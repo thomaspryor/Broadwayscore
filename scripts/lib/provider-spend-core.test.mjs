@@ -388,3 +388,23 @@ test('renderSnapshot: a boosted day names the bulk ceiling and the Tier-1 boost 
   assert.doesNotMatch(at('2026-11-02', 260), /boost/, 'no note once the boost has expired');
   assert.match(at('2026-11-02', 260), /CAP EXHAUSTED: 260\/250 sessions —/);
 });
+
+test('BRO-3023: cycleDelta only attributes a day when the two samples are ~24h apart', () => {
+  const prev = { ...prevRecord, providers: { ...prevRecord.providers,
+    scrapingbee: { status: 'ok', cycleUsed: 100000, readAt: '2026-07-30T06:45:00Z' },
+    scrapingdog: { status: 'ok', cycleUsed: 200000, readAt: '2026-07-30T06:45:00Z' } } };
+  const onTime = computeDayRecord({ ...okReadings, prev, readAt: '2026-07-31T06:50:00Z' });
+  assert.equal(onTime.providers.scrapingbee.dayCredits, 500);
+  const retimed = computeDayRecord({ ...okReadings, prev, readAt: '2026-07-31T00:10:00Z' }); // 17h25m gap
+  assert.equal(retimed.providers.scrapingbee.status, 'baseline');
+  assert.equal(retimed.providers.scrapingbee.dayCredits, undefined);
+  assert.equal(retimed.providers.scrapingbee.baselineReason, 'retimed');
+  assert.equal(retimed.providers.scrapingdog.status, 'baseline');
+});
+
+test('BRO-3023: records without readAt keep the legacy calendar-day behaviour', () => {
+  const rec = computeDayRecord({ ...okReadings, prev: prevRecord, readAt: '2026-07-31T00:10:00Z' });
+  assert.equal(rec.providers.scrapingbee.dayCredits, 500);
+  const legacy = computeDayRecord({ ...okReadings, prev: prevRecord });
+  assert.equal(legacy.providers.scrapingbee.readAt, undefined);
+});
