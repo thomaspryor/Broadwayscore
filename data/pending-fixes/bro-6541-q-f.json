@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-6541-q-f",
+  "planId": "2ba1d13c-1ff1-45cc-b539-db123f7fa099",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:55:20.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest reviews for the new UK hub productions (part 6 of 6)",
+    "steps": [
+      "BRO-6541: ingest thestage review for nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest thestage review for studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025",
+      "BRO-6541: ingest guardian review for snow-mice-egg-regional-2025",
+      "BRO-6541: ingest guardian review for scraps-wardrobe-regional-2025",
+      "BRO-6541: ingest guardian review for confessions-of-a-shinagawa-monkey-tramway-regional-2025",
+      "BRO-6541: ingest guardian review for doubt-ustinov-regional-2025",
+      "BRO-6541: ingest guardian review for cock-53two-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/nan-shepherd-naked-and-unashamed-review-at-pitlochry-festival-theatre-by-richard-baron-and-ellie-zeegen --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025 --url=https://www.thestage.co.uk/reviews/studio3-alright-sunshine-fleg-and-fruitcake-review-at-tron-theatre-glasgow-isla-cowan-meghan-tyler-and-frances-poet --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=snow-mice-egg-regional-2025 --url=https://www.theguardian.com/stage/2025/dec/03/snow-mice-review-egg-theatre-bath --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for snow-mice-egg-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=scraps-wardrobe-regional-2025 --url=https://www.theguardian.com/stage/2025/apr/01/scraps-review-daisy-kennedy-mia-macleod-wardrobe-theatre-bristol --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for scraps-wardrobe-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=confessions-of-a-shinagawa-monkey-tramway-regional-2025 --url=https://www.theguardian.com/stage/2025/feb/23/confessions-of-a-shinagawa-monkey-review-haruki-murakami-tramway-glasgow --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for confessions-of-a-shinagawa-monkey-tramway-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=doubt-ustinov-regional-2025 --url=https://www.theguardian.com/stage/2025/feb/14/doubt-review-maxine-peake-ustinov-bath --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for doubt-ustinov-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cock-53two-regional-2024 --url=https://www.theguardian.com/stage/2024/nov/17/cock-review-mike-bartlett-53two-manchester-her-productions --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for cock-53two-regional-2024"
+      }
+    ]
+  }
+}

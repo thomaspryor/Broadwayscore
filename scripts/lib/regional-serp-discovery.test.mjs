@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, tourCandidateVerdict } = require('./regional-serp-discovery.js');
+const { looksLikeAggregationOrReaction, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, tourCandidateVerdict } = require('./regional-serp-discovery.js');
 const { calculateDateWindow } = require('./url-discovery.js');
 
 const regional = { id: 'purpose-regional-2026', title: 'Purpose', market: 'regional', status: 'open', venue: 'Huntington Theatre Company (Calderwood Pavilion), Boston, MA' };
@@ -112,4 +112,19 @@ test('non-review pages, overseas editions and the Broadway company stay rejected
   assert.equal(tourCandidateVerdict(kinky, { url: 'https://www.nytimes.com/2026/01/x/kinky-boots-national-tour.html', title: 'Kinky Boots national tour' }).ok, true);
   // Non-tour shows are never judged here.
   assert.equal(tourCandidateVerdict({ market: 'regional' }, { url: 'https://www.broadwayworld.com/belgium/article/x', title: 'x' }).ok, true);
+});
+
+// BRO-6541: features the UK regional SERP pass ingested as reviews.
+test('pre-show features are not reviews; a review that mentions photos still is', () => {
+  for (const u of [
+    'https://theatreweekly.com/first-look-production-images-released-for-endgame-at-theatre-royal-bath/',
+    'https://www.westendbestfriend.co.uk/news/interview-ruffelle-ashfield-world-premiere-i-can-die-too-pitlochry-festival-theatre',
+    'https://www.afridiziak.com/news/first-look-at-utopia-theatres-crown-of-blood-at-sheffield-theatres/',
+    'https://www.broadwayworld.com/uk-regional/article/Photos-First-Look-At-The-UK-Tour-of-WISH-YOU-WERENT-HERE-By-Katie-Redford-20240125',
+  ]) assert.equal(looksLikeAggregationOrReaction(u, ''), true, u);
+  assert.equal(looksLikeAggregationOrReaction('https://www.broadwayworld.com/uk-regional/article/Review-Photos-KING-LEAR-Crucible-20260905', ''), false);
+  assert.equal(looksLikeAggregationOrReaction('https://www.whatsonstage.com/news/king-lear-crucible_123/', 'King Lear at the Crucible'), false);
+  // The marker inside the show's own title is not a feature page.
+  assert.equal(looksLikeAggregationOrReaction('https://example.co.uk/murdoch-the-final-interview-hope-mill/', 'Murdoch: The Final Interview, Hope Mill', 'Murdoch: The Final Interview'), false);
+  assert.equal(looksLikeAggregationOrReaction('https://example.co.uk/interview-cast-of-murdoch-the-final-interview/', '', 'Murdoch: The Final Interview'), true);
 });

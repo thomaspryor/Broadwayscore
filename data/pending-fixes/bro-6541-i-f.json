@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6541-i-f",
+  "planId": "8fc62dd0-9e22-425d-b703-972abf00ac18",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 6 of 9)",
+    "steps": [
+      "BRO-6541: ingest thestage review for the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+      "BRO-6541: ingest thestage review for hamlet-hail-to-the-thief-aviva-studios-regional-2025",
+      "BRO-6541: ingest thestage review for dancing-shoes-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
+      "BRO-6541: ingest thestage review for edward-ii-royal-shakespeare-regional-2025",
+      "BRO-6541: ingest thestage review for a-view-from-the-bridge-tron-regional-2025",
+      "BRO-6541: ingest thestage review for of-mice-and-men-octagon-regional-2025",
+      "BRO-6541: ingest thestage review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+      "BRO-6541: ingest thestage review for little-shop-of-horrors-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for spend-spend-spend-royal-exchange-regional-2024",
+      "BRO-6541: ingest thestage review for peter-panto-and-the-incredible-stinkerbell-tron-regional-2024",
+      "BRO-6541: ingest thestage review for the-sound-of-music-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest thestage review for kenrex-sheffield-regional-2024",
+      "BRO-6541: ingest thestage review for summer-1954-royal-bath-regional-2024",
+      "BRO-6541: ingest thestage review for reverberation-bristol-old-vic-regional-2024",
+      "BRO-6541: ingest thestage review for the-cat-and-the-canary-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for redlands-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for to-save-the-sea-tron-regional-2024",
+      "BRO-6541: ingest thestage review for a-dolls-house-crucible-regional-2024",
+      "BRO-6541: ingest thestage review for war-horse-lowry-regional-2024",
+      "BRO-6541: ingest thestage review for the-other-boleyn-girl-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for sunset-song-dundee-rep-regional-2024",
+      "BRO-6541: ingest thestage review for a-taste-of-honey-royal-exchange-regional-2024",
+      "BRO-6541: ingest thestage review for the-crucible-crucible-regional-2024",
+      "BRO-6541: ingest thestage review for frankenstein-leeds-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-chichester-festival-theatre-mark-addy --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hamlet-hail-to-the-thief-aviva-studios-regional-2025 --url=https://www.thestage.co.uk/reviews/hamlet-hail-to-the-thief-review-aviva-studios-factory-international-manchester-william-shakespeare-rsc-radiohead --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for hamlet-hail-to-the-thief-aviva-studios-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dancing-shoes-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/dancing-shoes-review-at-oran-mor-glasgow-directed-by-brian-logan --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for dancing-shoes-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=alfred-hitchcock-presents-the-musical-royal-bath-regional-2025 --url=https://www.thestage.co.uk/reviews/alfred-hitchcock-presents-the-musical-review-theatre-royal-bath-scarlett-strallen --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for alfred-hitchcock-presents-the-musical-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=edward-ii-royal-shakespeare-regional-2025 --url=https://www.thestage.co.uk/reviews/edward-ii-review-swan-theatre-royal-shakespeare-theatre-stratford-upon-avon-christopher-marlowe-daniel-raggett-royal-shakespeare-company --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for edward-ii-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-view-from-the-bridge-tron-regional-2025 --url=https://www.thestage.co.uk/reviews/a-view-from-the-bridge-review-tron-theatre-glasgow-arthur-miller-jemima-levick-nicholas-karimi-mark-holgate-nicole-cooper-holly-howden-gilchrist --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-view-from-the-bridge-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=of-mice-and-men-octagon-regional-2025 --url=https://www.thestage.co.uk/reviews/of-mice-and-men-review-derby-theatre-bolton-octagon-hull-truck-theatre-by-the-lake-john-steinbeck-sarah-brigham --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for of-mice-and-men-octagon-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=escaped-alone-and-what-if-if-only-royal-exchange-regional-2025 --url=https://www.thestage.co.uk/reviews/escaped-alone-and-what-if-if-only-review-royal-exchange-manchester-annette-badland-maureen-beattie-danielle-henry-caryl-churchill-sarah-frankcom --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=little-shop-of-horrors-crucible-regional-2025 --url=https://www.thestage.co.uk/reviews/little-shop-of-horrors-review-at-crucible-theatre-sheffield-by-howard-ashman-and-alan-menken --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for little-shop-of-horrors-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=spend-spend-spend-royal-exchange-regional-2024 --url=https://www.thestage.co.uk/reviews/spend-spend-spend-review-at-royal-exchange-theatre-manchester-by-steve-brown-and-justin-greene --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for spend-spend-spend-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peter-panto-and-the-incredible-stinkerbell-tron-regional-2024 --url=https://www.thestage.co.uk/reviews/peter-panto-and-the-incredible-stinkerbell-review-tron-theatre-glasgow-johnny-mcknight --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for peter-panto-and-the-incredible-stinkerbell-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-sound-of-music-pitlochry-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/the-sound-of-music-review-at-pitlochry-festival-theatre-scotland-elizabeth-newman-richard-rodgers-oscar-hammerstein --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-sound-of-music-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kenrex-sheffield-regional-2024 --url=https://www.thestage.co.uk/reviews/kenrex-review-tanya-moiseiwitsch-playhouse-sheffield-jack-holden-ed-stambollouian-ken-rex-mcelroy --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for kenrex-sheffield-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=summer-1954-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/summer-1954-review-theatre-royal-bath-nathaniel-parker-sian-phillips-terence-rattigan-james-dacre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for summer-1954-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=reverberation-bristol-old-vic-regional-2024 --url=https://www.thestage.co.uk/reviews/reverberation-review-at-bristol-old-vic-matthew-lopez --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for reverberation-bristol-old-vic-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-cat-and-the-canary-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/the-cat-and-the-canary-review-minerva-theatre-chichester-told-by-an-idiot-john-willard-carl-grose --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-cat-and-the-canary-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=redlands-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/redlands-review-chichester-festival-theatre-charlotte-jones-justin-audibert-rolling-stones --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for redlands-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=to-save-the-sea-tron-regional-2024 --url=https://www.thestage.co.uk/reviews/to-save-the-sea-review-tron-theatre-glasgow-sleeping-warrior-isla-cowan-andy-mcgregor --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for to-save-the-sea-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-dolls-house-crucible-regional-2024 --url=https://www.thestage.co.uk/reviews/a-dolls-house-review-crucible-theatre-sheffield-henrik-ibsen-chris-bush-elin-schofield-siena-kelly --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-dolls-house-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=war-horse-lowry-regional-2024 --url=https://www.thestage.co.uk/reviews/war-horse-review-the-lowry-salford-tom-sturgess-michael-morpurgo-nick-stafford-katie-henry --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for war-horse-lowry-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-other-boleyn-girl-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/the-other-boleyn-girl-review-chichester-festival-theatre-philippa-gregory-lucy-bailey-alex-kingston --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-other-boleyn-girl-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sunset-song-dundee-rep-regional-2024 --url=https://www.thestage.co.uk/reviews/sunset-song-review-at-dundee-rep-theatre-by-lewis-grassic-gibbon --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for sunset-song-dundee-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-taste-of-honey-royal-exchange-regional-2024 --url=https://www.thestage.co.uk/reviews/a-taste-of-honey-review-at-royal-exchange-manchester-by-shelagh-delaney --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-taste-of-honey-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-crucible-crucible-regional-2024 --url=https://www.thestage.co.uk/reviews/the-crucible-review-sheffield-arthur-miller-anthony-lau-anoushka-lucas-simon-manyonda --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-crucible-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=frankenstein-leeds-regional-2024 --url=https://www.thestage.co.uk/reviews/frankenstein-review-leeds-playhouse-2024-imitating-the-dog --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for frankenstein-leeds-regional-2024"
+      }
+    ]
+  }
+}

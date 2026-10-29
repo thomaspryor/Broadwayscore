@@ -569,6 +569,8 @@ on:
       - 'scripts/discover-dtli-slugs.js'
       - 'scripts/discover-historical-shows.js'
       - 'scripts/discover-regional-serp-reviews.js'
+      - 'scripts/uk-regional-coverage.js'
+      - 'scripts/uk-regional-census-productions.js'
       - 'scripts/eval-v52.js'
       - 'scripts/extract-bww-reviews.js'
       - 'scripts/extract-explicit-ratings.js'
@@ -6308,6 +6310,15 @@ jobs:
         if: always()
         run: node scripts/validate-market-expansion.js
         # Catches slug, threshold, display, and copy issues for WE/OB markets
+
+      # BRO-6541: UK regional coverage per city (rows eligible for /browse/beyond-london, which
+      # lists only the scoreable ones, and that scoreable share). Floor: today's 189 rows and a
+      # share under today's 25%, since new rows land with one review before more arrive; the
+      # 450 / 60% target lives on the card.
+      - name: UK regional coverage (advisory)
+        if: always()
+        continue-on-error: true
+        run: node scripts/uk-regional-coverage.js --min-shows=189 --min-share=0.15
 
       - name: Validate archive productions
         run: node scripts/validate-archive-productions.js

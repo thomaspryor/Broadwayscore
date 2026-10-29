@@ -169,7 +169,7 @@ async function processShow(show) {
       skippedExisting++;
       continue;
     }
-    if (!urlLooksLikeReview(url, show.title) || looksLikeAggregationOrReaction(url, r.title)) {
+    if (!urlLooksLikeReview(url, show.title) || looksLikeAggregationOrReaction(url, r.title, show.title)) {
       skippedNotReview++;
       continue;
     }

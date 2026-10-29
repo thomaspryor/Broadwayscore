@@ -250,7 +250,9 @@
       "theatre royal bath",
       "theatre royal, bath",
       "ustinov studio",
-      "the egg, bath"
+      "the egg, bath",
+      "ustinov, bath",
+      "egg theatre, bath"
     ],
     "guardianTrigger": false
   },
@@ -320,5 +322,33 @@
       "òran mór",
       "oran mor"
     ]
+  },
+  {
+    "match": "wardrobe theatre",
+    "city": "Bristol",
+    "venue": "The Wardrobe Theatre",
+    "idKey": "wardrobe-bristol",
+    "aliases": [
+      "wardrobe theatre, bristol"
+    ],
+    "domain": "thewardrobetheatre.com"
+  },
+  {
+    "match": "tramway",
+    "city": "Glasgow",
+    "venue": "Tramway",
+    "idKey": "tramway",
+    "aliases": [
+      "tramway, glasgow"
+    ],
+    "domain": "tramway.org"
+  },
+  {
+    "match": "53two",
+    "city": "Manchester",
+    "venue": "53two",
+    "idKey": "53two",
+    "aliases": [],
+    "domain": "53two.com"
   }
 ]

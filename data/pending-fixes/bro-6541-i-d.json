@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6541-i-d",
+  "planId": "338a8458-f29d-40c0-afbd-70b82114ae3c",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 4 of 9)",
+    "steps": [
+      "BRO-6541: ingest everything-theatre review for the-ladies-football-club-crucible-regional-2026",
+      "BRO-6541: ingest everything-theatre review for crown-of-blood-crucible-regional-2026",
+      "BRO-6541: ingest theatre-weekly review for tristan-and-yseult-royal-bath-regional-2026",
+      "BRO-6541: ingest theatre-weekly review for king-lear-crucible-regional-2026",
+      "BRO-6541: ingest thestage review for twelfth-night-crucible-regional-2026",
+      "BRO-6541: ingest thestage review for a-midsummer-nights-dream-chichester-festival-regional-2026",
+      "BRO-6541: ingest thestage review for king-lear-crucible-regional-2026",
+      "BRO-6541: ingest thestage review for the-trial-of-romeo-oscar-stephen-joseph-regional-2026",
+      "BRO-6541: ingest thestage review for east-is-east-octagon-regional-2026",
+      "BRO-6541: ingest thestage review for present-laughter-royal-bath-regional-2026",
+      "BRO-6541: ingest thestage review for a-history-of-paper-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest thestage review for my-fair-lady-chichester-festival-regional-2026",
+      "BRO-6541: ingest thestage review for lear-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest thestage review for fun-home-royal-exchange-regional-2026",
+      "BRO-6541: ingest thestage review for brassed-off-leeds-regional-2026",
+      "BRO-6541: ingest thestage review for 45-years-chichester-festival-regional-2026",
+      "BRO-6541: ingest thestage review for the-long-drop-citizens-regional-2026",
+      "BRO-6541: ingest thestage review for once-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest thestage review for our-public-house-leeds-regional-2026",
+      "BRO-6541: ingest thestage review for even-these-things-royal-exchange-regional-2026",
+      "BRO-6541: ingest thestage review for magic-chichester-festival-regional-2026",
+      "BRO-6541: ingest thestage review for stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026",
+      "BRO-6541: ingest thestage review for what-im-here-for-tron-regional-2026",
+      "BRO-6541: ingest thestage review for living-sheffield-regional-2026",
+      "BRO-6541: ingest thestage review for the-ladies-football-club-crucible-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-ladies-football-club-crucible-regional-2026 --url=https://everything-theatre.co.uk/2026/03/review-the-ladies-football-club-crucible-theatre-sheffield/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for the-ladies-football-club-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=crown-of-blood-crucible-regional-2026 --url=https://everything-theatre.co.uk/2026/02/review-crown-of-blood-crucible-theatre-sheffield/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for crown-of-blood-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tristan-and-yseult-royal-bath-regional-2026 --url=https://theatreweekly.com/review-tristan-yseult-at-theatre-royal-bath/ --outlet=theatre-weekly",
+        "description": "BRO-6541: ingest theatre-weekly review for tristan-and-yseult-royal-bath-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-lear-crucible-regional-2026 --url=https://theatreweekly.com/review-king-lear-at-the-crucible-theatre-sheffield/ --outlet=theatre-weekly",
+        "description": "BRO-6541: ingest theatre-weekly review for king-lear-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=twelfth-night-crucible-regional-2026 --url=https://www.thestage.co.uk/reviews/twelfth-night-review-crucible-theatre-sheffield-theatres-mathew-horne-shakespeare --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for twelfth-night-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-midsummer-nights-dream-chichester-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-chichester-festival-theatre-munya-chawawa --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-midsummer-nights-dream-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-lear-crucible-regional-2026 --url=https://www.thestage.co.uk/reviews/king-lear-review-crucible-theatre-sheffield --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for king-lear-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-trial-of-romeo-oscar-stephen-joseph-regional-2026 --url=https://www.thestage.co.uk/reviews/the-trial-of-romeo-oscar-review-stephen-joseph-theatre-scarborough-alan-ayckbourn --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-trial-of-romeo-oscar-stephen-joseph-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=east-is-east-octagon-regional-2026 --url=https://www.thestage.co.uk/reviews/east-is-east-review-octagon-theatre-bolton-2026-kash-arshad --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for east-is-east-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=present-laughter-royal-bath-regional-2026 --url=https://www.thestage.co.uk/reviews/present-laughter-review-theatre-royal-bath-tracy-ann-oberman --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for present-laughter-royal-bath-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-history-of-paper-pitlochry-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/a-history-of-paper-review-pitlochry-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-history-of-paper-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-fair-lady-chichester-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/my-fair-lady-review-chichester-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for my-fair-lady-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lear-pitlochry-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/lear-review-pitlochry-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fun-home-royal-exchange-regional-2026 --url=https://www.thestage.co.uk/reviews/fun-home-review-royal-exchange-theatre-manchester --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for fun-home-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=brassed-off-leeds-regional-2026 --url=https://www.thestage.co.uk/reviews/brassed-off-review-leeds-playhouse --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for brassed-off-leeds-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=45-years-chichester-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/45-years-review-chichester-festival-theatre-gabriel-byrne-geraldine-james --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for 45-years-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-long-drop-citizens-regional-2026 --url=https://www.thestage.co.uk/reviews/the-long-drop-review-citizens-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-long-drop-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=once-pitlochry-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/once-review-pitlochry-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for once-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=our-public-house-leeds-regional-2026 --url=https://www.thestage.co.uk/reviews/our-public-house-review-leeds-playhouse --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for our-public-house-leeds-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=even-these-things-royal-exchange-regional-2026 --url=https://www.thestage.co.uk/reviews/even-these-things-review-royal-exchange-manchester-rory-mullarkey --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for even-these-things-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=magic-chichester-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/magic-review-chichester-festival-theatre-david-haig-hadley-fraser --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for magic-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026 --url=https://www.thestage.co.uk/reviews/stand-and-deliver-the-lee-jeans-sit-in-review-tron-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=what-im-here-for-tron-regional-2026 --url=https://www.thestage.co.uk/reviews/what-im-here-for-review-tron-theatre-glasgow-vanishing-point-teater-katapult --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for what-im-here-for-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=living-sheffield-regional-2026 --url=https://www.thestage.co.uk/reviews/living-review-tanya-moiseiwitsch-playhouse-sheffield --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for living-sheffield-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-ladies-football-club-crucible-regional-2026 --url=https://www.thestage.co.uk/reviews/the-ladies-football-club-review-crucible-theatre-sheffield-elizabeth-newman --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-ladies-football-club-crucible-regional-2026"
+      }
+    ]
+  }
+}
