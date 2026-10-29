@@ -19,6 +19,7 @@ const path = require('path');
 const { buildRegionalShowEntry } = require('./promote-ob-venue-candidates');
 const { resolveMetroInfo, norm, TABLE } = require('./lib/venue-metro');
 const { applyAddShow } = require('./lib/add-show-action');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const ROOT = path.join(__dirname, '..');
 const LIST = path.join(ROOT, 'data', 'audit', 'uk-regional', 'production-list.json');
@@ -85,6 +86,10 @@ function buildAction(row, shows) {
 }
 
 function main(argv = process.argv.slice(2)) {
+  if (hasHelpFlag(argv)) {
+    console.log('Usage: node scripts/uk-regional-add-plan.js [--hub=<hub>] [--urls=<guardianUrl>,...] [--limit=N] [--list=<file>] [--out=<actions.json>]');
+    return;
+  }
   const arg = (k) => (argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=').slice(1).join('=') || null;
   const rows = JSON.parse(fs.readFileSync(arg('list') || LIST, 'utf8'));
   const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
