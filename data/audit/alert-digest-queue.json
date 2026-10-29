@@ -445,5 +445,36 @@
       }
     ],
     "queuedAt": "2026-10-29T13:10:07.254Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6504-cost-wrapup",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6504-cost-wrapup",
+    "description": "land.yml did not land land/bro-6504-cost-wrapup: the unit-tests-node gate went red at 8ac7b3209c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40850485439",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6504-cost-wrapup"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8ac7b3209c863fdc13b642e4c8ef6de547d4518d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40850485439"
+      }
+    ],
+    "queuedAt": "2026-10-29T13:11:25.844Z"
   }
 ]
