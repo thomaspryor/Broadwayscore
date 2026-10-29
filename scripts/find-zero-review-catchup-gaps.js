@@ -16,8 +16,8 @@
  * transient gh-cli/API failures that never really attempted collection.
  *
  * Guard (BRO-4290): rows the selector can never dispatch (no openingDate and
- * no previewsStartDate) and never-attempted eligible rows still waiting past
- * grace + 14 days are printed as ::warning:: lines; --fail-on-stranded also
+ * no previewsStartDate), open rows left out past grace + 14 days, and closed
+ * rows the capped queue will not reach before the 90-day bound are printed as ::warning:: lines; --fail-on-stranded also
  * exits 1 after writing gap_shows, so the workflow's advisory guard step can
  * go red without blocking the dispatch.
  *
@@ -68,7 +68,7 @@ function main() {
   }
   const waiting = stranded.filter((id) => !undated.includes(id));
   if (waiting.length) {
-    console.log(`::warning::catchup-zero-review-shows: ${waiting.length} zero-review show(s) eligible but never attempted for 14+ days past grace: ${waiting.join(', ')}`);
+    console.log(`::warning::catchup-zero-review-shows: ${waiting.length} zero-review show(s) stranded (open and left out 14+ days past grace, or closed and the 2-per-run queue will not reach it inside 90 days): ${waiting.join(', ')}`);
   }
   console.log(batch.length
     ? `Found ${batch.length} show(s) with 0 reviews needing collection: ${batch.join(', ')}`
