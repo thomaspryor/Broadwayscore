@@ -67,6 +67,13 @@
 // file merge=union) rather than assuming it's stale.
 const EXEMPT_LEDGERS = [
   {
+    file: 'data/audit/claude-session-cost.jsonl',
+    reason:
+      '2026-10-29 (BRO-5671): claude-session-cost-writer.js upserts by (date, session), ' +
+      'replacing a re-recorded session\'s row in place. A union merge would resurrect the ' +
+      'superseded row beside the replacement, double-counting that session\'s cost.',
+  },
+  {
     file: 'data/audit/arm-yield-ledger.jsonl',
     reason:
       '2026-08-26 (BRO-2493): record-arm-yield.js dedupes by (arm, date) keeping ' +
