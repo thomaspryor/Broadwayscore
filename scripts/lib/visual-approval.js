@@ -56,6 +56,12 @@ function pickCrops(dir) {
   return (crops.length ? crops : all).slice(0, MAX_CROPS);
 }
 
+/** What the session must do next, printed after a request: the owner reads the chat, not the card, so the crops go inline (SendUserFile, display render) in the same reply. */
+function showInlineHint(crops, cwd = process.cwd()) {
+  const files = crops.map((f) => path.resolve(cwd, f));
+  return `SHOW THEM NOW, in your next reply: SendUserFile files=${JSON.stringify(files)} display="render" status="normal" (one call). Saying "screenshots" without showing them is the failure. If the owner is in this chat, their plain "yes" / "Approved" is the approval: push land/<name> yourself instead of waiting for a tap.`;
+}
+
 function flatName(dir, file) {
   return path.relative(dir, file).replace(/[\\/]+/g, '_').replace(/[^A-Za-z0-9._-]/g, '-').slice(0, 120);
 }
@@ -143,4 +149,4 @@ function openVisualRequests(issues) {
   return issues.filter((i) => link.parseVisualApproval(i.description) && /DECISION NEEDED/i.test(i.description || '') && !/ANSWERED by the owner/.test(i.description || ''));
 }
 
-module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
