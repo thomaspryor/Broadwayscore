@@ -254,7 +254,7 @@ Round 1 listed 29 outlets here. Round 2 read all but the six listed under "Still
 ## Follow-ups
 
 - Re-run the census on CI after each ingest batch to measure the recall change, and vet each batch's URLs against the show's dates before ingest.
-- Round-2 ingest went in for every listed gap; the after-recall table below is the check that it held.
+- Round-2 ingest went in for every listed gap; re-measure the round-2 outlets on CI once it drains to confirm it held.
 
 ## London (BRO-6488)
 
