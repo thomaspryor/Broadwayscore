@@ -40,6 +40,7 @@ const os = require('os');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { redactEmails } = require('./lib/pii-scan.js');
 const { findClaimedTask } = require('./lib/autonomous-triage-core.js');
 const { makeFreshCheckout: freshCheckout, removeCheckout, runVerify, CHECK_TIMEOUT_MS } = require('./lib/acceptance-check-core.js');
 const { selectOpenBacklogSweepCandidates } = require('./lib/autonomous-recheck-core.js');
@@ -106,7 +107,7 @@ function makeFreshCheckout() {
 
 function writeReport(report) {
   fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
-  fs.writeFileSync(`${REPORT_PATH}.tmp`, JSON.stringify(report, null, 2) + '\n');
+  fs.writeFileSync(`${REPORT_PATH}.tmp`, JSON.stringify(report, (k, v) => (k === 'detail' && typeof v === 'string' ? redactEmails(v) : v), 2) + '\n');
   fs.renameSync(`${REPORT_PATH}.tmp`, REPORT_PATH);
 }
 

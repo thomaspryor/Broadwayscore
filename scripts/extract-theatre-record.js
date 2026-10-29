@@ -51,8 +51,10 @@ function writeProbe() {
   // Publisher contact lines in PDF front matter are email-shaped even letter-masked; the
   // committed-PII lint (BRO-6520) counts each one, so redact at write time instead of
   // raising its allowlist baseline every time a new show's PDF is probed.
-  const json = JSON.stringify({ generatedAt: new Date().toISOString(), shows: PROBE }, null, 2);
-  fs.writeFileSync(probeOut, redactEmails(json));
+  // Redact per string value (not the serialized text): the address matcher would swallow the
+  // letter after a JSON escape backslash ("\\njane@x.com" -> "\\redacted@x.com").
+  const json = JSON.stringify({ generatedAt: new Date().toISOString(), shows: PROBE }, (k, v) => (typeof v === 'string' ? redactEmails(v) : v), 2);
+  fs.writeFileSync(probeOut, json);
 }
 
 async function extractReviewsFromPDF(page, context, pdfUrl, show) {

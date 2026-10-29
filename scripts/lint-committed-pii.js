@@ -64,18 +64,6 @@ const ALLOWLIST = new Map([
       maxFindings: 4,
     },
   ],
-  [
-    'data/audit/we-historical-tr-probe.json',
-    {
-      reason:
-        'WE historical TR probe (BRO-6097): pdf.sections snippets are letter-masked ' +
-        '("xxxxx@xxxxxx.xx.xx") publisher/rights-contact lines from the front matter of ' +
-        'published play-text PDFs (e.g. "Oberon Books ... : <address>") — outlet contact ' +
-        'addresses, not submitter PII from the feedback pipeline. 5 distinct shows ' +
-        '(speed-the-plow, american-buffalo, hangmen x2, american-idiot).',
-      maxFindings: 5,
-    },
-  ],
 ]);
 
 function listTrackedAuditFiles() {
