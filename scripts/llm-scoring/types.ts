@@ -565,6 +565,8 @@ export interface PipelineRunSummary {
    * the cost-breach alarm (BRO-3381) — see scripts/lib/llm-scoring-cost-recording.js.
    */
   runId?: string | null;
+  /** Which writer produced this entry; lets one runId's spend be broken down (BRO-3464). Absent on older entries. */
+  source?: 'index' | 'comparative-rescore';
 
   /** Calibration stats if calibration was run */
   calibration?: CalibrationStats;
