@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-10-29T01:34:05.937Z",
+  "generatedAt": "2026-10-29T07:33:33.516Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 255,
-  "clean": 255,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 259,
+  "clean": 256,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "title": "Heathers The Musical",
+      "openingDate": "2025-06-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.06 vs local 74.31 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-10-29T07:33:29.395Z"
+    },
+    {
+      "showId": "just-in-time-2025",
+      "title": "Just in Time",
+      "openingDate": "2025-04-26",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.22 vs local 78.41 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 34,
+      "deployedCount": 35,
+      "firstDefectAt": "2026-10-29T07:33:29.395Z"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "title": "Maybe Happy Ending",
+      "openingDate": "2024-11-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.98 vs local 86.04 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 36,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-10-29T07:33:29.395Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
