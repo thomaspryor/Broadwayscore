@@ -7,11 +7,18 @@
  * on a real outage: a Scrapingdog transient 400 while Bright Data is over its
  * daily cap and ScrapingBee times out. 5 of 29 sampled backfill shows lost
  * the rest of their sweep that way (one after 18 of 150 outlets). Abort only
- * after `max` unavailable outlets in a row; any answered query resets it.
+ * after `max` unavailable outlets in a row (one strike per outlet, however
+ * many queries it made, BRO-6534); any answered query resets it.
  */
 const DEFAULT_MAX_STRIKES = 3;
 
-function createSerpUnavailableStrikes(max = DEFAULT_MAX_STRIKES) {
+/** SERP_UNAVAILABLE_MAX_STRIKES: positive integer, else the default. */
+function resolveMaxStrikes(env = process.env) {
+  const n = parseInt(env.SERP_UNAVAILABLE_MAX_STRIKES, 10);
+  return Number.isFinite(n) && n >= 1 ? n : DEFAULT_MAX_STRIKES;
+}
+
+function createSerpUnavailableStrikes(max = resolveMaxStrikes()) {
   let strikes = 0;
   return {
     max,
@@ -23,4 +30,4 @@ function createSerpUnavailableStrikes(max = DEFAULT_MAX_STRIKES) {
   };
 }
 
-module.exports = { DEFAULT_MAX_STRIKES, createSerpUnavailableStrikes };
+module.exports = { DEFAULT_MAX_STRIKES, resolveMaxStrikes, createSerpUnavailableStrikes };
