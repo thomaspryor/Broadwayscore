@@ -1,26 +1,31 @@
 {
-  "updatedAt": "2026-10-29T16:06:26.764Z",
-  "processed": 29,
-  "failed": 19,
-  "successRate": "60.4%",
+  "updatedAt": "2026-10-29T16:08:47.496Z",
+  "processed": 56,
+  "failed": 26,
+  "successRate": "68.3%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 29,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 9
+    "scrapingdog": 1,
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archiveToday": 7,
+    "archive": 15
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-29T16:05:37.803Z",
+      "t": "2026-10-29T15:51:04.287Z",
       "event": "bb-session",
-      "session": "322947c5",
-      "url": "https://bachtrack.com/review-farinelli-and-the-king-iestyn-davies-london-septemb"
+      "session": "8c4b170a",
+      "url": "http://www.nytimes.com/2014/07/05/theater/david-hares-skylight-stars-bill-nighy-"
+    },
+    {
+      "t": "2026-10-29T15:51:04.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
