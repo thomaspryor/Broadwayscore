@@ -280,7 +280,7 @@ jobs:
           for f in $F; do if [ -f "$f" ]; then cp "$f" "/tmp/tic-pre/$(basename $f)"; else touch "/tmp/tic-pre/$(basename $f).absent"; fi; done
           node scripts/tic-daily.js || true
           if node scripts/validate-data.js; then
-            git add data/audit/tic-daily-seen.json data/audit/tic-daily-added.json
+            bash scripts/lib/git-add-existing.sh data/audit/tic-daily-seen.json data/audit/tic-daily-added.json
           else
             echo "::warning::validate-data failed after Chicago pickup, rolling back"
             for f in $F; do
@@ -302,7 +302,7 @@ jobs:
       # BRO-6518: ingest + score the Chicago shows the pickup step added. Runs only
       # after the push really happened (no skip sentinel).
       - name: Ingest + score new Chicago productions
-        if: always()
+        if: always() && steps.push_core_regional.outcome == 'success'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}

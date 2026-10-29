@@ -24,7 +24,7 @@ test('pickCandidates skips known, finally-rejected and thin listings but keeps r
   const shows = [{ evidenceUrls: ['https://www.theatreinchicago.com/a/1/'] }];
   const seen = { 2: { reason: 'virtual', retry: false }, 3: { reason: 'under-3-outlets', retry: true } };
   const got = pickCandidates([row(1), row(2), row(3), row(4), row(5, 2)], shows, seen).map((r) => r.id);
-  assert.deepEqual(got, [3, 4]);
+  assert.deepEqual(got, [4, 3]);
 });
 
 test('runDaily adds an accepted show with the Chicago fields and remembers it', async () => {
@@ -63,4 +63,10 @@ test('rerunning does not add the same show twice', async () => {
   const second = await runDaily({ ...base, listing: [row(30)], shows, seen: {}, io });
   assert.equal(second.added.length, 0);
   assert.equal(shows.length, 1);
+});
+
+test('pickCandidates re-offers an id marked added but missing from shows.json, new ids first', () => {
+  const listing = [{ id: 1, reviewCount: 5 }, { id: 2, reviewCount: 5 }, { id: 3, reviewCount: 5 }];
+  const seen = { 1: { reason: 'under-3-outlets', retry: true }, 2: { reason: 'added', retry: false } };
+  assert.deepEqual(pickCandidates(listing, [], seen).map((r) => r.id), [3, 1, 2]);
 });
