@@ -11,7 +11,11 @@ import sharp from 'sharp';
  * WebP. Ask the optimizer for JPEG/PNG, but convert WebP locally when the
  * optimizer passes the original format through. Returns null on any failure.
  */
-export async function fetchImageDataUri(imagePath: string, width: number): Promise<string | null> {
+export async function fetchImageDataUri(
+  imagePath: string,
+  width: number,
+  { retryDelayMs = 400 }: { retryDelayMs?: number } = {},
+): Promise<string | null> {
   // Same-origin /images/** only: the optimizer's GHSA-2xp9-vwfh-vxw4 exposure
   // assessment (scripts/audit-dependencies.js, tests/unit/image-optimizer-
   // exposure.test.mjs) assumes no caller passes third-party URLs. Diary-only
@@ -19,8 +23,22 @@ export async function fetchImageDataUri(imagePath: string, width: number): Promi
   if (!isSameOriginImagePath(imagePath)) return null;
   try {
     const url = `${BASE_URL}/_next/image?url=${encodeURIComponent(imagePath)}&w=${width}&q=75`;
-    const res = await fetch(url, { headers: { Accept: 'image/jpeg,image/png' } });
-    if (!res.ok) return null;
+    // A static build asks the optimizer for thousands of images across parallel
+    // workers; a dropped connection or 429/5xx there is transient, and without
+    // a retry it silently degrades the show to the generic share card (BRO-3204).
+    // 4xx other than 429 (a dead pointer) is not retried.
+    let res: Response | null = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        res = await fetch(url, { headers: { Accept: 'image/jpeg,image/png' }, signal: AbortSignal.timeout(8000) });
+        if (res.ok || (res.status !== 429 && res.status < 500)) break;
+        if (attempt < 2) await res.body?.cancel();
+      } catch {
+        res = null;
+      }
+      if (attempt < 2) await new Promise(resolve => setTimeout(resolve, retryDelayMs * (attempt + 1)));
+    }
+    if (!res || !res.ok) return null;
     let contentType = (res.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
     if (!/^image\/(jpeg|png|webp)$/.test(contentType)) return null;
     let buf = Buffer.from(await res.arrayBuffer());
