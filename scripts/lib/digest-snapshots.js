@@ -10,6 +10,7 @@
  *   health-check.js            → data/audit/health-digest-snapshot.json
  *   send-daily-digest.js       → data/audit/daily-digest-snapshot.json
  *   reddit-engagement-digest.js→ data/audit/reddit-digest-snapshot.json
+ *   produce-new-show-types-snapshot.js → data/audit/new-show-types-snapshot.json
  *
  * send-opening-digest.js left this registry 2026-07-30 (owner ask): it sends
  * its own standalone daily email again and no longer writes a snapshot.
@@ -51,6 +52,13 @@ const SNAPSHOTS = [
   { key: 'health', label: 'site health', file: 'health-digest-snapshot.json', maxAgeH: 36 },
   { key: 'dailyDigest', label: 'score-drift digest', file: 'daily-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
   { key: 'redditDigest', label: 'Reddit engagement', file: 'reddit-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
+  // scripts/produce-new-show-types-snapshot.js (BRO-6542) — new tour,
+  // pre-Broadway and UK regional shows, plus a suggested r/Broadway post for
+  // each new pre-Broadway one (owner ask 2026-10-29: "so I don't miss them").
+  // Rendered in the owner-first top of the email, not bannerOnly. CI-produced
+  // in daily-digest.yml and committed; optionalIfMissing until the first run
+  // lands the file on main.
+  { key: 'newShowTypes', label: 'new tour/pre-Broadway/regional shows', file: 'new-show-types-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
   // backlogDrain REMOVED 2026-09-15 (BRO-3390). Its producer,
   // scripts/backlog-drain.js, was deliberately decommissioned on 2026-08-31
   // when the board moved to Linear — so data/audit/backlog-drain-metric.json

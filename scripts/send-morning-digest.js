@@ -75,6 +75,7 @@ const {
   renderTechnicalDetailsHeading,
 } = require('./lib/autonomous-email-render.js');
 const { localLoopDeadMessage } = require('./lib/digest-loop-health.js');
+const { renderNewShowTypesBlock } = require('./lib/new-show-types.js');
 const { fetchPipelineIssues } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
@@ -629,6 +630,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true }) : '',
   ].filter(Boolean).join('\n');
   head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
+  // New tour / pre-Broadway / UK regional shows with suggested Reddit posts
+  // (BRO-6542). Quiet days render nothing; a stale snapshot is flagged by the
+  // freshness banner like every other digest snapshot.
+  try {
+    head.push(renderNewShowTypesBlock(sections.newShowTypes, { esc, now }));
+  } catch (err) {
+    console.error(`[digest] WARN new-show-types block failed: ${String(err.message).slice(0, 120)}`);
+  }
   // Board numbers (BRO-5482). `waiting` and `stuck` are the SAME numbers the sections
   // above/below use (view.decisions, stuckCount): never a second definition.
   if (boardNumbersData) {
