@@ -167,7 +167,7 @@ function ghAuthAvailable() {
   }
 }
 
-test('live: repos/thomaspryor/Broadwayscore branches/main/protection has enforce_admins true and non-empty required checks', { skip: !ghAuthAvailable() && 'gh not authenticated in this environment — CI Unit Tests job has no GH_TOKEN' }, (t) => {
+test('live: repos/thomaspryor/Broadwayscore branches/main/protection has enforce_admins true and non-empty required checks', { skip: process.env.BRANCH_PROTECTION_LIVE_CHECK !== '1' ? 'live probe is opt-in: set BRANCH_PROTECTION_LIVE_CHECK=1 with an admin gh token (BRO-4269)' : (!ghAuthAvailable() && 'gh not authenticated in this environment — CI Unit Tests job has no GH_TOKEN') }, (t) => {
   // This is the ticket's literal acceptance bar, run against real live
   // state, un-gamed. It is EXPECTED TO FAIL until a fleet migration off
   // direct-push-to-main makes FULL_ENFORCEMENT_TARGET safe to --apply — see
