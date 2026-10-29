@@ -1329034,21 +1329034,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T04:23:07.900Z",
-    "completedAt": "2026-10-29T04:23:12.497Z",
-    "totalReviews": 42,
-    "processed": 1,
-    "skipped": 41,
+    "startedAt": "2026-10-29T04:25:05.934Z",
+    "completedAt": "2026-10-29T04:25:23.869Z",
+    "totalReviews": 51,
+    "processed": 4,
+    "skipped": 47,
     "errors": 0,
     "tokensUsed": {
-      "input": 4385,
-      "output": 251,
-      "cacheRead": 3807,
+      "input": 21205,
+      "output": 1249,
+      "cacheRead": 15228,
       "cacheWrite": 0,
-      "total": 12634
+      "total": 56231
     },
-    "costUsd": 0.0174729,
-    "runId": "40814499792",
+    "costUsd": 0.0827495,
+    "runId": "40814565352",
     "errorDetails": [],
     "validation": [
       {
@@ -1333147,10 +1333147,10 @@
       {
         "showId": "back-to-the-future-2023",
         "ourDistribution": {
-          "up": 14,
+          "up": 16,
           "flat": 10,
-          "down": 13,
-          "total": 37
+          "down": 15,
+          "total": 41
         },
         "dtliDistribution": {
           "up": 3,
@@ -1333165,7 +1333165,7 @@
           "total": 22
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Sentiment flip: we say positive, they say negative"
       },
       {
         "showId": "back-to-the-future-tour-2024",
@@ -1341195,10 +1341195,10 @@
       {
         "showId": "gutenberg-2023",
         "ourDistribution": {
-          "up": 24,
+          "up": 23,
           "flat": 7,
           "down": 6,
-          "total": 37
+          "total": 36
         },
         "dtliDistribution": {
           "up": 4,
@@ -1341213,7 +1341213,7 @@
           "total": 12
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 32% (ours: 65%, theirs: 33%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 31% (ours: 64%, theirs: 33%)"
       },
       {
         "showId": "guys-and-dolls-2009",
@@ -1363781,10 +1363781,10 @@
       {
         "showId": "water-for-elephants-2024",
         "ourDistribution": {
-          "up": 29,
-          "flat": 6,
+          "up": 30,
+          "flat": 7,
           "down": 5,
-          "total": 40
+          "total": 42
         },
         "dtliDistribution": {
           "up": 6,
@@ -1363799,7 +1363799,7 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Up thumbs differ by 28% (ours: 73%, theirs: 44%)"
+        "disagreementDetails": "BWW: Up thumbs differ by 27% (ours: 71%, theirs: 44%)"
       },
       {
         "showId": "water-for-elephants-tour-2025",
@@ -1364750,21 +1364750,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T04:24:55.418Z",
-    "completedAt": "2026-10-29T04:25:01.054Z",
-    "totalReviews": 2,
-    "processed": 2,
+    "startedAt": "2026-10-29T04:27:38.051Z",
+    "completedAt": "2026-10-29T04:27:38.071Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 4693,
-      "output": 288,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 4981
+      "total": 0
     },
-    "costUsd": 0.0168205,
-    "runId": "40814499792",
+    "costUsd": 0,
+    "runId": "40814565352",
     "errorDetails": []
   },
   {
