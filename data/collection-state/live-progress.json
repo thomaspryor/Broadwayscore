@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-29T13:01:12.598Z",
-  "processed": 65,
-  "failed": 51,
-  "successRate": "56.0%",
+  "updatedAt": "2026-10-29T13:33:04.954Z",
+  "processed": 158,
+  "failed": 78,
+  "successRate": "66.9%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 83,
     "amp": 1,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 2,
-    "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 13
+    "scrapingdog": 13,
+    "scrapingbee": 4,
+    "brightdata": 1,
+    "archiveToday": 16,
+    "archive": 44
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-29T12:31:39.329Z",
@@ -38,6 +38,34 @@
       "event": "bb-session",
       "session": "f70bacc1",
       "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
+    },
+    {
+      "t": "2026-10-29T13:15:27.053Z",
+      "event": "bb-session",
+      "session": "ea0caa86",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-29T13:15:27.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T13:21:22.120Z",
+      "event": "bb-session",
+      "session": "ba403ac2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-29T13:22:03.408Z",
+      "event": "bb-session",
+      "session": "901c78a4",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-29T13:22:04.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
