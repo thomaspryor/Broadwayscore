@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T00:57:41.958Z",
+  "timestamp": "2026-10-29T01:49:38.623Z",
   "stats": {
-    "totalReviews": 65814,
-    "alreadyFlagged": 22048,
+    "totalReviews": 65845,
+    "alreadyFlagged": 22051,
     "dateGuardCatches": 233,
-    "directorMismatch": 2629,
-    "tvFilmSignals": 1853,
-    "londonSignals": 3184,
+    "directorMismatch": 2631,
+    "tvFilmSignals": 1858,
+    "londonSignals": 3187,
     "offBroadwaySignals": 597,
     "yearMismatch": 239,
-    "noPublishDate": 6010
+    "noPublishDate": 6006
   },
   "findings": [
     {
@@ -1539,6 +1539,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "file": "goldderby--ethan-alter.json",
+      "publishDate": "2026-10-06",
+      "url": "https://www.goldderby.com/theater/2026/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-revival/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "file": "nytimes--jesse-mckinley.json",
+      "publishDate": "2026-10-27",
+      "url": "https://www.nytimes.com/2026/10/27/theater/few-good-men-whitford-blyth-sorkin.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -6631,6 +6657,32 @@
       "score": 24,
       "publishDate": "2024-02-14",
       "url": "https://www.theatermania.com/news/review-between-two-knees-is-church-masquerading-as-comedy_1729921/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "file": "thedaviddesk2--davidsheward.json",
+      "publishDate": null,
+      "url": "https://thedaviddesk2.blogspot.com/2026/10/broadway-review-billy-crystal-860.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "file": "totaltheater1--unknown.json",
+      "publishDate": "2026-10-26",
+      "url": "https://totaltheater1.wordpress.com/2026/10/26/billy-crystal-860/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -14851,20 +14903,6 @@
     },
     {
       "showId": "dirty-dancing-tour-2026",
-      "file": "nydailynews--brian-niemietz.json",
-      "score": null,
-      "publishDate": "2026-10-06",
-      "url": "https://www.nydailynews.com/2026/10/06/dirty-dancing-broadway-musical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
-        }
-      ]
-    },
-    {
-      "showId": "dirty-dancing-tour-2026",
       "file": "pioneer-press--rob-hubbard.json",
       "score": 78,
       "publishDate": "2026-08-22",
@@ -14962,6 +15000,25 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1104d before show (2023-07-14 vs 2026-07-22)"
+        }
+      ]
+    },
+    {
+      "showId": "doctor-faustus-west-end-2016",
+      "file": "hollywood-reporter--leslie-felperin.json",
+      "score": 75,
+      "publishDate": "2016-04-25",
+      "url": "http://www.hollywoodreporter.com/review/kit-harrington-doctor-faustus-theater-887400?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -32960,6 +33017,19 @@
       "file": "standard--maxine-frith.json",
       "publishDate": "2013-05-02",
       "url": "https://www.standard.co.uk/showbiz/bickering-sisters-sonia-and-maria-friedman-unite-to-stage-hit-musical-merrily-we-roll-along-8600472.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-west-end-2013",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2013-05-02",
+      "url": "https://www.whatsonstage.com/news/merrily-we-roll-along_336/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53413,6 +53483,19 @@
       ]
     },
     {
+      "showId": "the-judas-kiss-west-end-2013",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2013-01-23",
+      "url": "https://www.whatsonstage.com/news/the-judas-kiss_1458/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard eyre\" from the-judas-kiss-1998"
+        }
+      ]
+    },
+    {
       "showId": "the-jungle-west-end-2018",
       "file": "daily-mail--patrick-marmion.json",
       "score": 71,
@@ -57267,6 +57350,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2013",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2013-05-07",
+      "url": "https://www.whatsonstage.com/news/the-play-that-goes-wrong_295/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
         }
       ]
     },
@@ -105746,6 +105842,19 @@
       ]
     },
     {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-10-15",
+      "url": "https://www.whatsonstage.com/news/the-lives-of-others-with-keira-knightley-luke-thompson-and-stephen-dillane-begins-west-end-performances_1735180/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-low-road-west-end-2013",
       "file": "guardian--michael-billington.json",
       "score": 82,
@@ -105765,6 +105874,19 @@
       "score": 62,
       "publishDate": "2013-04-14",
       "url": "https://www.standard.co.uk/culture/theatre/the-low-road-royal-court-downstairs-theatre-review-8552675.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-low-road-west-end-2013",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2013-03-28",
+      "url": "https://www.whatsonstage.com/news/the-low-road_711/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
