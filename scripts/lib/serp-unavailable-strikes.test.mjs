@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { createSerpUnavailableStrikes, DEFAULT_MAX_STRIKES } = require('./serp-unavailable-strikes.js');
+const { createSerpUnavailableStrikes, DEFAULT_MAX_STRIKES, resolveMaxStrikes } = require('./serp-unavailable-strikes.js');
 
 test('one or two unavailable outlets do not abort; the third in a row does', () => {
   const s = createSerpUnavailableStrikes();
@@ -26,4 +26,11 @@ test('any answered query resets the count', () => {
 
 test('max 1 restores the old abort-on-first behaviour', () => {
   assert.equal(createSerpUnavailableStrikes(1).note(true).abort, true);
+});
+
+test('SERP_UNAVAILABLE_MAX_STRIKES overrides the default; junk falls back', () => {
+  assert.equal(resolveMaxStrikes({}), 3);
+  assert.equal(resolveMaxStrikes({ SERP_UNAVAILABLE_MAX_STRIKES: '10' }), 10);
+  assert.equal(resolveMaxStrikes({ SERP_UNAVAILABLE_MAX_STRIKES: '0' }), 3);
+  assert.equal(resolveMaxStrikes({ SERP_UNAVAILABLE_MAX_STRIKES: 'x' }), 3);
 });

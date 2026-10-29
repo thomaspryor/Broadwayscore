@@ -5590,7 +5590,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       for (const outlet of allOutlets) {
         if (serpUnavailable) break;
         if (serpCallCount + prunedSlots >= SERP_BUDGET) {
-          console.log(`  ⚠ SERP budget exhausted (${SERP_BUDGET} calls)`);
+          console.log(`  ⚠ SERP budget exhausted (${SERP_BUDGET} slots: ${serpCallCount} calls${prunedSlots ? ` + ${prunedSlots} pruned` : ''})`);
           break;
         }
 
@@ -5621,6 +5621,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             foundForOutlet.map(r => _normalizeUrlForDedup(r.url)).filter(Boolean)
           );
           let outletHits = 0;
+          let outletUnavailable = false;
           for (const critic of criticsToQuery) {
             if (serpCallCount + prunedSlots >= SERP_BUDGET) {
               console.log(`    ⚠ SERP budget exhausted mid-outlet`);
@@ -5634,14 +5635,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               openingNight: options.openingNight,
             });
             if (result && result.unavailable) {
-              const strike = _serpStrikes.note(true);
-              if (strike.abort) {
-                console.log(`✗ (SERP providers unavailable ${strike.strikes}/${_serpStrikes.max} in a row — aborting SERP phase)`);
-                serpUnavailable = true;
-                break;
-              }
-              console.log(`✗ (SERP providers unavailable ${strike.strikes}/${_serpStrikes.max})`);
-              continue;
+              // BRO-6534: one strike per outlet. Stop this outlet's remaining
+              // critics and its fallback: the same providers just failed.
+              outletUnavailable = true;
+              break;
             }
             _serpStrikes.note(false);
             if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
@@ -5670,7 +5667,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             }
             await sleep(DELAY_MS);
           }
-          if (serpUnavailable) break;
+          if (outletUnavailable) {
+            const strike = _serpStrikes.note(true);
+            if (strike.abort) {
+              console.log(`✗ (SERP providers unavailable for ${strike.strikes}/${_serpStrikes.max} outlets in a row — aborting SERP phase)`);
+              serpUnavailable = true;
+              break;
+            }
+            console.log(`✗ (SERP providers unavailable, outlet ${strike.strikes}/${_serpStrikes.max})`);
+            await sleep(DELAY_MS);
+            continue;
+          }
           // Legacy outlet-level fallback: if no per-critic query hit AND the aggregator
           // hadn't covered this outlet at all, fire a generic outlet query to catch
           // freelancer / guest-critic reviews not in critic-outlets.json. Skip when
@@ -5683,10 +5690,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             const _strike = _serpStrikes.note(!!(result && result.unavailable));
             if (result && result.unavailable) {
               if (_strike.abort) {
-                console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max} in a row — aborting SERP phase)`);
+                console.log(`✗ (SERP providers unavailable for ${_strike.strikes}/${_serpStrikes.max} outlets in a row — aborting SERP phase)`);
                 serpUnavailable = true;
               } else {
-                console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max})`);
+                console.log(`✗ (SERP providers unavailable, outlet ${_strike.strikes}/${_serpStrikes.max})`);
               }
             } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
               console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
@@ -5732,10 +5739,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         const _strike = _serpStrikes.note(!!(result && result.unavailable));
         if (result && result.unavailable) {
           if (_strike.abort) {
-            console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max} in a row — aborting SERP phase)`);
+            console.log(`✗ (SERP providers unavailable for ${_strike.strikes}/${_serpStrikes.max} outlets in a row — aborting SERP phase)`);
             serpUnavailable = true;
           } else {
-            console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max})`);
+            console.log(`✗ (SERP providers unavailable, outlet ${_strike.strikes}/${_serpStrikes.max})`);
           }
         } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
           console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
