@@ -160,7 +160,7 @@ function SectionToggle({ label, hint, count, checked, onChange }: {
     <label className="flex items-center justify-between gap-3 card p-3 cursor-pointer">
       <span>
         <span className="block text-sm font-semibold text-white">{label} <span className="text-gray-400 font-normal">({count})</span></span>
-        <span className="block text-xs text-gray-500">{hint}</span>
+        <span className="block text-xs text-fg-muted">{hint}</span>
       </span>
       <input type="checkbox" checked={checked} onChange={e => onChange(e.target.checked)} className="w-5 h-5 accent-brand" />
     </label>

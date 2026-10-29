@@ -177,15 +177,15 @@ export default function OlivierAwardsHubPage() {
         <div className="grid grid-cols-3 gap-4 mb-10">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{totalWinners}</div>
-            <div className="text-xs text-gray-500 mt-1">Recent winning shows</div>
+            <div className="text-xs text-fg-muted mt-1">Recent winning shows</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-brand">{totalWinTitles.toLocaleString('en-GB')}</div>
-            <div className="text-xs text-gray-500 mt-1">Oliviers won by those shows</div>
+            <div className="text-xs text-fg-muted mt-1">Oliviers won by those shows</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-amber-300">{bestNewMusicalWinners + bestNewPlayWinners}</div>
-            <div className="text-xs text-gray-500 mt-1">Best Musical / Play winners</div>
+            <div className="text-xs text-fg-muted mt-1">Best Musical / Play winners</div>
           </div>
         </div>
 
@@ -198,7 +198,7 @@ export default function OlivierAwardsHubPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="text-left text-xs text-gray-500 uppercase tracking-wide border-b border-white/5">
+                <tr className="text-left text-xs text-fg-muted uppercase tracking-wide border-b border-white/5">
                   <th className="pb-3 pr-4">Season</th>
                   <th className="pb-3 pr-4">Show</th>
                   <th className="pb-3 pr-4">Headline Win</th>
@@ -225,7 +225,7 @@ export default function OlivierAwardsHubPage() {
                             {Math.round(w.compositeScore)}
                           </span>
                         ) : (
-                          <span className="text-sm text-gray-500">–</span>
+                          <span className="text-sm text-fg-muted">–</span>
                         )}
                       </td>
                     </tr>
@@ -251,7 +251,7 @@ export default function OlivierAwardsHubPage() {
         </section>
 
         {/* Footer links */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6">
           <div className="flex flex-wrap gap-4">
             <Link href="/west-end/methodology" className="text-brand hover:text-brand-hover transition-colors">
               Scoring methodology →

@@ -17,7 +17,7 @@ function Cell({ cell }: { cell: RateCell }) {
   return (
     <td className="py-2.5 px-2 sm:px-4 text-center whitespace-nowrap align-top">
       <span className={`font-semibold ${cell.total >= SOLID_SAMPLE ? 'text-white' : 'text-gray-400'}`}>{r == null ? '—' : `${Math.round(r * 100)}%`}</span>
-      <span className="block text-xs text-gray-500">{cell.recouped} of {cell.total}</span>
+      <span className="block text-xs text-fg-muted">{cell.recouped} of {cell.total}</span>
     </td>
   );
 }
@@ -70,7 +70,7 @@ export default function OriginRecoupTable<Id extends string>({
       </div>
       {withNames.length > 0 && (
         <div className="px-4 py-3 space-y-1 text-sm border-t border-white/5">
-          <p className="text-xs text-gray-500 mb-1">Shows that recouped, by {noun}:</p>
+          <p className="text-xs text-fg-muted mb-1">Shows that recouped, by {noun}:</p>
           {withNames.map((r) => (
             <details key={r.id}>
               <summary className="cursor-pointer text-brand hover:text-brand-hover">
@@ -80,7 +80,7 @@ export default function OriginRecoupTable<Id extends string>({
                 {r.all.recoupedShows.map((s) => (
                   <ShowLinkListItem key={s.slug} href={`/show/${s.slug}`}>
                     <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white"><RowLinkArrow label={s.title} /></Link>
-                    <span className="text-gray-500"> ({s.year})</span>
+                    <span className="text-fg-muted"> ({s.year})</span>
                   </ShowLinkListItem>
                 ))}
               </ul>

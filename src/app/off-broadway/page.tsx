@@ -176,7 +176,7 @@ export default function OffBroadwayPage() {
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
           </p>
-          <p className="text-gray-500 text-sm sm:text-base mt-1">
+          <p className="text-fg-muted text-sm sm:text-base mt-1">
             {activeShows.length} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
           </p>
         </div>

@@ -61,7 +61,7 @@ export function ColumnHeader({
         title={title}
       >
         <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors leading-tight ${
-          active ? 'text-brand' : 'text-gray-500 group-hover/sort:text-gray-300'
+          active ? 'text-brand' : 'text-fg-muted group-hover/sort:text-gray-300'
         }`}>
           {mobileLabel ? (
             <>

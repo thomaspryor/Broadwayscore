@@ -145,7 +145,7 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
       : null;
     return (
       <li key={`${stopKey(s)}|${s.showId}|${i}`}>
-        <p className="text-xs text-gray-500 mb-1.5 tabular-nums">
+        <p className="text-xs text-fg-muted mb-1.5 tabular-nums">
           {when === 'past' ? 'Played ' : ''}{range}{when === 'past' && s.start.slice(0, 4) === s.end.slice(0, 4) && s.start.slice(0, 4) !== today.slice(0, 4) ? `, ${s.start.slice(0, 4)}` : ''} · {s.venue}
           {/* Here, not the card's CTA: that one is hidden below sm. */}
           {ticket && (
@@ -171,7 +171,7 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
 
   const localCard = (s: ReturnType<typeof getCityHubShows>['now'][number], i: number) => (
     <li key={`local|${s.id}`}>
-      <p className="text-xs text-gray-500 mb-1.5 tabular-nums">
+      <p className="text-xs text-fg-muted mb-1.5 tabular-nums">
         {s.openingDate ? formatShowDate(s.openingDate, { month: 'short', day: 'numeric', year: 'numeric' }) : ''}
         {s.closingDate ? `–${formatShowDate(s.closingDate, { month: 'short', day: 'numeric', year: 'numeric' })}` : ''}
         {s.venue ? ` · ${s.venue.replace(/,\s*Chicago,\s*IL$/, '')}` : ''}
@@ -219,7 +219,7 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
         ]} />
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-1">{hub ? `${hub.short} Theater` : `Broadway Shows Coming to ${place}`}</h1>
-          <p className="text-sm text-gray-500 mb-3">{c.city}{!hub && season ? ` · ${season} touring season` : ''}</p>
+          <p className="text-sm text-fg-muted mb-3">{c.city}{!hub && season ? ` · ${season} touring season` : ''}</p>
           <p className="text-gray-300 leading-relaxed">
             {hub
               ? `Touring Broadway shows and ${hub.short} productions with critic scores, split into what is playing now, what opens soon and what closed in the past year.`

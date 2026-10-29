@@ -40,7 +40,7 @@ export default function CiteScoreControl({ show, className = '' }: { show: Compu
   }
 
   return (
-    <div className={`text-xs text-gray-500 ${className}`} data-testid="cite-score">
+    <div className={`text-xs text-fg-muted ${className}`} data-testid="cite-score">
       <button
         type="button"
         onClick={copy}

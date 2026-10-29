@@ -55,14 +55,14 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
                 {tier && (
                   <div className={`text-sm font-bold ${getScoreTextColorClass(avgScore)}`}>{tier.label}</div>
                 )}
-                <div className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase">{reviews.length} reviews</div>
+                <div className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase">{reviews.length} reviews</div>
               </div>
               <div className={`score-badge w-14 h-14 text-2xl rounded-xl font-extrabold ${getScoreColorClass(avgScore)}`}>
                 {avgScore}
               </div>
             </>
           ) : (
-            <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase">
+            <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase">
               {reviews.length} review
             </span>
           )}
@@ -136,7 +136,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
                   {review.creatorName}
                 </Link>
                 {date && (
-                  <p className="text-gray-500 text-xs mt-0.5">{date}</p>
+                  <p className="text-fg-muted text-xs mt-0.5">{date}</p>
                 )}
               </div>
             );

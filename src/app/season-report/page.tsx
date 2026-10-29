@@ -64,7 +64,7 @@ function ShowLine({ show, today, note }: { show: SeasonListShow; today: string; 
   return (
     <li className="flex flex-wrap items-baseline justify-between gap-x-3 py-1.5 border-b border-white/5 last:border-b-0">
       <Link href={`/show/${show.slug}`} className="text-gray-200 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white">{show.title}</Link>
-      <span className="text-xs text-gray-500 whitespace-nowrap">
+      <span className="text-xs text-fg-muted whitespace-nowrap">
         {note ?? (date && show.openingDate ? `${show.openingDate <= today ? 'Opened' : 'Opens'} ${date}` : 'No date yet')}
       </span>
     </li>
@@ -198,7 +198,7 @@ export default function SeasonReportPage() {
                 ? `${cur.productions} new Broadway productions have opened or been announced for ${shortSeason(currentSeason)}. We compare them with last season and the 10 before it, and track which kinds of shows earn their money back.`
                 : 'This Broadway season compared with last season and the 10 before it, plus which kinds of shows earn their money back.'}
             </p>
-            <p className="text-xs text-gray-500 mt-1" data-testid="season-report-asof">
+            <p className="text-xs text-fg-muted mt-1" data-testid="season-report-asof">
               As of {formatDataDate(today) ?? today}. Updated as shows open, close and recoup.
             </p>
           </header>
@@ -243,7 +243,7 @@ export default function SeasonReportPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 {showGroups.map((g) => (
                   <div key={g.id} id={g.id} className="card rounded-xl p-4 scroll-mt-20">
-                    <h3 className="text-white font-semibold mb-1">{g.label} <span className="text-gray-500 font-normal">({g.shows.length})</span></h3>
+                    <h3 className="text-white font-semibold mb-1">{g.label} <span className="text-fg-muted font-normal">({g.shows.length})</span></h3>
                     <ul className="text-sm">
                       {g.shows.map((show) => <ShowLine key={show.slug} show={show} today={today} />)}
                     </ul>
@@ -251,8 +251,8 @@ export default function SeasonReportPage() {
                 ))}
                 {undated.length > 0 && (
                   <div id="no-date-yet" className="card rounded-xl p-4 scroll-mt-20">
-                    <h3 className="text-white font-semibold mb-1">Announced, no date yet <span className="text-gray-500 font-normal">({undated.length})</span></h3>
-                    <p className="text-xs text-gray-500 mb-1">Not counted above until an opening date is set.</p>
+                    <h3 className="text-white font-semibold mb-1">Announced, no date yet <span className="text-fg-muted font-normal">({undated.length})</span></h3>
+                    <p className="text-xs text-fg-muted mb-1">Not counted above until an opening date is set.</p>
                     <ul className="text-sm">
                       {undated.map((show) => (
                         <ShowLine key={show.slug} show={show} today={today} note={groupKind.get(showGroup(show.type, show.isRevival))} />
@@ -292,7 +292,7 @@ export default function SeasonReportPage() {
             </p>
           </section>
 
-          <footer className="text-sm text-gray-500 border-t border-white/5 pt-6">
+          <footer className="text-sm text-fg-muted border-t border-white/5 pt-6">
             <p className="mb-2">
               Productions come from Broadway Scorecard&apos;s show database. Recoupment comes from producer
               announcements and trade press (Broadway Journal, Broadway News, Deadline, Variety, Playbill, The New York

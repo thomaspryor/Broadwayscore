@@ -31,14 +31,14 @@ export const PERSON_LEVEL_CATEGORIES = new Set([
 // All rendered boxes use w-11 h-11 text-lg for visual harmony. ScoreBadge/AwardScoreBadge size="sm" matches.
 const BOX_MD = 'w-11 h-11 text-lg lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-lg flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-lg flex items-center justify-center font-bold';
-const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
+const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-fg-muted block leading-none';
 
 type ShowGrade = TonyCategory['shows'][number]['audienceGrade'];
 
 function AudienceBox({ grade, size }: { grade: ShowGrade; size: 'sm' | 'md' }) {
   const boxClass = size === 'md' ? BOX_MD : BOX_SM;
   if (!grade || grade.grade === '–') {
-    return <div className={`${boxClass} bg-surface-overlay text-gray-500`}>–</div>;
+    return <div className={`${boxClass} bg-surface-overlay text-fg-muted`}>–</div>;
   }
   const isAplus = grade.grade === 'A+';
   return (
@@ -134,7 +134,7 @@ function PredictedWinnerPill() {
 const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
 
 function PrecursorChips({ wins }: { wins?: string[] }) {
-  if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">–</span>;
+  if (!wins || wins.length === 0) return <span className="text-xs text-fg-muted">–</span>;
   return (
     <div className="flex flex-col items-start gap-1">
       {wins.map(w => (
@@ -399,7 +399,7 @@ function PerformerRow({ show, hideMarketOdds = false }: { show: TonyCategory['sh
           ) : (
             <span className="text-sm font-bold text-white flex-shrink-0">{show.nomineePersonName}</span>
           )}
-          <span className="text-[10px] text-gray-500 truncate min-w-0">{historyLabel}</span>
+          <span className="text-[10px] text-fg-muted truncate min-w-0">{historyLabel}</span>
         </div>
         <div className="sm:hidden">
           {actorUrl ? (
@@ -460,7 +460,7 @@ function CraftRow({ show, ceremonyDate, hideMarketOdds = false }: { show: TonyCa
           {show.title}
         </Link>
         {show.nomineePersonName && (
-          <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
+          <p className="text-xs text-fg-muted truncate mt-0.5">{show.nomineePersonName}</p>
         )}
         {show.precursorWins && show.precursorWins.length > 0 && (
           <div className="sm:hidden flex flex-row gap-1 mt-0.5">
@@ -582,7 +582,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
             </span>
           )}
         </div>
-        {description && <p className="text-xs text-gray-500 mt-0.5">{description}</p>}
+        {description && <p className="text-xs text-fg-muted mt-0.5">{description}</p>}
         {categoryOutcome?.status === 'missed' && (
           <p className="text-xs text-gray-400 mt-1">
             Winner: <span className="text-white font-medium">{categoryOutcome.winnerTitle}</span>
@@ -618,7 +618,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
       </div>
       {ineligible && ineligible.length > 0 && (
         <div className="mt-4 pt-4 border-t border-white/5">
-          <h3 className="text-xs uppercase tracking-wide text-gray-500 font-medium mb-2">
+          <h3 className="text-xs uppercase tracking-wide text-fg-muted font-medium mb-2">
             Ruled ineligible by the Tony Administration Committee
           </h3>
           <ul className="space-y-1.5">
@@ -627,7 +627,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
                 <Link href={`/show/${item.slug}`} className="text-gray-300 hover:text-white font-medium">
                   {item.title}
                 </Link>
-                <span className="text-gray-500">: {item.note}</span>
+                <span className="text-fg-muted">: {item.note}</span>
               </li>
             ))}
           </ul>

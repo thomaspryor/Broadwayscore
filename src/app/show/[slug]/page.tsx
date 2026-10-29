@@ -586,7 +586,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   className="w-full h-full object-cover"
                   fallback={
                     <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                      <span className="text-4xl text-gray-500">🎭</span>
+                      <span className="text-4xl text-fg-muted">🎭</span>
                     </div>
                   }
                 />
@@ -683,19 +683,19 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                               ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
                               : 0;
                             if (noReviewsExpected) {
-                              return <span className="text-xs sm:text-sm text-gray-500">No critic reviews expected</span>;
+                              return <span className="text-xs sm:text-sm text-fg-muted">No critic reviews expected</span>;
                             }
                             const isGatedByReviewCount = showTBD && show.status !== 'previews' && show.status !== 'upcoming' && show.status !== 'announced' && remaining > 0;
                             if (isGatedByReviewCount) {
                               return (
-                                <a href="#critic-reviews" className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors">
+                                <a href="#critic-reviews" className="text-xs sm:text-sm text-fg-muted hover:text-brand transition-colors">
                                   {reviewCount} {reviewCount === 1 ? 'review' : 'reviews'} · {remaining} more for a CriticScore
                                 </a>
                               );
                             }
                             if (reviewCount > 0) {
                               return (
-                                <a href="#critic-reviews" className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors">
+                                <a href="#critic-reviews" className="text-xs sm:text-sm text-fg-muted hover:text-brand transition-colors">
                                   Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                                 </a>
                               );
@@ -716,7 +716,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                         )}
                         {/* Review age note for long-running shows */}
                         {reviewAgeNote && (
-                          <p className="text-[10px] sm:text-xs text-gray-500 mt-1 leading-snug">
+                          <p className="text-[10px] sm:text-xs text-fg-muted mt-1 leading-snug">
                             {reviewAgeNote}
                           </p>
                         )}
@@ -758,7 +758,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   <Link href={`/theater/${slugify(foldVenueName(show.venue))}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 )}
                 {show.runtime && (
-                  <span className="whitespace-nowrap"> <span className="text-gray-500">·</span> {show.runtime}</span>
+                  <span className="whitespace-nowrap"> <span className="text-fg-muted">·</span> {show.runtime}</span>
                 )}
                 {/* Date-line segments come from the shared show-date-line
                     module (src/lib/show-date-line.ts) — the single source
@@ -770,13 +770,13 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   const durationText = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
                   const segments = getShowDateLineSegments(show, durationText);
                   return segments.map((seg, i) => (
-                    <span key={i}> <span className="text-gray-500">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
+                    <span key={i}> <span className="text-fg-muted">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
                   ));
                 })()}
                 {isTour && !show.openingDate && (() => {
                   // Only while the tour's own dates are unknown; the date line covers it otherwise.
                   const years = getTourReviewYears(show.criticScore?.reviews);
-                  return years ? <span> <span className="text-gray-500">·</span> reviewed {years}</span> : null;
+                  return years ? <span> <span className="text-fg-muted">·</span> reviewed {years}</span> : null;
                 })()}
               </p>
 
@@ -816,14 +816,14 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             if (mode === 'consensus') {
               return (
                 <div className="mt-3">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-fg-muted mb-1.5">Critics&apos; Take</p>
                   <p className="text-gray-300 text-sm leading-relaxed">{consensus!.text}</p>
                 </div>
               );
             }
             if (mode === 'coming-soon') {
               return (
-                <p className="text-gray-500 text-sm leading-relaxed mt-3 italic">
+                <p className="text-fg-muted text-sm leading-relaxed mt-3 italic">
                   Critics&apos; Take coming soon.
                 </p>
               );
@@ -861,7 +861,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
                 <a
                   href="#discount-tickets"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-fg-muted hover:text-gray-300 text-xs leading-none font-medium transition-colors border border-white/5"
                 >
                   <TicketIcon />
                   {lotteryRush.lottery ? (lotteryRush.lottery.price ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.lottery.price} Lottery` : 'Lottery Tickets') : lotteryRush.rush ? (lotteryRush.rush.price ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.rush.price} Rush` : 'Rush Tickets') : 'Discount Tickets'}
@@ -946,7 +946,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             {/* Unified scorecard chrome: eyebrow + lowercase meta count */}
             <header className="flex items-center justify-between gap-3 mb-4">
               <h2 id="critic-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
-              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+              <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
                 {show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}
               </span>
             </header>
@@ -979,7 +979,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             {/* Subtle in-card methodology link — explains how CriticScore is
                 computed without a verbose accordion. Links to the same
                 methodology page the page-footer link uses. */}
-            <p className="mt-4 pt-3 border-t border-white/5 text-xs text-gray-500">
+            <p className="mt-4 pt-3 border-t border-white/5 text-xs text-fg-muted">
               <Link href="/methodology" className="hover:text-brand-hover transition-colors">
                 How this score works →
               </Link>
@@ -992,7 +992,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-tour-pending" data-testid="tour-reviews-coming-in">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-tour-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
-              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">no score yet</span>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">no score yet</span>
             </header>
             <p className="text-gray-400 text-sm">
               The CriticScore appears once enough local critics have reviewed the tour.
@@ -1002,7 +1002,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
-              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">tbd</span>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">tbd</span>
             </header>
             {/* openingDate is often null Off-Broadway — without the guard this
                 rendered a dangling "Reviews coming after opening night:" with

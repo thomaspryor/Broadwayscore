@@ -235,7 +235,7 @@ export default function ShowPageBelowFold({
         return isPreDigital ? (
           <section className="card p-5 sm:p-6 mb-6">
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Audience Grade</h2>
-            <p className="text-sm text-gray-500">This show predates most audience rating platforms. Critic reviews only.</p>
+            <p className="text-sm text-fg-muted">This show predates most audience rating platforms. Critic reviews only.</p>
           </section>
         ) : null;
       })()}
@@ -392,7 +392,7 @@ export default function ShowPageBelowFold({
                   ) : (
                     <span className="text-white font-medium">{member.name}</span>
                   )}
-                  <span className="text-gray-500 text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-gray-600">{member.role}</span>
+                  <span className="text-fg-muted text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-fg-muted">{member.role}</span>
                 </li>
               ))}
             </ul>
@@ -408,29 +408,29 @@ export default function ShowPageBelowFold({
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
           {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category, (show.criticScore.tier1Count || 0) + (show.criticScore.tier2Count || 0), isCuratedHistoricalShow) && (
             <div>
-              <dt className="text-gray-500">CriticScore</dt>
+              <dt className="text-fg-muted">CriticScore</dt>
               <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>
             </div>
           )}
           <div>
-            <dt className="text-gray-500">Status</dt>
+            <dt className="text-fg-muted">Status</dt>
             <dd className="text-white mt-0.5">
               {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
             </dd>
           </div>
           <div>
-            <dt className="text-gray-500">{show.status === 'previews' || show.status === 'upcoming' ? 'Opens' : 'Opened'}</dt>
+            <dt className="text-fg-muted">{show.status === 'previews' || show.status === 'upcoming' ? 'Opens' : 'Opened'}</dt>
             <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
           </div>
           {show.previewsStartDate && (show.status === 'previews' || show.status === 'upcoming') && (
             <div>
-              <dt className="text-gray-500">Previews Start</dt>
+              <dt className="text-fg-muted">Previews Start</dt>
               <dd className="text-white mt-0.5">{formatDate(show.previewsStartDate)}</dd>
             </div>
           )}
           {show.closingDate && (
             <div>
-              <dt className="text-gray-500">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
+              <dt className="text-fg-muted">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
               <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
             </div>
           )}
@@ -438,7 +438,7 @@ export default function ShowPageBelowFold({
             const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
             return runLen ? (
               <div>
-                <dt className="text-gray-500">Run Length</dt>
+                <dt className="text-fg-muted">Run Length</dt>
                 <dd className="text-white mt-0.5">{runLen}</dd>
               </div>
             ) : null;
@@ -448,7 +448,7 @@ export default function ShowPageBelowFold({
             const dur = getBroadwayDuration(show.openingDate, durationSuffix);
             return dur ? (
               <div>
-                <dt className="text-gray-500">Running</dt>
+                <dt className="text-fg-muted">Running</dt>
                 {/* Reads today's date: the cached page (24h ISR) can be a month boundary
                     behind the viewer, so keep the server text rather than fail hydration. */}
                 <dd className="text-white mt-0.5" suppressHydrationWarning>{dur}</dd>
@@ -457,24 +457,24 @@ export default function ShowPageBelowFold({
           })()}
           {show.runtime && (
             <div>
-              <dt className="text-gray-500">Runtime</dt>
+              <dt className="text-fg-muted">Runtime</dt>
               <dd className="text-white mt-0.5">{show.runtime}</dd>
             </div>
           )}
           {show.intermissions !== undefined && show.intermissions !== null && (
             <div>
-              <dt className="text-gray-500">Intermissions</dt>
+              <dt className="text-fg-muted">Intermissions</dt>
               <dd className="text-white mt-0.5">{show.intermissions}</dd>
             </div>
           )}
           {show.ageRecommendation && (
             <div>
-              <dt className="text-gray-500">Age</dt>
+              <dt className="text-fg-muted">Age</dt>
               <dd className="text-white mt-0.5">{show.ageRecommendation}</dd>
             </div>
           )}
           <div className="sm:col-span-2">
-            <dt className="text-gray-500">{isTour ? 'Where' : isWestEnd ? 'Theatre' : 'Theater'}</dt>
+            <dt className="text-fg-muted">{isTour ? 'Where' : isWestEnd ? 'Theatre' : 'Theater'}</dt>
             <dd className="text-white mt-0.5">
               {/* A tour has no house: its venue is the current stop (or a placeholder), never a /theater page.
                   An announced show may have no theater yet (BRO-5814): no /theater/null link. */}
@@ -513,13 +513,13 @@ export default function ShowPageBelowFold({
           </div>
           {show.synopsis && (
             <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
-              <dt className="text-gray-500">Synopsis</dt>
+              <dt className="text-fg-muted">Synopsis</dt>
               <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
             </div>
           )}
           {lastUpdated && (
             <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
-              <dt className="text-gray-500">Data Last Updated</dt>
+              <dt className="text-fg-muted">Data Last Updated</dt>
               <dd className="text-gray-400 mt-0.5 text-xs">
                 {/* UTC on both sides: the viewer's zone moved a date-only value back a day
                     and made server and client text differ (hydration). */}
@@ -571,10 +571,10 @@ export default function ShowPageBelowFold({
       {/* Compare This Show */}
       {comparisons.length > 0 && (
         <div className="mt-4 text-sm text-gray-400">
-          <span className="text-gray-500">Compare: </span>
+          <span className="text-fg-muted">Compare: </span>
           {comparisons.slice(0, 6).map((comp, i) => (
             <span key={comp.slug}>
-              {i > 0 && <span className="text-gray-600"> · </span>}
+              {i > 0 && <span className="text-fg-muted"> · </span>}
               <Link href={`/compare/${comp.slug}`} className="text-gray-400 hover:text-white transition-colors">
                 vs {comp.otherSlug.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
               </Link>
@@ -584,7 +584,7 @@ export default function ShowPageBelowFold({
       )}
 
       {/* Page-bottom methodology link */}
-      <p className="mt-8 text-center text-xs text-gray-500">
+      <p className="mt-8 text-center text-xs text-fg-muted">
         <Link href="/methodology" className="hover:text-brand-hover transition-colors">
           Learn how our scores work →
         </Link>

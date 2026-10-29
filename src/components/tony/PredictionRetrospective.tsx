@@ -61,7 +61,7 @@ export function getRetrospective(ceremonyYear: number): Retrospective | null {
 
 function HitPill({ pick, hit }: { pick: string | null; hit: boolean | null }) {
   if (pick === null) {
-    return <span className="text-[11px] text-gray-600">no market</span>;
+    return <span className="text-[11px] text-fg-muted">no market</span>;
   }
   return (
     <span
@@ -83,7 +83,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
     <section className="mb-10">
       <div className="flex items-baseline justify-between gap-3 mb-1 flex-wrap">
         <h2 className="text-lg font-bold text-white">Who Called the {ceremonyYear} Tonys?</h2>
-        <span className="text-[11px] text-gray-500">final pre-ceremony picks vs. the winners</span>
+        <span className="text-[11px] text-fg-muted">final pre-ceremony picks vs. the winners</span>
       </div>
       <p className="text-sm text-gray-400 mb-4">
         How every public predictor did: our model, the prediction markets, Gold Derby&apos;s three
@@ -96,14 +96,14 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
         <table className="w-full text-left min-w-[640px]">
           <thead>
             <tr className="border-b border-white/10">
-              <th className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide py-2 pr-2">Predictor</th>
+              <th className="text-[11px] font-semibold text-fg-muted uppercase tracking-wide py-2 pr-2">Predictor</th>
               {retro.bigFour.categories.map((cat, i) => (
-                <th key={cat} className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide py-2 px-2 text-center">
+                <th key={cat} className="text-[11px] font-semibold text-fg-muted uppercase tracking-wide py-2 px-2 text-center">
                   <span className="block">{cat.replace('Best ', '').replace('Revival of a ', 'Revival / ')}</span>
-                  <span className="block text-gray-600 normal-case font-normal">won: {retro.bigFour.winners[i]}</span>
+                  <span className="block text-fg-muted normal-case font-normal">won: {retro.bigFour.winners[i]}</span>
                 </th>
               ))}
-              <th className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide py-2 pl-2 text-center">Score</th>
+              <th className="text-[11px] font-semibold text-fg-muted uppercase tracking-wide py-2 pl-2 text-center">Score</th>
             </tr>
           </thead>
           <tbody>
@@ -125,7 +125,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
                   <tr className={`border-b border-white/5 ${perfect ? 'bg-brand/[0.04]' : ''}`}>
                     <td className="py-2 pr-2 pl-2">
                       <span className="text-sm font-medium text-white whitespace-nowrap">{row.name}</span>
-                      {row.org && <span className="block text-[11px] text-gray-500">{row.org}</span>}
+                      {row.org && <span className="block text-[11px] text-fg-muted">{row.org}</span>}
                     </td>
                     {row.picks.map((pick, i) => (
                       <td key={i} className="py-2 px-2 text-center">
@@ -146,7 +146,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
       {/* Full-ballot leaderboard */}
       <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5 mb-4">
         <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Full-Ballot Leaderboard</h3>
-        <p className="text-[11px] text-gray-500 mb-3">Share of predicted categories called correctly.</p>
+        <p className="text-[11px] text-fg-muted mb-3">Share of predicted categories called correctly.</p>
         <div className="space-y-1.5">
           {retro.leaderboard.map((entry, idx) => {
             const pct = Math.round((entry.correct / entry.attempted) * 100);
@@ -161,7 +161,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
                 <div className="flex items-center gap-3">
                   <div className="w-44 sm:w-56 flex-shrink-0 text-[13px] font-medium text-white truncate">
                     {entry.name}
-                    {entry.org && <span className="text-gray-500 font-normal"> · {entry.org}</span>}
+                    {entry.org && <span className="text-fg-muted font-normal"> · {entry.org}</span>}
                   </div>
                   <div className="flex-1 h-4 rounded bg-white/5 overflow-hidden">
                     <div
@@ -170,7 +170,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
                     />
                   </div>
                   <div className="w-10 text-right text-[13px] font-bold text-white tabular-nums">{pct}%</div>
-                  <div className="w-12 text-right text-[11px] text-gray-500 tabular-nums">
+                  <div className="w-12 text-right text-[11px] text-fg-muted tabular-nums">
                     {entry.correct}/{entry.attempted}
                   </div>
                 </div>
@@ -178,14 +178,14 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
             );
           })}
         </div>
-        <p className="text-[11px] text-gray-500 mt-3">{retro.leaderboardNote}</p>
+        <p className="text-[11px] text-fg-muted mt-3">{retro.leaderboardNote}</p>
       </div>
 
       {/* How the markets moved */}
       {retro.marketMoves && (
         <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5 mb-4">
           <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{retro.marketMoves.title}</h3>
-          <p className="text-[11px] text-gray-500 mb-3">{retro.marketMoves.subtitle}</p>
+          <p className="text-[11px] text-fg-muted mb-3">{retro.marketMoves.subtitle}</p>
           <div className="space-y-2">
             {retro.marketMoves.rows.map(m => (
               <div key={m.category} className="flex items-start gap-3 text-[13px]">
@@ -196,9 +196,9 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
                 <div className="min-w-0">
                   <span className="font-medium text-white">{m.category.replace('Best ', '')}</span>
                   <span className="text-gray-400">
-                    {': '}{m.from} <span className="text-gray-600">→</span> {m.to}
+                    {': '}{m.from} <span className="text-fg-muted">→</span> {m.to}
                   </span>
-                  <span className="text-gray-500"> · {m.note}</span>
+                  <span className="text-fg-muted"> · {m.note}</span>
                 </div>
               </div>
             ))}
@@ -221,7 +221,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
       <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
         <a href="/beat-the-critics" className="text-base font-black tracking-tighter text-white hover:opacity-90 transition-opacity">
           Beat <span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span>
-          <sup className="text-[9px] font-bold text-gray-500 align-super ml-0.5">&trade;</sup>
+          <sup className="text-[9px] font-bold text-fg-muted align-super ml-0.5">&trade;</sup>
         </a>
         <span className="text-gray-400 text-[13px]">
           players averaged <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.avgScore}/{retro.btc.totalCategories}</span> each
@@ -236,7 +236,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
         </span>
       </div>
 
-      <p className="text-[11px] text-gray-500 mt-3">{retro.asOf}</p>
+      <p className="text-[11px] text-fg-muted mt-3">{retro.asOf}</p>
     </section>
   );
 }

@@ -85,7 +85,7 @@ export default function StatsDrilldown({
               <div className="grid grid-cols-3 gap-2 mt-4">
                 {payload.facts.map((f) => (
                   <div key={f.label} className="rounded-lg bg-surface-overlay/70 px-3 py-2 min-w-0">
-                    <p className="text-xs text-gray-500 truncate">{f.label}</p>
+                    <p className="text-xs text-fg-muted truncate">{f.label}</p>
                     <p className="text-sm font-semibold text-white truncate tabular-nums mt-0.5">{f.value}</p>
                   </div>
                 ))}
@@ -98,7 +98,7 @@ export default function StatsDrilldown({
             {rows.map((row) => {
               if (row.kind === 'divider') {
                 return (
-                  <p key={row.key} className="px-2 pt-4 pb-1.5 text-xs font-bold uppercase tracking-wider text-gray-500 first:pt-1">
+                  <p key={row.key} className="px-2 pt-4 pb-1.5 text-xs font-bold uppercase tracking-wider text-fg-muted first:pt-1">
                     {row.label}
                   </p>
                 );

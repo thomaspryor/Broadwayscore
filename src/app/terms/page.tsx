@@ -27,7 +27,7 @@ export default function TermsOfServicePage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Terms of Service</h1>
-      <p className="text-sm text-gray-500 mb-10">Last updated: October 2, 2026</p>
+      <p className="text-sm text-fg-muted mb-10">Last updated: October 2, 2026</p>
 
       <div className="prose prose-invert prose-gray max-w-none space-y-8 text-gray-300 leading-relaxed">
 
@@ -417,7 +417,7 @@ export default function TermsOfServicePage() {
         </section>
 
         {/* Footer */}
-        <div className="border-t border-white/10 pt-6 mt-10 text-center text-sm text-gray-500">
+        <div className="border-t border-white/10 pt-6 mt-10 text-center text-sm text-fg-muted">
           <p>&copy; 2026 Broadway Scorecard LLC. All rights reserved.</p>
           <p className="mt-1">broadwayscorecard.com</p>
         </div>

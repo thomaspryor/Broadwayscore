@@ -104,7 +104,7 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
               decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               fallback={
-                <div className="w-full h-full flex items-center justify-center text-gray-500" aria-hidden="true">
+                <div className="w-full h-full flex items-center justify-center text-fg-muted" aria-hidden="true">
                   <span className="text-xl">🎭</span>
                 </div>
               }
@@ -133,7 +133,7 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
                 <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
                   <div className="h-full rounded-full" style={sentimentBarStyle} />
                 </div>
-                <div className="text-[10px] text-gray-500 mt-1">{pulse.positivePct}% positive</div>
+                <div className="text-[10px] text-fg-muted mt-1">{pulse.positivePct}% positive</div>
               </div>
             )}
           </div>
@@ -143,7 +143,7 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
             <div className="text-lg sm:text-xl font-bold text-white leading-none">
               {formatVolume(pulse.volume)}
             </div>
-            <div className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-wide text-gray-500 mt-0.5">
+            <div className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-wide text-fg-muted mt-0.5">
               mentions
             </div>
           </div>

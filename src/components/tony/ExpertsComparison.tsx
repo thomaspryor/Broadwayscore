@@ -32,7 +32,7 @@ export function ExpertsComparison({ data }: Props) {
     <section className="rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
       <div className="flex items-baseline justify-between gap-3 mb-3">
         <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">vs GoldDerby&apos;s expert predictions</h2>
-        <span className="text-[11px] text-gray-500">{sample.cycles} seasons &middot; {sample.races} races</span>
+        <span className="text-[11px] text-fg-muted">{sample.cycles} seasons &middot; {sample.races} races</span>
       </div>
 
       {/* Two-column hit rate */}
@@ -40,14 +40,14 @@ export function ExpertsComparison({ data }: Props) {
         <div className="rounded-lg border border-brand/30 bg-brand/[0.06] p-4 text-center">
           <div className="text-[11px] text-brand font-semibold uppercase tracking-wider mb-1">Broadway Scorecard</div>
           <div className="text-3xl sm:text-4xl font-bold text-white leading-none mb-1 tabular-nums">
-            {ours.hits}<span className="text-gray-600 font-light mx-0.5">/</span>{ours.total}
+            {ours.hits}<span className="text-fg-muted font-light mx-0.5">/</span>{ours.total}
           </div>
           <div className="text-sm text-gray-300 tabular-nums">{ours.pct}% match rate</div>
         </div>
         <div className="rounded-lg border border-white/8 bg-white/[0.02] p-4 text-center">
           <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">GoldDerby experts</div>
           <div className="text-3xl sm:text-4xl font-bold text-gray-200 leading-none mb-1 tabular-nums">
-            {goldDerby.hits}<span className="text-gray-600 font-light mx-0.5">/</span>{goldDerby.total}
+            {goldDerby.hits}<span className="text-fg-muted font-light mx-0.5">/</span>{goldDerby.total}
           </div>
           <div className="text-sm text-gray-300 tabular-nums">{goldDerby.pct}% match rate</div>
         </div>
@@ -56,11 +56,11 @@ export function ExpertsComparison({ data }: Props) {
       {/* Head-to-head ledger */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs text-gray-300 mb-5">
         <div className="rounded-lg bg-white/[0.02] p-3">
-          <div className="text-gray-500 mb-1">We picked the winner, they missed</div>
+          <div className="text-fg-muted mb-1">We picked the winner, they missed</div>
           <div className="text-xl font-bold text-emerald-400 tabular-nums">{weBeatThemCount} <span className="text-xs font-normal text-gray-400">race{weBeatThemCount === 1 ? '' : 's'}</span></div>
         </div>
         <div className="rounded-lg bg-white/[0.02] p-3">
-          <div className="text-gray-500 mb-1">They picked the winner, we missed</div>
+          <div className="text-fg-muted mb-1">They picked the winner, we missed</div>
           <div className="text-xl font-bold text-amber-400 tabular-nums">{theyBeatUsCount} <span className="text-xs font-normal text-gray-400">race{theyBeatUsCount === 1 ? '' : 's'}</span></div>
         </div>
       </div>
@@ -71,7 +71,7 @@ export function ExpertsComparison({ data }: Props) {
         <div className="overflow-x-auto -mx-1">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-[11px] text-gray-500 uppercase tracking-wide">
+              <tr className="text-[11px] text-fg-muted uppercase tracking-wide">
                 <th className="text-left font-medium pb-2 px-1">Category</th>
                 <th className="text-right font-medium pb-2 px-1">Us</th>
                 <th className="text-right font-medium pb-2 px-1">GoldDerby</th>
@@ -107,9 +107,9 @@ export function ExpertsComparison({ data }: Props) {
               <div className="space-y-1.5">
                 {weHitTheyMissed.map(r => (
                   <div key={`${r.cycle}-${r.category}`} className="text-xs text-gray-300 rounded border border-emerald-500/15 bg-emerald-500/[0.03] p-2">
-                    <div className="text-[10px] text-gray-500 mb-0.5">{r.cycle} &middot; {r.category}</div>
-                    <div><span className="text-gray-500">Winner:</span> <span className="text-white">{r.winner}</span></div>
-                    <div className="text-[11px]"><span className="text-gray-500">GoldDerby picked:</span> {r.gdPick}</div>
+                    <div className="text-[10px] text-fg-muted mb-0.5">{r.cycle} &middot; {r.category}</div>
+                    <div><span className="text-fg-muted">Winner:</span> <span className="text-white">{r.winner}</span></div>
+                    <div className="text-[11px]"><span className="text-fg-muted">GoldDerby picked:</span> {r.gdPick}</div>
                   </div>
                 ))}
               </div>
@@ -121,9 +121,9 @@ export function ExpertsComparison({ data }: Props) {
               <div className="space-y-1.5">
                 {theyHitWeMissed.map(r => (
                   <div key={`${r.cycle}-${r.category}`} className="text-xs text-gray-300 rounded border border-amber-500/15 bg-amber-500/[0.03] p-2">
-                    <div className="text-[10px] text-gray-500 mb-0.5">{r.cycle} &middot; {r.category}</div>
-                    <div><span className="text-gray-500">Winner:</span> <span className="text-white">{r.winner}</span></div>
-                    <div className="text-[11px]"><span className="text-gray-500">We picked:</span> {r.ourPick}</div>
+                    <div className="text-[10px] text-fg-muted mb-0.5">{r.cycle} &middot; {r.category}</div>
+                    <div><span className="text-fg-muted">Winner:</span> <span className="text-white">{r.winner}</span></div>
+                    <div className="text-[11px]"><span className="text-fg-muted">We picked:</span> {r.ourPick}</div>
                   </div>
                 ))}
               </div>
@@ -132,7 +132,7 @@ export function ExpertsComparison({ data }: Props) {
         </div>
       )}
 
-      <p className="text-[11px] text-gray-500 mt-5 pt-4 border-t border-white/5 leading-relaxed">
+      <p className="text-[11px] text-fg-muted mt-5 pt-4 border-t border-white/5 leading-relaxed">
         GoldDerby publishes panel-of-experts predictions before each Tony ceremony. Their pundits are not tuned to past Tony outcomes; ours is. Same contests, different methodologies, directly comparable on whether the #1 pick won. Updated after each ceremony.
       </p>
     </section>

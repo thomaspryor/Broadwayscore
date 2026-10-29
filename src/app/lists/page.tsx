@@ -160,7 +160,7 @@ export default function GoldListsIndex() {
         </section>
 
         {/* Footer */}
-        <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
+        <footer className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-8">
           <p>
             Gold Lists™ are curated each season with minimum quality thresholds.
             Shows must meet review count and score minimums to qualify. Not every season has 10 shows per list.

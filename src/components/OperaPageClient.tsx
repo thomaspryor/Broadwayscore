@@ -175,11 +175,11 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
         <p className="text-gray-400 text-lg sm:text-xl">
           Every Met production. Every critic. One score.
         </p>
-        <p className="text-gray-500 text-sm sm:text-base mt-1">
+        <p className="text-fg-muted text-sm sm:text-base mt-1">
           {totalShows} productions. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
         {openCount > 0 && (
-          <p className="text-gray-500 text-xs sm:text-sm mt-1">
+          <p className="text-fg-muted text-xs sm:text-sm mt-1">
             {openCount} currently running at the Metropolitan Opera House.
           </p>
         )}
@@ -231,7 +231,7 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
           <ShowListCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} scoreMode={scoreMode} overrideHref={`/opera/${operaTitleSlug(show.slug)}`} />
         ))}
         {filteredAndSortedShows.length === 0 && (
-          <p className="text-gray-500 text-sm py-8 text-center">
+          <p className="text-fg-muted text-sm py-8 text-center">
             No productions match the current filter.
           </p>
         )}

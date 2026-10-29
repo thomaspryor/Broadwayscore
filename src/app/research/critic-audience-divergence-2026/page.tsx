@@ -172,7 +172,7 @@ function RowTable({
                   >
                     {r.title}
                   </Link>
-                  <div className="text-xs text-gray-500 mt-0.5">
+                  <div className="text-xs text-fg-muted mt-0.5">
                     {r.category === 'west-end'
                       ? 'West End'
                       : r.category === 'off-west-end'
@@ -269,7 +269,7 @@ export default function CriticAudienceDivergencePage() {
           {TITLE}
         </h1>
         <p className="text-lg text-gray-300 mt-5 leading-relaxed">{DESCRIPTION}</p>
-        <div className="text-xs text-gray-500 mt-4">
+        <div className="text-xs text-fg-muted mt-4">
           By Tom Pryor · Published 2026-07-12 · Based on {summary.count.toLocaleString()}{' '}
           productions
         </div>

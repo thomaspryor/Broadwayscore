@@ -68,7 +68,7 @@ export default function ScopePill({
             return (
               <div key={section} className="mb-2">
                 {section !== 'All time' && (
-                  <p className="px-3 pt-3 pb-1 text-xs font-bold uppercase tracking-wider text-gray-500">{section}</p>
+                  <p className="px-3 pt-3 pb-1 text-xs font-bold uppercase tracking-wider text-fg-muted">{section}</p>
                 )}
                 <div className={section === 'Years' ? 'grid grid-cols-3 gap-1.5 px-1' : ''}>
                   {items.map((s) => {
@@ -89,7 +89,7 @@ export default function ScopePill({
                       >
                         <span>
                           {s.label}
-                          {s.inProgress && section === 'Seasons' && <span className="ml-2 text-xs text-gray-500">in progress</span>}
+                          {s.inProgress && section === 'Seasons' && <span className="ml-2 text-xs text-fg-muted">in progress</span>}
                         </span>
                         {selected && section !== 'Years' && (
                           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} aria-hidden="true">

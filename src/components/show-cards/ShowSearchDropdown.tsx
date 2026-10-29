@@ -123,7 +123,7 @@ export default function ShowSearchDropdown({
         <button
           type="button"
           onClick={onClose}
-          className="p-1 text-gray-500 hover:text-white"
+          className="p-1 text-fg-muted hover:text-white"
           aria-label="Close search"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -150,7 +150,7 @@ export default function ShowSearchDropdown({
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white truncate">{show.title}</div>
-                  <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
+                  <div className="text-[10px] text-fg-muted flex items-center gap-1.5">
                     <span className={`px-1 py-0.5 rounded font-medium ${
                       show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
@@ -172,19 +172,19 @@ export default function ShowSearchDropdown({
                        show.category === 'regional' ? getRegionalLabel(show) :
                        show.category === 'tour' ? 'Tour' : 'Broadway'}
                     </span>
-                    {show.od && <span className="text-gray-500">{show.od.slice(0, 4)}</span>}
+                    {show.od && <span className="text-fg-muted">{show.od.slice(0, 4)}</span>}
                     {show.dy && (
                       <span className="px-1 py-0.5 rounded font-medium bg-gray-500/20 text-gray-400">No critic score</span>
                     )}
                   </div>
                 </div>
-                <div className="flex-shrink-0 text-[10px] text-gray-500">
+                <div className="flex-shrink-0 text-[10px] text-fg-muted">
                   {renderAction(show)}
                 </div>
               </button>
             );
           }) : (
-            <div className="px-3 py-4 text-center text-xs text-gray-500">
+            <div className="px-3 py-4 text-center text-xs text-fg-muted">
               <p>No shows found for &ldquo;{query}&rdquo;</p>
               {enableLiveLookup && liveState === 'idle' && (
                 <button
@@ -199,7 +199,7 @@ export default function ShowSearchDropdown({
                 <p className="mt-2 text-gray-400">Searching the wider catalog...</p>
               )}
               {enableLiveLookup && liveState === 'empty' && (
-                <p className="mt-2 text-gray-500">Not found in the wider catalog either. Try a different spelling, or ask us to add it.</p>
+                <p className="mt-2 text-fg-muted">Not found in the wider catalog either. Try a different spelling, or ask us to add it.</p>
               )}
               {enableLiveLookup && liveState === 'error' && (
                 <div className="mt-2">
@@ -223,7 +223,7 @@ export default function ShowSearchDropdown({
               )}
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium text-white truncate">{candidate.title}</div>
-                <div className="text-[10px] text-gray-500 flex items-center gap-1.5 truncate">
+                <div className="text-[10px] text-fg-muted flex items-center gap-1.5 truncate">
                   {candidate.venue && <span className="truncate">{candidate.venue}</span>}
                   {candidate.city && <span>· {candidate.city}</span>}
                   {candidate.openingDate && <span>· {candidate.openingDate.slice(0, 4)}</span>}

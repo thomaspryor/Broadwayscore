@@ -291,11 +291,11 @@ export function getLegendEntries(): Array<{ name: string; color: string; descrip
 export type RecoupmentTrend = 'improving' | 'declining' | 'steady' | 'unknown';
 
 export function getTrendColor(trend: RecoupmentTrend, recouped: boolean | null): string {
-  if (recouped) return 'text-gray-500';
+  if (recouped) return 'text-fg-muted';
   switch (trend) {
     case 'improving': return 'text-emerald-400';
     case 'declining': return 'text-red-400';
-    default: return 'text-gray-500';
+    default: return 'text-fg-muted';
   }
 }
 

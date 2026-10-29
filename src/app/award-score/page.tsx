@@ -117,7 +117,7 @@ export default function AwardScorePage() {
           <p className="text-gray-400 mt-2">
             Which shows are winning Broadway&apos;s awards season? Each score weighs seven ceremonies (Tonys, Pulitzer, Olivier, Drama Desk, OCC, Drama League, and NYDCC), with Tony wins carrying the most weight.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithScore.length} shows with award activity across all seasons
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function AwardScorePage() {
                 <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold shrink-0 mt-0.5 ${chipClass}`}>
                   {AWARD_TIER_LABEL[badge]}
                 </span>
-                <span className="text-xs text-gray-500">{description}</span>
+                <span className="text-xs text-fg-muted">{description}</span>
               </div>
             ))}
           </div>
@@ -165,7 +165,7 @@ export default function AwardScorePage() {
               )}
             </>
           ) : (
-            <p className="text-gray-500 text-sm">No shows with award activity found.</p>
+            <p className="text-fg-muted text-sm">No shows with award activity found.</p>
           )}
         </section>
 
@@ -182,7 +182,7 @@ export default function AwardScorePage() {
                     <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-bold ${chipClass}`}>
                       {AWARD_TIER_LABEL[badge]}
                     </span>
-                    <span className="text-gray-500 text-sm">{shows.length} show{shows.length !== 1 ? 's' : ''}</span>
+                    <span className="text-fg-muted text-sm">{shows.length} show{shows.length !== 1 ? 's' : ''}</span>
                   </div>
                   <ul className="space-y-1">
                     {shows.slice(0, 8).map(item => (
@@ -196,7 +196,7 @@ export default function AwardScorePage() {
                       </li>
                     ))}
                     {shows.length > 8 && (
-                      <li className="text-gray-500 text-xs">+{shows.length - 8} more</li>
+                      <li className="text-fg-muted text-xs">+{shows.length - 8} more</li>
                     )}
                   </ul>
                 </div>
@@ -223,7 +223,7 @@ export default function AwardScorePage() {
           </div>
         </div>
 
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Award data from Tony Awards, Pulitzer Prize, Olivier Awards, Drama Desk Awards, Outer Critics Circle, Drama League, and NY Drama Critics&apos; Circle. Scores use prestige-weighted point tables; Tony wins carry the highest weight.
           </p>

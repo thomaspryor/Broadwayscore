@@ -98,7 +98,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
             <OutletPickLogo outletId={s.id} />
             <span className="text-[11px] text-gray-400 leading-none">
               <span className="text-gray-200 font-medium">{s.outlet}</span>
-              <span className="text-gray-500"> · {s.critic}</span>
+              <span className="text-fg-muted"> · {s.critic}</span>
             </span>
           </div>
         ))}
@@ -117,7 +117,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
             <section key={cat.key} className="bg-surface-raised rounded-xl p-4 sm:p-5">
               <div className="flex items-baseline justify-between gap-2 mb-3">
                 <h2 className="text-sm font-bold uppercase tracking-wide text-gray-300">{cat.title}</h2>
-                <span className="text-[11px] text-gray-500 flex-shrink-0">
+                <span className="text-[11px] text-fg-muted flex-shrink-0">
                   {coveringOutlets} weighed in
                 </span>
               </div>
@@ -129,7 +129,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
                     <div key={nom.key} className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
                       <div className="sm:w-44 sm:flex-shrink-0 min-w-0">
                         <div className="text-sm truncate text-gray-200">{nom.name}</div>
-                        {nom.sub && <div className="text-[10px] text-gray-500 truncate">{nom.sub}</div>}
+                        {nom.sub && <div className="text-[10px] text-fg-muted truncate">{nom.sub}</div>}
                       </div>
                       <div className="flex items-center gap-2 sm:flex-1 min-w-0">
                         <div className="flex-1 min-w-0 h-2.5 rounded-full bg-surface-overlay overflow-hidden">

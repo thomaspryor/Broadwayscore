@@ -35,7 +35,7 @@ export default function ShowFAQSection({ faqs }: { faqs: ShowFAQ[] }) {
           <details key={i} className="group border-b border-white/5 pb-3 last:border-0 last:pb-0">
             <summary className="text-sm font-medium text-gray-200 cursor-pointer list-none flex items-start justify-between gap-3 marker:content-none [&::-webkit-details-marker]:hidden">
               <span>{faq.question}</span>
-              <span aria-hidden="true" className="text-gray-500 group-open:rotate-45 transition-transform shrink-0 leading-none">+</span>
+              <span aria-hidden="true" className="text-fg-muted group-open:rotate-45 transition-transform shrink-0 leading-none">+</span>
             </summary>
             <p className="text-sm text-gray-400 leading-relaxed mt-2">{faq.answer}</p>
           </details>

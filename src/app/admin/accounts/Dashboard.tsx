@@ -39,7 +39,7 @@ function Card({ title, children, note }: { title: string; children: React.ReactN
     <div className="bg-surface-raised border border-white/[0.06] rounded-lg p-4 sm:p-5 min-w-0">
       <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">{title}</h2>
       {children}
-      {note && <p className="text-xs text-gray-500 mt-3">{note}</p>}
+      {note && <p className="text-xs text-fg-muted mt-3">{note}</p>}
     </div>
   );
 }
@@ -90,7 +90,7 @@ function DailyChart({ days }: { days: Payload['daily'] }) {
           );
         })}
       </svg>
-      <div className="flex justify-between text-xs text-gray-500 mt-1">
+      <div className="flex justify-between text-xs text-fg-muted mt-1">
         <span>{shown[0] && fmtDay(shown[0].date)}</span>
         <span>{shown.length > 0 && fmtDay(shown[shown.length - 1].date)}</span>
       </div>
@@ -185,7 +185,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3 text-xs text-gray-500">
+      <div className="flex items-center gap-3 text-xs text-fg-muted">
         {data && <span>Updated {new Date(data.generatedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</span>}
         <button
           type="button"
@@ -255,7 +255,7 @@ export default function Dashboard() {
             <div className="mt-5 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-xs text-gray-500">
+                  <tr className="text-left text-xs text-fg-muted">
                     <th className="py-1 pr-3 font-medium">Where they saw it</th>
                     <th className="py-1 pr-3 font-medium">Device</th>
                     <th className="py-1 pr-3 font-medium text-right">Saw</th>
@@ -310,7 +310,7 @@ export default function Dashboard() {
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-xs text-gray-500">
+                  <tr className="text-left text-xs text-fg-muted">
                     <th className="py-1 pr-3 font-medium" />
                     <th className="py-1 pr-3 font-medium text-right">7 days</th>
                     <th className="py-1 pr-3 font-medium text-right">30 days</th>
@@ -338,7 +338,7 @@ export default function Dashboard() {
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-xs text-gray-500">
+                  <tr className="text-left text-xs text-fg-muted">
                     <th className="py-1 pr-3 font-medium">Joined</th>
                     <th className="py-1 pr-3 font-medium">Signed in with</th>
                     <th className="py-1 pr-3 font-medium">Last signed in</th>
@@ -371,13 +371,13 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
-            {a && <p className="text-xs text-gray-500 mt-3">All time: {fmtN(a.ratings)} ratings, {fmtN(a.watchlistItems)} watchlist entries, {fmtN(a.lists)} lists.</p>}
+            {a && <p className="text-xs text-fg-muted mt-3">All time: {fmtN(a.ratings)} ratings, {fmtN(a.watchlistItems)} watchlist entries, {fmtN(a.lists)} lists.</p>}
           </Card>
         )}
       </div>
 
       {data && data.failed.length > 0 && (
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-muted">
           Not refreshed this update: {data.failed.map((k) => FAILED_LABELS[k] || k).join(', ')}. They come back on the next update.
         </p>
       )}

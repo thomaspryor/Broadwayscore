@@ -148,7 +148,7 @@ function TonyAwardsPanel({
   return (
     <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
       <div className="mb-3">
-        <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+        <span className="text-xs text-fg-muted uppercase tracking-wide font-medium">
           Tony Awards {tony.season && `(${tony.season})`}
         </span>
       </div>
@@ -162,7 +162,7 @@ function TonyAwardsPanel({
           <span className="text-gray-400">win{wins.length === 1 ? '' : 's'}</span>
         </div>
         {(wins.length + nominationsOnly.length) > 0 && (
-          <span className="text-gray-500">of</span>
+          <span className="text-fg-muted">of</span>
         )}
         {(wins.length + nominationsOnly.length) > 0 && (
           <div className="flex items-baseline gap-1.5">
@@ -184,7 +184,7 @@ function TonyAwardsPanel({
             <span className="text-sm font-medium text-gray-300">
               See all categories ({totalCount})
             </span>
-            <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+            <ChevronIcon expanded={expanded} className="text-fg-muted group-hover:text-gray-400" />
           </button>
           {expanded && (
             <ul className="mt-3 space-y-2">
@@ -197,7 +197,7 @@ function TonyAwardsPanel({
                     <span className={`flex-1 ${major ? 'text-white font-medium' : 'text-amber-200'}`}>
                       {cat}
                       {name && (
-                        <span className="text-gray-500 font-normal"> · {name}</span>
+                        <span className="text-fg-muted font-normal"> · {name}</span>
                       )}
                     </span>
                     <span className="text-[10px] uppercase tracking-wide text-amber-400/70 font-semibold">Won</span>
@@ -209,11 +209,11 @@ function TonyAwardsPanel({
                 const name = nameFor(cat);
                 return (
                   <li key={`n-${idx}`} className="flex items-center gap-2 text-sm">
-                    <StarIconLine className="text-gray-500 flex-shrink-0" />
-                    <span className={`flex-1 ${major ? 'text-gray-300' : 'text-gray-500'}`}>
+                    <StarIconLine className="text-fg-muted flex-shrink-0" />
+                    <span className={`flex-1 ${major ? 'text-gray-300' : 'text-fg-muted'}`}>
                       {cat}
                       {name && (
-                        <span className="text-gray-600 font-normal"> · {name}</span>
+                        <span className="text-fg-muted font-normal"> · {name}</span>
                       )}
                     </span>
                   </li>
@@ -251,7 +251,7 @@ function OlivierAwardsPanel({
   return (
     <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
       <div className="mb-3">
-        <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+        <span className="text-xs text-fg-muted uppercase tracking-wide font-medium">
           Olivier Awards {olivier.season && `(${olivier.season})`}
         </span>
       </div>
@@ -263,7 +263,7 @@ function OlivierAwardsPanel({
           <span className="text-gray-400">win{wins.length === 1 ? '' : 's'}</span>
         </div>
         {totalCount > 0 && (
-          <span className="text-gray-500">of</span>
+          <span className="text-fg-muted">of</span>
         )}
         {totalCount > 0 && (
           <div className="flex items-baseline gap-1.5">
@@ -285,7 +285,7 @@ function OlivierAwardsPanel({
             <span className="text-sm font-medium text-gray-300">
               See all categories ({totalCount})
             </span>
-            <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+            <ChevronIcon expanded={expanded} className="text-fg-muted group-hover:text-gray-400" />
           </button>
           {expanded && (
             <ul className="mt-3 space-y-2">
@@ -305,8 +305,8 @@ function OlivierAwardsPanel({
                 const major = isMajorOlivierCategory(cat);
                 return (
                   <li key={`n-${idx}`} className="flex items-center gap-2 text-sm">
-                    <StarIconLine className="text-gray-500 flex-shrink-0" />
-                    <span className={`flex-1 ${major ? 'text-gray-300' : 'text-gray-500'}`}>
+                    <StarIconLine className="text-fg-muted flex-shrink-0" />
+                    <span className={`flex-1 ${major ? 'text-gray-300' : 'text-fg-muted'}`}>
                       {cat}
                     </span>
                   </li>
@@ -377,10 +377,10 @@ function OtherAwardsPanel({
         aria-expanded={expanded}
       >
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">Other Major Awards</span>
-          <span className="text-xs text-gray-500">({headerCount})</span>
+          <span className="text-xs text-fg-muted uppercase tracking-wide font-medium">Other Major Awards</span>
+          <span className="text-xs text-fg-muted">({headerCount})</span>
         </div>
-        <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+        <ChevronIcon expanded={expanded} className="text-fg-muted group-hover:text-gray-400" />
       </button>
 
       {/* Chip format per Claude Design 2026-05-17:
@@ -401,7 +401,7 @@ function OtherAwardsPanel({
           return (
             <span key={cfg.key} className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${cfg.chip} text-xs font-medium`}>
               <span className={cfg.text}>{cfg.short}:</span>
-              <span className={noAward ? 'text-gray-500 italic' : 'text-gray-300 tabular-nums'}>{detail}</span>
+              <span className={noAward ? 'text-fg-muted italic' : 'text-gray-300 tabular-nums'}>{detail}</span>
             </span>
           );
         })}
@@ -416,11 +416,11 @@ function OtherAwardsPanel({
                 <div className={`text-xs font-medium mb-1.5 ${cfg.text}`}>
                   {cfg.display}
                   {nomsTotal && nomsTotal > wins.length && (
-                    <span className="text-gray-500 font-normal ml-1.5">· {nomsTotal} total noms</span>
+                    <span className="text-fg-muted font-normal ml-1.5">· {nomsTotal} total noms</span>
                   )}
                 </div>
                 {noAward && (
-                  <p className="text-xs text-gray-500 italic pl-4">No award given this year</p>
+                  <p className="text-xs text-fg-muted italic pl-4">No award given this year</p>
                 )}
                 {wins.length > 0 && (
                   <ul className="space-y-1 pl-4">
@@ -434,16 +434,16 @@ function OtherAwardsPanel({
                 )}
                 {nomsOnly.length > 0 && (
                   <>
-                    <div className="text-[11px] text-gray-500 uppercase tracking-wide mt-1.5 mb-1 pl-4">
+                    <div className="text-[11px] text-fg-muted uppercase tracking-wide mt-1.5 mb-1 pl-4">
                       Nominated for
                     </div>
                     <ul className="space-y-1 pl-4">
                       {nomsOnly.map((nom, idx) => (
                         <li
                           key={`n-${idx}`}
-                          className="flex items-center gap-2 text-sm text-gray-500 italic"
+                          className="flex items-center gap-2 text-sm text-fg-muted italic"
                         >
-                          <StarIconLine className="w-3 h-3 text-gray-500/60 flex-shrink-0" />
+                          <StarIconLine className="w-3 h-3 text-fg-muted flex-shrink-0" />
                           <span className="flex-1">{nom}</span>
                         </li>
                       ))}
@@ -485,7 +485,7 @@ export default function AwardScoreCard({ showId, awards, result, openingDate, ca
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="awards-scorecard-heading-v2" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
         {(awards?.tony?.season || awards?.olivier?.season) && (
-          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0 whitespace-nowrap">{awards?.tony?.season ?? awards?.olivier?.season} season</span>
+          <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0 whitespace-nowrap">{awards?.tony?.season ?? awards?.olivier?.season} season</span>
         )}
       </header>
 
@@ -541,22 +541,22 @@ export default function AwardScoreCard({ showId, awards, result, openingDate, ca
         if (hasStandardContent || result.breakdown.length === 0) return null;
         return (
           <div className="mt-4 pt-4 border-t border-white/5">
-            <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-3">Award Recognition</div>
+            <div className="text-xs text-fg-muted uppercase tracking-wide font-medium mb-3">Award Recognition</div>
             <div className="space-y-3">
               {result.breakdown.map(contrib => (
                 <div key={contrib.ceremony}>
-                  <div className="text-xs text-gray-500 font-medium mb-1">{contrib.ceremony}</div>
+                  <div className="text-xs text-fg-muted font-medium mb-1">{contrib.ceremony}</div>
                   <ul className="space-y-1">
                     {contrib.items.map((item, idx) => (
                       <li key={idx} className="flex items-center gap-2 text-sm">
                         {item.result === 'win'
                           ? <span className="text-amber-400 text-xs">★</span>
-                          : <span className="text-gray-500 text-xs">☆</span>
+                          : <span className="text-fg-muted text-xs">☆</span>
                         }
                         <span className={item.result === 'win' ? 'text-gray-200' : 'text-gray-400 italic'}>
                           {item.category}
                         </span>
-                        <span className={`ml-auto text-xs ${item.result === 'win' ? 'text-amber-400' : 'text-gray-500'}`}>
+                        <span className={`ml-auto text-xs ${item.result === 'win' ? 'text-amber-400' : 'text-fg-muted'}`}>
                           {item.result === 'win' ? 'Won' : 'Nominated'}
                         </span>
                       </li>

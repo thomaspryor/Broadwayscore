@@ -28,7 +28,7 @@ export default function ReviewPhotosField({ reviewId, showTitle }: { reviewId: s
   return (
     <div className="ph-no-capture mb-3" data-testid="review-photos-field">
       <p className="block text-xs font-medium text-gray-400 mb-1">
-        Photos <span className="text-gray-600">({total}/{MAX_PHOTOS_PER_REVIEW})</span>
+        Photos <span className="text-fg-muted">({total}/{MAX_PHOTOS_PER_REVIEW})</span>
       </p>
       {error ? (
         <p className="text-xs text-score-tepid">
@@ -48,7 +48,7 @@ export default function ReviewPhotosField({ reviewId, showTitle }: { reviewId: s
           title={showTitle}
         />
       )}
-      <p className="mt-1 text-xs text-gray-500">Photos save as soon as they upload. Only you can see them.</p>
+      <p className="mt-1 text-xs text-fg-muted">Photos save as soon as they upload. Only you can see them.</p>
     </div>
   );
 }

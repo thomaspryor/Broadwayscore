@@ -211,7 +211,7 @@ function FantasyDraftInner() {
           <p className="text-gray-400 mb-2">
             Total spent: <span className="text-emerald-400 font-bold">${totalSpent}</span> / ${FANTASY_BUDGET}
           </p>
-          <p className="text-gray-500 text-sm mb-8">
+          <p className="text-fg-muted text-sm mb-8">
             {submitted.scoringFrom && !submitted.practice && <>Box office counts from the week of {longDate(submitted.scoringFrom)}. </>}
             {submitted.emailSent
               ? <>We emailed a copy of your roster to {email.trim()}.</>
@@ -219,7 +219,7 @@ function FantasyDraftInner() {
           </p>
 
           <div className="bg-surface-raised/50 rounded-xl p-6 mb-8 text-left">
-            <h2 className="text-sm text-gray-500 uppercase tracking-wider mb-3">Your Team</h2>
+            <h2 className="text-sm text-fg-muted uppercase tracking-wider mb-3">Your Team</h2>
             <div className="space-y-2">
               {selectedIds.map((id, i) => {
                 const show = config.shows[id];
@@ -329,7 +329,7 @@ function FantasyDraftInner() {
       <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
         {/* Header */}
         <div className="mb-8">
-          <a href="/fantasy" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+          <a href="/fantasy" className="text-sm text-fg-muted hover:text-gray-300 transition-colors">
             &larr; Fantasy League
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">{practice ? 'Practice Draft' : 'Draft Your Team'}</h1>
@@ -357,7 +357,7 @@ function FantasyDraftInner() {
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mt-1">{practice
+            <p className="text-xs text-fg-muted mt-1">{practice
               ? 'One practice team per email. We email you a copy so you can check it.'
               : 'One entry per person, final once submitted. We email you a copy of your roster and weekly standings.'}</p>
           </div>
@@ -380,14 +380,14 @@ function FantasyDraftInner() {
                 ? <p className="block text-sm text-gray-400 mb-1">League</p>
                 : <label htmlFor="fantasy-league-name" className="block text-sm text-gray-400 mb-1">League</label>}
               {practice ? (
-                <p className="text-xs text-gray-500 pt-1">
+                <p className="text-xs text-fg-muted pt-1">
                   Leagues start with the real draft.{' '}
                   <a href="/fantasy/create-league" className="text-brand/70 hover:text-brand transition-colors">Create yours now →</a>
                 </p>
               ) : leagueFromUrl ? (
                 <div className="w-full bg-surface-raised border border-brand/30 rounded-lg px-4 py-2.5 text-brand font-mono text-sm">
                   {leagueName}
-                  <span className="text-gray-500 font-sans text-xs ml-2">(from invite link)</span>
+                  <span className="text-fg-muted font-sans text-xs ml-2">(from invite link)</span>
                 </div>
               ) : (
                 <input
@@ -401,7 +401,7 @@ function FantasyDraftInner() {
                 />
               )}
               {!leagueFromUrl && !practice && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-fg-muted mt-1">
                   <a href="/fantasy/create-league" className="text-brand/70 hover:text-brand transition-colors">Create a private league →</a>
                 </p>
               )}
@@ -421,7 +421,7 @@ function FantasyDraftInner() {
 
         {/* Show Pickers */}
         <div className="space-y-3 mb-4">
-          <h2 className="text-sm text-gray-500 uppercase tracking-wider">Your Picks</h2>
+          <h2 className="text-sm text-fg-muted uppercase tracking-wider">Your Picks</h2>
           {picks.map((_, index) => (
             <FantasyShowPicker
               key={index}
@@ -435,7 +435,7 @@ function FantasyDraftInner() {
             />
           ))}
           {rosterFull && (
-            <p className="text-xs text-gray-500">Roster full: {FANTASY_TEAM_SIZE} of {FANTASY_TEAM_SIZE} picks. Remove a show to swap it.</p>
+            <p className="text-xs text-fg-muted">Roster full: {FANTASY_TEAM_SIZE} of {FANTASY_TEAM_SIZE} picks. Remove a show to swap it.</p>
           )}
         </div>
 
@@ -450,8 +450,8 @@ function FantasyDraftInner() {
 
         {/* Tiebreakers */}
         <div className="space-y-3 mb-8">
-          <h2 className="text-sm text-gray-500 uppercase tracking-wider">Tiebreakers</h2>
-          <p className="text-xs text-gray-500">Used to break ties on Tony night. Closest answer wins.</p>
+          <h2 className="text-sm text-fg-muted uppercase tracking-wider">Tiebreakers</h2>
+          <p className="text-xs text-fg-muted">Used to break ties on Tony night. Closest answer wins.</p>
           {TIEBREAKER_QUESTIONS.map(q => (
             <div key={q.id}>
               <label className="block text-sm text-gray-400 mb-1">{q.question}</label>
@@ -493,14 +493,14 @@ function FantasyDraftInner() {
           className={`w-full py-3.5 rounded-lg font-semibold text-lg transition-all ${
             canSubmit
               ? 'bg-brand text-white hover:bg-brand-hover active:scale-[0.98]'
-              : 'bg-surface-overlay text-gray-500 cursor-not-allowed'
+              : 'bg-surface-overlay text-fg-muted cursor-not-allowed'
           }`}
         >
           {submitting ? 'Submitting...' : practice ? `Save Practice Team ($${totalSpent})` : `Lock In My Picks ($${totalSpent})`}
         </button>
 
         {!canSubmit && !submitting && selectedIds.length > 0 && (
-          <p className="text-center text-xs text-gray-500 mt-2">
+          <p className="text-center text-xs text-fg-muted mt-2">
             {!email.includes('@')
               ? 'Enter your email to submit'
               : selectedIds.length < 1

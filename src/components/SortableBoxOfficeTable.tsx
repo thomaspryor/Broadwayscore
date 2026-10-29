@@ -76,7 +76,7 @@ function ChangeIndicator({ current, previous, mode = 'percent' }: { current: num
   // "we have data and it didn't move" apart from "no prior data" (empty slot).
   if (Math.abs(change) < 0.1) {
     return (
-      <span className={`${DELTA_SLOT} text-gray-500`} title="Unchanged from last week">
+      <span className={`${DELTA_SLOT} text-fg-muted`} title="Unchanged from last week">
         0.0{unit}
       </span>
     );
@@ -105,7 +105,7 @@ function ShowThumbnail({ show }: { show: ShowGrossesData['show'] }) {
         ariaHidden
         className="w-full h-full object-cover"
         fallback={
-          <div className="w-full h-full flex items-center justify-center text-gray-500" aria-hidden="true">
+          <div className="w-full h-full flex items-center justify-center text-fg-muted" aria-hidden="true">
             <span className="text-base">🎭</span>
           </div>
         }
@@ -117,7 +117,7 @@ function ShowThumbnail({ show }: { show: ShowGrossesData['show'] }) {
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );
@@ -284,7 +284,7 @@ export function ThisWeekTable({ data, extraColumns = NO_EXTRA_COLUMNS, hideColum
               <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                 <td className="py-3 pl-3 pr-1 sm:px-4 w-6 sm:w-8 align-middle">
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                    index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                    index < 3 ? 'bg-accent-gold text-gray-900' : 'text-fg-muted'
                   }`}>
                     {index + 1}
                   </span>
@@ -323,7 +323,7 @@ export function ThisWeekTable({ data, extraColumns = NO_EXTRA_COLUMNS, hideColum
                 >
                   {formatPercent(item.grosses?.thisWeek?.capacity)}
                   {(item.grosses?.thisWeek?.capacity ?? 0) > 100 && (
-                    <span className="text-gray-500 ml-0.5" aria-hidden="true">*</span>
+                    <span className="text-fg-muted ml-0.5" aria-hidden="true">*</span>
                   )}
                   <ChangeIndicator
                     current={item.grosses?.thisWeek?.capacity}
@@ -472,7 +472,7 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
               <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                 <td className="py-3 pl-3 pr-1 sm:px-4 w-6 sm:w-8 align-middle">
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                    index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                    index < 3 ? 'bg-accent-gold text-gray-900' : 'text-fg-muted'
                   }`}>
                     {index + 1}
                   </span>

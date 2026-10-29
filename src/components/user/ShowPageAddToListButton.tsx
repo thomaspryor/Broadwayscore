@@ -159,7 +159,7 @@ export default function ShowPageAddToListButton({ showId, variant = 'default' }:
           {/* List items */}
           <div className="max-h-48 overflow-y-auto">
             {lists.length === 0 && !creating && (
-              <div className="px-3 py-3 text-xs text-gray-500 text-center">
+              <div className="px-3 py-3 text-xs text-fg-muted text-center">
                 No lists yet
               </div>
             )}
@@ -186,7 +186,7 @@ export default function ShowPageAddToListButton({ showId, variant = 'default' }:
                   </span>
                   <span className="text-gray-200 truncate">{list.name}</span>
                   {list.is_ranked && (
-                    <span className="text-xs text-gray-500 ml-auto flex-shrink-0">#</span>
+                    <span className="text-xs text-fg-muted ml-auto flex-shrink-0">#</span>
                   )}
                 </button>
               );

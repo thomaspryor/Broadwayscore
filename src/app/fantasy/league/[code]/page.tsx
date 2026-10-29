@@ -99,13 +99,13 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
   return (
     <div className="min-h-screen bg-surface text-white">
       <div className="max-w-2xl mx-auto px-4 py-10">
-        <Link href="/fantasy" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+        <Link href="/fantasy" className="text-sm text-fg-muted hover:text-gray-300 transition-colors">
           ← Fantasy League
         </Link>
 
         <div className="mt-4 mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold">{meta?.name}</h1>
-          <p className="text-gray-500 text-sm mt-1">{meta?.member_count ?? 0} member{meta?.member_count !== 1 ? 's' : ''}</p>
+          <p className="text-fg-muted text-sm mt-1">{meta?.member_count ?? 0} member{meta?.member_count !== 1 ? 's' : ''}</p>
         </div>
 
         <div className="flex flex-wrap gap-3 mb-8">
@@ -131,14 +131,14 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
         ) : entries.length === 0 ? (
           <div className="card p-8 text-center">
             <p className="text-gray-400 mb-2">No entries yet.</p>
-            <p className="text-gray-600 text-sm">Share the invite link so friends can draft their teams.</p>
+            <p className="text-fg-muted text-sm">Share the invite link so friends can draft their teams.</p>
           </div>
         ) : (
           <div className="space-y-2">
-            <h2 className="text-sm text-gray-500 uppercase tracking-wider mb-3">Leaderboard</h2>
+            <h2 className="text-sm text-fg-muted uppercase tracking-wider mb-3">Leaderboard</h2>
             {entries.map((entry) => (
               <div key={entry.id} className="card p-4 flex items-center gap-4">
-                <div className="w-8 text-center font-bold text-gray-500 text-sm">#{entry.rank}</div>
+                <div className="w-8 text-center font-bold text-fg-muted text-sm">#{entry.rank}</div>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-white truncate">
                     {entry.displayName}
@@ -149,7 +149,7 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
                 </div>
                 <div className="text-right shrink-0">
                   <div className="text-lg font-bold text-brand">{entry.totalPoints.toFixed(1)}</div>
-                  <div className="text-xs text-gray-600">pts</div>
+                  <div className="text-xs text-fg-muted">pts</div>
                 </div>
               </div>
             ))}

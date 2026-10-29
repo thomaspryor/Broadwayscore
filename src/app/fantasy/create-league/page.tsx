@@ -39,7 +39,7 @@ export default function CreateLeaguePage() {
   return (
     <div className="min-h-screen bg-surface text-white">
       <div className="max-w-md mx-auto px-4 py-16">
-        <a href="/fantasy" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+        <a href="/fantasy" className="text-sm text-fg-muted hover:text-gray-300 transition-colors">
           ← Fantasy League
         </a>
         <h1 className="text-2xl font-bold mt-4 mb-2">Create a Private League</h1>
@@ -71,7 +71,7 @@ export default function CreateLeaguePage() {
               onChange={e => setEmail(e.target.value)}
               required
             />
-            <p className="text-xs text-gray-600 mt-1">Used to identify you as the creator. Not shared publicly.</p>
+            <p className="text-xs text-fg-muted mt-1">Used to identify you as the creator. Not shared publicly.</p>
           </div>
 
           {error && (

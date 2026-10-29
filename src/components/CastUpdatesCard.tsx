@@ -164,7 +164,7 @@ function CastEventRow({ event }: { event: CastEvent }) {
             ) : null}
             <span className={`text-xs font-medium ${config.colorClass}`}>{config.label}</span>
             {event.role && event.role !== 'Unknown' && (
-              <span className="text-gray-500 text-xs">as {event.role}</span>
+              <span className="text-fg-muted text-xs">as {event.role}</span>
             )}
           </div>
 
@@ -216,7 +216,7 @@ function HistoryEntryRow({ entry }: { entry: CastHistoryEntry }) {
   return (
     <div className="bg-surface-overlay border border-white/5 rounded-lg p-3 sm:p-4">
       <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 mt-0.5 text-gray-500">
+        <div className="flex-shrink-0 mt-0.5 text-fg-muted">
           <ClockIcon />
         </div>
         <div className="flex-1 min-w-0">
@@ -225,7 +225,7 @@ function HistoryEntryRow({ entry }: { entry: CastHistoryEntry }) {
               <span className="text-white font-semibold text-sm">{entry.name}</span>
             ) : null}
             {entry.role && entry.role !== 'Unknown' && (
-              <span className="text-gray-500 text-xs">as {entry.role}</span>
+              <span className="text-fg-muted text-xs">as {entry.role}</span>
             )}
           </div>
 
@@ -325,7 +325,7 @@ export default function CastUpdatesCard({ castChanges, showStatus }: CastUpdates
 
       {history.length > 0 && (
         <div className={sorted.length > 0 ? 'mt-5 pt-4 border-t border-white/5' : ''}>
-          <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 leading-none m-0 mb-3">
+          <h3 className="text-[11px] font-bold uppercase tracking-[0.12em] text-fg-muted leading-none m-0 mb-3">
             Previously in This Show
           </h3>
           <div className="space-y-3">

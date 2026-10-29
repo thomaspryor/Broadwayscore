@@ -71,7 +71,7 @@ function formatMultiple(m: number): string {
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );
@@ -103,7 +103,7 @@ function EstimatedReturnLine({ show }: { show: CommercialShowRow }) {
       title={`Our model's estimate of what investors got back, as a multiple of their money, after the producers' share and counting the NY tax credit. Shown as a range because running costs are rarely reported${assumed ? '; this show\'s running cost is assumed from similar shows' : ''}. See methodology.`}
     >
       <div className="text-xs text-gray-300 whitespace-nowrap">Est. {formatReturnRange(range)} returned</div>
-      <div className="text-[10px] text-gray-500 whitespace-nowrap">Our model{assumed ? ' · running cost assumed' : ''}</div>
+      <div className="text-[10px] text-fg-muted whitespace-nowrap">Our model{assumed ? ' · running cost assumed' : ''}</div>
     </div>
   );
 }
@@ -133,7 +133,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
           </span>
           {source && (
             <span
-              className="text-gray-500 cursor-help"
+              className="text-fg-muted cursor-help"
               title={`Source: ${source}`}
               aria-label={`Source: ${source}`}
             >
@@ -142,7 +142,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
           )}
         </div>
         {show.recoupmentNotAnnounced && (
-          <div className="text-xs text-gray-500 whitespace-nowrap" data-testid="recoupment-not-announced">
+          <div className="text-xs text-fg-muted whitespace-nowrap" data-testid="recoupment-not-announced">
             Not publicly announced
           </div>
         )}
@@ -156,7 +156,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
     return (
       <div title={`Reported by ${cell.outlet}${cell.asOf ? `, ${cell.asOf}` : ''}`}>
         <div className="text-sm text-gray-200 whitespace-nowrap">{figure} returned</div>
-        <div className="text-[10px] text-gray-500 whitespace-nowrap">Reported · {cell.outlet}</div>
+        <div className="text-[10px] text-fg-muted whitespace-nowrap">Reported · {cell.outlet}</div>
       </div>
     );
   }
@@ -258,7 +258,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
   if (shows.length === 0) {
     return (
       <div className="card rounded-xl p-6 text-center">
-        <p className="text-gray-500">No commercial data available</p>
+        <p className="text-fg-muted">No commercial data available</p>
       </div>
     );
   }
@@ -373,10 +373,10 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                       {designation.label}
                     </span>
                     {show.nonprofitOrg && (
-                      <div className="text-xs text-gray-500">{getNonprofitTag(show)}</div>
+                      <div className="text-xs text-fg-muted">{getNonprofitTag(show)}</div>
                     )}
                     {show.lossCaveat && (
-                      <div className="text-xs text-gray-500 whitespace-nowrap" title={show.lossCaveat === DESIGNATION_ESTIMATE_CAVEAT ? DESIGNATION_ESTIMATE_CAVEAT : LOSS_ON_SILENCE_CAVEAT} data-testid="loss-basis-tag">
+                      <div className="text-xs text-fg-muted whitespace-nowrap" title={show.lossCaveat === DESIGNATION_ESTIMATE_CAVEAT ? DESIGNATION_ESTIMATE_CAVEAT : LOSS_ON_SILENCE_CAVEAT} data-testid="loss-basis-tag">
                         {show.lossCaveat === DESIGNATION_ESTIMATE_CAVEAT ? 'Our estimate' : 'No recoupment announced'}
                       </div>
                     )}
@@ -388,7 +388,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                   </td>
                   <td className="py-3 px-4">
                     {show.capitalization == null ? (
-                      <span className="text-gray-500">Undisclosed</span>
+                      <span className="text-fg-muted">Undisclosed</span>
                     ) : (
                       formatCapitalization(show.capitalization, show.capitalizationIsEstimate, show.capitalizationIsMaximum)
                     )}
@@ -398,7 +398,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                       <>
                         <div>{formatCurrency(show.weeklyGross)}</div>
                         {(show.weeklyCapacity != null || show.weeklyAtp != null) && (
-                          <div className="text-xs text-gray-500 whitespace-nowrap" title="Latest week: share of seats sold (can top 100% with standing room), and average ticket price">
+                          <div className="text-xs text-fg-muted whitespace-nowrap" title="Latest week: share of seats sold (can top 100% with standing room), and average ticket price">
                             {[
                               show.weeklyCapacity != null ? `${Math.round(show.weeklyCapacity)}% full` : null,
                               show.weeklyAtp != null ? `$${Math.round(show.weeklyAtp)} avg` : null,
@@ -407,17 +407,17 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                         )}
                       </>
                     ) : (
-                      <span className="text-gray-500">Closed</span>
+                      <span className="text-fg-muted">Closed</span>
                     )}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell">
                     {show.weeklyCost == null ? (
-                      <span className="text-gray-500">—</span>
+                      <span className="text-fg-muted">—</span>
                     ) : (
                       <>
                         {`${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`}
                         {show.weeklyCostBasis && show.weeklyCostBasis !== 'running' && (
-                          <span className="block text-[10px] text-gray-500">{weeklyCostLabel(show.weeklyCostBasis)}</span>
+                          <span className="block text-[10px] text-fg-muted">{weeklyCostLabel(show.weeklyCostBasis)}</span>
                         )}
                       </>
                     )}
@@ -430,7 +430,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                       {show.reportedMultiple != null ? (
                         <span className="text-emerald-400 font-medium">{formatMultiple(show.reportedMultiple)}</span>
                       ) : (
-                        <span className="text-gray-500">—</span>
+                        <span className="text-fg-muted">—</span>
                       )}
                     </td>
                   )}
@@ -458,7 +458,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
       </div>
       {shows.length > initialLimit && (
         <div className="p-4 border-t border-white/5 text-center">
-          <span className="text-gray-500 text-sm">
+          <span className="text-fg-muted text-sm">
             Showing {displayShows.length} of {shows.length} shows ·{' '}
           </span>
           <button

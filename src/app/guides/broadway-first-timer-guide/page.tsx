@@ -115,7 +115,7 @@ export default function BroadwayFirstTimerGuide() {
             With <span className="text-brand font-semibold">{openShowCount} shows</span> currently
             running on Broadway, there has never been a better time to go.
           </p>
-          <p className="text-gray-500 text-sm mt-3">
+          <p className="text-fg-muted text-sm mt-3">
             Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>

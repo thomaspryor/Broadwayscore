@@ -154,7 +154,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-xl sm:text-2xl font-bold text-white">{shows.length}</div>
-            <div className="text-xs text-gray-500">Total Shows</div>
+            <div className="text-xs text-fg-muted">Total Shows</div>
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             {stats.totalShows >= MIN_TRACKED_SHOWS ? (
@@ -163,12 +163,12 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
                   {stats.recoupedCount}{' '}
                   <span className="text-sm text-gray-400">of {stats.totalShows}</span>
                 </div>
-                <div className="text-xs text-gray-500">Commercial shows recouped</div>
+                <div className="text-xs text-fg-muted">Commercial shows recouped</div>
               </>
             ) : (
               <>
                 <div className="text-sm text-gray-400">Too few tracked shows to state a recoup rate</div>
-                <div className="text-xs text-gray-500">Commercial shows recouped</div>
+                <div className="text-xs text-fg-muted">Commercial shows recouped</div>
               </>
             )}
           </div>
@@ -177,17 +177,17 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
               {est ? `~${formatSeasonMoney(est.total)}` : totalCapital.value}
             </div>
             <div
-              className="text-xs text-gray-500"
+              className="text-xs text-fg-muted"
               title="Every commercial production's capitalization: the public figure where there is one, else our estimate (our own budget estimate, or the median of similar shows). Nonprofit productions and tour stops are excluded."
             >
               Total Capital (est.)
             </div>
             {est ? (
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-fg-muted">
                 {formatSeasonMoney(profile!.capitalization.all.total)} disclosed{est.estimated > 0 ? `, ${est.estimated} show${est.estimated === 1 ? '' : 's'} estimated` : ''}
               </div>
             ) : (
-              totalCapital.note && <div className="text-xs text-gray-500">{totalCapital.note}</div>
+              totalCapital.note && <div className="text-xs text-fg-muted">{totalCapital.note}</div>
             )}
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
@@ -197,12 +197,12 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
                   ~{formatSeasonMoney(outcome.closedUnrecouped)}
                 </div>
                 <div
-                  className="text-xs text-gray-500"
+                  className="text-xs text-fg-muted"
                   title="Capitalization of the closed shows that had not recouped (public figures, else our estimates). Some of it came back to investors; each show's page has our estimate of how much."
                 >
                   In closed shows that hadn&apos;t recouped
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-fg-muted">
                   {outcome.closedUnrecoupedShows} show{outcome.closedUnrecoupedShows === 1 ? '' : 's'}
                   {outcome.runningShows > 0 && `, plus ~${formatSeasonMoney(outcome.running)} still at risk in ${outcome.runningShows} running show${outcome.runningShows === 1 ? '' : 's'}`}
                 </div>
@@ -213,12 +213,12 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
                   {outcome && outcome.runningShows > 0 ? `~${formatSeasonMoney(outcome.running)}` : capitalAtRisk.value}
                 </div>
                 <div
-                  className="text-xs text-gray-500"
+                  className="text-xs text-fg-muted"
                   title="Capitalization of shows still running that have not recouped. Nonprofit productions and tour stops are excluded."
                 >
                   Still at Risk
                 </div>
-                <div className="text-xs text-gray-500">in running shows not yet recouped</div>
+                <div className="text-xs text-fg-muted">in running shows not yet recouped</div>
               </>
             )}
           </div>
@@ -229,13 +229,13 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5 mb-8" data-testid="season-money-back">
             <div className="text-xl sm:text-2xl font-bold text-emerald-400">{back.headline}</div>
             <div
-              className="text-xs text-gray-500 mt-1"
+              className="text-xs text-fg-muted mt-1"
               title="An estimate. Recouped shows count at their reported return, else all of their capital; other shows at an estimate of what has come back (our model from weekly grosses and costs, or an outside estimate). Only shows we can estimate are counted."
             >
               Estimate, {back.range} ({back.share} of the capital in {profile.returnedCapital.shows} shows).{outcome && outcome.runningShows > 0 ? ' It rises as running shows pay back.' : ''}
             </div>
             {backHistory.length > 1 && (
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-fg-muted mt-1">
                 Estimate on {backHistory[0].date}: about {formatSeasonMoney(backHistory[0].returnedMid)} back
                 {' · '}
                 on {backHistory[backHistory.length - 1].date}: about {formatSeasonMoney(backHistory[backHistory.length - 1].returnedMid)} back
@@ -264,7 +264,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
 
         {/* Show breakdown */}
         {(openShows > 0 || closedShows > 0) && (
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-fg-muted mb-4">
             {openShows > 0 && `${openShows} still running`}
             {openShows > 0 && closedShows > 0 && ' · '}
             {closedShows > 0 && `${closedShows} closed`}
@@ -279,7 +279,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
         </section>
 
         {/* Footer */}
-        <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
+        <footer className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-8">
           <p>
             Capitalization and recoupment from SEC filings and trade press. Weekly box
             office from The Broadway League, as published by Playbill and BroadwayWorld.

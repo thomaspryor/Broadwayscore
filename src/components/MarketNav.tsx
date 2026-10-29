@@ -119,7 +119,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
       {/* Dropdown */}
       {isOpen && (
         <div className="absolute top-14 left-3 right-3 sm:left-auto sm:right-auto sm:w-72 bg-[#1e1e2a] border border-white/10 rounded-xl p-1.5 shadow-2xl z-50">
-          <div className="px-3.5 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">New York</div>
+          <div className="px-3.5 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">New York</div>
           <Link
             href="/"
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
@@ -129,7 +129,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           >
             <div>
               <div className="text-sm font-semibold text-white">Broadway</div>
-              <div className="text-[11px] text-gray-500">{stats.nyc.openShows} open shows · {stats.nyc.theaters} theaters</div>
+              <div className="text-[11px] text-fg-muted">{stats.nyc.openShows} open shows · {stats.nyc.theaters} theaters</div>
             </div>
             {isBroadway && (
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -149,7 +149,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 <span className={`w-1.5 h-1.5 rounded-full ${isOffBroadway ? 'bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,0.5)]' : 'bg-purple-500/60'}`} />
                 <div>
                   <div className={`text-sm font-semibold ${isOffBroadway ? 'text-purple-200' : 'text-white'}`}>Off-Broadway</div>
-                  <div className="text-[11px] text-gray-500">{stats.offBroadway.openShows} open shows</div>
+                  <div className="text-[11px] text-fg-muted">{stats.offBroadway.openShows} open shows</div>
                 </div>
               </div>
               {isOffBroadway && (
@@ -173,7 +173,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                   OperaScorecard
                   <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/70 border border-amber-400/30 rounded px-1 py-px">Beta</span>
                 </div>
-                <div className="text-[11px] text-gray-500">Met Opera · New York</div>
+                <div className="text-[11px] text-fg-muted">Met Opera · New York</div>
               </div>
             </div>
             {isOpera && (
@@ -194,7 +194,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 <span className={`w-1.5 h-1.5 rounded-full ${isRegional ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)]' : 'bg-emerald-500/60'}`} />
                 <div>
                   <div className={`text-sm font-semibold ${isRegional ? 'text-emerald-200' : 'text-white'}`}>Pre-Broadway</div>
-                  <div className="text-[11px] text-gray-500">Out-of-town tryouts · US regional</div>
+                  <div className="text-[11px] text-fg-muted">Out-of-town tryouts · US regional</div>
                 </div>
               </div>
               {isRegional && (
@@ -216,7 +216,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 <span className={`w-1.5 h-1.5 rounded-full ${isTour ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
                 <div>
                   <div className={`text-sm font-semibold ${isTour ? 'text-sky-200' : 'text-white'}`}>National Tours</div>
-                  <div className="text-[11px] text-gray-500">Touring shows, scored city by city</div>
+                  <div className="text-[11px] text-fg-muted">Touring shows, scored city by city</div>
                 </div>
               </div>
               {isTour && (
@@ -227,7 +227,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
             </Link>
           )}
           <div className="h-px bg-white/[0.06] mx-2 my-1" />
-          <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">London</div>
+          <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">London</div>
           <Link
             href="/west-end"
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
@@ -237,7 +237,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           >
             <div>
               <div className="text-sm font-semibold text-white">West End</div>
-              <div className="text-[11px] text-gray-500">{stats.westEnd.openShows} open shows · {stats.westEnd.theaters} theaters</div>
+              <div className="text-[11px] text-fg-muted">{stats.westEnd.openShows} open shows · {stats.westEnd.theaters} theaters</div>
             </div>
             {isWestEnd && (
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -257,7 +257,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 <span className={`w-1.5 h-1.5 rounded-full ${isOffWestEnd ? 'bg-violet-400 shadow-[0_0_6px_rgba(139,92,246,0.5)]' : 'bg-violet-500/60'}`} />
                 <div>
                   <div className={`text-sm font-semibold ${isOffWestEnd ? 'text-violet-200' : 'text-white'}`}>Off-West End</div>
-                  <div className="text-[11px] text-gray-500">{stats.offWestEnd.openShows} open shows</div>
+                  <div className="text-[11px] text-fg-muted">{stats.offWestEnd.openShows} open shows</div>
                 </div>
               </div>
               {isOffWestEnd && (

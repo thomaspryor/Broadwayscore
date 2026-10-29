@@ -15,6 +15,7 @@
     "test": "npm run test:data && npm run test:e2e",
     "test:data": "node scripts/validate-data.js && node scripts/validate-aggregator-truth.js",
     "audit:featured-row-mincount": "node scripts/audit-featured-row-mincount.js",
+    "audit:text-contrast": "node scripts/audit-text-contrast.js",
     "audit:aggregator-health": "node scripts/audit-aggregator-health.js",
     "audit:critics": "node scripts/audit-critic-outlets.js",
     "audit:verified-miss-presence": "node scripts/audit-verified-miss-presence.js",

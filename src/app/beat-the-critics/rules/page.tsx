@@ -12,9 +12,9 @@ export default function BeatTheCriticsRulesPage() {
   return (
     <div className="max-w-[680px] mx-auto px-5 py-12">
       <div className="mb-8">
-        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Beat the Critics</div>
+        <div className="text-[10px] font-bold uppercase tracking-widest text-fg-muted mb-2">Beat the Critics</div>
         <h1 className="text-2xl font-extrabold tracking-tight mb-1">Official Rules: Prize Draw</h1>
-        <p className="text-sm text-gray-500">$200 TodayTix Gift Card · Tony Awards 2026</p>
+        <p className="text-sm text-fg-muted">$200 TodayTix Gift Card · Tony Awards 2026</p>
       </div>
 
       <div className="prose prose-invert prose-sm max-w-none space-y-6 text-gray-300 leading-relaxed">

@@ -312,7 +312,7 @@ export default function BrowseListClient({
                 ariaLabel="Sort shows"
               />
             ) : subtitle ? (
-              <span className="text-gray-500 text-sm">{subtitle}</span>
+              <span className="text-fg-muted text-sm">{subtitle}</span>
             ) : <div />}
 
             {/* Score mode toggle */}

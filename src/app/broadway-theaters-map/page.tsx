@@ -78,7 +78,7 @@ export default function TheatersMapPage() {
             All Broadway theaters are located in Manhattan&apos;s Theater District, primarily on streets between 41st and 54th Streets,
             from 6th Avenue to 8th Avenue. Here&apos;s a guide to every Broadway venue with their current shows and addresses.
           </p>
-          <p className="text-gray-500 text-sm mt-3">
+          <p className="text-fg-muted text-sm mt-3">
             {theaters.length} theaters | {theatersWithShows.length} currently hosting shows
           </p>
         </div>
@@ -135,7 +135,7 @@ export default function TheatersMapPage() {
               {theatersWithoutShows.map(theater => (
                 <div key={theater.slug} className="card p-4 opacity-75">
                   <h3 className="font-bold text-white mb-2">{theater.name}</h3>
-                  <p className="text-sm text-gray-500 mb-2">No current production</p>
+                  <p className="text-sm text-fg-muted mb-2">No current production</p>
                   {theater.address && (
                     <a
                       href={getGoogleMapsUrl(theater.address)}

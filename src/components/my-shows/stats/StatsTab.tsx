@@ -454,7 +454,7 @@ function StatsTabContent({ reviews, showMap }: StatsTabProps) {
       />
       <RatingsModule bundle={bundle} onOpenBucket={openBucket} onOpenUnrated={openUnrated} />
       {diary.undated > 0 && (
-        <p className="text-xs text-gray-500 px-1">
+        <p className="text-xs text-fg-muted px-1">
           {diary.undated} {diary.undated === 1 ? 'entry has' : 'entries have'} no date, so {diary.undated === 1 ? 'it does' : 'they do'} not appear in the
           year, month or season views.
         </p>

@@ -100,7 +100,7 @@ function TierSection({ title, subtitle, description, shows }: {
       <div className={`flex items-baseline gap-2 ${description ? 'mb-1' : 'mb-3'}`}>
         <h2 className="text-lg font-semibold">{title}</h2>
         <span className="text-sm text-brand font-medium">{subtitle}</span>
-        <span className="text-sm text-gray-500 font-normal">({shows.length})</span>
+        <span className="text-sm text-fg-muted font-normal">({shows.length})</span>
       </div>
       {description && <p className="text-sm text-gray-400 mb-3">{description}</p>}
       <div className="space-y-2">

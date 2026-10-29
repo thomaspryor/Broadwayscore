@@ -255,7 +255,7 @@ export default function BrandPageClient() {
               </div>
               <div>
                 <div className="text-xs font-semibold uppercase text-gray-400 mb-2 tracking-wide">Caption: Inter Medium Small</div>
-                <div className="text-xs font-medium uppercase tracking-wide text-gray-500">MUSICAL · PREVIEWS · $89</div>
+                <div className="text-xs font-medium uppercase tracking-wide text-fg-muted">MUSICAL · PREVIEWS · $89</div>
               </div>
             </div>
           </Section>
@@ -450,7 +450,7 @@ export default function BrandPageClient() {
         </div>
 
         {/* Footer note */}
-        <div className="border-t border-white/5 pt-8 mt-16 text-xs text-gray-500 text-center">
+        <div className="border-t border-white/5 pt-8 mt-16 text-xs text-fg-muted text-center">
           Canonical source: <code className="text-gray-400">scripts/lib/brand-colors.js</code>.
           When colors change, update that file AND <code className="text-gray-400">tailwind.config.ts</code>.
         </div>
@@ -481,7 +481,7 @@ function CanvaCopyRow({ name, hex }: { name: string; hex: string }) {
       <span className="w-6 h-6 rounded border border-white/10 flex-shrink-0" style={{ background: hex }} />
       <div className="flex-1 min-w-0">
         <div className="text-xs font-semibold text-white truncate">{name}</div>
-        <div className="text-[10px] font-mono text-gray-500">{hex}</div>
+        <div className="text-[10px] font-mono text-fg-muted">{hex}</div>
       </div>
       <span className="text-[10px] text-brand opacity-0 group-hover:opacity-100 transition-opacity font-semibold uppercase">
         {copied ? 'Copied' : 'Copy'}
@@ -559,7 +559,7 @@ function AssetGallery({ title, assets, columns = 'default' }: { title: string; a
     : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3';
   return (
     <div className="mb-8">
-      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-300 mb-3">{title} <span className="text-gray-500 font-normal">· {assets.length}</span></h3>
+      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-300 mb-3">{title} <span className="text-fg-muted font-normal">· {assets.length}</span></h3>
       <div className={gridClass}>
         {assets.map(a => <AssetTile key={a.filename} asset={a} />)}
       </div>
@@ -597,9 +597,9 @@ function AssetTile({ asset }: { asset: Asset }) {
       <div className="p-3 flex items-center justify-between gap-2">
         <div className="min-w-0 flex-1">
           <div className="text-xs font-semibold text-white truncate group-hover:text-brand transition-colors">{asset.label}</div>
-          {asset.sub && <div className="text-[10px] text-gray-500 truncate">{asset.sub}</div>}
+          {asset.sub && <div className="text-[10px] text-fg-muted truncate">{asset.sub}</div>}
         </div>
-        <svg className="w-4 h-4 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-4 h-4 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m-4-4l4 4 4-4" />
         </svg>
       </div>
@@ -882,7 +882,7 @@ function BadgeBuilder() {
               aria-label="Score slider"
             />
           </div>
-          <div className="text-[11px] text-gray-500 mt-2">Tier: <span style={{ color: tier.tint }} className="font-semibold">{tier.label}</span> · Range {range}</div>
+          <div className="text-[11px] text-fg-muted mt-2">Tier: <span style={{ color: tier.tint }} className="font-semibold">{tier.label}</span> · Range {range}</div>
         </div>
 
         <div>
@@ -926,7 +926,7 @@ function BadgeBuilder() {
           {busy ? 'Rendering\u2026' : 'Download PNG'}
         </button>
         {err && <div className="text-xs text-red-400">{err}</div>}
-        <div className="text-[11px] text-gray-500 leading-relaxed">
+        <div className="text-[11px] text-fg-muted leading-relaxed">
           Rendered client-side at 2&times; pixel ratio. Matches the kit badges above but may differ very slightly in font anti-aliasing.
         </div>
       </div>
@@ -992,7 +992,7 @@ function DownloadTile({ title, description, href, filename }: { title: string; d
           <div className="font-semibold text-white mb-1 group-hover:text-brand transition-colors">{title}</div>
           <div className="text-xs text-gray-400">{description}</div>
         </div>
-        <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m-4-4l4 4 4-4" />
         </svg>
       </div>

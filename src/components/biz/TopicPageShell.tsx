@@ -33,7 +33,7 @@ export default function TopicPageShell({ title, subtitle, sharePath, children }:
 
         {children}
 
-        <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
+        <footer className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-8">
           <p>
             Commercial productions only: nonprofit runs and tour stops have no investors to repay and are left out.
             Capitalization and recoupment from SEC filings and trade press.

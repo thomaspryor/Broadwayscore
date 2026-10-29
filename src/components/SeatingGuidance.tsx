@@ -120,12 +120,12 @@ function SectionRow({
                 </span>
               )}
               {showRowRange && (
-                <span className="text-gray-500 text-xs font-normal">
+                <span className="text-fg-muted text-xs font-normal">
                   rows {rowRange}
                   {section.bestRow && <span className="text-brand ml-1">· {section.bestRow} sweetest</span>}
                 </span>
               )}
-              {priceLabel && <span className="text-gray-500 text-xs">· {priceLabel}</span>}
+              {priceLabel && <span className="text-fg-muted text-xs">· {priceLabel}</span>}
               {typeof section.dataPoints === 'number' && section.dataPoints > 0 && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill text-[10px] font-medium bg-surface-overlay text-gray-400 border border-white/5">
                   · {section.dataPoints} report{section.dataPoints === 1 ? '' : 's'}
@@ -133,9 +133,9 @@ function SectionRow({
               )}
             </div>
             {(hasBestFor || hasWorstFor) && (
-              <div className="text-[11px] text-gray-500 mt-1 leading-relaxed">
+              <div className="text-[11px] text-fg-muted mt-1 leading-relaxed">
                 {hasBestFor && <span><span className="text-gray-400">Best for</span> {section.bestFor!.map((t) => SHOW_TAG_LABEL[t] || t).join(', ')}</span>}
-                {hasBestFor && hasWorstFor && <span className="mx-1.5 text-gray-600">·</span>}
+                {hasBestFor && hasWorstFor && <span className="mx-1.5 text-fg-muted">·</span>}
                 {hasWorstFor && <span><span className="text-gray-400">Skip for</span> {section.worstFor!.map((t) => SHOW_TAG_LABEL[t] || t).join(', ')}</span>}
               </div>
             )}
@@ -149,8 +149,8 @@ function SectionRow({
               <span className="underline decoration-dotted underline-offset-2">
                 {section.hazards!.length === 1 ? '1 hazard' : `${section.hazards!.length} hazards`}
               </span>
-              <span className="text-gray-600 group-open:hidden">▾</span>
-              <span className="text-gray-600 hidden group-open:inline">▴</span>
+              <span className="text-fg-muted group-open:hidden">▾</span>
+              <span className="text-fg-muted hidden group-open:inline">▴</span>
             </summary>
             {hazardsWithNotes.length > 0 ? (
               <ul className="mt-1.5 space-y-1 pl-4 text-[11px] text-gray-400 leading-snug">
@@ -161,7 +161,7 @@ function SectionRow({
             ) : (
               <div className="mt-1.5 flex flex-wrap gap-1.5">
                 {(section.hazards ?? []).map((h, i) => (
-                  <span key={i} className="text-[10px] text-gray-500 bg-surface-overlay px-2 py-0.5 rounded-pill">{h.type.replace(/-/g, ' ')}</span>
+                  <span key={i} className="text-[10px] text-fg-muted bg-surface-overlay px-2 py-0.5 rounded-pill">{h.type.replace(/-/g, ' ')}</span>
                 ))}
               </div>
             )}
@@ -196,11 +196,11 @@ function SectionRow({
             </span>
           </div>
           {hasExpandContent && (
-            <span className="text-gray-600 text-xs flex-shrink-0" aria-hidden="true">{open ? '▴' : '▾'}</span>
+            <span className="text-fg-muted text-xs flex-shrink-0" aria-hidden="true">{open ? '▴' : '▾'}</span>
           )}
         </div>
         {metaParts.length > 0 && (
-          <p className="text-xs text-gray-500 mt-1 leading-tight">{metaParts.join(' · ')}</p>
+          <p className="text-xs text-fg-muted mt-1 leading-tight">{metaParts.join(' · ')}</p>
         )}
       </button>
 
@@ -210,9 +210,9 @@ function SectionRow({
             <p className="text-sm text-gray-300 leading-relaxed">{section.rationale}</p>
           )}
           {(hasBestFor || hasWorstFor) && (
-            <div className="text-[11px] text-gray-500 leading-relaxed">
+            <div className="text-[11px] text-fg-muted leading-relaxed">
               {hasBestFor && <span><span className="text-gray-400">Best for</span> {section.bestFor!.map((t) => SHOW_TAG_LABEL[t] || t).join(', ')}</span>}
-              {hasBestFor && hasWorstFor && <span className="mx-1.5 text-gray-600">·</span>}
+              {hasBestFor && hasWorstFor && <span className="mx-1.5 text-fg-muted">·</span>}
               {hasWorstFor && <span><span className="text-gray-400">Skip for</span> {section.worstFor!.map((t) => SHOW_TAG_LABEL[t] || t).join(', ')}</span>}
             </div>
           )}
@@ -230,7 +230,7 @@ function SectionRow({
               ) : (
                 <div className="flex flex-wrap gap-1.5">
                   {(section.hazards ?? []).map((h, i) => (
-                    <span key={i} className="text-[10px] text-gray-500 bg-surface-overlay px-2 py-0.5 rounded-pill flex items-center gap-1">
+                    <span key={i} className="text-[10px] text-fg-muted bg-surface-overlay px-2 py-0.5 rounded-pill flex items-center gap-1">
                       <span className="text-score-tepid" aria-hidden="true">⚠</span>
                       {h.type.replace(/-/g, ' ')}
                     </span>
@@ -240,7 +240,7 @@ function SectionRow({
             </div>
           )}
           {typeof section.dataPoints === 'number' && section.dataPoints > 0 && (
-            <p className="text-[10px] text-gray-600">{section.dataPoints} audience report{section.dataPoints === 1 ? '' : 's'}</p>
+            <p className="text-[10px] text-fg-muted">{section.dataPoints} audience report{section.dataPoints === 1 ? '' : 's'}</p>
           )}
         </div>
       )}

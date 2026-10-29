@@ -99,7 +99,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
 
       <header className="mt-6 mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">{post.title}</h1>
-        <p className="text-sm text-gray-500 mt-3">
+        <p className="text-sm text-fg-muted mt-3">
           {post.author ? `By ${post.author} · ` : ''}
           {published}
         </p>

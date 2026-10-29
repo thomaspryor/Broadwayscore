@@ -51,7 +51,7 @@ function ShowInput({
         onChange={e => onChange(e.target.value)}
         onFocus={onFocus}
         placeholder="Type a show name..."
-        className="w-full px-3 py-2.5 rounded-lg bg-surface-overlay border border-white/10 text-white text-sm placeholder:text-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
+        className="w-full px-3 py-2.5 rounded-lg bg-surface-overlay border border-white/10 text-white text-sm placeholder:text-fg-muted focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
         autoComplete="off"
       />
       {showResults && results.length > 0 && (
@@ -73,7 +73,7 @@ function ShowInput({
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-white truncate">{show.title}</div>
-                  <div className="text-[10px] text-gray-500 flex items-center gap-1.5">
+                  <div className="text-[10px] text-fg-muted flex items-center gap-1.5">
                     <span className={`px-1 py-0.5 rounded font-medium ${
                       show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
@@ -91,7 +91,7 @@ function ShowInput({
                        show.category === 'off-west-end' ? 'Off-West End' :
                        show.category === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
                     </span>
-                    {year && <span className="text-gray-500">{year}</span>}
+                    {year && <span className="text-fg-muted">{year}</span>}
                   </div>
                 </div>
               </button>

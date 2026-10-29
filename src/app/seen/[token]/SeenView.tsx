@@ -112,7 +112,7 @@ export default function SeenView({ view }: { view: SharedDiaryView }) {
       </div>
 
       {view.capped && (
-        <p className="text-xs text-gray-500 text-center mb-4" data-testid="diary-capped">Showing the most recent 1,000 entries.</p>
+        <p className="text-xs text-fg-muted text-center mb-4" data-testid="diary-capped">Showing the most recent 1,000 entries.</p>
       )}
 
       <p className="text-sm text-gray-400 text-center">

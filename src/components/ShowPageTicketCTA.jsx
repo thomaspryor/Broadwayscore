@@ -16,7 +16,7 @@ import { getTicketCtaNote } from '@/lib/ticket-cta-note';
  */
 export default function ShowPageTicketCTA({
   rawTicketLinks,
-  noteClassName = 'w-full text-xs text-gray-500',
+  noteClassName = 'w-full text-xs text-fg-muted',
   children,
   ...ticketProps
 }) {
