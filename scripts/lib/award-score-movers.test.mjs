@@ -1,4 +1,4 @@
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -7,16 +7,20 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { listAvailableDates, diffSnapshots, resolveMoversForWeek, latestMovers } = require('./award-score-movers.js');
 
+const historyDirs = [];
+after(() => historyDirs.forEach((dir) => fs.rmSync(dir, { recursive: true, force: true })));
+
 function makeHistoryDir(files) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'award-score-history-test-'));
+  historyDirs.push(dir);
   for (const [name, data] of Object.entries(files)) {
     fs.writeFileSync(path.join(dir, name), JSON.stringify(data));
   }
   return dir;
 }
 
-function snapshot(shows) {
-  return { snapshotDate: '2026-01-01', market: 'broadway', shows };
+function snapshot(shows, market = 'broadway') {
+  return { snapshotDate: '2026-01-01', market, shows };
 }
 
 test('diffSnapshots: ranks by absolute delta, drops unchanged shows', () => {
@@ -92,7 +96,7 @@ test('resolveMoversForWeek: picks the latest snapshot on/after week-start when -
 test('latestMovers: null when fewer than 2 snapshots exist (newsletter must skip gracefully)', () => {
   const dir = makeHistoryDir({ '2026-05-23.json': snapshot({ a: { title: 'A', displayScore: 50 } }) });
   assert.equal(latestMovers({ historyDir: dir, market: 'broadway', top: 5 }), null);
-  assert.equal(latestMovers({ historyDir: fs.mkdtempSync(path.join(os.tmpdir(), 'award-score-history-empty-')), market: 'broadway', top: 5 }), null);
+  assert.equal(latestMovers({ historyDir: makeHistoryDir({}), market: 'broadway', top: 5 }), null);
 });
 
 test('latestMovers: diffs the two most recent snapshots regardless of calendar alignment', () => {
@@ -109,8 +113,43 @@ test('latestMovers: diffs the two most recent snapshots regardless of calendar a
 test('listAvailableDates: west-end market suffix parsing does not pick up broadway files', () => {
   const dir = makeHistoryDir({
     '2026-05-23.json': snapshot({}),
-    '2026-05-23-west-end.json': snapshot({}),
+    '2026-05-23-west-end.json': snapshot({}, 'west-end'),
   });
   assert.deepEqual(listAvailableDates(dir, 'broadway'), ['2026-05-23']);
   assert.deepEqual(listAvailableDates(dir, 'west-end'), ['2026-05-23']);
+});
+
+test('West End movers compare Olivier snapshots independently of newer Broadway dates', () => {
+  const dir = makeHistoryDir({
+    '2026-05-23-west-end.json': snapshot({
+      paddington: { title: 'Paddington', displayScore: 50, badge: 'nominated' },
+      cabaret: { title: 'Cabaret', displayScore: 80, badge: 'decorated' },
+    }, 'west-end'),
+    '2026-05-30-west-end.json': snapshot({
+      paddington: { title: 'Paddington', displayScore: 75, badge: 'decorated' },
+      cabaret: { title: 'Cabaret', displayScore: 80, badge: 'decorated' },
+    }, 'west-end'),
+    '2026-05-30.json': snapshot({ hamilton: { title: 'Hamilton', displayScore: 80 } }),
+    '2026-06-06.json': snapshot({ hamilton: { title: 'Hamilton', displayScore: 90 } }),
+  });
+  const latest = latestMovers({ historyDir: dir, market: 'west-end' });
+  assert.equal(latest.market, 'west-end');
+  assert.equal(latest.weekStart, '2026-05-23');
+  assert.equal(latest.weekEnd, '2026-05-30');
+  assert.equal(latest.totalCompared, 2);
+  assert.equal(latest.movedCount, 1);
+  assert.deepEqual(latest.movers.map((m) => [m.showId, m.delta, m.beforeBadge, m.afterBadge]),
+    [['paddington', 25, 'nominated', 'decorated']]);
+  assert.deepEqual(resolveMoversForWeek({ historyDir: dir, market: 'west-end', weekStart: '2026-05-23', top: 5 }), latest);
+  assert.equal(latestMovers({ historyDir: dir }).movers[0].showId, 'hamilton');
+});
+
+test('West End skips missing or single snapshots even when Broadway has a complete pair', () => {
+  const dir = makeHistoryDir({
+    '2026-05-23.json': snapshot({}),
+    '2026-05-30.json': snapshot({}),
+  });
+  assert.equal(latestMovers({ historyDir: dir, market: 'west-end' }), null);
+  fs.writeFileSync(path.join(dir, '2026-05-30-west-end.json'), JSON.stringify(snapshot({}, 'west-end')));
+  assert.equal(latestMovers({ historyDir: dir, market: 'west-end' }), null);
 });

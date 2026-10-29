@@ -8,6 +8,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { computeSiteAwardScore } = require('./snapshot-award-scores.js');
+const { listAvailableDates, loadSnapshot } = require('./lib/award-score-movers.js');
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
@@ -116,6 +117,32 @@ function withTempHistoryDir(fn) {
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
+}
+
+for (const [label, args, markets] of [
+  ['scheduled default', [], ['broadway', 'west-end']],
+  ['explicit both markets', ['--markets=broadway,west-end'], ['broadway', 'west-end']],
+  ['explicit West End', ['--markets=west-end'], ['west-end']],
+  ['explicit Broadway', ['--markets=broadway'], ['broadway']],
+]) {
+  test(`snapshot writer: ${label} produces readable history from real data`, () => {
+    withTempHistoryDir((dir) => {
+      execFileSync(process.execPath, ['scripts/snapshot-award-scores.js', '--date=2026-10-29', ...args], {
+        cwd: ROOT, encoding: 'utf8', env: { ...process.env, AWARD_SCORE_HISTORY_DIR: dir },
+      });
+      const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+      const shows = Array.isArray(showsRaw) ? showsRaw : showsRaw.shows;
+      assert.equal(fs.readdirSync(dir).length, markets.length);
+      for (const market of ['broadway', 'west-end']) {
+        assert.deepEqual(listAvailableDates(dir, market), markets.includes(market) ? ['2026-10-29'] : []);
+        if (!markets.includes(market)) continue;
+        const result = loadSnapshot(dir, '2026-10-29', market);
+        assert.equal(result.market, market);
+        assert.deepEqual(Object.keys(result.shows).sort(),
+          shows.filter((s) => s.status === 'open' && s.category === market).map((s) => s.id).sort());
+      }
+    });
+  });
 }
 
 test('award-score-movers.js CLI: single available snapshot returns an empty, non-erroring movers list', () => {

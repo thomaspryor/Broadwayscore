@@ -1270,8 +1270,8 @@ function biggestMoverSection() {
 // SECTION: Award Score Movers — composite Site Award Score week-over-week
 // deltas, sourced from data/award-score-history/ snapshots (Saturday cron,
 // scripts/snapshot-award-scores.js; diff logic in scripts/lib/award-score-
-// movers.js, shared with the award-score-movers.js CLI). Broadway/Tony only
-// — no West End snapshots exist yet (BRO-3531).
+// movers.js, shared with the award-score-movers.js CLI). Each edition reads
+// its own market's snapshots.
 //
 // Round "medal" circle mirrors AwardScoreBadge.tsx's tier treatment (flat
 // colors, not the site's gradient/shimmer — email clients don't render
@@ -1295,7 +1295,7 @@ function awardBadgeBox(score, badge, size = 40) {
   const fontSize = Math.round(size * 0.36);
   return awardBadgeImg({ tierId: awardTierId(badge), score, size, fontSize });
 }
-function awardScoreMoversSection() {
+function awardScoreMoversSection(market) {
   const { latestMovers } = cjsRequire(path.join(repo, 'scripts/lib/award-score-movers.js'));
   // top:Infinity — closures/new-entrants dominate the raw ranking (a show
   // leaving the pool reads as a full drop to 0, see diffSnapshots), and the
@@ -1303,7 +1303,7 @@ function awardScoreMoversSection() {
   // not before — market size (~40-100 shows) makes the full diff cheap, and a
   // fixed pre-filter cap can starve every real mover in a heavy-turnover week
   // (Codex adversarial review, BRO-3531).
-  const result = latestMovers({ historyDir: path.join(repo, 'data/award-score-history'), market: 'broadway', top: Infinity });
+  const result = latestMovers({ historyDir: process.env.AWARD_SCORE_HISTORY_DIR || path.join(repo, 'data/award-score-history'), market, top: Infinity });
   if (!result || !result.movers.length) return null;
   // Cron gone quiet (feedback_github_cron_delays.md: crons silently disable
   // after ~60d inactivity) — stop resurfacing an increasingly stale
@@ -1370,7 +1370,8 @@ function awardScoreMoversSection() {
   // only just started running weekly (BRO-1226); the first live comparison
   // spans months, not a week, and a fixed "7 days" label would misrepresent
   // that to subscribers (Codex adversarial review, BRO-3531).
-  return sectionWrap(sectionHeading('Award Score Movers', `Tony race · since ${fmt(result.weekStart)}`), body);
+  const race = market === 'west-end' ? 'Olivier race' : 'Tony race';
+  return sectionWrap(sectionHeading('Award Score Movers', `${race} · since ${fmt(result.weekStart)}`), body);
 }
 
 // SECTION: Awards Race Movers — Tony odds shifts week-over-week
@@ -2630,7 +2631,7 @@ const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection
 // side-effect — which wrongly suppressed a WE show (Cyrano, a mover) from the
 // catch-up section that IS rendered (2026-07-12). Don't run what won't render.
 const mover = IS_WE ? null : sections.run('biggest-movers', () => biggestMoverSection());
-const awardMover = IS_WE ? null : sections.run('award-score-movers', () => awardScoreMoversSection());
+let awardMover = IS_WE ? null : sections.run('award-score-movers', () => awardScoreMoversSection(EDITION));
 const clo   = sections.run('closing-this-week', () => closingSection());
 const announced = IS_WE ? null : sections.run('announced-closings', () => announcedClosingsSection());
 const box      = IS_WE ? null : sections.run('box-office', () => boxOfficeSection());
@@ -2657,12 +2658,15 @@ const opera = sections.run('opera-openings', () => operaOpeningsSection());
 // Runs AFTER london-openings + closing so its notFeatured() gate excludes both
 // this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
 const catchup = sections.run('also-opened-recently', () => catchupOpeningsSection());
+// West End openings must claim their shows before award movers, as Broadway
+// openings already do above. Otherwise a new opening appears in both sections.
+if (IS_WE) awardMover = sections.run('award-score-movers', () => awardScoreMoversSection(EDITION));
 
 // Persist this issue's memory (mover + announced closings + everything featured)
 // so next week's run suppresses repeats. Best-effort — never fail the build.
 //
-// MUST stay below EVERY section that calls markFeatured() — the last three are
-// london-openings, broadway-we and also-opened-recently, immediately above
+// MUST stay below EVERY section that calls markFeatured(), including the final
+// West End award movers, london-openings, broadway-we and also-opened-recently
 // (BRO-2606). This block used to sit above them, so the shows those sections
 // featured never reached the persisted featuredShowIds and next week's
 // lastFeaturedIds could not suppress them: the WE edition led with As You Like
@@ -2757,6 +2761,7 @@ if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[...
 const sectionOrder = IS_WE ? [
   _slot('london-openings', lon),
   _slot('also-opened-recently', catchup),
+  _slot('award-score-movers', awardMover),
   _slot('closing-this-week', clo),
   _slot('broadway-we', bwWe),
   _slot('rave-pan-of-the-week', ravepan),
