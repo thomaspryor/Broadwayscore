@@ -300,9 +300,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 22 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 23 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40878426251",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40878918204",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -311,22 +311,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40878426251)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40878918204)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40877835153)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40878426251)"
       },
       {
         "name": "Consecutive failures",
-        "value": "22"
+        "value": "23"
       },
       {
         "name": "Currently failing job(s)",
         "value": "Unit Tests, Lint Workflows"
       }
     ],
-    "queuedAt": "2026-10-29T16:35:23.607Z"
+    "queuedAt": "2026-10-29T16:51:50.083Z"
   },
   {
     "conditionKey": "land:land/bro-6485-timeout-author",
@@ -873,20 +873,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T16:49:09.425Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T16:49:09.488Z"
   },
   {
     "conditionKey": "land:land/bro-4303-visual",
