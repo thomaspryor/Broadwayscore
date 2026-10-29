@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { findGaps } = require('./audit-workflow-secret-gaps.js');
 const { addStepSecrets } = require('./lib/workflow-env-codemod.js');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const WF_DIR = path.join(ROOT, '.github', 'workflows');
@@ -29,6 +30,10 @@ function arg(name, dflt) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/wire-workflow-secret-gaps.js --secrets=NAME[,NAME] [--exclude=REGEX] [--max-steps=40] [--dry-run]');
+    return;
+  }
   const secrets = new Set(String(arg('secrets', '')).split(',').map((s) => s.trim()).filter(Boolean));
   if (!secrets.size) {
     console.error('--secrets=NAME[,NAME] is required');
