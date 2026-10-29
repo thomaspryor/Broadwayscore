@@ -207,3 +207,32 @@ test('full scoring runs persist Claude cache usage in ensemble and single-model 
     assert.ok(summaries[0].costUsd > 0);
   }
 });
+
+test('BRO-3464: per-invocation breakdown is recoverable and legacy entries land in unknown', async () => {
+  const { sumCostUsdBySource, sumCostUsdForRun, reportRunCostBreach } = (await import('node:module')).createRequire(import.meta.url)('./llm-scoring-cost-recording.js');
+  const runs = [
+    { runId: '9', source: 'index', costUsd: 4 },
+    { runId: '9', source: 'index', costUsd: 3 },
+    { runId: '9', source: 'comparative-rescore', costUsd: 5 },
+    { runId: '9', costUsd: 1 },
+    { runId: '8', source: 'index', costUsd: 50 },
+  ];
+  const by = sumCostUsdBySource(runs, '9');
+  assert.deepEqual(by, { index: 7, 'comparative-rescore': 5, unknown: 1 });
+  assert.equal(Object.values(by).reduce((a, b) => a + b, 0), sumCostUsdForRun(runs, '9'));
+  const alerts = [];
+  const breach = await reportRunCostBreach(runs, { runId: '9', thresholdUsd: 10, routeAlert: async (a) => { alerts.push(a); } });
+  assert.equal(breach.breached, true);
+  assert.equal(alerts.length, 1);
+  assert.match(alerts[0].description, /index \$7\.00, comparative-rescore \$5\.00, unknown \$1\.00/);
+  assert.equal(alerts[0].conditionKey, 'llm-scoring:cost-breach');
+  assert.equal(alerts[0].disposition, 'digest');
+});
+
+test('BRO-3464: reportRunCostBreach is non-fatal and skips local runs and under-threshold runs', async () => {
+  const { reportRunCostBreach } = (await import('node:module')).createRequire(import.meta.url)('./llm-scoring-cost-recording.js');
+  const runs = [{ runId: '9', source: 'index', costUsd: 20 }];
+  assert.equal(await reportRunCostBreach(runs, { runId: null, thresholdUsd: 1, routeAlert: async () => { throw new Error('no'); } }), null);
+  assert.equal((await reportRunCostBreach(runs, { runId: '9', thresholdUsd: 100, routeAlert: async () => { throw new Error('no'); } })).breached, false);
+  assert.equal(await reportRunCostBreach(runs, { runId: '9', thresholdUsd: 1, routeAlert: async () => { throw new Error('boom'); } }), null);
+});

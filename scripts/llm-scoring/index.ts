@@ -2640,6 +2640,7 @@ async function main(): Promise<void> {
       tokensUsed: normalizedTokenUsage,
       costUsd,
       runId: process.env.GITHUB_RUN_ID || null,
+      source: 'index',
       errorDetails
     };
 
@@ -2655,50 +2656,13 @@ async function main(): Promise<void> {
 
     const runsAfterSave = saveRunSummary(summary);
     console.log(`\nRun summary saved to: ${RUNS_LOG_PATH}`);
-    const { reportRollingCostAlerts } = require('../lib/llm-scoring-cost-recording');
+    const { reportRollingCostAlerts, reportRunCostBreach } = require('../lib/llm-scoring-cost-recording');
     await reportRollingCostAlerts(runsAfterSave);
 
-    // BRO-3381 — alarm (never abort) when this GitHub Actions run's
-    // cumulative LLM scoring spend crosses the configured line. Summed by
-    // runId, not just this process's costUsd, because a scheduled workflow
-    // invokes index.ts more than once (main pass + drain) under the same
-    // run id. No runId (local/manual run) means nothing to correlate
-    // against, so skip rather than alarm on an ungrounded number.
-    if (summary.runId) {
-      try {
-        const { loadCostThresholdUsd, checkCostBreach, COST_BREACH_CONDITION_KEY } = require('../lib/llm-scoring-cost-recording');
-        const thresholdUsd = loadCostThresholdUsd();
-        // ship-check catch: loadCostThresholdUsd() collapses "file missing",
-        // "malformed JSON", and "llmScoringRunUsd key renamed/removed" into a
-        // silent null — without this warning a future thresholds.json
-        // refactor would kill the alarm with zero visible signal in CI logs.
-        if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd)) {
-          console.warn(`[llm-scoring] cost-breach threshold unavailable (scripts/config/provider-spend-thresholds.json missing or missing llmScoringRunUsd) — cost alarm is a no-op this run`);
-        }
-        const breach = checkCostBreach(runsAfterSave, { runId: summary.runId, thresholdUsd });
-        if (breach?.breached) {
-          const { routeAlert } = require('../lib/owner-alert-router');
-          await routeAlert({
-            conditionKey: breach.conditionKey,
-            title: 'LLM scoring spend over budget',
-            description: `GitHub run ${summary.runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
-            hint: 'Check data/llm-scoring-runs.json entries for this runId to see which invocation (main pass, drain, or comparative-rescore) drove the spend.',
-            severity: 'warning',
-            disposition: 'digest',
-            cooldownHours: 20,
-            fields: [
-              { name: 'GitHub run', value: String(summary.runId) },
-              { name: 'Cost', value: `$${breach.totalUsd.toFixed(2)}` },
-              { name: 'Threshold', value: `$${breach.thresholdUsd.toFixed(2)}` },
-            ],
-          });
-          console.log(`\n⚠️  LLM scoring cost breach: $${breach.totalUsd.toFixed(2)} > $${breach.thresholdUsd.toFixed(2)} (routed via ${COST_BREACH_CONDITION_KEY})`);
-        }
-      } catch (err: any) {
-        // Alarm plumbing must never abort a scoring run.
-        console.error(`[llm-scoring] cost-breach check failed (non-fatal): ${err.message}`);
-      }
-    }
+    // BRO-3381 — alarm (never abort) when this GitHub Actions run's cumulative
+    // LLM scoring spend crosses the configured line. Summed by runId because a
+    // scheduled workflow invokes index.ts more than once under one run id.
+    await reportRunCostBreach(runsAfterSave, { runId: summary.runId, logPrefix: '[llm-scoring]' });
 
     // Save garbage skips if any
     if (garbageSkips.length > 0) {

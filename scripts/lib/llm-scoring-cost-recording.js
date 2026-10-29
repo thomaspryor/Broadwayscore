@@ -94,6 +94,22 @@ function checkCostBreach(runs, { runId, thresholdUsd, conditionKey = COST_BREACH
   return { totalUsd, thresholdUsd, breached: totalUsd > thresholdUsd, conditionKey, runId };
 }
 
+/**
+ * Per-invocation breakdown of one runId's spend (BRO-3464). Entries written
+ * before `source` existed land in 'unknown' so the parts always sum to the
+ * same total as sumCostUsdForRun.
+ */
+function sumCostUsdBySource(runs, runId) {
+  const out = {};
+  for (const r of runs) {
+    if (!r || r.runId !== runId) continue;
+    const usd = typeof r.costUsd === 'number' && Number.isFinite(r.costUsd) ? r.costUsd : 0;
+    const key = typeof r.source === 'string' && r.source ? r.source : 'unknown';
+    out[key] = (out[key] || 0) + usd;
+  }
+  return out;
+}
+
 function runsWithinDay(runs, now) {
   const end = new Date(now).getTime();
   return runs.filter(r => {
@@ -115,6 +131,48 @@ function checkRepeatSignature(runs, now = new Date()) {
     groups.set(key, group);
   }
   return [...groups.values()].filter(group => group.count >= 3);
+}
+
+/**
+ * Shared by index.ts and comparative-rescore.ts (BRO-3464): check one GitHub
+ * run's cumulative spend and route a digest alert on breach. Alarm only, never
+ * throws. Resolves to the breach object (or null when nothing to check).
+ */
+async function reportRunCostBreach(runs, {
+  runId, logPrefix = '[llm-scoring]', thresholdUsd, routeAlert,
+} = {}) {
+  if (!runId) return null; // local/manual run: nothing to correlate against
+  try {
+    const threshold = thresholdUsd === undefined ? loadCostThresholdUsd() : thresholdUsd;
+    if (typeof threshold !== 'number' || !Number.isFinite(threshold)) {
+      console.warn(`${logPrefix} cost-breach threshold unavailable (scripts/config/provider-spend-thresholds.json missing or missing llmScoringRunUsd) — cost alarm is a no-op this run`);
+    }
+    const breach = checkCostBreach(runs, { runId, thresholdUsd: threshold });
+    if (breach?.breached) {
+      const bySource = Object.entries(sumCostUsdBySource(runs, runId))
+        .map(([k, v]) => `${k} $${v.toFixed(2)}`).join(', ');
+      await (routeAlert || require('./owner-alert-router').routeAlert)({
+        conditionKey: breach.conditionKey,
+        title: 'LLM scoring spend over budget',
+        description: `GitHub run ${runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). By invocation: ${bySource}. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
+        hint: 'Check data/llm-scoring-runs.json entries for this runId (each carries a `source` field) to see which invocation drove the spend.',
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 20,
+        fields: [
+          { name: 'GitHub run', value: String(runId) },
+          { name: 'Cost', value: `$${breach.totalUsd.toFixed(2)}` },
+          { name: 'Threshold', value: `$${breach.thresholdUsd.toFixed(2)}` },
+        ],
+      });
+      console.log(`\n⚠️  LLM scoring cost breach: $${breach.totalUsd.toFixed(2)} > $${breach.thresholdUsd.toFixed(2)} (routed via ${breach.conditionKey})`);
+    }
+    return breach;
+  } catch (err) {
+    // Alarm plumbing must never abort a scoring run.
+    console.error(`${logPrefix} cost-breach check failed (non-fatal): ${err.message}`);
+    return null;
+  }
 }
 
 /** Rolling 24h total, across all invocations and GitHub run ids. Alarm only. */
@@ -167,6 +225,8 @@ module.exports = {
   COST_BREACH_CONDITION_KEY,
   appendRunSummary,
   sumCostUsdForRun,
+  sumCostUsdBySource,
+  reportRunCostBreach,
   loadCostThresholdUsd,
   checkCostBreach,
   checkRepeatSignature,

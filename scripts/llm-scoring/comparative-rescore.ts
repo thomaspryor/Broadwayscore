@@ -511,54 +511,18 @@ async function main() {
       },
       costUsd,
       runId: process.env.GITHUB_RUN_ID || null,
+      source: 'comparative-rescore',
       errorDetails: [],
     };
 
-    const { appendRunSummary, loadCostThresholdUsd, checkCostBreach, reportRollingCostAlerts } = require('../lib/llm-scoring-cost-recording');
+    const { appendRunSummary, reportRunCostBreach, reportRollingCostAlerts } = require('../lib/llm-scoring-cost-recording');
     const runsAfterSave = appendRunSummary(summary);
     console.log(`Run summary saved to data/llm-scoring-runs.json`);
     await reportRollingCostAlerts(runsAfterSave);
 
-    // Re-check the SAME runId's cumulative spend here too, not just after
-    // index.ts: llm-ensemble-score.yml runs this script AFTER index.ts's own
-    // main-pass and drain steps in the same job, so index.ts's own breach
-    // check already ran before this script's cost existed. checkCostBreach()
-    // sums strictly by exact runId match (llm-scoring-cost-recording.js), and
-    // tomorrow's scheduled run gets a DIFFERENT GITHUB_RUN_ID — so without
-    // this recheck, a breach driven solely by today's comparative-rescore.ts
-    // spend would never be caught by ANY run, not just delayed to the next one.
-    if (summary.runId) {
-      try {
-        const thresholdUsd = loadCostThresholdUsd();
-        if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd)) {
-          console.warn(
-            `[comparative-rescore] cost-breach threshold unavailable (scripts/config/provider-spend-thresholds.json missing or missing llmScoringRunUsd) — cost alarm is a no-op this run`
-          );
-        }
-        const breach = checkCostBreach(runsAfterSave, { runId: summary.runId, thresholdUsd });
-        if (breach?.breached) {
-          const { routeAlert } = require('../lib/owner-alert-router');
-          await routeAlert({
-            conditionKey: breach.conditionKey,
-            title: 'LLM scoring spend over budget',
-            description: `GitHub run ${summary.runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
-            hint: 'Check data/llm-scoring-runs.json entries for this runId to see which invocation (main pass, drain, or comparative-rescore) drove the spend.',
-            severity: 'warning',
-            disposition: 'digest',
-            cooldownHours: 20,
-            fields: [
-              { name: 'GitHub run', value: String(summary.runId) },
-              { name: 'Cost', value: `$${breach.totalUsd.toFixed(2)}` },
-              { name: 'Threshold', value: `$${breach.thresholdUsd.toFixed(2)}` },
-            ],
-          });
-          console.log(`\n⚠️  LLM scoring cost breach: $${breach.totalUsd.toFixed(2)} > $${breach.thresholdUsd.toFixed(2)} (routed via ${breach.conditionKey})`);
-        }
-      } catch (err: any) {
-        // Alarm plumbing must never abort a scoring run.
-        console.error(`[comparative-rescore] cost-breach check failed (non-fatal): ${err.message}`);
-      }
-    }
+    // Re-check the SAME runId's cumulative spend: index.ts's own check ran
+    // before this script's cost existed (same job, later step).
+    await reportRunCostBreach(runsAfterSave, { runId: summary.runId, logPrefix: '[comparative-rescore]' });
   }
 }
 
