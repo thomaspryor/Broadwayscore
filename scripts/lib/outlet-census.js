@@ -122,6 +122,28 @@ function metaContent(html, prop) {
  * then JSON-LD. dateModified is only a fallback (NYTG pages carry nothing else) and is
  * marked so the report can say the date is soft.
  */
+/**
+ * The critic a page's JSON-LD Review names, or null. Listing pages carry a Review with an
+ * empty author. Walks every ld+json block (arrays, @graph); skips itemReviewed so a
+ * playwright's name on the reviewed work never counts.
+ */
+function jsonLdReviewAuthor(html) {
+  const names = [];
+  const isReview = (t) => (Array.isArray(t) ? t : [t]).some((x) => /Review$/.test(String(x || '')));
+  const authorNames = (a) => (Array.isArray(a) ? a : [a]).map((x) => (typeof x === 'string' ? x : x && x.name)).filter((n) => typeof n === 'string' && n.trim());
+  const walk = (node) => {
+    if (Array.isArray(node)) { node.forEach(walk); return; }
+    if (!node || typeof node !== 'object') return;
+    if (isReview(node['@type'])) names.push(...authorNames(node.author));
+    for (const [k, v] of Object.entries(node)) if (k !== 'itemReviewed' && k !== 'author') walk(v);
+  };
+  const re = /<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi;
+  for (let m; (m = re.exec(String(html || ''))); ) {
+    try { walk(JSON.parse(m[1])); } catch { /* malformed block */ }
+  }
+  return names.length ? decodeEntities(names[0]).trim() : null;
+}
+
 function extractPageMeta(html) {
   const s = String(html || '');
   const og = metaContent(s, 'og:title');
@@ -137,8 +159,7 @@ function extractPageMeta(html) {
     date = metaContent(s, 'article:modified_time') || (/"dateModified"\s*:\s*"([^"]+)"/.exec(s) || [])[1] || null;
     dateSoft = !!date;
   }
-  // A named critic on the page's JSON-LD Review; listing pages carry the type with an empty author.
-  const reviewAuthor = (/"@type"\s*:\s*"Review"[\s\S]{0,600}?"author"\s*:\s*\{[^}]*?"name"\s*:\s*"([^"]*)"/.exec(s) || [])[1];
+  const reviewAuthor = jsonLdReviewAuthor(s);
   return {
     headline: title ? title.trim() : null,
     description: description ? decodeEntities(description).trim() : null,

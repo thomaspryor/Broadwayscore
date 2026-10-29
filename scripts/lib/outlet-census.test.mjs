@@ -298,6 +298,12 @@ test('extractPageMeta reads the critic from a JSON-LD Review and ignores an unsi
   const listing = census.extractPageMeta('<script type="application/ld+json">{"@type":"Review","author":{"@type":"Person","name":""}}</script>');
   assert.equal(listing.reviewAuthor, null);
   assert.equal(census.extractPageMeta('<title>Soon | Theater in New York</title>').reviewAuthor, null);
+  const ld = (o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`;
+  assert.equal(census.extractPageMeta(ld({ '@graph': [{ '@type': 'Review', author: [{ '@type': 'Person', name: 'Raven Snook' }] }] })).reviewAuthor, 'Raven Snook');
+  assert.equal(census.extractPageMeta(ld({ author: { name: 'Adam Feldman' }, reviewBody: 'x'.repeat(2000), '@type': 'Review' })).reviewAuthor, 'Adam Feldman');
+  // A playwright on the reviewed work is not the critic.
+  assert.equal(census.extractPageMeta(ld({ '@type': 'Review', itemReviewed: { '@type': 'CreativeWork', author: { name: 'Jordan Harrison' } }, author: { name: '' } })).reviewAuthor, null);
+  assert.equal(census.extractPageMeta('<script type="application/ld+json">{not json</script>').reviewAuthor, null);
 });
 
 test('a Los Angeles house in the headline marks a same-titled review as another market (Fountain Theatre, BRO-6485)', () => {
