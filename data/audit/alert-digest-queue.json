@@ -538,5 +538,36 @@
       }
     ],
     "queuedAt": "2026-10-29T13:15:45.371Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5582-wp-legacy-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5582-wp-legacy-audit",
+    "description": "land.yml did not land land/bro-5582-wp-legacy-audit: the unit-tests-node gate went red at bbdee03784. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40852354228",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5582-wp-legacy-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "bbdee03784951d1488ae8722307986dff86ebae0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40852354228"
+      }
+    ],
+    "queuedAt": "2026-10-29T13:29:23.745Z"
   }
 ]
