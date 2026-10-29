@@ -1296,5 +1296,36 @@
       }
     ],
     "queuedAt": "2026-10-29T18:11:28.114Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5593-sentry-linear",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5593-sentry-linear",
+    "description": "land.yml did not land land/bro-5593-sentry-linear: the scripts-lib-tests gate went red at 27d7baa74c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40923052852",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5593-sentry-linear"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "27d7baa74c70f324ae3df6d602821880961682b8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40923052852"
+      }
+    ],
+    "queuedAt": "2026-10-29T18:15:23.465Z"
   }
 ]
