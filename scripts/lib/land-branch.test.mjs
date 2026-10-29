@@ -20,7 +20,7 @@ const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
-  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath,
+  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath, isAppendOnlyLedger,
   isPromisorFetchFailure, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
@@ -1082,4 +1082,20 @@ test('BRO-6276 checkTimings: names where the in-lock re-check spent its time', (
     'safe-checks 4m12s, merged-tree-tests 9m3s, bash-syntax 1s',
   );
   assert.equal(checkTimings({ safeMs: 0 }), 'safe-checks 0s');
+});
+
+test('BRO-6519: a file BOTH sides changed is not an overlap when it is an append-only audit ledger', () => {
+  const branch = ['scripts/lib/foo.js', 'data/audit/alert-ledger.json', 'data/audit/scraper-spend-ledger.jsonl'];
+  const r = selectRecheckScope({ ancestor: true, intervening: ['data/audit/alert-ledger.json', 'data/audit/scraper-spend-ledger.jsonl'], changedFiles: branch });
+  assert.equal(r.mode, 'small', r.reason);
+  // a real shared file next to a ledger still forces full
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['data/audit/alert-ledger.json', 'scripts/lib/foo.js'], changedFiles: branch }).mode, 'full');
+  // other shared inert data (not a ledger) keeps today's conservative full re-check
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['data/audit/other.json'], changedFiles: ['data/audit/other.json'] }).mode, 'full');
+  assert.equal(isAppendOnlyLedger('data/audit/alert-ledger.json'), true);
+  assert.equal(isAppendOnlyLedger('scripts/alert-ledger.json'), false);
+  assert.equal(isAppendOnlyLedger('data/audit/ledger-tool.js'), false);
+  // trains: two members appending the same ledger are still small
+  const t = selectTrainRecheckScope({ members: ['a', 'b'].map((n) => ({ name: n, base: 'a'.repeat(40), verified: true, ancestor: true, mainChanged: ['data/audit/alert-ledger.json'], files: ['data/audit/alert-ledger.json', `scripts/lib/${n}.js`] })) });
+  assert.equal(t.mode, 'small', t.reason);
 });

@@ -159,6 +159,7 @@ jobs:
       new_failures: ${{ steps.delta.outputs.new_failures }}
       pre_existing: ${{ steps.delta.outputs.pre_existing }}
       tsc_seed: ${{ steps.tscseed.outputs.seed }}
+      hook_seed: ${{ steps.hookseed.outputs.seed }}
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -642,6 +643,30 @@ jobs:
             --pre="$RUNNER_TEMP/tsc-data-digest-pre" --tree-status="$RUNNER_TEMP/land-gauntlet/branch/tsc-tree-status") || SEED=""
           echo "seed=$SEED" >> "$GITHUB_OUTPUT"
 
+      # BRO-6519: pre-warm the rest of the pre-push tail (push audits + workflow lints, 13-30s)
+      # HERE, outside the landing mutex, so the FIRST push under the lock skips it too. Runs
+      # scripts/hooks/pre-push itself against the rebased tip as if pushing it to main (tsc skipped
+      # via LAND_HOOK_PREWARM: it is seeded above). A red hook just means no seed; the real push
+      # re-runs it. Advisory: continue-on-error. Kill switch: repo variable LAND_HOOK_STAMP_DISABLED=1.
+      - name: Pre-warm the pre-push hook tail for the Land job
+        id: hookseed
+        if: success() && steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_HOOK_STAMP_DISABLED != '1'
+        continue-on-error: true
+        env:
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          GITHUB_ACTIONS: 'true'
+          LAND_HOOK_STAMP_FILE: ${{ runner.temp }}/land-hook-stamp
+          LAND_HOOK_PREWARM: '1'
+        run: |
+          SEED=""
+          if [ "$(git rev-parse HEAD)" = "$REBASED" ] && echo "refs/heads/main $REBASED refs/heads/main $BASE" | bash scripts/hooks/pre-push >/tmp/hook-prewarm.log 2>&1; then
+            SEED=$(node scripts/lib/tsc-stamp.js hook-seed-export --rebased="$REBASED") || SEED=""
+          else
+            tail -5 /tmp/hook-prewarm.log 2>/dev/null || true
+          fi
+          echo "seed=$SEED" >> "$GITHUB_OUTPUT"
+
       # ── Next landing's base: this branch's result, published under its tree ──
       # When this lands as a fast-forward, main BECOMES the rebased tip, and the
       # next land/** run's base key is the code-tree hash of that tip. Nobody
@@ -866,6 +891,16 @@ jobs:
           LAND_TSC_STAMP_FILE: ${{ vars.LAND_TSC_STAMP_DISABLED != '1' && format('{0}/land-tsc-stamp', runner.temp) || '' }}
         run: node scripts/lib/tsc-stamp.js seed --seed="$TSC_SEED"
 
+      # BRO-6519: seed the hook-tail stamp pre-warmed in the checks job (same tree key).
+      - name: Seed the hook-tail stamp from the checks job
+        if: vars.LAND_HOOK_STAMP_DISABLED != '1' && needs.checks.outputs.hook_seed != ''
+        continue-on-error: true
+        env:
+          HOOK_SEED: ${{ needs.checks.outputs.hook_seed }}
+          GITHUB_ACTIONS: 'true'
+          LAND_HOOK_STAMP_FILE: ${{ format('{0}/land-hook-stamp', runner.temp) }}
+        run: node scripts/lib/tsc-stamp.js hook-seed --seed="$HOOK_SEED"
+
       - name: Land the branch
         id: land
         env:
@@ -882,6 +917,8 @@ jobs:
           # mutex) is skipped on a retry push of an identical code tree. Kill
           # switch: repo variable LAND_TSC_STAMP_DISABLED=1. See scripts/lib/tsc-stamp.js.
           LAND_TSC_STAMP_FILE: ${{ vars.LAND_TSC_STAMP_DISABLED != '1' && format('{0}/land-tsc-stamp', runner.temp) || '' }}
+          # BRO-6519: same for the audits/lints part of the hook tail.
+          LAND_HOOK_STAMP_FILE: ${{ vars.LAND_HOOK_STAMP_DISABLED != '1' && format('{0}/land-hook-stamp', runner.temp) || '' }}
         # --expect-tip: land ONLY the tip `checks` verified — a newer push to
         #   the branch has its own run; this one refuses rather than landing
         #   an unverified tip.

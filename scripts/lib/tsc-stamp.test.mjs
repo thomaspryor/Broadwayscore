@@ -195,3 +195,25 @@ test('seed end-to-end: exported seed makes the first check() in another job skip
   fs.writeFileSync(tsFile, ' M src/a.ts\n');
   assert.equal(cli(['seed-export', `--meta=${metaFile}`, `--rebased=${head}`, `--pre=${preFile}`, `--tree-status=${tsFile}`]).stdout.trim(), '');
 });
+
+test('BRO-6519 hook-* CLI: own stamp file; pre-warm seed makes the first hook-check in another job skip', () => {
+  const r = mkRepo({});
+  r.commit({ 'src/a.ts': 'x\n', 'data/shows.json': '[]' });
+  const head = r.g('rev-parse', 'HEAD');
+  const a = path.join(r.d, 'hook-a'); const b = path.join(r.d, 'hook-b');
+  const base = { ...process.env, GITHUB_ACTIONS: 'true', LAND_TSC_STAMP_FILE: path.join(r.d, 'tsc-only') };
+  const run = (cmd, file, extra = []) => spawnSync('node', [SCRIPT, cmd, ...extra], { cwd: r.d, env: { ...base, LAND_HOOK_STAMP_FILE: file }, encoding: 'utf8' });
+  const push = [`--pushed-oid=${head}`, '--spec-count=1', '--remote-ref=refs/heads/main'];
+  assert.equal(run('hook-check', a, push).status, 1, 'nothing stamped');
+  assert.equal(run('hook-record', a).status, 0);
+  assert.equal(run('hook-check', a, push).status, 0, 'recorded -> skip');
+  assert.equal(fs.existsSync(path.join(r.d, 'tsc-only')), false, 'hook stamp never touches the tsc stamp file');
+  const seed = run('hook-seed-export', a, [`--rebased=${head}`]).stdout.trim();
+  assert.match(seed, /^[0-9a-f]{64}$/);
+  assert.equal(run('hook-seed-export', b, [`--rebased=${head}`]).stdout.trim(), '', 'no stamp in b -> no seed');
+  assert.equal(run('hook-seed', b, [`--seed=${seed}`]).status, 0);
+  assert.equal(run('hook-check', b, push).status, 0, 'seeded job skips its FIRST check');
+  assert.equal(run('hook-seed', path.join(r.d, 'c'), ['--seed=nothex']).status, 0);
+  assert.equal(fs.existsSync(path.join(r.d, 'c')), false, 'malformed seed is ignored');
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+});

@@ -155,17 +155,34 @@ function main(argv) {
   const [cmd, ...rest] = argv;
   const a = {};
   for (const t of rest) { const m = /^--([^=]+)=(.*)$/.exec(t); if (m) a[m[1]] = m[2]; }
-  const env = process.env;
+  // BRO-6519: `hook-*` commands reuse the same key/decision for the rest of the pre-push tail
+  // (push audits + workflow lints) with their own stamp file, so a retry push AND the first
+  // push (pre-warmed in the checks job) skip them. Only the file variable differs.
+  const isHook = /^hook-/.test(cmd || '');
+  const env = isHook ? { ...process.env, LAND_TSC_STAMP_FILE: process.env.LAND_HOOK_STAMP_FILE || '' } : process.env;
+  const cmdBase = isHook ? cmd.slice(5) : cmd;
   try {
     const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     const file = env.LAND_TSC_STAMP_FILE || '';
     const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim();
-    if (dirty && (cmd === 'check' || cmd === 'record')) { console.error('tsc-stamp: run tsc (dirty tracked tree)'); return cmd === 'check' ? 1 : 0; }
-    if (cmd === 'digest-pre') {
+    if (dirty && (cmdBase === 'check' || cmdBase === 'record')) { console.error('tsc-stamp: run tsc (dirty tracked tree)'); return cmdBase === 'check' ? 1 : 0; }
+    if (isHook && cmdBase === 'seed-export') {
+      // Checks job: the pre-warm ran the hook tail on exactly this rebased sha and left a stamp.
+      const key = computeKey(head);
+      const ok = !dirty && head === a.rebased && file && readStamp(file).includes(key);
+      console.error(`tsc-stamp: hook ${ok ? 'seed exported' : 'no seed'}`);
+      if (ok) console.log(key);
+      return 0;
+    }
+    if (isHook && cmdBase === 'seed') {
+      if (HASH64.test(String(a.seed || '')) && file && env.GITHUB_ACTIONS === 'true') { fs.appendFileSync(file, `${a.seed}\n`); console.error('tsc-stamp: hook seeded'); } else console.error('tsc-stamp: hook not seeded');
+      return 0;
+    }
+    if (cmdBase === 'digest-pre') {
       if (a.out) fs.writeFileSync(a.out, `${dataDigest()}\n`);
       return 0;
     }
-    if (cmd === 'seed-export') {
+    if (cmdBase === 'seed-export') {
       let preD = '';
       try { preD = fs.readFileSync(a.pre || '', 'utf8').trim(); } catch { /* decide() reports it */ }
       let residue = null;
@@ -179,14 +196,14 @@ function main(argv) {
       if (d.seed) console.log(d.seed);
       return 0;
     }
-    if (cmd === 'seed') {
+    if (cmdBase === 'seed') {
       if (!a.seed) { console.error('tsc-stamp: no seed (checks job exported none)'); return 0; }
       const d = decideSeed({ env, seed: a.seed, digest: dataDigest() });
       console.error(`tsc-stamp: ${d.key ? 'seeded' : 'not seeded'} (${d.reason})`);
       if (d.key) fs.appendFileSync(file, `${d.key}\n`);
       return 0;
     }
-    if (cmd === 'check') {
+    if (cmdBase === 'check') {
       const pre = decide({ env, headOid: head, pushedOid: a['pushed-oid'], specCount: Number(a['spec-count']), remoteRef: a['remote-ref'], key: 'a'.repeat(64), stampLines: ['a'.repeat(64)] });
       if (!pre.skip) { console.error(`tsc-stamp: run tsc (${pre.reason})`); return 1; }
       const key = computeKey(head);
@@ -194,14 +211,14 @@ function main(argv) {
       console.error(`tsc-stamp: ${d.skip ? 'SKIP tsc' : 'run tsc'} (${d.reason})`);
       return d.skip ? 0 : 1;
     }
-    if (cmd === 'record') {
+    if (cmdBase === 'record') {
       if (env.GITHUB_ACTIONS !== 'true' || !file) return 0;
       fs.appendFileSync(file, `${computeKey(head)}\n`);
       return 0;
     }
   } catch (e) {
     console.error(`tsc-stamp: run tsc (fail-open: ${e.message})`);
-    return cmd === 'check' ? 1 : 0;
+    return cmdBase === 'check' ? 1 : 0;
   }
   console.error('usage: tsc-stamp.js check|record|digest-pre|seed-export|seed [--pushed-oid=X --spec-count=N --remote-ref=R]');
   return 2;

@@ -157,6 +157,15 @@ const INERT_FOR_VERIFICATION_RE = /^(data\/|public\/data\/|public\/images\/shows
 const CAPPED_DOCS_RE = /^(CLAUDE\.md|AGENTS\.md|\.claude\/CLOUD\.md)$/;
 const CAPPED_DOCS_TEST = 'scripts/tests/global-instructions.test.mjs';
 
+// BRO-6519: append-only bot ledgers under data/audit/. Every landing appends to one (alert-ledger.json,
+// scraper-spend-ledger.jsonl) and so does main every minute, so "both sides changed it" is the norm, not
+// a clash. The branch is already rebased onto main when the scope is chosen (a conflicting rebase never
+// reaches the checks), the file is inert, and no test reads a ledger's content as a verdict input.
+const APPEND_ONLY_LEDGER_RE = /^data\/audit\/[^/]*ledger[^/]*\.jsonl?$/;
+function isAppendOnlyLedger(file) {
+  return APPEND_ONLY_LEDGER_RE.test(String(file)) && isInertForVerification(file);
+}
+
 function isInertForVerification(file) {
   return !CAPPED_DOCS_RE.test(String(file)) && INERT_FOR_VERIFICATION_RE.test(String(file));
 }
@@ -337,7 +346,7 @@ function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = fa
   if (ancestor !== true || !Array.isArray(intervening)) return { mode: 'full', build: true, reason: 'files main changed since the verified base are unknown' };
   if (!Array.isArray(changedFiles)) return { mode: 'full', build: true, reason: 'files the branch changed are unknown' };
   const mine = new Set((changedFiles || []).map(String));
-  const shared = intervening.map(String).filter((f) => mine.has(f));
+  const shared = intervening.map(String).filter((f) => mine.has(f) && !isAppendOnlyLedger(f));
   if (shared.length) return { mode: 'full', build: true, reason: `branch and main both changed ${shared.length} file(s) (${shared.slice(0, 3).join(', ')})` };
   // runSafeChecks builds only for a src/ change on the branch (hasSrcChange).
   const build = [...mine].some((f) => f.startsWith('src/')) && intervening.some(f => isBuildCodePath(f, buildScripts));
@@ -1082,6 +1091,7 @@ module.exports = {
   selectRecheckScope,
   selectTrainRecheckScope,
   classifyIntervening,
+  isAppendOnlyLedger,
   landBranch,
   defaultChecks,
   decideVerifiedBaseSkip,

@@ -287,6 +287,14 @@ if [ -z "$(echo "$ALL_CHANGED_FILES" | tr -d '[:space:]')" ]; then
   exit 0
 fi
 
+# BRO-6519: inside a CI landing the audits + workflow lints below are a function of the code tree,
+# so a retry push of an identical tree (and the first push, pre-warmed in the checks job) skips them.
+# Same key/safety rules as the tsc stamp (scripts/lib/tsc-stamp.js); fail-open: any doubt runs them.
+HOOK_STAMP_SKIP=0
+if node "$REPO_ROOT/scripts/lib/tsc-stamp.js" hook-check --pushed-oid="$LAST_SPEC_OID" --spec-count="$NON_DELETE_SPEC_COUNT" --remote-ref="$LAST_SPEC_REF"; then
+  HOOK_STAMP_SKIP=1
+fi
+if [ "$HOOK_STAMP_SKIP" != "1" ]; then
 # Range-scoped audits (unbounded-fetch, tests-vs-derived-data, orphan-tests,
 # playwright-evaluate-click, write-routing lint) — shared with
 # scripts/merge-worktree-to-main.sh via scripts/lib/run-push-audits.sh (card
@@ -361,6 +369,8 @@ if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
   rm -f "$GUARDS_OUT"
 fi
 [ "$LINKED_NODE_MODULES" = "1" ] && [ -L node_modules ] && rm -f node_modules
+node "$REPO_ROOT/scripts/lib/tsc-stamp.js" hook-record || true
+fi
 
 # Workflow audits (concurrency, hygiene, cron-health coverage) run in
 # scripts/lib/run-push-audits.sh above (BRO-3014), which also honours CI's
@@ -387,7 +397,9 @@ fi
 # as the corpus gates, just for code) and are slow enough (~1-2 min) to drive a
 # `--no-verify` habit that defeats the hook. tsc is the sweet spot: ~30-60s,
 # exit-code-clean, and near-zero false-blocks because CI already keeps main green.
-if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
+if [ "${LAND_HOOK_PREWARM:-}" = "1" ]; then
+  : # BRO-6519: checks-job pre-warm only stamps the audits/lints above; tsc is seeded by the gauntlet
+elif grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
   if [ -f data/reviews.json ] && [ -f data/shows.json ]; then
     # BRO-5783: inside a CI landing, a retry push of a byte-identical code tree
     # (main moved only across inert paths) skips the repeat tsc. Fail-open: any
