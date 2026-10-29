@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T05:15:43.653Z",
+  "timestamp": "2026-10-29T05:50:23.390Z",
   "stats": {
-    "totalReviews": 66353,
-    "alreadyFlagged": 22072,
+    "totalReviews": 66402,
+    "alreadyFlagged": 22065,
     "dateGuardCatches": 233,
-    "directorMismatch": 2691,
-    "tvFilmSignals": 1889,
-    "londonSignals": 3212,
+    "directorMismatch": 2695,
+    "tvFilmSignals": 1891,
+    "londonSignals": 3213,
     "offBroadwaySignals": 606,
     "yearMismatch": 244,
-    "noPublishDate": 6419
+    "noPublishDate": 6469
   },
   "findings": [
     {
@@ -7812,6 +7812,19 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": null,
+      "url": "https://stagebuddy.com/theater/theater-review/buena-vista-social-club",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 97,
       "publishDate": "2023-12-23T09:35:37",
@@ -13861,7 +13874,7 @@
     {
       "showId": "death-of-a-salesman-2022",
       "file": "nysr--steven-suskin.json",
-      "score": 56,
+      "score": 59,
       "publishDate": "October 3, 2022",
       "url": "https://nystagereview.com/2022/10/09/death-of-a-salesman-wendell-pierce-and-sharon-d-clarke-bring-classic-to-broadway/",
       "findings": [
@@ -21504,6 +21517,19 @@
     },
     {
       "showId": "gypsy-2024",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": null,
+      "url": "https://stagebuddy.com/theater/theater-review/gypsy",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
       "file": "talkinbroadway--howard-miller.json",
       "score": 78,
       "publishDate": "2024-12-19",
@@ -22597,6 +22623,7 @@
     {
       "showId": "harmony-off-broadway-2022",
       "file": "stagebuddy--unknown.json",
+      "score": 65,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/harmony",
       "findings": [
@@ -22666,6 +22693,7 @@
     {
       "showId": "harmony-off-broadway-2022",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.theatrereviews.com/off-broadway-review-harmony-at-the-museum-of-jewish-heritage-through-sunday-may-8-2022/",
       "findings": [
@@ -24976,6 +25004,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "im-assuming-you-know-david-greenspan-off-broadway-2025",
+      "file": "nysr--michael-sommers.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2025/04/07/im-assuming-you-know-david-greenspan-singular-theater-talk/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -31332,6 +31373,19 @@
     },
     {
       "showId": "liberation-off-broadway-2025",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": null,
+      "url": "https://stagebuddy.com/theater/theater-review/liberation",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
       "file": "talkinbroadway--howard-miller.json",
       "score": 72,
       "publishDate": "February 20th, 2025",
@@ -34711,7 +34765,7 @@
     {
       "showId": "mrs-doubtfire-2021",
       "file": "theater-life--paulanne-simmons.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "2021-12-09T11:48:00",
       "url": "https://theaterlife.com/mrs-doubtfire/",
       "findings": [
@@ -39648,6 +39702,7 @@
     {
       "showId": "pass-over-2021",
       "file": "nyt-theater--unknown.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://newyorktheater.me/2021/08/27/pass-over-on-broadway-review-fiery-foul-funny-flawed-and-first/",
       "findings": [
@@ -39689,7 +39744,7 @@
     {
       "showId": "pass-over-2021",
       "file": "timeout--adam-feldman.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "August 23, 2021",
       "url": "https://www.timeout.com/newyork/theater/pass-over-1",
       "findings": [
@@ -44601,6 +44656,19 @@
       "score": 57,
       "publishDate": "April 10, 2025",
       "url": "https://www.newyorktheatreguide.com/reviews/smash-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "smash-2025",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": null,
+      "url": "https://stagebuddy.com/theater/theater-review/smash",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -54499,6 +54567,19 @@
     },
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": null,
+      "url": "https://stagebuddy.com/theater/theater-review/jonathan-larson-project",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "theater-scene--victor-gluck.json",
       "score": 85,
       "publishDate": "2025-03-19",
@@ -58045,7 +58126,7 @@
     {
       "showId": "the-piano-lesson-2022",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "October 14, 2022",
       "url": "https://nypost.com/2022/10/13/the-piano-lesson-broadway-review-a-blisteringly-acted-drama/?utm_medium=SocialFlow&utm_source=NYPTwitter&utm_campaign=SocialFlow",
       "findings": [
@@ -58882,6 +58963,7 @@
     {
       "showId": "the-rocky-horror-show-2026",
       "file": "stagebuddy--unknown.json",
+      "score": 84,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/rocky-horror-show",
       "findings": [
@@ -61651,6 +61733,7 @@
     {
       "showId": "triple-threat-off-broadway-2023",
       "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://www.theatrereviews.com/off-broadway-review-triple-threat-at-theatre-row-through-sunday-july-30-2023/",
       "findings": [
@@ -68705,7 +68788,7 @@
       ]
     },
     {
-      "showId": "alice-in-wonderland-west-end-2026",
+      "showId": "alice-in-wonderland-off-west-end-2026",
       "file": "britishtheatrecom--susan-novak.json",
       "score": null,
       "publishDate": "2026-04-14",
@@ -73185,7 +73268,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 64,
       "publishDate": "2026-03-04",
@@ -73199,7 +73282,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 60,
       "publishDate": "2026-03-04",
@@ -73213,7 +73296,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "guardian--alfred-hickling.json",
       "score": 81,
       "publishDate": "2026-03-04",
@@ -73227,7 +73310,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 81,
       "publishDate": "2026-03-04",
@@ -73241,7 +73324,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 41,
       "publishDate": "2026-03-04",
@@ -73255,7 +73338,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "london-theatre--julia-rank.json",
       "score": 60,
       "publishDate": "2026-03-04",
@@ -73269,7 +73352,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "standard--nick-curtis.json",
       "publishDate": "2026-03-04",
       "url": "https://www.standard.co.uk/culture/theatre/broken-glass-young-vic-review-b1273400.html",
@@ -73282,7 +73365,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 54,
       "publishDate": "2026-03-04",
@@ -73296,7 +73379,7 @@
       ]
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "file": "times-uk--observes-andrzej-lukowski.json",
       "score": 62,
       "publishDate": "2026-03-04",
@@ -105822,6 +105905,19 @@
       "score": 78,
       "publishDate": "September 29th, 2024",
       "url": "https://culturesauce.com/2024/09/29/hills-of-california-butterworth-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": null,
+      "url": "https://stagebuddy.com/theater/theater-review/the-hills-of-california",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
