@@ -60,3 +60,12 @@ test('add-show accepts the localOnly field', () => {
   const src = read('scripts/lib/add-show-action.js');
   assert.match(src, /'localOnly'/);
 });
+
+test('computeShowData carries localOnly/discoverySource through, so the enumerators can see them', () => {
+  const { computeShowData } = require('../../src/lib/engine');
+  const raw = { id: 'x-regional-2026', title: 'X', slug: 'x-regional-2026', venue: 'Goodman Theatre, Chicago, IL', status: 'open', type: 'play', category: 'regional', market: 'regional', openingDate: '2026-09-01', localOnly: true, discoverySource: 'theatreinchicago' };
+  const out = computeShowData(raw, [], [], []);
+  assert.equal(out.localOnly, true);
+  assert.equal(out.discoverySource, 'theatreinchicago');
+  assert.equal(isLocalOnlyShow(out), true);
+});

@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
+const { isLocalOnlyShow } = require('./lib/local-market');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { buildScoreMap } = require('./lib/related-shows-scores');
 const { isEligibleSource, closedPoolAllows, qualityBonus } = require('./lib/related-shows-eligibility');
@@ -132,6 +133,8 @@ const scoreMap = buildScoreMap(reviews, showsData.shows, outletRegistry);
 // ─── Algorithmic pre-filter (matches data-core.ts logic) ───
 // statusFilter: 'open' = open/previews only, 'closed' = closed only, null = all
 function getMarket(show) {
+  // BRO-6518: local-only shows (Chicago) never mix with tryouts or other regionals
+  if (isLocalOnlyShow(show)) return 'local';
   const cat = show.category || 'broadway';
   // Group by city: Broadway + Off-Broadway = "nyc", West End + Off-West End = "london"
   if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';

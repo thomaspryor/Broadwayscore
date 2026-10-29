@@ -270,7 +270,7 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // BRO-5171: a Guardian review date is a press night bound already (press
     // night was on or before it). A later straggler wave must not move it
     // forward and stamp the confirmed 'inferred-from-reviews'.
-    if (show.openingDateSource === 'guardian-review') continue;
+    if (show.openingDateSource === 'guardian-review' || show.openingDateSource === 'tic-first-review') continue;
     // BRO-5851: a sourced search found no press night (a reopening or transfer
     // with none). A review wave must not invent one and stamp the confirmed
     // 'inferred-from-reviews'; only an authoritative source may replace it.
