@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6541-i-b",
+  "planId": "c022abae-024e-4c1d-a3ef-0d23a07f1a1c",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 2 of 9)",
+    "steps": [
+      "BRO-6541: ingest guardian review for the-memory-of-water-octagon-regional-2026",
+      "BRO-6541: ingest guardian review for work-it-out-home-regional-2024",
+      "BRO-6541: ingest guardian review for a-toast-fae-the-lassies-pitlochry-festival-regional-2025",
+      "BRO-6541: ingest guardian review for lear-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest guardian review for nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+      "BRO-6541: ingest guardian review for the-sound-of-music-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest guardian review for wiping-my-mothers-arse-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest guardian review for show-and-tell-stephen-joseph-regional-2024",
+      "BRO-6541: ingest guardian review for the-trial-of-romeo-oscar-stephen-joseph-regional-2026",
+      "BRO-6541: ingest guardian review for the-whitby-rebels-stephen-joseph-regional-2024",
+      "BRO-6541: ingest guardian review for a-dolls-house-crucible-regional-2024",
+      "BRO-6541: ingest guardian review for kenrex-sheffield-regional-2024",
+      "BRO-6541: ingest guardian review for the-crucible-crucible-regional-2024",
+      "BRO-6541: ingest guardian review for the-ladies-football-club-crucible-regional-2026",
+      "BRO-6541: ingest guardian review for a-midsummer-nights-dream-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest guardian review for ben-and-imo-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest guardian review for hamlet-royal-shakespeare-regional-2025",
+      "BRO-6541: ingest guardian review for loves-labours-lost-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest guardian review for measure-for-measure-royal-shakespeare-regional-2025",
+      "BRO-6541: ingest guardian review for much-ado-about-nothing-royal-shakespeare-regional-2025",
+      "BRO-6541: ingest guardian review for othello-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest guardian review for the-bfg-royal-shakespeare-regional-2025",
+      "BRO-6541: ingest guardian review for the-buddha-of-suburbia-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest guardian review for the-constant-wife-royal-shakespeare-regional-2025",
+      "BRO-6541: ingest guardian review for the-forsyte-saga-parts-1-and-2-royal-shakespeare-regional-2025"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-memory-of-water-octagon-regional-2026 --url=https://www.theguardian.com/stage/2026/feb/05/the-memory-of-water-review-octagon-bolton --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-memory-of-water-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=work-it-out-home-regional-2024 --url=https://www.theguardian.com/stage/2024/mar/07/work-it-out-review-eve-steele-home-manchester --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for work-it-out-home-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-toast-fae-the-lassies-pitlochry-festival-regional-2025 --url=https://www.theguardian.com/stage/2025/aug/31/a-toast-fae-the-lassies-review-pitlochry-festival-theatre-robert-burns --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for a-toast-fae-the-lassies-pitlochry-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lear-pitlochry-festival-regional-2026 --url=https://www.theguardian.com/stage/2026/jul/10/lear-review-pitlochry-festival-theatre-maureen-beattie-shakespeare --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025 --url=https://www.theguardian.com/stage/2025/jun/06/nan-shepherd-naked-and-unashamed-review-pitlochry-festival-theatre --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-sound-of-music-pitlochry-festival-regional-2024 --url=https://www.theguardian.com/stage/2024/nov/24/the-sound-of-music-pitlochry-festival-theatre-elizabeth-newman-review --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-sound-of-music-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=wiping-my-mothers-arse-pitlochry-festival-regional-2026 --url=https://www.theguardian.com/stage/2026/aug/22/wiping-my-mothers-arse-review-iain-heggie --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for wiping-my-mothers-arse-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=show-and-tell-stephen-joseph-regional-2024 --url=https://www.theguardian.com/stage/2024/sep/12/show-tell-review-ayckbourn-stephen-joseph-theatre-scarborough --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for show-and-tell-stephen-joseph-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-trial-of-romeo-oscar-stephen-joseph-regional-2026 --url=https://www.theguardian.com/stage/2026/sep/11/the-trial-of-romeo-oscar-review-alan-ayckbourn-stephen-joseph-theatre-scarborough --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-trial-of-romeo-oscar-stephen-joseph-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whitby-rebels-stephen-joseph-regional-2024 --url=https://www.theguardian.com/stage/2024/oct/23/the-whitby-rebels-review-true-life-tale-of-madcap-mission-to-the-arctic-stephen-joseph-theatre-scarborough --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-whitby-rebels-stephen-joseph-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-dolls-house-crucible-regional-2024 --url=https://www.theguardian.com/stage/2024/sep/29/a-dolls-house-review-chris-bush-elin-schofield-siena-kelly-crucible-sheffield --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for a-dolls-house-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kenrex-sheffield-regional-2024 --url=https://www.theguardian.com/stage/2024/nov/01/kenrex-review-jack-holden-ed-stambollouian-playhouse-sheffield --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for kenrex-sheffield-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-crucible-crucible-regional-2024 --url=https://www.theguardian.com/stage/2024/mar/10/the-crucible-review-arthur-miller-crucible-sheffield --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-crucible-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-ladies-football-club-crucible-regional-2026 --url=https://www.theguardian.com/stage/2026/mar/07/ladies-football-club-review-crucible-theatre-sheffield --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-ladies-football-club-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-midsummer-nights-dream-royal-shakespeare-regional-2024 --url=https://www.theguardian.com/stage/2024/feb/14/midsummer-nights-dream-review-rsc-latest-revival --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for a-midsummer-nights-dream-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ben-and-imo-royal-shakespeare-regional-2024 --url=https://www.theguardian.com/stage/2024/mar/10/ben-and-imo-review-swan-theatre-stratford-upon-avon-mark-ravenhill-lively-ballad-of-benjamin-britten-and-imogen-holst --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for ben-and-imo-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hamlet-royal-shakespeare-regional-2025 --url=https://www.theguardian.com/stage/2025/feb/19/hamlet-review-rsc-royal-shakespeare-theatre-stratford --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for hamlet-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=loves-labours-lost-royal-shakespeare-regional-2024 --url=https://www.theguardian.com/stage/2024/apr/19/loves-labours-lost-review-royal-shakespeare-theatre-stratford-upon-avon --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for loves-labours-lost-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=measure-for-measure-royal-shakespeare-regional-2025 --url=https://www.theguardian.com/stage/2025/sep/24/measure-for-measure-review-shakespeares-sleazy-sex-scandal-chimes-with-our-times --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for measure-for-measure-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=much-ado-about-nothing-royal-shakespeare-regional-2025 --url=https://www.theguardian.com/stage/2025/apr/23/much-ado-about-nothing-review-rsc-boots-the-action-to-elite-italian-football-in-a-play-of-two-halves --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for much-ado-about-nothing-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-royal-shakespeare-regional-2024 --url=https://www.theguardian.com/stage/2024/oct/25/othello-review-tim-caroll-rsc-stratford --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for othello-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-bfg-royal-shakespeare-regional-2025 --url=https://www.theguardian.com/stage/2025/dec/10/the-bfg-review-royal-shakespeare-theatre-stratford-upon-avon --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-bfg-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-buddha-of-suburbia-royal-shakespeare-regional-2024 --url=https://www.theguardian.com/stage/2024/may/01/the-buddha-of-suburbia-review-hanif-kureishi-swan-theatre-stratford-upon-avon --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-buddha-of-suburbia-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-constant-wife-royal-shakespeare-regional-2025 --url=https://www.theguardian.com/stage/2025/jul/02/the-constant-wife-review-swan-theatre-stratford-upon-avon-laura-wade-rsc-rose-leslie --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-constant-wife-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-forsyte-saga-parts-1-and-2-royal-shakespeare-regional-2025 --url=https://www.theguardian.com/stage/2025/dec/07/the-forsyte-saga-parts-1-2-review-swan-theatre-stratford-rsc --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-forsyte-saga-parts-1-and-2-royal-shakespeare-regional-2025"
+      }
+    ]
+  }
+}
