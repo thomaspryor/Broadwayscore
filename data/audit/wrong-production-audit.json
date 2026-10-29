@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T03:22:07.538Z",
+  "timestamp": "2026-10-29T03:42:07.525Z",
   "stats": {
-    "totalReviews": 65986,
-    "alreadyFlagged": 22072,
+    "totalReviews": 66049,
+    "alreadyFlagged": 22086,
     "dateGuardCatches": 233,
-    "directorMismatch": 2666,
-    "tvFilmSignals": 1872,
-    "londonSignals": 3207,
-    "offBroadwaySignals": 600,
-    "yearMismatch": 241,
-    "noPublishDate": 6063
+    "directorMismatch": 2675,
+    "tvFilmSignals": 1879,
+    "londonSignals": 3211,
+    "offBroadwaySignals": 602,
+    "yearMismatch": 242,
+    "noPublishDate": 6102
   },
   "findings": [
     {
@@ -202,6 +202,30 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2014",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-1984-almeida-theatre-5-stars",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from 1984-2017"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -1765,6 +1789,20 @@
       "score": 64,
       "publishDate": "2026-08-25",
       "url": "https://www.timeout.com/london/theatre/a-slow-fire-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-small-family-business-west-end-2014",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2014-04-09",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-small-family-business-national-theatre-review-9249247.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8595,7 +8633,7 @@
     {
       "showId": "caroline-or-change-2021",
       "file": "nysr--steven-suskin.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2021-10-27T20:49:02",
       "url": "https://nystagereview.com/2021/10/27/caroline-or-change-sharon-d-clarke-offers-a-bracing-performance-in-tesori-kushner-musical/",
       "findings": [
@@ -8642,6 +8680,7 @@
     {
       "showId": "caroline-or-change-2021",
       "file": "theater-life--david-sheward.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://theaterlife.com/caroline-or-change-fire-shut-up-in-my-bones/",
       "findings": [
@@ -16337,6 +16376,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "eureka-day-2024",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/eureka-day/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2024 (0x). 2022 matches production: eureka-day-west-end-2022"
         }
       ]
     },
@@ -24290,6 +24342,7 @@
     {
       "showId": "hyprov-improv-under-hypnosis-off-broadway-2022",
       "file": "stagebuddy--unknown.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/hyprov-improv-hypnosis",
       "findings": [
@@ -41064,6 +41117,32 @@
     },
     {
       "showId": "prince-faggot-playwrights-horizons-off-broadway-2025",
+      "file": "nysr--michael-sommers.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2025/06/17/prince-faggot-a-royal-fairy-tale-unravels/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "prince-faggot-playwrights-horizons-off-broadway-2025",
+      "file": "nyt-theater--unknown.json",
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2025/07/08/prince-faggot-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "prince-faggot-playwrights-horizons-off-broadway-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 91,
       "publishDate": "2025-06-17",
@@ -43874,6 +43953,39 @@
     },
     {
       "showId": "skylight-west-end-2014",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/pt/shows/skylight",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
+      "file": "express-uk--neil-norman.json",
+      "score": 88,
+      "publishDate": "2014-06-20",
+      "url": "http://www.express.co.uk/entertainment/theatre/483525/David-Hare-play-Skylight-at-the-Wyndham-Theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
       "file": "guardian--susannah-clapp.json",
       "score": 88,
       "publishDate": null,
@@ -43883,6 +43995,58 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
+      "file": "independent--paul-taylor.json",
+      "score": 87,
+      "publishDate": "2014-06-18",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/skylight-wyndhams-theatre-review-carey-mulligan-and-bill-nighy-star-in-splendid-revival-9546883.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
+      "file": "london-box-office--oliver-mitford.json",
+      "score": 82,
+      "publishDate": "2014-06-27",
+      "url": "https://www.londonboxoffice.co.uk/news/post/skylight-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
+      "file": "standard--henry-hitchings.json",
+      "score": 85,
+      "publishDate": "2014-06-19",
+      "url": "http://www.standard.co.uk/goingout/theatre/skylight-wyndhams-theatre--theatre-review-five-stars--bill-nighy-and-carey-mulligan-are-superb-9547822.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"episode\n \n \n \n \n 2\""
         }
       ]
     },
@@ -45591,6 +45755,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "staff-meal-off-broadway-2024",
+      "file": "vulture--sara-holdren.json",
+      "score": 90,
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-abe-koogler-staff-meal.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -50969,6 +51147,19 @@
     },
     {
       "showId": "the-effect-off-broadway-2024",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": null,
+      "url": "https://culturesauce.com/the-effect-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-effect-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-effect-off-broadway-2024",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 63,
       "publishDate": "2024-03-13",
@@ -50978,6 +51169,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from the-effect-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-effect-off-broadway-2024",
+      "file": "nytg--allison-considine.json",
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/the-effect-off-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-effect-west-end-2023"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -54385,6 +54594,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-2021",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 91,
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/review-a-fairytale-of-american-dreams-and-financial-nightmares-in-the-lehman-trilogy_92877/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -64904,6 +65127,7 @@
     {
       "showId": "what-the-end-will-be-off-broadway-2022",
       "file": "nyt-theater--unknown.json",
+      "score": 58,
       "publishDate": null,
       "url": "https://newyorktheater.me/2022/06/02/theater-reviews-what-the-end-will-be-and-exception-to-the-rule/",
       "findings": [
@@ -70504,6 +70728,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "bakersfield-mist-west-end-2014",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-bakersfield-mist-duchess-theatre-3stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -77631,6 +77869,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "english-2025",
+      "file": "theater-life--samuel-l-leiter.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/english1-2/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -114027,6 +114278,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "wine-in-the-wilderness-off-broadway-2025",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/glass-kill-what-if-if-only-imp-wine-in-the-wilderness/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
