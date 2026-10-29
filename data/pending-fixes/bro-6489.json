@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6489",
   "planId": "92ac358b-acf3-460e-a03c-3f3b456a38d1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T02:48:28.426Z",
   "submitter": {
     "name": null,
@@ -134,5 +134,69 @@
         "description": "shows.json: orlando-off-broadway-2026.isRevival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T06:36:05.740Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for between-riverside-and-crazy-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-morbs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-morbs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-morbs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for lord-nil-7-deadly-sins-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for clowns-like-me-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for everythings-fine-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for three-houses-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jesa-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for orlando-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for orlando-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for orlando-off-broadway-2026 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
 }
