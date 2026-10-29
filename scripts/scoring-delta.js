@@ -366,9 +366,9 @@ function isSignificant({ cannotAutoVerify = false, dataInputDrift = false, llmIn
 // KNOWN RESIDUAL GAP (code review, task #1929): this is a textual proximity
 // heuristic anchored on logExclusion( calls, not a semantic replay of the
 // loop. It cannot see an inclusion-affecting change with NO logExclusion(
-// call anywhere nearby — e.g. rebuild-all-reviews.js's `if (scoreResult ===
-// null) { ...; return; }` branch has no logExclusion call at all, so widening
-// that condition would not trigger this detector. Closing that class would
+// call anywhere nearby. The formerly silent no-score branch now logs
+// skippedNoScore (BRO-925), and exact/prefix dedup skips log skippedDuplicate
+// (BRO-2453), but a new silent branch could still escape. Closing that class would
 // mean extracting the real per-file decision chain into a pure function
 // shared by rebuild-all-reviews.js and this replay — a larger refactor than
 // this fix, tracked separately. This detector's guarantee is narrower: any

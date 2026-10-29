@@ -56,9 +56,9 @@ const LIMIT = Number(arg('limit')) || Infinity;
 // Stop starting new shows after this long so the summary still prints inside
 // cloud-run-script's 55-minute limit; unvisited shows are counted, never guessed.
 const BUDGET_MS = (Number(arg('budget-min')) || 45) * 60 * 1000;
-// A file with no [EXCLUSION] line was either included or dropped silently
-// (exact outlet|critic dedup losers are never logged); the show's included
-// count tells the two apart.
+// No log is not proof of inclusion: whole-show skips or a future silent
+// exclusion can also omit a per-file line. Exact/prefix dedup losers now
+// log skippedDuplicate (BRO-2453); compare included counts as well.
 const NO_LOG = 'no-exclusion-logged';
 const ONLY = process.argv.filter(a => a.startsWith('--show=')).map(a => a.slice(7));
 

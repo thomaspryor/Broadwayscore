@@ -4954,6 +4954,7 @@ showDirs.forEach(showId => {
       const dedupKey = `${outletKey}|${criticKey}`;
       // Skip exact duplicates (keep first occurrence)
       if (seenKeys.has(dedupKey)) {
+        logExclusion("skippedDuplicate", showId, file, data, { reason: "exact outlet/critic match" });
         stats.skippedDuplicate++;
         return;
       }
@@ -5120,6 +5121,7 @@ showDirs.forEach(showId => {
         }
       }
       if (prefixDuplicate) {
+        logExclusion("skippedDuplicate", showId, file, data, { reason: "critic name prefix match" });
         stats.skippedDuplicate++;
         return;
       }
