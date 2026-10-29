@@ -2,7 +2,7 @@ export { SCORE_TIERS, getScoreTier, getScoreTierRange, getScoreColorClass, getSc
 export type { ScoreTier, ScoreBadgeProps } from './ScoreBadge';
 export { ScoreBreakdownBar, getBreakdownTier } from './ScoreBreakdownBar';
 export type { BreakdownTier } from './ScoreBreakdownBar';
-export { StatusBadge, FormatPill, GenrePill, ProductionPill, AudienceChip, CategoryBadge } from './ShowPills';
+export { StatusBadge, ReviewsSyncingBadge, FormatPill, GenrePill, ProductionPill, AudienceChip, CategoryBadge } from './ShowPills';
 export { ToggleBar } from './ToggleBar';
 export { ScoreToggle } from './ScoreToggle';
 export { StatGrid } from './StatGrid';

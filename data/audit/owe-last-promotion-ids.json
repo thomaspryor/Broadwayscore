@@ -1,65 +1,35 @@
 {
-  "generatedAt": "2026-10-28T20:25:39.764Z",
+  "generatedAt": "2026-10-29T20:25:02.706Z",
   "promoted": [
     {
-      "id": "chamber-off-west-end-2027",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": "https://parktheatre.co.uk/events/papatango-prize-winner-2026/"
-    },
-    {
-      "id": "noises-off-off-west-end-2027",
+      "id": "uncle-vanya-off-west-end-2027",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": "https://www.stratfordeast.com/whats-on"
     },
     {
-      "id": "diana-the-untold-and-untrue-story-off-west-end-2027",
+      "id": "noel-cowards-sirocco-off-west-end-2026",
+      "source": "venue-page:finborough-theatre",
+      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/sirocco"
+    },
+    {
+      "id": "the-woolgatherer-off-west-end-2027",
+      "source": "venue-page:finborough-theatre",
+      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/the-woolgatherer"
+    },
+    {
+      "id": "all-our-lives-off-west-end-2027",
+      "source": "venue-page:finborough-theatre",
+      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/all-our-lives"
+    },
+    {
+      "id": "parasocial-activity-off-west-end-2027",
+      "source": "venue-page:southwark-playhouse",
+      "sourceUrl": "https://southwarkplayhouse.co.uk/"
+    },
+    {
+      "id": "for-dolores-off-west-end-2027",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    },
-    {
-      "id": "stand-up-if-youre-here-tonight-off-west-end-2027",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    },
-    {
-      "id": "before-the-coffee-gets-cold-off-west-end-2027",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": "https://lyric.co.uk/whats-on/"
-    },
-    {
-      "id": "brocks-mill-off-west-end-2027",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": "https://lyric.co.uk/whats-on/"
-    },
-    {
-      "id": "hare-and-tortoise-off-west-end-2027",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": "https://lyric.co.uk/whats-on/"
-    },
-    {
-      "id": "once-upon-a-time-in-sokoto-off-west-end-2027",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": "https://lyric.co.uk/whats-on/"
-    },
-    {
-      "id": "the-book-thief-off-west-end-2027",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": "https://lyric.co.uk/whats-on/"
-    },
-    {
-      "id": "the-young-team-off-west-end-2027",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": "https://lyric.co.uk/whats-on/"
-    },
-    {
-      "id": "we-have-always-lived-in-the-castle-off-west-end-2027",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": "https://lyric.co.uk/whats-on/"
-    },
-    {
-      "id": "talking-in-tongues-off-west-end-2027",
-      "source": "venue-page:theatre-royal-stratford-east",
-      "sourceUrl": "https://www.stratfordeast.com/whats-on"
     }
   ],
   "rejected": [
@@ -160,6 +130,14 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-09))"
     },
     {
+      "title": "Noises Off",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as noises-off-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Robin Hood",
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
@@ -174,6 +152,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as surinderella-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Talking In Tongues",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as talking-in-tongues-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Orlando: A Pornobiography",
@@ -368,20 +354,20 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Garry Starr Classic Penguins",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
       "title": "An Oak Tree",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
+    },
+    {
+      "title": "Garry Starr Classic Penguins",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
     },
     {
       "title": "Boys Who Dance",
@@ -414,6 +400,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as ayla-a-new-musical-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Taken The Unofficial Musical",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as taken-the-unofficial-musical-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "In Pieces 2",
@@ -536,6 +530,14 @@
       "reason": "already in shows.json as birdcatcher-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Chamber",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as chamber-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Drag Tales",
       "venue": "Park Theatre",
       "source": "venue-page:park-theatre",
@@ -558,14 +560,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as florence-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Gianni Schicchi (or Where There's A Will)",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as gianni-schicchi-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Goblin",
@@ -776,6 +770,14 @@
       "reason": "already in shows.json as the-reckoning-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Diana: The Untold and Untrue Story",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as diana-the-untold-and-untrue-story-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Dick Whittington and His Cat",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
@@ -800,12 +802,28 @@
       "reason": "already in shows.json as double-bill-tell-me-straight-and-aggy-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Furniture Boys",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 3 performance(s) listed — a short booking, not a run"
+    },
+    {
       "title": "God Is A Woman The Musical",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as god-is-a-woman-the-musical-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Stand Up If You're Here Tonight",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as stand-up-if-youre-here-tonight-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Thou Shalt Sit The F*** Down",
@@ -824,12 +842,28 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-01))"
     },
     {
+      "title": "Before the Coffee Gets Cold",
+      "venue": "Lyric Hammersmith",
+      "source": "venue-page:lyric-hammersmith",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as before-the-coffee-gets-cold-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Billy Goats Gruff",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
+      "title": "Brock's Mill",
+      "venue": "Lyric Hammersmith",
+      "source": "venue-page:lyric-hammersmith",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as brocks-mill-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Cinderella",
@@ -864,12 +898,12 @@
       "reason": "already in shows.json as franky-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Inclusive Dance with Anna Quiney",
+      "title": "Hare & Tortoise",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as hare-and-tortoise-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Jaja's African Hair Braiding",
@@ -912,12 +946,28 @@
       "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
     },
     {
+      "title": "Once Upon a Time in Sokoto",
+      "venue": "Lyric Hammersmith",
+      "source": "venue-page:lyric-hammersmith",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as once-upon-a-time-in-sokoto-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Strange Creatures: A Beegu Story",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
+      "title": "The Book Thief",
+      "venue": "Lyric Hammersmith",
+      "source": "venue-page:lyric-hammersmith",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-book-thief-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "The Luke Westlake Scholarship",
@@ -950,6 +1000,22 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
+      "title": "The Young Team",
+      "venue": "Lyric Hammersmith",
+      "source": "venue-page:lyric-hammersmith",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-young-team-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "We Have Always Lived in the Castle",
+      "venue": "Lyric Hammersmith",
+      "source": "venue-page:lyric-hammersmith",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as we-have-always-lived-in-the-castle-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "YAF: Animation with Mary Martins",
@@ -1008,14 +1074,6 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-30))"
     },
     {
-      "title": "YAF: Clay Crafts for Beginners",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
-    },
-    {
       "title": "YAF: Comic And Manga Illustration",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
@@ -1040,28 +1098,12 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
     },
     {
-      "title": "YAF: Facilitation Skills: How to run a room",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
-    },
-    {
       "title": "YAF: Fashion Printing and Textile Design with IDEA Design Hub",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Guitar For Beginners",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
     },
     {
       "title": "YAF: How To Be A Theatre Producer",
@@ -1096,14 +1138,6 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
     },
     {
-      "title": "YAF: Inclusive Dance with AMICI Dance Theatre Company",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
-    },
-    {
       "title": "YAF: K-Pop Fan Art",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
@@ -1126,14 +1160,6 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Musical Theatre with Disney Theatrical",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
     },
     {
       "title": "YAF: Paint And Smoothie Sip",
@@ -1222,22 +1248,6 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-30))"
-    },
-    {
-      "title": "YAF: Theatre Directing",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
-    },
-    {
-      "title": "YAF: Writing for Musical Theatre with Eden Tredwell",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-28))"
     },
     {
       "title": "A Hunger Artist",

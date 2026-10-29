@@ -1,4 +1,5 @@
 import { resolveShowFormat } from '@/lib/show-format';
+import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
 
 // Status pill - subtle background with accent color
 export function StatusBadge({ status }: { status: string }) {
@@ -8,6 +9,7 @@ export function StatusBadge({ status }: { status: string }) {
     previews: 'IN PREVIEWS',
     upcoming: 'UPCOMING',
     announced: 'ANNOUNCED',
+    syncing: 'Reviews syncing',
   }[status] || status.toUpperCase();
 
   const colorClass = {
@@ -16,13 +18,18 @@ export function StatusBadge({ status }: { status: string }) {
     previews: 'bg-purple-500/15 text-purple-400',
     upcoming: 'bg-blue-500/15 text-blue-400',
     announced: 'bg-blue-500/15 text-blue-400',
+    syncing: 'bg-status-previews-bg text-status-previews',
   }[status] || 'bg-gray-500/15 text-gray-400';
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide ${colorClass}`}>
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full ${status === 'syncing' ? 'text-xs' : 'text-[10px]'} leading-none font-semibold uppercase tracking-wide ${colorClass}`}>
       {label}
     </span>
   );
+}
+
+export function ReviewsSyncingBadge({ show }: { show: Parameters<typeof shouldShowReviewsSyncing>[0] }) {
+  return shouldShowReviewsSyncing(show) ? <StatusBadge status="syncing" /> : null;
 }
 
 // Format pill - outline style.

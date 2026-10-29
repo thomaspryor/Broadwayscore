@@ -1220,6 +1220,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (daily-digest.yml), group daily-digest (cancel-in-progress: false).',
   },
   {
+    file: 'audit/new-show-types-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'daily-digest',
+    verifiedBy: '2026-10-29 (BRO-6542): morning-digest snapshot of new tour, pre-Broadway and UK regional shows. 1 writer (daily-digest.yml runs scripts/produce-new-show-types-snapshot.js), group daily-digest (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/new-show-types-seen.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'daily-digest',
+    verifiedBy: '2026-10-29 (BRO-6542): ledger of show ids already announced (id to first-seen time or seeded); only the producer writes it, so run the producer locally with --dry-run only. 1 writer (daily-digest.yml runs scripts/produce-new-show-types-snapshot.js), group daily-digest (cancel-in-progress: false).',
+  },
+  {
     file: 'audit/daily-snapshot.json',
     surface: 'public-repo',
     status: 'single-writer',

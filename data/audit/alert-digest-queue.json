@@ -616,37 +616,6 @@
     "queuedAt": "2026-10-29T14:21:55.789Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 29 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40891527152",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40891527152)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40887416786)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "29"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-29T17:42:27.876Z"
-  },
-  {
     "conditionKey": "land:land/bro-6485-spec",
     "title": "Landing blocked: rebase red on land/bro-6485-spec",
     "description": "land.yml did not land land/bro-6485-spec: the rebase gate went red at 5fb7f19922. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6485-spec @ 5fb7f19922 (origin/land/bro-6485-spec) → origin/main @ cd3005d4af REFUSED: rebase: branch would not rebase cleanly onto origin/main @ ab74780cf3: warning: skipped previously applied commit f241b98f09a hint: use --reapply-cherry-picks to include skipped commits hint: Disable this message with \"git config set advice.skippedCherryPicks false\" Rebasing (1/1) error: could no Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40847387146",
@@ -1315,6 +1284,37 @@
     "queuedAt": "2026-10-29T18:15:23.465Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40929654440",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40929654440)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40927871048)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "6"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "E2E Tests, Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-29T21:01:12.349Z"
+  },
+  {
     "conditionKey": "corpus-drift:autoclear-vs-ensemble",
     "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
     "description": "check-corpus-drift.js audit \"autoclear-vs-ensemble\" (node scripts/audit-autoclear-vs-ensemble.js --strict) has been drifting. Latest output:\n\nautoclear-vs-ensemble audit: 68199 files scanned.\n  wrongProduction violations: 1\n    girls-off-west-end-2026/the-recs--unknown.json :: rebuild: UK URL on London show (therecs.co.uk)\n  wrongShow violations: 0\n\nFAIL: 1 autoclear-vs-ensemble violation(s) found.",
@@ -1327,20 +1327,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T20:09:04.378Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T20:09:04.453Z"
   },
   {
     "conditionKey": "ob-venue-go-live:cinderella-the-musical-off-broadway-2027",
@@ -1588,5 +1574,92 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T20:14:34.920Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:billy-crystal-860-2026",
+    "title": "Review gap — \"Billy Crystal 860\" missing 6 cited review(s)",
+    "description": "Billy Crystal 860 (billy-crystal-860-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=billy-crystal-860-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T20:58:22.102Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:garry-starr-classic-penguins-off-west-end-2026",
+    "title": "Review gap — \"Garry Starr Classic Penguins\" missing 6 cited review(s)",
+    "description": "Garry Starr Classic Penguins (garry-starr-classic-penguins-off-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=garry-starr-classic-penguins-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T20:58:22.145Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:girls-off-west-end-2026",
+    "title": "Review gap — \"Girls\" missing 42 cited review(s)",
+    "description": "Girls (girls-off-west-end-2026): 42 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=girls-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T20:58:22.166Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
+    "title": "Review gap — \"The Imaginary Invalid\" missing 3 cited review(s)",
+    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T20:58:22.332Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6541-census-ingest",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6541-census-ingest",
+    "description": "land.yml did not land land/bro-6541-census-ingest: the scripts-lib-tests gate went red at ff76def532. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40950501918",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6541-census-ingest"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "ff76def532256ac1fdc8aca5b288890e9ec580ec"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40950501918"
+      }
+    ],
+    "queuedAt": "2026-10-29T20:56:53.023Z"
   }
 ]

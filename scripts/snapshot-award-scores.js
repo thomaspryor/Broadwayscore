@@ -11,14 +11,15 @@
  * parity warning; same idea applied to TS ↔ JS.)
  *
  * Usage:
- *   node scripts/snapshot-award-scores.js                  # writes today
+ *   node scripts/snapshot-award-scores.js                  # writes both markets today
  *   node scripts/snapshot-award-scores.js --date=2026-05-23
  *   node scripts/snapshot-award-scores.js --markets=broadway,west-end
- *   node scripts/snapshot-award-scores.js --stdout         # dry-run, no write
+ *   node scripts/snapshot-award-scores.js --stdout         # Broadway dry-run, no write
  */
 
 const fs = require('fs');
 const path = require('path');
+const { snapshotFilename } = require('./lib/award-score-movers');
 
 const ROOT = path.resolve(__dirname, '..');
 const AWARDS_PATH = path.join(ROOT, 'data', 'awards.json');
@@ -271,7 +272,7 @@ function computeSiteAwardScore(showId, awardsShows, market = 'broadway', today =
 // ----- Main -----
 
 function parseArgs(argv) {
-  const args = { date: null, markets: ['broadway'], stdout: false };
+  const args = { date: null, markets: null, stdout: false };
   for (const a of argv.slice(2)) {
     if (a.startsWith('--date=')) args.date = a.slice('--date='.length);
     else if (a.startsWith('--markets=')) args.markets = a.slice('--markets='.length).split(',').map((x) => x.trim()).filter(Boolean);
@@ -279,9 +280,13 @@ function parseArgs(argv) {
     else if (a === '--all-markets') args.markets = ['broadway', 'west-end'];
     else if (a === '-h' || a === '--help') {
       console.log('Usage: snapshot-award-scores.js [--date=YYYY-MM-DD] [--markets=broadway,west-end] [--stdout]');
+      console.log('Default: write Broadway and West End. --stdout defaults to a single Broadway snapshot.');
       process.exit(0);
     }
   }
+  // The scheduled workflow passes no market input. Snapshot both editions,
+  // preserving the single-JSON Broadway contract of an unqualified --stdout.
+  if (!args.markets) args.markets = args.stdout ? ['broadway'] : ['broadway', 'west-end'];
   if (!args.date) args.date = new Date().toISOString().slice(0, 10);
   return args;
 }
@@ -326,9 +331,7 @@ function main() {
     if (args.stdout) {
       console.log(JSON.stringify(snapshot, null, 2));
     } else {
-      const fname = args.markets.length === 1 && market === 'broadway'
-        ? `${args.date}.json`
-        : `${args.date}-${market}.json`;
+      const fname = snapshotFilename(args.date, market);
       const outPath = path.join(OUT_DIR, fname);
       fs.writeFileSync(outPath, JSON.stringify(snapshot, null, 2) + '\n');
       results.push({ market, path: outPath, count: snapshot.showCount });

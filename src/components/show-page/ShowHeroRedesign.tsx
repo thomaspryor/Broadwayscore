@@ -39,6 +39,7 @@ import {
   FormatPill,
   ProductionPill,
   StatusBadge,
+  ReviewsSyncingBadge,
   CategoryBadge,
   getScoreTier,
 } from '@/components/show-cards';
@@ -85,6 +86,7 @@ import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
 import CiteScoreControl from '@/components/show-page/CiteScoreControl';
 import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
 
 // ─── Props ───────────────────────────────────────────────────────────────
 
@@ -879,6 +881,14 @@ function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pic
 }
 
 function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected = false }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number; reviewsRemaining: number; noReviewsExpected?: boolean }) {
+  if (shouldShowReviewsSyncing(show)) {
+    return (
+      <div className="card p-4 text-center bg-surface-overlay border-white/5" data-testid="reviews-syncing">
+        <ReviewsSyncingBadge show={show} />
+        <p className="text-xs text-gray-400 mt-1">Critic reviews are being collected.</p>
+      </div>
+    );
+  }
   // A national tour is reviewed city by city as it plays, so its empty state
   // says reviews are coming in rather than that something is missing (BRO-4931).
   const isTour = show.category === 'tour';

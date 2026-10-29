@@ -34,6 +34,9 @@ export interface ReviewListItem {
   quote?: string;
   summary?: string;
   pullQuote?: string;
+  // The critic's own published rating, display-ready ("4/5 stars", "B+"). Only
+  // present when it drove or anchored the score (see displayed-original-rating.js).
+  originalRating?: string;
   // Set when this review belongs to a returning production's declared
   // priorRuns window — e.g. "2022 Gielgud run" — so a since-departed cast
   // member's quote reads in context instead of as current casting (BRO-1397).
@@ -361,8 +364,24 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
     </div>
   ) : null;
 
+  // Subtle caption under the score badge so readers can see the rating our
+  // score is anchored to (the pull quote only mentions it when the critic
+  // happened to say it there). It hangs in the gutter left of the quote, which
+  // is pl-24 wide, so it stacks on two lines to fit.
+  const ratingNote = review.originalRating ? (
+    <div
+      className="absolute left-0 top-[50px] sm:top-[54px] w-20 text-sm leading-tight text-gray-500"
+      title="The published rating for this review. It anchors our score."
+      data-testid="review-original-rating"
+    >
+      <span className="block">Rated</span>
+      <span className="block">{review.originalRating}</span>
+    </div>
+  ) : null;
+
   return (
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
+    // min-h keeps a quote-less review tall enough for the two-line rating caption.
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group ${review.originalRating ? 'relative min-h-[100px]' : ''}`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       {/* CRITICAL: Outlet name vertical centering with score badge and logo.
          Broken 15+ times. Root cause: <a> tags (from Next.js Link) render as
          display:block in flex and ALWAYS stretch to cross-axis height (44px),
@@ -456,6 +475,8 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         </div>
         {mobileStopLine}
       </div>
+      {/* After the header and quote in the DOM so screen readers hear the score and outlet first; positioned under the badge. */}
+      {ratingNote}
     </article>
   );
 });

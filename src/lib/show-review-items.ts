@@ -6,6 +6,7 @@ import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getOutletBadge } from '@/config/outlet-logos';
 import { TOP_CRITICS } from '@/config/scoring';
 import { getPriorRunLabel } from '../../scripts/lib/prior-run-label';
+import { formatOriginalRating } from '@/lib/format-original-rating';
 import { getTourSchedule } from '@/lib/data-tour-schedule';
 import { stopForReview } from '@/lib/tour-schedule';
 import type { ComputedShow } from '@/lib/data-types';
@@ -36,6 +37,7 @@ export function getReviewListItems(show: ComputedShow): ReviewListItem[] {
     quote: r.quote,
     summary: r.summary,
     pullQuote: r.pullQuote,
+    originalRating: formatOriginalRating(r.originalRating) ?? undefined,
     priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
     stopLabel: tourStops.length ? (stopForReview(tourStops, r.publishDate)?.city ?? null) : undefined,
     isTopCritic: !!(r.criticName && TOP_CRITICS.has(r.criticName)) || undefined,

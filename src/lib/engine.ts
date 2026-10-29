@@ -124,6 +124,7 @@ export interface RawShow {
   // BRO-6518: local-only shows (scripts/lib/local-market.js); must survive computeShowData
   localOnly?: boolean;
   discoverySource?: string;
+  provisional?: boolean;
   // Homepage curation overrides (off-Broadway shows surfaced on the Broadway grid).
   // See src/lib/homepage-notability.ts. Editorial escape hatches over the auto rule.
   homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
@@ -287,6 +288,7 @@ export interface ComputedShow {
   // BRO-6518: local-only shows (scripts/lib/local-market.js); must survive computeShowData
   localOnly?: boolean;
   discoverySource?: string;
+  provisional?: boolean;
   // Homepage curation overrides (see RawShow above / homepage-notability.ts)
   homepageInclude?: boolean;
   homepageExclude?: boolean;
@@ -696,6 +698,7 @@ export function computeShowData(
     city: show.city ?? null,
     localOnly: show.localOnly,
     discoverySource: show.discoverySource,
+    provisional: show.provisional,
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
     priorRuns: show.priorRuns,

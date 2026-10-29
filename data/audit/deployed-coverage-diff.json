@@ -1,190 +1,30 @@
 {
-  "generatedAt": "2026-10-29T19:33:01.439Z",
+  "generatedAt": "2026-10-29T20:59:16.275Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 285,
-  "clean": 274,
-  "defective": 11,
+  "clean": 284,
+  "defective": 1,
   "byType": {
-    "score-drift": 11
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "openingDate": "2026-10-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.11 vs local 83.4 (Δ0.29)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.15 vs local 78.59 (Δ1.44)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.22 vs local 72.52 (Δ0.3)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
-      "openingDate": "2026-10-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 57.24 vs local 59.22 (Δ1.98)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "the-kick-inside-off-broadway-2026",
-      "title": "The Kick Inside",
+      "showId": "lanny-bristol-old-vic-regional-2026",
+      "title": "Lanny",
       "openingDate": "2026-10-23",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.34 vs local 68.67 (Δ1.67)"
+          "detail": "deployed cs 68.07 vs local 69.41 (Δ1.34)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.23 vs local 83.13 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "the-imaginary-invalid-2026",
-      "title": "The Imaginary Invalid",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 66.68 vs local 67.33 (Δ0.65)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 20,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "billy-crystal-860-2026",
-      "title": "Billy Crystal 860",
-      "openingDate": "2026-10-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.9 vs local 82.7 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
-      "openingDate": "2026-10-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.5 vs local 78.55 (Δ0.95)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "cadel-lungs-on-legs-west-end-2026",
-      "title": "Cadel: Lungs On Legs",
-      "openingDate": "2026-10-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.19 vs local 79.89 (Δ1.7)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
-    },
-    {
-      "showId": "fences-off-west-end-2026",
-      "title": "Fences",
-      "openingDate": "2026-10-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.94 vs local 83.66 (Δ1.72)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-10-29T19:32:57.690Z"
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-10-29T20:59:10.187Z"
     }
   ],
   "persistentDefective": 0,

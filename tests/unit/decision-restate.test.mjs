@@ -99,3 +99,10 @@ test('review blockers (BRO-6539): voided/needed/undone comments are not answers;
   assert.equal(answerState([ask('2026-10-29T10:00:00Z'), { body: 'Visual approval ref VQA-1', createdAt: '2026-10-29T11:00:00Z' }, { body: 'Visual approval stale VQS-1', createdAt: '2026-10-29T12:00:00Z' }]).answered, false);
   assert.ok(link);
 });
+
+test('isIssueAnswered reads Linear-shaped comments and fails open', () => {
+  const d = require('../../scripts/lib/decision-restate.js');
+  assert.equal(d.isIssueAnswered({}), false);
+  assert.equal(d.isIssueAnswered({ comments: { nodes: [{ body: 'Asked the owner to look at it', createdAt: '2026-10-29T10:00:00Z' }, { body: 'Owner answered: yes', createdAt: '2026-10-29T11:00:00Z' }] } }), true);
+  assert.equal(d.isIssueAnswered({ comments: { nodes: [{ body: 'Owner answered: yes', createdAt: '2026-10-29T09:00:00Z' }, { body: 'Asked the owner to look at it', createdAt: '2026-10-29T10:00:00Z' }] } }), false);
+});
