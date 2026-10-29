@@ -99,7 +99,7 @@ async function fetchBrightData(url) {
   }
 }
 
-const SD_CREDITS = { standard: 1, render: 5, premium: 10 };
+const SD_CREDITS = { standard: creditsFor('sd', 'page'), render: creditsFor('sd', 'render'), premium: creditsFor('sd', 'premium') };
 
 // mode: 'standard' (1cr), 'render' (dynamic=true, 5cr), 'premium' (premium=true, 10cr)
 async function fetchScrapingdog(url, mode) {

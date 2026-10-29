@@ -32,12 +32,8 @@
  * preference. serp/serp-news/serp-images (url-discovery.js) share one rate;
  * only the telemetry `host` differs by search type, not the credit cost.
  *
- * Only 4 call sites route through creditsFor() as of BRO-3057 (the two above
- * plus url-discovery.js's SERP calls) — ~15 other recordSbCall() call sites
- * elsewhere in scripts/ (fetch-square-images.js, scrape-bww-reviews.js,
- * sweep-we-aggregators.js, etc.) still inline their own credit literals into
- * sbBilledCredits(status, credits) and do NOT read this table. Migrating them
- * is a separate, larger refactor — out of scope here.
+ * Every recordSbCall()/sbBilledCredits() call site derives its credits from here (BRO-3072);
+ * tests/unit/sb-credits-no-literals.test.mjs fails if a numeric literal comes back.
  */
 'use strict';
 
@@ -59,6 +55,7 @@ const CREDITS = {
     premium: 10,
     standard: 1,
     premium_proxy: 10,
+    render_premium: 25, // render_js + premium_proxy (check-cookie-health.js cookie probe, BRO-4215)
     stealth_proxy: 75,
     serp: 25,
     'serp-news': 25,
