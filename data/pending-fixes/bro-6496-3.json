@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-6496-3",
+  "planId": "4b44dd37-dd6e-4e71-9ef4-e32933db543a",
+  "status": "pending",
+  "createdAt": "2026-10-29T23:24:24.658Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6496 fact-check fixes: Caesar and Cleopatra opened 2019-09-24 (TheaterMania; BWW had copied the first preview); This Ain't No Disco first preview 2018-06-30 (Atlantic Theater's own page)",
+    "steps": [
+      "shows.json: caesar-and-cleopatra-off-broadway-2019.openingDate",
+      "shows.json: caesar-and-cleopatra-off-broadway-2019.openingDateSource",
+      "shows.json: this-aint-no-disco-off-broadway-2018.previewsStartDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caesar-and-cleopatra-off-broadway-2019",
+        "field": "openingDate",
+        "oldValue": "2019-09-03",
+        "newValue": "2019-09-24",
+        "description": "shows.json: caesar-and-cleopatra-off-broadway-2019.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caesar-and-cleopatra-off-broadway-2019",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "theatermania",
+        "description": "shows.json: caesar-and-cleopatra-off-broadway-2019.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-aint-no-disco-off-broadway-2018",
+        "field": "previewsStartDate",
+        "oldValue": "2018-06-29",
+        "newValue": "2018-06-30",
+        "description": "shows.json: this-aint-no-disco-off-broadway-2018.previewsStartDate"
+      }
+    ]
+  }
+}
