@@ -131,6 +131,7 @@ Round 2 (BRO-6485):
 10. **Silent SERP truncation.** Pagination stopped on any page under 10 results or when the URL filter rejected a whole page. It now stops on a short page (under 8) or a page with no new URLs, and notes when the page cap was hit.
 11. **Time Out listings read as reviews.** Most `/newyork/theater/<show>` pages are listings with an unsigned blurb: 111 of the 119 round-2 Time Out gaps had no critic. Those pages count as reviews only when their JSON-LD Review names an author (`requireReviewAuthor`). Time Out recall moved from .632 to .889 on a local run.
 12. **Same-titled shows at LA and Chicago houses.** Front Mezz Junkies' "Fountain Theatre's Fatherland" (Los Angeles) matched the off-Broadway Fatherland. The Fountain Theatre and Kokandy are now other-market terms.
+13. **Ingest flood.** Round 2 dispatched 323 `ingest-urls.yml` runs at 12-second spacing. Each started its own scoring run and a rebuild, so 300+ runs sat queued for over an hour and every session's land run waited behind them. `scripts/dispatch-ingest-batch.js` now runs batches: it validates the whole plan first (URL shape, outlet id in the registry), ingests with `no_rebuild` only while the repo's queued+pending count is under a cap (15), checkpoints each show, then starts one `llm-ensemble-score` list run and one rebuild. Pure decisions live in `scripts/lib/ingest-batch-pacing.js` with tests.
 
 The production matcher `findMatchingShows` is unchanged. The census adds its own dated title-variant stage on top, so these fixes cannot change live review routing.
 
@@ -160,6 +161,58 @@ The CI run reads the review files themselves (flagged and unscored included), so
 
 T1 and T2 outlets sit at 0.86 to 0.99. The holes are in T3 (stagebuddy, culturesauce, exeunt, theatre-reviews-limited, stageandcinema).
 
+## Results (round 2, CI, 2026-10-29, fixed matcher)
+
+Recall is (held + alt) / (held + alt + gap + misfile), measured before the round-2 ingest. "New" marks an outlet the round-1 run could not read.
+
+| Source | Outlet | Recall before |
+|---|---|---|
+| WordPress API | theatermania | 0.998 |
+| | theater-scene, thewrap, variety, deadline, hollywood-reporter, amny, theatre-reviews-limited, the-recs, operawire, nyt-theater | 1.00 |
+| | theater-life | 0.992 |
+| | culturesauce | 0.997 |
+| | stageandcinema | 0.992 |
+| | stagebuddy (round 1: 0.31) | 0.989 |
+| | nysr | 0.999 |
+| | one-minute-critic | 0.98 |
+| | komisar | 0.979 |
+| | theater-pizzazz | 0.891 |
+| | pages-on-stages (new) | 0.826 |
+| | frontmezzjunkies (new) | 0.346 |
+| | dc-theater-arts | 0 (2 items, both gaps) |
+| Sitemap | nytg | 0.998 |
+| | broadwaynews | 1.00 |
+| | dailybeast (new) | 0.991 |
+| | timeout (new) | 0.632, 0.889 after bug class 11 |
+| | interested-bystander (new) | 0.638 |
+| | thestage (new) | 0.571 |
+| | off-off-online (new) | 0.534 |
+| Site-scoped SERP | nypost, ew, observer, guardian, latimes, new-york-sun (new) | 1.00 |
+| | nytimes (new) | 0.961 |
+| | nydailynews (new) | 0.958 |
+| | usatoday (new) | 0.938 |
+| | chicagotribune (new) | 0.90 |
+| | wsj (new) | 0.882 |
+| | theatrely (new) | 0.866 |
+| | talkinbroadway (new) | 0.823 |
+| | newyorker (new) | 0.75 |
+| | front-row-center (new) | 0.741 |
+| | washpost (new) | 0.50 (1 held, 1 gap) |
+| | broadway-and-me (new) | 0.20 |
+| | cititour (new) | 1.00 (page cap hit) |
+
+SERP recall is a floor on what the search engine indexes, and several SERP runs hit the page cap, so their recall covers only the pages read. Exeunt was measured by another worker (0.743).
+
+Still unmeasurable:
+- times-square-chronicles: all 36 items read were news or features, none a review.
+- queerty: all 64 theater items were news; it has no review taxonomy.
+- la-voce-di-new-york: the theater feed returned no items.
+- lighting-and-sound-america: one held review and nothing enumerable (design features, not reviews).
+- slantmagazine: the sitemap answers 403, also from CI.
+- dtli: an aggregator, not an outlet; its pages link out rather than hold reviews.
+
+Ingest: the vetted gap list was 409 reviews across 323 shows from the WordPress and sitemap sources, plus 40 reviews across 40 shows from SERP sources (a movie review, a two-show roundup and a news item dropped while vetting). The largest shares: frontmezzjunkies 186, off-off-online 132, pages-on-stages 30, thestage 22, theatrely 12, talkinbroadway 11. Spend: about 4,465 ScrapingDog credits for SERP (about $0.40 prepaid), plus ingest fetches and Gemini scoring estimated at $1 to $3. Well under the $20 cap.
+
 ## Fixes applied (pending-fix plans)
 
 - `bro-6481-2`: Illinoise and Clara misfile moves failed at apply time because the plan used `destinationPath`; the executor reads only `destPath`. Retried as `bro-6481-4`.
@@ -169,7 +222,7 @@ T1 and T2 outlets sit at 0.86 to 0.99. The holes are in T3 (stagebuddy, cultures
 
 ## Ingest
 
-Gaps go through `ingest-urls.yml`, one run per show, which scores new files with the LLM ensemble.
+Gaps go through `ingest-urls.yml`, one run per show. For more than a handful of shows use `node scripts/dispatch-ingest-batch.js --plan=<file>` (bug class 13): it paces the ingests and scores the whole batch in one run at the end. `--dry-run` validates the plan without dispatching.
 
 - Pilot, 5 shows, 22 URLs: 16 targeted files landed, 13 complete and scored. Two were excluded by existing guards (a NYTG ticket page, a NYT audio-play review). Cost: 36 ScrapingDog credits plus scoring, well under $1.
 - Batch 2: the 28 shows with a T1 gap, vetted by hand first. Vetting found census false positives (below), so 25 shows and 96 URLs went in.
@@ -196,15 +249,12 @@ Listed for an owner call, not added: Encores! Bat Boy and High Spirits (no Encor
 
 ## Unreadable outlets
 
-HTTP 403: nytimes, talkinbroadway, wsj, nypost, ew, chicagotribune, guardian, observer, newyorker, nydailynews, usatoday, latimes (and vulture's sitemaps from a cloud session).
-Challenge pages (429/503/202): theatrely, broadway-and-me, new-york-sun, times-square-chronicles, front-row-center.
-No theater taxonomy: la-voce-di-new-york, queerty.
-No WordPress API and no sitemap configured yet: timeout, washpost, dailybeast, pages-on-stages, off-off-online, lighting-and-sound-america, cititour, frontmezzjunkies, slantmagazine, thestage, the-interested-bystander, dtli.
+Round 1 listed 29 outlets here. Round 2 read all but the six listed under "Still unmeasurable" above: the 403 and challenge-page outlets through a site-scoped, date-windowed SERP, and the rest through WordPress APIs or sitemaps.
 
 ## Follow-ups
 
-- Configure sitemaps for the "not configured" outlets above; most have one.
 - Re-run the census on CI after each ingest batch to measure the recall change, and vet each batch's URLs against the show's dates before ingest.
+- Round-2 ingest went in for every listed gap; the after-recall table below is the check that it held.
 
 ## London (BRO-6488)
 
