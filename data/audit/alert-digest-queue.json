@@ -132,6 +132,37 @@
     "queuedAt": "2026-10-29T09:06:41.546Z"
   },
   {
+    "conditionKey": "land:land/bro-3041-3688-2454-batch",
+    "title": "Landing blocked: race red on land/bro-3041-3688-2454-batch",
+    "description": "land.yml did not land land/bro-3041-3688-2454-batch: the race gate went red at 90afce38b2. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-3041-3688-2454-batch @ 90afce38b2 (origin/land/bro-3041-3688-2454-batch) → origin/main @ 06b4c1a72e [land] attempt 1/3: rebased onto 7335210a0b, 8 file(s) changed — running checks [land] verified-base: main moved 56a58ada8c → 7335210a0b across 800 file(s), substantive — re-checking on the merged tree (+25 test file(s) changed on main since the verified base); small re-check: no fil Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40825893074",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3041-3688-2454-batch"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "90afce38b22f822639cb2fb0a023242fdcf347ee"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40825893074"
+      }
+    ],
+    "queuedAt": "2026-10-29T09:22:06.051Z"
+  },
+  {
     "conditionKey": "coverage-holes:dog-mom-off-west-end-2026",
     "title": "dog-mom-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
     "description": "- rejected as not-a-review, verification says review: dog-mom-off-west-end-2026/ground--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
@@ -144,33 +175,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T09:06:41.586Z"
-  },
-  {
-    "conditionKey": "coverage-holes:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "harry-potter-and-the-cursed-child-one-part-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
-    "description": "- rejected as not-a-review, verification says review: harry-potter-and-the-cursed-child-one-part-west-end-2026/guardian--emma-john.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T09:06:41.632Z"
-  },
-  {
-    "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget (still open — BRO-5526)",
-    "description": "Still firing after 45 notifications since it was filed. Tracked at BRO-5526.\n\nDay 2026-10-28. Over budget: brightdata $7.64 > $6 (2046 serp + 3047 unlocker reqs); scrapingdog 186988 credits > 100000. 2026-10-28 · Browserbase: $0.72 (111 sessions, 27.45min) · 2026-10-28 · Bright Data: $7.64 (2046 serp / 3047 unlocker) · ScrapingBee: 27594 credits (498912 this cycle) · ScrapingDog: 186988 credits (2190140 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 108, gather-reviews.js:the-stage 4, collect-talkinbroadway-index.js 1, sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 100% attributed — top callers (covers 100% of billed calls): gather-reviews.js 3828, opening-night-poller.js 1229, collect-review-texts.js 567, replay-pending-bylines.js 260, collect-outlet-reviews.js 188 · ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): gather-reviews.js 23854cr, opening-night-poller.js 5113cr, collect-review-texts.js 2535cr, discover-opening-night-reviews.js 1600cr, collect-outlet-reviews.js 1256cr · ScrapingDog attribution: 88% attributed — top callers (covers 77% of billed credits): gather-reviews.js 120041cr, collect-outlet-reviews.js 8342cr, discover-opening-night-reviews.js 5802cr, audit-show-review-gap.js 5287cr, collect-review-texts.js 3752cr · ⚠️ ScrapingDog top-caller coverage low: 77% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
-    "severity": "error",
-    "url": null,
-    "decision": true,
-    "info": false,
-    "decisionPrompt": "Scraping spend over budget: brightdata $7.64 > $6 (2046 serp + 3047 unlocker reqs); scrapingdog 186988 credits > 100000. Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
-    "model": null,
-    "tracked": "BRO-5526",
-    "fields": [],
-    "queuedAt": "2026-10-29T09:08:04.047Z"
   }
 ]
