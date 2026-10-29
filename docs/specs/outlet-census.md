@@ -32,6 +32,8 @@ Configured in `scripts/lib/outlet-census-sources.js`.
 
 - `wp-json`: the outlet's WordPress REST API, paged by date, filtered to a review category, vertical or link pattern. Flags: `sourceSaysReview` (the category is reviews-only, so no headline review test), `requireNycSignal` (national or regional outlets: a matched item must carry an NYC signal or it is not a gap).
 - `sitemap`: a sitemap index walked for review URLs (Exeunt, Broadway News, NYTG), with page metadata fetched where the sitemap lacks headlines.
+- `sitemap` options (BRO-6485): gzip sitemaps, `childFilter` to pick children of an index (Time Out's city sitemaps, Daily Beast's yearly ones), WordPress.com mirrors (`public-api.wordpress.com/wp/v2/sites/<domain>`) for sites whose own API is closed.
+- `serp`: for outlets that block direct reads, a site-scoped Google search per calendar quarter (`after:`/`before:` dates, so a 2014 production's review cannot attach to a 2024 show). Up to 5 pages per quarter and query; budget via `--serp-budget` (default 1500 calls). A run cut short by the budget, a missing provider, the page cap or a failed sitemap child is marked `incomplete` in the report, and its recall covers only part of the outlet.
 - `unreadable`: outlets the census cannot enumerate, with the reason. They report `n/a` recall. The census does not work around bot blocks or pay for proxies.
 
 ## Buckets
@@ -120,6 +122,13 @@ Each fix has a test in `scripts/lib/outlet-census.test.mjs` or `scripts/lib/show
 4. **StageBuddy features read as reviews.** Its theater category mixes previews and interviews (`/theater-feature/`) with reviews; the census now reads `/theater-review/` URLs only.
 5. **Word-boundary title match.** "Touch" matched "Innovative Touch". Short common-word titles now need the title as a standalone phrase.
 6. **Subtitled titles in a held check.** A TheWrap "School Girls" review whose headline says "Lady Macbeth" read as a misfile to Macbeth, because the full title "School Girls; Or, The African Mean Girls Play" never appears whole. The held check now accepts the main title before ";", ":" or a spaced dash.
+
+Round 2 (BRO-6485):
+
+7. **Tour stops and concerts.** "North American Tour at SCFTA", the Ahmanson and Pantages, and "Broadway By The Year" concerts at Town Hall matched the Broadway show. Tour and venue terms now mark another market unless the text names Broadway, New York, NYC, Manhattan or Brooklyn.
+8. **Archival film reviews.** Vulture slugs ending in a pre-2015 year ("beverly-hills-cop-1984") matched a current show of the same name. A slug-end year the show title does not carry now reads as not-review.
+9. **Entity and site-name titles.** `&mdash;`, `&rsquo;` and friends were left encoded, and page titles carried the site name. Titles now decode named entities and strip exactly `og:site_name`; SERP titles strip only a suffix the outlet's results repeat, so "Theater Review - Hamlet" keeps "Hamlet".
+10. **Silent SERP truncation.** Pagination stopped on any page under 10 results or when the URL filter rejected a whole page. It now stops on a short page (under 8) or a page with no new URLs, and notes when the page cap was hit.
 
 The production matcher `findMatchingShows` is unchanged. The census adds its own dated title-variant stage on top, so these fixes cannot change live review routing.
 
