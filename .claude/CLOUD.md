@@ -104,9 +104,9 @@ Never put review text or reader contact details in a plan: the file is public.
 
 ## GitHub work in cloud (no `gh` CLI by default)
 
-CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret rotation stays on the Mac). Probe first (BRO-4595; `ToolSearch mcp__github`): with the agent proxy, `gh` may be preconfigured (`curl -sS "$HTTPS_PROXY/__agentproxy/status"`) and REST works (`gh api user`, `gh run list/view`, `gh workflow run --ref main`; without `--ref` it needs GraphQL and fails) even though `gh auth status` says the token is invalid; GraphQL is blocked, so use REST routes instead of `gh pr list`/`gh issue view`. Job logs: `curl` the API's `actions/jobs/<id>/logs` redirect into a file and slice it. Dispatch and wait: `node scripts/cloud-dispatch.js <workflow.yml> -f k=v --wait`. Monitoring: a `run_in_background` loop on the public API (works without a token) or one `get_workflow_run` per turn, never ScheduleWakeup alone.
+CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret rotation stays on the Mac). Probe first (BRO-4595): with the agent proxy, `gh` may be preconfigured (`curl -sS "$HTTPS_PROXY/__agentproxy/status"`) and REST works (`gh api user`, `gh run list/view`, `gh workflow run --ref main`; without `--ref` it needs GraphQL and fails); GraphQL is blocked, so use REST routes instead of `gh pr list`/`gh issue view`. Job logs: `curl` `actions/jobs/<id>/logs` into a file. Dispatch and wait: `node scripts/cloud-dispatch.js <workflow.yml> -f k=v --wait`. Monitoring: a `run_in_background` loop on the public API, never ScheduleWakeup alone.
 
-**Bulk dispatches (BRO-6532):** repeated dispatches of llm-ensemble-score, ingest-urls or gather-reviews go through `node scripts/capped-workflow-dispatch.js --workflow=<wf> -f k=v --wait-min=5`, never a bare `gh workflow run` loop; stop the loop on exit 3 (cap full, dispatch the rest later). Put all of a show's URLs in one ingest-urls run. One day of per-show loops left a Land run queued 2h37m.
+**Bulk dispatches (BRO-6532):** loop llm-ensemble-score, ingest-urls or gather-reviews dispatches only through `node scripts/capped-workflow-dispatch.js`; stop on exit 3.
 
 ## Multi-repo sessions (BRO-5008, BRO-5221)
 
