@@ -13,6 +13,7 @@
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { resolveMetro } = require('./lib/venue-metro');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 function planCityEdits(shows) {
   const edits = [];
@@ -29,6 +30,10 @@ function planCityEdits(shows) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/backfill-show-city.js [--plan=bro-N]  (report; --plan writes a fix plan via new-fix-plan.js)');
+    return;
+  }
   const planArg = process.argv.find((a) => a.startsWith('--plan='));
   const raw = require(path.join(__dirname, '..', 'data', 'shows.json'));
   const shows = Array.isArray(raw) ? raw : raw.shows;
