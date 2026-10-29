@@ -27,6 +27,62 @@ test('refuses a stale oldValue and leaves data unchanged', () => {
   assert.equal(data.shows[0].venue, 'Old Theatre');
 });
 
+test('a stale oldValue whose newValue is already in place is a no-op success, not a refusal (BRO-6489)', () => {
+  const data = shows();
+  const before = JSON.stringify(data);
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'venue', oldValue: 'Older Theatre', newValue: 'Old Theatre' });
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.msg, /already/);
+  assert.equal(JSON.stringify(data), before); // venue has no pin side effect
+});
+
+test('an already-in-place openingDate still gets the human pin, so enrichers cannot revert it (BRO-6489)', () => {
+  const data = { shows: [{ id: 'a-2026', title: 'A', openingDate: '2026-03-20', closingDate: '2026-05-01' }] };
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'openingDate', oldValue: '2026-03-10', newValue: '2026-03-20' });
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.msg, /already/);
+  assert.equal(data.shows[0].openingDate, '2026-03-20');
+  assert.ok(data.shows[0].humanCorrectedOpeningDate, JSON.stringify(data.shows[0]));
+});
+
+test('an already-in-place closingDate still sets humanCorrectedClosingDate (BRO-6489)', () => {
+  const data = { shows: [{ id: 'a-2026', title: 'A', closingDate: '2026-05-01' }] };
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'closingDate', oldValue: '2026-04-01', newValue: '2026-05-01' });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(data.shows[0].humanCorrectedClosingDate, true);
+});
+
+test('an already-in-place isRevival still syncs the revival tags (BRO-6489)', () => {
+  const data = { shows: [{ id: 'a-2026', isRevival: true, tags: ['new'] }] };
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'isRevival', oldValue: false, newValue: true });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(data.shows[0].tags, ['revival']);
+  // a stale oldValue whose newValue is also different is still refused
+  assert.equal(applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'isRevival', oldValue: null, newValue: false }).ok, false);
+});
+
+test('already-in-place: noop flag, priorRuns checked against the stored value, no new null key, commercial still refuses (BRO-6489)', () => {
+  const runs = [{ venue: 'A', start: '2020-01-01', end: '2020-02-01' }, { venue: 'B', start: '2021-01-01', end: '2021-02-01' }];
+  const data = { shows: [{ id: 'a-2026', venue: 'X', priorRuns: runs }] };
+  const pr = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'priorRuns', oldValue: [], newValue: runs });
+  assert.equal(pr.ok, true, pr.reason);
+  assert.equal(pr.noop, true);
+  const nul = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'runtime', oldValue: '2h', newValue: null });
+  assert.equal(nul.ok, true, nul.reason);
+  assert.equal('runtime' in data.shows[0], false);
+  const fresh = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'venue', oldValue: 'X', newValue: 'Y' });
+  assert.equal(fresh.noop, undefined);
+  const com = { shows: { 'a-slug': { notes: 'n' } } };
+  assert.equal(applyDataEdit(com, { file: 'commercial.json', showId: 'a-2026', showSlug: 'a-slug', field: 'notes', oldValue: 'old', newValue: 'n' }).ok, false);
+});
+
+test('audience-buzz: a stale oldValue whose newValue is already in place is a no-op success (BRO-6489)', () => {
+  const data = { shows: { 'a-2026': { title: 'New Title' } } };
+  const r = applyDataEdit(data, { file: 'audience-buzz.json', showId: 'a-2026', field: 'title', oldValue: 'Old Title', newValue: 'New Title' });
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.msg, /already/);
+});
+
 test('an absent field compares as oldValue null (BRO-4623)', () => {
   const data = shows();
   const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'runtime', oldValue: null, newValue: '2h' });
