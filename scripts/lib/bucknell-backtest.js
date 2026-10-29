@@ -184,7 +184,7 @@ function splitNoCommercial(rows, documentedShows) {
   const noCommAll = rows.filter((r) => r.showId && !r.commercialKey);
   return {
     documented: noCommAll.filter((r) => doc[r.showId]),
-    open: noCommAll.filter((r) => !doc[r.showId]),
+    openRows: noCommAll.filter((r) => !doc[r.showId]),
     staleDoc: Object.keys(doc).filter((id) => !noCommAll.some((r) => r.showId === id)),
   };
 }

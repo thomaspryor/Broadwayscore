@@ -116,7 +116,7 @@ test('splitNoCommercial separates documented no-source shows and flags stale ent
   ];
   const out = splitNoCommercial(rows, { a: { reason: 'x' }, c: { reason: 'now has a record' }, gone: { reason: 'no page' } });
   assert.deepEqual(out.documented.map((r) => r.showId), ['a']);
-  assert.deepEqual(out.open.map((r) => r.showId), ['b']);
+  assert.deepEqual(out.openRows.map((r) => r.showId), ['b']);
   assert.deepEqual(out.staleDoc.sort(), ['c', 'gone']);
-  assert.deepEqual(splitNoCommercial(rows, undefined).open.map((r) => r.showId), ['a', 'b']);
+  assert.deepEqual(splitNoCommercial(rows, undefined).openRows.map((r) => r.showId), ['a', 'b']);
 });

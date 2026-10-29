@@ -37,8 +37,9 @@ const noSourceDoc = require(path.join(__dirname, '..', 'data', 'analysis', 'buck
 const split = splitNoCommercial(result.rows, noSourceDoc);
 
 if (argv.includes('--json')) {
-  for (const r of result.rows) if (noSourceDoc[r.showId] && !r.commercialKey) r.documentedNoSource = true;
-  console.log(JSON.stringify({ ...result, staleDoc: split.staleDoc }, null, 2));
+  const documentedIds = new Set(split.documented.map((r) => r.showId));
+  const rows = result.rows.map((r) => (documentedIds.has(r.showId) ? { ...r, documentedNoSource: true } : r));
+  console.log(JSON.stringify({ ...result, rows, staleDoc: split.staleDoc }, null, 2));
   process.exit(0);
 }
 
@@ -54,7 +55,7 @@ const fmt = (m, { baseline = false } = {}) => {
 const matched = result.rows.filter((r) => r.commercialKey);
 const neverOpened = result.rows.filter((r) => !r.showId && r.neverOpened);
 const noShow = result.rows.filter((r) => !r.showId && !r.neverOpened);
-const { documented, open: noComm, staleDoc } = split; // BRO-6182
+const { documented, openRows: noComm, staleDoc } = split; // BRO-6182
 const loose = result.rows.filter((r) => r.matchRule && r.matchRule !== 'opening');
 console.log(`Bucknell backtest: ${result.rows.length} study musicals; ${matched.length} have a commercial.json record`);
 console.log(`  never opened (no page expected): ${neverOpened.length}; missing from shows.json: ${noShow.length}; page but no commercial record: ${noComm.length} (+${documented.length} documented as no readable source)`);
