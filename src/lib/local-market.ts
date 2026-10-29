@@ -13,8 +13,9 @@
 export const LOCAL_DISCOVERY_SOURCES = ['theatreinchicago'];
 
 export function isLocalOnlyShow(
-  show: { localOnly?: boolean; discoverySource?: string } | null | undefined,
+  show: object | null | undefined,
 ): boolean {
   if (!show) return false;
-  return show.localOnly === true || (!!show.discoverySource && LOCAL_DISCOVERY_SOURCES.includes(show.discoverySource));
+  const { localOnly, discoverySource } = show as { localOnly?: boolean; discoverySource?: string };
+  return localOnly === true || (!!discoverySource && LOCAL_DISCOVERY_SOURCES.includes(discoverySource));
 }
