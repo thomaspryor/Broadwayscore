@@ -61,6 +61,21 @@ test('an already-in-place isRevival still syncs the revival tags (BRO-6489)', ()
   assert.equal(applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'isRevival', oldValue: null, newValue: false }).ok, false);
 });
 
+test('already-in-place: noop flag, priorRuns checked against the stored value, no new null key, commercial still refuses (BRO-6489)', () => {
+  const runs = [{ venue: 'A', start: '2020-01-01', end: '2020-02-01' }, { venue: 'B', start: '2021-01-01', end: '2021-02-01' }];
+  const data = { shows: [{ id: 'a-2026', venue: 'X', priorRuns: runs }] };
+  const pr = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'priorRuns', oldValue: [], newValue: runs });
+  assert.equal(pr.ok, true, pr.reason);
+  assert.equal(pr.noop, true);
+  const nul = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'runtime', oldValue: '2h', newValue: null });
+  assert.equal(nul.ok, true, nul.reason);
+  assert.equal('runtime' in data.shows[0], false);
+  const fresh = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'venue', oldValue: 'X', newValue: 'Y' });
+  assert.equal(fresh.noop, undefined);
+  const com = { shows: { 'a-slug': { notes: 'n' } } };
+  assert.equal(applyDataEdit(com, { file: 'commercial.json', showId: 'a-2026', showSlug: 'a-slug', field: 'notes', oldValue: 'old', newValue: 'n' }).ok, false);
+});
+
 test('audience-buzz: a stale oldValue whose newValue is already in place is a no-op success (BRO-6489)', () => {
   const data = { shows: { 'a-2026': { title: 'New Title' } } };
   const r = applyDataEdit(data, { file: 'audience-buzz.json', showId: 'a-2026', field: 'title', oldValue: 'Old Title', newValue: 'New Title' });

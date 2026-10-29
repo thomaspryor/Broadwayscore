@@ -43,7 +43,8 @@ function dataEditAllowProblem({ file, field }) {
 }
 
 // Another fix already wrote this exact value: the edit is satisfied, so it is
-// a no-op success, not a refusal (BRO-6489: one such edit turned a run red).
+// a no-op success ({ noop: true }), not a refusal (BRO-6489: one such edit
+// turned a run red). commercial.json edits still refuse (applyCommercialFieldEdit).
 function alreadyNewValue(currentVal, newValue) {
   return newValue !== undefined && JSON.stringify(currentVal) === JSON.stringify(newValue ?? null);
 }
@@ -68,6 +69,8 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue) && !already) {
       return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
     }
+    // Validators that diff against the old value see what is stored, not the stale plan value.
+    const prevValue = already ? currentVal : oldValue;
     if (field === 'images') {
       const { crossShowImageProblems } = require('./cross-show-images.js');
       if (!newValue || typeof newValue !== 'object' || Array.isArray(newValue)) {
@@ -77,7 +80,7 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
         if (!['thumbnail', 'poster', 'hero'].includes(k)) return { ok: false, reason: `images: unexpected key "${k}"` };
         // Only values the plan changes are checked: a plan that fixes one key
         // must not be refused over an untouched (e.g. already missing) path.
-        if (oldValue && typeof oldValue === 'object' && JSON.stringify(oldValue[k]) === JSON.stringify(v)) continue;
+        if (prevValue && typeof prevValue === 'object' && JSON.stringify(prevValue[k]) === JSON.stringify(v)) continue;
         if (v !== null && typeof v !== 'string') return { ok: false, reason: `images.${k}: must be a string or null` };
         if (typeof v === 'string' && !v.startsWith('/images/shows/')) return { ok: false, reason: `images.${k}: only local /images/shows/ paths or null` };
         if (typeof v === 'string' && !fs.existsSync(path.join(root, 'public', v))) return { ok: false, reason: `images.${k}: ${v} does not exist` };
@@ -113,7 +116,7 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
 
     if (field === 'rejectedImageUrls') {
       const { rejectedUrlsValueProblem } = require('./feedback-pipeline-fields.js');
-      const problem = rejectedUrlsValueProblem(newValue, oldValue, unreject);
+      const problem = rejectedUrlsValueProblem(newValue, prevValue, unreject);
       if (problem) return { ok: false, reason: problem };
     }
 
@@ -131,7 +134,7 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
 
     if (field === 'priorRuns') {
       const { priorRunsValueProblem } = require('./feedback-pipeline-fields.js');
-      const problem = priorRunsValueProblem(newValue, oldValue, shows[idx]);
+      const problem = priorRunsValueProblem(newValue, prevValue, shows[idx]);
       if (problem) return { ok: false, reason: problem };
     }
 
@@ -141,7 +144,8 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       if (problem) return { ok: false, reason: problem };
     }
 
-    shows[idx][field] = newValue;
+    // An absent field that is already null stays absent (no new null key).
+    if (!(already && shows[idx][field] === undefined)) shows[idx][field] = newValue;
     // A person-approved synopsis is manual provenance (BRO-4856).
     if (field === 'synopsis') require('./synopsis-source.js').setSynopsis(shows[idx], newValue, 'manual');
     // An approved plan is a person's correction: pin it so the date enrichers
@@ -155,7 +159,7 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     // shows-write-guard's object-identity snapshot lookup still matches.
     const tagNote = field === 'isRevival' ? ` (tags: ${JSON.stringify(shows[idx].tags)})` : '';
     const verb = already ? `already ${JSON.stringify(currentVal)}, pins refreshed` : 'updated';
-    return { ok: true, msg: `shows.json: ${field} ${verb} for ${showId}${tagNote}` };
+    return { ok: true, msg: `shows.json: ${field} ${verb} for ${showId}${tagNote}`, ...(already && { noop: true }) };
 
   } else if (file === 'commercial.json') {
     const { isPlanOnlyField, planOnlyValueProblem } = require('./cleared-field-guard.js');
@@ -172,7 +176,7 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     const currentVal = data.shows[showId][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       if (alreadyNewValue(currentVal, newValue)) {
-        return { ok: true, msg: `audience-buzz.json: ${field} already ${JSON.stringify(currentVal)} for ${showId}, nothing to change` };
+        return { ok: true, noop: true, msg: `audience-buzz.json: ${field} already ${JSON.stringify(currentVal)} for ${showId}, nothing to change` };
       }
       return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
     }
