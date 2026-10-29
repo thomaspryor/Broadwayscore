@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T07:48:52.326Z",
+  "timestamp": "2026-10-29T08:08:48.302Z",
   "stats": {
-    "totalReviews": 66531,
-    "alreadyFlagged": 22077,
+    "totalReviews": 66535,
+    "alreadyFlagged": 22079,
     "dateGuardCatches": 233,
     "directorMismatch": 2703,
     "tvFilmSignals": 1894,
     "londonSignals": 3227,
     "offBroadwaySignals": 606,
-    "yearMismatch": 244,
-    "noPublishDate": 6454
+    "yearMismatch": 247,
+    "noPublishDate": 6457
   },
   "findings": [
     {
@@ -11097,7 +11097,7 @@
     {
       "showId": "company-2021",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 96,
+      "score": 94,
       "publishDate": "2021-12-09T20:51:14",
       "url": "https://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/",
       "findings": [
@@ -11269,6 +11269,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2021 (0x). 2012 matches production: constellations-west-end-2012"
         }
       ]
     },
@@ -11469,6 +11474,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2021 (0x). 2012 matches production: constellations-west-end-2012"
         }
       ]
     },
@@ -25068,6 +25078,7 @@
     {
       "showId": "im-assuming-you-know-david-greenspan-off-broadway-2025",
       "file": "nysr--michael-sommers.json",
+      "score": 80,
       "publishDate": null,
       "url": "https://nystagereview.com/2025/04/07/im-assuming-you-know-david-greenspan-singular-theater-talk/",
       "findings": [
@@ -36749,6 +36760,20 @@
       ]
     },
     {
+      "showId": "noises-off-west-end-2023",
+      "file": "thestage--siobhan-murphy.json",
+      "score": 60,
+      "publishDate": "2023-01-25",
+      "url": "https://www.thestage.co.uk/reviews/noises-off-review-at-the-phoenix-theatre-london-starring-tracy-ann-oberman-and-felicity-kendal",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2023 (0x). 2011 matches production: noises-off-west-end-2011"
+        }
+      ]
+    },
+    {
       "showId": "north-by-northwest-regional-2026",
       "file": "encoreplus--mick-lasalle.json",
       "publishDate": "2026-09-14",
@@ -40867,7 +40892,7 @@
     {
       "showId": "plaza-suite-2022",
       "file": "telegraph--diane-snyder.json",
-      "score": 60,
+      "score": 62,
       "publishDate": "2022-03-29",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/plaza-suite-broadway-review-sarah-jessica-parker-matthew-broderick/",
       "findings": [
@@ -83108,7 +83133,7 @@
     {
       "showId": "harry-potter-2021",
       "file": "nytg--tulis-mccall.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2022-01-25",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-harry-potter-and-the-cursed-child-on-broadway",
       "findings": [
@@ -113544,7 +113569,7 @@
     {
       "showId": "trouble-in-mind-2021",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 62,
       "publishDate": "2021-12-10",
       "url": "https://www.theguardian.com/stage/2021/dec/10/trouble-in-mind-review-national-theatre",
       "findings": [
