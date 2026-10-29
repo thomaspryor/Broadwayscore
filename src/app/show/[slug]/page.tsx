@@ -72,6 +72,7 @@ import { stopForReview, stopKey } from '@/lib/tour-schedule';
 import TourScheduleCard from '@/components/show-page/TourScheduleCard';
 import AdSlot from '@/components/ads/AdSlot';
 import { getTourCities } from '@/lib/data-tour-cities';
+import { HUB_CITIES } from '@/lib/city-hub';
 import { isShowIndexable } from '@/lib/seo-indexability';
 
 // Group A: personalized, auth-dependent, client-only (see ShowPageUserButtons).
@@ -1035,7 +1036,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
 
         {/* National tour: where it plays now, next, and every stop (BRO-4601). */}
         {tourStops.length > 0 && (
-          <TourScheduleCard stops={tourStops} today={tourToday} reviewCounts={tourReviewCounts} source={getTourScheduleSource(show.id)} tickets={getTourStopTickets(show)} show={{ id: show.id, title: show.title, slug: show.slug, status: show.status }} cityPages={new Set(getTourCities().keys())} />
+          <TourScheduleCard stops={tourStops} today={tourToday} reviewCounts={tourReviewCounts} source={getTourScheduleSource(show.id)} tickets={getTourStopTickets(show)} show={{ id: show.id, title: show.title, slug: show.slug, status: show.status }} cityPages={new Set([...Array.from(getTourCities().keys()), ...Object.keys(HUB_CITIES)])} />
         )}
 
         {/* === SECTION ORDERING ===
