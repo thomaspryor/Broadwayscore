@@ -47,6 +47,8 @@ export interface ShowListCardProps {
   showTicketLink?: boolean;
   /** Override the default /show/[slug] href (used by opera pages for clean URLs) */
   overrideHref?: string;
+  /** Show the venue under the title. Lists set it only for rows that share a title with another row (BRO-4309). */
+  showVenue?: boolean;
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -77,6 +79,7 @@ const ShowListCard = memo(function ShowListCard({
   isMixedStatus = false,
   showTicketLink = false,
   overrideHref,
+  showVenue = false,
 }: ShowListCardProps) {
   const isRevival = show.isRevival === true;
   const category = show.category ?? 'broadway';
@@ -196,6 +199,9 @@ const ShowListCard = memo(function ShowListCard({
       <h2 className="font-bold text-lg text-white group-hover:text-brand transition-colors line-clamp-2 break-words hyphens-auto">
         {show.title}
       </h2>
+      {showVenue && show.venue && (
+        <p className="mt-0.5 text-xs text-gray-400 truncate" data-testid="show-venue">{show.venue}</p>
+      )}
       <div className="flex flex-wrap items-center gap-1.5 mt-1">
         {showFormatPill && (isNonTheatricalGenre(show.genre)
           ? <GenrePill genre={show.genre} />
@@ -257,6 +263,9 @@ const ShowListCard = memo(function ShowListCard({
       <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors line-clamp-2">
         {show.title}
       </h3>
+      {showVenue && show.venue && (
+        <p className="mt-0.5 text-xs text-gray-400 truncate" data-testid="show-venue">{show.venue}</p>
+      )}
       <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
         {isNonTheatricalGenre(show.genre)
           ? <GenrePill genre={show.genre} />

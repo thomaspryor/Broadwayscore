@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ShowListCard from './ShowListCard';
 import { INITIAL_SHOW_COUNT, LOAD_MORE_STEP } from '@/lib/market-list-window';
+import { sameTitleShowIds } from '@/lib/same-title-shows';
 import type { ShowCardShow, ScoreModeParam } from './types';
 
 export interface WindowedShowCardListProps<T extends ShowCardShow> {
@@ -28,6 +29,7 @@ export default function WindowedShowCardList<T extends ShowCardShow>({
 }: WindowedShowCardListProps<T>) {
   const [visibleCount, setVisibleCount] = useState(INITIAL_SHOW_COUNT);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const sameTitleIds = useMemo(() => sameTitleShowIds(shows), [shows]);
 
   // Reset when the list changes (filter/sort/search)
   useEffect(() => {
@@ -68,6 +70,7 @@ export default function WindowedShowCardList<T extends ShowCardShow>({
           hideStatus={hideStatus}
           scoreMode={scoreMode}
           showCategoryBadge={showCategoryBadge}
+          showVenue={sameTitleIds.has(show.id)}
         />
       ))}
       {visibleCount < shows.length && <div ref={sentinelRef} className="h-px" aria-hidden="true" />}
