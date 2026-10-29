@@ -52,6 +52,13 @@ test('diffAgainstLedger: later runs flag only unseen shows and never drop ledger
   assert.equal(lib.diffAgainstLedger([show({ id: 'a' }), show({ id: 'b' })], r.ledger, NOW).fresh.length, 0);
 });
 
+test('diffAgainstLedger: closed runs are recorded but never announced', () => {
+  const ledger = { seen: { a: 'seeded' } };
+  const r = lib.diffAgainstLedger([show({ id: 'old-tour', status: 'closed', category: 'tour' }), show({ id: 'live' })], ledger, NOW);
+  assert.deepEqual(r.fresh.map(s => s.id), ['live']);
+  assert.equal(r.ledger.seen['old-tour'], 'seeded');
+});
+
 test('recentlySeen keeps the 48h window, newest first, and ignores seeded rows', () => {
   const ledger = { seen: { a: '2026-10-29T02:00:00Z', b: '2026-10-28T02:00:00Z', c: '2026-10-26T02:00:00Z', d: 'seeded' } };
   const shows = ['a', 'b', 'c', 'd'].map(id => show({ id }));
@@ -87,6 +94,12 @@ test('Reddit suggestion: a score needs 5+ reviews; thin shows with no facts get 
   assert.match(previews.body, /^It is in previews and opens on November 5\./);
 });
 
+test('Reddit suggestion: previews with a past opening date do not claim it is still to come', () => {
+  const r = lib.buildRedditSuggestion(show({ status: 'previews', synopsis: 'A quiet play.', openingDate: '2026-10-01' }), null, { today: '2026-10-29' });
+  assert.doesNotMatch(r.body, /opens on/);
+  assert.match(r.body, /^It is in previews\./);
+});
+
 test('Reddit suggestion strips dashes that arrive in show data', () => {
   const r = lib.buildRedditSuggestion(show({ title: 'Rhino — Live', synopsis: 'A town — and its rhinos.' }), slim, { today: '2026-10-29' });
   noDashes(r.title); noDashes(r.body);
@@ -118,7 +131,7 @@ test('buildSnapshot lists pre-Broadway first, caps drafts at 3 and rows at 8, an
   const snap = lib.buildSnapshot({ shows, ledger, slims, now: NOW });
   assert.deepEqual(snap.items.map(i => i.kind), ['pre-broadway', 'pre-broadway', 'pre-broadway', 'pre-broadway', 'pre-broadway', 'tour', 'regional']);
   assert.equal(snap.items.filter(i => i.reddit).length, lib.MAX_REDDIT_DRAFTS);
-  assert.equal(snap.bannerText, '7 new: 5 pre-broadway, 1 tour, 1 uk regional');
+  assert.equal(snap.bannerText, '7 new: 5 Pre-Broadway, 1 Tour, 1 UK regional');
   assert.equal(snap.moreCount, 0);
 
   const many = Array.from({ length: 12 }, (_, i) => show({ id: `t${i}`, title: `Tour ${i}`, category: 'tour', venue: 'US Tour' }));

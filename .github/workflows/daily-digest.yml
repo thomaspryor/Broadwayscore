@@ -58,6 +58,15 @@ jobs:
         if: always() && (steps.core-data.outcome == 'failure' || steps.new-show-types.outcome == 'failure')
         run: echo "::warning::new-show-types snapshot did not update (core-data=${{ steps.core-data.outcome }}, producer=${{ steps.new-show-types.outcome }}); the morning email skips that section until it succeeds."
 
+      - name: Notify when new-show-types failed
+        if: always() && (steps.core-data.outcome == 'failure' || steps.new-show-types.outcome == 'failure')
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'New-show-types snapshot failed'
+          description: 'The nightly new tour / pre-Broadway / UK regional shows snapshot did not update, so the morning email skips that section until it succeeds.'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
       - name: Commit updated snapshots
         if: always()
         run: |
