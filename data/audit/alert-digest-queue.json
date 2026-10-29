@@ -3121,5 +3121,33 @@
       }
     ],
     "queuedAt": "2026-10-29T22:50:08.537Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/doubled-market-ids-live-data.test.mjs::the live corpus has zero unallowlisted doubled-market ids",
+    "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the live corpus has zero unallowlisted doubled-market ids\" in tests/unit/doubled-market-ids-live-data.test.mjs is red against the live corpus.\n\nfix the title, or allowlist the id with the source you checked\n+ actual - expected\n\n+ [\n+   'loki-the-end-of-the-world-tour-regional-2026 \"Loki - The End of the World Tour\"'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T23:10:05.392Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows",
+    "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data: no byte-identical art across unrelated, unlinked shows\" in tests/unit/duplicate-images-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/hero.webp, /images/shows/happy-days-are-here-again-regional-2024/hero.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/poster.webp, /images/shows/happy-days-are-here-again-regional-2024/poster.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/thumbnail.webp, /images/shows/happy-days-are-here-again-regional-2024/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/hero.webp, /images/shows/deathtrap-regional-2025/hero.webp, /images/shows/company-regional-2026/hero.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/thumbnail.webp, /images/shows/deathtrap-regional-2025/thumbnail.webp, /images/shows/company-regional-2026/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/poster.webp, /images/shows/deatht",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T23:10:05.417Z"
   }
 ]
