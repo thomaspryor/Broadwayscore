@@ -10,6 +10,7 @@ const { isExcludedType, mapShowType } = require('./theatreinchicago');
 const { foldDiacritics } = require('./title-match');
 
 const MIN_REVIEWS = 3;
+const CHICAGO_METRO = 'chicago-il'; // data/venue-metros.json metro slug (BRO-6515)
 
 // Broadway In Chicago / touring houses: their productions are national tours
 // (tracked in data/tour-schedules.json), not local productions.
@@ -127,6 +128,8 @@ function buildShowEntry({ page, detail, dates, discoveredAt }) {
     openingDateSource: 'tic-first-review',
     discoverySource: 'theatreinchicago',
     localOnly: true,
+    // theatreinchicago covers Chicagoland only (suburbs and Hammond-area IN included): one metro hub.
+    city: CHICAGO_METRO,
     discoveredAt,
     evidenceUrls: [`https://www.theatreinchicago.com/${page.slug || 'show'}/${page.id}/`],
   };
