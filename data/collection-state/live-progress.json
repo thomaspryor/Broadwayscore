@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-29T15:52:37.512Z",
-  "processed": 25,
-  "failed": 17,
-  "successRate": "59.5%",
+  "updatedAt": "2026-10-29T16:06:49.167Z",
+  "processed": 100,
+  "failed": 50,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 52,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 4
+    "scrapingdog": 10,
+    "scrapingbee": 6,
+    "brightdata": 1,
+    "archiveToday": 4,
+    "archive": 36
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-10-29T13:43:27.497Z",
@@ -30,59 +30,19 @@
     {
       "t": "2026-10-29T13:43:36.937Z",
       "event": "bb-session",
-      "session": "33dc40f8",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+      "session": "7023ea25",
+      "url": "http://www.publictheater.org/"
     },
     {
-      "t": "2026-10-29T13:43:37.548Z",
+      "t": "2026-10-29T15:50:42.921Z",
+      "event": "bb-session",
+      "session": "14abb8b0",
+      "url": "https://www.thestage.co.uk/reviews/disruption-review-at-the-park-theatre-london-"
+    },
+    {
+      "t": "2026-10-29T15:50:43.184Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-29T14:40:27.392Z",
-      "event": "bb-session",
-      "session": "af685618",
-      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
-    },
-    {
-      "t": "2026-10-29T14:40:27.727Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-29T14:47:06.319Z",
-      "event": "bb-session",
-      "session": "ab911bb1",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-10-29T14:47:07.145Z",
-      "event": "bb-session",
-      "session": "63bcb80a",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-10-29T14:47:07.395Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-29T14:47:14.732Z",
-      "event": "bb-session",
-      "session": "29ddf467",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-10-29T14:48:12.215Z",
-      "event": "bb-session",
-      "session": "3b31f4fb",
-      "url": "https://www.express.co.uk/entertainment/theatre/353084/Theatre-review-Loserville"
-    },
-    {
-      "t": "2026-10-29T15:44:38.097Z",
-      "event": "bb-session",
-      "session": "ae761775",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "domain": "thestage.co.uk"
     }
   ]
 }
