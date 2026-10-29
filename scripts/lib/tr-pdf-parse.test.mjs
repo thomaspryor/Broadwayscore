@@ -155,6 +155,17 @@ test('BRO-5141: the header walk-back stops at three title lines (a caps line in 
   assert.deepEqual(cut, ['and the audience roars its approval.', 'BRAVO.']);
 });
 
+test('maskPdfText leaves no PII-lint-shaped address behind (BRO-6529)', () => {
+  const { scanJsonValue } = require('./pii-scan.js');
+  const lines = ['Info@Oberon.co.uk', 'Contact info2@oberonbooks.com', 'oberon books: info@oberonbooks.com',
+    'Applications for performance should be made before rehearsal to info@oberonbooks.com, Oberon Books Ltd, London'];
+  for (const l of lines) {
+    const out = maskPdfText(l, []);
+    assert.equal(scanJsonValue({ l: out }).length, 0, `${l} -> ${out}`);
+    assert.ok(!/oberon|info/i.test(out.replace(/redacted/g, '')), `${l} -> ${out} leaks text`);
+  }
+});
+
 test('maskPdfText keeps structure lines and drops prose (BRO-6097)', () => {
   const prose = 'A lovely evening at the Théâtre with CAPITALS and Mixed Case words that run past seventy characters.';
   const out = maskPdfText(['THE STAGE', '21.12.17', 'Michael Billington', prose].join('\n'), ['Joseph']);

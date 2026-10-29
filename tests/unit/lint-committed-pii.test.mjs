@@ -320,6 +320,32 @@ describe('redaction placeholders are not submitter PII', () => {
     }
   });
 
+  test('letter-masked addresses are placeholders (BRO-6529)', () => {
+    // The two strings that took main red on 2026-10-29: maskPdfText's output in
+    // we-historical-tr-probe.json, and this lint's own maskEmail output quoted
+    // into done-evidence-audit.json (EMAIL_RE matches `x@xxxxxx.xx.xx` there).
+    for (const s of ['xxxxx@xxxxxx.xx.xx', 'Oberon Books xxxxx@xxxxxx.xx.xx', 'x***x@xxxxxx.xx.xx',
+      'x@xxxx.xxxx']) {
+      assert.ok(EMAIL_RE.test(s), `precondition: EMAIL_RE matches ${s}`);
+      assert.ok(isRedactedPlaceholder(s), `${s} should read as a placeholder`);
+      assert.equal(scanJsonValue({ detail: s }).length, 0);
+      assert.equal(redactEmails(s), s, 'write side leaves a placeholder alone');
+    }
+  });
+
+  test('the letter-mask exemption cannot hide a registerable address', () => {
+    for (const s of [
+      'x@xxx.xxx', 'xx@xxxx.xxx', // .xxx is a real TLD
+      'XXX@XXX.XX', // uppercase is not maskPdfText output
+      'xavier@gmail.com', 'x@gmail.com', 'jane@xx.com', 'x@xxx.com',
+      'Ixxx@xxxxx.xx.xx', // a capital survived masking: an initial leaks
+      'xxxxx@xxxxxx.xx.xx then jane@gmail.com', // real address behind a placeholder
+    ]) {
+      assert.equal(isRedactedPlaceholder(s), false, `${s} must NOT read as a placeholder`);
+      assert.ok(scanJsonValue({ detail: s }).length > 0, `${s} must still be flagged`);
+    }
+  });
+
   test('scanning a placeholder does not become quadratic on a long junk tail', () => {
     // Guarding a real regression, not a hypothetical. EMAIL_RE's
     // [A-Za-z0-9.-]+\.[A-Za-z]{2,} backtracks catastrophically on punctuation

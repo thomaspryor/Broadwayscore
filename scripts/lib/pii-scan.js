@@ -53,10 +53,20 @@ const EMAIL_RE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
 // GitHub's token prefixes (gho_, ghp_, github_pat_) all use underscore, so
 // nothing real is lost by refusing the other two separators.
 //
-// Masked forms like `****@example.com` deliberately have NO rule here: the
-// local part of EMAIL_RE is [A-Za-z0-9._%+-]+, which excludes `*`, so those
-// never matched and never needed excusing. A carve-out for them would have
-// been dead code that read as protection.
+// `*`-masked forms like `****@example.com` need no rule: the local part of
+// EMAIL_RE is [A-Za-z0-9._%+-]+, which excludes `*`, so they never match.
+//
+// LETTER-masked forms do match, and need LETTER_MASKED_RE (BRO-6529). The WE
+// TR probe's maskPdfText (scripts/lib/tr-pdf-parse.js) turns every lowercase
+// letter into 'x', so a play-text publisher line becomes
+// `xxxxx@xxxxxx.xx.xx`, and quoting this lint's own output stores
+// `x***x@xxxxxx.xx.xx` (EMAIL_RE matches `x@xxxxxx.xx.xx`). Both took main
+// red on 2026-10-29. Lowercase only and fully anchored: every label is all
+// 'x', and the final label is `xx` or 4+ x's, never exactly `xxx`, because
+// `.xxx` is a real delegated TLD (`x@xxx.xxx` is registerable). No other
+// all-x TLD exists. A masked address that kept a capital (`Ixxx@xxxxx.xx.xx`)
+// still flags on purpose: an initial survived.
+const LETTER_MASKED_RE = /^x+@(?:x+\.)+(?:xx|x{4,})$/;
 const REDACTED_LOCAL_RE = /(?:^|_)redacted$/i;
 const EMAIL_RE_G = new RegExp(EMAIL_RE.source, 'g');
 
@@ -69,7 +79,9 @@ const VENDOR_DOMAINS = new Set(['scrapingdog.com']);
 /** True when a matched address is a placeholder or a known vendor mailbox. */
 function isNonSubmitterAddress(addr) {
   const i = addr.lastIndexOf('@');
-  return REDACTED_LOCAL_RE.test(addr.slice(0, i)) || VENDOR_DOMAINS.has(addr.slice(i + 1).toLowerCase());
+  return REDACTED_LOCAL_RE.test(addr.slice(0, i)) ||
+    VENDOR_DOMAINS.has(addr.slice(i + 1).toLowerCase()) ||
+    LETTER_MASKED_RE.test(addr);
 }
 
 /**

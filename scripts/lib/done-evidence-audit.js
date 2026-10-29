@@ -50,6 +50,8 @@
 
 'use strict';
 
+const { redactEmails } = require('./pii-scan.js');
+
 // ── verdicts ────────────────────────────────────────────────────────────────
 // Ordered by how much they demand of a reader: the two that accuse come
 // first, then the two that merely note, then the absence of an answer.
@@ -384,7 +386,7 @@ function evaluateVerifyRun(runResult, cmd) {
   // dispatch guess). Falling through to the ordinary BROKEN branch below
   // restores the exact behaviour this module had before the guard existed,
   // and lets its own history-aware adjudication decide.
-  if (runResult.status === 'unverifiable' && !runResult.missingPath) return { state: EVIDENCE.UNKNOWN, detail: runResult.detail || null };
+  if (runResult.status === 'unverifiable' && !runResult.missingPath) return { state: EVIDENCE.UNKNOWN, detail: redactEmails(runResult.detail) || null };
   if (runResult.status === 'pass') return { state: EVIDENCE.HOLDS, detail: null };
   // The residual environment failure acceptance-check-core.js cannot classify
   // for itself — a prepared checkout still missing the private review corpus.
@@ -397,7 +399,9 @@ function evaluateVerifyRun(runResult, cmd) {
         : 'its check needs the private review-texts corpus, which this sandbox does not have — cannot verify either way',
     };
   }
-  return { state: EVIDENCE.BROKEN, detail: scrubSandboxPaths(runResult.detail) || `\`${cmd}\` does not pass on main` };
+  // redactEmails: this detail is persisted to the public data/audit/done-evidence-audit.json,
+  // and a quoted lint failure must not re-trip lint-committed-pii.js there (BRO-6529).
+  return { state: EVIDENCE.BROKEN, detail: redactEmails(scrubSandboxPaths(runResult.detail)) || `\`${cmd}\` does not pass on main` };
 }
 
 /**

@@ -542,8 +542,12 @@ function maskPdfText(text, keepWords) {
     // Short lines carry the structure (outlet, date, critic, headings); long
     // lines are prose, so their capitals go too. Non-ASCII letters always go.
     const prose = line.trim().length > 70;
-    return line.replace(/[\p{L}]+/gu, w => (keep.has(w.toLowerCase()) ? w
+    const masked = line.replace(/[\p{L}]+/gu, w => (keep.has(w.toLowerCase()) ? w
       : w.replace(/[\p{L}]/gu, c => (/[A-Z]/.test(c) && !prose ? c : 'x'))));
+    // A kept capital or digit leaves a publisher address PII-lint-shaped
+    // ("Ixxx@xxxxx.xx.xx"), and this skeleton is committed by an unattended
+    // workflow, so every address becomes a redacted@ placeholder (BRO-6529).
+    return redactEmails(masked);
   }).join('\n');
 }
 
@@ -560,6 +564,7 @@ const isCapsTitle = (l) => /[A-Z]/.test(l) && l === l.toUpperCase() && l.length 
 
 const { trTitleMatches } = require('./tr-production-pick');
 const { foldDiacritics } = require('./title-match');
+const { redactEmails } = require('./pii-scan');
 
 // BRO-6302: a block title sharing a word with ours stays "unknown" (TR spells
 // titles its own way), but common title words do not count: KING LEAR kept

@@ -1121,3 +1121,15 @@ test('rotationOffset: in range, and consecutive days jump far apart', () => {
   assert.equal(rotationOffset(5, 0), 0);
   assert.equal(rotationOffset(5, 1), 0);
 });
+
+test('evaluateVerifyRun redacts addresses before the detail is persisted (BRO-6529)', () => {
+  // done-evidence-audit.json is committed to the PUBLIC repo; a quoted
+  // lint-committed-pii.js failure once took main's PII lint red from there.
+  const { scanJsonValue } = require('../../scripts/lib/pii-scan.js');
+  const broken = evaluateVerifyRun({ status: 'fail', detail: 'mail jane.doe@gmail.com failed' }, 'node x.js');
+  assert.equal(broken.state, EVIDENCE.BROKEN);
+  assert.equal(broken.detail, 'mail redacted@gmail.com failed');
+  assert.equal(scanJsonValue({ detail: broken.detail }).length, 0);
+  const unknown = evaluateVerifyRun({ status: 'unverifiable', detail: 'jane@gmail.com' }, 'node x.js');
+  assert.equal(unknown.detail, 'redacted@gmail.com');
+});
