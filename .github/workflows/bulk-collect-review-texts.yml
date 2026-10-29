@@ -336,6 +336,7 @@ jobs:
           # step below still catches a normal completion, but a timeout/
           # cancellation mid-run loses everything since the last checkpoint.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
         run: |
           ARGS=""
           if [ "${{ inputs.aggressive }}" = "true" ]; then

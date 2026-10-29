@@ -87,6 +87,8 @@ jobs:
           # environment" — surfaced by health-check.js's alert-router deadman
           # check after 7 days of silent failures.
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             node scripts/audit-imageless-scored-shows.js --dry-run

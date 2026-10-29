@@ -61,6 +61,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DRY_RUN: ${{ inputs.dry_run }}
           CHECK_DATE: ${{ inputs.date }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ARGS=""
           [ "$DRY_RUN" = "true" ] && ARGS="--dry-run"
@@ -81,6 +82,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DRY_RUN: ${{ inputs.dry_run }}
           LIVE: ${{ vars.MAC_ALIVE_SIGNAL == 'heartbeat' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ARGS="--signal=heartbeat"
           if [ "$LIVE" != "true" ] || [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi

@@ -183,6 +183,8 @@ jobs:
           # Authenticated /meta: unauthenticated is 60 req/hr per source IP,
           # shared with every tenant on the runner's egress IP.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-bd-blacklist.js
 
       - name: Bright Data daily circuit-breaker check
@@ -210,6 +212,8 @@ jobs:
           # every trip logged "LINEAR_API_KEY not set" and fed the alert-router
           # dispatch-deadman page (2026-09-21/22).
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-bd-breaker.js
 
       - name: ScrapingDog daily circuit-breaker check
@@ -235,6 +239,8 @@ jobs:
           # ignored by the script (plan-derived fair share applies).
           SD_BREAKER_CEILING: ${{ vars.SD_BREAKER_CEILING }}
           SD_BREAKER_BURST_FACTOR: ${{ vars.SD_BREAKER_BURST_FACTOR }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-sd-breaker.js
 
       - name: ScrapingBee daily circuit-breaker check
@@ -257,6 +263,8 @@ jobs:
           SB_BREAKER_SHADOW: ${{ vars.SB_BREAKER_SHADOW }}
           SB_BREAKER_CEILING: ${{ vars.SB_BREAKER_CEILING }}
           SB_BREAKER_BURST_FACTOR: ${{ vars.SB_BREAKER_BURST_FACTOR }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-sb-breaker.js
 
       - name: Commit breaker state

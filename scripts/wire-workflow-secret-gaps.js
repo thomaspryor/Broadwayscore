@@ -1,0 +1,69 @@
+#!/usr/bin/env node
+/**
+ * Codemod (BRO-5151): wire the secrets that scripts/audit-workflow-secret-gaps.js
+ * reports as missing into each flagged step's env: block.
+ *
+ * Only the names passed in --secrets are wired, and only into workflows not
+ * matched by --exclude (a regex on the file name), so a batch stays reviewable
+ * and frozen workflows stay untouched. Text edit, not a YAML re-serialise:
+ * comments and layout survive (scripts/lib/workflow-env-codemod.js).
+ *
+ * Usage:
+ *   node scripts/wire-workflow-secret-gaps.js --secrets=LINEAR_API_KEY,RESEND_API_KEY \
+ *     [--exclude='^(land|test)\.yml$'] [--max-steps=40] [--dry-run]
+ */
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { findGaps } = require('./audit-workflow-secret-gaps.js');
+const { addStepSecrets } = require('./lib/workflow-env-codemod.js');
+
+const ROOT = path.resolve(__dirname, '..');
+const WF_DIR = path.join(ROOT, '.github', 'workflows');
+
+function arg(name, dflt) {
+  const a = process.argv.find((x) => x.startsWith(`--${name}=`));
+  return a ? a.slice(name.length + 3) : dflt;
+}
+
+function main() {
+  const secrets = new Set(String(arg('secrets', '')).split(',').map((s) => s.trim()).filter(Boolean));
+  if (!secrets.size) {
+    console.error('--secrets=NAME[,NAME] is required');
+    process.exit(2);
+  }
+  const exclude = arg('exclude', '') ? new RegExp(arg('exclude')) : null;
+  const maxSteps = Number(arg('max-steps', '40'));
+  const dryRun = process.argv.includes('--dry-run');
+
+  const gaps = findGaps(WF_DIR).filter((g) => secrets.has(g.secret) && !(exclude && exclude.test(g.workflow)));
+  const byStep = new Map();
+  for (const g of gaps) {
+    const k = JSON.stringify([g.workflow, g.job, g.step]);
+    if (!byStep.has(k)) byStep.set(k, new Set());
+    byStep.get(k).add(g.secret);
+  }
+
+  let steps = 0;
+  let wired = 0;
+  const skipped = [];
+  for (const [k, names] of byStep) {
+    if (steps >= maxSteps) break;
+    const [workflow, job, step] = JSON.parse(k);
+    const file = path.join(WF_DIR, workflow);
+    const res = addStepSecrets(fs.readFileSync(file, 'utf8'), job, step, [...names].sort());
+    if (!res.ok) {
+      skipped.push(`${workflow} :: ${job} :: ${step} — ${res.reason}`);
+      continue;
+    }
+    if (!dryRun) fs.writeFileSync(file, res.raw);
+    steps++;
+    wired += res.added.length;
+    console.log(`${dryRun ? '[dry] ' : ''}${workflow} :: ${step} += ${res.added.join(', ')}`);
+  }
+  console.log(`\n${steps} step(s), ${wired} secret line(s)${dryRun ? ' (dry run)' : ''}; ${byStep.size - steps - skipped.length} left over --max-steps`);
+  if (skipped.length) console.log(`skipped ${skipped.length}:\n  ${skipped.join('\n  ')}`);
+}
+
+if (require.main === module) main();

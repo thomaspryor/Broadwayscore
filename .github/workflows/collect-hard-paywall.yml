@@ -254,6 +254,7 @@ jobs:
           # the whole run — a timeout/cancellation mid-run loses everything
           # collected since the last checkpoint.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
         run: node scripts/collect-review-texts.js --aggressive
 
       - name: Validate data
@@ -649,6 +650,7 @@ jobs:
           # the whole run — a timeout/cancellation mid-run loses everything
           # collected since the last checkpoint.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
         run: node scripts/collect-review-texts.js --aggressive
 
       - name: Validate data

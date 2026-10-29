@@ -284,6 +284,7 @@ jobs:
           # permissions already grant actions: write).
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: node scripts/audit-t1-silent-gaps.js --recover --alert
 
       # BRO-4431: ask the outlets themselves (TheaterMania/WhatsOnStage/NYSR/
@@ -350,6 +351,8 @@ jobs:
         # path (see that comment on the "Run gap audit" step's env: block above).
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --write-ledger
 
       # B3 scoreboard (coverage % per market + oldest gap): printed to this job's
@@ -363,6 +366,8 @@ jobs:
         # The script's routeAlert import still needs the key (alert-ledger-commit-check).
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
 
       # B4 deployed-JSON coverage diff. Every other audit in this job compares

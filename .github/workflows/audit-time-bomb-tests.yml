@@ -90,6 +90,8 @@ jobs:
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           INPUT_DAYS: ${{ github.event.inputs.days || '45' }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           DAYS="${INPUT_DAYS}"
           ALERT_FLAG=""

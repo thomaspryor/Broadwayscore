@@ -107,6 +107,8 @@ jobs:
           INPUT_SAMPLE: ${{ inputs.sample || '5' }}
           INPUT_PAGES: ${{ inputs.pages || '2' }}
           INPUT_DAYS: ${{ inputs.days || '30' }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           # pipefail: without it the step takes tee's exit code, so a crashed
           # or empty-pool run still shows green (BRO-4139 review).
@@ -122,6 +124,9 @@ jobs:
       # entry. Discovery never fetches those and stage-latency never sees them, so
       # without this list they are invisible. Advisory: lists them in the summary.
       - name: Unregistered review domains in this census
+        env:
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         if: ${{ always() }}
         continue-on-error: true
         run: |

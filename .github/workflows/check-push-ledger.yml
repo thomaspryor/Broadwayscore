@@ -57,6 +57,8 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           # routeAlert(disposition:'auto') — files a Linear issue
           # for any reverted push (see scripts/lib/owner-alert-router.js).
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-push-ledger.js
 
       - name: Commit alert state

@@ -68,6 +68,8 @@ jobs:
       - name: Run tour page audit
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           ALERT_FLAG=""
           # Not `inputs.alert || 'true'`: false || 'true' is 'true'.

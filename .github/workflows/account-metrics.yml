@@ -61,6 +61,10 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Dry run (simulate)
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         if: inputs.simulate == 'signin-stalled'
         run: |
           # routealert-linear-key-ok: --simulate turns SEND_ALERTS off (account-metrics.js), so this step never calls routeAlert

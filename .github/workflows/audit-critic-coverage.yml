@@ -55,6 +55,8 @@ jobs:
       - name: Check coverage drift
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/lib/critic-coverage-checks/coverage-drift.check.js
 
       # Card #627: outlet-registry standingCoverage is DERIVED from measured

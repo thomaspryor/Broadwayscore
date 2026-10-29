@@ -179,6 +179,8 @@ jobs:
           # BRO-4434: audit-awards-freshness.js asks the commits-by-path API
           # via `gh api` (one call/day); the runner's default token is enough.
           GH_TOKEN: ${{ github.token }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           ARGS=""
           if [ "${{ inputs.strict }}" = "true" ]; then
@@ -495,6 +497,8 @@ jobs:
         timeout-minutes: 3
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           node scripts/route-live-data-failures.js --tap="$RUNNER_TEMP/live-data.tap" --exit="$([ '${{ steps.livedata.outcome }}' = success ] && echo 0 || echo 1)"
 

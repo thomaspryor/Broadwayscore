@@ -255,6 +255,7 @@ jobs:
           # Deploy: production freshness check (should-deploy gate watchdog)
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included
@@ -465,6 +466,8 @@ jobs:
         continue-on-error: true
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/sweep-resolved-alert-cards.js --apply
 
       # BRO-3011 (spend-guards Sprint 3): spend-guard audit over the last 7
@@ -488,6 +491,8 @@ jobs:
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/guard-audit.js
 
       # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
@@ -518,6 +523,8 @@ jobs:
           # Missing key = every overspend logged a failed dispatch and tripped
           # the alert-router dispatch-deadman page (2026-09-21/22).
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-provider-spend.js
 
       # BRO-3317: the write above (fs.writeFileSync in check-provider-spend.js)
@@ -1290,6 +1297,8 @@ jobs:
       - name: Time-to-publish SLA
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         if: always()
         continue-on-error: true
         timeout-minutes: 4
@@ -1310,6 +1319,8 @@ jobs:
         timeout-minutes: 4
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           # || true: archive-done exits 1 on ANY per-issue archive failure —
           # under bash -e that would skip the cap check exactly when a flaky

@@ -80,6 +80,9 @@ jobs:
         # guard-no-orphan-commit.yml makes) so a data/memory-only push is
         # skipped without any history fetch; an unreadable range leaves the
         # list empty, which the CLI treats as "unknown → judged as code".
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           # pipefail (BRO-4157): GHA's bash default already sets this, made
           # explicit given what this step gates — a crashed detector must fail
@@ -136,6 +139,7 @@ jobs:
           BEFORE: ${{ github.event.before }}
         # scripts/check-direct-push-to-main.js calls routeAlert() — the ledger
         # + digest queue it writes are committed by the step below.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           node scripts/check-direct-push-to-main.js --sha "$SHA" --actor "$ACTOR" \
             --committer-name "$COMMITTER_NAME" --committer-email "$COMMITTER_EMAIL" \
