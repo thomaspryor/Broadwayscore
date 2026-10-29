@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5163",
   "planId": "a4279f5b-43bf-428d-bff9-09305849e069",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T04:59:01.870Z",
   "submitter": {
     "name": null,
@@ -55,5 +55,19 @@
         "description": "shows.json: noises-off-west-end-2019.noReliableArt"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T07:54:46.162Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for noises-off-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for noises-off-west-end-2019"
+    }
+  ],
+  "executedIn": "ci"
 }
