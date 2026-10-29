@@ -43,13 +43,19 @@ function main(argv = process.argv.slice(2)) {
     return 1;
   }
   const now = new Date();
-  const { ledger, fresh } = lib.diffAgainstLedger(shows, readJson(LEDGER_FILE), now);
+  const ledgerIn = readJson(LEDGER_FILE);
+  if (!ledgerIn && fs.existsSync(LEDGER_FILE)) {
+    console.error('[new-show-types] ledger exists but is not valid JSON; refusing to reseed. Nothing written.');
+    return 1;
+  }
+  const { ledger, fresh } = lib.diffAgainstLedger(shows, ledgerIn, now);
   const slims = new Map();
   for (const show of lib.recentlySeen(shows, ledger, now)) {
     const slim = readJson(path.join(SLIM_DIR, `${show.id}.json`));
     if (slim) slims.set(show.id, slim);
   }
   const snapshot = lib.buildSnapshot({ shows, ledger, slims, now });
+  if (!ledgerIn) console.log(`[new-show-types] first run: ${Object.values(ledger.seen).filter(v => v === 'seeded').length} existing shows recorded silently`);
   console.log(`[new-show-types] ${fresh.length} newly seen, ${snapshot.items.length + snapshot.moreCount} in the 48h window: ${snapshot.bannerText}`);
   for (const it of snapshot.items) console.log(`  ${it.kind.padEnd(12)} ${it.title} | ${it.detail}${it.reddit ? ' | reddit draft' : ''}`);
   if (dryRun) return 0;

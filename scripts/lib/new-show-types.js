@@ -66,6 +66,11 @@ function urlFor(show) {
   return showUrl(show);
 }
 
+// The producer runs overnight UTC, which is still the previous evening in New York.
+function easternDate(now = new Date()) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(now);
+}
+
 function daysAgoIso(nowMs, days) {
   return new Date(nowMs - days * 86400000).toISOString();
 }
@@ -84,7 +89,8 @@ function diffAgainstLedger(shows, ledger, now = new Date()) {
   for (const show of shows) {
     if (!show || !show.id || !kindOf(show)) continue;
     if (seen[show.id]) continue;
-    if (firstRun && !(show.discoveredAt && show.discoveredAt >= cutoff)) {
+    // A closed run is not worth announcing (backfills, id renames); record it so it stays quiet.
+    if (show.status === 'closed' || (firstRun && !(show.discoveredAt && show.discoveredAt >= cutoff))) {
       seen[show.id] = 'seeded';
       continue;
     }
@@ -136,7 +142,7 @@ function firstSentence(text, max = 220) {
  *
  * slim: the public/data/shows/{id}.json file for the show, or null.
  */
-function buildRedditSuggestion(show, slim = null, { today = new Date().toISOString().slice(0, 10) } = {}) {
+function buildRedditSuggestion(show, slim = null, { today = easternDate() } = {}) {
   if (kindOf(show) !== 'pre-broadway') return null;
   if (!POSTABLE_STATUS.has(show.status)) return null;
   const where = venueName(show.venue);
@@ -151,7 +157,8 @@ function buildRedditSuggestion(show, slim = null, { today = new Date().toISOStri
 
   const lines = [];
   if (show.status === 'previews') {
-    lines.push(`It is in previews${when ? ` and opens on ${when}` : ''}${close ? `, running through ${close}` : ''}.`);
+    const upcoming = when && show.openingDate > today;
+    lines.push(`It is in previews${upcoming ? ` and opens on ${when}` : ''}${close ? `, running through ${close}` : ''}.`);
   } else if (when) {
     const opened = show.openingDate <= today;
     lines.push(`${opened ? 'It opened' : 'It opens'} on ${when}${close ? ` and runs through ${close}` : ''}.`);
@@ -210,7 +217,7 @@ function buildSnapshot({ shows, ledger, slims = new Map(), now = new Date() }) {
   const counts = KIND_ORDER
     .map(k => [k, all.filter(i => i.kind === k).length])
     .filter(([, n]) => n > 0)
-    .map(([k, n]) => `${n} ${KIND_LABEL[k].toLowerCase()}`);
+    .map(([k, n]) => `${n} ${KIND_LABEL[k]}`);
   return {
     generatedAt: now.toISOString(),
     bannerText: all.length ? `${all.length} new: ${counts.join(', ')}` : 'No new tour, pre-Broadway or regional shows',
