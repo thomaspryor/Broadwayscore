@@ -68,7 +68,7 @@ function readLandings(repoDir) {
   return { available: true, rows: parseLandings(fs.readFileSync(p, 'utf8')) };
 }
 
-function appendLanding({ repoDir = process.cwd(), branch, sha, tip = null, base = null, runUrl = null, attempts = null } = {}) {
+function appendLanding({ repoDir = process.cwd(), branch, sha, tip = null, base = null, runUrl = null, attempts = null, receipt = null } = {}) {
   if (!branch || !sha) throw new Error('appendLanding requires branch and sha');
   const row = {
     ts: new Date().toISOString(),
@@ -79,6 +79,8 @@ function appendLanding({ repoDir = process.cwd(), branch, sha, tip = null, base 
     runUrl: runUrl || null,
     attempts: attempts == null ? null : Number(attempts),
   };
+  // BRO-5411: server-side review receipt verdict (advisory), only when the checks job ran it.
+  if (receipt) row.receipt = String(receipt);
   const p = path.join(repoDir, LANDINGS_REL);
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.appendFileSync(p, `${JSON.stringify(row)}\n`);

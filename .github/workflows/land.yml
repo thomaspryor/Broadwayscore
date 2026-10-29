@@ -160,6 +160,7 @@ jobs:
       new_failures: ${{ steps.delta.outputs.new_failures }}
       pre_existing: ${{ steps.delta.outputs.pre_existing }}
       tsc_seed: ${{ steps.tscseed.outputs.seed }}
+      receipt: ${{ steps.receipt.outputs.receipt }}
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -219,6 +220,22 @@ jobs:
           fi
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
+
+      # BRO-5411: server-side backstop for the in-session review gate (BRO-5359).
+      # A stale cached container has no hooks, so check the Review-Receipt
+      # trailer here. ADVISORY (CLAUDE.md rule 19): continue-on-error, always
+      # exit 0, bounded to 2 min; the verdict rides into landings.jsonl for the
+      # land-preflight digest. Blocking comes later, from that telemetry.
+      - name: Review receipt (advisory)
+        id: receipt
+        continue-on-error: true
+        timeout-minutes: 2
+        run: |
+          # The rebase above put main's scripts in the tree, so the checker is the
+          # one on main (a branch cannot weaken it); absent only for the landing
+          # that introduces it.
+          [ -f scripts/review-receipt.js ] || { echo "receipt=unknown" >> "$GITHUB_OUTPUT"; echo "review-receipt.js not on main yet; skipping"; exit 0; }
+          node scripts/review-receipt.js check --base="${{ steps.rebase.outputs.base }}" --tip=HEAD || true
 
       # BRO-4299: a branch whose diff vs the base touches only bot churn
       # (SKIP_SAFE_RE in the optimizer; docs are not churn, tests read them,
@@ -1029,7 +1046,7 @@ jobs:
             # ref be deleted below — never redden a landing that happened.
             if [ -n "$LAND_LIB" ]; then
               LAND_LIB="$LAND_LIB" LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
-              LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" \
+              LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" LAND_RECEIPT="${{ needs.checks.outputs.receipt }}" \
               node -e '
                 const { appendLanding, parseLandings } = require(require("path").resolve(process.env.LAND_LIB));
                 const e = process.env;
@@ -1037,7 +1054,7 @@ jobs:
                 let onMain = "";
                 try { onMain = require("child_process").execFileSync("git", ["show", "origin/main:data/audit/landings.jsonl"], { encoding: "utf8", maxBuffer: 64 << 20 }); } catch { onMain = ""; }
                 if (parseLandings && parseLandings(onMain).some((x) => x.sha === e.LAND_SHA && x.branch === e.LAND_BRANCH)) { console.log("landings.jsonl on main already has this row (merge train)"); process.exit(0); }
-                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null });
+                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null, receipt: e.LAND_RECEIPT || null });
                 console.log(`landings.jsonl += ${JSON.stringify(row)}`);
               ' && echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY" \
                 || echo "::warning::landings.jsonl row for ${SHA:0:10} could NOT be written — the landing itself is verified; check-direct-push-to-main.yml may digest this sha as unrecorded"

@@ -865,7 +865,7 @@ export function checkReviewCoverage({ command, cwd, targets, env = process.env, 
       }
     }
     const v = rc.landGateDecision({ command, events, gatedLines, budget: rc.GATE_LINE_BUDGET, touchesSrc, env });
-    if (root && !seams.noLog) logEvent(root, { event: `review-coverage-${v.decision}`, reason: v.reason, gatedLines });
+    if (root && !seams.noLog) logEvent(root, { event: `review-coverage-${v.decision}`, reason: v.reason, gatedLines, target: (targets.find((t) => t.dst) || {}).dst || null });
     return v;
   } catch {
     return null;
