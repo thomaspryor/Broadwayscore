@@ -55,7 +55,11 @@ function loadAppleSDK(): Promise<void> {
       sdkLoaded = true;
       resolve();
     };
-    script.onerror = () => reject(new Error('Failed to load Apple JS SDK'));
+    script.onerror = () => {
+      sdkLoading = null;
+      script.remove();
+      reject(new Error('Failed to load Apple JS SDK'));
+    };
     document.head.appendChild(script);
   });
 
@@ -133,31 +137,33 @@ export function prepareAppleSignIn(): Promise<void> {
  */
 export async function signInWithAppleSDK(): Promise<AppleAuthResult> {
   if (!prepared) {
-    // Late: the browser may block this popup. Counted so a new Continue
-    // with Apple button that skips prepareAppleSignIn() shows up in the
-    // accounts dashboard instead of failing quietly (BRO-4894).
+    // Never wait and then open a popup: Safari's user activation would expire.
+    // Prepare a retry for callers outside the modal too.
     reportUgcError('auth.apple_sign_in', { message: 'popup prepared after the tap; caller skipped prepareAppleSignIn()', code: 'apple_late_prepare' });
-    await prepareAppleSignIn();
+    void prepareAppleSignIn().catch(() => {});
+    throw new Error('apple_not_prepared');
   }
   if (!prepared || !window.AppleID) {
     throw new Error('Apple JS SDK not available');
   }
   const { rawNonce } = prepared;
   prepared = null; // a nonce is single-use
-  const pending = window.AppleID.auth.signIn();
-  // Ready for a retry once this attempt settles.
-  pending.then(() => {}, () => {}).finally(() => { prepareAppleSignIn().catch(() => {}); });
-  const response = await pending;
+  try {
+    const response = await window.AppleID.auth.signIn();
 
-  return {
-    idToken: response.authorization.id_token,
-    nonce: rawNonce,
-    user: response.user
-      ? {
-          firstName: response.user.name?.firstName,
-          lastName: response.user.name?.lastName,
-          email: response.user.email,
-        }
-      : undefined,
-  };
+    return {
+      idToken: response.authorization.id_token,
+      nonce: rawNonce,
+      user: response.user
+        ? {
+            firstName: response.user.name?.firstName,
+            lastName: response.user.name?.lastName,
+            email: response.user.email,
+          }
+        : undefined,
+    };
+  } finally {
+    // Refresh the single-use nonce even if the SDK throws synchronously.
+    void prepareAppleSignIn().catch(() => {});
+  }
 }

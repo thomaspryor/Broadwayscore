@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { prepareAppleSignIn } from '@/lib/apple-auth';
@@ -13,6 +13,7 @@ interface SignInModalProps {
   onSignIn: (provider: 'google' | 'apple') => void;
   context?: SignInContext;
   loading?: boolean;
+  error?: string | null;
 }
 
 const CONTEXT_HEADLINES: Record<SignInContext, string> = {
@@ -31,12 +32,24 @@ const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   generic: 'Track shows, rate performances, and build your theater diary.',
 };
 
-export default function SignInModal({ isOpen, onClose, onSignIn, context = 'generic', loading = false }: SignInModalProps) {
+export default function SignInModal({ isOpen, onClose, onSignIn, context = 'generic', loading = false, error = null }: SignInModalProps) {
+  const [appleReady, setAppleReady] = useState(false);
+  const [prepareError, setPrepareError] = useState<string | null>(null);
   // Set Apple up while the box is open, so the tap opens its popup directly
   // (Safari blocks a popup that opens after any waiting).
   useEffect(() => {
-    if (isOpen) prepareAppleSignIn().catch(() => {});
-  }, [isOpen]);
+    let cancelled = false;
+    setAppleReady(false);
+    setPrepareError(null);
+    if (isOpen && !loading) {
+      prepareAppleSignIn().then(() => {
+        if (!cancelled) setAppleReady(true);
+      }).catch(() => {
+        if (!cancelled) setPrepareError('Apple sign-in is unavailable. Please try again, or continue with Google.');
+      });
+    }
+    return () => { cancelled = true; };
+  }, [isOpen, loading]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} zIndex={80} maxWidth="sm" ariaLabel="Sign in or create a free account">
@@ -78,7 +91,8 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
           <button
             type="button"
             onClick={() => onSignIn('apple')}
-            disabled={loading}
+            disabled={loading || !appleReady}
+            aria-busy={!appleReady && !prepareError}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-black text-white font-semibold text-sm rounded-lg border border-white/20 hover:bg-surface-raised disabled:opacity-50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -87,6 +101,12 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
             {loading ? 'Signing in...' : 'Continue with Apple'}
           </button>
         </div>
+
+        {(error || prepareError) && (
+          <p role="alert" className="mt-4 text-sm text-score-skip">
+            {error || prepareError}
+          </p>
+        )}
 
         {/* Footer */}
         <p className="mt-5 text-center text-xs text-gray-400 leading-relaxed">

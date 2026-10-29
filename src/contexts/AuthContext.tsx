@@ -76,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [modalSource, setModalSource] = useState<string>('generic');
   const [modalReturnTo, setModalReturnTo] = useState<string | null>(null);
   const [signInLoading, setSignInLoading] = useState(false);
+  const [signInError, setSignInError] = useState<string | null>(null);
 
   // Google sign-in leaves for Google with the box showing "Signing in..." and
   // both buttons disabled. Safari (iOS above all) restores the page from its
@@ -243,6 +244,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(async (provider: 'google' | 'apple', source: string = 'unknown', returnTo?: string) => {
     if (!isSupabaseConfigured()) return;
+    setSignInError(null);
     // Start the SDK load now but don't await it yet: Apple's popup must open
     // with no await before it (Safari blocks it otherwise, see apple-auth.ts).
     const clientReady = getSupabaseClient();
@@ -291,6 +293,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const raw = (err as { error?: string })?.error
           || (err instanceof Error ? err.message : String(err));
         const cancelled = /popup_closed|cancel/i.test(raw);
+        if (!cancelled) {
+          setSignInError(raw === 'popup_blocked_by_browser'
+            ? 'Your browser blocked the Apple window. Allow pop-ups for this site, or continue with Google.'
+            : raw === 'apple_not_prepared'
+              ? 'Apple sign-in is getting ready. Please try again, or continue with Google.'
+              : 'Apple sign-in could not finish. Please try again, or continue with Google.');
+          // Direct entry points (My Shows) need the same visible recovery.
+          setModalSource(source);
+          setModalReturnTo(returnTo ?? null);
+          setModalOpen(true);
+        }
         markSignInFailed('apple', source, cancelled ? 'cancelled' : raw);
         if (!cancelled) reportUgcError('auth.apple_sign_in', { message: raw, code: 'apple' });
         // eslint-disable-next-line no-console
@@ -373,6 +386,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const showSignIn = useCallback((context: ModalContext = 'generic', source?: string, options?: SignInOptions) => {
     const src = source || context;
+    setSignInError(null);
     setModalContext(context);
     setModalSource(src);
     setModalReturnTo(options?.returnTo ?? null);
@@ -424,6 +438,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         onSignIn={handleModalSignIn}
         context={modalContext}
         loading={signInLoading}
+        error={signInError}
       />
     </AuthContext.Provider>
   );
