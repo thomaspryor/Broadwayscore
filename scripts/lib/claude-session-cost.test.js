@@ -123,3 +123,10 @@ test('board-numbers: cost line renders from fetchClaudeCost, and a failed read r
   assert.equal((await bn.fetchClaudeCost({ graphql: paged, now: new Date(NOW), cwd: dir })).codex, null);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('parseGetSession: model comes from session_context.model / configured_model (real get_session shape)', () => {
+  const a = C.parseGetSession({ ccr: { id: S1, session_context: { model: 'claude-opus-5-5' }, external_metadata: { usage: { cost_usd: 1 } } } });
+  assert.equal(a.model, 'claude-opus-5-5');
+  const b = C.parseGetSession({ ccr: { id: S1, configured_model: 'claude-sonnet-5-5', external_metadata: { usage: { cost_usd: 1 } } } });
+  assert.equal(b.model, 'claude-sonnet-5-5');
+});

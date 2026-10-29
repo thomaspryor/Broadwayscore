@@ -156,4 +156,4 @@ The board worker's queue is weeks deep, so "queued for the worker" is never a fi
 
 **Plain backlog** (can wait weeks): a normal card, ending with a `BACKLOG-OK: <why it can wait>` line.
 
-**Cost ledger (BRO-5671):** a session with `get_session` records Claude spend daily: `node scripts/record-claude-session-cost.js --list`, `get_session` each id, save the results as a JSON array, `--from-json=<file>`, land `data/audit/claude-session-cost.jsonl` (feeds the digest's "Claude cost, 7 days").
+**Cost ledger (BRO-5671, BRO-6504):** a session with `get_session` records itself at wrap-up: `get_session` with no id, save it to a file, `node scripts/record-claude-session-cost.js --from-json=<file> --cards=BRO-N`, commit `data/audit/claude-session-cost.jsonl` (feeds the digest's "Claude cost, 7 days").
