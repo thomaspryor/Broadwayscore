@@ -156,6 +156,7 @@ const LINKED_FIELD_GROUPS = [
   ['capitalization', 'capitalizationSource', 'capitalizationBasis'],
   ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange', 'weeklyRunningCostBasis'],
   MODEL_RUN_FIELDS,
+  ['ourRecoupEstimatePct', 'ourRecoupEstimateAsOf'],
 ];
 const GROUP_OF = new Map(LINKED_FIELD_GROUPS.flatMap(g => g.map(f => [f, g])));
 // Bookkeeping both sides bump on any write, and model output both sides

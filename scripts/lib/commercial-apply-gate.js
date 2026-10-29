@@ -8,6 +8,8 @@ const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { addedPlaceholderSources } = require('./commercial-sources');
 const { capitalizationBasisFromText, retagCapitalizationBasis } = require('./public-source-text');
 
+const { carryOurRecoupEstimate, ourRecoupRangePct } = require('./our-recoup-estimate');
+
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 
 // recoupedDate must be YYYY or YYYY-MM (mirrors validate-data.js:2688). A claim
@@ -261,6 +263,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   // its sources, model* fields and figure sources survive the overlay.
   const overlay = (isClaimAutoApply || mergeExisting) && existing;
   const result = overlay ? { ...existing } : {};
+  carryOurRecoupEstimate(result, existing);
   // cleanNullish() collapses "null"/"undefined"/"" sentinels to undefined so a
   // bad LLM field never overwrites an existing value or writes invalid data.
   const designation = canonicalDesignation(cleanNullish(entry.designation));
@@ -358,7 +361,14 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   if (designation && isLossDesignation(result.designation) && !locked) {
     result.designation = lossDesignationFor(returnedEstimatePct(result));
   }
+  if (ourRecoupRangePct(result) && result.recouped !== true && existing?.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE) {
+    result.designation = existing.designation;
+    result.recouped = existing.recouped;
+  }
   stampDesignationBasis(result, entry, existing);
+  if (ourRecoupRangePct(result) && result.recouped !== true && existing?.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE) {
+    result.designationBasis = DESIGNATION_BASES.MODEL_ESTIMATE;
+  }
   // A later automated research refresh must not erase a verdict waiting for
   // the closure window. A verified recoupment still supersedes the loss.
   if (result.recouped === true) {

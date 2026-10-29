@@ -51,6 +51,7 @@ const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 const { commercialGrossesCandidate, compareGrossesRows, compareCostParsers } = require('./lib/commercial-grosses-shadow');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { isOurRecoupField } = require('./lib/our-recoup-estimate');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { proposeDesignation } = require('./lib/designation-rule');
 const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./lib/commercial-designations');
@@ -1571,6 +1572,10 @@ function filterByConfidence(proposedChanges, commercialData) {
 
   for (const change of (proposedChanges || [])) {
     const { slug, field, oldValue, newValue, confidence } = change;
+    if (isOurRecoupField(field)) {
+      skipped.push({ ...change, skipReason: 'Owner-set estimate fields are never written by research' });
+      continue;
+    }
 
     // Sprint 3: Check for Deep Research conflicts FIRST
     const conflict = deepResearchBlock(change, commercialData);

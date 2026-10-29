@@ -11,6 +11,8 @@
  * strings ([] = ok).
  */
 
+const { ourRecoupEstimateErrors } = require('./our-recoup-estimate');
+
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard',
   'trade-reported',
@@ -125,6 +127,8 @@ function commercialRecordErrors(showId, show, ctx = {}) {
       }
     }
   }
+
+  for (const problem of ourRecoupEstimateErrors(show)) out.push(`commercial.json: "${showId}" ${problem}`);
 
   // ourEstimateRangePct (BRO-6245): our own rounded [low, high], ends in whole 5s,
   // never on a recouped show (it would read as an earlier share outranking the recoupment).

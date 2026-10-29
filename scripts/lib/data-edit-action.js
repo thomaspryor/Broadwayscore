@@ -22,6 +22,8 @@ const ROOT = path.join(__dirname, '..', '..');
 const EDITABLE_DATA_FIELDS = pickEditableFields([
   'shows.json', 'commercial.json', 'audience-buzz.json',
 ]);
+// Owner-set recoupment estimates are plan-only, never feedback/research output.
+EDITABLE_DATA_FIELDS['commercial.json'] = [...EDITABLE_DATA_FIELDS['commercial.json'], 'ourRecoupEstimatePct', 'ourRecoupEstimateAsOf'];
 // Plan-only (owner-approved) extras, not user-feedback fields (BRO-5975): the exemption a
 // show earns when Playbill's page is a different production, which validate-show-venue.js
 // honors only alongside a substantive statusBackfillSource.

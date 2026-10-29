@@ -32,6 +32,7 @@ import {
 import { formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import { returnSnapshotLabel } from '../../scripts/lib/commercial-return-snapshot';
+import { ourRecoupRangePct } from '../../scripts/lib/our-recoup-estimate';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
 import MoneyGate from './biz/MoneyGate';
@@ -451,12 +452,12 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         {analystRange && (
           <div>
             {analystRange[0] >= 100 ? (
-              <p className="text-sm text-gray-300">Estimated to have recouped, not yet announced</p>
+              <p className="text-sm text-gray-300">{ourRecoupRangePct(commercial) ? 'Est. recouped, not yet announced' : 'Estimated to have recouped, not yet announced'}</p>
             ) : (
               <RecoupmentProgressBar estimatedPct={analystRange} variant="headline" />
             )}
             <div className="mt-1">
-              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} ours={!commercial.analystRecoupPct} />
+              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} ours={!!ourRecoupRangePct(commercial) || !commercial.analystRecoupPct} />
             </div>
           </div>
         )}

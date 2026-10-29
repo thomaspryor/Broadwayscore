@@ -8,6 +8,8 @@
  * record on save, and commercial-apply-gate.js drops unknown values on build.
  */
 
+const { ourRecoupRangePct } = require('./our-recoup-estimate');
+
 const VALID_DESIGNATIONS = [
   'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
   'TBD', 'Fizzle', 'Did Not Recoup', 'Flop', 'Nonprofit', 'Tour Stop',
@@ -36,10 +38,12 @@ const MIRACLE_MIN_YEARS = 10;
 const FIZZLE_MIN_RETURNED_PCT = 30;
 /**
  * The % of capitalization the record's own estimate says came back: the
- * analyst's range first, then an outside estimate; a range counts as its
- * midpoint. null when the record has neither.
+ * owner's figure first, then the analyst's range and an outside estimate.
+ * A range counts as its midpoint; null when there is no estimate.
  */
 function ownReturnedEstimatePct(entry) {
+  const owner = ourRecoupRangePct(entry);
+  if (owner) return (owner[0] + owner[1]) / 2;
   for (const v of [entry?.analystRecoupPct, entry?.estimatedRecoupmentPct, entry?.ourEstimateRangePct]) {
     if (Array.isArray(v) && v.length === 2 && v.every(Number.isFinite)) return (v[0] + v[1]) / 2;
     if (Number.isFinite(v)) return v;
@@ -51,6 +55,8 @@ function ownReturnedEstimatePct(entry) {
  * single figure is a point range); null when the record has none (BRO-6335).
  */
 function ownReturnedRangePct(entry) {
+  const owner = ourRecoupRangePct(entry);
+  if (owner) return owner;
   for (const v of [entry?.analystRecoupPct, entry?.estimatedRecoupmentPct, entry?.ourEstimateRangePct]) {
     if (Array.isArray(v) && v.length === 2 && v.every(Number.isFinite)) return [Math.min(v[0], v[1]), Math.max(v[0], v[1])];
     if (Number.isFinite(v)) return [v, v];
