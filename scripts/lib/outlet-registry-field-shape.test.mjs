@@ -4,7 +4,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { outletFieldShapeErrors } = require('./outlet-registry-field-shape.js');
-const { findRunTogetherSlugDisplayNames, isRunTogetherSlugDisplayName } = require('./outlet-auto-register.js');
+const { findRunTogetherSlugDisplayNames, isRunTogetherSlugDisplayName, resolveMastheadName } = require('./outlet-auto-register.js');
+const { normalizeOutlet } = require('./review-normalization.js');
 
 // BRO-5246: verified one-word mastheads must survive the homepage backfill.
 // The first four are explicitly verified in the card. Operationlivetheatre's
@@ -38,16 +39,48 @@ test('the whole registry has no unreviewed run-together display names', () => {
   assert.deepEqual(singleWords.sort(), Object.keys(VERIFIED_SINGLE_WORD_DISPLAY_NAMES).sort());
 });
 
+// BRO-5246: homepage metadata retrieved from these Wayback captures on 2026-10-29.
+// Keep only the masthead metadata, never the archived articles.
+for (const { id, displayName, previousName, html, source } of [
+  {
+    id: 'realmericanmedia',
+    displayName: 'RealMerican Media',
+    previousName: 'RealMericanMedia.com',
+    html: '<meta content="RealMerican Media" property="og:site_name"/><title>RealMerican Media | Keeping It American</title>',
+    source: 'https://web.archive.org/web/20161022052133/http://realmericanmedia.com/',
+  },
+  {
+    id: 'mydreamcametrue',
+    displayName: 'My Dream Came True!',
+    previousName: 'My Dream Came True',
+    html: '<title>Home Page - My Dream Came True!</title>',
+    source: 'https://web.archive.org/web/20161010123202/http://mydreamcametrue.com/',
+  },
+  {
+    id: 'broadwayspotted',
+    displayName: 'BroadwaySpotted',
+    previousName: 'Broadway Spotted',
+    html: '<title>BroadwaySpotted - Broadway gets Spotted</title>',
+    source: 'https://web.archive.org/web/20150111081400/http://www.broadwayspotted.com/',
+  },
+]) {
+  test(`${id} matches its archived homepage masthead`, async () => {
+    const { outlets } = require('../../data/outlet-registry.json');
+    const masthead = await resolveMastheadName({
+      outletId: id,
+      domain: outlets[id].domain,
+      fetchPage: async () => ({ content: html }),
+    });
+    assert.equal(masthead.displayName, displayName, source);
+    assert.equal(outlets[id].displayName, masthead.displayName, source);
+    assert.equal(normalizeOutlet(displayName), id);
+    assert.equal(normalizeOutlet(previousName), id, 'Existing review labels must still resolve to the same outlet');
+  });
+}
+
 test('the remaining BRO-5246 names keep their individually checked spelling', () => {
   const { outlets } = require('../../data/outlet-registry.json');
   for (const [id, name] of Object.entries({
-    // Dead homepages, checked against historical references rather than split from ids:
-    // Contributor's own spelling: https://medium.com/@johnentrada/the-american-film-you-might-never-see-c4d9d84a253e
-    realmericanmedia: 'RealMericanMedia.com',
-    // Cited article title: https://bestref.net/wikipedia/fr/The_Ellen_DeGeneres_Show
-    mydreamcametrue: 'My Dream Came True',
-    // First-person interview account: https://newmusicaltheatre.com/blogs/green-room/kindness-within-the-community
-    broadwayspotted: 'Broadway Spotted',
     // Homepage title / og:site_name, fetched via resolveMastheadName on 2026-10-25.
     // These three mastheads differ from their ids and needed manual review.
     thepegreview: 'THE PEG',
