@@ -997,5 +997,36 @@
       }
     ],
     "queuedAt": "2026-10-29T16:38:48.431Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5582-wp-legacy-audit-v2",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5582-wp-legacy-audit-v2",
+    "description": "land.yml did not land land/bro-5582-wp-legacy-audit-v2: the scripts-lib-tests gate went red at 33d75040bc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40904780562",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5582-wp-legacy-audit-v2"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "33d75040bcfdb38451245b8cacf13009f3e8a391"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40904780562"
+      }
+    ],
+    "queuedAt": "2026-10-29T17:11:02.112Z"
   }
 ]
