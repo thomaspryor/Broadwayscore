@@ -1295,11 +1295,11 @@ jobs:
       # data/audit snapshots. continue-on-error: a metric must never block the
       # health commit.
       - name: Time-to-publish SLA
+        if: always()
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        if: always()
         continue-on-error: true
         timeout-minutes: 4
         run: node scripts/time-to-publish-sla.js --windows=2 --alert

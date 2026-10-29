@@ -66,6 +66,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           WORKFLOW_CAP_DISABLED: ${{ vars.WORKFLOW_CAP_DISABLED }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "since=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
           # BRO-6532: through the bulk-workflow cap, with no wait (a waiting

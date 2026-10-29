@@ -124,10 +124,10 @@ jobs:
       # entry. Discovery never fetches those and stage-latency never sees them, so
       # without this list they are invisible. Advisory: lists them in the summary.
       - name: Unregistered review domains in this census
+        if: ${{ always() }}
         env:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        if: ${{ always() }}
         continue-on-error: true
         run: |
           set -o pipefail

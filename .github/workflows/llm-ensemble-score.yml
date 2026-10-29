@@ -581,6 +581,7 @@ jobs:
       # occurrence exactly like a bare npx ts-node call would; only
       # auto-recovers after 2+ consecutive crashes past a 24h floor.
       - name: Run ensemble scoring pipeline
+        if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           # Via env, never ${{ }} in the script: show_id is free text and would
@@ -589,7 +590,6 @@ jobs:
           INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         run: |
           # SCORING_ARGS is split on purpose (flag list); the reason stays one arg.
           # shellcheck disable=SC2086
@@ -650,11 +650,11 @@ jobs:
       # Skipped when the main pass already ran in rescore mode.
       # Kill switch: set repo variable DISABLE_RESCORE_DRAIN=1.
       - name: Drain needsRescore backlog (capped, scheduled only)
+        if: github.event.schedule == '30 4 * * *' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        if: github.event.schedule == '30 4 * * *' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=50 --verbose
 
@@ -707,10 +707,10 @@ jobs:
       # fired this cycle, so 3 flat samples surface in the daily digest
       # (health-check.js's progressWatchResults). Never fails the job.
       - name: Snapshot progress-watch state
+        if: always() && github.event.schedule == '30 4 * * *'
         env:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        if: always() && github.event.schedule == '30 4 * * *'
         continue-on-error: true
         run: node scripts/check-progress-stalls.js
 

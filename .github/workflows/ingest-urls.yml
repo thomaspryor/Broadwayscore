@@ -115,6 +115,7 @@ jobs:
           INPUT_SHOW_ID: ${{ inputs.show_id }}
           INGEST_DISPATCH_MARKER: ${{ runner.temp }}/ingest-dispatch-pending
           WORKFLOW_CAP_DISABLED: ${{ vars.WORKFLOW_CAP_DISABLED }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           FLAGS=""
           if [ "${{ inputs.no_fetch }}" = "true" ]; then

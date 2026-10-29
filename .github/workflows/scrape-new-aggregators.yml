@@ -160,6 +160,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set +e  # every failure below is handled explicitly
           # Core data missing (checkout-core-data failed but if:always() ran us):
@@ -665,11 +666,11 @@ jobs:
       # commit step below, which stages the files routeAlert writes. Candidates
       # create-tour-entries.js turned into entries are no longer open.
       - name: Suggest national tours to add
+        if: always()
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        if: always()
         continue-on-error: true
         run: node scripts/route-tour-candidates.js
 

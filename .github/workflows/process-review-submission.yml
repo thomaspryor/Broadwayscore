@@ -299,6 +299,7 @@ jobs:
           NYT_PASSWORD: ${{ secrets.NYT_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
           VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Get show ID and review URL from validation output
           SHOW_ID="${{ needs.validate.outputs.show_id }}"
