@@ -33,7 +33,7 @@ const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const SCOPE_INDEXING = 'https://www.googleapis.com/auth/indexing';
 const SCOPE_WEBMASTERS = 'https://www.googleapis.com/auth/webmasters.readonly';
 const SCOPE_WEBMASTERS_WRITE = 'https://www.googleapis.com/auth/webmasters';
-const QUOTA_LEDGER_PATH = path.join(__dirname, '../data/audit/indexing-api-usage.json');
+const QUOTA_LEDGER_PATH = process.env.INDEXING_LEDGER_PATH || path.join(__dirname, '../data/audit/indexing-api-usage.json');
 
 // Parse args
 const args = process.argv.slice(2);

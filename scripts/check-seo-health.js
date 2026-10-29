@@ -605,19 +605,8 @@ async function submitHighValuePages(token) {
     return { submitted: 0, skipped: 0 };
   }
 
-  // Load submission history for backoff
-  const ledger = readQuotaLedger();
-  const submissionCounts = {};
-  for (const sub of (ledger.submissions || [])) {
-    submissionCounts[sub.url] = (submissionCounts[sub.url] || 0) + 1;
-  }
-
-  // Priority: open/previews shows, then key hub pages
+  // Priority: key hub pages first (they must not fall past the 50-URL cap), then open/previews shows
   const highValueUrls = [
-    // Active shows first
-    ...shows
-      .filter(s => s.status === 'open' || s.status === 'previews')
-      .map(s => `${SITE_HOST}/show/${s.slug}`),
     // Key landing pages
     `${SITE_HOST}/`,
     `${SITE_HOST}/rankings`,
@@ -628,21 +617,23 @@ async function submitHighValuePages(token) {
     `${SITE_HOST}/tony-awards`,
     `${SITE_HOST}/west-end`,
     `${SITE_HOST}/off-broadway`,
+    // Active shows first
+    ...shows
+      .filter(s => s.status === 'open' || s.status === 'previews')
+      .map(s => `${SITE_HOST}/show/${s.slug}`),
   ];
 
-  // Filter out pages submitted 3+ times (backoff)
-  const candidates = highValueUrls.filter(url => {
-    const count = submissionCounts[url] || 0;
-    return count < 3;
-  });
+  // No per-URL backoff (BRO-3041): the quota ledger resets daily, so it cannot
+  // carry multi-day submission counts, and weekly re-submission is harmless. Hubs lead the list so the cap never drops them.
+  const candidates = highValueUrls;
 
   const budget = Math.min(candidates.length, remaining, 50);
   if (budget === 0) {
-    console.log('  No candidates remaining (all at backoff limit)');
-    return { submitted: 0, skipped: highValueUrls.length - candidates.length };
+    console.log('  No candidates to submit (no quota or no URLs)');
+    return { submitted: 0, skipped: 0 };
   }
 
-  console.log(`  Submitting up to ${budget} high-value pages (${candidates.length} eligible, ${highValueUrls.length - candidates.length} at backoff limit)...`);
+  console.log(`  Submitting up to ${budget} high-value pages (${candidates.length} candidates)...`);
 
   let submitted = 0;
   try {
@@ -669,7 +660,7 @@ async function submitHighValuePages(token) {
   } catch { /* non-critical */ }
 
   console.log(`  Submitted ${submitted} high-value pages`);
-  return { submitted, skipped: highValueUrls.length - candidates.length };
+  return { submitted, skipped: 0 };
 }
 
 // --- Check: Review-Intent Query Rankings (the de-branded truth) ---
@@ -1581,7 +1572,7 @@ async function main() {
   console.log(`  Sitemaps: ${sitemapStatus.count}`);
   console.log(`  New Pages: ${newPages.checked} checked, ${newPages.indexed} indexed`);
   console.log(`  Stale Pages: ${stalePages.stale}/${stalePages.sampled} stale, ${stalePages.resubmitted} resubmitted`);
-  console.log(`  High-Value Submissions: ${highValuePages.submitted} submitted, ${highValuePages.skipped} at backoff limit`);
+  console.log(`  High-Value Submissions: ${highValuePages.submitted} submitted`);
   console.log(`  Target Keywords: ${targetKeywords.filter(r => r.position !== null).length}/${TARGET_KEYWORDS.length} ranking`);
   console.log(`  Core Web Vitals: ${coreWebVitals.length} pages checked`);
   console.log(`  Rich Results: ${richResults.passing}/${RICH_RESULTS_SLUGS.length} PASS${richResults.failing > 0 ? ` ⚠ ${richResults.failing} FAIL` : ''}`);

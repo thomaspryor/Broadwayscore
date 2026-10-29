@@ -38,7 +38,7 @@ function runGuard(workflows) {
     }
     try {
       const stdout = execFileSync('bash', ['scripts/lint-workflow-guards.sh', 'core-data-pairing'],
-        { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+        { cwd: dir, env: { ...process.env, WF_MIN_OVERRIDE: '1' }, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
       return { code: 0, out: stdout };
     } catch (e) {
       return { code: e.status, out: `${e.stdout || ''}${e.stderr || ''}` };

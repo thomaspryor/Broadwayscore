@@ -22,6 +22,27 @@ cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 
 FAILED=0
 
+# BRO-3688: fail closed when the workflow glob matches too few files. A bare
+# `for f in .github/workflows/*.yml` over an empty/wrong-cwd dir iterates once
+# over the literal pattern, every grep no-ops and the check reports clean
+# having scanned nothing. Fills WF_FILES; returns 1 (and sets FAILED) below the
+# floor, so callers do `workflow_yml_files_or_fail <check> || return`.
+# Override the dir/floor with WF_DIR / WF_MIN_OVERRIDE (tests only).
+workflow_yml_files_or_fail() {
+  local check="$1" min dir="${WF_DIR:-.github/workflows}"
+  min="${WF_MIN_OVERRIDE:-$(node -e "console.log(require('./scripts/lib/scan-alert-ledger-gaps.js').MIN_EXPECTED_WORKFLOWS)" 2>/dev/null)}"
+  case "$min" in ''|*[!0-9]*) echo "FAIL ($check): workflow floor is not a number ('$min')"; FAILED=1; return 1 ;; esac
+  shopt -s nullglob
+  WF_FILES=("$dir"/*.yml)
+  shopt -u nullglob
+  if [ "${#WF_FILES[@]}" -lt "$min" ]; then
+    echo "::error::$check found only ${#WF_FILES[@]} workflow file(s) in $dir (expected at least $min) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
+    FAILED=1
+    return 1
+  fi
+  return 0
+}
+
 check_prebuild() {
   # `npx next build` (or bare `next build`) in a workflow step skips the npm
   # `prebuild` lifecycle hook (scripts/prebuild.sh), which is the only thing
@@ -30,7 +51,8 @@ check_prebuild() {
   #   Module not found: '../../data/cast-manifest.json'.
   # (2026-05-26 Test UGC Features failure, test-ugc.yml.)
   local VIOLATIONS="" f
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_prebuild || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     # Match `npx next build` and `npx --no-install next build`; tolerate extra
     # flags after. Avoid matching `npm run build` (which is fine).
     if grep -E '^[[:space:]]*(run:[[:space:]]*)?(npx([[:space:]]+--[a-z-]+)*[[:space:]]+next[[:space:]]+build|next[[:space:]]+build)([[:space:]]|$)' "$f" >/dev/null 2>&1; then
@@ -84,7 +106,8 @@ check_core_data_pairing() {
   #   opening-night-stage-alert.yml   mentions rebuild in alert runbook TEXT, not an invocation
   local EXEMPT="test.yml vercel-deploy.yml vercel-demo.yml vercel-preview.yml update-deploy-watermark.yml collect-review-texts.yml collect-we-ob-reviews.yml sweep-we-aggregators.yml generate-theater-tips.yml scoring-audit.yml opening-night-stage-alert.yml"
   local MISSING="" f name s
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_core_data_pairing || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     name=$(basename "$f")
     # -Fx exact-name match (grep -qw would let vercel-demo.yml exempt a future
     # foo-vercel-demo.yml — '-' and '.' are non-word chars to grep)
@@ -154,7 +177,8 @@ check_private_git_add() {
   # CORRECT way to commit a registry change, not a silent no-op.
   local CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json"
   local VIOLATIONS="" f core
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_private_git_add || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     for core in $CORE_FILES; do
       # Match `git add` (no -f/--force) then data/<core>. Reject both
       # `git add data/shows.json` and `git add a b data/shows.json c`.
@@ -225,7 +249,8 @@ check_scraping_fallback() {
     verify-reviews.yml
   "
   local VIOLATIONS="" f name
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_scraping_fallback || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     name=$(basename "$f")
     if grep -qw "$name" <<<"$EXEMPT"; then continue; fi
     if grep -q "SCRAPINGBEE_API_KEY" "$f" && ! grep -q "BRIGHTDATA_TOKEN" "$f"; then
@@ -260,7 +285,8 @@ check_scrapingdog_pairing() {
   # verify-reviews.yml: also exempt from check_scraping_fallback (SB-only by
   # design, not a bulk fetchPage() scraper) — same rationale here.
   local VIOLATIONS="" f name
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_scrapingdog_pairing || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     name=$(basename "$f")
     if grep -qw "$name" <<<"$EXEMPT"; then continue; fi
     if (grep -q "BRIGHTDATA_TOKEN" "$f" || grep -q "SCRAPINGBEE_API_KEY" "$f") && ! grep -q "SCRAPINGDOG_API_KEY" "$f"; then
@@ -285,7 +311,8 @@ check_theatr_token() {
   # (fetch-all-image-formats.yml did this for 2 weeks, April 2026).
   local ALLOWED="update-theatr.yml rotate-theatr-token.yml"
   local VIOLATIONS="" f name
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_theatr_token || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     name=$(basename "$f")
     if grep -qw "$name" <<<"$ALLOWED"; then continue; fi
     # Match actual secret usage, not comments
@@ -350,7 +377,8 @@ check_snapshot_overwrite() {
   # DESTINATION (final argument). Reading FROM it (e.g. commercial-weekly.yml
   # restoring the pristine baseline on failure) is legitimate.
   local VIOLATIONS="" f
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_snapshot_overwrite || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     if grep -E '(cp|rsync)[^#]*[[:space:]]"?/tmp/core-data-snapshot/?"?[[:space:]]*$' "$f" >/dev/null 2>&1; then
       VIOLATIONS="$VIOLATIONS $(basename "$f")"
     fi
@@ -660,7 +688,8 @@ check_dry_run_flag_setter() {
   # rebuild-reviews.yml ever re-applied a cleared wrongProduction flag. A dry-run
   # flag-setter in a persistence workflow is silent, not loud: the step is green.
   local VIOLATIONS=""
-  for f in .github/workflows/*.yml; do
+  workflow_yml_files_or_fail check_dry_run_flag_setter || return
+  for f in "${WF_FILES[@]}"; do # set-u-safe: workflow_yml_files_or_fail returns before here when the array is below the floor
     while IFS= read -r line; do
       case "$line" in
         *"flag-wrong-production-by-date.js --apply"*) ;;
