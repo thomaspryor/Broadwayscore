@@ -848,6 +848,15 @@ function titleSegmentKeysUncached(title) {
 }
 
 /**
+ * True when `needle` appears in `haystack` as whole words (normalized titles
+ * are space-separated words). "phantom of the opera" is in "the phantom of
+ * the opera"; "dream" is not in "dreamgirls" (BRO-4315).
+ */
+function containsAsWords(haystack, needle) {
+  return (' ' + haystack + ' ').includes(' ' + needle + ' ');
+}
+
+/**
  * True when both titles are the SAME set of two-or-more segments joined by
  * " / ", " & " or " and ", in any order (BRO-4204 S5-T2). The Charing Cross
  * double bill lived under two ids because one listing led with "The Human
@@ -1113,8 +1122,11 @@ function checkForDuplicate(newShow, existingShows) {
       const shorter = Math.min(existingTitleNormalized.length, newTitleNormalized.length);
       const longer = Math.max(existingTitleNormalized.length, newTitleNormalized.length);
       if (shorter / longer >= 0.5) {
-        if (newTitleNormalized.includes(existingTitleNormalized) ||
-            existingTitleNormalized.includes(newTitleNormalized)) {
+        // Whole-word containment only (BRO-4315): normalizeTitle strips a
+        // possessive prefix, so "A Midsummer Night's Dream" becomes "dream",
+        // which a raw substring test matched inside "dreamgirls".
+        if (containsAsWords(newTitleNormalized, existingTitleNormalized) ||
+            containsAsWords(existingTitleNormalized, newTitleNormalized)) {
           if (isMultiProduction(newShow, existing)) continue;
           return {
             isDuplicate: true,
