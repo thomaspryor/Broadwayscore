@@ -63,9 +63,16 @@ test('main prints ALREADY ANSWERED for a message and stays quiet when nothing is
 test('the Stop hook runs the restate check, advisory unless DECISION_RESTATE_ENFORCE=1', async () => {
   const fs = await import('node:fs');
   const hook = fs.readFileSync(new URL('../../.claude/hooks/verify-edits.sh', import.meta.url), 'utf8');
-  assert.match(hook, /scripts\/lib\/decision-restate\.js" --message-stdin/);
-  assert.match(hook, /DECISION_RESTATE_ENFORCE/);
-  assert.match(hook, /DECISION_RESTATE_DISABLE/);
+  assert.match(hook, /scripts\/lib\/decision-restate\.js" --stop-hook/);
+  const { stopHook } = require('../../scripts/lib/decision-restate.js');
+  const comments = new Map([['BRO-5646', [{ body: 'DECISION NEEDED: pick', createdAt: '2026-10-29T10:00:00Z' }, { body: '**Owner decision** (answered by the owner)\n\nChose: A', createdAt: '2026-10-29T11:00:00Z' }]]]);
+  const run = (env, extra = '') => stopHook(JSON.stringify({ last_assistant_message: `DECISION NEEDED: BRO-5646 pick ${extra}` }), { env, listComments: async () => comments, log() {} });
+  assert.equal((await run({})).code, 0);
+  assert.match((await run({})).message, /ALREADY ANSWERED/);
+  assert.equal((await run({ DECISION_RESTATE_ENFORCE: '1' })).code, 2);
+  assert.equal((await run({ DECISION_RESTATE_ENFORCE: '1' }, 'NO-VERIFY: x')).code, 0);
+  assert.equal((await run({ DECISION_RESTATE_DISABLE: '1', DECISION_RESTATE_ENFORCE: '1' })).code, 0);
+  assert.equal((await stopHook('not json', { env: {} })).code, 0);
 });
 
 test('review blockers (BRO-6539): voided/needed/undone comments are not answers; new evidence is not settled by an old approval', async () => {

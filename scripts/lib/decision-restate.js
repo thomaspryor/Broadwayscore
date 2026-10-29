@@ -144,8 +144,34 @@ async function main(argv = process.argv.slice(2), { stdin = () => require('fs').
   return strict && dropped.length ? 3 : 0;
 }
 
-if (require.main === module) {
+/**
+ * Stop-hook entry (verify-edits.sh pipes its JSON input here). Advisory by default (CLAUDE.md section 19): logs to
+ * stderr and .cache/decision-restate-advisory.log and exits 0. Exit 2 only with DECISION_RESTATE_ENFORCE=1 and no
+ * NO-VERIFY: in the message. DECISION_RESTATE_DISABLE=1 turns it off. Any error fails open.
+ */
+async function stopHook(raw, { env = process.env, listComments, log = (l) => require('fs').appendFileSync(require('path').join(__dirname, '../../.cache/decision-restate-advisory.log'), l) } = {}) {
+  if (env.DECISION_RESTATE_DISABLE === '1') return { code: 0 };
+  let input; try { input = JSON.parse(raw); } catch { return { code: 0 }; }
+  const msg = String(input.last_assistant_message || '');
+  if (!msg.includes('DECISION NEEDED:')) return { code: 0 };
+  const lines = [];
+  const argv = ['--message-stdin', ...(input.transcript_path ? [`--transcript=${input.transcript_path}`] : [])];
+  await main(argv, { stdin: () => msg, out: (l) => lines.push(l), listComments });
+  if (!lines.length) return { code: 0 };
+  const out = lines.join('\n');
+  try { require('fs').mkdirSync(require('path').join(__dirname, '../../.cache'), { recursive: true }); log(`${new Date().toISOString()}\n${out}\n`); } catch { /* log is best effort */ }
+  if (env.DECISION_RESTATE_ENFORCE === '1' && !msg.includes('NO-VERIFY:')) {
+    return { code: 2, message: `BLOCKED: this message restates a decision the owner already answered on the card (BRO-6539):\n${out}\nAct on the answer and drop it from the message. Bypass: NO-VERIFY: <reason>.` };
+  }
+  return { code: 0, message: `[decision-restate advisory] ${out}` };
+}
+
+if (require.main === module && process.argv.includes('--stop-hook')) {
+  let raw = ''; process.stdin.on('data', (d) => { raw += d; }).on('end', () => {
+    stopHook(raw).then((r) => { if (r.message) console.error(r.message); process.exitCode = r.code; }, () => { process.exitCode = 0; });
+  });
+} else if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[decision-restate] ${e.message}`); process.exitCode = 0; });
 }
 
-module.exports = { answerState, dropAnswered, decisionCards, decisionCardsFromTranscript, checkCards, isAnswer, isQuestion, main };
+module.exports = { stopHook, answerState, dropAnswered, decisionCards, decisionCardsFromTranscript, checkCards, isAnswer, isQuestion, main };

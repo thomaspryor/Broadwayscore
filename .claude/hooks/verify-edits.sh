@@ -93,24 +93,10 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SHIP_CHECK_COVERAGE_DISABLE:-0
   _rc_err=$(printf '%s' "$input" | node "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" --stop-hook 2>&1 >/dev/null)
   if [ $? -eq 2 ]; then printf '%s\n' "$_rc_err" >&2; exit 2; fi
 fi
-# BRO-6539: restating a DECISION NEEDED the owner already answered on the card (BRO-5646 / BRO-4309 / BRO-4303
-# were restated for 3+ hours). scripts/lib/decision-restate.js reads the cards named in the DECISION NEEDED blocks
-# and prints one line per card whose owner-decision / visual-approval comment is newer than the question.
-# ADVISORY first (CLAUDE.md section 19): logs to stderr and .cache/decision-restate-advisory.log; blocks only
-# with DECISION_RESTATE_ENFORCE=1. Fails open on any error. Kill switch DECISION_RESTATE_DISABLE=1.
-if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${DECISION_RESTATE_DISABLE:-0}" != "1" ] \
-   && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1 \
-   && printf '%s' "$VE_LAST_MSG" | grep -q 'DECISION NEEDED:'; then
-  _dr_out=$(printf '%s' "$VE_LAST_MSG" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --message-stdin --transcript="$transcript" 2>/dev/null)
-  if [ -n "$_dr_out" ]; then
-    mkdir -p "$VE_REPO_ROOT/.cache" 2>/dev/null
-    { date -u +%FT%TZ; printf '%s\n' "$_dr_out"; } >> "$VE_REPO_ROOT/.cache/decision-restate-advisory.log" 2>/dev/null
-    if [ "${DECISION_RESTATE_ENFORCE:-0}" = "1" ] && ! printf '%s' "$VE_LAST_MSG" | grep -q 'NO-VERIFY:'; then
-      printf '🛑 BLOCKED: this message restates a decision the owner already answered on the card (BRO-6539):\n%s\nAct on the answer and drop it from the message. Bypass: NO-VERIFY: <reason>.\n' "$_dr_out" >&2
-      exit 2
-    fi
-    printf '[decision-restate advisory] %s\n' "$_dr_out" >&2
-  fi
+# BRO-6539: advisory check that a DECISION NEEDED is not already answered on its card (logic in decision-restate.js --stop-hook).
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1; then
+  _dr_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --stop-hook 2>&1 >/dev/null)
+  if [ $? -eq 2 ]; then printf '%s\n' "$_dr_err" >&2; exit 2; fi
 fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
