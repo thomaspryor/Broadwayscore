@@ -28,7 +28,7 @@ const RECENT_SIGNAL_DAYS_DEFAULT = 30;
 // announced.
 const {
   DESIGNATION_BASES, estimatedDesignationForClosed,
-  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS,
+  UNRECOUPED_DESIGNATIONS, isLossDesignation, isUnrecoupedDesignation, RECOUPED_DESIGNATIONS,
 } = require('./commercial-designations');
 
 /**
@@ -59,7 +59,7 @@ const SKIP_DESIGNATIONS = new Set([
   'Nonprofit',        // pure nonprofits — recoupment doesn't apply
   'Tour Stop',        // tour stops never measured against original cap
   ...RECOUPED_DESIGNATIONS, // already classified as recouped
-  ...LOSS_DESIGNATIONS, // already classified as loss
+  ...UNRECOUPED_DESIGNATIONS, // already classified as not recouped (loss labels, Wait & See)
 ]);
 
 function daysAgo(isoString, now = Date.now()) {
@@ -302,7 +302,7 @@ function closedTbdLossAction(entry, show, { now = Date.now(), requireLossEvidenc
   if (!Number.isFinite(days)) return null;
   const designation = lossLabelFor(entry);
   // A win-side estimate beside a recorded non-recoupment is contradictory: a person looks.
-  if (designation && !isLossDesignation(designation) && entry.recouped === false) return { action: 'flag' };
+  if (designation && !isUnrecoupedDesignation(designation) && entry.recouped === false) return { action: 'flag' };
   if (requireLossEvidence || !designation) {
     return 'needsLossEvidence' in entry ? null : { action: 'flag' };
   }

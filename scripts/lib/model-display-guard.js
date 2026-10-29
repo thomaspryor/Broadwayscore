@@ -42,7 +42,7 @@
 
 const { runWindow } = require('./run-window');
 const { ourRecoupRangePct } = require('./our-recoup-estimate');
-const { FIZZLE_MIN_RETURNED_PCT, TRICKLE_MAX_MULTIPLE, hasNoInvestorsToRepay } = require('./commercial-designations');
+const { FIZZLE_MIN_RETURNED_PCT, TRICKLE_MAX_MULTIPLE, WAIT_AND_SEE_MIN_RETURNED_PCT, hasNoInvestorsToRepay } = require('./commercial-designations');
 // Our own "Inferred:"/"Estimated:" figures are not a report.
 const { OWN_INFERENCE, STATED_PCT } = require('./recoupment-ground-truth');
 
@@ -108,6 +108,7 @@ function estimateFitsDesignation(range, designation, ownerEstimate = false) {
   if (ownerEstimate && designation === 'Trickle') return mid >= 100 && mid < TRICKLE_MAX_MULTIPLE * 100;
   if (ownerEstimate && designation === 'Windfall') return mid >= TRICKLE_MAX_MULTIPLE * 100;
   if (designation === 'Flop') return mid < FIZZLE_MIN_RETURNED_PCT;
+  if (designation === 'Wait & See') return mid >= WAIT_AND_SEE_MIN_RETURNED_PCT && mid < 100;
   if (designation === 'Fizzle') return mid >= FIZZLE_MIN_RETURNED_PCT && mid < 100;
   return false;
 }

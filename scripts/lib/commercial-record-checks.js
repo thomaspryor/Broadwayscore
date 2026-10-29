@@ -75,7 +75,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const { NP_VENUES, venueMatches } = require('./nonprofit-venues');
-const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, labelSizingPct, isLossDesignation, lossDesignationFor, REPORTED_WIN_DESIGNATIONS } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, labelSizingPct, isLossDesignation, lossDesignationFor, REPORTED_WIN_DESIGNATIONS, WAIT_AND_SEE, WAIT_AND_SEE_MIN_RETURNED_PCT, modelPctWithoutCredit } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 const { CAPITALIZATION_BASES } = require('./public-source-text');
@@ -238,6 +238,29 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   if (isLossDesignation(show.designation) && show.recouped !== false && !(modelEstimated && show.recouped == null)) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
   }
+  // Squeaker (BRO-6499): recouped only because the NY State tax credit pushed returns over 100%.
+  // Reported, never our estimate: it needs the cited recoupment AND the credit named in that citation.
+  if (show.designation === 'Squeaker') {
+    if (modelEstimated) {
+      out.push(`commercial.json: "${showId}" is Squeaker on a model estimate (a Squeaker is reported: a cited recoupment that names the NY tax credit)`);
+    }
+    if (!/tax credit/i.test(String(show.recoupedSource || ''))) {
+      out.push(`commercial.json: "${showId}" is Squeaker but recoupedSource does not cite the NY State tax credit's part in the recoupment`);
+    }
+  }
+  // Wait & See (BRO-6499): closed without recouping, 50%+ back, later money may still recoup it.
+  if (show.designation === WAIT_AND_SEE) {
+    if (show.recouped !== false) {
+      out.push(`commercial.json: "${showId}" is ${WAIT_AND_SEE} but recouped=${JSON.stringify(show.recouped)} (it counts as not recouped, so recouped must be false)`);
+    }
+    const own = ownReturnedEstimatePct(show);
+    if (own === null || own < WAIT_AND_SEE_MIN_RETURNED_PCT || own >= 100) {
+      out.push(`commercial.json: "${showId}" is ${WAIT_AND_SEE} but its own estimate of the share returned is ${own === null ? 'missing' : own + '%'} (needs a cited estimate of ${WAIT_AND_SEE_MIN_RETURNED_PCT}% to under 100%)`);
+    }
+    if (!Array.isArray(show.sources) || !show.sources.some((x) => x && /^https?:\/\//.test(String(x.url || '')))) {
+      out.push(`commercial.json: "${showId}" is ${WAIT_AND_SEE} but cites no source for the share returned`);
+    }
+  }
   // capitalizationBasis (BRO-5660): what the figure is, on a capitalization.
   if (show.capitalizationBasis != null) {
     if (!CAPITALIZATION_BASES.includes(show.capitalizationBasis)) {
@@ -399,6 +422,15 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   const runStatus = ctx.showRecord && ctx.showRecord.status;
   if (isLossDesignation(show.designation) && runStatus && runStatus !== 'closed') {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but the show's status is "${runStatus}" (loss designations are for closed runs; use "TBD" until it closes)`);
+  }
+  if (show.designation === WAIT_AND_SEE && runStatus && runStatus !== 'closed') {
+    out.push(`commercial.json: "${showId}" has designation "${WAIT_AND_SEE}" but the show's status is "${runStatus}" (it is for closed runs)`);
+  }
+  if (show.designation === 'Squeaker') {
+    const exCredit = modelPctWithoutCredit(show);
+    if (exCredit !== null && exCredit >= 100) {
+      out.push(`commercial.json: "${showId}" is Squeaker but our model has it past 100% even without the NY tax credit (${Math.round(exCredit)}%); check the citation`);
+    }
   }
   // Every loss label says what it rests on (owner policy B, BRO-5020). Advisory (§19).
   if (isLossDesignation(show.designation) && show.designationBasis == null) {

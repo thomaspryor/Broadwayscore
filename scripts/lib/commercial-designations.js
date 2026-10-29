@@ -13,9 +13,10 @@ const { ourRecoupRangePct } = require('./our-recoup-estimate');
 const VALID_DESIGNATIONS = [
   'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
   'TBD', 'Fizzle', 'Did Not Recoup', 'Flop', 'Nonprofit', 'Tour Stop',
+  'Squeaker', 'Wait & See',
 ];
 
-const keyOf = (s) => s.trim().toLowerCase().replace(/[\s_-]+/g, ' ');
+const keyOf = (s) => s.trim().toLowerCase().replace(/\s*&\s*/g, ' and ').replace(/[\s_-]+/g, ' ');
 const DESIGNATION_BY_KEY = new Map(VALID_DESIGNATIONS.map(d => [keyOf(d), d]));
 
 // Returns the canonical spelling, or undefined for anything not in the list.
@@ -63,6 +64,19 @@ function ownReturnedRangePct(entry) {
   }
   return null;
 }
+/**
+ * Wait & See (owner 2026-10-29, BRO-6499): closed without recouping, but this
+ * % of capitalization or more has come back and later money (tour, licensing,
+ * a sale or buyout) may still get it there. Boundary with Fizzle (30% to under
+ * 100%): the two overlap on 50-99%, and the difference is documented later
+ * money, which a figure cannot show. So Wait & See is never inferred: the
+ * automatic sizing (lossDesignationFor, estimatedDesignationForClosed) keeps
+ * choosing Fizzle or Flop, and Wait & See is a reviewed, cited label that
+ * needs recouped:false and an own estimate at or above this line
+ * (commercial-record-checks.js). It counts as NOT recouped and is not a loss
+ * label (isLossDesignation stays false), so no loss phrase prints for it.
+ */
+const WAIT_AND_SEE_MIN_RETURNED_PCT = 50;
 /** Model data qualities good enough to split Fizzle from Flop. */
 const SPLIT_MODEL_QUALITIES = new Set(['medium', 'high']);
 /**
@@ -125,6 +139,30 @@ const LOSS_DESIGNATIONS = Object.freeze(['Fizzle', 'Did Not Recoup', 'Flop']);
 const LOSS_DESIGNATION_SET = new Set(LOSS_DESIGNATIONS);
 function isLossDesignation(designation) {
   return LOSS_DESIGNATION_SET.has(designation);
+}
+/**
+ * Labels that say the show closed without recouping: the loss labels plus Wait
+ * and See (not a loss, never phrased as one). Season stats count all of them as
+ * not recouped; loss wording stays on isLossDesignation.
+ */
+const WAIT_AND_SEE = 'Wait & See';
+const UNRECOUPED_DESIGNATIONS = Object.freeze([...LOSS_DESIGNATIONS, WAIT_AND_SEE]);
+function isUnrecoupedDesignation(designation) {
+  return LOSS_DESIGNATION_SET.has(designation) || designation === WAIT_AND_SEE;
+}
+/**
+ * A model's central returned % without the NY State tax credit it counted:
+ * modelReturnedExCreditPct is post-credit when modelTaxCreditCounted is above
+ * 0, so the credit's share of capitalization comes back out. null when the
+ * record lacks the figures. A Squeaker needs this under 100 with the credit
+ * in the recouped total; the model can only corroborate it, a source reports it.
+ */
+function modelPctWithoutCredit(entry) {
+  const mid = modelMiddleReturnedPct(entry);
+  const cap = entry?.capitalization;
+  const credit = entry?.modelTaxCreditCounted;
+  if (mid === null || !Number.isFinite(cap) || cap <= 0 || !Number.isFinite(credit)) return null;
+  return mid - (credit / cap) * 100;
 }
 /**
  * The loss label a % returned supports (returnedEstimatePct): Fizzle at
@@ -214,16 +252,16 @@ function planModelLossResizes(entries, limit = MODEL_LOSS_RESIZE_LIMIT) {
   return { moves, held: moves.length > limit };
 }
 /** Classes the recoupment rule never moves. */
-const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop']);
+const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop', 'Squeaker', 'Wait & See']);
 
 /**
  * Labels that say the show recouped. Use these lists, never a hand-written
  * one: six hand lists had to be found by hand when a label was proposed
  * (BRO-6446; tests/unit/recouped-designations.test.mjs).
  */
-const RECOUPED_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
+const RECOUPED_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Squeaker']);
 /** Recouped labels that need a reported recoupment (recouped:true): never our estimate. */
-const REPORTED_WIN_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner']);
+const REPORTED_WIN_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Squeaker']);
 /** Recouped labels that mean returned under TRICKLE_MAX_MULTIPLE: watched for crossing it. */
 const MODEST_RETURN_DESIGNATIONS = Object.freeze(['Trickle']);
 
@@ -282,6 +320,7 @@ module.exports = {
   DESIGNATION_BASES, VALID_DESIGNATION_BASES,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, ownReturnedRangePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
+  WAIT_AND_SEE, WAIT_AND_SEE_MIN_RETURNED_PCT, UNRECOUPED_DESIGNATIONS, isUnrecoupedDesignation, modelPctWithoutCredit,
   LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS, REPORTED_WIN_DESIGNATIONS, MODEST_RETURN_DESIGNATIONS, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
   estimatedDesignationForClosed, labelSizingPct,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,

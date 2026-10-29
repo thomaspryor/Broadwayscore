@@ -25,7 +25,7 @@
 // alone is inference about the outcome (checker, 2026-10-10). A reported-pct
 // row is 'reported' only when its source also states a figure (BRO-5073).
 
-const { isLossDesignation } = require('./commercial-designations');
+const { isUnrecoupedDesignation } = require('./commercial-designations');
 
 const OWN_INFERENCE = /^\s*(inferred|estimated)\b/i;
 // A stated figure for the money returned or lost: a percentage beside
@@ -182,7 +182,7 @@ function truthCandidates(comm, show, now) {
     out.push({ kind: 'recouped', lo: 100, hi: Infinity, source: String(comm.recoupedSource) });
   }
   const closed = show && show.closingDate && new Date(show.closingDate) <= now;
-  if (closed && comm.recouped === false && isLossDesignation(comm.designation)) {
+  if (closed && comm.recouped === false && isUnrecoupedDesignation(comm.designation)) {
     out.push({ kind: 'failed', lo: -Infinity, hi: 99.99, source: `designation ${comm.designation}` });
   }
   return out;
