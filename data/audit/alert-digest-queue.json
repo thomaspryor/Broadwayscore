@@ -1350,5 +1350,36 @@
       }
     ],
     "queuedAt": "2026-10-29T06:23:06.617Z"
+  },
+  {
+    "conditionKey": "land:land/bro-batch2-credits-spend",
+    "title": "Landing blocked: unit-tests-node red on land/bro-batch2-credits-spend",
+    "description": "land.yml did not land land/bro-batch2-credits-spend: the unit-tests-node gate went red at 378cf359f1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40826832408",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-batch2-credits-spend"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "378cf359f1c8cab2fc920502e52788d9b19d3d0e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40826832408"
+      }
+    ],
+    "queuedAt": "2026-10-29T06:38:10.934Z"
   }
 ]
