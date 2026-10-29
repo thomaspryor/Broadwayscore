@@ -21,6 +21,7 @@ import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
 import { isLiveTour, isTourScored, isTourScoreHidden } from '@/lib/tour-listing';
 import { shortCity } from '@/lib/tour-schedule';
 import { stopDateRange } from '@/lib/tour-cities';
+import { ukHubForCity, ukHubFilterOptions } from '@/lib/uk-hubs';
 
 // "How This Works" default per market. The Broadway outlets (NYT, Vulture,
 // Variety) also review Off-Broadway; London and regional runs are reviewed by
@@ -214,8 +215,11 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
     const { creativeTeam: _ct, tags: _tags, ageRecommendation: _age, subtitle: _sub, subtitleColor: _subc, ...slim } = serializeShowForClient(show, {
       performances: grosses?.allTime?.performances ?? undefined,
     });
-    return slim;
+    return config.cityFilter ? { ...slim, hub: ukHubForCity(show.city) } : slim;
   });
+  // One pill per hub with shows; a single hub is no choice to offer.
+  const hubOptions = config.cityFilter ? ukHubFilterOptions(serializedShows.map(s => s.hub!)) : [];
+  const cityFilterOptions = hubOptions.length > 1 ? hubOptions : undefined;
 
   // Tours hub (BRO-6544): Status filter + Newest default replace the section
   // headings; the server order (customSort) still feeds the ItemList schema.
@@ -331,6 +335,7 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
           hasPerformanceData={hasPerformanceData}
           availableSorts={availableSorts}
           showTypeFilter={showTypeFilter}
+          cityFilterOptions={cityFilterOptions}
           showScoreToggle={showScoreToggle}
           sectionLabels={sectionLabels}
           upcomingContext={config.slug.startsWith('upcoming-')}
