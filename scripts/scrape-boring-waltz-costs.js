@@ -37,7 +37,7 @@ const { commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { waltzAnchor, appendWaltzAnchors, waltzJumpFlags, castEventsFor, shouldAlertNoAnchors } = require('./lib/waltz-cost-history');
 const { buildFitRows, summarizeFit, recordFit } = require('./lib/waltz-model-fit');
-const { applyAnalystRecoupEstimates, runsNear, newestFigureInRun } = require('./lib/waltz-recoup-estimates');
+const { applyAnalystRecoupEstimates, applyAnalystRecoupHistory, runsNear, newestFigureInRun } = require('./lib/waltz-recoup-estimates');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -88,7 +88,8 @@ With --record-history, every figure he posts is also appended to the show's
 costHistory as a dated anchor (deduped by post id), so his series survives
 the gap-fill; without it the history is previewed only.
 The newest "Estimated percentage recouped" per show is stored on the record
-(analystRecoupPct/AsOf/Url, scripts/lib/waltz-recoup-estimates.js, BRO-5502).
+(analystRecoupPct/AsOf/Url, scripts/lib/waltz-recoup-estimates.js, BRO-5502),
+and each change in it as a dated analystRecoupHistory anchor (BRO-5505).
   --dry-run         print the changes, write nothing
   --backfill        history preview only: it never changes a current
                     weeklyRunningCost (every run reads his whole archive)
@@ -448,15 +449,22 @@ async function main() {
   if (history.noRecord.length) console.log(`  No commercial record (anchors not stored): ${history.noRecord.join(', ')}`);
 
   // --- The analyst's "Estimated percentage recouped", newest per show (BRO-5502) ---
-  const recoup = applyAnalystRecoupEstimates(commercial.shows, relevantPosts, (name) => {
+  const matchBroadway = (name) => {
     if (!matchCache.has(name)) matchCache.set(name, matchShowName(name, lookup));
     const show = matchCache.get(name);
     return show && isBroadwayShow(show) ? show : null;
-  }, { apply: !DRY_RUN });
+  };
+  const recoup = applyAnalystRecoupEstimates(commercial.shows, relevantPosts, matchBroadway, { apply: !DRY_RUN });
   console.log('\n=== Estimated % recouped (analyst figure, newest per show) ===');
   console.log(`${DRY_RUN ? 'Would update' : 'Updated'}: ${recoup.updated.length} | no commercial record: ${recoup.noRecord.length}`);
   for (const u of recoup.updated) console.log(`  ${u.slug}: ${u.from ? u.from.join('-') : 'none'} -> ${u.to.join('-')}% (${u.asOf})`);
   if (recoup.noRecord.length) console.log(`  No commercial record: ${recoup.noRecord.join(', ')}`);
+
+  // --- The same figure's history: one dated anchor per change (BRO-5505) ---
+  const recoupHistory = applyAnalystRecoupHistory(commercial.shows, relevantPosts, matchBroadway, { apply: !DRY_RUN });
+  console.log('\n=== Estimated % recouped history (one anchor per change) ===');
+  console.log(`${DRY_RUN ? 'Would update' : 'Updated'}: ${recoupHistory.updated.length} shows`);
+  for (const u of recoupHistory.updated) console.log(`  ${u.slug}: ${u.from} -> ${u.to} anchors (${u.series.join(', ')})`);
 
   // Single-week jumps >15% in his series with no cast change near them may be
   // a change in his method rather than in the show's costs.
@@ -540,10 +548,10 @@ async function main() {
 
   // Write
   const costWrites = BACKFILL ? 0 : changes.length;
-  if (!DRY_RUN && (costWrites > 0 || (WRITE_HISTORY && history.added > 0) || recoup.updated.length > 0)) {
+  if (!DRY_RUN && (costWrites > 0 || (WRITE_HISTORY && history.added > 0) || recoup.updated.length > 0 || recoupHistory.updated.length > 0)) {
     commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
     saveCommercial(commercial);
-    console.log(`\nWrote ${costWrites} cost changes, ${WRITE_HISTORY ? history.added : 0} cost-history anchors and ${recoup.updated.length} recouped estimates to ${commercialPath}`);
+    console.log(`\nWrote ${costWrites} cost changes, ${WRITE_HISTORY ? history.added : 0} cost-history anchors, ${recoup.updated.length} recouped estimates and ${recoupHistory.updated.length} recouped histories to ${commercialPath}`);
   } else if (DRY_RUN && changes.length > 0) {
     console.log('\n[DRY RUN] No files written.');
   } else {

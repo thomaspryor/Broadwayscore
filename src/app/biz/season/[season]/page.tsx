@@ -30,7 +30,8 @@ import MoneyGate from '@/components/biz/MoneyGate';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
 import { formatRowValue, returnedCapitalText } from '@/lib/season-profile';
-import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
+import { ESTIMATE_SOURCES_NOTE, getRecoupedCellSummary } from '@/lib/commercial-display';
+import { getSeasonRecoupHeadline } from '@/lib/recoup-story';
 import EmailTomLink from '@/components/EmailTomLink';
 
 // Dynamically generate params from actual data - auto-updates when shows are added
@@ -117,6 +118,8 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
   const backHistory = back ? getSeasonPaybackHistory(season) : [];
   const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews').length;
   const closedShows = shows.filter(s => s.status === 'closed').length;
+  // Counts and ranges from the same % Recouped cells the table prints (BRO-5505); never a dollar sum.
+  const recoupHeadline = getSeasonRecoupHeadline(shows.map(getRecoupedCellSummary));
 
   return (
     <div className="min-h-screen bg-surface">
@@ -269,6 +272,10 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             {openShows > 0 && closedShows > 0 && ' · '}
             {closedShows > 0 && `${closedShows} closed`}
           </p>
+        )}
+
+        {recoupHeadline && (
+          <p className="text-sm text-gray-300 mb-4" data-testid="season-recoup-headline">{recoupHeadline.text}</p>
         )}
 
         {/* All Shows Table */}

@@ -7,6 +7,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   latestRecoupEstimates, analystRecoupPatch, applyAnalystRecoupEstimates, runsNear, newestFigureInRun,
+  recoupHistoryEstimates, mergeRecoupHistory, applyAnalystRecoupHistory,
 } = require('./waltz-recoup-estimates.js');
 
 // Blocks as the analyst writes them (Week Ending October 11, 2026 post).
@@ -109,4 +110,62 @@ test('apply: writes onto existing records only, and a dry run changes nothing', 
   assert.deepEqual(wet.updated, [{ slug: 'the-great-gatsby', from: null, to: [10, 30], asOf: '2026-10-13' }]);
   // Second run with the same posts: nothing to do.
   assert.equal(applyAnalystRecoupEstimates(records, posts, match).updated.length, 0);
+});
+
+// BRO-5505: the analyst's series, one dated anchor per change.
+const WEEKLY = [
+  post('2025-10-14', GATSBY('0%-20%'), 'p1'),
+  post('2025-10-21', GATSBY('0%-20%'), 'p2'),
+  post('2025-10-28', `${GATSBY('10%-30%')}\n\n${TWO_STRANGERS}`, 'p3'),
+  post('2025-11-04', GATSBY('10%-30%'), 'p4'),
+  post('2026-10-13', GATSBY('30%-50%'), 'p5'),
+];
+
+test('the history keeps one anchor each time the figure changes, oldest first', () => {
+  const out = recoupHistoryEstimates([...WEEKLY].reverse(), match);
+  assert.deepEqual(out.get('the-great-gatsby'), [
+    { asOf: '2025-10-14', pct: [0, 20], postId: 'p1' },
+    { asOf: '2025-10-28', pct: [10, 30], postId: 'p3' },
+    { asOf: '2026-10-13', pct: [30, 50], postId: 'p5' },
+  ]);
+  assert.deepEqual(out.get('two-strangers'), [{ asOf: '2025-10-28', pct: [0, 0], postId: 'p3' }]);
+});
+
+test('a re-run and a backfill add no duplicate anchors', () => {
+  const records = { 'the-great-gatsby': {}, 'two-strangers': {} };
+  const first = applyAnalystRecoupHistory(records, WEEKLY, match);
+  assert.deepEqual(first.updated.map((u) => [u.slug, u.to]), [['the-great-gatsby', 3], ['two-strangers', 1]]);
+  const stored = JSON.stringify(records);
+  assert.deepEqual(applyAnalystRecoupHistory(records, WEEKLY, match).updated, []);
+  assert.deepEqual(applyAnalystRecoupHistory(records, [...WEEKLY, ...WEEKLY], match).updated, []);
+  assert.equal(JSON.stringify(records), stored);
+  // A newer post with the same figure is no change; a new figure adds one anchor.
+  assert.deepEqual(applyAnalystRecoupHistory(records, [...WEEKLY, post('2026-10-20', GATSBY('30%-50%'), 'p6')], match).updated, []);
+  const moved = applyAnalystRecoupHistory(records, [...WEEKLY, post('2026-10-27', GATSBY('40%-60%'), 'p7')], match);
+  assert.deepEqual(moved.updated.map((u) => [u.slug, u.from, u.to]), [['the-great-gatsby', 3, 4]]);
+  assert.deepEqual(records['the-great-gatsby'].analystRecoupHistory.at(-1), { asOf: '2026-10-27', pct: [40, 60], postId: 'p7' });
+});
+
+test('stored anchors survive a run whose archive no longer has their posts', () => {
+  const records = { 'the-great-gatsby': { analystRecoupHistory: [{ asOf: '2025-06-01', pct: [0, 10], postId: 'old' }] } };
+  applyAnalystRecoupHistory(records, WEEKLY, match);
+  assert.deepEqual(records['the-great-gatsby'].analystRecoupHistory.map((a) => a.postId), ['old', 'p1', 'p3', 'p5']);
+});
+
+test('dry run reports the change and writes nothing; no record is reported', () => {
+  const records = { 'the-great-gatsby': {} };
+  const res = applyAnalystRecoupHistory(records, WEEKLY, match, { apply: false });
+  assert.equal(res.updated.length, 1);
+  assert.deepEqual(res.updated[0].series, ['0-20% 2025-10-14', '10-30% 2025-10-28', '30-50% 2026-10-13']);
+  assert.equal(records['the-great-gatsby'].analystRecoupHistory, undefined);
+  assert.deepEqual(res.noRecord, ['two-strangers']);
+});
+
+test('merge drops malformed anchors, repeats, and keeps one figure per date', () => {
+  const merged = mergeRecoupHistory(
+    [{ asOf: '2026-01-01', pct: [10, 30], postId: 'a' }, { asOf: 'bad', pct: [1, 2] }, { asOf: '2026-01-08', pct: [10, 30], postId: 'b' }, null],
+    [{ asOf: '2026-02-01', pct: [20, 40], postId: 'c' }, { asOf: '2026-02-01', pct: [10, 30], postId: 'd' }],
+  );
+  assert.deepEqual(merged, [{ asOf: '2026-01-01', pct: [10, 30], postId: 'a' }]);
+  assert.deepEqual(mergeRecoupHistory(merged, []), merged);
 });

@@ -526,6 +526,8 @@ export interface ShowCommercial {
   analystRecoupAsOf?: string | null;
   /** That post. */
   analystRecoupUrl?: string | null;
+  /** Each change in that figure, oldest first: [{asOf, pct, postId}] (BRO-5505, waltz-recoup-estimates.js). */
+  analystRecoupHistory?: Array<{ asOf: string; pct: [number, number]; postId?: string | null }> | null;
   /** Our own estimate as a rounded [low, high] (BRO-6245). Used only when there is no analystRecoupPct; credited as "Our estimate". */
   ourEstimateRangePct?: [number, number] | null;
   /** Owner-set estimate, ahead of analyst/model figures; research never writes these (BRO-6215). */

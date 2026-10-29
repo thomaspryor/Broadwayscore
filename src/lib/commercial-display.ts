@@ -494,6 +494,10 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
       analystRecoupPct: commercial.analystRecoupPct,
       analystRecoupAsOf: commercial.analystRecoupAsOf ?? null,
       analystRecoupUrl: commercial.analystRecoupUrl ?? null,
+      // How that figure moved (BRO-5505): dates and ranges only, for the card's step chart.
+      ...(Array.isArray(commercial.analystRecoupHistory) && commercial.analystRecoupHistory.length
+        ? { analystRecoupHistory: commercial.analystRecoupHistory.map(({ asOf, pct }) => ({ asOf, pct })) }
+        : {}),
     } : {}),
     ...(commercial.ourEstimateRangePct ? { ourEstimateRangePct: commercial.ourEstimateRangePct } : {}),
     ...(commercial.ourRecoupEstimatePct != null ? { ourRecoupEstimatePct: commercial.ourRecoupEstimatePct, ourRecoupEstimateAsOf: commercial.ourRecoupEstimateAsOf ?? null } : {}),

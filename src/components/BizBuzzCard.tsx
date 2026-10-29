@@ -35,6 +35,7 @@ import { returnSnapshotLabel } from '../../scripts/lib/commercial-return-snapsho
 import { ourRecoupRangePct } from '../../scripts/lib/our-recoup-estimate';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
+import AnalystRecoupTrendChart from './biz/AnalystRecoupTrendChart';
 import MoneyGate from './biz/MoneyGate';
 import dynamic from 'next/dynamic';
 import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
@@ -459,6 +460,10 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             <div className="mt-1">
               <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} ours={!!ourRecoupRangePct(commercial) || !commercial.analystRecoupPct} />
             </div>
+            {/* How his figure moved (BRO-5505); only beside his own figure, never ours. */}
+            {commercial.analystRecoupPct && !ourRecoupRangePct(commercial) && (
+              <AnalystRecoupTrendChart history={commercial.analystRecoupHistory} asOf={commercial.analystRecoupAsOf} />
+            )}
           </div>
         )}
         {showModelBar && commercial.modelRecoupmentPct && (
