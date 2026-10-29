@@ -116,6 +116,13 @@ const PREFETCH_MAX_PATHS = 2000;
 
 // ── Pure decision helpers ───────────────────────────────────────────────────
 
+// BRO-6035: generated docs a rebase conflict may be repaired by regenerating (never hand-merged).
+const GENERATED_DOC_PATHS = ['.github/workflows/DEPENDENCIES.md'];
+/** True when every conflicted path is a generated doc (and at least one is). */
+function isGeneratedDocConflict(files) {
+  return Array.isArray(files) && files.length > 0 && files.every((f) => GENERATED_DOC_PATHS.includes(f));
+}
+
 /**
  * The first check that did not PASS, or null when every check passed (or
  * none ran). Fails closed: a result without `pass: true` — `{name}` alone, a
@@ -756,6 +763,25 @@ function landBranch(o) {
         quiet(['diff', '--binary', '--no-textconv', '--no-ext-diff', mb, onto, '--', ...paths]);
       }
     };
+    // BRO-6035: while a rebase is stopped on a conflict confined to GENERATED_DOC_PATHS, rebuild the doc with its
+    // generator, stage it and continue. True when the rebase then finished; false (rebase left stopped, the caller
+    // aborts) on any other conflict or a generator failure.
+    const resolveGeneratedDocConflicts = () => {
+      for (let step = 0; step < 50; step++) {
+        const files = gitOrNull(['diff', '--name-only', '--diff-filter=U'], workdir);
+        if (!isGeneratedDocConflict((files || '').split('\n').filter(Boolean))) return false;
+        try {
+          execFileSync('node', ['scripts/generate-workflow-dependencies.js'], { cwd: workdir, stdio: 'pipe', timeout: 120000 });
+          git(['add', '--', ...GENERATED_DOC_PATHS], workdir);
+        } catch { return false; }
+        try {
+          git(['rebase', '--continue'], workdir, { env: { ...process.env, GIT_EDITOR: 'true' } });
+          log(`[land] rebase conflict in ${GENERATED_DOC_PATHS.join(', ')} only: regenerated it and continued (BRO-6035)`);
+          return true;
+        } catch { /* stopped on the next commit's conflict: look again */ }
+      }
+      return false;
+    };
     // rangeFrom/tip: rebase `rangeFrom..tip` onto `onto` instead of HEAD's own
     // commits (a train rider; HEAD becomes the rebased rider).
     const rebaseOnto = (onto, { rangeFrom = null, tip = null } = {}) => {
@@ -766,6 +792,8 @@ function landBranch(o) {
           return;
         } catch (err) {
           const errText = String(err.stderr || err.message || '');
+          // BRO-6035: a conflict in nothing but the generated DEPENDENCIES.md is regenerated, not refused.
+          if (resolveGeneratedDocConflicts()) return;
           if (retry >= PROMISOR_REBASE_RETRIES || !isPromisorFetchFailure(errText)) throw err;
           gitOrNull(['rebase', '--abort'], workdir);
           discardResidue(`promisor retry ${retry + 1}`);
@@ -1071,6 +1099,7 @@ module.exports = {
   DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
   checkTimings,
   isPromisorFetchFailure,
+  isGeneratedDocConflict, GENERATED_DOC_PATHS,
   PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,
   MAX_CHURN_SKIPS,

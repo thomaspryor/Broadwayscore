@@ -21,7 +21,7 @@ const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
   selectRecheckScope, selectTrainRecheckScope, isBuildCodePath,
-  isPromisorFetchFailure, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
+  isPromisorFetchFailure, isGeneratedDocConflict, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
 
@@ -534,6 +534,60 @@ test('rebase conflict → refused as "rebase", aborted cleanly, no push', () => 
     assert.equal(r.landed, false);
     assert.equal(r.failedCheck, 'rebase');
     assert.equal(pushes, 0);
+    assert.equal(w.worktreeCount(), 1);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-6035: isGeneratedDocConflict is true only when DEPENDENCIES.md is the sole conflicted path', () => {
+  assert.equal(isGeneratedDocConflict(['.github/workflows/DEPENDENCIES.md']), true);
+  assert.equal(isGeneratedDocConflict(['.github/workflows/DEPENDENCIES.md', 'a.txt']), false);
+  assert.equal(isGeneratedDocConflict(['a.txt']), false);
+  assert.equal(isGeneratedDocConflict([]), false);
+});
+
+function seedGenerator(w) {
+  // A stand-in generator: the real one rebuilds the doc from the workflow files.
+  w.commitOn(w.other, 'scripts/generate-workflow-dependencies.js',
+    "require('fs').mkdirSync('.github/workflows',{recursive:true});require('fs').writeFileSync('.github/workflows/DEPENDENCIES.md','regenerated\\n');\n", 'generator');
+  w.commitOn(w.other, '.github/workflows/DEPENDENCIES.md', 'base doc\n', 'doc');
+  sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+  sh(w.repoDir, ['fetch', '-q', 'origin', 'main']);
+}
+
+test('BRO-6035: rebase conflict in only DEPENDENCIES.md is regenerated and the landing continues', () => {
+  const w = makeWorld();
+  try {
+    seedGenerator(w);
+    sh(w.repoDir, ['checkout', '-q', '-b', 'feat-doc', 'origin/main']);
+    w.commitOn(w.repoDir, '.github/workflows/DEPENDENCIES.md', 'branch doc\n', 'branch edits doc');
+    w.commitOn(w.repoDir, 'feature.txt', 'f\n', 'feature');
+    sh(w.repoDir, ['checkout', '-q', 'main']);
+    w.commitOn(w.other, '.github/workflows/DEPENDENCIES.md', 'main doc\n', 'main edits doc');
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+    let pushes = 0;
+    const r = landBranch({ branch: 'feat-doc', repoDir: w.repoDir, checks: greenChecks, pushMain: (o) => { pushes++; plainPush(o); } });
+    assert.equal(r.failedCheck, null, r.reason);
+    assert.equal(r.landed, true);
+    assert.equal(pushes, 1);
+    assert.equal(w.isAncestorOfOrigin(r.sha), true);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-6035: a conflict in DEPENDENCIES.md AND another file still refuses as "rebase"', () => {
+  const w = makeWorld();
+  try {
+    seedGenerator(w);
+    sh(w.repoDir, ['checkout', '-q', '-b', 'feat-mixed', 'origin/main']);
+    w.commitOn(w.repoDir, '.github/workflows/DEPENDENCIES.md', 'branch doc\n', 'doc');
+    w.commitOn(w.repoDir, 'a.txt', 'branch\n', 'a');
+    sh(w.repoDir, ['checkout', '-q', 'main']);
+    sh(w.other, ['fetch', '-q', 'origin', 'main']); sh(w.other, ['reset', '-q', '--hard', 'origin/main']);
+    w.commitOn(w.other, '.github/workflows/DEPENDENCIES.md', 'main doc\n', 'doc');
+    w.commitOn(w.other, 'a.txt', 'main\n', 'a');
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+    const r = landBranch({ branch: 'feat-mixed', repoDir: w.repoDir, checks: greenChecks, pushMain: () => {} });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'rebase');
     assert.equal(w.worktreeCount(), 1);
   } finally { w.cleanup(); }
 });
