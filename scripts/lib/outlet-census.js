@@ -46,6 +46,15 @@ function isNycShow(show) {
   return !!show && NYC_MARKETS.has(show.market || 'broadway');
 }
 
+/** Show rows each census market matches against (BRO-6488). Regional and tour rows are US. */
+const SHOW_MARKETS = { nyc: NYC_MARKETS, london: new Set(['west-end']) };
+
+function isMarketShow(show, market = 'nyc') {
+  if (!show) return false;
+  const set = SHOW_MARKETS[market] || NYC_MARKETS;
+  return set.has(show.market || 'broadway');
+}
+
 /** [floorMs, ceilMs] for one production; ceil is Infinity while it runs. */
 function runWindowMs(show) {
   const starts = [toDateMs(show.previewsStartDate || show.previewDate), toDateMs(show.openingDate)].filter((t) => !Number.isNaN(t));
@@ -64,7 +73,12 @@ function inRunWindow(show, publishDate) {
   // No dates yet (a just-catalogued 2026 return): the id's year is still a floor, so an
   // earlier production's reviews are not filed against it (BRO-6481, Counting and Cracking).
   const year = /-(\d{4})$/.exec(show.id || '');
-  return !year || pub >= Date.UTC(Number(year[1]), 0, 1) - PRE_START_DAYS * DAY_MS;
+  if (!year) return true;
+  const y = Number(year[1]);
+  if (pub < Date.UTC(y, 0, 1) - PRE_START_DAYS * DAY_MS) return false;
+  // An undated past production (263 West End rows carry only the id year) is not still
+  // running a decade later: cap it two years past the id year (BRO-6488).
+  return y >= new Date().getUTCFullYear() || pub < Date.UTC(y + 2, 0, 1);
 }
 
 /**
@@ -165,6 +179,30 @@ function classifyItem(item, { sourceSaysReview = false } = {}) {
 const NYC_SIGNAL_RE = /\b(broadway|off-broadway|off broadway|new york|nyc|manhattan|brooklyn|lincoln center|public theater|signature theatre|playwrights horizons|second stage|roundabout|manhattan theatre club|mtc|atlantic theater|new york theatre workshop|nytw|lct3|vineyard theatre|the shed|park avenue armory|bam\b|st\.? ann'?s warehouse|soho rep|minetta lane|new world stages|lucille lortel|cherry lane|irish repertory|mcc theater|primary stages|keen company|theatre row|59e59|la mama|the kitchen|joe's pub|york theatre|pershing square signature|daryl roth|audible'?s minetta)\b/i;
 const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los angeles|l\.a\.|pasadena|la jolla|old globe|san diego|san francisco|berkeley|seattle|boston|philadelphia|houston|dallas|atlanta|denver|minneapolis|guthrie|miami|washington,? d\.?c\.?|arena stage|kennedy center|shakespeare theatre company|hartford|new haven|yale rep|williamstown|berkshire|barrington|chautauqua|toronto|stratford|national tour|tour stop|edinburgh|chichester)\b/i;
 
+// London (BRO-6488). Venue names alone ("Almeida", "Donmar") are London signals; a UK city,
+// a tour, Edinburgh or New York in the text marks another production of the same title.
+const LONDON_SIGNAL_RE = /\b(west end|off-west end|london|national theatre|\bthe national\b|olivier theatre|lyttelton|dorfman|almeida|donmar|(?<!bristol )old vic|young vic|royal court|hampstead theatre|bridge theatre|barbican|southwark playhouse|menier|park theatre|arcola|bush theatre|kiln theatre|tricycle|orange tree|lyric hammersmith|soho theatre|shakespeare'?s globe|sam wanamaker|trafalgar (?:theatre|studios)|regent'?s park|jermyn street|finborough|king'?s head|hope theatre|union theatre|the other palace|charing cross theatre|hackney empire|stratford east|theatre royal stratford|battersea arts centre|riverside studios|@sohoplace|sohoplace|marylebone theatre|hampstead|richmond theatre|wilton'?s music hall|the yard theatre|gate theatre|white bear|turbine theatre|omnibus|seven dials playhouse|pleasance london|vaudeville|gielgud|wyndham'?s|noel coward|harold pinter|duke of york'?s|apollo victoria|palladium|drury lane|lyceum|adelphi|savoy theatre|garrick|criterion|playhouse theatre|ambassadors|novello|aldwych|piccadilly theatre|prince edward|prince of wales theatre|dominion|phoenix theatre|cambridge theatre|her majesty'?s|haymarket|duchess theatre|fortune theatre|st martin'?s|apollo theatre|lyric theatre|shaftesbury theatre|victoria palace|peacock theatre|sadler'?s wells|coliseum|royal opera house|london palladium)\b/i;
+const UK_OTHER_RE = /\b(broadway|off-broadway|new york|manhattan|brooklyn|manchester|salford|birmingham|leeds|sheffield|liverpool|bristol|bath|chichester|edinburgh|fringe|glasgow|dundee|aberdeen|pitlochry|cardiff|swansea|belfast|dublin|newcastle|gateshead|nottingham|leicester|derby|stratford-upon-avon|oxford|cambridge arts|brighton|(?<!duke of )york\b(?!'s| theatre)|coventry|northampton|plymouth|southampton|salisbury|watford|guildford|windsor|bolton|keswick|scarborough|ipswich|colchester|exeter|hull|frinton|harrogate|lancaster|clwyd|mold|milton keynes|stoke|wolverhampton|chester|canterbury|cheltenham|malvern|norwich|bury st edmunds|leatherhead|woking|basingstoke|bromsgrove|newbury|henley|kingston|lowry|new wolsey|crucible theatre|northern stage|royal exchange|home mcr|everyman|playhouse liverpool|curve theatre|curve leicester|royal & derngate|minerva|festival theatre|birmingham rep|the rep|west yorkshire playhouse|leeds playhouse|octagon|stephen joseph|theatr|traverse theatre|citizens theatre|tron theatre|lyceum edinburgh|king'?s theatre glasgow|grand opera house|abbey theatre|gate theatre dublin|theatre by the lake|mercury theatre|watermill|nuffield|new vic|hull truck|sheffield theatres|bristol old vic|tobacco factory|theatre royal bath|ustinov|chichester festival|yvonne arnaud|marlowe|wales millennium|sherman|torch theatre|storyhouse|uk tour|national tour|on tour|touring|tour\)|tour review|international tour|paris|berlin|avignon|sydney|melbourne|toronto|chicago|los angeles)\b/i;
+
+const SIGNAL_MARKETS = {
+  nyc: { home: NYC_SIGNAL_RE, other: OTHER_MARKET_RE, homeWins: /\bbroadway\b/i },
+  london: { home: LONDON_SIGNAL_RE, other: UK_OTHER_RE, homeWins: /\b(?:west end|london)\b/i },
+};
+
+/** 'home' | 'other-market' | 'unknown' for the census market. */
+function marketSignal(item, venues, market = 'nyc') {
+  const m = SIGNAL_MARKETS[market] || SIGNAL_MARKETS.nyc;
+  const hay = `${item.headline || ''} ${item.description || ''}`;
+  // London: the headline names the venue and city ("X review – Royal Exchange,
+  // Manchester"); a standfirst's "after its Chichester run" must not outvote it.
+  const otherHay = market === 'london' && item.headline && (m.other.test(item.headline) || m.home.test(item.headline)) ? item.headline : hay;
+  if (m.other.test(otherHay) && !m.homeWins.test(otherHay)) return 'other-market';
+  if (m.home.test(hay)) return 'home';
+  const low = hay.toLowerCase();
+  if (venues && venues.some((v) => v && low.includes(v))) return 'home';
+  return 'unknown';
+}
+
 function nycSignal(item, nycVenues) {
   const hay = `${item.headline || ''} ${item.description || ''}`;
   if (OTHER_MARKET_RE.test(hay) && !/\bbroadway\b/i.test(hay)) return 'other-market';
@@ -174,11 +212,11 @@ function nycSignal(item, nycVenues) {
   return 'unknown';
 }
 
-/** NYC venue phrases long enough not to collide with common words. */
-function nycVenuePhrases(shows) {
+/** Venue phrases of the market's shows, long enough not to collide with common words. */
+function nycVenuePhrases(shows, market = 'nyc') {
   const set = new Set();
   for (const s of shows || []) {
-    if (!isNycShow(s) || !s.venue) continue;
+    if (!isMarketShow(s, market) || !s.venue) continue;
     const v = String(s.venue).toLowerCase().replace(/\s*\(.*\)$/, '').trim();
     if (v.length >= 10) set.add(v);
   }
@@ -268,7 +306,9 @@ function titleWordsAppear(show, text) {
 
 function bucketItem(item, ctx) {
   const cls = classifyItem(item, { sourceSaysReview: !!item.sourceSaysReview });
-  const heldIds = ctx.corpus.get(urlKey(item.url));
+  // aliasKey: the held URL an outlet's own id says is this page (WhatsOnStage moved every
+  // /london-theatre/reviews/x_43290.html review to /news/x_43290/ and kept the number).
+  const heldIds = ctx.corpus.get(urlKey(item.url)) || (item.aliasKey && ctx.corpus.get(item.aliasKey));
   const held = heldIds ? [...heldIds] : [];
   const nycHeld = held.filter((id) => ctx.nycIds.has(id));
 
@@ -304,14 +344,22 @@ function bucketItem(item, ctx) {
   // A regional or touring production of an NYC title ("HAMILTON (National Tour in
   // Houston)") matches the NYC show by title and date; it is not a review of it. Outlets
   // that mostly cover other markets (requireNycSignal) need a positive NYC signal.
-  const sig = nycSignal(item, ctx.nycVenues);
+  const market = ctx.market || 'nyc';
+  const sm = SIGNAL_MARKETS[market] || SIGNAL_MARKETS.nyc;
+  const raw = marketSignal(item, ctx.nycVenues, market);
+  const home = raw === 'home';
+  const sig = home ? (market === 'nyc' ? 'nyc' : 'home') : raw;
   out.nycSignal = sig;
   // For those outlets a market word in the headline itself wins over "Broadway" in the
   // blurb ("'Putnam County Spelling Bee' at Kennedy Center", blurb: "the Broadway hit").
-  const regionalOutletMiss = item.requireNycSignal && (sig !== 'nyc' || OTHER_MARKET_RE.test(item.headline || ''));
+  const regionalOutletMiss = item.requireNycSignal && (!home || sm.other.test(item.headline || ''));
+  // London keeps every other-market review in the manifest with its market, so the owner
+  // can size a regional/touring/Edinburgh expansion (BRO-6488); NYC behaviour is unchanged.
+  const otherBucket = market === 'nyc' ? 'not-review' : 'other-market-review';
   if (inIds.length && (sig === 'other-market' || regionalOutletMiss)) {
-    out.bucket = 'not-review';
+    out.bucket = otherBucket;
     out.classifyReason = sig === 'other-market' ? 'other-market' : 'no-nyc-signal';
+    if (market !== 'nyc') Object.assign(out, itemMarket(item));
     return out;
   }
   if (inIds.length === 1) {
@@ -321,10 +369,43 @@ function bucketItem(item, ctx) {
     return out;
   }
   if (inIds.length > 1) { out.bucket = 'ambiguous'; return out; }
-  if (out.outOfWindowIds.length > 0) { out.bucket = 'out-of-window'; return out; }
-  out.bucket = sig === 'nyc' && !regionalOutletMiss ? 'catalog-gap' : 'not-review';
-  if (sig !== 'nyc') out.classifyReason = sig === 'other-market' ? 'other-market' : 'no-nyc-signal';
+  // A London item naming a regional venue is an other-market review, whatever a same-titled
+  // West End show's dates say ("Calendar Girls at New Wolsey Theatre").
+  if (out.outOfWindowIds.length > 0 && !(market !== 'nyc' && sig === 'other-market')) { out.bucket = 'out-of-window'; return out; }
+  out.bucket = home && !regionalOutletMiss ? 'catalog-gap' : sig === 'other-market' ? otherBucket : 'not-review';
+  if (!home) out.classifyReason = sig === 'other-market' ? 'other-market' : 'no-nyc-signal';
+  if (market !== 'nyc' && (out.bucket === 'catalog-gap' || out.bucket === 'other-market-review')) Object.assign(out, itemMarket(item));
   return out;
+}
+
+/**
+ * Where an unmatched UK review was staged, for the catalog-gap summary (BRO-6488):
+ * {itemMarket: west-end | off-west-end | london | edinburgh | touring | regional-uk | nyc |
+ * international | unknown, venueHint}. The venue hint is the text after "review –" (Guardian,
+ * Telegraph), "review at" (The Stage), or a parenthesis (WhatsOnStage), when present.
+ */
+const WEST_END_HOUSES_RE = /\b(gielgud|wyndham'?s|noel coward|harold pinter|duke of york'?s|apollo victoria|palladium|drury lane|lyceum|adelphi|savoy|garrick|criterion|playhouse theatre|ambassadors|novello|aldwych|piccadilly theatre|prince edward|prince of wales|dominion|phoenix theatre|cambridge theatre|her majesty'?s|his majesty'?s|haymarket|duchess|fortune theatre|st martin'?s|apollo theatre|lyric theatre|shaftesbury|victoria palace|sondheim theatre|queen'?s theatre|gillian lynne|new london theatre|london coliseum|vaudeville|sohoplace|old vic|national theatre|olivier|lyttelton|dorfman|barbican|bridge theatre|trafalgar theatre|theatre royal haymarket|peacock|savoy)\b/i;
+function venueHint(headline) {
+  const h = String(headline || '');
+  const m = /\breview\b\s*[–—:|-]+\s*(.{3,80}?)\s*(?:[–—|]|$)/i.exec(h)
+    || /\breview\s+(?:at|of [^,]+ at)\s+(.{3,80}?)\s*(?:[–—|]|$)/i.exec(h)
+    || /\(([^)]{3,60})\)\s*$/.exec(h);
+  return m ? m[1].trim() : null;
+}
+function itemMarket(item) {
+  const head = String(item.headline || '');
+  const hay = `${head} ${item.description || ''}`;
+  const hint = venueHint(head);
+  const v = `${hint || ''} ${head}`;
+  let m = 'unknown';
+  if (/\b(edinburgh|fringe)\b/i.test(head)) m = 'edinburgh';
+  else if (/\b(uk tour|on tour|touring|tour\)|national tour|international tour)\b/i.test(head)) m = 'touring';
+  else if (/\b(broadway|new york|off-broadway)\b/i.test(head)) m = 'nyc';
+  else if (WEST_END_HOUSES_RE.test(v)) m = 'west-end';
+  else if (LONDON_SIGNAL_RE.test(v)) m = 'off-west-end';
+  else if (UK_OTHER_RE.test(head)) m = /\b(paris|berlin|avignon|sydney|melbourne|toronto|chicago|los angeles)\b/i.test(head) ? 'international' : 'regional-uk';
+  else if (LONDON_SIGNAL_RE.test(hay)) m = 'london';
+  return { itemMarket: m, venueHint: hint };
 }
 
 /** Corpus rows for the outlet, inside the census window, whose URL the enumeration never saw. */
@@ -337,6 +418,14 @@ function corpusSideMisses(corpusRows, enumeratedKeys, { sinceMs, untilMs = Infin
     if (!enumeratedKeys.has(urlKey(r.url))) misses.push({ showId: r.showId, url: r.url, publishDate: r.publishDate || null, why: 'not-enumerated' });
   }
   return misses;
+}
+
+/** UK/US theatre season, September to August: 2013-10-02 -> "2013-14". */
+function seasonOf(date) {
+  const m = /^(\d{4})-(\d{2})/.exec(String(date || ''));
+  if (!m) return 'undated';
+  const y = Number(m[1]) - (Number(m[2]) < 9 ? 1 : 0);
+  return `${y}-${String((y + 1) % 100).padStart(2, '0')}`;
 }
 
 function summarize(results) {
@@ -355,7 +444,50 @@ function summarize(results) {
   return { counts, viaTitleVariant, recall: ratio(heldAll, denom), recallWithCatalog: ratio(heldAll, denomCat) };
 }
 
+/** Where a catalog-gap or other-market review would land: the venue, or the city for regional. */
+function gapPlace(e) {
+  const hint = String(e.venueHint || '').replace(/,?\s*(london|uk)\s*$/i, '').trim();
+  return (hint || 'unknown venue').toLowerCase().replace(/\s+theatre$/, ' theatre');
+}
+
+/**
+ * Catalog gaps grouped by market, then venue (or city), then year, with the review count each
+ * would bring. Reviews of shows the site does not carry, summarised for the owner (BRO-6488:
+ * no new shows outside the West End historical scope).
+ */
+function groupCatalogGaps(entries) {
+  const out = {};
+  for (const e of entries || []) {
+    const m = e.itemMarket || 'unknown';
+    const place = gapPlace(e);
+    const year = String(e.publishDate || '').slice(0, 4) || 'undated';
+    out[m] = out[m] || { reviews: 0, places: {} };
+    out[m].reviews++;
+    const p = (out[m].places[place] = out[m].places[place] || { reviews: 0, years: {}, outlets: {} });
+    p.reviews++;
+    p.years[year] = (p.years[year] || 0) + 1;
+    p.outlets[e.outletId || '?'] = (p.outlets[e.outletId || '?'] || 0) + 1;
+  }
+  return out;
+}
+
+function catalogGapMarkdown(groups, topPlaces = 25) {
+  const lines = ['| Market | Venue or city | Reviews | By year | Outlets |', '|---|---|---|---|---|'];
+  for (const [m, g] of Object.entries(groups).sort((a, b) => b[1].reviews - a[1].reviews)) {
+    lines.push(`| **${m}** | (all) | ${g.reviews} | | |`);
+    const places = Object.entries(g.places).sort((a, b) => b[1].reviews - a[1].reviews);
+    for (const [place, p] of places.slice(0, topPlaces)) {
+      const years = Object.entries(p.years).sort().map(([y, n]) => `${y}:${n}`).join(' ');
+      lines.push(`| ${m} | ${place.replace(/\|/g, '/')} | ${p.reviews} | ${years} | ${Object.keys(p.outlets).length} |`);
+    }
+    if (places.length > topPlaces) lines.push(`| ${m} | (${places.length - topPlaces} more) | ${places.slice(topPlaces).reduce((n, [, p]) => n + p.reviews, 0)} | | |`);
+  }
+  return lines.join('\n');
+}
+
 module.exports = {
+  catalogGapMarkdown,
+  groupCatalogGaps,
   slugHeadline,
   urlKey,
   titleWordsAppear,
@@ -368,7 +500,12 @@ module.exports = {
   extractPageMeta,
   inRunWindow,
   isNycShow,
+  isMarketShow,
+  itemMarket,
+  marketSignal,
   nycSignal,
+  seasonOf,
+  venueHint,
   nycVenuePhrases,
   runWindowMs,
   summarize,

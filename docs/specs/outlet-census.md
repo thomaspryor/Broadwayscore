@@ -194,3 +194,45 @@ No WordPress API and no sitemap configured yet: timeout, washpost, dailybeast, p
 
 - Configure sitemaps for the "not configured" outlets above; most have one.
 - Re-run the census on CI after each ingest batch to measure the recall change, and vet each batch's URLs against the show's dates before ingest.
+
+## London (BRO-6488)
+
+`--market=london` runs the same census against the West End market (shows.json
+`market: west-end`, categories `west-end` and `off-west-end`, 1,343 shows),
+writing to `data/audit/outlet-census/london/`. Sources live in
+`LONDON_SOURCES` in `scripts/lib/outlet-census-sources.js`; window defaults to
+`--since=2012-09-01`.
+
+```bash
+node scripts/outlet-census.js --market=london --outlet=whatsonstage
+node scripts/outlet-census.js --market=london --tier=1          # all T1 outlets
+node scripts/outlet-census.js --market=london --summary         # tables + catalog gaps
+node scripts/outlet-census.js --market=london --probe=https://example.com/sitemap.xml
+```
+
+Extra pieces:
+
+- **Other-market reviews.** A review whose text or slug names a regional or
+  touring UK venue/city (`UK_OTHER_RE`) and no West End house is bucketed
+  `other-market-review` with `itemMarket` (regional / touring / edinburgh). It
+  never counts as a gap or out-of-window. The manifest keeps every review
+  whatever the market (owner scope, 2026-10-28).
+- **Catalog-gap summary.** `--summary` groups catalog gaps by market and place
+  (Off-West End by venue, regional by city or venue, touring) and by year, with
+  the review count each would bring (`groupCatalogGaps`,
+  `catalog-gaps.json`). New shows outside the West End historical scope are not
+  added.
+- **Article-number aliasing.** `urlId` on a source extracts a stable article id
+  from the URL. WhatsOnStage moved `/london-theatre/reviews/<slug>_43290.html`
+  to `/news/<slug>_43290/`; held rows under the old URL now match by id.
+- **CI hand-back.** UK newspapers (Guardian API, Telegraph, Times, Standard,
+  FT, Mail, Independent, i, Express, Spectator) are blocked by the cloud
+  container's egress, so they enumerate on CI with
+  `--emit-items --enumerate-only`. The run prints gzip+base64
+  `CENSUS-ITEMS <outlet> i/n <chunk>` lines (20k chunks); save the
+  `cloud-run-script.js` stdout and bucket locally with
+  `--items-in=<file>` against the full review-texts. `--source='<json>'`
+  overrides a source definition for one run (regex strings become `i` RegExps)
+  so a sitemap shape can be tried without re-landing.
+- **Seasons.** Reports carry a per-season (Sep-Aug) breakdown; `--summary`
+  prints the per-outlet, per-season table.

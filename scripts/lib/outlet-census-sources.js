@@ -82,4 +82,68 @@ const SOURCES = {
     .map((id) => [id, unreadable('no WordPress API; sitemap enumeration not yet configured')])),
 };
 
-module.exports = { SOURCES };
+/**
+ * London outlets (BRO-6488), census window 2012-09 to now. tier is the registry tier, so
+ * `--all --tier=1` runs T1 first. The newspapers' sites refuse this cloud container (egress
+ * policy), so they run on CI through cloud-run-script with --emit-items; their sitemap shapes
+ * were confirmed from there with --probe before an entry left 'unreadable'.
+ */
+const ciOnly = (tier, reason = 'site refused from the cloud container; enumerate on CI (--probe first)') => ({ kind: 'unreadable', tier, reason });
+
+const LONDON_SOURCES = {
+  // The Content API lists every review the Guardian and Observer ran (section stage, tone/reviews).
+  guardian: { kind: 'guardian-api', tier: 1, publication: /^the guardian$/i, sourceSaysReview: true },
+  observer: { kind: 'guardian-api', tier: 2, publication: /observer/i, sourceSaysReview: true },
+  whatsonstage: (() => {
+    const w = WP_SEARCH_SOURCES.find((x) => x.outletId === 'whatsonstage');
+    // Every news post, not just "-review_" slugs: reviews before about 2020 have bare title
+    // slugs (/news/42nd-street-theatre-royal-drury-lane_43290/), so the headline decides.
+    // urlId matches the article number the old /london-theatre/reviews/ URLs carried.
+    return { kind: 'wp-json', tier: 2, apiBase: w.api, urlId: '_(\\d{4,})(?:\\.html|/)?$' };
+  })(),
+  // The Stage's review sitemap starts 2021-10; earlier reviews come from the Wayback index
+  // (free; web.archive.org is refused here, so the full run is on CI).
+  thestage: { kind: 'composite', tier: 1, urlFilter: /thestage\.co\.uk\/(?:long-)?reviews\/(?:reviews\/|20\d\d\/|review\.php\/\d+\/)?[^/?#]+\/?$/, headlineFromSlug: true, sourceSaysReview: true,
+    parts: [
+      { kind: 'sitemap', url: 'https://www.thestage.co.uk/SiteMap_TheStage_index.xml', childFilter: /Reviews/i },
+      { kind: 'cdx', prefixes: ['thestage.co.uk/reviews/', 'thestage.co.uk/long-reviews/'], cdxCanonicalHost: 'www.thestage.co.uk', until: '2022-06-30' },
+    ] },
+  // Time Out keeps a page per production under /london/theatre/; reviews carry "-review" only
+  // from about 2016, so every page is listed and the slug title decides the match.
+  'timeout-london': { kind: 'sitemap', tier: 1, url: 'https://www.timeout.com/london/sitemap.xml.gz', urlFilter: /timeout\.com\/london\/theatre\/[^/]+$/, headlineFromSlug: true },
+  artsdesk: { kind: 'sitemap', tier: 2, url: 'https://theartsdesk.com/sitemap.xml', urlFilter: /theartsdesk\.com\/theatre\/[^/]+$/, headlineFromSlug: true },
+  'london-theatre': { kind: 'sitemap', tier: 2, url: 'https://www.londontheatre.co.uk/www.londontheatre.co.uk-sitemap.xml', urlFilter: /londontheatre\.co\.uk\/reviews\/[^/]+$/, headlineFromSlug: true, sourceSaysReview: true },
+  'london-box-office': { kind: 'sitemap', tier: 2, url: 'https://www.londonboxoffice.co.uk/news-sitemap.xml', urlFilter: /londonboxoffice\.co\.uk\/news\/post\/[^/]*review[^/]*$/, headlineFromSlug: true, sourceSaysReview: true },
+  thereviewshub: wp('https://www.thereviewshub.com/wp-json/wp/v2/posts', { tier: 2 }),
+  'british-theatre': { kind: 'sitemap', tier: 2, url: 'https://www.britishtheatreguide.info/sitemap.xml.gz', urlFilter: /britishtheatreguide\.info\/reviews\/[^/]+$/, headlineFromSlug: true, sourceSaysReview: true },
+  britishtheatrecom: { kind: 'sitemap', tier: 2, url: 'https://britishtheatre.com/sitemap-0.xml', urlFilter: /britishtheatre\.com\/posts\/[^/]*review[^/]*\/?$/, headlineFromSlug: true, sourceSaysReview: true },
+  'theatre-weekly': wp('https://theatreweekly.com/wp-json/wp/v2/posts', { tier: 3, linkFilter: /review/i, sourceSaysReview: true }),
+  'everything-theatre': wp('https://everything-theatre.co.uk/wp-json/wp/v2/posts', { tier: 3, linkFilter: /review/i, sourceSaysReview: true }),
+  'all-that-dazzles-uk': { kind: 'sitemap', tier: 3, url: 'https://www.allthatdazzles.co.uk/blog-posts-sitemap.xml', urlFilter: /review/i, headlineFromSlug: true, sourceSaysReview: true },
+  'west-end-best-friend': { kind: 'sitemap', tier: 3, url: 'https://www.westendbestfriend.co.uk/sitemap.xml', urlFilter: /westendbestfriend\.co\.uk\/news\/review-[^/]+$/, headlineFromSlug: true, sourceSaysReview: true },
+  telegraph: ciOnly(1),
+  standard: ciOnly(1),
+  'times-uk': ciOnly(1),
+  'sunday-times': ciOnly(1),
+  financialtimes: ciOnly(1),
+  'daily-mail': ciOnly(1),
+  'mail-on-sunday': ciOnly(1),
+  independent: ciOnly(1),
+  'i-paper': ciOnly(1),
+  'express-uk': ciOnly(3),
+  'the-spectator-uk': ciOnly(2, 'WordPress API needs a login; sitemap_index.xml to probe from CI'),
+  londontheatre1: unreadable('site answers an sgcaptcha 202 challenge to the census client'),
+  broadwayworld: unreadable('Cloudflare challenge; the BWW reviews pages are read per show by gather-reviews instead'),
+};
+for (const [id, src] of Object.entries(LONDON_SOURCES)) if (src.kind === 'unreadable' && src.tier == null) LONDON_SOURCES[id] = { ...src, tier: 2 };
+
+/** An ad hoc --source given as JSON: string regexes (urlFilter, linkFilter, childFilter, publication) become RegExp. */
+function sourceFromJson(obj) {
+  const out = { ...obj };
+  for (const k of ['urlFilter', 'linkFilter', 'childFilter', 'publication']) {
+    if (typeof out[k] === 'string') out[k] = new RegExp(out[k], 'i');
+  }
+  return out;
+}
+
+module.exports = { SOURCES, LONDON_SOURCES, sourceFromJson };
