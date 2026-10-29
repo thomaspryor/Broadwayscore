@@ -1595,6 +1595,11 @@ function recentlyDispatched(showId) {
   } catch { /* fail-open: better to dispatch on uncertain history than block */ }
   return false;
 }
+// BRO-6532: once the gather cap defers a non-urgent show, later non-urgent
+// shows in this run skip the 3-call count for a few minutes (a run can visit
+// hundreds of gap shows; GITHUB_TOKEN allows 1000 API calls an hour).
+let gatherCapFullUntil = 0;
+
 async function dispatchGatherFor(showId) {
   if (recentlyDispatched(showId)) {
     console.log(`  ⏸  gather-reviews dispatched within last 2h for ${showId} — skipping`);
@@ -1604,8 +1609,14 @@ async function dispatchGatherFor(showId) {
   // window waits for a later run (hourly cron) rather than piling onto the queue.
   const { checkCap } = require('./lib/workflow-queue-cap');
   const { isUrgentShowId } = require('./lib/scoring-lane');
-  const cap = checkCap({ workflow: 'gather-reviews.yml', priority: isUrgentShowId(showId) });
+  const urgent = isUrgentShowId(showId);
+  if (!urgent && Date.now() < gatherCapFullUntil) {
+    console.log(`  ⏸  gather-reviews deferred for ${showId}: cap was full moments ago`);
+    return false;
+  }
+  const cap = checkCap({ workflow: 'gather-reviews.yml', priority: urgent });
   if (!cap.ok) {
+    gatherCapFullUntil = Date.now() + 5 * 60e3;
     console.log(`  ⏸  gather-reviews deferred for ${showId}: ${cap.reason}`);
     return false;
   }
@@ -3324,4 +3335,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };
+module.exports = { planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
