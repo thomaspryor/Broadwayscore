@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6516-e2e",
   "planId": "debd1392-0733-4280-9a27-5816d5dea986",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T11:40:40.673Z",
   "submitter": {
     "name": null,
@@ -159,5 +159,34 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T15:29:35.988Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added even-these-things-royal-exchange-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added magic-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-psychic-york-royal-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-resistible-rise-of-arturo-ui-royal-shakespeare-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lanny-bristol-old-vic-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
