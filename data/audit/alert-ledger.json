@@ -1001,7 +1001,7 @@
       "resolvedAt": "2026-10-13T16:45:36.950Z"
     },
     "bd-circuit-breaker-web_unlocker2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2654/1750 reqs)",
@@ -1014,10 +1014,11 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 30,
-      "sweptTracker": "BRO-5544"
+      "sweptTracker": "BRO-5544",
+      "resolvedAt": "2026-10-29T03:02:53.747Z"
     },
     "bd-circuit-breaker-serp_api1": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Bright Data daily breaker TRIPPED: serp_api1 (1961/1750 reqs)",
@@ -1028,7 +1029,8 @@
       "lastSurfacedAt": "2026-10-28T19:57:16.106Z",
       "notifyCount": 21,
       "cardId": null,
-      "linearIdentifier": "BRO-4950"
+      "linearIdentifier": "BRO-4950",
+      "resolvedAt": "2026-10-29T03:02:53.764Z"
     },
     "test-yml:main-streak": {
       "status": "resolved",
@@ -3681,13 +3683,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-29T01:04:51.357Z",
+      "lastSeen": "2026-10-29T02:52:55.260Z",
       "lastNotifiedAt": "2026-10-28T14:56:16.431Z",
       "lastSurfacedAt": "2026-10-24T11:26:05.130Z",
       "notifyCount": 38,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3695,13 +3697,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-10-25T09:22:42.540Z",
-      "lastSeen": "2026-10-29T01:04:51.390Z",
+      "lastSeen": "2026-10-29T02:52:55.282Z",
       "lastNotifiedAt": "2026-10-28T10:53:43.818Z",
       "lastSurfacedAt": "2026-10-25T09:22:42.540Z",
       "notifyCount": 34,
       "cardId": null,
       "linearIdentifier": "BRO-5503",
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "resolved",
@@ -4460,13 +4462,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-27T05:01:18.291Z",
-      "lastSeen": "2026-10-29T01:04:51.329Z",
+      "lastSeen": "2026-10-29T02:52:55.244Z",
       "lastNotifiedAt": "2026-10-28T10:53:43.566Z",
       "lastSurfacedAt": "2026-10-21T18:16:17.793Z",
       "notifyCount": 33,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -6638,13 +6640,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-26T19:23:29.367Z",
-      "lastSeen": "2026-10-29T01:04:51.264Z",
+      "lastSeen": "2026-10-29T02:52:55.205Z",
       "lastNotifiedAt": "2026-10-28T23:28:57.926Z",
       "lastSurfacedAt": "2026-10-24T11:26:01.064Z",
       "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": "BRO-6113",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -10300,13 +10302,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-26T23:27:47.707Z",
-      "lastSeen": "2026-10-29T01:04:51.343Z",
+      "lastSeen": "2026-10-29T02:52:55.252Z",
       "lastNotifiedAt": "2026-10-29T00:31:46.188Z",
       "lastSurfacedAt": "2026-10-29T00:31:46.188Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-5823",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -16153,13 +16155,13 @@
       "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
       "firstSeen": "2026-10-12T12:34:40.002Z",
       "incidentOpenedAt": "2026-10-22T14:17:35.428Z",
-      "lastSeen": "2026-10-29T01:04:51.377Z",
+      "lastSeen": "2026-10-29T02:52:55.275Z",
       "lastNotifiedAt": "2026-10-28T16:40:08.138Z",
       "lastSurfacedAt": "2026-10-28T16:40:08.138Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-3999-empty-body-sweep": {
       "status": "resolved",
@@ -18739,13 +18741,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-10-29T02:24:51.949Z",
-      "lastNotifiedAt": "2026-10-28T06:31:24.102Z",
-      "lastSurfacedAt": "2026-10-28T06:31:24.102Z",
-      "notifyCount": 11,
+      "lastSeen": "2026-10-29T03:05:46.845Z",
+      "lastNotifiedAt": "2026-10-29T02:47:39.728Z",
+      "lastSurfacedAt": "2026-10-29T02:47:39.728Z",
+      "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 88
+      "silentRefires": 3
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -22697,7 +22699,7 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
@@ -22708,7 +22710,9 @@
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-29T02:57:50.463Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -23487,13 +23491,13 @@
       "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
       "firstSeen": "2026-10-22T02:01:04.201Z",
       "incidentOpenedAt": "2026-10-22T02:01:04.201Z",
-      "lastSeen": "2026-10-29T01:04:51.300Z",
+      "lastSeen": "2026-10-29T02:52:55.227Z",
       "lastNotifiedAt": "2026-10-28T10:53:43.536Z",
       "lastSurfacedAt": "2026-10-28T10:53:43.536Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-5706-retire-eno-dup": {
       "status": "open",
@@ -23945,7 +23949,7 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
@@ -23956,7 +23960,9 @@
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 10,
+      "resolvedAt": "2026-10-29T02:57:50.472Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24707,13 +24713,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-29T01:09:19.879Z",
+      "lastSeen": "2026-10-29T02:57:50.452Z",
       "lastNotifiedAt": "2026-10-28T10:58:13.690Z",
       "lastSurfacedAt": "2026-10-28T10:58:13.690Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -26545,7 +26551,7 @@
       "resolvedAt": "2026-10-24T23:11:11.283Z"
     },
     "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-24T23:08:26.440Z",
@@ -26556,7 +26562,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 10,
+      "resolvedAt": "2026-10-29T02:57:50.479Z",
+      "resolveReason": "live-data test green"
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -28930,7 +28938,7 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-28T10:58:13.736Z",
@@ -28941,7 +28949,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 10,
+      "resolvedAt": "2026-10-29T02:57:50.487Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
