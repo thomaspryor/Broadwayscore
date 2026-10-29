@@ -74,7 +74,7 @@ describe('sourced non-recoupment bounds (BRO-6355)', () => {
   });
 
   for (const tier of ['weekly', 'lifetime', 'comparables']) {
-    it(`bounds all scenarios and clears recoupment flags on the ${tier} path`, () => {
+    it(`bounds live scenarios but lets backtests ignore reported outcomes on the ${tier} path`, () => {
       const production = tier === 'lifetime' ? { ...show, openingDate: '2000-01-01' } : show;
       const record = tier === 'comparables' ? { ...comm, capitalization: null } : comm;
       const run = (c, opts = {}) => tier === 'lifetime'
@@ -97,6 +97,9 @@ describe('sourced non-recoupment bounds (BRO-6355)', () => {
       assert.equal(bounded.modelRecouped, false);
       assert.equal(bounded.weeksToRecoupEstimate, null);
       assert.ok(bounded.warnings.some((w) => w.includes('sourced non-recoupment')));
+      const unbounded = run(record, { ignoreReportedOutcome: true });
+      assert.ok(unbounded.recoupmentPctCentral >= 100, 'backtests must see the raw contradiction');
+      assert.deepEqual(unbounded, raw, 'bypassing the reported outcome must preserve the raw simulation');
       assert.equal(JSON.stringify(record), before, 'never mutate commercial inputs');
     });
   }

@@ -7,6 +7,7 @@
  * Runs the live model exactly as merge-model-recoupment.js does, then with
  * the given shadow options, and reports mean error and in-range counts,
  * overall and by kind, type (play/musical) and era (pre-2020/2020+).
+ * Both sides use ignoreReportedOutcome so reported losses cannot constrain the predictions scored against them.
  * Read-only. Run it for every model change before a live switch.
  *
  *   node scripts/backtest-recoupment-ground-truth.js --opt=previewsFromWeekly [--opt=...] [--json] [--strict]
@@ -158,10 +159,10 @@ for (const [key, comm] of Object.entries(commercial)) {
     skip.notDisplayable++;
     continue;
   }
-  const live = baseRun(show, comm, L, at);
+  const live = baseRun(show, comm, L, { ...at, ignoreReportedOutcome: true });
   // --opt=creditBasis: score the new side on the truth's tax-credit basis;
   // an unstated recoupment is scored on whichever basis fits (eitherBasis).
-  const runBasis = (pre) => liveModelRun(show, comm, L, { ...OPTS, ...(OPTS.creditBasis ? { taxCreditPre: pre } : {}), ...at });
+  const runBasis = (pre) => liveModelRun(show, comm, L, { ...OPTS, ...(OPTS.creditBasis ? { taxCreditPre: pre } : {}), ...at, ignoreReportedOutcome: true });
   let fixed = runBasis(truth.creditBasis === 'pre-credit');
   let usedPost;
   if (OPTS.creditBasis && truth.creditBasis === 'unstated' && fixed.result) {
@@ -199,8 +200,8 @@ function flagInsane(slug, oldPct, newPct) {
 }
 // Records that are not scored still run through the model for the sanity line.
 function sanityCheck(slug, show, comm) {
-  const o = baseRun(show, comm, L, {});
-  const n = liveModelRun(show, comm, L, OPTS);
+  const o = baseRun(show, comm, L, { ignoreReportedOutcome: true });
+  const n = liveModelRun(show, comm, L, { ...OPTS, ignoreReportedOutcome: true });
   flagInsane(slug, o.result && o.result.recoupmentPctCentral, n.result && n.result.recoupmentPctCentral);
   if (!noOutcomeOnFile(comm)) return;
   const capped = o.result && n.result ? { o, n } : capRuns(show, comm, {});
@@ -209,8 +210,8 @@ function sanityCheck(slug, show, comm) {
 // Both sides on the live comparables cap; null when either still has no result.
 function capRuns(show, comm, at) {
   if (!CAP_OPTS.capComparables) return null;
-  const o = baseRun(show, comm, L, { ...CAP_OPTS, ...at });
-  const n = liveModelRun(show, comm, L, { ...CAP_OPTS, ...OPTS, ...at });
+  const o = baseRun(show, comm, L, { ...CAP_OPTS, ...at, ignoreReportedOutcome: true });
+  const n = liveModelRun(show, comm, L, { ...CAP_OPTS, ...OPTS, ...at, ignoreReportedOutcome: true });
   return o.result && n.result ? { o, n } : null;
 }
 function capFilledRow(slug, show, comm, at, kind) {

@@ -45,9 +45,10 @@ function hasSourcedNonRecoupment(commercial) {
  * raw profits for diagnosing missing costs; do not invent a running-cost
  * figure or capitalization to make the simulation fit the known outcome.
  * Historical replays must not see a loss reported after their asOf date.
+ * opts.ignoreReportedOutcome keeps backtests independent of the scored truth.
  */
 function constrainNonRecoupment(scenarios, commercial, warnings, opts) {
-  if (opts.asOf || !hasSourcedNonRecoupment(commercial)) return;
+  if (opts.ignoreReportedOutcome || opts.asOf || !hasSourcedNonRecoupment(commercial)) return;
   let changed = false;
   for (const scenario of Object.values(scenarios)) {
     if (scenario.recoupmentPct >= 100 || scenario.recouped || scenario.recoupWeek != null) changed = true;

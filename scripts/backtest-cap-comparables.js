@@ -6,6 +6,7 @@
  * it, and the result is scored against the same ground truth as
  * backtest-recoupment-ground-truth.js. This is the only place the guess meets
  * known answers. Advisory: it gates nothing.
+ * Both model runs ignore reported outcomes to keep those answers out of the predictions.
  *
  * Usage: node scripts/backtest-cap-comparables.js [--json] [--truth=reported|all] [--type=musical|play] [--opt=<name>...]
  *
@@ -54,8 +55,8 @@ for (const [key, comm] of Object.entries(commercial)) {
   const ratio = est.value / comm.capitalization;
   capRows.push({ slug: key, actual: comm.capitalization, est: est.value, ratio, inside: comm.capitalization >= est.low && comm.capitalization <= est.high, n: est.n, type: show.type });
   const bare = { ...comm }; delete bare.capitalization;
-  const run = liveModelRun(show, bare, L, { ...OPTS, capComparables: true, capEstimator: () => est });
-  const real = liveModelRun(show, comm, L, OPTS);
+  const run = liveModelRun(show, bare, L, { ...OPTS, capComparables: true, capEstimator: () => est, ignoreReportedOutcome: true });
+  const real = liveModelRun(show, comm, L, { ...OPTS, ignoreReportedOutcome: true });
   if (!run.result || !real.result) continue;
   for (const { truth, tier } of truthRows(comm, show, TRUTH)) {
     if (tier !== 'gate' && TRUTH === 'reported') continue;
