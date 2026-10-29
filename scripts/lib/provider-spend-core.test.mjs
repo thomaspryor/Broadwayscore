@@ -396,10 +396,10 @@ test('BRO-3023: cycleDelta only attributes a day when the two samples are ~24h a
   const onTime = computeDayRecord({ ...okReadings, prev, readAt: '2026-07-31T06:50:00Z' });
   assert.equal(onTime.providers.scrapingbee.dayCredits, 500);
   const retimed = computeDayRecord({ ...okReadings, prev, readAt: '2026-07-31T00:10:00Z' }); // 17h25m gap
-  assert.equal(retimed.providers.scrapingbee.status, 'baseline');
-  assert.equal(retimed.providers.scrapingbee.dayCredits, undefined);
-  assert.equal(retimed.providers.scrapingbee.baselineReason, 'retimed');
-  assert.equal(retimed.providers.scrapingdog.status, 'baseline');
+  assert.equal(retimed.providers.scrapingbee.status, 'ok'); // not hidden: no skipped breach, streak intact
+  assert.equal(retimed.providers.scrapingbee.retimed, true);
+  assert.equal(retimed.providers.scrapingbee.dayCredits, Math.round(500 * 24 / (17 + 25 / 60)));
+  assert.equal(onTime.providers.scrapingbee.retimed, undefined);
 });
 
 test('BRO-3023: records without readAt keep the legacy calendar-day behaviour', () => {

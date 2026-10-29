@@ -118,15 +118,16 @@ function computeDayRecord({ day, bb, bd, sb, sd, prev, readAt = null }) {
 
 // BRO-3023: two cycle readings one calendar day apart are only "a day of usage" when they
 // were also sampled about 24h apart. A retimed run (late cron, workflow_dispatch re-run)
-// would otherwise report the interval between the samples as a day.
+// is pro-rated to a 24h rate and flagged `retimed`.
 const READ_INTERVAL_TOLERANCE_MS = 6 * 3600 * 1000;
 const DAY_MS = 24 * 3600 * 1000;
 
-function sampledAboutADayApart(prevReadAt, readAt) {
+// Hours between two readAt stamps, or null when either is unusable (legacy behaviour).
+function sampleGapMs(prevReadAt, readAt) {
   const a = Date.parse(prevReadAt);
   const b = Date.parse(readAt);
-  if (Number.isNaN(a) || Number.isNaN(b)) return true; // no usable timestamps: legacy behaviour
-  return Math.abs(b - a - DAY_MS) <= READ_INTERVAL_TOLERANCE_MS;
+  if (Number.isNaN(a) || Number.isNaN(b) || b <= a) return null;
+  return b - a;
 }
 
 function cycleDelta(reading, prevEntry, readAt = null) {
@@ -136,13 +137,19 @@ function cycleDelta(reading, prevEntry, readAt = null) {
   const prevCycleUsed = prevEntry && typeof prevEntry.cycleUsed === 'number' ? prevEntry.cycleUsed : null;
   if (prevCycleUsed == null) {
     out.status = 'baseline';
-  } else if (readAt && prevEntry.readAt && !sampledAboutADayApart(prevEntry.readAt, readAt)) {
-    out.status = 'baseline'; // measured, but the interval is not a day
-    out.baselineReason = 'retimed';
   } else {
-    out.dayCredits = reading.cycleUsed >= prevCycleUsed
+    const raw = reading.cycleUsed >= prevCycleUsed
       ? reading.cycleUsed - prevCycleUsed
       : reading.cycleUsed; // counter reset = cycle renewed
+    const gap = readAt && prevEntry.readAt ? sampleGapMs(prevEntry.readAt, readAt) : null;
+    if (gap != null && Math.abs(gap - DAY_MS) > READ_INTERVAL_TOLERANCE_MS) {
+      // Retimed run: pro-rate to a 24h rate instead of hiding the day (a baseline would
+      // skip budget breaches, break the streak and cascade into the next run).
+      out.dayCredits = Math.round(raw * DAY_MS / gap);
+      out.retimed = true;
+    } else {
+      out.dayCredits = raw;
+    }
   }
   return out;
 }
