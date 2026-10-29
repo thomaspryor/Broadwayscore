@@ -1,20 +1,33 @@
 {
-  "generatedAt": "2026-10-29T05:12:26.476Z",
+  "generatedAt": "2026-10-29T05:46:48.038Z",
   "season": "2010-2011",
   "issue": "BRO-6450",
   "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
   "sources": [
     "theatricalia (venue histories)",
+    "tr-az",
     "wos",
     "guardian",
     "wikipedia (venue articles)"
   ],
   "counts": {
-    "reference": 39,
-    "theatricaliaOnly": 19,
+    "reference": 52,
+    "theatricaliaOnly": 6,
     "excludedShortRuns": 5
   },
   "reference": [
+    {
+      "title": "Blood and Gifts",
+      "venue": "Lyttelton Theatre",
+      "start": "2010-09-01",
+      "end": "2010-11-14",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/adk/blood-and-gifts/production/n9a"
+    },
     {
       "title": "Krapp's Last Tape",
       "venue": "Duchess Theatre",
@@ -22,6 +35,7 @@
       "end": "2010-11-20",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -34,6 +48,7 @@
       "end": "2011-01-15",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -46,6 +61,7 @@
       "end": "2011-01-15",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -58,6 +74,7 @@
       "end": "2011-01-26",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -70,6 +87,7 @@
       "end": "2011-02-26",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -82,6 +100,7 @@
       "end": "2011-01-08",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -94,6 +113,7 @@
       "end": "2011-01-15",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -106,10 +126,23 @@
       "end": "2011-02-26",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/3dk/when-we-are-married/production/1355"
+    },
+    {
+      "title": "Men Should Weep",
+      "venue": "Lyttelton Theatre",
+      "start": "2010-10-26",
+      "end": "2011-01-10",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/59s/men-should-weep/production/ndr"
     },
     {
       "title": "A Flea in Her Ear",
@@ -118,6 +151,7 @@
       "end": "2011-03-31",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -130,10 +164,35 @@
       "end": "2011-02-19",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/3kh/an-ideal-husband/production/n5b"
+    },
+    {
+      "title": "FELA!",
+      "venue": "Olivier Theatre",
+      "start": "2010-11-16",
+      "end": "2011-01-06",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ae7/fela/production/naw"
+    },
+    {
+      "title": "End of the Rainbow",
+      "venue": "Trafalgar Theatre",
+      "start": "2010-11-22",
+      "end": "2011-05-21",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/71r/end-of-the-rainbow/production/151t"
     },
     {
       "title": "The Rivals",
@@ -142,10 +201,47 @@
       "end": "2011-02-26",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/e/the-rivals/production/109e"
+    },
+    {
+      "title": "The Gruffalo",
+      "venue": "Garrick Theatre",
+      "start": "2010-11-24",
+      "end": "2011-01-16",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gx6/the-gruffalo/production/135e"
+    },
+    {
+      "title": "Love Story",
+      "venue": "Duchess Theatre",
+      "start": "2010-11-27",
+      "end": "2011-02-26",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gw5/love-story/production/1333"
+    },
+    {
+      "title": "Season's Greetings",
+      "venue": "Lyttelton Theatre",
+      "start": "2010-12-01",
+      "end": "2011-03-13",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/58g/seasons-greetings/production/n99"
     },
     {
       "title": "Twelfth Night",
@@ -154,6 +250,7 @@
       "end": "2011-03-02",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -166,6 +263,7 @@
       "end": "2011-04-02",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -178,6 +276,7 @@
       "end": null,
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -190,10 +289,23 @@
       "end": "2011-05-07",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/f0r/clybourne-park/production/1524"
+    },
+    {
+      "title": "The Heretic",
+      "venue": "Royal Court",
+      "start": "2011-02-04",
+      "end": "2011-03-19",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/jda/the-heretic/production/1are"
     },
     {
       "title": "Frankenstein",
@@ -202,6 +314,7 @@
       "end": "2011-05-02",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -214,6 +327,7 @@
       "end": "2012-01-14",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -226,6 +340,7 @@
       "end": "2011-06-18",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -262,10 +377,35 @@
       "end": "2011-05-21",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/82k/the-umbrellas-of-cherbourg/production/14b4"
+    },
+    {
+      "title": "Remembrance Day",
+      "venue": "Royal Court",
+      "start": "2011-03-23",
+      "end": "2011-04-16",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/an7/remembrance-day/production/ny4"
+    },
+    {
+      "title": "Rocket to the Moon",
+      "venue": "Lyttelton Theatre",
+      "start": "2011-03-23",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/anf/rocket-to-the-moon/production/nyj"
     },
     {
       "title": "Cause Célèbre",
@@ -274,10 +414,23 @@
       "end": "2011-06-11",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/anm/cause-celebre/production/nyw"
+    },
+    {
+      "title": "Wastwater",
+      "venue": "Royal Court",
+      "start": "2011-03-31",
+      "end": "2011-05-07",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fp1/wastwater/production/10j1"
     },
     {
       "title": "Betty Blue Eyes",
@@ -286,6 +439,7 @@
       "end": "2011-09-24",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -298,6 +452,7 @@
       "end": "2011-08-27",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -322,6 +477,7 @@
       "end": "2011-06-25",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -334,6 +490,7 @@
       "end": "2011-09-03",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -346,6 +503,7 @@
       "end": "2011-09-03",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -358,6 +516,7 @@
       "end": "2011-09-19",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -370,6 +529,7 @@
       "end": "2011-08-20",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -382,6 +542,7 @@
       "end": "2011-08-27",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -394,10 +555,23 @@
       "end": "2013-02-24",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/krx/shrek-the-musical/production/s0a"
+    },
+    {
+      "title": "Lend Me a Tenor (Musical)",
+      "venue": "Gielgud Theatre",
+      "start": "2011-06-15",
+      "end": "2011-08-06",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7m1/lend-me-a-tenor-musical/production/14b5"
     },
     {
       "title": "Rosencrantz and Guildenstern are Dead",
@@ -406,6 +580,7 @@
       "end": "2011-08-20",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -424,12 +599,25 @@
       "url": "https://theatricalia.com/play/gj3/park-avenue-cat/production/12fg"
     },
     {
+      "title": "The Village Bike",
+      "venue": "Royal Court",
+      "start": "2011-07-01",
+      "end": "2011-07-30",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/cv4/the-village-bike/production/rz6"
+    },
+    {
       "title": "Yes, Prime Minister",
       "venue": "Apollo Theatre",
       "start": "2011-07-06",
       "end": "2011-09-17",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -442,6 +630,7 @@
       "end": "2012-10-06",
       "sources": [
         "theatricalia",
+        "tr-az",
         "wikipedia"
       ],
       "corroborated": true,
@@ -486,83 +675,6 @@
   ],
   "uncorroborated": [
     {
-      "title": "Blood and Gifts",
-      "venue": "Lyttelton Theatre",
-      "start": "2010-09-01",
-      "end": "2010-11-14",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/adk/blood-and-gifts/production/n9a"
-    },
-    {
-      "title": "Men Should Weep",
-      "venue": "Lyttelton Theatre",
-      "start": "2010-10-26",
-      "end": "2011-01-10",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/59s/men-should-weep/production/ndr"
-    },
-    {
-      "title": "FELA!",
-      "venue": "Olivier Theatre",
-      "start": "2010-11-16",
-      "end": "2011-01-06",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/ae7/fela/production/naw"
-    },
-    {
-      "title": "End of the Rainbow",
-      "venue": "Trafalgar Theatre",
-      "start": "2010-11-22",
-      "end": "2011-05-21",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/71r/end-of-the-rainbow/production/151t"
-    },
-    {
-      "title": "The Gruffalo",
-      "venue": "Garrick Theatre",
-      "start": "2010-11-24",
-      "end": "2011-01-16",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/gx6/the-gruffalo/production/135e"
-    },
-    {
-      "title": "Love Story",
-      "venue": "Duchess Theatre",
-      "start": "2010-11-27",
-      "end": "2011-02-26",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/gw5/love-story/production/1333"
-    },
-    {
-      "title": "Season's Greetings",
-      "venue": "Lyttelton Theatre",
-      "start": "2010-12-01",
-      "end": "2011-03-13",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/58g/seasons-greetings/production/n99"
-    },
-    {
       "title": "The Night Before Christmas",
       "venue": "Ambassadors Theatre",
       "start": "2010-12-07",
@@ -572,17 +684,6 @@
       ],
       "corroborated": false,
       "url": "https://theatricalia.com/play/113/the-night-before-christmas/production/138b"
-    },
-    {
-      "title": "The Heretic",
-      "venue": "Royal Court",
-      "start": "2011-02-04",
-      "end": "2011-03-19",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/jda/the-heretic/production/1are"
     },
     {
       "title": "Showstopper! The Improvised Musical",
@@ -605,61 +706,6 @@
       ],
       "corroborated": false,
       "url": "https://theatricalia.com/play/gw8/the-hurly-burly-show/production/1358"
-    },
-    {
-      "title": "Remembrance Day",
-      "venue": "Royal Court",
-      "start": "2011-03-23",
-      "end": "2011-04-16",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/an7/remembrance-day/production/ny4"
-    },
-    {
-      "title": "Rocket to the Moon",
-      "venue": "Lyttelton Theatre",
-      "start": "2011-03-23",
-      "end": null,
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/anf/rocket-to-the-moon/production/nyj"
-    },
-    {
-      "title": "Wastwater",
-      "venue": "Royal Court",
-      "start": "2011-03-31",
-      "end": "2011-05-07",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/fp1/wastwater/production/10j1"
-    },
-    {
-      "title": "Lend Me a Tenor (Musical)",
-      "venue": "Gielgud Theatre",
-      "start": "2011-06-15",
-      "end": "2011-08-06",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/7m1/lend-me-a-tenor-musical/production/14b5"
-    },
-    {
-      "title": "The Village Bike",
-      "venue": "Royal Court",
-      "start": "2011-07-01",
-      "end": "2011-07-30",
-      "sources": [
-        "theatricalia"
-      ],
-      "corroborated": false,
-      "url": "https://theatricalia.com/play/cv4/the-village-bike/production/rz6"
     },
     {
       "title": "A Woman Killed with Kindness",
