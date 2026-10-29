@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T06:54:33.881Z",
+  "timestamp": "2026-10-29T07:12:24.063Z",
   "stats": {
-    "totalReviews": 66513,
-    "alreadyFlagged": 22074,
+    "totalReviews": 66518,
+    "alreadyFlagged": 22072,
     "dateGuardCatches": 233,
     "directorMismatch": 2703,
-    "tvFilmSignals": 1892,
-    "londonSignals": 3226,
+    "tvFilmSignals": 1893,
+    "londonSignals": 3227,
     "offBroadwaySignals": 606,
     "yearMismatch": 244,
-    "noPublishDate": 6454
+    "noPublishDate": 6451
   },
   "findings": [
     {
@@ -8481,6 +8481,19 @@
       ]
     },
     {
+      "showId": "camp-siegfried-west-end-2021",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2021-09-18",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/camp-siegfried-review-transfixingly-plausible-tale-nazi-youth/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
       "showId": "carmen-off-broadway-2025",
       "file": "broadwayworld--richard-sasanow.json",
       "score": 66,
@@ -8700,7 +8713,7 @@
     {
       "showId": "caroline-off-broadway-2026",
       "file": "theater-life--david-sheward.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2025-10-07T19:42:47",
       "url": "https://theaterlife.com/caroline/",
       "findings": [
@@ -23705,6 +23718,7 @@
     {
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "stagebuddy--unknown.json",
+      "score": 66,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/heathers-the-musical",
       "findings": [
@@ -42273,7 +42287,7 @@
     {
       "showId": "queen-versailles-2025",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 17,
+      "score": 7,
       "publishDate": "November 9, 2025",
       "url": "https://nypost.com/2025/11/09/entertainment/queen-of-versailles-review-kristin-chenoweth-returns-to-broadway-in-a-dire-musical-that-needs-a-wrecking-ball/",
       "findings": [
@@ -44623,7 +44637,7 @@
     {
       "showId": "smash-2025",
       "file": "culturesauce--thom-geier.json",
-      "score": 39,
+      "score": 35,
       "publishDate": "April 10th, 2025",
       "url": "https://culturesauce.com/2025/04/10/smash-bombshell-broadway-review/",
       "findings": [
@@ -44670,7 +44684,7 @@
     {
       "showId": "smash-2025",
       "file": "guardian--adrian-horton.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "April 10, 2025",
       "url": "https://www.theguardian.com/stage/2025/apr/10/smash-review-broadway",
       "findings": [
@@ -44712,7 +44726,7 @@
     {
       "showId": "smash-2025",
       "file": "nysr--roma-torre.json",
-      "score": 58,
+      "score": 61,
       "publishDate": "April 10, 2025",
       "url": "https://nystagereview.com/2025/04/10/smash-marilyn-musical-neither-smash-nor-bomb/",
       "findings": [
@@ -44740,6 +44754,7 @@
     {
       "showId": "smash-2025",
       "file": "stagebuddy--unknown.json",
+      "score": 71,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/smash",
       "findings": [
@@ -44809,7 +44824,7 @@
     {
       "showId": "smash-2025",
       "file": "timeout--adam-feldman.json",
-      "score": 57,
+      "score": 56,
       "publishDate": "April 10, 2025",
       "url": "https://www.timeout.com/newyork/theater/smash-broadway-musical-review-brooks-ashmanskas-robyn-hurder",
       "findings": [
@@ -73800,6 +73815,19 @@
     },
     {
       "showId": "camp-siegfried-west-end-2021",
+      "file": "financialtimes--alice-saville.json",
+      "publishDate": "2021-09-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "camp-siegfried-west-end-2021",
       "file": "guardian--arifa-akbar.json",
       "score": 59,
       "publishDate": "September 18th, 2021",
@@ -100227,7 +100255,7 @@
     {
       "showId": "stephen-sondheims-old-friends-2025",
       "file": "timeout--adam-feldman.json",
-      "score": 60,
+      "score": 57,
       "publishDate": "April 8, 2025",
       "url": "https://www.timeout.com/newyork/theater/old-friends-broadway-musical-review-stephen-sondheim-bernadette-peters-lea-salonga",
       "findings": [

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T06:54:50.719Z",
+  "generatedAt": "2026-10-29T07:12:41.010Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -4407,6 +4407,45 @@
       "slug": "rope-off-broadway",
       "thumbnail": "/images/shows/rope-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 5,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-11-04",
+      "status": "previews",
+      "slug": "parcel-from-america-off-broadway",
+      "thumbnail": "/images/shows/parcel-from-america-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
