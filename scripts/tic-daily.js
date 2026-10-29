@@ -42,7 +42,9 @@ async function stageAndAdd() {
   const seen = readJson(SEEN, {});
   const today = new Date().toISOString().slice(0, 10);
   // Reset first so a failure below can never leave yesterday's list for the ingest step.
-  if (!flag('dry-run')) { fs.mkdirSync(path.dirname(ADDED), { recursive: true }); fs.writeFileSync(ADDED, JSON.stringify({ on: today, added: [] }) + '\n'); }
+  // `pending` = shows whose ingest dispatch was deferred by the ingest-urls cap on an earlier run.
+  const pending = readJson(ADDED, {}).pending || [];
+  if (!flag('dry-run')) { fs.mkdirSync(path.dirname(ADDED), { recursive: true }); fs.writeFileSync(ADDED, JSON.stringify({ on: today, added: [], pending }) + '\n'); }
   const listing = tic.parseListing((await fetchPage(`${tic.BASE}/reviewlistings.php`)).content);
   console.log(`[tic-daily] ${listing.length} listed`);
   const io = {
@@ -58,7 +60,7 @@ async function stageAndAdd() {
   // whereas audit files written first would claim shows that never landed.
   if (added.length) fs.writeFileSync(SHOWS, JSON.stringify(raw, null, 2) + '\n');
   fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
-  fs.writeFileSync(ADDED, JSON.stringify({ on: today, added }, null, 1) + '\n');
+  fs.writeFileSync(ADDED, JSON.stringify({ on: today, added, pending }, null, 1) + '\n');
   if (!added.length) return;
   // Let the existing image-fetch step pick the new ids up.
   const prev = readJson(PROMOTED, { promoted: [] });
@@ -68,16 +70,26 @@ async function stageAndAdd() {
 
 function dispatchIngest() {
   const { dispatch } = require('./lib/rest-dispatch');
+  const { checkCap } = require('./lib/workflow-queue-cap');
   const rec = readJson(ADDED, { added: [] });
-  if (rec.on !== new Date().toISOString().slice(0, 10)) { console.log('[tic-daily] no run today, nothing to ingest'); return; }
-  for (const a of rec.added) {
+  const today = new Date().toISOString().slice(0, 10);
+  // Today's additions plus anything an earlier run had to defer (the ingest-urls cap, BRO-6532).
+  const queue = [...(rec.pending || []), ...(rec.on === today ? rec.added : [])];
+  const left = [];
+  for (const a of queue) {
+    if (left.length) { left.push(a); continue; }
+    const cap = checkCap({ workflow: 'ingest-urls.yml' });
+    if (!cap.ok) { console.log(`[tic-daily] deferred: ${cap.reason}`); left.push(a); continue; }
     try {
       dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: a.urls.join('\n') } });
       console.log(`[tic-daily] ingest dispatched for ${a.id}`);
     } catch (e) {
       console.log(`::warning::ingest dispatch failed for ${a.id}: ${e.message}`);
+      left.push(a);
     }
   }
+  fs.writeFileSync(ADDED, JSON.stringify({ on: rec.on, added: rec.added, pending: left }, null, 1) + '\n');
+  console.log(`[tic-daily] ${queue.length - left.length} dispatched, ${left.length} left for the next run`);
 }
 
 async function main() {
