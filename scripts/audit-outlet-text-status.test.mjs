@@ -16,6 +16,44 @@ test('flags a host whose three recent files are all empty', () => {
   assert.equal(out.length, 1);
   assert.equal(out[0].host, 'exeuntnyc.com');
   assert.deepEqual(out[0].urlShapes, ['wp-attachment']);
+  assert.equal(out[0].silent, 3);
+  assert.deepEqual(out[0].byLastFailure, { none: 3 });
+});
+
+test('counts null, none and not_attempted as silent and reports logged failures separately', () => {
+  const reasons = [null, 'none', 'not_attempted', 'url_dead_404', 'garbage_content'];
+  const rows = reasons.map((lastFailure, i) => row(`https://mixed.com/${i}`, 0, undefined, { lastFailure }));
+  const [out] = zeroCharHosts(rows, 30, NOW);
+  assert.equal(out.files, 5);
+  assert.equal(out.silent, 3);
+  assert.deepEqual(out.byLastFailure, { none: 2, not_attempted: 1, url_dead_404: 1, garbage_content: 1 });
+});
+
+test('hosts with only logged failures do not alert, regardless of failure type', () => {
+  const rows = ['newjerseynewsroom.com', 'online.wsj.com', 'theepochtimes.com', 'womanaroundtown.com']
+    .flatMap((host) => ['url_dead_404', 'garbage_content', 'url_content_mismatch', 'partial_text']
+      .map((lastFailure, i) => row(`https://${host}/${i}`, 0, undefined, { lastFailure })));
+  assert.deepEqual(zeroCharHosts(rows, 30, NOW), []);
+});
+
+test('silent rows must be a strict majority of the recent zero-char files', () => {
+  for (const reasons of [
+    [null, 'url_dead_404', 'partial_text'],
+    [null, 'not_attempted', 'url_dead_404', 'partial_text'],
+  ]) {
+    const rows = reasons.map((lastFailure, i) => row(`https://known.com/${i}`, 0, undefined, { lastFailure }));
+    assert.deepEqual(zeroCharHosts(rows, 30, NOW), []);
+  }
+});
+
+test('old and excluded rows do not affect the failure breakdown or silent majority', () => {
+  const rows = [1, 2, 3].map((i) => row(`https://silent.com/${i}`, 0));
+  rows.push(row('https://www.silent.com/old', 0, '2025-01-01T00:00:00Z', { lastFailure: 'url_dead_404' }));
+  rows.push(row('https://silent.com/excluded', 0, undefined, { excludedBy: 'wrongShow', lastFailure: 'partial_text' }));
+  const [out] = zeroCharHosts(rows, 30, NOW);
+  assert.equal(out.files, 3);
+  assert.equal(out.silent, 3);
+  assert.deepEqual(out.byLastFailure, { none: 3 });
 });
 
 test('one readable recent file clears the host', () => {

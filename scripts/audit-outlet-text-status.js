@@ -18,7 +18,9 @@
  * --zero-char-hosts[=DAYS] (BRO-6486) scans every outlet instead: for files
  * first seen in the last DAYS (default 30) that no flag excludes, it lists each
  * url host where at least 3 such files exist and every one holds 0 chars of
- * text. That is the "outlet silently unreadable" shape Exeunt NYC showed on
+ * text and a strict majority have no logged failure (null, none or
+ * not_attempted). Each flagged host includes a silent count and lastFailure
+ * breakdown. That is the "outlet silently unreadable" shape Exeunt NYC showed on
  * 2026-10-28 (there the files pointed at WordPress photo-attachment pages,
  * now reported as urlShape wp-attachment). Exit 1 when any host is flagged.
  */
@@ -114,7 +116,7 @@ function hostOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; }
 }
 
-/** Hosts whose recent, non-excluded files all hold 0 chars (pure, exported for the test). */
+/** Hosts whose recent files are all empty and mostly silent (pure, exported for the test). */
 function zeroCharHosts(rows, days, nowMs = Date.now()) {
   const since = nowMs - days * 86400000;
   const byHost = new Map();
@@ -128,7 +130,15 @@ function zeroCharHosts(rows, days, nowMs = Date.now()) {
   const flagged = [];
   for (const [host, list] of byHost) {
     if (list.length >= ZERO_MIN_FILES && list.every((r) => r.chars === 0)) {
-      flagged.push({ host, files: list.length, outlets: [...new Set(list.map((r) => r.outletId))], urlShapes: [...new Set(list.map((r) => r.urlShape))], examples: list.slice(0, 3).map((r) => `${r.show}/${r.file}`) });
+      const byLastFailure = {};
+      let silent = 0;
+      for (const r of list) {
+        const reason = r.lastFailure == null ? 'none' : String(r.lastFailure);
+        byLastFailure[reason] = (byLastFailure[reason] || 0) + 1;
+        if (reason === 'none' || reason === 'not_attempted') silent++;
+      }
+      if (silent <= list.length / 2) continue;
+      flagged.push({ host, files: list.length, silent, byLastFailure, outlets: [...new Set(list.map((r) => r.outletId))], urlShapes: [...new Set(list.map((r) => r.urlShape))], examples: list.slice(0, 3).map((r) => `${r.show}/${r.file}`) });
     }
   }
   return flagged.sort((a, b) => b.files - a.files);
@@ -139,8 +149,8 @@ function reportZeroCharHosts(rows, days) {
   const attachments = rows.filter((r) => r.urlShape === 'wp-attachment' && !r.excludedBy).length;
   if (asJson) console.log(JSON.stringify({ days, flagged, wpAttachmentFiles: attachments }, null, 2));
   else {
-    console.log(`hosts whose files first seen in the last ${days} days all hold 0 chars (min ${ZERO_MIN_FILES} files): ${flagged.length}`);
-    for (const f of flagged) console.log(`  ${f.host} | ${f.files} files | outlets ${f.outlets.join(',')} | urlShapes ${f.urlShapes.join(',')} | e.g. ${f.examples.join(' ')}`);
+    console.log(`hosts whose files first seen in the last ${days} days all hold 0 chars and mostly have no logged failure (min ${ZERO_MIN_FILES} files): ${flagged.length}`);
+    for (const f of flagged) console.log(`  ${f.host} | ${f.files} files | silent ${f.silent} | lastFailure ${JSON.stringify(f.byLastFailure)} | outlets ${f.outlets.join(',')} | urlShapes ${f.urlShapes.join(',')} | e.g. ${f.examples.join(' ')}`);
     console.log(`wp-attachment url files not excluded, all outlets: ${attachments}`);
   }
   if (flagged.length) process.exitCode = 1;
