@@ -275,7 +275,9 @@ async function runOutlet(outletId, o, shared) {
 
   const ctx = shared.ctx;
   const results = items.map((it) => {
-    const full = { ...it, outletId, sourceSaysReview: !!src.sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
+    // requireReviewAuthor: the source path mixes reviews with listings; only a page naming its critic counts.
+    const sourceSaysReview = !!src.sourceSaysReview && (!src.requireReviewAuthor || !!it.reviewAuthor);
+    const full = { ...it, outletId, sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
     return { ...full, ...census.bucketItem(full, ctx) };
   });
 
