@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T02:39:35.235Z",
+  "timestamp": "2026-10-29T02:52:30.020Z",
   "stats": {
-    "totalReviews": 65859,
-    "alreadyFlagged": 22059,
+    "totalReviews": 65873,
+    "alreadyFlagged": 22060,
     "dateGuardCatches": 233,
-    "directorMismatch": 2646,
+    "directorMismatch": 2648,
     "tvFilmSignals": 1864,
-    "londonSignals": 3191,
+    "londonSignals": 3197,
     "offBroadwaySignals": 599,
     "yearMismatch": 240,
-    "noPublishDate": 5980
+    "noPublishDate": 5984
   },
   "findings": [
     {
@@ -30922,6 +30922,19 @@
     },
     {
       "showId": "liberation-off-broadway-2025",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": null,
+      "url": "https://www.thewrap.com/liberation-off-broadway-review-bess-wohl/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
       "file": "vulture--sara-holdren.json",
       "score": 94,
       "publishDate": "2025-02-20",
@@ -33790,6 +33803,20 @@
       "score": 35,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2016/mar/08/motown-the-musical-review-berry-gordy-shaftesbury-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"charles randolph-wright\" from motown-the-musical-2016"
+        }
+      ]
+    },
+    {
+      "showId": "motown-the-musical-west-end-2016",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 79,
+      "publishDate": "2016-06-08",
+      "url": "https://www.londontheatre.co.uk/reviews/motown-the-musical-review-at-the-shaftesbury-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -90761,6 +90788,20 @@
       ]
     },
     {
+      "showId": "motown-the-musical-west-end-2016",
+      "file": "londontheatre1--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.londontheatre1.com/london-theatre/motown-the-musical/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "moulin-rouge-2019",
       "file": "mashable--erin-strecker.json",
       "score": 82,
@@ -90869,6 +90910,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-henderson-presents-west-end-2016",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-mrs-henderson-presents-theatre-royal-bath-5stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-henderson-presents-west-end-2016",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": "2016-02-17",
+      "url": "https://www.whatsonstage.com/news/did-the-critics-enjoy-mrs-henderson-presents_39754/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -102321,6 +102390,20 @@
       ]
     },
     {
+      "showId": "the-comedy-about-a-bank-robbery-west-end-2016",
+      "file": "britishtheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-the-comedy-about-a-bank-robbery-criterion-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "londontheatredirect--hay-brunsdon.json",
       "score": null,
@@ -106411,6 +106494,20 @@
     },
     {
       "showId": "the-master-builder-west-end-2016",
+      "file": "london-box-office--nastazja-domaradzka.json",
+      "score": 93,
+      "publishDate": "2016-02-08",
+      "url": "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-west-end-2016",
       "file": "telegraph--jane-shilling.json",
       "score": 97,
       "publishDate": "2016-02-04",
@@ -106434,6 +106531,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mentalists-west-end-2015",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": "2015-07-14",
+      "url": "https://www.standard.co.uk/showbiz/celebrity-news/stephen-merchant-exhausted-but-relieved-after-theatre-debut-in-the-mentalists-10387206.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
