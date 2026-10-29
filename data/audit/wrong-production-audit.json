@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T02:52:30.020Z",
+  "timestamp": "2026-10-29T03:09:36.556Z",
   "stats": {
-    "totalReviews": 65873,
-    "alreadyFlagged": 22060,
+    "totalReviews": 65934,
+    "alreadyFlagged": 22064,
     "dateGuardCatches": 233,
-    "directorMismatch": 2648,
-    "tvFilmSignals": 1864,
-    "londonSignals": 3197,
-    "offBroadwaySignals": 599,
+    "directorMismatch": 2657,
+    "tvFilmSignals": 1867,
+    "londonSignals": 3200,
+    "offBroadwaySignals": 600,
     "yearMismatch": 240,
-    "noPublishDate": 5984
+    "noPublishDate": 6034
   },
   "findings": [
     {
@@ -278,6 +278,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2015",
+      "file": "londontheatre1--unknown.json",
+      "score": null,
+      "publishDate": "2015-06-20",
+      "url": "https://www.londontheatre1.com/reviews/paradoxical-1984-at-londons-playhouse-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -24528,6 +24547,19 @@
     },
     {
       "showId": "illinoise-off-broadway-2024",
+      "file": "nysr--frank-scheck.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2024/03/07/illinoise-an-explosion-of-transporting-music-and-dance/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
       "file": "nytg--amelia-merrill.json",
       "score": 76,
       "publishDate": "March 7, 2024",
@@ -24556,6 +24588,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/review-illinoise-is-a-folk-ballet-for-the-emotionally-wounded_1732498/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
         }
       ]
     },
@@ -30923,6 +30968,7 @@
     {
       "showId": "liberation-off-broadway-2025",
       "file": "thewrap--robert-hofler.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.thewrap.com/liberation-off-broadway-review-bess-wohl/",
       "findings": [
@@ -30944,6 +30990,32 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "lights-out-nat-king-cole-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": null,
+      "url": "https://culturesauce.com/lights-out-nat-king-cole-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "lights-out-nat-king-cole-off-broadway-2025",
+      "file": "theatermania--pete-hempstead.json",
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/review-dule-hill-and-daniel-j-watts-are-unforgettable-in-a-murky-lights-out_1779864/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -50820,6 +50892,20 @@
     },
     {
       "showId": "the-elephant-man-west-end-2015",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/elephant-man-theatre-royal-haymarket",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-west-end-2015",
       "file": "guardian--michael-billington.json",
       "score": 76,
       "publishDate": "2015-06-01T12:14:40+00:00",
@@ -50834,10 +50920,43 @@
     },
     {
       "showId": "the-elephant-man-west-end-2015",
+      "file": "independent--paul-taylor.json",
+      "score": 73,
+      "publishDate": "2015-06-01T12:14:40+00:00",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-elephant-man-theatre-royal-review-bradley-cooper-is-terrific-as-john-merrick-10287684.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-west-end-2015",
       "file": "londonist--stu-black.json",
       "score": 58,
       "publishDate": "2015-06-01T12:14:40+00:00",
       "url": "http://londonist.com/2015/06/bradley-cooper-excels-in-dated-elephant-man.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-west-end-2015",
+      "file": "thestage--natasha-tripney.json",
+      "score": 45,
+      "publishDate": "2015-06-01T12:14:40+00:00",
+      "url": "https://www.thestage.co.uk/reviews/2015/elephant-man-3/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -59494,6 +59613,34 @@
     },
     {
       "showId": "the-weir-off-broadway-2025",
+      "file": "theatermania--pete-hempstead.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/review-the-weir-returns-for-another-haunting-run-at-irish-repertory-theatre_1792277/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-weir-at-irish-repertory-theatre-through-sunday-august-31-2025/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
       "file": "theatrely--andrew-martini.json",
       "score": 76,
       "publishDate": "2025-07-18",
@@ -65405,6 +65552,20 @@
       ]
     },
     {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+      "file": "londontheatre1--unknown.json",
+      "score": null,
+      "publishDate": "2015-03-31",
+      "url": "https://www.londontheatre1.com/reviews/review-of-women-on-the-verge-of-a-nervous-breakdown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from women-on-the-verge-of-a-nervous-breakdown-2010"
+        }
+      ]
+    },
+    {
       "showId": "working-girl-la-jolla-regional-2025",
       "file": "latheatrix--anita-w-harris.json",
       "score": 88,
@@ -70330,6 +70491,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "beautiful-the-carole-king-musical-west-end-2015",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2015-02-27",
+      "url": "https://www.londonboxoffice.co.uk/news/post/beautiful-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -82738,6 +82912,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2015",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2015-05-19",
+      "url": "https://www.ayoungertheatre.com/review-high-society-old-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -100467,6 +100655,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "teeth-off-broadway-2024",
+      "file": "theatermania--pete-hempstead.json",
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/review-in-little-shop-style-horror-musical-teeth-audrey-ii-is-a-carnivorous-cooter_1754471/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
