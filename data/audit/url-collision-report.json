@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-29T20:39:48.902Z",
+  "generatedAt": "2026-10-29T22:26:20.838Z",
   "summary": {
-    "total": 11,
+    "total": 12,
     "high": 6,
     "medium": 4,
-    "low": 1
+    "low": 2
   },
   "collisions": [
     {
@@ -195,6 +195,51 @@
       "suggestedWinner": "jesus-christ-superstar-west-end-2026",
       "reason": "publishDate 2026-07-08 is 1 days from jesus-christ-superstar-west-end-2026 opening (2026-07-07); next closest is 100 days from jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "confidence": "high"
+    },
+    {
+      "url": "https://maratapp.org/theater-raves/",
+      "normalizedUrl": "https://maratapp.org/theater-raves",
+      "candidates": [
+        {
+          "showId": "notes-from-the-field-regional-2024",
+          "file": "maratapporg--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-02-08",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "maratapporg"
+        },
+        {
+          "showId": "rosencrantz-and-guildenstern-are-dead-regional-2024",
+          "file": "maratapporg--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-04-06",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "maratapporg"
+        },
+        {
+          "showId": "stokely-the-unfinished-revolution-regional-2024",
+          "file": "maratapporg--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-06-03",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "maratapporg"
+        },
+        {
+          "showId": "the-lifespan-of-a-fact-regional-2023",
+          "file": "maratapporg--unknown.json",
+          "publishDate": null,
+          "openingDate": "2023-11-12",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "maratapporg"
+        }
+      ],
+      "suggestedWinner": "stokely-the-unfinished-revolution-regional-2024",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
