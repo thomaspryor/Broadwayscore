@@ -440,3 +440,13 @@ test('summarizeMissedForHealth: round-up covered shows do not count as unreached
   assert.deepStrictEqual(summarizeMissedForHealth({ missedCount: 4 }), { uncovered: 4, covered: 0, alertable: 0, agedOut: 0 }, 'older snapshot without a missed array keeps the raw count');
   assert.deepStrictEqual(summarizeMissedForHealth(null), { uncovered: 0, covered: 0, alertable: 0, agedOut: 0 });
 });
+
+test('summarizeMissedForHealth: counts alertable only over uncovered shows', () => {
+  const { summarizeMissedForHealth } = require('./missed-broadcasts.js');
+  const snap = { missedCount: 3, missed: [
+    { state: 'draft-stuck', alertable: true },
+    { state: 'never-drafted', alertable: false },
+    { state: 'covered-by-roundup', alertable: false },
+  ] };
+  assert.deepStrictEqual(summarizeMissedForHealth(snap), { uncovered: 2, covered: 1, alertable: 1, agedOut: 1 });
+});
