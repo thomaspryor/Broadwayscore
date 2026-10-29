@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6488-c",
   "planId": "7bedbfc8-3243-4cf0-8e38-988a9fdff80f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T22:58:56.273Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "description": "BRO-6488 follow-up: same theartsdesk.com url as hadestown-west-end-2018/artsdesk--marianka-swain.json, the National Theatre review (page byline date 14 November 2018), with no byline or date. It is not about the 2024 Lyric run; the correct copy is held on the 2018 row."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T23:06:33.976Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted arcadia-west-end-2026/whatsonstage--sarah-crompton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hadestown-west-end-2024/artsdesk--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
