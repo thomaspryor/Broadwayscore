@@ -17,7 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { pushReviewTexts, dispatchDownstream } = require('./lib/land-ingested-reviews');
+const { pushReviewTexts, pushFailureAction, dispatchDownstream } = require('./lib/land-ingested-reviews');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -380,11 +380,9 @@ async function main() {
       console.log(`::warning::Review-texts push failed for ${showId}: the CI workflows will not see the new files, so scoring/rebuild are NOT dispatched yet. Push ${reviewTextsDir}, then: gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
       // In CI the workflow's commit step pushes the stranded commit and then
       // dispatches downstream from this marker (ingest-urls.yml).
-      if (process.env.INGEST_DISPATCH_MARKER && !noRebuild) {
-        fs.writeFileSync(process.env.INGEST_DISPATCH_MARKER, String(newReviews));
-      } else {
-        process.exitCode = 1;
-      }
+      const action = pushFailureAction({ inCiWithCommitStep: !!process.env.INGEST_DISPATCH_MARKER, noRebuild });
+      if (action === 'write-marker') fs.writeFileSync(process.env.INGEST_DISPATCH_MARKER, String(newReviews));
+      else if (action === 'fail') process.exitCode = 1;
     }
   }
 

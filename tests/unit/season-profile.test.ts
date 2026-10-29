@@ -220,6 +220,15 @@ test('season-level money totals print in whole millions', () => {
   assert.equal(formatSeasonMoney(999_499), '$999K');
   assert.equal(formatSeasonMoney(999_500), '$1M');
   assert.equal(formatSeasonMoney(null), '—');
+  assert.equal(formatSeasonMoney(Number.NaN), '—');
+  assert.equal(formatSeasonMoney(Number.POSITIVE_INFINITY), '—');
+  assert.equal(formatSeasonMoney(0), '$0K');
+  assert.equal(formatSeasonMoney(-2_000_000), '-$2M');
+  assert.equal(formatSeasonMoney(999_499_999), '$999M');
+  assert.equal(formatSeasonMoney(999_500_000), '$1.0B');
+  assert.equal(formatSeasonMoney(1_500_000_000), '$1.5B');
+  assert.equal(formatRowValue('money', 999_600), '$1.0M');
+  assert.equal(formatRowValue('money', 999_400), '$999K');
 });
 
 test('a per-show average needs MIN_AVERAGE_SAMPLE disclosed figures', () => {

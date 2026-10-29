@@ -20,6 +20,11 @@ const { downstreamWorkflows } = require('./ingest-downstream');
 const { isReviewTextsClone } = require('./review-texts-dir');
 const { CAPS, checkCap } = require('./workflow-queue-cap');
 const { isUrgentShowId } = require('./scoring-lane');
+const { pushWithRetry } = require('./push-with-retry');
+
+// Tests that inject `exec` must never reach the real push script (it could push a
+// real clone), so only the real exec gets the real helper.
+const refusePush = () => ({ ok: false, code: null, stderr: 'pushRetry not injected alongside a stub exec' });
 
 /**
  * Push the given absolute file paths. Returns {pushed: boolean, error?: string}.
@@ -44,6 +49,7 @@ const { isUrgentShowId } = require('./scoring-lane');
 function pushReviewTexts({
   reviewTextsDir, touchedPaths, message, exec = execSync, log = console.log,
   isCheckout = isReviewTextsClone,
+  pushRetry = exec === execSync ? pushWithRetry : refusePush,
 }) {
   if (!isCheckout(reviewTextsDir)) {
     const error = `not the review-texts clone: ${reviewTextsDir}`;
@@ -79,13 +85,15 @@ function pushReviewTexts({
         return { pushed: true };
       }
     }
-    try {
-      exec(`git -C "${reviewTextsDir}" pull --rebase --autostash origin main`, { stdio: 'pipe' });
-    } catch (rebaseErr) {
-      log(`  ⚠️  Pull-rebase failed: ${execErrorDetail(rebaseErr)}`);
-      log('  Attempting push anyway; if it fails resolve manually.');
+    // BRO-6485: one pull-rebase then one push lost the race to concurrent ingest
+    // runs ("fetch first", run 40951242833). The shared helper re-fetches,
+    // rebases and retries within its 240s deadline.
+    const res = pushRetry({ cwd: reviewTextsDir, branch: 'HEAD:main' });
+    if (!res.ok) {
+      const error = String(res.stderr || `push-with-retry exit ${res.code}`).trim().split('\n').slice(-3).join(' | ');
+      log(`  ⚠️  Push to review-texts failed: ${error}`);
+      return { pushed: false, error };
     }
-    exec(`git -C "${reviewTextsDir}" push origin main`, { stdio: 'pipe' });
     log(`  ✓ Pushed ${relPaths.length} review-text file(s) to private repo`);
     return { pushed: true };
   } catch (e) {
@@ -129,12 +137,25 @@ function dispatchDownstream({
   });
 }
 
+/**
+ * What ingest-urls.js does when its review-texts push failed. In CI the workflow's
+ * commit step re-pushes the stranded commit, then dispatches from the marker, so
+ * the run is not a failure there; with --no-rebuild nothing is dispatched at all
+ * (BRO-6485: exiting 1 there turned recovered runs red). Elsewhere nothing will
+ * push the files, so the run fails.
+ * @returns {'write-marker'|'none'|'fail'}
+ */
+function pushFailureAction({ inCiWithCommitStep, noRebuild }) {
+  if (!inCiWithCommitStep) return 'fail';
+  return noRebuild ? 'none' : 'write-marker';
+}
+
 /** Push, and only if the push landed, dispatch. A failed push never dispatches (CI would score a clone without the files). */
-function landIngestedReviews({ showId, extraShowIds = [], reviewTextsDir, touchedPaths, newReviews, message, only, exec, log, isCheckout }) {
-  const push = pushReviewTexts({ reviewTextsDir, touchedPaths, message, exec, log, isCheckout });
+function landIngestedReviews({ showId, extraShowIds = [], reviewTextsDir, touchedPaths, newReviews, message, only, exec, log, isCheckout, pushRetry }) {
+  const push = pushReviewTexts({ reviewTextsDir, touchedPaths, message, exec, log, isCheckout, pushRetry });
   if (!push.pushed) return { push, dispatched: [] };
   const shows = [...new Set([showId, ...extraShowIds])];
   return { push, dispatched: shows.flatMap((id) => dispatchDownstream({ showId: id, newReviews, only, exec, log })) };
 }
 
-module.exports = { pushReviewTexts, dispatchDownstream, landIngestedReviews };
+module.exports = { pushReviewTexts, dispatchDownstream, landIngestedReviews, pushFailureAction };
