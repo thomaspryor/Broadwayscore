@@ -101,6 +101,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-6141: delete aggregator-archive pages that fail their own category check (the pages
   // audit-aggregator-archive-integrity --strict reports). Needs --delete --expect=N; same archive checkout/push as above.
   'quarantine-poisoned-aggregator-archive.js',
+  // BRO-4371: repair bwwExcerpt cut at digit-leading outlets from the private BWW archive. Dry run unless
+  // --write; --write needs --expect=N and exits nonzero on any refusal or count mismatch.
+  'repair-bww-digit-outlets.js',
   'rebuild-all-reviews.js',
   'gather-reviews.js',
   'collect-review-texts.js',
