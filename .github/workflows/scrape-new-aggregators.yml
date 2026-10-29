@@ -274,7 +274,9 @@ jobs:
         env:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # lint-allow-swallow: advisory by design (BRO-6518). A crash restores the four files it touched and exits 0; the audit files are re-derived from the live list next run.
           F="data/shows.json data/audit/tic-daily-seen.json data/audit/tic-daily-added.json data/audit/last-promotion-ids.json"
           mkdir -p /tmp/tic-pre data/audit
           for f in $F; do if [ -f "$f" ]; then cp "$f" "/tmp/tic-pre/$(basename $f)"; else touch "/tmp/tic-pre/$(basename $f).absent"; fi; done
@@ -306,7 +308,9 @@ jobs:
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # lint-allow-swallow: advisory by design (BRO-6518). Shows whose dispatch fails or is capped stay in the pending list and retry on the next run.
           if [ -f "${RUNNER_TEMP}/.skip-push-core-data" ]; then echo "core-data push skipped, not dispatching ingest"; exit 0; fi
           node scripts/tic-daily.js --dispatch-ingest
           # Deferred shows ride in the audit file to the next run.
