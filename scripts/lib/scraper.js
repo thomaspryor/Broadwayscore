@@ -18,6 +18,8 @@
  *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
  */
 
+const { isTransientScrapingdogError, parseScrapingdogHttpError } = require('./sd-transient-error');
+
 const https = require('https');
 require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const path = require('path');
@@ -797,7 +799,10 @@ async function fetchWithScrapingdog(url, options = {}) {
       };
     } catch (error) {
       lastError = error;
-      const isTransient = !/Scrapingdog HTTP 4\d\d/.test(error.message || '');
+      // BRO-6492: SD's "Something went wrong" 400 is a provider hiccup and
+      // gets the one retry too; other 4xx (and the stealth hint) stay final.
+      const _sdHttp = parseScrapingdogHttpError(error.message);
+      const isTransient = _sdHttp ? isTransientScrapingdogError(_sdHttp) : true;
       if (isTransient && attempt < MAX_ATTEMPTS) continue;
       break;
     }

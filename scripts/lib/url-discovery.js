@@ -25,6 +25,7 @@ const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { evaluateSerpAcceptance, downgradeBaselineUrl } = require('./serp-review-acceptance');
+const { isTransientScrapingdogError, scrapingdogErrorMessage } = require('./sd-transient-error');
 const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
@@ -537,7 +538,8 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
     } catch (error) {
       lastError = error;
       const status = error.response?.status;
-      const isTransient = !status || status >= 500;
+      // BRO-6492: SD's "Something went wrong" 400 clears on a resend.
+      const isTransient = isTransientScrapingdogError({ status, message: scrapingdogErrorMessage(error.response?.data) });
       if (isTransient && attempt < MAX_ATTEMPTS) continue;
       break;
     }
