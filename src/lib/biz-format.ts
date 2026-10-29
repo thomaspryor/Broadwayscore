@@ -6,8 +6,7 @@
 // reimplementing it — the /biz components previously each had their own
 // ad-hoc copy; this file was almost a third fork of the same K/M/B logic.
 
-import { formatCurrency } from './formatting';
-import { formatSeasonMoney } from './season-profile';
+import { formatCurrency, formatSeasonMoney } from './formatting';
 import type { CapitalSummary } from './commercial-metrics';
 export { formatCurrency };
 

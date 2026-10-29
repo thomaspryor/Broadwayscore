@@ -8,6 +8,7 @@
 // fixtures.
 
 import { getSeason, isExcludedFromSeasonStats } from './commercial-metrics';
+import { formatSeasonMoney } from './formatting';
 import { ownReturnedRangePct } from '../../scripts/lib/commercial-designations';
 import { sourceOpensAsEstimate } from '../../scripts/lib/public-source-text';
 import { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization, continuationIds } from '../../scripts/lib/cap-comparables';
@@ -869,19 +870,8 @@ export function formatRowValue(format: RowFormat, value: number | null, whole = 
   if (format === 'money' && whole) return formatSeasonMoney(value);
   if (format === 'pct') return `${Math.round(value * 100)}%`;
   if (format === 'count') return Number.isInteger(value) ? String(value) : value.toFixed(1);
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  return `$${Math.round(value / 1000)}K`;
-}
-
-/**
- * Season-level money totals (headline tiles, "about $X back of $Y in", season
- * history rows): whole millions, "$231M". Per-show averages in the comparison
- * tables keep formatRowValue's one decimal, where $18.4M vs $18.0M matters.
- */
-export function formatSeasonMoney(value: number | null): string {
-  if (value == null || !Number.isFinite(value)) return '—';
-  // 999,500 and up rounds to a thousand K, so it prints as $1M.
-  if (value >= 999_500) return `$${Math.round(value / 1_000_000)}M`;
+  // 999,500 and up would round to "$1000K", so it prints as $1.0M.
+  if (value >= 999_500) return `$${(value / 1_000_000).toFixed(1)}M`;
   return `$${Math.round(value / 1000)}K`;
 }
 
@@ -1004,3 +994,5 @@ export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): Rec
     atLeast80,
   };
 }
+
+export { formatSeasonMoney };

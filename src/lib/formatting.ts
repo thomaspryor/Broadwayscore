@@ -23,6 +23,22 @@ export function formatCurrency(amount: number | null | undefined): string {
   return `$${amount.toLocaleString()}`;
 }
 
+/**
+ * Season-level money totals (headline tiles, "about $X back of $Y in", season
+ * history rows): whole millions, "$231M". Per-show averages in the comparison
+ * tables keep one decimal, where $18.4M vs $18.0M matters. Lives here, not in
+ * season-profile, so client components importing biz-format stay light.
+ */
+export function formatSeasonMoney(value: number | null): string {
+  if (value == null || !Number.isFinite(value)) return '\u2014';
+  const sign = value < 0 ? '-' : '';
+  const abs = Math.abs(value);
+  // 999.5M and up prints as billions; 999,500 and up would round to "$1000K".
+  if (abs >= 999_500_000) return `${sign}$${(abs / 1_000_000_000).toFixed(1)}B`;
+  if (abs >= 999_500) return `${sign}$${Math.round(abs / 1_000_000)}M`;
+  return `${sign}$${Math.round(abs / 1000)}K`;
+}
+
 export function formatNumber(num: number | null | undefined): string {
   if (num === null || num === undefined) return '\u2014';
   return num.toLocaleString();
