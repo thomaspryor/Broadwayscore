@@ -2050225,21 +2050225,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T08:35:34.273Z",
-    "completedAt": "2026-10-29T08:35:44.127Z",
-    "totalReviews": 15,
-    "processed": 2,
-    "skipped": 13,
+    "startedAt": "2026-10-29T08:41:29.044Z",
+    "completedAt": "2026-10-29T08:41:31.465Z",
+    "totalReviews": 48,
+    "processed": 0,
+    "skipped": 47,
     "errors": 0,
     "tokensUsed": {
-      "input": 14094,
-      "output": 538,
-      "cacheRead": 7614,
+      "input": 4168,
+      "output": 125,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 33137
+      "total": 12134
     },
-    "costUsd": 0.050553100000000004,
-    "runId": "40839206625",
+    "costUsd": 0.014761,
+    "runId": "40839860427",
     "errorDetails": [],
     "validation": [
       {
@@ -2050340,30 +2050340,30 @@
       {
         "showId": "1984-west-end-2014",
         "ourDistribution": {
-          "up": 6,
+          "up": 8,
           "flat": 0,
           "down": 0,
-          "total": 6
+          "total": 8
         },
         "hasDisagreement": false
       },
       {
         "showId": "1984-west-end-2015",
         "ourDistribution": {
-          "up": 6,
+          "up": 8,
           "flat": 0,
           "down": 0,
-          "total": 6
+          "total": 8
         },
         "hasDisagreement": false
       },
       {
         "showId": "1984-west-end-2016",
         "ourDistribution": {
-          "up": 6,
+          "up": 8,
           "flat": 0,
           "down": 0,
-          "total": 6
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -2052021,10 +2052021,10 @@
       {
         "showId": "a-small-family-business-west-end-2014",
         "ourDistribution": {
-          "up": 1,
+          "up": 3,
           "flat": 1,
           "down": 0,
-          "total": 2
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2052270,9 +2052270,9 @@
         "showId": "a-view-from-islington-north-west-end-2016",
         "ourDistribution": {
           "up": 3,
-          "flat": 5,
+          "flat": 6,
           "down": 0,
-          "total": 8
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -2052993,10 +2052993,10 @@
       {
         "showId": "all-that-fall-west-end-2016",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 0,
           "down": 0,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2053481,6 +2053481,12 @@
           "flat": 3,
           "down": 7,
           "total": 22
+        },
+        "dtliDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2054570,6 +2054576,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "barking-in-essex-west-end-2013",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 1,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "barnum-1980",
         "ourDistribution": {
           "up": 2,
@@ -2054693,10 +2054709,10 @@
       {
         "showId": "beautiful-the-carole-king-musical-west-end-2015",
         "ourDistribution": {
-          "up": 0,
+          "up": 3,
           "flat": 1,
           "down": 1,
-          "total": 2
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -2057075,9 +2057091,9 @@
         "showId": "chess-1988",
         "ourDistribution": {
           "up": 22,
-          "flat": 17,
+          "flat": 18,
           "down": 14,
-          "total": 53
+          "total": 54
         },
         "dtliDistribution": {
           "up": 2,
@@ -2057092,15 +2057108,15 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "chess-2025",
         "ourDistribution": {
           "up": 22,
-          "flat": 17,
+          "flat": 18,
           "down": 14,
-          "total": 53
+          "total": 54
         },
         "dtliDistribution": {
           "up": 2,
@@ -2057115,7 +2057131,7 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "chester-bailey-off-broadway-2022",
@@ -2057236,6 +2057252,26 @@
           "flat": 1,
           "down": 0,
           "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "children-of-the-sun-west-end-2013",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "chimerica-west-end-2013",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2057470,10 +2057506,10 @@
       {
         "showId": "cleansed-west-end-2016",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 1,
           "down": 1,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2058253,6 +2058289,16 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 57%, theirs: 20%)"
+      },
+      {
+        "showId": "damned-by-despair-west-end-2012",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
       },
       {
         "showId": "dana-h-2021",
@@ -2059320,6 +2059366,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "doktor-glas-west-end-2013",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "dolly-a-true-original-musical-regional-2025",
         "ourDistribution": {
           "up": 7,
@@ -2060285,30 +2060341,30 @@
       {
         "showId": "evita-west-end-2014",
         "ourDistribution": {
-          "up": 42,
-          "flat": 6,
+          "up": 46,
+          "flat": 7,
           "down": 9,
-          "total": 57
+          "total": 62
         },
         "hasDisagreement": false
       },
       {
         "showId": "evita-west-end-2017",
         "ourDistribution": {
-          "up": 42,
-          "flat": 6,
+          "up": 46,
+          "flat": 7,
           "down": 9,
-          "total": 57
+          "total": 62
         },
         "hasDisagreement": false
       },
       {
         "showId": "evita-west-end-2025",
         "ourDistribution": {
-          "up": 42,
-          "flat": 6,
+          "up": 46,
+          "flat": 7,
           "down": 9,
-          "total": 57
+          "total": 62
         },
         "hasDisagreement": false
       },
@@ -2061580,6 +2061636,16 @@
         "disagreementDetails": "BWW: Down thumbs differ by 38% (ours: 38%, theirs: 0%)"
       },
       {
+        "showId": "ghosts-west-end-2013",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "giant-2026",
         "ourDistribution": {
           "up": 31,
@@ -2062100,10 +2062166,10 @@
       {
         "showId": "good-people-west-end-2014",
         "ourDistribution": {
-          "up": 2,
+          "up": 3,
           "flat": 0,
           "down": 0,
-          "total": 2
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2062492,10 +2062558,10 @@
       {
         "showId": "guys-and-dolls-west-end-2016",
         "ourDistribution": {
-          "up": 2,
+          "up": 3,
           "flat": 1,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2063132,6 +2063198,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "harvey-west-end-2015",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 1,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "hate-radio-off-broadway-2026",
         "ourDistribution": {
           "up": 7,
@@ -2063709,20 +2063785,20 @@
       {
         "showId": "high-society-west-end-2015",
         "ourDistribution": {
-          "up": 24,
+          "up": 26,
           "flat": 7,
           "down": 1,
-          "total": 32
+          "total": 34
         },
         "hasDisagreement": false
       },
       {
         "showId": "high-society-west-end-2026",
         "ourDistribution": {
-          "up": 24,
+          "up": 26,
           "flat": 7,
           "down": 1,
-          "total": 32
+          "total": 34
         },
         "hasDisagreement": false
       },
@@ -2064155,9 +2064231,9 @@
         "showId": "how-to-hold-your-breath-west-end-2015",
         "ourDistribution": {
           "up": 1,
-          "flat": 2,
+          "flat": 3,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2064607,10 +2064683,10 @@
       {
         "showId": "impossible-west-end-2015",
         "ourDistribution": {
-          "up": 2,
+          "up": 3,
           "flat": 4,
           "down": 0,
-          "total": 6
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -2067122,10 +2067198,10 @@
       {
         "showId": "linda-west-end-2015",
         "ourDistribution": {
-          "up": 0,
+          "up": 1,
           "flat": 2,
           "down": 1,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2067459,10 +2067535,10 @@
       {
         "showId": "lost-in-del-valle-return-off-broadway-2026",
         "ourDistribution": {
-          "up": 2,
+          "up": 3,
           "flat": 1,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2067850,10 +2067926,10 @@
       {
         "showId": "macbeth-west-end-2013",
         "ourDistribution": {
-          "up": 2,
+          "up": 3,
           "flat": 0,
           "down": 0,
-          "total": 2
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2069592,10 +2069668,10 @@
       {
         "showId": "mrs-henderson-presents-west-end-2016",
         "ourDistribution": {
-          "up": 0,
-          "flat": 0,
+          "up": 1,
+          "flat": 2,
           "down": 1,
-          "total": 1
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2070812,10 +2070888,10 @@
       {
         "showId": "old-times-west-end-2013",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 0,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -2071514,10 +2071590,10 @@
       {
         "showId": "other-desert-cities-west-end-2014",
         "ourDistribution": {
-          "up": 5,
+          "up": 6,
           "flat": 3,
           "down": 1,
-          "total": 9
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -2071534,10 +2071610,10 @@
       {
         "showId": "our-boys-west-end-2012",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 0,
           "down": 0,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2072039,20 +2072115,20 @@
       {
         "showId": "people-places-and-things-west-end-2016",
         "ourDistribution": {
-          "up": 32,
+          "up": 33,
           "flat": 1,
           "down": 0,
-          "total": 33
+          "total": 34
         },
         "hasDisagreement": false
       },
       {
         "showId": "people-places-and-things-west-end-2024",
         "ourDistribution": {
-          "up": 32,
+          "up": 33,
           "flat": 1,
           "down": 0,
-          "total": 33
+          "total": 34
         },
         "hasDisagreement": false
       },
@@ -2072083,6 +2072159,16 @@
           "flat": 1,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "peter-and-alice-west-end-2013",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2073001,6 +2073087,12 @@
           "down": 2,
           "total": 19
         },
+        "dtliDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
         "bwwDistribution": {
           "up": 1,
           "flat": 0,
@@ -2073489,9 +2073581,9 @@
         "showId": "relatively-speaking-west-end-2013",
         "ourDistribution": {
           "up": 1,
-          "flat": 0,
+          "flat": 1,
           "down": 0,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2075939,10 +2076031,10 @@
       {
         "showId": "sunny-afternoon-west-end-2014",
         "ourDistribution": {
-          "up": 4,
-          "flat": 1,
+          "up": 6,
+          "flat": 2,
           "down": 2,
-          "total": 7
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -2077049,20 +2077141,20 @@
       {
         "showId": "the-bodyguard-west-end-2012",
         "ourDistribution": {
-          "up": 6,
+          "up": 7,
           "flat": 2,
           "down": 1,
-          "total": 9
+          "total": 10
         },
         "hasDisagreement": false
       },
       {
         "showId": "the-bodyguard-west-end-2016",
         "ourDistribution": {
-          "up": 6,
+          "up": 7,
           "flat": 2,
           "down": 1,
-          "total": 9
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -2077261,10 +2077353,10 @@
       {
         "showId": "the-caretaker-west-end-2016",
         "ourDistribution": {
-          "up": 4,
+          "up": 5,
           "flat": 5,
           "down": 0,
-          "total": 9
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -2078152,10 +2078244,10 @@
       {
         "showId": "the-elephant-man-west-end-2015",
         "ourDistribution": {
-          "up": 5,
+          "up": 7,
           "flat": 1,
           "down": 1,
-          "total": 7
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -2078199,10 +2078291,10 @@
       {
         "showId": "the-end-of-longing-west-end-2016",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 1,
           "down": 3,
-          "total": 5
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -2079242,6 +2079334,16 @@
           "flat": 8,
           "down": 1,
           "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-hothouse-west-end-2013",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2081025,10 +2081127,10 @@
       {
         "showId": "the-painkiller-west-end-2016",
         "ourDistribution": {
-          "up": 4,
+          "up": 5,
           "flat": 3,
           "down": 4,
-          "total": 11
+          "total": 12
         },
         "hasDisagreement": false
       },
@@ -2082891,9 +2082993,9 @@
         "showId": "the-war-of-the-worlds-west-end-2016",
         "ourDistribution": {
           "up": 1,
-          "flat": 3,
+          "flat": 4,
           "down": 2,
-          "total": 6
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -2083140,6 +2083242,16 @@
           "flat": 0,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-winslow-boy-west-end-2013",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2084176,6 +2084288,12 @@
           "down": 0,
           "total": 11
         },
+        "dtliDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
         "hasDisagreement": false
       },
       {
@@ -2084571,9 +2084689,9 @@
         "showId": "uncle-vanya-west-end-2012",
         "ourDistribution": {
           "up": 23,
-          "flat": 3,
+          "flat": 4,
           "down": 1,
-          "total": 27
+          "total": 28
         },
         "hasDisagreement": false
       },
@@ -2084581,9 +2084699,9 @@
         "showId": "uncle-vanya-west-end-2020",
         "ourDistribution": {
           "up": 23,
-          "flat": 3,
+          "flat": 4,
           "down": 1,
-          "total": 27
+          "total": 28
         },
         "hasDisagreement": false
       },
@@ -2084759,10 +2084877,10 @@
       {
         "showId": "violence-and-son-west-end-2015",
         "ourDistribution": {
-          "up": 0,
+          "up": 1,
           "flat": 2,
           "down": 0,
-          "total": 2
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2085705,10 +2085823,10 @@
       {
         "showId": "wonder-land-west-end-2015",
         "ourDistribution": {
-          "up": 0,
+          "up": 1,
           "flat": 0,
           "down": 1,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2086028,8 +2086146,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T08:38:00.594Z",
-    "completedAt": "2026-10-29T08:38:00.605Z",
+    "startedAt": "2026-10-29T08:43:40.452Z",
+    "completedAt": "2026-10-29T08:43:40.462Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2086042,7 +2086160,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40839206625",
+    "runId": "40839860427",
     "errorDetails": []
   }
 ]
