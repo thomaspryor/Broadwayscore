@@ -19,7 +19,8 @@ const { locationFlagsStaleAfterMove } = require('./wrong-production-autoclear');
 
 const MANUAL_CLEAR = { wrongProduction: 'wrongProductionManualClear', wrongShow: 'wrongShowManualClear' };
 
-const urlKey = (u) => normalizeUrl(String(u || '')).replace(/^https?:\/\/(www\.)?/, '');
+const urlKey = (u) => (/^https?:\/\//i.test(String(u || '')) ? normalizeUrl(String(u)).replace(/^https?:\/\/(www\.)?/i, '') : '');
+const norm = (p) => path.posix.normalize(String(p || '')).replace(/^\.\//, '');
 
 /**
  * Warnings for one move action. `readJson(rel)` returns a parsed review file or
@@ -27,27 +28,32 @@ const urlKey = (u) => normalizeUrl(String(u || '')).replace(/^https?:\/\/(www\.)
  * whole plan, so a manual clear or a delete elsewhere in it counts.
  */
 function movePlanWarnings(a, actions, { readJson, listFolder }) {
-  if (!a || a.type !== 'review-file-op' || a.operation !== 'move' || !a.sourcePath || !a.destPath) return [];
-  const data = readJson(a.sourcePath);
+  // execute-approved-fix.js treats 'rename' exactly like 'move'.
+  if (!a || a.type !== 'review-file-op' || !['move', 'rename'].includes(a.operation) || !a.sourcePath || !a.destPath) return [];
+  const src = norm(a.sourcePath);
+  const dest = norm(a.destPath);
+  const data = readJson(src);
   if (!data) return [];
   const out = [];
-  const srcFolder = a.sourcePath.split('/')[0];
-  const crossFolder = srcFolder !== a.destPath.split('/')[0];
+  const srcFolder = src.split('/')[0];
+  const crossFolder = srcFolder !== dest.split('/')[0];
   const stale = crossFolder ? locationFlagsStaleAfterMove(data, srcFolder) : {};
-  const planClears = (field) => actions.some((x) => x.type === 'review-field-edit' && x.file === a.destPath
+  const planClears = (field) => actions.some((x) => x && x.type === 'review-field-edit' && norm(x.file) === dest
     && x.field === MANUAL_CLEAR[field] && x.newValue);
-  for (const field of Object.keys(MANUAL_CLEAR)) {
+  // A same-folder rename keeps its flags by design; only a cross-folder move
+  // is meant to land the review somewhere it counts.
+  for (const field of crossFolder ? Object.keys(MANUAL_CLEAR) : []) {
     if (data[field] !== true || stale[field] || data[MANUAL_CLEAR[field]] || planClears(field)) continue;
-    out.push(`${a.destPath} keeps ${field}=true after the move, so it stays excluded; if the review is about the destination production, add a ${MANUAL_CLEAR[field]} edit on ${a.destPath} to this plan`);
+    out.push(`${dest} keeps ${field}=true after the move, so it stays excluded; if the review is about the destination production, add a ${MANUAL_CLEAR[field]} edit on ${dest} to this plan`);
   }
   const key = urlKey(data.url);
   if (key) {
-    const handled = new Set(actions.filter((x) => x.type === 'review-file-op' && x.sourcePath).map((x) => x.sourcePath));
+    const handled = new Set(actions.filter((x) => x && x.type === 'review-file-op' && x.sourcePath).map((x) => norm(x.sourcePath)));
     for (const f of listFolder(srcFolder)) {
       const rel = `${srcFolder}/${f}`;
-      if (rel === a.sourcePath || handled.has(rel) || path.extname(f) !== '.json') continue;
+      if (rel === src || handled.has(rel) || path.extname(f) !== '.json') continue;
       const other = readJson(rel);
-      if (other && urlKey(other.url) === key) out.push(`${rel} holds the same url as ${a.sourcePath}; move or delete it in this plan too, or it stays on ${srcFolder}`);
+      if (other && urlKey(other.url) === key) out.push(`${rel} holds the same url as ${src}; move or delete it in this plan too, or it stays on ${srcFolder}`);
     }
   }
   return out;

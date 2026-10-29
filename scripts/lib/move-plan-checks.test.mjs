@@ -69,3 +69,15 @@ test('preflight() prints the warnings against a real tree and still passes the p
   assert.equal(failed, 0);
   assert.equal(lines.filter((l) => l.includes('WARN p:')).length, 2);
 });
+
+test('rename counts as a move, paths are normalized, null entries and junk urls are tolerated', () => {
+  const rename = { ...move, operation: 'rename', sourcePath: `./${move.sourcePath}` };
+  const files = { [move.sourcePath]: { url: URL, wrongProduction: true, wrongProductionReason: 'CV-promoted' } };
+  assert.equal(movePlanWarnings(rename, [null, rename], fake(files)).length, 1);
+  // same-folder rename: no flag warning
+  const same = { ...move, operation: 'rename', destPath: 'arcadia-west-end-2026/wos--alex-wood-2.json' };
+  assert.deepEqual(movePlanWarnings(same, [same], fake(files)), []);
+  // two files holding the same junk url are not twins
+  const junk = { [move.sourcePath]: { url: 'N/A' }, 'arcadia-west-end-2026/wos--x.json': { url: 'N/A' } };
+  assert.deepEqual(movePlanWarnings(move, [move], fake(junk)), []);
+});

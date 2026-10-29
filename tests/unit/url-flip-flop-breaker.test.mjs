@@ -7,7 +7,7 @@
  *  - end to end through safeWriteReview: no evidence => pinned (the known
  *    blind spot, documented); corroboration => the corrected url wins.
  */
-import { test, describe } from 'node:test';
+import { test, describe, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -125,8 +125,11 @@ test('a legit pinned url with %20 in the path is not treated as malformed', () =
 describe('approvedUrlRepair vs pins (BRO-6488)', () => {
   const PINNED = 'https://www.whatsonstage.com/news/arcadia-at-the-soon-to-be-tom-stoppard-theatre-review_1726588/';
   const FIXED = 'https://www.whatsonstage.com/news/tom-stoppards-arcadia-at-the-old-vic-review_1711215/';
+  const dirs = [];
+  after(() => { for (const d of dirs) fs.rmSync(d, { recursive: true, force: true }); });
   function write(extra) {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6488-'));
+    dirs.push(dir);
     const file = path.join(dir, 'whatsonstage--sarah-crompton.json');
     const rec = { showId: 'arcadia-west-end-2026', outletId: 'whatsonstage', criticName: 'Sarah Crompton', url: PINNED, ...extra };
     fs.writeFileSync(file, JSON.stringify(rec, null, 2));
@@ -148,6 +151,18 @@ describe('approvedUrlRepair vs pins (BRO-6488)', () => {
   test('without the option the auto pin still holds', () => {
     const { file, rec } = write(autoPin);
     safeWriteReview(file, { ...rec, url: FIXED }, {});
+    assert.equal(read(file).url, PINNED);
+  });
+  test('a stray urlVerifiedAuto without urlVerified is dropped by an approved repair', () => {
+    const { file, rec } = write({ urlVerifiedAuto: true });
+    safeWriteReview(file, { ...rec, url: FIXED }, { approvedUrlRepair: true });
+    const out = read(file);
+    assert.equal(out.url, FIXED);
+    assert.equal(out.urlVerifiedAuto, undefined);
+  });
+  test('an approved repair never swaps a real url for a garbage one', () => {
+    const { file, rec } = write(autoPin);
+    safeWriteReview(file, { ...rec, url: 'undefined' }, { approvedUrlRepair: true });
     assert.equal(read(file).url, PINNED);
   });
   for (const [name, extra] of [
