@@ -921,5 +921,36 @@
       }
     ],
     "queuedAt": "2026-10-29T16:21:29.177Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6532-dispatch-cap",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6532-dispatch-cap",
+    "description": "land.yml did not land land/bro-6532-dispatch-cap: the unit-tests-node gate went red at b1890e8cc6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40896248119",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6532-dispatch-cap"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b1890e8cc6b12f98abacc58af832f14cf6dad2e0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40896248119"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:38:48.431Z"
   }
 ]
