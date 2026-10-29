@@ -79,6 +79,15 @@ test('a closed row with only previewsStartDate is aged from it', () => {
   assert.deepEqual(pick([closed('p', { openingDate: null, previewsStartDate: daysAgo(20) })]).batch, ['p']);
 });
 
+test('a row with only closingDate is aged from it; an open one closing later waits', () => {
+  const r = pick([
+    closed('c-only', { openingDate: null, closingDate: daysAgo(20) }),
+    { id: 'o-later', status: 'open', closingDate: new Date(NOW + 2 * 86400000).toISOString() },
+  ]);
+  assert.deepEqual(r.batch, ['c-only']);
+  assert.deepEqual(r.undated, []);
+});
+
 test('undated open/closed rows are reported as undated and stranded; exempt wins', () => {
   const r = pick([
     closed('u1', { openingDate: null }),
