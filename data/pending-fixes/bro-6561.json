@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6561",
+  "planId": "235cc93e-cc54-4ccf-b954-2663d487de27",
+  "status": "pending",
+  "createdAt": "2026-10-29T21:37:27.838Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6561: restore The Lives of Others (West End 2026) show art and clear the stale noReliableArt marker. The 2026-10-20 marker blocked every fetch; real Adelphi key art (TodayTix 46914) is archived under public/images/shows/ in the same land.",
+    "steps": [
+      "shows.json: the-lives-of-others-west-end-2026.images",
+      "shows.json: the-lives-of-others-west-end-2026.noReliableArt"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lives-of-others-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-lives-of-others-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/the-lives-of-others-west-end-2026/poster.webp",
+          "hero": "/images/shows/the-lives-of-others-west-end-2026/hero.webp"
+        },
+        "description": "shows.json: the-lives-of-others-west-end-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lives-of-others-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another production (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "the lives of others|adelphi theatre|2026-10-29"
+        },
+        "newValue": null,
+        "description": "shows.json: the-lives-of-others-west-end-2026.noReliableArt"
+      }
+    ]
+  }
+}

@@ -15,6 +15,7 @@ const require = createRequire(import.meta.url);
 const {
   noArtFingerprint, buildNoReliableArtMarker, hasActiveNoArtMarker, isStrictGoogleShow,
   shouldMarkNoReliableArt, noArtOutcome, partitionNoReliableArt, validateNoReliableArtValue,
+  NON_CLOSED_MARKER_TTL_DAYS, hasLapsingMarker,
 } = require('./no-reliable-art.js');
 const { selectShowsToFetch } = require('./image-fetch-selection.js');
 
@@ -39,6 +40,63 @@ test('a corrected title, venue or opening date retires the marker', () => {
   }
   assert.equal(hasActiveNoArtMarker({ ...endgame(), noReliableArt: { at: '2026-10-11', reason: 'x' } }), false, 'keyless marker');
   assert.equal(noArtFingerprint({ title: ' Noises  Off ', venue: 'Garrick', openingDate: '2019-01-29T00:00' }), 'noises off|garrick|2019-01-29');
+});
+
+// The Lives of Others (West End 2026): wrong poster nulled and marked on
+// 2026-10-20, real Adelphi art on TodayTix (id 46914) soon after, show opened
+// 2026-10-29 and still had no image because the marker never lapsed.
+const livesOfOthers = () => ({
+  id: 'the-lives-of-others-west-end-2026', title: 'The Lives of Others', venue: 'Adelphi Theatre',
+  openingDate: '2026-10-29', status: 'open', todaytixId: 46914, images: { thumbnail: null, poster: null, hero: null },
+});
+const DAY = 86400000;
+
+test('a marker on a running row with a TodayTix id lapses after the TTL', () => {
+  const s = marked(livesOfOthers()); // marker.at = 2026-10-11 via the helper
+  const at = Date.parse(s.noReliableArt.at);
+  assert.equal(hasLapsingMarker(s), true);
+  assert.equal(hasActiveNoArtMarker(s, at + 1 * DAY), true, 'fresh marker holds, the BRO-5022 refill guard');
+  assert.equal(hasActiveNoArtMarker(s, at + NON_CLOSED_MARKER_TTL_DAYS * DAY), true, 'holds through the TTL day');
+  assert.equal(hasActiveNoArtMarker(s, at + (NON_CLOSED_MARKER_TTL_DAYS + 1) * DAY), false, 'lapsed');
+  for (const status of ['announced', 'upcoming', 'previews', 'open']) {
+    assert.equal(hasActiveNoArtMarker({ ...s, status }, at + 30 * DAY), false, status);
+  }
+});
+
+test('a marker on a row with no TodayTix id never lapses (the 32 hand-marked rows with no reliable source)', () => {
+  const { todaytixId, ...noId } = livesOfOthers();
+  for (const status of ['announced', 'upcoming', 'previews', 'open']) {
+    const s = marked({ ...noId, status });
+    assert.equal(hasLapsingMarker(s), false, status);
+    assert.equal(hasActiveNoArtMarker(s, Date.parse(s.noReliableArt.at) + 365 * DAY), true, status);
+  }
+});
+
+test('a marker on a closed row never lapses, even with a TodayTix id', () => {
+  const s = marked({ ...endgame(), todaytixId: 1 });
+  assert.equal(hasLapsingMarker(s), false);
+  assert.equal(hasActiveNoArtMarker(s, Date.parse(s.noReliableArt.at) + 3650 * DAY), true);
+  const plain = marked(endgame());
+  assert.equal(hasActiveNoArtMarker(plain, Date.parse(plain.noReliableArt.at) + 3650 * DAY), true);
+});
+
+test('a lapsing marker with an unreadable date counts as expired', () => {
+  const s = livesOfOthers();
+  const m = buildNoReliableArtMarker(s, { reason: 'x', now: '2026-10-20T00:00:00Z' });
+  assert.equal(hasActiveNoArtMarker({ ...s, noReliableArt: { ...m, at: 'sometime' } }, Date.parse('2026-10-21')), false);
+  assert.equal(hasActiveNoArtMarker({ ...s, noReliableArt: m }, Date.parse('2026-10-21')), true);
+});
+
+test('regression: a 2026-10-20 marker no longer hides the show from sweeps on 2026-10-29', () => {
+  const s = { ...livesOfOthers(), noReliableArt: buildNoReliableArtMarker(livesOfOthers(), { reason: 'the art found was another production (BRO-5739)', now: '2026-10-20T12:57:49Z' }) };
+  assert.equal(s.noReliableArt.key, 'the lives of others|adelphi theatre|2026-10-29');
+  const sweep = (now) => selectShowsToFetch([s], { onlyMissing: true, imageOnDisk: noFiles, now });
+  assert.equal(sweep(Date.parse('2026-10-22')).shows.length, 0, 'still suppressed two days in');
+  assert.equal(sweep(Date.parse('2026-10-29')).shows.length, 1, 'searched again once the production has opened');
+  assert.deepEqual(partitionNoReliableArt([s], Date.parse('2026-10-29')).kept.map(x => x.id), [s.id]);
+  // The same marker on a row with no catalogue id (title search only) still holds.
+  const { todaytixId, ...noId } = s;
+  assert.equal(selectShowsToFetch([noId], { onlyMissing: true, imageOnDisk: noFiles, now: Date.parse('2026-10-29') }).shows.length, 0);
 });
 
 test('--missing sweep (closed rows included) skips a marked row', () => {

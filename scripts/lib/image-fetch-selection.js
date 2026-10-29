@@ -8,12 +8,13 @@
  * - every mode: skip rows marked noReliableArt (BRO-5022) unless retryNoArt.
  *   That includes --show= batches, which is how the imageless self-heal
  *   dispatches; without this the self-heal refilled a blanked row with the
- *   next wrong hit within hours.
+ *   next wrong hit within hours. A marker on a running or upcoming row with a TodayTix
+ *   id lapses after a week (no-reliable-art.js), so launch art is not hidden for good.
  */
 
 const { partitionNoReliableArt } = require('./no-reliable-art');
 
-function selectShowsToFetch(shows, { onlyMissing = false, includeClosed = false, retryNoArt = false, imageOnDisk, log = () => {} } = {}) {
+function selectShowsToFetch(shows, { onlyMissing = false, includeClosed = false, retryNoArt = false, imageOnDisk, log = () => {}, now = Date.now() } = {}) {
   let out = shows || [];
   if (onlyMissing) {
     // Closed shows are excluded by default: there are 2000+ and most will
@@ -32,7 +33,7 @@ function selectShowsToFetch(shows, { onlyMissing = false, includeClosed = false,
   }
   let skippedNoArt = [];
   if (!retryNoArt) {
-    const { kept, skipped } = partitionNoReliableArt(out);
+    const { kept, skipped } = partitionNoReliableArt(out, now);
     if (skipped.length) {
       log(`Skipping ${skipped.length} show(s) marked noReliableArt (use --retry-no-art to search them again): ${skipped.slice(0, 10).map(s => s.id).join(', ')}${skipped.length > 10 ? ', ...' : ''}`);
     }

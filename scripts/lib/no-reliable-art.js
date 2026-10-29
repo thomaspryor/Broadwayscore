@@ -16,6 +16,16 @@
  * The marker holds while the fields the search is built from (title, venue,
  * opening date) are unchanged. Change any of them, delete the marker, or run
  * fetch-show-images-auto.js with --retry-no-art, and the row is searched again.
+ *
+ * A marker on a row that has not closed AND carries a TodayTix id expires after
+ * NON_CLOSED_MARKER_TTL_DAYS. The marker guards against noisy title searches;
+ * a by-id catalogue entry is a different, verified source, and a running
+ * production's key art goes up there during previews. the-lives-of-others-west-
+ * end-2026 had a wrong poster nulled and marked on 2026-10-20 (BRO-5739); the
+ * real Adelphi art was on TodayTix within days, but the permanent marker kept
+ * every sweep and the imageless self-heal away from it past opening night.
+ * Rows with no by-id source keep the permanent marker, and so do closed rows:
+ * for them nothing new can arrive, and a lapse would only invite the next wrong hit.
  */
 
 function norm(v) {
@@ -37,12 +47,32 @@ function buildNoReliableArtMarker(show, { reason, now = new Date() } = {}) {
   };
 }
 
-// True when the row carries a marker that still applies to its current fields.
-function hasActiveNoArtMarker(show) {
+// How long a marker on a not-yet-closed row that has a TodayTix id suppresses
+// searching. Long enough that the self-heal does not refill the row with the
+// next wrong hit within hours (the BRO-5022 failure), short enough that launch
+// art is picked up within a week.
+const NON_CLOSED_MARKER_TTL_DAYS = 7;
+
+// A show not yet closed that the TodayTix catalogue lists by id has a source
+// that is not title-search noise; its art goes through the vision gate and the
+// "Coming Soon" placeholder filter before it is accepted.
+function hasLapsingMarker(show) {
+  return !!show && show.status !== 'closed' && !!show.todaytixId;
+}
+
+// True when the row carries a marker that still applies to its current fields
+// and, for a row whose marker lapses (hasLapsingMarker), is still inside the
+// TTL. An unreadable `at` on such a row counts as expired: searching again is
+// cheap, a marker that can never lapse is not.
+function hasActiveNoArtMarker(show, now = Date.now()) {
   const m = show && show.noReliableArt;
   if (!m || typeof m !== 'object') return false;
   if (typeof m.key !== 'string' || !m.key) return false;
-  return m.key === noArtFingerprint(show);
+  if (m.key !== noArtFingerprint(show)) return false;
+  if (!hasLapsingMarker(show)) return true;
+  const at = Date.parse(m.at || '');
+  if (Number.isNaN(at)) return false;
+  return new Date(now).getTime() - at <= NON_CLOSED_MARKER_TTL_DAYS * 86400000;
 }
 
 // Which tier runs in strict mode: the title-only Google Images search for a
@@ -83,10 +113,10 @@ function noArtOutcome(show, images, tally) {
 }
 
 // Selection filter for every fetch mode: marked rows are not searched again.
-function partitionNoReliableArt(shows) {
+function partitionNoReliableArt(shows, now = Date.now()) {
   const kept = [];
   const skipped = [];
-  for (const s of shows || []) (hasActiveNoArtMarker(s) ? skipped : kept).push(s);
+  for (const s of shows || []) (hasActiveNoArtMarker(s, now) ? skipped : kept).push(s);
   return { kept, skipped };
 }
 
@@ -101,6 +131,8 @@ function validateNoReliableArtValue(value, show) {
 }
 
 module.exports = {
+  NON_CLOSED_MARKER_TTL_DAYS,
+  hasLapsingMarker,
   noArtFingerprint,
   buildNoReliableArtMarker,
   hasActiveNoArtMarker,
