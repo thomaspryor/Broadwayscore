@@ -24,6 +24,7 @@ const DATA_TRACKED_FILES = [
   'shows.json',
   'commercial.json',
   'grosses.json',
+  'grosses-history.json',
   'critic-consensus.json',
 ];
 
