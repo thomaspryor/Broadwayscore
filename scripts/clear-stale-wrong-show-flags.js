@@ -47,6 +47,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { shouldRefuseSurge } = require('./lib/wrong-show-blocker-cleanup');
 const { hasApprovedFlag } = require('./lib/review-field-edit');
+const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const FIX_SURGE_THRESHOLD = 25;
 
@@ -229,6 +230,11 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
       : `[${today} cleared stale wrongShow — predicate-only — Notion 34e637c5-416f-8121]`;
     clearWrongProductionFlags(d.c.data, { source: 'clear-stale-wrong-show-flags.js', reason: note, wrongShowOnly: true });
     d.c.data.wrongShowClearedNote = note;
+    // BRO-4681 (BRO-2407 cousin): re-queue an already-scored review instead of
+    // leaving its stale score until the daily sweep.
+    if (isStaleScoreInput(d.c.data, d.c.show, d.c.filePath)) {
+      markRescoreNeeded(d.c.data, 'wrongShow false-positive cleared (clear-stale-wrong-show-flags)');
+    }
     fs.writeFileSync(d.c.filePath, JSON.stringify(d.c.data, null, 2) + (hadTrailingNewline ? '\n' : ''));
     cleared++;
   }

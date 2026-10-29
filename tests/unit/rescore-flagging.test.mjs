@@ -252,6 +252,30 @@ test('every persisted wrongProduction/wrongShow clear in rebuild-all-reviews.js 
   assert.deepEqual(missing, [], `clear without markRescoreNeeded before write at lines ${missing.join(', ')}`);
 });
 
+// BRO-4681: the two weekly clear sweeps persist flag clears with plain
+// fs.writeFileSync (not safeWriteReview), so scan every write that follows a
+// clearWrongProductionFlags() call for a markRescoreNeeded() in between.
+for (const rel of ['scripts/clear-stale-wrong-production-flags.js', 'scripts/clear-stale-wrong-show-flags.js']) {
+  test(`every persisted flag clear in ${rel} calls markRescoreNeeded before its write`, async () => {
+    const { readFileSync } = await import('node:fs');
+    const lines = readFileSync(path.join(REPO, rel), 'utf8').split('\n');
+    const missing = [];
+    let checked = 0;
+    lines.forEach((l, i) => {
+      if (!/^\s*clearWrongProductionFlags\(/.test(l)) return;
+      let w = -1;
+      for (let j = i + 1; j < Math.min(i + 30, lines.length); j++) {
+        if (/fs\.writeFileSync\(/.test(lines[j])) { w = j; break; }
+      }
+      if (w < 0) return;
+      checked++;
+      if (!lines.slice(i, w).some(x => /markRescoreNeeded\(/.test(x))) missing.push(i + 1);
+    });
+    assert.ok(checked >= 1, `expected >=1 persisted clear site in ${rel}, saw ${checked} (regex drift?)`);
+    assert.deepEqual(missing, [], `clear without markRescoreNeeded before write at lines ${missing.join(', ')}`);
+  });
+}
+
 // BRO-4804: a page footer made the scorer call complete reviews truncated.
 const BODY_4804 = 'Slam Frank is a bucking bronco in a world of pony rides. '.repeat(30)
   + 'But if you can hang on till the end, you might find that getting knocked around can jostle new things loose.';
