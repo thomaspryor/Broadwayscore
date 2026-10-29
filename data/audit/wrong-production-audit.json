@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T11:01:55.566Z",
+  "timestamp": "2026-10-29T12:51:37.728Z",
   "stats": {
-    "totalReviews": 66955,
+    "totalReviews": 67030,
     "alreadyFlagged": 22096,
     "dateGuardCatches": 233,
-    "directorMismatch": 2743,
-    "tvFilmSignals": 1925,
-    "londonSignals": 3232,
-    "offBroadwaySignals": 616,
+    "directorMismatch": 2753,
+    "tvFilmSignals": 1927,
+    "londonSignals": 3237,
+    "offBroadwaySignals": 617,
     "yearMismatch": 252,
-    "noPublishDate": 6801
+    "noPublishDate": 6845
   },
   "findings": [
     {
@@ -1641,6 +1641,7 @@
     {
       "showId": "a-dolls-house-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/03/26/a-dolls-house-cat-on-a-hot-tin-roof/",
       "findings": [
@@ -1829,6 +1830,7 @@
     {
       "showId": "a-man-of-no-importance-off-broadway-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2022/11/17/a-man-of-no-importance-classic-stage/",
       "findings": [
@@ -4366,6 +4368,19 @@
       ]
     },
     {
+      "showId": "an-ideal-husband-west-end-2010",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2010-11-11",
+      "url": "https://www.whatsonstage.com/news/an-ideal-husband_10891/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"peter hall\" from an-ideal-husband-1996"
+        }
+      ]
+    },
+    {
       "showId": "an-ideal-husband-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 53,
@@ -5111,6 +5126,7 @@
     {
       "showId": "appropriate-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 93,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2024/01/20/2st-broadway-appropriate/",
       "findings": [
@@ -5124,7 +5140,7 @@
     {
       "showId": "appropriate-2023",
       "file": "guardian--adrian-horton.json",
-      "score": 86,
+      "score": 88,
       "publishDate": "December 19, 2023",
       "url": "https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins",
       "findings": [
@@ -5152,7 +5168,7 @@
     {
       "showId": "appropriate-2023",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "December 18, 2023",
       "url": "https://nystagereview.com/2023/12/18/appropriate-southern-discomfort-and-sibling-rivalry-at-its-juiciest/",
       "findings": [
@@ -7907,6 +7923,7 @@
     {
       "showId": "brooklyn-laundry-off-broadway-2024",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 57,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2024/04/01/a-john-patrick-shanley-double-bill-doubt-brooklyn-laundry/",
       "findings": [
@@ -9966,6 +9983,29 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "the-interested-bystander--unknown.json",
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2024/06/theater-review-off-broadway-is-burning.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -12668,6 +12708,7 @@
     {
       "showId": "days-of-wine-and-roses-2024",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 58,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2024/02/24/broadway-days-of-wine-and-roses/",
       "findings": [
@@ -12751,6 +12792,7 @@
     {
       "showId": "days-of-wine-and-roses-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 69,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/06/20/days-of-wine-and-roses-and-bees-amp-honey/",
       "findings": [
@@ -13208,6 +13250,7 @@
     {
       "showId": "dead-outlaw-off-broadway-2024",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2024/03/20/audibles-dead-outlaw-lives-entertainingly-large-and-wonderful-at-the-minetta-lane-theatre/",
       "findings": [
@@ -13220,6 +13263,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 39,
+      "publishDate": "2024-03-14",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-Q26VJ2",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
         }
       ]
     },
@@ -16757,6 +16814,20 @@
       "score": 91,
       "publishDate": "2022-02-22",
       "url": "https://www.theatrely.com/post/english-a-stunning-education-in-language-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"knud adams\" from english-2025"
+        }
+      ]
+    },
+    {
+      "showId": "english-off-broadway-2022",
+      "file": "thewrap--robert-hofler.json",
+      "score": 41,
+      "publishDate": "2022-02-22",
+      "url": "https://www.thewrap.com/english-off-broadway-review-sanaz-toossis-play-gets-lost-in-translation/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24476,6 +24547,7 @@
     {
       "showId": "here-lies-love-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 80,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/08/30/here-lies-love-broadway/",
       "findings": [
@@ -28348,6 +28420,7 @@
     {
       "showId": "jajas-african-hair-braiding-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/10/09/jajas-african-hair-braiding-manhattan-theatre-club-broadway/",
       "findings": [
@@ -30222,6 +30295,19 @@
       "score": 76,
       "publishDate": "2022-08-25",
       "url": "https://www.nytimes.com/2022/08/25/theater/kinky-boots-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-off-broadway-2026",
+      "file": "off-off-online--stanford-friedman.json",
+      "publishDate": null,
+      "url": "https://www.offoffonline.com/offoffonline/2022/8/23/kinky-boots",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32142,6 +32228,20 @@
       "score": 91,
       "publishDate": null,
       "url": "https://www.thewrap.com/liberation-off-broadway-review-bess-wohl/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "twiny--mark-rifkin.json",
+      "score": 91,
+      "publishDate": "2025-03-11",
+      "url": "https://twiny.substack.com/p/freedoms-just-another-word-bess-wohls",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34152,6 +34252,7 @@
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/01/24/merrily-we-roll-along-nytw/",
       "findings": [
@@ -34664,6 +34765,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-west-end-2011",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2011-03-01",
+      "url": "https://www.whatsonstage.com/news/million-dollar-quartet_9819/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"eric schaeffer\" from million-dollar-quartet-2010"
         }
       ]
     },
@@ -39769,6 +39883,7 @@
     {
       "showId": "parade-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 93,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/03/28/broadway-parade/",
       "findings": [
@@ -41908,6 +42023,7 @@
     {
       "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 82,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2022/05/27/broadway-potus/",
       "findings": [
@@ -44636,6 +44752,19 @@
       ]
     },
     {
+      "showId": "shrek-the-musical-west-end-2011",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2011-06-14",
+      "url": "https://www.whatsonstage.com/news/shrek-the-musical_8595/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jason moore\" from shrek-the-musical-2008"
+        }
+      ]
+    },
+    {
       "showId": "shucked-2023",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 63,
@@ -45138,6 +45267,7 @@
     {
       "showId": "skeleton-crew-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2022/02/20/mtc-skeleton-crew/",
       "findings": [
@@ -46236,6 +46366,7 @@
     {
       "showId": "spamalot-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/11/21/broadways-revival-of-spamalot-empties-out-every-laugh-one-could-possibly-have-inside-and-maybe-more/",
       "findings": [
@@ -47055,6 +47186,7 @@
     {
       "showId": "stereophonic-2024",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2024/04/23/stereophonic-resonates-at-a-higher-frequency-on-broadway/",
       "findings": [
@@ -47176,6 +47308,7 @@
     {
       "showId": "stereophonic-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/12/04/stereophonic-at-playwrights-horizons/",
       "findings": [
@@ -47878,6 +48011,7 @@
     {
       "showId": "suffs-off-broadway-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2022/04/23/public-suffs/",
       "findings": [
@@ -47975,7 +48109,7 @@
     {
       "showId": "suffs-off-broadway-2022",
       "file": "talkinbroadway--james-wilson.json",
-      "score": null,
+      "score": 62,
       "publishDate": "April 17th, 2022",
       "url": "https://www.talkinbroadway.com/page/ob/04_21_22.html",
       "findings": [
@@ -49568,6 +49702,7 @@
     {
       "showId": "take-me-out-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2022/05/13/take-me-out-on-broadway/",
       "findings": [
@@ -52395,6 +52530,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert icke\" from the-doctor-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-doctor-off-broadway-2023",
+      "file": "off-off-online--edward-karam.json",
+      "publishDate": null,
+      "url": "https://www.offoffonline.com/offoffonline/2023/6/23/the-doctor",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from the-doctor-west-end-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -56474,6 +56627,7 @@
     {
       "showId": "the-music-man-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 66,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2022/02/28/broadway-the-music-man-revival/",
       "findings": [
@@ -59908,6 +60062,7 @@
     {
       "showId": "the-refuge-plays-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/10/31/roundabout-the-refuge-plays/",
       "findings": [
@@ -61366,6 +61521,7 @@
     {
       "showId": "the-wanderers-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 56,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/02/18/roundabout-the-wanderers/",
       "findings": [
@@ -69815,6 +69971,7 @@
     {
       "showId": "aint-no-mo-2022",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2022/12/04/broadways-aint-no-mo/",
       "findings": [
@@ -70474,6 +70631,20 @@
       "score": 66,
       "publishDate": "2015-04-28",
       "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11561068/American-Buffalo-Wyndhams-Theatre-review-Damien-Lewis-has-bravura.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "american-buffalo-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": null,
+      "publishDate": "2015-04-28",
+      "url": "https://www.whatsonstage.com/news/american-buffalo-wyndhams-theatre_37682/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -79803,6 +79974,19 @@
       ]
     },
     {
+      "showId": "evanston-salt-costs-climbing-off-broadway-2022",
+      "file": "off-off-online--adrienne-onofri.json",
+      "publishDate": null,
+      "url": "https://www.offoffonline.com/offoffonline/2022/11/13/evanston-salt-costs-climbing",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 60,
@@ -84853,7 +85037,7 @@
     {
       "showId": "hells-kitchen-2024",
       "file": "nypost--unknown.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "https://nypost.com/2024/04/21/entertainment/hells-kitchen-review-alicia-keys-musical-fires-up-on-broadway/",
       "findings": [
@@ -89394,7 +89578,7 @@
     {
       "showId": "leopoldstadt-2022",
       "file": "nysr--steven-suskin.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2022-10-02T21:52:58",
       "url": "https://nystagereview.com/2022/10/02/leopoldstadt-stoppard-examines-his-roots-in-extraordinary-fashion/",
       "findings": [
@@ -90083,6 +90267,19 @@
       ]
     },
     {
+      "showId": "london-road-west-end-2011",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2011-04-15",
+      "url": "https://www.whatsonstage.com/news/london-road_9256/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "london-road-west-end-2012",
       "file": "guardian--michael-billington.json",
       "publishDate": "2012-08-13",
@@ -90539,6 +90736,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "made-in-dagenham-west-end-2014",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "score": null,
+      "publishDate": "2014-11-11",
+      "url": "https://www.britishtheatre.com/pt/posts/review-made-dagenham-adelphi-theatre-4stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -103286,6 +103497,19 @@
       ]
     },
     {
+      "showId": "the-alchemist-off-broadway-2021",
+      "file": "off-off-online--edward-karam.json",
+      "publishDate": null,
+      "url": "https://www.offoffonline.com/offoffonline/2021/11/21/the-alchemist",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-american-clock-west-end-2019",
       "file": "city-am--steve-dinneen.json",
       "score": 41,
@@ -107232,6 +107456,7 @@
     {
       "showId": "the-half-god-of-rainfall-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
+      "score": 61,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2023/08/07/nytw-the-half-god-of-rainfall/",
       "findings": [
@@ -108894,6 +109119,19 @@
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "londontheatredirect--jose-izcue-gana.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

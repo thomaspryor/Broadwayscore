@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-29T11:01:37.357Z",
-  "totalScanned": 67130,
-  "totalExcluded": 29349,
+  "generatedAt": "2026-10-29T12:51:18.810Z",
+  "totalScanned": 67207,
+  "totalExcluded": 29355,
   "ruleCounts": {
-    "wrongProduction": 19196,
+    "wrongProduction": 19198,
     "duplicateOf": 2195,
     "wrongShow": 1867,
     "rejectionReason": 1293,
     "unverifiableWebSearchRow": 951,
-    "noTextOrScoreSignal": 894,
+    "noTextOrScoreSignal": 895,
     "nonReview": 656,
     "wrongAttribution": 347,
     "blockedReviewUrl": 224,
@@ -21,10 +21,10 @@
     "previewPlaceholder": 121,
     "scoreStatusToBeCalculated": 91,
     "listingPageUrl": 82,
-    "namedNonReviewUrl": 64,
+    "namedNonReviewUrl": 65,
     "rejectedAt": 60,
     "roundupPageAsReview": 51,
-    "contentTierInvalid": 49,
+    "contentTierInvalid": 50,
     "cancelledBeforeOpening": 29,
     "directorMismatch": 26,
     "combinedReviewOfOtherMemberOnly": 25,
@@ -40,30 +40,29 @@
     "duplicateOfCircularTiebreak": 1,
     "errorPage": 1,
     "personalRepost": 1,
-    "registrationWallStub": 1
+    "registrationWallStub": 1,
+    "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 13,
-    "wrongShow": 1,
-    "rejectionReason": 6,
-    "noTextOrScoreSignal": 19,
-    "bodylessAggregatorScoreUncorroborated": -1,
-    "knownSyndicationSecondary": 2,
-    "contentTierInvalid": 2
+    "wrongProduction": 2,
+    "noTextOrScoreSignal": 1,
+    "namedNonReviewUrl": 1,
+    "contentTierInvalid": 1,
+    "suspectedMisattribution": 1
   },
-  "previousGeneratedAt": "2026-10-29T08:32:51.013Z",
+  "previousGeneratedAt": "2026-10-29T11:01:37.357Z",
   "mirror": {
-    "comparedShows": 3233,
-    "comparedFiles": 66476,
-    "agreeExcluded": 29427,
-    "agreeIncluded": 36697,
-    "mirrorOnly": 117,
+    "comparedShows": 3262,
+    "comparedFiles": 66551,
+    "agreeExcluded": 29374,
+    "agreeIncluded": 36824,
+    "mirrorOnly": 118,
     "rebuildOnly": 235,
-    "disagreements": 352,
+    "disagreements": 353,
     "disagreementRate": 0.0053,
     "mirrorOnlyByRule": {
       "cvWrongArticleHighConfidence": 70,
-      "contentTierInvalid": 29,
+      "contentTierInvalid": 30,
       "noTextOrScoreSignal": 9,
       "knownSyndicationSecondary": 5,
       "previewPlaceholder": 2,
@@ -89,7 +88,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 79,
-    "notComparedFiles": 654
+    "notComparedFiles": 656
   },
   "previousDisagreementRate": 0.0053
 }
