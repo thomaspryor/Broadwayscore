@@ -265,5 +265,36 @@
       }
     ],
     "queuedAt": "2026-10-29T09:46:07.852Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-4991",
+    "title": "Landing blocked: rebase red on land/codex-bro-4991",
+    "description": "land.yml did not land land/codex-bro-4991: the rebase gate went red at e46098e66b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-4991 @ e46098e66b (origin/land/codex-bro-4991) → origin/main @ 95f07c0704 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 95f07c0704: Rebasing (1/1) error: could not apply e46098e66b6... fix(BRO-4991): london-theatre leftovers after the star backfill: 2 stale originalScore=100 plac hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40826801937",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-4991"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e46098e66b64eef4a20810080f5f80c29cdaa831"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40826801937"
+      }
+    ],
+    "queuedAt": "2026-10-29T10:43:33.866Z"
   }
 ]
