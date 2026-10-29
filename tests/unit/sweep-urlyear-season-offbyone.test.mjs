@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: asserts structural invariants (venue name present, URL years parse), not hardcoded facts that an audit would change
 // BRO-3589: Playbill season-format URLs ("-2021-2022") must not be read as one opening year,
 // and Roundabout shows must carry the real stage, not the parent org's admin name.
 import { test } from 'node:test';
