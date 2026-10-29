@@ -84,6 +84,9 @@ Usage:
 const { applyDataEdit, dataEditAllowProblem } = require('./lib/data-edit-action.js');
 
 const ALLOWED_SCRIPTS = [
+  // BRO-5582: stamp wrongProductionLegacyAudit on legacy wrongProduction flags with no trail.
+  // Needs --apply --expect=N in args.
+  'backfill-wrongproduction-legacy-audit.js',
   // BRO-5276: delete Theatr audience data attached to shows that closed before
   // Theatr existed, recompute their combined score. Needs --apply in args.
   'neutralize-stale-theatr-buzz.js',
