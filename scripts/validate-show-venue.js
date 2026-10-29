@@ -207,6 +207,10 @@ function isExemptFromPlaybillCheck(show) {
   // third-party proof, and the promoter only mints this source for venues in
   // data/uk-regional-venues.json.
   if (show.category === 'regional' && src === 'guardian-review') return true;
+  // BRO-6516 hub backfill (scripts/uk-regional-add-plan.js): same proof, a
+  // dated Guardian review of a hub-house production, carried in evidenceUrls.
+  if (show.category === 'regional' && src === 'uk-regional-guardian-backfill'
+    && (show.evidenceUrls || []).some((u) => /^https:\/\/www\.theguardian\.com\/stage\//.test(u))) return true;
   // Same rule for national tours (BRO-4211): a BWW tour roundup is dated,
   // third-party proof the tour exists and reviewed, which is what this check
   // establishes for a stub. A tour without a roundup still goes through the
