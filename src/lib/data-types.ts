@@ -510,6 +510,8 @@ export interface ShowCommercial {
   modelDisplayHold?: 'no-model' | 'star-deal-unknown' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced' | 'estimated-recouped';
   /** "% returned so far" run (scripts/lib/model-run-fields.js): a running show's NY tax credit only once cited. */
   modelReturnedExCreditPct?: [number, number, number] | null;
+  /** Investor return multiple after the producers' share, same order (scripts/lib/model-run-fields.js). */
+  modelInvestorMultiple?: [number, number, number] | null;
   /** NY tax credit inside modelReturnedExCreditPct ($); above 0 = post-credit. */
   modelTaxCreditCounted?: number | null;
   /** Tax-credit basis of the displayed model figure (displayBasis, BRO-5073); null/absent while running bars are off. */
@@ -672,6 +674,8 @@ export interface CommercialShowRow {
   modelDataQuality?: 'high' | 'medium' | 'low';
   /** Reported investor multiple from a cited record (getReportedInvestorMultiple); never modeled. */
   reportedMultiple: number | null;
+  /** getEstimatedReturnRange: our model's [low, high] investor multiple for a win label (BRO-6555). */
+  estimatedReturnRange?: [number, number] | null;
   /** recoupedSource after publicSourceText (null when it is internal research text). */
   recoupedSource: string | null;
   /** 'unknown' for closed shows. */

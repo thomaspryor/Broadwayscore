@@ -28,6 +28,8 @@ const {
   formatRecoupedDate,
   getRecoupmentAttribution,
   getReportedInvestorMultiple,
+  getEstimatedReturnRange,
+  formatReturnRange,
   getDesignationDisplay,
   getBreakEven,
   getDisplayableAnalystRange,
@@ -609,4 +611,24 @@ test('BRO-6245: ourEstimateRangePct stands in for the analyst range and is credi
 test('BRO-6245: our own range never reads as an outside estimate in the Likely line', () => {
   const rec = { ...base, status: 'closed', designation: 'Did Not Recoup', recouped: false, ourEstimateRangePct: [10, 30] };
   assert.notEqual(likelyOutcomeBasis(rec), 'estimate');
+});
+
+// BRO-6555 (owner 2026-10-29): a win label shows our modeled investor return
+// as a range. This supersedes the 2026-07-13 "never quote the model on a
+// recouped show" rule for the return line only; the % bar rule stands.
+test('BRO-6555: estimated return range for closed win labels', () => {
+  const win = { designation: 'Easy Winner', modelInvestorMultiple: [1.04, 1.21, 1.33] };
+  const r = (rec, status = 'closed') => getEstimatedReturnRange(rec, status);
+  assert.deepEqual(r(win), [1.04, 1.33]);
+  assert.equal(r(win, 'open'), null, 'running: a projection, not money returned');
+  assert.equal(formatReturnRange([1.04, 1.33]), '1.0–1.3x');
+  assert.equal(formatReturnRange([1.21, 1.24]), 'about 1.2x');
+  assert.equal(r({ ...win, designation: 'Fizzle' }), null, 'loss label');
+  assert.equal(r({ ...win, designation: 'TBD' }), null, 'undecided');
+  assert.equal(r({ designation: 'Windfall' }), null, 'no model');
+  assert.deepEqual(r({ ...win, modelInvestorMultiple: [1.5, 1.4, 1.2] }), [1.2, 1.5], 'order-safe');
+  assert.deepEqual(r({ ...win, modelInvestorMultiple: [0.7, 1.02, 1.7] }), [1, 1.7], 'a win starts at 1x');
+  assert.equal(r({ ...win, modelInvestorMultiple: [0.71, 0.95, 1.09] }), null, 'model middle under 1x contradicts the win');
+  assert.equal(r({ ...win, modelInvestorMultiple: [0, 2.98, 9.1] }), null, 'too wide to mean anything');
+  assert.equal(r({ ...win, investorMultiple: 2.4, sources: [tradeSource] }), null, 'a cited multiple wins');
 });

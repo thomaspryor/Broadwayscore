@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -23,6 +24,9 @@ test('buildShowEntry: regional local-only entry with -regional-<year> id', () =>
   assert.equal(e.localOnly, true);
   assert.equal(e.discoverySource, 'theatreinchicago');
   assert.equal(e.type, 'play');
+  assert.equal(e.city, 'chicago-il');
+  // the metro slug must exist in the shared table, or the hub never lists the show
+  assert.ok(JSON.parse(fs.readFileSync(new URL('../../data/venue-metros.json', import.meta.url), 'utf8')).metros[e.city]);
 });
 test('findDuplicate: same-title Chicago regional or nearby tour', () => {
   const e = { title: 'Parade', openingDate: '2025-06-01' };

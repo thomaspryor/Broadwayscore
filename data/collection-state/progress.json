@@ -79,7 +79,8 @@
     "a-little-night-music-2009/nytg--unknown.json",
     "a-little-night-music-2009/latimes--david-ng.json",
     "a-little-night-music-2009/theater-life--eric-march.json",
-    "cyrano-de-bergerac-2007/nytg--unknown.json"
+    "cyrano-de-bergerac-2007/nytg--unknown.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "burn-this-2019/nyt-theater--jonathan-mandell.json",
@@ -101,7 +102,26 @@
     "long-days-journey-into-night-2016/labor-press--leonard-golubchick.json",
     "long-days-journey-into-night-2016/woman-around-town--alix-cohen.json",
     "waitress-2016/curtainup--elyse-sommer.json",
-    "la-cage-aux-folles-2010/backstage--david-sheward.json"
+    "la-cage-aux-folles-2010/backstage--david-sheward.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--unknown.json",
+    "a-few-good-men-2026/letterboxd--unknown.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -150,12 +170,14 @@
       "data/review-texts/grey-house-2023/hollywood-reporter--unknown.json",
       "grey-house-2023/hollywood-reporter--unknown.json",
       "data/review-texts/meteor-shower-2017/washpost--peter-marks.json",
-      "meteor-shower-2017/washpost--peter-marks.json"
+      "meteor-shower-2017/washpost--peter-marks.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingdog": [
       "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json",
-      "ink-2019/limelight-magazine-au--clive-paget.json"
+      "ink-2019/limelight-magazine-au--clive-paget.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
     ],
     "scrapingbee": [
       "punch-2025/cititour--brian-scott-lipton.json",
@@ -171,7 +193,12 @@
       "data/review-texts/ink-2019/nyt-theater--jonathan-mandell.json",
       "data/review-texts/ink-2019/vulture--jesse-green.json",
       "data/review-texts/oklahoma-2019/usatoday--kelly-lawler.json",
-      "data/review-texts/waitress-2016/curtainup--elyse-sommer.json"
+      "data/review-texts/waitress-2016/curtainup--elyse-sommer.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
     ],
     "archive": [
       "waitress-2016/ap--mark-kennedy.json",
@@ -212,11 +239,12 @@
       "waitress-2016/talkinbroadway--matthew-murray.json",
       "waitress-2016/theater-pizzazz--sandi-durell.json",
       "waitress-2016/usatoday--elysa-gardner.json",
-      "a-little-night-music-2009/latimes--david-ng.json"
+      "a-little-night-music-2009/latimes--david-ng.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-29T20:08:46.882Z",
-  "lastProcessed": "cyrano-de-bergerac-2007/nytg--unknown.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
   "log": [
     {
       "t": "2026-10-29T20:09:05.131Z",
@@ -318,6 +346,23 @@
       "t": "2026-10-29T20:27:22.480Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-29T21:19:10.336Z",
+      "event": "bb-session",
+      "session": "7db99367",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-29T21:19:10.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T21:23:17.441Z",
+      "event": "bb-session",
+      "session": "7d2ba1be",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
   ]
 }

@@ -29,6 +29,8 @@ export interface BrowseShow {
   performances?: number;
   reviewYearNote?: string;
   category?: string;
+  /** UK city hub key when the page offers a city filter (BRO-6516). */
+  hub?: string;
   ticketLinks?: { platform: string; url: string; priceFrom?: number | null }[];
 }
 
@@ -67,6 +69,8 @@ interface BrowseListClientProps {
   availableSorts: SortOption[];
   /** Whether to show the type filter (All/Musicals/Plays) */
   showTypeFilter: boolean;
+  /** City-hub pills (Beyond London); omitted when the page has no city filter */
+  cityFilterOptions?: { value: string; label: string }[];
   /** Whether to show the score mode toggle */
   showScoreToggle: boolean;
   /** Optional subtitle shown on same line as toggle (e.g. "Last updated: Feb 2026") */
@@ -117,6 +121,7 @@ export default function BrowseListClient({
   hasPerformanceData,
   availableSorts,
   showTypeFilter,
+  cityFilterOptions,
   showScoreToggle,
   subtitle,
   sectionLabels,
@@ -153,6 +158,7 @@ export default function BrowseListClient({
     return opts.length ? opts : ['all' as StatusBucket];
   }, [statusFilter, initialShows]);
   const [status, setStatus] = useState<StatusBucket>(statusOptions[0] ?? 'all');
+  const [cityFilter, setCityFilter] = useState<string>('all');
 
   const hasAnyAudienceData = useMemo(
     () => initialShows.some(s => s.audienceCombinedScore !== null),
@@ -168,6 +174,9 @@ export default function BrowseListClient({
     }
     if (statusFilter && status !== 'all') {
       result = result.filter(s => statusBucket(s.status) === status);
+    }
+    if (cityFilter !== 'all') {
+      result = result.filter(s => s.hub === cityFilter);
     }
 
     // Helper: effective score for sorting (null = TBD, sorts to bottom
@@ -223,7 +232,7 @@ export default function BrowseListClient({
     });
 
     return result;
-  }, [initialShows, typeFilter, sort, scoreMode, statusFilter, status]);
+  }, [initialShows, typeFilter, cityFilter, sort, scoreMode, statusFilter, status]);
   // Rows that share a title with another visible row get a venue line (BRO-4309).
   const sameTitleIds = useMemo(() => sameTitleShowIds(filteredAndSorted), [filteredAndSorted]);
 
@@ -235,7 +244,7 @@ export default function BrowseListClient({
     return sectionLabelsContiguous(filteredAndSorted.map(s => sectionLabels[indexOf.get(s)!]));
   }, [sectionLabels, filteredAndSorted, initialShows]);
 
-  const showControls = availableSorts.length > 1 || showTypeFilter || statusOptions.length > 1 || (showScoreToggle && hasAnyAudienceData);
+  const showControls = availableSorts.length > 1 || showTypeFilter || statusOptions.length > 1 || !!cityFilterOptions || (showScoreToggle && hasAnyAudienceData);
   // score_asc (reversed Critics) would otherwise label the lowest-scored show
   // "#1" — misleading on a page that advertises itself as ranked by critic score.
   const showRankNumbers = showRanks && sort !== 'score_asc';
@@ -247,7 +256,19 @@ export default function BrowseListClient({
 
       {/* Controls */}
       {showControls && (
-        <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : '-mt-4 mb-4'}>
+        <div className={availableSorts.length > 1 || showTypeFilter || cityFilterOptions ? 'mb-5 space-y-2.5' : '-mt-4 mb-4'}>
+          {cityFilterOptions && (
+            <ToggleBar
+              variant="pill"
+              size="compact"
+              className="flex-wrap"
+              options={[{ value: 'all', label: 'All cities' }, ...cityFilterOptions]}
+              value={cityFilter}
+              onChange={setCityFilter}
+              ariaLabel="Filter by city"
+            />
+          )}
+
           {/* Type filter row (only if mixed types) */}
           {showTypeFilter && (
             <ToggleBar

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-29T20:47:38.869Z",
+  "generated": "2026-10-29T21:06:18.579Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 50,
+  "count": 43,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -36,13 +36,6 @@
       "loserFile": "london-theatre--unknown.json",
       "targetFile": "london-theatre--holly-omahony.json",
       "reason": "orphaned-duplicate-heal: london-theatre--holly-omahony.json was flagged invalid after london-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "loserFile": "broadwayworld--unknown.json",
-      "targetFile": "broadwayworld--christiana-rose.json",
-      "reason": "orphaned-duplicate-heal: broadwayworld--christiana-rose.json was flagged invalid after broadwayworld--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -193,20 +186,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "punch-2025",
-      "loserFile": "dailybeast--unknown.json",
-      "targetFile": "dailybeast--tim-teeman.json",
-      "reason": "orphaned-duplicate-heal: dailybeast--tim-teeman.json was flagged invalid after dailybeast--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "punch-2025",
-      "loserFile": "nydailynews--unknown.json",
-      "targetFile": "nydailynews--chris-jones.json",
-      "reason": "orphaned-duplicate-heal: nydailynews--chris-jones.json was flagged invalid after nydailynews--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
       "loserFile": "patch--unknown.json",
       "targetFile": "patch--katie-rosin.json",
@@ -324,34 +303,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "loserFile": "broadwayworld--unknown.json",
-      "targetFile": "broadwayworld--christiana-rose.json",
-      "reason": "orphaned-duplicate-heal: broadwayworld--christiana-rose.json was flagged invalid after broadwayworld--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "loserFile": "whatsonstage--sarah-crompton.json",
-      "targetFile": "whatsonstage--alex-wood.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--alex-wood.json was flagged invalid after whatsonstage--sarah-crompton.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
-    },
-    {
-      "showId": "punch-2025",
-      "loserFile": "dailybeast--unknown.json",
-      "targetFile": "dailybeast--tim-teeman.json",
-      "reason": "orphaned-duplicate-heal: dailybeast--tim-teeman.json was flagged invalid after dailybeast--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
-    },
-    {
-      "showId": "punch-2025",
-      "loserFile": "nydailynews--unknown.json",
-      "targetFile": "nydailynews--chris-jones.json",
-      "reason": "orphaned-duplicate-heal: nydailynews--chris-jones.json was flagged invalid after nydailynews--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
