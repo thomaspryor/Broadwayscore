@@ -248,6 +248,19 @@ Run on CI after the round-2 ingest batch had written its review files (run 40864
 | timeout | 0.632 (0.889 after bug class 11) | 0.989 (after the JSON-LD critic fix landed) | 2 |
 | theater-life | 0.992 (measured from a cloud session) | not measurable on CI: theaterlife.com refuses GitHub Actions runners (two runs, `fetch failed`) while answering a cloud session; its 4 gaps were ingested | |
 
+### After ingest (CI re-measure, 2026-10-29, SERP outlets)
+
+Run 40953189047, after the 40 SERP-found reviews (34 shows) were ingested through `scripts/dispatch-ingest-batch.js`. SERP enumeration samples a different result set each run (page cap 5 per quarter-query), so these are lower bounds, not exact before/after pairs.
+
+| Outlet | Recall before | Recall after | Gaps left |
+|---|---|---|---|
+| talkinbroadway | 0.823 | 0.983 | 1 |
+| broadway-and-me | 0.2 | 0.9 | 0 gaps, 1 misfile |
+| chicagotribune | 0.9 | 0.929 | 2 (INCOMPLETE, page cap hit) |
+| front-row-center | 0.741 | 0.879 | 3 gaps, 1 misfile |
+| theatrely | 0.866 | 0.879 | 4 (INCOMPLETE, page cap hit; this run surfaced results the first did not) |
+| washpost | 0.5 | 1.00 | 0 |
+
 ## Fixes applied (pending-fix plans)
 
 - `bro-6481-2`: Illinoise and Clara misfile moves failed at apply time because the plan used `destinationPath`; the executor reads only `destPath`. Retried as `bro-6481-4`.
@@ -289,7 +302,7 @@ Round 1 listed 29 outlets here. Round 2 read all but the six listed under "Still
 ## Follow-ups
 
 - Re-run the census on CI after each ingest batch to measure the recall change, and vet each batch's URLs against the show's dates before ingest.
-- Round-2 ingest went in for every listed gap; re-measure the round-2 outlets on CI once it drains to confirm it held.
+- Round-2 ingest went in for every listed gap and was re-measured on CI (tables above). The 10 SERP gaps left (front-row-center, theatrely, chicagotribune, talkinbroadway) are new results the re-measure surfaced, so a third pass would find more; SERP recall only converges with repeated sampling.
 
 ## London (BRO-6488)
 
