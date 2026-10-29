@@ -57,6 +57,7 @@ const { withMarketSuffix } = require('./lib/market-slug');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
+const { resolveMetro } = require('./lib/venue-metro');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows, findSameProduction } = require('./lib/uk-regional-guardian');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -616,6 +617,7 @@ function buildRegionalShowEntry(candidate) {
   // placeholder venue; the caller's `if (!entry.venue)` check refuses to
   // promote rather than write a garbage venue string.
   const sanitizedVenue = sanitizeVenueForWrite(candidate.venue);
+  const metro = resolveMetro(candidate.venue && city ? `${candidate.venue}, ${city}` : candidate.venue);
   // Regional runs are limited engagements (6-10 weeks). A fresh roundup ⇒ the
   // show just opened ⇒ 'open'. A roundup older than ~90 days reaching this
   // code is a backfill/seed — the run is almost certainly over, and 'open'
@@ -634,6 +636,9 @@ function buildRegionalShowEntry(candidate) {
     status: ageDays > 90 ? 'closed' : 'open',
     category: 'regional',
     market: 'regional',
+    // Metro slug for the UK/US city hubs (BRO-6515), from the one venue table.
+    // Both promotion paths (--regional-only and the Guardian trigger) build here.
+    ...(metro ? { city: metro } : {}),
     tags: ['regional'],
     // Same 'play'-not-null default as the west-end/off-broadway builders
     // above (BRO-3716) — regional isn't in validate-market-expansion.js's

@@ -1,0 +1,758 @@
+{
+ "_doc": "ONE venue -> metro table (BRO-6515). resolveMetro() in scripts/lib/venue-metro.js is the only reader. metro slug = /tours/[city] slug for US (citySlug(\"<City>, <ST>\")) and \"<city>-uk\" for UK. Aliases are matched as lowercase whole-word phrases, longest wins; a venue string naming no alias falls back to its trailing city. Market stays regional/tour; this only feeds shows.city.",
+ "metros": {
+  "manchester-uk": {
+   "name": "Manchester",
+   "country": "UK"
+  },
+  "stratford-upon-avon-uk": {
+   "name": "Stratford-upon-Avon",
+   "country": "UK"
+  },
+  "leeds-uk": {
+   "name": "Leeds",
+   "country": "UK"
+  },
+  "bristol-uk": {
+   "name": "Bristol",
+   "country": "UK"
+  },
+  "chichester-uk": {
+   "name": "Chichester",
+   "country": "UK"
+  },
+  "glasgow-uk": {
+   "name": "Glasgow",
+   "country": "UK"
+  },
+  "sheffield-uk": {
+   "name": "Sheffield",
+   "country": "UK"
+  },
+  "birmingham-uk": {
+   "name": "Birmingham",
+   "country": "UK"
+  },
+  "nottingham-uk": {
+   "name": "Nottingham",
+   "country": "UK"
+  },
+  "liverpool-uk": {
+   "name": "Liverpool",
+   "country": "UK"
+  },
+  "edinburgh-uk": {
+   "name": "Edinburgh",
+   "country": "UK"
+  },
+  "bath-uk": {
+   "name": "Bath",
+   "country": "UK"
+  },
+  "leicester-uk": {
+   "name": "Leicester",
+   "country": "UK"
+  },
+  "cardiff-uk": {
+   "name": "Cardiff",
+   "country": "UK"
+  },
+  "belfast-uk": {
+   "name": "Belfast",
+   "country": "UK"
+  },
+  "chicago-il": {
+   "name": "Chicago",
+   "country": "US",
+   "cities": [
+    "Evanston"
+   ]
+  },
+  "washington-dc": {
+   "name": "Washington",
+   "country": "US",
+   "cities": [
+    "Arlington"
+   ]
+  },
+  "los-angeles-ca": {
+   "name": "Los Angeles",
+   "country": "US",
+   "cities": [
+    "Pasadena"
+   ]
+  },
+  "san-francisco-ca": {
+   "name": "San Francisco",
+   "country": "US",
+   "cities": [
+    "Berkeley"
+   ]
+  },
+  "san-diego-ca": {
+   "name": "San Diego",
+   "country": "US",
+   "cities": [
+    "La Jolla"
+   ]
+  },
+  "boston-ma": {
+   "name": "Boston",
+   "country": "US",
+   "cities": [
+    "Cambridge"
+   ]
+  },
+  "seattle-wa": {
+   "name": "Seattle",
+   "country": "US"
+  },
+  "atlanta-ga": {
+   "name": "Atlanta",
+   "country": "US"
+  },
+  "minneapolis-mn": {
+   "name": "Minneapolis",
+   "country": "US"
+  },
+  "dallas-tx": {
+   "name": "Dallas",
+   "country": "US"
+  },
+  "houston-tx": {
+   "name": "Houston",
+   "country": "US"
+  },
+  "denver-co": {
+   "name": "Denver",
+   "country": "US"
+  },
+  "philadelphia-pa": {
+   "name": "Philadelphia",
+   "country": "US"
+  },
+  "cleveland-oh": {
+   "name": "Cleveland",
+   "country": "US"
+  },
+  "cincinnati-oh": {
+   "name": "Cincinnati",
+   "country": "US"
+  },
+  "nashville-tn": {
+   "name": "Nashville",
+   "country": "US"
+  },
+  "new-haven-ct": {
+   "name": "New Haven",
+   "country": "US"
+  },
+  "hartford-ct": {
+   "name": "Hartford",
+   "country": "US"
+  },
+  "providence-ri": {
+   "name": "Providence",
+   "country": "US"
+  },
+  "millburn-nj": {
+   "name": "Millburn",
+   "country": "US"
+  },
+  "princeton-nj": {
+   "name": "Princeton",
+   "country": "US"
+  },
+  "red-bank-nj": {
+   "name": "Red Bank",
+   "country": "US"
+  },
+  "new-brunswick-nj": {
+   "name": "New Brunswick",
+   "country": "US"
+  },
+  "east-haddam-ct": {
+   "name": "East Haddam",
+   "country": "US"
+  },
+  "westport-ct": {
+   "name": "Westport",
+   "country": "US"
+  },
+  "new-hope-pa": {
+   "name": "New Hope",
+   "country": "US"
+  },
+  "ashland-or": {
+   "name": "Ashland",
+   "country": "US"
+  },
+  "williamstown-ma": {
+   "name": "Williamstown",
+   "country": "US"
+  },
+  "pittsfield-ma": {
+   "name": "Pittsfield",
+   "country": "US"
+  },
+  "laguna-beach-ca": {
+   "name": "Laguna Beach",
+   "country": "US"
+  },
+  "stratford-on": {
+   "name": "Stratford",
+   "country": "CA"
+  },
+  "niagara-on-the-lake-on": {
+   "name": "Niagara-on-the-Lake",
+   "country": "CA"
+  }
+ },
+ "venues": [
+  {
+   "venue": "Royal Shakespeare Theatre",
+   "metro": "stratford-upon-avon-uk",
+   "aliases": [
+    "royal shakespeare theatre",
+    "royal shakespeare",
+    "swan theatre, stratford",
+    "the other place, stratford"
+   ]
+  },
+  {
+   "venue": "Chichester Festival Theatre",
+   "metro": "chichester-uk",
+   "aliases": [
+    "chichester festival theatre",
+    "chichester festival",
+    "minerva theatre, chichester",
+    "minerva theatre chichester"
+   ]
+  },
+  {
+   "venue": "Royal Exchange Theatre",
+   "metro": "manchester-uk",
+   "aliases": [
+    "royal exchange theatre",
+    "royal exchange manchester"
+   ]
+  },
+  {
+   "venue": "HOME",
+   "metro": "manchester-uk",
+   "aliases": [
+    "home",
+    "home manchester",
+    "home, manchester"
+   ]
+  },
+  {
+   "venue": "Crucible Theatre",
+   "metro": "sheffield-uk",
+   "aliases": [
+    "crucible theatre",
+    "sheffield crucible"
+   ]
+  },
+  {
+   "venue": "Lyceum Theatre, Sheffield",
+   "metro": "sheffield-uk",
+   "aliases": [
+    "lyceum theatre, sheffield",
+    "lyceum sheffield"
+   ]
+  },
+  {
+   "venue": "Leeds Playhouse",
+   "metro": "leeds-uk",
+   "aliases": [
+    "leeds playhouse"
+   ]
+  },
+  {
+   "venue": "Bristol Old Vic",
+   "metro": "bristol-uk",
+   "aliases": [
+    "bristol old vic"
+   ]
+  },
+  {
+   "venue": "Theatre Royal Bath",
+   "metro": "bath-uk",
+   "aliases": [
+    "theatre royal bath",
+    "theatre royal, bath"
+   ]
+  },
+  {
+   "venue": "Birmingham Rep",
+   "metro": "birmingham-uk",
+   "aliases": [
+    "birmingham rep",
+    "birmingham repertory theatre"
+   ]
+  },
+  {
+   "venue": "Nottingham Playhouse",
+   "metro": "nottingham-uk",
+   "aliases": [
+    "nottingham playhouse"
+   ]
+  },
+  {
+   "venue": "Liverpool Everyman",
+   "metro": "liverpool-uk",
+   "aliases": [
+    "liverpool everyman",
+    "everyman theatre, liverpool",
+    "everyman liverpool"
+   ]
+  },
+  {
+   "venue": "Liverpool Playhouse",
+   "metro": "liverpool-uk",
+   "aliases": [
+    "liverpool playhouse",
+    "playhouse theatre, liverpool",
+    "playhouse liverpool"
+   ]
+  },
+  {
+   "venue": "Royal Lyceum Theatre",
+   "metro": "edinburgh-uk",
+   "aliases": [
+    "royal lyceum theatre",
+    "royal lyceum",
+    "lyceum edinburgh"
+   ]
+  },
+  {
+   "venue": "Citizens Theatre",
+   "metro": "glasgow-uk",
+   "aliases": [
+    "citizens theatre",
+    "citizens theatre glasgow"
+   ]
+  },
+  {
+   "venue": "Curve",
+   "metro": "leicester-uk",
+   "aliases": [
+    "curve",
+    "curve leicester",
+    "curve theatre"
+   ]
+  },
+  {
+   "venue": "Sherman Theatre",
+   "metro": "cardiff-uk",
+   "aliases": [
+    "sherman theatre",
+    "sherman cymru"
+   ]
+  },
+  {
+   "venue": "Lyric Theatre, Belfast",
+   "metro": "belfast-uk",
+   "aliases": [
+    "lyric theatre, belfast",
+    "lyric theatre belfast",
+    "lyric belfast"
+   ]
+  },
+  {
+   "venue": "American Repertory Theater",
+   "metro": "boston-ma",
+   "aliases": [
+    "american repertory theater",
+    "american repertory theatre",
+    "loeb drama center",
+    "loeb drama centre"
+   ]
+  },
+  {
+   "venue": "Huntington Theatre Company",
+   "metro": "boston-ma",
+   "aliases": [
+    "huntington theatre company",
+    "huntington theatre",
+    "huntington avenue theatre",
+    "calderwood pavilion"
+   ]
+  },
+  {
+   "venue": "Emerson Colonial Theatre",
+   "metro": "boston-ma",
+   "aliases": [
+    "emerson colonial theatre",
+    "emerson colonial",
+    "colonial theatre, boston"
+   ]
+  },
+  {
+   "venue": "La Jolla Playhouse",
+   "metro": "san-diego-ca",
+   "aliases": [
+    "la jolla playhouse",
+    "mandell weiss",
+    "weiss theatre",
+    "weiss forum",
+    "potiker theatre",
+    "potiker theater"
+   ]
+  },
+  {
+   "venue": "The Old Globe",
+   "metro": "san-diego-ca",
+   "aliases": [
+    "the old globe",
+    "old globe",
+    "lowell davies",
+    "shiley stage"
+   ]
+  },
+  {
+   "venue": "Berkeley Repertory Theatre",
+   "metro": "san-francisco-ca",
+   "aliases": [
+    "berkeley repertory theatre",
+    "berkeley rep",
+    "berkeley repertory",
+    "roda theatre",
+    "peet's theatre",
+    "peets theatre"
+   ]
+  },
+  {
+   "venue": "American Conservatory Theater",
+   "metro": "san-francisco-ca",
+   "aliases": [
+    "american conservatory theater",
+    "toni rembe"
+   ]
+  },
+  {
+   "venue": "Goodman Theatre",
+   "metro": "chicago-il",
+   "aliases": [
+    "goodman theatre",
+    "goodman theater",
+    "albert theatre",
+    "albert theater"
+   ]
+  },
+  {
+   "venue": "Steppenwolf Theatre Company",
+   "metro": "chicago-il",
+   "aliases": [
+    "steppenwolf theatre company",
+    "steppenwolf"
+   ]
+  },
+  {
+   "venue": "Chicago Shakespeare Theater",
+   "metro": "chicago-il",
+   "aliases": [
+    "chicago shakespeare theater",
+    "chicago shakespeare"
+   ]
+  },
+  {
+   "venue": "Victory Gardens Theater",
+   "metro": "chicago-il",
+   "aliases": [
+    "victory gardens theater",
+    "victory gardens"
+   ]
+  },
+  {
+   "venue": "Northlight Theatre",
+   "metro": "chicago-il",
+   "aliases": [
+    "northlight theatre",
+    "northlight theater"
+   ]
+  },
+  {
+   "venue": "Arena Stage",
+   "metro": "washington-dc",
+   "aliases": [
+    "arena stage",
+    "kreeger",
+    "fichandler"
+   ]
+  },
+  {
+   "venue": "Shakespeare Theatre Company",
+   "metro": "washington-dc",
+   "aliases": [
+    "shakespeare theatre company",
+    "harman hall"
+   ]
+  },
+  {
+   "venue": "Ford's Theatre",
+   "metro": "washington-dc",
+   "aliases": [
+    "ford's theatre",
+    "fords theatre",
+    "ford's theater"
+   ]
+  },
+  {
+   "venue": "Signature Theatre (The MAX)",
+   "metro": "washington-dc",
+   "aliases": [
+    "signature theatre (the max)",
+    "signature theatre, arlington",
+    "the max, arlington"
+   ]
+  },
+  {
+   "venue": "Center Theatre Group",
+   "metro": "los-angeles-ca",
+   "aliases": [
+    "center theatre group",
+    "ahmanson",
+    "mark taper"
+   ]
+  },
+  {
+   "venue": "Geffen Playhouse",
+   "metro": "los-angeles-ca",
+   "aliases": [
+    "geffen playhouse"
+   ]
+  },
+  {
+   "venue": "Pasadena Playhouse",
+   "metro": "los-angeles-ca",
+   "aliases": [
+    "pasadena playhouse"
+   ]
+  },
+  {
+   "venue": "Laguna Playhouse",
+   "metro": "laguna-beach-ca",
+   "aliases": [
+    "laguna playhouse"
+   ]
+  },
+  {
+   "venue": "5th Avenue Theatre",
+   "metro": "seattle-wa",
+   "aliases": [
+    "5th avenue theatre"
+   ]
+  },
+  {
+   "venue": "Seattle Repertory Theatre",
+   "metro": "seattle-wa",
+   "aliases": [
+    "seattle repertory theatre",
+    "seattle rep",
+    "bagley wright"
+   ]
+  },
+  {
+   "venue": "Alliance Theatre",
+   "metro": "atlanta-ga",
+   "aliases": [
+    "alliance theatre",
+    "coca-cola stage",
+    "coca cola stage"
+   ]
+  },
+  {
+   "venue": "Guthrie Theater",
+   "metro": "minneapolis-mn",
+   "aliases": [
+    "guthrie theater",
+    "guthrie theatre",
+    "wurtele thrust stage"
+   ]
+  },
+  {
+   "venue": "Dallas Theater Center",
+   "metro": "dallas-tx",
+   "aliases": [
+    "dallas theater center",
+    "dallas theatre center",
+    "wyly theatre",
+    "wyly theater"
+   ]
+  },
+  {
+   "venue": "Alley Theatre",
+   "metro": "houston-tx",
+   "aliases": [
+    "alley theatre",
+    "alley theatre, houston",
+    "alley theater, houston"
+   ]
+  },
+  {
+   "venue": "Denver Center Theatre Company",
+   "metro": "denver-co",
+   "aliases": [
+    "denver center theatre company",
+    "dcpa theatre company"
+   ]
+  },
+  {
+   "venue": "Arden Theatre Company",
+   "metro": "philadelphia-pa",
+   "aliases": [
+    "arden theatre company"
+   ]
+  },
+  {
+   "venue": "Cleveland Play House",
+   "metro": "cleveland-oh",
+   "aliases": [
+    "cleveland play house",
+    "cleveland playhouse"
+   ]
+  },
+  {
+   "venue": "Cincinnati Playhouse in the Park",
+   "metro": "cincinnati-oh",
+   "aliases": [
+    "cincinnati playhouse in the park",
+    "cincinnati playhouse"
+   ]
+  },
+  {
+   "venue": "Fisher Center for the Performing Arts",
+   "metro": "nashville-tn",
+   "aliases": [
+    "fisher center for the performing arts",
+    "fisher center for the performing arts, nashville"
+   ]
+  },
+  {
+   "venue": "Yale Repertory Theatre",
+   "metro": "new-haven-ct",
+   "aliases": [
+    "yale repertory theatre",
+    "yale rep"
+   ]
+  },
+  {
+   "venue": "Long Wharf Theatre",
+   "metro": "new-haven-ct",
+   "aliases": [
+    "long wharf theatre",
+    "long wharf"
+   ]
+  },
+  {
+   "venue": "Hartford Stage",
+   "metro": "hartford-ct",
+   "aliases": [
+    "hartford stage"
+   ]
+  },
+  {
+   "venue": "Trinity Repertory Company",
+   "metro": "providence-ri",
+   "aliases": [
+    "trinity repertory company",
+    "trinity rep"
+   ]
+  },
+  {
+   "venue": "Paper Mill Playhouse",
+   "metro": "millburn-nj",
+   "aliases": [
+    "paper mill playhouse"
+   ]
+  },
+  {
+   "venue": "McCarter Theatre Center",
+   "metro": "princeton-nj",
+   "aliases": [
+    "mccarter theatre center",
+    "mccarter theatre",
+    "mccarter theater"
+   ]
+  },
+  {
+   "venue": "Two River Theater",
+   "metro": "red-bank-nj",
+   "aliases": [
+    "two river theater",
+    "two river theatre"
+   ]
+  },
+  {
+   "venue": "George Street Playhouse",
+   "metro": "new-brunswick-nj",
+   "aliases": [
+    "george street playhouse"
+   ]
+  },
+  {
+   "venue": "Goodspeed Opera House",
+   "metro": "east-haddam-ct",
+   "aliases": [
+    "goodspeed opera house",
+    "goodspeed",
+    "terris theatre",
+    "terris theater"
+   ]
+  },
+  {
+   "venue": "Westport Country Playhouse",
+   "metro": "westport-ct",
+   "aliases": [
+    "westport country playhouse"
+   ]
+  },
+  {
+   "venue": "Bucks County Playhouse",
+   "metro": "new-hope-pa",
+   "aliases": [
+    "bucks county playhouse"
+   ]
+  },
+  {
+   "venue": "Oregon Shakespeare Festival",
+   "metro": "ashland-or",
+   "aliases": [
+    "oregon shakespeare festival",
+    "angus bowmer"
+   ]
+  },
+  {
+   "venue": "Williamstown Theatre Festival",
+   "metro": "williamstown-ma",
+   "aliases": [
+    "williamstown theatre festival",
+    "williamstown theater festival"
+   ]
+  },
+  {
+   "venue": "Barrington Stage Company",
+   "metro": "pittsfield-ma",
+   "aliases": [
+    "barrington stage company",
+    "barrington stage"
+   ]
+  },
+  {
+   "venue": "Stratford Festival",
+   "metro": "stratford-on",
+   "aliases": [
+    "stratford festival"
+   ]
+  },
+  {
+   "venue": "Shaw Festival",
+   "metro": "niagara-on-the-lake-on",
+   "aliases": [
+    "shaw festival"
+   ]
+  }
+ ]
+}
