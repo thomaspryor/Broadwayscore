@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6485",
   "planId": "e4998179-0c8a-4924-b6f9-0a96cc9b758c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T02:48:11.777Z",
   "submitter": {
     "name": null,
@@ -168,5 +168,119 @@
         "description": "BRO-6485 outlet census round 2: https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/ is a review of hamlet-greenwich-house-off-broadway-2024, filed under the wrong-year show. Delete the misfiled copy; the URL is re-ingested into hamlet-greenwich-house-off-broadway-2024."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T04:07:24.443Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted funny-girl-2002/vulture--jackson-mchenry.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2009/vulture--sara-holdren.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ghosts-1982/theater-life--patrick-christiano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted translations-2007/theater-life--alix-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted arcadia-2011/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted orpheus-descending-1989/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted merrily-we-roll-along-2023/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mamma-mia-2001/culturesauce--thom-geier.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted sunset-boulevard-1994/thewrap--robert-hofler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted funny-girl-2002/thewrap--robert-hofler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted caroline-off-broadway-2026/variety--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted caroline-or-change-2004/variety--ayanna-prescod.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted funny-girl-2002/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted caroline-off-broadway-2026/hollywood-reporter--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted caroline-or-change-2004/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted macbeth-1981/theater-pizzazz--jk-clarke.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted macbeth-1988/theater-pizzazz--jk-clarke.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted our-town-2002/amny--matt-windman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted funny-girl-2002/amny--matt-windman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted merrily-we-roll-along-2023/the-komisar-scoop--lucy-komisar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-off-broadway-2026/nysr--david-finkle.json"
+    }
+  ],
+  "executedIn": "ci"
 }
