@@ -7,7 +7,7 @@ interface BreadcrumbItem {
 
 export default function Breadcrumb({ items, className }: { items: BreadcrumbItem[]; className?: string }) {
   return (
-    <nav aria-label="Breadcrumb" className={`text-sm text-gray-500 ${className ?? 'mb-6'}`}>
+    <nav aria-label="Breadcrumb" className={`text-sm text-fg-muted ${className ?? 'mb-6'}`}>
       <ol className="flex items-center gap-1.5 flex-wrap">
         {items.map((item, i) => (
           <li

@@ -162,5 +162,5 @@ test('CTA prominence: submit button uses solid brand fill + bold weight; dismiss
   const dismissBlock = dismissBlockMatch[0];
   assert.doesNotMatch(dismissBlock, /bg-brand|bg-\w+-\d{3}/, 'dismiss control must not carry a filled background');
   assert.match(dismissBlock, /text-(xs|sm)/, 'dismiss control must use a small text size');
-  assert.match(dismissBlock, /text-gray-[4-9]00/, 'dismiss control must use a dim/muted color, not full-contrast text');
+  assert.match(dismissBlock, /text-(gray-[4-9]00|fg-muted)/, 'dismiss control must use a dim/muted color, not full-contrast text');
 });

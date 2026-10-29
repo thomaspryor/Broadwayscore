@@ -164,7 +164,7 @@ export default function DiscountTicketsPage() {
           <p className="text-gray-400 mt-2">
             Every lottery, rush, and standing room option for Broadway shows in one place.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {rows.length} shows · {lotteryCount} lotteries · {rushCount} rush · {sroCount} standing room · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -180,7 +180,7 @@ export default function DiscountTicketsPage() {
           </div>
         )}
 
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Discount ticket information sourced from Playbill and official show websites.
             Prices and availability change frequently. Always verify with the official source.

@@ -477,7 +477,7 @@ export function hasReturnedCoverage(p: SeasonProfile): boolean {
 export function returnedCapitalText(p: SeasonProfile): { headline: string; range: string; share: string } | null {
   if (!hasReturnedCoverage(p)) return null;
   const r = p.returnedCapital;
-  const money = (v: number) => formatRowValue('money', v);
+  const money = (v: number) => formatSeasonMoney(v);
   return {
     headline: `about ${money(r.mid)} back of ${money(r.capital)} in`,
     range: `${money(r.low)} to ${money(r.high)}`,
@@ -545,6 +545,8 @@ export type RowFormat = 'count' | 'pct' | 'money';
 export interface ComparisonRow {
   label: string;
   format: RowFormat;
+  /** A season total (a sum), not a per-show figure: money prints in whole millions. */
+  whole?: boolean;
   current: number | null;
   /** "12 of 32" style detail under each column's value. */
   currentDetail: string | null;
@@ -834,6 +836,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   rows.push({
     label: 'Disclosed capitalization (sum)',
     format: 'money',
+    whole: true,
     current: capAll(cur).known > 0 ? capAll(cur).total : null,
     currentDetail: disclosedDetail(capAll(cur)),
     ...pair((q) => ({ v: q && hasTrackedCoverage(q) && capAll(q).known > 0 ? capAll(q).total : null, d: q && hasTrackedCoverage(q) ? disclosedDetail(capAll(q)) : null })),
@@ -861,11 +864,24 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
 }
 
 /** Formats a comparison cell: "38%", "$14.2M", "31". */
-export function formatRowValue(format: RowFormat, value: number | null): string {
+export function formatRowValue(format: RowFormat, value: number | null, whole = false): string {
   if (value == null) return '—';
+  if (format === 'money' && whole) return formatSeasonMoney(value);
   if (format === 'pct') return `${Math.round(value * 100)}%`;
   if (format === 'count') return Number.isInteger(value) ? String(value) : value.toFixed(1);
   if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  return `$${Math.round(value / 1000)}K`;
+}
+
+/**
+ * Season-level money totals (headline tiles, "about $X back of $Y in", season
+ * history rows): whole millions, "$231M". Per-show averages in the comparison
+ * tables keep formatRowValue's one decimal, where $18.4M vs $18.0M matters.
+ */
+export function formatSeasonMoney(value: number | null): string {
+  if (value == null || !Number.isFinite(value)) return '—';
+  // 999,500 and up rounds to a thousand K, so it prints as $1M.
+  if (value >= 999_500) return `$${Math.round(value / 1_000_000)}M`;
   return `$${Math.round(value / 1000)}K`;
 }
 

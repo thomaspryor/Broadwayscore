@@ -75,7 +75,7 @@ const TIER_STYLES: Record<TierBadge, TierStyle> = {
     fillBg: 'transparent',
     ring: '1.5px dashed rgba(255, 255, 255, 0.18)',
     text: 'text-white/40',
-    label: 'text-gray-500',
+    label: 'text-fg-muted',
     glow: 'none',
   },
 };

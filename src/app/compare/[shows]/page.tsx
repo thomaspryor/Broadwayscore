@@ -57,7 +57,7 @@ export async function generateMetadata(props: { params: Promise<{ shows: string 
 // Section label component
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 pt-4 pb-2 border-t border-white/[0.06] first:border-t-white/10">
+    <div className="text-[11px] font-semibold uppercase tracking-wider text-fg-muted pt-4 pb-2 border-t border-white/[0.06] first:border-t-white/10">
       {children}
     </div>
   );
@@ -268,7 +268,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
   // Lottery pill matching existing site style
   function LotteryPill({ data, showSlug }: { data: NonNullable<typeof lotteryRushA>; showSlug: string }) {
     const lottery = data.lottery || data.specialLottery;
-    if (!lottery) return <span className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-white/[0.04] text-gray-500 text-xs">&#10007; None</span>;
+    if (!lottery) return <span className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-white/[0.04] text-fg-muted text-xs">&#10007; None</span>;
     return (
       <Link
         href={`/show/${showSlug}#discount-tickets`}
@@ -282,7 +282,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
 
   function RushPill({ data, showSlug }: { data: NonNullable<typeof lotteryRushA>; showSlug: string }) {
     const rush = data.rush || data.digitalRush || data.studentRush;
-    if (!rush) return <span className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-white/[0.04] text-gray-500 text-xs">&#10007; None</span>;
+    if (!rush) return <span className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-white/[0.04] text-fg-muted text-xs">&#10007; None</span>;
     return (
       <Link
         href={`/show/${showSlug}#discount-tickets`}
@@ -296,7 +296,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
 
   // Creative team link
   function CreativeLink({ member, roleSlug }: { member: { name: string; role: string } | undefined; roleSlug: string }) {
-    if (!member) return <span className="text-gray-500">–</span>;
+    if (!member) return <span className="text-fg-muted">–</span>;
     return (
       <Link href={`/${roleSlug}/${slugify(member.name)}`} className="text-gray-300 hover:text-brand transition-colors border-b border-dashed border-white/20 hover:border-brand">
         {member.name}
@@ -306,7 +306,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
 
   // Tag rendering
   function GenreTags({ tags }: { tags: string[] }) {
-    if (!tags.length) return <span className="text-gray-500">–</span>;
+    if (!tags.length) return <span className="text-fg-muted">–</span>;
     return (
       <div className="flex flex-wrap justify-center gap-1">
         {tags.slice(0, 4).map(tag => {
@@ -366,7 +366,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                         ]}
                         alt={show.title}
                         className="w-full h-full object-cover"
-                        fallback={<div className="w-full h-full flex items-center justify-center bg-surface-overlay"><span className="text-2xl text-gray-500">🎭</span></div>}
+                        fallback={<div className="w-full h-full flex items-center justify-center bg-surface-overlay"><span className="text-2xl text-fg-muted">🎭</span></div>}
                       />
                     </div>
                     <h2 className="font-bold text-white text-sm sm:text-base hover:text-brand transition-colors mb-1.5">
@@ -382,7 +382,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                       ) : null;
                     })()}
                     {show.criticScore?.reviewCount ? (
-                      <span className="text-[10px] text-gray-500">{show.criticScore.reviewCount} reviews</span>
+                      <span className="text-[10px] text-fg-muted">{show.criticScore.reviewCount} reviews</span>
                     ) : null}
                   </div>
                   {show.status !== 'closed' && sorted.length > 0 && (
@@ -470,15 +470,15 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                 valueA={awardsA?.tony ? (
                   <Link href={`/show/${showA.slug}#awards`} className="group">
                     <span className="text-amber-400 font-bold group-hover:text-amber-300">🏆 {awardsA.tony.wins?.length ?? 0} wins</span>
-                    <span className="block text-[11px] text-gray-500">{awardsA.tony.nominations ?? 0} nominations</span>
+                    <span className="block text-[11px] text-fg-muted">{awardsA.tony.nominations ?? 0} nominations</span>
                   </Link>
-                ) : <span className="text-gray-500">–</span>}
+                ) : <span className="text-fg-muted">–</span>}
                 valueB={awardsB?.tony ? (
                   <Link href={`/show/${showB.slug}#awards`} className="group">
                     <span className="text-amber-400 font-bold group-hover:text-amber-300">🏆 {awardsB.tony.wins?.length ?? 0} wins</span>
-                    <span className="block text-[11px] text-gray-500">{awardsB.tony.nominations ?? 0} nominations</span>
+                    <span className="block text-[11px] text-fg-muted">{awardsB.tony.nominations ?? 0} nominations</span>
                   </Link>
-                ) : <span className="text-gray-500">–</span>}
+                ) : <span className="text-fg-muted">–</span>}
                 winnerA={!!awardsA?.tony?.wins?.length && (awardsA.tony.wins.length > (awardsB?.tony?.wins?.length ?? 0))}
                 winnerB={!!awardsB?.tony?.wins?.length && (awardsB.tony.wins.length > (awardsA?.tony?.wins?.length ?? 0))}
               />
@@ -559,13 +559,13 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
           )}
           <Row
             label="Lottery"
-            valueA={lotteryRushA ? <LotteryPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-gray-500 text-xs">–</span>}
-            valueB={lotteryRushB ? <LotteryPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-gray-500 text-xs">–</span>}
+            valueA={lotteryRushA ? <LotteryPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-fg-muted text-xs">–</span>}
+            valueB={lotteryRushB ? <LotteryPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-fg-muted text-xs">–</span>}
           />
           <Row
             label="Rush"
-            valueA={lotteryRushA ? <RushPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-gray-500 text-xs">–</span>}
-            valueB={lotteryRushB ? <RushPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-gray-500 text-xs">–</span>}
+            valueA={lotteryRushA ? <RushPill data={lotteryRushA} showSlug={showA.slug} /> : <span className="text-fg-muted text-xs">–</span>}
+            valueB={lotteryRushB ? <RushPill data={lotteryRushB} showSlug={showB.slug} /> : <span className="text-fg-muted text-xs">–</span>}
           />
 
           {/* ── BOX OFFICE — THIS WEEK ── */}
@@ -578,7 +578,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                   <Link href={`/show/${showA.slug}#box-office`} className="group">
                     <span className="text-white font-semibold group-hover:text-brand">{formatMoney(grossesA.thisWeek.gross, currency)}</span>
                     {grossesA.thisWeek.grossPrevWeek != null && (
-                      <span className="block text-[11px] text-gray-500">{pctChange(grossesA.thisWeek.gross, grossesA.thisWeek.grossPrevWeek)} vs last week</span>
+                      <span className="block text-[11px] text-fg-muted">{pctChange(grossesA.thisWeek.gross, grossesA.thisWeek.grossPrevWeek)} vs last week</span>
                     )}
                   </Link>
                 ) : '–'}
@@ -586,7 +586,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                   <Link href={`/show/${showB.slug}#box-office`} className="group">
                     <span className="text-white font-semibold group-hover:text-brand">{formatMoney(grossesB.thisWeek.gross, currency)}</span>
                     {grossesB.thisWeek.grossPrevWeek != null && (
-                      <span className="block text-[11px] text-gray-500">{pctChange(grossesB.thisWeek.gross, grossesB.thisWeek.grossPrevWeek)} vs last week</span>
+                      <span className="block text-[11px] text-fg-muted">{pctChange(grossesB.thisWeek.gross, grossesB.thisWeek.grossPrevWeek)} vs last week</span>
                     )}
                   </Link>
                 ) : '–'}
@@ -758,7 +758,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
             <div className="text-[13px] text-gray-400 font-medium pt-0.5">Critics Say</div>
             <div>
               <Link href={`/show/${showA.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showA.title}</Link>
-              <p className={`text-[13px] leading-relaxed mt-1 ${criticsTakeModeA === 'coming-soon' ? 'text-gray-500 italic' : 'text-gray-400'}`}>
+              <p className={`text-[13px] leading-relaxed mt-1 ${criticsTakeModeA === 'coming-soon' ? 'text-fg-muted italic' : 'text-gray-400'}`}>
                 {criticsTakeModeA === 'consensus' ? consensusA
                   : criticsTakeModeA === 'coming-soon' ? "Critics' Take coming soon."
                   : criticsTakeModeA === 'synopsis' ? showA.synopsis
@@ -767,7 +767,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
             </div>
             <div>
               <Link href={`/show/${showB.slug}`} className="font-bold text-white text-sm hover:text-brand transition-colors">{showB.title}</Link>
-              <p className={`text-[13px] leading-relaxed mt-1 ${criticsTakeModeB === 'coming-soon' ? 'text-gray-500 italic' : 'text-gray-400'}`}>
+              <p className={`text-[13px] leading-relaxed mt-1 ${criticsTakeModeB === 'coming-soon' ? 'text-fg-muted italic' : 'text-gray-400'}`}>
                 {criticsTakeModeB === 'consensus' ? consensusB
                   : criticsTakeModeB === 'coming-soon' ? "Critics' Take coming soon."
                   : criticsTakeModeB === 'synopsis' ? showB.synopsis

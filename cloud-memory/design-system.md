@@ -209,6 +209,7 @@ Use these classes directly in `className`. Don't recreate their styling.
 | `bg-zinc-900` | `bg-surface` |
 | `bg-zinc-800`, `bg-zinc-800/*` | `bg-surface-raised` |
 | `bg-zinc-700` | `bg-surface-overlay` |
+| `text-gray-500`, `text-gray-600` (text) | `text-fg-muted` (#969da9: 6.3:1 on raised, 4.6:1 on elevated; gray-500 is 3.6:1 and fails AA). Guard: `node scripts/audit-text-contrast.js --strict` (BRO-6553). Empty-star/icon SVGs may keep gray-600 |
 | `border-zinc-*` | `border-white/5` or `border-white/10` |
 | `text-zinc-400` | `text-gray-400` |
 | `text-zinc-300` | `text-gray-300` |

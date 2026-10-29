@@ -19,7 +19,7 @@ const MASKED = [
   ['src/app/diary-show/[id]/DiaryShowClient.tsx', 'className="ph-mask max-w-2xl', 'the diary page'],
   ['src/components/HamburgerMenu.tsx', 'className="ph-mask text-sm font-semibold text-white truncate">{profile?.display_name || email', 'the menu name/email'],
   ['src/components/show-page/ShowHeroRedesign.tsx', 'className="ph-mask text-sm text-gray-400 italic', 'saved notes on show pages'],
-  ['src/app/unsubscribe/UnsubscribeClient.tsx', 'className="ph-mask text-gray-500 text-sm mb-8">', 'the unsubscribe email'],
+  ['src/app/unsubscribe/UnsubscribeClient.tsx', 'className="ph-mask text-fg-muted text-sm mb-8">', 'the unsubscribe email'],
 ];
 
 for (const [file, fragment, what] of MASKED) {

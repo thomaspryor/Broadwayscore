@@ -98,7 +98,7 @@ function PersonalBests({ lines }: { lines: BestLine[] }) {
           </li>
         ))}
       </ul>
-      <p className="m-0 text-xs text-gray-500">This production only. Dollars at the time, not adjusted for inflation.</p>
+      <p className="m-0 text-xs text-fg-muted">This production only. Dollars at the time, not adjusted for inflation.</p>
     </section>
   );
 }
@@ -109,9 +109,9 @@ export default function BoxOfficeScorecard({ card, grosses, history }: Props) {
       <header className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h2 id="box-office-heading" className="m-0 text-[12px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none">Box Office Scorecard</h2>
-          <p className="m-0 text-xs italic text-gray-500">{card.current ? 'week of' : 'last reported week:'} {weekLabel(card.week)}</p>
+          <p className="m-0 text-xs italic text-fg-muted">{card.current ? 'week of' : 'last reported week:'} {weekLabel(card.week)}</p>
         </div>
-        <span className="text-xs italic text-gray-500 shrink-0">source · Broadway League, public</span>
+        <span className="text-xs italic text-fg-muted shrink-0">source · Broadway League, public</span>
       </header>
 
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 items-start">

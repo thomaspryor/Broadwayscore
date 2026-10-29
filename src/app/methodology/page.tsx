@@ -192,43 +192,43 @@ export default function MethodologyPage() {
               <div className="w-14 h-10 rounded-lg score-must-see flex items-center justify-center font-bold text-sm flex-shrink-0">83+</div>
               <div>
                 <span className="text-white font-medium">Critical Gold™</span>
-                <span className="text-gray-500 block sm:inline sm:ml-2">Drop everything. If you see one show, make it this one.</span>
-                <span className="text-gray-500 block text-xs mt-0.5">West End shows need 85, because British critics nearly always give stars and stars run high.</span>
+                <span className="text-fg-muted block sm:inline sm:ml-2">Drop everything. If you see one show, make it this one.</span>
+                <span className="text-fg-muted block text-xs mt-0.5">West End shows need 85, because British critics nearly always give stars and stars run high.</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="w-14 h-10 rounded-lg score-great flex items-center justify-center font-bold text-sm flex-shrink-0">75-82</div>
               <div>
                 <span className="text-white font-medium">Recommended</span>
-                <span className="text-gray-500 block sm:inline sm:ml-2">A strong pick. Most people will have a great time.</span>
+                <span className="text-fg-muted block sm:inline sm:ml-2">A strong pick. Most people will have a great time.</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="w-14 h-10 rounded-lg score-good flex items-center justify-center font-bold text-sm flex-shrink-0">65-74</div>
               <div>
                 <span className="text-white font-medium">Worth Seeing</span>
-                <span className="text-gray-500 block sm:inline sm:ml-2">Good, with some reservations. Best if the story or the cast is your thing.</span>
+                <span className="text-fg-muted block sm:inline sm:ml-2">Good, with some reservations. Best if the story or the cast is your thing.</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="w-14 h-10 rounded-lg score-tepid flex items-center justify-center font-bold text-sm flex-shrink-0">55-64</div>
               <div>
                 <span className="text-white font-medium">Mixed</span>
-                <span className="text-gray-500 block sm:inline sm:ml-2">Critics are split. Worth a look if the premise grabs you.</span>
+                <span className="text-fg-muted block sm:inline sm:ml-2">Critics are split. Worth a look if the premise grabs you.</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="w-14 h-10 rounded-lg score-skip flex items-center justify-center font-bold text-sm flex-shrink-0">&lt;55</div>
               <div>
                 <span className="text-white font-medium">Critical Miss</span>
-                <span className="text-gray-500 block sm:inline sm:ml-2">Most critics didn&apos;t like it. Save your time and money.</span>
+                <span className="text-fg-muted block sm:inline sm:ml-2">Most critics didn&apos;t like it. Save your time and money.</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="w-14 h-10 rounded-lg bg-surface-overlay border border-white/10 flex items-center justify-center font-bold text-gray-400 text-sm flex-shrink-0">TBD</div>
               <div>
                 <span className="text-white font-medium">Not enough reviews yet</span>
-                <span className="text-gray-500 block sm:inline sm:ml-2">We wait for 5 reviews (3 for Off-Broadway, Off-West End, tours and regional shows) before showing a score.</span>
+                <span className="text-fg-muted block sm:inline sm:ml-2">We wait for 5 reviews (3 for Off-Broadway, Off-West End, tours and regional shows) before showing a score.</span>
               </div>
             </div>
           </div>
@@ -278,7 +278,7 @@ export default function MethodologyPage() {
 
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 4</span>
+                <span className="px-2 py-0.5 rounded bg-surface text-fg-muted text-xs font-medium">Tier 4</span>
                 <span className="text-xs text-gray-400">counts 20%</span>
               </div>
               <p className="text-gray-300 text-sm">
@@ -592,7 +592,7 @@ export default function MethodologyPage() {
           <div className="bg-surface-overlay rounded-lg p-4 border border-white/5 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-xs uppercase tracking-wide text-gray-500 border-b border-white/5">
+                <tr className="text-left text-xs uppercase tracking-wide text-fg-muted border-b border-white/5">
                   <th className="pb-2 pr-3 font-semibold">Group</th>
                   <th className="pb-2 pr-3 font-semibold">Examples</th>
                   <th className="pb-2 font-semibold tabular-nums">Tony win</th>
@@ -646,11 +646,11 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Badges</h3>
           <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-500 text-amber-950 font-bold flex items-center justify-center text-xs">90+</div><div><span className="text-amber-400 font-semibold">Sweeper</span> <span className="text-gray-500">A historic haul of awards</span></div></div>
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">70-89</div><div><span className="text-emerald-400 font-semibold">Decorated</span> <span className="text-gray-500">Several major wins</span></div></div>
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-teal-600 text-white font-bold flex items-center justify-center text-xs">1 win+</div><div><span className="text-teal-400 font-semibold">Honored</span> <span className="text-gray-500">At least one win</span></div></div>
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-700/70 text-amber-50 font-bold flex items-center justify-center text-xs">0 wins</div><div><span className="text-amber-300 font-semibold">Nominated</span> <span className="text-gray-500">Nominated, no wins yet</span></div></div>
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-white/10 text-gray-400 font-bold flex items-center justify-center text-xs">&ndash;</div><div><span className="text-gray-400 font-semibold">Eligible</span> <span className="text-gray-500">No nominations yet</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-500 text-amber-950 font-bold flex items-center justify-center text-xs">90+</div><div><span className="text-amber-400 font-semibold">Sweeper</span> <span className="text-fg-muted">A historic haul of awards</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">70-89</div><div><span className="text-emerald-400 font-semibold">Decorated</span> <span className="text-fg-muted">Several major wins</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-teal-600 text-white font-bold flex items-center justify-center text-xs">1 win+</div><div><span className="text-teal-400 font-semibold">Honored</span> <span className="text-fg-muted">At least one win</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-700/70 text-amber-50 font-bold flex items-center justify-center text-xs">0 wins</div><div><span className="text-amber-300 font-semibold">Nominated</span> <span className="text-fg-muted">Nominated, no wins yet</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-white/10 text-gray-400 font-bold flex items-center justify-center text-xs">&ndash;</div><div><span className="text-gray-400 font-semibold">Eligible</span> <span className="text-fg-muted">No nominations yet</span></div></div>
           </div>
           <p className="text-gray-400 text-xs mt-3">
             During Tony season a show&apos;s score is marked <strong className="text-amber-300">Provisional</strong> until the ceremony in June, when the wins come in.
@@ -676,7 +676,7 @@ export default function MethodologyPage() {
         <BuyMeACoffeeWidget />
 
         {/* Version */}
-        <div className="text-center text-gray-500 text-sm pt-4">
+        <div className="text-center text-fg-muted text-sm pt-4">
           <p>Methodology version 2.3 · Last updated October 2026</p>
         </div>
       </div>

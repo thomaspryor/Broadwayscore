@@ -472,7 +472,7 @@ function Inner({
     return (
       <a
         href="#discount-tickets"
-        className={`${display} items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-sm font-medium leading-none transition-colors border border-white/5 whitespace-nowrap flex-shrink-0`}
+        className={`${display} items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-fg-muted hover:text-gray-300 text-sm font-medium leading-none transition-colors border border-white/5 whitespace-nowrap flex-shrink-0`}
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -511,7 +511,7 @@ function Inner({
                 className="w-full h-full object-cover"
                 fallback={
                   <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                    <span className="text-4xl text-gray-500">🎭</span>
+                    <span className="text-4xl text-fg-muted">🎭</span>
                   </div>
                 }
               />
@@ -564,12 +564,12 @@ function Inner({
                       {tier.label}
                     </p>
                   )}
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-fg-muted mt-1">
                     Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                   </p>
                   <HeroRankLine ranks={ranks} market={show.category} />
                   {reviewAgeNote && (
-                    <p className="text-xs text-gray-500 mt-1 leading-snug" data-testid="hero-review-age-note">
+                    <p className="text-xs text-fg-muted mt-1 leading-snug" data-testid="hero-review-age-note">
                       {reviewAgeNote}
                     </p>
                   )}
@@ -606,7 +606,7 @@ function Inner({
                   {tier.label}
                 </p>
               )}
-              <p className="text-xs text-gray-500 mt-0.5 leading-snug">
+              <p className="text-xs text-fg-muted mt-0.5 leading-snug">
                 {reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}
               </p>
             </div>
@@ -624,7 +624,7 @@ function Inner({
                   {audienceGrade.label}
                 </p>
                 {audienceCount > 0 && (
-                  <p className="text-xs text-gray-500 mt-0.5 leading-snug">
+                  <p className="text-xs text-fg-muted mt-0.5 leading-snug">
                     {audienceCount.toLocaleString('en-US')} audience reviews
                   </p>
                 )}
@@ -644,7 +644,7 @@ function Inner({
       {/* Mobile-only review-age caveat for long-running shows (desktop renders
           it inline in the score block above). */}
       {hasEnoughCriticReviews && reviewAgeNote && (
-        <p className="lg:hidden -mt-1 text-xs text-gray-500 leading-snug" data-testid="hero-review-age-note-mobile">
+        <p className="lg:hidden -mt-1 text-xs text-fg-muted leading-snug" data-testid="hero-review-age-note-mobile">
           {reviewAgeNote}
         </p>
       )}
@@ -662,7 +662,7 @@ function Inner({
           continuous block. */}
       {hasEnoughCriticReviews && consensusText && (
         <div className="mt-3">
-          <p className="text-xs font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-fg-muted mb-1.5">
             Critics&apos; Take
           </p>
           <p className="text-gray-300 text-sm leading-relaxed">{consensusText}</p>
@@ -671,7 +671,7 @@ function Inner({
       {/* No consensus yet: say so once enough reviews exist, or show the synopsis
           for an unopened show (never unrelated copy in the verdict slot, BRO-927). */}
       {!(hasEnoughCriticReviews && consensusText) && criticsTakeMode === 'coming-soon' && (
-        <p className="mt-3 text-gray-500 text-sm leading-relaxed italic">Critics&apos; Take coming soon.</p>
+        <p className="mt-3 text-fg-muted text-sm leading-relaxed italic">Critics&apos; Take coming soon.</p>
       )}
       {!(hasEnoughCriticReviews && consensusText) && criticsTakeMode === 'synopsis' && (
         <p className="mt-3 text-gray-400 text-sm leading-relaxed">{show.synopsis}</p>
@@ -743,7 +743,7 @@ function Inner({
           Watchlist link first (the "On your list" button is a TOGGLE and must
           not navigate), then custom lists. Owner design pick, 2026-07-19. */}
       {userFeaturesEnabled && (onWatchlist || firstListContainingShow) && (
-        <p className="text-xs text-gray-500 flex items-center gap-1.5">
+        <p className="text-xs text-fg-muted flex items-center gap-1.5">
           <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h10" />
           </svg>
@@ -833,7 +833,7 @@ function Inner({
         showScore={score}
         ticketLinks={sortedTicketLinks}
         rawTicketLinks={show.ticketLinks}
-        noteClassName="text-xs text-gray-500"
+        noteClassName="text-xs text-fg-muted"
         officialUrl={show.officialUrl}
         pageType="show"
         splitVariant
@@ -853,7 +853,7 @@ function Inner({
 function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; tourReviewYears: string | null }) {
   // One hierarchy step below the venue line (text-sm gray-300) so the two
   // stacked rows read as place → metadata instead of two identical gray lines.
-  const dateClass = 'text-xs text-gray-500';
+  const dateClass = 'text-xs text-fg-muted';
 
   // Segments (start/closing/duration text) come from the shared
   // show-date-line module — the single source of truth also consumed by the
@@ -907,9 +907,9 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
     <div className="card p-4 text-center bg-surface-overlay border-white/5">
       <p className="text-sm font-semibold text-gray-300 mb-0.5" data-testid={noReviewsExpected ? 'no-reviews-expected' : 'awaiting-reviews'}>{title}</p>
       {reviewCount > 0 ? (
-        <a href="#critic-reviews" className="text-xs text-gray-500 hover:text-brand transition-colors">{progress}</a>
+        <a href="#critic-reviews" className="text-xs text-fg-muted hover:text-brand transition-colors">{progress}</a>
       ) : (
-        <p className="text-xs text-gray-500">{progress}</p>
+        <p className="text-xs text-fg-muted">{progress}</p>
       )}
     </div>
   );

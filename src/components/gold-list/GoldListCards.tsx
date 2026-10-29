@@ -23,7 +23,7 @@ export function ValueBadge({ displayValue, label }: { displayValue: string; labe
       <div className="px-2 py-1.5 sm:px-3 sm:py-2 bg-surface-overlay border border-white/10 rounded-lg sm:rounded-xl text-center min-w-[56px]">
         <div className="text-white font-bold text-xs sm:text-sm leading-tight">{displayValue}</div>
       </div>
-      <div className="text-[10px] text-gray-500 mt-0.5 text-center">{label}</div>
+      <div className="text-[10px] text-fg-muted mt-0.5 text-center">{label}</div>
     </div>
   );
 }

@@ -33,6 +33,9 @@ function disambiguateByVenue(candidates, listingVenue, venuesMatch) {
  *   ones. A URL this run venue-REJECTED is never carried over: discover-new-shows
  *   auto-consumes `candidates`, so a stale entry would add a show from a listing
  *   the venue check just refused.
+ * - outOfScopeUrls: listings observed in the Off-Off-Broadway collection.
+ *   They may enrich existing catalog rows, but cannot create new ones. The
+ *   collection supplies the tier evidence; URL paths are only identities.
  * - venueRejected: this run's rejects, keeping the first-seen discoveredAt of a
  *   reject already listed, so its age shows how long it has been stuck.
  * - write: false only when there is nothing old or new to record; a file whose
@@ -40,7 +43,7 @@ function disambiguateByVenue(candidates, listingVenue, venuesMatch) {
  *
  * @returns {{ write: boolean, data: object }}
  */
-function mergeShowScoreCandidates({ candidates, venueRejects, existing, matchedUrls, ttlDays, now = Date.now() }) {
+function mergeShowScoreCandidates({ candidates, venueRejects, existing, matchedUrls, outOfScopeUrls = new Set(), ttlDays, now = Date.now() }) {
   const existingCandidates = (existing && existing.candidates) || [];
   const existingRejects = (existing && existing.venueRejected) || [];
   const nowIso = new Date(now).toISOString();
@@ -50,10 +53,12 @@ function mergeShowScoreCandidates({ candidates, venueRejects, existing, matchedU
 
   const merged = [];
   for (const c of candidates) {
+    if (outOfScopeUrls.has(c.showScoreUrl)) continue;
     if (matchedUrls.has(c.showScoreUrl)) continue;
     merged.push({ ...c, discoveredAt: nowIso });
   }
   for (const c of existingCandidates) {
+    if (outOfScopeUrls.has(c.showScoreUrl)) continue;
     if (currentUrls.has(c.showScoreUrl)) continue;
     if (matchedUrls.has(c.showScoreUrl)) continue;
     if (rejectedUrls.has(c.showScoreUrl)) continue;

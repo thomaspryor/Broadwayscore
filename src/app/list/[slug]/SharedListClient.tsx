@@ -239,7 +239,7 @@ export default function SharedListClient({ slug }: { slug: string }) {
           {list.description && (
             <p className="text-sm text-gray-400 mt-2">{list.description}</p>
           )}
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-fg-muted mt-1">
             {items.length} {items.length === 1 ? 'show' : 'shows'}
           </p>
         </div>
@@ -276,7 +276,7 @@ export default function SharedListClient({ slug }: { slug: string }) {
           >
             Create your own list
           </Link>
-          <p className="text-[11px] text-gray-600 mt-4">
+          <p className="text-[11px] text-fg-muted mt-4">
             Powered by{' '}
             <Link href="/" className="text-brand hover:text-brand/80 transition-colors">
               Broadway Scorecard
@@ -311,7 +311,7 @@ function SharedListItem({
     >
       {/* Rank number */}
       {isRanked && (
-        <span className="flex-shrink-0 w-7 text-center text-lg font-bold text-gray-500">
+        <span className="flex-shrink-0 w-7 text-center text-lg font-bold text-fg-muted">
           {index + 1}
         </span>
       )}
@@ -321,7 +321,7 @@ function SharedListItem({
         {posterSrc ? (
           <img src={posterSrc} alt={title} className="w-full h-full object-cover" loading="lazy" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
+          <div className="w-full h-full flex items-center justify-center text-fg-muted text-lg">🎭</div>
         )}
       </div>
 
@@ -331,7 +331,7 @@ function SharedListItem({
           {title}
         </h3>
         {show?.venue && (
-          <p className="text-xs text-gray-500 truncate">{show.venue}</p>
+          <p className="text-xs text-fg-muted truncate">{show.venue}</p>
         )}
         {item.note && (
           <p className="text-xs text-gray-400 mt-1 line-clamp-2 italic">&ldquo;{item.note}&rdquo;</p>

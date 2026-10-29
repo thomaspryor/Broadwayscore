@@ -44,7 +44,7 @@ function ComparisonCard({ showA, showB, slug }: {
             className="w-full h-full object-cover"
             fallback={
               <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                <span className="text-2xl text-gray-500">🎭</span>
+                <span className="text-2xl text-fg-muted">🎭</span>
               </div>
             }
           />
@@ -63,7 +63,7 @@ function ComparisonCard({ showA, showB, slug }: {
             className="w-full h-full object-cover"
             fallback={
               <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                <span className="text-2xl text-gray-500">🎭</span>
+                <span className="text-2xl text-fg-muted">🎭</span>
               </div>
             }
           />
@@ -81,7 +81,7 @@ function ComparisonCard({ showA, showB, slug }: {
             )}
           </p>
         </div>
-        <div className="text-gray-500 group-hover:text-brand transition-colors">
+        <div className="text-fg-muted group-hover:text-brand transition-colors">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>

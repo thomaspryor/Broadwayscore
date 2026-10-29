@@ -72,32 +72,32 @@ export default function AtRiskCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       {closingText && (
         <div className="flex justify-between text-sm mb-1" data-testid="at-risk-closing">
-          <span className="text-gray-500">Closing announced</span>
+          <span className="text-fg-muted">Closing announced</span>
           <span className="text-score-tepid">{closingText}</span>
         </div>
       )}
       <div className="flex justify-between text-sm">
-        <span className="text-gray-500">Capitalization</span>
+        <span className="text-fg-muted">Capitalization</span>
         <span className="text-white">{formatCapitalization(capitalization, capitalizationIsEstimate, capitalizationIsMaximum)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Avg gross (4 wks)</span>
+        <span className="text-fg-muted">Avg gross (4 wks)</span>
         <span className="text-white">{formatCurrency(avgWeeklyGross)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Est. break-even</span>
+        <span className="text-fg-muted">Est. break-even</span>
         <span className="text-white">~{formatCurrency(breakEven)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Gap</span>
+        <span className="text-fg-muted">Gap</span>
         <span className="text-red-400">-{formatCurrency(deficit)} a week</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Est. recouped (best case)</span>
+        <span className="text-fg-muted">Est. recouped (best case)</span>
         <span className="text-white">{modelHoldLabel ?? `~${optimistic}%`}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Trend (4 wks)</span>
+        <span className="text-fg-muted">Trend (4 wks)</span>
         <span className={getTrendColor(trend, false)} aria-label={trendLabel}>
           {getTrendIcon(trend, false)} {trendLabel}
         </span>

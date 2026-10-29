@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-28T22:04:26.123Z",
+    "lastUpdated": "2026-10-29T22:51:27.607Z",
     "version": "2.1.0",
     "lastChange": "BRO-5823: alias the-washington-post/theatre-s-leiter-side, register themetroland + kidsoutandabout"
   },
@@ -13976,6 +13976,25 @@
       "domain": "irishamericannews.com",
       "region": "chicago",
       "accessModel": "free"
+    },
+    "bristol247": {
+      "displayName": "Bristol24/7",
+      "tier": 3,
+      "aliases": [
+        "bristol247"
+      ],
+      "domain": "bristol247.com"
+    },
+    "frostmagazine": {
+      "displayName": "Frost Magazine",
+      "tier": 3,
+      "aliases": [
+        "frostmagazine"
+      ],
+      "domain": "frostmagazine.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-29T22:51:27.607Z"
     }
   },
   "_aliasIndex": {

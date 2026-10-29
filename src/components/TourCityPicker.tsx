@@ -65,7 +65,7 @@ function StopRow({ stop, show }: { stop: CityAgendaStop; show: BrowseShow }) {
         <Link href={`/show/${show.slug}`} className="block font-semibold text-white text-sm sm:text-base leading-tight hover:text-brand transition-colors line-clamp-2">
           {show.title}
         </Link>
-        <div className="text-xs sm:text-sm text-gray-500 truncate mt-0.5">{stop.venue}</div>
+        <div className="text-xs sm:text-sm text-fg-muted truncate mt-0.5">{stop.venue}</div>
       </div>
       <ScoreBadge
         size="xs"
@@ -140,7 +140,7 @@ export default function TourCityPicker({ cities, shows }: { cities: TourCityOpti
         </span>
         <div className="min-w-0">
           <h2 id={`${inputId}-h`} className="text-base font-bold text-white leading-tight">Touring near you</h2>
-          <p className="text-xs sm:text-sm text-gray-500">What&apos;s playing in your city, and what&apos;s coming</p>
+          <p className="text-xs sm:text-sm text-fg-muted">What&apos;s playing in your city, and what&apos;s coming</p>
         </div>
       </div>
 
@@ -166,7 +166,7 @@ export default function TourCityPicker({ cities, shows }: { cities: TourCityOpti
           aria-controls={listVisible ? listId : undefined}
           aria-activedescendant={listVisible ? `${listId}-${active}` : undefined}
           aria-autocomplete="list"
-          className="w-full h-11 rounded-xl bg-surface border border-white/10 px-4 text-base text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/60"
+          className="w-full h-11 rounded-xl bg-surface border border-white/10 px-4 text-base text-white placeholder:text-fg-muted focus:outline-none focus:border-brand/60"
         />
         {listVisible && (
           <ul id={listId} role="listbox" aria-label="Cities" className="absolute z-20 left-0 right-0 mt-1 rounded-xl bg-surface-elevated border border-white/10 shadow-card overflow-hidden">
@@ -199,7 +199,7 @@ export default function TourCityPicker({ cities, shows }: { cities: TourCityOpti
           <div className="flex items-center gap-2 min-w-0 text-sm">
             <PinIcon className="w-4 h-4 text-brand flex-shrink-0" />
             <span className="font-semibold text-white truncate">{city.city}</span>
-            <span className="text-gray-500 whitespace-nowrap text-xs sm:text-sm">
+            <span className="text-fg-muted whitespace-nowrap text-xs sm:text-sm">
               · {agenda.now.length} now · {agenda.comingCount} coming
             </span>
             <button type="button" onClick={() => setOpen(true)} className="ml-1 h-11 px-4 rounded-pill bg-surface-overlay text-white text-sm font-medium hover:bg-surface-elevated flex-shrink-0">
@@ -253,7 +253,7 @@ export default function TourCityPicker({ cities, shows }: { cities: TourCityOpti
               <h4 className="mt-4 text-xs font-bold uppercase tracking-[0.1em] text-gray-400">Coming to {place}</h4>
               {agenda.coming.map(m => (
                 <div key={m.month}>
-                  <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-gray-500">{m.month}</div>
+                  <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-fg-muted">{m.month}</div>
                   <ul>{m.stops.map(s => <StopRow key={`${s.showId}|${s.start}`} stop={s} show={showById.get(s.showId)!} />)}</ul>
                 </div>
               ))}

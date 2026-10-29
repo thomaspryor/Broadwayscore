@@ -64,7 +64,7 @@ function ThumbImage({ src }: { src: string }) {
   const [broken, setBroken] = useState(false);
   if (broken) {
     return (
-      <span className="absolute inset-0 flex items-center justify-center text-gray-500">
+      <span className="absolute inset-0 flex items-center justify-center text-fg-muted">
         <CameraIcon className="w-5 h-5" />
       </span>
     );

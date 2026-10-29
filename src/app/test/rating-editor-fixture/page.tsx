@@ -67,7 +67,7 @@ function RatingEditorFixtureInner() {
     <div className="min-h-screen bg-surface text-white" data-testid="rating-editor-fixture">
       <div className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-xl font-bold mb-2">Hamilton</h1>
-        <p className="text-sm text-gray-500 mb-4">Richard Rodgers Theatre</p>
+        <p className="text-sm text-fg-muted mb-4">Richard Rodgers Theatre</p>
 
         <div className="card p-5" data-testid="editor-card">
           {open ? (
@@ -115,7 +115,7 @@ function RatingEditorFixtureInner() {
           <h2 className="text-sm font-bold text-gray-400 mb-3">Half-Star Rendering (all sizes)</h2>
           {(['xs', 'sm', 'md', 'lg'] as const).map(size => (
             <div key={size} className="flex items-center gap-3 mb-2">
-              <span className="text-xs text-gray-500 w-8">{size}</span>
+              <span className="text-xs text-fg-muted w-8">{size}</span>
               <StarRating rating={3.5} onRatingChange={() => {}} size={size} readOnly hideLabel />
             </div>
           ))}

@@ -45,7 +45,7 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
         <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">
           {theater.name}
         </h2>
-        <p className="text-gray-500 text-xs sm:text-sm truncate mt-0.5">
+        <p className="text-fg-muted text-xs sm:text-sm truncate mt-0.5">
           {theater.currentShowTitle ? (
             <>
               <span className="text-brand">{theater.currentShowTitle}</span>
@@ -57,7 +57,7 @@ function TheaterCard({ theater }: { theater: TheaterSummary }) {
               )}
             </>
           ) : (
-            <span className="text-gray-600 italic">No current show</span>
+            <span className="text-fg-muted italic">No current show</span>
           )}
         </p>
       </div>
@@ -136,12 +136,12 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
         <p className="text-gray-400">
           {theaters.length} theaters · {playingCount} with shows currently running
         </p>
-        <p className="text-xs text-gray-500 mt-1">Past show counts cover 1970 to present.</p>
+        <p className="text-xs text-fg-muted mt-1">Past show counts cover 1970 to present.</p>
       </div>
 
       {/* Search */}
       <div className="relative mb-4" role="search">
-        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
@@ -150,7 +150,7 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
           placeholder="Search theaters or shows..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/50"
+          className="w-full bg-surface-overlay border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder:text-fg-muted focus:outline-none focus:border-brand/50"
         />
       </div>
 
@@ -190,7 +190,7 @@ export default function TheaterIndexClient({ theaters }: { theaters: TheaterSumm
       )}
 
       {sorted.length > 0 && (
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-fg-muted mt-6">
           {sorted.length} theater{sorted.length !== 1 ? 's' : ''}
           {search.trim() ? ` matching "${search}"` : ''}
         </p>

@@ -44,6 +44,7 @@ const {
   buildExcerptIndex,
   findCrossShowMatches,
   shouldAutoFlag,
+  isQuarantinedTargetMatch,
   stillExcerptOnly,
   selectAuditTargets,
   buildFlagPlans,
@@ -198,6 +199,7 @@ function main() {
   let autoFlagEligible = 0;
   let applied = 0;
   let targetOwnsSkipped = 0;
+  let quarantinedOnly = 0;
   const titlesById = loadTitlesById(opts.showsPath);
 
   for (const rel of backlog) {
@@ -250,10 +252,17 @@ function main() {
     // a shorter match is a verified wrongFullText hit).
     // BRO-4159: if ANY match's quarantined text looks like the target show's
     // own review, nothing auto-flags this file; a human decides.
+    // BRO-5622: matches through the target's own (quarantined, unscored)
+    // wrongFullText never flag and, when they are all there is, leave the
+    // manual queue too. ownsText still looks at every match: it only blocks.
+    const onlyQuarantined = matches.length > 0 && matches.every((m) => isQuarantinedTargetMatch(m));
     const ownsText = matches.some((m) => m.targetOwnsText);
     const eligibleMatch = ownsText ? null : (matches.find((m) => shouldAutoFlag(m)) || null);
     let action = matches.length === 0 ? 'no-match' : 'needs-manual-review';
-    if (ownsText) {
+    if (onlyQuarantined) {
+      quarantinedOnly++;
+      action = 'quarantined-target-text-only';
+    } else if (ownsText) {
       targetOwnsSkipped++;
       action = 'needs-manual-review-target-owns-text';
     }
@@ -334,6 +343,7 @@ function main() {
       applied,
       autoFlagEligibleUnflagged: planRows.length,
       targetOwnsTextSkipped: targetOwnsSkipped,
+      quarantinedTargetTextOnly: quarantinedOnly,
     },
     files: perFile,
   };
@@ -375,6 +385,7 @@ function main() {
   console.log(`  auto-flag-eligible:   ${autoFlagEligible}`);
   console.log(`    not yet flagged:      ${planRows.length}`);
   console.log(`  target owns text (skipped): ${targetOwnsSkipped}`);
+  console.log(`  only via target's quarantined wrongFullText (skipped): ${quarantinedOnly}`);
   if (opts.apply) console.log(`  applied:              ${applied}`);
   console.log(`Report written: ${opts.reportPath}`);
   if (!opts.apply && planRows.length > 0) {

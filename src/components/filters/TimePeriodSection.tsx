@@ -118,7 +118,7 @@ export function TimePeriodSection({ dateRanges, onChange }: TimePeriodSectionPro
 
 function Sublabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+    <div className="text-[10px] font-bold uppercase tracking-wider text-fg-muted">
       {children}
     </div>
   );

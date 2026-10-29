@@ -2894,9 +2894,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 25 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 29 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40957759401",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40961695235",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -2905,21 +2905,249 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40957759401)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40961695235)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40957451409)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40961384420)"
       },
       {
         "name": "Consecutive failures",
-        "value": "25"
+        "value": "29"
       },
       {
         "name": "Currently failing job(s)",
-        "value": "Unit Tests"
+        "value": "E2E Tests, Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-29T21:47:13.898Z"
+    "queuedAt": "2026-10-29T22:20:53.981Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6541-census",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6541-census",
+    "description": "land.yml did not land land/bro-6541-census: the unit-tests-node gate went red at db8f9e045d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40958993813",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6541-census"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "db8f9e045dcb4f0d4fc3d938a273a3a2807f24a0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40958993813"
+      }
+    ],
+    "queuedAt": "2026-10-29T22:03:25.134Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6546-ownermerge",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6546-ownermerge",
+    "description": "land.yml did not land land/bro-6546-ownermerge: the unit-tests-node gate went red at 3df40785e0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40959765973",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6546-ownermerge"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3df40785e09df1f4b70ccca2b02e6d478a41d163"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40959765973"
+      }
+    ],
+    "queuedAt": "2026-10-29T22:06:18.832Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6546-visualrefusal",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6546-visualrefusal",
+    "description": "land.yml did not land land/bro-6546-visualrefusal: the unit-tests-node gate went red at fbf5062142. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40961205799",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6546-visualrefusal"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fbf506214296a5701624979aadd5934556ebcf42"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40961205799"
+      }
+    ],
+    "queuedAt": "2026-10-29T22:10:36.214Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6553",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6553",
+    "description": "land.yml did not land land/bro-6553: the unit-tests-node gate went red at 2c263f22f1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40961174647",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6553"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2c263f22f1b60e3814d27e5a15b8d23432174d81"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40961174647"
+      }
+    ],
+    "queuedAt": "2026-10-29T22:09:49.165Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-29.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T23:04:15.188Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6553-b",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6553-b",
+    "description": "land.yml did not land land/bro-6553-b: the unit-tests-node gate went red at 6db7ca85a2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40964010768",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6553-b"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6db7ca85a2b5a6389d390d64653821b11a41603d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40964010768"
+      }
+    ],
+    "queuedAt": "2026-10-29T22:35:21.351Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6518-daily",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6518-daily",
+    "description": "land.yml did not land land/bro-6518-daily: the unit-tests-node gate went red at a770a53e14. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40965832543",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6518-daily"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a770a53e14911e2cae80f21bd18d99d652a43bcd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40965832543"
+      }
+    ],
+    "queuedAt": "2026-10-29T22:50:08.537Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/doubled-market-ids-live-data.test.mjs::the live corpus has zero unallowlisted doubled-market ids",
+    "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the live corpus has zero unallowlisted doubled-market ids\" in tests/unit/doubled-market-ids-live-data.test.mjs is red against the live corpus.\n\nfix the title, or allowlist the id with the source you checked\n+ actual - expected\n\n+ [\n+   'loki-the-end-of-the-world-tour-regional-2026 \"Loki - The End of the World Tour\"'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T23:10:05.392Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows",
+    "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data: no byte-identical art across unrelated, unlinked shows\" in tests/unit/duplicate-images-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/hero.webp, /images/shows/happy-days-are-here-again-regional-2024/hero.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/poster.webp, /images/shows/happy-days-are-here-again-regional-2024/poster.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/thumbnail.webp, /images/shows/happy-days-are-here-again-regional-2024/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/hero.webp, /images/shows/deathtrap-regional-2025/hero.webp, /images/shows/company-regional-2026/hero.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/thumbnail.webp, /images/shows/deathtrap-regional-2025/thumbnail.webp, /images/shows/company-regional-2026/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/poster.webp, /images/shows/deatht",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T23:10:05.417Z"
   }
 ]

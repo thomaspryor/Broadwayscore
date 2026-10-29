@@ -132,14 +132,14 @@ test('formatCapitalSummary: shows counted but no figure known reads "Undisclosed
 
 test('formatCapitalSummary: a partial total gets "+" and says how many are missing', () => {
   assert.deepEqual(formatCapitalSummary({ knownTotal: 42_000_000, showCount: 9, undisclosedCount: 3 }), {
-    value: '~$42.0M+',
+    value: '~$42M+',
     note: '3 of 9 undisclosed',
   });
 });
 
 test('formatCapitalSummary: a complete total has no "+" and no note', () => {
   assert.deepEqual(formatCapitalSummary({ knownTotal: 42_000_000, showCount: 9, undisclosedCount: 0 }), {
-    value: '~$42.0M',
+    value: '~$42M',
     note: null,
   });
 });

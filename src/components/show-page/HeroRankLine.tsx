@@ -59,7 +59,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
     fragments.push(
       <span key="at">
         <span className="font-bold text-brand">#{c.allTime.rank}/{c.allTime.total}</span>
-        {' '}all-time<span className="text-gray-600">*</span>
+        {' '}all-time<span className="text-fg-muted">*</span>
       </span>,
     );
   }
@@ -69,7 +69,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
     <p className={`text-[12px] sm:text-[13px] text-gray-400 mt-1 leading-snug whitespace-nowrap overflow-x-auto scrollbar-hide ${className}`}>
       Ranks {fragments.map((f, i) => (
         <React.Fragment key={i}>
-          {i > 0 ? <span className="text-gray-600"> · </span> : null}
+          {i > 0 ? <span className="text-fg-muted"> · </span> : null}
           {f}
         </React.Fragment>
       ))}

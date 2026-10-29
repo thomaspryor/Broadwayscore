@@ -192,7 +192,7 @@ function ShowGroup({ showId, locks }: { showId: string; locks: LockRecord[] }) {
     <section className="rounded-lg border border-white/10 bg-surface-raised overflow-hidden">
       <header className="px-4 py-2.5 bg-surface-overlay border-b border-white/10 flex items-baseline justify-between">
         <h2 className="text-sm font-semibold text-white">{showId}</h2>
-        <span className="text-[11px] text-gray-500">
+        <span className="text-[11px] text-fg-muted">
           {locks.length} lock{locks.length === 1 ? '' : 's'}
         </span>
       </header>
@@ -272,7 +272,7 @@ function LockRow({ lock }: { lock: LockRecord }) {
             {tierBadge}
             {pendingBadge}
           </div>
-          <div className="text-[11px] text-gray-500 mt-0.5">
+          <div className="text-[11px] text-fg-muted mt-0.5">
             Locked at <strong className="text-gray-300 tabular-nums">{lock.lockedScore}</strong>
             {lock.priorScore !== null && lock.priorScore !== lock.lockedScore && (
               <> · prior LLM score <span className="text-gray-400 tabular-nums">{lock.priorScore}</span></>
@@ -283,10 +283,10 @@ function LockRow({ lock }: { lock: LockRecord }) {
             {lock.lockedBy && <> · by {lock.lockedBy}</>}
           </div>
           <div className="text-xs text-gray-300 mt-1 italic">
-            {lock.lockedReason || <span className="text-gray-600">no rationale captured</span>}
+            {lock.lockedReason || <span className="text-fg-muted">no rationale captured</span>}
           </div>
           {lock.url && (
-            <div className="text-[11px] text-gray-600 mt-0.5 truncate">
+            <div className="text-[11px] text-fg-muted mt-0.5 truncate">
               <a href={lock.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
                 {lock.url.replace(/^https?:\/\/(www\.)?/, '')}
               </a>
@@ -308,7 +308,7 @@ function LockRow({ lock }: { lock: LockRecord }) {
               >
                 confirm unlock
               </button>
-              <span className="text-gray-600">·</span>
+              <span className="text-fg-muted">·</span>
               <button
                 onClick={() => setUnlockOpen(false)}
                 disabled={actionState.type === 'submitting'}
@@ -320,7 +320,7 @@ function LockRow({ lock }: { lock: LockRecord }) {
           ) : (
             <button
               onClick={() => setUnlockOpen(true)}
-              className="text-[11px] text-gray-500 hover:text-score-skip"
+              className="text-[11px] text-fg-muted hover:text-score-skip"
             >
               unlock
             </button>

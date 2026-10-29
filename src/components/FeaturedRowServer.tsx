@@ -73,7 +73,7 @@ function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerSh
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
+            <div className="w-full h-full flex flex-col items-center justify-center text-fg-muted px-2" aria-hidden="true">
               <div className="text-2xl mb-1">🎭</div>
             </div>
           )}
@@ -95,7 +95,7 @@ function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerSh
       <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
         {show.title}
       </h3>
-      {caption && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{caption}</p>}
+      {caption && <p className="text-xs text-fg-muted mt-0.5 line-clamp-1">{caption}</p>}
     </Link>
   );
 }
@@ -139,7 +139,7 @@ export default function FeaturedRowServer({
           </Link>
         )}
       </div>
-      {subtitle && <p className="text-xs text-gray-500 mb-2">{subtitle}</p>}
+      {subtitle && <p className="text-xs text-fg-muted mb-2">{subtitle}</p>}
       <ScrollRow>
         {shows.map((show, index) => (
           // One high-priority image per page: the LCP poster. Four high

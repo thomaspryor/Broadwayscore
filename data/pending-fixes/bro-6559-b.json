@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6559-b",
   "planId": "34bddd4b-add6-4c84-8e26-02da5d27f681",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T21:46:20.530Z",
   "submitter": {
     "name": null,
@@ -111,5 +111,34 @@
         "description": "commercial.json: death-of-a-salesman.sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T21:54:30.441Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for death-of-a-salesman"
+    }
+  ],
+  "executedIn": "ci"
 }

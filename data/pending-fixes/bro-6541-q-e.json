@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6541-q-e",
+  "planId": "283cdade-8029-4fc2-92ab-65c781ab13ba",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:55:20.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest reviews for the new UK hub productions (part 5 of 6)",
+    "steps": [
+      "BRO-6541: ingest thestage review for my-romantic-history-tron-regional-2026",
+      "BRO-6541: ingest british-theatre review for my-romantic-history-tron-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for return-to-the-forest-aviva-studios-regional-2026",
+      "BRO-6541: ingest thestage review for return-to-the-forest-aviva-studios-regional-2026",
+      "BRO-6541: ingest thestage review for sense-and-sensibility-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest thestage review for the-last-cabaret-on-earth-oran-mor-regional-2024",
+      "BRO-6541: ingest thestage review for figures-in-extinction-aviva-studios-regional-2025",
+      "BRO-6541: ingest thestage review for the-high-life-the-musical-dundee-rep-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for the-merry-wives-of-windsor-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest thestage review for the-merry-wives-of-windsor-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest whatsonstage review for the-merry-wives-of-windsor-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest all-that-dazzles-uk review for little-shop-of-horrors-hope-mill-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for a-streetcar-named-desire-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for a-streetcar-named-desire-crucible-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for a-streetcar-named-desire-crucible-regional-2025",
+      "BRO-6541: ingest whatsonstage review for a-streetcar-named-desire-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for these-are-our-neighbours-citizens-regional-2026",
+      "BRO-6541: ingest thestage review for goodbye-dreamland-bowlarama-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for death-and-the-kings-horseman-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for righ-iasgair-the-fisher-king-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for shaun-the-sheeps-circus-show-aviva-studios-regional-2025",
+      "BRO-6541: ingest thestage review for the-history-boys-20th-anniversary-royal-bath-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for mel-brooks-young-frankenstein-hope-mill-regional-2025",
+      "BRO-6541: ingest thestage review for snow-white-and-the-seven-dwarfs-royal-bath-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-romantic-history-tron-regional-2026 --url=https://www.thestage.co.uk/reviews/my-romantic-history-review-tron-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for my-romantic-history-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-romantic-history-tron-regional-2026 --url=https://www.britishtheatreguide.info/reviews/my-romantic-his-tron-theatre-g-25663 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for my-romantic-history-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=return-to-the-forest-aviva-studios-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-return-to-the-forest-aviva-studios-manchester --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for return-to-the-forest-aviva-studios-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=return-to-the-forest-aviva-studios-regional-2026 --url=https://www.thestage.co.uk/reviews/return-to-the-forest-review-aviva-studios-manchester --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for return-to-the-forest-aviva-studios-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sense-and-sensibility-pitlochry-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/sense-and-sensibility-review-pitlochry-festival-theatre-kirsty-findlay-adam-nichols-frances-poet --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for sense-and-sensibility-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-cabaret-on-earth-oran-mor-regional-2024 --url=https://www.thestage.co.uk/reviews/the-last-cabaret-on-earth-review-oran-mor-glasgow-brian-james-osullivan-mark-mackinnon-a-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-last-cabaret-on-earth-oran-mor-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=figures-in-extinction-aviva-studios-regional-2025 --url=https://www.thestage.co.uk/reviews/figures-in-extinction-review-factory-international-aviva-studios-manchester-simon-mcburney-crystal-pite --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for figures-in-extinction-aviva-studios-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-high-life-the-musical-dundee-rep-regional-2026 --url=https://www.thestage.co.uk/reviews/the-high-life-the-musical-review-dundee-rep-theatre-alan-cumming-forbes-masson --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-high-life-the-musical-dundee-rep-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-merry-wives-of-windsor-royal-shakespeare-regional-2024 --url=https://www.allthatdazzles.co.uk/post/review-merry-wives-of-windsor-royal-shakespeare-theatre --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for the-merry-wives-of-windsor-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-merry-wives-of-windsor-royal-shakespeare-regional-2024 --url=https://www.thestage.co.uk/reviews/the-merry-wives-of-windsor-review-royal-shakespeare-theatre-stratford-blanche-mcintyre-william-shakespeare-samantha-spiro-siubhan-harrison-john-hodgkinson --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-merry-wives-of-windsor-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-merry-wives-of-windsor-royal-shakespeare-regional-2024 --url=https://www.whatsonstage.com/news/the-merry-wives-of-windsor-at-the-royal-shakespeare-theatre-review_1605324/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-merry-wives-of-windsor-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=little-shop-of-horrors-hope-mill-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-little-shop-of-horrors-hope-mill-theatre-liverpool-playhouse --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for little-shop-of-horrors-hope-mill-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-streetcar-named-desire-crucible-regional-2025 --url=https://www.allthatdazzles.co.uk/post/review-a-streetcar-named-desire-crucible-theatre-sheffield --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for a-streetcar-named-desire-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-streetcar-named-desire-crucible-regional-2025 --url=https://www.thestage.co.uk/reviews/a-streetcar-named-desire-review-crucible-theatre-sheffield-josh-seymour-joanna-vanderham-jake-dunn-amara-okereke --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-streetcar-named-desire-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-streetcar-named-desire-crucible-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-a-streetcar-named-desire-crucible-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for a-streetcar-named-desire-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-streetcar-named-desire-crucible-regional-2025 --url=https://www.whatsonstage.com/news/a-streetcar-named-desire-at-crucible-theatre-review_1668244/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for a-streetcar-named-desire-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=these-are-our-neighbours-citizens-regional-2026 --url=https://www.thestage.co.uk/reviews/these-are-our-neighbours-review-citizens-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for these-are-our-neighbours-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=goodbye-dreamland-bowlarama-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/goodbye-dreamland-bowlarama-review-oran-mor-glasgow-a-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for goodbye-dreamland-bowlarama-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=death-and-the-kings-horseman-crucible-regional-2025 --url=https://www.thestage.co.uk/reviews/death-and-the-kings-horseman-review-at-crucible-theatre-sheffield-by-wole-soyinka --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for death-and-the-kings-horseman-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=righ-iasgair-the-fisher-king-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/righ-iasgair-the-fisher-king-review-oran-mor-glasgow-a-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for righ-iasgair-the-fisher-king-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=shaun-the-sheeps-circus-show-aviva-studios-regional-2025 --url=https://www.thestage.co.uk/reviews/shaun-the-sheeps-circus-show-review-aviva-studios-manchester-aardman-circa --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for shaun-the-sheeps-circus-show-aviva-studios-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-history-boys-20th-anniversary-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/the-history-boys-20th-anniversary-review-theatre-royal-bath-alan-bennett-sean-linnen --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-history-boys-20th-anniversary-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-the-spy-who-came-in-from-the-cold-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mel-brooks-young-frankenstein-hope-mill-regional-2025 --url=https://www.thestage.co.uk/reviews/mel-brooks-young-frankenstein-review-hope-mill-theatre-manchester --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for mel-brooks-young-frankenstein-hope-mill-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=snow-white-and-the-seven-dwarfs-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/snow-white-and-the-seven-dwarfs-review-at-theatre-royal-bath-paul-milton --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for snow-white-and-the-seven-dwarfs-royal-bath-regional-2024"
+      }
+    ]
+  }
+}

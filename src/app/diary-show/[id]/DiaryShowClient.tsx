@@ -171,7 +171,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
 
   return (
     <div className="ph-mask max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16">
-      <Link href="/my-shows" className="text-sm text-gray-500 hover:text-white transition-colors inline-flex items-center gap-1 mb-4">
+      <Link href="/my-shows" className="text-sm text-fg-muted hover:text-white transition-colors inline-flex items-center gap-1 mb-4">
         ← My Shows
       </Link>
 
@@ -181,15 +181,15 @@ function Inner({ show }: { show: DiaryShowDetail }) {
             sources={[show.posterUrl]}
             alt={show.title}
             sizes="(min-width: 640px) 128px, 96px"
-            fallback={<div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>}
+            fallback={<div className="w-full h-full flex items-center justify-center text-fg-muted text-3xl">🎭</div>}
             className="w-full h-full object-cover"
           />
         </div>
         <div className="min-w-0 flex-1">
           <h1 className="text-xl sm:text-2xl font-extrabold text-white">{show.title}</h1>
           {show.venue && <p className="text-sm text-gray-400 mt-1">{show.venue}</p>}
-          {marketDetail && <p className="text-sm text-gray-500 mt-0.5">{marketDetail}</p>}
-          <p className="text-xs text-gray-600 mt-1">
+          {marketDetail && <p className="text-sm text-fg-muted mt-0.5">{marketDetail}</p>}
+          <p className="text-xs text-fg-muted mt-1">
             {show.openingDate
               ? `Opened ${formatShowDate(show.openingDate)}`
               : 'Opening date unknown'}
@@ -215,7 +215,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
                   Saw {new Date(latestReview.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               )}
-              {latestReview.review_text && <p className="text-xs text-gray-500 mt-1 italic truncate">{latestReview.review_text}</p>}
+              {latestReview.review_text && <p className="text-xs text-fg-muted mt-1 italic truncate">{latestReview.review_text}</p>}
             </div>
             <button type="button" onClick={handleEditClick} className="text-xs text-gray-400 hover:text-white flex-shrink-0">Edit</button>
           </div>

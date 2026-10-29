@@ -55,7 +55,7 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
       {/* Hero stat */}
       <div className="text-center pb-5 mb-5 border-b border-white/5">
         <div className="text-5xl sm:text-6xl font-bold text-brand leading-none mb-2 tabular-nums tracking-tight">
-          <span>{totalHits}</span><span className="text-gray-600 font-light mx-1">/</span><span>{totalCells}</span>
+          <span>{totalHits}</span><span className="text-fg-muted font-light mx-1">/</span><span>{totalCells}</span>
         </div>
         <p className="text-sm text-gray-300">
           Our #1 matches the Tony winner across {seasonCount} seasons &middot; <span className="text-white font-semibold">{accuracyPct}% match rate</span>
@@ -68,7 +68,7 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
           <div key={category}>
             <div className="flex items-baseline justify-between mb-1 sm:hidden">
               <span className="text-sm text-gray-300">{category}</span>
-              <span className="text-xs text-gray-500 tabular-nums">
+              <span className="text-xs text-fg-muted tabular-nums">
                 {hits}/{total} <span className="text-white font-bold ml-1">{pct}%</span>
               </span>
             </div>
@@ -80,7 +80,7 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
                   style={{ width: `${pct}%` }}
                 />
               </div>
-              <span className="hidden sm:inline text-xs text-gray-500 w-10 text-right tabular-nums">{hits}/{total}</span>
+              <span className="hidden sm:inline text-xs text-fg-muted w-10 text-right tabular-nums">{hits}/{total}</span>
               <span className="hidden sm:inline text-sm font-bold text-white w-14 text-right tabular-nums">{pct}%</span>
             </div>
           </div>
@@ -93,7 +93,7 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
         <div className="overflow-x-auto -mx-1">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-[11px] text-gray-500 uppercase tracking-wide">
+              <tr className="text-[11px] text-fg-muted uppercase tracking-wide">
                 <th className="text-left font-medium pb-2 px-1">Season</th>
                 {CAT_COLS.map(c => (
                   <th key={c} className="text-center font-medium pb-2 px-1">
@@ -110,7 +110,7 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
                   {CAT_COLS.map(c => {
                     const h = sum.categoryHighlights.find(x => x.category === c);
                     if (!h || !h.winnerTitle) {
-                      return <td key={c} className="text-center text-gray-600 py-2 px-1">–</td>;
+                      return <td key={c} className="text-center text-fg-muted py-2 px-1">–</td>;
                     }
                     const hit = h.topShowTitle === h.winnerTitle;
                     return (
@@ -134,21 +134,21 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
       {misses.length > 0 && (
         <div>
           <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Where we missed ({misses.length})</h3>
-          <p className="text-xs text-gray-500 mb-3">
+          <p className="text-xs text-fg-muted mb-3">
             Our #1 didn&apos;t match the Tony winner in these category-seasons. Most are voter-sentiment upsets (cultural significance, star power) that blended scores can&apos;t fully capture.
           </p>
           <div className="grid sm:grid-cols-2 gap-2">
             {misses.map(m => (
               <div key={`${m.seasonLabel}-${m.categoryLabel}`} className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
-                <div className="text-xs text-gray-500 mb-1">
+                <div className="text-xs text-fg-muted mb-1">
                   {m.seasonLabel} &middot; Best {m.categoryLabel}
                 </div>
                 <div className="text-sm text-gray-300 space-y-0.5">
                   <div>
-                    <span className="text-gray-500 text-xs">Our #1:</span> <span className="text-white">{m.ourPick}</span>
+                    <span className="text-fg-muted text-xs">Our #1:</span> <span className="text-white">{m.ourPick}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 text-xs">Tony:</span> <span className="text-amber-400 font-medium">{m.tonyWinner}</span>
+                    <span className="text-fg-muted text-xs">Tony:</span> <span className="text-amber-400 font-medium">{m.tonyWinner}</span>
                   </div>
                 </div>
               </div>

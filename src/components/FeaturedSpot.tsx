@@ -214,7 +214,7 @@ export default function FeaturedSpot({
                   {secondary.map((s) => (
                     <div key={s.label} className="text-center">
                       <div className="text-base lg:text-lg font-bold text-white leading-tight">{s.value}</div>
-                      <div className="text-[10px] lg:text-xs text-gray-500 uppercase tracking-wider">{s.label}</div>
+                      <div className="text-[10px] lg:text-xs text-fg-muted uppercase tracking-wider">{s.label}</div>
                     </div>
                   ))}
                 </div>

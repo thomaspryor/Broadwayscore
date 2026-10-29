@@ -60,7 +60,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileRev
             {review.url ? (
               <a href={review.url} target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-brand transition-colors truncate block">
                 {review.showTitle}
-                {showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
+                {showYear && <span className="text-fg-muted font-normal text-sm ml-1">({showYear})</span>}
                 <svg className="inline-block w-3 h-3 ml-1 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
@@ -68,7 +68,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileRev
             ) : (
               <Link href={`/show/${review.showSlug}`} className="font-bold text-white hover:text-brand transition-colors truncate block">
                 {review.showTitle}
-                {showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
+                {showYear && <span className="text-fg-muted font-normal text-sm ml-1">({showYear})</span>}
               </Link>
             )}
             <p className="text-gray-400 text-sm truncate">
@@ -87,7 +87,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileRev
 
         {/* Excerpt */}
         {review.quote && (
-          <p className="text-gray-500 text-sm mt-2 line-clamp-2 italic leading-relaxed">
+          <p className="text-fg-muted text-sm mt-2 line-clamp-2 italic leading-relaxed">
             &ldquo;{nestQuotes(review.quote)}&rdquo;
           </p>
         )}
@@ -210,7 +210,7 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
 
         {/* All outlets if multi */}
         {critic.outlets.length > 1 && (
-          <p className="text-gray-500 text-sm mb-4">
+          <p className="text-fg-muted text-sm mb-4">
             Also writes for: {critic.outlets.filter(o => o !== critic.primaryOutlet).map((o, i, arr) => {
               const outletReview = critic.reviews.find(r => r.outlet === o);
               const slug = outletReview?.outletSlug || '';
@@ -235,10 +235,10 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
         {/* Ranks */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">
           <span>{ordinalSuffix(critic.volumeRank)} most prolific critic</span>
-          <span className="text-gray-600">·</span>
+          <span className="text-fg-muted">·</span>
           <span>{ordinalSuffix(critic.generosityRank)} most generous scorer</span>
           {marketFilter !== 'all' && (
-            <span className="text-gray-600">· ranks across all reviews</span>
+            <span className="text-fg-muted">· ranks across all reviews</span>
           )}
         </div>
       </div>

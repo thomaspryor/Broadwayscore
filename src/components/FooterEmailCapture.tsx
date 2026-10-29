@@ -35,7 +35,7 @@ export default function FooterEmailCapture({ inputId = 'footer-email' }: { input
   return (
     <div className="py-4">
       <p className="text-sm font-semibold text-white mb-1">{EMAIL_LIST_COPY.heading(market)}</p>
-      <p className="text-xs text-gray-500 mb-3">{EMAIL_LIST_COPY.promise(market)}</p>
+      <p className="text-xs text-fg-muted mb-3">{EMAIL_LIST_COPY.promise(market)}</p>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <label htmlFor={inputId} className="sr-only">Email address</label>
         <input

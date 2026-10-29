@@ -35,7 +35,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                 sizes="(min-width: 640px) 128px, 112px"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 fallback={
-                  <div className="w-full h-full flex items-center justify-center text-gray-500" aria-hidden="true">
+                  <div className="w-full h-full flex items-center justify-center text-fg-muted" aria-hidden="true">
                     <div className="text-2xl">🎭</div>
                   </div>
                 }

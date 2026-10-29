@@ -725,7 +725,7 @@ export default function ImportShows({
       <button
         type="button"
         onClick={() => setStep('source')}
-        className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1"
+        className="text-xs text-fg-muted hover:text-white transition-colors flex items-center gap-1"
       >
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -762,7 +762,7 @@ export default function ImportShows({
                   <span className="text-lg">🎭</span>
                   <span className="text-sm font-bold text-white">Show Score</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-2">
+                <p className="text-xs text-fg-muted mb-2">
                   Paste your public profile link and your reviews and ratings import directly. No password needed.
                   Find it on show-score.com: tap your profile picture, then copy the page address.
                 </p>
@@ -789,7 +789,7 @@ export default function ImportShows({
               {onlySource === null && (
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-white/10" />
-                <span className="text-xs text-gray-600">or</span>
+                <span className="text-xs text-fg-muted">or</span>
                 <div className="flex-1 h-px bg-white/10" />
               </div>
               )}
@@ -801,7 +801,7 @@ export default function ImportShows({
                   <span className="text-lg">📱</span>
                   <span className="text-sm font-bold text-white">Mezzanine</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-2">In the app: Settings → Export Data → JSON, then upload the file.</p>
+                <p className="text-xs text-fg-muted mb-2">In the app: Settings → Export Data → JSON, then upload the file.</p>
                 <label className="btn-secondary text-sm gap-2 cursor-pointer inline-flex items-center">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -821,7 +821,7 @@ export default function ImportShows({
               {onlySource === null && (
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-white/10" />
-                <span className="text-xs text-gray-600">or</span>
+                <span className="text-xs text-fg-muted">or</span>
                 <div className="flex-1 h-px bg-white/10" />
               </div>
               )}
@@ -833,7 +833,7 @@ export default function ImportShows({
                   <span className="text-lg">📸</span>
                   <span className="text-sm font-bold text-white">Theatr</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-2">
+                <p className="text-xs text-fg-muted mb-2">
                   Theatr has no export, so upload screenshots instead. In the app: Profile → Activity, then screenshot
                   the feed from the top as you scroll down. Up to {THEATR_MAX_SCREENSHOTS} screenshots. We read the shows,
                   dates, your reactions and any reviews you wrote; the images aren&apos;t saved.
@@ -899,14 +899,14 @@ export default function ImportShows({
               {(Object.keys(reactionCountsInPreview) as TheatrReaction[]).length > 0 && (
                 <div className="mb-3 rounded-lg border border-white/10 bg-white/5 p-3">
                   <p className="text-xs font-bold text-white mb-0.5">Your Theatr reactions</p>
-                  <p className="text-xs text-gray-500 mb-2">
+                  <p className="text-xs text-fg-muted mb-2">
                     Theatr has no star ratings, so choose what each reaction means. Any review you wrote comes along too,
                     and you can change any rating later.
                   </p>
                   {(['recommend', 'mixed', 'dislike'] as TheatrReaction[]).filter(r => reactionCountsInPreview[r]).map(r => (
                     <label key={r} className="flex items-center justify-between gap-3 py-1 text-sm">
                       <span className="text-gray-300">
-                        {REACTION_LABELS[r]} <span className="text-gray-500">({reactionCountsInPreview[r]})</span>
+                        {REACTION_LABELS[r]} <span className="text-fg-muted">({reactionCountsInPreview[r]})</span>
                       </span>
                       <select
                         value={reactionRatings[r] ?? ''}
@@ -924,7 +924,7 @@ export default function ImportShows({
               {notices.map((n, i) => (
                 <p key={i} className="text-xs text-yellow-500 mb-1">{n}</p>
               ))}
-              <p className="text-xs text-gray-600 mb-4">
+              <p className="text-xs text-fg-muted mb-4">
                 Imported ratings are private until you choose to share them.
                 {source === 'show-score' && ' Show Score scores convert to the nearest half-star.'}
                 {/* Rated rows only: unrated ones import to the watchlist, not the
@@ -941,7 +941,7 @@ export default function ImportShows({
                   <h4 className="text-xs font-bold text-yellow-500 uppercase tracking-wider mb-1">
                     Not selected: date mismatch ({dateSuspectRows.length})
                   </h4>
-                  <p className="text-xs text-gray-500 mb-2">
+                  <p className="text-xs text-fg-muted mb-2">
                     The date you logged falls outside this production&apos;s run, so we didn&apos;t
                     auto-select it. You may have seen a different production (a tour or revival)
                     of the same title. Tick the box to import into the matched production anyway,
@@ -966,7 +966,7 @@ export default function ImportShows({
               {/* Diary entries */}
               {diaryRows.length > 0 && (
                 <div className="mb-4">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <h4 className="text-xs font-bold text-fg-muted uppercase tracking-wider mb-2">
                     Diary · {diaryRows.filter(({ entry }) => entry.selected).length} of {diaryRows.length} selected
                   </h4>
                   <div className="space-y-1 max-h-48 sm:max-h-[40vh] overflow-y-auto">
@@ -980,7 +980,7 @@ export default function ImportShows({
               {/* Watchlist entries */}
               {watchlistRows.length > 0 && (
                 <div className="mb-4">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <h4 className="text-xs font-bold text-fg-muted uppercase tracking-wider mb-2">
                     Watchlist · {watchlistRows.filter(({ entry }) => entry.selected).length} of {watchlistRows.length} selected
                   </h4>
                   <div className="space-y-1 max-h-32 sm:max-h-[30vh] overflow-y-auto">
@@ -994,7 +994,7 @@ export default function ImportShows({
               {/* Unmatched — grouped so they're findable, not scattered */}
               {unmatchedRows.length > 0 && (
                 <div className="mb-4">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <h4 className="text-xs font-bold text-fg-muted uppercase tracking-wider mb-2">
                     Not on Broadway Scorecard ({unmatchedRows.length})
                   </h4>
                   <div className="space-y-1 max-h-64 overflow-y-auto">
@@ -1037,7 +1037,7 @@ export default function ImportShows({
                   manually or tell us to add them. */}
               {unmatchedRows.length > 0 && (
                 <div className="mt-5 text-left">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <h4 className="text-xs font-bold text-fg-muted uppercase tracking-wider mb-2">
                     Not imported: {unmatchedRows.length} show{unmatchedRows.length === 1 ? '' : 's'} we couldn&apos;t find on Broadway Scorecard
                   </h4>
                   <ul className="space-y-1 max-h-40 overflow-y-auto text-sm text-gray-300">
@@ -1050,7 +1050,7 @@ export default function ImportShows({
                       </li>
                     ))}
                   </ul>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-fg-muted mt-2">
                     Try the <span className="text-gray-300">Add show</span> search (spellings sometimes differ), or{' '}
                     <a href="/feedback" className="text-brand hover:underline">ask us to add them</a>.
                   </p>
@@ -1121,20 +1121,20 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
           ) : entry.type === 'diary' ? (
             // Unrated diary entries import into the watchlist, not the diary —
             // say so instead of letting the "diary" section header mislead.
-            <span className="text-xs text-gray-600 flex-shrink-0">no rating → watchlist</span>
+            <span className="text-xs text-fg-muted flex-shrink-0">no rating → watchlist</span>
           ) : null}
         </div>
         {entry.match && !noMatch ? (
           // Mobile wraps — a truncated context line hid "you logged …" and
           // the status labels at 390px; sm+ keeps the single line.
-          <div className="text-xs text-gray-500 sm:truncate">
+          <div className="text-xs text-fg-muted sm:truncate">
             → {entry.match.title}
-            <span className="text-gray-600"> · {matchContext(entry.match)}</span>
+            <span className="text-fg-muted"> · {matchContext(entry.match)}</span>
             {entry.sourceDate && (
-              <span className="text-gray-600"> · you logged {formatDateSeen(entry.sourceDate)}</span>
+              <span className="text-fg-muted"> · you logged {formatDateSeen(entry.sourceDate)}</span>
             )}
             {entry.alreadyOwned && (
-              <span className="text-gray-600"> · already in your shows{entry.selected ? ', will add another viewing' : ''}</span>
+              <span className="text-fg-muted"> · already in your shows{entry.selected ? ', will add another viewing' : ''}</span>
             )}
             {entry.dateSuspect && (
               <span className="text-yellow-600"> · date is outside this run</span>
@@ -1145,7 +1145,7 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
         )}
       </div>
       {entry.listName && (
-        <span className="text-xs text-gray-600 flex-shrink-0">{entry.listName}</span>
+        <span className="text-xs text-fg-muted flex-shrink-0">{entry.listName}</span>
       )}
     </label>
     {(noMatch || entry.dateSuspect) && onFindIt && (
@@ -1156,10 +1156,10 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
           </button>
         )}
         {liveResolve?.status === 'searching' && (
-          <p className="text-xs text-gray-500">Searching the wider catalog...</p>
+          <p className="text-xs text-fg-muted">Searching the wider catalog...</p>
         )}
         {liveResolve?.status === 'empty' && (
-          <p className="text-xs text-gray-500">Not found in the wider catalog either.</p>
+          <p className="text-xs text-fg-muted">Not found in the wider catalog either.</p>
         )}
         {liveResolve?.status === 'error' && (
           <div>
@@ -1185,9 +1185,9 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
                   className="block w-full text-left text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded px-1.5 py-1"
                 >
                   {title}{venue ? ` · ${venue}` : ''}{year ? ` (${year})` : ''}
-                  {isCatalog && <span className="text-gray-500"> · on Broadway Scorecard</span>}
-                  {ratingsCount > 0 && <span className="text-gray-500"> · {ratingsCount} ratings</span>}
-                  {city && <span className="text-gray-500"> · {city}</span>}
+                  {isCatalog && <span className="text-fg-muted"> · on Broadway Scorecard</span>}
+                  {ratingsCount > 0 && <span className="text-fg-muted"> · {ratingsCount} ratings</span>}
+                  {city && <span className="text-fg-muted"> · {city}</span>}
                 </button>
               );
             })}

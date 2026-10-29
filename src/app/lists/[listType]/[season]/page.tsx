@@ -141,7 +141,7 @@ export default async function GoldListSeasonPage(props: { params: Promise<{ list
             {config.description}
             {isCurrent && <span className="ml-2 text-xs text-amber-400 font-medium">(In Progress)</span>}
           </p>
-          <p className="text-gray-500 text-sm mt-3">
+          <p className="text-fg-muted text-sm mt-3">
             {entries.length} {entries.length === 1 ? 'show' : 'shows'} | {season} Season
           </p>
         </div>
@@ -157,7 +157,7 @@ export default async function GoldListSeasonPage(props: { params: Promise<{ list
           >
             All-Time
           </Link>
-          <span className="text-gray-600">|</span>
+          <span className="text-fg-muted">|</span>
           <SeasonSelect listType={listType} seasons={allSeasons} currentSeason={season} />
         </div>
 
@@ -205,17 +205,17 @@ export default async function GoldListSeasonPage(props: { params: Promise<{ list
                       <>Opens {formatGoldListDate(entry.openingDate)}</>
                     ) : entry.closingDate ? (
                       <>
-                        <span className={entry.status === 'closed' ? 'text-gray-500' : 'text-amber-400'}>
+                        <span className={entry.status === 'closed' ? 'text-fg-muted' : 'text-amber-400'}>
                           {entry.status === 'closed' ? 'Closed' : 'Closes'} {formatGoldListDate(entry.closingDate)}
                         </span>
                         {entry.openingDate && (
-                          <span className="text-gray-500"> · Opened {formatGoldListDate(entry.openingDate)}</span>
+                          <span className="text-fg-muted"> · Opened {formatGoldListDate(entry.openingDate)}</span>
                         )}
                       </>
                     ) : entry.openingDate ? (
                       <>Opened {formatGoldListDate(entry.openingDate)}</>
                     ) : (
-                      <span className="text-gray-500">{entry.venue}</span>
+                      <span className="text-fg-muted">{entry.venue}</span>
                     )}
                   </p>
                 </div>
@@ -250,7 +250,7 @@ export default async function GoldListSeasonPage(props: { params: Promise<{ list
         )}
 
         {/* Footer */}
-        <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
+        <footer className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-8">
           <p>
             <strong className="text-gray-400">Methodology:</strong> {config.minDataRequirement}.
             {config.threshold > 0 && ` Minimum ${config.metricLabel.toLowerCase()}: ${config.threshold}${config.metricSuffix}.`}

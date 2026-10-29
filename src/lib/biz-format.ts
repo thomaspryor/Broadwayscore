@@ -7,6 +7,7 @@
 // ad-hoc copy; this file was almost a third fork of the same K/M/B logic.
 
 import { formatCurrency } from './formatting';
+import { formatSeasonMoney } from './season-profile';
 import type { CapitalSummary } from './commercial-metrics';
 export { formatCurrency };
 
@@ -32,7 +33,7 @@ export function formatCapitalization(amount: number | null | undefined, isEstima
 }
 
 export interface CapitalSummaryDisplay {
-  /** "~$42.0M", "~$42.0M+", "Undisclosed" or "None". */
+  /** "~$42M", "~$42M+", "Undisclosed" or "None". */
   value: string;
   /** "3 of 9 undisclosed" when some figures are missing, else null. */
   note: string | null;
@@ -57,7 +58,7 @@ export function formatCapitalSummary(summary: CapitalSummary): CapitalSummaryDis
   }
   const partial = undisclosedCount > 0;
   return {
-    value: `~${formatCurrency(knownTotal)}${partial ? '+' : ''}`,
+    value: `~${formatSeasonMoney(knownTotal)}${partial ? '+' : ''}`,
     note: partial ? `${undisclosedCount} of ${showCount} undisclosed` : null,
   };
 }

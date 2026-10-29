@@ -38,7 +38,7 @@ export default function FantasyLeaderboardPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
         {/* Header */}
         <div className="mb-8">
-          <a href="/fantasy" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+          <a href="/fantasy" className="text-sm text-fg-muted hover:text-gray-300 transition-colors">
             &larr; Fantasy League
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Leaderboard</h1>

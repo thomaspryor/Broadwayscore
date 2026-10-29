@@ -101,7 +101,7 @@ function CalendarSheet({ event, isOpen, onClose, onAdd }: {
             Google Calendar
           </a>
         </div>
-        <p className="text-xs text-gray-500 mt-3">Outlook or another app? Choose Apple Calendar. It saves a file any calendar can open.</p>
+        <p className="text-xs text-fg-muted mt-3">Outlook or another app? Choose Apple Calendar. It saves a file any calendar can open.</p>
       </div>
     </Modal>
   );

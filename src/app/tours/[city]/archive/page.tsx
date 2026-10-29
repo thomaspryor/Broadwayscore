@@ -52,7 +52,7 @@ export default async function CityArchivePage(props: { params: Promise<{ city: s
           <li key={s.id} className="py-3 flex items-baseline justify-between gap-4">
             <div className="min-w-0">
               <Link href={`/show/${s.slug}`} className="text-white hover:text-brand font-medium">{s.title}</Link>
-              <p className="text-xs text-gray-500 truncate">
+              <p className="text-xs text-fg-muted truncate">
                 {s.venue?.replace(/,\s*Chicago,\s*IL$/, '')}
                 {s.closingDate || s.openingDate ? ` · ${formatShowDate((s.closingDate || s.openingDate)!, year)}` : ''}
               </p>

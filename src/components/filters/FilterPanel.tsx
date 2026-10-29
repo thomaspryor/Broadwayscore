@@ -119,7 +119,7 @@ export function FilterPanel({
             );
             return (
               <div key={group.paramKey} className="py-3 border-b border-white/5">
-                <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-fg-muted mb-2.5">
                   {group.label}
                 </h3>
                 <FilterSinglePillGroup
@@ -136,7 +136,7 @@ export function FilterPanel({
           {groups.map((group, idx) => (
             <div key={group.paramKey}>
               <div className="py-3 border-b border-white/5">
-                <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-fg-muted mb-2.5">
                   {group.label}
                 </h3>
                 <FilterPillGroup
@@ -149,7 +149,7 @@ export function FilterPanel({
               {/* Insert Time period after Production (idx 0) */}
               {idx === 0 && (
                 <div className="py-3 border-b border-white/5">
-                  <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
+                  <h3 className="text-[11px] font-bold uppercase tracking-wider text-fg-muted mb-2.5">
                     Time period
                   </h3>
                   <TimePeriodSection dateRanges={dateRanges} onChange={onDateRangesChange} />

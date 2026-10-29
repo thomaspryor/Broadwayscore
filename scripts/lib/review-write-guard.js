@@ -1997,7 +1997,8 @@ function safeWriteReview(filePath, newData, options = {}) {
       // (fields the incoming write refreshed differ from `existing` and
       // survive). Manual URL decisions win first: a urlVerified /
       // urlManualOverride url — and any url on a _locked file — is only
-      // replaceable via force (mirrors mergeReviews' blockUrlChange).
+      // replaceable via force (mirrors mergeReviews' blockUrlChange). An auto
+      // pin (urlVerifiedAuto) also yields to approvedUrlRepair (BRO-6488).
       {
         const { urlCanonicallyChanged, applyUrlChangeInvariant, isUrlFlipFlop } = require('./url-change-invariant');
         // The protection block must NOT key on urlCanonicallyChanged: that
@@ -2015,11 +2016,18 @@ function safeWriteReview(filePath, newData, options = {}) {
           && (newData.url.includes('undefined') || !/^https?:\/\//i.test(newData.url));
         const normalizedUrlDiffers = existingUrlReal && typeof newData.url === 'string' && newData.url
           && _normalizeUrlForCollision(newData.url) !== _normalizeUrlForCollision(existing.url);
+        // An AUTO pin (urlVerifiedAuto, set by the flip-flop breaker) yields to
+        // the poller's real-review url or to an approved fix-plan url repair
+        // (BRO-6488: a file auto-pinned onto another production's url could not
+        // be repaired by any plan). A human pin, urlManualOverride and _locked
+        // still need force.
+        const autoPinLiftable = existing.urlVerifiedAuto === true && typeof newData.url === 'string'
+          && (options.approvedUrlRepair === true || _flipFlopShouldTakeIncoming(existing.url, newData.url, existing));
         if (existingUrlReal && incomingUrlGarbage && newData.url !== existing.url) {
           console.warn(`[review-write-guard] rejecting garbage url ${JSON.stringify(newData.url)} on ${path.basename(filePath)}: keeping ${existing.url}`);
           newData.url = existing.url;
         } else if (normalizedUrlDiffers && (lockedOverride || existing.urlManualOverride === true
-          || (existing.urlVerified === true && !(existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url, existing))))) {
+          || (existing.urlVerified === true && !autoPinLiftable))) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
         } else if (normalizedUrlDiffers && !force && options.approvedUrlRepair !== true
@@ -2075,7 +2083,7 @@ function safeWriteReview(filePath, newData, options = {}) {
             newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
           }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
-          const liftAutoPin = existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url, existing);
+          const liftAutoPin = autoPinLiftable;
           if (liftAutoPin) {
             // The auto-pin belonged to the non-review url being replaced; it must
             // not lock in the incoming url (its note names the old one).

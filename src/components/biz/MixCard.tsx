@@ -92,7 +92,7 @@ function GroupRows({ title, rows, columns }: { title: string; rows: ComparisonRo
           {columns.map((c) => (
             <td key={c.label} className="py-2 px-2 sm:px-4 text-center whitespace-nowrap">
               <span className={c.value === 'current' ? 'font-semibold text-white' : 'text-gray-300'}>{formatRowValue(r.format, r[c.value])}</span>
-              {r[DETAIL[c.value]] && <span className="block text-xs text-gray-500">{r[DETAIL[c.value]]}</span>}
+              {r[DETAIL[c.value]] && <span className="block text-xs text-fg-muted">{r[DETAIL[c.value]]}</span>}
             </td>
           ))}
         </tr>
@@ -110,7 +110,7 @@ export default function MixCard({ columns, overallRows, withinRows, linkGroups }
           <div key={c.label} className="grid grid-cols-[7.5rem_1fr] sm:grid-cols-[11rem_1fr] items-center gap-3">
             <div className="text-sm">
               <div className="text-white font-medium">{c.label}</div>
-              <div className="text-xs text-gray-500">{c.note}</div>
+              <div className="text-xs text-fg-muted">{c.note}</div>
             </div>
             <StackedBar m={c.mix} />
           </div>
@@ -147,7 +147,7 @@ export default function MixCard({ columns, overallRows, withinRows, linkGroups }
                     <span className={i === 0 ? 'font-semibold text-white' : 'text-gray-300'}>
                       {formatRowValue('pct', share(c.mix[s.key], c.mix.total))}
                     </span>
-                    <span className="block text-xs text-gray-500">{perSeason(c.mix[s.key], c.seasons)} of {perSeason(c.mix.total, c.seasons)}</span>
+                    <span className="block text-xs text-fg-muted">{perSeason(c.mix[s.key], c.seasons)} of {perSeason(c.mix.total, c.seasons)}</span>
                   </td>
                 ))}
               </tr>
@@ -157,7 +157,7 @@ export default function MixCard({ columns, overallRows, withinRows, linkGroups }
           <GroupRows title="Within each group" rows={withinRows} columns={columns} />
         </table>
       </div>
-      <p className="px-4 py-3 text-xs text-gray-500">
+      <p className="px-4 py-3 text-xs text-fg-muted">
         The average pools every production from the prior seasons (skipping 2019-20 and 2020-21), and its counts are
         per season. Specials (magic and holiday shows, for example) and any show we haven&apos;t classed as original or
         revival fill the rest of each bar. This season includes shows announced but not yet open.

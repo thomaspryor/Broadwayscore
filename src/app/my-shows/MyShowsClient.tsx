@@ -39,7 +39,7 @@ const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
   return { default: () => <div className="text-center py-12 text-red-400">Failed to load lists. Please refresh the page.</div> };
 }), {
-  loading: () => <div className="text-center py-12 text-gray-500">Loading lists...</div>,
+  loading: () => <div className="text-center py-12 text-fg-muted">Loading lists...</div>,
 });
 
 const SharePlansModal = dynamic(() => import('@/components/user/SharePlansModal'), { ssr: false });
@@ -716,7 +716,7 @@ export default function MyShowsClient() {
               Continue with Apple
             </button>
           </div>
-          <p className="mt-5 text-xs text-gray-600">By signing in, you agree to our Terms of Service and Privacy Policy.</p>
+          <p className="mt-5 text-xs text-fg-muted">By signing in, you agree to our Terms of Service and Privacy Policy.</p>
         </div>
       </div>
     );
@@ -805,7 +805,7 @@ export default function MyShowsClient() {
             <span className="text-gray-400"> added to your Watchlist</span>
           </span>
           <span className="flex items-center gap-2 ml-auto">
-            <span className="text-xs text-gray-500 hidden sm:inline">Seeing it when?</span>
+            <span className="text-xs text-fg-muted hidden sm:inline">Seeing it when?</span>
             <SharedDatePicker
               value=""
               onChange={(date) => {
@@ -825,7 +825,7 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => setJustAdded(null)}
-              className="text-xs text-gray-500 hover:text-white transition-colors px-1.5 py-1.5"
+              className="text-xs text-fg-muted hover:text-white transition-colors px-1.5 py-1.5"
             >
               Skip
             </button>
@@ -1081,7 +1081,7 @@ export default function MyShowsClient() {
                             title={year}
                             count={reviewsByYear[year].length}
                             hint={year === 'No date' && (
-                              <span className="normal-case font-normal tracking-normal text-gray-500"> (edit a show to add when you saw it)</span>
+                              <span className="normal-case font-normal tracking-normal text-fg-muted"> (edit a show to add when you saw it)</span>
                             )}
                           />
                         )}
@@ -1344,7 +1344,7 @@ function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: str
     return (
       <span className="relative z-[2] flex items-center gap-1 text-xs flex-shrink-0 pointer-events-auto">
         <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
-        <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirm(false); }} className="text-gray-500 hover:text-white">No</button>
+        <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirm(false); }} className="text-fg-muted hover:text-white">No</button>
       </span>
     );
   }
@@ -1384,7 +1384,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
           // inline-flex centering is load-bearing: the mobile 44px tap-target
           // rule inflates this inline <a>, and without it the pencil glyph
           // pinned to the box's top — the "floating pencil" (owner, 2026-07-17).
-          className="inline-flex items-center justify-center p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+          className="inline-flex items-center justify-center p-1 rounded-full text-fg-muted hover:text-white transition-colors"
           aria-label="Edit rating"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1395,7 +1395,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
         <button
           type="button"
           onClick={() => onRate({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen })}
-          className="inline-flex items-center justify-center p-1 rounded-full text-gray-600 hover:text-white transition-colors"
+          className="inline-flex items-center justify-center p-1 rounded-full text-fg-muted hover:text-white transition-colors"
           aria-label="Edit rating"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1418,7 +1418,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
       {confirmDelete && (
         <span className="relative z-[1] flex items-center gap-1 text-xs">
           <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete?.(); }} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
-          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(false); }} className="text-gray-500 hover:text-white">No</button>
+          <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(false); }} className="text-fg-muted hover:text-white">No</button>
         </span>
       )}
     </>
@@ -1439,7 +1439,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
       {/* Info — date above review text, consistent font sizes */}
       <div className="relative z-[1] pointer-events-none flex-1 min-w-0">
         <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
-        {show?.venue && <p data-testid="diary-venue" className="text-sm text-gray-500 truncate">{show.venue}</p>}
+        {show?.venue && <p data-testid="diary-venue" className="text-sm text-fg-muted truncate">{show.venue}</p>}
         {review.date_seen && (
           <p className="text-xs text-amber-400 mt-0.5">
             {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
@@ -1455,7 +1455,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
             read as "numbers without the actual stars" (owner, 2026-07-19). */}
         <div className="md:hidden mt-1"><StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel /></div>
         {review.review_text && (
-          <p className="text-xs text-gray-500 mt-0.5 line-clamp-1 italic">{review.review_text}</p>
+          <p className="text-xs text-fg-muted mt-0.5 line-clamp-1 italic">{review.review_text}</p>
         )}
       </div>
 
@@ -1678,7 +1678,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
 
       <div className="relative z-[1] flex-1 min-w-0">
         <h4 className="font-bold text-white text-base group-hover/wl:text-brand transition-colors truncate">{title}</h4>
-        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
+        {show?.venue && <p className="text-sm text-fg-muted truncate">{show.venue}</p>}
         {isClosingSoon && (
           <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
         )}
@@ -1686,7 +1686,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
           <span className={`inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded ${bookability.cls}`}>{bookability.text}</span>
         )}
         {show?.closingDate && (
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-fg-muted mt-1">
             Closes {formatShowDate(show.closingDate)}
           </p>
         )}
@@ -1726,7 +1726,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
           {confirmRemove ? (
             <span className="relative z-[1] flex items-center gap-1 text-xs">
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
-              <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(false); }} className="text-gray-500 hover:text-white">No</button>
+              <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(false); }} className="text-fg-muted hover:text-white">No</button>
             </span>
           ) : (
             <button

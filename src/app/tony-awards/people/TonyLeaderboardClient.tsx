@@ -135,21 +135,21 @@ export default function TonyLeaderboardClient({
       </div>
 
       {filter !== 'all' && (
-        <p className="text-xs text-gray-500 mb-3">
+        <p className="text-xs text-fg-muted mb-3">
           Showing {filter === 'acting' ? 'acting' : 'creative'} nominations only. People with both acting and creative nominations may have different totals in each view.
         </p>
       )}
 
       {/* No results */}
       {filtered.length === 0 && query.trim() && (
-        <p className="text-sm text-gray-500 py-8 text-center">No results for &ldquo;{query.trim()}&rdquo;</p>
+        <p className="text-sm text-fg-muted py-8 text-center">No results for &ldquo;{query.trim()}&rdquo;</p>
       )}
 
       {/* Table */}
       {filtered.length > 0 && <><div className="overflow-x-auto">
         <table className="w-full" aria-label="Tony Awards leaderboard ranked by wins">
           <thead>
-            <tr className="text-left text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide border-b border-white/10">
+            <tr className="text-left text-[10px] sm:text-xs text-fg-muted uppercase tracking-wide border-b border-white/10">
               <th className="pb-2 pr-2 w-8 text-center">#</th>
               <th className="pb-2 pr-3">Name</th>
               <th className="pb-2 pr-3 text-center w-16">Wins</th>
@@ -160,7 +160,7 @@ export default function TonyLeaderboardClient({
           <tbody>
             {visible.map((row, i) => (
               <tr key={row.ibdbPersonId || row.name} className="border-b border-white/5 hover:bg-white/[0.02]">
-                <td className="py-2.5 pr-2 text-center text-xs text-gray-500 tabular-nums">{ranks[i]}</td>
+                <td className="py-2.5 pr-2 text-center text-xs text-fg-muted tabular-nums">{ranks[i]}</td>
                 <td className="py-2.5 pr-3">
                   {row.profileUrl ? (
                     <Link href={row.profileUrl} className="text-sm font-medium text-white hover:text-brand transition-colors">
@@ -169,18 +169,18 @@ export default function TonyLeaderboardClient({
                   ) : (
                     <span className="text-sm font-medium text-gray-300">{row.name}</span>
                   )}
-                  <span className="text-xs text-gray-500 ml-1.5">
+                  <span className="text-xs text-fg-muted ml-1.5">
                     ({row.showCount} show{row.showCount !== 1 ? 's' : ''})
                   </span>
                   {/* Mobile-only: show categories under name since column is hidden */}
                   <div className="sm:hidden flex flex-wrap gap-1 mt-0.5">
                     {row.categories.slice(0, 3).map(cat => (
-                      <span key={cat} className="text-[10px] text-gray-600">
+                      <span key={cat} className="text-[10px] text-fg-muted">
                         {abbreviateCategory(cat)}
                       </span>
                     ))}
                     {row.categories.length > 3 && (
-                      <span className="text-[10px] text-gray-600">+{row.categories.length - 3}</span>
+                      <span className="text-[10px] text-fg-muted">+{row.categories.length - 3}</span>
                     )}
                   </div>
                 </td>
@@ -188,7 +188,7 @@ export default function TonyLeaderboardClient({
                   {row.wins > 0 ? (
                     <span className="text-sm font-bold text-yellow-300 tabular-nums">{row.wins}</span>
                   ) : (
-                    <span className="text-sm text-gray-600 tabular-nums">0</span>
+                    <span className="text-sm text-fg-muted tabular-nums">0</span>
                   )}
                 </td>
                 <td className="py-2.5 pr-3 text-center">
@@ -197,12 +197,12 @@ export default function TonyLeaderboardClient({
                 <td className="py-2.5 hidden sm:table-cell">
                   <div className="flex flex-wrap gap-1">
                     {row.categories.slice(0, 3).map(cat => (
-                      <span key={cat} className="text-[10px] px-1.5 py-0.5 rounded border bg-white/5 text-gray-500 border-white/10 whitespace-nowrap">
+                      <span key={cat} className="text-[10px] px-1.5 py-0.5 rounded border bg-white/5 text-fg-muted border-white/10 whitespace-nowrap">
                         {abbreviateCategory(cat)}
                       </span>
                     ))}
                     {row.categories.length > 3 && (
-                      <span className="text-[10px] text-gray-600">+{row.categories.length - 3}</span>
+                      <span className="text-[10px] text-fg-muted">+{row.categories.length - 3}</span>
                     )}
                   </div>
                 </td>
@@ -223,12 +223,12 @@ export default function TonyLeaderboardClient({
       </>}
 
       {/* Source note */}
-      <p className="text-xs text-gray-600 mt-6">
+      <p className="text-xs text-fg-muted mt-6">
         Data sourced from IBDB for Broadway shows tracked since 1970. Producing credits (Best Musical, Best Play, Best Revival) are not yet tracked individually.
       </p>
 
       {/* Footer links */}
-      <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+      <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
         <div className="flex flex-wrap gap-4">
           <Link href="/tony-awards" className="text-brand hover:text-brand-hover transition-colors">
             Tony Awards hub &rarr;

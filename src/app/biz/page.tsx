@@ -60,7 +60,7 @@ const PAGE_TITLE = "Broadway Profitability Database: Who Recouped and Who Didn't
 
 // Headline numbers for the hero and the meta description (BRO-6286).
 function formatBillions(n: number): string {
-  return n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : `$${Math.round(n / 1e6)}M`;
+  return n >= 999.5e6 ? `$${(n / 1e9).toFixed(1)}B` : `$${Math.round(n / 1e6)}M`;
 }
 
 const HERO = getCommercialHeadlineStats();
@@ -200,11 +200,11 @@ export default function BizDashboard() {
 
           <div className="mt-5 space-y-1">
             {freshness.length > 0 && (
-              <p className="text-xs text-gray-500" data-testid="biz-freshness">
+              <p className="text-xs text-fg-muted" data-testid="biz-freshness">
                 {freshness.join(' · ')}
               </p>
             )}
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-fg-muted">
               League grosses as published by Playbill and BroadwayWorld. Recoupment estimates are
               our model.{' '}
               <Link href="/methodology#commercial" className="text-brand underline hover:text-brand-hover">
@@ -423,7 +423,7 @@ export default function BizDashboard() {
         </section>
 
         {/* Footer */}
-        <footer className="text-sm text-gray-500 border-t border-white/5 pt-6">
+        <footer className="text-sm text-fg-muted border-t border-white/5 pt-6">
           <p className="mb-2">
             <strong className="text-gray-400">Note:</strong> Figures marked ~ are
             estimates. Capitalization and recoupment come from SEC filings and trade

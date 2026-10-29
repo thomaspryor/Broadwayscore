@@ -75,7 +75,7 @@ export function PlanRow({ onClick, ariaLabel, tile, title, subtitle, children, t
         {subtitle && <span className="block text-xs sm:text-sm text-gray-400 truncate mt-0.5">{subtitle}</span>}
         {children}
       </span>
-      <svg className="w-4 h-4 flex-shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <svg className="w-4 h-4 flex-shrink-0 text-fg-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
       </svg>
     </button>
@@ -155,7 +155,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
           <ModalCloseButton onClick={onClose} />
         </div>
 
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-gray-500 mb-2">Date</p>
+        <p className="text-xs font-bold uppercase tracking-[0.12em] text-fg-muted mb-2">Date</p>
         <DatePickerButton
           value={date || ''}
           onChange={(val) => { guarded(() => onDateChange(val || null))(); }}
@@ -174,7 +174,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
           </span>
         </DatePickerButton>
 
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-gray-500 mt-5 mb-2">Showtime</p>
+        <p className="text-xs font-bold uppercase tracking-[0.12em] text-fg-muted mt-5 mb-2">Showtime</p>
         <div className={`grid grid-cols-3 gap-2 ${saving ? 'opacity-60' : ''}`}>
           {slotButton('matinee', 'Matinee')}
           {slotButton('evening', 'Evening')}
@@ -192,7 +192,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
             </span>
           </DatePickerButton>
         </div>
-        {!date && <p className="text-xs text-gray-500 mt-2">Pick a date first, then choose a showtime.</p>}
+        {!date && <p className="text-xs text-fg-muted mt-2">Pick a date first, then choose a showtime.</p>}
         {slot && (
           <button
             type="button"
@@ -222,7 +222,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
 
 function slotClass(selected: boolean, disabled: boolean): string {
   const base = 'flex flex-col items-center justify-center h-16 rounded-xl ring-1 ring-inset transition-colors';
-  if (disabled) return `${base} ring-white/5 text-gray-600 cursor-not-allowed`;
+  if (disabled) return `${base} ring-white/5 text-fg-muted cursor-not-allowed`;
   return selected
     ? `${base} bg-brand/10 ring-brand text-brand`
     : `${base} bg-white/[0.06] ring-white/10 text-white hover:bg-white/10`;

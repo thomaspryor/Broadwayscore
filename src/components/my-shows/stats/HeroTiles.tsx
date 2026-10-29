@@ -53,7 +53,7 @@ export default function HeroTiles({ bundle, onOpen }: { bundle: StatsBundle; onO
         )}
       </div>
       {hoursEstimated && (
-        <p className="text-xs text-gray-500 mt-3">
+        <p className="text-xs text-fg-muted mt-3">
           Hours are estimated: {Math.round(diary.runtimeFallbackShare * 100)}% of these shows have no runtime on file, so they count as 2h 30m
           (musicals) or 2h (plays).
         </p>

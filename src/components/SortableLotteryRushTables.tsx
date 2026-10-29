@@ -30,7 +30,7 @@ function ExternalLinkIcon() {
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
-      className={`w-4 h-4 text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`}
+      className={`w-4 h-4 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`}
       fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
     >
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -57,7 +57,7 @@ function ActionLinkIcon() {
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );
@@ -222,7 +222,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                   >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-fg-muted'
                     }`}>
                       {index + 1}
                     </span>
@@ -236,7 +236,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                     </div>
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
-                      return platform ? <span className="block text-xs text-gray-500 sm:hidden truncate">{platform}</span> : null;
+                      return platform ? <span className="block text-xs text-fg-muted sm:hidden truncate">{platform}</span> : null;
                     })()}
                   </td>
                   <td className="py-3 px-4 text-right">
@@ -249,7 +249,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
                       const rawUrl = ensureHttps(lottery?.url || special?.url);
-                      if (!platform) return <span className="text-gray-500">–</span>;
+                      if (!platform) return <span className="text-fg-muted">–</span>;
                       if (rawUrl) {
                         const { url, isAffiliate } = buildAffiliateUrl(rawUrl, platform || '', 'lottery');
                         return (
@@ -283,7 +283,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                         </span>
                       )}
                       {!item.lotteryData.rush && !item.lotteryData.standingRoom && (
-                        <span className="text-gray-500">–</span>
+                        <span className="text-fg-muted">–</span>
                       )}
                     </div>
                   </td>
@@ -490,7 +490,7 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                   >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-fg-muted'
                     }`}>
                       {index + 1}
                     </span>
@@ -502,7 +502,7 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                       </Link>
                       {hasDetails && <span className="flex-shrink-0"><ChevronIcon open={isExpanded} /></span>}
                     </div>
-                    {item.show.venue && <span className="block text-xs text-gray-500 sm:hidden truncate">{item.show.venue}</span>}
+                    {item.show.venue && <span className="block text-xs text-fg-muted sm:hidden truncate">{item.show.venue}</span>}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-500/15 border border-white/15 text-gray-300 font-semibold">
@@ -517,7 +517,7 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                         <ExternalLinkIcon />
                       </a>
                     ) : (
-                      <span className="text-gray-500">In person</span>
+                      <span className="text-fg-muted">In person</span>
                     )}
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell">
@@ -732,7 +732,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                   >
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-fg-muted'
                     }`}>
                       {index + 1}
                     </span>
@@ -744,7 +744,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                       </Link>
                       {hasDetails && <span className="flex-shrink-0"><ChevronIcon open={isExpanded} /></span>}
                     </div>
-                    <span className="block text-xs text-gray-500 sm:hidden truncate">{rushType}</span>
+                    <span className="block text-xs text-fg-muted sm:hidden truncate">{rushType}</span>
                   </td>
                   <td className="py-3 px-4 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold">
@@ -769,7 +769,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         const prefix = rush ? ' + ' : '';
                         if (rawUrl) {
                           const { url, isAffiliate } = buildAffiliateUrl(rawUrl, digital.platform || '', 'rush');
-                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors" onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: digital.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate }); }}>{label}<ExternalLinkIcon /></a></>;
+                          return <>{prefix && <span className="text-fg-muted">{prefix}</span>}<a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors" onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: digital.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate }); }}>{label}<ExternalLinkIcon /></a></>;
                         }
                         return <span className="text-blue-400">{prefix}{label}</span>;
                       })()}
@@ -792,7 +792,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         </span>
                       )}
                       {!item.rushData.lottery && !item.rushData.standingRoom && (
-                        <span className="text-gray-500">–</span>
+                        <span className="text-fg-muted">–</span>
                       )}
                     </div>
                   </td>

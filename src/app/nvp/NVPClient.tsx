@@ -299,10 +299,10 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
                     sizes="(min-width: 640px) 112px, 96px"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
                     fallback={
-                      <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
+                      <div className="w-full h-full flex flex-col items-center justify-center text-fg-muted px-2" aria-hidden="true">
                         <div className="text-2xl mb-0.5">🎭</div>
                         {(show.status === 'previews' || show.status === 'upcoming') && (
-                          <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
+                          <div className="text-[9px] text-fg-muted text-center font-medium leading-tight">Images<br/>soon</div>
                         )}
                       </div>
                     }
@@ -325,7 +325,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
                     ) : show.closingDate ? (
                       <>
                         <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatOpeningDate(show.closingDate)}</span>
-                        <span className="text-gray-500"> • Opened {formatOpeningDate(show.openingDate)}</span>
+                        <span className="text-fg-muted"> • Opened {formatOpeningDate(show.openingDate)}</span>
                       </>
                     ) : (
                       <>Opened {formatOpeningDate(show.openingDate)}</>
@@ -402,7 +402,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
       {/* Off-Broadway */}
       {offBroadway.length > 0 && (
         <div className="mt-6">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">Off-Broadway</h3>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-fg-muted mb-3">Off-Broadway</h3>
           <div className="space-y-3">
             {offBroadway.map((show) => (
               <div key={show.title} className="card p-4 flex items-center gap-4 opacity-70">
@@ -426,7 +426,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
 
       {/* Footer Note */}
       <div className="mt-8 p-4 rounded-xl bg-surface-overlay/50 border border-white/5">
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-fg-muted text-center">
           This is an unofficial fan page. Visit <a href="https://www.nvpbroadway.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">nvpbroadway.com</a> for official NVP information.
         </p>
       </div>

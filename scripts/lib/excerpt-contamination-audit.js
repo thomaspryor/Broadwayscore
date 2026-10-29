@@ -261,9 +261,23 @@ function targetOwnsMatchedText(match, targetShowId, titles = [], fullText = '') 
   return targetShowPhrases(targetShowId, titles).some((p) => hay.includes(` ${p} `));
 }
 
+/**
+ * BRO-5622: a match found through the TARGET record's own wrongFullText says
+ * nothing about the text that scores it. wrongFullText is already quarantined
+ * (never scored), so junk-vs-junk collisions (parked-domain pages, site
+ * chrome copied into dozens of records) land here. On the 2026-10-29 corpus
+ * run every one of the 28 auto-flag-eligible rows fired this way and none
+ * through an excerpt, and 61 of the 148 scored, unflagged manual-review rows
+ * matched only through it. Such matches are reported, never flagged.
+ */
+function isQuarantinedTargetMatch(match) {
+  return !!match && match.targetField === 'wrongFullText';
+}
+
 function shouldAutoFlag(match) {
   return (
     match.confidence === 'high' &&
+    !isQuarantinedTargetMatch(match) &&
     !match.sameBase &&
     match.matchedField === 'wrongFullText' &&
     (match.matchedWrongProduction || match.matchedWrongShow) &&
@@ -390,5 +404,6 @@ module.exports = {
   buildExcerptIndex,
   findCrossShowMatches,
   shouldAutoFlag,
+  isQuarantinedTargetMatch,
   stillExcerptOnly,
 };

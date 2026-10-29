@@ -28,7 +28,7 @@ export function ModuleHeader({ title, caption, right }: { title: string; caption
 
 /** Small caps group label ("RISING MATCHES"). */
 export function GroupLabel({ children }: { children: ReactNode }) {
-  return <p className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">{children}</p>;
+  return <p className="text-xs font-bold uppercase tracking-wider text-fg-muted mb-2">{children}</p>;
 }
 
 const pressable =
@@ -57,7 +57,7 @@ export function StatTile({
     >
       <span className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums leading-tight truncate">{value}</span>
       <span className="text-xs text-gray-300 mt-1.5">{label}</span>
-      {sublabel && <span className="text-xs text-gray-500 mt-0.5 truncate">{sublabel}</span>}
+      {sublabel && <span className="text-xs text-fg-muted mt-0.5 truncate">{sublabel}</span>}
     </button>
   );
 }
@@ -72,7 +72,7 @@ export function RecordPill({ label, value, onClick, testId }: { label: string; v
       disabled={!onClick}
       className={`${pressable} rounded-lg bg-surface-overlay/70 hover:bg-surface-overlay border border-white/5 hover:border-white/10 px-3 py-2 min-h-[44px] min-w-0`}
     >
-      <span className="block text-xs text-gray-500 truncate">{label}</span>
+      <span className="block text-xs text-fg-muted truncate">{label}</span>
       <span className="block text-sm font-semibold text-white tabular-nums truncate mt-0.5">{value}</span>
     </button>
   );
@@ -114,7 +114,7 @@ export function ProgressRing({ pct, size = 104, stroke = 10, children }: { pct: 
   );
 }
 
-export function Chevron({ className = 'w-3.5 h-3.5 text-gray-500' }: { className?: string }) {
+export function Chevron({ className = 'w-3.5 h-3.5 text-fg-muted' }: { className?: string }) {
   return (
     <svg className={`flex-shrink-0 ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -132,7 +132,7 @@ export function ChipButton({ children, onClick, testId }: { children: ReactNode;
       className={`${pressable} inline-flex items-center gap-1.5 rounded-full bg-surface-overlay/70 hover:bg-surface-overlay border border-white/10 hover:border-white/20 px-3.5 min-h-[36px] text-xs font-semibold text-gray-200`}
     >
       {children}
-      <Chevron className="w-3 h-3 text-gray-500" />
+      <Chevron className="w-3 h-3 text-fg-muted" />
     </button>
   );
 }

@@ -62,6 +62,9 @@ const config: Config = {
           'low-bg': 'rgba(239, 68, 68, 0.15)',
           none: '#6b7280',
         },
+        // Readable muted text on dark surfaces: 6.3:1 on surface.raised, 4.6:1 on elevated (WCAG AA).
+        // Use instead of text-gray-500/600, which are 3.6:1 / 2.3:1. BRO-6511
+        'fg-muted': '#969da9',
         // Surface colors - deeper, richer darks
         surface: {
           DEFAULT: '#0f0f14',

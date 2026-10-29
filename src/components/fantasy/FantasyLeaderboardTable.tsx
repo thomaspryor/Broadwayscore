@@ -68,7 +68,7 @@ export default function FantasyLeaderboardTable() {
     return (
       <div className="text-center py-12">
         <div className="inline-block w-6 h-6 border-2 border-brand/30 border-t-brand rounded-full animate-spin" />
-        <p className="text-gray-500 text-sm mt-3">Loading leaderboard...</p>
+        <p className="text-fg-muted text-sm mt-3">Loading leaderboard...</p>
       </div>
     );
   }
@@ -86,7 +86,7 @@ export default function FantasyLeaderboardTable() {
         {emailFilter && (
           <button
             onClick={() => setEmailFilter('')}
-            className="text-xs text-gray-500 hover:text-white transition-colors"
+            className="text-xs text-fg-muted hover:text-white transition-colors"
           >
             Clear
           </button>
@@ -104,7 +104,7 @@ export default function FantasyLeaderboardTable() {
         {leagueFilter && (
           <button
             onClick={() => setLeagueFilter('')}
-            className="text-xs text-gray-500 hover:text-white transition-colors"
+            className="text-xs text-fg-muted hover:text-white transition-colors"
           >
             Clear
           </button>
@@ -139,7 +139,7 @@ export default function FantasyLeaderboardTable() {
             // A failed load must not read as an empty season (BRO-5548 audit).
             <>
               <p className="text-gray-400 text-lg mb-2">{debouncedEmail ? 'That search did not work' : 'The leaderboard did not load'}</p>
-              <p className="text-gray-500 text-sm mb-6">{error}</p>
+              <p className="text-fg-muted text-sm mb-6">{error}</p>
               <button
                 type="button"
                 onClick={() => setRetry(n => n + 1)}
@@ -151,12 +151,12 @@ export default function FantasyLeaderboardTable() {
           ) : emailNotFound ? (
             <>
               <p className="text-gray-400 text-lg mb-2">No team found for that email</p>
-              <p className="text-gray-500 text-sm">Check the address you drafted with and try again.</p>
+              <p className="text-fg-muted text-sm">Check the address you drafted with and try again.</p>
             </>
           ) : (
             <>
               <p className="text-gray-400 text-lg mb-2">No entries yet</p>
-              <p className="text-gray-500 text-sm mb-6">Be the first to draft a team!</p>
+              <p className="text-fg-muted text-sm mb-6">Be the first to draft a team!</p>
               <a
                 href="/fantasy/draft"
                 className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
@@ -176,12 +176,12 @@ export default function FantasyLeaderboardTable() {
     <div className="space-y-2">
       {filterBar}
 
-      <p className="text-xs text-gray-500 px-1">
+      <p className="text-xs text-fg-muted px-1">
         {entries.length} {entries.length === 1 ? 'team' : 'teams'}{debouncedLeague ? ' in this league' : ''}. Tap a team to see its picks.
       </p>
 
       {/* Header row */}
-      <div className="hidden sm:grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 px-4 py-2 text-xs text-gray-500 uppercase tracking-wider">
+      <div className="hidden sm:grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 px-4 py-2 text-xs text-fg-muted uppercase tracking-wider">
         <span>#</span>
         <span>Team</span>
         <span className="text-right">Critics</span>
@@ -208,7 +208,7 @@ export default function FantasyLeaderboardTable() {
           >
             {/* Rank */}
             <span className={`text-lg font-bold ${
-              !ranked ? 'text-gray-500' : entry.rank === 1 ? 'text-brand' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-brand-hover' : 'text-gray-500'
+              !ranked ? 'text-fg-muted' : entry.rank === 1 ? 'text-brand' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-brand-hover' : 'text-fg-muted'
             }`}>
               {ranked ? entry.rank : '–'}
             </span>
@@ -239,24 +239,24 @@ export default function FantasyLeaderboardTable() {
           {/* Expanded picks */}
           {expandedRank === idx && (
             <div className="ml-12 mr-4 mb-2 mt-1 bg-surface-raised/50 rounded-lg p-3 space-y-1.5">
-              <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Picks</p>
+              <p className="text-xs text-fg-muted uppercase tracking-wider mb-2">Picks</p>
               {entry.picks.map((pick, i) => (
                 <div key={pick.showId} className="flex items-center justify-between text-sm gap-3">
                   <span className="text-gray-300">
-                    <span className="text-gray-500 mr-2">{i + 1}.</span>
+                    <span className="text-fg-muted mr-2">{i + 1}.</span>
                     {pick.showTitle}
-                    <span className="text-gray-500 ml-2">(${pick.price})</span>
+                    <span className="text-fg-muted ml-2">(${pick.price})</span>
                     {pick.scoreLocked && (
-                      <span className="text-gray-500 ml-2 text-xs">drafted after opening</span>
+                      <span className="text-fg-muted ml-2 text-xs">drafted after opening</span>
                     )}
                   </span>
-                  <span className={`font-mono ${pick.points > 0 ? 'text-emerald-400' : 'text-gray-500'}`}>
+                  <span className={`font-mono ${pick.points > 0 ? 'text-emerald-400' : 'text-fg-muted'}`}>
                     {pick.points.toFixed(1)}
                   </span>
                 </div>
               ))}
               {entry.scoringFrom && (
-                <p className="text-xs text-gray-500 pt-1">
+                <p className="text-xs text-fg-muted pt-1">
                   Box office counted from the week of {new Date(`${entry.scoringFrom}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}.
                 </p>
               )}
@@ -267,7 +267,7 @@ export default function FantasyLeaderboardTable() {
       })}
 
       {error && (
-        <p className="text-center text-xs text-gray-500 mt-4">{error}</p>
+        <p className="text-center text-xs text-fg-muted mt-4">{error}</p>
       )}
     </div>
   );

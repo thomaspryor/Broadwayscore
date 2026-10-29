@@ -56,7 +56,7 @@ export default function VisualFixturePage() {
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-surface-raised">
                 <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                  <span className="text-4xl text-gray-500">🎭</span>
+                  <span className="text-4xl text-fg-muted">🎭</span>
                 </div>
               </div>
             </div>
@@ -78,9 +78,9 @@ export default function VisualFixturePage() {
               {/* Meta line — inline text wrapping (the bug this catches) */}
               <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
                 <span className="text-gray-300">Golden Theatre</span>
-                <span className="whitespace-nowrap"> <span className="text-gray-500">&middot;</span> 2h 45m (incl. intermission)</span>
-                <span> <span className="text-gray-500">&middot;</span> <span className="text-amber-400">Closes Dec 15, 2024</span></span>
-                <span> <span className="text-gray-500">&middot;</span> Opened Apr 25, 2024</span>
+                <span className="whitespace-nowrap"> <span className="text-fg-muted">&middot;</span> 2h 45m (incl. intermission)</span>
+                <span> <span className="text-fg-muted">&middot;</span> <span className="text-amber-400">Closes Dec 15, 2024</span></span>
+                <span> <span className="text-fg-muted">&middot;</span> Opened Apr 25, 2024</span>
               </p>
 
               {/* Score section */}
