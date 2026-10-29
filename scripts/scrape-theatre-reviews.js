@@ -476,7 +476,7 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
 const INDEX_PATH = path.join(ARCHIVE_DIR, '_roundup-index.json');
 const COVERAGE_PATH = path.join(__dirname, '..', 'data', 'audit', 'theatre-reviews-coverage.json');
 const SCOPE_OVERRIDES_PATH = path.join(__dirname, '..', 'data', 'theatre-reviews-scope-overrides.json');
-const MAX_CONSECUTIVE_FETCH_FAILURES = 8;
+const { nextFetchFailureState } = require('./lib/tr-fetch-failure');
 // Fetch time budget (the workflow timeout is 90 min). A cold archive drains over several runs
 // instead of timing out and losing the index; TR_FETCH_BUDGET_MIN overrides it.
 const FETCH_BUDGET_MS = (Number(process.env.TR_FETCH_BUDGET_MIN) || 65) * 60 * 1000;
@@ -558,6 +558,8 @@ async function main() {
   const index = readJson(INDEX_PATH, {});
   const entries = [];
   let consecutiveFailures = 0;
+  let movedFailures = 0;
+  let st = { abort: false };
   let aborted = false;
   let budgetHit = false;
   let fetchesSinceCheckpoint = 0;
@@ -600,16 +602,18 @@ async function main() {
         // coverage report unwritten (BRO-6089).
         let moved = false;
         try { moved = require('./lib/scraper').wasUrlMismatch(roundup.url); } catch { /* optional */ }
-        if (!moved) consecutiveFailures++;
-        console.log(`    ✗ Failed to fetch (${moved ? 'url moved, not counted' : consecutiveFailures + ' in a row'})`);
+        // A redirecting round-up is a moved page, not an outage: separate, larger cap (BRO-6089).
+        st = nextFetchFailureState({ consecutive: consecutiveFailures, moved: movedFailures }, { failed: true, moved });
+        consecutiveFailures = st.consecutive; movedFailures = st.moved;
+        console.log(`    ✗ Failed to fetch (${moved ? 'url moved, ' + movedFailures : consecutiveFailures} in a row)`);
         entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: 'fetch-failed' });
-        if (consecutiveFailures >= MAX_CONSECUTIVE_FETCH_FAILURES) {
+        if (st.abort) {
           aborted = true;
           console.log('  ✗ Too many consecutive fetch failures: stopping fetches (scraper spend guard); remaining round-ups are reported as skipped');
         }
         continue;
       }
-      consecutiveFailures = 0;
+      consecutiveFailures = 0; movedFailures = 0;
       const v = checkArchiveCategory(html, show, siblingCategoriesByShowId()[show.id]);
       if (!v.ok) {
         console.log(`    ✗ archive guard (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);

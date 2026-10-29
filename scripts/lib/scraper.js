@@ -1504,6 +1504,7 @@ function pageChainOrder(flags) {
  * @returns {Promise<{content: string, format: string, source: string}>}
  */
 async function fetchPage(url, options = {}) {
+  _lastUrlMismatchUrl = null; // BRO-6089: per-call state, never leaks from an earlier fetch
   url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
   // EDGAR XML needs an identifying admin contact, and must retain its tags.
   // Keep SEC access behind the same fetchPage entry point as other sources.
@@ -2284,7 +2285,7 @@ const URL_MISMATCH_MAX_ENTRIES = 10000;
  * @param {string} source - Which fetch tier returned the mismatch (e.g. 'Bright Data')
  * @param {string} hostname - Hostname of the requested URL (for quick filtering)
  */
-// BRO-6089: last URL whose every provider answered with a different page. Lets a
+// BRO-6089: URL for which at least one provider answered with a different page during the latest fetchPage call. Lets a
 // caller tell "this page is gone or moved" from "the providers are down".
 let _lastUrlMismatchUrl = null;
 
