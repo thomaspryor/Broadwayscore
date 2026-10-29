@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T05:50:23.390Z",
+  "timestamp": "2026-10-29T06:19:26.801Z",
   "stats": {
-    "totalReviews": 66402,
-    "alreadyFlagged": 22065,
+    "totalReviews": 66470,
+    "alreadyFlagged": 22074,
     "dateGuardCatches": 233,
-    "directorMismatch": 2695,
-    "tvFilmSignals": 1891,
-    "londonSignals": 3213,
+    "directorMismatch": 2699,
+    "tvFilmSignals": 1892,
+    "londonSignals": 3214,
     "offBroadwaySignals": 606,
     "yearMismatch": 244,
-    "noPublishDate": 6469
+    "noPublishDate": 6451
   },
   "findings": [
     {
@@ -6297,7 +6297,7 @@
     {
       "showId": "becky-shaw-2026",
       "file": "nysr--frank-scheck.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "April 6, 2026",
       "url": "https://nystagereview.com/2026/04/06/becky-shaw-social-climbing-in-the-21st-century/",
       "findings": [
@@ -6325,6 +6325,7 @@
     {
       "showId": "becky-shaw-2026",
       "file": "stagebuddy--unknown.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/becky-shaw",
       "findings": [
@@ -6945,6 +6946,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2014",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "April 22, 2014",
+      "url": "http://www.variety.com/review/VE1117939874.html?categoryid=33&cs=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from blithe-spirit-2009"
         }
       ]
     },
@@ -10354,7 +10369,7 @@
     {
       "showId": "chinese-republicans-off-broadway-2026",
       "file": "nysr--steven-suskin.json",
-      "score": 59,
+      "score": 56,
       "publishDate": "February 26, 2026",
       "url": "https://nystagereview.com/2026/02/26/chinese-republicans-clever-venom-tipped-arrows-ineffectively-aimed/",
       "findings": [
@@ -20649,6 +20664,7 @@
     {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "stageandcinema--rob-lester.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://stageandcinema.com/2026/01/19/going-bacharach-songs-of-an-icon-review/",
       "findings": [
@@ -28061,7 +28077,7 @@
     {
       "showId": "john-proctor-is-the-villain-2025",
       "file": "guardian--jesse-hassenger.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "April 14, 2025",
       "url": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
       "findings": [
@@ -28103,7 +28119,7 @@
     {
       "showId": "john-proctor-is-the-villain-2025",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 59,
+      "score": 61,
       "publishDate": "April 14, 2025",
       "url": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
       "findings": [
@@ -28131,7 +28147,7 @@
     {
       "showId": "john-proctor-is-the-villain-2025",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2025-04-14T23:00:05",
       "url": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
       "findings": [
@@ -29077,7 +29093,7 @@
       "showId": "kimberly-akimbo-off-broadway-2021",
       "file": "nysr--david-finkle.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "December 8th, 2021",
       "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-david-lindsay-abaires-akimbo-play-now-sings-out/",
       "findings": [
         {
@@ -29091,7 +29107,7 @@
       "showId": "kimberly-akimbo-off-broadway-2021",
       "file": "nysr--frank-scheck.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "December 9th, 2021",
       "url": "https://nystagereview.com/2021/12/08/kimberly-akimbo-a-musical-as-skewed-as-its-title-character/",
       "findings": [
         {
@@ -29231,7 +29247,7 @@
       "showId": "kimberly-akimbo-off-broadway-2021",
       "file": "thewrap--robert-hofler.json",
       "score": 91,
-      "publishDate": null,
+      "publishDate": "December 8th, 2021",
       "url": "https://www.thewrap.com/kimberly-akimbo-off-broadway-review-victoria-clark-tesori/",
       "findings": [
         {
@@ -29259,7 +29275,7 @@
       "showId": "kimberly-akimbo-off-broadway-2021",
       "file": "vulture--helen-shaw.json",
       "score": 91,
-      "publishDate": null,
+      "publishDate": "December 8th, 2021",
       "url": "https://www.vulture.com/2021/12/theater-review-kimberly-akimbo-atlantic.html",
       "findings": [
         {
@@ -33611,6 +33627,37 @@
       "score": 78,
       "publishDate": "2022-12-12",
       "url": "https://observer.com/2022/12/review-sondheims-brilliant-flop-merrily-we-roll-along-is-smartly-revived/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-off-broadway-2022",
+      "file": "the-komisar-scoop--lucy-komisar.json",
+      "publishDate": null,
+      "url": "https://www.thekomisarscoop.com/2022/12/merrily-we-roll-along-is-sondheims-cynical-take-on-hollywood-movie-moguls-ditching-idealism-for-cash/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-off-broadway-2022",
+      "file": "theater-life--samuel-l-leiter.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/merrily-we-roll-along-1-2-2/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47071,6 +47118,20 @@
       "score": 57,
       "publishDate": "2022-04-06",
       "url": "https://www.nytimes.com/2022/04/06/theater/suffs-review-public-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "talkinbroadway--james-wilson.json",
+      "score": null,
+      "publishDate": "April 17th, 2022",
+      "url": "https://www.talkinbroadway.com/page/ob/04_21_22.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -70145,6 +70206,7 @@
     {
       "showId": "anna-christie-off-broadway-2025",
       "file": "stageandcinema--carol-rocamora.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://stageandcinema.com/2025/12/23/review-anna-christie-st-anns/",
       "findings": [
@@ -73946,6 +74008,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "independent--paul-taylor.json",
+      "publishDate": "2017-07-25",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cat-on-a-hot-tin-roof-review-apollo-theatre-a7859331.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -98561,7 +98636,7 @@
     {
       "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
       "file": "nysr--frank-scheck.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2025-05-08",
       "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
       "findings": [
