@@ -87,7 +87,7 @@ test('review blockers (BRO-6539): voided/needed/undone comments are not answers;
   assert.equal(cardAlreadySettled([{ body: 'Waiting on your approval: 2 crops', createdAt: '2026-10-01T10:00:00Z' }, { body: 'Owner decision: Approve', createdAt: '2026-10-02T10:00:00Z' }], fp1), null);
   // a rejection written by the real comment builder is not a closing answer
   const link = require('../../src/lib/owner-decision-link.js');
-  const rejected = { body: '**Owner decision**\n\nChose: Rejected', createdAt: '2026-10-29T11:00:00Z' };
+  const rejected = { body: link.buildAnswerComment({ choiceLabel: 'Rejected', text: '', ref: 'r1', now: new Date('2026-10-29T11:00:00Z') }), createdAt: '2026-10-29T11:00:00Z' };
   assert.equal(answerState([ask('2026-10-29T10:00:00Z'), rejected]).answered, false);
   assert.equal(answerState([ask('2026-10-29T10:00:00Z'), { body: 'Visual approval ref VQA-1', createdAt: '2026-10-29T11:00:00Z' }, { body: 'Visual approval stale VQS-1', createdAt: '2026-10-29T12:00:00Z' }]).answered, false);
   assert.ok(link);
