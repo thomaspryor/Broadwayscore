@@ -248,16 +248,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-29T07:28:32.901Z",
-      "lastSeen": "2026-10-29T08:57:48.955Z",
-      "lastNotifiedAt": "2026-10-29T07:28:32.901Z",
-      "lastSurfacedAt": "2026-10-29T07:28:32.901Z",
-      "notifyCount": 184,
+      "incidentOpenedAt": "2026-10-29T13:21:52.482Z",
+      "lastSeen": "2026-10-29T13:21:52.482Z",
+      "lastNotifiedAt": "2026-10-29T13:21:52.482Z",
+      "lastSurfacedAt": "2026-10-29T13:21:52.482Z",
+      "notifyCount": 185,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
-      "sweptTracker": "BRO-6422",
-      "silentRefires": 1
+      "sweptTracker": "BRO-6422"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4340,26 +4339,23 @@
       "resolveReason": "absent"
     },
     "test-yml:red:Lint Workflows:1ff49e04": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
-      "incidentOpenedAt": "2026-10-27T06:18:20.169Z",
-      "lastSeen": "2026-10-27T06:59:56.889Z",
-      "lastNotifiedAt": "2026-10-27T06:18:20.169Z",
+      "incidentOpenedAt": "2026-10-29T13:21:51.837Z",
+      "lastSeen": "2026-10-29T13:21:51.837Z",
+      "lastNotifiedAt": "2026-10-29T13:21:51.837Z",
       "lastSurfacedAt": null,
-      "notifyCount": 4,
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-6423",
+      "linearIdentifier": "BRO-6520",
       "dispatch": {
         "requestedAt": "2026-10-27T06:18:20.169Z",
         "mode": "dispatch-at-filing",
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
-      },
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-27T06:59:54.021Z",
-      "resolveReason": "job-green"
+      }
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
@@ -15077,7 +15073,10 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-6505",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "absentRunIds": [
+        "40860133605"
+      ]
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
       "status": "resolved",
@@ -29624,6 +29623,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:045ee448": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
+      "firstSeen": "2026-10-29T13:21:52.232Z",
+      "incidentOpenedAt": "2026-10-29T13:21:52.232Z",
+      "lastSeen": "2026-10-29T13:21:52.232Z",
+      "lastNotifiedAt": "2026-10-29T13:21:52.232Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6522"
     },
     "land:land/bro-6485-timeout-author": {
       "status": "open",

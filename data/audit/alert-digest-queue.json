@@ -298,6 +298,37 @@
     "queuedAt": "2026-10-29T10:43:33.866Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 15 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Lint Workflows, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40860133605",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40860133605)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40852767178)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "15"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Lint Workflows, Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-29T13:21:52.482Z"
+  },
+  {
     "conditionKey": "land:land/bro-6485-timeout-author",
     "title": "Landing blocked: rebase red on land/bro-6485-timeout-author",
     "description": "land.yml did not land land/bro-6485-timeout-author: the rebase gate went red at b6c79de665. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6485-timeout-author @ b6c79de665 (origin/land/bro-6485-timeout-author) → origin/main @ 14e34442f2 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 47331c9fe3: Rebasing (1/4) error: could not apply e033f6150e4... fix(census): count Time Out pages only when a critic is named; LA/Chicago houses as other market (BRO-6485) hint: Resolve all conflicts manually, mark th Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40843398230",
