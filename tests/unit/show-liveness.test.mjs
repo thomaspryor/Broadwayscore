@@ -162,7 +162,7 @@ test('zero-review-catchup: CATCHUP_LIVENESS ≡ old `s.status === \'open\'`', ()
   }
 });
 
-test('zero-review-catchup: selectCatchupCandidates still dispatches only status=open (a recently closed zero-review show is not a target)', () => {
+test('zero-review-catchup: open rows come first; a recently closed never-attempted row is backfilled once (BRO-4290); previews are not targets', () => {
   const now = Date.UTC(2026, 8, 28);
   const opened = new Date(now - 10 * 86_400_000).toISOString().slice(0, 10);
   const shows = [
@@ -170,8 +170,9 @@ test('zero-review-catchup: selectCatchupCandidates still dispatches only status=
     { id: 'closed-yesterday', status: 'closed', openingDate: opened, closingDate: daysAgo(1) },
     { id: 'previews-show', status: 'previews', openingDate: opened },
   ];
-  const { batch } = selectCatchupCandidates(shows, [], {}, { now });
-  assert.deepEqual(batch, ['open-show']);
+  assert.deepEqual(selectCatchupCandidates(shows, [], {}, { now }).batch, ['open-show', 'closed-yesterday']);
+  const attempted = { 'closed-yesterday': { attempts: 1, firstAt: daysAgo(2) } };
+  assert.deepEqual(selectCatchupCandidates(shows, [], attempted, { now }).batch, ['open-show']);
 });
 
 test('opening-night-completeness: STALE_UPCOMING_LIVENESS ≡ old STALE_UPCOMING_STATUSES = {open}', () => {

@@ -1784,7 +1784,8 @@ jobs:
         with:
           workflow-name: update-show-status-trigger-data-agent
 
-  # Safety net: catch open shows that slipped through without review collection
+  # Safety net: catch open shows that slipped through without review collection,
+  # plus one try each for closed rows that never sat in 'open' (BRO-4290)
   catchup-zero-review-shows:
     needs: update-shows
     if: always() && needs.update-shows.result == 'success'
@@ -1806,7 +1807,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Find open shows with zero reviews
+      - name: Find zero-review shows (open, plus one try for closed)
         id: find-gaps
         run: |
           # Selection logic lives in scripts/lib/zero-review-catchup.js
@@ -1844,6 +1845,13 @@ jobs:
               echo "dispatched=false" >> $GITHUB_OUTPUT
             fi
           fi
+
+      # BRO-4290 guard, advisory per CLAUDE.md §19: red when a zero-review row
+      # can never be gathered (no openingDate/previewsStartDate) or has waited
+      # 14+ days past grace without a single attempt. Never blocks dispatch.
+      - name: Guard - stranded zero-review rows (advisory)
+        continue-on-error: true
+        run: node scripts/find-zero-review-catchup-gaps.js --fail-on-stranded
 
       # Attempt is recorded only after a CONFIRMED successful dispatch (BRO-3389
       # ship-check finding) — recording it unconditionally, as the first cut of
