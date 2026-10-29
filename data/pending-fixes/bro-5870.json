@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-5870",
+  "planId": "9af35165-28d2-4dc7-b8e9-b1ed4a350609",
+  "status": "pending",
+  "createdAt": "2026-10-29T13:15:30.259Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5870: seed one independently reviewed prose weekly-cost estimate; preserve the range and existing reported capitalization. Original 105-figure cohort remains unresolved.",
+    "steps": [
+      "commercial.json: call-me-izzy.isEstimate",
+      "commercial.json: call-me-izzy.weeklyRunningCostSource",
+      "commercial.json: call-me-izzy.costMethodology",
+      "commercial.json: call-me-izzy.weeklyRunningCost"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": false
+        },
+        "newValue": {
+          "capitalization": false,
+          "weeklyRunningCost": true
+        },
+        "description": "commercial.json: call-me-izzy.isEstimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Estimate: $300,000 midpoint of the stored $250,000 to $350,000 weekly industry-estimate range for this solo production. Unconfirmed and undated; not a reported running cost.",
+        "description": "commercial.json: call-me-izzy.weeklyRunningCostSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "industry-estimate",
+        "description": "commercial.json: call-me-izzy.costMethodology"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 300000,
+        "description": "commercial.json: call-me-izzy.weeklyRunningCost"
+      }
+    ]
+  }
+}
