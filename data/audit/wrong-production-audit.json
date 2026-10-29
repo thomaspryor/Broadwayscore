@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T13:51:29.155Z",
+  "timestamp": "2026-10-29T14:39:58.249Z",
   "stats": {
-    "totalReviews": 67037,
-    "alreadyFlagged": 22098,
+    "totalReviews": 67081,
+    "alreadyFlagged": 22099,
     "dateGuardCatches": 233,
-    "directorMismatch": 2753,
-    "tvFilmSignals": 1927,
-    "londonSignals": 3237,
+    "directorMismatch": 2754,
+    "tvFilmSignals": 1929,
+    "londonSignals": 3240,
     "offBroadwaySignals": 617,
-    "yearMismatch": 252,
-    "noPublishDate": 6846
+    "yearMismatch": 253,
+    "noPublishDate": 6885
   },
   "findings": [
     {
@@ -4626,6 +4626,7 @@
     {
       "showId": "angry-alan-off-broadway-2025",
       "file": "off-off-online--edward-karam.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://www.offoffonline.com/offoffonline/2025/6/7/angry-alan",
       "findings": [
@@ -19199,6 +19200,19 @@
       ]
     },
     {
+      "showId": "follies-west-end-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/review-follies-national-theatre_48574/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2017 (2x) more than 2019 (0x). 2017 matches production: follies-west-end-2017"
+        }
+      ]
+    },
+    {
       "showId": "fool-for-love-2015",
       "file": "ew--joe-mc.json",
       "score": 44,
@@ -20360,6 +20374,19 @@
       "score": 72,
       "publishDate": "2019-12-17",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2019",
+      "file": "whatsonstage--daniella-harrison.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/review-girl-from-the-north-country-gielgud-theatre_50587/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22778,6 +22805,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2024 (1x). 2018 matches production: hadestown-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "hairspray-the-musical-west-end-2021",
+      "file": "london-box-office--john-yap.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/hairspray-review-2021",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -45442,6 +45487,24 @@
       ]
     },
     {
+      "showId": "small-island-west-end-2019",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/small-island-national-theatre-review-fun-epic-takes-ages-warm",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"series finale\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "small-island-west-end-2022",
       "file": "guardian--arifa-akbar.json",
       "score": 86,
@@ -64406,7 +64469,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2025-03-18",
       "url": "https://nystagereview.com/2025/03/18/vanya-one-man-nine-characters-considerable-tragicomedy/",
       "findings": [
@@ -64425,7 +64488,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "nysr--michael-sommers.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2025-03-18",
       "url": "https://nystagereview.com/2025/03/18/vanya-andrew-scott-goes-virtuoso-in-a-solo-show/",
       "findings": [
@@ -64486,6 +64549,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "off-off-online--marc-miller.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.offoffonline.com/offoffonline/2025/3/20/vanya",
       "findings": [
@@ -115247,6 +115311,19 @@
       "score": 58,
       "publishDate": "April 5th, 2024",
       "url": "https://www.whatsonstage.com/news/underdog-the-other-other-bronte-at-the-national-theatre-review_1590165/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026",
+      "file": "whatsonstage--tanyel-gumushan.json",
+      "publishDate": "2026-01-08",
+      "url": "https://www.whatsonstage.com/news/unfortunate-the-untold-story-of-ursula-the-sea-witch-reveals-full-london-casting_1708127/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
