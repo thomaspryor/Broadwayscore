@@ -37,7 +37,24 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 - **Repeatable tool landed:** `node scripts/plan-ob-historical-cohort.js --from=YYYY-MM-DD --to=YYYY-MM-DD` (read-only, run via `cloud-run-script.js --timeout=55` for the keys). It prints add-show actions; plans are built with `buildPlans` from `new-fix-plan.js` (10 actions each). Its second pass on the gap window found 11 more (revivals and "&" titles the hand pass missed).
 - **Per cohort, in order:** plan script, then plans land and apply, then `gather-reviews.yml` (`max_tier=3`, `spend_purpose=historical-backfill`, 12 shows a run), then `collect-review-texts.yml` with `show_filter`, then `llm-ensemble-score.yml` with `show_id`, then `rebuild-fast.yml`. Waiting for the scheduled text and score crons instead adds up to a day.
 - **Audits:** `isObHistoricalRow` (scripts/lib/ob-historical-cohort.js) selects these rows for `audit-review-crossmodel.js` and `fact-check-sample.js`. The 'historical' tag is not used: on the site it is a theme (BRO-6200 tracks the existing collision).
-- **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each.
+- **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each. Done: all three plus cohort 4 (2021-06..2022-05, BRO-6470, which also covers January to May 2022). Mid-2021 is the floor the owner set.
+
+## Cohort 4 results (2026-10-29, BRO-6470): June 2021 to May 2022
+
+This is the last cohort. The owner set mid-2021 as the floor, so no older season is planned.
+
+Process: same planner in two half-window runs (June to November 2021: 59 candidates, 10 Playbill matches; December 2021 to May 2022: 80 candidates, 25 Playbill matches), 24 promotable, all kept (6 and 18). Playbill coverage of this COVID-reopening season is thin: most TheaterMania listings had no Playbill production page at all. Two planner fixes landed first. `venue-date-compare.js` now reads both years from a Playbill season slug (`...-2021-2022`), which had marked every December to May show as a year mismatch, and the venue match compares only the company half of a "Company / Theatre" string. `isStructuralOnlyMismatch` takes the claimed opening date, so a TheaterMania preview date that Playbill prints as the opening no longer drops the show. Two add-show plans, landed and applied, then gather (1 show per shard), collect, score, `audit-aggregator-gap.yml` and rebuild.
+
+Review-count distribution (prod `analyst-shows.json`, 2026-10-29T01:15Z; a show missing from the feed counts as 0):
+
+| Reviews | 0 | 1-2 | 3-4 | 5-9 | 10+ | 3+ | Total reviews |
+|---|---|---|---|---|---|---|---|
+| Final | 1 | 2 | 0 | 8 | 13 | 21 (88 percent) | 236 |
+
+- Cost: about $4.1, at most about $6.3, against a $4 estimate (stop line $10). Scraping was $1.52 on ledger rows tagged with cohort 4 show ids, plus $0.37 of untagged gather rows counted only in the upper bound. LLM was $2.62 for 95 newly scored reviews. The planner's Playbill SERP calls are not in the ledger; at 5 Scrapingdog credits a call they are about $0.60, at most about $1.80. About $0.17 to $0.26 a show.
+- Revival labels: Playbill tags COVID-postponed premieres as "Revival", often on a sparse tag-line with no Play or Musical tag (`["Off-Broadway","Revival"]`). Seven new works were added as revivals: The Bedwetter, Confederates, Wish You Were Here, On Sugarland, Black No More, Trevor and Kimberly Akimbo (the last two with a full tag-line, so the planner fix below does not catch them). Plan `bro-6470-revival` sets them to `isRevival: false`, and The Bedwetter and Black No More, which the title guess had as plays, to musical. `playbillFacts` now trusts "Revival" only when the tag-line also names Play or Musical. Little Christmas Miracles also has a bare "Revival" tag and was left as is (not verified either way).
+- Wrong-production check: the same minus/plus 150-day scan as cohort 3 over the 40 reviews that carry a page date found none out of window, including Kimberly Akimbo (Atlantic 2021, Broadway 2022) and Assassins (Classic Stage 2021).
+- Still at 0 or 1: The Importance of Being Earnestly LGBTQ (0, a small comedy adaptation), How the Hell Did I Get Here? (1, a solo show) and Little Christmas Miracles (1). None looks like a major gap.
 
 ## Cohort 3 results (2026-10-28, BRO-6259): June 2022 to May 2023
 
