@@ -43,7 +43,10 @@ function parsePlaybillTagLine(html) {
   // regression ever printed both.
   const lastTag = tags[tags.length - 1] || '';
   let revivalStatus = 'unknown';
-  if (/^revival$/i.test(lastTag)) revivalStatus = 'revival';
+  // A bare "Market | Revival" line (no Play/Musical tag) is a sparse page and
+  // not trustworthy: Playbill prints it on COVID-postponed premieres (5 of 8
+  // such pages in the 2021-22 Off-Broadway backfill were new works, BRO-6470).
+  if (/^revival$/i.test(lastTag)) revivalStatus = showType ? 'revival' : 'unknown';
   else if (/^original$/i.test(lastTag)) revivalStatus = 'original';
 
   return { tags, market, showType, revivalStatus };

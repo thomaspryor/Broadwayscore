@@ -76,6 +76,16 @@ test('reads revival/original from the LAST tag, not "anywhere in the list" (ship
   assert.equal(parsePlaybillTagLine(reversedContradictory).revivalStatus, 'original');
 });
 
+test('bare Off-Broadway/Revival (no Play/Musical) → unknown, not revival (BRO-6470)', () => {
+  // The Bedwetter, Confederates, Black No More 2022: new works on sparse pages.
+  const bare = parsePlaybillTagLine(pageWithTags('Off-Broadway', 'Revival'));
+  assert.equal(bare.revivalStatus, 'unknown');
+  assert.equal(bare.showType, null);
+  // Original on a sparse page is still trusted (Out of Time 2022).
+  assert.equal(parsePlaybillTagLine(pageWithTags('Off-Broadway', 'Original')).revivalStatus, 'original');
+  assert.equal(parsePlaybillTagLine(pageWithTags('Off-Broadway', 'Play', 'Revival')).revivalStatus, 'revival');
+});
+
 test('empty/undefined html does not throw', () => {
   assert.equal(parsePlaybillTagLine('').revivalStatus, 'unknown');
   assert.equal(parsePlaybillTagLine(undefined).revivalStatus, 'unknown');

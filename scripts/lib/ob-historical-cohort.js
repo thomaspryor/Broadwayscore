@@ -85,11 +85,8 @@ function isStructuralOnlyMismatch(r, { claimedOpening = null } = {}) {
 function playbillFacts(r, entry) {
   const tag = (r && r.parsed && r.parsed.tagLine) || {};
   const type = tag.showType === 'play' || tag.showType === 'musical' ? tag.showType : entry.type;
-  // A tag-line with no Play/Musical tag (["Off-Broadway","Revival"]) is a sparse
-  // page, often a COVID-postponed premiere: 5 of 8 in BRO-6470 were new works
-  // labelled "Revival". Only trust "Revival" when Playbill also classified the type.
-  const isRevival = tag.revivalStatus === 'revival' ? (tag.showType ? true : null)
-    : tag.revivalStatus === 'original' ? false : null;
+  // A bare "Revival" tag-line (no Play/Musical) already parses as 'unknown' (playbill-tagline.js).
+  const isRevival = tag.revivalStatus === 'revival' ? true : tag.revivalStatus === 'original' ? false : null;
   const openingFromPlaybill = !!(r && r.parsed && r.parsed.dates && r.parsed.dates.openingDate);
   return { type, isRevival, openingFromPlaybill };
 }
