@@ -1,26 +1,131 @@
 {
-  "updatedAt": "2026-10-29T22:23:52.706Z",
-  "processed": 25,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-29T22:29:14.107Z",
+  "processed": 192,
+  "failed": 97,
+  "successRate": "66.4%",
   "tierBreakdown": {
-    "playwright": 15,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 83,
+    "amp": 3,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 14,
+    "scrapingbee": 6,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 8
+    "archiveToday": 27,
+    "archive": 66
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-29T22:20:00.411Z",
+      "t": "2026-10-29T20:18:51.499Z",
       "event": "bb-session",
-      "session": "d2805a56",
-      "url": "https://www.hollywoodreporter.com/review/a-bright-room-called-day-theater-review"
+      "session": "72e70d7a",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/06/abba-mamma-mia-v"
+    },
+    {
+      "t": "2026-10-29T20:18:52.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-29T20:19:28.350Z",
+      "event": "bb-session",
+      "session": "74bc6994",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-grey-house-july-30-clo"
+    },
+    {
+      "t": "2026-10-29T20:19:59.942Z",
+      "event": "bb-session",
+      "session": "63ef645c",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+    },
+    {
+      "t": "2026-10-29T20:20:00.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-29T20:20:11.779Z",
+      "event": "bb-session",
+      "session": "8aa30c2c",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+    },
+    {
+      "t": "2026-10-29T20:20:12.192Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-29T20:24:56.903Z",
+      "event": "bb-session",
+      "session": "6e50795f",
+      "url": "https://www.usatoday.com/story/life/theater/2019/04/08/oklahoma-broadway-review-"
+    },
+    {
+      "t": "2026-10-29T20:24:57.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-29T20:25:15.938Z",
+      "event": "bb-session",
+      "session": "e8e8df5e",
+      "url": "https://www.usatoday.com/story/life/theater/2019/04/08/oklahoma-broadway-review-"
+    },
+    {
+      "t": "2026-10-29T20:25:16.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-29T20:27:21.951Z",
+      "event": "bb-session",
+      "session": "c8d1e269",
+      "url": "https://www.washingtonpost.com/lifestyle/whats-steve-martin-up-to-with-meteor-sh"
+    },
+    {
+      "t": "2026-10-29T20:27:22.480Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-29T21:32:04.065Z",
+      "event": "bb-session",
+      "session": "798bd315",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-29T22:10:14.984Z",
+      "event": "bb-session",
+      "session": "eefff027",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch933.html"
+    },
+    {
+      "t": "2026-10-29T22:10:15.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T22:22:58.344Z",
+      "event": "bb-session",
+      "session": "1367b4f1",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-29T22:22:58.770Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T22:28:09.753Z",
+      "event": "bb-session",
+      "session": "c07f9138",
+      "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh"
+    },
+    {
+      "t": "2026-10-29T22:28:10.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
