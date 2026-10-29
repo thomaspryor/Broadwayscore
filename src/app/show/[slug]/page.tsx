@@ -44,7 +44,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
-import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
+import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, ScoreBadge, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
@@ -491,11 +491,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
     ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
     : 0;
   const criticsTakeMode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, reviewCount, !!show.synopsis);
-  const roundedScore = score ? Math.round(score) : null;
   const sentiment = score ? getSentimentLabel(score, show.category) : null;
-  const scoreColorClass = (!showTBD && roundedScore !== null)
-    ? getScoreColorClass(roundedScore, show.category)
-    : 'bg-surface-overlay text-gray-400 border border-white/10';
   const hasAudience = !showTBD && audienceBuzz != null && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz);
   const audienceGrade = hasAudience ? getAudienceGrade(audienceBuzz!.combinedScore!) : null;
   const totalAudienceCount = audienceBuzz ? getTotalAudienceReviews(audienceBuzz) : 0;
@@ -644,19 +640,17 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                     || show.status === 'previews' || show.status === 'upcoming',
                   { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
                 );
-                const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score, show.category) : null;
 
-                const scoreColorClass = (!showTBD && roundedScore !== null)
-                  ? getScoreColorClass(roundedScore, show.category)
-                  : 'bg-surface-overlay text-gray-400 border border-white/10';
-
+                // The page has already applied the coverage floor. Rechecking
+                // raw counts here would hide scores that the floor protects.
                 const scoreBox = (
-                  <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center flex-shrink-0 ${scoreColorClass}`}>
-                    <span className="text-3xl font-extrabold">
-                      {showTBD ? 'TBD' : roundedScore}
-                    </span>
-                  </div>
+                  <ScoreBadge
+                    score={score}
+                    size="lg"
+                    category={show.category}
+                    reviewCount={showTBD ? 0 : undefined}
+                  />
                 );
 
                 const hasAudience = !showTBD && audienceBuzz && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz);
@@ -666,8 +660,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   <div className="space-y-2" data-testid="show-score-section">
                     {/* Score row: box + label + review count */}
                     <div className="flex items-start gap-3 sm:gap-4">
-                      {scoreBox}
-                      <div className="pt-0.5 min-w-0">
+                      <div className="flex-shrink-0">{scoreBox}</div>
+                      <div className="pt-0.5 min-w-0 break-words">
                         {showTBD ? (
                           <div className="text-base sm:text-lg font-bold text-gray-400">{isLiveTour(show) ? 'Reviews coming in' : 'Awaiting Reviews'}</div>
                         ) : sentiment && (
