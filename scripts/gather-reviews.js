@@ -196,6 +196,7 @@ try {
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const { gatherPurposeForShow, pressNightPurposeForShow, emptySerpAuthoritativeForGather } = require('./lib/spend-purpose');
 // A dispatch-level tag (gather-reviews.yml spend_purpose input) wins over the per-show one.
+const { createSerpUnavailableStrikes } = require('./lib/serp-unavailable-strikes');
 const _DISPATCH_SPEND_PURPOSE = process.env.SCRAPER_SPEND_PURPOSE || '';
 const _backfillYield = require('./lib/backfill-outlet-yield');
 // BRO-6490: bulk historical backfill skips outlets with almost no history in
@@ -5581,6 +5582,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // fail the same way. Short-circuit the entire SERP phase instead of
       // burning 50+ outlets × 6 critics of wasted budget + DELAY_MS sleeps.
       let serpUnavailable = false;
+      // BRO-6492: abort only after 3 outlets in a row fail on every provider.
+      const _serpStrikes = createSerpUnavailableStrikes();
 
       console.log(`\n[2/4] Searching ${allOutlets.length} outlets via SERP (budget: ${SERP_BUDGET})...`);
 
@@ -5631,10 +5634,16 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               openingNight: options.openingNight,
             });
             if (result && result.unavailable) {
-              console.log('✗ (SERP providers unavailable — aborting SERP phase)');
-              serpUnavailable = true;
-              break;
+              const strike = _serpStrikes.note(true);
+              if (strike.abort) {
+                console.log(`✗ (SERP providers unavailable ${strike.strikes}/${_serpStrikes.max} in a row — aborting SERP phase)`);
+                serpUnavailable = true;
+                break;
+              }
+              console.log(`✗ (SERP providers unavailable ${strike.strikes}/${_serpStrikes.max})`);
+              continue;
             }
+            _serpStrikes.note(false);
             if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
               console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
               health.rejections.wrongProduction++;
@@ -5671,9 +5680,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             process.stdout.write(`    ↳ (outlet fallback)... `);
             serpCallCount++;
             const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical, openingNight: options.openingNight });
+            const _strike = _serpStrikes.note(!!(result && result.unavailable));
             if (result && result.unavailable) {
-              console.log('✗ (SERP providers unavailable — aborting SERP phase)');
-              serpUnavailable = true;
+              if (_strike.abort) {
+                console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max} in a row — aborting SERP phase)`);
+                serpUnavailable = true;
+              } else {
+                console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max})`);
+              }
             } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
               console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
               health.rejections.wrongProduction++;
@@ -5715,9 +5729,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
         const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical, openingNight: options.openingNight });
 
+        const _strike = _serpStrikes.note(!!(result && result.unavailable));
         if (result && result.unavailable) {
-          console.log('✗ (SERP providers unavailable — aborting SERP phase)');
-          serpUnavailable = true;
+          if (_strike.abort) {
+            console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max} in a row — aborting SERP phase)`);
+            serpUnavailable = true;
+          } else {
+            console.log(`✗ (SERP providers unavailable ${_strike.strikes}/${_serpStrikes.max})`);
+          }
         } else if (result && result.url && options.openingNight && isSerpUrlWrongProductionForOpeningNight(result.url, show)) {
           console.log(`✗ rejected — embedded URL year doesn't match opening year ${year} (opening-night guard, BRO-736): ${result.url}`);
           health.rejections.wrongProduction++;
