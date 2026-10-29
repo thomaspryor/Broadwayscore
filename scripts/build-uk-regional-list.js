@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 // BRO-6516 step 1: build the UK regional production list from the census snapshot.
+const { hasHelpFlag } = require('./lib/cli-help');
+if (hasHelpFlag(process.argv)) {
+  console.log('Usage: node scripts/build-uk-regional-list.js  (reads data/audit/uk-regional/census-input-2024plus.json, writes production-list.json)');
+  process.exit(0);
+}
 const fs = require('fs');
 const path = require('path');
 const { buildList } = require('./lib/uk-regional-list');
