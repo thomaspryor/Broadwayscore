@@ -133,7 +133,7 @@ export default function ShowSearchDropdown({
       </div>
 
       {query.length >= 2 && (
-        <div className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-1.5 w-full min-w-[calc(100vw-2rem)] sm:min-w-0 sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-[min(18rem,60vh)] overflow-y-auto`}>
+        <div className={`absolute top-full ${align === 'right' ? 'right-0' : 'left-0'} mt-1.5 w-full min-w-[min(100%,calc(100vw-2rem))] sm:min-w-0 sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80] max-h-[min(18rem,60vh)] overflow-y-auto`}>
           {results.length > 0 ? results.map(show => {
             const disabled = isDisabled?.(show) ?? false;
             return (
