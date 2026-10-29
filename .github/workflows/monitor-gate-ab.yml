@@ -67,6 +67,10 @@ jobs:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-6372: sign-in joins are confirmed against Formspree auth-auto submissions
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
+          FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
         run: node scripts/monitor-email-gate-funnel.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
       - name: Run related-shows-position A/B result monitor (BRO-6271)
