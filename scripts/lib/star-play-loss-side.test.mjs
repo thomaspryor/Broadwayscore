@@ -8,6 +8,9 @@
 // one there.
 // Runs the live model on the real records (§15); skips when the private core
 // data is absent.
+// BRO-6355: sourced non-recoupment bounds the model at <100%, without
+// inferring how large the loss was. The 90% default-cost calibration guard
+// still applies to records without that outside outcome constraint.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -23,14 +26,9 @@ const skip = missing.length ? `private core data absent: ${missing.join(', ')}` 
 
 const LOSS_LABEL = /^(Flop|Fizzle|Did Not Recoup)$/;
 const NEAR_MISS_PCT = 90;
-// BRO-6350: a two-part National Theatre import has a doubled company and no
-// published capitalization, so a comparables estimate (single-play figures)
-// understates its cost and reads ~105% against a sourced "did not recoup".
-// That is a missing-cost gap on one record, not the star-play default weekly
-// cost this guard protects. Add a slug only with that same reason.
-const TWO_PART_NO_CAP = new Set(['angels-in-america']);
+const { hasSourcedNonRecoupment } = require('./recoupment-model');
 
-test(`no loss-labelled star play with a model run reads ${NEAR_MISS_PCT}% or more`, { skip }, () => {
+test('loss-labelled star plays respect the sourced loss bound or default-cost calibration', { skip }, () => {
   const { liveModelRun } = require('./model-drift');
   const { makeGrossesLookup } = require('./grosses-lookup');
   const { makeCapEstimator } = require('./cap-comparables');
@@ -51,16 +49,42 @@ test(`no loss-labelled star play with a model run reads ${NEAR_MISS_PCT}% or mor
     // evidence against it: count only recouped:false or an outside loss label.
     const outsideLabel = LOSS_LABEL.test(c.designation || '') && c.designationBasis !== 'model-estimate';
     if (!(c.recouped === false || outsideLabel)) continue;
-    if (TWO_PART_NO_CAP.has(slug) && c.capitalization == null) continue;
     const show = bySlug.get(slug) || bySlug.get(c.slug) || bySlug.get(slug.replace(/-\d{4}$/, ''));
     if (!show) continue;
     const r = liveModelRun(show, c, L, opts).result;
     if (!r || r.error) continue;
     checked++;
-    if (r.recoupmentPctCentral >= NEAR_MISS_PCT) over.push(`${slug} ${Math.round(r.recoupmentPctCentral)}`);
+    const ceiling = hasSourcedNonRecoupment(c) ? 100 : NEAR_MISS_PCT;
+    if (r.recoupmentPctCentral >= ceiling) over.push(`${slug} ${r.recoupmentPctCentral} (limit ${ceiling})`);
   }
   assert.ok(checked >= 20, `only ${checked} loss-labelled star plays modelled`);
   // The repo is public: name shows only in a local run.
   const names = process.env.CI ? `${over.length} rows (run locally for names)` : over.join(', ');
-  assert.equal(over.length, 0, `loss-labelled star plays at >= ${NEAR_MISS_PCT}%: ${names}`);
+  assert.equal(over.length, 0, `loss-labelled star plays above their bound: ${names}`);
+});
+
+test('all sourced non-recoupers stay below 100% in every live-model scenario', { skip }, () => {
+  const { liveModelRun } = require('./model-drift');
+  const { makeGrossesLookup } = require('./grosses-lookup');
+  const { makeCapEstimator } = require('./cap-comparables');
+  const load = (f) => JSON.parse(fs.readFileSync(path.join(REPO, 'data', f), 'utf8'));
+  const raw = load('shows.json');
+  const shows = raw.shows || raw;
+  const by = new Map(shows.flatMap((s) => [[s.id, s], [s.slug, s]]));
+  const commercial = load('commercial.json').shows;
+  const lookup = makeGrossesLookup(load('grosses.json'), load('grosses-history.json'));
+  const opts = { capComparables: true, capEstimator: makeCapEstimator(shows, commercial) };
+  let checked = 0;
+  for (const [key, c] of Object.entries(commercial)) {
+    if (!hasSourcedNonRecoupment(c)) continue;
+    const show = by.get(key) || by.get(c.slug) || by.get(key.replace(/-\d{4}$/, ''));
+    if (!show) continue;
+    const r = liveModelRun(show, c, lookup, opts).result;
+    if (!r || r.error) continue;
+    checked++;
+    assert.ok([r.recoupmentPctLow, r.recoupmentPctCentral, r.recoupmentPctHigh].every((p) => p < 100));
+    assert.equal(r.modelRecouped, false);
+    assert.equal(r.weeksToRecoupEstimate, null);
+  }
+  assert.ok(checked >= 5, `only ${checked} sourced non-recoupers modelled`);
 });

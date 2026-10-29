@@ -27,6 +27,36 @@ const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = 
 const { isConvertedToCommercial } = require('./commercial-conversion');
 const { haircutCapitalization } = require('./cap-max-haircut');
 const { modelInputBasis } = require('./model-input-basis');
+const { OWN_INFERENCE, truthClassOf } = require('./recoupment-ground-truth');
+const { isRealUrl } = require('./commercial-citation-guards');
+
+/** An outside loss claim, rather than an inference from silence or model output. */
+function hasSourcedNonRecoupment(commercial) {
+  if (commercial.recouped !== false) return false;
+  const source = commercial.recoupedSource;
+  if (typeof source === 'string' && source.trim() && !OWN_INFERENCE.test(source)) return true;
+  // Older records put the reported outcome in notes and its citation in sources.
+  return !!(!source && commercial.sources?.some((s) => isRealUrl(s?.url)) &&
+    truthClassOf(commercial, 'failed', '').truthClass === 'reported');
+}
+
+/**
+ * BRO-6355: a reported failure bounds every scenario below recoupment. Keep
+ * raw profits for diagnosing missing costs; do not invent a running-cost
+ * figure or capitalization to make the simulation fit the known outcome.
+ * Historical replays must not see a loss reported after their asOf date.
+ */
+function constrainNonRecoupment(scenarios, commercial, warnings, opts) {
+  if (opts.asOf || !hasSourcedNonRecoupment(commercial)) return;
+  let changed = false;
+  for (const scenario of Object.values(scenarios)) {
+    if (scenario.recoupmentPct >= 100 || scenario.recouped || scenario.recoupWeek != null) changed = true;
+    scenario.recoupmentPct = Math.min(scenario.recoupmentPct, 99.9);
+    scenario.recouped = false;
+    scenario.recoupWeek = null;
+  }
+  if (changed) warnings.push('Recoupment estimate capped at 99.9% by sourced non-recoupment; raw simulated profits retained');
+}
 
 // A nonprofit run that switched to a commercial run (BRO-5508) holds two
 // productions' weeks under one grosses key, often in two theaters, and the
@@ -912,6 +942,8 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     };
   }
 
+  constrainNonRecoupment(results, commercial, warnings, opts);
+
   // --- Weekly breakeven ---
   // The gross at which the steady-state week (27: full nut, no opening push)
   // makes zero profit, solved by bisection on calcWeeklyProfit itself, so it
@@ -1436,6 +1468,8 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
     };
   }
 
+  constrainNonRecoupment(scenarios, commercial, warnings, opts);
+
   return {
     slug,
     title: show.title,
@@ -1478,6 +1512,7 @@ module.exports = {
   ALL_LIVE_OPTS,
   calculateRecoupment,
   calculateLifetimeRecoupment,
+  hasSourcedNonRecoupment,
   SPLIT_RUN_ERROR,
   buildWeeklySchedule,
   classifyShow,

@@ -21,6 +21,7 @@ const require = createRequire(import.meta.url);
 const {
   calculateRecoupment,
   calculateLifetimeRecoupment,
+  hasSourcedNonRecoupment,
   classifyShow,
   estimateWeeklyNut,
   isSoloShow,
@@ -43,6 +44,85 @@ function weeklyGrosses(weeks, gross) {
   }
   return out;
 }
+
+describe('sourced non-recoupment bounds (BRO-6355)', () => {
+  const show = {
+    slug: 'loss-fixture', title: 'Loss Fixture', type: 'play',
+    venue: 'Neil Simon Theatre', openingDate: '2018-01-01', closingDate: '2018-07-01',
+  };
+  const comm = {
+    capitalization: 4_000_000, weeklyRunningCost: 500_000,
+    recouped: false, recoupedSource: 'Broadway News: the production did not recoup.',
+  };
+  const weekly = Object.fromEntries(Array.from({ length: 26 }, (_, i) => [
+    new Date(Date.UTC(2018, 0, 7 + i * 7)).toISOString().slice(0, 10), { gross: 2_000_000 },
+  ]));
+
+  it('recognizes outcome citations, including older notes plus sources records', () => {
+    assert.equal(hasSourcedNonRecoupment(comm), true);
+    assert.equal(hasSourcedNonRecoupment({
+      recouped: false, notes: 'Playbill reported that the production did not recoup.',
+      sources: [{ url: 'https://example.com/report' }],
+    }), true);
+    for (const record of [
+      { recouped: true, recoupedSource: comm.recoupedSource },
+      { recouped: false },
+      { recouped: false, recoupedSource: 'Inferred: no announcement found' },
+      { recouped: false, recoupedSource: 'Estimated from grosses' },
+      { recouped: false, notes: 'Playbill reported a $4M capitalization.', sources: [{ url: 'https://example.com/cost' }] },
+    ]) assert.equal(hasSourcedNonRecoupment(record), false);
+  });
+
+  for (const tier of ['weekly', 'lifetime', 'comparables']) {
+    it(`bounds all scenarios and clears recoupment flags on the ${tier} path`, () => {
+      const production = tier === 'lifetime' ? { ...show, openingDate: '2000-01-01' } : show;
+      const record = tier === 'comparables' ? { ...comm, capitalization: null } : comm;
+      const run = (c, opts = {}) => tier === 'lifetime'
+        ? calculateLifetimeRecoupment(production, c, { gross: 1_000_000_000 }, opts)
+        : calculateRecoupment(production, c, null, weekly, {
+          ...(tier === 'comparables' ? { capEstimate: { value: 4_000_000, low: 3_000_000, high: 5_000_000, n: 7 } } : {}),
+          ...opts,
+        });
+      const before = JSON.stringify(record);
+      const raw = run({ ...record, recouped: null });
+      const bounded = run(record);
+      assert.ok(raw.recoupmentPctCentral >= 100, 'fixture must reproduce a contradiction');
+      for (const name of ['pessimistic', 'central', 'optimistic']) {
+        assert.ok(bounded[name].recoupmentPct < 100);
+        assert.equal(bounded[name].recouped, false);
+        assert.equal(bounded[name].recoupWeek, null);
+        assert.equal(bounded[name].cumulativeProfit, raw[name].cumulativeProfit, 'keep raw profits for diagnosis');
+      }
+      assert.deepEqual([bounded.recoupmentPctLow, bounded.recoupmentPctCentral, bounded.recoupmentPctHigh], [99.9, 99.9, 99.9]);
+      assert.equal(bounded.modelRecouped, false);
+      assert.equal(bounded.weeksToRecoupEstimate, null);
+      assert.ok(bounded.warnings.some((w) => w.includes('sourced non-recoupment')));
+      assert.equal(JSON.stringify(record), before, 'never mutate commercial inputs');
+    });
+  }
+
+  it('preserves scenarios already on the loss side and uses recorded costs', () => {
+    const record = { ...comm, weeklyRunningCost: 1_900_000 };
+    const raw = calculateRecoupment(show, { ...record, recouped: null }, null, weekly);
+    const bounded = calculateRecoupment(show, record, null, weekly);
+    assert.ok(raw.recoupmentPctHigh < 100);
+    for (const name of ['pessimistic', 'central', 'optimistic']) assert.deepEqual(bounded[name], raw[name]);
+    assert.equal(bounded.weeklyFixedCosts, record.weeklyRunningCost);
+    assert.deepEqual(bounded.warnings, raw.warnings);
+  });
+
+  it('does not use a final loss outcome in historical replays or unsourced estimates', () => {
+    const raw = calculateRecoupment(show, { ...comm, recouped: null }, null, weekly);
+    for (const recoupedSource of [null, '', 'Inferred: no announcement found']) {
+      const r = calculateRecoupment(show, { ...comm, recoupedSource }, null, weekly);
+      assert.equal(r.recoupmentPctCentral, raw.recoupmentPctCentral);
+    }
+    const replay = calculateRecoupment(show, comm, null, weekly, { asOf: '2018-07-01' });
+    const rawReplay = calculateRecoupment(show, { ...comm, recouped: null }, null, weekly, { asOf: '2018-07-01' });
+    assert.ok(replay.recoupmentPctCentral >= 100);
+    assert.equal(replay.recoupmentPctCentral, rawReplay.recoupmentPctCentral);
+  });
+});
 
 describe('eraDeflator', () => {
   it('is 1 for anchor year and later', () => {
