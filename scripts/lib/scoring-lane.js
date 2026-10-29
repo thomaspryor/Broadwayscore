@@ -52,19 +52,23 @@ function isPlainBacklogDispatch({ eventName, showId, rescoreReason, forceRun, sy
 
 /**
  * Is one show urgent right now, read from data/shows.json and the review
- * evidence file (BRO-6532: callers that may defer a show's work). If the data
- * cannot be read the answer is true: an unreadable file must never defer
- * opening-night work.
+ * evidence file (BRO-6532: callers that may defer a show's work). The path is
+ * resolved from the repo root, not the cwd. If the data cannot be read the
+ * answer is false with a warning: every CI dispatcher has the data, and
+ * answering true would switch the cap off for every show in a session or
+ * worktree that lacks it.
  */
-function isUrgentShowId(showId, { showsPath = 'data/shows.json', now = new Date() } = {}) {
+const DEFAULT_SHOWS_PATH = require('path').join(__dirname, '..', '..', 'data', 'shows.json');
+function isUrgentShowId(showId, { showsPath = DEFAULT_SHOWS_PATH, now = new Date(), log = console.log } = {}) {
   try {
     const fs = require('fs');
     const { loadReviewEvidence } = require('./review-evidence');
     const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
     const shows = Array.isArray(raw) ? raw : (raw.shows || []);
     return urgentScoringShowIds(shows, { now, evidence: loadReviewEvidence() }).has(showId);
-  } catch {
-    return true;
+  } catch (e) {
+    log(`::warning::isUrgentShowId: could not read ${showsPath} (${String(e.message).split('\n')[0]}); treating ${showId} as not urgent`);
+    return false;
   }
 }
 

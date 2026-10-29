@@ -111,9 +111,9 @@ function dispatchDownstream({
   let workflows = downstreamWorkflows(showId, newReviews);
   if (only) workflows = workflows.filter((w) => only.includes(w.file));
   return workflows.map((wf) => {
-    if (capCheck && CAPS[wf.file]) {
+    if (capCheck && CAPS[wf.file] && !urgent(showId)) {
       const cap = capCheck({ workflow: wf.file, log });
-      if (!cap.ok && !urgent(showId)) {
+      if (!cap.ok) {
         log(`::warning::${wf.name} deferred for ${showId}: ${cap.reason}. The next scheduled batch run will score it.`);
         return { name: wf.name, ok: true, deferred: true };
       }

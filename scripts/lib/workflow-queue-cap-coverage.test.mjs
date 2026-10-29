@@ -18,11 +18,22 @@ const require = createRequire(import.meta.url);
 const { CAPS } = require('./workflow-queue-cap.js');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
-const alt = Object.keys(CAPS).map((w) => w.replace(/[.-]/g, '\\$&')).join('|');
-// gh CLI, the shell retry helper, the REST path, execFile arg arrays and
-// dispatchWorkflow({ workflow: ... }) / remediation { workflow: ... } objects.
+const esc = (x) => x.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&');
+// `gh workflow run "<name>"` dispatches by display name; map it back to the file.
+const NAMES = {
+  'LLM Ensemble Score Reviews': 'llm-ensemble-score.yml',
+  'Gather Review Data': 'gather-reviews.yml',
+  'Ingest Review URLs': 'ingest-urls.yml',
+};
+const alt = [...Object.keys(CAPS), ...Object.keys(NAMES)].map(esc).join('|');
+// gh CLI (file or display name), the shell retry helper, the REST path,
+// execFile arg arrays, dispatchWorkflow({ workflow: ... }) / remediation
+// { workflow: ... } objects and github-script createWorkflowDispatch({ workflow_id }).
+// Not visible to it: a workflow held in a constant. Today those are opening-night
+// Express (express-preemption.js), single feedback requests (content-request-routing.js)
+// and ingest-downstream.js, whose only dispatcher is the capped dispatchDownstream.
 const DISPATCH_RE = new RegExp(
-  `(?:workflow\\s+run\\s+["']?|dispatch_with_retry\\s+["']?|actions/workflows/|['"]workflow['"],\\s*['"]run['"],\\s*['"]|workflow:\\s*['"])(${alt})`,
+  `(?:workflow\\s+run\\s+["']?|dispatch_with_retry\\s+["']?|actions/workflows/|['"]workflow['"],\\s*['"]run['"],\\s*['"]|workflow(?:_id)?:\\s*['"])(${alt})`,
 );
 const USES_CAP_RE = /workflow-queue-cap|capped-workflow-dispatch/;
 
@@ -34,7 +45,7 @@ function findDispatches(text) {
     if (/^(#|\/\/|\*|\/\*)/.test(t) || /^(echo|console\.|log\(|printf)/.test(t)) return;
     const m = l.match(DISPATCH_RE);
     // `actions/workflows/<wf>/runs` reads runs; it does not dispatch.
-    if (m && !/^[^\s'"`]*\/runs\b/.test(l.slice(l.indexOf(m[1]) + m[1].length))) out.push({ line: i + 1, workflow: m[1] });
+    if (m && !/^[^\s'"`]*\/runs\b/.test(l.slice(l.indexOf(m[1]) + m[1].length))) out.push({ line: i + 1, workflow: NAMES[m[1]] || m[1] });
   });
   return out;
 }
@@ -66,11 +77,17 @@ const BASELINE = {
   [`.github/workflows/gather-reviews.yml|${ENS}`]: { count: 1, reason: 'skipped when any ensemble run is active' },
   [`.github/workflows/gather-reviews.yml|${GATHER}`]: { count: 1, reason: 'one re-dispatch of shows this run deferred; held by the 2-slot gather gate' },
   [`.github/workflows/llm-ensemble-score.yml|${ENS}`]: { count: 1, reason: 'self-chain, one successor at a time' },
+  [`scripts/audit-t1-silent-gaps.js|${ENS}`]: { count: 1, reason: HINT },
+  [`scripts/backfill-gather-all.sh|${GATHER}`]: { count: 1, reason: 'retired Mac backfill; one batch at a time, waits for each run to finish' },
+  [`scripts/backfill-gather-batch.sh|${GATHER}`]: { count: 1, reason: 'retired Mac backfill; gather-reviews.yml skips its no_sb_serp dispatches (BRO-4146)' },
+  [`.github/workflows/discover-historical-shows.yml|${GATHER}`]: { count: 1, reason: 'one dispatch per discovery run' },
+  [`.github/workflows/poll-loureviews.yml|${ENS}`]: { count: 1, reason: 'one plain fast_rebuild dispatch; plain dispatches score urgent shows only (BRO-5047)' },
+  [`.github/workflows/review-refresh.yml|${GATHER}`]: { count: 2, reason: 'daily; one run per 10 shows with genuinely new reviews plus one routine batch, held by the 2-slot gather gate' },
   [`.github/workflows/opening-night-broadcast.yml|${GATHER}`]: { count: 1, reason: ON },
   [`.github/workflows/opening-night-reviews.yml|${GATHER}`]: { count: 2, reason: ON },
   [`.github/workflows/rebuild-reviews.yml|${ENS}`]: { count: 1, reason: 'self-heal, only when no ensemble run is active' },
   [`.github/workflows/scrape-new-aggregators.yml|${GATHER}`]: { count: 1, reason: 'one weekly dispatch' },
-  [`.github/workflows/update-show-status.yml|${GATHER}`]: { count: 1, reason: 'one dispatch for shows that opened today (opening night)' },
+  [`.github/workflows/update-show-status.yml|${GATHER}`]: { count: 2, reason: 'one dispatch each for shows that opened today (opening night)' },
 };
 
 function scanRepo() {
@@ -98,8 +115,12 @@ test('scanner flags every dispatch form and skips run reads, comments and echo l
     '# gh workflow run gather-reviews.yml',
     'echo "gh workflow run gather-reviews.yml"',
     'gh workflow run land.yml',
+    "  workflow_id: 'gather-reviews.yml',",
+    'gh workflow run "LLM Ensemble Score Reviews" -f show_id=x',
   ].join('\n');
-  assert.deepEqual(findDispatches(sample).map((d) => d.line), [1, 2, 3, 4, 5]);
+  const found = findDispatches(sample);
+  assert.deepEqual(found.map((d) => d.line), [1, 2, 3, 4, 5, 10, 11]);
+  assert.equal(found[6].workflow, 'llm-ensemble-score.yml');
 });
 
 test('every bulk-workflow dispatch uses the cap or is in the reasoned baseline', () => {
