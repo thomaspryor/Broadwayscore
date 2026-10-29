@@ -436,6 +436,11 @@ if (APPLY) {
   // Guard: skip wrongShow for manually-cleared files, London-market shows reviewed by UK outlets,
   // URL market signal match, null publish date, or when fullText confirms the filed show.
   function shouldSkipWrongShow(showId, data) {
+    // BRO-2262: every tier honors the CV-aware cross-show-URL guard (manual
+    // clear, explicit wrongShow clear, production-aware contentVerification),
+    // not only Tier 15. A record already confirmed to belong to its show must
+    // not be flipped to wrongShow by a collision verdict.
+    if (shouldSkipCrossShowUrlFlag(data)) return true;
     const info = showDateMap[showId];
     const show = info ? {
       id: showId, title: info.title, venue: info.venue,

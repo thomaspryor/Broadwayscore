@@ -200,3 +200,21 @@ test('BRO-2261: --apply flags an earlier same-title London run filed on the West
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test('BRO-2262: --apply never flags a collision loser whose contentVerification already confirmed it (tiers 1-14 share the CV-aware guard)', () => {
+  const fixture = makeFixture();
+  try {
+    const loserFile = path.join(fixture.reviewTextsDir, 'fixture-collision-b-2024', 'outlet--critic.json');
+    const loserData = JSON.parse(fs.readFileSync(loserFile, 'utf8'));
+    loserData.contentVerification = { wrongProduction: false, verifiedBy: 'llm:sonnet', verifiedAt: '2026-10-01T00:00:00Z' };
+    fs.writeFileSync(loserFile, JSON.stringify(loserData, null, 2) + '\n');
+
+    runAudit(fixture, ['--apply']);
+
+    const loser = readReview(fixture.reviewTextsDir, 'fixture-collision-b-2024', 'outlet--critic.json');
+    assert.equal(loser.wrongShow, undefined, 'CV-confirmed record must survive --apply');
+    // Control: without CV the same record is flagged (the pre-existing test above).
+  } finally {
+    fs.rmSync(fixture.tmp, { recursive: true, force: true });
+  }
+});
