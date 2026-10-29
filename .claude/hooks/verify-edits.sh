@@ -344,8 +344,10 @@ _MERGE_ASK_RE = re.compile(
     r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b"
     # BRO-5915 imperatives; an object is required ("need to merge conflicts" is not an ask).
     r"|\bplease merge\b"
-    r"|\byou(?:['’]ll| will)?\s+(?:need|have)\s+to\s+merge\s+(?:the\s+|this\s+|these\s+|both\s+|my\s+)?(?:PRs?\b|pull\s+requests?\b|#\d)",
-    re.IGNORECASE,
+    r"|\byou(?:['’]ll| will)?\s+(?:need|have)\s+to\s+merge\s+(?:the\s+|this\s+|these\s+|both\s+|my\s+)?(?:PRs?\b|pull\s+requests?\b|#\d)"
+    # Bare imperative at a sentence start ("Merge #1170 first, then data#3."); an object is required.
+    r"|(?:^|(?<=[.!?;:] )|(?<=\bthen )|(?<=\bfirst, ))merge\s+(?:the\s+|both\s+|these\s+|my\s+)?(?:(?:draft\s+)?PRs?\b|pull\s+requests?\b|[\w./-]*#\d)",
+    re.IGNORECASE | re.MULTILINE,
 )
 _REVIEW_Q = r"((a|an|the|human|owner'?s?|your)\s+){0,2}"
 _REVIEW_N = r"(review|reviewers?|approval|sign-?off)"
