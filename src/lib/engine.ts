@@ -116,6 +116,9 @@ export interface RawShow {
   // stop per city). Set on each per-venue leg; points at the aggregate show
   // that rolls up all legs' reviews into one combined score.
   tourParent?: string | null;
+  // Metro slug of a regional/local production (equals citySlug() of "<City>, <ST>",
+  // e.g. 'chicago-il'); set by the venue->metro table (BRO-6515). market stays 'regional'.
+  city?: string | null;
   // National tour (category 'tour', BRO-4211): id of the Broadway production it tours.
   tourOf?: string | null;
   // Homepage curation overrides (off-Broadway shows surfaced on the Broadway grid).
@@ -276,6 +279,7 @@ export interface ComputedShow {
   transferOf?: string | null;
   transferredTo?: string | null;
   tourParent?: string | null;
+  city?: string | null;
   tourOf?: string | null;
   // Homepage curation overrides (see RawShow above / homepage-notability.ts)
   homepageInclude?: boolean;
@@ -682,6 +686,7 @@ export function computeShowData(
     transferOf: show.transferOf,
     transferredTo: show.transferredTo,
     tourParent: show.tourParent,
+    city: show.city,
     tourOf: show.tourOf,
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
