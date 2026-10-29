@@ -2014404,21 +2014404,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T08:30:54.854Z",
-    "completedAt": "2026-10-29T08:30:59.002Z",
-    "totalReviews": 5,
+    "startedAt": "2026-10-29T08:34:45.675Z",
+    "completedAt": "2026-10-29T08:34:52.081Z",
+    "totalReviews": 66,
     "processed": 1,
-    "skipped": 4,
+    "skipped": 65,
     "errors": 0,
     "tokensUsed": {
-      "input": 5092,
-      "output": 280,
+      "input": 7342,
+      "output": 314,
       "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 13738
+      "total": 17108
     },
-    "costUsd": 0.0196211,
-    "runId": "40837228899",
+    "costUsd": 0.0267484,
+    "runId": "40838986637",
     "errorDetails": [],
     "validation": [
       {
@@ -2021254,9 +2021254,9 @@
         "showId": "chess-1988",
         "ourDistribution": {
           "up": 22,
-          "flat": 17,
+          "flat": 18,
           "down": 14,
-          "total": 53
+          "total": 54
         },
         "dtliDistribution": {
           "up": 2,
@@ -2021271,15 +2021271,15 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "chess-2025",
         "ourDistribution": {
           "up": 22,
-          "flat": 17,
+          "flat": 18,
           "down": 14,
-          "total": 53
+          "total": 54
         },
         "dtliDistribution": {
           "up": 2,
@@ -2021294,7 +2021294,7 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 32% (ours: 32%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "chester-bailey-off-broadway-2022",
@@ -2031638,10 +2031638,10 @@
       {
         "showId": "lost-in-del-valle-return-off-broadway-2026",
         "ourDistribution": {
-          "up": 3,
+          "up": 2,
           "flat": 1,
           "down": 0,
-          "total": 4
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2032661,10 +2032661,10 @@
       {
         "showId": "masquerade-off-broadway-2025",
         "ourDistribution": {
-          "up": 17,
+          "up": 18,
           "flat": 4,
           "down": 2,
-          "total": 23
+          "total": 24
         },
         "bwwDistribution": {
           "up": 7,
@@ -2050207,8 +2050207,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T08:33:27.195Z",
-    "completedAt": "2026-10-29T08:33:27.197Z",
+    "startedAt": "2026-10-29T08:37:15.000Z",
+    "completedAt": "2026-10-29T08:37:15.023Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2050221,7 +2050221,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40837228899",
+    "runId": "40838986637",
     "errorDetails": []
   }
 ]
