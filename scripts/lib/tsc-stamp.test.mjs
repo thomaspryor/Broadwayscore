@@ -217,3 +217,24 @@ test('BRO-6519 hook-* CLI: own stamp file; pre-warm seed makes the first hook-ch
   assert.equal(fs.existsSync(path.join(r.d, 'c')), false, 'malformed seed is ignored');
   fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
+
+test('BRO-6519 hook key also covers root allowlist .txt/dotfiles that the code-tree hash drops; gold-lists residue is tolerated', () => {
+  const r = mkRepo({});
+  r.commit({ 'src/a.ts': 'x\n', 'data/shows.json': '[]', '.review-write-guard-exempt.txt': 'a\n' });
+  const base = r.g('rev-parse', 'HEAD');
+  const hk = (sha) => require('./tsc-stamp.js').computeHookKey(sha, { cwd: r.d });
+  const k0 = hk(base);
+  const edited = r.commit({ '.review-write-guard-exempt.txt': 'b\n' });
+  assert.equal(r.key(edited), r.key(base), 'premise: computeKey ignores the allowlist edit');
+  assert.notEqual(hk(edited), k0, 'hook key must change');
+  // residue: a dirty gold-lists file does not block hook-record
+  fs.mkdirSync(path.join(r.d, 'data'), { recursive: true });
+  fs.writeFileSync(path.join(r.d, 'data/gold-lists-computed.json'), '{}');
+  r.g('add', '-f', 'data/gold-lists-computed.json'); r.g('commit', '-qm', 'gl');
+  fs.writeFileSync(path.join(r.d, 'data/gold-lists-computed.json'), '{"a":1}');
+  const f = path.join(r.d, 'stamp');
+  const env = { ...process.env, GITHUB_ACTIONS: 'true', LAND_HOOK_STAMP_FILE: f };
+  assert.equal(spawnSync('node', [SCRIPT, 'hook-record'], { cwd: r.d, env }).status, 0);
+  assert.match(fs.readFileSync(f, 'utf8'), /^[0-9a-f]{64}\n$/, 'recorded despite residue');
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+});

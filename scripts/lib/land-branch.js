@@ -159,9 +159,9 @@ const CAPPED_DOCS_TEST = 'scripts/tests/global-instructions.test.mjs';
 
 // BRO-6519: append-only bot ledgers under data/audit/. Every landing appends to one (alert-ledger.json,
 // scraper-spend-ledger.jsonl) and so does main every minute, so "both sides changed it" is the norm, not
-// a clash. The branch is already rebased onto main when the scope is chosen (a conflicting rebase never
-// reaches the checks), the file is inert, and no test reads a ledger's content as a verdict input.
-const APPEND_ONLY_LEDGER_RE = /^data\/audit\/[^/]*ledger[^/]*\.jsonl?$/;
+// a clash (named explicitly: other *ledger* files are not append-only). The branch is already rebased onto main when the scope is chosen (a conflicting rebase never
+// reaches the checks), and the file is inert.
+const APPEND_ONLY_LEDGER_RE = /^data\/audit\/(alert-ledger\.json|scraper-spend-ledger\.jsonl)$/;
 function isAppendOnlyLedger(file) {
   return APPEND_ONLY_LEDGER_RE.test(String(file)) && isInertForVerification(file);
 }

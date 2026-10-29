@@ -397,7 +397,7 @@ fi
 # as the corpus gates, just for code) and are slow enough (~1-2 min) to drive a
 # `--no-verify` habit that defeats the hook. tsc is the sweet spot: ~30-60s,
 # exit-code-clean, and near-zero false-blocks because CI already keeps main green.
-if [ "${LAND_HOOK_PREWARM:-}" = "1" ]; then
+if [ "${LAND_HOOK_PREWARM:-}" = "1" ] && [ "${GITHUB_ACTIONS:-}" = "true" ]; then
   : # BRO-6519: checks-job pre-warm only stamps the audits/lints above; tsc is seeded by the gauntlet
 elif grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
   if [ -f data/reviews.json ] && [ -f data/shows.json ]; then

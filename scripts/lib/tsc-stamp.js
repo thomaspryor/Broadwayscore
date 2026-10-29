@@ -94,6 +94,19 @@ function computeKey(sha, { cwd = process.cwd(), lsTreeData = null } = {}) {
 }
 
 /**
+ * Hook-tail key (BRO-6519): computeKey plus every root-level dotfile/.txt blob. The push audits and
+ * write-routing lint read root allowlists (.review-write-guard-exempt.txt, ...) that computeCodeTreeHash
+ * drops as inert (.txt), so a main move that edits one must change the key.
+ */
+function computeHookKey(sha, { cwd = process.cwd() } = {}) {
+  const ls = execFileSync('git', ['ls-tree', sha], { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const h = crypto.createHash('sha256');
+  h.update(computeKey(sha, { cwd }));
+  for (const line of ls.split('\n')) if (/\t(\.[^/]+|[^/]+\.txt)$/.test(line)) { h.update(line); h.update('\n'); }
+  return h.digest('hex');
+}
+
+/**
  * Digest of the gitignored core data on disk (data/**.json that git ignores,
  * minus the review-texts corpus). tsc reads these through resolveJsonModule and
  * two jobs clone them at different moments, so differing digests => no seeding.
@@ -164,11 +177,14 @@ function main(argv) {
   try {
     const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     const file = env.LAND_TSC_STAMP_FILE || '';
-    const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim();
+    let dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trimEnd();
+    // The gauntlet's gold-lists prep dirties this file; no audit/lint reads it (see TSC_INERT_RESIDUE).
+    if (isHook) dirty = dirty.split('\n').filter((l) => l && !TSC_INERT_RESIDUE.has(l.slice(3))).join('\n');
+    const keyOf = isHook ? computeHookKey : computeKey;
     if (dirty && (cmdBase === 'check' || cmdBase === 'record')) { console.error('tsc-stamp: run tsc (dirty tracked tree)'); return cmdBase === 'check' ? 1 : 0; }
     if (isHook && cmdBase === 'seed-export') {
       // Checks job: the pre-warm ran the hook tail on exactly this rebased sha and left a stamp.
-      const key = computeKey(head);
+      const key = computeHookKey(head);
       const ok = !dirty && head === a.rebased && file && readStamp(file).includes(key);
       console.error(`tsc-stamp: hook ${ok ? 'seed exported' : 'no seed'}`);
       if (ok) console.log(key);
@@ -206,14 +222,14 @@ function main(argv) {
     if (cmdBase === 'check') {
       const pre = decide({ env, headOid: head, pushedOid: a['pushed-oid'], specCount: Number(a['spec-count']), remoteRef: a['remote-ref'], key: 'a'.repeat(64), stampLines: ['a'.repeat(64)] });
       if (!pre.skip) { console.error(`tsc-stamp: run tsc (${pre.reason})`); return 1; }
-      const key = computeKey(head);
+      const key = keyOf(head);
       const d = decide({ env, headOid: head, pushedOid: a['pushed-oid'], specCount: Number(a['spec-count']), remoteRef: a['remote-ref'], key, stampLines: readStamp(file) });
       console.error(`tsc-stamp: ${d.skip ? 'SKIP tsc' : 'run tsc'} (${d.reason})`);
       return d.skip ? 0 : 1;
     }
     if (cmdBase === 'record') {
       if (env.GITHUB_ACTIONS !== 'true' || !file) return 0;
-      fs.appendFileSync(file, `${computeKey(head)}\n`);
+      fs.appendFileSync(file, `${keyOf(head)}\n`);
       return 0;
     }
   } catch (e) {
@@ -226,4 +242,4 @@ function main(argv) {
 
 if (require.main === module) process.exit(main(process.argv.slice(2)));
 
-module.exports = { TSC_INERT_RESIDUE, decide, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };
+module.exports = { TSC_INERT_RESIDUE, decide, computeKey, computeHookKey, readStamp, dataDigest, decideSeedExport, decideSeed };
