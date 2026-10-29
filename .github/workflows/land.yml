@@ -42,8 +42,9 @@ name: Land
 # `git push origin HEAD:main` inherits that credential. A push made with the
 # default GITHUB_TOKEN triggers NO workflows on main — test.yml would never
 # run for the landed sha and scripts/ci-green-rate.js would be blind to it.
-# test.yml has no workflow_dispatch trigger, so there is no fallback: the PAT
-# push is the only way the landed sha gets its own Test Suite run.
+# test.yml's workflow_dispatch is a manual hand-run on a ref, not an automatic
+# fallback: the PAT push is the only way the landed sha gets its own
+# push-triggered Test Suite run.
 #
 # What runs in `checks` (parity with test.yml's blocking gates on main), via
 # scripts/lib/land-gauntlet.sh, run on the rebased branch first and then on
