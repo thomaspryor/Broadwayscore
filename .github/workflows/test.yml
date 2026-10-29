@@ -343,47 +343,33 @@ on:
       # BRO-4066: the --job-id fixture test lives in scripts/tests/
       # (registered in tests/unit-test-manifest.txt) — scripts/tests/ is not
       # scripts/lib/, so it needs its own path entry to fire CI on a solo edit.
-      - 'scripts/tests/ack-landed-job-id.test.mjs'
       # BRO-4069: same reason as the BRO-4066 entry above — the
       # --already-landed fixture test also lives in scripts/tests/.
-      - 'scripts/tests/ack-landed-already-landed.test.mjs'
       # BRO-4068: the naming-hint test (builds a throwaway git repo, since CI
       # checks out at depth 1) - same scripts/tests/ situation, so it needs
       # its own entry too.
-      - 'scripts/tests/ack-landed-naming-candidates.test.mjs'
       # BRO-4071: --sha derivation test (throwaway git repo, same situation).
-      - 'scripts/tests/ack-landed-derive-sha.test.mjs'
       # BRO-4078: computeStrandedTie's git-plumbing rebase test also lives in
       # scripts/tests/ - same scripts/tests/ situation, so it needs its own
       # entry too.
-      - 'scripts/tests/ack-landed-stranded-rebased.test.mjs'
       # BRO-1711: destructive-script --help ratchet test (entry predates the scripts/tests/** glob, BRO-5309).
-      - 'scripts/tests/help-flag-safety-guard.test.mjs'
       # BRO-3188: syndicated-reprint canonical-extraction test (entry predates the scripts/tests/** glob, BRO-5309).
-      - 'scripts/tests/syndication-canonical-extraction.test.mjs'
       # BRO-4133: --job-id correlationId fallback fixture test, same
       # scripts/tests/ situation as the five entries above — scripts/lib/
       # ack-landed-core.test.mjs (globbed) covers the decision, but this file
       # itself needs its own entry to fire CI on a solo edit.
-      - 'scripts/tests/ack-landed-correlation-id.test.mjs'
       # BRO-4662: --landed-elsewhere fixture test + ack-event-family parity
       # check, same scripts/tests/ situation as the entries above.
-      - 'scripts/tests/ack-landed-landed-elsewhere.test.mjs'
       # BRO-4066: the reclassify-headless-endings.js backfill CLI and its
       # scripts/tests/ test (registered in tests/unit-test-manifest.txt) —
       # neither is covered by the globs above, so both need their own entry.
       - 'scripts/reclassify-headless-endings.js'
-      - 'scripts/tests/reclassify-headless-endings.test.mjs'
       # BRO-4133: three more scripts/tests/ files found unregistered by the
       # same audit gap (audit-orphan-tests.js had never scanned this
       # directory at all) — same scripts/tests/ situation as the entries
       # above. (BRO-5309 later added the scripts/tests/** glob, so these
       # literal scripts/tests/ entries are now redundant.)
-      - 'scripts/tests/batch-drain-decision.test.mjs'
-      - 'scripts/tests/verify-edits-cloud-session-gates.test.mjs'
       # BRO-3630: Ruthless! data-integrity test (entry predates the scripts/tests/** glob, BRO-5309)
-      - 'scripts/tests/show-ruthless-data.test.mjs'
-      - 'scripts/tests/watchdog-skips-landed-acked.test.mjs'
       # scripts/lib/fanout-verified-core.test.mjs covers the decision this
       # CLI wraps (BRO-3939); listed so a solo edit to the CLI still fires CI.
       - 'scripts/fanout-verified.js'
@@ -744,7 +730,6 @@ on:
       # (root-level scripts/*.js + *.test.mjs, no scripts/** broad glob) —
       # needs its own entry so a solo edit triggers CI.
       - 'scripts/recover-serp-text.js'
-      - 'scripts/tests/recover-serp-exhausted-outlets.test.mjs'
       # BRO-848: root-level scripts/*.js + *.test.mjs pair (no scripts/**
       # broad glob) — needs its own entry so a solo edit triggers CI. Not
       # require()-coupled (the test shells out to migrate-reroute-backlog.js
@@ -992,18 +977,15 @@ on:
       # + the brightdataDailyUsd threshold decision. Deps are all
       # scripts/lib/** (already globbed above) — path-listed so a solo edit
       # to this test alone still triggers CI.
-      - 'scripts/tests/brightdata-daily-spend.test.mjs'
       # BRO-3419: weekly traffic-source spike detection (GA4 + PostHog). The
       # pure helpers (weekStart/bucketWeekly/detectSpikes) live in the script
       # itself, so both the script and its test are path-listed — a solo edit
       # to either would otherwise run in ZERO CI jobs.
       - 'scripts/analyze-traffic-sources.js'
-      - 'scripts/tests/analyze-traffic-sources.test.mjs'
       # BRO-4327: the ad-hoc HogQL runner behind posthog-adhoc-query.yml and
       # its scripts/tests/ test (registered in tests/unit-test-manifest.txt,
       # not globbed) — same reason as the two entries above.
       - 'scripts/posthog-adhoc-query.js'
-      - 'scripts/tests/posthog-adhoc-query.test.mjs'
       # Task #692: summarizeBwwRoundupMisses() (in the file above) + its digest
       # formatter bwwRoundupMissBacklogResults() (scripts/health-check.js, already
       # path-listed elsewhere). Test lives in tests/unit/ (node --test batch, not
@@ -1050,7 +1032,6 @@ on:
       # --diff-filter flag there. Colocated test lives in scripts/tests/,
       # which is NOT covered by any glob (registered in
       # tests/unit-test-manifest.txt); path-listed so a solo edit triggers CI.
-      - 'scripts/tests/check-push-ledger-content-check.test.mjs'
       - 'tests/unit/rescore-queue-depth.test.mjs'
       - 'tests/unit/rescore-actionable-depth.test.mjs'
       - 'scripts/check-progress-stalls.js'
@@ -1069,7 +1050,6 @@ on:
       # and is registered in tests/unit-test-manifest-tsx.txt. Its two subjects
       # (src/lib/ticket-utils.ts, scripts/lib/ticket-link-discovery.js) already
       # trigger CI, so only an edit to the TEST ITSELF was invisible.
-      - 'scripts/tests/tm-gap-links.test.mjs'
       - 'scripts/enrich-fallback-ticket-links.js'
       - 'src/lib/ticket-utils.ts'
       - 'tests/unit/ticket-links-hidden-fallback.test.ts'
@@ -1196,7 +1176,6 @@ on:
       # #1720's fix in notion-action-poll.js. Test lives in scripts/tests/
       # (registered in tests/unit-test-manifest.txt, not globbed) —
       # path-listed so a solo edit triggers CI.
-      - 'scripts/tests/opening-night-monitor-kill-switch-staleness.test.mjs'
       # Opening-night scored-stage alert (task #1737, 2026-08-17): shared
       # filter/date/scored-lookup predicate + the script that calls it.
       # Colocated test runs in the scripts/lib/*.test.mjs glob; path-listed
@@ -1210,9 +1189,7 @@ on:
       # Task #1706: cross-invocation launch-journal reclaim. Test lives in
       # scripts/tests/ (registered in tests/unit-test-manifest.txt, not
       # globbed) — path-listed so a solo edit triggers CI.
-      - 'scripts/tests/cmux-launch-reclaim.test.mjs'
       # BRO-4077: identical-title guard for ordinary OWNER hand-offs.
-      - 'scripts/tests/cmux-launch-same-title-guard.test.mjs'
       # Card #650: cmux refuses launchd-parented process ancestry, so the
       # launcher now runs headless via this thin wrapper around the shared
       # scripts/lib/claude-cli.js primitive instead of cmux-launch.js.
@@ -1734,7 +1711,6 @@ on:
       # Path-listed so a solo edit triggers CI (same "scripts/tests/ is not
       # scripts/lib/" gap the comment above warns about).
       - 'scripts/test-data-write-guard.js'
-      - 'scripts/tests/test-data-write-guard.test.mjs'
       - '.review-write-guard-exempt.txt'
       - '.reviews-json-write-exempt.txt'
       - '.shows-json-write-exempt.txt'
@@ -2014,7 +1990,6 @@ on:
       # tests/unit-test-manifest.txt, scripts/tests/ is not scripts/lib/ so
       # not covered by any glob above).
       - 'scripts/extract-pull-quotes.js'
-      - 'scripts/tests/pull-quote-quality.test.mjs'
       # extractDateFromUrl (URL-date fallback for rebuild + backfill-review-dates.js)
       # lives here; covered by tests/unit/rebuild-helpers.test.mjs (tests/** trigger)
       # and the colocated scripts/lib/*.test.mjs glob — but rebuild-helpers.js itself
@@ -2214,13 +2189,11 @@ on:
       # its test lives in scripts/tests/ (registered in tests/unit-test-manifest.txt),
       # the scanner's colocated *.test.mjs runs via the scripts/lib glob.
       - 'scripts/audit-invisible-verification.js'
-      - 'scripts/tests/observable-before-absence.test.mjs'
       # not-found cache backfill (card 3bd637c5-416f-8142-8b78-c7405c71bd98):
       # shouldSkipAsKnownNotFound/applyFetchResultToCache decide whether a
       # Show Score / BWW-RR fetch is served from cache. Test lives in
       # scripts/tests/ (registered in tests/unit-test-manifest.txt); the lib
       # and its caller need explicit listing — no scripts/lib/** broad glob.
-      - 'scripts/tests/not-found-cache-backfill.test.mjs'
       - 'scripts/fetch-aggregator-pages.ts'
       # Headless dispatch lane telemetry (card #1454) — JOB_EVENTS.ABANDONED,
       # the headless success-rate reader, and the lease-held ledger-write fix
@@ -2231,12 +2204,10 @@ on:
       # file (registered in tests/unit-test-manifest.txt, but scripts/tests/ is
       # not auto-globbed either) and the new CLI reader.
       - 'scripts/audit-headless-outcome-rate.js'
-      - 'scripts/tests/headless-dispatch-telemetry.test.mjs'
       # BRO-4064: classifyHeadlessResult/classifyHeadlessJobResult (in
       # scripts/lib/, already covered by the scripts/lib/** glob above) plus
       # their own scripts/tests/ acceptance file — path-listed per this
       # file's own repeated convention (scripts/tests/ is not auto-globbed).
-      - 'scripts/tests/bsc-runner-headless-classify.test.mjs'
       # fetchPage() cleanup-on-success-path guard (#946) — advisory scan for
       # scripts whose only cleanup()/process.exit() call is catch-only (the
       # #438/#914 hang class). Without this path entry, edits get ZERO CI.
@@ -2295,8 +2266,6 @@ on:
       # would trigger ZERO CI — the "non-listed scripts/ = ZERO CI" class.
       - 'scripts/audit-close-time-verify.js'
       - 'scripts/produce-trunk-snapshot.js'
-      - 'scripts/tests/close-time-verify.test.mjs'
-      - 'scripts/tests/trunk-status.test.mjs'
       # BRO-3865: per-breakage main-red alert routing (test.yml's own
       # test-summary job invokes this). Same "non-listed scripts/ = ZERO CI"
       # gap — a solo edit to just this file, with test.yml untouched, would
@@ -2310,23 +2279,19 @@ on:
       # scripts/lib/" gap as the block above: without these entries a push
       # touching only them runs ZERO CI.
       - 'scripts/claude-auth-preflight.js'
-      - 'scripts/tests/agent-auth-preflight.test.mjs'
       # Dispatch-card drift (card #1009) — the detector that answers "is this
       # running session executing the card Notion currently shows?", plus its
       # watcher. Same "scripts/tests/ is not scripts/lib/" gap as the block
       # above: without these entries a push touching only them runs ZERO CI.
-      - 'scripts/tests/dispatch-card-drift.test.mjs'
       # P1 backlog relevance classifier (task #1719) — is an open P1 still
       # real, or LIKELY-DONE/DUPLICATE/STALE. Same "scripts/tests/ is not
       # scripts/lib/" gap as the block above: without these entries a push
       # touching only them runs ZERO CI.
       - 'scripts/audit-card-relevance.js'
-      - 'scripts/tests/audit-card-relevance.test.mjs'
       # Pre-implementation infra review gate (card #1079, owner decision
       # 2026-08-05) — the scope classifier + its test. Same "scripts/tests/ is
       # not scripts/lib/" gap: without these entries a push touching only them
       # runs ZERO CI. review-gate.mjs is already path-listed elsewhere.
-      - 'scripts/tests/infra-review-gate.test.mjs'
       - 'scripts/dispatch-drift-watch.js'
       # Infra-review gate registration + liveness probe (task #1094) — the
       # vacuous-gate class (#1063/#1066-#1069) applied to the #1079 gate
@@ -2336,7 +2301,6 @@ on:
       # critical-infra edit to confirm it still blocks. Same "scripts/tests/
       # is not scripts/lib/" gap: without these entries a push touching only
       # them runs ZERO CI.
-      - 'scripts/tests/infra-gate-registration.test.mjs'
       - 'scripts/check-infra-gate-registration.js'
       # Merge/push review-gate shell e2e (task #1316). Same "scripts/tests/ is
       # not scripts/lib/" gap, and found the hard way on 2026-08-14: a push to
@@ -2348,10 +2312,8 @@ on:
       # suite exists to catch regressions in exactly those two scripts — same
       # hook-with-its-test pairing already used for pre-push-visual-gate.sh
       # above.
-      - 'scripts/tests/merge-gate-hook.test.mjs'
       # BRO-4238: cloud sessions never push main (land via land/**) — drives
       # the real pre-push-review-gate.sh. Also in tests/unit-test-manifest.txt.
-      - 'scripts/tests/cloud-push-main-guard.test.mjs'
       - '.claude/hooks/pre-merge-review-gate.sh'
       - '.claude/hooks/pre-push-review-gate.sh'
       # BRO-4238: GitHub-MCP main guard + cloud copy of the Resend broadcast
@@ -2361,26 +2323,20 @@ on:
       # BRO-2394: visual gate on GitHub MCP file writes (lib called by
       # github-main-guard.sh); driven for real by the test below.
       - 'scripts/lib/mcp-push-visual-gate.sh'
-      - 'scripts/tests/github-mcp-push-gates.test.mjs'
       - '.claude/hooks/block-resend-broadcasts.sh'
       - '.claude/hooks/lib/strip-git-commit-noise.js'
       # BRO-5221: hooks/commands for cloud sessions that start in /home/user;
       # driven for real by scripts/tests/install-home-claude-config.test.mjs.
       - '.claude/hooks/lib/home-hook-runner.sh'
       - 'scripts/install-home-claude-config.js'
-      - 'scripts/tests/install-home-claude-config.test.mjs'
       # BRO-4593: land rebase + test-registration preflight; driven for real by
       # tests/unit/land-preflight.test.mjs (rides 'tests/**' and 'scripts/lib/**').
       - '.claude/hooks/pre-push-land-preflight.sh'
-      - 'scripts/tests/cloud-settings-guards.test.mjs'
-      - 'scripts/tests/cloud-infra-review-hooks.test.mjs'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # verify-edits.sh heredoc-stripper here-string false negative (task
       # #1606), same shell-e2e class as merge-gate-hook.test.mjs above and
       # the same "scripts/tests/ is not scripts/lib/" path-list gap.
-      - 'scripts/tests/verify-edits-heredoc.test.mjs'
       # BRO-5270: the scoring-delta Stop gate's fixture suite (same gap).
-      - 'scripts/tests/verify-edits-scoring-gate.test.mjs'
       - '.claude/hooks/verify-edits.sh'
       # BRO-2258: session-start.sh's disk-space-check.js/job-log-retention.js
       # wiring is asserted by tests/unit/session-start-disk-check.test.mjs
@@ -2394,13 +2350,11 @@ on:
       # no glob until BRO-5309 added scripts/tests/** (this literal entry is
       # now redundant). Also registered in
       # tests/unit-test-manifest.txt.
-      - 'scripts/tests/session-start-staleness.test.mjs'
       # BRO-4237: the cloud session-start hook installs the owner's global
       # instructions via scripts/sync-global-instructions.js (the lib rides
       # 'scripts/lib/**'); the test drives the real hook end-to-end. Also
       # registered in tests/unit-test-manifest.txt.
       - 'scripts/sync-global-instructions.js'
-      - 'scripts/tests/global-instructions.test.mjs'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on
@@ -2411,7 +2365,6 @@ on:
       # scripts/tests/hook-liveness.test.mjs is also registered in
       # tests/unit-test-manifest.txt (node --test only runs files literally
       # listed there — no glob).
-      - 'scripts/tests/hook-liveness.test.mjs'
       - 'scripts/check-hook-liveness.js'
       # BRO-2439 — the generalized hook-liveness check above reads
       # <repo>/.claude/settings.json as its source of truth for every hook
@@ -2429,7 +2382,6 @@ on:
       # both outside that glob and need their own entries (same
       # "scripts/tests/ is not scripts/lib/" gap as hook-liveness below).
       - 'scripts/check-cmux-reachability.js'
-      - 'scripts/tests/cmux-reachability-check.test.mjs'
       - '.claude/hooks/notion-create-block.sh'
       - '.claude/hooks/worktree-enforce.sh'
       - '.claude/hooks/check-skill-redaction.sh'
@@ -2446,7 +2398,6 @@ on:
       # file's own header) — registration here buys a parse/import tripwire,
       # not behavioral coverage. Still path-listed so a solo edit to the test
       # doesn't run ZERO CI.
-      - 'scripts/tests/hook-guard-restore.test.mjs'
       # BRO-2510 — commit/stop gate accept a claimed/reported Linear issue
       # (linear-issue-verify.sh's sentinels) as equivalent to a Notion card.
       # Both guarded scripts (notion-card-required-commit.sh,
@@ -2455,14 +2406,12 @@ on:
       # in this file skips in CI, registration here is a parse/import
       # tripwire only. Still path-listed so a solo edit to the test doesn't
       # run ZERO CI.
-      - 'scripts/tests/notion-card-linear-sentinel.test.mjs'
       # Infra-review gate digest (card #1095) — turns the gitignored
       # data/audit/infra-review-gate.jsonl + .claude/review-verdicts.jsonl
       # ledgers into a health-check.js row. health-check.js is already
       # path-listed; same "scripts/tests/ is not scripts/lib/" gap as the
       # blocks above: without these entries a push touching only the lib +
       # test would run ZERO CI.
-      - 'scripts/tests/infra-review-digest.test.mjs'
       # Worktree-gc liveness guard (task #1709) — gc-merged-worktrees.sh calls
       # hasLiveProcessInDir() via a CLI wrapper before every `git worktree
       # remove` on a merged worktree, so a dev server/watcher left running in
@@ -2470,15 +2419,12 @@ on:
       # "scripts/tests/ is not scripts/lib/" gap as the blocks above: without
       # these entries a push touching only the lib + test would run ZERO CI.
       # Test is also registered in tests/unit-test-manifest.txt.
-      - 'scripts/tests/gc-merged-worktrees-liveness.test.mjs'
       - 'scripts/gc-merged-worktrees.sh'
       # Dry-run/real parity guard (BRO-2607) — the dry-run branch reported a
       # merged-but-source-dirty worktree as "fully merged / WOULD-REMOVE" and
       # counted it in removed=, while the real path's plain `git worktree
       # remove` refuses it. Same "scripts/tests/ is not scripts/lib/" gap.
-      - 'scripts/tests/gc-dry-run-parity.test.mjs'
       # BRO-5301: generated churn (pyc, auto-fix-results, committed core-data copies) is safe-dirty.
-      - 'scripts/tests/gc-safe-dirty-generated.test.mjs'
       # BRO-4815: salvage of landed untracked-notes-only worktrees (lib + colocated test).
       - 'scripts/lib/worktree-gc-salvage.js'
       - 'tests/unit/worktree-gc-salvage.test.mjs'
@@ -2547,7 +2493,6 @@ on:
       # glob nor the scripts/ root listing reaches that directory) and asserts
       # UI_PATH_RE still matches pre-push-visual-gate.sh's UI_PATTERN — so the
       # hook is path-listed too, or a hook-only widening lands unchecked.
-      - 'scripts/tests/headless-dispatchability.test.mjs'
       - '.claude/hooks/pre-push-visual-gate.sh'
       # Overall email-gate funnel monitor (card #240) — pure rules + runner +
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
@@ -2628,15 +2573,6 @@ on:
       # 18 live instances while wiring BRO-2647. scripts/audit-test-yml-manifest-paths.js
       # is now a BLOCKING gate so this list can never silently drift again.
       - 'scripts/llm-scoring/openai-leg-model.test.mjs'
-      - 'scripts/tests/alert-sender-bypass.test.mjs'
-      - 'scripts/tests/dispatch-claim-requires-workspace.test.mjs'
-      - 'scripts/tests/dispatch-watchdog-staleness.test.mjs'
-      - 'scripts/tests/notion-action-poll-escalation-staleness.test.mjs'
-      - 'scripts/tests/record-push-ledger-redaction.test.mjs'
-      - 'scripts/tests/scripts-no-undef.test.mjs'
-      - 'scripts/tests/stale-wrongproduction-adjudication.test.mjs'
-      - 'scripts/tests/verify-gate-ts-runner.test.mjs'
-      - 'scripts/tests/fix-platform-ticket-links.test.mjs'
       # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
       # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
       # so an edit triggers CI per feedback_test_yml_push_path_allowlist.
@@ -2749,7 +2685,6 @@ on:
       # BRO-2215 acceptance regression — lives in scripts/tests/ (registered in
       # tests/unit-test-manifest.txt, not globbed); path-listed so a solo edit
       # triggers CI.
-      - 'scripts/tests/notion-mirror-status-reconcile.test.mjs'
       # Task #1701: pull-time dedup regression test lives in tests/unit/ (node
       # --test batch, not globbed — see tests/unit-test-manifest.txt) and is
       # registered explicitly in the tests/unit node --test invocation below.
@@ -2779,7 +2714,6 @@ on:
       # registered in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs is NOT globbed). Path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist).
-      - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-conductor.js'
       # bsc-status (owner request 2026-07-22: one-glance tab verdicts +
@@ -2824,7 +2758,6 @@ on:
       # scripts/tests/ (literal entry predates the BRO-5309 glob; registered in
       # tests/unit-test-manifest.txt) so a solo edit still triggers CI
       # (feedback_test_yml_push_path_allowlist).
-      - 'scripts/tests/bsc-reconcile-linear-started.test.mjs'
       # Flagless-resume revive helper (task #985) — colocated test runs in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'tests/unit/bsc-runner-lease.test.mjs'
@@ -2902,21 +2835,17 @@ on:
       - 'scripts/dispatch-watchdog.js'
       # BRO-3437: class-level "no watchdog-park source names a retired-board
       # id" test (top-level scripts/*.test.mjs are NOT globbed).
-      - 'scripts/tests/dispatch-watchdog-core.test.mjs'
-      - 'scripts/tests/dispatch-outcome.test.mjs'
       # BRO-3923: digest-autofix never files a "BSC Daily: Watchdog parked
       # #<bare numeric>" tracker for the frozen Notion mirror. The guard lib
       # (scripts/lib/digest-autofix-mirror-park-guard.js) is auto-covered by
       # the scripts/lib/** glob above; its test lives in scripts/tests/ (not
       # globbed, same gap shape as dispatch-watchdog-core.test.mjs above) so
       # it's registered in tests/unit-test-manifest.txt AND path-listed here.
-      - 'scripts/tests/digest-autofix-mirror-park-guard.test.mjs'
       # The digest sibling was missed when the pair above was listed: grep for
       # "dispatch-outcome-digest" across .github/workflows/ returned NOTHING,
       # so neither the lib nor its test could trigger any workflow. The test is
       # in tests/unit-test-manifest.txt, so it RUNS once CI runs — it just
       # never started CI, which is the more dangerous half of the gap.
-      - 'scripts/tests/dispatch-outcome-digest.test.mjs'
       # Autonomous nightly loop (Sprint 1, Notion 39b637c5). Colocated
       # *.test.mjs run in the lib-test glob; path-listed so a solo edit
       # triggers CI (feedback_test_yml_push_path_allowlist). notion-brain.js
@@ -2933,8 +2862,6 @@ on:
       # ZERO CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/posthog-friction-analyzer.js'
       - 'scripts/audit-opening-dates.js'
-      - 'scripts/tests/notion-write-paths-retired.test.mjs'
-      - 'scripts/tests/notion-live-write-paths.test.mjs'
       - 'scripts/lib/notion-residue-scan.js'
       # Notion corpus export (Sprint 2, notion→linear cutover). notion-corpus.js
       # holds the overflow-reassembly that notion-brain.js ALSO reads through —
@@ -2999,9 +2926,7 @@ on:
       # is NOT globbed); the fallback-specific test lives in scripts/tests/
       # (also not globbed) — both path-listed here so a solo edit triggers CI.
       - 'scripts/enrich-card-acceptance.js'
-      - 'scripts/tests/enrich-card-acceptance-fallback.test.mjs'
       # BRO-2170: stale owner-judgment marker recheck.
-      - 'scripts/tests/enrich-card-recheck-markers.test.mjs'
       - 'scripts/audit-card-verifiability.js'
       - 'scripts/lib/triage-schema.json'
       - 'scripts/autonomous-triage.js'
@@ -3042,7 +2967,6 @@ on:
       # the colocated scripts/tests/ test is NOT globbed by 'tests/**' (same
       # "scripts/tests/ is not scripts/lib/" gap as feedback_test_yml_push_path_allowlist),
       # so it needs its own explicit line; registered in tests/unit-test-manifest.txt.
-      - 'scripts/tests/tracked-and-ignored-guard.test.mjs'
       # Loop 5 PR supervisor: the pure merge-decision function, its CLI, and its
       # fixture test. Registered in tests/unit-test-manifest.txt, but that only
       # decides WHICH tests run once this workflow triggers — without these path
@@ -3074,43 +2998,35 @@ on:
       # '.github/workflows/**' glob above; this test lives in scripts/tests/
       # (registered in tests/unit-test-manifest.txt, not globbed), so it's
       # path-listed here so a solo edit to just the test still triggers CI.
-      - 'scripts/tests/recheck-ledger-persistence.test.mjs'
-      - 'scripts/tests/sweep-open-backlog-acceptance-scheduled.test.mjs'
       # BRO-3373: the recheck's Linear candidate source. scripts/lib/linear-
       # recheck-source.js and its edits to autonomous-recheck-core.js /
       # recheck-stamp.js all ride the 'scripts/lib/**' glob above; this test
       # lives in scripts/tests/ (registered in tests/unit-test-manifest.txt,
       # not globbed), so it's path-listed here so a solo edit to just the
       # test still triggers CI.
-      - 'scripts/tests/autonomous-acceptance-recheck-linear.test.mjs'
       # BRO-3317: same shape as the BRO-386 note directly above — the
       # provider-spend ledger's commit is its own step in data-health-check.yml
       # (already covered by the '.github/workflows/**' glob), but this
       # ordering test lives in scripts/tests/ (registered in
       # tests/unit-test-manifest.txt, not globbed), so it's path-listed here
       # so a solo edit to just the test still triggers CI.
-      - 'scripts/tests/provider-spend-ledger-commit-ordering.test.mjs'
       # BRO-3349: the freshness-math regression guard for health-check.js's
       # "Data quality: provider spend ledger" row. scripts/health-check.js and
       # scripts/lib/provider-spend-core.js are already covered above/by the
       # 'scripts/lib/**' glob; this test lives in scripts/tests/ (registered in
       # tests/unit-test-manifest.txt, not globbed), so it's path-listed here so
       # a solo edit to just the test still triggers CI.
-      - 'scripts/tests/provider-spend-ledger-freshness-row.test.mjs'
       # BRO-3349 prevent-class: the same start-of-day inflation, guarded in
       # health-check.js's shared hoursAgo() so every freshness row is covered
       # (data/cast-changes.json's day-shaped lastUpdated sits on a 72h warn bar).
       # Same scripts/tests/ path-listing rationale as the entry directly above.
-      - 'scripts/tests/health-check-hours-ago.test.mjs'
       # BRO-467: checkAutofixCanary()/checkAutofixThroughput() CI-skip gate —
       # scripts/health-check.js is already path-listed above, but this test
       # lives in scripts/tests/ (registered in tests/unit-test-manifest.txt,
       # not globbed), so it's path-listed here too so a solo edit to just the
       # test still triggers CI.
-      - 'scripts/tests/health-check-autofix-ci-gate.test.mjs'
       # BRO-4120: unmeasurable-in-CI rows never actionable. Same scripts/tests/
       # path-listing rationale as the entries directly above.
-      - 'scripts/tests/health-check-unmeasurable-rows.test.mjs'
       - 'scripts/bsc-prune.js'
       # validate-show-venue.js already path-listed above (line ~180).
       - 'scripts/verify-review-recovery.js'
@@ -3332,7 +3248,6 @@ on:
       # above (scripts/lib/** / scripts/launchd/**) — only these two
       # top-level, un-globbed paths need explicit listing.
       - 'scripts/audit-launchd-stale-sync-guard.js'
-      - 'scripts/tests/launchd-stale-sync-guard.test.mjs'
       # Linear-issue dispatcher (task #1303): fetches a Linear issue and
       # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
       # headless launch primitives. dispatch-guards.js (task #1303 plan
@@ -3353,7 +3268,6 @@ on:
       # "scripts/tests/ is not scripts/lib/" gap as this block's siblings,
       # feedback_test_yml_push_path_allowlist), so it needs its own explicit
       # line; registered in tests/unit-test-manifest.txt.
-      - 'scripts/tests/linear-next-overlap-guards.test.mjs'
       # BRO-2569: wired dispatch-guards.js's new resolvePathCheck()/
       # pathVerifiabilityGuard() into linear-next.js's main() (evaluateVerifiability
       # only checks a card's acceptance command SHAPE, never whether its paths
@@ -3362,7 +3276,6 @@ on:
       # 'tests/**' glob" gap as this block's siblings,
       # feedback_test_yml_push_path_allowlist), so it needs its own explicit
       # line; registered in tests/unit-test-manifest.txt.
-      - 'scripts/tests/linear-next-dispatch.test.mjs'
       # Linear-side drain for parked, auto-filed issues (BRO-293, BRO-286
       # Phase 2 completion): dispatches issues owner-alert-router.js's
       # dispatchCard() filed and parked, via linear-next.js's own --headless
