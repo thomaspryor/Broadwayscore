@@ -67,3 +67,20 @@ test('the Stop hook runs the restate check, advisory unless DECISION_RESTATE_ENF
   assert.match(hook, /DECISION_RESTATE_ENFORCE/);
   assert.match(hook, /DECISION_RESTATE_DISABLE/);
 });
+
+test('review blockers (BRO-6539): voided/needed/undone comments are not answers; new evidence is not settled by an old approval', async () => {
+  assert.equal(answerState([ask('2026-10-29T10:00:00Z'), { body: '**Owner decision** (closed without an owner tap through the email link, 2026-10-29 UTC)', createdAt: '2026-10-29T11:00:00Z' }]).answered, false);
+  assert.equal(answerState([ask('2026-10-29T10:00:00Z'), { body: 'Owner decision needed: pick a font', createdAt: '2026-10-29T11:00:00Z' }]).answered, false);
+  assert.equal(answerState([ask('2026-10-29T10:00:00Z'), { body: 'Visual approval ref VQA-1', createdAt: '2026-10-29T11:00:00Z' }, { body: 'Visual approval void VQV-1', createdAt: '2026-10-29T12:00:00Z' }]).answered, false);
+  const { cardAlreadySettled, fingerprintMarker } = require('../../scripts/lib/linear-attach-approval.js');
+  const fp1 = 'a'.repeat(12); const fp2 = 'b'.repeat(12);
+  const history = [
+    { body: `Waiting on your approval: 2 crops.\n\n${fingerprintMarker(fp1)}`, createdAt: '2026-10-02T10:00:00Z' },
+    { body: 'Visual approval ref VQA-1', createdAt: '2026-10-02T11:00:00Z' },
+  ];
+  assert.equal(cardAlreadySettled(history, fp2), null);
+  assert.match(cardAlreadySettled(history, fp1), /already on the card/);
+  assert.equal(cardAlreadySettled([{ body: '**Owner decision** (answered by the owner)', createdAt: '2026-01-01T00:00:00Z' }], fp1), null);
+  const { decisionCardsFromTranscript } = require('../../scripts/lib/decision-restate.js');
+  assert.deepEqual(decisionCardsFromTranscript('{"x":"DECISION NEEDED: BRO-12 pick"}\n{"y":"BRO-99"}'), ['BRO-12']);
+});

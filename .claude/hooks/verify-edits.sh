@@ -101,11 +101,11 @@ fi
 if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${DECISION_RESTATE_DISABLE:-0}" != "1" ] \
    && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1 \
    && printf '%s' "$VE_LAST_MSG" | grep -q 'DECISION NEEDED:'; then
-  _dr_out=$(printf '%s' "$VE_LAST_MSG" | timeout 25 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --message-stdin 2>/dev/null)
+  _dr_out=$(printf '%s' "$VE_LAST_MSG" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --message-stdin --transcript="$transcript" 2>/dev/null)
   if [ -n "$_dr_out" ]; then
     mkdir -p "$VE_REPO_ROOT/.cache" 2>/dev/null
     { date -u +%FT%TZ; printf '%s\n' "$_dr_out"; } >> "$VE_REPO_ROOT/.cache/decision-restate-advisory.log" 2>/dev/null
-    if [ "${DECISION_RESTATE_ENFORCE:-0}" = "1" ]; then
+    if [ "${DECISION_RESTATE_ENFORCE:-0}" = "1" ] && ! printf '%s' "$VE_LAST_MSG" | grep -q 'NO-VERIFY:'; then
       printf '🛑 BLOCKED: this message restates a decision the owner already answered on the card (BRO-6539):\n%s\nAct on the answer and drop it from the message. Bypass: NO-VERIFY: <reason>.\n' "$_dr_out" >&2
       exit 2
     fi

@@ -18,7 +18,9 @@
  *   printf '%s' "$MESSAGE" | node scripts/lib/decision-restate.js --message-stdin
  *
  * --message-stdin reads a chat reply, finds the BRO ids inside its DECISION
- * NEEDED blocks and prints one line per answered card (nothing when none).
+ * NEEDED blocks (plus, with --transcript=<file>, the ids in transcript entries that
+ * carry a DECISION NEEDED, since chat replies are written without ids) and prints one
+ * line per answered card (nothing when none).
  * Exit 0 always, unless --strict and something is answered (exit 3).
  */
 
@@ -30,7 +32,7 @@ const link = require('../../src/lib/owner-decision-link.js');
 // record-owner-answer.js leave the "Owner decision" comment; decision-reply.js
 // leaves "Owner answered / declined / picked / chose".
 const ANSWER_RES = [
-  /^\*{0,2}Owner decision\*{0,2}\b/i,
+  /^\*{0,2}Owner decision\*{0,2}(?!\s+needed)(?![^\n]*closed without an owner tap)/i,
   /^owner (?:answered|declined|picked|chose)\b/i,
   new RegExp(MARK.approved.replace(/\s+/g, '\\s+')),
   new RegExp(MARK.landed.replace(/\s+/g, '\\s+')),
@@ -39,7 +41,9 @@ const ANSWER_RES = [
 const QUESTION_RES = [/DECISION NEEDED/, /^Asked the owner to look at/i];
 // Approved/chosen answers close the question; a decline sends work back to the
 // worker, who may legitimately ask again afterwards.
-const DECLINE_RE = /^owner declined\b|\bRejected\b|\bChose:\s*(?:reject|no)\b/i;
+const DECLINE_RE = /^owner declined\b|\bChose:\s*(?:reject|no)\b/i;
+// Later states that undo an Approve (visual-approval.js classifyStatus: void, unverified, expired).
+const UNDO_RES = [MARK.void, MARK.unverified, MARK.expired].map((m) => new RegExp(m.replace(/\s+/g, '\\s+')));
 
 const plain = (body) => link.unescapeMarkdown(String(body || '')).trim();
 const ms = (c) => { const t = new Date(c && c.createdAt).getTime(); return Number.isFinite(t) ? t : null; };
@@ -63,7 +67,8 @@ function answerState(comments, { askedAt = null } = {}) {
   const given = askedAt == null ? null : new Date(askedAt).getTime();
   const lastQuestion = dated.filter(isQuestion).at(-1);
   const since = Number.isFinite(given) ? given : (lastQuestion ? ms(lastQuestion) : -Infinity);
-  const hit = dated.filter((c) => ms(c) > since && isAnswer(c) && !DECLINE_RE.test(plain(c.body))).at(-1);
+  const hit = dated.filter((c) => ms(c) > since && isAnswer(c) && !DECLINE_RE.test(plain(c.body)))
+    .filter((c, _i, _a) => !dated.some((u) => ms(u) > ms(c) && UNDO_RES.some((re) => re.test(plain(u.body))))).at(-1);
   return {
     answered: !!hit,
     answer: hit ? { text: plain(hit.body).replace(/\s+/g, ' ').slice(0, 160), at: hit.createdAt || null } : null,
@@ -105,6 +110,16 @@ function decisionCards(message) {
   return [...ids];
 }
 
+/** Card ids a session worked with when it wrote a DECISION NEEDED: the ids in each transcript entry that carries one. */
+function decisionCardsFromTranscript(text) {
+  const ids = new Set();
+  for (const line of String(text || '').split('\n')) {
+    if (!line.includes('DECISION NEEDED')) continue;
+    for (const m of line.matchAll(/\bBRO-(\d+)\b/g)) ids.add(`BRO-${m[1]}`);
+  }
+  return [...ids];
+}
+
 async function checkCards(cards, { listComments } = {}) {
   const list = listComments || ((ids) => require('./linear-client.js').listIssueComments(ids));
   const map = await list(cards);
@@ -114,7 +129,11 @@ async function checkCards(cards, { listComments } = {}) {
 async function main(argv = process.argv.slice(2), { stdin = () => require('fs').readFileSync(0, 'utf8'), out = console.log, listComments } = {}) {
   const strict = argv.includes('--strict');
   let cards = argv.filter((a) => /^BRO-\d+$/i.test(a)).map((a) => a.toUpperCase());
-  if (argv.includes('--message-stdin')) cards = decisionCards(stdin());
+  if (argv.includes('--message-stdin')) {
+    cards = decisionCards(stdin());
+    const t = argv.find((a) => a.startsWith('--transcript='));
+    if (t) { try { cards = [...new Set([...cards, ...decisionCardsFromTranscript(require('fs').readFileSync(t.slice(13), 'utf8'))])]; } catch { /* no transcript */ } }
+  }
   if (!cards.length) return 0;
   const { keep, dropped } = await checkCards(cards, { listComments });
   if (!argv.includes('--message-stdin')) keep.forEach((i) => out(`${i.card}: open (no owner answer after the question)`));
@@ -126,4 +145,4 @@ if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[decision-restate] ${e.message}`); process.exitCode = 0; });
 }
 
-module.exports = { answerState, dropAnswered, decisionCards, checkCards, isAnswer, isQuestion, main };
+module.exports = { answerState, dropAnswered, decisionCards, decisionCardsFromTranscript, checkCards, isAnswer, isQuestion, main };
