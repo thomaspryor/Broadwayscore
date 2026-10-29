@@ -1249136,21 +1249136,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T02:44:00.868Z",
-    "completedAt": "2026-10-29T02:44:05.351Z",
-    "totalReviews": 1,
+    "startedAt": "2026-10-29T02:44:28.194Z",
+    "completedAt": "2026-10-29T02:44:34.509Z",
+    "totalReviews": 2,
     "processed": 1,
-    "skipped": 0,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 5418,
-      "output": 287,
+      "input": 6132,
+      "output": 320,
       "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 14181
+      "cacheWrite": 3762,
+      "total": 15216
     },
-    "costUsd": 0.03379485,
-    "runId": "40807740917",
+    "costUsd": 0.0362558,
+    "runId": "40807767800",
     "errorDetails": [],
     "validation": [
       {
@@ -1255326,6 +1255326,16 @@
           "flat": 2,
           "down": 0,
           "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "cable-street-59e59-off-broadway-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -1269185,16 +1269195,6 @@
           "flat": 1,
           "down": 5,
           "total": 10
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "north-star-off-broadway-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
         },
         "hasDisagreement": false
       },
@@ -1284792,8 +1284792,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T02:46:04.167Z",
-    "completedAt": "2026-10-29T02:46:04.168Z",
+    "startedAt": "2026-10-29T02:46:47.640Z",
+    "completedAt": "2026-10-29T02:46:47.645Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1284806,7 +1284806,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40807740917",
+    "runId": "40807767800",
     "errorDetails": []
   }
 ]
