@@ -6,18 +6,24 @@
  * all the same (two "North American Tour" rows) is skipped: a venue line would
  * add clutter without telling them apart.
  */
+export function normalizeTitle(t: string): string {
+  return t.toLowerCase().replace(/[‘’'`]/g, '').replace(/\s+/g, ' ').trim();
+}
+
 export function sameTitleShowIds(shows: ReadonlyArray<{ id: string; title: string; venue?: string | null }>): Set<string> {
-  const norm = (t: string) => t.toLowerCase().replace(/[‘’'`]/g, '').replace(/\s+/g, ' ').trim();
   const byTitle = new Map<string, typeof shows[number][]>();
   for (const s of shows) {
-    const key = norm(s.title);
+    const key = normalizeTitle(s.title);
     const group = byTitle.get(key);
     if (group) group.push(s); else byTitle.set(key, [s]);
   }
   const out = new Set<string>();
   for (const group of byTitle.values()) {
     if (group.length < 2) continue;
-    const venues = new Set(group.map((s) => (s.venue ?? '').trim().toLowerCase()));
+    // Rows without a venue cannot show a venue line, so they do not count as
+    // a distinct venue (a null-venue twin would otherwise flag a pair where
+    // only one row could display anything).
+    const venues = new Set(group.map((s) => (s.venue ?? '').trim().toLowerCase()).filter(Boolean));
     if (venues.size > 1) group.forEach((s) => out.add(s.id));
   }
   return out;
