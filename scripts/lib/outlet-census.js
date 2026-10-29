@@ -137,11 +137,14 @@ function extractPageMeta(html) {
     date = metaContent(s, 'article:modified_time') || (/"dateModified"\s*:\s*"([^"]+)"/.exec(s) || [])[1] || null;
     dateSoft = !!date;
   }
+  // A named critic on the page's JSON-LD Review; listing pages carry the type with an empty author.
+  const reviewAuthor = (/"@type"\s*:\s*"Review"[\s\S]{0,600}?"author"\s*:\s*\{[^}]*?"name"\s*:\s*"([^"]*)"/.exec(s) || [])[1];
   return {
     headline: title ? title.trim() : null,
     description: description ? decodeEntities(description).trim() : null,
     publishDate: date ? String(date).slice(0, 10) : null,
     dateSoft,
+    reviewAuthor: reviewAuthor ? decodeEntities(reviewAuthor).trim() || null : null,
   };
 }
 
@@ -169,7 +172,7 @@ function classifyItem(item, { sourceSaysReview = false } = {}) {
 }
 
 const NYC_SIGNAL_RE = /\b(broadway|off-broadway|off broadway|new york|nyc|manhattan|brooklyn|lincoln center|public theater|signature theatre|playwrights horizons|second stage|roundabout|manhattan theatre club|mtc|atlantic theater|new york theatre workshop|nytw|lct3|vineyard theatre|the shed|park avenue armory|bam\b|st\.? ann'?s warehouse|soho rep|minetta lane|new world stages|lucille lortel|cherry lane|irish repertory|mcc theater|primary stages|keen company|theatre row|59e59|la mama|the kitchen|joe's pub|york theatre|pershing square signature|daryl roth|audible'?s minetta)\b/i;
-const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los angeles|l\.a\.|pasadena|la jolla|old globe|san diego|san francisco|berkeley|seattle|boston|philadelphia|houston|dallas|atlanta|denver|minneapolis|guthrie|miami|washington,? d\.?c\.?|arena stage|kennedy center|shakespeare theatre company|hartford|new haven|yale rep|williamstown|berkshire|barrington|chautauqua|toronto|stratford|national tour|north american tour|(?:first|second) national|touring production|tour at|segerstrom|scfta|ahmanson|pantages|cadillac palace|edinburgh|chichester)\b/i;
+const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los angeles|l\.a\.|pasadena|la jolla|old globe|san diego|san francisco|berkeley|seattle|boston|philadelphia|houston|dallas|atlanta|denver|minneapolis|guthrie|miami|washington,? d\.?c\.?|arena stage|kennedy center|shakespeare theatre company|hartford|new haven|yale rep|williamstown|berkshire|barrington|chautauqua|toronto|stratford|national tour|north american tour|(?:first|second) national|touring production|tour at|segerstrom|scfta|ahmanson|pantages|cadillac palace|edinburgh|chichester|fountain theatre|kokandy)\b/i;
 
 function nycSignal(item, nycVenues) {
   const hay = `${item.headline || ''} ${item.description || ''}`;
