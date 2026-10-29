@@ -1286,9 +1286,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 9 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 9 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40931312194",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40938098932",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -1297,7 +1297,7 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40931312194)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40938098932)"
       },
       {
         "name": "Previous failed run",
@@ -1312,7 +1312,7 @@
         "value": "E2E Tests, Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-29T21:14:00.098Z"
+    "queuedAt": "2026-10-29T21:14:32.328Z"
   },
   {
     "conditionKey": "corpus-drift:autoclear-vs-ensemble",
