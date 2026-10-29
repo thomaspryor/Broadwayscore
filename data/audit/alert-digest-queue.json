@@ -1125,5 +1125,36 @@
       }
     ],
     "queuedAt": "2026-10-29T03:23:42.413Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6489-nyc-facts-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6489-nyc-facts-audit",
+    "description": "land.yml did not land land/bro-6489-nyc-facts-audit: the unit-tests-node gate went red at 4c69f162b0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40810692204",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6489-nyc-facts-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4c69f162b0acb96e95457d59e580458aa775f867"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40810692204"
+      }
+    ],
+    "queuedAt": "2026-10-29T03:37:26.839Z"
   }
 ]
