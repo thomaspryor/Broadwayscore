@@ -1,7 +1,7 @@
 {
   "outletId": "london-box-office",
   "market": "london",
-  "generatedAt": "2026-10-29T02:35:27.307Z",
+  "generatedAt": "2026-10-29T04:23:48.685Z",
   "since": "2012-09-01",
   "source": {
     "kind": "sitemap",
@@ -14,11 +14,11 @@
   "corpus": "review-texts",
   "summary": {
     "counts": {
-      "held": 476,
+      "held": 475,
       "catalog-gap": 176,
       "not-review": 661,
       "other-market-review": 14,
-      "held-unmatched": 159,
+      "held-unmatched": 160,
       "misfile": 5,
       "gap": 11,
       "held-alt-url": 17,
@@ -26,12 +26,12 @@
       "out-of-window": 60
     },
     "viaTitleVariant": {
-      "held": 19,
+      "held": 29,
       "gap": 3,
       "held-alt-url": 2
     },
     "recall": 0.969,
-    "recallWithCatalog": 0.72
+    "recallWithCatalog": 0.719
   },
   "seasons": {
     "2026-27": {
@@ -67,10 +67,10 @@
     },
     "2023-24": {
       "catalog-gap": 10,
-      "held": 26,
+      "held": 25,
       "not-review": 57,
       "out-of-window": 4,
-      "held-unmatched": 10
+      "held-unmatched": 11
     },
     "2022-23": {
       "catalog-gap": 20,
@@ -1305,6 +1305,20 @@
       ],
       "matched": [],
       "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/two-strangers-review",
+      "headline": "two strangers review",
+      "publishDate": "2024-04-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "two-strangers-carry-a-cake-across-new-york-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "two-strangers-carry-a-cake-across-new-york-west-end-2024"
+      ]
     },
     {
       "url": "https://www.londonboxoffice.co.uk/news/post/the-other-other-bronte-review",

@@ -1,7 +1,7 @@
 {
   "outletId": "theatre-weekly",
   "market": "london",
-  "generatedAt": "2026-10-29T03:09:55.553Z",
+  "generatedAt": "2026-10-29T04:24:36.200Z",
   "since": "2012-09-01",
   "source": {
     "kind": "wp-json",
@@ -16,25 +16,25 @@
     "counts": {
       "gap": 112,
       "held": 219,
-      "catalog-gap": 875,
+      "catalog-gap": 878,
       "out-of-window": 251,
       "held-other-market": 8,
-      "other-market-review": 2010,
-      "not-review": 889,
+      "other-market-review": 2006,
+      "not-review": 891,
       "held-unmatched": 16,
-      "held-alt-url": 42,
+      "held-alt-url": 41,
       "ambiguous": 1,
       "misfile": 2
     },
     "viaTitleVariant": {
       "held": 9,
-      "other-market-review": 4,
-      "held-alt-url": 4,
+      "other-market-review": 1,
+      "held-alt-url": 5,
       "ambiguous": 1,
-      "gap": 4
+      "gap": 5
     },
-    "recall": 0.696,
-    "recallWithCatalog": 0.209
+    "recall": 0.695,
+    "recallWithCatalog": 0.208
   },
   "seasons": {
     "2026-27": {
@@ -68,10 +68,10 @@
       "held-alt-url": 6
     },
     "2023-24": {
-      "catalog-gap": 82,
+      "catalog-gap": 83,
       "gap": 4,
       "held-other-market": 3,
-      "other-market-review": 208,
+      "other-market-review": 207,
       "not-review": 22,
       "out-of-window": 24,
       "held": 38,
@@ -81,13 +81,13 @@
       "misfile": 1
     },
     "2022-23": {
-      "other-market-review": 239,
+      "other-market-review": 238,
       "out-of-window": 24,
       "catalog-gap": 81,
-      "not-review": 62,
+      "not-review": 63,
       "held": 27,
-      "held-alt-url": 6,
-      "gap": 2,
+      "held-alt-url": 5,
+      "gap": 3,
       "misfile": 1,
       "held-other-market": 2,
       "held-unmatched": 3
@@ -116,25 +116,25 @@
       "gap": 11,
       "out-of-window": 38,
       "not-review": 158,
-      "other-market-review": 47,
-      "catalog-gap": 71,
+      "other-market-review": 46,
+      "catalog-gap": 72,
       "held": 1,
       "held-alt-url": 1
     },
     "2018-19": {
       "not-review": 180,
-      "other-market-review": 243,
-      "catalog-gap": 156,
+      "other-market-review": 242,
+      "catalog-gap": 157,
       "out-of-window": 49,
       "gap": 23,
       "held-alt-url": 1
     },
     "2017-18": {
-      "not-review": 143,
+      "not-review": 144,
       "catalog-gap": 165,
       "other-market-review": 282,
       "out-of-window": 19,
-      "gap": 12,
+      "gap": 11,
       "held-alt-url": 1,
       "held-other-market": 1
     },
@@ -827,6 +827,19 @@
       "outOfWindow": []
     },
     {
+      "url": "https://theatreweekly.com/review-richard-iii-at-rose-theatre-kingston/",
+      "headline": "Review: Richard III at Rose Theatre Kingston",
+      "publishDate": "2023-05-02",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "rose-west-end-2023"
+      ],
+      "outOfWindow": [
+        "richard-iii-west-end-2014"
+      ]
+    },
+    {
       "url": "https://theatreweekly.com/review-black-superhero-at-royal-court-jerwood-theatre-downstairs/",
       "headline": "Review: BLACK SUPERHERO at Royal Court Jerwood Theatre Downstairs",
       "publishDate": "2023-03-21",
@@ -1328,17 +1341,6 @@
       "outOfWindow": [
         "the-king-and-i-west-end-2024"
       ]
-    },
-    {
-      "url": "https://theatreweekly.com/preview-hamilton-lewis-at-the-kings-head-theatre/",
-      "headline": "Preview: Hamilton (Lewis) at The King’s Head Theatre",
-      "publishDate": "2018-06-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamilton-west-end-2021"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://theatreweekly.com/review-killer-joe-at-trafalgar-studios/",
@@ -2000,17 +2002,6 @@
       "heldUrls": [
         "(no url)",
         "(no url)"
-      ]
-    },
-    {
-      "url": "https://theatreweekly.com/vault-festival-review-all-in-good-time/",
-      "headline": "VAULT Festival Review: All In Good Time",
-      "publishDate": "2023-02-03",
-      "matched": [
-        "good-west-end-2022"
-      ],
-      "heldUrls": [
-        "https://theatreweekly.com/review-c-p-taylors-good-starring-david-tennant-at-the-harold-pinter-theatre/"
       ]
     },
     {
@@ -2916,7 +2907,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end",
-      "venueHint": "Mrs President at Charing Cross Theatre (2026)"
+      "venueHint": "2026"
     },
     {
       "url": "https://theatreweekly.com/review-jo-the-little-women-musical-in-concert-at-theatre-royal-drury-lane/",
@@ -5052,6 +5043,17 @@
       "venueHint": "I, Daniel Blake at Stratford East"
     },
     {
+      "url": "https://theatreweekly.com/review-uncanny-i-know-what-i-saw-at-rose-theatre-kingston/",
+      "headline": "Review: Uncanny: I Know What I Saw at Rose Theatre Kingston",
+      "publishDate": "2023-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown",
+      "venueHint": "Uncanny: I Know What I Saw at Rose Theatre Kingston"
+    },
+    {
       "url": "https://theatreweekly.com/review-the-flea-at-the-yard-theatre/",
       "headline": "Review: The Flea at the Yard Theatre",
       "publishDate": "2023-10-17",
@@ -6586,7 +6588,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end",
-      "venueHint": "Full Disclosure Theatre’s XPOSED at Southwark Playhouse (2021)"
+      "venueHint": "2021"
     },
     {
       "url": "https://theatreweekly.com/review-nw-trilogy-at-the-kiln-theatre/",
@@ -6817,7 +6819,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end",
-      "venueHint": "Outside at Orange Tree Theatre (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-inside-at-orange-tree-theatre-online/",
@@ -6828,7 +6830,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end",
-      "venueHint": "Inside at Orange Tree Theatre (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-curse-of-the-crackles-from-shoreditch-town-hall-online/",
@@ -6839,7 +6841,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "unknown",
-      "venueHint": "Curse of The Crackles! from Shoreditch Town Hall (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-the-sorcerers-apprentice-filmed-at-southwark-playhouse-and-on-stream-theatre/",
@@ -6861,7 +6863,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end",
-      "venueHint": "Typical at Soho Theatre On Demand (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-bored-of-knives-online/",
@@ -6872,7 +6874,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "unknown",
-      "venueHint": "Bored of Knives filmed at Greenwich Theatre (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-public-domain-at-southwark-playhouse-online/",
@@ -6883,7 +6885,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end",
-      "venueHint": "Public Domain at Southwark Playhouse (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-tonight-at-the-london-coliseum/",
@@ -6905,7 +6907,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end",
-      "venueHint": "The Poltergeist at Southwark Playhouse (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/preview-skin-hunger-from-dante-or-die/",
@@ -7323,6 +7325,17 @@
       "outOfWindow": [],
       "itemMarket": "off-west-end",
       "venueHint": "Snowflake at The Kiln Theatre"
+    },
+    {
+      "url": "https://theatreweekly.com/review-the-snow-queen-at-rose-theatre-kingston/",
+      "headline": "Review: The Snow Queen at Rose Theatre Kingston",
+      "publishDate": "2019-12-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown",
+      "venueHint": "The Snow Queen at Rose Theatre Kingston"
     },
     {
       "url": "https://theatreweekly.com/review-thriller-live-at-the-lyric-theatre-starring-peter-andre/",
@@ -8220,6 +8233,17 @@
       "outOfWindow": [],
       "itemMarket": "off-west-end",
       "venueHint": "Hell Yes I’m Tough Enough at Park Theatre"
+    },
+    {
+      "url": "https://theatreweekly.com/review-the-cat-in-the-hat-at-rose-theatre-kingston/",
+      "headline": "Review: The Cat in the Hat at Rose Theatre Kingston",
+      "publishDate": "2019-04-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown",
+      "venueHint": "The Cat in the Hat at Rose Theatre Kingston"
     },
     {
       "url": "https://theatreweekly.com/review-toast-at-the-other-palace/",
@@ -11889,7 +11913,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Baby Everything at Summerhall (Tech Cube 0)"
+      "venueHint": "Tech Cube 0"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-sobremesa-at-gilded-balloon-patter-house-blether/",
@@ -11900,7 +11924,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Sobremesa at Gilded Balloon Patter House (Blether)"
+      "venueHint": "Blether"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-woodhill-at-zoo-southside-main-house/",
@@ -11911,7 +11935,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Woodhill at Zoo Southside (Main House)"
+      "venueHint": "Main House"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-when-vincent-met-john-at-c-arts-c-alto-venue-40/",
@@ -11922,7 +11946,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "When Vincent Met John at C Arts (C Alto"
+      "venueHint": "C Alto – Venue 40"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-ham-at-summerhall-old-lab/",
@@ -11933,7 +11957,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "HAM at Summerhall (Old Lab)"
+      "venueHint": "Old Lab"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-thermodrama-at-summerhall-old-lab/",
@@ -11944,7 +11968,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "THERMODRAMA at Summerhall (Old Lab)"
+      "venueHint": "Old Lab"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-gameplay-at-pleasance-dome-10-dome/",
@@ -11955,7 +11979,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "GAMEPLAY at Pleasance Dome (10 Dome)"
+      "venueHint": "10 Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-horrorshow-at-summerhall-anatomy-lecture-theatre/",
@@ -11966,7 +11990,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Horrorshow at Summerhall (Anatomy Lecture Theatre)"
+      "venueHint": "Anatomy Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-wreck-at-summerhall-old-lab/",
@@ -11977,7 +12001,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Wreck at Summerhall (Old Lab)"
+      "venueHint": "Old Lab"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-goodbye-dandelion-at-underbelly-belly-dancer/",
@@ -11988,7 +12012,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Goodbye Dandelion at Underbelly (Belly Dancer)"
+      "venueHint": "Belly Dancer"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-amnesia-at-pleasance-courtyard-bunker-2/",
@@ -11999,7 +12023,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Amnesia at Pleasance Courtyard (Bunker 2)"
+      "venueHint": "Bunker 2"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-kevin-at-pleasance-courtyard-forth/",
@@ -12010,7 +12034,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "KEVIN!!!!! at Pleasance Courtyard (Forth)"
+      "venueHint": "Forth"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-puttana-at-zoo-southside-main-house/",
@@ -12021,7 +12045,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Puttana at Zoo Southside (Main House)"
+      "venueHint": "Main House"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-ben-hart-the-labyrinth-at-assembly-george-square-gardens-palais-du-variete/",
@@ -12032,33 +12056,31 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Ben Hart: The Labyrinth at Assembly George Square Gardens (Palais du Variété)"
+      "venueHint": "Palais du Variété"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-handle-with-care-at-zoo-southside-main-house/",
       "headline": "Edinburgh Fringe Review: Handle with Care at ZOO Southside (Main House)",
       "publishDate": "2026-08-27",
-      "via": "title-variant",
+      "via": null,
       "held": [],
-      "matched": [
-        "care-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Handle with Care at ZOO Southside (Main House)"
+      "venueHint": "Main House"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-smile-the-charlie-chaplin-story-at-pleasance-dome-ace-dome/",
       "headline": "Edinburgh Fringe Review: Smile: The Charlie Chaplin Story at Pleasance Dome (Ace Dome)",
       "publishDate": "2026-08-27",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "the-story-west-end-2026"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Smile: The Charlie Chaplin Story at Pleasance Dome (Ace Dome)"
+      "venueHint": "Ace Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-evita-too-at-zoo-southside-main-house/",
@@ -12073,7 +12095,7 @@
         "evita-west-end-2014"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Evita TOO at Zoo Southside (Main House)"
+      "venueHint": "Main House"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-morning-sauna-rave-at-sauna-theatre-summerhall/",
@@ -12095,7 +12117,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Dylan Thomas: Return Journey at Pleasance Courtyard (Attic)"
+      "venueHint": "Attic"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-deepfake-at-underbelly-cowgate-top-belly/",
@@ -12106,7 +12128,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "DeepFake at Underbelly Cowgate (Top Belly)"
+      "venueHint": "Top Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-los-anos-maravillosos-at-paradise-in-augustines-the-snug/",
@@ -12119,7 +12141,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Los años maravillosos at Paradise in Augustines (The Snug)"
+      "venueHint": "The Snug"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-endgame-at-pleasance-at-eicc-lomond-theatre/",
@@ -12132,7 +12154,7 @@
         "endgame-west-end-2020"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Endgame at Pleasance at EICC (Lomond Theatre)"
+      "venueHint": "Lomond Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-nose-country-for-old-men-at-c-venues-c-aquila/",
@@ -12143,7 +12165,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Nose Country for Old Men at C Venues (C Aquila)"
+      "venueHint": "C Aquila"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-around-the-world-in-80-toys-at-summerhall-anatomy-lecture-theatre/",
@@ -12154,7 +12176,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ArounD the WorlD in 80 ToyS at Summerhall (Anatomy Lecture Theatre)"
+      "venueHint": "Anatomy Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-terribly-credible-definitely-edible-tale-of-the-town-of-cropshire-at-assembly-roxy-upstairs/",
@@ -12187,7 +12209,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Tabletop Role-Playing Game: The Musical at C Venues (C Aquila)"
+      "venueHint": "C Aquila"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-problem-at-assembly-st-andrew-square-front-room/",
@@ -12198,7 +12220,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Problem at Assembly @ St Andrew Square (Front Room)"
+      "venueHint": "Front Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-slayers-at-assembly-george-square-studios-studio-5/",
@@ -12209,7 +12231,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Slayers at Assembly George Square Studios (Studio 5)"
+      "venueHint": "Studio 5"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-we-will-hear-the-angels-at-summerhall-dissection-room/",
@@ -12220,7 +12242,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "We Will Hear the Angels at Summerhall (Dissection Room)"
+      "venueHint": "Dissection Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-circle-of-fifths-at-zoo-southside-studio/",
@@ -12231,7 +12253,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Circle of Fifths at Zoo Southside (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-women-of-will-at-summerhall-the-library-gallery/",
@@ -12242,7 +12264,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Women of Will at Summerhall (The Library Gallery)"
+      "venueHint": "The Library Gallery"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-roleplay-at-summerhall/",
@@ -12264,7 +12286,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Little Animals at Traverse @ Lyceum Theatre (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-r-evolutions-at-assembly-dance-base-db1/",
@@ -12275,7 +12297,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "R/evolution(s) at Assembly @ Dance Base (DB1)"
+      "venueHint": "DB1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-flight-at-assembly-george-square/",
@@ -12310,7 +12332,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Silent Disco at Gilded Balloon (Turret)"
+      "venueHint": "Turret"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-if-i-cant-dance-im-not-coming-at-assembly-dance-base-db1/",
@@ -12321,7 +12343,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "If I Can’t Dance I’m Not Coming at Assembly @ Dance Base (DB1)"
+      "venueHint": "DB1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-noted-at-assembly-roxy-upstairs/",
@@ -12332,7 +12354,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Noted at Assembly Roxy (Upstairs)"
+      "venueHint": "Upstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-deluge-at-underbelly-cowgate-big-belly/",
@@ -12343,7 +12365,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Deluge at Underbelly Cowgate (Big Belly)"
+      "venueHint": "Big Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-come-from-away-at-assembly-rooms-ballroom/",
@@ -12356,7 +12378,7 @@
         "come-from-away-west-end-2019"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Come From Away at Assembly Rooms (Ballroom)"
+      "venueHint": "Ballroom"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-lions-at-summerhall-tech-cube-0/",
@@ -12367,7 +12389,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Lions at Summerhall (Tech Cube 0)"
+      "venueHint": "Tech Cube 0"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-did-you-charge-your-phone-for-the-end-of-the-world-at-greenside-riddles-court-pickle-studio/",
@@ -12389,7 +12411,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Steve Burns: Alive at Underbelly Cowgate (Belly Button)"
+      "venueHint": "Belly Button"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-in-the-black-at-underbelly-bristo-square-daisy/",
@@ -12400,7 +12422,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "In The Black at Underbelly Bristo Square (Daisy)"
+      "venueHint": "Daisy"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-ten-thousand-hours-at-assembly-hall-main-hall/",
@@ -12411,7 +12433,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Ten Thousand Hours at Assembly Hall (Main Hall)"
+      "venueHint": "Main Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-broke-fabulous-in-the-21st-century-at-gilded-balloon-patter-house-the-dram/",
@@ -12422,7 +12444,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Broke & Fabulous in the 21st Century at Gilded Balloon Patter House (The Dram)"
+      "venueHint": "The Dram"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-singer-at-traverse-traverse-1/",
@@ -12433,7 +12455,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Singer at Traverse (Traverse 1)"
+      "venueHint": "Traverse 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-afronauts-at-underbelly-george-square/",
@@ -12446,7 +12468,7 @@
         "the-afronauts-west-end-2026"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "AFRONAUTS at Underbelly (George Square)"
+      "venueHint": "George Square"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-behind-closed-doors-at-braw-venues-hill-street-alba-theatre/",
@@ -12457,7 +12479,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Behind Closed Doors at Braw Venues @ Hill Street (Alba Theatre)"
+      "venueHint": "Alba Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-exit-at-zoo-southside-main-house/",
@@ -12468,7 +12490,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "EXIT at Zoo Southside (Main House)"
+      "venueHint": "Main House"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-play-dead-at-underbelly-cowgate-iron-belly/",
@@ -12479,7 +12501,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Play Dead at Underbelly Cowgate (Iron Belly)"
+      "venueHint": "Iron Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-dungeons-and-shakespeare-at-gilded-balloon-patter-house-other-yin/",
@@ -12490,7 +12512,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Dungeons and Shakespeare at Gilded Balloon Patter House (Other Yin)"
+      "venueHint": "Other Yin"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-sophies-surprise-29th-at-underbellys-circus-hub-the-beauty/",
@@ -12501,20 +12523,20 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Sophie’s Surprise 29th at Underbelly’s Circus Hub (The Beauty)"
+      "venueHint": "The Beauty"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-boiler-room-six-a-titanic-story-at-pleasance-dome-queen-dome/",
       "headline": "Edinburgh Fringe Review: Boiler Room Six: A Titanic Story at Pleasance Dome (Queen Dome)",
       "publishDate": "2026-08-22",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "the-story-west-end-2026"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Boiler Room Six: A Titanic Story at Pleasance Dome (Queen Dome)"
+      "venueHint": "Queen Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-my-grandpa-doesnt-follow-me-on-instagram-a-guide-to-trans-generational-road-tripping-at-underbelly-cowgate-jelly-belly/",
@@ -12536,7 +12558,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "I Bought a Flip Phone at ZOO (Playground 2)"
+      "venueHint": "Playground 2"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-drone-at-pleasance-courtyard-pleasance-two/",
@@ -12547,7 +12569,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "DRONE at Pleasance Courtyard (Pleasance Two)"
+      "venueHint": "Pleasance Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-dracula-lucys-dream-at-pleasance-at-eicc-lennox/",
@@ -12560,7 +12582,7 @@
         "dracula-west-end-2025"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Dracula"
+      "venueHint": "Lennox"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-muse-the-shakespeare-mayhem-musical-at-underbelly-bristo-square-cowbarn/",
@@ -12571,7 +12593,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "MUSE: The Shakespeare Mayhem Musical at Underbelly, Bristo Square (Cowbarn)"
+      "venueHint": "Cowbarn"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-judas-exclusive-at-zoo-southside-studio/",
@@ -12582,7 +12604,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "JUDAS EXCLUSIVE at Zoo Southside (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-persona-at-thespace-triplex-studio/",
@@ -12593,7 +12615,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Persona at theSpace Triplex (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-pitch-at-pleasance-courtyard-baby-grand/",
@@ -12604,7 +12626,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Pitch at Pleasance Courtyard (Baby Grand)"
+      "venueHint": "Baby Grand"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-fantasy-world-adventures-mega-park-the-musical-at-thespace-on-the-mile-space-3/",
@@ -12639,7 +12661,7 @@
         "don-quixote-west-end-2018"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Don Quixote (is a very big book) at Pleasance Dome (King Dome)"
+      "venueHint": "King Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-beth-and-ben-your-place-in-the-workplace-at-braw-venues-hill-street-theatre-dunedin/",
@@ -12650,7 +12672,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Beth and Ben: Your Place in the Workplace at Braw Venues (Hill Street Theatre"
+      "venueHint": "Hill Street Theatre – Dunedin"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-language-of-dreams-a-crash-course-at-greenside-george-street/",
@@ -12672,20 +12694,20 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Mark Vigeant: Out There at Assembly Roxy (Downstairs)"
+      "venueHint": "Downstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-tale-of-the-firebird-at-assembly-roxy-central/",
       "headline": "Edinburgh Fringe Review: Tale of the Firebird at Assembly Roxy (Central)",
       "publishDate": "2026-08-19",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "firebird-off-west-end-2026"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Tale of the Firebird at Assembly Roxy (Central)"
+      "venueHint": "Central"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-by-a-thread-at-assembly-rooms-music-hall/",
@@ -12696,7 +12718,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "By A Thread at Assembly Rooms (Music Hall)"
+      "venueHint": "Music Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-wallace-at-c-arts-c-aurora-main-house/",
@@ -12707,7 +12729,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Wallace at Braw Venues @ Hill Street (Dunedin Theatre)"
+      "venueHint": "Dunedin Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-asura-an-enlightenment-experiment-at-zoo-southside-studio/",
@@ -12718,7 +12740,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ASURA: An Enlightenment Experiment at ZOO Southside (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-turn-the-cloth-at-gilded-balloon-teviot-turret/",
@@ -12729,7 +12751,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Turn the Cloth at Gilded Balloon Teviot (Turret)"
+      "venueHint": "Turret"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-love-in-the-cracks-at-c-arts-c-aurora/",
@@ -12740,7 +12762,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Love in the Cracks at C Arts (C aurora)"
+      "venueHint": "C aurora"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-good-with-faces-at-summerhall-tech-cube-0/",
@@ -12751,7 +12773,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Good With Faces at Summerhall (Tech Cube 0)"
+      "venueHint": "Tech Cube 0"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-operation-blank-at-thespace-surgeons-hall/",
@@ -12773,7 +12795,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Mythos: Ragnarök at Assembly Rooms (Music Hall)"
+      "venueHint": "Music Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-if-we-really-were-witches-at-paradise-in-the-vault-the-vault/",
@@ -12787,7 +12809,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "If We Really Were Witches at Paradise in The Vault (The Vault)"
+      "venueHint": "The Vault"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-argonauts-at-zoo/",
@@ -12809,7 +12831,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Casual Receptionist of the Quarter at Gilded Balloon Patter Hoose (Bothie)"
+      "venueHint": "Bothie"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-15-minutes-of-shame-at-zoo-playground-playground-2/",
@@ -12820,7 +12842,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "15 Minutes of Shame at Zoo Playground (Playground 2)"
+      "venueHint": "Playground 2"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-steak-out-at-gilded-balloon-teviot-billiard-room/",
@@ -12831,7 +12853,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Steak Out at Gilded Balloon Teviot (Billiard Room)"
+      "venueHint": "Billiard Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-i-am-going-to-reveal-something-personal-about-myself-at-greenside-riddles-court/",
@@ -12887,7 +12909,7 @@
         "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end-2026"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Churchill’s Urinal at Pleasance at EICC (Lomond Theatre)"
+      "venueHint": "Lomond Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-cvntclave-at-greenside-george-street-lime-studio/",
@@ -12898,7 +12920,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "CVNTCLAVE at Greenside @ George Street (Lime Studio)"
+      "venueHint": "Lime Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-bride-to-be-at-greenside-riddles-court-thistle-theatre/",
@@ -12909,7 +12931,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Bride To Be at Greenside @ Riddles Court (Thistle Theatre)"
+      "venueHint": "Thistle Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-gas-station-at-the-edge-of-the-universe-at-venue-13/",
@@ -12931,7 +12953,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "A Better Memory at Pleasance Courtyard (The Green)"
+      "venueHint": "The Green"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-alan-bennetts-talking-heads-at-the-royal-scots-club-the-speakeasy/",
@@ -12942,7 +12964,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Alan Bennett’s Talking Heads at The Royal Scots Club (The Speakeasy)"
+      "venueHint": "The Speakeasy"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-big-stuff-at-assembly-roxy-roxy-boxy/",
@@ -12953,7 +12975,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Big Stuff at Assembly Roxy (Roxy Boxy)"
+      "venueHint": "Roxy Boxy"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-playback-at-summerhall-arts-former-womens-locker-room/",
@@ -12964,7 +12986,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Playback at Summerhall Arts (Former Women’s Locker Room)"
+      "venueHint": "Former Women’s Locker Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-qfwfq-at-summerhall-former-gents-locker-room/",
@@ -12975,7 +12997,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "QFWFQ at Summerhall (Former Gent’s Locker Room)"
+      "venueHint": "Former Gent’s Locker Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-how-not-to-make-it-in-america-at-summerhall-former-gents-locker-room/",
@@ -12986,7 +13008,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "How Not to Make It in America at Summerhall (Former Gent’s Locker Room)"
+      "venueHint": "Former Gent’s Locker Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-theyre-just-small-town-northern-lads-at-summerhall-anatomy-lecture-theatre/",
@@ -12997,7 +13019,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "They’re Just Small Town (Northern) Lads at Summerhall (Anatomy Lecture Theatre)"
+      "venueHint": "Anatomy Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-stay-a-little-longer-at-pleasance-courtyard-cellar/",
@@ -13008,7 +13030,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Stay A Little Longer at Pleasance Courtyard (Cellar)"
+      "venueHint": "Cellar"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-after-party-at-traverse-theatre-traverse-1/",
@@ -13019,7 +13041,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "After Party at Traverse Theatre (Traverse 1)"
+      "venueHint": "Traverse 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-linus-karp-was-hit-with-an-umbrella-at-underbelly-bristo-square-friesian/",
@@ -13030,7 +13052,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Linus Karp Was Hit With an Umbrella at Underbelly Bristo Square (Friesian)"
+      "venueHint": "Friesian"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-toe-poke-at-braw-venues-grand-lodge-committee-room/",
@@ -13041,7 +13063,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Toe Poke at Braw Venues @ Grand Lodge (Committee Room)"
+      "venueHint": "Committee Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-badgers-at-traverse-theatre/",
@@ -13065,7 +13087,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "The Proposal at Paradise in the Vault (The Annexe)"
+      "venueHint": "The Annexe"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-charming-the-musical-at-just-the-tonic-the-fancy-room/",
@@ -13076,7 +13098,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Charming! The Musical at Just the Tonic (The Fancy Room)"
+      "venueHint": "The Fancy Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-for-dolores-at-traverse-theatre/",
@@ -13098,7 +13120,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Camelton at Gilded Balloon Teviot (Wine Bar)"
+      "venueHint": "Wine Bar"
     },
     {
       "url": "https://theatreweekly.com/review-dear-michelle-kwan-at-thespace-triplex/",
@@ -13120,7 +13142,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Atomic Tales at Zoo Playground (Playground 1)"
+      "venueHint": "Playground 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-pod-at-paradise-in-the-vault-the-annexe/",
@@ -13133,7 +13155,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "The Pod at Paradise in the Vault (The Annexe)"
+      "venueHint": "The Annexe"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-an-echo-in-the-void-at-assembly-roxy-upstairs/",
@@ -13144,7 +13166,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "An Echo in the Void at Assembly Roxy (Upstairs)"
+      "venueHint": "Upstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-homebound-at-paradise-in-augustines-sanctuary/",
@@ -13157,7 +13179,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Homebound at Paradise in Augustines (Sanctuary)"
+      "venueHint": "Sanctuary"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-parasocial-activity-at-gilded-balloon-patter-house-the-penny/",
@@ -13168,7 +13190,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Parasocial Activity at Gilded Balloon Patter House (The Penny)"
+      "venueHint": "The Penny"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-late-utopians-at-underbelly-cowgate-iron-belly/",
@@ -13179,7 +13201,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Late Utopians at Underbelly Cowgate (Iron Belly)"
+      "venueHint": "Iron Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-two-little-pigs-at-pleasance-courtyard-the-green/",
@@ -13190,7 +13212,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Two Little Pigs at Pleasance Courtyard (The Green)"
+      "venueHint": "The Green"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-acids-reign-at-pleasance-courtyard-forth/",
@@ -13201,7 +13223,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ACID’S REIGN at Pleasance Courtyard (Forth)"
+      "venueHint": "Forth"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-44-minutes-at-assembly-rooms-front-room/",
@@ -13212,7 +13234,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "44 Minutes at Assembly Rooms (Front Room)"
+      "venueHint": "Front Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-already-here-at-gilded-balloon-patter-hoose-dram/",
@@ -13223,20 +13245,20 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Already Here at Gilded Balloon Patter Hoose (Dram)"
+      "venueHint": "Dram"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-a-microscopic-odyssey-at-pleasance-courtyard-beside/",
       "headline": "Edinburgh Fringe Review: A Microscopic Odyssey at Pleasance Courtyard (Beside)",
       "publishDate": "2026-08-15",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "the-odyssey-off-west-end-2026"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "A Microscopic Odyssey at Pleasance Courtyard (Beside)"
+      "venueHint": "Beside"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-last-drop-at-zoo-playground-1/",
@@ -13247,7 +13269,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Last Drop at Zoo (Playground 1)"
+      "venueHint": "Playground 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-plot-at-summerhall-main-hall/",
@@ -13258,7 +13280,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Plot at Summerhall (Main Hall)"
+      "venueHint": "Main Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-alone-at-assembly-george-square-the-box-2/",
@@ -13269,7 +13291,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ALONE at Assembly George Square (The Box)"
+      "venueHint": "The Box"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-magic-lantern-anthology-at-summerhall-former-gents-locker-room/",
@@ -13280,7 +13302,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Magic Lantern Anthology at Summerhall (Former Gents Locker Room)"
+      "venueHint": "Former Gents Locker Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-meteors-at-summerhall-former-womens-locker-room/",
@@ -13291,7 +13313,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "METEORS at Summerhall (Former Womens Locker Room)"
+      "venueHint": "Former Womens Locker Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-max-olesker-making-the-cut-at-pleasance-dome-10-dome/",
@@ -13302,7 +13324,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Max Olesker: Making the Cut at Pleasance Dome (10 Dome)"
+      "venueHint": "10 Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-a-play-on-words-at-assembly-st-andrew-square-front-room/",
@@ -13313,7 +13335,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "A Play on Words at Assembly @ St Andrew Square  (Front Room)"
+      "venueHint": "Front Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-clive-at-assembly-rooms-drawing-room/",
@@ -13324,7 +13346,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Clive at Assembly Rooms (Drawing Room)"
+      "venueHint": "Drawing Room"
     },
     {
       "url": "https://theatreweekly.com/review-sunshine-on-leith-at-assembly-rooms-music-hall/",
@@ -13335,7 +13357,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Sunshine on Leith at Assembly Rooms (Music Hall)"
+      "venueHint": "Music Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-cathy-at-traverse-theatre-traverse-1/",
@@ -13346,7 +13368,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Cathy at Traverse Theatre (Traverse 1)"
+      "venueHint": "Traverse 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-jenna-at-c-venues-c-aquila/",
@@ -13357,7 +13379,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "@Jenna at C Venues (C Aquila)"
+      "venueHint": "C Aquila"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-antigone-1989-a-town-hall-musical-at-gilded-balloon-the-other-yin/",
@@ -13368,7 +13390,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ANTIGONE 1989: A Town Hall Musical at Gilded Balloon (The Other Yin)"
+      "venueHint": "The Other Yin"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-arcade-at-potterrow-plaza-container-1/",
@@ -13379,7 +13401,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ARCADE at Potterrow Plaza (Container 1)"
+      "venueHint": "Container 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-bbcs-first-homosexual-at-assembly-george-square-the-crate/",
@@ -13390,7 +13412,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The BBC’s First Homosexual at Assembly George Square (The Crate)"
+      "venueHint": "The Crate"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-war-of-the-worlds-on-a-budget-at-pleasance-courtyard-upstairs/",
@@ -13403,7 +13425,7 @@
         "the-war-of-the-worlds-west-end-2016"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "War of the Worlds (On a Budget) at Pleasance Courtyard (Upstairs)"
+      "venueHint": "Upstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-homunculus-at-thespace-triplex-big/",
@@ -13414,7 +13436,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Homunculus at theSpace (Triplex BIG)"
+      "venueHint": "Triplex BIG"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-vincent-van-gogh-between-worlds-at-assembly-george-square-studios-underground/",
@@ -13425,7 +13447,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "VINCENT van GOGH: Between Worlds at Assembly George Square Studios (Underground)"
+      "venueHint": "Underground"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-werewolf-at-summerhall-techcube-0/",
@@ -13436,7 +13458,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Werewolf at Summerhall (TechCube 0)"
+      "venueHint": "TechCube 0"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-shantify-at-assembly-palais-du-variete/",
@@ -13447,20 +13469,20 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "SHANTIFY at Assembly (Palais du Variété)"
+      "venueHint": "Palais du Variété"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-kanpur-1857-at-pleasance-courtyard-above/",
       "headline": "Edinburgh Fringe Review: Kanpur 1857 at Pleasance Courtyard (Above)",
       "publishDate": "2026-08-14",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "kanpur-1857-off-west-end-2026"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Kanpur 1857 at Pleasance Courtyard (Above)"
+      "venueHint": "Above"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-suitcase-show-at-assembly-roxy-upstairs/",
@@ -13471,7 +13493,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Suitcase Show at Assembly Roxy (Upstairs)"
+      "venueHint": "Upstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-if-you-let-me-speak-at-greenside-george-street/",
@@ -13493,7 +13515,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Chopin’s Last Tour at C Arts (C aurora)"
+      "venueHint": "C aurora"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-endometriosis-the-musical-at-gilded-balloon-patter-house-doonstairs/",
@@ -13504,7 +13526,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Endometriosis: The Musical at Gilded Balloon Patter House (Doonstairs)"
+      "venueHint": "Doonstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-we-had-fun-at-summerhall-old-lab/",
@@ -13515,7 +13537,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "We Had Fun at Summerhall (Old Lab)"
+      "venueHint": "Old Lab"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-kirsty-mann-corpse-at-summerhall-red-lecture-theatre/",
@@ -13526,17 +13548,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "KIRSTY MANN: CORPSE at Summerhall (Red Lecture Theatre)"
+      "venueHint": "Red Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-hole-at-underbelly-cowbarn/",
       "headline": "Edinburgh Fringe Review: HOLE! at Underbelly Cowbarn",
       "publishDate": "2026-08-14",
-      "via": "title-variant",
+      "via": null,
       "held": [],
-      "matched": [
-        "hole-off-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
       "venueHint": "HOLE! at Underbelly Cowbarn"
@@ -13550,7 +13570,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "SpinQueen™ at Greenside @ George Street (Jade Studio)"
+      "venueHint": "Jade Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-next-to-normal-at-paradise-in-augustines-sanctuary/",
@@ -13564,7 +13584,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Next to Normal at Paradise in Augustines (Sanctuary)"
+      "venueHint": "Sanctuary"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-overtone-at-pleasance-dome-jack-dome/",
@@ -13575,7 +13595,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Overtone at Pleasance Dome (Jack Dome)"
+      "venueHint": "Jack Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-pilate-the-lost-gospel-at-pleasance-courtyard-above/",
@@ -13586,7 +13606,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "PILATE: The Lost Gospel at Pleasance Courtyard (Above)"
+      "venueHint": "Above"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-see-you-tomorrow-at-greenside-riddles-court/",
@@ -13608,7 +13628,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "January 6th the Musical at TheSpace Triplex (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-i-am-johnny-at-summerhall-red-lecture-theatre/",
@@ -13619,7 +13639,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "I AM JOHNNY at Summerhall (Red Lecture Theatre)"
+      "venueHint": "Red Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-sanctuary-at-pleasance-dome-ace-dome/",
@@ -13630,7 +13650,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Sanctuary at Pleasance Dome (Ace Dome)"
+      "venueHint": "Ace Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-roses-to-the-living-at-paradise-in-the-vault-the-vault/",
@@ -13643,7 +13663,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Roses To The Living at Paradise in the Vault (The Vault)"
+      "venueHint": "The Vault"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-distance-at-summerhall-main-hall/",
@@ -13654,7 +13674,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Distance at Summerhall (Main Hall)"
+      "venueHint": "Main Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-revel-puck-circus-the-wing-scuffle-spectacular-at-underbellys-circus-hub-on-the-meadows-the-lafayette/",
@@ -13676,7 +13696,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Burning Down the Horse at Underbelly Bristo Square (Fresian)"
+      "venueHint": "Fresian"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-supposing-at-traverse/",
@@ -13698,7 +13718,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Trials of Magnus Coffinkey at Summerhall (Red Lecture Theatre)"
+      "venueHint": "Red Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-copycat-at-pleasance-dome-jack-dome/",
@@ -13709,7 +13729,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "COPYCAT at Pleasance Dome (Jack Dome)"
+      "venueHint": "Jack Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-bull-fight-at-summerhall-former-womens-locker-room/",
@@ -13720,7 +13740,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "BULL/FIGHT at Summerhall (Former Womens Locker Room)"
+      "venueHint": "Former Womens Locker Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-nuns-at-assembly-george-square-studio-5/",
@@ -13731,7 +13751,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Nuns! at Assembly George Square (Studio 5)"
+      "venueHint": "Studio 5"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-tether-%ec%9d%b8%ec%97%b0-at-summerhall-main-hall/",
@@ -13742,7 +13762,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Tether 인연 at Summerhall (Main Hall)"
+      "venueHint": "Main Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-what-i-am-at-greenside-george-street/",
@@ -13775,7 +13795,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Amadan & Mortair Kill the King at Gilded Balloon Patter Hoose (Blether)"
+      "venueHint": "Blether"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-11%c2%bd-angry-men-at-pleasance-eicc-pentland-theatre/",
@@ -13786,7 +13806,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "11½ Angry Men at Pleasance (EICC Pentland Theatre)"
+      "venueHint": "EICC Pentland Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-boys-dont-dance-at-assembly-dance-base/",
@@ -13808,7 +13828,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Blackbox at Underbelly Cowgate (Belly Button)"
+      "venueHint": "Belly Button"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-border-bodies-at-dancebase-db3/",
@@ -13821,7 +13841,7 @@
         "bodies-west-end-2017"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Border Bodies at DanceBase (DB3)"
+      "venueHint": "DB3"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-homecumming-at-summerhall-arts-anatomy-lecture-theatre/",
@@ -13832,7 +13852,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Homecumming at Summerhall Arts (Anatomy Lecture Theatre)"
+      "venueHint": "Anatomy Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-a-public-display-of-affection-at-gilded-balloon-patter-house-the-snug/",
@@ -13843,7 +13863,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "A Public Display of Affection at Gilded Balloon Patter House (The Snug)"
+      "venueHint": "The Snug"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-ten-ways-to-die-happy-at-underbelly-bristo-square-cowbarn/",
@@ -13854,7 +13874,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Ten Ways to Die Happy at Underbelly Bristo Square (Cowbarn)"
+      "venueHint": "Cowbarn"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-bigfoot-ripped-my-dog-in-half-i-saw-it-at-summerhall-main-hall/",
@@ -13865,7 +13885,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Bigfoot Ripped My Dog In Half I Saw It at Summerhall (Main Hall)"
+      "venueHint": "Main Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-a-chorus-line-at-braw-venues-grand-lodge-grand-hall/",
@@ -13876,7 +13896,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "A Chorus Line at Braw Venues @ Grand Lodge (Grand Hall)"
+      "venueHint": "Grand Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-shinjuku-at-greenside-olive-studio/",
@@ -13887,7 +13907,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "SHINJUKU at Greenside (Olive Studio)"
+      "venueHint": "Olive Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-librarians-a-very-serious-comedy-at-pleasance-courtyard-pleasance-two/",
@@ -13898,7 +13918,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Librarians: A Very Serious Comedy! at Pleasance Courtyard (Pleasance Two)"
+      "venueHint": "Pleasance Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-fools-gold-at-thespace/",
@@ -13920,7 +13940,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "This Is Not America at Pleasance Courtyard (Bunker Two)"
+      "venueHint": "Bunker Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-bliss-at-pleasance-courtyard-grand/",
@@ -13931,7 +13951,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "BLISS at Pleasance Courtyard (Grand)"
+      "venueHint": "Grand"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-tom-read-wilson-a-z-of-me-at-gilded-balloon-the-museum/",
@@ -13942,7 +13962,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Tom Read Wilson A-Z of Me at Gilded Balloon (The Museum)"
+      "venueHint": "The Museum"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-disenchanted-at-pleasance-at-eicc-pentland-theatre/",
@@ -13953,7 +13973,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Disenchanted! at Pleasance at EICC (Pentland Theatre)"
+      "venueHint": "Pentland Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-book-of-shadows-at-underbelly-cowgate-big-belly/",
@@ -13964,7 +13984,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Book of Shadows at Underbelly Cowgate (Big Belly)"
+      "venueHint": "Big Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-afrique-en-cirque-at-assembly-rooms-music-hall/",
@@ -13975,7 +13995,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Afrique en Cirque at Assembly Rooms (Music Hall)"
+      "venueHint": "Music Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-prophets-at-assembly-roxy-roxyboxy/",
@@ -13986,7 +14006,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Prophets at Assembly Roxy (Roxyboxy)"
+      "venueHint": "Roxyboxy"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-a-ghost-among-the-living-at-pleasance-dome-queen-dome/",
@@ -13997,7 +14017,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "A Ghost Among the Living at Pleasance Dome (Queen Dome)"
+      "venueHint": "Queen Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-grimm-af-at-assembly-george-square-studios-studio-two/",
@@ -14008,7 +14028,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Grimm AF at Assembly George Square Studios (Studio Two)"
+      "venueHint": "Studio Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-shotgunned-at-assembly-gardens-studio-5/",
@@ -14019,7 +14039,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "SHOTGUNNED at Assembly Gardens (Studio 5)"
+      "venueHint": "Studio 5"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-preview-cadel-lungs-on-legs-at-gilded-balloon-at-the-museum/",
@@ -14038,11 +14058,9 @@
       "url": "https://theatreweekly.com/edinburgh-fringe-preview-churchills-urinal-at-lomond-theatre-at-pleasance-at-eicc/",
       "headline": "Edinburgh Fringe Preview: Churchill’s Urinal at Lomond Theatre at Pleasance at EICC",
       "publishDate": "2026-07-12",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh"
     },
@@ -15771,7 +15789,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "off-west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "The Meat Kings! (Inc.) of Brooklyn Heights at Park Theatre"
     },
     {
@@ -15827,7 +15845,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Help! I’m Trapped in a One-Woman Show at Pleasance Dome (10 Dome)"
+      "venueHint": "10 Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-is-there-work-on-mars-at-zoo-playground-playground-1/",
@@ -15838,7 +15856,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Is There Work on Mars? at ZOO Playground (Playground 1)"
+      "venueHint": "Playground 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-cardstock-at-greenside-riddles-court/",
@@ -15871,7 +15889,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Dear Annie, I Hate You at Pleasance Courtyard (Pleasance Two)"
+      "venueHint": "Pleasance Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-thanks-for-being-here-at-zoo-southside/",
@@ -15893,7 +15911,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Fuselage at Pleasance Courtyard (Above)"
+      "venueHint": "Above"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-bog-body-at-paradise-in-the-vault-the-vault/",
@@ -15906,7 +15924,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Bog Body at Paradise in the Vault (The Vault)"
+      "venueHint": "The Vault"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-three-marias-at-greenside-george-street/",
@@ -15939,7 +15957,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Centre of the Universe at Summerhall (Tech Cube Zero)"
+      "venueHint": "Tech Cube Zero"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-after-shakespeare-at-thespace-surgeons-hall/",
@@ -15961,7 +15979,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "BETTY GRUMBLE: Enemies of Grooviness Eat Sh!t at Assembly Roxy (Upstairs)"
+      "venueHint": "Upstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-a-stan-is-born-at-gilded-balloon-patter-house-blether/",
@@ -15972,7 +15990,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "A STAN IS BORN! at Gilded Balloon Patter House (Blether)"
+      "venueHint": "Blether"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-falling-a-disabled-love-story-at-pleasance-courtyard-bunker-2/",
@@ -15985,7 +16003,7 @@
         "the-story-west-end-2026"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Falling: A Disabled Love Story at Pleasance Courtyard (Bunker 2)"
+      "venueHint": "Bunker 2"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-consumed-at-traverse-theatre/",
@@ -16020,7 +16038,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "King at Summerhall (Former Gents’ Locker Room)"
+      "venueHint": "Former Gents’ Locker Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-how-cant-i-help-at-greenside-george-street-jade-studio/",
@@ -16031,7 +16049,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "How Can(t) I Help? at Greenside @ George Street (Jade Studio)"
+      "venueHint": "Jade Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-essence-of-audrey-at-pleasance-courtyard/",
@@ -16064,7 +16082,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Jumper Bumps at Gilded Balloon Appleton Tower (Ruby)"
+      "venueHint": "Ruby"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-peace-circle-at-thespace-triplex/",
@@ -16119,7 +16137,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Saria Callas at Underbelly Cowgate (BellyButton)"
+      "venueHint": "BellyButton"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-flush-at-pleasance-courtyard-upstairs/",
@@ -16132,7 +16150,7 @@
         "flush-off-west-end-2026"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "FLUSH at Pleasance Courtyard (Upstairs)"
+      "venueHint": "Upstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-paldem-at-summerhall-techcube-zero/",
@@ -16143,7 +16161,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "PALDEM at Summerhall (Techcube Zero)"
+      "venueHint": "Techcube Zero"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-yes-were-related-at-underbelly-cowgate/",
@@ -16167,7 +16185,7 @@
         "macbeth-west-end-2013"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Lady Macbeth Played Wing Defence at Assembly George Square (Studio One)"
+      "venueHint": "Studio One"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-float-at-gilded-balloon-patter-house-other-yin/",
@@ -16178,7 +16196,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "FLOAT at Gilded Balloon Patter House (Other Yin)"
+      "venueHint": "Other Yin"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-1984-at-pleasance-courtyard-above/",
@@ -16189,7 +16207,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "1984 at Pleasance Courtyard (Above)"
+      "venueHint": "Above"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-flying-bubble-show-at-underbelly-circus-hub/",
@@ -16213,7 +16231,7 @@
         "fly-you-fools-off-west-end-2026"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Fly, You Fools! at Pleasance Courtyard (Beyond)"
+      "venueHint": "Beyond"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-how-to-kill-your-landlord-at-bedlam-theatre/",
@@ -16261,7 +16279,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "BLANDY at Assembly George Square Studios (Studio Four)"
+      "venueHint": "Studio Four"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-lost-property-at-thespace-surgeons-hall/",
@@ -16296,7 +16314,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Wild Thing! at Summerhall (Tech Cube 0)"
+      "venueHint": "Tech Cube 0"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-because-at-thespace-triplex-studio/",
@@ -16307,7 +16325,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Because at theSpace Triplex (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-all-the-boys-i-blocked-at-pickle-studio-riddles-court/",
@@ -16362,7 +16380,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Future Looks Bright at C venues"
+      "venueHint": "Quaker Meeting House"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-stampin-in-the-graveyard-at-summerhall/",
@@ -16384,7 +16402,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "r/Conspiracy at Gilded Balloon Appleton Tower (Ruby)"
+      "venueHint": "Ruby"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-players-of-diadon-at-gilded-balloon-patter-house-other-yin/",
@@ -16395,7 +16413,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Players of Diadon at Gilded Balloon Patter House (Other Yin)"
+      "venueHint": "Other Yin"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-windrush-secret-at-c-arts/",
@@ -16428,7 +16446,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "These Mechanisms at Assembly @ Dance Base (DB3)"
+      "venueHint": "DB3"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-tree-of-dreams-at-gilded-balloon-at-appleton-tower/",
@@ -16548,7 +16566,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Mothman Cometh at Just the Tonic at The Caves"
+      "venueHint": "The Subway"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-dangerous-goods-at-assembly-george-square-gardens/",
@@ -16704,7 +16722,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Guns in Dragonland at theSpace @ Niddry Street (Upper Theatre)"
+      "venueHint": "Upper Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-driving-in-circles-at-gilded-balloon-appleton-tower/",
@@ -16816,7 +16834,7 @@
         "worlds-greatest-lover-west-end-2026"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "World’s Greatest Lover"
+      "venueHint": "Pleasance One"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-no-apologies-at-summerhall/",
@@ -16904,7 +16922,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Motorhome Marilyn at Gilded Balloon Patter House (Doonstairs)"
+      "venueHint": "Doonstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-skye-a-thriller-at-summerhall-tech-cube-0/",
@@ -16915,7 +16933,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "SKYE: A Thriller at Summerhall (Tech Cube 0)"
+      "venueHint": "Tech Cube 0"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-niusia-at-summerhall/",
@@ -16981,7 +16999,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Trouble, Struggle, Bubble and Squeak at Pleasance Courtyard (Above)"
+      "venueHint": "Above"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-an-ode-to-the-casting-director-at-gilded-balloon-patter-house/",
@@ -17003,7 +17021,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Wilde Women at Greenside @ George Street (Fern Studio)"
+      "venueHint": "Fern Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-lolita-apologies-at-hill-street-theatre-the-muse-blackbox/",
@@ -17014,7 +17032,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Lolita Apologies at Hill Street Theatre (The Muse Blackbox)"
+      "venueHint": "The Muse Blackbox"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-bond-age-at-braw-venues/",
@@ -17047,7 +17065,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Uncrackable Case at Pleasance Courtyard (Pleasance Two)"
+      "venueHint": "Pleasance Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-no-sugar-no-milk-at-assembly-george-square-studios/",
@@ -17113,7 +17131,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Boy From Bantay at theSpace @ Surgeons’ Hall (Stephenson Theatre)"
+      "venueHint": "Stephenson Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-facility-111-at-assembly-rooms/",
@@ -17170,7 +17188,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ROTUS: Receptionist Of The United States at Gilded Balloon Patter Hoose (Snug)"
+      "venueHint": "Snug"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-baby-shark-and-the-mystery-of-the-sphinx-at-gilded-balloon-patter-house/",
@@ -17192,7 +17210,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "I Was A German at ZOO Southside (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-other-mozart-at-assembly-george-square-studios-studio-two/",
@@ -17238,7 +17256,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Supermarket 86 at theSpace @ Surgeons’ Hall (Stephenson Theatre)"
+      "venueHint": "Stephenson Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-faustus-project-at-underbelly-belly-laugh/",
@@ -17282,7 +17300,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "No Good Drunk at Pleasance Courtyard (Attic)"
+      "venueHint": "Attic"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-nature-of-forgetting-at-pleasance-courtyard-grand/",
@@ -17293,7 +17311,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Nature of Forgetting at Pleasance Courtyard (Grand)"
+      "venueHint": "Grand"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-blaze-fm-at-pleasance-courtyard-pleasance-two/",
@@ -17304,7 +17322,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Blaze FM at Pleasance Courtyard (Pleasance Two)"
+      "venueHint": "Pleasance Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-club-nvrlnd-at-assembly-checkpoint/",
@@ -17350,7 +17368,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Rift at Traverse Theatre (Traverse 2)"
+      "venueHint": "Traverse 2"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-fun-at-parties-at-thespace-niddry-street-studio/",
@@ -17372,7 +17390,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Jackie!!! at Gilded Balloon Patter House (Big Yin)"
+      "venueHint": "Big Yin"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-in-the-land-of-eagles-at-pleasance-courtyard-baby-grand/",
@@ -17383,7 +17401,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "In the Land of Eagles at Pleasance Courtyard (Baby Grand)"
+      "venueHint": "Baby Grand"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-aether-at-summerhall-anatomy-lecture-theatre/",
@@ -17394,7 +17412,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "AETHER at Summerhall (Anatomy Lecture Theatre)"
+      "venueHint": "Anatomy Lecture Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-a-woman-of-no-importance-at-edinburgh-theatre-arts/",
@@ -17416,7 +17434,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Wenches! at Greenside @ George Street (Olive Studio)"
+      "venueHint": "Olive Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-marriage-of-alice-b-toklas-by-gertrude-stein-at-gilded-balloon-patter-house-dram/",
@@ -17438,7 +17456,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Pigs Fly Easy Ryan at Underbelly Cowgate (Iron Belly)"
+      "venueHint": "Iron Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-lunchbox-at-pleasance-courtyard-the-green/",
@@ -17449,7 +17467,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Lunchbox at Pleasance Courtyard (The Green)"
+      "venueHint": "The Green"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-imago-at-assembly-roxy-central/",
@@ -17460,7 +17478,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Imago at Assembly Roxy (Central)"
+      "venueHint": "Central"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-mary-queen-of-rock-at-cowbarn-underbelly-bristo-square/",
@@ -17517,7 +17535,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Garden Party"
+      "venueHint": "Annexe"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-dusk-night-dawn-at-assembly-roxy/",
@@ -17616,7 +17634,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Bonding at Assembly George Square Studios (Studio Five)"
+      "venueHint": "Studio Five"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-unstoppable-rise-of-ben-manager-at-pleasance-courtyard-above/",
@@ -17627,7 +17645,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Unstoppable Rise of Ben Manager at Pleasance Courtyard (Above)"
+      "venueHint": "Above"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-golden-time-and-other-behavioural-management-strategies-at-pleasance-dome/",
@@ -17671,7 +17689,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Our Brothers in Cloth at Assembly George Square (Studio Five)"
+      "venueHint": "Studio Five"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-krapps-last-tape-at-greenside-george-street/",
@@ -17693,7 +17711,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "KINDER at Underbelly Cowgate (Big Belly)"
+      "venueHint": "Big Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-little-prince-at-pleasance-courtyard/",
@@ -17728,7 +17746,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Shunga Alert at Underbelly Cowgate (Big Belly)"
+      "venueHint": "Big Belly"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-cadel-lungs-on-legs-at-underbelly-cowgate/",
@@ -17753,7 +17771,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Monkeypox Gospel at Underbelly Cowgate (Belly Laugh)"
+      "venueHint": "Belly Laugh"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-alone-at-assembly-george-square-the-box/",
@@ -17764,7 +17782,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "ALONE at Assembly George Square (The Box)"
+      "venueHint": "The Box"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-hot-mess-at-pleasance-courtyard-pleasance-two/",
@@ -17775,7 +17793,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Hot Mess at Pleasance Courtyard (Pleasance Two)"
+      "venueHint": "Pleasance Two"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-here-comes-gudong-at-thespace-symposium-hall/",
@@ -17797,7 +17815,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Midnight at the Palace at Gilded Balloon Patter House (Big Yin)"
+      "venueHint": "Big Yin"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-f-u-d-s-at-gilded-balloon-patter-house-nip-theatre/",
@@ -17808,7 +17826,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "F.U.D.S at Gilded Balloon Patter House (Nip Theatre)"
+      "venueHint": "Nip Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-tale-of-the-loneliest-whale-at-underbelly-bristo-square-clover/",
@@ -17819,7 +17837,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Tale of the Loneliest Whale at Underbelly Bristo Square (Clover)"
+      "venueHint": "Clover"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-bernie-dieters-club-kabarett-at-underbelly-circus-hub/",
@@ -17841,7 +17859,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "I Killed My Roommate at theSpace @ Surgeons’ Hall (Theatre 2)"
+      "venueHint": "Theatre 2"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-by-a-thread-at-assembly-roxy-central/",
@@ -17863,7 +17881,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Butterfly Who Flew Into The Rave at Summerhall (Main Hall)"
+      "venueHint": "Main Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-body-count-at-pleasance-courtyard/",
@@ -17944,7 +17962,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Strangewife at Assembly Rooms (Front Room)"
+      "venueHint": "Front Room"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-moon-dragon-at-lifecare-centre/",
@@ -17988,7 +18006,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Basically Nocturnal at Gilded Balloon Patter House (Blether)"
+      "venueHint": "Blether"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-ghost-light-at-pleasance-courtyard-pleasance-one/",
@@ -17999,7 +18017,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Ghost Light at Pleasance Courtyard (Pleasance One)"
+      "venueHint": "Pleasance One"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-footballers-wives-the-musical-at-assembly-rooms-music-hall/",
@@ -18010,7 +18028,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Footballers’ Wives: The Musical at Assembly Rooms (Music Hall)"
+      "venueHint": "Music Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-nerds-the-bill-gates-vs-steve-jobs-comedy-musical-at-underbelly-bristo-square-cowbarn/",
@@ -18032,7 +18050,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "This Sh*t Happens All The Time at Assembly George Square Studios (Studio Four)"
+      "venueHint": "Studio Four"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-strangers-with-benefits-at-paradise-in-augustines-studio/",
@@ -18045,7 +18063,7 @@
         "paradise-west-end-2021"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Strangers With Benefits at Paradise in Augustines (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-genesis-at-assembly-hall-main-hall/",
@@ -18056,7 +18074,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Genesis at Assembly Hall (Main Hall)"
+      "venueHint": "Main Hall"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-insider-at-pleasance-dome-king-dome/",
@@ -18067,7 +18085,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Insider at Pleasance Dome (King Dome)"
+      "venueHint": "King Dome"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-couac-at-gilded-balloon-patter-house-doonstairs/",
@@ -18089,7 +18107,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Eat The Rich (but maybe not me mates x) at Pleasance Courtyard (Bunker 1)"
+      "venueHint": "Bunker 1"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-0g-crush-at-assembly-the-drawing-room/",
@@ -18124,7 +18142,7 @@
         "macbeth-west-end-2013"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Macbeth by The Barden Party at ZOO Southside (Studio)"
+      "venueHint": "Studio"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-pals-at-gilded-balloon-patter-house-doonstairs/",
@@ -18135,7 +18153,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "PALS at Gilded Balloon Patter House (Doonstairs)"
+      "venueHint": "Doonstairs"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-review-the-naked-neds-at-thespace-surgeons-hall-grand-theatre/",
@@ -18146,7 +18164,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "The Naked Neds at theSpace @ Surgeons’ Hall (Grand Theatre)"
+      "venueHint": "Grand Theatre"
     },
     {
       "url": "https://theatreweekly.com/review-death-comes-to-pemberley-at-theatre-royal-windsor/",
@@ -18652,11 +18670,9 @@
       "url": "https://theatreweekly.com/capgras-theatre-company-to-preview-strangewife-at-lion-unicorn-theatre-ahead-of-edinburgh-fringe-run/",
       "headline": "Capgras Theatre Company to Preview Strangewife at Lion & Unicorn Theatre Ahead of Edinburgh Fringe Run",
       "publishDate": "2025-06-19",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "unicorn-west-end-2025"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh"
     },
@@ -18971,7 +18987,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "touring",
-      "venueHint": "Chicago on Tour (New Wimbledon Theatre)"
+      "venueHint": "New Wimbledon Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-fringe-preview-auntie-empire-at-summerhall-the-dissection-room/",
@@ -19213,7 +19229,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "touring",
-      "venueHint": "NOW! That’s What I Call A Musical on Tour (at New Wimbledon Theatre)"
+      "venueHint": "at New Wimbledon Theatre"
     },
     {
       "url": "https://theatreweekly.com/review-just-between-ourselves-at-theatre-royal-windsor/",
@@ -19248,7 +19264,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "touring",
-      "venueHint": "&Juliet on Tour (New Wimbledon Theatre)"
+      "venueHint": "New Wimbledon Theatre"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-festival-fringe-society-publishes-its-review-of-the-year-2024/",
@@ -21558,17 +21574,6 @@
       "venueHint": "Two Strangers (Carry a Cake Across New York) at Kiln Theatre"
     },
     {
-      "url": "https://theatreweekly.com/review-uncanny-i-know-what-i-saw-at-rose-theatre-kingston/",
-      "headline": "Review: Uncanny: I Know What I Saw at Rose Theatre Kingston",
-      "publishDate": "2023-10-22",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk",
-      "venueHint": "Uncanny: I Know What I Saw at Rose Theatre Kingston"
-    },
-    {
       "url": "https://theatreweekly.com/edinburgh-review-oh-my-heart-oh-my-home-at-summerhall/",
       "headline": "Edinburgh Review: Oh My Heart, Oh My Home. at Summerhall",
       "publishDate": "2023-08-28",
@@ -21671,12 +21676,11 @@
       "url": "https://theatreweekly.com/edinburgh-review-mass-effect-at-summerhall/",
       "headline": "Edinburgh Review: Mass Effect at Summerhall",
       "publishDate": "2023-08-24",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-effect-west-end-2023"
-      ],
+      "matched": [],
       "outOfWindow": [
+        "the-effect-west-end-2023",
         "the-effect-west-end-2012"
       ],
       "itemMarket": "edinburgh",
@@ -22824,7 +22828,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Police Cops The Musical at Assembly Rooms (2023)"
+      "venueHint": "2023"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-review-four-at-gilded-balloon-teviot/",
@@ -24153,21 +24157,6 @@
       ],
       "itemMarket": "touring",
       "venueHint": "The Handlebards A Midsummer Night’s Dream on Tour"
-    },
-    {
-      "url": "https://theatreweekly.com/review-richard-iii-at-rose-theatre-kingston/",
-      "headline": "Review: Richard III at Rose Theatre Kingston",
-      "publishDate": "2023-05-02",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "rose-west-end-2023"
-      ],
-      "outOfWindow": [
-        "richard-iii-west-end-2014"
-      ],
-      "itemMarket": "regional-uk",
-      "venueHint": "Richard III at Rose Theatre Kingston"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-preview-17-minutes-at-gilded-balloon-teviot-wine-bar/",
@@ -26623,7 +26612,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "touring",
-      "venueHint": "The Lion, the Witch and the Wardrobe on Tour (Lowry Theatre)"
+      "venueHint": "Lowry Theatre"
     },
     {
       "url": "https://theatreweekly.com/review-jack-and-the-beanstalk-at-new-wolsey-theatre/",
@@ -26871,7 +26860,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk",
-      "venueHint": "The Merthyr Stigmatist From Sherman Theatre and Theatre Uncut (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-the-preacher-at-brighton-fringe/",
@@ -26906,7 +26895,7 @@
         "sunset-boulevard-west-end-2023"
       ],
       "itemMarket": "regional-uk",
-      "venueHint": "Sunset Boulevard in Concert from Curve, Leicester (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-the-magic-of-christmas-from-pitlochry-festival-theatre/",
@@ -26928,7 +26917,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk",
-      "venueHint": "Unearthed part of Hoard Rediscovered at New Vic Theatre (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/preview-press-play-a-season-of-new-digital-performances/",
@@ -27001,7 +26990,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Grip at Reading Fringe Digital Festival (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-adventures-with-the-painted-people-from-pitlochry-festival-theatre/",
@@ -27025,7 +27014,7 @@
         "iphigenia-off-west-end-2026"
       ],
       "itemMarket": "unknown",
-      "venueHint": "Iphigenia in Splott (Audible Original Studio Recording)"
+      "venueHint": "Audible Original Studio Recording"
     },
     {
       "url": "https://theatreweekly.com/review-bryony-kimmings-i-am-falling-in-love-with-you-and-its-making-me-do-stupid-things-from-home-manchester-online/",
@@ -27047,7 +27036,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk",
-      "venueHint": "A Small Gathering from HOME Manchester (Online)"
+      "venueHint": "Online"
     },
     {
       "url": "https://theatreweekly.com/review-the-good-book-from-slung-low-theatre-and-leeds-peoples-theatre/",
@@ -27192,7 +27181,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "Romantics Anonymous at Bristol Old Vic"
     },
     {
@@ -27235,17 +27224,6 @@
       "outOfWindow": [],
       "itemMarket": "regional-uk",
       "venueHint": "The Steamie at SSE Hydro Arena Glasgow"
-    },
-    {
-      "url": "https://theatreweekly.com/review-the-snow-queen-at-rose-theatre-kingston/",
-      "headline": "Review: The Snow Queen at Rose Theatre Kingston",
-      "publishDate": "2019-12-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk",
-      "venueHint": "The Snow Queen at Rose Theatre Kingston"
     },
     {
       "url": "https://theatreweekly.com/review-joan-of-leeds-at-new-diorama-theatre/",
@@ -27483,12 +27461,12 @@
       "url": "https://theatreweekly.com/edinburgh-review-showstopper-the-improvised-musical-at-pleasance-grand/",
       "headline": "Edinburgh Review: Showstopper! The Improvised Musical at Pleasance Grand",
       "publishDate": "2019-08-23",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "showstopper-the-improvised-musical-west-end-2023"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh",
       "venueHint": "Showstopper! The Improvised Musical at Pleasance Grand"
     },
@@ -28703,7 +28681,7 @@
         "unicorn-west-end-2025"
       ],
       "itemMarket": "edinburgh",
-      "venueHint": "Almost, Maine at The Lion and Unicorn Theatre (Edinburgh Preview)"
+      "venueHint": "Edinburgh Preview"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-preview-the-words-are-there-at-thespace-at-surgeons-hall/",
@@ -28869,7 +28847,7 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh",
-      "venueHint": "Shadows at The Tristan Bates Theatre (Edinburgh Preview)"
+      "venueHint": "Edinburgh Preview"
     },
     {
       "url": "https://theatreweekly.com/edinburgh-preview-dont-bother-at-underbelly/",
@@ -29701,17 +29679,6 @@
       "itemMarket": "unknown"
     },
     {
-      "url": "https://theatreweekly.com/review-the-cat-in-the-hat-at-rose-theatre-kingston/",
-      "headline": "Review: The Cat in the Hat at Rose Theatre Kingston",
-      "publishDate": "2019-04-10",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk",
-      "venueHint": "The Cat in the Hat at Rose Theatre Kingston"
-    },
-    {
       "url": "https://theatreweekly.com/review-luke-wright-poet-laureate-national-tour/",
       "headline": "Review: Luke Wright Poet Laureate National Tour",
       "publishDate": "2019-04-10",
@@ -30473,12 +30440,12 @@
       "url": "https://theatreweekly.com/edinburgh-review-hamilton-lewis-at-assembly-george-square-studios/",
       "headline": "Edinburgh Review: Hamilton (Lewis) at Assembly George Square Studios",
       "publishDate": "2018-08-08",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "hamilton-west-end-2021"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh",
       "venueHint": "Hamilton (Lewis) at Assembly George Square Studios"
     },
@@ -32596,7 +32563,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "international",
       "venueHint": "Chicago at The Phoenix Theatre"
     },
     {
@@ -33799,7 +33766,7 @@
         "an-american-in-paris-west-end-2017"
       ],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "international",
       "venueHint": "An American in Paris at The Dominion Theatre"
     },
     {

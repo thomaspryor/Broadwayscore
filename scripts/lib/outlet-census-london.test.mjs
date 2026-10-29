@@ -184,3 +184,47 @@ test('inRunWindow: announced rows with only an id year keep no ceiling', () => {
   assert.equal(census.inRunWindow({ id: 'x-2024', status: 'announced' }, '2027-03-01'), true);
   assert.equal(census.inRunWindow({ id: 'x-2015', status: 'closed' }, '2022-03-01'), false);
 });
+
+// BRO-6488 matcher false positives, real artsdesk / Time Out slug headlines.
+const aladdin = { id: 'aladdin-west-end-2016', title: 'Aladdin', market: 'west-end', venue: 'Prince Edward Theatre', openingDate: '2016-06-15', closingDate: '2019-08-31' };
+const hamilton = { id: 'hamilton-west-end-2021', title: 'Hamilton', market: 'west-end', venue: 'Victoria Palace Theatre', openingDate: '2017-12-21' };
+const stories = { id: 'stories-west-end-2018', title: 'Stories', market: 'west-end', venue: 'Dorfman Theatre', openingDate: '2018-10-17', closingDate: '2018-11-28' };
+const beautiful = { id: 'beautiful-the-carole-king-musical-west-end-2015', title: 'Beautiful, the Carole King Musical', market: 'west-end', venue: 'Aldwych Theatre', openingDate: '2015-02-24', closingDate: '2017-08-05' };
+
+test('titleOnlyInTagline: a title only after "review" in a slug headline is the tagline', () => {
+  assert.equal(census.titleOnlyInTagline(stories, 'misty bush theatre review powerful meditation how we tell stories'), true);
+  assert.equal(census.titleOnlyInTagline(hamilton, 'infamous jermyn street theatre review lady hamilton challenges patriarchy and loses'), true);
+  assert.equal(census.titleOnlyInTagline(hamilton, 'hamilton victoria palace review rich radical and ridiculously exciting'), false);
+  assert.equal(census.titleOnlyInTagline(hamilton, 'Review: Hamilton at the Victoria Palace'), false);
+  assert.equal(census.titleOnlyInTagline(hamilton, 'theatre review hamilton'), false);
+});
+
+test('venueContradicts: a different house named after the title is another production', () => {
+  assert.equal(census.venueContradicts(aladdin, 'aladdin hackney empire review clive rowe returns dame'), true);
+  assert.equal(census.venueContradicts(aladdin, 'aladdin richmond theatre review great dame weak script'), true);
+  assert.equal(census.venueContradicts(hamilton, 'hamilton victoria palace review rich radical and ridiculously exciting'), false);
+  assert.equal(census.venueContradicts(hamilton, 'Hamilton review – Victoria Palace Theatre'), false);
+  assert.equal(census.venueContradicts({ ...aladdin, venue: null }, 'aladdin hackney empire review'), false);
+});
+
+test('bucketItem: tagline, panto and slug-variant false matches no longer land as gaps', () => {
+  const list = [aladdin, hamilton, stories, beautiful];
+  const ctx = ctxFor([], list);
+  const item = (url, headline, publishDate) => ({ outletId: 'artsdesk', sourceSaysReview: true, url, headline, publishDate });
+  const panto = census.bucketItem(item('https://theartsdesk.com/theatre/aladdin-hackney-empire-review-clive-rowe-returns-dame', 'aladdin hackney empire review clive rowe returns dame', '2018-12-01'), ctx);
+  assert.notEqual(panto.bucket, 'gap');
+  assert.deepEqual(panto.venueMismatchIds, ['aladdin-west-end-2016']);
+  const misty = census.bucketItem(item('https://theartsdesk.com/theatre/misty-bush-theatre-review-powerful-meditation-how-we-tell-stories', 'misty bush theatre review powerful meditation how we tell stories', '2018-11-01'), ctx);
+  assert.notEqual(misty.bucket, 'gap');
+  const future = census.bucketItem(item('https://www.timeout.com/london/theatre/this-beautiful-future-review', 'this beautiful future review', '2017-06-20'), ctx);
+  assert.notEqual(future.bucket, 'gap');
+  const real = census.bucketItem(item('https://theartsdesk.com/theatre/hamilton-victoria-palace-review-rich-radical-and-ridiculously-exciting', 'hamilton victoria palace review rich radical and ridiculously exciting', '2018-01-01'), ctx);
+  assert.equal(real.bucket, 'gap');
+});
+
+test('venueContradicts: stems and National Theatre houses are the same venue', () => {
+  const mousetrap = { id: 'the-mousetrap-west-end-1952', title: 'The Mousetrap', venue: "St Martin's Theatre" };
+  const pride = { id: 'pride-west-end-2026', title: 'Pride', venue: 'Olivier Theatre' };
+  assert.equal(census.venueContradicts(mousetrap, 'theartsdesk mot mousetrap st martins theatre'), false);
+  assert.equal(census.venueContradicts(pride, 'Pride musical at the National Theatre – review'), false);
+});

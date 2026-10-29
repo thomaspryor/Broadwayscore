@@ -1,7 +1,7 @@
 {
   "outletId": "britishtheatrecom",
   "market": "london",
-  "generatedAt": "2026-10-29T03:04:30.370Z",
+  "generatedAt": "2026-10-29T04:23:24.239Z",
   "since": "2012-09-01",
   "source": {
     "kind": "sitemap",
@@ -15,23 +15,23 @@
   "summary": {
     "counts": {
       "held": 76,
+      "out-of-window": 237,
+      "not-review": 557,
+      "held-alt-url": 58,
+      "other-market-review": 576,
+      "catalog-gap": 717,
       "gap": 204,
-      "not-review": 556,
-      "held-alt-url": 59,
-      "other-market-review": 579,
-      "catalog-gap": 715,
-      "out-of-window": 235,
-      "ambiguous": 4,
+      "ambiguous": 3,
       "held-unmatched": 7
     },
     "viaTitleVariant": {
-      "held": 3,
-      "gap": 11,
-      "held-alt-url": 5,
-      "other-market-review": 1
+      "held": 4,
+      "gap": 16,
+      "held-alt-url": 4,
+      "other-market-review": 2
     },
-    "recall": 0.398,
-    "recallWithCatalog": 0.128
+    "recall": 0.396,
+    "recallWithCatalog": 0.127
   },
   "seasons": {
     "2025-26": {
@@ -44,12 +44,12 @@
       "out-of-window": 1
     },
     "2013-14": {
-      "gap": 20,
+      "out-of-window": 19,
       "held": 3,
       "not-review": 28,
-      "out-of-window": 17,
       "catalog-gap": 39,
-      "other-market-review": 12,
+      "other-market-review": 11,
+      "gap": 19,
       "held-unmatched": 2,
       "held-alt-url": 8
     },
@@ -97,8 +97,8 @@
       "ambiguous": 1
     },
     "2018-19": {
-      "catalog-gap": 115,
-      "other-market-review": 104,
+      "catalog-gap": 117,
+      "other-market-review": 102,
       "not-review": 44,
       "held-alt-url": 9,
       "out-of-window": 27,
@@ -111,8 +111,8 @@
       "out-of-window": 29,
       "catalog-gap": 87,
       "other-market-review": 47,
-      "not-review": 67,
-      "held-alt-url": 7,
+      "not-review": 68,
+      "held-alt-url": 6,
       "held": 3,
       "held-unmatched": 1
     },
@@ -145,10 +145,9 @@
       "other-market-review": 42,
       "not-review": 4,
       "held-alt-url": 4,
-      "gap": 9,
+      "gap": 10,
       "held": 5,
-      "catalog-gap": 7,
-      "ambiguous": 1
+      "catalog-gap": 7
     },
     "2020-21": {
       "not-review": 53,
@@ -417,18 +416,6 @@
     ]
   },
   "gaps": [
-    {
-      "url": "https://www.britishtheatre.com/posts/2013-review-the-book-of-mormon-prince-of-wales-theatre",
-      "headline": "2013 review the book of mormon prince of wales theatre",
-      "publishDate": "2013-10-21",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-book-of-mormon-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
     {
       "url": "https://www.britishtheatre.com/posts/dayreview-groundhog-day-old-vic-theatre",
       "headline": "dayreview groundhog day old vic theatre",
@@ -735,7 +722,7 @@
       "headline": "review charlie and the chocolate factory theatre royal drury lane",
       "publishDate": "2013-06-26",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": "title-variant",
       "held": [],
       "matched": [
         "charlie-and-the-chocolate-factory-west-end-2013"
@@ -749,7 +736,7 @@
       "headline": "review charlie and the chocolate factory theatre royal drury lane 4stars",
       "publishDate": "2015-03-30",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": "title-variant",
       "held": [],
       "matched": [
         "charlie-and-the-chocolate-factory-west-end-2013"
@@ -1027,7 +1014,7 @@
       "headline": "review fatal attraction theatre royal haymarket 0 stars",
       "publishDate": "2014-03-19",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": "title-variant",
       "held": [],
       "matched": [
         "fatal-attraction-west-end-2014"
@@ -1277,7 +1264,7 @@
       "headline": "review harvey theatre royal haymarket 1 star",
       "publishDate": "2015-03-25",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": "title-variant",
       "held": [],
       "matched": [
         "harvey-west-end-2015"
@@ -2403,7 +2390,7 @@
       "headline": "review the goat or who is sylvia theatre royal haymarket",
       "publishDate": "2017-04-09",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": "title-variant",
       "held": [],
       "matched": [
         "the-goat-or-who-is-sylvia-west-end-2017"
@@ -2996,6 +2983,18 @@
       "outOfWindow": [
         "the-years-west-end-2025"
       ]
+    },
+    {
+      "url": "https://www.britishtheatre.com/posts/the-way-old-friends-do-criterion-theatre-review-round-up",
+      "headline": "the way old friends do criterion theatre review round up",
+      "publishDate": "2023-09-01",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-way-old-friends-do-west-end-2023"
+      ],
+      "outOfWindow": []
     }
   ],
   "heldAltUrl": [
@@ -3583,17 +3582,6 @@
       ]
     },
     {
-      "url": "https://www.britishtheatre.com/posts/review-the-phantom-raspberry-blower-st-james-theatre-3stars",
-      "headline": "review the phantom raspberry blower st james theatre 3stars",
-      "publishDate": "2015-11-03",
-      "matched": [
-        "the-phantom-of-the-opera-west-end-1986"
-      ],
-      "heldUrls": [
-        "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london"
-      ]
-    },
-    {
       "url": "https://www.britishtheatre.com/posts/review-to-kill-a-mockingbird-gielgud-theatre",
       "headline": "review to kill a mockingbird gielgud theatre",
       "publishDate": "2022-04-01",
@@ -3782,19 +3770,6 @@
         "much-ado-about-nothing-west-end-2022",
         "much-ado-about-nothing-west-end-2013"
       ]
-    },
-    {
-      "url": "https://www.britishtheatre.com/posts/the-way-old-friends-do-criterion-theatre-review-round-up",
-      "headline": "the way old friends do criterion theatre review round up",
-      "publishDate": "2023-09-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "old-friends-west-end-2023",
-        "the-way-old-friends-do-west-end-2023"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://www.britishtheatre.com/posts/to-kill-a-mockingbird-returns-to-the-west-end-story-cast-reviews-and-everything",
@@ -9311,6 +9286,17 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatre.com/posts/review-taste-of-the-town-rose-theatre-kingston",
+      "headline": "review taste of the town rose theatre kingston",
+      "publishDate": "2018-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatre.com/posts/review-teenage-dick-donmar-warehouse",
       "headline": "review teenage dick donmar warehouse",
       "publishDate": "2019-12-15",
@@ -9364,6 +9350,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatre.com/posts/review-the-art-of-success-rose-theatre-kingston",
+      "headline": "review the art of success rose theatre kingston",
+      "publishDate": "2018-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatre.com/posts/review-the-autumn-garden-jermyn-street-theatre",
@@ -14124,7 +14121,7 @@
       "headline": "review ghost stories theatre royal nottingham uk tour",
       "publishDate": "2020-01-27",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": "title-variant",
       "held": [],
       "matched": [
         "ghost-stories-west-end-2019"
@@ -15621,20 +15618,6 @@
       "itemMarket": "edinburgh"
     },
     {
-      "url": "https://www.britishtheatre.com/posts/review-noises-off-rose-theatre-kingston",
-      "headline": "review noises off rose theatre kingston",
-      "publishDate": "2014-02-19",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "noises-off-west-end-2023",
-        "noises-off-west-end-2019"
-      ],
-      "itemMarket": "regional-uk"
-    },
-    {
       "url": "https://www.britishtheatre.com/posts/review-not-about-heroes-pleasance-dome-edinburgh-fringe",
       "headline": "review not about heroes pleasance dome edinburgh fringe",
       "publishDate": "2017-08-28",
@@ -16768,17 +16751,6 @@
       "itemMarket": "regional-uk"
     },
     {
-      "url": "https://www.britishtheatre.com/posts/review-taste-of-the-town-rose-theatre-kingston",
-      "headline": "review taste of the town rose theatre kingston",
-      "publishDate": "2018-10-10",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk"
-    },
-    {
       "url": "https://www.britishtheatre.com/posts/review-teach-the-space-surgeons-hall-edinburgh-fringe",
       "headline": "review teach the space surgeons hall edinburgh fringe",
       "publishDate": "2019-08-08",
@@ -16911,17 +16883,6 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh"
-    },
-    {
-      "url": "https://www.britishtheatre.com/posts/review-the-art-of-success-rose-theatre-kingston",
-      "headline": "review the art of success rose theatre kingston",
-      "publishDate": "2018-10-09",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk"
     },
     {
       "url": "https://www.britishtheatre.com/posts/review-the-audit-pulse-festival-new-wolsey-theatre",
@@ -18364,6 +18325,18 @@
     }
   ],
   "outOfWindow": [
+    {
+      "url": "https://www.britishtheatre.com/posts/2013-review-the-book-of-mormon-prince-of-wales-theatre",
+      "headline": "2013 review the book of mormon prince of wales theatre",
+      "publishDate": "2013-10-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-book-of-mormon-west-end-2024"
+      ]
+    },
     {
       "url": "https://www.britishtheatre.com/posts/elf-the-musical-review-round-up-dominion-theatre-london-2022",
       "headline": "elf the musical review round up dominion theatre london 2022",
@@ -20044,6 +20017,19 @@
       "outOfWindow": [
         "nine-night-off-west-end-2026",
         "nine-night-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatre.com/posts/review-noises-off-rose-theatre-kingston",
+      "headline": "review noises off rose theatre kingston",
+      "publishDate": "2014-02-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "noises-off-west-end-2023",
+        "noises-off-west-end-2019"
       ]
     },
     {

@@ -1,7 +1,7 @@
 {
   "outletId": "timeout-london",
   "market": "london",
-  "generatedAt": "2026-10-29T02:55:55.051Z",
+  "generatedAt": "2026-10-29T04:26:30.758Z",
   "since": "2012-09-01",
   "source": {
     "kind": "sitemap",
@@ -14,7 +14,7 @@
   "corpus": "review-texts",
   "summary": {
     "counts": {
-      "not-review": 11660,
+      "not-review": 11661,
       "catalog-gap": 2,
       "held": 323,
       "out-of-window": 140,
@@ -22,16 +22,16 @@
       "held-unmatched": 72,
       "ambiguous": 1,
       "held-other-market": 30,
-      "gap": 9,
+      "gap": 8,
       "other-market-review": 11,
       "misfile": 2
     },
     "viaTitleVariant": {
-      "held": 14,
-      "gap": 3
+      "held": 16,
+      "gap": 2
     },
-    "recall": 0.969,
-    "recallWithCatalog": 0.964
+    "recall": 0.972,
+    "recallWithCatalog": 0.967
   },
   "seasons": {
     "2026-27": {
@@ -123,8 +123,8 @@
       "other-market-review": 3
     },
     "2016-17": {
-      "not-review": 1083,
-      "gap": 2,
+      "not-review": 1084,
+      "gap": 1,
       "out-of-window": 1,
       "held": 6
     },
@@ -494,18 +494,6 @@
       "outOfWindow": [
         "hamlet-west-end-2025"
       ]
-    },
-    {
-      "url": "https://www.timeout.com/london/theatre/this-beautiful-future-review",
-      "headline": "this beautiful future review",
-      "publishDate": "2017-05-02",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "beautiful-the-carole-king-musical-west-end-2015"
-      ],
-      "outOfWindow": []
     }
   ],
   "heldAltUrl": [

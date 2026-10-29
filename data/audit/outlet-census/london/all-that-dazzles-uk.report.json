@@ -1,7 +1,7 @@
 {
   "outletId": "all-that-dazzles-uk",
   "market": "london",
-  "generatedAt": "2026-10-29T03:12:38.111Z",
+  "generatedAt": "2026-10-29T04:23:24.372Z",
   "since": "2012-09-01",
   "source": {
     "kind": "sitemap",
@@ -16,23 +16,22 @@
     "counts": {
       "other-market-review": 277,
       "held": 287,
-      "out-of-window": 236,
-      "not-review": 559,
+      "out-of-window": 237,
+      "not-review": 561,
       "catalog-gap": 804,
       "held-other-market": 18,
-      "held-unmatched": 60,
-      "gap": 140,
+      "held-unmatched": 61,
+      "gap": 137,
       "ambiguous": 1,
-      "held-alt-url": 30,
-      "misfile": 1
+      "held-alt-url": 30
     },
     "viaTitleVariant": {
       "held": 22,
-      "gap": 10,
+      "gap": 8,
       "held-alt-url": 2
     },
-    "recall": 0.692,
-    "recallWithCatalog": 0.251
+    "recall": 0.698,
+    "recallWithCatalog": 0.252
   },
   "seasons": {
     "2026-27": {
@@ -58,12 +57,12 @@
       "held-alt-url": 9
     },
     "2024-25": {
-      "not-review": 96,
+      "not-review": 98,
       "held": 37,
       "other-market-review": 64,
       "catalog-gap": 205,
       "out-of-window": 45,
-      "gap": 21,
+      "gap": 19,
       "held-alt-url": 7,
       "held-unmatched": 8,
       "held-other-market": 2
@@ -92,12 +91,12 @@
     },
     "2021-22": {
       "catalog-gap": 54,
-      "out-of-window": 20,
+      "out-of-window": 21,
       "held": 13,
       "not-review": 36,
       "other-market-review": 15,
       "held-unmatched": 2,
-      "gap": 7,
+      "gap": 6,
       "held-alt-url": 1
     },
     "2020-21": {
@@ -108,8 +107,7 @@
       "held": 2,
       "held-alt-url": 3,
       "out-of-window": 15,
-      "misfile": 1,
-      "held-unmatched": 1
+      "held-unmatched": 2
     },
     "2019-20": {
       "out-of-window": 6,
@@ -1213,18 +1211,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.allthatdazzles.co.uk/post/review-jonacon-at-phantom-peak",
-      "headline": "review jonacon at phantom peak",
-      "publishDate": "2025-03-17",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "the-phantom-of-the-opera-west-end-1986"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.allthatdazzles.co.uk/post/review-retrograde-apollo-theatre",
       "headline": "review retrograde apollo theatre",
       "publishDate": "2025-03-20",
@@ -1361,18 +1347,6 @@
         "a-christmas-carol-west-end-2012",
         "a-christmas-carol-west-end-2015"
       ]
-    },
-    {
-      "url": "https://www.allthatdazzles.co.uk/post/review-wintermas-at-phantom-peak-phantom-peak",
-      "headline": "review wintermas at phantom peak phantom peak",
-      "publishDate": "2024-11-22",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "the-phantom-of-the-opera-west-end-1986"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://www.allthatdazzles.co.uk/post/review-come-alive-the-greatest-showman-circus-spectacular-empress-musem",
@@ -1855,18 +1829,6 @@
       ]
     },
     {
-      "url": "https://www.allthatdazzles.co.uk/post/streaming-review-come-from-away-apple-tv",
-      "headline": "streaming review come from away apple tv",
-      "publishDate": "2021-09-11",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "come-from-away-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.allthatdazzles.co.uk/post/review-hairspray-london-coliseum",
       "headline": "review hairspray london coliseum",
       "publishDate": "2021-06-30",
@@ -2273,30 +2235,7 @@
       ]
     }
   ],
-  "misfiles": [
-    {
-      "url": "https://www.allthatdazzles.co.uk/post/preview-review-a-christmas-carol-dominion-theatre",
-      "headline": "preview review a christmas carol dominion theatre",
-      "publishDate": "2020-12-10",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [
-        "a-christmas-carol-west-end-2018"
-      ],
-      "matched": [
-        "a-christmas-carol-west-end-2020"
-      ],
-      "outOfWindow": [
-        "a-christmas-carol-west-end-2026",
-        "a-christmas-carol-west-end-2023",
-        "a-christmas-carol-west-end-2022",
-        "a-christmas-carol-west-end-2018",
-        "a-christmas-carol-west-end-2024",
-        "a-christmas-carol-west-end-2012",
-        "a-christmas-carol-west-end-2015"
-      ]
-    }
-  ],
+  "misfiles": [],
   "heldUnmatched": [
     {
       "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
@@ -3090,6 +3029,27 @@
       "matched": [],
       "outOfWindow": [
         "pride-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.allthatdazzles.co.uk/post/preview-review-a-christmas-carol-dominion-theatre",
+      "headline": "preview review a christmas carol dominion theatre",
+      "publishDate": "2020-12-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-christmas-carol-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
       ]
     },
     {
@@ -17875,6 +17835,18 @@
       "matched": [],
       "outOfWindow": [
         "harvey-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.allthatdazzles.co.uk/post/streaming-review-come-from-away-apple-tv",
+      "headline": "streaming review come from away apple tv",
+      "publishDate": "2021-09-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "come-from-away-west-end-2019"
       ]
     },
     {

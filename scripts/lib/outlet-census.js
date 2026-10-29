@@ -254,6 +254,9 @@ function shortVariantStandsAlone(headline, title, variant) {
   // An all-caps headline carries no casing signal, so keep the match.
   if (!/[a-z]/.test(raw)) return true;
   const esc = variant.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // An all-lowercase headline (built from a URL slug) carries none either: the short
+  // variant must lead it ("this beautiful future review" is not Beautiful, BRO-6488).
+  if (!/[A-Z]/.test(raw)) return new RegExp(`^\\s*(?:review\\W+)?${esc}(?![a-z0-9])`, 'i').test(raw);
   const re = new RegExp(`(?<![a-z0-9])${esc}(?![a-z0-9])(?:\\s+([a-z0-9']+))?`, 'gi');
   let seen = false;
   for (const m of raw.matchAll(re)) {
@@ -329,6 +332,52 @@ function titleOnlyInVenue(show, text, venues) {
   return !titleWordsAppear(show, hay);
 }
 
+const LEAD_FILLER = new Set(['theatre', 'theater', 'first', 'night', 'london', 'west', 'end', 'stage', 'musical', 'play', 'opera', 'dance', 'the']);
+/** Normalised headline split at its first standalone "review": [before, after], or null. */
+function splitAtReview(headline) {
+  const hay = ` ${normTitle(headline)} `;
+  const i = hay.indexOf(' review ');
+  return i < 0 ? null : [hay.slice(0, i + 1), hay.slice(i + 7)];
+}
+
+/**
+ * Slug headline "<title> <venue> review <tagline>": a title found only in the tagline is the
+ * critic's phrasing ("misty bush theatre review ... how we tell stories" is not Stories;
+ * "infamous jermyn street theatre review lady hamilton ..." is not Hamilton, BRO-6488).
+ * A headline that opens with "review" (or "theatre review") has no lead and is left alone.
+ */
+function titleOnlyInTagline(show, headline) {
+  const parts = splitAtReview(headline);
+  if (!show || !parts) return false;
+  const [before, after] = parts;
+  if (!before.trim().split(' ').some((w) => w && !LEAD_FILLER.has(w))) return false;
+  return !titleWordsAppear(show, before) && titleWordsAppear(show, after);
+}
+
+const VENUE_WORD_RE = /\b(theatre|theater|empire|playhouse|studios?|warehouse|hall|coliseum|palladium|arts centre|opera house)\b/;
+/**
+ * The headline names the production's venue right after the title, and it is not this
+ * show's house ("aladdin hackney empire review" is a panto, not the Prince Edward Aladdin,
+ * BRO-6488). Only a venue word between the title and "review" counts.
+ */
+function venueContradicts(show, headline) {
+  if (!show || !show.venue) return false;
+  const parts = splitAtReview(headline);
+  const lead = parts ? parts[0] : ` ${normTitle(headline)} `;
+  const t = normTitle(show.title).replace(/^the /, '');
+  if (!t || !lead.includes(` ${t} `)) return false;
+  const rest = lead.slice(lead.indexOf(` ${t} `) + t.length + 2).trim();
+  if (!rest || !VENUE_WORD_RE.test(rest)) return false;
+  // Compare word stems ("St Martin's" normalises to "martin", a slug says "martins"), and
+  // let a National Theatre headline stand for its three houses.
+  const stem = (w) => w.replace(/s$/, '');
+  const restWords = new Set(rest.split(' ').map(stem));
+  const venue = normTitle(show.venue);
+  if (restWords.has('national') && /\b(olivier|lyttelton|dorfman|national)\b/.test(venue)) return false;
+  const venueWords = venue.split(' ').filter((w) => w.length >= 3 && !['the', 'theatre', 'theater'].includes(w));
+  return venueWords.length > 0 && !venueWords.some((w) => restWords.has(stem(w)));
+}
+
 /**
  * Sitemap lastmod days that are a bulk re-touch, not publish dates: one day carrying at
  * least minCount items and minShare of all of them (British Theatre Guide stamps 17,853
@@ -356,14 +405,26 @@ function bucketItem(item, ctx) {
 
   const matched = findMatchingShows(item.headline || '', slugOf(item.url), ctx.shows, item.description || '', { publishDate: item.publishDate || null });
   const matchText = `${item.headline || ''} ${slugOf(item.url)}`;
-  let inWindow = matched.filter((s) => inRunWindow(s, item.publishDate) && !titleOnlyInVenue(s, matchText, ctx.nycVenues));
+  // London only: the two headline-shape guards below were measured on the London corpus.
+  const london = (ctx.market || 'nyc') !== 'nyc';
+  const venueMismatchIds = [];
+  const headlineFits = (s) => {
+    // A show we already hold this URL under keeps its match: the guards are for gaps.
+    if (!london || (heldIds && heldIds.has(s.id))) return true;
+    if (titleOnlyInTagline(s, item.headline || '')) return false;
+    if (venueContradicts(s, item.headline || '')) { venueMismatchIds.push(s.id); return false; }
+    return true;
+  };
+  let inWindow = matched.filter((s) => inRunWindow(s, item.publishDate) && !titleOnlyInVenue(s, matchText, ctx.nycVenues) && headlineFits(s));
   let matchVia = inWindow.length ? 'poller-matcher' : null;
   if (inWindow.length === 0 && (cls.review || held.length)) {
-    inWindow = variantMatches(item, ctx.shows);
+    inWindow = variantMatches(item, ctx.shows).filter(headlineFits);
     if (inWindow.length) matchVia = 'title-variant';
   }
   const inIds = inWindow.map((s) => s.id);
-  const out = { bucket: null, classifyReason: cls.reason, matchVia, held, matchedIds: inIds, outOfWindowIds: matched.filter((s) => !inIds.includes(s.id)).map((s) => s.id) };
+  // A venue-mismatched show is another production, not an out-of-window one.
+  const out = { bucket: null, classifyReason: cls.reason, matchVia, held, matchedIds: inIds, outOfWindowIds: matched.filter((s) => !inIds.includes(s.id) && !venueMismatchIds.includes(s.id)).map((s) => s.id) };
+  if (venueMismatchIds.length) out.venueMismatchIds = [...new Set(venueMismatchIds)];
 
   if (held.length > 0) {
     if (nycHeld.length === 0) { out.bucket = 'held-other-market'; return out; }
@@ -542,6 +603,8 @@ module.exports = {
   bucketItem,
   bulkLastmodDays,
   titleOnlyInVenue,
+  titleOnlyInTagline,
+  venueContradicts,
   classifyItem,
   corpusSideMisses,
   extractPageMeta,

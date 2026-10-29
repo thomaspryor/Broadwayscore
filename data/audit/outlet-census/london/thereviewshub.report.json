@@ -1,7 +1,7 @@
 {
   "outletId": "thereviewshub",
   "market": "london",
-  "generatedAt": "2026-10-29T02:59:52.249Z",
+  "generatedAt": "2026-10-29T04:24:59.856Z",
   "since": "2012-09-01",
   "source": {
     "kind": "wp-json",
@@ -20,13 +20,12 @@
       "held-unmatched": 31,
       "gap": 1,
       "misfile": 3,
-      "out-of-window": 3,
-      "held-alt-url": 2,
+      "out-of-window": 5,
       "catalog-gap": 1,
       "other-market-review": 1
     },
     "viaTitleVariant": {
-      "held": 12,
+      "held": 18,
       "gap": 1
     },
     "recall": 0.984,
@@ -61,11 +60,10 @@
     },
     "2022-23": {
       "not-review": 2150,
-      "held-alt-url": 2,
+      "out-of-window": 4,
       "held": 8,
       "held-unmatched": 8,
       "misfile": 2,
-      "out-of-window": 2,
       "catalog-gap": 1
     },
     "2021-22": {
@@ -335,32 +333,7 @@
       "outOfWindow": []
     }
   ],
-  "heldAltUrl": [
-    {
-      "url": "https://www.thereviewshub.com/re-review-jersey-boys-trafalgar-theatre-london/",
-      "headline": "Re-Review: Jersey Boys – Trafalgar Theatre, London",
-      "publishDate": "2023-08-01",
-      "matched": [
-        "jersey-boys-west-end-2021"
-      ],
-      "heldUrls": [
-        "(no url)",
-        "(no url)"
-      ]
-    },
-    {
-      "url": "https://www.thereviewshub.com/re-review-life-of-pi-wyndhams-theatre-london/",
-      "headline": "Re-Review: Life of Pi – Wyndham’s Theatre, London",
-      "publishDate": "2022-10-12",
-      "matched": [
-        "life-of-pi-west-end-2021"
-      ],
-      "heldUrls": [
-        "(no url)",
-        "(no url)"
-      ]
-    }
-  ],
+  "heldAltUrl": [],
   "misfiles": [
     {
       "url": "https://www.thereviewshub.com/24-a-christmas-carol-the-old-vic-london/",
@@ -874,6 +847,28 @@
       "outOfWindow": [
         "the-bridge-off-west-end-2026",
         "guys-and-dolls-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/re-review-jersey-boys-trafalgar-theatre-london/",
+      "headline": "Re-Review: Jersey Boys – Trafalgar Theatre, London",
+      "publishDate": "2023-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jersey-boys-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.thereviewshub.com/re-review-life-of-pi-wyndhams-theatre-london/",
+      "headline": "Re-Review: Life of Pi – Wyndham’s Theatre, London",
+      "publishDate": "2022-10-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "life-of-pi-west-end-2021"
       ]
     },
     {

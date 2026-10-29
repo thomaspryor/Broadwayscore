@@ -1,7 +1,7 @@
 {
  "outletId": "london-theatre",
  "market": "london",
- "generatedAt": "2026-10-29T03:10:17.421Z",
+ "generatedAt": "2026-10-29T04:23:59.789Z",
  "since": "2012-09-01",
  "source": "sitemap",
  "items": [
@@ -26,17 +26,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-the-bridge-theatre-simon-russell-beale",
    "publishDate": null,
    "headline": "a christmas carol the bridge theatre simon russell beale",
-   "bucket": "ambiguous",
-   "matched": [
-    "a-christmas-carol-west-end-2026",
-    "a-christmas-carol-west-end-2023",
-    "a-christmas-carol-west-end-2022",
-    "a-christmas-carol-west-end-2020",
-    "a-christmas-carol-west-end-2018",
-    "a-christmas-carol-west-end-2024",
-    "a-christmas-carol-west-end-2012",
-    "a-christmas-carol-west-end-2015"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/angels-bone-review-london-coliseum",
@@ -1123,9 +1113,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/blithe-spirit-gielgud-theatre-2014",
    "publishDate": null,
    "headline": "blithe spirit gielgud theatre 2014",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "blithe-spirit-west-end-2021",
     "blithe-spirit-west-end-2014"
    ]
   },
@@ -1411,8 +1400,7 @@
    "bucket": "held",
    "matched": [
     "the-seagull-globe-off-west-end-2026",
-    "the-seagull-west-end-2022",
-    "emilia-west-end-2019"
+    "the-seagull-west-end-2022"
    ]
   },
   {
@@ -4297,10 +4285,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/death-of-england-the-plays-review-delroy-michael-closing-time-soho-place",
    "publishDate": null,
    "headline": "death of england the plays review delroy michael closing time soho place",
-   "bucket": "held",
-   "matched": [
-    "michael-off-west-end-2026"
-   ]
+   "bucket": "held-unmatched"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/red-pitch-review-tyrell-williamss-play-is-just-what-the-west-end-needs",
@@ -4588,11 +4573,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-open-air-theatre-2010",
    "publishDate": null,
    "headline": "into the woods open air theatre 2010",
-   "bucket": "ambiguous",
-   "matched": [
-    "into-the-woods-west-end-2025",
-    "into-the-woods-noel-coward-west-end-2026"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-fiasco-theaters-revival-at-the-menier-chocolate-factory",
@@ -5159,10 +5140,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/constellations-duke-of-yorks-theatre-2012",
    "publishDate": null,
    "headline": "constellations duke of yorks theatre 2012",
-   "bucket": "held-alt-url",
-   "matched": [
-    "constellations-west-end-2021"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/jerusalem-review-apollo-theatre-mark-rylance",
@@ -5195,7 +5174,6 @@
    "bucket": "held",
    "matched": [
     "the-lehman-trilogy-west-end-2023",
-    "the-lehman-trilogy-west-end-2018",
     "the-lehman-trilogy-west-end-2024"
    ]
   },
@@ -5381,11 +5359,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/the-last-five-years-at-southwark-playhouse-soars-even-higher-after-shutdown",
    "publishDate": null,
    "headline": "the last five years at southwark playhouse soars even higher after shutdown",
-   "bucket": "held-other-market",
-   "matched": [
-    "the-years-west-end-2025",
-    "the-last-five-years-west-end-2021"
-   ]
+   "bucket": "held-other-market"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/horrible-histories-terrible-tudors-review-garrick-theatre",
@@ -5519,10 +5493,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/richard-iii-almeida-theatre",
    "publishDate": null,
    "headline": "richard iii almeida theatre",
-   "bucket": "held-alt-url",
-   "matched": [
-    "richard-iii-west-end-2014"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/the-talking-cure",
@@ -5927,11 +5899,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/all-my-sons-apollo-theatre-2010",
    "publishDate": null,
    "headline": "all my sons apollo theatre 2010",
-   "bucket": "ambiguous",
-   "matched": [
-    "all-my-sons-west-end-2025",
-    "all-my-sons-west-end-2019"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/review-bat-out-of-hell-at-the-dominion-theatre",
@@ -6037,10 +6006,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/guys-and-dolls-piccadilly-theatre-2005",
    "publishDate": null,
    "headline": "guys and dolls piccadilly theatre 2005",
-   "bucket": "held-alt-url",
-   "matched": [
-    "guys-and-dolls-west-end-2016"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/review-home-im-darling-at-the-duke-of-yorks-theatre",
@@ -6700,12 +6667,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/evita-adelphi-theatre-2006",
    "publishDate": null,
    "headline": "evita adelphi theatre 2006",
-   "bucket": "ambiguous",
-   "matched": [
-    "evita-west-end-2025",
-    "evita-west-end-2017",
-    "evita-west-end-2014"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/review-evita-at-the-phoenix-theatre",
@@ -7442,10 +7405,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/a-view-from-the-bridge-wyndhams-theatre-2015",
    "publishDate": null,
    "headline": "a view from the bridge wyndhams theatre 2015",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "the-bridge-off-west-end-2026",
-    "a-view-from-the-bridge-west-end-2024",
     "a-view-from-the-bridge-west-end-2015"
    ]
   },
@@ -7593,7 +7554,6 @@
    "headline": "michael sheen in under milk wood at the national theatre",
    "bucket": "held",
    "matched": [
-    "michael-off-west-end-2026",
     "under-milk-wood-west-end-2021"
    ]
   },
@@ -7898,10 +7858,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/east-is-east-trafalgar-studios-2014",
    "publishDate": null,
    "headline": "east is east trafalgar studios 2014",
-   "bucket": "held-alt-url",
-   "matched": [
-    "east-is-east-west-end-2021"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/changing-destiny-at-the-young-vic",
@@ -7923,8 +7881,7 @@
    "headline": "the windsors endgame prince of wales theatre review",
    "bucket": "held",
    "matched": [
-    "the-windsors-endgame-west-end-2021",
-    "endgame-west-end-2020"
+    "the-windsors-endgame-west-end-2021"
    ]
   },
   {
@@ -8743,10 +8700,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/inua-ellams-an-evening-with-an-immigrant-the-bridge-theatre",
    "publishDate": null,
    "headline": "inua ellams an evening with an immigrant the bridge theatre",
-   "bucket": "gap",
-   "matched": [
-    "an-evening-with-an-immigrant-off-west-end-2026"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/michael-sheen-david-threlfall-indira-varma-mesmerise-in-old-vic-faith-healer",
@@ -8906,16 +8860,9 @@
    "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-musical-dominion-theatre",
    "publishDate": null,
    "headline": "a christmas carol musical dominion theatre",
-   "bucket": "ambiguous",
+   "bucket": "held-alt-url",
    "matched": [
-    "a-christmas-carol-west-end-2026",
-    "a-christmas-carol-west-end-2023",
-    "a-christmas-carol-west-end-2022",
-    "a-christmas-carol-west-end-2020",
-    "a-christmas-carol-west-end-2018",
-    "a-christmas-carol-west-end-2024",
-    "a-christmas-carol-west-end-2012",
-    "a-christmas-carol-west-end-2015"
+    "a-christmas-carol-west-end-2020"
    ]
   },
   {
@@ -9229,10 +9176,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/carousel-at-regents-park-open-air-theatre-review",
    "publishDate": null,
    "headline": "carousel at regents park open air theatre review",
-   "bucket": "held-alt-url",
-   "matched": [
-    "carousel-west-end-2017"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/review-big-big-sky-at-the-hampstead-theatre",
@@ -9325,10 +9270,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/operation-mincemeat-at-southwark-playhouse",
    "publishDate": null,
    "headline": "operation mincemeat at southwark playhouse",
-   "bucket": "held-alt-url",
-   "matched": [
-    "operation-mincemeat-west-end-2024"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/inside-no-9-stage-fright-review-wyndhams-theatre",
@@ -10221,9 +10164,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/blues-for-an-alabama-sky-national-theatre-review-samira-wiley",
    "publishDate": null,
    "headline": "blues for an alabama sky national theatre review samira wiley",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "samira-west-end-2026",
     "blues-for-an-alabama-sky-west-end-2022"
    ]
   },
@@ -11464,21 +11406,15 @@
    "url": "https://www.londontheatre.co.uk/reviews/a-streetcar-named-desire-national-theatre-2002",
    "publishDate": null,
    "headline": "a streetcar named desire national theatre 2002",
-   "bucket": "gap",
-   "matched": [
-    "a-streetcar-named-desire-west-end-2023"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/a-view-from-the-bridge-duke-of-yorks-theatre-2009",
    "publishDate": null,
    "headline": "a view from the bridge duke of yorks theatre 2009",
-   "bucket": "ambiguous",
-   "matched": [
-    "the-bridge-off-west-end-2026",
-    "a-view-from-the-bridge-west-end-2024",
-    "a-view-from-the-bridge-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/a-view-from-the-bridge-young-vic-2014",
@@ -11599,21 +11535,14 @@
    "url": "https://www.londontheatre.co.uk/reviews/all-my-sons-national-theatre-2001",
    "publishDate": null,
    "headline": "all my sons national theatre 2001",
-   "bucket": "ambiguous",
-   "matched": [
-    "all-my-sons-west-end-2025",
-    "all-my-sons-west-end-2019"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/all-my-sons-open-air-theatre-2014",
    "publishDate": null,
    "headline": "all my sons open air theatre 2014",
-   "bucket": "ambiguous",
-   "matched": [
-    "all-my-sons-west-end-2025",
-    "all-my-sons-west-end-2019"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/all-new-people",
@@ -11806,11 +11735,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-wyndhams-theatre-2005",
    "publishDate": null,
    "headline": "as you like it wyndhams theatre 2005",
-   "bucket": "ambiguous",
-   "matched": [
-    "as-you-like-it-globe-west-end-2026",
-    "as-you-like-it-west-end-2022"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/attempts-on-her-life",
@@ -12439,32 +12365,24 @@
    "url": "https://www.londontheatre.co.uk/reviews/death-of-a-salesman-lyric-theatre-2005",
    "publishDate": null,
    "headline": "death of a salesman lyric theatre 2005",
-   "bucket": "ambiguous",
-   "matched": [
-    "death-of-a-salesman-west-end-2026",
-    "death-of-a-salesman-west-end-2019",
-    "death-of-a-salesman-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/death-of-a-salesman-national-theatre-1996",
    "publishDate": null,
    "headline": "death of a salesman national theatre 1996",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "death-of-a-salesman-west-end-2026",
-    "death-of-a-salesman-west-end-2019",
-    "death-of-a-salesman-west-end-2015"
+    "death-of-a-salesman-west-end-2026"
    ]
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/death-of-a-salesman-noel-coward-theatre-2015",
    "publishDate": null,
    "headline": "death of a salesman noel coward theatre 2015",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "death-of-a-salesman-west-end-2026",
-    "death-of-a-salesman-west-end-2019",
     "death-of-a-salesman-west-end-2015"
    ]
   },
@@ -12927,10 +12845,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/goodnight-mister-tom-phoenix-theatre-2012",
    "publishDate": null,
    "headline": "goodnight mister tom phoenix theatre 2012",
-   "bucket": "gap",
-   "matched": [
-    "goodnight-mister-tom-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/grand-hotel-donmar-2004",
@@ -12998,10 +12914,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/guys-and-dolls-national-theatre-1996",
    "publishDate": null,
    "headline": "guys and dolls national theatre 1996",
-   "bucket": "held-alt-url",
-   "matched": [
-    "guys-and-dolls-west-end-2016"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/guys-and-dolls-review-of-rebel-wilson-at-the-phoenix-theatre",
@@ -13025,11 +12939,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-albery-theatre-2004",
    "publishDate": null,
    "headline": "hamlet albery theatre 2004",
-   "bucket": "ambiguous",
-   "matched": [
-    "hamlet-west-end-2025",
-    "hamlet-west-end-2017"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-house-of-horror",
@@ -13045,10 +12955,9 @@
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-national-theatre-2010",
    "publishDate": null,
    "headline": "hamlet national theatre 2010",
-   "bucket": "ambiguous",
+   "bucket": "held-alt-url",
    "matched": [
-    "hamlet-west-end-2025",
-    "hamlet-west-end-2017"
+    "hamlet-west-end-2025"
    ]
   },
   {
@@ -13065,11 +12974,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-wyndhams-theatre-2009",
    "publishDate": null,
    "headline": "hamlet wyndhams theatre 2009",
-   "bucket": "ambiguous",
-   "matched": [
-    "hamlet-west-end-2025",
-    "hamlet-west-end-2017"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-young-vic-2011",
@@ -13094,10 +13000,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/hangmen-royal-court-theatre-2015",
    "publishDate": null,
    "headline": "hangmen royal court theatre 2015",
-   "bucket": "gap",
-   "matched": [
-    "hangmen-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/happy-days-national-theatre-2007",
@@ -13116,11 +13020,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/hay-fever-noel-coward-theatre-2012",
    "publishDate": null,
    "headline": "hay fever noel coward theatre 2012",
-   "bucket": "ambiguous",
-   "matched": [
-    "hay-fever-west-end-2026",
-    "hay-fever-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/heathcliff",
@@ -13132,11 +13033,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/hedda-gabler-almeida-theatre-2005",
    "publishDate": null,
    "headline": "hedda gabler almeida theatre 2005",
-   "bucket": "ambiguous",
-   "matched": [
-    "hedda-gabler-west-end-2012",
-    "hedda-gabler-west-end-2016"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hedwig-and-the-angry-inch",
@@ -13164,10 +13062,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/henry-v-national-theatre-2003",
    "publishDate": null,
    "headline": "henry v national theatre 2003",
-   "bucket": "held-alt-url",
-   "matched": [
-    "henry-v-west-end-2013"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/henry-v-shakespeares-globe-2012",
@@ -13206,11 +13102,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/high-society-shaftesbury-theatre-2005",
    "publishDate": null,
    "headline": "high society shaftesbury theatre 2005",
-   "bucket": "ambiguous",
-   "matched": [
-    "high-society-west-end-2026",
-    "high-society-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hobsons-choice-vaudeville-theatre-2016",
@@ -13354,19 +13247,15 @@
    "url": "https://www.londontheatre.co.uk/reviews/ivanov-national-theatre-2002",
    "publishDate": null,
    "headline": "ivanov national theatre 2002",
-   "bucket": "gap",
-   "matched": [
-    "ivanov-west-end-2026"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/ivanov-wyndhams-theatre-2008",
    "publishDate": null,
    "headline": "ivanov wyndhams theatre 2008",
-   "bucket": "gap",
-   "matched": [
-    "ivanov-west-end-2026"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/jane-eyre",
@@ -13383,12 +13272,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/jane-eyre-trafalgar-studios-2006",
    "publishDate": null,
    "headline": "jane eyre trafalgar studios 2006",
-   "bucket": "ambiguous",
-   "matched": [
-    "jane-eyre-off-west-end-2026",
-    "jane-eyre-rose-kingston-off-west-end-2026",
-    "jane-eyre-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/jerry-springer-the-opera",
@@ -13860,10 +13745,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/macbeth-albery-theatre-2002",
    "publishDate": null,
    "headline": "macbeth albery theatre 2002",
-   "bucket": "held-alt-url",
-   "matched": [
-    "macbeth-west-end-2013"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/mack-and-mabel",
@@ -14333,11 +14215,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/noises-off-old-vic-theatre-3-dec-2011-to-10-march-2012-novello-theatre-from-24-march",
    "publishDate": null,
    "headline": "noises off old vic theatre 3 dec 2011 to 10 march 2012 novello theatre from 24 march",
-   "bucket": "ambiguous",
-   "matched": [
-    "noises-off-west-end-2023",
-    "noises-off-west-end-2019"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/not-about-nightingales",
@@ -17695,17 +17574,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-kings-head-theatre-2009",
    "publishDate": null,
    "headline": "a christmas carol kings head theatre 2009",
-   "bucket": "ambiguous",
-   "matched": [
-    "a-christmas-carol-west-end-2026",
-    "a-christmas-carol-west-end-2023",
-    "a-christmas-carol-west-end-2022",
-    "a-christmas-carol-west-end-2020",
-    "a-christmas-carol-west-end-2018",
-    "a-christmas-carol-west-end-2024",
-    "a-christmas-carol-west-end-2012",
-    "a-christmas-carol-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-with-jim-broadbent-2015",
@@ -18192,11 +18062,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/as-you-like-it-open-air-theatre-2002",
    "publishDate": null,
    "headline": "as you like it open air theatre 2002",
-   "bucket": "ambiguous",
-   "matched": [
-    "as-you-like-it-globe-west-end-2026",
-    "as-you-like-it-west-end-2022"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/ashes-to-ashes",
@@ -18208,10 +18074,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/assassins-new-end-theatre-1997",
    "publishDate": null,
    "headline": "assassins new end theatre 1997",
-   "bucket": "gap",
-   "matched": [
-    "assassins-off-west-end-2014"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/aunt-dan-and-lemon",
@@ -18318,19 +18181,14 @@
    "url": "https://www.londontheatre.co.uk/reviews/betrayal-duchess-theatre-2003",
    "publishDate": null,
    "headline": "betrayal duchess theatre 2003",
-   "bucket": "held-alt-url",
-   "matched": [
-    "betrayal-west-end-2019"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/betrayal-national-theatre-1998",
    "publishDate": null,
    "headline": "betrayal national theatre 1998",
-   "bucket": "held-alt-url",
-   "matched": [
-    "betrayal-west-end-2019"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/betty",
@@ -18537,10 +18395,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/constellations-trafalgar-studios-2015",
    "publishDate": null,
    "headline": "constellations trafalgar studios 2015",
-   "bucket": "held-alt-url",
-   "matched": [
-    "constellations-west-end-2021"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/contact",
@@ -18890,28 +18746,20 @@
    "url": "https://www.londontheatre.co.uk/reviews/endgame-albery-theatre-2004",
    "publishDate": null,
    "headline": "endgame albery theatre 2004",
-   "bucket": "held-alt-url",
-   "matched": [
-    "endgame-west-end-2020"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/endgame-donmar-warehouse-1996",
    "publishDate": null,
    "headline": "endgame donmar warehouse 1996",
-   "bucket": "held-alt-url",
-   "matched": [
-    "endgame-west-end-2020"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/endgame-duchess-theatre-2009",
    "publishDate": null,
    "headline": "endgame duchess theatre 2009",
-   "bucket": "held-alt-url",
-   "matched": [
-    "endgame-west-end-2020"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/enemies",
@@ -19212,29 +19060,20 @@
    "url": "https://www.londontheatre.co.uk/reviews/ghost-stories-arts-theatre-2014",
    "publishDate": null,
    "headline": "ghost stories arts theatre 2014",
-   "bucket": "ambiguous",
-   "matched": [
-    "ghost-stories-west-end-2019",
-    "stories-west-end-2018"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "unknown"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/ghosts-comedy-theatre-2001",
    "publishDate": null,
    "headline": "ghosts comedy theatre 2001",
-   "bucket": "gap",
-   "matched": [
-    "ghosts-west-end-2013"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/ghosts-duchess-theatre-2010",
    "publishDate": null,
    "headline": "ghosts duchess theatre 2010",
-   "bucket": "gap",
-   "matched": [
-    "ghosts-west-end-2013"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/gibraltar",
@@ -19358,11 +19197,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-barbican-theatre-1998",
    "publishDate": null,
    "headline": "hamlet barbican theatre 1998",
-   "bucket": "ambiguous",
-   "matched": [
-    "hamlet-west-end-2025",
-    "hamlet-west-end-2017"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-benedict-cumberbatch",
@@ -19378,21 +19214,17 @@
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-national-theatre-2000",
    "publishDate": null,
    "headline": "hamlet national theatre 2000",
-   "bucket": "ambiguous",
+   "bucket": "held-alt-url",
    "matched": [
-    "hamlet-west-end-2025",
-    "hamlet-west-end-2017"
+    "hamlet-west-end-2025"
    ]
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hamlet-new-ambassadors-theatre-2006",
    "publishDate": null,
    "headline": "hamlet new ambassadors theatre 2006",
-   "bucket": "ambiguous",
-   "matched": [
-    "hamlet-west-end-2025",
-    "hamlet-west-end-2017"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/happy-birthday-dear-alice",
@@ -19450,9 +19282,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/hay-fever-duke-of-yorks-theatre-2015",
    "publishDate": null,
    "headline": "hay fever duke of yorks theatre 2015",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "hay-fever-west-end-2026",
     "hay-fever-west-end-2015"
    ]
   },
@@ -19460,11 +19291,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/hay-fever-savoy-theatre-1999",
    "publishDate": null,
    "headline": "hay fever savoy theatre 1999",
-   "bucket": "ambiguous",
-   "matched": [
-    "hay-fever-west-end-2026",
-    "hay-fever-west-end-2015"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hecuba-review-2005",
@@ -19545,11 +19373,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/high-society-open-air-theatre-2003",
    "publishDate": null,
    "headline": "high society open air theatre 2003",
-   "bucket": "ambiguous",
-   "matched": [
-    "high-society-west-end-2026",
-    "high-society-west-end-2015"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/hinterland",
@@ -19849,10 +19673,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/julius-caesar-barbican-theatre-2005",
    "publishDate": null,
    "headline": "julius caesar barbican theatre 2005",
-   "bucket": "gap",
-   "matched": [
-    "julius-caesar-globe-off-west-end-2026"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/jumpy-duke-of-yorks-theatre-2012",
@@ -19901,10 +19723,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/king-charles-iii-almeida-theatre-2014",
    "publishDate": null,
    "headline": "king charles iii almeida theatre 2014",
-   "bucket": "gap",
-   "matched": [
-    "king-charles-iii-west-end-2014"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/king-charles-iii-wyndhams-theatre-2014",
@@ -19953,13 +19773,8 @@
    "url": "https://www.londontheatre.co.uk/reviews/king-lear-at-the-shakespeare-globe-theatre",
    "publishDate": null,
    "headline": "king lear at the shakespeare globe theatre",
-   "bucket": "ambiguous",
-   "matched": [
-    "king-lear-2-off-west-end-2026",
-    "king-lear-west-end-2023",
-    "king-lear-west-end-2018",
-    "king-lear-west-end-2014"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "unknown"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/kiss-me-kate",
@@ -20406,19 +20221,15 @@
    "url": "https://www.londontheatre.co.uk/reviews/measure-for-measure-national-theatre-2004",
    "publishDate": null,
    "headline": "measure for measure national theatre 2004",
-   "bucket": "gap",
-   "matched": [
-    "measure-for-measure-off-west-end-2026"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/measure-for-measure-national-theatre-2006",
    "publishDate": null,
    "headline": "measure for measure national theatre 2006",
-   "bucket": "gap",
-   "matched": [
-    "measure-for-measure-off-west-end-2026"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/medea-review-2001",
@@ -21171,11 +20982,7 @@
    "url": "https://www.londontheatre.co.uk/reviews/private-lives-geilgud-theatre-2013",
    "publishDate": null,
    "headline": "private lives geilgud theatre 2013",
-   "bucket": "ambiguous",
-   "matched": [
-    "private-lives-west-end-2023",
-    "private-lives-west-end-2013"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.londontheatre.co.uk/reviews/privates-on-parade",
@@ -22431,12 +22238,9 @@
    "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-playhouse-theatre-2004",
    "publishDate": null,
    "headline": "romeo and juliet playhouse theatre 2004",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "romeo-and-juliet-west-end-2026",
-    "romeo-and-juliet-west-end-2027",
-    "romeo-and-juliet-west-end-2024",
-    "romeo-and-juliet-west-end-2016"
+    "romeo-and-juliet-west-end-2027"
    ]
   },
   {

@@ -1,10 +1,10 @@
 {
   "outletId": "thestage",
   "market": "london",
-  "generatedAt": "2026-10-29T02:36:14.074Z",
+  "generatedAt": "2026-10-29T04:25:34.251Z",
   "since": "2012-09-01",
   "source": {
-    "kind": "sitemap",
+    "kind": "composite",
     "notes": [],
     "enumerated": 5031,
     "inWindow": 5031,
@@ -14,28 +14,27 @@
   "corpus": "review-texts",
   "summary": {
     "counts": {
-      "catalog-gap": 1276,
-      "held": 390,
-      "other-market-review": 1958,
+      "catalog-gap": 1288,
+      "held": 389,
+      "other-market-review": 1951,
       "misfile": 4,
-      "not-review": 718,
+      "not-review": 719,
       "held-other-market": 115,
-      "gap": 28,
-      "out-of-window": 416,
-      "held-unmatched": 68,
-      "held-alt-url": 54,
-      "ambiguous": 4
+      "gap": 26,
+      "out-of-window": 436,
+      "held-unmatched": 69,
+      "ambiguous": 2,
+      "held-alt-url": 32
     },
     "viaTitleVariant": {
-      "gap": 4,
-      "held": 10,
-      "held-other-market": 1,
-      "other-market-review": 6,
-      "held-alt-url": 13,
+      "held": 11,
+      "other-market-review": 4,
+      "gap": 2,
+      "held-alt-url": 2,
       "ambiguous": 1
     },
     "recall": 0.933,
-    "recallWithCatalog": 0.253
+    "recallWithCatalog": 0.242
   },
   "seasons": {
     "2026-27": {
@@ -43,71 +42,69 @@
       "held": 61,
       "other-market-review": 53,
       "misfile": 1,
-      "not-review": 21,
+      "not-review": 22,
       "held-other-market": 10,
-      "gap": 4,
-      "out-of-window": 3,
+      "gap": 2,
+      "out-of-window": 5,
       "held-unmatched": 3,
-      "held-alt-url": 1,
       "ambiguous": 1
     },
     "2025-26": {
       "other-market-review": 407,
       "not-review": 109,
-      "out-of-window": 58,
+      "out-of-window": 59,
       "held": 147,
-      "held-alt-url": 13,
-      "catalog-gap": 195,
+      "catalog-gap": 198,
       "held-unmatched": 9,
-      "gap": 19,
+      "gap": 18,
       "held-other-market": 12,
-      "misfile": 1,
-      "ambiguous": 1
+      "held-alt-url": 11,
+      "misfile": 1
     },
     "2024-25": {
       "not-review": 115,
-      "held-unmatched": 17,
-      "other-market-review": 349,
-      "catalog-gap": 261,
-      "out-of-window": 89,
+      "held-unmatched": 18,
+      "other-market-review": 348,
+      "catalog-gap": 266,
+      "out-of-window": 96,
       "held-other-market": 25,
-      "held": 51,
-      "held-alt-url": 18
+      "held": 50,
+      "held-alt-url": 7
     },
     "2023-24": {
-      "catalog-gap": 268,
-      "other-market-review": 403,
+      "catalog-gap": 267,
+      "other-market-review": 401,
       "held": 59,
-      "out-of-window": 93,
+      "out-of-window": 97,
       "not-review": 165,
       "held-other-market": 40,
-      "gap": 3,
+      "gap": 4,
       "held-unmatched": 13,
-      "ambiguous": 2,
-      "held-alt-url": 2,
-      "misfile": 1
+      "ambiguous": 1,
+      "misfile": 1,
+      "held-alt-url": 1
     },
     "2022-23": {
-      "out-of-window": 93,
+      "out-of-window": 98,
       "not-review": 191,
-      "other-market-review": 438,
-      "catalog-gap": 337,
+      "other-market-review": 435,
+      "catalog-gap": 341,
       "held-unmatched": 20,
       "held": 53,
       "held-other-market": 19,
-      "held-alt-url": 13,
+      "held-alt-url": 7,
       "misfile": 1,
       "gap": 1
     },
     "2021-22": {
-      "other-market-review": 308,
-      "catalog-gap": 193,
+      "other-market-review": 307,
+      "catalog-gap": 194,
       "not-review": 117,
       "held-unmatched": 6,
-      "out-of-window": 80,
+      "out-of-window": 81,
       "held": 19,
       "held-other-market": 9,
-      "held-alt-url": 7,
+      "held-alt-url": 6,
       "gap": 1
     }
   },
@@ -372,32 +369,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
-      "headline": "rb dance company stories review peacock theatre london",
-      "publishDate": "2026-10-16",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "stories-the-tap-dance-sensation-west-end-2026"
-      ],
-      "outOfWindow": [
-        "stories-west-end-2018"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/do-not-pass-go-review",
-      "headline": "do not pass go review",
-      "publishDate": "2026-10-15",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "the-pass-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/annie-wobbler-revisited-review-finborough-theatre-london",
       "headline": "annie wobbler revisited review finborough theatre london",
       "publishDate": "2026-09-04",
@@ -631,18 +602,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/sleeping-beauty-review-london-palladium-catherine-tate-michael-harrison-julian-clary",
-      "headline": "sleeping beauty review london palladium catherine tate michael harrison julian clary",
-      "publishDate": "2025-12-24",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "michael-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/the-39-steps-review-trafalgar-theatre-london-patrick-barlow-tom-byrne-safeena-ladha",
       "headline": "the 39 steps review trafalgar theatre london patrick barlow tom byrne safeena ladha",
       "publishDate": "2024-08-20",
@@ -679,6 +638,20 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/bronco-billy-the-musical-review-charing-cross-theatre-london-clint-eastwood-dennis-hackin-hunter-bird-tarinn-callender-victoria-hamilton-barritt-emily-benjamin",
+      "headline": "bronco billy the musical review charing cross theatre london clint eastwood dennis hackin hunter bird tarinn callender victoria hamilton barritt emily benjamin",
+      "publishDate": "2024-02-05",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "bronco-billy-the-musical-west-end-2024"
+      ],
+      "outOfWindow": [
+        "hamilton-west-end-2021"
+      ]
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/baghdaddy-review-at-royal-court-jerwood-theatre-downstairs",
       "headline": "baghdaddy review at royal court jerwood theatre downstairs",
       "publishDate": "2022-11-29",
@@ -706,30 +679,6 @@
     }
   ],
   "heldAltUrl": [
-    {
-      "url": "https://www.thestage.co.uk/reviews/amanda-the-night-before-me-review-bridge-house-london-divina-de-campo",
-      "headline": "amanda the night before me review bridge house london divina de campo",
-      "publishDate": "2026-09-28",
-      "matched": [
-        "the-bridge-off-west-end-2026"
-      ],
-      "heldUrls": [
-        "https://thestage.co.uk/reviews/london-city-ballet-firebird-a-double-bill-review-sadlers-well-london"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-sorcerers-apprentice-review-little-angel-theatre-london-oliver-hymans",
-      "headline": "the sorcerers apprentice review little angel theatre london oliver hymans",
-      "publishDate": "2026-08-24",
-      "matched": [
-        "oliver-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies",
-        "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
-      ]
-    },
     {
       "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-greenwich-theatre",
       "headline": "romeo and juliet review greenwich theatre",
@@ -800,16 +749,15 @@
       ]
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/last-days-review-linbury-theatre-royal-opera-house-london-oliver-leith-kurt-cobain",
-      "headline": "last days review linbury theatre royal opera house london oliver leith kurt cobain",
-      "publishDate": "2025-12-08",
+      "url": "https://www.thestage.co.uk/reviews/daniels-husband-review-marylebone-theatre-michael-mckeever",
+      "headline": "daniels husband review marylebone theatre michael mckeever",
+      "publishDate": "2025-12-11",
       "matched": [
-        "oliver-west-end-2024"
+        "daniels-husband-off-west-end-2025"
       ],
       "heldUrls": [
-        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies",
-        "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
+        "(no url)",
+        "(no url)"
       ]
     },
     {
@@ -858,56 +806,6 @@
       ]
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/tosca-review-royal-opera-house-london-oliver-mears-anna-netrebko",
-      "headline": "tosca review royal opera house london oliver mears anna netrebko",
-      "publishDate": "2025-09-16",
-      "matched": [
-        "oliver-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies",
-        "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/semele-review-royal-opera-house-oliver-mears",
-      "headline": "semele review royal opera house oliver mears",
-      "publishDate": "2025-07-01",
-      "matched": [
-        "oliver-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies",
-        "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/die-fledermaus-review-at-the-grange-festival-hampshire-paul-curran-andrew-hamilton",
-      "headline": "die fledermaus review at the grange festival hampshire paul curran andrew hamilton",
-      "publishDate": "2025-06-24",
-      "matched": [
-        "hamilton-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/hamilton-review-at-victoria-palace-theatre-london--world-shattering",
-        "https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--review-round-up"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/matthew-bournes-the-midnight-bell-review-at-sadlers-wells-london-patrick-hamilton",
-      "headline": "matthew bournes the midnight bell review at sadlers wells london patrick hamilton",
-      "publishDate": "2025-06-13",
-      "matched": [
-        "hamilton-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/hamilton-review-at-victoria-palace-theatre-london--world-shattering",
-        "https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--review-round-up"
-      ]
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-royal-shakespeare-theatre-stratford-rsc-michael-longhurst-freema-agyeman",
       "headline": "much ado about nothing review royal shakespeare theatre stratford rsc michael longhurst freema agyeman",
       "publishDate": "2025-04-28",
@@ -916,30 +814,6 @@
       ],
       "heldUrls": [
         "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-theatre-royal-drury-lane-london-2025-tom-hiddleston-hayley-atwell-jamie-lloyd"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/beegu-review-unicorn-theatre-debbie-hannan-alexis-deacon",
-      "headline": "beegu review unicorn theatre debbie hannan alexis deacon",
-      "publishDate": "2025-04-15",
-      "matched": [
-        "unicorn-west-end-2025"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/unicorn-review-garrick-theatre-london-mike-bartlett-james-macdonald-stephen-mangan-nicola-walker-erin-doherty"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/holly-blakey-a-wound-with-teeth-phantom-review-queen-elizabeth-hall-london",
-      "headline": "holly blakey a wound with teeth phantom review queen elizabeth hall london",
-      "publishDate": "2025-04-14",
-      "matched": [
-        "the-phantom-of-the-opera-west-end-1986"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
-        "https://www.thestage.co.uk/long-reviews/the-phantom-of-the-opera-her-majestys-theatre",
-        "https://www.thestage.co.uk/reviews/when-we-are-married-review-donmar-warehouse-london"
       ]
     },
     {
@@ -955,43 +829,6 @@
       ]
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/mariupol-review-the-cockpit-london-ukraine-war-john-retallack-katia-haddad-nathalie-barclay-oliver-gomm",
-      "headline": "mariupol review the cockpit london ukraine war john retallack katia haddad nathalie barclay oliver gomm",
-      "publishDate": "2025-02-12",
-      "matched": [
-        "oliver-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies",
-        "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/pig-heart-boy-review-at-unicorn-theatre-london-by-winsome-pinnock",
-      "headline": "pig heart boy review at unicorn theatre london by winsome pinnock",
-      "publishDate": "2025-02-10",
-      "matched": [
-        "unicorn-west-end-2025"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/unicorn-review-garrick-theatre-london-mike-bartlett-james-macdonald-stephen-mangan-nicola-walker-erin-doherty"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/road-show-review-upstairs-at-the-gatehouse-london-stephen-sondheim-john-weidman-amanda-noar-reece-richardson-oliver-sidney",
-      "headline": "road show review upstairs at the gatehouse london stephen sondheim john weidman amanda noar reece richardson oliver sidney",
-      "publishDate": "2024-12-19",
-      "matched": [
-        "oliver-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies",
-        "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
-      ]
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/robin-hood-and-the-christmas-heist-review-at-rose-theatre-london-by-chris-bush",
       "headline": "robin hood and the christmas heist review at rose theatre london by chris bush",
       "publishDate": "2024-12-19",
@@ -1000,30 +837,6 @@
       ],
       "heldUrls": [
         "https://www.thestage.co.uk/reviews/robin-hood-review-london-palladium-michael-harrison-julian-clary-jane-mcdonald-paul-zerdin-rob-madge-marisha-wallace"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/twelfth-night-review-orange-tree-theatre-london-william-shakespeare-tom-littler-oliver-ford-davies-jane-asher-patricia-allison-clive-francis",
-      "headline": "twelfth night review orange tree theatre london william shakespeare tom littler oliver ford davies jane asher patricia allison clive francis",
-      "publishDate": "2024-12-02",
-      "matched": [
-        "oliver-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies",
-        "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/royal-variety-performance-2024-review-royal-albert-hall-london-alan-carr-amanda-holden-devil-wears-prada-marisha-wallace",
-      "headline": "royal variety performance 2024 review royal albert hall london alan carr amanda holden devil wears prada marisha wallace",
-      "publishDate": "2024-11-27",
-      "matched": [
-        "the-devil-wears-prada-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre-london-jerry-mitchell-elton-john-vanessa-williams-georgie-buckland-amy-di-bartolomeo"
       ]
     },
     {
@@ -1061,17 +874,6 @@
       ]
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/the-new-real-review-the-other-place-stratford-upon-avon-david-edgar-royal-shakespeare-company-headlong-holly-race-roughan",
-      "headline": "the new real review the other place stratford upon avon david edgar royal shakespeare company headlong holly race roughan",
-      "publishDate": "2024-10-11",
-      "matched": [
-        "the-other-place-west-end-2024"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies"
-      ]
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-shakespeare-north-playhouse-prescot-by-william-shakespeare-and-jenny-sealey",
       "headline": "romeo and juliet review at shakespeare north playhouse prescot by william shakespeare and jenny sealey",
       "publishDate": "2024-09-24",
@@ -1080,17 +882,6 @@
       ],
       "heldUrls": [
         "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-bar-at-the-edge-of-time-review-at-tramshed-woolwich-from-frozen-light",
-      "headline": "the bar at the edge of time review at tramshed woolwich from frozen light",
-      "publishDate": "2023-11-27",
-      "matched": [
-        "frozen-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/long-reviews/frozen-theatre-royal-drury-lane-london-samantha-barks-stephanie-mckeon-michael-grandage"
       ]
     },
     {
@@ -1128,28 +919,6 @@
       ]
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/richard-iii-review-rose-theatre-kingston-london-adjoa-andoh-william-shakespeare",
-      "headline": "richard iii review rose theatre kingston london adjoa andoh william shakespeare",
-      "publishDate": "2023-05-02",
-      "matched": [
-        "rose-west-end-2023"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/rose-review-starring-maureen-lipman-ambassadors-theatre-london"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/a-play-for-the-living-in-a-time-of-extinction-review-at-the-barbican-london-lydia-west-miranda-rose-hall-katie-mitchell",
-      "headline": "a play for the living in a time of extinction review at the barbican london lydia west miranda rose hall katie mitchell",
-      "publishDate": "2023-05-02",
-      "matched": [
-        "rose-west-end-2023"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/rose-review-starring-maureen-lipman-ambassadors-theatre-london"
-      ]
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/this-weeks-theatre-in-scotland-scottish-ballets-a-streetcar-named-desire-storytelling-and-walden",
       "headline": "this weeks theatre in scotland scottish ballets a streetcar named desire storytelling and walden",
       "publishDate": "2023-04-17",
@@ -1158,42 +927,6 @@
       ],
       "heldUrls": [
         "https://www.thestage.co.uk/long-reviews/a-streetcar-named-desire-review-at-almeida-theatre-london-starring-paul-mescal-and-directed-by-cabarets-rebecca-frecknall"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/sleepova-review-matilda-feyisayo-ibini-bush-theatre-london-bukky-bakray",
-      "headline": "sleepova review matilda feyisayo ibini bush theatre london bukky bakray",
-      "publishDate": "2023-03-03",
-      "matched": [
-        "matilda-the-musical-west-end-2021"
-      ],
-      "heldUrls": [
-        "http://www.thestage.co.uk/reviews/review.php/34349/matilda-the-musical",
-        "https://www.thestage.co.uk/reviews/2018/matilda-musical-review-curve-leicester/",
-        "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-london-michael-bond-tom-fletcher-jessica-swale"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-oyster-problem-review-jermyn-street-theatre-london-orlando-figes",
-      "headline": "the oyster problem review jermyn street theatre london orlando figes",
-      "publishDate": "2023-02-16",
-      "matched": [
-        "orlando-west-end-2022"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/orlando-review-garrick-theatre-london-emma-corrin-deborah-findlay-neil-bartlett-michael-grandage-virginia-woolf"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/one-who-wants-to-cross-review-at-finborough-theatre-london-from-marc-emmanuel-soriano-and-alice-hamilton",
-      "headline": "one who wants to cross review at finborough theatre london from marc emmanuel soriano and alice hamilton",
-      "publishDate": "2023-02-06",
-      "matched": [
-        "hamilton-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/hamilton-review-at-victoria-palace-theatre-london--world-shattering",
-        "https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--review-round-up"
       ]
     },
     {
@@ -1242,18 +975,6 @@
       ]
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/to-what-end-review-barbican-pit-london-centre-for-the-less-good-idea-vusi-mdoyi-thabo-rapoo-thulisile-binda-phala-ookeditse-phala-faniswa-yisa",
-      "headline": "to what end review barbican pit london centre for the less good idea vusi mdoyi thabo rapoo thulisile binda phala ookeditse phala faniswa yisa",
-      "publishDate": "2022-10-10",
-      "matched": [
-        "good-west-end-2022"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/reviews/good-review-at-harold-pinter-theatre-london-starring-david-tennant",
-        "https://www.thestage.co.uk/reviews/good-luck-studio-henry-shields-henry-lewis-mischief-theatre-mercury-colchester-review"
-      ]
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-review-royal-court-london",
       "headline": "for black boys who have considered suicide when the hue gets too heavy review royal court london",
       "publishDate": "2022-04-22",
@@ -1291,18 +1012,6 @@
       "url": "https://www.thestage.co.uk/reviews/cinderella-review-york-theatre-royal",
       "headline": "cinderella review york theatre royal",
       "publishDate": "2021-12-14",
-      "matched": [
-        "cinderella-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-        "https://www.thestage.co.uk/reviews/cinderella-review-at-theatre-royal-stratford-east-london-starring-gracie-mcgonigal-and-kathryn-bond"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/cinderella-perth-theatre-horsecross-arts-barrie-hunter",
-      "headline": "cinderella perth theatre horsecross arts barrie hunter",
-      "publishDate": "2021-12-07",
       "matched": [
         "cinderella-west-end-2021"
       ],
@@ -1794,6 +1503,20 @@
       "outOfWindow": [
         "abigails-party-west-end-2026",
         "abigails-party-richmond-theatre-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/g-review-royal-court-by-tife-kusoro-directed-by-monique-touko",
+      "headline": "g review royal court by tife kusoro directed by monique touko",
+      "publishDate": "2024-09-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "g-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "g-west-end-2024"
       ]
     },
     {
@@ -2395,19 +2118,6 @@
       ]
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/daniels-husband-review-marylebone-theatre-michael-mckeever",
-      "headline": "daniels husband review marylebone theatre michael mckeever",
-      "publishDate": "2025-12-11",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "michael-off-west-end-2026",
-        "daniels-husband-off-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/death-of-england-michael-delroy-sohoplace-clint-dyer-roy-williams-thomas-coombes-paapa-essiedu",
       "headline": "death of england michael delroy sohoplace clint dyer roy williams thomas coombes paapa essiedu",
       "publishDate": "2024-08-01",
@@ -2421,19 +2131,6 @@
       "outOfWindow": [
         "michael-off-west-end-2026"
       ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/bronco-billy-the-musical-review-charing-cross-theatre-london-clint-eastwood-dennis-hackin-hunter-bird-tarinn-callender-victoria-hamilton-barritt-emily-benjamin",
-      "headline": "bronco billy the musical review charing cross theatre london clint eastwood dennis hackin hunter bird tarinn callender victoria hamilton barritt emily benjamin",
-      "publishDate": "2024-02-05",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamilton-west-end-2021",
-        "bronco-billy-the-musical-west-end-2024"
-      ],
-      "outOfWindow": []
     }
   ],
   "catalogGaps": [
@@ -2673,6 +2370,17 @@
       "url": "https://www.thestage.co.uk/reviews/you-and-it-review-kings-head-theatre-london",
       "headline": "you and it review kings head theatre london",
       "publishDate": "2026-09-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/the-sorcerers-apprentice-review-little-angel-theatre-london-oliver-hymans",
+      "headline": "the sorcerers apprentice review little angel theatre london oliver hymans",
+      "publishDate": "2026-08-24",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -3860,6 +3568,17 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/last-days-review-linbury-theatre-royal-opera-house-london-oliver-leith-kurt-cobain",
+      "headline": "last days review linbury theatre royal opera house london oliver leith kurt cobain",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/hms-pinafore-review-london-coliseum",
       "headline": "hms pinafore review london coliseum",
       "publishDate": "2025-12-05",
@@ -4709,6 +4428,17 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/tosca-review-royal-opera-house-london-oliver-mears-anna-netrebko",
+      "headline": "tosca review royal opera house london oliver mears anna netrebko",
+      "publishDate": "2025-09-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/london-city-ballet-momentum-review-christopher-marney-guest-alina-cojocaru",
       "headline": "london city ballet momentum review christopher marney guest alina cojocaru",
       "publishDate": "2025-09-15",
@@ -5095,6 +4825,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/semele-review-royal-opera-house-oliver-mears",
+      "headline": "semele review royal opera house oliver mears",
+      "publishDate": "2025-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/botis-sevafar-from-the-norm-until-we-sleep-review-sadlers-wells-east",
@@ -5719,6 +5460,17 @@
     {
       "url": "https://www.thestage.co.uk/reviews/mette-ingvartsen-skatepark-review-sadlers-wells-east",
       "headline": "mette ingvartsen skatepark review sadlers wells east",
+      "publishDate": "2025-04-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/holly-blakey-a-wound-with-teeth-phantom-review-queen-elizabeth-hall-london",
+      "headline": "holly blakey a wound with teeth phantom review queen elizabeth hall london",
       "publishDate": "2025-04-14",
       "dateSoft": true,
       "via": null,
@@ -6361,6 +6113,17 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/mariupol-review-the-cockpit-london-ukraine-war-john-retallack-katia-haddad-nathalie-barclay-oliver-gomm",
+      "headline": "mariupol review the cockpit london ukraine war john retallack katia haddad nathalie barclay oliver gomm",
+      "publishDate": "2025-02-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/our-mighty-groove-review-at-sadlers-wells-east-london-by-vicki-igbokwe-ozoagu",
       "headline": "our mighty groove review at sadlers wells east london by vicki igbokwe ozoagu",
       "publishDate": "2025-02-10",
@@ -6658,6 +6421,17 @@
       "url": "https://www.thestage.co.uk/reviews/you-me-bum-bum-train-review-kate-bond-and-morgan-lloyd-london-secret-location-2024",
       "headline": "you me bum bum train review kate bond and morgan lloyd london secret location 2024",
       "publishDate": "2024-12-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/road-show-review-upstairs-at-the-gatehouse-london-stephen-sondheim-john-weidman-amanda-noar-reece-richardson-oliver-sidney",
+      "headline": "road show review upstairs at the gatehouse london stephen sondheim john weidman amanda noar reece richardson oliver sidney",
+      "publishDate": "2024-12-19",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -7475,6 +7249,18 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/never-let-me-go-review-at-the-rose-theatre-kingston-by-kazuo-ishiguro",
+      "headline": "never let me go review at the rose theatre kingston by kazuo ishiguro",
+      "publishDate": "2024-09-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown",
+      "venueHint": "the rose theatre kingston by kazuo ishiguro"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/la-boheme-review-at-london-coliseum-by-giacomo-puccini-crispin-lord-and-jonathan-miller",
@@ -9272,18 +9058,6 @@
       "outOfWindow": [],
       "itemMarket": "off-west-end",
       "venueHint": "the park theatre london from taylor mac and starring felicity huffman"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/scottish-operas-marx-in-london-review-at-theatre-royal-glasgow-jonathan-dove-charles-hart-and-jurgen-r-weber-roland-wood",
-      "headline": "scottish operas marx in london review at theatre royal glasgow jonathan dove charles hart and jurgen r weber roland wood",
-      "publishDate": "2024-02-20",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "off-west-end",
-      "venueHint": "theatre royal glasgow jonathan dove charles hart and jurgen r weber roland wood"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/turning-the-screw-review-at-kings-head-theatre-kevin-kelly-tim-mcarthur-gary-tushaw",
@@ -11756,6 +11530,18 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/a-play-for-the-living-in-a-time-of-extinction-review-at-the-barbican-london-lydia-west-miranda-rose-hall-katie-mitchell",
+      "headline": "a play for the living in a time of extinction review at the barbican london lydia west miranda rose hall katie mitchell",
+      "publishDate": "2023-05-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end",
+      "venueHint": "the barbican london lydia west miranda rose hall katie mitchell"
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/its-a-motherfking-pleasure-review-at-soho-theatre-london",
       "headline": "its a motherfking pleasure review at soho theatre london",
       "publishDate": "2023-05-02",
@@ -14185,6 +13971,28 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/to-what-end-review-barbican-pit-london-centre-for-the-less-good-idea-vusi-mdoyi-thabo-rapoo-thulisile-binda-phala-ookeditse-phala-faniswa-yisa",
+      "headline": "to what end review barbican pit london centre for the less good idea vusi mdoyi thabo rapoo thulisile binda phala ookeditse phala faniswa yisa",
+      "publishDate": "2022-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/the-caucasian-chalk-circle-rose-theatre-kingston-bertolt-brecht-christopher-haydon-carrie-hope-fletcher-review",
+      "headline": "the caucasian chalk circle rose theatre kingston bertolt brecht christopher haydon carrie hope fletcher review",
+      "publishDate": "2022-10-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/the-coral-review-finborough-theatre",
       "headline": "the coral review finborough theatre",
       "publishDate": "2022-10-07",
@@ -14506,6 +14314,18 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/the-two-popes-review-at-rose-theatre-kingston-upon-thames",
+      "headline": "the two popes review at rose theatre kingston upon thames",
+      "publishDate": "2022-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown",
+      "venueHint": "rose theatre kingston upon thames"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/don-giovanni-review-royal-opera-house-kasper-holten-christopher-maltman-maria-bengtsson-luca-micheletti-2022",
@@ -15046,6 +14866,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/persuasion-review-rose-theatre-kingston-sasha-frost-jeff-james-jane-austen",
+      "headline": "persuasion review rose theatre kingston sasha frost jeff james jane austen",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/the-false-servant-review-at-the-orange-tree-theatre",
@@ -20937,12 +20768,12 @@
       "headline": "our town review swansea grand theatre michael sheen welsh national theatre",
       "publishDate": "2026-01-26",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "michael-off-west-end-2026"
       ],
-      "outOfWindow": [],
       "itemMarket": "west-end"
     },
     {
@@ -22491,12 +22322,12 @@
       "headline": "madonna on the rocks review assembly roxy edinburgh marie hamilton",
       "publishDate": "2025-08-19",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "hamilton-west-end-2021"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh"
     },
     {
@@ -25244,7 +25075,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "lyceum theatre sheffield by paul hendy"
     },
     {
@@ -25252,11 +25083,9 @@
       "headline": "a christmas carol the musical at the lowry salford from hope mill theatre starring claire moore",
       "publishDate": "2024-12-17",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "a-christmas-carol-west-end-2024"
-      ],
+      "matched": [],
       "outOfWindow": [
         "a-christmas-carol-west-end-2026",
         "a-christmas-carol-west-end-2023",
@@ -25873,7 +25702,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "bristol old vic matthew lopez"
     },
     {
@@ -25897,7 +25726,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "lyric theatre belfast by federico garcia lorca"
     },
     {
@@ -25992,7 +25821,7 @@
         "girls-off-west-end-2026",
         "the-girls-west-end-2017"
       ],
-      "itemMarket": "off-west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "royal court liverpool by ian salmon"
     },
     {
@@ -26062,18 +25891,6 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/never-let-me-go-review-at-the-rose-theatre-kingston-by-kazuo-ishiguro",
-      "headline": "never let me go review at the rose theatre kingston by kazuo ishiguro",
-      "publishDate": "2024-09-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk",
-      "venueHint": "the rose theatre kingston by kazuo ishiguro"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/to-save-the-sea-review-tron-theatre-glasgow-sleeping-warrior-isla-cowan-andy-mcgregor",
@@ -28080,11 +27897,9 @@
       "headline": "a history of paper review traverse theatre edinburgh oliver emanuel gareth williams",
       "publishDate": "2024-08-05",
       "dateSoft": true,
-      "via": "title-variant",
+      "via": null,
       "held": [],
-      "matched": [
-        "oliver-west-end-2024"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "edinburgh"
     },
@@ -28424,12 +28239,12 @@
       "headline": "rope review at theatr clwyd wales by patrick hamilton and francesca goodridge",
       "publishDate": "2024-07-09",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "hamilton-west-end-2021"
       ],
-      "outOfWindow": [],
       "itemMarket": "regional-uk",
       "venueHint": "theatr clwyd wales by patrick hamilton and francesca goodridge"
     },
@@ -28655,7 +28470,7 @@
       "outOfWindow": [
         "the-caretaker-west-end-2016"
       ],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "chichester festival theatre by harold pinter"
     },
     {
@@ -28749,7 +28564,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "off-west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "the gate theatre dublin annie baker roisin mcbrinn niamh cusack"
     },
     {
@@ -28867,11 +28682,9 @@
       "headline": "the deep blue sea review ustinov studio theatre royal bath tamsin greig oliver chris",
       "publishDate": "2024-05-15",
       "dateSoft": true,
-      "via": "title-variant",
+      "via": null,
       "held": [],
-      "matched": [
-        "oliver-west-end-2024"
-      ],
+      "matched": [],
       "outOfWindow": [
         "the-deep-blue-sea-west-end-2025",
         "the-deep-blue-sea-west-end-2016"
@@ -29087,7 +28900,7 @@
         "the-children-off-west-end-2026",
         "the-children-west-end-2016"
       ],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "the lyric theatre belfast brassneck theatre by fionnuala kennedy"
     },
     {
@@ -29142,20 +28955,6 @@
         "much-ado-about-nothing-west-end-2016"
       ],
       "itemMarket": "regional-uk"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-glass-menagerie-review-at-the-rose-theatre-kingston-upon-thames-directed-by-atri-banerjee",
-      "headline": "the glass menagerie review at the rose theatre kingston upon thames directed by atri banerjee",
-      "publishDate": "2024-04-22",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-glass-menagerie-west-end-2017"
-      ],
-      "itemMarket": "regional-uk",
-      "venueHint": "the rose theatre kingston upon thames directed by atri banerjee"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/children-of-the-sun-review-at-the-abbey-theatre-dublin-rough-magic-theatre-company",
@@ -29611,6 +29410,18 @@
       "itemMarket": "regional-uk"
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/scottish-operas-marx-in-london-review-at-theatre-royal-glasgow-jonathan-dove-charles-hart-and-jurgen-r-weber-roland-wood",
+      "headline": "scottish operas marx in london review at theatre royal glasgow jonathan dove charles hart and jurgen r weber roland wood",
+      "publishDate": "2024-02-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk",
+      "venueHint": "theatre royal glasgow jonathan dove charles hart and jurgen r weber roland wood"
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/shed-exploded-view-review-at-the-royal-exchange-manchester-by-phoebe-eclair-powell",
       "headline": "shed exploded view review at the royal exchange manchester by phoebe eclair powell",
       "publishDate": "2024-02-20",
@@ -29654,19 +29465,6 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "regional-uk"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-boy-at-the-back-of-the-class-review-at-the-rose-theatre-kingston-by-onjali-q-rauf-adapted-nick-ahad-directed-monique-touko-starring-eastenders-priya-davdra",
-      "headline": "the boy at the back of the class review at the rose theatre kingston by onjali q rauf adapted nick ahad directed monique touko starring eastenders priya davdra",
-      "publishDate": "2024-02-13",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-boy-at-the-back-of-the-class-west-end-2026"
-      ],
       "itemMarket": "regional-uk"
     },
     {
@@ -29765,7 +29563,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "bristol old vic by jenny rainsford alana ramsey lizzie stables"
     },
     {
@@ -30319,7 +30117,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "lyric theatre belfast"
     },
     {
@@ -30564,7 +30362,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "the lyric theatre belfast eugene ionesco and patrick j oreilly"
     },
     {
@@ -30718,13 +30516,12 @@
       "headline": "the hypochondriac review crucible theatre sheffield roger mcgough moliere",
       "publishDate": "2023-10-06",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-crucible-west-end-2023"
-      ],
+      "matched": [],
       "outOfWindow": [
         "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
         "the-crucible-west-end-2014"
       ],
       "itemMarket": "regional-uk"
@@ -30751,20 +30548,6 @@
       "outOfWindow": [],
       "itemMarket": "edinburgh",
       "venueHint": "the studio festival theatre edinburgh from katie barnett"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/shooting-hedda-gabler-review-rose-theatre-kingston-2023-jeff-james-nina-segal-henrik-ibsen-antonia-thomas",
-      "headline": "shooting hedda gabler review rose theatre kingston 2023 jeff james nina segal henrik ibsen antonia thomas",
-      "publishDate": "2023-10-05",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hedda-gabler-west-end-2012",
-        "hedda-gabler-west-end-2016"
-      ],
-      "itemMarket": "regional-uk"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/one-song-review-at-theatre-rond-point-paris-by-miet-warlop",
@@ -33023,14 +32806,13 @@
       "headline": "miss saigon review crucible theatre sheffield robert hastie anthony lau",
       "publishDate": "2023-07-14",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-crucible-west-end-2023"
-      ],
+      "matched": [],
       "outOfWindow": [
         "miss-saigon-west-end-2026",
         "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
         "miss-saigon-west-end-2014",
         "the-crucible-west-end-2014"
       ],
@@ -33589,7 +33371,7 @@
         "the-price-off-west-end-2026",
         "the-price-west-end-2019"
       ],
-      "itemMarket": "off-west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "the gate theatre dublin"
     },
     {
@@ -33692,7 +33474,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "bristol old vic by ad infinitum"
     },
     {
@@ -33795,7 +33577,7 @@
       "outOfWindow": [
         "bodies-west-end-2017"
       ],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "bristol old vic from extraordinary bodies"
     },
     {
@@ -34035,7 +33817,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "bristol old vic from womens prize for playwriting winner 2020 ahlam"
     },
     {
@@ -34207,7 +33989,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "bristol old vic from judith kerr and the wardrobe ensemble"
     },
     {
@@ -34328,20 +34110,6 @@
       "outOfWindow": [
         "arcadia-west-end-2026",
         "arcadia-duke-of-yorks-west-end-2026"
-      ],
-      "itemMarket": "regional-uk"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-tempest-review-royal-shakespeare-theatre-alex-kingston-stratford-upon-avon",
-      "headline": "the tempest review royal shakespeare theatre alex kingston stratford upon avon",
-      "publishDate": "2023-02-07",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-tempest-globe-west-end-2026",
-        "the-tempest-west-end-2024"
       ],
       "itemMarket": "regional-uk"
     },
@@ -34613,7 +34381,7 @@
       "outOfWindow": [
         "peter-pan-west-end-2026"
       ],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "his majestys theatre aberdeen starring brendan cole and alan mchugh"
     },
     {
@@ -34640,7 +34408,7 @@
       "outOfWindow": [
         "nutcracker-west-end-2026"
       ],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "bristol old vic tom morris"
     },
     {
@@ -35048,7 +34816,7 @@
       "outOfWindow": [
         "jack-and-the-beanstalk-off-west-end-2026"
       ],
-      "itemMarket": "off-west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "liverpool royal court"
     },
     {
@@ -35187,12 +34955,12 @@
       "headline": "blanket ban review underbelly edinburgh chalk line theatre davinia hamilton marta vella",
       "publishDate": "2022-11-14",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "hamilton-west-end-2021"
       ],
-      "outOfWindow": [],
       "itemMarket": "edinburgh"
     },
     {
@@ -36000,17 +35768,6 @@
       "venueHint": "leeds playhouse"
     },
     {
-      "url": "https://www.thestage.co.uk/reviews/the-caucasian-chalk-circle-rose-theatre-kingston-bertolt-brecht-christopher-haydon-carrie-hope-fletcher-review",
-      "headline": "the caucasian chalk circle rose theatre kingston bertolt brecht christopher haydon carrie hope fletcher review",
-      "publishDate": "2022-10-07",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk"
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/im-revolting-atlantic-theater-company-linda-gross-theater-new-york-city-review",
       "headline": "im revolting atlantic theater company linda gross theater new york city review",
       "publishDate": "2022-10-06",
@@ -36063,12 +35820,11 @@
       "headline": "accidental death of an anarchist review at tanya moiseiwitsch playhouse crucible theatre sheffield",
       "publishDate": "2022-10-03",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-crucible-west-end-2022"
-      ],
+      "matched": [],
       "outOfWindow": [
+        "the-crucible-west-end-2022",
         "accidental-death-of-an-anarchist-west-end-2023",
         "the-crucible-west-end-2023",
         "the-crucible-west-end-2014"
@@ -36149,7 +35905,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "off-west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "liverpool royal court theatre"
     },
     {
@@ -36243,13 +35999,13 @@
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "the-crucible-west-end-2022",
         "much-ado-about-nothing-west-end-2022"
       ],
       "outOfWindow": [
         "much-ado-about-nothing-globe-off-west-end-2026",
         "much-ado-about-nothing-off-west-end-2026",
         "much-ado-about-nothing-west-end-2025",
+        "the-crucible-west-end-2022",
         "the-crucible-west-end-2023",
         "the-crucible-west-end-2014",
         "much-ado-about-nothing-west-end-2013",
@@ -36269,18 +36025,6 @@
       "outOfWindow": [],
       "itemMarket": "regional-uk",
       "venueHint": "pitlochry festival theatre scotland"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-two-popes-review-at-rose-theatre-kingston-upon-thames",
-      "headline": "the two popes review at rose theatre kingston upon thames",
-      "publishDate": "2022-09-19",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk",
-      "venueHint": "rose theatre kingston upon thames"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-leeds-playhouse-denzel-westley-sanderson-abiola-owokoniran-adele-james",
@@ -36321,7 +36065,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "lyric theatre belfast by clare mcmahon"
     },
     {
@@ -37566,7 +37310,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [],
-      "itemMarket": "west-end",
+      "itemMarket": "regional-uk",
       "venueHint": "stephen joseph theatre scarborough noel coward"
     },
     {
@@ -38015,17 +37759,6 @@
       "url": "https://www.thestage.co.uk/reviews/circle-of-fifths-dance-house-cardiff-gavin-porter-maureen-blades-wella-review",
       "headline": "circle of fifths dance house cardiff gavin porter maureen blades wella review",
       "publishDate": "2022-07-02",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk"
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/persuasion-review-rose-theatre-kingston-sasha-frost-jeff-james-jane-austen",
-      "headline": "persuasion review rose theatre kingston sasha frost jeff james jane austen",
-      "publishDate": "2022-07-01",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -38763,12 +38496,12 @@
       "headline": "2065 review frozen light northern stage",
       "publishDate": "2022-04-02",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "frozen-west-end-2021"
       ],
-      "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
     {
@@ -40078,6 +39811,18 @@
   ],
   "outOfWindow": [
     {
+      "url": "https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
+      "headline": "rb dance company stories review peacock theatre london",
+      "publishDate": "2026-10-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "stories-west-end-2018"
+      ]
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/ghosts-review-jermyn-street-theatre-london",
       "headline": "ghosts review jermyn street theatre london",
       "publishDate": "2026-10-15",
@@ -40087,6 +39832,18 @@
       "matched": [],
       "outOfWindow": [
         "ghosts-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/amanda-the-night-before-me-review-bridge-house-london-divina-de-campo",
+      "headline": "amanda the night before me review bridge house london divina de campo",
+      "publishDate": "2026-09-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026"
       ]
     },
     {
@@ -40433,6 +40190,18 @@
       "matched": [],
       "outOfWindow": [
         "the-war-of-the-worlds-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/sleeping-beauty-review-london-palladium-catherine-tate-michael-harrison-julian-clary",
+      "headline": "sleeping beauty review london palladium catherine tate michael harrison julian clary",
+      "publishDate": "2025-12-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "michael-off-west-end-2026"
       ]
     },
     {
@@ -41039,6 +40808,30 @@
       ]
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/die-fledermaus-review-at-the-grange-festival-hampshire-paul-curran-andrew-hamilton",
+      "headline": "die fledermaus review at the grange festival hampshire paul curran andrew hamilton",
+      "publishDate": "2025-06-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamilton-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/matthew-bournes-the-midnight-bell-review-at-sadlers-wells-london-patrick-hamilton",
+      "headline": "matthew bournes the midnight bell review at sadlers wells london patrick hamilton",
+      "publishDate": "2025-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamilton-west-end-2021"
+      ]
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/the-reckoning-review-arcola-theatre",
       "headline": "the reckoning review arcola theatre",
       "publishDate": "2025-06-10",
@@ -41202,6 +40995,18 @@
       "matched": [],
       "outOfWindow": [
         "michael-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/beegu-review-unicorn-theatre-debbie-hannan-alexis-deacon",
+      "headline": "beegu review unicorn theatre debbie hannan alexis deacon",
+      "publishDate": "2025-04-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
       ]
     },
     {
@@ -41426,6 +41231,18 @@
       "matched": [],
       "outOfWindow": [
         "three-sisters-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/pig-heart-boy-review-at-unicorn-theatre-london-by-winsome-pinnock",
+      "headline": "pig heart boy review at unicorn theatre london by winsome pinnock",
+      "publishDate": "2025-02-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
       ]
     },
     {
@@ -41738,6 +41555,20 @@
       ]
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/twelfth-night-review-orange-tree-theatre-london-william-shakespeare-tom-littler-oliver-ford-davies-jane-asher-patricia-allison-clive-francis",
+      "headline": "twelfth night review orange tree theatre london william shakespeare tom littler oliver ford davies jane asher patricia allison clive francis",
+      "publishDate": "2024-12-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/michael-keegan-dolanteac-damsa-nobodaddy-review-sadlers-wells-london-sam-amidon-rachel-poirier",
       "headline": "michael keegan dolanteac damsa nobodaddy review sadlers wells london sam amidon rachel poirier",
       "publishDate": "2024-11-29",
@@ -41759,6 +41590,18 @@
       "matched": [],
       "outOfWindow": [
         "alice-in-wonderland-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/royal-variety-performance-2024-review-royal-albert-hall-london-alan-carr-amanda-holden-devil-wears-prada-marisha-wallace",
+      "headline": "royal variety performance 2024 review royal albert hall london alan carr amanda holden devil wears prada marisha wallace",
+      "publishDate": "2024-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-devil-wears-prada-west-end-2024"
       ]
     },
     {
@@ -41871,6 +41714,18 @@
       "matched": [],
       "outOfWindow": [
         "the-turn-of-the-screw-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/the-new-real-review-the-other-place-stratford-upon-avon-david-edgar-royal-shakespeare-company-headlong-holly-race-roughan",
+      "headline": "the new real review the other place stratford upon avon david edgar royal shakespeare company headlong holly race roughan",
+      "publishDate": "2024-10-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-other-place-west-end-2024"
       ]
     },
     {
@@ -42351,6 +42206,18 @@
       ]
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/the-glass-menagerie-review-at-the-rose-theatre-kingston-upon-thames-directed-by-atri-banerjee",
+      "headline": "the glass menagerie review at the rose theatre kingston upon thames directed by atri banerjee",
+      "publishDate": "2024-04-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-glass-menagerie-west-end-2017"
+      ]
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/the-girls-of-slender-means-review",
       "headline": "the girls of slender means review",
       "publishDate": "2024-04-22",
@@ -42492,6 +42359,18 @@
         "a-midsummer-nights-dream-globe-west-end-2026",
         "a-midsummer-nights-dream-west-end-2026",
         "a-midsummer-nights-dream-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/the-boy-at-the-back-of-the-class-review-at-the-rose-theatre-kingston-by-onjali-q-rauf-adapted-nick-ahad-directed-monique-touko-starring-eastenders-priya-davdra",
+      "headline": "the boy at the back of the class review at the rose theatre kingston by onjali q rauf adapted nick ahad directed monique touko starring eastenders priya davdra",
+      "publishDate": "2024-02-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-boy-at-the-back-of-the-class-west-end-2026"
       ]
     },
     {
@@ -42888,6 +42767,18 @@
       ]
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/the-bar-at-the-edge-of-time-review-at-tramshed-woolwich-from-frozen-light",
+      "headline": "the bar at the edge of time review at tramshed woolwich from frozen light",
+      "publishDate": "2023-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-west-end-2021"
+      ]
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/the-rock-n-roll-panto-cinderella-review",
       "headline": "the rock n roll panto cinderella review",
       "publishDate": "2023-11-23",
@@ -43076,6 +42967,19 @@
       "matched": [],
       "outOfWindow": [
         "michael-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/shooting-hedda-gabler-review-rose-theatre-kingston-2023-jeff-james-nina-segal-henrik-ibsen-antonia-thomas",
+      "headline": "shooting hedda gabler review rose theatre kingston 2023 jeff james nina segal henrik ibsen antonia thomas",
+      "publishDate": "2023-10-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hedda-gabler-west-end-2012",
+        "hedda-gabler-west-end-2016"
       ]
     },
     {
@@ -43517,6 +43421,18 @@
       ]
     },
     {
+      "url": "https://www.thestage.co.uk/reviews/richard-iii-review-rose-theatre-kingston-london-adjoa-andoh-william-shakespeare",
+      "headline": "richard iii review rose theatre kingston london adjoa andoh william shakespeare",
+      "publishDate": "2023-05-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-west-end-2014"
+      ]
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/a-thong-for-europe-review-at-liverpools-royal-court-by-jonathan-harvey",
       "headline": "a thong for europe review at liverpools royal court by jonathan harvey",
       "publishDate": "2023-04-27",
@@ -43652,197 +43568,6 @@
       "outOfWindow": [
         "waiting-for-godot-west-end-2024",
         "waiting-for-godot-west-end-2017"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/thats-not-my-name-review-at-the-hen-and-chickens-theatre-london-by-sammy-trotman",
-      "headline": "thats not my name review at the hen and chickens theatre london by sammy trotman",
-      "publishDate": "2023-03-09",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "sammy-off-west-end-2027"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/abigails-party-review-at-theatre-royal-winchester-by-mike-leigh",
-      "headline": "abigails party review at theatre royal winchester by mike leigh",
-      "publishDate": "2023-03-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "abigails-party-west-end-2026",
-        "abigails-party-richmond-theatre-west-end-2026"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/hedda-gabler-review-at-reading-rep-by-harriet-madeley-starring-anna-popplewell",
-      "headline": "hedda gabler review at reading rep by harriet madeley starring anna popplewell",
-      "publishDate": "2023-02-28",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hedda-gabler-west-end-2012",
-        "hedda-gabler-west-end-2016"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/richard-ii-review",
-      "headline": "richard ii review",
-      "publishDate": "2023-02-14",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "richard-ii-off-west-end-2026"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-william-shakespeare-debris-stevenson-duke-of-yorks-london-national-youth-theatre",
-      "headline": "much ado about nothing review william shakespeare debris stevenson duke of yorks london national youth theatre",
-      "publishDate": "2023-02-14",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "much-ado-about-nothing-globe-off-west-end-2026",
-        "much-ado-about-nothing-off-west-end-2026",
-        "much-ado-about-nothing-west-end-2025",
-        "much-ado-about-nothing-west-end-2022",
-        "much-ado-about-nothing-west-end-2013",
-        "much-ado-about-nothing-west-end-2016"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-at-unicorn-theatre-london-justin-audibert",
-      "headline": "anansi the spider review at unicorn theatre london justin audibert",
-      "publishDate": "2023-01-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "anansi-the-spider-west-end-2026",
-        "unicorn-west-end-2025"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/swan-lake-review-english-national-ballet-london-coliseum-derek-deane-tchaikovsky-petipa-ivanov-aitor-arrieta-emma-hawes",
-      "headline": "swan lake review english national ballet london coliseum derek deane tchaikovsky petipa ivanov aitor arrieta emma hawes",
-      "publishDate": "2023-01-17",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "ivanov-west-end-2026"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/manor-of-lies",
-      "headline": "manor of lies",
-      "publishDate": "2023-01-14",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "manor-west-end-2021"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/iphigenia-or-the-sacrifices-of-a-young-woman-in-nine-movements-review-hope-theatre-london",
-      "headline": "iphigenia or the sacrifices of a young woman in nine movements review hope theatre london",
-      "publishDate": "2023-01-13",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "iphigenia-off-west-end-2026"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/le-gateau-chocolat-and-jonny-woo-a-night-at-the-musicals--90-years-of-drag-review",
-      "headline": "le gateau chocolat and jonny woo a night at the musicals 90 years of drag review",
-      "publishDate": "2023-01-10",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-years-west-end-2025"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/jack-and-the-beanstalk-review-at-the-london-palladium-from-michael-harrison-starring-dawn-french-and-gary-wilmot",
-      "headline": "jack and the beanstalk review at the london palladium from michael harrison starring dawn french and gary wilmot",
-      "publishDate": "2023-01-09",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "michael-off-west-end-2026",
-        "jack-and-the-beanstalk-off-west-end-2026"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/the-human-voice-review-charing-cross-theatre-london-matalia-lemercier",
-      "headline": "the human voice review charing cross theatre london matalia lemercier",
-      "publishDate": "2023-01-03",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-human-voice-west-end-2022"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/henry-v-review-sam-wanamaker-playhouse-london-2022-oliver-johnstone-holly-race-roughan",
-      "headline": "henry v review sam wanamaker playhouse london 2022 oliver johnstone holly race roughan",
-      "publishDate": "2022-12-21",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "henry-v-west-end-2013"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/cinderella-review-at-princes-hall-theatre-aldershot",
-      "headline": "cinderella review at princes hall theatre aldershot",
-      "publishDate": "2022-12-15",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
-      ]
-    },
-    {
-      "url": "https://www.thestage.co.uk/reviews/paradise-now-review-at-bush-theatre-london-by-margaret-perry",
-      "headline": "paradise now review at bush theatre london by margaret perry",
-      "publishDate": "2022-12-13",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "paradise-west-end-2021"
       ]
     }
   ]

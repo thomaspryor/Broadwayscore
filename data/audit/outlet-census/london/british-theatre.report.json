@@ -1,7 +1,7 @@
 {
   "outletId": "british-theatre",
   "market": "london",
-  "generatedAt": "2026-10-29T03:13:35.506Z",
+  "generatedAt": "2026-10-29T04:26:16.593Z",
   "since": "2012-09-01",
   "source": {
     "kind": "sitemap",
@@ -14,36 +14,36 @@
   "corpus": "review-texts",
   "summary": {
     "counts": {
-      "not-review": 17232,
-      "gap": 631,
+      "not-review": 17386,
+      "gap": 530,
       "held-other-market": 17,
-      "held-alt-url": 334,
-      "out-of-window": 812,
-      "ambiguous": 467,
-      "catalog-gap": 2555,
+      "held-alt-url": 277,
+      "out-of-window": 828,
+      "ambiguous": 356,
+      "catalog-gap": 2654,
       "held": 104,
       "other-market-review": 3419,
       "held-unmatched": 52
     },
     "viaTitleVariant": {
-      "gap": 11,
+      "gap": 7,
       "other-market-review": 7,
-      "held-alt-url": 13,
+      "held-alt-url": 9,
       "held": 6
     },
-    "recall": 0.41,
-    "recallWithCatalog": 0.121
+    "recall": 0.418,
+    "recallWithCatalog": 0.107
   },
   "seasons": {
     "undated": {
-      "not-review": 12346,
-      "gap": 569,
+      "not-review": 12491,
+      "gap": 475,
       "held-other-market": 7,
-      "held-alt-url": 255,
-      "ambiguous": 467,
+      "held-alt-url": 211,
+      "ambiguous": 356,
       "other-market-review": 2119,
-      "catalog-gap": 1842,
-      "out-of-window": 122,
+      "catalog-gap": 1935,
+      "out-of-window": 133,
       "held": 52,
       "held-unmatched": 6
     },
@@ -56,52 +56,52 @@
     "2026-27": {
       "not-review": 127,
       "other-market-review": 84,
-      "out-of-window": 18,
+      "out-of-window": 21,
       "catalog-gap": 33,
       "held-unmatched": 20,
-      "held-alt-url": 7,
-      "gap": 5,
+      "gap": 4,
+      "held-alt-url": 5,
       "held": 24,
       "held-other-market": 6
     },
     "2025-26": {
-      "not-review": 934,
-      "held-alt-url": 35,
-      "out-of-window": 182,
+      "not-review": 937,
+      "held-alt-url": 31,
+      "out-of-window": 183,
       "other-market-review": 484,
-      "catalog-gap": 248,
-      "gap": 34,
+      "catalog-gap": 249,
       "held-unmatched": 17,
+      "gap": 33,
       "held": 25,
       "held-other-market": 4
     },
     "2024-25": {
-      "not-review": 726,
+      "not-review": 728,
       "held": 2,
-      "out-of-window": 159,
+      "out-of-window": 160,
       "other-market-review": 262,
-      "catalog-gap": 182,
-      "gap": 9,
+      "catalog-gap": 183,
+      "gap": 6,
       "held-unmatched": 5,
-      "held-alt-url": 7
+      "held-alt-url": 6
     },
     "2023-24": {
-      "not-review": 723,
+      "not-review": 724,
       "held": 1,
       "out-of-window": 132,
       "other-market-review": 236,
-      "held-alt-url": 14,
-      "catalog-gap": 132,
+      "held-alt-url": 11,
+      "catalog-gap": 134,
       "held-unmatched": 2,
       "gap": 3
     },
     "2022-23": {
-      "not-review": 383,
+      "not-review": 386,
       "out-of-window": 52,
       "other-market-review": 85,
-      "gap": 8,
-      "catalog-gap": 42,
-      "held-alt-url": 8,
+      "catalog-gap": 44,
+      "gap": 6,
+      "held-alt-url": 5,
       "held-unmatched": 2
     },
     "2021-22": {
@@ -589,16 +589,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/king-john-union-theatre-7100",
-      "headline": "king john union theatre 7100",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "king-john-globe-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/richard-iii-holy-trinity-ch-7217",
       "headline": "richard iii holy trinity ch 7217",
       "via": "poller-matcher",
@@ -629,16 +619,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/copenhagen-lyceum-theatre-7297",
-      "headline": "copenhagen lyceum theatre 7297",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "copenhagen-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/assassins-pleasance-theat-7368",
       "headline": "assassins pleasance theat 7368",
       "via": "poller-matcher",
@@ -655,26 +635,6 @@
       "held": [],
       "matched": [
         "unicorn-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/richard-iii-swan-theatre-s-7453",
-      "headline": "richard iii swan theatre s 7453",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "richard-iii-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/king-john-swan-theatre-s-7454",
-      "headline": "king john swan theatre s 7454",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "king-john-globe-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -715,16 +675,6 @@
       "held": [],
       "matched": [
         "unicorn-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-tramway-theatre-7608",
-      "headline": "macbeth tramway theatre 7608",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
       ],
       "outOfWindow": []
     },
@@ -799,16 +749,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/confessions-of-the-key-theatre-7994",
-      "headline": "confessions of the key theatre 7994",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-confessions-west-end-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/choir-boy-royal-court-the-8016",
       "headline": "choir boy royal court the 8016",
       "via": "poller-matcher",
@@ -829,16 +769,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/julius-caesar-london-coliseum-8093",
-      "headline": "julius caesar london coliseum 8093",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "julius-caesar-globe-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/this-house-cottesloe-theat-8126",
       "headline": "this house cottesloe theat 8126",
       "via": "poller-matcher",
@@ -855,16 +785,6 @@
       "held": [],
       "matched": [
         "unicorn-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/a-tender-thing-swan-theatre-s-8149",
-      "headline": "a tender thing swan theatre s 8149",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "tender-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -917,26 +837,6 @@
       "held": [],
       "matched": [
         "9-to-5-the-musical-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/42nd-street-palace-theatre-8174",
-      "headline": "42nd street palace theatre 8174",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "42nd-street-west-end-2017"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/american-idiot-palace-theatre-8247",
-      "headline": "american idiot palace theatre 8247",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "american-idiot-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -1001,18 +901,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-lion-king-palace-theatre-8340",
-      "headline": "the lion king palace theatre 8340",
-      "publishDate": "2022-11-04",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-lion-king-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/american-idiot-apollo-hammers-8349",
       "headline": "american idiot apollo hammers 8349",
       "via": "poller-matcher",
@@ -1043,52 +931,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/get-aladdin-landor-theatre-8370",
-      "headline": "get aladdin landor theatre 8370",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-wyvern-theatre-8375",
-      "headline": "aladdin wyvern theatre 8375",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-opera-house-ma-8379",
-      "headline": "peter pan opera house ma 8379",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-nutcracker-london-coliseum-8389",
       "headline": "the nutcracker london coliseum 8389",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "nutcracker-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-stag-theatre-s-8390",
-      "headline": "aladdin stag theatre s 8390",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -1109,16 +957,6 @@
       "held": [],
       "matched": [
         "crazy-for-you-west-end-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/robin-hood-and-york-theatre-ro-8407",
-      "headline": "robin hood and york theatre ro 8407",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "robin-hood-west-end-2024"
       ],
       "outOfWindow": []
     },
@@ -1213,16 +1051,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-vortex-rose-theatre-k-8548",
-      "headline": "the vortex rose theatre k 8548",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-vortex-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/julius-caesar-8553",
       "headline": "julius caesar 8553",
       "via": "poller-matcher",
@@ -1253,16 +1081,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-39-steps-opera-house-ma-8607",
-      "headline": "the 39 steps opera house ma 8607",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-39-steps-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/word-play-div-the-continental-8618",
       "headline": "word play div the continental 8618",
       "via": "poller-matcher",
@@ -1279,16 +1097,6 @@
       "held": [],
       "matched": [
         "the-winslow-boy-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-odyssey-york-theatre-ro-8657",
-      "headline": "the odyssey york theatre ro 8657",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-odyssey-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -1325,12 +1133,12 @@
       ]
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/captain-amazing-live-theatre-n-8732",
-      "headline": "captain amazing live theatre n 8732",
+      "url": "https://www.britishtheatreguide.info/reviews/othello-olivier-theatre-8762",
+      "headline": "othello olivier theatre 8762",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "the-captain-off-west-end-2027"
+        "othello-west-end-2013"
       ],
       "outOfWindow": []
     },
@@ -1435,16 +1243,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/daytona-park-theatre-9043",
-      "headline": "daytona park theatre 9043",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "daytona-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/macbeth-lion-and-unicor-9072",
       "headline": "macbeth lion and unicor 9072",
       "via": "poller-matcher",
@@ -1535,16 +1333,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/cabaret-opera-house-ma-9376",
-      "headline": "cabaret opera house ma 9376",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cabaret-west-end-2012"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/in-the-jungle-o-the-arcola-9418",
       "headline": "in the jungle o the arcola 9418",
       "via": "poller-matcher",
@@ -1615,32 +1403,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-of-fire-arcola-theatre-9574",
-      "headline": "macbeth of fire arcola theatre 9574",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/macbeth-royal-opera-hou-9594",
       "headline": "macbeth royal opera hou 9594",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/richard-iii-york-theatre-ro-9634",
-      "headline": "richard iii york theatre ro 9634",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "richard-iii-west-end-2014"
       ],
       "outOfWindow": []
     },
@@ -1661,26 +1429,6 @@
       "held": [],
       "matched": [
         "tender-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/robin-hood-th-gala-theatre-d-9658",
-      "headline": "robin hood th gala theatre d 9658",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "robin-hood-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-grand-theatre-9678",
-      "headline": "peter pan grand theatre 9678",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -1735,26 +1483,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-anvil-theatre-9721",
-      "headline": "aladdin anvil theatre 9721",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/robin-hood-and-stag-theatre-s-9739",
-      "headline": "robin hood and stag theatre s 9739",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "robin-hood-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/stephen-ward-aldwych-9740",
       "headline": "stephen ward aldwych 9740",
       "via": "poller-matcher",
@@ -1785,16 +1513,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-and-the-york-theatre-ro-9755",
-      "headline": "aladdin and the york theatre ro 9755",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/macbeth-vivian-beaumont-9762",
       "headline": "macbeth vivian beaumont 9762",
       "via": "poller-matcher",
@@ -1805,22 +1523,22 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-princes-hall-th-9767",
-      "headline": "peter pan princes hall th 9767",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/we-macbeth-9807",
       "headline": "we macbeth 9807",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "macbeth-west-end-2013"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/king-lear-olivier-theatre-9821",
+      "headline": "king lear olivier theatre 9821",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "king-lear-west-end-2014"
       ],
       "outOfWindow": []
     },
@@ -1861,16 +1579,6 @@
       "held": [],
       "matched": [
         "dracula-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/last-man-standi-grand-theatre-10032",
-      "headline": "last man standi grand theatre 10032",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-last-man-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -1925,16 +1633,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/fleabag-soho-theatre-10135",
-      "headline": "fleabag soho theatre 10135",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "fleabag-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/wolf-hall-aldwych-10149",
       "headline": "wolf hall aldwych 10149",
       "via": "poller-matcher",
@@ -1981,16 +1679,6 @@
       "held": [],
       "matched": [
         "skylight-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/mamma-mia-inte-opera-house-bl-10264",
-      "headline": "mamma mia inte opera house bl 10264",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mamma-mia-west-end-2021"
       ],
       "outOfWindow": []
     },
@@ -2055,6 +1743,16 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/medea-olivier-theatre-10338",
+      "headline": "medea olivier theatre 10338",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "medea-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-nether-royal-court-the-10348",
       "headline": "the nether royal court the 10348",
       "via": "poller-matcher",
@@ -2091,16 +1789,6 @@
       "held": [],
       "matched": [
         "electra-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-confessions-assembly-hall-10480",
-      "headline": "the confessions assembly hall 10480",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-confessions-west-end-2023"
       ],
       "outOfWindow": []
     },
@@ -2207,16 +1895,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/betrayal-york-theatre-ro-10768",
-      "headline": "betrayal york theatre ro 10768",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "betrayal-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/east-is-east-trafalgar-studi-10792",
       "headline": "east is east trafalgar studi 10792",
       "via": "poller-matcher",
@@ -2255,28 +1933,6 @@
         "macbeth-west-end-2013"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-snowman-lyceum-theatre-10928",
-      "headline": "the snowman lyceum theatre 10928",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-snowman-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-nutcracker-unicorn-theatre-10958",
-      "headline": "the nutcracker unicorn theatre 10958",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "nutcracker-west-end-2026"
-      ],
-      "outOfWindow": [
-        "unicorn-west-end-2025"
-      ]
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/assassins-menier-chocolat-10969",
@@ -2319,26 +1975,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/east-is-east-opera-house-ma-11136",
-      "headline": "east is east opera house ma 11136",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "east-is-east-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/classic-ghosts-grand-theatre-11151",
-      "headline": "classic ghosts grand theatre 11151",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ghosts-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/dokei-lion-unicorn-11153",
       "headline": "dokei lion unicorn 11153",
       "via": "poller-matcher",
@@ -2355,16 +1991,6 @@
       "held": [],
       "matched": [
         "the-captain-off-west-end-2027"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/happy-ending-arcola-theatre-11163",
-      "headline": "happy ending arcola theatre 11163",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "happy-ending-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -2405,36 +2031,6 @@
       "held": [],
       "matched": [
         "the-nether-west-end-2015"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/loserville-union-theatre-11253",
-      "headline": "loserville union theatre 11253",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "loserville-west-end-2012"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-lost-theatre-11264",
-      "headline": "macbeth lost theatre 11264",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/blood-brothers-palace-theatre-11271",
-      "headline": "blood brothers palace theatre 11271",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "blood-brothers-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -2499,6 +2095,16 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-audience-apollo-theatre-11478",
+      "headline": "the audience apollo theatre 11478",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-audience-west-end-2015"
+      ],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-father-tricycle-11496",
       "headline": "the father tricycle 11496",
       "via": "poller-matcher",
@@ -2555,16 +2161,6 @@
       "held": [],
       "matched": [
         "the-father-west-end-2015"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/wonder-land-palace-theatre-11660",
-      "headline": "wonder land palace theatre 11660",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "wonder-land-west-end-2015"
       ],
       "outOfWindow": []
     },
@@ -2789,16 +2385,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/richard-iii-quarry-theatre-12115",
-      "headline": "richard iii quarry theatre 12115",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "richard-iii-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/a-tender-thing-the-dukes-lanc-12125",
       "headline": "a tender thing the dukes lanc 12125",
       "via": "poller-matcher",
@@ -2815,16 +2401,6 @@
       "held": [],
       "matched": [
         "unicorn-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/guys-and-dolls-palace-theatre-12264",
-      "headline": "guys and dolls palace theatre 12264",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "guys-and-dolls-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -2979,16 +2555,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/on-your-feet-marquis-theatre-12438",
-      "headline": "on your feet marquis theatre 12438",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "on-your-feet-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/guys-and-dolls-savoy-12447",
       "headline": "guys and dolls savoy 12447",
       "via": "poller-matcher",
@@ -2999,32 +2565,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-nutcracker-palace-theatre-12456",
-      "headline": "the nutcracker palace theatre 12456",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "nutcracker-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/grass-unicorn-clore-12481",
       "headline": "grass unicorn clore 12481",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "unicorn-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/mary-poppins-palace-theatre-12494",
-      "headline": "mary poppins palace theatre 12494",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mary-poppins-west-end-2019"
       ],
       "outOfWindow": []
     },
@@ -3079,6 +2625,16 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/cleansed-dorfman-theatre-12590",
+      "headline": "cleansed dorfman theatre 12590",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cleansed-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/nell-gwynn-apollo-theatre-12596",
       "headline": "nell gwynn apollo theatre 12596",
       "via": "poller-matcher",
@@ -3127,18 +2683,6 @@
         "notmoses-west-end-2016"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/y-father-odyss-unicorn-theatre-12669",
-      "headline": "y father odyss unicorn theatre 12669",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-father-west-end-2015"
-      ],
-      "outOfWindow": [
-        "unicorn-west-end-2025"
-      ]
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-painkiller-garrick-12671",
@@ -3221,18 +2765,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/jungle-book-theatre-royal-w-12808",
-      "headline": "jungle book theatre royal w 12808",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-jungle-west-end-2018"
-      ],
-      "outOfWindow": [
-        "the-jungle-book-west-end-2026"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-iphigenia-q-gate-notting-h-12831",
       "headline": "the iphigenia q gate notting h 12831",
       "via": "poller-matcher",
@@ -3249,16 +2781,6 @@
       "held": [],
       "matched": [
         "richard-ii-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/king-john-rose-theatre-k-12877",
-      "headline": "king john rose theatre k 12877",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "king-john-globe-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -3293,22 +2815,22 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-globe-theatre-13000",
-      "headline": "macbeth globe theatre 13000",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/impossible-noel-coward-the-13043",
       "headline": "impossible noel coward the 13043",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "impossible-west-end-2015"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-london-coliseum-13071",
+      "headline": "cinderella london coliseum 13071",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cinderella-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -3353,32 +2875,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/sunny-afternoon-opera-house-ma-13357",
-      "headline": "sunny afternoon opera house ma 13357",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sunny-afternoon-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-entertainer-garrick-13400",
       "headline": "the entertainer garrick 13400",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "the-entertainer-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/sister-act-palace-theatre-13401",
-      "headline": "sister act palace theatre 13401",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sister-act-west-end-2024"
       ],
       "outOfWindow": []
     },
@@ -3419,16 +2921,6 @@
       "held": [],
       "matched": [
         "hamilton-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/amadeus-olivier-theatre-13639",
-      "headline": "amadeus olivier theatre 13639",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "amadeus-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -3499,16 +2991,6 @@
       "held": [],
       "matched": [
         "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-direc-york-theatre-ro-13755",
-      "headline": "macbeth direc york theatre ro 13755",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
       ],
       "outOfWindow": []
     },
@@ -3589,36 +3071,6 @@
       "held": [],
       "matched": [
         "buried-child-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-olivier-theatre-13798",
-      "headline": "peter pan olivier theatre 13798",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/potted-panto-garrick-theatre-13834",
-      "headline": "potted panto garrick theatre 13834",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "potted-panto-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-opera-house-ma-13846",
-      "headline": "aladdin opera house ma 13846",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -3723,12 +3175,22 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/funny-girl-the-palace-theatre-14055",
-      "headline": "funny girl the palace theatre 14055",
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-olivier-theatre-14054",
+      "headline": "twelfth night olivier theatre 14054",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "funny-girl-west-end-2016"
+        "twelfth-night-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-la-lyric-theatre-a-14127",
+      "headline": "cinderella la lyric theatre a 14127",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cinderella-lyric-hammersmith-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -3753,42 +3215,22 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/consent-dorfman-theatre-14231",
+      "headline": "consent dorfman theatre 14231",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "consent-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/opening-night-o-stratford-circu-14254",
       "headline": "opening night o stratford circu 14254",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "opening-night-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/nell-gwynn-grand-theatre-14256",
-      "headline": "nell gwynn grand theatre 14256",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "nell-gwynn-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-the-jack-studio-14274",
-      "headline": "macbeth the jack studio 14274",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/gypsy-queen-oldham-coliseum-14296",
-      "headline": "gypsy queen oldham coliseum 14296",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "gypsy-west-end-2015"
       ],
       "outOfWindow": []
     },
@@ -3809,46 +3251,6 @@
       "held": [],
       "matched": [
         "the-ferryman-west-end-2017"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/richard-iii-arcola-theatre-14387",
-      "headline": "richard iii arcola theatre 14387",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "richard-iii-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-ugly-one-park-theatre-14489",
-      "headline": "the ugly one park theatre 14489",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-ugly-one-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-father-oldham-coliseum-14509",
-      "headline": "the father oldham coliseum 14509",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-father-west-end-2015"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-kite-runner-playhouse-theat-14534",
-      "headline": "the kite runner playhouse theat 14534",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-kite-runner-west-end-2017"
       ],
       "outOfWindow": []
     },
@@ -3905,26 +3307,6 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/robin-hood-mowbray-park-14678",
       "headline": "robin hood mowbray park 14678",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "robin-hood-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-wedding-sin-theatre-royal-p-14729",
-      "headline": "the wedding sin theatre royal p 14729",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-weddings-off-west-end-2027"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/robin-hood-the-york-theatre-ro-14736",
-      "headline": "robin hood the york theatre ro 14736",
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -3993,16 +3375,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/sister-act-opera-house-bl-14864",
-      "headline": "sister act opera house bl 14864",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sister-act-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-majority-dorfman-theatre-14870",
       "headline": "the majority dorfman theatre 14870",
       "via": "poller-matcher",
@@ -4045,16 +3417,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/cabaret-from-th-unity-theatre-14993",
-      "headline": "cabaret from th unity theatre 14993",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cabaret-west-end-2012"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-p-15004",
       "headline": "the revlon girl park theatre p 15004",
       "via": "poller-matcher",
@@ -4071,16 +3433,6 @@
       "held": [],
       "matched": [
         "robin-hood-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/frankenstein-the-jack-studio-15040",
-      "headline": "frankenstein the jack studio 15040",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "frankenstein-west-end-2027"
       ],
       "outOfWindow": []
     },
@@ -4195,16 +3547,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-anvil-theatre-b-15379",
-      "headline": "peter pan anvil theatre b 15379",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-nutcracker-royal-opera-hou-15396",
       "headline": "the nutcracker royal opera hou 15396",
       "via": "poller-matcher",
@@ -4267,28 +3609,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/amadeus-olivier-theatre-15449",
-      "headline": "amadeus olivier theatre 15449",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "amadeus-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/julius-caesar-bridge-theatre-15484",
-      "headline": "julius caesar bridge theatre 15484",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "julius-caesar-globe-off-west-end-2026"
-      ],
-      "outOfWindow": [
-        "the-bridge-off-west-end-2026"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/gypsy-queen-the-vaults-15507",
       "headline": "gypsy queen the vaults 15507",
       "via": "poller-matcher",
@@ -4319,32 +3639,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/this-house-quarry-theatre-15617",
-      "headline": "this house quarry theatre 15617",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "this-house-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/electra-the-bunker-15619",
       "headline": "electra the bunker 15619",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "electra-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-olivier-theatre-15628",
-      "headline": "macbeth olivier theatre 15628",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
       ],
       "outOfWindow": []
     },
@@ -4389,32 +3689,22 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/legally-blonde-grand-theatre-15757",
-      "headline": "legally blonde grand theatre 15757",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "legally-blonde-west-end-2027"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-grand-theatre-15789",
-      "headline": "macbeth grand theatre 15789",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/crazy-for-you-sunderland-empi-15819",
       "headline": "crazy for you sunderland empi 15819",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "crazy-for-you-west-end-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/nine-night-dorfman-theatre-15850",
+      "headline": "nine night dorfman theatre 15850",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "nine-night-west-end-2018"
       ],
       "outOfWindow": []
     },
@@ -4489,26 +3779,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-kite-runner-grand-theatre-15933",
-      "headline": "the kite runner grand theatre 15933",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-kite-runner-west-end-2017"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/gypsy-queen-live-theatre-n-15972",
-      "headline": "gypsy queen live theatre n 15972",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "gypsy-west-end-2015"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/stories-on-a-st-little-angel-th-15978",
       "headline": "stories on a st little angel th 15978",
       "via": "poller-matcher",
@@ -4525,16 +3795,6 @@
       "held": [],
       "matched": [
         "beautiful-thing-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/machinal-almeida-theatre-16016",
-      "headline": "machinal almeida theatre 16016",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "machinal-west-end-2024"
       ],
       "outOfWindow": []
     },
@@ -4639,16 +3899,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/dracula-the-jack-studio-16645",
-      "headline": "dracula the jack studio 16645",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "dracula-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-inheritance-noel-coward-the-16647",
       "headline": "the inheritance noel coward the 16647",
       "via": "poller-matcher",
@@ -4729,16 +3979,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/frankenstein-seligman-studio-16875",
-      "headline": "frankenstein seligman studio 16875",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "frankenstein-west-end-2027"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/peter-pan-dukes-16877",
       "headline": "peter pan dukes 16877",
       "via": "poller-matcher",
@@ -4765,26 +4005,6 @@
       "held": [],
       "matched": [
         "true-west-west-end-2018"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-playhouse-whitl-16890",
-      "headline": "peter pan playhouse whitl 16890",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-hackney-empire-16892",
-      "headline": "aladdin hackney empire 16892",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -4825,16 +4045,6 @@
       "held": [],
       "matched": [
         "nutcracker-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-wyvern-theatre-16957",
-      "headline": "aladdin wyvern theatre 16957",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -4999,18 +4209,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/six-the-musical-arts-theatre-17275",
-      "headline": "six the musical arts theatre 17275",
-      "publishDate": "2023-03-09",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "six-the-musical-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/richard-ii-sam-wanamaker-t-17276",
       "headline": "richard ii sam wanamaker t 17276",
       "via": "poller-matcher",
@@ -5081,32 +4279,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-york-theatre-ro-17373",
-      "headline": "macbeth york theatre ro 17373",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/american-idiot-the-palace-thea-17384",
       "headline": "american idiot the palace thea 17384",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "american-idiot-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/local-hero-lyceum-theatre-17412",
-      "headline": "local hero lyceum theatre 17412",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "local-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -5121,32 +4299,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/captain-corelli-rose-theatre-k-17494",
-      "headline": "captain corelli rose theatre k 17494",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-captain-off-west-end-2027"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/rosmersholm-duke-of-york-s-17510",
       "headline": "rosmersholm duke of york s 17510",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "rosmersholm-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/inala-a-zulu-peacock-theatre-17517",
-      "headline": "inala a zulu peacock theatre 17517",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "inala-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -5237,16 +4395,6 @@
       "held": [],
       "matched": [
         "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/amelie-the-musi-opera-house-ma-17909",
-      "headline": "amelie the musi opera house ma 17909",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "amelie-west-end-2021"
       ],
       "outOfWindow": []
     },
@@ -5351,16 +4499,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/malory-towers-york-theatre-ro-18128",
-      "headline": "malory towers york theatre ro 18128",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "malory-towers-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-lion-king-18137",
       "headline": "the lion king 18137",
       "publishDate": "2022-11-04",
@@ -5423,16 +4561,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/king-john-swan-theatre-s-18200",
-      "headline": "king john swan theatre s 18200",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "king-john-globe-off-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/blood-wedding-young-vic-18206",
       "headline": "blood wedding young vic 18206",
       "via": "poller-matcher",
@@ -5443,12 +4571,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/curtains-a-mus-palace-theatre-18261",
-      "headline": "curtains a mus palace theatre 18261",
+      "url": "https://www.britishtheatreguide.info/reviews/noises-off-garrick-theatre-18242",
+      "headline": "noises off garrick theatre 18242",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "curtains-west-end-2019"
+        "noises-off-west-end-2019"
       ],
       "outOfWindow": []
     },
@@ -5483,16 +4611,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-entertainer-opera-house-ma-18353",
-      "headline": "the entertainer opera house ma 18353",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-entertainer-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/on-bear-ridge-royal-court-the-18354",
       "headline": "on bear ridge royal court the 18354",
       "via": "poller-matcher",
@@ -5523,16 +4641,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-gala-theatre-d-18460",
-      "headline": "aladdin gala theatre d 18460",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/richard-iii-sam-wanamaker-p-18461",
       "headline": "richard iii sam wanamaker p 18461",
       "via": "poller-matcher",
@@ -5543,12 +4651,12 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-lyric-theatre-18497",
-      "headline": "peter pan lyric theatre 18497",
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-theatre-18463",
+      "headline": "cinderella lyric theatre 18463",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "peter-pan-west-end-2026"
+        "cinderella-lyric-hammersmith-off-west-end-2026"
       ],
       "outOfWindow": []
     },
@@ -5573,26 +4681,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-grand-theatre-18538",
-      "headline": "peter pan grand theatre 18538",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-tyne-theatre-an-18539",
-      "headline": "aladdin tyne theatre an 18539",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/42nd-street-upstairs-at-the-18569",
       "headline": "42nd street upstairs at the 18569",
       "via": "poller-matcher",
@@ -5609,16 +4697,6 @@
       "held": [],
       "matched": [
         "the-father-west-end-2015"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-anvil-theatre-b-18603",
-      "headline": "aladdin anvil theatre b 18603",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -5709,38 +4787,6 @@
       "held": [],
       "matched": [
         "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-phantom-of-royal-albert-ha-18947",
-      "headline": "the phantom of royal albert ha 18947",
-      "publishDate": "2026-07-06",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "the-phantom-of-the-opera-west-end-1986"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/fleabag-soho-theatre-18955",
-      "headline": "fleabag soho theatre 18955",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "fleabag-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/frankenstein-olivier-theatre-18964",
-      "headline": "frankenstein olivier theatre 18964",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "frankenstein-west-end-2027"
       ],
       "outOfWindow": []
     },
@@ -6027,16 +5073,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/dracula-lyric-theatre-20076",
-      "headline": "dracula lyric theatre 20076",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "dracula-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/king-john-a-th-online-thespace-20131",
       "headline": "king john a th online thespace 20131",
       "via": "poller-matcher",
@@ -6122,16 +5158,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/macbeth-almeida-theatre-20406",
-      "headline": "macbeth almeida theatre 20406",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/six-the-musical-vaudeville-thea-20417",
       "headline": "six the musical vaudeville thea 20417",
       "publishDate": "2023-03-09",
@@ -6150,16 +5176,6 @@
       "held": [],
       "matched": [
         "bedlam-off-west-end-2027"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-oldham-coliseum-20451",
-      "headline": "aladdin oldham coliseum 20451",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
       ],
       "outOfWindow": []
     },
@@ -6242,18 +5258,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-three-billy-unicorn-theatre-21827",
-      "headline": "the three billy unicorn theatre 21827",
-      "publishDate": "2025-02-23",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "unicorn-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/hamilton-palace-theatre-22762",
       "headline": "hamilton palace theatre 22762",
       "publishDate": "2023-11-22",
@@ -6264,20 +5268,6 @@
         "hamilton-west-end-2021"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-odyssey-unicorn-theatre-23138",
-      "headline": "the odyssey unicorn theatre 23138",
-      "publishDate": "2025-04-28",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "unicorn-west-end-2025"
-      ],
-      "outOfWindow": [
-        "the-odyssey-off-west-end-2026"
-      ]
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/mj-the-musical-prince-edward-t-23144",
@@ -6391,18 +5381,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/hamilton-empire-sunderla-24520",
-      "headline": "hamilton empire sunderla 24520",
-      "publishDate": "2025-06-26",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamilton-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/stereophonic-duke-of-york-s-24525",
       "headline": "stereophonic duke of york s 24525",
       "publishDate": "2025-06-24",
@@ -6437,21 +5415,6 @@
         "grease-the-immersive-movie-musical-off-west-end-2026"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-la-london-coliseum-24940",
-      "headline": "cinderella la london coliseum 24940",
-      "publishDate": "2026-10-19",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-lyric-hammersmith-off-west-end-2026"
-      ],
-      "outOfWindow": [
-        "cinderella-west-end-2026",
-        "cinderella-west-end-2021"
-      ]
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-unbelievers-royal-court-the-25016",
@@ -7067,16 +6030,6 @@
       ]
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/avenue-q-the-playhouse-7196",
-      "headline": "avenue q the playhouse 7196",
-      "matched": [
-        "avenue-q-west-end-2026"
-      ],
-      "heldUrls": [
-        "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-5th-avenue-25576"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-oresteia-riverside-studi-7278",
       "headline": "the oresteia riverside studi 7278",
       "matched": [
@@ -7149,17 +6102,6 @@
       ],
       "heldUrls": [
         "https://www.britishtheatreguide.info/reviews/henry-v-noel-coward-th-9663"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/doctor-in-the-h-grand-theatre-7654",
-      "headline": "doctor in the h grand theatre 7654",
-      "matched": [
-        "the-doctor-west-end-2022"
-      ],
-      "heldUrls": [
-        "(no url)",
-        "(no url)"
       ]
     },
     {
@@ -7277,16 +6219,6 @@
       ]
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/golden-boy-belasco-theatre-8435",
-      "headline": "golden boy belasco theatre 8435",
-      "matched": [
-        "golden-boy-off-west-end-2026"
-      ],
-      "heldUrls": [
-        "https://www.britishtheatreguide.info/reviews/golden-boy-almeida-theatre-26021"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/top-story-the-old-vic-tun-8443",
       "headline": "top story the old vic tun 8443",
       "matched": [
@@ -7318,17 +6250,6 @@
       ]
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/consumed-tara-theatre-8569",
-      "headline": "consumed tara theatre 8569",
-      "matched": [
-        "consumed-west-end-2026"
-      ],
-      "heldUrls": [
-        "(no url)",
-        "(no url)"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/mies-julie-riverside-studi-8632",
       "headline": "mies julie riverside studi 8632",
       "matched": [
@@ -7336,16 +6257,6 @@
       ],
       "heldUrls": [
         "https://www.britishtheatreguide.info/reviews/julie-lyttelton-theat-15998"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/don-quixote-london-coliseum-8686",
-      "headline": "don quixote london coliseum 8686",
-      "matched": [
-        "don-quixote-west-end-2018"
-      ],
-      "heldUrls": [
-        "https://www.britishtheatreguide.info/reviews/don-quixote-garrick-16764"
       ]
     },
     {
@@ -7369,50 +6280,6 @@
       ]
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-misanthrope-york-theatre-ro-8869",
-      "headline": "the misanthrope york theatre ro 8869",
-      "matched": [
-        "the-misanthrope-west-end-2026"
-      ],
-      "heldUrls": [
-        "https://www.britishtheatreguide.info/reviews/the-misanthrope-national-theatr-25683"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/sherlock-holmes-quarry-theatre-8883",
-      "headline": "sherlock holmes quarry theatre 8883",
-      "matched": [
-        "sherlock-holmes-west-end-2026"
-      ],
-      "heldUrls": [
-        "(no url)",
-        "https://www.britishtheatreguide.info/reviews/sherlock-holmes-regent-s-park-o-25590",
-        "(no url)"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/pride-prejudi-lytham-hall-and-8938",
-      "headline": "pride prejudi lytham hall and 8938",
-      "matched": [
-        "pride-west-end-2026"
-      ],
-      "heldUrls": [
-        "https://www.britishtheatreguide.info/reviews/pride-national-theatr-25693"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/sherlock-holmes-opera-house-ma-8967",
-      "headline": "sherlock holmes opera house ma 8967",
-      "matched": [
-        "sherlock-holmes-west-end-2026"
-      ],
-      "heldUrls": [
-        "(no url)",
-        "https://www.britishtheatreguide.info/reviews/sherlock-holmes-regent-s-park-o-25590",
-        "(no url)"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/pride-and-preju-regent-s-park-o-8970",
       "headline": "pride and preju regent s park o 8970",
       "matched": [
@@ -7420,6 +6287,16 @@
       ],
       "heldUrls": [
         "https://www.britishtheatreguide.info/reviews/pride-national-theatr-25693"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/indian-tempest-globe-theatre-9076",
+      "headline": "indian tempest globe theatre 9076",
+      "matched": [
+        "the-tempest-globe-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-25272"
       ]
     },
     {
@@ -7455,17 +6332,6 @@
       ]
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/wicked-palace-theatre-9401",
-      "headline": "wicked palace theatre 9401",
-      "publishDate": "2024-03-01",
-      "matched": [
-        "wicked-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://www.britishtheatreguide.info/reviews/wicked-rev"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/don-quixote-royal-opera-hou-9447",
       "headline": "don quixote royal opera hou 9447",
       "matched": [
@@ -7473,6 +6339,98 @@
       ],
       "heldUrls": [
         "https://www.britishtheatreguide.info/reviews/don-quixote-garrick-16764"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/handbagged-tricycle-9450",
+      "headline": "handbagged tricycle 9450",
+      "matched": [
+        "handbagged-west-end-2014"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/handbagged-vaudeville-thea-10047"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/miss-julie-korova-arts-c-9552",
+      "headline": "miss julie korova arts c 9552",
+      "matched": [
+        "julie-west-end-2018"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/julie-lyttelton-theat-15998"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/lee-harvey-oswa-finborough-9573",
+      "headline": "lee harvey oswa finborough 9573",
+      "matched": [
+        "harvey-west-end-2015"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/harvey-theatre-royal-h-11346"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/julie-madly-dee-trafalgar-studi-9649",
+      "headline": "julie madly dee trafalgar studi 9649",
+      "matched": [
+        "julie-west-end-2018"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/julie-lyttelton-theat-15998"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/coriolanus-donmar-warehous-9733",
+      "headline": "coriolanus donmar warehous 9733",
+      "matched": [
+        "coriolanus-west-end-2024"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/donkeys-years-9878",
+      "headline": "donkeys years 9878",
+      "matched": [
+        "the-years-west-end-2025"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-full-monty-noel-coward-9915",
+      "headline": "the full monty noel coward 9915",
+      "matched": [
+        "the-full-monty-west-end-2014"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/the-full-monty-everyman-theatr-22442"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/good-people-noel-coward-the-10058",
+      "headline": "good people noel coward the 10058",
+      "matched": [
+        "good-people-west-end-2014"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/good-people-hampstead-9942"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/three-sisters-jagged-fence-an-10082",
+      "headline": "three sisters jagged fence an 10082",
+      "matched": [
+        "three-sisters-west-end-2019"
+      ],
+      "heldUrls": [
+        "https://www.britishtheatreguide.info/reviews/three-sisters-national-theatre-17861"
       ]
     }
   ],
@@ -8258,29 +7216,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/uncle-vanya-lyric-theatre-7206",
-      "headline": "uncle vanya lyric theatre 7206",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "vanya-west-end-2023",
-        "uncle-vanya-west-end-2020",
-        "uncle-vanya-west-end-2012"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-king-and-i-new-theatre-oxf-7218",
-      "headline": "the king and i new theatre oxf 7218",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-king-and-i-west-end-2024",
-        "the-king-and-i-west-end-2018"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/king-lear-shakespeare-at-7251",
       "headline": "king lear shakespeare at 7251",
       "via": "poller-matcher",
@@ -8516,18 +7451,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/the-village-bik-crucible-studio-8050",
-      "headline": "the village bik crucible studio 8050",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/let-it-be-prince-of-wales-8066",
       "headline": "let it be prince of wales 8066",
       "via": "poller-matcher",
@@ -8639,30 +7562,6 @@
       "matched": [
         "the-effect-west-end-2023",
         "the-effect-west-end-2012"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/straight-crucible-studio-8286",
-      "headline": "straight crucible studio 8286",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-oldham-coliseum-8294",
-      "headline": "cinderella oldham coliseum 8294",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
       ],
       "outOfWindow": []
     },
@@ -8784,18 +7683,6 @@
         "unicorn-west-end-2025",
         "twelfth-night-west-end-2012",
         "twelfth-night-west-end-2017"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/bull-crucible-studio-8536",
-      "headline": "bull crucible studio 8536",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
       ],
       "outOfWindow": []
     },
@@ -8926,18 +7813,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/othello-olivier-theatre-8762",
-      "headline": "othello olivier theatre 8762",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "othello-west-end-2025",
-        "othello-west-end-2022",
-        "othello-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-8807",
       "headline": "the tempest shakespeare s g 8807",
       "via": "poller-matcher",
@@ -8996,40 +7871,6 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-history-boy-crucible-8870",
       "headline": "the history boy crucible 8870",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/dirty-dancing-palace-theatre-8872",
-      "headline": "dirty dancing palace theatre 8872",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "dirty-dancing-west-end-2027",
-        "dirty-dancing-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/hay-fever-oldham-coliseum-8948",
-      "headline": "hay fever oldham coliseum 8948",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hay-fever-west-end-2026",
-        "hay-fever-west-end-2015"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/this-is-my-fami-crucible-studio-8969",
-      "headline": "this is my fami crucible studio 8969",
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -9110,17 +7951,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/indian-tempest-globe-theatre-9076",
-      "headline": "indian tempest globe theatre 9076",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-tempest-globe-west-end-2026",
-        "the-tempest-west-end-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/west-side-story-9131",
       "headline": "west side story 9131",
       "via": "poller-matcher",
@@ -9154,32 +7984,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/othello-the-re-unicorn-theatre-9387",
-      "headline": "othello the re unicorn theatre 9387",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "othello-west-end-2025",
-        "othello-west-end-2022",
-        "othello-west-end-2013"
-      ],
-      "outOfWindow": [
-        "unicorn-west-end-2025"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/stuart-a-life-crucible-studio-9402",
-      "headline": "stuart a life crucible studio 9402",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/romeo-and-julie-reading-minster-9412",
       "headline": "romeo and julie reading minster 9412",
       "via": "poller-matcher",
@@ -9199,18 +8003,6 @@
         "othello-west-end-2025",
         "othello-west-end-2022",
         "othello-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-park-theatre-9441",
-      "headline": "twelfth night park theatre 9441",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "twelfth-night-off-west-end-2026",
-        "twelfth-night-west-end-2012",
-        "twelfth-night-west-end-2017"
       ],
       "outOfWindow": []
     },
@@ -9260,18 +8052,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/love-your-soldi-crucible-studio-9576",
-      "headline": "love your soldi crucible studio 9576",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-the-albany-9635",
       "headline": "as you like it the albany 9635",
       "via": "poller-matcher",
@@ -9306,17 +8086,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/west-side-story-palace-theatre-9704",
-      "headline": "west side story palace theatre 9704",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-story-west-end-2026",
-        "west-side-story-west-end-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/cinderella-the-hawth-craw-9726",
       "headline": "cinderella the hawth craw 9726",
       "via": "poller-matcher",
@@ -9337,18 +8106,6 @@
         "the-crucible-west-end-2022",
         "the-crucible-west-end-2023",
         "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-shaw-theatre-l-9757",
-      "headline": "cinderella shaw theatre l 9757",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
       ],
       "outOfWindow": []
     },
@@ -9386,31 +8143,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/blink-crucible-studio-9796",
-      "headline": "blink crucible studio 9796",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "blink-off-west-end-2026",
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-life-and-lo-crucible-studio-9818",
-      "headline": "the life and lo crucible studio 9818",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/oedipus-retold-tristan-bates-t-9820",
       "headline": "oedipus retold tristan bates t 9820",
       "via": "poller-matcher",
@@ -9418,19 +8150,6 @@
       "matched": [
         "oedipus-west-end-2024",
         "oedipus-west-end-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/king-lear-olivier-theatre-9821",
-      "headline": "king lear olivier theatre 9821",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "king-lear-2-off-west-end-2026",
-        "king-lear-west-end-2023",
-        "king-lear-west-end-2018",
-        "king-lear-west-end-2014"
       ],
       "outOfWindow": []
     },
@@ -9447,18 +8166,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/afterplay-crucible-studio-9874",
-      "headline": "afterplay crucible studio 9874",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/frankenstein-lion-unicorn-9901",
       "headline": "frankenstein lion unicorn 9901",
       "via": "poller-matcher",
@@ -9470,39 +8177,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/private-lives-lyceum-theatre-9906",
-      "headline": "private lives lyceum theatre 9906",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "private-lives-west-end-2023",
-        "private-lives-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/ghost-stories-arts-theatre-9929",
-      "headline": "ghost stories arts theatre 9929",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ghost-stories-west-end-2019",
-        "stories-west-end-2018"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/let-it-be-palace-theatre-9937",
-      "headline": "let it be palace theatre 9937",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "let-it-be-west-end-2012",
-        "let-it-be-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/medea-riverside-studi-9951",
       "headline": "medea riverside studi 9951",
       "via": "poller-matcher",
@@ -9510,19 +8184,6 @@
       "matched": [
         "medea-west-end-2023",
         "medea-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/king-lear-cockpit-theatre-9957",
-      "headline": "king lear cockpit theatre 9957",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "king-lear-2-off-west-end-2026",
-        "king-lear-west-end-2023",
-        "king-lear-west-end-2018",
-        "king-lear-west-end-2014"
       ],
       "outOfWindow": []
     },
@@ -9558,17 +8219,6 @@
         "the-crucible-west-end-2022",
         "the-crucible-west-end-2023",
         "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/translations-rose-theatre-10087",
-      "headline": "translations rose theatre 10087",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "translations-west-end-2019",
-        "translations-west-end-2018"
       ],
       "outOfWindow": []
     },
@@ -9648,17 +8298,6 @@
         "the-crucible-west-end-2022",
         "the-crucible-west-end-2023",
         "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/medea-olivier-theatre-10338",
-      "headline": "medea olivier theatre 10338",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "medea-west-end-2023",
-        "medea-west-end-2014"
       ],
       "outOfWindow": []
     },
@@ -9758,31 +8397,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/queen-coal-crucible-studio-10873",
-      "headline": "queen coal crucible studio 10873",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/girls-like-that-unicorn-theatre-10890",
-      "headline": "girls like that unicorn theatre 10890",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "girls-off-west-end-2026",
-        "the-girls-west-end-2017"
-      ],
-      "outOfWindow": [
-        "unicorn-west-end-2025"
-      ]
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/white-christmas-10900",
       "headline": "white christmas 10900",
       "via": "poller-matcher",
@@ -9801,18 +8415,6 @@
       "matched": [
         "the-effect-west-end-2023",
         "the-effect-west-end-2012"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-palace-theatre-10919",
-      "headline": "cinderella palace theatre 10919",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
       ],
       "outOfWindow": []
     },
@@ -9879,18 +8481,6 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/cinderella-the-capitol-hor-11041",
       "headline": "cinderella the capitol hor 11041",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-grand-theatre-11058",
-      "headline": "cinderella grand theatre 11058",
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -9982,78 +8572,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/uncle-vanya-quarry-theatre-11283",
-      "headline": "uncle vanya quarry theatre 11283",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "vanya-west-end-2023",
-        "uncle-vanya-west-end-2020",
-        "uncle-vanya-west-end-2012"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/king-lear-viaduct-theatre-11297",
-      "headline": "king lear viaduct theatre 11297",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "king-lear-2-off-west-end-2026",
-        "king-lear-west-end-2023",
-        "king-lear-west-end-2018",
-        "king-lear-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/4-48-psychosis-crucible-studio-11314",
-      "headline": "4 48 psychosis crucible studio 11314",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "4-48-psychosis-west-end-2025",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/crave-crucible-studio-11328",
-      "headline": "crave crucible studio 11328",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/hedda-gabler-lyceum-theatre-11384",
-      "headline": "hedda gabler lyceum theatre 11384",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hedda-gabler-west-end-2012",
-        "hedda-gabler-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-audience-apollo-theatre-11478",
-      "headline": "the audience apollo theatre 11478",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-audience-west-end-2015",
-        "the-audience-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/hay-fever-duke-of-york-s-11492",
       "headline": "hay fever duke of york s 11492",
       "via": "poller-matcher",
@@ -10112,17 +8630,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/an-audience-wit-park-theatre-11604",
-      "headline": "an audience wit park theatre 11604",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-audience-west-end-2015",
-        "the-audience-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-st-paul-s-cove-11649",
       "headline": "twelfth night st paul s cove 11649",
       "via": "poller-matcher",
@@ -10131,20 +8638,6 @@
         "twelfth-night-off-west-end-2026",
         "twelfth-night-west-end-2012",
         "twelfth-night-west-end-2017"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-effect-crucible-studio-11653",
-      "headline": "the effect crucible studio 11653",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-effect-west-end-2023",
-        "the-crucible-west-end-2014",
-        "the-effect-west-end-2012"
       ],
       "outOfWindow": []
     },
@@ -10311,40 +8804,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-olivier-theatre-12235",
-      "headline": "as you like it olivier theatre 12235",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "as-you-like-it-globe-west-end-2026",
-        "as-you-like-it-west-end-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-distance-crucible-studio-12237",
-      "headline": "the distance crucible studio 12237",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/medea-gate-theatre-12257",
-      "headline": "medea gate theatre 12257",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "medea-west-end-2023",
-        "medea-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/king-lear-the-young-vic-12262",
       "headline": "king lear the young vic 12262",
       "via": "poller-matcher",
@@ -10370,32 +8829,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-gala-theatre-d-12319",
-      "headline": "cinderella gala theatre d 12319",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.britishtheatreguide.info/reviews/cinderella-th-anthony-hopkins-12331",
       "headline": "cinderella th anthony hopkins 12331",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-opera-house-ma-12353",
-      "headline": "cinderella opera house ma 12353",
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -10414,18 +8849,6 @@
         "the-crucible-west-end-2022",
         "the-crucible-west-end-2023",
         "the-crucible-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-princes-hall-a-12421",
-      "headline": "cinderella princes hall a 12421",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
       ],
       "outOfWindow": []
     },
@@ -10461,6 +8884,524 @@
         "vanya-west-end-2023",
         "uncle-vanya-west-end-2020",
         "uncle-vanya-west-end-2012"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-tempest-sam-wanamaker-p-12603",
+      "headline": "the tempest sam wanamaker p 12603",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-tempest-globe-west-end-2026",
+        "the-tempest-west-end-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-nap-the-crucible-12663",
+      "headline": "the nap the crucible 12663",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-truth-menier-chocolat-12665",
+      "headline": "the truth menier chocolat 12665",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+        "the-truth-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hedda-gabler-salisbsury-play-12686",
+      "headline": "hedda gabler salisbsury play 12686",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hedda-gabler-west-end-2012",
+        "hedda-gabler-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/all-that-fall-wilton-s-music-12695",
+      "headline": "all that fall wilton s music 12695",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "all-that-fall-west-end-2012",
+        "all-that-fall-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/henry-v-middle-temple-h-12707",
+      "headline": "henry v middle temple h 12707",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "middle-west-end-2022",
+        "henry-v-west-end-2013"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-the-lounge-lei-12781",
+      "headline": "twelfth night the lounge lei 12781",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/doctor-faustus-duke-of-york-s-12810",
+      "headline": "doctor faustus duke of york s 12810",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-doctor-west-end-2022",
+        "doctor-faustus-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/noises-off-nothern-stage-12861",
+      "headline": "noises off nothern stage 12861",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "noises-off-west-end-2023",
+        "noises-off-west-end-2019"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/romeo-and-julie-garrick-12907",
+      "headline": "romeo and julie garrick 12907",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "romeo-and-julie-west-end-2023",
+        "julie-west-end-2018"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/king-lear-in-br-274-pages-12914",
+      "headline": "king lear in br 274 pages 12914",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "king-lear-2-off-west-end-2026",
+        "king-lear-west-end-2023",
+        "king-lear-west-end-2018",
+        "king-lear-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-grove-park-open-13020",
+      "headline": "as you like it grove park open 13020",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "as-you-like-it-globe-west-end-2026",
+        "as-you-like-it-west-end-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/into-the-woods-menier-chocolat-13040",
+      "headline": "into the woods menier chocolat 13040",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "into-the-woods-west-end-2025",
+        "into-the-woods-noel-coward-west-end-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/a-dream-the-crucible-13047",
+      "headline": "a dream the crucible 13047",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-in-bed-pleasance-court-13117",
+      "headline": "hamlet in bed pleasance court 13117",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-an-a-assembly-roxy-13168",
+      "headline": "jane eyre an a assembly roxy 13168",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "jane-eyre-off-west-end-2026",
+        "jane-eyre-rose-kingston-off-west-end-2026",
+        "jane-eyre-west-end-2015"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-o-thespace-on-the-13187",
+      "headline": "twelfth night o thespace on the 13187",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/groundhog-day-old-vic-13354",
+      "headline": "groundhog day old vic 13354",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "groundhog-day-west-end-2023",
+        "groundhog-day-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/assassins-paradise-in-au-13374",
+      "headline": "assassins paradise in au 13374",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "assassins-off-west-end-2014",
+        "paradise-west-end-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/romeo-and-julie-lyceum-sheffiel-13468",
+      "headline": "romeo and julie lyceum sheffiel 13468",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "romeo-and-julie-west-end-2023",
+        "julie-west-end-2018"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/lady-chatterly-the-crucible-13501",
+      "headline": "lady chatterly the crucible 13501",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-east-riding-the-13567",
+      "headline": "hamlet east riding the 13567",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-tempest-sdaler-s-wells-13585",
+      "headline": "the tempest sdaler s wells 13585",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-tempest-globe-west-end-2026",
+        "the-tempest-west-end-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-tara-arts-13637",
+      "headline": "hamlet tara arts 13637",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/king-lear-barbican-13725",
+      "headline": "king lear barbican 13725",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "king-lear-2-off-west-end-2026",
+        "king-lear-west-end-2023",
+        "king-lear-west-end-2018",
+        "king-lear-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-tempest-king-s-cross-13747",
+      "headline": "the tempest king s cross 13747",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-tempest-globe-west-end-2026",
+        "the-tempest-west-end-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-tempest-rst-13753",
+      "headline": "the tempest rst 13753",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-tempest-globe-west-end-2026",
+        "the-tempest-west-end-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-children-royal-court-the-13758",
+      "headline": "the children royal court the 13758",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-children-off-west-end-2026",
+        "the-children-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-corn-exchange-n-13779",
+      "headline": "cinderella corn exchange n 13779",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-trafalgar-studi-13822",
+      "headline": "hamlet trafalgar studi 13822",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-lawrence-batley-13843",
+      "headline": "cinderella lawrence batley 13843",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-london-palladiu-13850",
+      "headline": "cinderella london palladiu 13850",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/annie-get-your-crucible-13854",
+      "headline": "annie get your crucible 13854",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-girls-phoenix-14042",
+      "headline": "the girls phoenix 14042",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "girls-off-west-end-2026",
+        "the-girls-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/othello-sam-wanamaker-p-14086",
+      "headline": "othello sam wanamaker p 14086",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "othello-west-end-2025",
+        "othello-west-end-2022",
+        "othello-west-end-2013"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hedda-gabler-picturehouse-s-14117",
+      "headline": "hedda gabler picturehouse s 14117",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hedda-gabler-west-end-2012",
+        "hedda-gabler-west-end-2016"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-almeida-14129",
+      "headline": "hamlet almeida 14129",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/dr-frankenstein-the-crucible-14149",
+      "headline": "dr frankenstein the crucible 14149",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "frankenstein-west-end-2027",
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/evita-sunderland-empi-14235",
+      "headline": "evita sunderland empi 14235",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "evita-west-end-2025",
+        "evita-west-end-2017",
+        "evita-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/men-and-girls-d-the-place-14273",
+      "headline": "men and girls d the place 14273",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "girls-off-west-end-2026",
+        "the-girls-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/romeo-and-julie-the-globe-theat-14320",
+      "headline": "romeo and julie the globe theat 14320",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "romeo-and-julie-west-end-2023",
+        "julie-west-end-2018"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-grand-opera-hou-14419",
+      "headline": "jane eyre grand opera hou 14419",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "jane-eyre-off-west-end-2026",
+        "jane-eyre-rose-kingston-off-west-end-2026",
+        "jane-eyre-west-end-2015"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/julius-caesar-crucible-14422",
+      "headline": "julius caesar crucible 14422",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "julius-caesar-globe-off-west-end-2026",
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-the-globe-theat-14425",
+      "headline": "twelfth night the globe theat 14425",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-new-victoria-th-14446",
+      "headline": "jane eyre new victoria th 14446",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "jane-eyre-off-west-end-2026",
+        "jane-eyre-rose-kingston-off-west-end-2026",
+        "jane-eyre-west-end-2015"
       ],
       "outOfWindow": []
     }
@@ -10539,6 +9480,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/king-john-union-theatre-7100",
+      "headline": "king john union theatre 7100",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/translunar-para-barbican-pit-7104",
@@ -10743,6 +9693,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/uncle-vanya-lyric-theatre-7206",
+      "headline": "uncle vanya lyric theatre 7206",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/muswell-hill-orange-tree-the-7208",
       "headline": "muswell hill orange tree the 7208",
       "via": null,
@@ -10923,6 +9882,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/copenhagen-lyceum-theatre-7297",
+      "headline": "copenhagen lyceum theatre 7297",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/going-dark-young-vic-s-cla-7306",
@@ -12018,6 +10986,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/julius-caesar-london-coliseum-8093",
+      "headline": "julius caesar london coliseum 8093",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/berenice-donmar-warehous-8099",
       "headline": "berenice donmar warehous 8099",
       "via": null,
@@ -12133,6 +11110,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/42nd-street-palace-theatre-8174",
+      "headline": "42nd street palace theatre 8174",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/55-dayd-hampstead-theat-8179",
@@ -12306,6 +11292,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/american-idiot-palace-theatre-8247",
+      "headline": "american idiot palace theatre 8247",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/theatre-uncut-2-young-vic-8252",
       "headline": "theatre uncut 2 young vic 8252",
       "via": null,
@@ -12376,6 +11371,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-oldham-coliseum-8294",
+      "headline": "cinderella oldham coliseum 8294",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-changeling-young-vic-8298",
@@ -12484,6 +11488,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-lion-king-palace-theatre-8340",
+      "headline": "the lion king palace theatre 8340",
+      "publishDate": "2022-11-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/dick-whittingto-hackney-empire-8348",
@@ -12792,6 +11807,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-vortex-rose-theatre-k-8548",
+      "headline": "the vortex rose theatre k 8548",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/chess-union-theatre-8554",
       "headline": "chess union theatre 8554",
       "via": null,
@@ -13087,6 +12111,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/don-quixote-london-coliseum-8686",
+      "headline": "don quixote london coliseum 8686",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-hospital-at-finborough-8687",
@@ -13386,6 +12419,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/dirty-dancing-palace-theatre-8872",
+      "headline": "dirty dancing palace theatre 8872",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/nothing-is-the-finborough-8874",
       "headline": "nothing is the finborough 8874",
       "via": null,
@@ -13566,6 +12608,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/hay-fever-oldham-coliseum-8948",
+      "headline": "hay fever oldham coliseum 8948",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-night-alive-donmar-warehous-8955",
       "headline": "the night alive donmar warehous 8955",
       "via": null,
@@ -13732,6 +12783,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-strange-und-london-welsh-ce-9038",
       "headline": "the strange und london welsh ce 9038",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/daytona-park-theatre-9043",
+      "headline": "daytona park theatre 9043",
       "via": null,
       "held": [],
       "matched": [],
@@ -13975,6 +13035,17 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/wicked-palace-theatre-9401",
+      "headline": "wicked palace theatre 9401",
+      "publishDate": "2024-03-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/justitia-peacock-theatre-9404",
       "headline": "justitia peacock theatre 9404",
       "via": null,
@@ -14031,6 +13102,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-barrier-park-theatre-9440",
       "headline": "the barrier park theatre 9440",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-park-theatre-9441",
+      "headline": "twelfth night park theatre 9441",
       "via": null,
       "held": [],
       "matched": [],
@@ -14303,6 +13383,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/la-traviata-kings-head-thea-9572",
       "headline": "la traviata kings head thea 9572",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/macbeth-of-fire-arcola-theatre-9574",
+      "headline": "macbeth of fire arcola theatre 9574",
       "via": null,
       "held": [],
       "matched": [],
@@ -14616,6 +13705,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/west-side-story-palace-theatre-9704",
+      "headline": "west side story palace theatre 9704",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/die-fledermaus-the-kings-head-9718",
@@ -14991,6 +14089,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/private-lives-lyceum-theatre-9906",
+      "headline": "private lives lyceum theatre 9906",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/versailles-donmar-warehous-9920",
       "headline": "versailles donmar warehous 9920",
       "via": null,
@@ -14998,6 +14105,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/ghost-stories-arts-theatre-9929",
+      "headline": "ghost stories arts theatre 9929",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/variation-on-a-finborough-9930",
@@ -15016,6 +14132,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/let-it-be-palace-theatre-9937",
+      "headline": "let it be palace theatre 9937",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/how-to-be-immor-soho-theatre-an-9941",
@@ -15369,6 +14494,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/translations-rose-theatre-10087",
+      "headline": "translations rose theatre 10087",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/occupied-theatre503-10092",
       "headline": "occupied theatre503 10092",
       "via": null,
@@ -15432,6 +14566,24 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/fleabag-soho-theatre-10135",
+      "headline": "fleabag soho theatre 10135",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/pressure-lyceum-theatre-10140",
+      "headline": "pressure lyceum theatre 10140",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-man-who-sho-park-theatre-20-10141",
       "headline": "the man who sho park theatre 20 10141",
       "via": null,
@@ -15493,6 +14645,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/avenue-q-palace-theatre-10174",
+      "headline": "avenue q palace theatre 10174",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/quietly-soho-theatre-10177",
@@ -15677,6 +14838,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-glass-suppe-hampstead-theat-10279",
       "headline": "the glass suppe hampstead theat 10279",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/carousel-arcola-theatre-10284",
+      "headline": "carousel arcola theatre 10284",
       "via": null,
       "held": [],
       "matched": [],
@@ -16298,6 +15468,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/man-to-man-park-theatre-10884",
+      "headline": "man to man park theatre 10884",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-old-vic-274-pages-10888",
       "headline": "the old vic 274 pages 10888",
       "via": null,
@@ -16334,6 +15513,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-palace-theatre-10919",
+      "headline": "cinderella palace theatre 10919",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/behind-the-beau-olivier-theatre-10924",
       "headline": "behind the beau olivier theatre 10924",
       "via": null,
@@ -16347,6 +15535,15 @@
       "headline": "dirty rotten sc savoy theatre 10927",
       "publishDate": "2020-08-03",
       "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-snowman-lyceum-theatre-10928",
+      "headline": "the snowman lyceum theatre 10928",
       "via": null,
       "held": [],
       "matched": [],
@@ -16651,6 +15848,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/happy-ending-arcola-theatre-11163",
+      "headline": "happy ending arcola theatre 11163",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-mist-in-the-oldham-coliseum-11165",
       "headline": "the mist in the oldham coliseum 11165",
       "via": null,
@@ -16813,6 +16019,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/loserville-union-theatre-11253",
+      "headline": "loserville union theatre 11253",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/lippy-young-vic-11255",
       "headline": "lippy young vic 11255",
       "via": null,
@@ -16829,6 +16044,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/blood-brothers-palace-theatre-11271",
+      "headline": "blood brothers palace theatre 11271",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/joseph-and-the-crewe-lyceum-th-11274",
@@ -16921,6 +16145,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-producers-palace-theatre-11330",
+      "headline": "the producers palace theatre 11330",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-broken-hear-sam-wanamaker-p-11336",
       "headline": "the broken hear sam wanamaker p 11336",
       "via": null,
@@ -16946,6 +16179,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/frozen-park-theatre-11341",
+      "headline": "frozen park theatre 11341",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/calamity-jane-palace-theatre-11350",
@@ -16991,6 +16233,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hedda-gabler-lyceum-theatre-11384",
+      "headline": "hedda gabler lyceum theatre 11384",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/a-streetcar-nam-sadlers-wells-11386",
@@ -17135,6 +16386,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/romeo-et-julie-london-coliseum-11451",
+      "headline": "romeo et julie london coliseum 11451",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/a-new-play-for-finborough-thea-11455",
@@ -17402,6 +16662,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/an-audience-wit-park-theatre-11604",
+      "headline": "an audience wit park theatre 11604",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/puss-in-boots-polka-theatre-11612",
       "headline": "puss in boots polka theatre 11612",
       "via": null,
@@ -17535,6 +16804,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/wonder-land-palace-theatre-11660",
+      "headline": "wonder land palace theatre 11660",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-house-of-mi-arcola-theatre-11668",
@@ -18121,6 +17399,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-olivier-theatre-12235",
+      "headline": "as you like it olivier theatre 12235",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/dry-land-jermyn-street-t-12241",
       "headline": "dry land jermyn street t 12241",
       "via": null,
@@ -18157,6 +17444,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/medea-gate-theatre-12257",
+      "headline": "medea gate theatre 12257",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/thirty-million-vaudeville-12263",
       "headline": "thirty million vaudeville 12263",
       "via": null,
@@ -18164,6 +17460,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/guys-and-dolls-palace-theatre-12264",
+      "headline": "guys and dolls palace theatre 12264",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/being-harold-pi-young-vic-12269",
@@ -18400,6 +17705,15 @@
       "itemMarket": "unknown"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-nutcracker-palace-theatre-12456",
+      "headline": "the nutcracker palace theatre 12456",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/le-corsaire-london-coliseum-12464",
       "headline": "le corsaire london coliseum 12464",
       "via": null,
@@ -18452,6 +17766,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/mary-poppins-palace-theatre-12494",
+      "headline": "mary poppins palace theatre 12494",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/escaped-alone-royal-court-the-12498",
@@ -18645,6 +17968,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-crucible-lyceum-theatre-12591",
+      "headline": "the crucible lyceum theatre 12591",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/hello-norma-jea-park-theatre-p-12594",
@@ -19054,6 +18386,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/king-john-rose-theatre-k-12877",
+      "headline": "king john rose theatre k 12877",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/my-family-not-menier-chocolat-12879",
       "headline": "my family not menier chocolat 12879",
       "via": null,
@@ -19261,6 +18602,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/macbeth-globe-theatre-13000",
+      "headline": "macbeth globe theatre 13000",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/faith-healer-donmar-warehous-13007",
@@ -19533,6 +18883,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/children-of-ede-union-theatre-13198",
+      "headline": "children of ede union theatre 13198",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/echoes-of-etern-london-coliseum-13319",
       "headline": "echoes of etern london coliseum 13319",
       "via": null,
@@ -19567,6 +18926,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/sister-act-palace-theatre-13401",
+      "headline": "sister act palace theatre 13401",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/home-chat-finborough-thea-13405",
@@ -19895,6 +19263,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/amadeus-olivier-theatre-13639",
+      "headline": "amadeus olivier theatre 13639",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/magnificence-finborough-thea-13645",
       "headline": "magnificence finborough thea 13645",
       "via": null,
@@ -19940,6 +19317,15 @@
       "itemMarket": "unknown"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/all-my-sons-rose-theatre-k-13681",
+      "headline": "all my sons rose theatre k 13681",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/comus-a-mas-sam-wanamaker-p-13682",
       "headline": "comus a mas sam wanamaker p 13682",
       "via": null,
@@ -19960,6 +19346,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/jumpy-lyceum-theatre-13686",
       "headline": "jumpy lyceum theatre 13686",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/king-lear-old-vic-theatre-13688",
+      "headline": "king lear old vic theatre 13688",
       "via": null,
       "held": [],
       "matched": [],
@@ -20052,6 +19447,15 @@
       "headline": "the very hungry ambassadors the 13795",
       "publishDate": "2024-04-30",
       "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-olivier-theatre-13798",
+      "headline": "peter pan olivier theatre 13798",
       "via": null,
       "held": [],
       "matched": [],
@@ -20158,6 +19562,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/potted-panto-garrick-theatre-13834",
+      "headline": "potted panto garrick theatre 13834",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/love-dorfman-theatre-13842",
       "headline": "love dorfman theatre 13842",
       "via": null,
@@ -20196,6 +19609,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-trackers-of-finborough-thea-13889",
       "headline": "the trackers of finborough thea 13889",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/three-sisters-union-theatre-13891",
+      "headline": "three sisters union theatre 13891",
       "via": null,
       "held": [],
       "matched": [],
@@ -20500,6 +19922,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/funny-girl-the-palace-theatre-14055",
+      "headline": "funny girl the palace theatre 14055",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/september-11th-the-cockpit-the-14060",
       "headline": "september 11th the cockpit the 14060",
       "via": null,
@@ -20693,6 +20124,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/hay-fever-lyceum-theatre-14158",
+      "headline": "hay fever lyceum theatre 14158",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-frogs-jermyn-street-t-14161",
       "headline": "the frogs jermyn street t 14161",
       "via": null,
@@ -20875,6 +20315,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/gypsy-queen-oldham-coliseum-14296",
+      "headline": "gypsy queen oldham coliseum 14296",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/nuclear-war-royal-court-the-14298",
       "headline": "nuclear war royal court the 14298",
       "via": null,
@@ -20969,6 +20418,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/romeo-and-julie-union-theatre-14353",
+      "headline": "romeo and julie union theatre 14353",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/assata-taught-m-gate-theatre-14354",
       "headline": "assata taught m gate theatre 14354",
       "via": null,
@@ -21027,6 +20485,15 @@
       "headline": "tick tick b park theatre 14378",
       "publishDate": "2020-08-03",
       "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/richard-iii-arcola-theatre-14387",
+      "headline": "richard iii arcola theatre 14387",
       "via": null,
       "held": [],
       "matched": [],
@@ -21178,6 +20645,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-ugly-one-park-theatre-14489",
+      "headline": "the ugly one park theatre 14489",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/i-hear-you-and-tricycle-14493",
       "headline": "i hear you and tricycle 14493",
       "via": null,
@@ -21207,6 +20683,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/holy-crap-kings-head-t-14505",
       "headline": "holy crap kings head t 14505",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-father-oldham-coliseum-14509",
+      "headline": "the father oldham coliseum 14509",
       "via": null,
       "held": [],
       "matched": [],
@@ -21515,6 +21000,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/lions-and-tiger-sam-wanamaker-p-14913",
       "headline": "lions and tiger sam wanamaker p 14913",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-park-theatre-14922",
+      "headline": "hamlet park theatre 14922",
       "via": null,
       "held": [],
       "matched": [],
@@ -22059,6 +21553,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-hackney-empire-15274",
+      "headline": "cinderella hackney empire 15274",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-secret-thea-sam-wanamaker-p-15277",
       "headline": "the secret thea sam wanamaker p 15277",
       "via": null,
@@ -22363,6 +21866,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/amadeus-olivier-theatre-15449",
+      "headline": "amadeus olivier theatre 15449",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/all-s-well-that-sam-wanamaker-p-15451",
@@ -22691,6 +22203,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/macbeth-olivier-theatre-15628",
+      "headline": "macbeth olivier theatre 15628",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/checkpoint-chan-finborough-thea-15629",
       "headline": "checkpoint chan finborough thea 15629",
       "via": null,
@@ -22702,6 +22223,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/summer-and-smok-almeida-theatre-15633",
       "headline": "summer and smok almeida theatre 15633",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-hackney-empire-15639",
+      "headline": "hamlet hackney empire 15639",
       "via": null,
       "held": [],
       "matched": [],
@@ -22799,6 +22329,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/miss-saigon-palace-theatre-15699",
+      "headline": "miss saigon palace theatre 15699",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/vincent-river-park-theatre-p-15700",
       "headline": "vincent river park theatre p 15700",
       "via": null,
@@ -22866,6 +22405,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/death-of-a-hunt-finborough-thea-15731",
       "headline": "death of a hunt finborough thea 15731",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/pressure-park-theatre-15732",
+      "headline": "pressure park theatre 15732",
       "via": null,
       "held": [],
       "matched": [],
@@ -23215,6 +22763,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/machinal-almeida-theatre-16016",
+      "headline": "machinal almeida theatre 16016",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/monogamy-park-theatre-p-16017",
@@ -23740,6 +23297,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-other-place-park-theatre-p-16555",
+      "headline": "the other place park theatre p 16555",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/poet-in-da-corn-royal-court-the-16558",
       "headline": "poet in da corn royal court the 16558",
       "via": null,
@@ -23747,6 +23313,24 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-effect-oldham-coliseum-16560",
+      "headline": "the effect oldham coliseum 16560",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-lyceum-theatre-16564",
+      "headline": "twelfth night lyceum theatre 16564",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/antony-and-cleo-olivier-theatre-16565",
@@ -24136,6 +23720,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-fishermen-arcola-theatre-16837",
+      "headline": "the fishermen arcola theatre 16837",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/doris-dolly-an-rose-theatre-e-16848",
       "headline": "doris dolly an rose theatre e 16848",
       "via": null,
@@ -24172,6 +23765,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/aladdin-hackney-empire-16892",
+      "headline": "aladdin hackney empire 16892",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/fiddler-on-the-menier-chocolat-16896",
       "headline": "fiddler on the menier chocolat 16896",
       "via": null,
@@ -24179,6 +23781,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/wicked-palace-theatre-16898",
+      "headline": "wicked palace theatre 16898",
+      "publishDate": "2024-03-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/a-christmas-car-old-vic-16907",
@@ -24730,6 +24343,17 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/six-the-musical-arts-theatre-17275",
+      "headline": "six the musical arts theatre 17275",
+      "publishDate": "2023-03-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/blood-knot-orange-tree-the-17283",
       "headline": "blood knot orange tree the 17283",
       "via": null,
@@ -24750,6 +24374,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-bay-at-nice-menier-chocolat-17317",
       "headline": "the bay at nice menier chocolat 17317",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/othello-union-theatre-17322",
+      "headline": "othello union theatre 17322",
       "via": null,
       "held": [],
       "matched": [],
@@ -24786,6 +24419,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/london-with-a-p-katzpace-17356",
       "headline": "london with a p katzpace 17356",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/west-end-girls-live-theatre-n-17357",
+      "headline": "west end girls live theatre n 17357",
       "via": null,
       "held": [],
       "matched": [],
@@ -24901,6 +24543,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/local-hero-lyceum-theatre-17412",
+      "headline": "local hero lyceum theatre 17412",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/hair-palace-theatre-17416",
       "headline": "hair palace theatre 17416",
       "via": null,
@@ -24917,6 +24568,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/three-sisters-almeida-theatre-17452",
+      "headline": "three sisters almeida theatre 17452",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/sweet-charity-donmar-warehous-17460",
@@ -24964,6 +24624,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/captain-corelli-rose-theatre-k-17494",
+      "headline": "captain corelli rose theatre k 17494",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/man-of-la-manch-london-coliseum-17501",
       "headline": "man of la manch london coliseum 17501",
       "via": null,
@@ -24980,6 +24649,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/inala-a-zulu-peacock-theatre-17517",
+      "headline": "inala a zulu peacock theatre 17517",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-half-god-of-kiln-theatre-17522",
@@ -25029,6 +24707,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-firm-hampstead-downs-17571",
       "headline": "the firm hampstead downs 17571",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/handbagged-oldham-coliseum-17572",
+      "headline": "handbagged oldham coliseum 17572",
       "via": null,
       "held": [],
       "matched": [],
@@ -25227,6 +24914,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-globe-theatre-17711",
+      "headline": "twelfth night globe theatre 17711",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/after-dark-or-finborough-thea-17718",
       "headline": "after dark or finborough thea 17718",
       "via": null,
@@ -25315,6 +25011,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/othello-remixe-omnibus-theatre-17760",
+      "headline": "othello remixe omnibus theatre 17760",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-end-of-hist-royal-court-the-17772",
@@ -25508,6 +25213,15 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/the-doctor-almeida-theatre-18047",
+      "headline": "the doctor almeida theatre 18047",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/appropriate-donmar-warehous-18059",
       "headline": "appropriate donmar warehous 18059",
       "via": null,
@@ -25609,6 +25323,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-king-of-hel-hampstead-theat-18138",
       "headline": "the king of hel hampstead theat 18138",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/what-girls-are-soho-theatre-18142",
+      "headline": "what girls are soho theatre 18142",
       "via": null,
       "held": [],
       "matched": [],
@@ -25760,6 +25483,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/curtains-a-mus-palace-theatre-18261",
+      "headline": "curtains a mus palace theatre 18261",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/the-playboy-of-lyric-theatre-18268",
       "headline": "the playboy of lyric theatre 18268",
       "via": null,
@@ -25812,6 +25544,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-palace-theatre-18301",
+      "headline": "cinderella palace theatre 18301",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/blank-donmar-warehous-18302",
@@ -26093,6 +25834,15 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/peter-pan-lyric-theatre-18497",
+      "headline": "peter pan lyric theatre 18497",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-national-th-18500",
@@ -26659,6 +26409,24 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/fleabag-soho-theatre-18955",
+      "headline": "fleabag soho theatre 18955",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/frankenstein-olivier-theatre-18964",
+      "headline": "frankenstein olivier theatre 18964",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/it-is-easy-to-b-finborough-thea-18972",
       "headline": "it is easy to b finborough thea 18972",
       "via": null,
@@ -26766,6 +26534,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/nine-lessons-an-almeida-theatre-19621",
       "headline": "nine lessons an almeida theatre 19621",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-a-s-turbine-theatre-19624",
+      "headline": "cinderella a s turbine theatre 19624",
       "via": null,
       "held": [],
       "matched": [],
@@ -27106,6 +26883,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/dracula-lyric-theatre-20076",
+      "headline": "dracula lyric theatre 20076",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/changing-destin-young-vic-20078",
       "headline": "changing destin young vic 20078",
       "via": null,
@@ -27227,6 +27013,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/can-i-live-the-barbican-20237",
       "headline": "can i live the barbican 20237",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/rough-girls-lyric-theatre-20240",
+      "headline": "rough girls lyric theatre 20240",
       "via": null,
       "held": [],
       "matched": [],
@@ -27436,6 +27231,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/macbeth-almeida-theatre-20406",
+      "headline": "macbeth almeida theatre 20406",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/night-mother-hampstead-theat-20407",
       "headline": "night mother hampstead theat 20407",
       "via": null,
@@ -27510,6 +27314,15 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/aladdin-oldham-coliseum-20451",
+      "headline": "aladdin oldham coliseum 20451",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/rare-earth-mett-royal-court-the-20461",
       "headline": "rare earth mett royal court the 20461",
       "via": null,
@@ -27575,6 +27388,15 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/ballet-icons-ga-london-coliseum-20494",
       "headline": "ballet icons ga london coliseum 20494",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/pinocchio-the-lyric-theatre-20497",
+      "headline": "pinocchio the lyric theatre 20497",
       "via": null,
       "held": [],
       "matched": [],
@@ -29507,6 +29329,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-three-billy-unicorn-theatre-21827",
+      "headline": "the three billy unicorn theatre 21827",
+      "publishDate": "2025-02-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-tragedy-of-almeida-theatre-21839",
@@ -34371,6 +34204,17 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/consumed-lyric-theatre-25360",
+      "headline": "consumed lyric theatre 25360",
+      "publishDate": "2026-02-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/evening-all-aft-donmar-warehous-25371",
       "headline": "evening all aft donmar warehous 25371",
       "publishDate": "2026-02-27",
@@ -35149,11 +34993,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/macbeth-octagon-theatre-7271",
       "headline": "macbeth octagon theatre 7271",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -35347,11 +35189,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-winslow-boy-octagon-theatre-7394",
       "headline": "the winslow boy octagon theatre 7394",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-winslow-boy-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -36142,12 +35982,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/private-lives-a-minerva-theatre-8096",
       "headline": "private lives a minerva theatre 8096",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "private-lives-west-end-2023",
-        "private-lives-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -36479,11 +36316,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/peter-pan-octagon-theatre-8266",
       "headline": "peter pan octagon theatre 8266",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -37367,11 +37202,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-pajama-game-minerva-theatre-8792",
       "headline": "the pajama game minerva theatre 8792",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-pajama-game-west-end-2014"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -38574,11 +38407,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/robin-hood-octagon-theatre-9639",
       "headline": "robin hood octagon theatre 9639",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "robin-hood-west-end-2024"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -38982,11 +38813,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-odyssey-derby-theatre-9903",
       "headline": "the odyssey derby theatre 9903",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-odyssey-off-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -39049,13 +38878,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-octagon-theatre-9928",
       "headline": "twelfth night octagon theatre 9928",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "twelfth-night-off-west-end-2026",
-        "twelfth-night-west-end-2012",
-        "twelfth-night-west-end-2017"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -39391,11 +39216,9 @@
       "headline": "the mousetrap derby theatre 10077",
       "publishDate": "2024-01-27",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-mousetrap-west-end-2021"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -39660,11 +39483,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/pressure-minerva-theatre-10205",
       "headline": "pressure minerva theatre 10205",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "pressure-west-end-2018"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -39756,11 +39577,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/love-story-octagon-theatre-10252",
       "headline": "love story octagon theatre 10252",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-story-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -40230,11 +40049,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/ghosts-clwyd-theatre-c-10736",
       "headline": "ghosts clwyd theatre c 10736",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "ghosts-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -40349,11 +40166,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/macbeth-mercury-theatre-10771",
       "headline": "macbeth mercury theatre 10771",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -40869,11 +40684,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/aladdin-marlowe-theatre-10989",
       "headline": "aladdin marlowe theatre 10989",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -41520,11 +41333,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/dracula-new-vic-theatre-11321",
       "headline": "dracula new vic theatre 11321",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "dracula-west-end-2025"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -41626,12 +41437,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/private-lives-octagon-theatre-11370",
       "headline": "private lives octagon theatre 11370",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "private-lives-west-end-2023",
-        "private-lives-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -41795,11 +41603,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-ladykillers-new-vic-theatre-11430",
       "headline": "the ladykillers new vic theatre 11430",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-ladykillers-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -42178,12 +41984,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/noises-off-octagon-theatre-11587",
       "headline": "noises off octagon theatre 11587",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "noises-off-west-end-2023",
-        "noises-off-west-end-2019"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -42445,11 +42248,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/richard-iii-curve-theatre-11730",
       "headline": "richard iii curve theatre 11730",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "richard-iii-west-end-2014"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -43292,11 +43093,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/aladdin-mercury-theatre-12337",
       "headline": "aladdin mercury theatre 12337",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -43327,13 +43126,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/cinderella-derby-theatre-12354",
       "headline": "cinderella derby theatre 12354",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -45231,11 +45026,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/this-house-minerva-theatre-13523",
       "headline": "this house minerva theatre 13523",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "this-house-west-end-2016"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -45622,13 +45415,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/cinderella-octagon-theatre-13742",
       "headline": "cinderella octagon theatre 13742",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -46041,11 +45830,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-wedding-sin-curve-theatre-14019",
       "headline": "the wedding sin curve theatre 14019",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-weddings-off-west-end-2027"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -46292,11 +46079,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/nell-gwynn-malvern-theatre-14142",
       "headline": "nell gwynn malvern theatre 14142",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "nell-gwynn-west-end-2016"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -46372,11 +46157,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/pygmalion-curve-theatre-14173",
       "headline": "pygmalion curve theatre 14173",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "pygmalion-west-end-2023"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -46410,11 +46193,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/betrayal-derby-theatre-14189",
       "headline": "betrayal derby theatre 14189",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "betrayal-west-end-2019"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -46441,11 +46222,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/killology-sherman-theatre-14200",
       "headline": "killology sherman theatre 14200",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "killology-west-end-2017"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -46463,11 +46242,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/dr-frankenstein-curve-theatre-14207",
       "headline": "dr frankenstein curve theatre 14207",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "frankenstein-west-end-2027"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -47696,14 +47473,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/king-lear-minerva-theatre-15041",
       "headline": "king lear minerva theatre 15041",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "king-lear-2-off-west-end-2026",
-        "king-lear-west-end-2023",
-        "king-lear-west-end-2018",
-        "king-lear-west-end-2014"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -48292,11 +48064,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/peter-pan-derby-theatre-15320",
       "headline": "peter pan derby theatre 15320",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -48461,11 +48231,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/treasure-island-new-vic-theatre-15401",
       "headline": "treasure island new vic theatre 15401",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "treasure-island-west-end-2014"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -48579,13 +48347,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-octagon-theatre-15468",
       "headline": "jane eyre octagon theatre 15468",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "jane-eyre-off-west-end-2026",
-        "jane-eyre-rose-kingston-off-west-end-2026",
-        "jane-eyre-west-end-2015"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -48768,12 +48532,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/hamlet-octagon-theatre-15564",
       "headline": "hamlet octagon theatre 15564",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "hamlet-west-end-2025",
-        "hamlet-west-end-2017"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -49060,11 +48821,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/east-is-east-octagon-theatre-15686",
       "headline": "east is east octagon theatre 15686",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "east-is-east-west-end-2021"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -49586,11 +49345,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/fleabag-curve-theatre-15913",
       "headline": "fleabag curve theatre 15913",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "fleabag-west-end-2019"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -49732,11 +49489,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/crazy-for-you-curve-theatre-15983",
       "headline": "crazy for you curve theatre 15983",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "crazy-for-you-west-end-2023"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -51104,11 +50859,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/robin-hood-watermill-theatre-16845",
       "headline": "robin hood watermill theatre 16845",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "robin-hood-west-end-2024"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -51124,13 +50877,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/cinderella-marlowe-theatre-16851",
       "headline": "cinderella marlowe theatre 16851",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "cinderella-west-end-2026",
-        "cinderella-lyric-hammersmith-off-west-end-2026",
-        "cinderella-west-end-2021"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -51381,12 +51130,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/white-christmas-curve-theatre-16953",
       "headline": "white christmas curve theatre 16953",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "white-christmas-west-end-2019",
-        "white-christmas-west-end-2014"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -52092,12 +51838,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/hamlet-leeds-playhouse-17278",
       "headline": "hamlet leeds playhouse 17278",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "hamlet-west-end-2025",
-        "hamlet-west-end-2017"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -52353,12 +52096,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/the-jungle-book-derby-theatre-17422",
       "headline": "the jungle book derby theatre 17422",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-jungle-book-west-end-2026",
-        "the-jungle-west-end-2018"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -52951,11 +52691,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/vanya-and-sonia-ustinov-studio-17684",
       "headline": "vanya and sonia ustinov studio 17684",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "vanya-west-end-2023"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -53479,12 +53217,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/war-horse-curve-theatre-18167",
       "headline": "war horse curve theatre 18167",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "war-horse-west-end-2026",
-        "war-horse-west-end-2018"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -53531,11 +53266,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/on-bear-ridge-sherman-theatre-18189",
       "headline": "on bear ridge sherman theatre 18189",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "on-bear-ridge-west-end-2019"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -53824,11 +53557,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/cabaret-curve-theatre-18291",
       "headline": "cabaret curve theatre 18291",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "cabaret-west-end-2012"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -53907,12 +53638,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/hedda-gabler-sherman-theatre-18328",
       "headline": "hedda gabler sherman theatre 18328",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "hedda-gabler-west-end-2012",
-        "hedda-gabler-west-end-2016"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -54063,11 +53791,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/dracula-leeds-playhouse-18375",
       "headline": "dracula leeds playhouse 18375",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "dracula-west-end-2025"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -54301,12 +54027,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/west-side-story-curve-theatre-18483",
       "headline": "west side story curve theatre 18483",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "the-story-west-end-2026",
-        "west-side-story-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -55093,11 +54816,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/macbeth-derby-theatre-18862",
       "headline": "macbeth derby theatre 18862",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "macbeth-west-end-2013"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -56700,11 +56421,9 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/peter-pan-octagon-theatre-20509",
       "headline": "peter pan octagon theatre 20509",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "peter-pan-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -57048,11 +56767,9 @@
       "headline": "as you like it new vic theatre 20663",
       "publishDate": "2023-01-08",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "as-you-like-it-west-end-2022"
-      ],
+      "matched": [],
       "outOfWindow": [
         "as-you-like-it-globe-west-end-2026"
       ],
@@ -58357,11 +58074,9 @@
       "headline": "mamma mia curve theatre 21322",
       "publishDate": "2022-09-14",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "mamma-mia-west-end-2021"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -63880,11 +63595,9 @@
       "headline": "dracula derby theatre 23754",
       "publishDate": "2026-06-01",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "dracula-west-end-2025"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -65885,10 +65598,10 @@
       "headline": "pride prejudi octagon theatre 24485",
       "publishDate": "2026-10-19",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": "title-variant",
       "held": [],
       "matched": [
-        "pride-west-end-2026"
+        "pride-bridge-theatre-off-west-end-2026"
       ],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
@@ -67364,11 +67077,9 @@
       "headline": "oliver twist derby theatre 25163",
       "publishDate": "2025-12-03",
       "dateSoft": true,
-      "via": "title-variant",
+      "via": null,
       "held": [],
-      "matched": [
-        "oliver-west-end-2024"
-      ],
+      "matched": [],
       "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
@@ -69695,11 +69406,9 @@
       "headline": "calendar girls octagon theatre 26099",
       "publishDate": "2026-10-10",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "girls-off-west-end-2026"
-      ],
+      "matched": [],
       "outOfWindow": [
         "the-girls-west-end-2017"
       ],
@@ -70898,6 +70607,16 @@
       ]
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/othello-the-re-unicorn-theatre-9387",
+      "headline": "othello the re unicorn theatre 9387",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
+      ]
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/dora-unicorn-theatre-9403",
       "headline": "dora unicorn theatre 9403",
       "via": null,
@@ -70977,6 +70696,16 @@
       "matched": [],
       "outOfWindow": [
         "the-duchess-of-malfi-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/cuckoo-unicorn-theatre-9802",
+      "headline": "cuckoo unicorn theatre 9802",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
       ]
     },
     {
@@ -71227,6 +70956,16 @@
       ]
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/girls-like-that-unicorn-theatre-10890",
+      "headline": "girls like that unicorn theatre 10890",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
+      ]
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/jersey-boys-sunderland-empi-10952",
       "headline": "jersey boys sunderland empi 10952",
       "publishDate": "2025-07-21",
@@ -71236,6 +70975,16 @@
       "matched": [],
       "outOfWindow": [
         "jersey-boys-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/the-nutcracker-unicorn-theatre-10958",
+      "headline": "the nutcracker unicorn theatre 10958",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
       ]
     },
     {
@@ -71479,6 +71228,26 @@
       ]
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/y-father-odyss-unicorn-theatre-12669",
+      "headline": "y father odyss unicorn theatre 12669",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/jungle-book-theatre-royal-w-12808",
+      "headline": "jungle book theatre royal w 12808",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-jungle-book-west-end-2026"
+      ]
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-cast-doncaster-12888",
       "headline": "jane eyre cast doncaster 12888",
       "publishDate": "2026-06-01",
@@ -71666,6 +71435,16 @@
       "matched": [],
       "outOfWindow": [
         "the-red-barn-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/my-mother-medea-unicorn-theatre-13621",
+      "headline": "my mother medea unicorn theatre 13621",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
       ]
     },
     {
@@ -71864,6 +71643,26 @@
     {
       "url": "https://www.britishtheatreguide.info/reviews/wild-life-fm-unicorn-theatre-15426",
       "headline": "wild life fm unicorn theatre 15426",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/julius-caesar-bridge-theatre-15484",
+      "headline": "julius caesar bridge theatre 15484",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/othello-unicorn-theatre-15532",
+      "headline": "othello unicorn theatre 15532",
       "via": null,
       "held": [],
       "matched": [],
@@ -72148,6 +71947,16 @@
       ]
     },
     {
+      "url": "https://www.britishtheatreguide.info/reviews/truth-or-dare-unicorn-theatre-16674",
+      "headline": "truth or dare unicorn theatre 16674",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "unicorn-west-end-2025"
+      ]
+    },
+    {
       "url": "https://www.britishtheatreguide.info/reviews/on-the-road-unicorn-theatre-16677",
       "headline": "on the road unicorn theatre 16677",
       "via": null,
@@ -72175,6 +71984,18 @@
       "matched": [],
       "outOfWindow": [
         "the-other-place-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/hadestown-olivier-theatre-16785",
+      "headline": "hadestown olivier theatre 16785",
+      "publishDate": "2026-10-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hadestown-west-end-2018"
       ]
     },
     {
@@ -72555,6 +72376,16 @@
       "matched": [],
       "outOfWindow": [
         "unicorn-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.britishtheatreguide.info/reviews/a-number-bridge-theatre-18797",
+      "headline": "a number bridge theatre 18797",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026"
       ]
     },
     {
@@ -73179,151 +73010,6 @@
       "outOfWindow": [
         "white-christmas-west-end-2019",
         "white-christmas-west-end-2014"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/cabaret-playhouse-theat-20534",
-      "headline": "cabaret playhouse theat 20534",
-      "publishDate": "2024-01-07",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cabaret-west-end-2012"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/the-book-of-dus-bridge-theatre-20537",
-      "headline": "the book of dus bridge theatre 20537",
-      "publishDate": "2022-03-28",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-bridge-off-west-end-2026"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/robin-hood-theatre-royal-20553",
-      "headline": "robin hood theatre royal 20553",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "robin-hood-west-end-2024"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/aladdin-opera-house-ma-20555",
-      "headline": "aladdin opera house ma 20555",
-      "publishDate": "2022-02-18",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "aladdin-west-end-2016"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/a-fight-against-royal-court-the-20557",
-      "headline": "a fight against royal court the 20557",
-      "publishDate": "2023-12-10",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-fight-against-una-lucha-contra-west-end-2021"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/linda-di-chamou-20567",
-      "headline": "linda di chamou 20567",
-      "publishDate": "2022-02-18",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "linda-west-end-2015"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/school-of-rock-the-palace-thea-20584",
-      "headline": "school of rock the palace thea 20584",
-      "publishDate": "2023-01-15",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "school-of-rock-west-end-2016"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/gianni-schicchi-grange-park-ope-20588",
-      "headline": "gianni schicchi grange park ope 20588",
-      "publishDate": "2022-04-19",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "gianni-schicchi-off-west-end-2027"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/groan-ups-the-mayflower-t-20608",
-      "headline": "groan ups the mayflower t 20608",
-      "publishDate": "2022-04-11",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "groan-ups-west-end-2019"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/human-nurture-crucible-studio-20627",
-      "headline": "human nurture crucible studio 20627",
-      "publishDate": "2022-04-11",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-crucible-west-end-2022",
-        "the-crucible-west-end-2023",
-        "the-crucible-west-end-2014"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/hamlet-sam-wanamaker-p-20633",
-      "headline": "hamlet sam wanamaker p 20633",
-      "publishDate": "2022-05-16",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hamlet-west-end-2025",
-        "hamlet-west-end-2017"
-      ]
-    },
-    {
-      "url": "https://www.britishtheatreguide.info/reviews/9-to-5-the-musi-new-victoria-th-20635",
-      "headline": "9 to 5 the musi new victoria th 20635",
-      "publishDate": "2022-04-11",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "9-to-5-the-musical-west-end-2019"
       ]
     }
   ]

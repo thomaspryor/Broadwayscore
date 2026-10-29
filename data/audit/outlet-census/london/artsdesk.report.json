@@ -1,7 +1,7 @@
 {
   "outletId": "artsdesk",
   "market": "london",
-  "generatedAt": "2026-10-29T02:56:36.678Z",
+  "generatedAt": "2026-10-29T04:23:30.987Z",
   "since": "2012-09-01",
   "source": {
     "kind": "sitemap",
@@ -15,35 +15,35 @@
   "summary": {
     "counts": {
       "not-review": 1775,
-      "held": 278,
-      "misfile": 5,
-      "held-unmatched": 178,
+      "held": 279,
+      "misfile": 3,
+      "held-unmatched": 179,
       "held-other-market": 28,
-      "catalog-gap": 728,
-      "out-of-window": 247,
-      "gap": 57,
-      "other-market-review": 203,
-      "held-alt-url": 40,
+      "catalog-gap": 737,
+      "out-of-window": 253,
+      "gap": 51,
+      "other-market-review": 201,
+      "held-alt-url": 33,
       "ambiguous": 2
     },
     "viaTitleVariant": {
-      "held": 12,
+      "held": 24,
       "gap": 2,
-      "other-market-review": 3,
-      "held-alt-url": 1
+      "other-market-review": 2,
+      "held-alt-url": 3
     },
-    "recall": 0.837,
-    "recallWithCatalog": 0.287
+    "recall": 0.852,
+    "recallWithCatalog": 0.283
   },
   "seasons": {
     "2018-19": {
       "not-review": 140,
       "held-unmatched": 11,
-      "out-of-window": 39,
-      "catalog-gap": 99,
-      "held-alt-url": 6,
-      "gap": 11,
+      "out-of-window": 40,
+      "catalog-gap": 104,
+      "held-alt-url": 3,
       "other-market-review": 28,
+      "gap": 8,
       "held": 21,
       "misfile": 1
     },
@@ -52,17 +52,17 @@
       "held": 5,
       "held-unmatched": 15,
       "held-other-market": 3,
-      "catalog-gap": 94,
+      "catalog-gap": 95,
       "out-of-window": 17,
       "other-market-review": 15,
-      "gap": 17
+      "gap": 16
     },
     "2019-20": {
       "not-review": 146,
       "held": 13,
       "held-unmatched": 26,
-      "gap": 7,
-      "catalog-gap": 83,
+      "gap": 6,
+      "catalog-gap": 84,
       "out-of-window": 35,
       "other-market-review": 10,
       "held-other-market": 1,
@@ -91,11 +91,11 @@
     "2021-22": {
       "not-review": 77,
       "held-unmatched": 17,
-      "catalog-gap": 100,
-      "out-of-window": 39,
-      "other-market-review": 22,
+      "catalog-gap": 102,
+      "out-of-window": 40,
+      "other-market-review": 20,
       "held": 21,
-      "held-alt-url": 6,
+      "held-alt-url": 5,
       "gap": 1,
       "held-other-market": 2
     },
@@ -109,8 +109,7 @@
       "other-market-review": 2,
       "held-unmatched": 10,
       "gap": 1,
-      "held": 18,
-      "misfile": 1,
+      "held": 19,
       "held-other-market": 2,
       "out-of-window": 1
     },
@@ -131,26 +130,26 @@
     },
     "2023-24": {
       "not-review": 20,
-      "out-of-window": 24,
+      "out-of-window": 25,
       "catalog-gap": 81,
       "held-unmatched": 18,
-      "gap": 5,
       "held": 36,
+      "gap": 4,
       "other-market-review": 24,
       "held-alt-url": 3,
       "held-other-market": 6
     },
     "2025-26": {
       "not-review": 24,
-      "out-of-window": 18,
-      "held-alt-url": 6,
-      "held-unmatched": 33,
+      "out-of-window": 20,
+      "held-unmatched": 34,
       "catalog-gap": 48,
       "other-market-review": 33,
-      "misfile": 2,
+      "held-alt-url": 4,
       "held": 78,
       "held-other-market": 4,
       "gap": 7,
+      "misfile": 1,
       "ambiguous": 1
     },
     "2022-23": {
@@ -170,9 +169,9 @@
       "gap": 3,
       "held": 35,
       "other-market-review": 26,
-      "out-of-window": 16,
+      "out-of-window": 17,
       "held-unmatched": 12,
-      "held-alt-url": 7,
+      "held-alt-url": 6,
       "ambiguous": 1,
       "held-other-market": 4
     }
@@ -536,18 +535,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://theartsdesk.com/theatre/aladdin-richmond-theatre-review-great-dame-weak-script",
-      "headline": "aladdin richmond theatre review great dame weak script",
-      "publishDate": "2017-12-19",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://theartsdesk.com/theatre/hamilton-victoria-palace-review-rich-radical-and-ridiculously-exciting",
       "headline": "hamilton victoria palace review rich radical and ridiculously exciting",
       "publishDate": "2018-01-01",
@@ -580,18 +567,6 @@
       "held": [],
       "matched": [
         "the-great-wave-west-end-2018"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/misty-bush-theatre-review-powerful-meditation-how-we-tell-stories",
-      "headline": "misty bush theatre review powerful meditation how we tell stories",
-      "publishDate": "2018-11-06",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "stories-west-end-2018"
       ],
       "outOfWindow": []
     },
@@ -762,30 +737,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://theartsdesk.com/theatre/aladdin-hackney-empire-review-clive-rowe-returns-dame",
-      "headline": "aladdin hackney empire review clive rowe returns dame",
-      "publishDate": "2018-12-15",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/aladdin-new-wimbledon-theatre-review-enjoyable-underpowered",
-      "headline": "aladdin new wimbledon theatre review enjoyable underpowered",
-      "publishDate": "2018-12-19",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aladdin-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://theartsdesk.com/theatre/tell-tale-heart-national-theatre-review-bloody-good-fun-well-bloody",
       "headline": "tell tale heart national theatre review bloody good fun well bloody",
       "publishDate": "2018-12-19",
@@ -846,18 +797,6 @@
       "outOfWindow": [
         "small-island-west-end-2022"
       ]
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/three-sisters-maly-drama-theatre-vaudeville-theatre-review-chekhov-luminous-clarity",
-      "headline": "three sisters maly drama theatre vaudeville theatre review chekhov luminous clarity",
-      "publishDate": "2019-12-11",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "three-sisters-west-end-2019"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://theartsdesk.com/theatre/hansard-national-theatre-review-starry-argument-ends-poorly",
@@ -934,18 +873,6 @@
       "outOfWindow": [
         "the-story-west-end-2026"
       ]
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/infamous-jermyn-street-theatre-review-lady-hamilton-challenges-patriarchy-and-loses",
-      "headline": "infamous jermyn street theatre review lady hamilton challenges patriarchy and loses",
-      "publishDate": "2023-09-14",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamilton-west-end-2021"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://theartsdesk.com/theatre/pygmalion-old-vic-review-zappy-wit-and-emotional-intelligence",
@@ -1138,17 +1065,6 @@
   ],
   "heldAltUrl": [
     {
-      "url": "https://theartsdesk.com/theatre/twilight-zone-almeida-theatre-review-hokum-humanity",
-      "headline": "twilight zone almeida theatre review hokum humanity",
-      "publishDate": "2019-03-13",
-      "matched": [
-        "the-twilight-zone-west-end-2019"
-      ],
-      "heldUrls": [
-        "https://theartsdesk.com/theatre/twilight-zone-ambassadors-theatre-review-%E2%80%93-retro-wit-our-new-space-age-0"
-      ]
-    },
-    {
       "url": "https://theartsdesk.com/theatre/jungle-young-vic-review-physically-and-emotionally-challenging",
       "headline": "jungle young vic review physically and emotionally challenging",
       "publishDate": "2018-12-14",
@@ -1160,17 +1076,6 @@
       ]
     },
     {
-      "url": "https://theartsdesk.com/theatre/caroline-or-change-hampstead-theatre-review-sharon-d-clarke-conquers",
-      "headline": "caroline or change hampstead theatre review sharon d clarke conquers",
-      "publishDate": "2018-12-19",
-      "matched": [
-        "caroline-or-change-west-end-2018"
-      ],
-      "heldUrls": [
-        "https://theartsdesk.com/theatre/caroline-or-change-playhouse-theatre-review-sharon-d-clarke-superlative"
-      ]
-    },
-    {
       "url": "https://theartsdesk.com/theatre/inheritance-young-vic-review-long-days-journey-light",
       "headline": "inheritance young vic review long days journey light",
       "publishDate": "2018-10-15",
@@ -1179,28 +1084,6 @@
       ],
       "heldUrls": [
         "https://www.theartsdesk.com/theatre/inheritance-noel-coward-theatre-review-tangled-knot-gay-fairy-tale-and-reality"
-      ]
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/tartuffe-theatre-royal-haymarket-review-dual-language-production-loses-its-way",
-      "headline": "tartuffe theatre royal haymarket review dual language production loses its way",
-      "publishDate": "2019-02-22",
-      "matched": [
-        "tartuffe-west-end-2019"
-      ],
-      "heldUrls": [
-        "https://theartsdesk.com/theatre/tartuffe-national-theatre-review-morality-heavy-version-comedy-classic"
-      ]
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/measure-measure-donmar-warehouse-review-shakespeare-twice-over-packs-partial-sting",
-      "headline": "measure measure donmar warehouse review shakespeare twice over packs partial sting",
-      "publishDate": "2026-08-25",
-      "matched": [
-        "sting-west-end-2026"
-      ],
-      "heldUrls": [
-        "https://theartsdesk.com/theatre/sting-young-vic-review-emotionally-gruelling-bit-bizarre"
       ]
     },
     {
@@ -1234,17 +1117,6 @@
       ],
       "heldUrls": [
         "https://theartsdesk.com/theatre/les-mis%C3%A9rables-sondheim-theatre-review-join-our-crusade"
-      ]
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/last-five-years-southwark-playhouse-review-inspired-actor-musician-take-cult-classic",
-      "headline": "last five years southwark playhouse review inspired actor musician take cult classic",
-      "publishDate": "2021-09-25",
-      "matched": [
-        "the-last-five-years-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://theartsdesk.com/theatre/last-five-years-garrick-theatre-review-bittersweet-musical-treat-gets-west-end-upgrade"
       ]
     },
     {
@@ -1462,17 +1334,6 @@
       ]
     },
     {
-      "url": "https://theartsdesk.com/theatre/reykjavik-hampstead-theatre-review-drama-frozen-waves-detail",
-      "headline": "reykjavik hampstead theatre review drama frozen waves detail",
-      "publishDate": "2024-10-31",
-      "matched": [
-        "frozen-west-end-2021"
-      ],
-      "heldUrls": [
-        "https://theartsdesk.com/theatre/frozen-theatre-royal-drury-lane-review-twinkling-spectacle-sincere-drama-its-heart"
-      ]
-    },
-    {
       "url": "https://theartsdesk.com/theatre/dr-strangelove-noel-coward-theatre-review-evening-different-parts",
       "headline": "dr strangelove noel coward theatre review evening different parts",
       "publishDate": "2024-11-06",
@@ -1534,18 +1395,6 @@
       "publishDate": "2025-05-06",
       "matched": [
         "my-master-builder-west-end-2025"
-      ],
-      "heldUrls": [
-        "(no url)",
-        "(no url)"
-      ]
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/fat-ham-rsc-stratford-review-its-hamlet-jim-not-we-know-it",
-      "headline": "fat ham rsc stratford review its hamlet jim not we know it",
-      "publishDate": "2025-09-06",
-      "matched": [
-        "hamlet-west-end-2025"
       ],
       "heldUrls": [
         "(no url)",
@@ -1621,22 +1470,6 @@
       ]
     },
     {
-      "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
-      "headline": "comedy about spies noel coward theatre review goes wrong team hit spot again",
-      "publishDate": "2026-08-25",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [
-        "the-comedy-about-spies-west-end-2025"
-      ],
-      "matched": [
-        "the-comedy-about-spies-west-end-2026"
-      ],
-      "outOfWindow": [
-        "the-comedy-about-spies-west-end-2025"
-      ]
-    },
-    {
       "url": "https://theartsdesk.com/theatre/arcadia-duke-yorks-theatre-review-reaching-stars",
       "headline": "arcadia duke yorks theatre review reaching stars",
       "publishDate": "2026-07-10",
@@ -1650,22 +1483,6 @@
       ],
       "outOfWindow": [
         "arcadia-west-end-2026"
-      ]
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/bloodsport-stratford-east-review-1536-author-pits-more-essex-girls-against-bellicose-englishmen",
-      "headline": "bloodsport stratford east review 1536 author pits more essex girls against bellicose englishmen",
-      "publishDate": "2026-09-22",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [
-        "bloodsport-after-helen-of-troy-off-west-end-2026"
-      ],
-      "matched": [
-        "girls-off-west-end-2026"
-      ],
-      "outOfWindow": [
-        "the-girls-west-end-2017"
       ]
     }
   ],
@@ -3482,6 +3299,20 @@
       ]
     },
     {
+      "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
+      "headline": "comedy about spies noel coward theatre review goes wrong team hit spot again",
+      "publishDate": "2026-08-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-comedy-about-spies-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-comedy-about-spies-west-end-2025"
+      ]
+    },
+    {
       "url": "https://theartsdesk.com/theatre/crucible-shakespeares-globe-review-stirring-account-paranoia-and-prejudice",
       "headline": "crucible shakespeares globe review stirring account paranoia and prejudice",
       "publishDate": "2025-05-27",
@@ -4929,6 +4760,17 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://theartsdesk.com/theatre/twilight-zone-almeida-theatre-review-hokum-humanity",
+      "headline": "twilight zone almeida theatre review hokum humanity",
+      "publishDate": "2019-03-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://theartsdesk.com/theatre/misalliance-orange-tree-theatre-review-smashing-edwardian-comedy-festive-treat",
       "headline": "misalliance orange tree theatre review smashing edwardian comedy festive treat",
       "publishDate": "2017-12-15",
@@ -4954,6 +4796,17 @@
       "url": "https://theartsdesk.com/theatre/belleville-donmar-warehouse-review-prickly-and-unnerving",
       "headline": "belleville donmar warehouse review prickly and unnerving",
       "publishDate": "2018-03-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/aladdin-richmond-theatre-review-great-dame-weak-script",
+      "headline": "aladdin richmond theatre review great dame weak script",
+      "publishDate": "2017-12-19",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -5193,6 +5046,17 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://theartsdesk.com/theatre/caroline-or-change-hampstead-theatre-review-sharon-d-clarke-conquers",
+      "headline": "caroline or change hampstead theatre review sharon d clarke conquers",
+      "publishDate": "2018-12-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://theartsdesk.com/theatre/kiss-spider-woman-menier-chocolate-factory-review-brilliantly-performed-and-imaginatively-staged",
       "headline": "kiss spider woman menier chocolate factory review brilliantly performed and imaginatively staged",
       "publishDate": "2018-03-26",
@@ -5323,6 +5187,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/tartuffe-theatre-royal-haymarket-review-dual-language-production-loses-its-way",
+      "headline": "tartuffe theatre royal haymarket review dual language production loses its way",
+      "publishDate": "2019-02-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://theartsdesk.com/theatre/fatherland-lyric-hammersmith-review-loud-and-proud-shame-about-content",
@@ -5930,6 +5805,17 @@
       "itemMarket": "west-end"
     },
     {
+      "url": "https://theartsdesk.com/theatre/aladdin-hackney-empire-review-clive-rowe-returns-dame",
+      "headline": "aladdin hackney empire review clive rowe returns dame",
+      "publishDate": "2018-12-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
       "url": "https://theartsdesk.com/theatre/double-dealer-orange-tree-theatre-review-high-spirits-and-low-morals",
       "headline": "double dealer orange tree theatre review high spirits and low morals",
       "publishDate": "2018-12-14",
@@ -5961,6 +5847,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "west-end"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/aladdin-new-wimbledon-theatre-review-enjoyable-underpowered",
+      "headline": "aladdin new wimbledon theatre review enjoyable underpowered",
+      "publishDate": "2018-12-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
     },
     {
       "url": "https://theartsdesk.com/theatre/convert-young-vic-review-africas-electric-cry-justice",
@@ -6544,6 +6441,17 @@
       "matched": [],
       "outOfWindow": [],
       "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/three-sisters-maly-drama-theatre-vaudeville-theatre-review-chekhov-luminous-clarity",
+      "headline": "three sisters maly drama theatre vaudeville theatre review chekhov luminous clarity",
+      "publishDate": "2019-12-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
     },
     {
       "url": "https://theartsdesk.com/theatre/damned-comedie-francaise-barbican-review-slow-burn-horrors-devastating-images",
@@ -8064,6 +7972,17 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://theartsdesk.com/theatre/leopards-rose-theatre-kingston-review-no-thrill-thriller-about-sex-and-power",
+      "headline": "leopards rose theatre kingston review no thrill thriller about sex and power",
+      "publishDate": "2021-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
       "url": "https://theartsdesk.com/theatre/memory-water-hampstead-theatre-review-uneasy-tragi-comedy",
       "headline": "memory water hampstead theatre review uneasy tragi comedy",
       "publishDate": "2021-09-17",
@@ -8232,6 +8151,17 @@
       "url": "https://theartsdesk.com/theatre/choir-man-arts-theatre-review-old-school-hits-old-school-pub",
       "headline": "choir man arts theatre review old school hits old school pub",
       "publishDate": "2021-11-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/seven-pomegranate-seeds-rose-theatre-kingston-review-misogynist-euripides-stands-corrected",
+      "headline": "seven pomegranate seeds rose theatre kingston review misogynist euripides stands corrected",
+      "publishDate": "2021-11-16",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -12379,11 +12309,9 @@
       "headline": "henry v tobacco factory theatres bristol review pity war",
       "publishDate": "2018-09-24",
       "dateSoft": true,
-      "via": "title-variant",
+      "via": null,
       "held": [],
-      "matched": [
-        "pity-west-end-2018"
-      ],
+      "matched": [],
       "outOfWindow": [
         "henry-v-west-end-2013"
       ],
@@ -12916,17 +12844,6 @@
       "itemMarket": "regional-uk"
     },
     {
-      "url": "https://theartsdesk.com/theatre/leopards-rose-theatre-kingston-review-no-thrill-thriller-about-sex-and-power",
-      "headline": "leopards rose theatre kingston review no thrill thriller about sex and power",
-      "publishDate": "2021-09-13",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
-      "itemMarket": "regional-uk"
-    },
-    {
       "url": "https://theartsdesk.com/theatre/cherry-orchard-windsor-theatre-royal-review-tolstoy-meets-mrs-two-soups",
       "headline": "cherry orchard windsor theatre royal review tolstoy meets mrs two soups",
       "publishDate": "2021-10-22",
@@ -12938,17 +12855,6 @@
         "the-cherry-orchard-west-end-2026",
         "the-cherry-orchard-riverside-studios-off-west-end-2026"
       ],
-      "itemMarket": "regional-uk"
-    },
-    {
-      "url": "https://theartsdesk.com/theatre/seven-pomegranate-seeds-rose-theatre-kingston-review-misogynist-euripides-stands-corrected",
-      "headline": "seven pomegranate seeds rose theatre kingston review misogynist euripides stands corrected",
-      "publishDate": "2021-11-16",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
     {
@@ -14209,12 +14115,12 @@
       "headline": "ulster american irish repertory theatre abbey theatre dublin review plenty laughs no layering",
       "publishDate": "2026-08-14",
       "dateSoft": true,
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
+      "matched": [],
+      "outOfWindow": [
         "plenty-west-end-2026"
       ],
-      "outOfWindow": [],
       "itemMarket": "regional-uk"
     },
     {
@@ -14724,6 +14630,18 @@
       ]
     },
     {
+      "url": "https://theartsdesk.com/theatre/misty-bush-theatre-review-powerful-meditation-how-we-tell-stories",
+      "headline": "misty bush theatre review powerful meditation how we tell stories",
+      "publishDate": "2018-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "stories-west-end-2018"
+      ]
+    },
+    {
       "url": "https://theartsdesk.com/theatre/pressure-park-theatre-review-david-haig-terrific-his-own-drama",
       "headline": "pressure park theatre review david haig terrific his own drama",
       "publishDate": "2018-04-06",
@@ -14998,6 +14916,18 @@
         "twelfth-night-off-west-end-2026",
         "twelfth-night-west-end-2012",
         "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/measure-measure-donmar-warehouse-review-shakespeare-twice-over-packs-partial-sting",
+      "headline": "measure measure donmar warehouse review shakespeare twice over packs partial sting",
+      "publishDate": "2026-08-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sting-west-end-2026"
       ]
     },
     {
@@ -15632,6 +15562,18 @@
       "matched": [],
       "outOfWindow": [
         "be-more-chill-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/last-five-years-southwark-playhouse-review-inspired-actor-musician-take-cult-classic",
+      "headline": "last five years southwark playhouse review inspired actor musician take cult classic",
+      "publishDate": "2021-09-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-west-end-2025"
       ]
     },
     {
@@ -16834,6 +16776,18 @@
       ]
     },
     {
+      "url": "https://theartsdesk.com/theatre/infamous-jermyn-street-theatre-review-lady-hamilton-challenges-patriarchy-and-loses",
+      "headline": "infamous jermyn street theatre review lady hamilton challenges patriarchy and loses",
+      "publishDate": "2023-09-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamilton-west-end-2021"
+      ]
+    },
+    {
       "url": "https://theartsdesk.com/theatre/white-factory-marylebone-theatre-review-what-price-dignity-hell",
       "headline": "white factory marylebone theatre review what price dignity hell",
       "publishDate": "2023-09-23",
@@ -17148,6 +17102,18 @@
       ]
     },
     {
+      "url": "https://theartsdesk.com/theatre/reykjavik-hampstead-theatre-review-drama-frozen-waves-detail",
+      "headline": "reykjavik hampstead theatre review drama frozen waves detail",
+      "publishDate": "2024-10-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-west-end-2021"
+      ]
+    },
+    {
       "url": "https://theartsdesk.com/theatre/title-show-southwark-playhouse-review-two-guys-and-two-girls-write-about-writing-delightfully",
       "headline": "title show southwark playhouse review two guys and two girls write about writing delightfully",
       "publishDate": "2024-11-28",
@@ -17309,6 +17275,19 @@
       "matched": [],
       "outOfWindow": [
         "the-story-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/fat-ham-rsc-stratford-review-its-hamlet-jim-not-we-know-it",
+      "headline": "fat ham rsc stratford review its hamlet jim not we know it",
+      "publishDate": "2025-09-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
       ]
     },
     {

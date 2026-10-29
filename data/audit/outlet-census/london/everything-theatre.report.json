@@ -1,7 +1,7 @@
 {
   "outletId": "everything-theatre",
   "market": "london",
-  "generatedAt": "2026-10-29T03:12:08.904Z",
+  "generatedAt": "2026-10-29T04:24:47.514Z",
   "since": "2012-09-01",
   "source": {
     "kind": "wp-json",
@@ -14,11 +14,11 @@
   "corpus": "review-texts",
   "summary": {
     "counts": {
-      "catalog-gap": 2168,
-      "not-review": 2852,
+      "catalog-gap": 2171,
+      "not-review": 2856,
       "held": 200,
-      "gap": 120,
-      "out-of-window": 910,
+      "gap": 108,
+      "out-of-window": 915,
       "other-market-review": 329,
       "held-other-market": 7,
       "ambiguous": 5,
@@ -27,10 +27,10 @@
     },
     "viaTitleVariant": {
       "held": 12,
-      "gap": 14,
+      "gap": 10,
       "held-alt-url": 13
     },
-    "recall": 0.652,
+    "recall": 0.676,
     "recallWithCatalog": 0.09
   },
   "seasons": {
@@ -104,11 +104,11 @@
       "other-market-review": 5
     },
     "2019-20": {
-      "not-review": 79,
+      "not-review": 80,
       "out-of-window": 21,
       "other-market-review": 26,
       "catalog-gap": 56,
-      "gap": 3,
+      "gap": 2,
       "held": 1,
       "held-unmatched": 1
     },
@@ -116,51 +116,51 @@
       "not-review": 149,
       "out-of-window": 31,
       "other-market-review": 12,
-      "catalog-gap": 101,
-      "gap": 3
+      "catalog-gap": 102,
+      "gap": 2
     },
     "2017-18": {
-      "not-review": 185,
+      "not-review": 186,
       "other-market-review": 19,
-      "out-of-window": 63,
+      "out-of-window": 64,
       "catalog-gap": 135,
       "held-unmatched": 1,
       "held": 1,
-      "gap": 5
+      "gap": 3
     },
     "2016-17": {
       "catalog-gap": 152,
       "other-market-review": 13,
       "not-review": 201,
-      "out-of-window": 48,
-      "gap": 14,
+      "out-of-window": 49,
+      "gap": 13,
       "held-unmatched": 1,
       "held": 3
     },
     "2015-16": {
-      "out-of-window": 68,
+      "out-of-window": 70,
       "not-review": 172,
       "catalog-gap": 125,
       "other-market-review": 23,
-      "gap": 7,
+      "gap": 5,
       "held": 1,
       "held-alt-url": 1
     },
     "2014-15": {
-      "catalog-gap": 198,
+      "catalog-gap": 199,
       "out-of-window": 86,
       "other-market-review": 21,
-      "not-review": 211,
-      "gap": 7,
+      "not-review": 212,
+      "gap": 5,
       "held-alt-url": 1,
       "held": 1
     },
     "2013-14": {
-      "not-review": 238,
-      "catalog-gap": 188,
+      "not-review": 239,
+      "catalog-gap": 189,
       "other-market-review": 24,
-      "out-of-window": 99,
-      "gap": 17,
+      "out-of-window": 100,
+      "gap": 14,
       "held-unmatched": 1,
       "held": 2
     }
@@ -1024,17 +1024,6 @@
       ]
     },
     {
-      "url": "https://everything-theatre.co.uk/2019/11/touching-the-void-duke-of-yorks-theatre-review/",
-      "headline": "Touching the Void, Duke of York’s Theatre – Review",
-      "publishDate": "2019-11-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "touching-the-void-west-end-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://everything-theatre.co.uk/2019/11/juliet-shaftesbury-theatre-review/",
       "headline": "& Juliet, Shaftesbury Theatre – Review",
       "publishDate": "2019-11-21",
@@ -1067,17 +1056,6 @@
       "held": [],
       "matched": [
         "the-comedy-about-a-bank-robbery-west-end-2016"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://everything-theatre.co.uk/2019/03/the-silence-of-snow-the-life-of-patrick-hamilton-jack-studio-theatre-review/",
-      "headline": "The Silence of Snow: The Life of Patrick Hamilton, Jack Studio Theatre – Review",
-      "publishDate": "2019-03-18",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamilton-west-end-2021"
       ],
       "outOfWindow": []
     },
@@ -1115,17 +1093,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://everything-theatre.co.uk/2018/03/split-network-theatre-at-vault-festival-review/",
-      "headline": "Split, Network Theatre at Vault Festival – Review",
-      "publishDate": "2018-03-04",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "network-west-end-2017"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://everything-theatre.co.uk/2017/12/goats-royal-court-theatre-review/",
       "headline": "Goats, Royal Court Theatre – Review",
       "publishDate": "2017-12-03",
@@ -1135,19 +1102,6 @@
         "goats-west-end-2017"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://everything-theatre.co.uk/2017/09/hamlet-park-theatre-review/",
-      "headline": "Hamlet, Park Theatre – Review",
-      "publishDate": "2017-09-04",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamlet-west-end-2017"
-      ],
-      "outOfWindow": [
-        "hamlet-west-end-2025"
-      ]
     },
     {
       "url": "https://everything-theatre.co.uk/2017/08/men-girls-dance-tate-britain-review/",
@@ -1243,20 +1197,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://everything-theatre.co.uk/2017/04/twelfth-night-greenwich-theatre-review/",
-      "headline": "Twelfth Night, Greenwich Theatre – Review",
-      "publishDate": "2017-04-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "twelfth-night-west-end-2017"
-      ],
-      "outOfWindow": [
-        "twelfth-night-off-west-end-2026",
-        "twelfth-night-west-end-2012"
-      ]
-    },
-    {
       "url": "https://everything-theatre.co.uk/2017/04/men-girls-dance-the-place-review/",
       "headline": "Men & Girls Dance, The Place – Review",
       "publishDate": "2017-04-15",
@@ -1322,21 +1262,6 @@
       ]
     },
     {
-      "url": "https://everything-theatre.co.uk/2016/08/romeo-and-juliet-steiner-theatre-review/",
-      "headline": "Romeo and Juliet, Steiner Theatre – Review",
-      "publishDate": "2016-08-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "romeo-and-juliet-west-end-2016"
-      ],
-      "outOfWindow": [
-        "romeo-and-juliet-west-end-2026",
-        "romeo-and-juliet-west-end-2027",
-        "romeo-and-juliet-west-end-2024"
-      ]
-    },
-    {
       "url": "https://everything-theatre.co.uk/2016/07/american-idiot-arts-theatre-review/",
       "headline": "American Idiot, Arts Theatre – Review",
       "publishDate": "2016-07-15",
@@ -1346,19 +1271,6 @@
         "american-idiot-west-end-2016"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://everything-theatre.co.uk/2016/03/all-that-fall-wiltons-music-hall-review/",
-      "headline": "All That Fall, Wilton’s Music Hall – Review",
-      "publishDate": "2016-03-28",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "all-that-fall-west-end-2016"
-      ],
-      "outOfWindow": [
-        "all-that-fall-west-end-2012"
-      ]
     },
     {
       "url": "https://everything-theatre.co.uk/2015/12/hangmen-wyndhams-theatre-review/",
@@ -1455,17 +1367,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://everything-theatre.co.uk/2015/04/once-upon-a-midnight-dreary-blue-elephant-theatre-review/",
-      "headline": "Once Upon a Midnight Dreary, Blue Elephant Theatre – Review",
-      "publishDate": "2015-04-30",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "once-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://everything-theatre.co.uk/2014/12/treasure-island-the-curse-of-the-pearl-necklace-above-the-stag-review/",
       "headline": "Treasure Island, the Curse of the Pearl Necklace, Above the Stag – Review",
       "publishDate": "2014-12-07",
@@ -1477,17 +1378,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://everything-theatre.co.uk/2014/10/great-britain-theatre-royal-haymarket-review/",
-      "headline": "Great Britain, Theatre Royal Haymarket – Review",
-      "publishDate": "2014-10-01",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "great-britain-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://everything-theatre.co.uk/2014/08/let-the-right-one-in-apollo-theatre-review/",
       "headline": "Let The Right One In, Apollo Theatre – Review",
       "publishDate": "2014-08-23",
@@ -1495,17 +1385,6 @@
       "held": [],
       "matched": [
         "let-the-right-one-in-west-end-2014"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://everything-theatre.co.uk/2014/07/drag-king-richard-iii-riverside-studios-review/",
-      "headline": "Drag King Richard III, Riverside Studios – Review",
-      "publishDate": "2014-07-31",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "richard-iii-west-end-2014"
       ],
       "outOfWindow": []
     },
@@ -1589,17 +1468,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://everything-theatre.co.uk/2014/04/once-we-lived-here-kings-head-theatre-review/",
-      "headline": "Once We Lived Here, King’s Head Theatre – Review",
-      "publishDate": "2014-04-07",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "once-west-end-2013"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://everything-theatre.co.uk/2014/03/king-lear-the-cockpit-review/",
       "headline": "King Lear, The Cockpit – Review",
       "publishDate": "2014-03-15",
@@ -1672,21 +1540,6 @@
         "othello-west-end-2013"
       ],
       "outOfWindow": [
-        "othello-west-end-2025",
-        "othello-west-end-2022"
-      ]
-    },
-    {
-      "url": "https://everything-theatre.co.uk/2013/09/othello-remix-unicorn-theatre-review/",
-      "headline": "Othello: The Remix, Unicorn Theatre – Review",
-      "publishDate": "2013-09-16",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "othello-west-end-2013"
-      ],
-      "outOfWindow": [
-        "unicorn-west-end-2025",
         "othello-west-end-2025",
         "othello-west-end-2022"
       ]
@@ -16477,6 +16330,16 @@
       "itemMarket": "london"
     },
     {
+      "url": "https://everything-theatre.co.uk/2019/03/the-silence-of-snow-the-life-of-patrick-hamilton-jack-studio-theatre-review/",
+      "headline": "The Silence of Snow: The Life of Patrick Hamilton, Jack Studio Theatre – Review",
+      "publishDate": "2019-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "london"
+    },
+    {
       "url": "https://everything-theatre.co.uk/2019/03/blood-knot-orange-tree-theatre-review/",
       "headline": "Blood Knot, Orange Tree Theatre – Review",
       "publishDate": "2019-03-17",
@@ -23077,6 +22940,16 @@
       "itemMarket": "off-west-end"
     },
     {
+      "url": "https://everything-theatre.co.uk/2014/10/great-britain-theatre-royal-haymarket-review/",
+      "headline": "Great Britain, Theatre Royal Haymarket – Review",
+      "publishDate": "2014-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
       "url": "https://everything-theatre.co.uk/2014/09/mistaken-etcetera-theatre-review/",
       "headline": "Mistaken, Etcetera Theatre – Review",
       "publishDate": "2014-09-30",
@@ -23529,6 +23402,16 @@
     {
       "url": "https://everything-theatre.co.uk/2014/07/napoleon-blown-apart-arcola-theatre-review/",
       "headline": "Napoleon Blown Apart, Arcola Theatre – Review",
+      "publishDate": "2014-07-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://everything-theatre.co.uk/2014/07/drag-king-richard-iii-riverside-studios-review/",
+      "headline": "Drag King Richard III, Riverside Studios – Review",
       "publishDate": "2014-07-31",
       "via": null,
       "held": [],
@@ -28132,11 +28015,9 @@
       "url": "https://everything-theatre.co.uk/2017/04/shit-faced-shakespeares-much-ado-about-nothing-leicester-square-theatre-review/",
       "headline": "Shit-Faced Shakespeare’s Much Ado About Nothing, Leicester Square Theatre – Review",
       "publishDate": "2017-04-16",
-      "via": "poller-matcher",
+      "via": null,
       "held": [],
-      "matched": [
-        "much-ado-about-nothing-west-end-2016"
-      ],
+      "matched": [],
       "outOfWindow": [
         "much-ado-about-nothing-globe-off-west-end-2026",
         "much-ado-about-nothing-off-west-end-2026",

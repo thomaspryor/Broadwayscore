@@ -1,9 +1,9 @@
 {
  "outletId": "thestage",
  "market": "london",
- "generatedAt": "2026-10-29T02:36:14.074Z",
+ "generatedAt": "2026-10-29T04:25:34.251Z",
  "since": "2012-09-01",
- "source": "sitemap",
+ "source": "composite",
  "items": [
   {
    "url": "https://www.thestage.co.uk/reviews/a-centenary-celebration-review-royal-opera-house-london-royal-ballet-birmingham-royal-ballet-and-the-royal-ballet-school",
@@ -357,10 +357,7 @@
    "publishDate": "2026-10-16",
    "dateSoft": true,
    "headline": "rb dance company stories review peacock theatre london",
-   "bucket": "gap",
-   "matched": [
-    "stories-the-tap-dance-sensation-west-end-2026"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/sylvia-review-festival-theatre-edinburgh-beverley-knight-naomi-katiyo",
@@ -454,10 +451,7 @@
    "publishDate": "2026-10-15",
    "dateSoft": true,
    "headline": "do not pass go review",
-   "bucket": "gap",
-   "matched": [
-    "the-pass-off-west-end-2026"
-   ]
+   "bucket": "not-review"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/nina-review-battersea-arts-centre-council-chamber-london",
@@ -807,10 +801,7 @@
    "publishDate": "2026-10-02",
    "dateSoft": true,
    "headline": "antigone exits review chichester festival theatre nina segal",
-   "bucket": "held-other-market",
-   "matched": [
-    "nina-off-west-end-2026"
-   ]
+   "bucket": "held-other-market"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/the-farmers-wife-review-theatre-by-the-lake-keswick-hannah-khalil-helen-rebanks",
@@ -930,10 +921,7 @@
    "publishDate": "2026-09-28",
    "dateSoft": true,
    "headline": "amanda the night before me review bridge house london divina de campo",
-   "bucket": "held-alt-url",
-   "matched": [
-    "the-bridge-off-west-end-2026"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/ecstasy-of-the-virtues-review-stone-nest-london-nwando-ebizie-mahogany-opera",
@@ -1760,10 +1748,8 @@
    "publishDate": "2026-08-24",
    "dateSoft": true,
    "headline": "the sorcerers apprentice review little angel theatre london oliver hymans",
-   "bucket": "held-alt-url",
-   "matched": [
-    "oliver-west-end-2024"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/our-other-organ-review-boaz-barkan-summerhall-edinburgh",
@@ -5583,8 +5569,7 @@
    "headline": "copenhagen review hampstead theatre london michael frayn",
    "bucket": "held",
    "matched": [
-    "copenhagen-west-end-2026",
-    "michael-off-west-end-2026"
+    "copenhagen-west-end-2026"
    ]
   },
   {
@@ -6971,9 +6956,6 @@
    "dateSoft": true,
    "headline": "our town review swansea grand theatre michael sheen welsh national theatre",
    "bucket": "other-market-review",
-   "matched": [
-    "michael-off-west-end-2026"
-   ],
    "itemMarket": "west-end"
   },
   {
@@ -7112,8 +7094,7 @@
    "headline": "woman in mind review duke of yorks theatre london sheridan smith alan ayckbourn michael longhurst",
    "bucket": "held",
    "matched": [
-    "woman-in-mind-west-end-2025",
-    "michael-off-west-end-2026"
+    "woman-in-mind-west-end-2025"
    ]
   },
   {
@@ -7129,10 +7110,7 @@
    "publishDate": "2025-12-24",
    "dateSoft": true,
    "headline": "sleeping beauty review london palladium catherine tate michael harrison julian clary",
-   "bucket": "gap",
-   "matched": [
-    "michael-off-west-end-2026"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/robin-hood-review-birmingham-hippodrome-matt-slack",
@@ -7419,9 +7397,8 @@
    "publishDate": "2025-12-11",
    "dateSoft": true,
    "headline": "daniels husband review marylebone theatre michael mckeever",
-   "bucket": "ambiguous",
+   "bucket": "held-alt-url",
    "matched": [
-    "michael-off-west-end-2026",
     "daniels-husband-off-west-end-2025"
    ]
   },
@@ -7586,10 +7563,8 @@
    "publishDate": "2025-12-08",
    "dateSoft": true,
    "headline": "last days review linbury theatre royal opera house london oliver leith kurt cobain",
-   "bucket": "held-alt-url",
-   "matched": [
-    "oliver-west-end-2024"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/singin-in-the-rain-review-royal-exchange-theatre-manchester",
@@ -7676,8 +7651,7 @@
    "headline": "paddington the musical review savoy theatre london michael bond tom fletcher jessica swale",
    "bucket": "held",
    "matched": [
-    "paddington-the-musical-west-end-2025",
-    "michael-off-west-end-2026"
+    "paddington-the-musical-west-end-2025"
    ]
   },
   {
@@ -9370,10 +9344,8 @@
    "publishDate": "2025-09-16",
    "dateSoft": true,
    "headline": "tosca review royal opera house london oliver mears anna netrebko",
-   "bucket": "held-alt-url",
-   "matched": [
-    "oliver-west-end-2024"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/how-to-make-a-revolution-review",
@@ -9859,9 +9831,6 @@
    "dateSoft": true,
    "headline": "madonna on the rocks review assembly roxy edinburgh marie hamilton",
    "bucket": "other-market-review",
-   "matched": [
-    "hamilton-west-end-2021"
-   ],
    "itemMarket": "edinburgh"
   },
   {
@@ -11516,10 +11485,8 @@
    "publishDate": "2025-07-01",
    "dateSoft": true,
    "headline": "semele review royal opera house oliver mears",
-   "bucket": "held-alt-url",
-   "matched": [
-    "oliver-west-end-2024"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/botis-sevafar-from-the-norm-until-we-sleep-review-sadlers-wells-east",
@@ -11678,10 +11645,7 @@
    "publishDate": "2025-06-24",
    "dateSoft": true,
    "headline": "die fledermaus review at the grange festival hampshire paul curran andrew hamilton",
-   "bucket": "held-alt-url",
-   "matched": [
-    "hamilton-west-end-2021"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/twisted-the-musical-review-bolton-albert-halls-anything-theatre-company",
@@ -11834,10 +11798,7 @@
    "publishDate": "2025-06-13",
    "dateSoft": true,
    "headline": "matthew bournes the midnight bell review at sadlers wells london patrick hamilton",
-   "bucket": "held-alt-url",
-   "matched": [
-    "hamilton-west-end-2021"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/head-first-acrobats-godz-review-peacock-theatre-sadlers-wells",
@@ -12804,10 +12765,7 @@
    "publishDate": "2025-04-15",
    "dateSoft": true,
    "headline": "beegu review unicorn theatre debbie hannan alexis deacon",
-   "bucket": "held-alt-url",
-   "matched": [
-    "unicorn-west-end-2025"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/english-national-ballet-the-forsythe-programme-review-sadlers-wells-london-william-forsythe",
@@ -12830,10 +12788,8 @@
    "publishDate": "2025-04-14",
    "dateSoft": true,
    "headline": "holly blakey a wound with teeth phantom review queen elizabeth hall london",
-   "bucket": "held-alt-url",
-   "matched": [
-    "the-phantom-of-the-opera-west-end-1986"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/piaf-review-watermill-theatre-newbury-audrey-brisson-pam-gems-edith-piaf-kimberley-sykes",
@@ -14033,10 +13989,8 @@
    "publishDate": "2025-02-12",
    "dateSoft": true,
    "headline": "mariupol review the cockpit london ukraine war john retallack katia haddad nathalie barclay oliver gomm",
-   "bucket": "held-alt-url",
-   "matched": [
-    "oliver-west-end-2024"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/the-years-review-harold-pinter-theatre-london-deborah-findlay-romola-garai-gina-mckee-anjli-mohindra-harmony-rose-bremner-annie-ernaux-eline-arbo",
@@ -14053,10 +14007,7 @@
    "publishDate": "2025-02-10",
    "dateSoft": true,
    "headline": "pig heart boy review at unicorn theatre london by winsome pinnock",
-   "bucket": "held-alt-url",
-   "matched": [
-    "unicorn-west-end-2025"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/rita-sue-and-bob-too-review-theatre-royal-st-helens-andrea-dunbar-jake-quickenden",
@@ -14543,10 +14494,8 @@
    "publishDate": "2024-12-19",
    "dateSoft": true,
    "headline": "road show review upstairs at the gatehouse london stephen sondheim john weidman amanda noar reece richardson oliver sidney",
-   "bucket": "held-alt-url",
-   "matched": [
-    "oliver-west-end-2024"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "off-west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/robin-hood-and-the-christmas-heist-review-at-rose-theatre-london-by-chris-bush",
@@ -14594,7 +14543,7 @@
    "dateSoft": true,
    "headline": "snow white review at lyceum theatre sheffield by paul hendy",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "lyceum theatre sheffield by paul hendy"
   },
   {
@@ -14603,9 +14552,6 @@
    "dateSoft": true,
    "headline": "a christmas carol the musical at the lowry salford from hope mill theatre starring claire moore",
    "bucket": "other-market-review",
-   "matched": [
-    "a-christmas-carol-west-end-2024"
-   ],
    "itemMarket": "regional-uk"
   },
   {
@@ -15171,10 +15117,7 @@
    "publishDate": "2024-12-02",
    "dateSoft": true,
    "headline": "twelfth night review orange tree theatre london william shakespeare tom littler oliver ford davies jane asher patricia allison clive francis",
-   "bucket": "held-alt-url",
-   "matched": [
-    "oliver-west-end-2024"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/the-importance-of-being-earnest-review-lyttelton-theatre-national-theatre-london-max-skinner-ncuti-gatwa-hugh-skinner-ronke-adekoluejo-sharon-d-clarke-oscar-wilde",
@@ -15277,10 +15220,7 @@
    "publishDate": "2024-11-27",
    "dateSoft": true,
    "headline": "royal variety performance 2024 review royal albert hall london alan carr amanda holden devil wears prada marisha wallace",
-   "bucket": "held-alt-url",
-   "matched": [
-    "the-devil-wears-prada-west-end-2024"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/the-nutcracker-review-at-polka-theatre-london-by-alex-scott",
@@ -15981,7 +15921,7 @@
    "dateSoft": true,
    "headline": "reverberation review at bristol old vic matthew lopez",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "bristol old vic matthew lopez"
   },
   {
@@ -16059,7 +15999,7 @@
    "dateSoft": true,
    "headline": "yerma review at lyric theatre belfast by federico garcia lorca",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "lyric theatre belfast by federico garcia lorca"
   },
   {
@@ -16091,10 +16031,7 @@
    "publishDate": "2024-10-11",
    "dateSoft": true,
    "headline": "the new real review the other place stratford upon avon david edgar royal shakespeare company headlong holly race roughan",
-   "bucket": "held-alt-url",
-   "matched": [
-    "the-other-place-west-end-2024"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/filumena-review-at-theatre-royal-windsor-by-sean-mathias-and-eduardo-de-filippo-felicity-kendal",
@@ -16232,7 +16169,7 @@
    "dateSoft": true,
    "headline": "girls dont play guitars review at royal court liverpool by ian salmon",
    "bucket": "other-market-review",
-   "itemMarket": "off-west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "royal court liverpool by ian salmon"
   },
   {
@@ -16425,8 +16362,8 @@
    "publishDate": "2024-09-27",
    "dateSoft": true,
    "headline": "never let me go review at the rose theatre kingston by kazuo ishiguro",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk",
+   "bucket": "catalog-gap",
+   "itemMarket": "unknown",
    "venueHint": "the rose theatre kingston by kazuo ishiguro"
   },
   {
@@ -16955,10 +16892,7 @@
    "publishDate": "2024-09-03",
    "dateSoft": true,
    "headline": "g review royal court by tife kusoro directed by monique touko",
-   "bucket": "held",
-   "matched": [
-    "g-west-end-2024"
-   ]
+   "bucket": "held-unmatched"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/rebus-a-game-called-malice-review-at-cambridge-arts-theatre-by-ian-rankin-simon-reade-and-loveday-ingram",
@@ -18641,9 +18575,6 @@
    "dateSoft": true,
    "headline": "a history of paper review traverse theatre edinburgh oliver emanuel gareth williams",
    "bucket": "other-market-review",
-   "matched": [
-    "oliver-west-end-2024"
-   ],
    "itemMarket": "edinburgh"
   },
   {
@@ -19237,9 +19168,6 @@
    "dateSoft": true,
    "headline": "rope review at theatr clwyd wales by patrick hamilton and francesca goodridge",
    "bucket": "other-market-review",
-   "matched": [
-    "hamilton-west-end-2021"
-   ],
    "itemMarket": "regional-uk",
    "venueHint": "theatr clwyd wales by patrick hamilton and francesca goodridge"
   },
@@ -19743,7 +19671,7 @@
    "dateSoft": true,
    "headline": "the caretaker review at chichester festival theatre by harold pinter",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "chichester festival theatre by harold pinter"
   },
   {
@@ -19978,7 +19906,7 @@
    "dateSoft": true,
    "headline": "circle mirror transformation review at the gate theatre dublin annie baker roisin mcbrinn niamh cusack",
    "bucket": "other-market-review",
-   "itemMarket": "off-west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "the gate theatre dublin annie baker roisin mcbrinn niamh cusack"
   },
   {
@@ -20329,9 +20257,6 @@
    "dateSoft": true,
    "headline": "the deep blue sea review ustinov studio theatre royal bath tamsin greig oliver chris",
    "bucket": "other-market-review",
-   "matched": [
-    "oliver-west-end-2024"
-   ],
    "itemMarket": "regional-uk"
   },
   {
@@ -20730,7 +20655,7 @@
    "dateSoft": true,
    "headline": "project children review at the lyric theatre belfast brassneck theatre by fionnuala kennedy",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "the lyric theatre belfast brassneck theatre by fionnuala kennedy"
   },
   {
@@ -20805,9 +20730,7 @@
    "publishDate": "2024-04-22",
    "dateSoft": true,
    "headline": "the glass menagerie review at the rose theatre kingston upon thames directed by atri banerjee",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk",
-   "venueHint": "the rose theatre kingston upon thames directed by atri banerjee"
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/1884-review-at-shoreditch-town-hall-london-by-rhianna-ilube-and-coney",
@@ -22000,8 +21923,8 @@
    "publishDate": "2024-02-20",
    "dateSoft": true,
    "headline": "scottish operas marx in london review at theatre royal glasgow jonathan dove charles hart and jurgen r weber roland wood",
-   "bucket": "catalog-gap",
-   "itemMarket": "off-west-end",
+   "bucket": "other-market-review",
+   "itemMarket": "regional-uk",
    "venueHint": "theatre royal glasgow jonathan dove charles hart and jurgen r weber roland wood"
   },
   {
@@ -22130,8 +22053,7 @@
    "publishDate": "2024-02-13",
    "dateSoft": true,
    "headline": "the boy at the back of the class review at the rose theatre kingston by onjali q rauf adapted nick ahad directed monique touko starring eastenders priya davdra",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk"
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/wilko-review-at-queens-theatre-hornchurch-by-jonathan-maitland-starring-johnson-willis",
@@ -22323,7 +22245,7 @@
    "dateSoft": true,
    "headline": "nanny review at bristol old vic by jenny rainsford alana ramsey lizzie stables",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "bristol old vic by jenny rainsford alana ramsey lizzie stables"
   },
   {
@@ -22348,9 +22270,8 @@
    "publishDate": "2024-02-05",
    "dateSoft": true,
    "headline": "bronco billy the musical review charing cross theatre london clint eastwood dennis hackin hunter bird tarinn callender victoria hamilton barritt emily benjamin",
-   "bucket": "ambiguous",
+   "bucket": "gap",
    "matched": [
-    "hamilton-west-end-2021",
     "bronco-billy-the-musical-west-end-2024"
    ]
   },
@@ -23494,7 +23415,7 @@
    "dateSoft": true,
    "headline": "hansel and gretel review at lyric theatre belfast",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "lyric theatre belfast"
   },
   {
@@ -23532,10 +23453,7 @@
    "publishDate": "2023-11-27",
    "dateSoft": true,
    "headline": "the bar at the edge of time review at tramshed woolwich from frozen light",
-   "bucket": "held-alt-url",
-   "matched": [
-    "frozen-west-end-2021"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/la-danse-damazon-at-cabuwazi-marzahn-berlin-rimini-protokoll",
@@ -24241,7 +24159,7 @@
    "dateSoft": true,
    "headline": "rhino review at the lyric theatre belfast eugene ionesco and patrick j oreilly",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "the lyric theatre belfast eugene ionesco and patrick j oreilly"
   },
   {
@@ -24573,9 +24491,6 @@
    "dateSoft": true,
    "headline": "the hypochondriac review crucible theatre sheffield roger mcgough moliere",
    "bucket": "other-market-review",
-   "matched": [
-    "the-crucible-west-end-2023"
-   ],
    "itemMarket": "regional-uk"
   },
   {
@@ -24600,8 +24515,7 @@
    "publishDate": "2023-10-05",
    "dateSoft": true,
    "headline": "shooting hedda gabler review rose theatre kingston 2023 jeff james nina segal henrik ibsen antonia thomas",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk"
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/woman-walking-review-moffat-town-hall-by-sylvia-dow-nan-shepherd",
@@ -27479,9 +27393,6 @@
    "dateSoft": true,
    "headline": "miss saigon review crucible theatre sheffield robert hastie anthony lau",
    "bucket": "other-market-review",
-   "matched": [
-    "the-crucible-west-end-2023"
-   ],
    "itemMarket": "regional-uk"
   },
   {
@@ -29082,7 +28993,7 @@
    "dateSoft": true,
    "headline": "the price review at the gate theatre dublin",
    "bucket": "other-market-review",
-   "itemMarket": "off-west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "the gate theatre dublin"
   },
   {
@@ -29090,10 +29001,7 @@
    "publishDate": "2023-05-02",
    "dateSoft": true,
    "headline": "richard iii review rose theatre kingston london adjoa andoh william shakespeare",
-   "bucket": "held-alt-url",
-   "matched": [
-    "rose-west-end-2023"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/tosca-review-at-the-kings-head-theatre-london",
@@ -29134,10 +29042,9 @@
    "publishDate": "2023-05-02",
    "dateSoft": true,
    "headline": "a play for the living in a time of extinction review at the barbican london lydia west miranda rose hall katie mitchell",
-   "bucket": "held-alt-url",
-   "matched": [
-    "rose-west-end-2023"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end",
+   "venueHint": "the barbican london lydia west miranda rose hall katie mitchell"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/its-a-motherfking-pleasure-review-at-soho-theatre-london",
@@ -29445,7 +29352,7 @@
    "dateSoft": true,
    "headline": "if you fall review at bristol old vic by ad infinitum",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "bristol old vic by ad infinitum"
   },
   {
@@ -29715,7 +29622,7 @@
    "dateSoft": true,
    "headline": "waldos circus of magic and terror review at bristol old vic from extraordinary bodies",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "bristol old vic from extraordinary bodies"
   },
   {
@@ -30204,7 +30111,7 @@
    "dateSoft": true,
    "headline": "you bury me review at bristol old vic from womens prize for playwriting winner 2020 ahlam",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "bristol old vic from womens prize for playwriting winner 2020 ahlam"
   },
   {
@@ -30339,10 +30246,7 @@
    "publishDate": "2023-03-03",
    "dateSoft": true,
    "headline": "sleepova review matilda feyisayo ibini bush theatre london bukky bakray",
-   "bucket": "held-alt-url",
-   "matched": [
-    "matilda-the-musical-west-end-2021"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/the-journey-to-venice-review-finborough-theatre-london-bjorg-vik-tim-hardy-annabel-leventon",
@@ -30643,7 +30547,7 @@
    "dateSoft": true,
    "headline": "mog the forgetful cat review at bristol old vic from judith kerr and the wardrobe ensemble",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "bristol old vic from judith kerr and the wardrobe ensemble"
   },
   {
@@ -30708,10 +30612,7 @@
    "publishDate": "2023-02-16",
    "dateSoft": true,
    "headline": "the oyster problem review jermyn street theatre london orlando figes",
-   "bucket": "held-alt-url",
-   "matched": [
-    "orlando-west-end-2022"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/this-weeks-theatre-in-scotland-moonset-and-the-man-in-the-submarine-reviews",
@@ -30959,8 +30860,7 @@
    "publishDate": "2023-02-07",
    "dateSoft": true,
    "headline": "the tempest review royal shakespeare theatre alex kingston stratford upon avon",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk"
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/smoke-review-southwark-playhouse-london",
@@ -30983,10 +30883,7 @@
    "publishDate": "2023-02-06",
    "dateSoft": true,
    "headline": "one who wants to cross review at finborough theatre london from marc emmanuel soriano and alice hamilton",
-   "bucket": "held-alt-url",
-   "matched": [
-    "hamilton-west-end-2021"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/chekhovs-dildo-review-at-the-hope-theatre-london-by-rex-fisher",
@@ -31915,7 +31812,7 @@
    "dateSoft": true,
    "headline": "the pantomime adventures of peter pan review at his majestys theatre aberdeen starring brendan cole and alan mchugh",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "his majestys theatre aberdeen starring brendan cole and alan mchugh"
   },
   {
@@ -31984,7 +31881,7 @@
    "dateSoft": true,
    "headline": "the nutcracker review at bristol old vic tom morris",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "bristol old vic tom morris"
   },
   {
@@ -32681,7 +32578,7 @@
    "dateSoft": true,
    "headline": "the scouse jack and the beanstalk review at liverpool royal court",
    "bucket": "other-market-review",
-   "itemMarket": "off-west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "liverpool royal court"
   },
   {
@@ -32930,9 +32827,6 @@
    "dateSoft": true,
    "headline": "blanket ban review underbelly edinburgh chalk line theatre davinia hamilton marta vella",
    "bucket": "other-market-review",
-   "matched": [
-    "hamilton-west-end-2021"
-   ],
    "itemMarket": "edinburgh"
   },
   {
@@ -34138,10 +34032,8 @@
    "publishDate": "2022-10-10",
    "dateSoft": true,
    "headline": "to what end review barbican pit london centre for the less good idea vusi mdoyi thabo rapoo thulisile binda phala ookeditse phala faniswa yisa",
-   "bucket": "held-alt-url",
-   "matched": [
-    "good-west-end-2022"
-   ]
+   "bucket": "catalog-gap",
+   "itemMarket": "west-end"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/the-witches-of-oz-review-at-the-vaults-london",
@@ -34155,8 +34047,8 @@
    "publishDate": "2022-10-07",
    "dateSoft": true,
    "headline": "the caucasian chalk circle rose theatre kingston bertolt brecht christopher haydon carrie hope fletcher review",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk"
+   "bucket": "catalog-gap",
+   "itemMarket": "unknown"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/good-luck-studio-henry-shields-henry-lewis-mischief-theatre-mercury-colchester-review",
@@ -34299,9 +34191,6 @@
    "dateSoft": true,
    "headline": "accidental death of an anarchist review at tanya moiseiwitsch playhouse crucible theatre sheffield",
    "bucket": "other-market-review",
-   "matched": [
-    "the-crucible-west-end-2022"
-   ],
    "itemMarket": "regional-uk",
    "venueHint": "tanya moiseiwitsch playhouse crucible theatre sheffield"
   },
@@ -34395,7 +34284,7 @@
    "dateSoft": true,
    "headline": "the scousetrap review at liverpool royal court theatre",
    "bucket": "other-market-review",
-   "itemMarket": "off-west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "liverpool royal court theatre"
   },
   {
@@ -34664,7 +34553,6 @@
    "headline": "much ado about nothing review at crucible theatre sheffield shakespeare by ramps on the moon",
    "bucket": "other-market-review",
    "matched": [
-    "the-crucible-west-end-2022",
     "much-ado-about-nothing-west-end-2022"
    ],
    "itemMarket": "regional-uk",
@@ -34691,8 +34579,8 @@
    "publishDate": "2022-09-19",
    "dateSoft": true,
    "headline": "the two popes review at rose theatre kingston upon thames",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk",
+   "bucket": "catalog-gap",
+   "itemMarket": "unknown",
    "venueHint": "rose theatre kingston upon thames"
   },
   {
@@ -34796,7 +34684,7 @@
    "dateSoft": true,
    "headline": "the gap year review at lyric theatre belfast by clare mcmahon",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "lyric theatre belfast by clare mcmahon"
   },
   {
@@ -35927,7 +35815,7 @@
    "dateSoft": true,
    "headline": "brief encounter review at stephen joseph theatre scarborough noel coward",
    "bucket": "other-market-review",
-   "itemMarket": "west-end",
+   "itemMarket": "regional-uk",
    "venueHint": "stephen joseph theatre scarborough noel coward"
   },
   {
@@ -36732,8 +36620,8 @@
    "publishDate": "2022-07-01",
    "dateSoft": true,
    "headline": "persuasion review rose theatre kingston sasha frost jeff james jane austen",
-   "bucket": "other-market-review",
-   "itemMarket": "regional-uk"
+   "bucket": "catalog-gap",
+   "itemMarket": "unknown"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/le-nozze-di-figaro-glyndebourne-lewes-michael-grandage-ian-rutherford-review",
@@ -38310,9 +38198,6 @@
    "dateSoft": true,
    "headline": "2065 review frozen light northern stage",
    "bucket": "other-market-review",
-   "matched": [
-    "frozen-west-end-2021"
-   ],
    "itemMarket": "regional-uk"
   },
   {
@@ -40162,10 +40047,7 @@
    "publishDate": "2021-12-07",
    "dateSoft": true,
    "headline": "cinderella perth theatre horsecross arts barrie hunter",
-   "bucket": "held-alt-url",
-   "matched": [
-    "cinderella-west-end-2021"
-   ]
+   "bucket": "out-of-window"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/treasure-island-derby-theatre-sarah-brigham-theresa-heskins",
@@ -40357,10 +40239,7 @@
    "publishDate": "2021-11-28",
    "dateSoft": true,
    "headline": "trouble in mind alice childress american airlines theatre new york 2021",
-   "bucket": "held-other-market",
-   "matched": [
-    "trouble-in-mind-west-end-2021"
-   ]
+   "bucket": "held-other-market"
   },
   {
    "url": "https://www.thestage.co.uk/reviews/little-women-the-musical-park-theatre-london-bronagh-lagan-allan-knee-mindi-dickstein",
