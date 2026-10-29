@@ -1284,37 +1284,6 @@
     "queuedAt": "2026-10-29T18:15:23.465Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 19 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40948259968",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40948259968)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40947089975)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "19"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-29T21:30:52.340Z"
-  },
-  {
     "conditionKey": "corpus-drift:autoclear-vs-ensemble",
     "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
     "description": "check-corpus-drift.js audit \"autoclear-vs-ensemble\" (node scripts/audit-autoclear-vs-ensemble.js --strict) has been drifting. Latest output:\n\nautoclear-vs-ensemble audit: 68199 files scanned.\n  wrongProduction violations: 1\n    girls-off-west-end-2026/the-recs--unknown.json :: rebuild: UK URL on London show (therecs.co.uk)\n  wrongShow violations: 0\n\nFAIL: 1 autoclear-vs-ensemble violation(s) found.",
@@ -2921,5 +2890,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T21:09:49.329Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 25 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40957759401",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40957759401)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40957451409)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "25"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-29T21:47:13.898Z"
   }
 ]
