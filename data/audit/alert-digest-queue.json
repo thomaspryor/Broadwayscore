@@ -923,6 +923,37 @@
     "queuedAt": "2026-10-29T16:21:29.177Z"
   },
   {
+    "conditionKey": "land:land/bro-6504-r2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6504-r2",
+    "description": "land.yml did not land land/bro-6504-r2: the unit-tests-node gate went red at 00b4701a37. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40895495776",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6504-r2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "00b4701a37d8f0a12a93d1bd382febd2ec9ed18e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40895495776"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:39:22.151Z"
+  },
+  {
     "conditionKey": "land:land/bro-6532-dispatch-cap",
     "title": "Landing blocked: unit-tests-node red on land/bro-6532-dispatch-cap",
     "description": "land.yml did not land land/bro-6532-dispatch-cap: the unit-tests-node gate went red at b1890e8cc6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40896248119",
