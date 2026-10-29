@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6215",
   "planId": "9ba09096-e1b5-45dd-8e3e-f1f17564257d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T05:00:29.001Z",
   "submitter": {
     "name": null,
@@ -120,5 +120,59 @@
         "description": "commercial.json: oedipus.ourEstimateRangePct"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T06:59:06.080Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimatePct updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimateAsOf updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimatePct updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimateAsOf updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for oedipus"
+    }
+  ],
+  "executedIn": "ci"
 }
