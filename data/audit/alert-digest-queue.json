@@ -2952,5 +2952,36 @@
       }
     ],
     "queuedAt": "2026-10-29T22:03:25.134Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6546-ownermerge",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6546-ownermerge",
+    "description": "land.yml did not land land/bro-6546-ownermerge: the unit-tests-node gate went red at 3df40785e0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40959765973",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6546-ownermerge"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3df40785e09df1f4b70ccca2b02e6d478a41d163"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40959765973"
+      }
+    ],
+    "queuedAt": "2026-10-29T22:06:18.832Z"
   }
 ]
