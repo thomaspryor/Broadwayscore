@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-28T08:32:12.085Z",
+  "generatedAt": "2026-10-29T09:08:00.245Z",
   "window": {
-    "since": "2026-10-22",
-    "until": "2026-10-28"
+    "since": "2026-10-23",
+    "until": "2026-10-29"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 1 cap drift(s).",
   "items": [
     {
       "title": "bd-circuit-breaker-serp_api1",
-      "detail": "OK: 0 trip day(s); spend n/a (no skip label)"
+      "detail": "OK: 1 trip day(s); spend n/a (no skip label)"
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 6 trip day(s); rerouted spend on trip days $0.04 (327 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2439"
+      "detail": "ACCEPTED: 6 trip day(s); rerouted spend on trip days $0.06 (463 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2439"
     },
     {
       "title": "sb-circuit-breaker",
@@ -38,18 +38,20 @@
       "provider": "brightdata",
       "shadow": false,
       "verdict": "OK",
-      "days": 0,
-      "dayList": [],
+      "days": 1,
+      "dayList": [
+        "2026-10-28"
+      ],
       "lowerBound": false,
       "spend": {
         "note": "n/a (no skip label)"
       },
       "drift": {
         "ceiling": 1750,
-        "source": null,
-        "from": "state",
+        "source": "opening-window-reserve",
+        "from": "trip-row",
         "currentZero": false,
-        "median14d": 220,
+        "median14d": 237,
         "drift": false,
         "note": null
       }
@@ -62,17 +64,17 @@
       "verdict": "ACCEPTED",
       "days": 6,
       "dayList": [
-        "2026-10-22",
         "2026-10-23",
         "2026-10-24",
         "2026-10-25",
         "2026-10-26",
-        "2026-10-27"
+        "2026-10-27",
+        "2026-10-28"
       ],
       "lowerBound": false,
       "spend": {
-        "usd": 0.04,
-        "rows": 327,
+        "usd": 0.06,
+        "rows": 463,
         "unpriced": 0,
         "label": "bd-budget",
         "partialSince": null,
@@ -106,11 +108,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 51173,
+        "ceiling": 54355,
         "source": "plan+opening-window-reserve",
         "from": "state",
         "currentZero": false,
-        "median14d": 16433,
+        "median14d": 16659,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -133,27 +135,17 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 594202,
+        "ceiling": 659166,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 67686,
+        "median14d": 68853,
         "drift": false,
         "note": null
       }
     }
   ],
   "spendByDay": {
-    "2026-10-15": {
-      "partial": false,
-      "guards": {
-        "bd-circuit-breaker-web_unlocker2": {
-          "usd": 0.0034,
-          "rows": 30,
-          "unpriced": 0
-        }
-      }
-    },
     "2026-10-16": {
       "partial": false,
       "guards": {
@@ -269,32 +261,44 @@
       }
     },
     "2026-10-28": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0279,
+          "rows": 162,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-29": {
       "partial": true,
       "guards": {}
     }
   },
   "dailyBreakerPattern": {
     "window": {
-      "sinceDay": "2026-10-22",
-      "untilDay": "2026-10-28",
+      "sinceDay": "2026-10-23",
+      "untilDay": "2026-10-29",
       "days": 7
     },
     "providers": {
       "web": {
         "days": 6,
         "dayList": [
-          "2026-10-22",
           "2026-10-23",
           "2026-10-24",
           "2026-10-25",
           "2026-10-26",
-          "2026-10-27"
+          "2026-10-27",
+          "2026-10-28"
         ],
         "lowerBound": false
       },
       "serp": {
-        "days": 0,
-        "dayList": [],
+        "days": 1,
+        "dayList": [
+          "2026-10-28"
+        ],
         "lowerBound": false
       },
       "scrapingdog": {
