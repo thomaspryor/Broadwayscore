@@ -90,6 +90,9 @@ data/followers.json
 # files ({issue}.json, digit-leading) are trackable again; everything else in
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
+!data/pending-fixes/bro-6493.json
+!data/pending-fixes/bro-6493-b.json
+!data/pending-fixes/bro-6493-c.json
 !data/pending-fixes/bro-6215.json
 !data/pending-fixes/bro-5934.json
 !data/pending-fixes/bro-6223.json
@@ -336,6 +339,7 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+!/docs/bro-6493-opening-dates.md
 # BRO-2880 requires the accepted core-data CI cadence in writing on main.
 !/docs/bro-2880-core-data-ci-cadence.md
 # BRO-3699 requires the first-party ticketing-platform research on main.
