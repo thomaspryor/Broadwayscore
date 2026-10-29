@@ -138,6 +138,28 @@ function metaContent(html, prop) {
  * then JSON-LD. dateModified is only a fallback (NYTG pages carry nothing else) and is
  * marked so the report can say the date is soft.
  */
+/**
+ * The critic a page's JSON-LD Review names, or null. Listing pages carry a Review with an
+ * empty author. Walks every ld+json block (arrays, @graph); skips itemReviewed so a
+ * playwright's name on the reviewed work never counts.
+ */
+function jsonLdReviewAuthor(html) {
+  const names = [];
+  const isReview = (t) => (Array.isArray(t) ? t : [t]).some((x) => /Review$/.test(String(x || '')));
+  const authorNames = (a) => (Array.isArray(a) ? a : [a]).map((x) => (typeof x === 'string' ? x : x && x.name)).filter((n) => typeof n === 'string' && n.trim());
+  const walk = (node) => {
+    if (Array.isArray(node)) { node.forEach(walk); return; }
+    if (!node || typeof node !== 'object') return;
+    if (isReview(node['@type'])) names.push(...authorNames(node.author));
+    for (const [k, v] of Object.entries(node)) if (k !== 'itemReviewed' && k !== 'author') walk(v);
+  };
+  const re = /<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi;
+  for (let m; (m = re.exec(String(html || ''))); ) {
+    try { walk(JSON.parse(m[1])); } catch { /* malformed block */ }
+  }
+  return names.length ? decodeEntities(names[0]).trim() : null;
+}
+
 function extractPageMeta(html) {
   const s = String(html || '');
   const og = metaContent(s, 'og:title');
@@ -153,11 +175,13 @@ function extractPageMeta(html) {
     date = metaContent(s, 'article:modified_time') || (/"dateModified"\s*:\s*"([^"]+)"/.exec(s) || [])[1] || null;
     dateSoft = !!date;
   }
+  const reviewAuthor = jsonLdReviewAuthor(s);
   return {
     headline: title ? title.trim() : null,
     description: description ? decodeEntities(description).trim() : null,
     publishDate: date ? String(date).slice(0, 10) : null,
     dateSoft,
+    reviewAuthor: reviewAuthor ? decodeEntities(reviewAuthor).trim() || null : null,
   };
 }
 
@@ -185,7 +209,7 @@ function classifyItem(item, { sourceSaysReview = false } = {}) {
 }
 
 const NYC_SIGNAL_RE = /\b(broadway|off-broadway|off broadway|new york|nyc|manhattan|brooklyn|lincoln center|public theater|signature theatre|playwrights horizons|second stage|roundabout|manhattan theatre club|mtc|atlantic theater|new york theatre workshop|nytw|lct3|vineyard theatre|the shed|park avenue armory|bam\b|st\.? ann'?s warehouse|soho rep|minetta lane|new world stages|lucille lortel|cherry lane|irish repertory|mcc theater|primary stages|keen company|theatre row|59e59|la mama|the kitchen|joe's pub|york theatre|pershing square signature|daryl roth|audible'?s minetta)\b/i;
-const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los angeles|l\.a\.|pasadena|la jolla|old globe|san diego|san francisco|berkeley|seattle|boston|philadelphia|houston|dallas|atlanta|denver|minneapolis|guthrie|miami|washington,? d\.?c\.?|arena stage|kennedy center|shakespeare theatre company|hartford|new haven|yale rep|williamstown|berkshire|barrington|chautauqua|toronto|stratford|national tour|north american tour|(?:first|second) national|touring production|tour at|segerstrom|scfta|ahmanson|pantages|cadillac palace|edinburgh|chichester)\b/i;
+const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los angeles|l\.a\.|pasadena|la jolla|old globe|san diego|san francisco|berkeley|seattle|boston|philadelphia|houston|dallas|atlanta|denver|minneapolis|guthrie|miami|washington,? d\.?c\.?|arena stage|kennedy center|shakespeare theatre company|hartford|new haven|yale rep|williamstown|berkshire|barrington|chautauqua|toronto|stratford|national tour|north american tour|(?:first|second) national|touring production|tour at|segerstrom|scfta|ahmanson|pantages|cadillac palace|edinburgh|chichester|fountain theatre|kokandy)\b/i;
 
 // London (BRO-6488). Venue names alone ("Almeida", "Donmar") are London signals; a UK city,
 // a tour, Edinburgh or New York in the text marks another production of the same title.

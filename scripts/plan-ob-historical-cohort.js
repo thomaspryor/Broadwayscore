@@ -146,14 +146,14 @@ async function main() {
     if (isStructuralOnlyMismatch(r, { claimedOpening: target.openingDate })) r = { ...r, result: 'match', structuralOnly: r.mismatches.map(m => m.field) };
     verdicts[r.result] = (verdicts[r.result] || 0) + 1;
     if (r.result === 'match' && r.playbillUrl && r.parsed && r.parsed.dates) {
-      results.push({ ...r, title: c.title, venue: c.venue, tmUrl: c.theatermaniaUrl, censusUrls: c.evidenceUrls || [] });
+      results.push({ ...r, title: c.title, venue: c.venue, tmUrl: c.theatermaniaUrl, censusUrls: c.evidenceUrls || [], listingGenre: c.listingGenre });
     }
   }
   console.log(`Playbill: checked ${checked}; ${JSON.stringify(verdicts)}`);
   try { await require('./lib/scraper').cleanup(); } catch (_) { /* best-effort: browser/pool teardown */ }
 
   // 4-5. Guards, then cohort rules.
-  const { toPromote, skipped, transferOf } = selectPromotable(results, shows);
+  const { toPromote, skipped, transferOf, typeGuessed } = selectPromotable(results, shows);
   const showById = new Map(shows.map(s => [s.id, s]));
   const tmById = new Map(results.map(r => [r.playbillUrl, r.tmUrl]));
   const censusById = new Map(results.map(r => [r.playbillUrl, r.censusUrls]));
@@ -179,6 +179,13 @@ async function main() {
   for (const s of skipped) console.log(`  - ${s.entry.title} (${s.reason})`);
   for (const s of ruleSkips) console.log(`  - ${s}`);
   for (const a of actions) console.log(`  + ${a.show.openingDate} → ${a.show.closingDate}  ${a.show.id} @ ${a.show.venue}`);
+  // BRO-6506: rows typed 'play' with no Playbill tag, TM genre or title signal.
+  const guessedIds = new Set(typeGuessed);
+  const guessed = actions.filter(a => guessedIds.has(a.show.id));
+  if (guessed.length) {
+    console.log(`Type guessed as 'play' (check by hand before approving): ${guessed.length}`);
+    for (const a of guessed) console.log(`  ? ${a.show.id}`);
+  }
   console.log(`Promotable: ${actions.length}`);
   console.log('ACTIONS_BEGIN');
   console.log(JSON.stringify(actions));

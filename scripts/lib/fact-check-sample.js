@@ -114,7 +114,9 @@ function stratifiedSample(rows, stratumOf, n, seed, allocation = 'proportional')
   if (want >= keys.length) for (const k of keys) if (alloc.get(k) === 0) alloc.set(k, 1);
   let used = [...alloc.values()].reduce((a, b) => a + b, 0);
   const byRem = [...quotas].sort((a, b) => b.rem - a.rem || a.k.localeCompare(b.k));
-  for (let i = 0; used < want && i < byRem.length * 2; i++) {
+  // Equal allocation can leave quota on strata smaller than their share; keep
+  // handing it out (one per pass) so n >= population still takes every row.
+  for (let i = 0; used < want && i < byRem.length * (allocation === 'equal' ? want + 1 : 2); i++) {
     const { k } = byRem[i % byRem.length];
     if (alloc.get(k) < groups.get(k).length) { alloc.set(k, alloc.get(k) + 1); used++; }
   }

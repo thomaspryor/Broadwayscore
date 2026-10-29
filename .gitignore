@@ -102,6 +102,7 @@ data/pending-fixes/*
 !data/pending-fixes/bro-6045.json
 !data/pending-fixes/bro-6187.json
 !data/pending-fixes/bro-6187-2.json
+!data/pending-fixes/bro-5870.json
 !data/pending-fixes/bro-4937.json
 !data/pending-fixes/[0-9]*.json
 !data/pending-fixes/bro-3964.json
@@ -336,12 +337,15 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /docs/*
 # BRO-2880 requires the accepted core-data CI cadence in writing on main.
 !/docs/bro-2880-core-data-ci-cadence.md
+# BRO-3699 requires the first-party ticketing-platform research on main.
+!/docs/ticketing-platforms-audit-bro-3699.md
 !/docs/bro-4623-commercial-readiness.md
 !/docs/bro-5189-affluenza-button.md
 !/docs/bro-6045-review-recovery.md
 !/docs/bro-6500-uk-regional-hubs.md
 !/docs/bro-6165-bucknell-backtest.md
 !/docs/bro-6187-commercial-estimates.md
+!/docs/bro-5870-prose-figure-seeding.md
 !/docs/bro-5530-capitalization-sweep.md
 !/docs/search-navigation-review.md
 !/docs/triage-audit-scripts.md

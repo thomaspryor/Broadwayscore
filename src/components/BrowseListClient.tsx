@@ -7,6 +7,7 @@ import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { createSortToggle } from '@/lib/sort-toggle';
 import { compareScore } from '@/lib/browse-sort';
 import { sectionLabelsContiguous } from '@/lib/browse-sections';
+import { sameTitleShowIds } from '@/lib/same-title-shows';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -193,6 +194,8 @@ export default function BrowseListClient({
 
     return result;
   }, [initialShows, typeFilter, sort, scoreMode]);
+  // Rows that share a title with another visible row get a venue line (BRO-4309).
+  const sameTitleIds = useMemo(() => sameTitleShowIds(filteredAndSorted), [filteredAndSorted]);
 
   // Headings only when every section label is one contiguous run in the order on
   // screen; otherwise a heading would repeat or sit over the wrong rows.
@@ -292,6 +295,7 @@ export default function BrowseListClient({
                   showPerformances={hasPerformanceData}
                   showReviewCount
                   showTicketLink
+                  showVenue={sameTitleIds.has(show.id)}
                 />
               </div>
             );

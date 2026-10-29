@@ -841,19 +841,48 @@ function planMove(plan, g, ctx, handled) {
   const { oldName, newName, isGlob } = idPaths(entry, ctx);
   const matches = listMatching(g.abs, oldName, isGlob);
   const disp = (n) => (g.display.endsWith(':') ? `${g.display}${n}` : `${g.display}/${n}`);
-  if (!matches.length) { plan.skipped.push({ path: disp(oldName), reason: 'not present' }); return; }
+  if (!matches.length) {
+    // A dir move that stopped before its re-stamp (or a merge cut short)
+    // leaves files under the new name still carrying the old id: re-stamp them.
+    const restamp = entry.shape === 'dir' && !isGlob ? staleInner(path.join(g.abs, newName), ctx, handled) : [];
+    if (restamp.length) {
+      const to = path.join(g.abs, newName);
+      plan.moves.push({ kind: 'move', repo: entry.repo, root: g.root, path: disp(oldName), from: path.join(g.abs, oldName), to, toPath: disp(newName),
+        relFrom: path.relative(g.root, path.join(g.abs, oldName)), relTo: path.relative(g.root, to), isDir: true, method: 'restamp',
+        writeGuard: entry.writeGuard || 'atomic', inner: restamp, generated: entry.generated || null, keepOldCopy: false, merge: false, restampOnly: true });
+      return;
+    }
+    plan.skipped.push({ path: disp(oldName), reason: 'not present' }); return;
+  }
   for (const name of matches) {
     const from = path.join(g.abs, name);
-    const toName = isGlob ? name.replace(ctx.oldId, ctx.newId) : newName;
-    const to = path.join(g.abs, toName);
+    let toName = isGlob ? name.replace(ctx.oldId, ctx.newId) : newName;
+    let to = path.join(g.abs, toName);
     // A kept old copy next to the renamed one is the finished state, not a pending move.
     if (entry.keepOldCopy && exists(to) && plan.resume) { plan.skipped.push({ path: disp(name), reason: 'old copy kept' }); continue; }
-    if (exists(to)) { plan.refusals.push(`${disp(toName)} already exists — cannot move ${name} onto it`); plan.ok = false; }
+    // A raw capture already filed under the new id stays; the old one is set
+    // aside verbatim in _pre-rename/ (a subdir, so the extractors and audits
+    // that list <source>/*.html|json never read it as a second capture).
+    let parked = false;
+    if (entry.onMoveCollision === 'park-old' && exists(to)) {
+      toName = `_pre-rename/${name}`;
+      to = path.join(g.abs, toName);
+      parked = true;
+    }
+    // A review dir already filed under the new id (a scraper that guessed it,
+    // BRO-4315 batch 3) takes the old dir's files when no file name clashes.
+    let merge = false;
+    if (entry.onMoveCollision === 'merge-dir' && isDir(from) && isDir(to)) {
+      const there = new Set(fs.readdirSync(to));
+      const clash = fs.readdirSync(from).filter((n) => there.has(n));
+      if (clash.length) { plan.refusals.push(`${disp(toName)} already exists and shares ${clash.length} file name(s) with ${name} (${clash.slice(0, 3).join(', ')}) — cannot merge`); plan.ok = false; }
+      else merge = true;
+    } else if (exists(to)) { plan.refusals.push(`${disp(toName)} already exists — cannot move ${name} onto it`); plan.ok = false; }
     const rel = path.relative(g.root, from);
     const isDirMove = isDir(from);
     const tracked = gitTracked(g.root, rel);
     const inner = [];
-    for (const f of innerJsonFiles(from)) {
+    for (const f of parked ? [] : innerJsonFiles(from)) {
       const real = realpathOr(f);
       handled.add(real);
       let text;
@@ -872,8 +901,10 @@ function planMove(plan, g, ctx, handled) {
       kind: 'move', repo: entry.repo, root: g.root, path: disp(name), from, to, toPath: disp(toName),
       relFrom: rel, relTo: path.relative(g.root, to), isDir: isDirMove, method: tracked ? 'git mv' : 'rename',
       writeGuard: entry.writeGuard || 'atomic', inner, generated: entry.generated || null,
-      keepOldCopy: Boolean(entry.keepOldCopy),
+      keepOldCopy: Boolean(entry.keepOldCopy), merge,
     });
+    // a merge cut short: files already moved into the target still carry the old id
+    if (merge) plan.moves[plan.moves.length - 1].inner.push(...staleInner(to, ctx, handled));
   }
 }
 
@@ -905,12 +936,39 @@ function writeThroughGuard(change, doc, originalText) {
   return 'atomic';
 }
 
+/** JSON files under an id-named target dir that still carry the old id (re-stamp only). */
+function staleInner(dir, ctx, handled) {
+  if (!isDir(dir)) return [];
+  const out = [];
+  for (const f of innerJsonFiles(dir)) {
+    let text;
+    try { text = fs.readFileSync(f, 'utf8'); } catch { continue; }
+    if (!text.includes(ctx.oldId)) continue;
+    let result;
+    try { result = rewriteText(text, [], ctx, { jsonl: f.endsWith('.jsonl') }); } catch { continue; }
+    if (!result.edits.length) continue;
+    handled.add(realpathOr(f));
+    out.push({ abs: f, toAbs: f, rel: path.relative(dir, f) || path.basename(f), edits: result.edits, counts: countEdits(result.edits), jsonl: f.endsWith('.jsonl') });
+  }
+  return out;
+}
+
 function moveTree(move) {
-  if (move.keepOldCopy) {
+  if (move.merge) {
+    for (const n of fs.readdirSync(move.from)) {
+      const src = path.join(move.from, n);
+      const dst = path.join(move.to, n);
+      if (exists(dst)) throw new Error(`${move.toPath}/${n} appeared since the plan — refusing to overwrite`);
+      if (gitTracked(move.root, path.relative(move.root, src))) execFileSync('git', ['-C', move.root, 'mv', '--', path.relative(move.root, src), path.relative(move.root, dst)], { stdio: ['ignore', 'pipe', 'pipe'] });
+      else fs.renameSync(src, dst);
+    }
+    fs.rmdirSync(move.from);
+  } else if (move.keepOldCopy) {
     fs.mkdirSync(path.dirname(move.to), { recursive: true });
     fs.cpSync(move.from, move.to, { recursive: true });
     if (move.method === 'git mv') execFileSync('git', ['-C', move.root, 'add', '--', move.relTo], { stdio: ['ignore', 'pipe', 'pipe'] });
   } else if (move.method === 'git mv') {
+    fs.mkdirSync(path.dirname(move.to), { recursive: true });
     execFileSync('git', ['-C', move.root, 'mv', '--', move.relFrom, move.relTo], { stdio: ['ignore', 'pipe', 'pipe'] });
   } else {
     fs.mkdirSync(path.dirname(move.to), { recursive: true });
@@ -951,11 +1009,13 @@ function applyShowIdRename(plan, opts = {}) {
 
   // 2. Moves (git mv when tracked, rename otherwise).
   for (const move of plan.moves) {
-    if (!exists(move.from)) {
+    if (move.restampOnly) {
+      log(`re-stamp: ${move.toPath} (${move.inner.length} file(s) still carry ${plan.oldId})`);
+    } else if (!exists(move.from)) {
       if (exists(move.to)) { out.warnings.push(`${move.path}: already moved to ${move.toPath}`); }
       else out.warnings.push(`${move.path}: source vanished since the plan`);
     } else {
-      if (exists(move.to)) throw new Error(`${move.toPath} appeared since the plan — refusing to overwrite`);
+      if (exists(move.to) && !move.merge) throw new Error(`${move.toPath} appeared since the plan — refusing to overwrite`);
       moveTree(move);
       out.moved.push(`${move.path} -> ${move.toPath} (${move.method})`);
       log(`${move.method}: ${move.path} -> ${move.toPath}`);
@@ -963,7 +1023,7 @@ function applyShowIdRename(plan, opts = {}) {
     // 3. Inner re-stamp of the moved JSON files.
     for (const item of move.inner) {
       if (item.unparseable) { out.warnings.push(`${move.toPath}/${item.rel}: unparseable, showId not re-stamped`); continue; }
-      const abs = path.join(move.to, path.relative(move.from, item.abs));
+      const abs = item.toAbs || path.join(move.to, path.relative(move.from, item.abs));
       const target = isFile(abs) ? abs : (isFile(move.to) ? move.to : null);
       if (!target) { out.warnings.push(`${move.toPath}/${item.rel}: missing after move`); continue; }
       const text = fs.readFileSync(target, 'utf8');

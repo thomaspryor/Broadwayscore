@@ -78,8 +78,9 @@ const SOURCES = {
   timeout: {
     kind: 'sitemap', url: 'https://www.timeout.com/sitemap.xml.gz', // gzip index, one child per city
     childFilter: (c) => /timeout\.com\/newyork\//.test(c),
-    // A /newyork/theater/<show> page is the show's review; /news/ reviews say so in the slug.
-    urlFilter: /timeout\.com\/newyork\/(?:theater\/[^/?#]+$|news\/[^/?#]*review)/, needsMeta: true, sourceSaysReview: true,
+    // /newyork/theater/<show> is usually a listing with an unsigned blurb (BRO-6485: 111 of 119 gaps);
+    // it is the show's review only when the page's JSON-LD Review names a critic.
+    urlFilter: /timeout\.com\/newyork\/(?:theater\/[^/?#]+$|news\/[^/?#]*review)/, needsMeta: true, sourceSaysReview: true, requireReviewAuthor: true,
   },
   // WordPress.com-hosted blogs: no /wp-json on the site, but the public WP.com REST mirror lists every post.
   'pages-on-stages': wp('https://public-api.wordpress.com/wp/v2/sites/pagesonstages.com/posts', { sourceSaysReview: true }), // a reviews-only blog,

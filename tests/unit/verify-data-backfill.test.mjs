@@ -12,7 +12,7 @@ const { isSafeCheckCommand } = require('../../scripts/lib/verify-gate.js');
 
 test('backfill probe requires explicit safe IDs and positive review minima', () => {
   const options = parseArgs(['--show=one-2026,two-2026', '--images', '--reviews=2']);
-  assert.deepEqual(options, { showIds: ['one-2026', 'two-2026'], images: true, minReviews: 2 });
+  assert.deepEqual(options, { showIds: ['one-2026', 'two-2026'], images: true, minReviews: 2, type: null });
   for (const args of [[], ['--show=../shows'], ['--show=one', '--reviews=0'], ['--show=one', '--fix'], ['--show=one', '--reviews=1', '--images']]) {
     assert.throws(() => parseArgs(args));
     assert.equal(isSafeCheckCommand(`node scripts/lib/verify-data-backfill.js ${args.join(' ')}`), false);
@@ -50,4 +50,17 @@ test('backfill CLI fails closed on missing data and unmet expectations, without 
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
+});
+
+// BRO-6506: a type correction needs its own expectation; "show found" passed before the fix.
+test('--type: every listed show must carry the type; safe-form accepts it last', () => {
+  assert.equal(parseArgs(['--show=one', '--type=musical']).type, 'musical');
+  for (const args of [['--show=one', '--type=Musical'], ['--show=one', '--type=revue'], ['--show=one', '--type=musical', '--images']]) {
+    assert.throws(() => parseArgs(args));
+    assert.equal(isSafeCheckCommand(`node scripts/lib/verify-data-backfill.js ${args.join(' ')}`), false);
+  }
+  assert.equal(isSafeCheckCommand('node scripts/lib/verify-data-backfill.js --show=kilgallen-off-broadway-2026,wesley-off-broadway-2025 --type=musical'), true);
+  const results = verifyBackfill([{ id: 'one', type: 'play' }, { id: 'two', type: 'musical' }], [], parseArgs(['--show=one,two', '--type=musical']));
+  assert.deepEqual(results.map(r => r.ok), [false, true]);
+  assert.deepEqual(results[0].problems, ['type play != musical']);
 });

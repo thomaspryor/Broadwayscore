@@ -33,8 +33,11 @@ function parsePlaybillTagLine(html) {
   while ((m = TAG_RE.exec(block[1]))) tags.push(m[1].trim());
 
   const market = tags[0] || null;
-  const typeTag = tags.find(t => /^(play|musical)$/i.test(t));
-  const showType = typeTag ? typeTag.toLowerCase() : null;
+  // BRO-6506: Playbill also prints compound musical tags ("Musical Revue"
+  // on Going Bacharach), which the exact match missed. "Play" stays exact:
+  // "Play with Music" is not a call this parser should make.
+  const typeTag = tags.find(t => /^(play|musical(\s+(revue|comedy))?)$/i.test(t));
+  const showType = typeTag ? (/^musical/i.test(typeTag) ? 'musical' : 'play') : null;
 
   // Revival/Original is always the LAST tag on every live page checked
   // (BRO-2023 ship-check finding) — reading the last tag specifically, not

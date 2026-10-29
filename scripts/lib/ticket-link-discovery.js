@@ -8,9 +8,14 @@
  * the testable acceptance predicate; enrich-fallback-ticket-links.js does I/O.
  */
 
-// Known ticketing platforms — host suffix → display platform name.
-// Order matters: first match wins when scanning SERP results, so put
-// primary-sale platforms before anything resale-adjacent.
+// Ticketing platforms with verified primary sales: host suffix to display name.
+// BRO-3699: first-party sources for every entry are recorded in
+// docs/ticketing-platforms-audit-bro-3699.md. Verify new hosts the same way.
+// Ticketmaster and See Tickets also offer resale; allowlisting a platform
+// does not establish the inventory type of every ticket on its event pages.
+// Removed smarttix.com (utility software: https://smarttix.com/about/) and
+// ticketcentral.com (default hosting page: https://ticketcentral.com/),
+// neither of which currently demonstrates theatre ticket sales.
 //
 // `region` marks hosts that only ever sell in ONE market: ticketmaster.com is
 // the US storefront and ticketmaster.co.uk the UK one, and a title that runs on
@@ -27,8 +32,6 @@ const TICKETING_PLATFORMS = [
   { host: 'telecharge.com', platform: 'Telecharge', region: 'us' },
   { host: 'ovationtix.com', platform: 'OvationTix' },
   { host: 'eventbrite.com', platform: 'Eventbrite' },
-  { host: 'smarttix.com', platform: 'SmartTix', region: 'us' },
-  { host: 'ticketcentral.com', platform: 'Ticket Central', region: 'us' },
   { host: 'universe.com', platform: 'Universe' },
   { host: 'showclix.com', platform: 'ShowClix' },
   { host: 'ticketleap.com', platform: 'TicketLeap' },

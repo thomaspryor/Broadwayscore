@@ -300,9 +300,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 19 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 22 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40870784977",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40878426251",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -311,22 +311,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40870784977)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40878426251)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40864524395)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40877835153)"
       },
       {
         "name": "Consecutive failures",
-        "value": "19"
+        "value": "22"
       },
       {
         "name": "Currently failing job(s)",
         "value": "Unit Tests, Lint Workflows"
       }
     ],
-    "queuedAt": "2026-10-29T14:45:14.907Z"
+    "queuedAt": "2026-10-29T16:35:23.607Z"
   },
   {
     "conditionKey": "land:land/bro-6485-timeout-author",
@@ -386,20 +386,6 @@
     "tracked": "BRO-4795",
     "fields": [],
     "queuedAt": "2026-10-29T12:20:58.912Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T12:20:59.193Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
@@ -633,6 +619,20 @@
     "queuedAt": "2026-10-29T13:51:48.717Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:the-revlon-girl-off-west-end-2026",
+    "title": "1 review(s) for the-revlon-girl-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--57bed62a.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-revlon-girl-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T14:52:22.576Z"
+  },
+  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-revlon-girl-off-west-end-2026",
     "title": "Auto-remediation gave up on the-revlon-girl-off-west-end-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-revlon-girl-off-west-end-2026\"}",
@@ -707,5 +707,281 @@
       }
     ],
     "queuedAt": "2026-10-29T14:29:00.975Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
+    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T14:55:59.332Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:fences-off-west-end-2026",
+    "title": "1 review(s) for fences-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--5a0f0ca7.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tom-skerritt-actor-picket-fences-alien-top-gun-dies/6562233/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T14:56:35.577Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6518-chicago-local",
+    "title": "Landing blocked: rebase red on land/bro-6518-chicago-local",
+    "description": "land.yml did not land land/bro-6518-chicago-local: the rebase gate went red at 3e523c7977. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6518-chicago-local @ 3e523c7977 (origin/land/bro-6518-chicago-local) → origin/main @ 1b3fe2ccc1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ d0ccca2e13: Rebasing (1/12) Rebasing (2/12) error: could not apply 79e9e1c6537... BRO-6518: local-only show rule (off homepage/Pre-Broadway/browse/search/app feeds) + crawler hint: Resolve all conflicts manually, mark th Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40874349921",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6518-chicago-local"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3e523c7977b5196b0dab24a2fe47635a568c331b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40874349921"
+      }
+    ],
+    "queuedAt": "2026-10-29T15:11:51.844Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6529-masked-email",
+    "title": "Landing blocked: colocated-tests red on land/bro-6529-masked-email",
+    "description": "land.yml did not land land/bro-6529-masked-email: the colocated-tests gate went red at f6aeeaf1aa. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6529-masked-email @ f6aeeaf1aa (origin/land/bro-6529-masked-email) → origin/main @ ed003f4781 [land] attempt 1/3: rebased onto 3fea2894df, 6 file(s) changed — running checks [land] verified-base: main moved 5b302862b9 → 3fea2894df across 306 file(s), substantive — re-checking on the merged tree (+9 test file(s) changed on main since the verified base); full re-check: branch and mai Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40875824250",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6529-masked-email"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "f6aeeaf1aa4e6923371da7affa25d82126ebe058"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40875824250"
+      }
+    ],
+    "queuedAt": "2026-10-29T15:01:15.161Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6516-mvtceqe7",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6516-mvtceqe7",
+    "description": "land.yml did not land land/job/linear-BRO-6516-mvtceqe7: the rebase gate went red at b232b53d40. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6516-mvtceqe7 @ b232b53d40 (origin/land/job/linear-BRO-6516-mvtceqe7) → origin/main @ 11fe8e1a5d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 11fe8e1a5d: Rebasing (1/6) error: could not apply 3b91ef3c5c1... BRO-6516: UK regional production list builder (step 1) + acceptance test (fails until build completes) hint: Resolve all conflicts manually, ma Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40853206353",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6516-mvtceqe7"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b232b53d40db0a7e589cfd6b9b6f261433421cbe"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40853206353"
+      }
+    ],
+    "queuedAt": "2026-10-29T15:20:50.420Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6515-mvtcbgux",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6515-mvtcbgux",
+    "description": "land.yml did not land land/job/linear-BRO-6515-mvtcbgux: the rebase gate went red at 04a15073d1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6515-mvtcbgux @ 04a15073d1 (origin/land/job/linear-BRO-6515-mvtcbgux) → origin/main @ 36493a08fe REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 36493a08fe: Rebasing (1/3) error: could not apply 0b09497e53b... BRO-6515: venue-to-metro table, resolver, city backfill, regional add-path city hint: Resolve all conflicts manually, mark them as resolved wit Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40854213561",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6515-mvtcbgux"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "04a15073d11a95e05afc2e9307a83faab86cd735"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40854213561"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:06:20.972Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4303-visual",
+    "title": "Landing blocked: rebase red on land/bro-4303-visual",
+    "description": "land.yml did not land land/bro-4303-visual: the rebase gate went red at b8ed076521. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40892679867",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4303-visual"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b8ed0765215c7bbb7d02c2cbd1ef8ff95d7ae956"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40892679867"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:12:04.865Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6516-visual",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6516-visual",
+    "description": "land.yml did not land land/bro-6516-visual: the unit-tests-node gate went red at 4acc2aa9f5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40892592766",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6516-visual"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4acc2aa9f50ac1b7a5487d8b542a31cba41d4c4c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40892592766"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:21:29.177Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6504-r2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6504-r2",
+    "description": "land.yml did not land land/bro-6504-r2: the unit-tests-node gate went red at 00b4701a37. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40895495776",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6504-r2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "00b4701a37d8f0a12a93d1bd382febd2ec9ed18e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40895495776"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:39:22.151Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6532-dispatch-cap",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6532-dispatch-cap",
+    "description": "land.yml did not land land/bro-6532-dispatch-cap: the unit-tests-node gate went red at b1890e8cc6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40896248119",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6532-dispatch-cap"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b1890e8cc6b12f98abacc58af832f14cf6dad2e0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40896248119"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:38:48.431Z"
   }
 ]

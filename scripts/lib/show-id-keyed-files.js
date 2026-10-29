@@ -219,7 +219,7 @@ const SHOW_ID_KEYED_FILES = [
   { repo: 'core-data', path: 'audience-history', glob: '*.json', shape: 'map', keyPath: ['shows'], onCollision: 'drop-orphan-target',
     note: 'weekly snapshots; 18 files (2026-06-21..10-12) also hold frozen stray entries under 7 BRO-4315 target ids that no shows.json row owns (the plan refuses when one does), so on a forward rename the renamed row keeps its own history and the orphan is dropped (git history keeps it); a resume refuses instead' },
   { repo: 'core-data', path: 'data/audience-reviews/show-score', shape: 'file', pattern: '{id}.json', innerIdFields: ['showId'] },
-  { repo: 'core-data', path: 'data/review-texts', shape: 'dir', innerIdFields: ['showId'],
+  { repo: 'core-data', path: 'data/review-texts', shape: 'dir', innerIdFields: ['showId'], onMoveCollision: 'merge-dir',
     note: 'legacy location (5 dirs on 2026-09-28); the live corpus is the review-texts repo' },
   { repo: 'core-data', path: 'retired-show-ids.json', webMirror: 'data/retired-show-ids.json', shape: 'records', keyPath: [], idField: 'id', rewrite: false,
     note: 'retirement registry (scripts/lib/retired-show-ids.js) — never rewritten; a rename refuses a retired target id' },
@@ -229,13 +229,13 @@ const SHOW_ID_KEYED_FILES = [
   // ---------------------------------------------------------------------
   // review-texts repo (private; one dir per show id)
   // ---------------------------------------------------------------------
-  { repo: 'review-texts', path: '.', shape: 'dir', innerIdFields: ['showId'], writeGuard: 'review',
+  { repo: 'review-texts', path: '.', shape: 'dir', innerIdFields: ['showId'], writeGuard: 'review', onMoveCollision: 'merge-dir',
     note: '<id>/<outlet>--<critic>.json; `archivePath` points into the aggregator-archive repo and is left untouched' },
-  { repo: 'review-texts', path: '_pending', shape: 'dir', innerIdFields: ['showId'], writeGuard: 'review',
-    note: 'quarantined payloads, same layout' },
+  { repo: 'review-texts', path: '_pending', shape: 'dir', innerIdFields: ['showId'], writeGuard: 'review', onMoveCollision: 'merge-dir',
+    note: 'quarantined payloads, same layout. merge-dir: a dir already under the new id takes the old files when no name clashes (BRO-4315 batch 3)' },
   { repo: 'review-texts', path: '_superseded-misattributed', shape: 'file', pattern: '{id}--*.json', innerIdFields: ['showId'], writeGuard: 'review' },
-  { repo: 'review-texts', path: 'aggregator-archive/*', shape: 'file', pattern: '{id}.*',
-    note: 'raw aggregator captures: <source>/<id>.html, .html.mismatch, .json (stagedoor, westendtheatre); api-page-*.json siblings are not id-keyed' },
+  { repo: 'review-texts', path: 'aggregator-archive/*', shape: 'file', pattern: '{id}.*', onMoveCollision: 'park-old',
+    note: 'raw aggregator captures: <source>/<id>.html, .html.mismatch, .json (stagedoor, westendtheatre); api-page-*.json siblings are not id-keyed. A capture already under the new id (a scraper that guessed it, BRO-4315 batch 2) stays; the old one moves verbatim to <source>/_pre-rename/<oldId>.<ext>' },
   { repo: 'review-texts', path: 'aggregator-archive/*/_not-found.json', shape: 'map', keyPath: [],
     note: 'id -> date the aggregator 404ed' },
   { repo: 'review-texts', path: 'failed-fetches.json', shape: 'records', keyPath: [], idField: 'showId',
@@ -273,6 +273,8 @@ function validateRegistry(entries = SHOW_ID_KEYED_FILES) {
     if (e.keyedBy && !['id', 'slug'].includes(e.keyedBy)) problems.push(`${where}: keyedBy must be id|slug`);
     if (e.keyStyle && !['exact', 'colon-segments'].includes(e.keyStyle)) problems.push(`${where}: bad keyStyle`);
     if (e.onCollision && (e.onCollision !== 'drop-orphan-target' || e.shape !== 'map')) problems.push(`${where}: onCollision is only 'drop-orphan-target' on a map`);
+    if (e.onMoveCollision && !((e.onMoveCollision === 'park-old' && e.shape === 'file') || (e.onMoveCollision === 'merge-dir' && e.shape === 'dir'))) problems.push(`${where}: onMoveCollision is 'park-old' on a file entry or 'merge-dir' on a dir entry`);
+    if (e.onMoveCollision === 'merge-dir' && e.keepOldCopy) problems.push(`${where}: merge-dir cannot keep an old copy`);
     if (e.writeGuard && !['shows', 'commercial', 'audience-buzz', 'review', 'atomic'].includes(e.writeGuard)) {
       problems.push(`${where}: bad writeGuard ${e.writeGuard}`);
     }

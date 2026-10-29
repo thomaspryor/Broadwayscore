@@ -228,6 +228,11 @@ function parseTmOffBroadwayRow(row, { venuesById = new Map(), genresById = new M
     // by ~15 shows a week for no gain (second-opinion review).
     ...(isKnownOffBroadwayVenue(venue) ? {} : { provisional: true }),
     discoverySource: 'theatermania-ob',
+    // BRO-6506: TM's own genre names ("Musical; Comedy"), read by
+    // knownShowType (lib/title-says-musical.js) in discovery and the OB
+    // historical promoter. Without it a musical whose title lacks the word
+    // was stored as a play (The Apple Boys, Wesley, The Connector).
+    ...(genreNames.length ? { listingGenre: genreNames.map(cleanText).filter(Boolean).join('; ') } : {}),
     theatermaniaUrl: row.link || null,
     theatermaniaId: row.id || null,
   };

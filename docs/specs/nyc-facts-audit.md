@@ -1,6 +1,6 @@
-# NYC show facts audit, two-model pilot (BRO-6489)
+# NYC show facts audit, two-model pilot and full run (BRO-6489)
 
-Status: pilot done 2026-10-29. Full run not done: it would cost about $88 against a $30 cap (see Cost).
+Status: pilot done 2026-10-29; full run done 2026-10-29 (1,082 of 1,085 rows checked, owner raised the cap to $100). Full-run results and corrections are in the section "Full run" below; the pilot sections are kept as they were.
 
 ## What was checked
 
@@ -66,9 +66,41 @@ All of these are pinned in `scripts/lib/nyc-facts-audit.test.mjs`.
 - **Class 1 (code):** `enrich-off-broadway-dates.yml` gains two dispatch-only modes. `fix-closed` adds `--include-closed-when-year-matches`. `backfill-closed` also bypasses the stability guard, for one reviewed drain. The crons stay on `fix-unconfirmed`, because the stability guard (20 changes or 15%) aborts the whole run rather than capping it. A cron carrying the backlog would abort weekly and block live-show fixes too. A local full-catalog dry run (`--dry-run --fix-unconfirmed --include-closed-when-year-matches`, 597 closed rows in the pool) found a Playbill production page for 11 of 79 same-date rows and proposed 12 changes: 7 corrected openings on closed rows (Chinese Republicans, Marcel on the Train, Jesa, How My Grandparents Fell in Love, Data, Heartbreak Hotel; Bughouse's first preview), 2 openings filled on upcoming rows, and 3 same-date rows confirmed as having no preview period. That is under the guard's limit of 20, so one `fix-closed` dispatch drains it with the guard left on. The other 68 same-date rows have no Playbill production page and stay as they are. Jesa is in both lists, so the plan below goes first. Its correction is then a human one, which the enricher skips, and the plan's expected old value still matches.
 - **Rows (data):** pending-fix plan `data/pending-fixes/bro-6489.json`, 12 edits on 8 rows, applied through `execute-approved-fix.yml`: Between Riverside and Crazy (first preview), The Morbs (first preview, opening, status), Lord Nil (type), Clowns Like Me and Everything's Fine (closing), Three Houses, Jesa and Orlando (opening; Orlando also first preview and revival). Jesa and Orlando match their Playbill production pages. Three Houses was corrected from a Playbill article. The Morbs has no Playbill production page yet (world premiere in previews), so the source is TDF plus BroadwayWorld's extension article.
 
+## Full run (1,082 rows)
+
+Same checkers and prompt as the pilot, every row in the cohort. Hand adjudication of every disagreement was not possible at this size, so disagreements were settled by two automatic adjudicators (`adjudicate-playbill` in `scripts/fact-check-historical-sample.js`, rules in `scripts/lib/nyc-facts-audit.js`):
+
+- **playbill-auto:** the row's Playbill production page, read by `scripts/validate-show-venue.js`. Only these verdicts drive row corrections. Guards (tested): the page's venue must match and its year must be one the row belongs to (id suffix or stored dates); a date more than 60 days from the stored one is another engagement, not a fix; a field a person already corrected (`humanCorrected*Date`, or a manual / human-correction / hand-verified source) is never overridden; a closing still to come on a closed row is skipped. The first version lacked these, and a review caught it marking Grey House's hand-corrected opening wrong and Triumph's closing as a future date. The venue validator's ledger keeps only provisional rows, so the run used `--all --show=<ids>` with `VENUE_AUDIT_PATH` pointing at a scratch file to keep results for any row.
+- **pages-auto:** both checkers agree with each other against the store and cite a fetched page. Counted in the error table, never used to correct a row. Guards (tested): theatre, tier and other-runs are never auto-wrong, and a date is auto-wrong only when the two answers sit within 31 days of the stored date. The first pages-auto pass marked rows wrong where both checkers had found a different production of the same title (a revival a decade later); the guards were added before counting.
+
+648 field verdicts are still pending (no Playbill page and no agreeing sourced pair). They count in neither column, so the rates below are rates among settled fields.
+
+| Field | Wrong / checked | Rate | 95% CI | Unverifiable |
+|---|---|---|---|---|
+| theatre | 0/893 | 0.0% | 0.0-0.4% | 183 |
+| tier | 0/1004 | 0.0% | 0.0-0.4% | 78 |
+| first preview | 6/769 | 0.8% | 0.4-1.7% | 116 |
+| opening night | 25/693 | 3.6% | 2.5-5.3% | 204 |
+| closing | 7/843 | 0.8% | 0.4-1.7% | 139 |
+| type | 28/959 | 2.9% | 2.0-4.2% | 114 |
+| revival | 17/896 | 1.9% | 1.2-3.0% | 186 |
+| other runs | 1/790 | 0.1% | 0.0-0.7% | 292 |
+
+By stratum, the errors concentrate in closed Off-Broadway rows outside the backfill: ob-recent opening night 20/163 (12.3%), first preview 5/175 (2.9%), closing 5/255 (2.0%). The backfilled OB rows' dates are clean (opening 1/232) but their type is wrong in 11/233 (4.7%). Closed Broadway rows had no settled date errors (0/150 first previews, 0/155 openings). The pilot's date rates (10-13%) were from 40 rows, mostly the worst stratum; the full run's pooled rates are lower and the ob-recent opening rate matches the pilot.
+
+New error classes from the full run:
+
+7. **Type guessed as play when unknown.** NYC show builders default an unknown type to play, so Off-Broadway musicals and solo cabaret shows land as plays (The Seat of Our Pants, Bear Grease, Saturday Church). Code fix filed as BRO-6506; rows corrected below.
+8. **Off-Broadway revival flags missing** on stagings of works with earlier New York productions (Sea Wall, Elektra, The Receptionist, Coriolanus). Same convention as pilot class 4.
+9. **Announcement-era dates** (pilot class 2) recur on closed OB rows beyond the venue-page discoveries: a stored opening a week or more before the real one.
+
+Corrections: two pending-fix plans, `data/pending-fixes/bro-6489-playbill-1.json` (25 edits, 21 rows) and `bro-6489-playbill-2.json` (12 edits, 9 rows), written by `plan-playbill` and applied through `execute-approved-fix.yml`. Every edit is a playbill-auto "wrong" verdict with the Playbill value as the new value and the stored value as the expected old value. The guards above leave out Mrs. Doubtfire (2020 pre-shutdown previews vs the 2021 restart), Going Bacharach (return engagement), Othello (Bedlam) and Music City (over 60 days), Grey House (hand-corrected) and Triumph (closing still to come). Held by hand with `--hold`: four rows whose id names a year other than their dates (Animal Wisdom, Bad Kreyòl, Jerome, Caroline), Shit. Meet. Fan. (first preview 50 days off), and Cat Cohen: Broad Strokes (cabaret, which this site files as special; Playbill says musical).
+
+Full-run cost: about $84.72 at list price; with the pilot, about $88 total, under the $100 cap.
+
 ## Cost
 
-Pilot: $0.67 model fees plus $2.57 search fees at list price = $3.24 for 40 shows, about $0.081 a show. A full run over 1,085 rows would cost about $88, so it was not run. A field-targeted rerun is cheaper. Re-checking only the three date fields on the 586 closed OB rows would cost about $25-30, but the free consistency checks plus the closed-row enrich mode already reach most of class 1.
+Pilot: $0.67 model fees plus $2.57 search fees at list price = $3.24 for 40 shows, about $0.081 a show. A full run over 1,085 rows would cost about $88; it was run after the owner raised the cap (see Full run). A field-targeted rerun is cheaper. Re-checking only the three date fields on the 586 closed OB rows would cost about $25-30, but the free consistency checks plus the closed-row enrich mode already reach most of class 1.
 
 ## Reproduce
 
@@ -76,4 +108,7 @@ Pilot: $0.67 model fees plus $2.57 search fees at list price = $3.24 for 40 show
 node scripts/fact-check-historical-sample.js sample --cohort=nyc-facts --n=40 --seed=6489
 node scripts/fact-check-historical-sample.js check  --cohort=nyc-facts --max-usd=6
 node scripts/fact-check-historical-sample.js report --cohort=nyc-facts
+# full run: check every row, then settle disagreements from Playbill and agreeing sourced pages
+node scripts/fact-check-historical-sample.js adjudicate-playbill --cohort=nyc-facts --results=<validate-show-venue result files> --pages --dry-run
+node scripts/fact-check-historical-sample.js plan-playbill --cohort=nyc-facts --prefix=bro-6489-playbill --hold=shit-meet-fan-off-broadway-2024,animal-wisdom-off-broadway-2022,bad-krey-l-off-broadway-2026,jerome-off-broadway-2025,caroline-off-broadway-2026,cat-cohen-broad-strokes-off-broadway-2026 --dry-run
 ```

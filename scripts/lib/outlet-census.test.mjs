@@ -291,3 +291,25 @@ test('an archival film review naming an old year is not a gap; a show titled wit
     headline: 'Danny and the Deep Blue Sea: John Patrick Shanley’s 1983 drama revived swimmingly' }, ctx2);
   assert.equal(revival.bucket, 'gap');
 });
+
+test('extractPageMeta reads the critic from a JSON-LD Review and ignores an unsigned listing', () => {
+  const signed = census.extractPageMeta('<script type="application/ld+json">{"@type":"Review","itemReviewed":{"@type":"TheaterEvent"},"author":{"@type":"Person","name":"Adam Feldman"}}</script>');
+  assert.equal(signed.reviewAuthor, 'Adam Feldman');
+  const listing = census.extractPageMeta('<script type="application/ld+json">{"@type":"Review","author":{"@type":"Person","name":""}}</script>');
+  assert.equal(listing.reviewAuthor, null);
+  assert.equal(census.extractPageMeta('<title>Soon | Theater in New York</title>').reviewAuthor, null);
+  const ld = (o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`;
+  assert.equal(census.extractPageMeta(ld({ '@graph': [{ '@type': 'Review', author: [{ '@type': 'Person', name: 'Raven Snook' }] }] })).reviewAuthor, 'Raven Snook');
+  assert.equal(census.extractPageMeta(ld({ author: { name: 'Adam Feldman' }, reviewBody: 'x'.repeat(2000), '@type': 'Review' })).reviewAuthor, 'Adam Feldman');
+  // A playwright on the reviewed work is not the critic.
+  assert.equal(census.extractPageMeta(ld({ '@type': 'Review', itemReviewed: { '@type': 'CreativeWork', author: { name: 'Jordan Harrison' } }, author: { name: '' } })).reviewAuthor, null);
+  assert.equal(census.extractPageMeta('<script type="application/ld+json">{not json</script>').reviewAuthor, null);
+});
+
+test('a Los Angeles house in the headline marks a same-titled review as another market (Fountain Theatre, BRO-6485)', () => {
+  const show = { id: 'fatherland-off-broadway-2024', title: 'Fatherland', market: 'off-broadway', openingDate: '2024-09-01', closingDate: '2024-11-01' };
+  const ctx = { shows: [show], nycIds: new Set([show.id]), corpus: census.buildCorpusIndex([]), outletShowUrls: census.buildOutletShowIndex([]), nycVenues: [] };
+  const r = census.bucketItem({ outletId: 'frontmezzjunkies', sourceSaysReview: true, url: 'https://frontmezzjunkies.com/2024/10/04/fountain-theatres-fatherland/', publishDate: '2024-10-04',
+    headline: 'Fountain Theatre’s “Fatherland” Talks Its Way Through', description: '' }, ctx);
+  assert.notEqual(r.bucket, 'gap');
+});

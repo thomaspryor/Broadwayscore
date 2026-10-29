@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const { isEntryInWindow, decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, isObHistoricalRow, transferLinkFields } = require('./ob-historical-cohort.js');
 const { applyAddShow } = require('./add-show-action.js');
 const { isTmRowInWindow, isCurrentTmRow, findTmSameTitleShow, isDistinctTransfer } = require('./theatermania-ob.js');
-const { selectPromotable } = require('../promote-ob-historical.js');
+const { selectPromotable, inferObShowType, onlyMusicalTitles } = require('../promote-ob-historical.js');
 
 const TODAY = '2026-10-25';
 const entry = (o = {}) => ({
@@ -226,6 +226,47 @@ test('isStructuralOnlyMismatch (BRO-6470): a TM preview date inside Playbill\'s 
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2021, playbill: 2022 }] }), true);
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2019, playbill: 2022 }] }), false);
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'venue' }] }), false);
+});
+
+// BRO-6506: 15 OB musicals went in as plays because the title was the only signal.
+test('inferObShowType: Playbill tag > TM genre > title > same-titled catalog musical > flagged play', () => {
+  const r = (o) => ({ title: 'The Connector', parsed: { tagLine: {} }, ...o });
+  assert.deepEqual(inferObShowType(r({ parsed: { tagLine: { showType: 'musical' } } })), { type: 'musical', guessed: false });
+  // Playbill's explicit Play wins over a TM musical genre.
+  assert.deepEqual(inferObShowType(r({ parsed: { tagLine: { showType: 'play' } }, listingGenre: 'Musical' })), { type: 'play', guessed: false });
+  // Bare "Off-Broadway" tag-line (The Connector, Walk on Through): TM genre decides.
+  assert.deepEqual(inferObShowType(r({ listingGenre: 'Comedy; Musical' })), { type: 'musical', guessed: false });
+  assert.deepEqual(inferObShowType(r({ listingGenre: 'Play; World Premiere' })), { type: 'play', guessed: false });
+  // TM "Play; Comedy": knownShowType says nothing, the Play genre still counts and beats the catalog.
+  assert.deepEqual(inferObShowType(r({ title: 'Peter Pan', listingGenre: 'Play; Comedy' }), new Set(['peter pan'])), { type: 'play', guessed: false });
+  // Any genre at all silences the catalog rule ("Cabaret; Comedy" stays a flagged guess).
+  assert.deepEqual(inferObShowType(r({ title: 'Peter Pan', listingGenre: 'Cabaret; Comedy' }), new Set(['peter pan'])), { type: 'play', guessed: true });
+  assert.deepEqual(inferObShowType(r({ title: 'Dog Man: The Musical' })), { type: 'musical', guessed: false });
+  // Catalog-only inference still goes on the hand-check list.
+  assert.deepEqual(inferObShowType(r({ title: 'Animal Wisdom' }), new Set(['animal wisdom'])), { type: 'musical', guessed: true });
+  assert.deepEqual(inferObShowType(r()), { type: 'play', guessed: true });
+});
+
+test('selectPromotable: carries the inferred type and lists guessed ids', () => {
+  const match = (title, venue, extra = {}) => ({
+    title, venue, result: 'match', playbillUrl: `https://playbill.com/production/${title.toLowerCase().replace(/ /g, '-')}`,
+    parsed: { dates: { openingDate: '2024-02-06', firstPreview: null, closingDate: '2024-03-17' }, titleParse: { venue }, tagLine: { tags: ['Off-Broadway'], showType: null } },
+    ...extra,
+  });
+  const { toPromote, typeGuessed } = selectPromotable([
+    match('The Connector', 'The Robert W. Wilson MCC Theater Space', { listingGenre: 'Musical' }),
+    match('Archduke', 'Laura Pels Theatre'),
+  ], []);
+  assert.deepEqual(toPromote.map(e => [e.id, e.type]), [['the-connector-off-broadway-2024', 'musical'], ['archduke-off-broadway-2024', 'play']]);
+  assert.deepEqual(typeGuessed, ['archduke-off-broadway-2024']);
+});
+
+test('onlyMusicalTitles: a title the catalog holds as both play and musical never counts', () => {
+  const t = onlyMusicalTitles([
+    { title: 'Peter Pan', type: 'musical' }, { title: 'Peter Pan', type: 'play' },
+    { title: 'Animal Wisdom', type: 'musical' }, { title: 'Archduke', type: 'play' },
+  ]);
+  assert.deepEqual([...t], ['animal wisdom']);
 });
 
 test('BRO-6496: isEntryInWindow uses the first preview, else the opening', () => {

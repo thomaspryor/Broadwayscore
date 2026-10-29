@@ -336,7 +336,8 @@ async function fillMeta(outletId, items, { refresh, concurrency }) {
   let fetched = 0; let failed = 0;
   await pool(items, concurrency, async (item) => {
     const k = urlKey(item.url);
-    if (!cache[k]) {
+    // Entries cached before reviewAuthor existed are re-read once (BRO-6485).
+    if (!cache[k] || (!cache[k].error && !('reviewAuthor' in cache[k]))) {
       try {
         const { status, body } = await get(item.url);
         cache[k] = status === 200 ? census.extractPageMeta(body) : { error: `HTTP ${status}` };
@@ -477,7 +478,9 @@ async function runOutlet(outletId, o, shared) {
   const results = items.map((it) => {
     const idm = idRe && idRe.exec(it.url);
     const aliasKey = idm ? heldById.get(idm[1]) : undefined;
-    const full = { ...it, aliasKey, outletId, sourceSaysReview: !!src.sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
+    // requireReviewAuthor: the source path mixes reviews with listings; only a page naming its critic counts.
+    const sourceSaysReview = !!src.sourceSaysReview && (!src.requireReviewAuthor || !!it.reviewAuthor);
+    const full = { ...it, aliasKey, outletId, sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
     return { ...full, ...census.bucketItem(full, ctx) };
   });
 
