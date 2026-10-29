@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-29T14:58:34.934Z",
-  "processed": 193,
-  "failed": 131,
-  "successRate": "59.6%",
+  "updatedAt": "2026-10-29T15:18:49.292Z",
+  "processed": 198,
+  "failed": 141,
+  "successRate": "58.4%",
   "tierBreakdown": {
-    "playwright": 96,
+    "playwright": 99,
     "amp": 1,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 15,
+    "scrapingdog": 16,
     "scrapingbee": 8,
     "brightdata": 3,
-    "archiveToday": 22,
-    "archive": 56
+    "archiveToday": 26,
+    "archive": 57
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-10-29T13:43:27.497Z",
-      "event": "bb-session",
-      "session": "712e366e",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-10-29T13:43:28.163Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-29T13:43:36.937Z",
-      "event": "bb-session",
-      "session": "33dc40f8",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-10-29T13:43:37.548Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-10-29T14:40:27.392Z",
       "event": "bb-session",
@@ -127,6 +105,29 @@
       "t": "2026-10-29T14:57:44.390Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-29T15:13:28.393Z",
+      "event": "bb-session",
+      "session": "a4892700",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-29T15:13:29.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-29T15:14:27.424Z",
+      "event": "bb-session",
+      "session": "46666c83",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-29T15:16:54.307Z",
+      "event": "bb-session",
+      "session": "7f6bdca5",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
