@@ -88,6 +88,20 @@ function getExistingUrls(showId) {
   return urls;
 }
 
+// BRO-6516: the UK hub backfill took the pool from ~50 shows to ~200, and the
+// job's 20-minute timeout fits about 30 (a 45-show run was cancelled). An
+// unfiltered run searches one weekly slice instead: shows sorted by id, every
+// Nth one, N = slices needed to keep each under the cap, rotating by ISO week,
+// so every show is still searched once per N weeks. --show runs are untouched.
+const MAX_SHOWS_PER_RUN = Number(process.env.REGIONAL_SERP_MAX_SHOWS) || 30;
+function weeklySlice(shows, now = new Date(), max = MAX_SHOWS_PER_RUN) {
+  if (shows.length <= max) return { shows, slice: 0, slices: 1 };
+  const slices = Math.ceil(shows.length / max);
+  const slice = Math.floor(now.getTime() / (7 * 86400000)) % slices;
+  const sorted = [...shows].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  return { shows: sorted.filter((_, i) => i % slices === slice), slice, slices };
+}
+
 function selectRegionalShows() {
   const showsData = require(path.join(ROOT, 'data', 'shows.json'));
   return selectDiscoveryShows(showsData.shows, showFilter);
@@ -229,7 +243,13 @@ async function main() {
     process.exit(1);
   }
 
-  const shows = selectRegionalShows();
+  let shows = selectRegionalShows();
+  if (!showFilter) {
+    const pool = shows.length;
+    const r = weeklySlice(shows);
+    shows = r.shows;
+    if (r.slices > 1) console.log(`Pool of ${pool} over the ${MAX_SHOWS_PER_RUN}-show cap: searching weekly slice ${r.slice + 1} of ${r.slices}`);
+  }
   console.log(`Regional SERP discovery — ${shows.length} show(s) in pool${dryRun ? ' (dry-run)' : ''}`);
   if (shows.length === 0) {
     console.log(showFilter ? `No regional/tour show found matching --show=${showFilter}` : 'No regional or tour shows in the discovery window.');
@@ -270,6 +290,8 @@ async function main() {
     console.log(`Audit log written: ${path.relative(ROOT, AUDIT_PATH)}`);
   }
 }
+
+module.exports = { weeklySlice, MAX_SHOWS_PER_RUN };
 
 if (require.main === module) {
   main().catch((e) => {
