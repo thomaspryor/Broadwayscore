@@ -72,6 +72,17 @@ const SUPABASE_SHOW_ID_TABLES = [
   { table: 'seen_unrated', column: 'show_id', declaredIn: 'supabase/migrations/20261005_profile_onboarding.sql',
     confirmedBy: ['src/components/onboarding/WelcomeSheet.tsx', 'src/app/my-shows/MyShowsClient.tsx'],
     note: 'PRIMARY KEY(user_id, show_id)' },
+  { table: 'show_events', column: 'show_id', declaredIn: 'supabase/migrations/20261026_push_alert_prefs.sql',
+    confirmedBy: ['scripts/write-show-events.js'],
+    note: 'UNIQUE(show_id, type, value)', uniqueWith: ['type', 'value'] },
+  { table: 'push_alert_log', column: 'show_id', declaredIn: 'supabase/migrations/20261026_push_alert_prefs.sql',
+    confirmedBy: ['iOS app send-notifications (dedupe log)'], idSegmentColumns: ['dedupe_key'], note: "dedupe_key embeds the id as a ':' segment ('closing-posted:hamilton-2015')" },
+];
+
+/** TEXT[] columns that hold shows.json ids (array_replace, not a plain UPDATE). */
+const SUPABASE_ARRAY_SHOW_ID_COLUMNS = [
+  { table: 'profiles', column: 'favorite_show_ids', declaredIn: 'supabase/migrations/20261025b_profile_favorite_shows.sql',
+    confirmedBy: ['iOS app Stats "Your favorites"'] },
 ];
 
 /** JSONB columns that embed shows.json ids (need jsonb rewrites, not a plain UPDATE). */
@@ -109,9 +120,17 @@ function sqlLiteral(value) {
 function buildSqlMigration(oldId, newId) {
   const o = sqlLiteral(oldId);
   const n = sqlLiteral(newId);
-  const statements = SUPABASE_SHOW_ID_TABLES.map(
-    (t) => `UPDATE ${t.table} SET ${t.column} = ${n} WHERE ${t.column} = ${o};`
-  );
+  // Ids match ID_RE ([a-z0-9-]), so they are regex-safe as a segment.
+  const segment = (col) => `${col} = regexp_replace(${col}, '(^|:)' || ${o} || '(:|$)', '\\1' || ${n} || '\\2')`;
+  const statements = SUPABASE_SHOW_ID_TABLES.flatMap((t) => [
+    // A newId row written between the data rename and this SQL would make the
+    // UPDATE violate the unique key and roll back every table: drop the old
+    // twin of any such row first.
+    ...(t.uniqueWith ? [`DELETE FROM ${t.table} o WHERE o.${t.column} = ${o} AND EXISTS (SELECT 1 FROM ${t.table} x WHERE x.${t.column} = ${n}${t.uniqueWith.map((c) => ` AND x.${c} IS NOT DISTINCT FROM o.${c}`).join('')});`] : []),
+    `UPDATE ${t.table} SET ${[`${t.column} = ${n}`, ...(t.idSegmentColumns || []).map(segment)].join(', ')} WHERE ${t.column} = ${o};`,
+  ]).concat(SUPABASE_ARRAY_SHOW_ID_COLUMNS.map(
+    (c) => `UPDATE ${c.table} SET ${c.column} = array_replace(${c.column}, ${o}, ${n}) WHERE ${o} = ANY(${c.column});`
+  ));
   const jsonbStatements = [
     // picks: jsonb array of ids
     `UPDATE fantasy_entries SET picks = (SELECT COALESCE(jsonb_agg(CASE WHEN elem = to_jsonb(${o}::text) THEN to_jsonb(${n}::text) ELSE elem END), '[]'::jsonb) FROM jsonb_array_elements(picks) AS elem) WHERE picks @> jsonb_build_array(${o}::text);`,
@@ -236,7 +255,8 @@ function colonRename(key, oldKey, newKey) {
  * Apply one registry entry's shape to a parsed document. Mutates `doc`.
  * @returns {Array<{op:string, at:string, from:string, to:string}>} edits
  *   (throws on a key collision — the caller turns that into a refusal at
- *   plan time, so apply never sees one)
+ *   plan time, so apply never sees one — unless the entry opts into
+ *   onCollision 'drop-orphan-target' on a forward rename)
  */
 function applyShape(doc, entry, ctx) {
   const keyedBy = entry.keyedBy || 'id';
@@ -257,9 +277,19 @@ function applyShape(doc, entry, ctx) {
         const renamed = entry.keyStyle === 'colon-segments' ? colonRename(key, oldKey, newKey) : (key === oldKey ? newKey : key);
         if (renamed === key) continue;
         if (Object.prototype.hasOwnProperty.call(container, renamed)) {
-          const err = new Error(`key ${JSON.stringify(renamed)} already exists at ${base || '<root>'}`);
-          err.code = 'KEY_COLLISION';
-          throw err;
+          // Only for registry entries that opt in, and only on a forward
+          // rename: the plan has refused any target id a shows.json row owns,
+          // so the existing entry is orphan data no page reads. On a resume
+          // the row already carries newId, so its newId entry is live (CI may
+          // have written it since) and a collision must refuse instead.
+          if (entry.onCollision === 'drop-orphan-target' && !ctx.resume) {
+            delete container[renamed];
+            edits.push({ op: 'drop-orphan', at: joinPath(base, renamed), from: renamed, to: null });
+          } else {
+            const err = new Error(`key ${JSON.stringify(renamed)} already exists at ${base || '<root>'}`);
+            err.code = 'KEY_COLLISION';
+            throw err;
+          }
         }
         renameKeyInPlace(container, key, renamed);
         edits.push({ op: 'rename-key', at: joinPath(base, key), from: key, to: renamed });
@@ -518,9 +548,10 @@ function rewriteText(text, entries, ctx, { jsonl = false, skipGenericKeys } = {}
 
 /** Group edits into counts for the summary line. */
 function countEdits(edits) {
-  const c = { keys: 0, fields: 0, refs: 0, paths: 0 };
+  const c = { keys: 0, fields: 0, refs: 0, paths: 0, orphansDropped: 0 };
   for (const e of edits) {
     if (e.op === 'rename-key') c.keys++;
+    else if (e.op === 'drop-orphan') c.orphansDropped++;
     else if (e.op === 'set-field') c.fields++;
     else if (e.op === 'replace-path' || e.op === 'replace-prefix') c.paths++;
     else c.refs++;
@@ -693,7 +724,7 @@ function planShowIdRename(oldId, newId, treesIn = {}) {
     }
     plan.aliases = aliases;
   }
-  const ctx = { oldId, newId, oldSlug: plan.oldSlug, newSlug: plan.newSlug, slugChanged: plan.slugChanged };
+  const ctx = { oldId, newId, oldSlug: plan.oldSlug, newSlug: plan.newSlug, slugChanged: plan.slugChanged, resume: !!plan.resume };
 
   // Group registry entries by the real file they resolve to (the web
   // checkout's data/shows.json symlink and the core clone's shows.json are one
@@ -792,6 +823,7 @@ function planShowIdRename(oldId, newId, treesIn = {}) {
   plan.summary = {
     filesRewritten: plan.changes.length,
     keysRenamed: plan.changes.reduce((n, c) => n + c.counts.keys, 0),
+    orphansDropped: plan.changes.reduce((n, c) => n + (c.counts.orphansDropped || 0), 0),
     fieldsSet: plan.changes.reduce((n, c) => n + c.counts.fields, 0),
     refsRewritten: plan.changes.reduce((n, c) => n + c.counts.refs + c.counts.paths, 0),
     dirsMoved: plan.moves.filter((m) => m.isDir).length,
@@ -896,7 +928,7 @@ function moveTree(move) {
 function applyShowIdRename(plan, opts = {}) {
   if (!plan || !plan.ok) throw new Error(`refusing to apply: ${(plan && plan.refusals.join('; ')) || 'no plan'}`);
   const log = typeof opts.log === 'function' ? opts.log : () => {};
-  const ctx = { oldId: plan.oldId, newId: plan.newId, oldSlug: plan.oldSlug, newSlug: plan.newSlug, slugChanged: plan.slugChanged };
+  const ctx = { oldId: plan.oldId, newId: plan.newId, oldSlug: plan.oldSlug, newSlug: plan.newSlug, slugChanged: plan.slugChanged, resume: !!plan.resume };
   const out = { rewritten: [], moved: [], innerRewritten: [], warnings: [] };
 
   // 1. JSON rewrites (shows.json first — see plan ordering).
@@ -984,6 +1016,7 @@ function formatPlan(plan, { verbose = false, maxEdits = 6 } = {}) {
     for (const c of plan.changes) {
       const parts = [];
       if (c.counts.keys) parts.push(`${c.counts.keys} key${c.counts.keys === 1 ? '' : 's'}`);
+      if (c.counts.orphansDropped) parts.push(`${c.counts.orphansDropped} orphan target entr${c.counts.orphansDropped === 1 ? 'y' : 'ies'} dropped`);
       if (c.counts.fields) parts.push(`${c.counts.fields} id field${c.counts.fields === 1 ? '' : 's'}`);
       if (c.counts.refs) parts.push(`${c.counts.refs} ref${c.counts.refs === 1 ? '' : 's'}`);
       if (c.counts.paths) parts.push(`${c.counts.paths} path${c.counts.paths === 1 ? '' : 's'}`);
@@ -1066,6 +1099,7 @@ module.exports = {
   serializeJson,
   yearlessSlug,
   SUPABASE_SHOW_ID_TABLES,
+  SUPABASE_ARRAY_SHOW_ID_COLUMNS,
   SUPABASE_JSONB_SHOW_ID_COLUMNS,
   SUPABASE_SHOW_ID_LOOKALIKES,
   SUPABASE_UNVERIFIED_TABLES,

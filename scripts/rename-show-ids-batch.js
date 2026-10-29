@@ -201,7 +201,7 @@ function main() {
     if (st.state === 'reappeared') { console.log(`reappeared ${p.oldId} -> ${p.newId}: old row re-added by a merge; --apply drops it and resumes`); continue; }
     const plan = planShowIdRename(p.oldId, p.newId, trees);
     if (!plan.ok) refused.push(...plan.refusals.map((r) => `${p.oldId}: ${r}`));
-    console.log(`${st.state.padEnd(7)} ${p.oldId} -> ${p.newId}  slug ${plan.oldSlug}${plan.slugChanged ? ` -> ${plan.newSlug}` : ' (kept)'}  ${plan.summary ? `${plan.summary.filesRewritten} files, ${plan.summary.dirsMoved + plan.summary.filesMoved} moves` : ''}`);
+    console.log(`${st.state.padEnd(7)} ${p.oldId} -> ${p.newId}  slug ${plan.oldSlug}${plan.slugChanged ? ` -> ${plan.newSlug}` : ' (kept)'}  ${plan.summary ? `${plan.summary.filesRewritten} files, ${plan.summary.dirsMoved + plan.summary.filesMoved} moves${plan.summary.orphansDropped ? `, ${plan.summary.orphansDropped} orphan target entries dropped` : ''}` : ''}`);
   }
   if (refused.length) { console.error(`\nrefused (${refused.length}), nothing written:\n  ${refused.join('\n  ')}`); process.exit(2); }
   if (!f.apply) { console.log(`\ndry run: ${pairs.length} pair(s) plan cleanly; pass --apply to execute`); return; }
