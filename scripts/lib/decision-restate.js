@@ -93,6 +93,13 @@ function dropAnswered(items, commentsByCard) {
   return { keep, dropped };
 }
 
+/** True when a Linear issue (comments as {nodes:[...]} or an array) already holds the owner's answer. Fails open. */
+function isIssueAnswered(issue) {
+  const c = issue && issue.comments;
+  const list = Array.isArray(c) ? c : (c && c.nodes) || [];
+  return list.length ? answerState(list).answered : false;
+}
+
 /** BRO ids named inside DECISION NEEDED blocks (a block runs to its Default: line or a blank line pair). */
 function decisionCards(message) {
   const lines = String(message || '').split('\n');
@@ -174,4 +181,4 @@ if (require.main === module && process.argv.includes('--stop-hook')) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[decision-restate] ${e.message}`); process.exitCode = 0; });
 }
 
-module.exports = { stopHook, answerState, dropAnswered, decisionCards, decisionCardsFromTranscript, checkCards, isAnswer, isQuestion, main };
+module.exports = { isIssueAnswered, stopHook, answerState, dropAnswered, decisionCards, decisionCardsFromTranscript, checkCards, isAnswer, isQuestion, main };

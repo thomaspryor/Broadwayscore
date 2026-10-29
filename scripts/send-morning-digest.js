@@ -1188,7 +1188,8 @@ async function main() {
     // above are two separate round trips, so an owner who removed the
     // awaiting-owner label in that gap must not still show up as waiting
     // (ship-check finding, BRO-420).
-    const section = buildAwaitingOwnerSection(enriched.filter(isAwaitingOwner));
+    // BRO-6539: an owner who answered (Owner decision / Approve) without removing the label is not still waiting.
+    const section = buildAwaitingOwnerSection(enriched.filter(isAwaitingOwner).filter((i) => !require('./lib/decision-restate.js').isIssueAnswered(i)));
     if (section) sections.awaitingOwner = section;
   } catch (err) {
     sections.boardWaitingUnknown = true; // Board numbers shows n/a, not 0 (BRO-5482)
