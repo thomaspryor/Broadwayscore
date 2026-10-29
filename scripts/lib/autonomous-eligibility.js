@@ -66,6 +66,14 @@ function categoryOf(task) {
   return parts.length >= 3 ? parts[parts.length - 1].toLowerCase() : null;
 }
 
+// Imported Linear cards can have routing prefixes before the original bridge line.
+function categoryOfLinearIssue(description) {
+  const match = /^\[notion:[^\]]+\]\s*(.+)$/m.exec(String(description || ''));
+  if (!match) return null;
+  const parts = match[1].split('·').map(s => s.trim());
+  return parts.length >= 3 ? parts[parts.length - 1] : null;
+}
+
 // Human-action verb applies only to short imperatives ("Email volunteers") —
 // long subjects starting with the same word are product cards ("Email gate
 // conversion critically low at 0.9%").
@@ -545,6 +553,7 @@ module.exports = {
   DATA_CARD_CLASSES,
   DATA_CLASS_REPO,
   categoryOf,
+  categoryOfLinearIssue,
   isHumanActionSubject,
   isExcludedCategory,
   isCardEligible,

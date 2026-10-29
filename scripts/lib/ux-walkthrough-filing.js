@@ -53,15 +53,15 @@ const DUPE_SIMILARITY = 0.6;
 // (BRO-340), so a bad night files a few. The rest are reported as skippedOverCap; a real defect shows up in the next night's run and files then.
 const MAX_FILINGS_PER_RUN = 3;
 
-// The card's own safe-form check (check-paths.js SAFE_CHECK_FORMS). The real acceptance is the live check the
-// notes describe; this keeps the card pickable by the cloud worker (a card with no safe VERIFY is skipped).
-const VERIFY_LINE = 'VERIFY: node --test scripts/lib/ux-walkthrough-filing.test.mjs';
+// Each filing gets a unique key from the caller, so an earlier finding's resolution cannot close a recurrence.
+const VERIFY_LINE = 'VERIFY: node scripts/lib/ux-walkthrough-resolution.js --key=';
 
 /**
  * PURE. The card body. Worker instructions avoid the phrases headless-dispatchability.js reads as "needs the
  * owner" (the owner must decide / approval first), so the card stays pickable; the owner is asked later with a picture.
  */
-function cardNotes(finding, respondingCount) {
+function cardNotes(finding, respondingCount, resolutionKey) {
+  if (!/^[a-f0-9]{32}$/.test(resolutionKey || '')) throw new Error('A unique 32-hex UX resolution key is required');
   const f = finding || {};
   const evidence = f.deterministic
     ? `Flagged by the automated ${(f.models && f.models[0]) || 'structural'} detector in the nightly signed-in UX walkthrough's interactive pass (deterministic, not a model opinion).`
@@ -77,12 +77,13 @@ function cardNotes(finding, respondingCount) {
     '',
     '## What to do',
     '1. Reproduce the finding on demo.broadwayscorecard.com (signed in, grid and list, mobile and desktop). Do not trust the finding text alone.',
-    '2. If it does not reproduce or is not a real problem, close this card with the reason in a comment (what you looked at and what you saw). That is the expected outcome for most of these.',
+    '2. If it does not reproduce or is not a real problem, post a comment with a line starting UX-RESOLUTION: noise: followed by the reason (at least 20 characters: what you looked at and what you saw), then close this card. That is the expected outcome for most of these.',
     '3. If it is real, build the fix with the shared components and tokens (memory/design-system.md), run /visual-qa, commit, then ask the owner to look at the picture: `node scripts/visual-approval.js request --issue=<this card> --what="<plain words>"`. That emails before/after screenshots with an Approve button. Do not write a question for the owner in Linear.',
     '',
     '## Acceptance criteria',
     'The finding is closed as noise with a reason, or the fix is landed with the owner\'s Approve recorded, and the next nightly walkthrough does not repeat it.',
-    VERIFY_LINE,
+    `UX-FINDING: ${resolutionKey}`,
+    `${VERIFY_LINE}${resolutionKey}`,
   ].join('\n');
 }
 
