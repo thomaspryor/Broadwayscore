@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parseArgs, extractOutput, validateScriptPath, BEGIN, END } = require('./cloud-run-script.js');
+const { parseArgs, pollDeadline, extractOutput, validateScriptPath, BEGIN, END } = require('./cloud-run-script.js');
 
 test('parseArgs keeps flags before the script and passes the rest through', () => {
   const o = parseArgs(['--review-texts', '--timeout=5', 'scripts/a.js', '--days=91', '--review-texts']);
@@ -50,4 +50,14 @@ test('--review-texts-depth asks for review-texts history and implies --review-te
   assert.equal(o.script, 'scripts/a.js');
   assert.deepEqual(o.args, ['--days=60']);
   assert.equal(parseArgs(['scripts/a.js']).reviewTextsDepth, 1, 'default stays a one-commit snapshot');
+});
+
+test('pollDeadline: queue time does not count against --timeout (BRO-6485)', () => {
+  const min = 60 * 1000;
+  const base = { dispatchedAt: 0, timeoutMin: 55, queueWaitMin: 240 };
+  assert.equal(pollDeadline({ ...base, startedAt: null }), 240 * min);
+  // Started after 68 min queued: the 75-min script window runs from the start.
+  assert.equal(pollDeadline({ ...base, startedAt: 68 * min }), (68 + 75) * min);
+  assert.equal(parseArgs(['--queue-wait=30', 'scripts/a.js']).queueWaitMin, 30);
+  assert.equal(parseArgs(['scripts/a.js']).queueWaitMin, 240);
 });

@@ -13,7 +13,7 @@
  * for it, and prints the script's output here as if it ran locally.
  *
  * Usage:
- *   node scripts/cloud-run-script.js [--review-texts] [--review-texts-depth=N] [--timeout=MIN] <scripts/x.js> [args...]
+ *   node scripts/cloud-run-script.js [--review-texts] [--review-texts-depth=N] [--timeout=MIN] [--queue-wait=MIN] <scripts/x.js> [args...]
  *
  * Exit code: the script's own exit code; 3 when the run could not be started or
  * read (dispatch refused, run never appeared, timeout).
@@ -53,7 +53,7 @@ function validateScriptPath(p) {
 }
 
 function parseArgs(argv) {
-  const opts = { reviewTexts: false, reviewTextsDepth: 1, timeoutMin: 30, script: null, args: [] };
+  const opts = { reviewTexts: false, reviewTextsDepth: 1, timeoutMin: 30, queueWaitMin: 240, script: null, args: [] };
   let i = 0;
   for (; i < argv.length; i++) {
     const a = argv[i];
@@ -62,6 +62,7 @@ function parseArgs(argv) {
     // drops the clone's credentials, so a script cannot fetch more itself.
     else if (a.startsWith('--review-texts-depth=')) { opts.reviewTexts = true; opts.reviewTextsDepth = Number(a.slice(21)); }
     else if (a.startsWith('--timeout=')) opts.timeoutMin = Number(a.slice(10));
+    else if (a.startsWith('--queue-wait=')) opts.queueWaitMin = Number(a.slice(13));
     else break;
   }
   opts.script = argv[i] || null;
@@ -72,6 +73,18 @@ function parseArgs(argv) {
 // Job logs prefix every line with an ISO timestamp and a space.
 function stripTimestamp(line) {
   return line.replace(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z ?/, '');
+}
+
+/**
+ * When to stop polling. Queue time does not count against --timeout: a run that sat
+ * queued for an hour behind a busy Actions pool used to hit the deadline while its
+ * script was still working, and the sealed output was lost with this process's key
+ * (BRO-6485). The queue gets its own --queue-wait limit; the script limit starts
+ * when the run is first seen in progress.
+ */
+function pollDeadline({ dispatchedAt, startedAt, timeoutMin, queueWaitMin }) {
+  if (startedAt == null) return dispatchedAt + queueWaitMin * 60 * 1000;
+  return startedAt + (timeoutMin + 20) * 60 * 1000;
 }
 
 function extractOutput(logText) {
@@ -111,7 +124,7 @@ function findRun(requestId, deadline) {
 function main() {
   const opts = parseArgs(process.argv.slice(2));
   if (!opts.script || hasHelpFlag([opts.script])) {
-    console.error('Usage: node scripts/cloud-run-script.js [--review-texts] [--review-texts-depth=N] [--timeout=MIN] <scripts/x.js> [args...]');
+    console.error('Usage: node scripts/cloud-run-script.js [--review-texts] [--review-texts-depth=N] [--timeout=MIN] [--queue-wait=MIN] <scripts/x.js> [args...]');
     return opts.script ? 0 : 2;
   }
   const bad = validateScriptPath(opts.script);
@@ -122,6 +135,10 @@ function main() {
   }
   if (!Number.isInteger(opts.timeoutMin) || opts.timeoutMin < 1 || opts.timeoutMin > 55) {
     console.error('--timeout must be a whole number of minutes from 1 to 55');
+    return 2;
+  }
+  if (!Number.isInteger(opts.queueWaitMin) || opts.queueWaitMin < 1 || opts.queueWaitMin > 600) {
+    console.error('--queue-wait must be a whole number of minutes from 1 to 600');
     return 2;
   }
   if (!fs.existsSync(path.join(__dirname, '..', opts.script))) {
@@ -149,13 +166,16 @@ function main() {
   if (!run) { console.error('[cloud-run-script] the run never appeared in the Actions list within 3 min.'); return 3; }
   console.error(`[cloud-run-script] run ${run.html_url}`);
 
-  // Script limit plus queueing, npm ci and the data checkouts.
-  const deadline = Date.now() + (opts.timeoutMin + 20) * 60 * 1000;
+  // Script limit plus npm ci and the data checkouts, counted from the run starting.
+  const dispatchedAt = Date.now();
+  let startedAt = null;
   let status = run.status;
   let conclusion = run.conclusion;
   while (status !== 'completed') {
-    if (Date.now() > deadline) {
-      console.error(`[cloud-run-script] still ${status} after ${opts.timeoutMin} min; follow it at ${run.html_url}`);
+    if (startedAt == null && status === 'in_progress') startedAt = Date.now();
+    if (Date.now() > pollDeadline({ dispatchedAt, startedAt, timeoutMin: opts.timeoutMin, queueWaitMin: opts.queueWaitMin })) {
+      const limit = startedAt == null ? `${opts.queueWaitMin} min queued` : `${opts.timeoutMin} min running`;
+      console.error(`[cloud-run-script] still ${status} after ${limit}; follow it at ${run.html_url}`);
       return 3;
     }
     sleep(30000);
@@ -195,4 +215,4 @@ function main() {
 
 if (require.main === module) process.exit(main());
 
-module.exports = { parseArgs, extractOutput, validateScriptPath, stripTimestamp, BEGIN, END };
+module.exports = { parseArgs, pollDeadline, extractOutput, validateScriptPath, stripTimestamp, BEGIN, END };
