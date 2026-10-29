@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6488",
   "planId": "589256dd-9fd0-4e4f-b60e-f181f84b8f5d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T03:11:38.678Z",
   "submitter": {
     "name": null,
@@ -69,5 +69,50 @@
         "description": "BRO-6488 London outlet census: the 2023 Apollo review (URL prefix 23-, published 2023-04-01) is already held on the 2023 row as thereviewshub--andrew-houghton.json with the same date and length; this copy on the 2022 row is a duplicate."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T13:16:50.417Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hadestown-west-end-2024/artsdesk--marianka-swain.json → hadestown-west-end-2018/artsdesk--marianka-swain.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved noises-off-west-end-2019/theatre-weekly--greg-stewart.json → noises-off-west-end-2023/theatre-weekly--greg-stewart.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved standing-at-the-skys-edge-west-end-2023/theatre-weekly--greg-stewart.json → standing-at-the-skys-edge-west-end-2024/theatre-weekly--greg-stewart.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-christmas-carol-west-end-2015/thereviewshub--the-reviews-hub-london.json → a-christmas-carol-west-end-2024/thereviewshub--the-reviews-hub-london.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-christmas-carol-west-end-2020/thereviewshub--the-reviews-hub-london.json → a-christmas-carol-west-end-2022/thereviewshub--the-reviews-hub-london.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved arcadia-west-end-2026/whatsonstage--alex-wood.json → arcadia-duke-of-yorks-west-end-2026/whatsonstage--alex-wood.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/thereviewshub--the-reviews-hub-london.json"
+    }
+  ],
+  "executedIn": "ci"
 }
