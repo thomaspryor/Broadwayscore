@@ -15,6 +15,7 @@
  * Resumable: ids already in the cache are skipped. Checkpoints every 20 ids.
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');

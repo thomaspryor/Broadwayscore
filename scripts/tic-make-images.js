@@ -9,6 +9,7 @@
  * 300x450, hero 1600x1000), written as webp to public/images/shows/<id>/.
  * Shows with no poster get no images field (the site shows its placeholder).
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');

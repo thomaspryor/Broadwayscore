@@ -11,6 +11,7 @@
  * the manifest file (ids already staged or rejected are skipped).
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');

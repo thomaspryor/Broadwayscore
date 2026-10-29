@@ -149,7 +149,7 @@ function parseDetailPage(html) {
   return {
     empty: false,
     title,
-    venue: clean(theatre.text()),
+    venue: clean(theatre.text()), // venue-write-guard-ok: parser output, not a shows.json write
     venuePath: theatre.attr('href') || null,
     address: addrText,
     description: clean($('.post-description').first().text()),

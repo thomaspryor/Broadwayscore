@@ -8,6 +8,7 @@
  * preflight and force-adds them. Also writes <manifest>.ingest.json:
  * { <showId>: [ "<review url>"... ] } for the ingest step.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');

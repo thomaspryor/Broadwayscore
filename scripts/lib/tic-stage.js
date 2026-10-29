@@ -7,6 +7,7 @@
  */
 
 const { isExcludedType, mapShowType } = require('./theatreinchicago');
+const { foldDiacritics } = require('./title-match');
 
 const MIN_REVIEWS = 3;
 
@@ -20,7 +21,7 @@ const TOUR_HOUSES = [
 const VIRTUAL_VENUE = /online stream|virtual|livestream|streaming|\bzoom\b|on demand|audio play/i;
 
 function normTitle(t) {
-  return String(t || '')
+  return foldDiacritics(String(t || ''))
     .toLowerCase()
     .replace(/&/g, ' and ')
     .replace(/\b(the|a|an)\b/g, ' ')
@@ -29,7 +30,7 @@ function normTitle(t) {
 }
 
 function slugify(t) {
-  return String(t || '')
+  return foldDiacritics(String(t || ''))
     .toLowerCase()
     .replace(/&/g, ' and ')
     .replace(/['’]/g, '')
@@ -117,7 +118,7 @@ function buildShowEntry({ page, detail, dates, discoveredAt }) {
     id,
     title: page.title,
     slug: id,
-    venue: venueLine(detail, page),
+    venue: venueLine(detail, page), // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
     status,
     type: mapShowType(detail && detail.showType),
     category: 'regional',
