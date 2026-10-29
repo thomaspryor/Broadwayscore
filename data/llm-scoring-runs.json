@@ -1724594,21 +1724594,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T06:47:28.211Z",
-    "completedAt": "2026-10-29T06:47:33.726Z",
-    "totalReviews": 34,
+    "startedAt": "2026-10-29T06:48:24.236Z",
+    "completedAt": "2026-10-29T06:48:28.624Z",
+    "totalReviews": 70,
     "processed": 1,
-    "skipped": 33,
+    "skipped": 69,
     "errors": 0,
     "tokensUsed": {
-      "input": 5577,
-      "output": 312,
+      "input": 5472,
+      "output": 259,
       "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 14468
+      "total": 14236
     },
-    "costUsd": 0.021465400000000003,
-    "runId": "40821220716",
+    "costUsd": 0.020427400000000002,
+    "runId": "40821328183",
     "errorDetails": [],
     "validation": [
       {
@@ -1730961,10 +1730961,10 @@
       {
         "showId": "caroline-off-broadway-2026",
         "ourDistribution": {
-          "up": 16,
+          "up": 15,
           "flat": 0,
           "down": 0,
-          "total": 16
+          "total": 15
         },
         "hasDisagreement": false
       },
@@ -1737603,9 +1737603,9 @@
         "showId": "heathers-the-musical-off-broadway-2025",
         "ourDistribution": {
           "up": 24,
-          "flat": 9,
+          "flat": 10,
           "down": 4,
-          "total": 37
+          "total": 38
         },
         "dtliDistribution": {
           "up": 0,
@@ -1737619,7 +1737619,8 @@
           "down": 0,
           "total": 13
         },
-        "hasDisagreement": false
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
       },
       {
         "showId": "heathers-the-musical-2025",
@@ -1760366,21 +1760367,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T06:49:22.509Z",
-    "completedAt": "2026-10-29T06:49:30.437Z",
-    "totalReviews": 3,
-    "processed": 3,
+    "startedAt": "2026-10-29T06:50:33.799Z",
+    "completedAt": "2026-10-29T06:50:33.814Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 8306,
-      "output": 763,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 9069
+      "total": 0
     },
-    "costUsd": 0.0235794,
-    "runId": "40821220716",
+    "costUsd": 0,
+    "runId": "40821328183",
     "errorDetails": []
   }
 ]
