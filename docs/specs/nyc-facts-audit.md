@@ -98,6 +98,24 @@ Corrections: two pending-fix plans, `data/pending-fixes/bro-6489-playbill-1.json
 
 Full-run cost: about $84.72 at list price; with the pilot, about $88 total, under the $100 cap.
 
+
+### Second correction pass (authoritative pages)
+
+The 84 pooled wrong verdicts break down per field as follows: fixed by the Playbill plans / fixed by authoritative-page plans / stored value right on recheck / already fixed / still open.
+
+| Field | Wrong | Playbill plans | Authoritative plans | Right on recheck | Already fixed | Open |
+|---|---|---|---|---|---|---|
+| first preview | 6 | 3 | 2 | 1 | 0 | 0 |
+| opening night | 25 | 18 | 4 | 1 | 0 | 2 |
+| type | 28 | 6 | 18 | 1 | 0 | 3 |
+| revival | 17 | 6 | 9 | 1 | 1 | 0 |
+| closing | 7 | 4 | 2 | 0 | 0 | 1 |
+| other runs | 1 | 0 | 0 | 0 | 1 | 0 |
+
+The verdicts judged wrong only from non-Playbill pages (pages-auto) and the six held rows were re-verified one by one on a Playbill production page, IBDB, or the theatre or producer's own page, and corrected through `bro-6489-auth-1.json` and `bro-6489-auth-1-b.json` (36 edits, including the Slanted Floors closing extension found on the way). On recheck the stored value was right for Macbeth (type), Gloria (revival), Pretend It's Pretend (first preview) and Animal Wisdom (opening). Six stay open because no authoritative page could be read or none names the field: Peter Panto, Pizza (Nature Theater of Oklahoma) and The Unsinkable (type), Isla and The Gin Game (opening), El Quijote (closing). Guard-skipped verdicts are nulled before counting, so they are not in the 84.
+
+A rerun found that a data-edit whose value another fix had already written was refused and turned the run red. `applyDataEdit` now treats it as a no-op success (`noop: true`): shows.json edits still run their validators against the stored value and still apply the human pins and revival tags, and `execute-approved-fix.js` leaves no-ops out of the applied count, so no repeat reader email goes out.
+
 ## Cost
 
 Pilot: $0.67 model fees plus $2.57 search fees at list price = $3.24 for 40 shows, about $0.081 a show. A full run over 1,085 rows would cost about $88; it was run after the owner raised the cap (see Full run). A field-targeted rerun is cheaper. Re-checking only the three date fields on the 586 closed OB rows would cost about $25-30, but the free consistency checks plus the closed-row enrich mode already reach most of class 1.
