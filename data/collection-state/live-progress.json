@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-29T19:57:47.156Z",
-  "processed": 10,
-  "failed": 10,
-  "successRate": "50.0%",
+  "updatedAt": "2026-10-29T20:07:42.465Z",
+  "processed": 37,
+  "failed": 31,
+  "successRate": "54.4%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 0
+    "archiveToday": 11,
+    "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-29T19:49:10.603Z",
@@ -25,8 +25,53 @@
     {
       "t": "2026-10-29T19:52:31.235Z",
       "event": "bb-session",
-      "session": "00c4b229",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "cc2e53dc",
+      "url": "https://www.express.co.uk/entertainment/theatre/204902/Review-The-Country-Girl-A"
+    },
+    {
+      "t": "2026-10-29T19:49:03.966Z",
+      "event": "bb-session",
+      "session": "f8f1374c",
+      "url": "https://www.express.co.uk/entertainment/theatre/202870/Review-Birdsong-Comedy-Th"
+    },
+    {
+      "t": "2026-10-29T20:01:18.885Z",
+      "event": "bb-session",
+      "session": "1a5986a7",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-29T20:01:19.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T20:03:41.845Z",
+      "event": "bb-session",
+      "session": "8ae3fe54",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-29T20:05:52.978Z",
+      "event": "bb-session",
+      "session": "0d2b2642",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-29T20:05:53.868Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-29T20:06:03.763Z",
+      "event": "bb-session",
+      "session": "1d6bf52e",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-29T20:06:04.571Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
