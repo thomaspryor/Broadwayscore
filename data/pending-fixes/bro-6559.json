@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6559",
   "planId": "afe7798a-2fc1-456d-a44e-37914a558f7d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T21:11:54.419Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "commercial.json: mean-girls-2018.notes"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T21:32:48.251Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for west-side-story-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for in-the-heights-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-bands-visit-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for fun-home-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-gentlemans-guide-to-love-and-murder-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for mean-girls-2018"
+    }
+  ],
+  "executedIn": "ci"
 }
