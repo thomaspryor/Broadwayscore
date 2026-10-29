@@ -150,7 +150,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           </div>
         </BizHeader>
 
-        {/* Season Stats Summary. text-xl on phones: "~$165M+" overflowed a two-column tile at 360px. */}
+        {/* Season Stats Summary. text-xl on phones: "~$164.7M+" overflowed a two-column tile at 360px. */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-xl sm:text-2xl font-bold text-white">{shows.length}</div>
