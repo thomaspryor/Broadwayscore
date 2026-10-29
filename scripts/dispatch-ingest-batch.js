@@ -27,6 +27,7 @@
 const fs = require('fs');
 const path = require('path');
 const { dispatchWorkflow, fetchGitHubJSON } = require('./lib/gh-api-client');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { DEFAULT_MAX_ACTIVE, pendingShows, emptyShows, formatUrlsInput, queueHasRoom } = require('./lib/ingest-batch-pacing');
 
 const REPO = 'thomaspryor/Broadwayscore';
@@ -80,6 +81,10 @@ async function dispatchOrThrow(workflow, inputs) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/dispatch-ingest-batch.js --plan=<file> [--checkpoint=<file>] [--max-active=15] [--spacing=12] [--max-wait-min=120] [--limit=N] [--dry-run] [--finish-only]');
+    return;
+  }
   const planFile = arg('plan');
   if (!planFile) throw new Error('--plan=<file> is required');
   const plan = JSON.parse(fs.readFileSync(planFile, 'utf8'));
