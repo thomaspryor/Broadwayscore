@@ -2124069,21 +2124069,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T09:37:18.163Z",
-    "completedAt": "2026-10-29T09:37:24.144Z",
-    "totalReviews": 40,
+    "startedAt": "2026-10-29T09:37:04.266Z",
+    "completedAt": "2026-10-29T09:37:10.507Z",
+    "totalReviews": 58,
     "processed": 1,
-    "skipped": 39,
+    "skipped": 57,
     "errors": 0,
     "tokensUsed": {
-      "input": 6682,
-      "output": 303,
+      "input": 6715,
+      "output": 246,
       "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 16070
+      "total": 16066
     },
-    "costUsd": 0.0246731,
-    "runId": "40844601531",
+    "costUsd": 0.0241246,
+    "runId": "40844562107",
     "errorDetails": [],
     "validation": [
       {
@@ -2128613,10 +2128613,10 @@
       {
         "showId": "becky-shaw-2026",
         "ourDistribution": {
-          "up": 34,
+          "up": 33,
           "flat": 1,
           "down": 1,
-          "total": 36
+          "total": 35
         },
         "dtliDistribution": {
           "up": 11,
@@ -2135492,10 +2135492,10 @@
       {
         "showId": "giant-2026",
         "ourDistribution": {
-          "up": 31,
+          "up": 32,
           "flat": 8,
           "down": 1,
-          "total": 40
+          "total": 41
         },
         "dtliDistribution": {
           "up": 10,
@@ -2135509,7 +2135509,8 @@
           "down": 0,
           "total": 17
         },
-        "hasDisagreement": false
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Up thumbs differ by 25% (ours: 78%, theirs: 53%)"
       },
       {
         "showId": "giant-public-theater-off-broadway-2012",
@@ -2159989,8 +2159990,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T09:39:32.169Z",
-    "completedAt": "2026-10-29T09:39:32.191Z",
+    "startedAt": "2026-10-29T09:39:30.313Z",
+    "completedAt": "2026-10-29T09:39:30.331Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2160003,7 +2160004,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40844601531",
+    "runId": "40844562107",
     "errorDetails": []
   }
 ]
