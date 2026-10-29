@@ -78,6 +78,8 @@ function inRunWindow(show, publishDate) {
   if (pub < Date.UTC(y, 0, 1) - PRE_START_DAYS * DAY_MS) return false;
   // An undated past production (263 West End rows carry only the id year) is not still
   // running a decade later: cap it two years past the id year (BRO-6488).
+  // Announced or upcoming rows may still open late, so they keep no ceiling.
+  if (/^(announced|upcoming|previews)$/i.test(show.status || '')) return true;
   return y >= new Date().getUTCFullYear() || pub < Date.UTC(y + 2, 0, 1);
 }
 
@@ -182,7 +184,7 @@ const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los ange
 // London (BRO-6488). Venue names alone ("Almeida", "Donmar") are London signals; a UK city,
 // a tour, Edinburgh or New York in the text marks another production of the same title.
 const LONDON_SIGNAL_RE = /\b(west end|off-west end|london|national theatre|\bthe national\b|olivier theatre|lyttelton|dorfman|almeida|donmar|(?<!bristol )old vic|young vic|royal court|hampstead theatre|bridge theatre|barbican|southwark playhouse|menier|park theatre|arcola|bush theatre|kiln theatre|tricycle|orange tree|lyric hammersmith|soho theatre|shakespeare'?s globe|sam wanamaker|trafalgar (?:theatre|studios)|regent'?s park|jermyn street|finborough|king'?s head|hope theatre|union theatre|the other palace|charing cross theatre|hackney empire|stratford east|theatre royal stratford|battersea arts centre|riverside studios|@sohoplace|sohoplace|marylebone theatre|hampstead|richmond theatre|wilton'?s music hall|the yard theatre|gate theatre|white bear|turbine theatre|omnibus|seven dials playhouse|pleasance london|vaudeville|gielgud|wyndham'?s|noel coward|harold pinter|duke of york'?s|apollo victoria|palladium|drury lane|lyceum|adelphi|savoy theatre|garrick|criterion|playhouse theatre|ambassadors|novello|aldwych|piccadilly theatre|prince edward|prince of wales theatre|dominion|phoenix theatre|cambridge theatre|her majesty'?s|haymarket|duchess theatre|fortune theatre|st martin'?s|apollo theatre|lyric theatre|shaftesbury theatre|victoria palace|peacock theatre|sadler'?s wells|coliseum|royal opera house|london palladium)\b/i;
-const UK_OTHER_RE = /\b(broadway|off-broadway|new york|manhattan|brooklyn|manchester|salford|birmingham|leeds|sheffield|liverpool|bristol|bath|chichester|edinburgh|fringe|glasgow|dundee|aberdeen|pitlochry|cardiff|swansea|belfast|dublin|newcastle|gateshead|nottingham|leicester|derby|stratford-upon-avon|oxford|cambridge arts|brighton|(?<!duke of )york\b(?!'s| theatre)|coventry|northampton|plymouth|southampton|salisbury|watford|guildford|windsor|bolton|keswick|scarborough|ipswich|colchester|exeter|hull|frinton|harrogate|lancaster|clwyd|mold|milton keynes|stoke|wolverhampton|chester|canterbury|cheltenham|malvern|norwich|bury st edmunds|leatherhead|woking|basingstoke|bromsgrove|newbury|henley|kingston|lowry|new wolsey|crucible theatre|northern stage|royal exchange|home mcr|everyman|playhouse liverpool|curve theatre|curve leicester|royal & derngate|minerva|festival theatre|birmingham rep|the rep|west yorkshire playhouse|leeds playhouse|octagon|stephen joseph|theatr|traverse theatre|citizens theatre|tron theatre|lyceum edinburgh|king'?s theatre glasgow|grand opera house|abbey theatre|gate theatre dublin|theatre by the lake|mercury theatre|watermill|nuffield|new vic|hull truck|sheffield theatres|bristol old vic|tobacco factory|theatre royal bath|ustinov|chichester festival|yvonne arnaud|marlowe|wales millennium|sherman|torch theatre|storyhouse|uk tour|national tour|on tour|touring|tour\)|tour review|international tour|paris|berlin|avignon|sydney|melbourne|toronto|chicago|los angeles)\b/i;
+const UK_OTHER_RE = /\b(broadway|off-broadway|new york|manhattan|brooklyn|manchester|salford|birmingham|leeds|sheffield|liverpool|bristol|bath|chichester|edinburgh|fringe|glasgow|dundee|aberdeen|pitlochry|cardiff|swansea|belfast|dublin|newcastle|gateshead|nottingham|leicester|derby|stratford-upon-avon|oxford|cambridge arts|brighton|(?<!duke of )york\b(?!'s| theatre)|coventry|northampton|plymouth|southampton|salisbury|watford|guildford|windsor|bolton|keswick|scarborough|ipswich|colchester|exeter|hull|frinton|harrogate|lancaster|clwyd|mold|milton keynes|stoke|wolverhampton|chester|canterbury|cheltenham|malvern|norwich|bury st edmunds|leatherhead|woking|basingstoke|bromsgrove|newbury|henley|lowry|new wolsey|crucible theatre|northern stage|royal exchange|home mcr|everyman|playhouse liverpool|curve theatre|curve leicester|royal & derngate|minerva|festival theatre|birmingham rep|the rep|west yorkshire playhouse|leeds playhouse|octagon|stephen joseph|theatr|traverse theatre|citizens theatre|tron theatre|lyceum edinburgh|king'?s theatre glasgow|grand opera house|abbey theatre|gate theatre dublin|theatre by the lake|mercury theatre|watermill|nuffield|new vic|hull truck|sheffield theatres|bristol old vic|tobacco factory|theatre royal bath|ustinov|chichester festival|yvonne arnaud|marlowe|wales millennium|sherman|torch theatre|storyhouse|uk tour|national tour|on tour|touring|tour\)|tour review|international tour|paris|berlin|avignon|sydney|melbourne|toronto|chicago|los angeles)\b/i;
 
 const SIGNAL_MARKETS = {
   nyc: { home: NYC_SIGNAL_RE, other: OTHER_MARKET_RE, homeWins: /\bbroadway\b/i },
@@ -195,6 +197,13 @@ function marketSignal(item, venues, market = 'nyc') {
   const hay = `${item.headline || ''} ${item.description || ''}`;
   // London: the headline names the venue and city ("X review – Royal Exchange,
   // Manchester"); a standfirst's "after its Chichester run" must not outvote it.
+  // The staged venue ("Hamlet review – Bristol Old Vic", "(Dominion Theatre)") decides
+  // first: a West End house outvotes a city in the play's title ("An American in Paris").
+  const hint = market === 'london' ? venueHint(item.headline) : null;
+  if (hint) {
+    if (m.other.test(hint) && !m.homeWins.test(hint)) return 'other-market';
+    if (m.home.test(hint)) return 'home';
+  }
   const otherHay = market === 'london' && item.headline && (m.other.test(item.headline) || m.home.test(item.headline)) ? item.headline : hay;
   if (m.other.test(otherHay) && !m.homeWins.test(otherHay)) return 'other-market';
   if (m.home.test(hay)) return 'home';
@@ -304,6 +313,39 @@ function titleWordsAppear(show, text) {
   return words.every((w) => hay.includes(` ${w} `));
 }
 
+/**
+ * The show's title shows up only inside a venue name ("The Bridge" in "Guys and Dolls review,
+ * Bridge Theatre"): strip the market's venue phrases and "<title> theatre", then re-check the
+ * title words (BRO-6488: 16 false London Theatre gaps against the-bridge-off-west-end-2026).
+ */
+function titleOnlyInVenue(show, text, venues) {
+  const t = normTitle(show && show.title).replace(/^the /, '');
+  if (!t) return false;
+  let hay = ` ${normTitle(text)} `;
+  if (!hay.includes(` ${t} `)) return false;
+  const phrases = [...(venues || []).map(normTitle), `${t} theatre`, `${t} theater`].filter((v) => v && ` ${v} `.includes(` ${t} `));
+  if (!phrases.length) return false;
+  for (const v of phrases.sort((a, b) => b.length - a.length)) hay = hay.split(` ${v} `).join(' | ');
+  return !titleWordsAppear(show, hay);
+}
+
+/**
+ * Sitemap lastmod days that are a bulk re-touch, not publish dates: one day carrying at
+ * least minCount items and minShare of all of them (British Theatre Guide stamps 17,853
+ * of 25,623 review URLs 2022-02, BRO-6488). Those lastmods must not become soft dates.
+ */
+function bulkLastmodDays(items, { minCount = 200, minShare = 0.1 } = {}) {
+  const byDay = new Map();
+  let n = 0;
+  for (const i of items || []) {
+    if (!i || !i.lastmod) continue;
+    const d = String(i.lastmod).slice(0, 10);
+    byDay.set(d, (byDay.get(d) || 0) + 1);
+    n++;
+  }
+  return new Set([...byDay].filter(([, c]) => c >= minCount && c >= n * minShare).map(([d]) => d));
+}
+
 function bucketItem(item, ctx) {
   const cls = classifyItem(item, { sourceSaysReview: !!item.sourceSaysReview });
   // aliasKey: the held URL an outlet's own id says is this page (WhatsOnStage moved every
@@ -313,7 +355,8 @@ function bucketItem(item, ctx) {
   const nycHeld = held.filter((id) => ctx.nycIds.has(id));
 
   const matched = findMatchingShows(item.headline || '', slugOf(item.url), ctx.shows, item.description || '', { publishDate: item.publishDate || null });
-  let inWindow = matched.filter((s) => inRunWindow(s, item.publishDate));
+  const matchText = `${item.headline || ''} ${slugOf(item.url)}`;
+  let inWindow = matched.filter((s) => inRunWindow(s, item.publishDate) && !titleOnlyInVenue(s, matchText, ctx.nycVenues));
   let matchVia = inWindow.length ? 'poller-matcher' : null;
   if (inWindow.length === 0 && (cls.review || held.length)) {
     inWindow = variantMatches(item, ctx.shows);
@@ -387,9 +430,9 @@ function bucketItem(item, ctx) {
 const WEST_END_HOUSES_RE = /\b(gielgud|wyndham'?s|noel coward|harold pinter|duke of york'?s|apollo victoria|palladium|drury lane|lyceum|adelphi|savoy|garrick|criterion|playhouse theatre|ambassadors|novello|aldwych|piccadilly theatre|prince edward|prince of wales|dominion|phoenix theatre|cambridge theatre|her majesty'?s|his majesty'?s|haymarket|duchess|fortune theatre|st martin'?s|apollo theatre|lyric theatre|shaftesbury|victoria palace|sondheim theatre|queen'?s theatre|gillian lynne|new london theatre|london coliseum|vaudeville|sohoplace|old vic|national theatre|olivier|lyttelton|dorfman|barbican|bridge theatre|trafalgar theatre|theatre royal haymarket|peacock|savoy)\b/i;
 function venueHint(headline) {
   const h = String(headline || '');
-  const m = /\breview\b\s*[–—:|-]+\s*(.{3,80}?)\s*(?:[–—|]|$)/i.exec(h)
-    || /\breview\s+(?:at|of [^,]+ at)\s+(.{3,80}?)\s*(?:[–—|]|$)/i.exec(h)
-    || /\(([^)]{3,60})\)\s*$/.exec(h);
+  const m = /\(([^)]{3,60})\)\s*$/.exec(h)
+    || /\breview\b\s*[–—:|-]+\s*(.{3,80}?)\s*(?:[–—|]|$)/i.exec(h)
+    || /\breview\s+(?:at|of [^,]+ at)\s+(.{3,80}?)\s*(?:[–—|]|$)/i.exec(h);
   return m ? m[1].trim() : null;
 }
 function itemMarket(item) {
@@ -401,6 +444,8 @@ function itemMarket(item) {
   if (/\b(edinburgh|fringe)\b/i.test(head)) m = 'edinburgh';
   else if (/\b(uk tour|on tour|touring|tour\)|national tour|international tour)\b/i.test(head)) m = 'touring';
   else if (/\b(broadway|new york|off-broadway)\b/i.test(head)) m = 'nyc';
+  // A city in the venue hint beats a house name it shares ("Lyceum, Sheffield", "Bristol Old Vic").
+  else if (hint && UK_OTHER_RE.test(hint) && !/\b(?:west end|london)\b/i.test(hint)) m = /\b(paris|berlin|avignon|sydney|melbourne|toronto|chicago|los angeles)\b/i.test(hint) ? 'international' : 'regional-uk';
   else if (WEST_END_HOUSES_RE.test(v)) m = 'west-end';
   else if (LONDON_SIGNAL_RE.test(v)) m = 'off-west-end';
   else if (UK_OTHER_RE.test(head)) m = /\b(paris|berlin|avignon|sydney|melbourne|toronto|chicago|los angeles)\b/i.test(head) ? 'international' : 'regional-uk';
@@ -495,6 +540,8 @@ module.exports = {
   buildOutletShowIndex,
   decodeEntities,
   bucketItem,
+  bulkLastmodDays,
+  titleOnlyInVenue,
   classifyItem,
   corpusSideMisses,
   extractPageMeta,

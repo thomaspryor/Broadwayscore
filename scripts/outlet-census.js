@@ -328,13 +328,15 @@ function readEmittedItems(file) {
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
     const m = new RegExp(`${ITEMS_TAG} (\\S+) (\\d+)/(\\d+) (\\S+)`).exec(line);
     if (!m) continue;
-    if (!parts.has(m[1])) parts.set(m[1], { n: Number(m[3]), chunks: [] });
+    // A new 1/n chunk starts a fresh emission: the latest run wins, never a mix of two.
+    if (!parts.has(m[1]) || m[2] === '1') parts.set(m[1], { n: Number(m[3]), chunks: [] });
     parts.get(m[1]).chunks[Number(m[2]) - 1] = m[4];
   }
   const out = {};
   for (const [id, p] of parts) {
     if (p.chunks.filter(Boolean).length !== p.n) { console.error(`  ${id}: ${p.chunks.filter(Boolean).length}/${p.n} chunks, skipped`); continue; }
-    out[id] = JSON.parse(zlib.gunzipSync(Buffer.from(p.chunks.join(''), 'base64')).toString('utf8'));
+    try { out[id] = JSON.parse(zlib.gunzipSync(Buffer.from(p.chunks.join(''), 'base64')).toString('utf8')); }
+    catch (e) { console.error(`  ${id}: unreadable items (${e.message}), skipped`); }
   }
   return out;
 }
@@ -381,7 +383,10 @@ async function runOutlet(outletId, o, shared) {
     if (src.needsMeta) enumerated.meta = await fillMeta(outletId, enumerated.items, o);
   }
   // Pages that would not give meta keep the sitemap's period or lastmod as a soft date.
+  const bulkDays = census.bulkLastmodDays(enumerated.items);
+  if (bulkDays.size) console.log(`  lastmod ignored on bulk re-touch day(s) ${[...bulkDays].join(', ')}`);
   for (const i of enumerated.items) {
+    if (i.lastmod && bulkDays.has(String(i.lastmod).slice(0, 10))) i.lastmod = null;
     if (!i.headline && (src.headlineFromSlug || src.needsMeta)) Object.assign(i, { headline: census.slugHeadline(i.url), headlineFromSlug: true });
     if (!i.publishDate && (i.periodDate || i.lastmod)) Object.assign(i, { publishDate: i.periodDate || String(i.lastmod).slice(0, 10), dateSoft: true });
   }
@@ -414,7 +419,7 @@ async function runOutlet(outletId, o, shared) {
   for (const r of results) if (r.aliasKey) enumeratedKeys.add(r.aliasKey);
   const seenRow = new Set();
   const uniqRows = outletRows.filter((r) => { const k = `${r.showId}|${r.url}`; if (seenRow.has(k)) return false; seenRow.add(k); return true; });
-  const misses = census.corpusSideMisses(uniqRows, enumeratedKeys, { sinceMs });
+  const misses = census.corpusSideMisses(uniqRows, enumeratedKeys, { sinceMs, untilMs: o.until ? Date.parse(o.until) + 86400000 : Infinity });
 
   const summary = census.summarize(results);
   // Per season (September to August): the coverage table the card asks for.

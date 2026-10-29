@@ -154,3 +154,33 @@ test('cdxItems: canonical https URL, earliest capture, Stage URL shapes kept', (
   assert.ok(byUrl['https://www.thestage.co.uk/long-reviews/after-life']);
   assert.equal(items.length, 3);
 });
+
+test('titleOnlyInVenue: a title that is only the venue name is no match', () => {
+  const bridge = { id: 'the-bridge-off-west-end-2026', title: 'The Bridge' };
+  const venues = ['bridge theatre', 'national theatre'];
+  assert.equal(census.titleOnlyInVenue(bridge, 'Guys and Dolls review, Bridge Theatre guys-and-dolls-review-bridge-theatre', venues), true);
+  assert.equal(census.titleOnlyInVenue(bridge, 'The Bridge review, Southwark Playhouse', venues), false);
+  assert.equal(census.titleOnlyInVenue({ title: 'Hamlet' }, 'Hamlet review, National Theatre', venues), false);
+  assert.equal(census.titleOnlyInVenue({ title: 'National Theatre' }, 'Hamlet at the National Theatre', ['national theatre']), true);
+});
+
+test('bulkLastmodDays: a mass re-touch day is not a publish date', () => {
+  const items = [];
+  for (let i = 0; i < 300; i++) items.push({ url: `u${i}`, lastmod: '2022-02-16T10:00:00Z' });
+  for (let i = 0; i < 50; i++) items.push({ url: `v${i}`, lastmod: `2024-0${(i % 9) + 1}-1${i % 9}` });
+  assert.deepEqual([...census.bulkLastmodDays(items)], ['2022-02-16']);
+  assert.equal(census.bulkLastmodDays(items.slice(300)).size, 0);
+  assert.equal(census.bulkLastmodDays([]).size, 0);
+});
+
+test('marketSignal: a West End venue hint outvotes a city in the title (BRO-6488)', () => {
+  assert.equal(census.marketSignal({ headline: 'Review: An American in Paris (Dominion Theatre)' }, [], 'london'), 'home');
+  assert.equal(census.marketSignal({ headline: 'Brighton Rock review – Theatre Royal Haymarket' }, [], 'london'), 'home');
+  assert.equal(census.marketSignal({ headline: 'Hamlet review – Bristol Old Vic' }, [], 'london'), 'other-market');
+  assert.equal(census.itemMarket({ headline: 'Macbeth review – Lyceum, Sheffield' }).itemMarket, 'regional-uk');
+});
+
+test('inRunWindow: announced rows with only an id year keep no ceiling', () => {
+  assert.equal(census.inRunWindow({ id: 'x-2024', status: 'announced' }, '2027-03-01'), true);
+  assert.equal(census.inRunWindow({ id: 'x-2015', status: 'closed' }, '2022-03-01'), false);
+});
