@@ -35,7 +35,7 @@ test('refuses to grant wrongProductionOverride when LLM reasoning names a differ
   // The verdict itself: high confidence, every boolean clean — this is exactly the
   // shape that reached a live review on 2026-08-15 before the guard existed.
   const result = {
-    isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false,
+    isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false, verifiedBy: 'llm:gemini',
     confidence: 'high', reasoning,
   };
 
@@ -55,7 +55,7 @@ test('refuses to grant wrongProductionOverride when LLM reasoning names a differ
 test('refuses to grant wrongProductionOverride when LLM reasoning names a different show title (Here There Are Blueberries / Here We Are)', () => {
   const reasoning = "The scraped content is a review of 'Here We Are', not 'Here There Are Blueberries'.";
   const result = {
-    isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false,
+    isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false, verifiedBy: 'llm:gemini',
     confidence: 'high', reasoning,
   };
 
@@ -73,7 +73,7 @@ test('refuses to grant wrongProductionOverride when LLM reasoning names a differ
 
 test('control: a genuinely clean verdict on the show\'s OWN title is still permitted (guard is not overbroad)', () => {
   const result = {
-    isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false,
+    isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false, verifiedBy: 'llm:gemini',
     confidence: 'high', reasoning: 'A clear review of "Blood of my Blood" at the Royal Court Theatre.',
   };
 
