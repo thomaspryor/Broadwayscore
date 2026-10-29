@@ -40,6 +40,8 @@ fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), STATE_SANDBOX
 // throw, which is what leaves these behind on a CI runner otherwise.
 process.on('exit', () => { try { fs.rmSync(STATE_SANDBOX_DIR, { recursive: true, force: true }); } catch { /* no-op */ } });
 
+// BRO-3048 live-data coupling audit: safe on live shows.json because the lede/ordering assertions name specific shows that open inside this frozen week; a newer show cannot enter a past week's window (generate.mjs windows by openingDate), so only editing or deleting those named shows' rows breaks it, which is the regression this test exists to catch.
+// A "this week had exactly N things" assertion would need the fixture pattern instead (NEWSLETTER_TEST_SHOWS_PATH/REVIEWS_PATH).
 const WEEK_START = '2026-07-27';
 // weOpeningStories() ranking (West End tier, most-reviewed-first): Tao of
 // Glass (28 reviews) > Brainiac Live (9 reviews, Critical Gold) > The Car Man
