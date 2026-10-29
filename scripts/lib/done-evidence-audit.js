@@ -50,6 +50,8 @@
 
 'use strict';
 
+const { redactEmails } = require('./pii-scan.js');
+
 // ── verdicts ────────────────────────────────────────────────────────────────
 // Ordered by how much they demand of a reader: the two that accuse come
 // first, then the two that merely note, then the absence of an answer.
@@ -397,7 +399,7 @@ function evaluateVerifyRun(runResult, cmd) {
         : 'its check needs the private review-texts corpus, which this sandbox does not have — cannot verify either way',
     };
   }
-  return { state: EVIDENCE.BROKEN, detail: scrubSandboxPaths(runResult.detail) || `\`${cmd}\` does not pass on main` };
+  return { state: EVIDENCE.BROKEN, detail: redactEmails(scrubSandboxPaths(runResult.detail)) || `\`${cmd}\` does not pass on main` };
 }
 
 /**

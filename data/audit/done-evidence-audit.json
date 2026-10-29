@@ -2344,7 +2344,7 @@
       "cmd": "node scripts/lint-committed-pii.js",
       "verdict": "FAILED",
       "evidence": "broken",
-      "detail": "❌ Possible submitter PII in a committed, PUBLIC-repo data/audit file:\n\n  data/audit/we-historical-tr-probe.json — 6 hit(s) exceeds its allowlisted baseline of 5. New content in this file introduced a NEW finding — the allowlist covers a fixed count, not a blanket file skip.\n    • shows.speed-the-plow-west-end-2014.pdf.sections.default[0].before[1] → email-shaped string (x***x@xxxxxx.xx.xx)\n    • s",
+      "detail": "❌ Possible submitter PII in a committed, PUBLIC-repo data/audit file:\n\n  data/audit/we-historical-tr-probe.json — 6 hit(s) exceeds its allowlisted baseline of 5. New content in this file introduced a NEW finding — the allowlist covers a fixed count, not a blanket file skip.\n    • shows.speed-the-plow-west-end-2014.pdf.sections.default[0].before[1] → email-shaped string (x***redacted@xxxxxx.xx.xx)\n    • s",
       "channels": [
         "verify-command"
       ],

@@ -15,6 +15,7 @@
  */
 
 const fs = require('fs');
+const { redactEmails } = require('./lib/pii-scan.js');
 const path = require('path');
 const { execSync } = require('child_process');
 const { chromium } = require('playwright');
@@ -47,7 +48,11 @@ const probeNote = (showId, o) => { PROBE[showId] = Object.assign(PROBE[showId] |
 function writeProbe() {
   if (!probeOut) return;
   fs.mkdirSync(path.dirname(probeOut), { recursive: true });
-  fs.writeFileSync(probeOut, JSON.stringify({ generatedAt: new Date().toISOString(), shows: PROBE }, null, 2));
+  // Publisher contact lines in PDF front matter are email-shaped even letter-masked; the
+  // committed-PII lint (BRO-6520) counts each one, so redact at write time instead of
+  // raising its allowlist baseline every time a new show's PDF is probed.
+  const json = JSON.stringify({ generatedAt: new Date().toISOString(), shows: PROBE }, null, 2);
+  fs.writeFileSync(probeOut, redactEmails(json));
 }
 
 async function extractReviewsFromPDF(page, context, pdfUrl, show) {
