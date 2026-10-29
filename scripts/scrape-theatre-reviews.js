@@ -609,7 +609,7 @@ async function main() {
         entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: 'fetch-failed' });
         if (st.abort) {
           aborted = true;
-          console.log('  ✗ Too many consecutive fetch failures: stopping fetches (scraper spend guard); remaining round-ups are reported as skipped');
+          console.log(`  ✗ Too many fetch failures (${movedFailures} moved-page, ${consecutiveFailures} other, since the last success): stopping fetches (scraper spend guard); remaining round-ups are reported as skipped`);
         }
         continue;
       }

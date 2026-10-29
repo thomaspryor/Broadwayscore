@@ -2356,7 +2356,7 @@ module.exports = {
   PLAYWRIGHT_SETTLE_MS,
   settleAfterNavigation,
   recordUrlMismatch,
-  wasUrlMismatch: (u) => _lastUrlMismatchUrl === u,
+  wasUrlMismatch: (u) => _lastUrlMismatchUrl === require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(u)),
   unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
   get sdQuotaExceeded() { return _sdQuotaExceeded; },
