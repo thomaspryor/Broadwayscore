@@ -77,7 +77,7 @@ describe('Wait & See counts as not recouped downstream', () => {
   it('a recoupment report does not lay recouped:true over a Wait & See label', () => {
     const { recoupClaimDesignationAction } = require('../../scripts/lib/commercial-apply-gate');
     assert.equal(recoupClaimDesignationAction({ designation: 'Wait & See', humanReviewedDesignation: true }), 'block');
-    assert.notEqual(recoupClaimDesignationAction({ designation: 'Wait & See' }), 'keep');
+    assert.equal(recoupClaimDesignationAction({ designation: 'Wait & See' }), 'block');
   });
   it('stunt-casting outcome: Wait & See is not recouped, Squeaker is recouped', () => {
     const { commercialOutcome } = require('../../scripts/lib/stunt-casting');

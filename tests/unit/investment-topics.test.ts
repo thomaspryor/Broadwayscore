@@ -64,6 +64,9 @@ test('outcomeOf: recouped, lost, running, unknown', () => {
   for (const d of ['Flop', 'Fizzle', 'Did Not Recoup']) assert.equal(outcomeOf({ status: 'closed', commercial: { designation: d } }), 'lost');
   assert.equal(outcomeOf({ status: 'open', commercial: { designation: 'TBD' } }), 'running');
   assert.equal(outcomeOf({ status: 'closed', commercial: { designation: 'TBD' } }), 'unknown');
+  // Wait & See (BRO-6499) may still pay back: no verdict yet, never a loss, never in acclaimedLosers.
+  assert.equal(outcomeOf({ status: 'closed', commercial: { recouped: false, designation: 'Wait & See' } }), 'unknown');
+  assert.equal(outcomeOf({ status: 'closed', commercial: { recouped: true, designation: 'Squeaker' } }), 'recouped');
 });
 
 test('musicals since reopening: counts by kind and outcome, plays and pre-reopening excluded', () => {

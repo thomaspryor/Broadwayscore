@@ -100,7 +100,7 @@ export function musicalKind(s: Pick<TopicShowInput, 'isRevival' | 'tags'>): Musi
   return (s.tags ?? []).includes('jukebox') ? 'pop-catalog' : 'original';
 }
 
-/** Recouped, lost (Fizzle, Did Not Recoup, Flop), still running, or closed with no verdict. */
+/** Recouped, lost (Fizzle, Did Not Recoup, Flop), still running, or closed with no verdict (TBD, and Wait & See, which may still pay back). */
 export function outcomeOf(s: Pick<TopicShowInput, 'status' | 'commercial'>): MusicalOutcome {
   const c = s.commercial;
   if (c?.recouped === true) return 'recouped';
