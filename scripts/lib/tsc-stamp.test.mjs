@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 import { execFileSync, spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
-const { decide, computeKey } = require('./tsc-stamp.js');
+const { decide, computeKey, decideHook, hookKey } = require('./tsc-stamp.js');
 const SCRIPT = path.resolve(import.meta.dirname, 'tsc-stamp.js');
 
 const H = 'a'.repeat(40);
@@ -194,4 +194,59 @@ test('seed end-to-end: exported seed makes the first check() in another job skip
   const tsFile = path.join(d, 'ts-src');
   fs.writeFileSync(tsFile, ' M src/a.ts\n');
   assert.equal(cli(['seed-export', `--meta=${metaFile}`, `--rebased=${head}`, `--pre=${preFile}`, `--tree-status=${tsFile}`]).stdout.trim(), '');
+});
+
+// BRO-6508: hook-tail stamp ("audits + workflow lints passed on this tree").
+test('hookKey: stable across bot churn (incl. top-level data JSON) and file-list order; changes on allowlists, files, tip message', () => {
+  const r = mkRepo({});
+  const base = r.commit({ 'src/a.ts': 'x\n', 'data/shows.json': '[]', 'data/audit/x.json': '1', '.cron-health-exempt.txt': 'a\n' });
+  const k = (sha, files = 'src/a.ts\nscripts/b.js', tip = 'msg\n') =>
+    hookKey({ lsTree: r.g('ls-tree', '-r', sha), changedFiles: files, tipMessage: tip });
+  assert.match(k(base), /^[0-9a-f]{64}$/);
+  const churn = r.commit({ 'data/audit/x.json': '2', 'public/images/shows/a.webp': 'i', 'public/data/shows/a.json': '{}' });
+  assert.equal(k(churn), k(base), 'bot data/public churn must not change the key');
+  assert.equal(k(base, '\nscripts/b.js\nsrc/a.ts\nsrc/a.ts\n'), k(base), 'file list order, blanks and dupes do not matter');
+  assert.notEqual(k(base, 'src/a.ts'), k(base), 'a different pushed file list changes the key');
+  assert.notEqual(k(base, undefined, 'msg\n[skip-cron-audit]\n'), k(base), 'the tip message is in the key');
+  const allow = r.commit({ '.cron-health-exempt.txt': 'b\n' });
+  assert.notEqual(k(allow), k(churn), 'a root .txt allowlist (inert to the verdict) must change the hook key');
+  const json = r.commit({ 'data/shows.json': '[1]' });
+  assert.equal(k(json), k(allow), 'a bot rewrite of a top-level data JSON keeps the audit stamp (tsc has its own)');
+  assert.notEqual(r.key(json), r.key(allow), '...while the tsc key still changes');
+  const other = r.commit({ 'public/robots.txt': 'x' });
+  assert.notEqual(k(other), k(json), 'public/ outside data/ and images/ stays in the key');
+  assert.equal(hookKey({ lsTree: '', changedFiles: 'a', tipMessage: '' }), '', 'no tree -> no hook key');
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+});
+
+test('decideHook: same refusals as decide(), and only hook: lines count', () => {
+  const { stampLines, ...rest } = ok;
+  assert.equal(decideHook({ ...rest, stampLines: [`hook:${K}`] }).skip, true);
+  assert.equal(decideHook({ ...rest, stampLines: [K] }).skip, false, 'a tsc stamp line is not a hook stamp');
+  assert.equal(decideHook({ ...rest, stampLines: [`hook:${K}`], specCount: 2 }).skip, false);
+  assert.equal(decideHook({ ...rest, stampLines: [`hook:${K}`], env: {} }).skip, false);
+  assert.equal(decideHook({ ...rest, stampLines: [`hook:${K}`], remoteRef: 'refs/heads/land/x' }).skip, false);
+});
+
+test('CLI: hook-record then hook-check skips; tsc check stays separate; other file list or dirty tree runs', () => {
+  const r = mkRepo({});
+  r.commit({ 'src/a.ts': 'x\n', 'data/shows.json': '[]' });
+  const stamp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'hook-stamp-')), 'stamp'); // outside the repo: commit -A would track it
+  const env = { ...process.env, GITHUB_ACTIONS: 'true', LAND_TSC_STAMP_FILE: stamp };
+  const args = [`--pushed-oid=${r.g('rev-parse', 'HEAD')}`, '--spec-count=1', '--remote-ref=refs/heads/main'];
+  const run = (cmd, input = '\nsrc/a.ts\n', e = env) => spawnSync('node', [SCRIPT, cmd, ...args], { cwd: r.d, env: e, input, encoding: 'utf8' });
+  assert.equal(run('hook-check').status, 1, 'no stamp yet -> run the hook');
+  assert.equal(run('hook-record').status, 0);
+  assert.match(fs.readFileSync(stamp, 'utf8'), /^hook:[0-9a-f]{64}\n$/);
+  assert.equal(run('hook-check').status, 0, 'same tree + files -> skip');
+  assert.equal(run('check').status, 1, 'a hook stamp never skips tsc check on its own');
+  r.commit({ 'data/shows.json': '[1]' });
+  const args2 = [`--pushed-oid=${r.g('rev-parse', 'HEAD')}`, '--spec-count=1', '--remote-ref=refs/heads/main'];
+  assert.equal(spawnSync('node', [SCRIPT, 'hook-check', ...args2], { cwd: r.d, env, input: '\nsrc/a.ts\n', encoding: 'utf8' }).status, 0, 'bot data JSON move -> audits still skip');
+  assert.equal(spawnSync('node', [SCRIPT, 'check', ...args2], { cwd: r.d, env, encoding: 'utf8' }).status, 1, '...but tsc runs');
+  assert.equal(run('hook-check', 'src/a.ts\nsrc/b.ts\n').status, 1, 'different file list -> run');
+  assert.equal(run('hook-check', undefined, { ...env, LAND_TSC_STAMP_FILE: '' }).status, 1, 'kill switch (blank file var) -> run');
+  fs.writeFileSync(path.join(r.d, 'src/a.ts'), 'dirty\n');
+  assert.equal(run('hook-check').status, 1, 'dirty tree -> run');
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });

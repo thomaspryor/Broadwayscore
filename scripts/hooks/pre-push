@@ -287,6 +287,17 @@ if [ -z "$(echo "$ALL_CHANGED_FILES" | tr -d '[:space:]')" ]; then
   exit 0
 fi
 
+# BRO-6508: inside a CI landing, a retry push of a tree this job already ran
+# the audits + workflow lints below on (same code + allowlists, same file list,
+# same tip message; main moved only across bot data) skips them. The guards
+# above always run, and tsc keeps its own data-aware stamp further down.
+# Fail-open; rules: scripts/lib/tsc-stamp.js.
+HOOK_TAIL_SKIP=0
+if echo "$ALL_CHANGED_FILES" | node "$REPO_ROOT/scripts/lib/tsc-stamp.js" hook-check --pushed-oid="$LAST_SPEC_OID" --spec-count="$NON_DELETE_SPEC_COUNT" --remote-ref="$LAST_SPEC_REF"; then
+  HOOK_TAIL_SKIP=1
+  echo "pre-push: SKIP audits + workflow lints (already passed on this tree in this Land job)"
+fi
+
 # Range-scoped audits (unbounded-fetch, tests-vs-derived-data, orphan-tests,
 # playwright-evaluate-click, write-routing lint) — shared with
 # scripts/merge-worktree-to-main.sh via scripts/lib/run-push-audits.sh (card
@@ -295,6 +306,7 @@ fi
 # violation only surfaced later when an unrelated session's `git push` hit
 # this hook and ate someone else's failure. Extracting to a shared runner
 # keeps both call sites from drifting apart on gate list or scoping.
+if [ "$HOOK_TAIL_SKIP" != "1" ]; then
 if ! echo "$ALL_CHANGED_FILES" | "$REPO_ROOT/scripts/lib/run-push-audits.sh"; then
   echo ""
   echo "(Bypass for emergencies: git push --no-verify)"
@@ -361,6 +373,10 @@ if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
   rm -f "$GUARDS_OUT"
 fi
 [ "$LINKED_NODE_MODULES" = "1" ] && [ -L node_modules ] && rm -f node_modules
+
+# Record only after both passed (each failure above exits 1).
+echo "$ALL_CHANGED_FILES" | node "$REPO_ROOT/scripts/lib/tsc-stamp.js" hook-record || true
+fi
 
 # Workflow audits (concurrency, hygiene, cron-health coverage) run in
 # scripts/lib/run-push-audits.sh above (BRO-3014), which also honours CI's

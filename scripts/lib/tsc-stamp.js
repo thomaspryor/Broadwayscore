@@ -45,6 +45,24 @@
 //   that differs in code (main moved substantively) just has a different key
 //   and still runs tsc. The gauntlet exit is the raw tsc exit, not the
 //   base-delta verdict: a tsc red forgiven because base is red never seeds.
+//
+// HOOK-TAIL STAMP (BRO-6508)
+//   With tsc skipped, a retry push still re-ran the rest of the hook tail
+//   (run-push-audits.sh + lint-workflow-guards.sh, ~30s local, ~50s on CI).
+//   Bots land on main about once a minute, so that window lost most retry
+//   races ("cannot lock ref") and long holds burned the churn budget.
+//   `hook-check`/`hook-record` stamp "audits + workflow lints passed" as
+//   `hook:<key>` lines in the same file, under the same decide() rules. tsc
+//   keeps its own stamp above, so a bot rewrite of a top-level data/*.json
+//   re-runs tsc without re-running the audits. hookKey() hashes every tracked
+//   path+blob except bot churn (HOOK_TREE_SKIP_RE; no audit or lint reads those
+//   contents, bar an advisory-only scan), the pushed file list, and HEAD's
+//   message ([skip-cron-audit]/[skip-actionlint]/[skip-demo-flag-check] read
+//   `git log -1`). Root .txt allowlists stay in, although the verdict logic
+//   calls them inert. ASSUMED constant within one job, as above, plus: the
+//   PATH (actionlint) and no GH_TOKEN in the Land step (audit-workflow-hygiene
+//   calls the API only with a token). Kill switch: LAND_TSC_STAMP_DISABLED=1
+//   blanks the stamp file, which turns off both stamps.
 
 const fs = require('fs');
 const crypto = require('crypto');
@@ -65,6 +83,29 @@ function decide({ env = {}, headOid, pushedOid, specCount, remoteRef, key, stamp
   if (!HASH64.test(String(key || ''))) return run('no usable tree key');
   if (!(stampLines || []).includes(key)) return run('no matching stamp (tree not yet typechecked)');
   return { skip: true, reason: `tsc already passed on this code tree (${key.slice(0, 12)})` };
+}
+
+const HOOK_TREE_SKIP_RE = /^(data\/|public\/(data|images)\/)/;
+
+/** Pure: key for "the pre-push audits + workflow lints passed". lsTree = `git ls-tree -r HEAD` output. */
+function hookKey({ lsTree, changedFiles, tipMessage }) {
+  const tree = String(lsTree || '').split('\n').filter((l) => {
+    const path = l.split('\t')[1];
+    return path && !HOOK_TREE_SKIP_RE.test(path);
+  });
+  if (!tree.length) return '';
+  const files = [...new Set(String(changedFiles || '').split('\n').map((f) => f.trim()).filter(Boolean))].sort();
+  return crypto.createHash('sha256')
+    .update(['pre-push-tail', '--tree', ...tree, '--files', ...files, '--tip', String(tipMessage || '')].join('\n'))
+    .digest('hex');
+}
+
+/** Pure: the tsc decide() rules applied to `hook:` stamp lines. */
+function decideHook({ stampLines, ...rest }) {
+  const lines = (stampLines || []).filter((l) => l.startsWith('hook:')).map((l) => l.slice(5));
+  const d = decide({ ...rest, stampLines: lines });
+  if (d.skip) return { skip: true, reason: `audits + workflow lints already passed on this tree (${rest.key.slice(0, 12)})` };
+  return d.reason.startsWith('no matching stamp') ? { skip: false, reason: 'no matching hook stamp (tail not yet run on this tree)' } : d;
 }
 
 /** Nested data JSON paths named anywhere under src/ (a superset of what tsc imports). */
@@ -160,7 +201,26 @@ function main(argv) {
     const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     const file = env.LAND_TSC_STAMP_FILE || '';
     const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim();
-    if (dirty && (cmd === 'check' || cmd === 'record')) { console.error('tsc-stamp: run tsc (dirty tracked tree)'); return cmd === 'check' ? 1 : 0; }
+    if (dirty && ['check', 'record', 'hook-check', 'hook-record'].includes(cmd)) { console.error('tsc-stamp: run checks (dirty tracked tree)'); return cmd.endsWith('check') ? 1 : 0; }
+    const liveHookKey = () => hookKey({
+      lsTree: execFileSync('git', ['ls-tree', '-r', 'HEAD'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 }),
+      changedFiles: fs.readFileSync(0, 'utf8'),
+      tipMessage: execFileSync('git', ['log', '-1', '--format=%B', 'HEAD'], { encoding: 'utf8' }),
+    });
+    if (cmd === 'hook-check') {
+      const args = { env, headOid: head, pushedOid: a['pushed-oid'], specCount: Number(a['spec-count']), remoteRef: a['remote-ref'] };
+      const pre = decide({ ...args, key: 'a'.repeat(64), stampLines: ['a'.repeat(64)] });
+      if (!pre.skip) { console.error(`tsc-stamp: run hook checks (${pre.reason})`); return 1; }
+      const d = decideHook({ ...args, key: liveHookKey(), stampLines: readStamp(file) });
+      console.error(`tsc-stamp: ${d.skip ? 'SKIP hook checks' : 'run hook checks'} (${d.reason})`);
+      return d.skip ? 0 : 1;
+    }
+    if (cmd === 'hook-record') {
+      if (env.GITHUB_ACTIONS !== 'true' || !file) return 0;
+      const key = liveHookKey();
+      if (key) fs.appendFileSync(file, `hook:${key}\n`);
+      return 0;
+    }
     if (cmd === 'digest-pre') {
       if (a.out) fs.writeFileSync(a.out, `${dataDigest()}\n`);
       return 0;
@@ -201,12 +261,12 @@ function main(argv) {
     }
   } catch (e) {
     console.error(`tsc-stamp: run tsc (fail-open: ${e.message})`);
-    return cmd === 'check' ? 1 : 0;
+    return cmd === 'check' || cmd === 'hook-check' ? 1 : 0;
   }
-  console.error('usage: tsc-stamp.js check|record|digest-pre|seed-export|seed [--pushed-oid=X --spec-count=N --remote-ref=R]');
+  console.error('usage: tsc-stamp.js check|record|hook-check|hook-record|digest-pre|seed-export|seed [--pushed-oid=X --spec-count=N --remote-ref=R]');
   return 2;
 }
 
 if (require.main === module) process.exit(main(process.argv.slice(2)));
 
-module.exports = { TSC_INERT_RESIDUE, decide, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };
+module.exports = { TSC_INERT_RESIDUE, HOOK_TREE_SKIP_RE, decide, decideHook, hookKey, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };
