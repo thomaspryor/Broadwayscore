@@ -4,6 +4,7 @@
 // approved-fix plan data/pending-fixes/bro-5586.json; this test runs the real
 // add-show action and venue classifier against it and, when the core data is
 // present, checks the live shows.json row.
+// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json is this row's source of truth (a manual add); expectations come from the plan file, not hardcoded pins.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -49,8 +50,8 @@ test('add-show applies against the real shows.json, or the row is already there'
   const shows = loadShows();
   const existing = shows.find(s => s.id === ID);
   if (existing) {
-    assert.equal(existing.venue, 'Royal Opera House');
-    assert.equal(existing.openingDate, '2026-11-30');
+    assert.equal(existing.venue, action.show.venue);
+    assert.equal(existing.category, action.show.category);
     return;
   }
   const result = applyAddShow(shows, structuredClone(action));
