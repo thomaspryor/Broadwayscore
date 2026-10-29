@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T22:21:45.296Z",
+  "timestamp": "2026-10-29T22:37:46.319Z",
   "stats": {
-    "totalReviews": 68361,
-    "alreadyFlagged": 22247,
+    "totalReviews": 68491,
+    "alreadyFlagged": 22249,
     "dateGuardCatches": 233,
-    "directorMismatch": 2800,
-    "tvFilmSignals": 1969,
+    "directorMismatch": 2805,
+    "tvFilmSignals": 1973,
     "londonSignals": 3372,
-    "offBroadwaySignals": 622,
+    "offBroadwaySignals": 623,
     "yearMismatch": 274,
-    "noPublishDate": 7171
+    "noPublishDate": 7273
   },
   "findings": [
     {
@@ -2034,6 +2034,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2024 (5x) more than 2012 (0x). 2024 matches production: a-streetcar-named-desire-regional-2024"
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-regional-2024",
+      "file": "splash-magazines--suzanne-magnuson.json",
+      "publishDate": null,
+      "url": "https://chicago.splashmags.com/index.php/2024/03/21/the-blazing-brilliance-of-tennessee-williams-a-streetcar-named-desire-at-paramounts-copely-theatre-bold-series/#gsc.tab=0",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"series finale\""
         }
       ]
     },
@@ -7405,6 +7418,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"milli bhatia\" from blue-mist-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "blues-for-an-alabama-sky-regional-2023",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2023/09/let-the-good-times-roll-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -38577,6 +38603,19 @@
       ]
     },
     {
+      "showId": "notes-from-the-field-regional-2024",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-NOTES-FROM-THE-FIELD-At-TimeLine-Theatre-Company-20240209",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 7\""
+        }
+      ]
+    },
+    {
       "showId": "oedipus-west-end-2024",
       "file": "plays-international--maryam-philpott.json",
       "score": 89,
@@ -44572,6 +44611,19 @@
       ]
     },
     {
+      "showId": "revolution-regional-2023",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-REVIEW-REVOLUTION-AT-A-RED-ORCHID-THEATRE-At-A-Red-Orchid-Theatre-20231009",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
       "file": "deadline--greg-evans.json",
       "publishDate": "2026-10-15",
@@ -44684,6 +44736,76 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "rock-of-ages-off-broadway-2019",
+      "file": "newsday--barbara-schuler.json",
+      "score": null,
+      "publishDate": "2019-07-05",
+      "url": "https://www.newsday.com/entertainment/theater/rock-of-ages-y48039",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kristin hanggi\" from rock-of-ages-2009"
+        }
+      ]
+    },
+    {
+      "showId": "rock-of-ages-off-broadway-2019",
+      "file": "nytg--stanford-friedman.json",
+      "score": null,
+      "publishDate": "2019-07-08",
+      "url": "https://www.newyorktheatreguide.com/reviews/review-of-rock-of-ages-at-new-world-stages",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kristin hanggi\" from rock-of-ages-2009"
+        }
+      ]
+    },
+    {
+      "showId": "rock-of-ages-off-broadway-2019",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": null,
+      "publishDate": "2019-07-04",
+      "url": "https://www.nytimes.com/2019/07/04/theater/rock-of-ages-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kristin hanggi\" from rock-of-ages-2009"
+        }
+      ]
+    },
+    {
+      "showId": "rock-of-ages-off-broadway-2019",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "2019-07-08",
+      "url": "https://www.theatermania.com/off-broadway/reviews/rock-of-ages-still-rocks_89228.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kristin hanggi\" from rock-of-ages-2009"
+        }
+      ]
+    },
+    {
+      "showId": "rock-of-ages-off-broadway-2019",
+      "file": "theatres-leiter-side--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2019-07-11",
+      "url": "https://slleiter.blogspot.com/2019/07/40-2019-2020-review-rock-of-ages-seen.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kristin hanggi\" from rock-of-ages-2009"
         }
       ]
     },
@@ -57639,6 +57761,7 @@
     {
       "showId": "the-lion-in-winter-regional-2023",
       "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://www.letsplaytheatricalreview.com/blog/the-lion-in-winter",
       "findings": [
@@ -57652,6 +57775,7 @@
     {
       "showId": "the-lion-in-winter-regional-2023",
       "file": "new-city-stage--mary-wisniewski.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.newcitystage.com/2023/11/16/a-review-of-the-lion-in-winter-at-court-theatre/",
       "findings": [
@@ -82719,6 +82843,19 @@
       ]
     },
     {
+      "showId": "fefu-and-her-friends-off-broadway-2019",
+      "file": "vulture--helen-shaw.json",
+      "publishDate": "2019-11-25",
+      "url": "https://www.vulture.com/2019/11/reviews-fefu-and-her-friends-and-a-bright-room-called-day.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
+        }
+      ]
+    },
+    {
       "showId": "festen-2006",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -91683,7 +91820,7 @@
     {
       "showId": "lanny-bristol-old-vic-regional-2026",
       "file": "telegraph--claire-allfree.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2026-10-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/lanny-bristol-old-vic-review/",
       "findings": [
