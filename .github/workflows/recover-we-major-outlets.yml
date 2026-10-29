@@ -97,6 +97,7 @@ jobs:
         if: inputs.mode == 'report'
         env:
           INPUT_SEASONS: ${{ inputs.seasons }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
         run: node scripts/we-major-recovery.js report --seasons="$INPUT_SEASONS"
 
       - name: Recover

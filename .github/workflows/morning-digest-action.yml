@@ -82,6 +82,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           status=0
           node scripts/send-morning-digest.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \
@@ -94,6 +95,8 @@ jobs:
         if: always()
         env:
           PUBKEY_B64: ${{ inputs.pubkey_b64 }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           node scripts/morning-digest-compare.js --diff --mac="$RUNNER_TEMP/mac/mac.html" \
             --action=data/audit/morning-digest-preview.html --log="$RUNNER_TEMP/digest.log" \

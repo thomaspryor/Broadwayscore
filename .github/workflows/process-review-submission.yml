@@ -351,6 +351,9 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SHOW_ID: ${{ needs.validate.outputs.show_id }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --limit=10
 
       # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts

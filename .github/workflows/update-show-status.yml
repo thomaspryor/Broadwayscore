@@ -276,6 +276,8 @@ jobs:
         # (run 30080143665, 2026-07-24). A clean 35-min budget-exit commits
         # whatever was found and finishes the job ~10 min sooner, well inside
         # the 45-min step timeout (kept as a backstop).
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         timeout-minutes: 45
         continue-on-error: true
         run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates --time-budget-min=35
@@ -296,6 +298,8 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-broadway-source-coverage.js
 
       # Off-Broadway twin (BRO-4381): diffs TheaterMania's current OB listings
@@ -306,6 +310,9 @@ jobs:
       # keeps status flips running and the discovery-source-blind job below
       # turns the run red.
       - name: Check Off-Broadway source coverage
+        env:
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         continue-on-error: true
         run: node scripts/check-off-broadway-source-coverage.js
 

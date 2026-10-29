@@ -258,6 +258,8 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
           INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         id: check-needed
         run: |
           # BRO-3029: this gate used to be schedule-only (if:
@@ -585,6 +587,8 @@ jobs:
           # otherwise be spliced into the shell source (BRO-5254).
           SCORING_ARGS: ${{ steps.build-args.outputs.args }}
           INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         run: |
           # SCORING_ARGS is split on purpose (flag list); the reason stays one arg.
@@ -646,6 +650,10 @@ jobs:
       # Skipped when the main pass already ran in rescore mode.
       # Kill switch: set repo variable DISABLE_RESCORE_DRAIN=1.
       - name: Drain needsRescore backlog (capped, scheduled only)
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         if: github.event.schedule == '30 4 * * *' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=50 --verbose
@@ -672,6 +680,9 @@ jobs:
         continue-on-error: true
         env:
           INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           # BRO-3029: used to always pass --all-we, so a single-show dispatch
           # (e.g. the per-show auto-rescore from dispatch-rescore.js) fired a
@@ -696,6 +707,9 @@ jobs:
       # fired this cycle, so 3 flat samples surface in the daily digest
       # (health-check.js's progressWatchResults). Never fails the job.
       - name: Snapshot progress-watch state
+        env:
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         if: always() && github.event.schedule == '30 4 * * *'
         continue-on-error: true
         run: node scripts/check-progress-stalls.js

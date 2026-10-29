@@ -266,6 +266,9 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           DRAIN_SCOPE: ${{ steps.drain-scope.outputs.scope }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           FLAGS="--all-open"
@@ -291,6 +294,9 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/replay-pending-bylines.js --all-pending --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true

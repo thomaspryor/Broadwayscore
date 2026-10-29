@@ -114,6 +114,7 @@ jobs:
           # BRO-5886: the executor reads and deletes this file before any action
           # runs, so the key is in no process environment of this step.
           HTML_HANDOFF_KEY_FILE: ${{ runner.temp }}/html-handoff-key.pem
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/execute-approved-fix.js
 
       - name: Remove html handoff key file

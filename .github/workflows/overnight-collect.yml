@@ -119,6 +119,7 @@ jobs:
           # cancellation mid-loop loses everything since the last checkpoint.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           INPUT_MAX_PER_SHOW: ${{ inputs.max_per_show }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

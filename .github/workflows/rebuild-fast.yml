@@ -224,6 +224,8 @@ jobs:
       - name: Verify no scoreable review vanished during checkout drift
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         id: staleness
         if: always() && steps.rebuild.outcome == 'success'
         run: |
@@ -357,6 +359,7 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: node scripts/verify-all-scored.js
         continue-on-error: true
 

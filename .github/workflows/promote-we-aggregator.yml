@@ -138,6 +138,11 @@ jobs:
         if: always() && steps.promote.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           IDS=$(node -e "const d=require('./data/audit/we-last-promotion-ids.json'); console.log(d.promoted.map(p=>p.id).join(','))" 2>/dev/null)
           if [ -n "$IDS" ]; then

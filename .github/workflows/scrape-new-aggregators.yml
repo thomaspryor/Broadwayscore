@@ -286,6 +286,11 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: node scripts/dispatch-new-show-images.js || echo "::warning::image-fetch dispatch failed — will still be picked up by the next fetch-all-image-formats.yml sweep"
 
       - name: Push review-texts to private repo (PV)
@@ -662,6 +667,8 @@ jobs:
       - name: Suggest national tours to add
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         if: always()
         continue-on-error: true
         run: node scripts/route-tour-candidates.js

@@ -82,6 +82,7 @@ jobs:
           LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
           # BRO-6015: resumed runs join up to park depth + this headroom.
           LAND_MUTEX_RESUME_HEADROOM: ${{ vars.LAND_MUTEX_RESUME_HEADROOM }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/land-retry-cancelled.js --sweep
 
       - name: Notify on failure
