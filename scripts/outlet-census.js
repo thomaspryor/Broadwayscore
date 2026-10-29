@@ -147,9 +147,9 @@ async function enumerateGuardian(src, since, until) {
     for (const g of guardianMonths.get(mk)) {
       const f = g.fields || {};
       if (src.publication && !src.publication.test(f.publication || '')) continue;
-      // News and blog pieces before 2013 carry tone/reviews too (BRO-6503); theatreblog posts
-      // are dropped, other non-review-looking items fall back to the headline classifier.
-      if (/\/theatreblog\//.test(g.webUrl || '')) continue;
+      // News and blog pieces before 2013 carry tone/reviews too (BRO-6503): those the shared
+      // predicate rejects fall back to the headline classifier (runOutlet drops theatreblog and
+      // readers' reviews, cached items included).
       items.push({ url: g.webUrl, headline: census.decodeEntities(f.headline || g.webTitle || ''),
         description: census.decodeEntities(String(f.standfirst || '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim().slice(0, 400),
         publishDate: String(g.webPublicationDate || '').slice(0, 10), byline: f.byline || null, publication: f.publication || null,
@@ -468,6 +468,9 @@ async function runOutlet(outletId, o, shared) {
   if (o.enumerateOnly) return { outletId, enumerated: enumerated.items.length };
   if (!shared.ctx) return null;
   let { items } = enumerated;
+  // Guardian theatreblog posts and readers' reviews / round-ups are never one critic's review
+  // (BRO-6503). Filtered here so --from-cache and --items-in runs saved earlier drop them too.
+  if (src.kind === 'guardian-api') items = items.filter((i) => !/\/theatreblog\//.test(i.url || '') && !/\b(round ?up|readers?'? reviews?)\b/i.test(i.headline || ''));
   const sinceMs = Date.parse(o.since);
   const dated = items.filter((i) => !i.publishDate || Date.parse(i.publishDate) >= sinceMs);
   const undated = dated.filter((i) => !i.publishDate).length;
