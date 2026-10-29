@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2255",
   "planId": "626a1d7a-632d-4310-ab03-16bb62c631d3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T08:09:20.747Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "shows.json: bear-grease-off-broadway-2025.type"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T11:04:14.760Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for garry-starr-classic-penguins-off-broadway-2026 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for bear-grease-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
