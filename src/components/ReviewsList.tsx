@@ -344,22 +344,25 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   const dateLabel = formatDate(review.publishDate);
   const mobileDate = dateLabel ? <span className="sm:hidden block text-xs text-gray-500 mt-0.5">{dateLabel}</span> : null;
 
-  // Subtle byline note so readers can see the rating our score is anchored to
-  // (the pull quote only mentions it when the critic happened to say it there).
-  // Phones stack it on its own line like the date; the byline column is too
-  // narrow there to keep "Rated 5/5 stars" in one piece beside Full Review.
+  // Subtle caption under the score badge so readers can see the rating our
+  // score is anchored to (the pull quote only mentions it when the critic
+  // happened to say it there). It hangs in the gutter left of the quote, which
+  // is pl-24 wide, so it stacks on two lines to fit.
   const ratingNote = review.originalRating ? (
-    <span
-      className="block mt-0.5 text-xs text-gray-500 whitespace-nowrap sm:inline sm:mt-0 sm:text-sm"
+    <div
+      className="absolute left-0 top-[50px] sm:top-[54px] w-24 text-sm leading-tight text-gray-500"
       title="The rating this critic published. It anchors our score for this review."
       data-testid="review-original-rating"
     >
-      <span className="hidden sm:inline" aria-hidden="true">{' · '}</span>Rated {review.originalRating}
-    </span>
+      <span className="block">Rated</span>
+      <span className="block">{review.originalRating}</span>
+    </div>
   ) : null;
 
   return (
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
+    // min-h keeps a quote-less review tall enough for the two-line rating caption.
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group ${review.originalRating ? 'relative min-h-[100px]' : ''}`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
+      {ratingNote}
       {/* CRITICAL: Outlet name vertical centering with score badge and logo.
          Broken 15+ times. Root cause: <a> tags (from Next.js Link) render as
          display:block in flex and ALWAYS stretch to cross-axis height (44px),
@@ -442,9 +445,9 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
           {review.criticName && review.criticName !== 'Unknown' ? (
             <span className="text-sm text-gray-500">By {featureFlags.criticPages && review.criticSlug ? (
               <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
-            ) : review.criticName}{ratingNote}{mobileDate}</span>
+            ) : review.criticName}{mobileDate}</span>
           ) : (
-            <span className="text-sm text-gray-400">{review.outlet} Staff{ratingNote}{mobileDate}</span>
+            <span className="text-sm text-gray-400">{review.outlet} Staff{mobileDate}</span>
           )}
           {review.url && (
             <a
