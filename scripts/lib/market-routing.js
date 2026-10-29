@@ -422,14 +422,18 @@ function tourDecision(showId, sibData, { url, publishDate, dateSource }) {
  * at all means a Broadway-era or later review, so reject.
  * @returns {{action:'reroute'|'reject', targetShowId?, reason}|null}
  */
-// Strictly UK: a .uk domain or a named UK-only outlet. isUkOutletUrl's
+// Strictly UK: a .uk domain, a named UK-only outlet, or Guardian stage coverage.
+// Other Guardian sections (including /us-news) and Time Out remain eligible.
+// isUkOutletUrl's
 // 'theatre'/'independent' hostname heuristic flags US tour-stop sites
 // (mdtheatreguide.com, bgindependentmedia.org), so it isn't used here.
 const UK_ONLY_HOSTS = /(^|\.)(thestage|whatsonstage|britishtheatre|londontheatre1?|westendtheatre|thereviewshub)\./i;
 function isStrictlyUkUrl(url) {
   try {
-    const h = new URL(url).hostname.toLowerCase();
-    return /\.uk$/.test(h) || UK_ONLY_HOSTS.test(`${h}.`);
+    const parsed = new URL(url);
+    const h = parsed.hostname.toLowerCase();
+    const guardianStage = /(^|\.)theguardian\.com$/.test(h) && /^\/stage(?:\/|$)/i.test(parsed.pathname);
+    return /\.uk$/.test(h) || UK_ONLY_HOSTS.test(`${h}.`) || guardianStage;
   } catch { return false; }
 }
 

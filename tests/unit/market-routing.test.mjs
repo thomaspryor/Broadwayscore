@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { classifyMarketRouting, buildSiblingIndex } =
+const { classifyMarketRouting, buildSiblingIndex, resolveWriteTarget } =
   require('../../scripts/lib/market-routing.js');
 
 // ---------------------------------------------------------------------------
@@ -223,6 +223,42 @@ test('a write aimed at a tour: UK outlets rejected; dated reviews go to the tour
   assert.equal(r('https://www.nytimes.com/2003/10/31/theater/wicked.html', '2003-10-31').action, 'reject', 'Broadway-era date fits no tour');
   assert.equal(r('https://www.denverpost.com/x', '2019-05-01').action, 'accept');
   assert.equal(r('https://www.denverpost.com/2003/x', '2003-10-31', 'url-backfill-url-ymd').action, 'accept', 'URL-derived date is not trusted');
+});
+
+test('Guardian stage reviews are rejected for tour writes, preserving other sections and markets (BRO-4279)', () => {
+  const shows = [
+    { id: 'wicked-2003', title: 'Wicked', category: 'broadway', openingDate: '2003-10-30' },
+    { id: 'wicked-tour-2013', title: 'Wicked', category: 'tour', openingDate: '2013-03-01' },
+  ];
+  const siblingIndex = buildSiblingIndex(shows);
+  const route = (url, extra = {}) => resolveWriteTarget({
+    showId: 'wicked-tour-2013', category: 'tour', publishDate: '2025-10-07',
+    url, siblingIndex, ...extra,
+  });
+  for (const url of [
+    'https://www.theguardian.com/stage/2025/oct/07/wicked-review',
+    'https://theguardian.com/stage/2025/oct/07/wicked-review',
+    'https://www.theguardian.com/stage',
+    'https://www.theguardian.com/stage/2025/oct/07/wicked-review?section=us-news',
+  ]) {
+    assert.equal(route(url).action, 'reject', url);
+    assert.match(route(url).reason, /^tour-review: UK outlet/);
+    assert.equal(route(url, { publishDate: null }).action, 'reject', 'does not depend on a date');
+    assert.equal(route(url, { showId: 'wicked-2003', category: 'broadway' }).action, 'accept', 'non-tour unchanged');
+    assert.equal(route(url, { allowCrossMarket: true }).action, 'accept', 'explicit override preserved');
+  }
+  for (const url of [
+    'https://www.theguardian.com/us-news/2025/oct/07/wicked-review',
+    'https://www.theguardian.com/us-news/stage/wicked-review',
+    'https://www.theguardian.com/culture/2025/oct/07/wicked-review',
+    'https://www.timeout.com/london/theatre/wicked-review',
+    'https://www.timeout.com/newyork/theater/wicked-review',
+    'https://www.theguardian.com/stagecraft/wicked-review',
+    'https://nottheguardian.com/stage/wicked-review',
+    'https://theguardian.com.example.org/stage/wicked-review',
+  ]) {
+    assert.equal(route(url).action, 'accept', url);
+  }
 });
 
 // BRO-4931: tours of Off-Broadway, West End and regional productions are tracked
