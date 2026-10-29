@@ -1555,6 +1555,7 @@ async function fetchPage(url, options = {}) {
       return result;
     }
     if (vr.reason === 'url_mismatch') {
+      _lastUrlMismatchUrl = url;
       try {
         const hostname = new URL(url).hostname;
         recordUrlMismatch(url, vr.actual, source, hostname);
@@ -2283,6 +2284,10 @@ const URL_MISMATCH_MAX_ENTRIES = 10000;
  * @param {string} source - Which fetch tier returned the mismatch (e.g. 'Bright Data')
  * @param {string} hostname - Hostname of the requested URL (for quick filtering)
  */
+// BRO-6089: last URL whose every provider answered with a different page. Lets a
+// caller tell "this page is gone or moved" from "the providers are down".
+let _lastUrlMismatchUrl = null;
+
 function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
   try {
     fs.mkdirSync(path.dirname(URL_MISMATCH_AUDIT_PATH), { recursive: true });
@@ -2350,6 +2355,7 @@ module.exports = {
   PLAYWRIGHT_SETTLE_MS,
   settleAfterNavigation,
   recordUrlMismatch,
+  wasUrlMismatch: (u) => _lastUrlMismatchUrl === u,
   unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
   get sdQuotaExceeded() { return _sdQuotaExceeded; },

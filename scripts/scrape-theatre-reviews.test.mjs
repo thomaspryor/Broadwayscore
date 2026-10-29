@@ -87,3 +87,15 @@ test('a link over whole words of the name still takes the full prose name (BRO-5
     assert.equal(r.outlet, outlet);
   }
 });
+
+import { createRequire as _cr6089 } from 'node:module';
+import _t6089 from 'node:test';
+import _a6089 from 'node:assert/strict';
+_t6089('BRO-6089: scraper exposes wasUrlMismatch and TR scraper uses it', () => {
+  const req = _cr6089(import.meta.url);
+  const sc = req('./lib/scraper');
+  _a6089.equal(typeof sc.wasUrlMismatch, 'function');
+  _a6089.equal(sc.wasUrlMismatch('https://never-fetched.example/'), false);
+  const src = req('node:fs').readFileSync(new URL('./scrape-theatre-reviews.js', import.meta.url), 'utf8');
+  _a6089.match(src, /wasUrlMismatch\(roundup\.url\)/);
+});
