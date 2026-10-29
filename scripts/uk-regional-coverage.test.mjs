@@ -6,7 +6,6 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const raw = JSON.parse(fs.readFileSync(new URL('../data/shows.json', import.meta.url), 'utf8'));
 const shows = Array.isArray(raw) ? raw : raw.shows;
-const isUk = (s) => s.market === 'regional' && s.city && /^uk-|-uk$|-(eng|sct|wls|nir)$/.test(String(s.country || '') + '-' + s.city) || s.country === 'GB' && s.market === 'regional';
 
 test('>=300 UK regional productions from Jan 2024 with a city', () => {
   const uk = shows.filter((s) => s.market === 'regional' && s.city && (s.country === 'GB' || s.country === 'UK') && (s.openingDate || '') >= '2024-01-01');
