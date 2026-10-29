@@ -76,6 +76,8 @@ jobs:
           // Node 22.7+ module detection rejects require() + top-level await together
           import https from 'node:https';
           import crypto from 'node:crypto';
+          // Model ids live in scripts/lib/models.js (BRO-4497); the repo is checked out above.
+          import models from './scripts/lib/models.js';
 
           const alertType = process.env.ALERT_TYPE || '';
           const alertTitle = process.env.ALERT_TITLE || '';
@@ -136,7 +138,7 @@ jobs:
           }
 
           const claudeBody = JSON.stringify({
-            model: 'claude-opus-4-7',
+            model: models.CLAUDE_OPUS,
             max_tokens: 512,
             system: systemPrompt,
             messages: [{ role: 'user', content: userPrompt }],

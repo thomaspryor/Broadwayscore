@@ -42,6 +42,7 @@ jobs:
         run: |
           node << 'EOF'
           const fs = require('fs');
+          const { CLAUDE_SONNET } = require('./scripts/lib/models.js');
 
           const planContent = fs.readFileSync(process.env.PLAN_FILE, 'utf-8');
           const customQuestion = process.env.CUSTOM_QUESTION || '';
@@ -92,7 +93,7 @@ jobs:
                   'anthropic-version': '2023-06-01',
                 },
                 body: JSON.stringify({
-                  model: 'claude-sonnet-4-6',
+                  model: CLAUDE_SONNET,
                   max_tokens: 1024,
                   messages: [{ role: 'user', content: prompt }],
                 }),
