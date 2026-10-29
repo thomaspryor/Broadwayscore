@@ -8,7 +8,7 @@
  * Run: npx tsx --test tests/unit/ugc-analytics.test.ts
  */
 
-import { test, beforeEach } from 'node:test';
+import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 // Static imports are safe: neither module touches window/storage at load time.
 import * as ugc from '../../src/lib/ugc-analytics';
@@ -34,6 +34,7 @@ g.addEventListener = (type: string, fn: () => void) => { (windowListeners[type] 
 const fireWindowEvent = (type: string) => { for (const fn of windowListeners[type] || []) fn(); };
 
 let captured: Captured[] = [];
+let vercelCalls: { name: string; data: Record<string, unknown> }[] = [];
 let sentryCalls: { err: Error; ctx: Record<string, unknown> }[] = [];
 const fakePosthog = {
   capture: (event: string, props: Record<string, unknown>, opts?: { timestamp?: Date }) => { captured.push({ event, props, opts }); },
@@ -48,11 +49,69 @@ const fakeSentry = {
 
 beforeEach(() => {
   captured = [];
+  vercelCalls = [];
+  // Observe the real @vercel/analytics track() output without sending events.
+  g.va = (command: string, payload: { name: string; data: Record<string, unknown> }) => {
+    assert.equal(command, 'event');
+    vercelCalls.push(payload);
+  };
   sentryCalls = [];
   (g.sessionStorage as MemStorage).clear();
   (g.localStorage as MemStorage).clear();
   g.posthog = fakePosthog;
   g.Sentry = fakeSentry;
+});
+
+afterEach(() => {
+  for (const { name, data } of vercelCalls) {
+    assert.ok(Object.keys(data).length <= 2, `${name} exceeds the Vercel Pro two-property cap`);
+  }
+});
+
+test('rating_submitted respects the Vercel Pro two-property cap and keeps all PostHog properties', () => {
+  const props = Object.freeze({
+    show_id: 'hamilton', source: 'show_page', mode: 'edit', rating: 4.5,
+    has_review_text: false, review_length: 0, has_date_seen: false, is_edit: true,
+  });
+  ugc.trackUgc('rating_submitted', props);
+  assert.equal(vercelCalls.length, 1);
+  assert.equal(vercelCalls[0].name, 'rating_submitted');
+  assert.ok(Object.keys(vercelCalls[0].data).length <= 2, 'Vercel Pro permits at most two properties');
+  assert.deepEqual(vercelCalls[0].data, { show_id: 'hamilton', source: 'show_page' });
+  assert.deepEqual(captured, [{ event: 'rating_submitted', props, opts: undefined }]);
+});
+
+test('Vercel selects useful properties per event, independent of input order', () => {
+  const cases = [
+    { event: 'sign_in_completed', props: { is_new_user: true, seconds_to_complete: 5, context: 'rating', provider: 'google' }, expected: { provider: 'google', context: 'rating' } },
+    { event: 'list_created', props: { list_count: 2, has_description: false, list_id: 'list-1', is_ranked: false }, expected: { list_id: 'list-1', is_ranked: false } },
+    { event: 'import_completed', props: { imported: 4, skipped: 0, errors: 0, ratings_selected: 4, watchlist_selected: 0, context: 'my_shows', source: 'mezzanine' }, expected: { context: 'my_shows', source: 'mezzanine' } },
+    { event: 'onboarding_completed', props: { shows_added: 3, imported: 0, market: 'west-end', destination: '/my-shows' }, expected: { market: 'west-end', destination: '/my-shows' } },
+  ];
+  for (const { event, props, expected } of cases) {
+    ugc.trackUgc(event, props);
+    const sent = vercelCalls.at(-1)!;
+    assert.equal(sent.name, event);
+    assert.ok(Object.keys(sent.data).length <= 2, event);
+    assert.deepEqual(sent.data, expected);
+    assert.deepEqual(captured.at(-1), { event, props, opts: undefined });
+  }
+});
+
+test('Vercel fails closed for unknown events and handles missing, null and false properties', () => {
+  for (const event of ['future_ugc_event', 'constructor', '__proto__']) {
+    const props = { show_id: 'hamilton', source: 'show_page', extra: 'keep in PostHog' };
+    ugc.trackUgc(event, props);
+    assert.deepEqual(vercelCalls.at(-1)?.data, {}, event);
+    assert.deepEqual(captured.at(-1), { event, props, opts: undefined });
+  }
+  ugc.trackUgc('rating_submitted', { show_id: null, source: undefined, rating: 0 });
+  assert.deepEqual(vercelCalls.at(-1)?.data, { show_id: null });
+  assert.deepEqual(captured.at(-1)?.props, { show_id: null, rating: 0 });
+  ugc.trackUgc('list_visibility_changed', { list_id: 'list-1', is_public: false });
+  assert.deepEqual(vercelCalls.at(-1)?.data, { list_id: 'list-1', is_public: false });
+  ugc.trackUgc('sign_out');
+  assert.deepEqual(vercelCalls.at(-1)?.data, {});
 });
 
 test('describeSupabaseOp names REST, RPC, auth and functions calls', () => {
@@ -215,17 +274,20 @@ test('instrumentedFetch ignores the logout answers auth-js treats as signed out'
 
 test('events fired before PostHog loads wait in the outbox and keep their original time', () => {
   g.posthog = undefined;
-  ugc.trackUgc('rating_submitted', { show_id: 'hamilton', rating: 4.5, has_review_text: undefined });
+  const props = { show_id: 'hamilton', source: 'show_page', rating: 4.5, review_length: 0, is_edit: false };
+  ugc.trackUgc('rating_submitted', { ...props, has_review_text: undefined });
+  assert.deepEqual(vercelCalls[0].data, { show_id: 'hamilton', source: 'show_page' });
   assert.equal(captured.length, 0);
   const queued = JSON.parse((g.sessionStorage as MemStorage).getItem('bsc_ugc_outbox') || '[]');
   assert.equal(queued.length, 1);
   assert.equal('has_review_text' in queued[0].p, false, 'undefined props are dropped');
+  assert.deepEqual(queued[0].p, props, 'the outbox keeps the full PostHog payload');
 
   g.posthog = fakePosthog;
   ugc.flushUgcOutbox();
   assert.equal(captured.length, 1);
   assert.equal(captured[0].event, 'rating_submitted');
-  assert.equal(captured[0].props.rating, 4.5);
+  assert.deepEqual(captured[0].props, props);
   assert.ok(captured[0].opts?.timestamp instanceof Date);
   assert.equal(queued[0].t, captured[0].opts?.timestamp?.getTime());
   assert.equal((g.sessionStorage as MemStorage).getItem('bsc_ugc_outbox'), null, 'outbox cleared');

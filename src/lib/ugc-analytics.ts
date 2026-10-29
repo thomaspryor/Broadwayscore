@@ -2,8 +2,8 @@
  * Analytics + error reporting for the signed-in features (accounts, ratings,
  * watchlist, lists, import).
  *
- * - trackUgc: dual-fires Vercel track() and PostHog capture (same pattern as
- *   posthog-events.ts), so the funnel is queryable in PostHog.
+ * - trackUgc: dual-fires Vercel track() with selected properties and PostHog
+ *   capture with full properties, so the funnel is queryable in PostHog.
  * - instrumentedFetch: the fetch every Supabase call goes through (the
  *   supabase-js client via `global.fetch`, and supabase-rest.ts). Any failed
  *   REST/auth/functions response is reported once, here, so a call site that
@@ -96,11 +96,54 @@ export function flushUgcOutbox(): void {
   }
 }
 
+// Pro is the lowest plan supporting custom events and allows two properties:
+// https://vercel.com/docs/analytics/limits-and-pricing
+// Tuples enforce the cap. Unknown events send no Vercel properties until listed;
+// PostHog remains the source of truth with the full payload, including the outbox.
+const VERCEL_UGC_PROPS = new Map<string, readonly [string, string?]>([
+  ['sign_in_prompt_shown', ['context', 'source']],
+  ['sign_in_prompt_dismissed', ['context', 'source']],
+  ['sign_in_started', ['provider', 'context']],
+  ['sign_in_failed', ['provider', 'context']],
+  ['sign_in_completed', ['provider', 'context']],
+  ['menu_opened', ['signed_in', 'had_dot']],
+  ['rating_editor_opened', ['show_id', 'source']],
+  ['rating_submitted', ['show_id', 'source']],
+  ['rating_save_failed', ['show_id', 'source']],
+  ['rating_deleted', ['show_id', 'source']],
+  ['watchlist_add', ['show_id', 'source']],
+  ['watchlist_remove', ['show_id', 'reason']],
+  ['watchlist_local_migrated', ['local_count', 'added']],
+  ['list_created', ['list_id', 'is_ranked']],
+  ['list_updated', ['list_id', 'fields']],
+  ['list_deleted', ['list_id']],
+  ['list_item_added', ['list_id', 'show_id']],
+  ['list_item_removed', ['list_id', 'show_id']],
+  ['list_reordered', ['list_id', 'items_moved']],
+  ['list_shared', ['list_id', 'was_public']],
+  ['list_visibility_changed', ['list_id', 'is_public']],
+  ['import_previewed', ['context', 'source']],
+  ['import_failed', ['context', 'source']],
+  ['import_completed', ['context', 'source']],
+  ['onboarding_shown', ['market']],
+  ['onboarding_search_pick', ['market']],
+  ['onboarding_completed', ['market', 'destination']],
+  ['onboarding_step_completed', ['step', 'shows_added']],
+  ['onboarding_skipped', ['step', 'via']],
+  ['onboarding_market_switch', ['market']],
+  ['onboarding_import_source', ['source']],
+  ['cite_score_copied', ['slug']],
+]);
+
 export function trackUgc(event: string, props: UgcProps = {}): void {
   if (typeof window === 'undefined') return;
   const p = clean(props);
   try {
-    track(event, p);
+    const vercelProps: Record<string, Primitive> = {};
+    for (const key of VERCEL_UGC_PROPS.get(event) ?? []) {
+      if (key !== undefined && p[key] !== undefined) vercelProps[key] = p[key];
+    }
+    track(event, vercelProps);
   } catch {
     // tracking is never critical
   }
