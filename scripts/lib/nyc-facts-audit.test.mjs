@@ -1,0 +1,129 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const nyc = require('./nyc-facts-audit.js');
+const fc = require('./fact-check-sample.js');
+
+const ob = (id, extra = {}) => ({ id, title: id, category: 'off-broadway', market: 'broadway', status: 'closed', previewsStartDate: '2024-01-10', openingDate: '2024-01-25', venue: 'Lucille Lortel Theatre', ...extra });
+
+test('cohort: NYC rows since 2021-06-01 plus everything current; no West End, no older closed rows', () => {
+  assert.equal(nyc.isNycFactsRow(ob('a')), true);
+  assert.equal(nyc.isNycFactsRow(ob('old', { previewsStartDate: '2019-01-01', openingDate: '2019-02-01' })), false);
+  assert.equal(nyc.isNycFactsRow(ob('ann', { status: 'announced', previewsStartDate: null, openingDate: null })), true);
+  assert.equal(nyc.isNycFactsRow({ ...ob('we'), category: 'west-end' }), false);
+  assert.ok(fc.COHORTS['nyc-facts'], 'registered on the harness');
+});
+
+test('strata: current first, then OB backfilled / recent, then Broadway', () => {
+  assert.equal(nyc.nycStratum(ob('a', { status: 'open' })), 'current-upcoming');
+  assert.equal(nyc.nycStratum(ob('b', { tags: ['historical'] })), 'ob-backfilled');
+  assert.equal(nyc.nycStratum(ob('c')), 'ob-recent');
+  assert.equal(nyc.nycStratum({ ...ob('d'), category: 'broadway' }), 'bway-recent');
+});
+
+test('equal allocation samples every stratum evenly; default allocation is unchanged', () => {
+  const rows = [...Array(80)].map((_, i) => ob(`r${i}`)).concat([...Array(5)].map((_, i) => ob(`h${i}`, { tags: ['historical'] })), [...Array(30)].map((_, i) => ob(`o${i}`, { status: 'open' })));
+  const s = fc.drawSample(rows, 'nyc-facts', 12, 6489);
+  assert.equal(s.n, 12);
+  assert.equal(s.strata['ob-backfilled'].sampled, 4);
+  assert.equal(s.strata['ob-recent'].sampled, 4);
+  assert.equal(s.strata['current-upcoming'].sampled, 4);
+  const prop = fc.stratifiedSample(rows, nyc.nycStratum, 12, 1);
+  assert.equal(prop.filter((r) => r.stratum === 'ob-recent').length, 8, 'proportional stays the default');
+});
+
+test('prompt never shows the stored venue, category, dates, type or revival flag', () => {
+  const show = ob('p', { title: 'Kenrex', venue: 'Lucille Lortel Theatre', type: 'play', isRevival: false });
+  const p = nyc.buildNycFactPrompt(show, '2026-10-29');
+  assert.match(p, /"Kenrex"/);
+  assert.match(p, /around 2024/);
+  for (const leak of ['Lucille Lortel', '2024-01-10', '2024-01-25']) assert.ok(!p.includes(leak), leak);
+  assert.match(nyc.buildNycFactPrompt(ob('q', { previewsStartDate: null, openingDate: null, status: 'announced' }), '2026-10-29'), /currently announced or running/);
+});
+
+test('venue compare tells stages apart and accepts reordered or less specific names', () => {
+  assert.equal(nyc.compareNycVenue('Atlantic Theater Company - Linda Gross Theater', 'Linda Gross Theater (Atlantic Theater Company)'), 'agree');
+  assert.equal(nyc.compareNycVenue('Playwrights Horizons Mainstage', 'Peter Jay Sharp Theater at Playwrights Horizons'), 'disagree');
+  assert.equal(nyc.compareNycVenue('Pershing Square Signature Center', 'The Irene Diamond Stage at the Pershing Square Signature Center'), 'less-specific');
+  assert.equal(nyc.compareNycVenue('Irene Diamond Stage, Pershing Square Signature Center', 'Pershing Square Signature Center'), 'agree');
+  assert.equal(nyc.compareNycVenue('Lucille Lortel Theatre', 'Minetta Lane Theatre'), 'disagree');
+  // sameVenue's per-part match would call these the same room; the NYC compare must not.
+  assert.equal(fc.sameVenue('Playwrights Horizons, Mainstage', 'Playwrights Horizons, Peter Jay Sharp Theater', 'broadway'), true);
+  assert.equal(nyc.compareNycVenue('Playwrights Horizons, Mainstage', 'Playwrights Horizons, Peter Jay Sharp Theater'), 'disagree');
+});
+
+test('tier and revival compare against what the site shows', () => {
+  const s = ob('t', { tags: ['revival'] });
+  assert.equal(nyc.nycCompareField('tier', s, 'Off-Broadway'), 'agree');
+  assert.equal(nyc.nycCompareField('tier', s, 'Broadway'), 'disagree');
+  assert.equal(nyc.nycCompareField('tier', s, 'Off-Off-Broadway'), 'disagree');
+  assert.equal(nyc.nycCompareField('revival', s, 'revival'), 'agree', 'tags revival counts, as in engine.ts');
+  assert.equal(nyc.nycCompareField('revival', ob('n'), 'new'), 'agree');
+  assert.equal(nyc.nycCompareField('openingNight', ob('d'), '2024-02-05'), 'disagree');
+  assert.equal(nyc.nycCompareField('openingNight', ob('d'), '2024-01-25'), 'agree');
+});
+
+test('tier page support: an Off-Broadway page does not support a Broadway answer', () => {
+  const obPage = 'The Off-Broadway premiere opens at the Lortel.';
+  assert.equal(nyc.nycPageSupports(obPage, 'Off-Broadway', 'tier'), true);
+  assert.equal(nyc.nycPageSupports(obPage, 'Broadway', 'tier'), false);
+  assert.equal(nyc.nycPageSupports('Now on Broadway at the Hayes', 'Broadway', 'tier'), true);
+  assert.equal(nyc.nycPageSupports('An Off-Off-Broadway show', 'Off-Broadway', 'tier'), false);
+  assert.equal(nyc.nycPageSupports('the first major revival since 1998', 'revival', 'revival'), true);
+  assert.equal(nyc.nycPageSupports('the world premiere of a new play', 'new', 'revival'), true);
+  assert.equal(nyc.nycPageSupports('moved to the Minetta Lane Theatre', { theatre: 'Minetta Lane Theatre' }, 'run'), true);
+});
+
+test('triageField with the cohort impl uses NYC comparisons (stage mismatch -> adjudicate)', () => {
+  const show = ob('s', { venue: 'Playwrights Horizons, Mainstage' });
+  const checks = [{ checker: 'gemini', answer: { theatre: { value: 'Playwrights Horizons, Peter Jay Sharp Theater', source: 'https://x' } }, support: { theatre: true } }];
+  assert.equal(fc.triageField('theatre', show, checks, 'broadway').status, 'ok', 'default impl is unchanged');
+  assert.equal(fc.triageField('theatre', show, checks, 'broadway', nyc.NYC_COHORT).status, 'adjudicate');
+});
+
+test('other runs: a declared priorRun or a same-title sibling is present; anything else is missing', () => {
+  const show = ob('kramer', { title: 'Kramer', venue: "St. Ann's Warehouse", priorRuns: [{ venue: 'NYU Skirball', openingDate: '2026-02-01' }] });
+  const sib = ob('kramer-2', { title: 'Kramer', venue: 'Minetta Lane Theatre' });
+  const mk = (theatre) => [{ checker: 'openai', answer: { otherRuns: { value: [{ theatre, began: '2026-02', relation: 'earlier run' }], source: 'https://x' } }, support: { otherRuns: true } }];
+  assert.equal(nyc.otherRunsTriage(show, [show, sib], mk('NYU Skirball')).status, 'ok');
+  assert.equal(nyc.otherRunsTriage(show, [show, sib], mk('Minetta Lane Theatre')).runs[0].siblingId, 'kramer-2');
+  assert.equal(nyc.otherRunsTriage(show, [show, sib], mk('New York Theatre Workshop')).status, 'adjudicate');
+  assert.equal(nyc.otherRunsTriage(show, [show], mk("St. Ann's Warehouse")).runs.length, 0, 'own theatre is the row itself');
+});
+
+test('consistency findings: free checks catch the classes the probe found', () => {
+  const rows = [
+    ob('same', { previewsStartDate: '2026-02-05', openingDate: '2026-02-05' }),
+    { ...ob('bw'), category: 'broadway', venue: 'Lucille Lortel Theatre' },
+    ob('obbw', { venue: 'Hayes Theater' }),
+    ob('stale', { status: 'previews', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', closingDate: '2026-10-01' }),
+    ob('tba', { status: 'announced', venue: null, previewsStartDate: null, openingDate: null }),
+  ];
+  const cls = (id) => nyc.consistencyFindings(rows, '2026-10-29').filter((f) => f.id === id).map((f) => f.class);
+  assert.deepEqual(cls('same'), ['preview-equals-opening']);
+  assert.deepEqual(cls('bw'), ['broadway-not-registry']);
+  assert.deepEqual(cls('obbw'), ['ob-at-broadway-house']);
+  assert.deepEqual(cls('stale'), ['status-vs-dates']);
+  assert.deepEqual(cls('tba'), ['venue-missing']);
+});
+
+test('type compare covers opera and special (the default fold calls opera a musical and has no special)', () => {
+  assert.equal(nyc.nycCompareField('type', ob('o', { type: 'opera' }), 'opera'), 'agree');
+  assert.equal(nyc.nycCompareField('type', ob('r', { type: 'musical' }), 'rock opera'), 'agree');
+  assert.equal(nyc.nycCompareField('type', ob('s', { type: 'special' }), 'other'), 'agree');
+  assert.equal(nyc.nycCompareField('type', ob('m', { type: 'special' }), 'magic show'), 'agree');
+  assert.equal(nyc.nycCompareField('type', ob('p', { type: 'play' }), 'musical'), 'disagree');
+  assert.match(nyc.buildNycFactPrompt(ob('q'), '2026-10-29'), /transferring from another theatre is new, not a revival/);
+});
+
+test('revival follows the row tier: an Off-Broadway premiere before Broadway is new on a Broadway row', () => {
+  const bw = { ...ob('brc'), category: 'broadway', isRevival: false };
+  assert.equal(nyc.nycCompareField('revival', bw, 'Off-Broadway revival'), 'agree');
+  assert.equal(nyc.nycCompareField('revival', bw, 'Broadway revival'), 'disagree');
+  assert.equal(nyc.nycCompareField('revival', ob('orl'), 'Off-Broadway revival'), 'disagree', 'OB rows count any earlier NYC staging');
+  assert.equal(nyc.nycPageSupports('Common making his Broadway debut', 'new', 'revival'), false, 'an actor debut is not support');
+  assert.equal(nyc.nycCompareField('type', ob('cm', { type: 'special' }), 'comedy magic show'), 'agree');
+  assert.match(nyc.buildNycFactPrompt(ob('q'), '2026-10-29'), /Broadway revival = a new staging of a work that already had an earlier Broadway production/);
+});

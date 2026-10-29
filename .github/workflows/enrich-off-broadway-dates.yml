@@ -22,7 +22,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all), fix-unconfirmed (correct todaytix/ibdb/etc. dates), initial-backfill (bypass stability guard once)'
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all), fix-unconfirmed (correct todaytix/ibdb/etc. dates), initial-backfill (bypass stability guard once), fix-closed (also closed rows whose Playbill page year matches), backfill-closed (fix-closed without the stability guard). Closed modes are dispatch-only (the guard aborts whole runs).'
         required: true
         default: 'fix-unconfirmed'
         type: choice
@@ -32,6 +32,8 @@ on:
           - force
           - fix-unconfirmed
           - initial-backfill
+          - fix-closed
+          - backfill-closed
       show:
         description: 'Optional: specific show id or slug to process'
         required: false
@@ -81,6 +83,8 @@ jobs:
             force) FLAGS="--force" ;;
             fix-unconfirmed) FLAGS="--fix-unconfirmed" ;;
             initial-backfill) FLAGS="--fix-unconfirmed --initial-backfill" ;;
+            fix-closed) FLAGS="--fix-unconfirmed --include-closed-when-year-matches" ;;
+            backfill-closed) FLAGS="--fix-unconfirmed --include-closed-when-year-matches --initial-backfill" ;;
             *) FLAGS="--fix-unconfirmed" ;;
           esac
           if [ -n "${INPUT_SHOW}" ]; then
