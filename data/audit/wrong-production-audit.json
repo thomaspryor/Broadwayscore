@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-28T23:45:08.236Z",
+  "timestamp": "2026-10-29T00:00:36.334Z",
   "stats": {
-    "totalReviews": 65667,
-    "alreadyFlagged": 22043,
+    "totalReviews": 65724,
+    "alreadyFlagged": 22042,
     "dateGuardCatches": 233,
-    "directorMismatch": 2607,
+    "directorMismatch": 2620,
     "tvFilmSignals": 1854,
-    "londonSignals": 3168,
+    "londonSignals": 3184,
     "offBroadwaySignals": 596,
     "yearMismatch": 239,
     "noPublishDate": 5950
@@ -273,6 +273,19 @@
       "score": 82,
       "publishDate": "2015-06-24",
       "url": "https://www.londonboxoffice.co.uk/news/post/1984-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2015",
+      "file": "whatsonstage--mark-valencia.json",
+      "publishDate": "2015-06-19",
+      "url": "https://www.whatsonstage.com/news/1984-playhouse-theatre_38092/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -5137,7 +5150,7 @@
     {
       "showId": "assassins-off-broadway-2021",
       "file": "exeunt-magazine--unknown.json",
-      "score": null,
+      "score": 66,
       "publishDate": "2021-11-15",
       "url": "https://exeuntnyc.com/reviews/review-assassins-at-classic-stage-company/",
       "findings": [
@@ -6725,6 +6738,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2014",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2014-03-19",
+      "url": "https://www.whatsonstage.com/news/blithe-spirit-gielgud-theatre_33886/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from blithe-spirit-2009"
         }
       ]
     },
@@ -16711,6 +16737,19 @@
       ]
     },
     {
+      "showId": "farinelli-and-the-king-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2015-09-30",
+      "url": "https://www.whatsonstage.com/news/farinelli-and-the-king-duke-of-yorks_38823/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john dove\" from farinelli-and-the-king-2017"
+        }
+      ]
+    },
+    {
       "showId": "fat-ham-2023",
       "file": "ew--lester-fabian-brathwaite.json",
       "score": 79,
@@ -18409,6 +18448,19 @@
       "score": 87,
       "publishDate": "2016-04-21",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from funny-girl-2022"
+        }
+      ]
+    },
+    {
+      "showId": "funny-girl-west-end-2016",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "publishDate": "2016-04-21",
+      "url": "https://www.whatsonstage.com/news/funny-girl-savoy-theatre_40246/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21306,6 +21358,19 @@
       ]
     },
     {
+      "showId": "gypsy-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2015-04-16",
+      "url": "https://www.whatsonstage.com/news/gypsy-savoy-theatre_37597/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
       "showId": "hadestown-2019",
       "file": "musical-theatre-review--angela-thomas.json",
       "publishDate": null,
@@ -21771,6 +21836,19 @@
       "score": 44,
       "publishDate": "2016-02-16",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moritz von stuelpnagel\" from hand-to-god-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-west-end-2016",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2016-02-16",
+      "url": "https://www.whatsonstage.com/news/hand-to-god-vaudeville-theatre_39735/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28439,7 +28517,7 @@
     {
       "showId": "kimberly-akimbo-off-broadway-2021",
       "file": "theatrely--joey-sims.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2021-12-08",
       "url": "https://www.theatrely.com/post/kimberly-akimbo-a-momentus-masterpiece-review",
       "findings": [
@@ -28582,6 +28660,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "king-charles-iii-west-end-2014",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "publishDate": "2014-09-12",
+      "url": "https://www.whatsonstage.com/news/king-charles-iii-wyndhams-theatre_35680/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from king-charles-iii-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -33127,6 +33223,19 @@
       ]
     },
     {
+      "showId": "miss-saigon-west-end-2014",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2014-05-21",
+      "url": "https://www.whatsonstage.com/news/miss-saigon-prince-edward-theatre_34523/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from miss-saigon-1991"
+        }
+      ]
+    },
+    {
       "showId": "mj-2022",
       "file": "cititour--brian-scott-lipton.json",
       "score": 77,
@@ -33440,6 +33549,19 @@
       "score": 38,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2016/mar/08/motown-the-musical-review-berry-gordy-shaftesbury-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"charles randolph-wright\" from motown-the-musical-2016"
+        }
+      ]
+    },
+    {
+      "showId": "motown-the-musical-west-end-2016",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2016-03-08",
+      "url": "https://www.whatsonstage.com/news/motown-the-musical-shaftesbury-theatre_39921/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39231,6 +39353,19 @@
       ]
     },
     {
+      "showId": "peter-pan-goes-wrong-west-end-2015",
+      "file": "whatsonstage--ben-hewis.json",
+      "publishDate": "2015-12-10",
+      "url": "https://www.whatsonstage.com/news/peter-pan-goes-wrong-apollo-theatre_39315/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
+        }
+      ]
+    },
+    {
       "showId": "peter-pan-goes-wrong-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 82,
@@ -43233,6 +43368,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2014-06-19",
+      "url": "https://www.whatsonstage.com/news/skylight-wyndhams-theatre_34791/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard eyre\" from skylight-1996"
         }
       ]
     },
@@ -50215,6 +50368,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2015-06-01",
+      "url": "https://www.whatsonstage.com/news/the-elephant-man-theatre-royal-haymarket_37926/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -65253,6 +65424,19 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-west-end-2015",
+      "file": "whatsonstage--whatsonstage-reviewer.json",
+      "publishDate": "2015-12-10",
+      "url": "https://www.whatsonstage.com/news/a-christmas-carol-noel-coward-theatre_39318/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-west-end-2023",
       "file": "all-that-dazzles-uk--unknown.json",
       "score": 95,
@@ -68865,7 +69049,7 @@
     {
       "showId": "assassins-off-broadway-2021",
       "file": "observer--david-cote.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2021-11-15",
       "url": "https://observer.com/2021/11/american-psychos-assassins-takes-wobbly-aim-off-broadway-review/",
       "findings": [
@@ -73948,6 +74132,19 @@
       ]
     },
     {
+      "showId": "cyprus-avenue-west-end-2016",
+      "file": "whatsonstage--matt-trueman.json",
+      "publishDate": "2016-04-08",
+      "url": "https://www.whatsonstage.com/news/cyprus-avenue-royal-court_40150/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "cyrano-de-bergerac-2012",
       "file": "about-entertainment--ben-brantley.json",
       "score": 85,
@@ -76211,6 +76408,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "elf-west-end-2015",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "publishDate": "2015-11-06",
+      "url": "https://www.whatsonstage.com/news/elf-the-musical-dominion-theatre_39090/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -80667,6 +80877,19 @@
       "score": 56,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/jun/17/hang-review-marianne-jean-baptiste-justice-capital-punishment",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "hang-west-end-2015",
+      "file": "whatsonstage--matt-trueman.json",
+      "publishDate": "2015-06-17",
+      "url": "https://www.whatsonstage.com/news/hang-royal-court_38065/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -86712,6 +86935,19 @@
       ]
     },
     {
+      "showId": "let-the-right-one-in-west-end-2014",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2014-04-08",
+      "url": "https://www.whatsonstage.com/news/let-the-right-one-in-apollo-theatre_34085/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "lets-love-off-broadway-2026",
       "file": "playbill--unknown.json",
       "score": null,
@@ -86820,6 +87056,19 @@
       "score": 56,
       "publishDate": "2015-12-02",
       "url": "https://www.theguardian.com/stage/2015/dec/02/linda-review-royal-court-london-noma-dumezweni-penelope-skinner",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "linda-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2015-12-02",
+      "url": "https://www.whatsonstage.com/news/linda-royal-court_39256/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -93583,6 +93832,19 @@
       ]
     },
     {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "publishDate": "2016-03-24",
+      "url": "https://www.whatsonstage.com/news/people-places-and-things-wyndhams-theatre_40032/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
       "showId": "people-places-and-things-west-end-2024",
       "file": "guardian--susannah-clapp.json",
       "publishDate": "2024-06-02",
@@ -95663,6 +95925,19 @@
       "score": 82,
       "publishDate": "2015-10-27",
       "url": "https://www.theguardian.com/stage/2015/oct/27/roosevelvis-review-royal-court-the-team",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "roosevelvis-west-end-2015",
+      "file": "whatsonstage--matt-trueman.json",
+      "publishDate": "2015-10-27",
+      "url": "https://www.whatsonstage.com/news/roosevelvis-royal-court_39025/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -100983,6 +101258,19 @@
       ]
     },
     {
+      "showId": "the-caretaker-west-end-2016",
+      "file": "whatsonstage--holly-williams.json",
+      "publishDate": "2016-04-07",
+      "url": "https://www.whatsonstage.com/news/the-caretaker-old-vic_40138/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "artsdesk--matt-wolf.json",
       "score": 97,
@@ -101775,6 +102063,19 @@
       "score": 50,
       "publishDate": "2014-07-13",
       "url": "https://www.express.co.uk/entertainment/theatre/488165/Arthur-Miller-s-The-Crucible-in-Old-Vic-and-Shakespeare-s-Richard-III",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-crucible-west-end-2014",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2014-07-04",
+      "url": "https://www.whatsonstage.com/news/the-crucible-old-vic_34958/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -102810,6 +103111,19 @@
       "score": 78,
       "publishDate": "2015-10-06",
       "url": "https://www.theguardian.com/stage/2015/oct/06/the-father-review-alzheimer-s-kenneth-cranham-claire-skinner-florian-zeller",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-father-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2015-10-06",
+      "url": "https://www.whatsonstage.com/news/the-father-wyndhams-theatre_38875/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -105475,6 +105789,19 @@
       "score": 97,
       "publishDate": "2016-02-04",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-master-builder-old-vic-review-extraordinary/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-west-end-2016",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2016-02-04",
+      "url": "https://www.whatsonstage.com/news/the-master-builder-old-vic_39642/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -108497,6 +108824,19 @@
       ]
     },
     {
+      "showId": "the-truth-west-end-2016",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2016-06-28",
+      "url": "https://www.whatsonstage.com/news/the-truth-wyndhams-theatre_41161/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
       "file": "theatreandtonic--bronagh.json",
       "score": 80,
@@ -111324,6 +111664,19 @@
       "score": 57,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/jun/09/violence-and-son-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "violence-and-son-west-end-2015",
+      "file": "whatsonstage--matt-trueman.json",
+      "publishDate": "2015-06-09",
+      "url": "https://www.whatsonstage.com/news/violence-and-son-royal-court_37997/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
