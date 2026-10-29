@@ -1856135,59 +1856135,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T17:33:13.674Z",
-    "completedAt": "2026-10-29T17:33:19.496Z",
-    "totalReviews": 8,
-    "processed": 1,
-    "skipped": 7,
+    "startedAt": "2026-10-29T18:01:01.383Z",
+    "completedAt": "2026-10-29T18:02:58.551Z",
+    "totalReviews": 212,
+    "processed": 21,
+    "skipped": 190,
     "errors": 0,
     "tokensUsed": {
-      "input": 5623,
-      "output": 309,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 14527
+      "input": 121689,
+      "output": 7002,
+      "cacheRead": 64535,
+      "cacheWrite": 18851,
+      "total": 316039
     },
-    "costUsd": 0.021641200000000003,
-    "runId": "40918886110",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-29T17:33:22.021Z",
-    "completedAt": "2026-10-29T17:33:22.023Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "40918886110",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-29T17:42:33.440Z",
-    "completedAt": "2026-10-29T17:43:58.884Z",
-    "totalReviews": 199,
-    "processed": 17,
-    "skipped": 181,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 89985,
-      "output": 5440,
-      "cacheRead": 53298,
-      "cacheWrite": 15093,
-      "total": 244382
-    },
-    "costUsd": 0.40678795,
-    "runId": "40919302225",
+    "costUsd": 0.5370175500000001,
+    "runId": "40922539918",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1860733,9 +1860695,9 @@
         "showId": "beautiful-the-carole-king-musical-west-end-2015",
         "ourDistribution": {
           "up": 3,
-          "flat": 1,
-          "down": 1,
-          "total": 5
+          "flat": 2,
+          "down": 2,
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -1868769,10 +1868731,10 @@
       {
         "showId": "guys-and-dolls-west-end-2016",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 1,
           "down": 0,
-          "total": 4
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -1869411,10 +1869373,10 @@
       {
         "showId": "harvey-west-end-2015",
         "ourDistribution": {
-          "up": 0,
+          "up": 1,
           "flat": 0,
           "down": 1,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -1870006,20 +1869968,20 @@
       {
         "showId": "high-society-west-end-2015",
         "ourDistribution": {
-          "up": 26,
-          "flat": 7,
+          "up": 27,
+          "flat": 8,
           "down": 1,
-          "total": 34
+          "total": 36
         },
         "hasDisagreement": false
       },
       {
         "showId": "high-society-west-end-2026",
         "ourDistribution": {
-          "up": 26,
-          "flat": 7,
+          "up": 27,
+          "flat": 8,
           "down": 1,
-          "total": 34
+          "total": 36
         },
         "hasDisagreement": false
       },
@@ -1871555,10 +1871517,10 @@
       {
         "showId": "jane-eyre-west-end-2015",
         "ourDistribution": {
-          "up": 5,
+          "up": 6,
           "flat": 0,
           "down": 0,
-          "total": 5
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1872322,10 +1872284,10 @@
       {
         "showId": "king-charles-iii-west-end-2014",
         "ourDistribution": {
-          "up": 3,
+          "up": 4,
           "flat": 0,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1873301,10 +1873263,20 @@
       {
         "showId": "let-it-be-west-end-2012",
         "ourDistribution": {
-          "up": 0,
-          "flat": 0,
+          "up": 1,
+          "flat": 1,
           "down": 1,
-          "total": 1
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "let-it-be-west-end-2014",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 1,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -1874621,9 +1874593,9 @@
         "showId": "man-and-superman-west-end-2015",
         "ourDistribution": {
           "up": 1,
-          "flat": 0,
+          "flat": 1,
           "down": 0,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -1876492,9 +1876464,9 @@
         "showId": "nevilles-island-west-end-2014",
         "ourDistribution": {
           "up": 2,
-          "flat": 1,
+          "flat": 2,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1882921,10 +1882893,10 @@
       {
         "showId": "taken-at-midnight-west-end-2015",
         "ourDistribution": {
-          "up": 1,
-          "flat": 1,
+          "up": 2,
+          "flat": 2,
           "down": 0,
-          "total": 2
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1886119,9 +1886091,9 @@
         "showId": "the-importance-of-being-earnest-west-end-2014",
         "ourDistribution": {
           "up": 43,
-          "flat": 13,
+          "flat": 15,
           "down": 5,
-          "total": 61
+          "total": 63
         },
         "hasDisagreement": false
       },
@@ -1886129,9 +1886101,9 @@
         "showId": "the-importance-of-being-earnest-west-end-2015",
         "ourDistribution": {
           "up": 43,
-          "flat": 13,
+          "flat": 15,
           "down": 5,
-          "total": 61
+          "total": 63
         },
         "hasDisagreement": false
       },
@@ -1886139,9 +1886111,9 @@
         "showId": "the-importance-of-being-earnest-west-end-2024",
         "ourDistribution": {
           "up": 43,
-          "flat": 13,
+          "flat": 15,
           "down": 5,
-          "total": 61
+          "total": 63
         },
         "hasDisagreement": false
       },
@@ -1886149,9 +1886121,9 @@
         "showId": "the-importance-of-being-earnest-west-end-2025",
         "ourDistribution": {
           "up": 43,
-          "flat": 13,
+          "flat": 15,
           "down": 5,
-          "total": 61
+          "total": 63
         },
         "hasDisagreement": false
       },
@@ -1890871,9 +1890843,9 @@
         "showId": "treasure-island-west-end-2014",
         "ourDistribution": {
           "up": 1,
-          "flat": 0,
+          "flat": 2,
           "down": 2,
-          "total": 3
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -1891544,10 +1891516,10 @@
       {
         "showId": "violence-and-son-west-end-2015",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 2,
           "down": 0,
-          "total": 3
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1892500,10 +1892472,10 @@
       {
         "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
         "ourDistribution": {
-          "up": 3,
+          "up": 5,
           "flat": 1,
           "down": 0,
-          "total": 4
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1892833,21 +1892805,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T17:46:18.878Z",
-    "completedAt": "2026-10-29T17:46:18.912Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-10-29T18:05:14.402Z",
+    "completedAt": "2026-10-29T18:05:46.995Z",
+    "totalReviews": 14,
+    "processed": 14,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 40051,
+      "output": 3142,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 43193
     },
-    "costUsd": 0,
-    "runId": "40919302225",
+    "costUsd": 0.1098065,
+    "runId": "40922539918",
     "source": "comparative-rescore",
     "errorDetails": []
   }
