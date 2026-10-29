@@ -63,3 +63,20 @@ test('two headline-form slugs for the same title are ambiguous', () => {
   assert.deepEqual(matchStandardSlugs({ title: 'Macbeth', venue: 'Trafalgar Studios' }, urls), []);
   assert.deepEqual(matchStandardSlugs({ title: 'Macbeth', venue: 'Trafalgar Studios' }, urls.slice(0, 1)), urls.slice(0, 1));
 });
+
+test('a shared venue word is not enough (Old Vic vs Young Vic, Royal Haymarket vs Royal Bath)', () => {
+  const hamlet = (venue) => ({ title: 'Hamlet', venue });
+  const oldVic = [U('hamlet-old-vic-theatre-review-8000001')];
+  const bath = [U('hamlet-theatre-royal-bath-review-8000002')];
+  assert.deepEqual(matchStandardSlugs(hamlet('Young Vic'), oldVic), []);
+  assert.deepEqual(matchStandardSlugs(hamlet('Theatre Royal Haymarket'), bath), []);
+  assert.deepEqual(matchStandardSlugs(hamlet('Old Vic'), oldVic), oldVic);
+  assert.deepEqual(matchStandardSlugs(hamlet("Duke of York's Theatre"), [U('hamlet-duke-of-yorks-theatre-review-8000003')]).length, 1);
+});
+
+test('bodyNamesVenue requires the venue in a headline-form article', () => {
+  const { bodyNamesVenue } = createRequire(import.meta.url)('./we-sitemap-candidates.js');
+  assert.equal(bodyNamesVenue('A gripping Macbeth at the Young Vic last night', 'Trafalgar Studios'), false);
+  assert.equal(bodyNamesVenue('Macbeth at Trafalgar Studios was gripping', 'Trafalgar Studios'), true);
+  assert.equal(bodyNamesVenue('anything', ''), true);
+});

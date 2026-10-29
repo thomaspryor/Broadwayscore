@@ -49,6 +49,22 @@ function slugParts(url, show) {
   return { rest: sw.slice(tw.length).filter((w) => !STOP.has(w)) };
 }
 
+const venueWords = (v) => words(v).filter((w) => !STOP.has(w));
+
+/** The slug's venue and the show's venue name the same place: equal, or one contains the other (a long-enough name). A shared word is not enough (Old Vic / Young Vic). */
+function venueSlugAgrees(slugKey, venueKey) {
+  if (!slugKey || !venueKey) return false;
+  if (slugKey === venueKey) return true;
+  const [short, long] = slugKey.length <= venueKey.length ? [slugKey, venueKey] : [venueKey, slugKey];
+  return short.length >= 7 && long.includes(short);
+}
+
+/** Headline-form slugs carry no venue, so the fetched article body must name the show's venue. */
+function bodyNamesVenue(body, venue) {
+  const v = venueWords(venue).join(' ');
+  return !v || norm(body).includes(v);
+}
+
 /**
  * Candidate URLs for one show from the sitemap URLs of the months its window
  * touches. A slug naming a venue must agree with the show's venue (a same-titled
@@ -57,14 +73,14 @@ function slugParts(url, show) {
  */
 function matchStandardSlugs(show, urls) {
   if (!show || !show.title || norm(show.title).length < 3) return [];
-  const venue = new Set(words(show.venue).filter((w) => !STOP.has(w)));
+  const venueKey = venueWords(show.venue).join('');
   const confirmed = [];
   const bare = [];
   for (const u of urls) {
     const p = slugParts(u, show);
     if (!p) continue;
     if (!p.rest.length) bare.push(u);
-    else if (p.rest.some((w) => venue.has(w))) confirmed.push(u);
+    else if (venueSlugAgrees(p.rest.join(''), venueKey)) confirmed.push(u);
   }
   if (confirmed.length) return confirmed.length <= 3 ? confirmed : [];
   // Headline-form slugs (2015+) carry no venue: keep one only when it is the sole title hit (same rule as the WoS matcher).
@@ -77,4 +93,4 @@ function candidateWindow(show) {
   return first ? { lo: addDays(first, -14), hi: addDays(first, 75) } : null;
 }
 
-module.exports = { monthsBetween, standardReviewUrls, slugParts, matchStandardSlugs, candidateWindow };
+module.exports = { venueSlugAgrees, bodyNamesVenue, monthsBetween, standardReviewUrls, slugParts, matchStandardSlugs, candidateWindow };

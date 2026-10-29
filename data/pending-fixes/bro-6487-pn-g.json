@@ -1,15 +1,18 @@
 {
   "issueNumber": "bro-6487-pn-g",
-  "planId": "62361d1c-77f6-4f0c-819d-6d9ab41647a9",
+  "planId": "ceb1b588-2586-4bf9-958d-1ff0f2758563",
   "status": "pending",
-  "createdAt": "2026-10-29T02:25:56.872Z",
+  "createdAt": "2026-10-29T02:36:45.753Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 7 of 10)",
+    "summary": "BRO-6487: sourced West End press nights, set g of 11 (2012-13..2015-16 opening rows)",
     "steps": [
+      "shows.json: taken-at-midnight-west-end-2015.openingDate",
+      "shows.json: taken-at-midnight-west-end-2015.openingDateSource",
+      "shows.json: harvey-west-end-2015.openingDateSource",
       "shows.json: stop-the-play-west-end-2015.openingDateSource",
       "shows.json: close-to-you-bacharach-reimagined-west-end-2015.openingDate",
       "shows.json: close-to-you-bacharach-reimagined-west-end-2015.openingDateSource",
@@ -29,22 +32,44 @@
       "shows.json: quartermaines-terms-west-end-2013.openingDateSource",
       "shows.json: the-low-road-west-end-2013.previewsStartDate",
       "shows.json: the-low-road-west-end-2013.openingDate",
-      "shows.json: the-low-road-west-end-2013.openingDateSource",
-      "shows.json: the-play-that-goes-wrong-west-end-2013.previewsStartDate",
-      "shows.json: the-play-that-goes-wrong-west-end-2013.openingDate",
-      "shows.json: the-play-that-goes-wrong-west-end-2013.openingDateSource",
-      "shows.json: chimerica-west-end-2013.openingDate",
-      "shows.json: chimerica-west-end-2013.openingDateSource"
+      "shows.json: the-low-road-west-end-2013.openingDateSource"
     ],
     "riskLevel": "low",
     "actions": [
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "stop-the-play-west-end-2015",
+        "showId": "taken-at-midnight-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-01-15",
+        "newValue": "2015-01-26",
+        "description": "shows.json: taken-at-midnight-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "taken-at-midnight-west-end-2015",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "press night 2015-06-03 (londontheatre.co.uk; BRO-6487)",
+        "newValue": "press night 2015-01-26 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: taken-at-midnight-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harvey-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: harvey-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stop-the-play-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: stop-the-play-west-end-2015.openingDateSource"
       },
       {
@@ -217,51 +242,6 @@
         "oldValue": "human-correction",
         "newValue": "press night 2013-03-27 (royalcourttheatre.com; BRO-6487)",
         "description": "shows.json: the-low-road-west-end-2013.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-play-that-goes-wrong-west-end-2013",
-        "field": "previewsStartDate",
-        "oldValue": "2013-05-10",
-        "newValue": "2013-04-30",
-        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.previewsStartDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-play-that-goes-wrong-west-end-2013",
-        "field": "openingDate",
-        "oldValue": "2013-05-10",
-        "newValue": "2013-05-03",
-        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-play-that-goes-wrong-west-end-2013",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2013-05-03 (londontheatre.co.uk; BRO-6487)",
-        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "chimerica-west-end-2013",
-        "field": "openingDate",
-        "oldValue": "2013-08-06",
-        "newValue": "2013-08-15",
-        "description": "shows.json: chimerica-west-end-2013.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "chimerica-west-end-2013",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2013-08-15 (whatsonstage.com; BRO-6487)",
-        "description": "shows.json: chimerica-west-end-2013.openingDateSource"
       }
     ]
   }

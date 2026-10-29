@@ -1,15 +1,18 @@
 {
   "issueNumber": "bro-6487-pn-e",
-  "planId": "4d6cd0e1-4f02-4a2d-ad50-c822ecf36f20",
+  "planId": "c0d19b7f-552c-4658-b09c-407e1492327a",
   "status": "pending",
-  "createdAt": "2026-10-29T02:25:56.872Z",
+  "createdAt": "2026-10-29T02:36:43.901Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 5 of 10)",
+    "summary": "BRO-6487: sourced West End press nights, set e of 11 (2012-13..2015-16 opening rows)",
     "steps": [
+      "shows.json: fences-west-end-2013.openingDate",
+      "shows.json: fences-west-end-2013.openingDateSource",
+      "shows.json: barking-in-essex-west-end-2013.previewsStartDate",
       "shows.json: barking-in-essex-west-end-2013.openingDate",
       "shows.json: barking-in-essex-west-end-2013.openingDateSource",
       "shows.json: the-weir-west-end-2014.previewsStartDate",
@@ -30,14 +33,37 @@
       "shows.json: kinky-boots-west-end-2015.openingDate",
       "shows.json: kinky-boots-west-end-2015.openingDateSource",
       "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDate",
-      "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDateSource",
-      "shows.json: the-war-of-the-worlds-west-end-2016.openingDate",
-      "shows.json: the-war-of-the-worlds-west-end-2016.openingDateSource",
-      "shows.json: the-taming-of-the-shrew-west-end-2016.openingDateSource",
-      "shows.json: our-boys-west-end-2012.openingDate"
+      "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDateSource"
     ],
     "riskLevel": "low",
     "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-06-19",
+        "newValue": "2013-06-26",
+        "description": "shows.json: fences-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-06-26 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: fences-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "barking-in-essex-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-09-16",
+        "newValue": "2013-09-06",
+        "description": "shows.json: barking-in-essex-west-end-2013.previewsStartDate"
+      },
       {
         "type": "data-edit",
         "file": "shows.json",
@@ -226,42 +252,6 @@
         "oldValue": "human-correction",
         "newValue": "press night 2015-11-06 (londontheatre.co.uk; BRO-6487)",
         "description": "shows.json: lovesong-of-the-electric-bear-west-end-2015.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-war-of-the-worlds-west-end-2016",
-        "field": "openingDate",
-        "oldValue": "2016-02-08",
-        "newValue": "2016-02-17",
-        "description": "shows.json: the-war-of-the-worlds-west-end-2016.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-war-of-the-worlds-west-end-2016",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2016-02-17 (whatsonstage.com; BRO-6487)",
-        "description": "shows.json: the-war-of-the-worlds-west-end-2016.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-taming-of-the-shrew-west-end-2016",
-        "field": "openingDateSource",
-        "oldValue": "theatricalia-first-performance",
-        "newValue": "first-performance-no-press-night-found",
-        "description": "shows.json: the-taming-of-the-shrew-west-end-2016.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "our-boys-west-end-2012",
-        "field": "openingDate",
-        "oldValue": "2012-09-26",
-        "newValue": "2012-10-03",
-        "description": "shows.json: our-boys-west-end-2012.openingDate"
       }
     ]
   }

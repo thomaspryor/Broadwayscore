@@ -1,15 +1,17 @@
 {
   "issueNumber": "bro-6487-pn-c",
-  "planId": "f66f9df8-7922-4cec-bcc0-85c6b9efdd6b",
+  "planId": "1ed0f0bd-191a-4352-a9b4-9f89a21e63f6",
   "status": "pending",
-  "createdAt": "2026-10-29T02:25:56.872Z",
+  "createdAt": "2026-10-29T02:36:42.114Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 3 of 10)",
+    "summary": "BRO-6487: sourced West End press nights, set c of 11 (2012-13..2015-16 opening rows)",
     "steps": [
+      "shows.json: doktor-glas-west-end-2013.previewsStartDate",
+      "shows.json: doktor-glas-west-end-2013.openingDate",
       "shows.json: doktor-glas-west-end-2013.openingDateSource",
       "shows.json: the-cripple-of-inishmaan-west-end-2013.openingDate",
       "shows.json: the-cripple-of-inishmaan-west-end-2013.openingDateSource",
@@ -32,12 +34,28 @@
       "shows.json: a-view-from-the-bridge-west-end-2015.openingDate",
       "shows.json: a-view-from-the-bridge-west-end-2015.openingDateSource",
       "shows.json: violence-and-son-west-end-2015.openingDate",
-      "shows.json: violence-and-son-west-end-2015.openingDateSource",
-      "shows.json: ushers-west-end-2015.openingDate",
-      "shows.json: ushers-west-end-2015.openingDateSource"
+      "shows.json: violence-and-son-west-end-2015.openingDateSource"
     ],
     "riskLevel": "low",
     "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doktor-glas-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-04-18",
+        "newValue": "2013-04-16",
+        "description": "shows.json: doktor-glas-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doktor-glas-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-04-18",
+        "newValue": "2013-04-18",
+        "description": "shows.json: doktor-glas-west-end-2013.openingDate"
+      },
       {
         "type": "data-edit",
         "file": "shows.json",
@@ -244,24 +262,6 @@
         "oldValue": "human-correction",
         "newValue": "press night 2015-06-08 (royalcourttheatre.com; BRO-6487)",
         "description": "shows.json: violence-and-son-west-end-2015.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "ushers-west-end-2015",
-        "field": "openingDate",
-        "oldValue": "2015-09-09",
-        "newValue": "2015-09-14",
-        "description": "shows.json: ushers-west-end-2015.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "ushers-west-end-2015",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2015-09-14 (londontheatre.co.uk; BRO-6487)",
-        "description": "shows.json: ushers-west-end-2015.openingDateSource"
       }
     ]
   }

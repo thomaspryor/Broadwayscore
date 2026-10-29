@@ -153,13 +153,41 @@ function splitName(id, index) {
   return index === 0 ? id : `${id}-${String.fromCharCode(97 + index)}`;
 }
 
+/**
+ * Chunks of at most `max` actions. One show's consecutive actions stay in one chunk (BRO-6487): a later action
+ * on the same field chains its oldValue through the earlier edit, and plans apply in file-name order, so a
+ * split put "openingDateSource" ahead of the "openingDate" edit that stamps its oldValue and the plan was refused.
+ */
+function chunkActions(actions, max) {
+  const key = (a) => a.showId || a.showSlug || a.file;
+  const groups = [];
+  for (const a of actions) {
+    const g = groups[groups.length - 1];
+    if (g && key(g[0]) === key(a)) g.push(a); else groups.push([a]);
+  }
+  const chunks = [];
+  let cur = [];
+  for (const g of groups) {
+    if (g.length > max) { // one show with more than a plan's worth: no choice but to split it
+      if (cur.length) { chunks.push(cur); cur = []; }
+      for (let i = 0; i < g.length; i += max) chunks.push(g.slice(i, i + max));
+      continue;
+    }
+    if (cur.length + g.length > max) { chunks.push(cur); cur = []; }
+    cur.push(...g);
+  }
+  if (cur.length) chunks.push(cur);
+  return chunks;
+}
+
 /** Split actions into plan objects of at most `max` actions each. Pure apart from planId/createdAt. */
 function buildPlans(id, summary, actions, { risk = 'low', max = MAX_PLAN_ACTIONS, now = new Date().toISOString(), uuid = crypto.randomUUID } = {}) {
   const plans = [];
-  for (let i = 0; i * max < actions.length; i++) {
-    const chunk = actions.slice(i * max, (i + 1) * max);
+  const chunks = chunkActions(actions, max);
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
     const name = splitName(id, i);
-    const total = Math.ceil(actions.length / max);
+    const total = chunks.length;
     plans.push({
       name,
       plan: {

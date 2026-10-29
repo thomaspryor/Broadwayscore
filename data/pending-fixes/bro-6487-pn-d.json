@@ -1,15 +1,17 @@
 {
   "issueNumber": "bro-6487-pn-d",
-  "planId": "8c42265b-6526-44b3-a3e2-0abb4716ff45",
+  "planId": "cf220d5d-b24d-444e-bed7-74af7ec08af1",
   "status": "pending",
-  "createdAt": "2026-10-29T02:25:56.872Z",
+  "createdAt": "2026-10-29T02:36:43.004Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 4 of 10)",
+    "summary": "BRO-6487: sourced West End press nights, set d of 11 (2012-13..2015-16 opening rows)",
     "steps": [
+      "shows.json: ushers-west-end-2015.openingDate",
+      "shows.json: ushers-west-end-2015.openingDateSource",
       "shows.json: mr-footes-other-leg-west-end-2015.openingDate",
       "shows.json: mr-footes-other-leg-west-end-2015.openingDateSource",
       "shows.json: the-master-builder-west-end-2016.openingDate",
@@ -31,13 +33,28 @@
       "shows.json: the-winslow-boy-west-end-2013.openingDate",
       "shows.json: the-winslow-boy-west-end-2013.openingDateSource",
       "shows.json: merrily-we-roll-along-west-end-2013.openingDate",
-      "shows.json: merrily-we-roll-along-west-end-2013.openingDateSource",
-      "shows.json: fences-west-end-2013.openingDate",
-      "shows.json: fences-west-end-2013.openingDateSource",
-      "shows.json: barking-in-essex-west-end-2013.previewsStartDate"
+      "shows.json: merrily-we-roll-along-west-end-2013.openingDateSource"
     ],
     "riskLevel": "low",
     "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ushers-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-09-09",
+        "newValue": "2015-09-14",
+        "description": "shows.json: ushers-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ushers-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-09-14 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: ushers-west-end-2015.openingDateSource"
+      },
       {
         "type": "data-edit",
         "file": "shows.json",
@@ -235,33 +252,6 @@
         "oldValue": "human-correction",
         "newValue": "press night 2013-05-01 (broadwayworld.com; BRO-6487)",
         "description": "shows.json: merrily-we-roll-along-west-end-2013.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "fences-west-end-2013",
-        "field": "openingDate",
-        "oldValue": "2013-06-19",
-        "newValue": "2013-06-26",
-        "description": "shows.json: fences-west-end-2013.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "fences-west-end-2013",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2013-06-26 (officiallondontheatre.com; BRO-6487)",
-        "description": "shows.json: fences-west-end-2013.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "barking-in-essex-west-end-2013",
-        "field": "previewsStartDate",
-        "oldValue": "2013-09-16",
-        "newValue": "2013-09-06",
-        "description": "shows.json: barking-in-essex-west-end-2013.previewsStartDate"
       }
     ]
   }

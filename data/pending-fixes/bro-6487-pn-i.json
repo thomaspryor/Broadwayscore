@@ -1,15 +1,22 @@
 {
   "issueNumber": "bro-6487-pn-i",
-  "planId": "2b9377da-f573-4a7f-b647-3c0c84c19686",
+  "planId": "c209b938-e073-4798-8761-b9bacadc57df",
   "status": "pending",
-  "createdAt": "2026-10-29T02:25:56.872Z",
+  "createdAt": "2026-10-29T02:36:47.643Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 9 of 10)",
+    "summary": "BRO-6487: sourced West End press nights, set i of 11 (2012-13..2015-16 opening rows)",
     "steps": [
+      "shows.json: the-father-west-end-2015.previewsStartDate",
+      "shows.json: the-father-west-end-2015.openingDate",
+      "shows.json: the-father-west-end-2015.openingDateSource",
+      "shows.json: peter-pan-goes-wrong-west-end-2015.openingDate",
+      "shows.json: peter-pan-goes-wrong-west-end-2015.openingDateSource",
+      "shows.json: motown-the-musical-west-end-2016.previewsStartDate",
+      "shows.json: motown-the-musical-west-end-2016.openingDate",
       "shows.json: motown-the-musical-west-end-2016.openingDateSource",
       "shows.json: aladdin-west-end-2016.previewsStartDate",
       "shows.json: aladdin-west-end-2016.openingDate",
@@ -27,17 +34,73 @@
       "shows.json: charlie-and-the-chocolate-factory-west-end-2013.openingDateSource",
       "shows.json: a-dolls-house-west-end-2013.previewsStartDate",
       "shows.json: a-dolls-house-west-end-2013.openingDate",
-      "shows.json: a-dolls-house-west-end-2013.openingDateSource",
-      "shows.json: henry-v-west-end-2013.openingDate",
-      "shows.json: henry-v-west-end-2013.openingDateSource",
-      "shows.json: fatal-attraction-west-end-2014.previewsStartDate",
-      "shows.json: fatal-attraction-west-end-2014.openingDate",
-      "shows.json: fatal-attraction-west-end-2014.openingDateSource",
-      "shows.json: wolf-hall-west-end-2014.openingDate",
-      "shows.json: wolf-hall-west-end-2014.openingDateSource"
+      "shows.json: a-dolls-house-west-end-2013.openingDateSource"
     ],
     "riskLevel": "low",
     "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-10-05",
+        "newValue": "2015-09-30",
+        "description": "shows.json: the-father-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-10-05",
+        "newValue": "2015-10-05",
+        "description": "shows.json: the-father-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-10-05 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-father-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-12-04",
+        "newValue": "2015-12-09",
+        "description": "shows.json: peter-pan-goes-wrong-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-12-09 (unitedagents.co.uk; BRO-6487)",
+        "description": "shows.json: peter-pan-goes-wrong-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "motown-the-musical-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-03-08",
+        "newValue": "2016-02-11",
+        "description": "shows.json: motown-the-musical-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "motown-the-musical-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-03-08",
+        "newValue": "2016-03-08",
+        "description": "shows.json: motown-the-musical-west-end-2016.openingDate"
+      },
       {
         "type": "data-edit",
         "file": "shows.json",
@@ -199,69 +262,6 @@
         "oldValue": "human-correction",
         "newValue": "press night 2013-08-14 (londontheatre.co.uk; BRO-6487)",
         "description": "shows.json: a-dolls-house-west-end-2013.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "henry-v-west-end-2013",
-        "field": "openingDate",
-        "oldValue": "2013-11-23",
-        "newValue": "2013-12-03",
-        "description": "shows.json: henry-v-west-end-2013.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "henry-v-west-end-2013",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2013-12-03 (londontheatredirect.com; BRO-6487)",
-        "description": "shows.json: henry-v-west-end-2013.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "fatal-attraction-west-end-2014",
-        "field": "previewsStartDate",
-        "oldValue": "2014-03-25",
-        "newValue": "2014-03-08",
-        "description": "shows.json: fatal-attraction-west-end-2014.previewsStartDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "fatal-attraction-west-end-2014",
-        "field": "openingDate",
-        "oldValue": "2014-03-25",
-        "newValue": "2014-03-25",
-        "description": "shows.json: fatal-attraction-west-end-2014.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "fatal-attraction-west-end-2014",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2014-03-25 (en.wikipedia.org; BRO-6487)",
-        "description": "shows.json: fatal-attraction-west-end-2014.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "wolf-hall-west-end-2014",
-        "field": "openingDate",
-        "oldValue": "2014-05-01",
-        "newValue": "2014-05-17",
-        "description": "shows.json: wolf-hall-west-end-2014.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "wolf-hall-west-end-2014",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2014-05-17 (londontheatre.co.uk; BRO-6487)",
-        "description": "shows.json: wolf-hall-west-end-2014.openingDateSource"
       }
     ]
   }

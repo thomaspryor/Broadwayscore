@@ -136,7 +136,7 @@ jobs:
             node -e "const f=require('fs'),d=process.env.RUNNER_TEMP;f.writeFileSync(d+'/wos.json',JSON.stringify([...JSON.parse(f.readFileSync(d+'/wos.json')),...JSON.parse(f.readFileSync(d+'/standard.json'))],null,1))"
           fi
           [ "$INPUT_MODE" = "run" ] && FLAGS="$FLAGS --serp"
-          node scripts/we-major-recovery.js run --candidates=$RUNNER_TEMP/wos.json $FLAGS 2>&1 | tee $RUNNER_TEMP/recovery.log
+          node scripts/we-major-recovery.js run --candidates=$RUNNER_TEMP/wos.json $FLAGS 2>&1 | tee -a $RUNNER_TEMP/recovery.log
           { echo '### Recovery'; grep -E 'COST TALLY|OUTCOMES|STOPPED' $RUNNER_TEMP/recovery.log | tail -4; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload run output

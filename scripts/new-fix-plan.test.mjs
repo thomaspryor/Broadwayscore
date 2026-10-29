@@ -94,3 +94,16 @@ test('a review-file move without destPath is refused (BRO-6481: destinationPath 
   assert.deepEqual(good.problems, []);
   assert.equal(good.actions[0].destPath, 'b-2026/x.json');
 });
+
+test('buildPlans keeps one show\'s actions in one plan', async () => {
+  const { createRequire } = await import('node:module');
+  const { buildPlans } = createRequire(import.meta.url)('./new-fix-plan.js');
+  const acts = [];
+  for (let s = 0; s < 9; s++) for (const f of ['previewsStartDate', 'openingDate', 'openingDateSource']) acts.push({ type: 'data-edit', file: 'shows.json', showId: `s${s}`, field: f, newValue: 'x' });
+  const plans = buildPlans('bro-1', 'x', acts, { max: 25 });
+  const where = {};
+  for (const p of plans) for (const a of p.plan.plan.actions) (where[a.showId] = where[a.showId] || new Set()).add(p.name);
+  assert.ok(plans.length >= 2);
+  assert.ok(Object.values(where).every((v) => v.size === 1));
+  assert.ok(plans.every((p) => p.plan.plan.actions.length <= 25));
+});

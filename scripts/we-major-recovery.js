@@ -119,8 +119,9 @@ async function cmdSitemap() {
     const url = `https://www.standard.co.uk/sitemaps/sitemap-articles-${ym}.xml`;
     // Node's fetch is 403'd by the host's TLS check where curl is not. Free path only: no scraper fallback, so a
     // sitemap pass can never spend outside the campaign cap (a failed month is counted and reported below).
-    const xml = spawnSync('curl', ['-sS', '-m', '90', '-A', 'Mozilla/5.0', '-f', url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).stdout || '';
-    if (xml.includes('<urlset')) { urls = sm.standardReviewUrls(xml); fetched++; } else console.log(`${ym}: sitemap not fetched`);
+    const res = spawnSync('curl', ['-sS', '-m', '90', '-A', 'Mozilla/5.0', '-f', url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    const xml = res.stdout || '';
+    if (xml.includes('<urlset')) { urls = sm.standardReviewUrls(xml); fetched++; } else console.log(`${ym}: sitemap not fetched (curl exit ${res.status}: ${String(res.stderr || '').trim().slice(0, 100)})`);
     monthUrls.set(ym, urls);
     return urls;
   };
@@ -200,6 +201,8 @@ function ingest(showId, m, url, show) {
     let body = '';
     try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
     if (body.length < 200 || !pageMentionsShowTitle(body, show.title)) { fs.unlinkSync(f); removed++; continue; }
+    // BRO-6487: sitemap slugs often carry no venue; a same-title production elsewhere must not pass on the title alone.
+    if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;
   }
   if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s)` };

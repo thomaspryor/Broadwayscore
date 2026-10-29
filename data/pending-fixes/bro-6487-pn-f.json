@@ -1,15 +1,19 @@
 {
   "issueNumber": "bro-6487-pn-f",
-  "planId": "860487e7-199d-4d6d-88d2-da383401e952",
+  "planId": "1d043948-73fb-4c2f-b417-ba4b305a5283",
   "status": "pending",
-  "createdAt": "2026-10-29T02:25:56.872Z",
+  "createdAt": "2026-10-29T02:36:44.822Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 6 of 10)",
+    "summary": "BRO-6487: sourced West End press nights, set f of 11 (2012-13..2015-16 opening rows)",
     "steps": [
+      "shows.json: the-war-of-the-worlds-west-end-2016.openingDate",
+      "shows.json: the-war-of-the-worlds-west-end-2016.openingDateSource",
+      "shows.json: the-taming-of-the-shrew-west-end-2016.openingDateSource",
+      "shows.json: our-boys-west-end-2012.openingDate",
       "shows.json: our-boys-west-end-2012.openingDateSource",
       "shows.json: twelfth-night-west-end-2012.openingDate",
       "shows.json: twelfth-night-west-end-2012.openingDateSource",
@@ -29,15 +33,46 @@
       "shows.json: richard-iii-west-end-2014.openingDate",
       "shows.json: richard-iii-west-end-2014.openingDateSource",
       "shows.json: king-charles-iii-west-end-2014.openingDate",
-      "shows.json: king-charles-iii-west-end-2014.openingDateSource",
-      "shows.json: taken-at-midnight-west-end-2015.openingDate",
-      "shows.json: taken-at-midnight-west-end-2015.openingDateSource",
-      "shows.json: harvey-west-end-2015.openingDateSource",
-      "shows.json: stop-the-play-west-end-2015.previewsStartDate",
-      "shows.json: stop-the-play-west-end-2015.openingDate"
+      "shows.json: king-charles-iii-west-end-2014.openingDateSource"
     ],
     "riskLevel": "low",
     "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-war-of-the-worlds-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-02-08",
+        "newValue": "2016-02-17",
+        "description": "shows.json: the-war-of-the-worlds-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-war-of-the-worlds-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-02-17 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: the-war-of-the-worlds-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-taming-of-the-shrew-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-taming-of-the-shrew-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-boys-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-09-26",
+        "newValue": "2012-10-03",
+        "description": "shows.json: our-boys-west-end-2012.openingDate"
+      },
       {
         "type": "data-edit",
         "file": "shows.json",
@@ -217,51 +252,6 @@
         "oldValue": "human-correction",
         "newValue": "press night 2014-09-11 (londontheatre.co.uk; BRO-6487)",
         "description": "shows.json: king-charles-iii-west-end-2014.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "taken-at-midnight-west-end-2015",
-        "field": "openingDate",
-        "oldValue": "2015-01-15",
-        "newValue": "2015-01-26",
-        "description": "shows.json: taken-at-midnight-west-end-2015.openingDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "taken-at-midnight-west-end-2015",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "press night 2015-01-26 (londontheatre.co.uk; BRO-6487)",
-        "description": "shows.json: taken-at-midnight-west-end-2015.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "harvey-west-end-2015",
-        "field": "openingDateSource",
-        "oldValue": "theatricalia-first-performance",
-        "newValue": "first-performance-no-press-night-found",
-        "description": "shows.json: harvey-west-end-2015.openingDateSource"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "stop-the-play-west-end-2015",
-        "field": "previewsStartDate",
-        "oldValue": "2015-07-01",
-        "newValue": "2015-06-03",
-        "description": "shows.json: stop-the-play-west-end-2015.previewsStartDate"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "stop-the-play-west-end-2015",
-        "field": "openingDate",
-        "oldValue": "2015-07-01",
-        "newValue": "2015-06-03",
-        "description": "shows.json: stop-the-play-west-end-2015.openingDate"
       }
     ]
   }
