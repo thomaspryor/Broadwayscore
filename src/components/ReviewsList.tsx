@@ -33,6 +33,9 @@ export interface ReviewListItem {
   quote?: string;
   summary?: string;
   pullQuote?: string;
+  // The critic's own published rating, display-ready ("4/5 stars", "B+"). Only
+  // present when it drove or anchored the score (see displayed-original-rating.js).
+  originalRating?: string;
   // Set when this review belongs to a returning production's declared
   // priorRuns window — e.g. "2022 Gielgud run" — so a since-departed cast
   // member's quote reads in context instead of as current casting (BRO-1397).
@@ -341,6 +344,20 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   const dateLabel = formatDate(review.publishDate);
   const mobileDate = dateLabel ? <span className="sm:hidden block text-xs text-gray-500 mt-0.5">{dateLabel}</span> : null;
 
+  // Subtle byline note so readers can see the rating our score is anchored to
+  // (the pull quote only mentions it when the critic happened to say it there).
+  // Phones stack it on its own line like the date; the byline column is too
+  // narrow there to keep "Rated 5/5 stars" in one piece beside Full Review.
+  const ratingNote = review.originalRating ? (
+    <span
+      className="block mt-0.5 text-xs text-gray-500 whitespace-nowrap sm:inline sm:mt-0 sm:text-sm"
+      title="The rating this critic published. It anchors our score for this review."
+      data-testid="review-original-rating"
+    >
+      <span className="hidden sm:inline" aria-hidden="true">{' · '}</span>Rated {review.originalRating}
+    </span>
+  ) : null;
+
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       {/* CRITICAL: Outlet name vertical centering with score badge and logo.
@@ -425,9 +442,9 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
           {review.criticName && review.criticName !== 'Unknown' ? (
             <span className="text-sm text-gray-500">By {featureFlags.criticPages && review.criticSlug ? (
               <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
-            ) : review.criticName}{mobileDate}</span>
+            ) : review.criticName}{ratingNote}{mobileDate}</span>
           ) : (
-            <span className="text-sm text-gray-400">{review.outlet} Staff{mobileDate}</span>
+            <span className="text-sm text-gray-400">{review.outlet} Staff{ratingNote}{mobileDate}</span>
           )}
           {review.url && (
             <a

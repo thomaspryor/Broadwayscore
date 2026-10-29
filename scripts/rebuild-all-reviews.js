@@ -71,6 +71,7 @@ const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSibling
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
+const { displayedOriginalRating } = require('./lib/displayed-original-rating');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -5531,11 +5532,8 @@ showDirs.forEach(showId => {
           // Honest state: leave undated if no verifiable source found.
           return null;
         })(),
-        originalRating: (source === 'originalScore-priority0' || source === 'originalScore-showscore-downgraded')
-          ? data.originalScore || null
-          : (source === 'aggregatorStars-relay' || source === 'aggregatorStars-fallback')
-          ? data.aggregatorStars || null  // S6-T5: the relayed star that drove the score IS the displayed rating
-          : null,  // Don't display star rating when it wasn't used for scoring
+        // The critic's rating, only when it drove or anchored the score (never when it wasn't used for scoring).
+        originalRating: displayedOriginalRating(source, data),
         pullQuote: finalizePullQuote(data, showTitleMap[showId], showStatusMap[showId]),
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
