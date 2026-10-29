@@ -47,12 +47,13 @@ export const ANCHORED_MARKETS: ReadonlySet<string> = new Set([
 // verified opening-night reviews. Bypasses shouldHideReviews.
 // To add a new historical show: edit data/curated-historical-shows.json (no code change needed).
 import curatedHistoricalShowsData from '../../data/curated-historical-shows.json';
+import { getShowYear } from '../lib/date-utils';
 export const CURATED_HISTORICAL_SHOWS = new Set<string>(curatedHistoricalShowsData);
 
 /** Returns true if a show's reviews should be completely hidden on the site. */
 export function shouldHideReviews(show: { id?: string | null; openingDate?: string | null; status?: string; category?: string }): boolean {
   if (!show.openingDate) return false;
-  const openingYear = new Date(show.openingDate).getFullYear();
+  const openingYear = getShowYear(show.openingDate) ?? 0;
   if (openingYear >= SCORE_DISPLAY_YEAR_CUTOFF) return false;
   // Still-open shows were explicitly collected — show their reviews
   if (show.status === 'open' || show.status === 'previews') return false;

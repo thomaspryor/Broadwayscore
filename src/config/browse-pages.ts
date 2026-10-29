@@ -14,7 +14,7 @@ import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '
 import { hasReachedStage } from '@/lib/market-utils';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import { getTourSection, tourSectionRank, isTourScored } from '@/lib/tour-listing';
-import { formatShowDate } from '@/lib/date-utils';
+import { formatShowDate, getShowYear } from '@/lib/date-utils';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { FIZZLE_MIN_RETURNED_PCT, isLossDesignation } from '../../scripts/lib/commercial-designations';
@@ -160,7 +160,7 @@ function generateDecadeBrowsePages(): Record<string, BrowsePageConfig> {
       intro: `Every Broadway show that opened during the ${label} (${start}–${end}), ranked by aggregated CriticScore ratings from dozens of professional critics. This decade saw some of Broadway's most celebrated productions, from groundbreaking musicals to powerful dramas and revivals that redefined what theater could be. Whether you lived through this era or are discovering it for the first time, these rankings reveal which shows stood the test of critical scrutiny.`,
       filter: (show) => {
         if (!show.openingDate) return false;
-        const year = new Date(show.openingDate).getFullYear();
+        const year = getShowYear(show.openingDate) ?? 0;
         return year >= start && year <= end && (show.criticScore?.score ?? 0) > 0;
       },
       sort: 'score',
@@ -695,7 +695,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => show.status === 'open',
     sort: 'performances',
     sectionGroup: (show) => {
-      const year = new Date(show.openingDate).getFullYear();
+      const year = getShowYear(show.openingDate) ?? 0;
       if (year >= 2020) return 'Opened in the 2020s';
       if (year >= 2010) return 'Opened in the 2010s';
       if (year >= 2000) return 'Opened in the 2000s';

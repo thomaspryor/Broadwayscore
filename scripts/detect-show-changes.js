@@ -18,6 +18,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const { isStaleBaseline, stampDetectedAt } = require('./lib/follow-digest-prune');
 const { diffClosingDate } = require('./lib/show-change-diff');
+const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -179,12 +180,13 @@ function detectChanges(currentState, previousState, extras) {
         const mixed = showReviews.filter(r => r.assignedScore >= 55 && r.assignedScore < 65).length;
         const negative = showReviews.filter(r => r.assignedScore < 55).length;
 
-        // Get consensus (null-safe — may not exist yet for just-opened shows)
-        const consensusData = consensus?.shows?.[showId];
-        const consensusText = consensusData?.text || null;
-
         // Get show metadata
         const show = showsMap[showId];
+
+        // Get consensus (null-safe — may not exist yet for just-opened shows).
+        // Shared lookup (BRO-2437): falls back to the show's slug and to the
+        // legacy `.consensus` field, like the other critic-consensus readers.
+        const consensusText = getShowConsensusText(consensus, showId, show?.slug);
 
         showChanges.push({
           type: 'opening-night',
@@ -412,4 +414,6 @@ function main() {
   console.log(`\nDigest written to ${DIGEST_PATH}`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { detectChanges };

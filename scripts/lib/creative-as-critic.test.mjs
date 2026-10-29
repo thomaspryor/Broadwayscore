@@ -6,6 +6,10 @@ import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
 const require = createRequire(import.meta.url);
+// BRO-4126: pin the writer to an empty temp corpus so dry-run calls never read the real data/review-texts.
+const PINNED_REVIEW_TEXTS_DIR = require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'creative-as-critic-'));
+process.on('exit', () => { try { require('node:fs').rmSync(PINNED_REVIEW_TEXTS_DIR, { recursive: true, force: true }); } catch {} });
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const {
@@ -155,7 +159,7 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
       criticName: 'Sammi Cannold',
       source: 'bww-roundup',
       fields: { bwwExcerpt: 'an underdog itself' },
-    }, { dryRun: true });
+    }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR });
     assert.equal(res.action, 'skipped');
     assert.match(res.reason, /credited-person-as-critic/);
   });
@@ -169,7 +173,7 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
       url: 'https://www.nytimes.com/2023/12/10/theater/how-to-dance-in-ohio-review.html',
       source: 'bww-roundup',
       fields: { bwwExcerpt: 'a real excerpt' },
-    }, { dryRun: true });
+    }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR });
     assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `unexpectedly skipped: ${res.reason}`);
   });
 
@@ -190,7 +194,7 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
       criticName: castName,
       source: 'bww-roundup',
       fields: { bwwExcerpt: 'a cast-bylined piece' },
-    }, { dryRun: true });
+    }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR });
     assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `cast byline was skipped: ${res.reason}`);
   });
 
@@ -206,6 +210,10 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
     if (!fs.existsSync(target)) return t.skip('fixture file not present in this corpus snapshot');
     const existing = JSON.parse(fs.readFileSync(target, 'utf8'));
     const { createOrMergeReviewFile } = require('./review-file-writer.js');
+    // Pin to a temp copy that CONTAINS the target, so the writer takes the merge path.
+    const mergeDir = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'creative-as-critic-merge-'));
+    fs.mkdirSync(path.join(mergeDir, 'allegra-west-end-2026'), { recursive: true });
+    fs.copyFileSync(target, path.join(mergeDir, 'allegra-west-end-2026', 'westend--peter-quilter.json'));
     const res = createOrMergeReviewFile('allegra-west-end-2026', {
       outlet: existing.outlet,
       outletId: existing.outletId,
@@ -213,7 +221,8 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
       url: existing.url,
       source: 'audit-show-review-gap',
       fields: { fullText: 'a body being filled in by the recovery path' },
-    }, { dryRun: true });
+    }, { dryRun: true, reviewTextsDir: mergeDir });
+    fs.rmSync(mergeDir, { recursive: true, force: true });
     assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `merge was rejected by the create-only guard: ${res.reason}`);
   });
 
@@ -230,7 +239,7 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
       criticName: 'Sammi Cannold',
       source: 'manual-entry',
       fields: { bwwExcerpt: 'operator typed this in, no score given' },
-    }, { dryRun: true });
+    }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR });
     assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `unscored manual entry was skipped: ${res.reason}`);
   });
 
@@ -242,7 +251,7 @@ describe('save-time wiring — createOrMergeReviewFile refuses the write', () =>
       criticName: 'Sammi Cannold',
       source: 'manual-entry',
       fields: { bwwExcerpt: 'operator typed this in', humanReviewScore: 70 },
-    }, { dryRun: true });
+    }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR });
     assert.ok(!/credited-person-as-critic/.test(String(res.reason || '')), `unexpectedly skipped: ${res.reason}`);
   });
 });

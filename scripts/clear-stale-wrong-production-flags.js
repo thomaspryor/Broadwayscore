@@ -57,6 +57,7 @@ const { buildPriorRunHint } = require('./lib/content-verifier');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { splitSurge } = require('./lib/surge-drain');
+const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const FIX_SURGE_THRESHOLD = 50;
 // Pre-LLM ceiling — catches a predicate regression BEFORE burning a paid,
@@ -455,6 +456,12 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     // invalid/"Wrong production" and left that stale tierReason behind.
     if (restores) restoreQuarantinedText(data, classifyContentTier);
     else if (d.c.kind === 'collector-prior-run' || d.c.kind === 'collector-quarantined') resetWrongContentTier(data, classifyContentTier);
+    // BRO-4681 (BRO-2407 cousin): an already-scored review keeps its stale score
+    // until the daily sweep unless the clear re-queues it. Checked after the
+    // clear + tier fix so isScoreable() sees the final record.
+    if (isStaleScoreInput(data, d.c.show, d.c.filePath)) {
+      markRescoreNeeded(data, 'wrongProduction false-positive cleared (clear-stale-wrong-production-flags)');
+    }
     fs.writeFileSync(d.c.filePath, JSON.stringify(data, null, 2) + (hadTrailingNewline ? '\n' : ''));
     cleared++;
   }

@@ -21,6 +21,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// BRO-4126: pin the writer to an empty temp corpus so dry-run calls never read the real data/review-texts.
+const PINNED_REVIEW_TEXTS_DIR = require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'aggregator-outlet-refinement-'));
+process.on('exit', () => { try { require('node:fs').rmSync(PINNED_REVIEW_TEXTS_DIR, { recursive: true, force: true }); } catch {} });
+
 const {
   shouldRefuseAggregatorOutletRefinement,
   AGGREGATOR_OUTLET_IDS,
@@ -164,7 +168,7 @@ test('createOrMergeReviewFile: a scored star-stub keeps its true outlet instead 
     url: 'https://westendtheatre.co.uk/some-roundup/',
     source: 'serp-discovery',
     fields: { aggregatorStars: '5/5' },
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.equal(scored.action, 'new', `expected the scored star-stub to land, got ${JSON.stringify(scored)}`);
   assert.match(scored.filepath, /from-the-fourth-row/, 'must file under the TRUE outlet, not the aggregator');
   assert.ok(!/westendtheatre/.test(scored.filepath), 'must never file under the aggregator outlet');
@@ -176,7 +180,7 @@ test('createOrMergeReviewFile: a scored star-stub keeps its true outlet instead 
     url: 'https://www.stagedoor.com/shows/some-show',
     source: 'serp-discovery',
     fields: { originalScore: '4/5' },
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.equal(scoredViaOriginalScore.action, 'new',
     `originalScore must also count as a preservable score, got ${JSON.stringify(scoredViaOriginalScore)}`);
 });
@@ -201,7 +205,7 @@ test('createOrMergeReviewFile: a scored stub for a DOMAIN-REGISTERED outlet also
     url: 'https://www.westendtheatre.com/295880/news/reviews/some-review/',
     source: 'westendtheatre',
     fields: { aggregatorStars: '4/5 stars' },
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.equal(scored.action, 'new', `expected the scored star-stub to land, got ${JSON.stringify(scored)}`);
   assert.match(scored.filepath, /\/guardian--/, 'must file under the TRUE (domain-registered) outlet');
 });
@@ -220,7 +224,7 @@ test('createOrMergeReviewFile: an unscored write on an aggregator URL is still r
     url: 'https://westendtheatre.co.uk/some-roundup/',
     source: 'serp-discovery',
     fields: { fullText: 'x'.repeat(400) },
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.equal(unscored.action, 'skipped');
   assert.equal(unscored.reason, 'aggregator-url-refinement-refused');
 });
@@ -253,7 +257,7 @@ test('createOrMergeReviewFile: aggregator-source write with NO score and NO text
     outletId, outlet: 'From the Fourth Row', criticName: 'X',
     url, source: 'theatre-reviews',
     fields: {},
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.equal(result.action, 'skipped');
   assert.equal(result.reason, 'aggregator-url-mismatch');
 });
@@ -274,7 +278,7 @@ test('createOrMergeReviewFile: aggregator-source write with text but NO score st
     url: 'https://theatre.reviews/some-random-non-roundup-path/xyz',
     source: 'theatre-reviews',
     fields: { fullText: 'x'.repeat(400) },
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.equal(result.action, 'new');
 });
 
@@ -339,7 +343,7 @@ test('createOrMergeReviewFile: an aggregator-SOURCE write on an aggregator URL i
     url: 'https://westendtheatre.co.uk/some-roundup/',
     source: 'westendtheatre',
     fields: { fullText: 'x'.repeat(400) },
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.notEqual(result.reason, 'aggregator-url-refinement-refused',
     `aggregator-sourced write must not hit this refusal, got ${JSON.stringify(result)}`);
   assert.equal(result.action, 'new', `expected the aggregator-source write to land, got ${JSON.stringify(result)}`);
@@ -360,7 +364,7 @@ test('createOrMergeReviewFile: a non-aggregator-source write on an aggregator UR
     url: 'https://westendtheatre.co.uk/some-roundup/',
     source: 'serp-discovery',
     fields: { fullText: 'x'.repeat(400) },
-  }, { dryRun: true }));
+  }, { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR }));
   assert.equal(result.action, 'skipped');
   assert.equal(result.reason, 'aggregator-url-refinement-refused');
 });

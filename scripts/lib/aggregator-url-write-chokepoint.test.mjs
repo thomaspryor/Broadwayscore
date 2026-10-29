@@ -28,6 +28,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// BRO-4126: pin the writer to an empty temp corpus so dry-run calls never read the real data/review-texts.
+const PINNED_REVIEW_TEXTS_DIR = require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'aggregator-url-write-chokepoint-'));
+process.on('exit', () => { try { require('node:fs').rmSync(PINNED_REVIEW_TEXTS_DIR, { recursive: true, force: true }); } catch {} });
+
 const { provisionalOutletIdFromHost } = require('./outlet-canonicalize.js');
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains.js');
@@ -75,7 +79,7 @@ test('provisionalOutletIdFromHost still onboards real unknown publications', () 
 const write = (input) => quiet(() => createOrMergeReviewFile(
   'grace-pervades-west-end-2026',
   { criticName: 'Paul Lewis', fields: {}, ...input },
-  { dryRun: true },
+  { dryRun: true, reviewTextsDir: PINNED_REVIEW_TEXTS_DIR },
 ));
 
 test('createOrMergeReviewFile refuses a real outlet carrying an aggregator roundup URL', () => {
