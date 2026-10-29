@@ -37,8 +37,8 @@
  * scripts/seed-evidence-review-stubs.js instead, which fetches only the
  * evidence URL under a hard monthly cap (scripts/lib/evidence-catchup-spend.js).
  *
- * The guard: rows the selector cannot dispatch (no openingDate and no
- * previewsStartDate) come back as `undated`; open rows still waiting past
+ * The guard: rows the selector cannot dispatch (no openingDate,
+ * previewsStartDate or closingDate) come back as `undated`; open rows still waiting past
  * grace + strandedDays, and closed rows the capped queue will not reach before
  * they pass the age bound, come back as `stranded`, so
  * find-zero-review-catchup-gaps.js can warn (or fail with --fail-on-stranded)
@@ -101,9 +101,12 @@ function hasGivenUp(entry, nowMs, opts = {}) {
 }
 
 // Age anchor: openingDate, else previewsStartDate (many Off-West End and
-// Off-Broadway rows carry only a first-performance date).
+// Off-Broadway rows carry only a first-performance date), else closingDate
+// (short fringe runs often list only an end date; gather-reviews.js copes
+// with a missing openingDate via productionYear()). An open row anchored on a
+// future closingDate waits until it closes and takes the closed branch.
 function catchupAnchorDate(s) {
-  return s.openingDate || s.previewsStartDate || null;
+  return s.openingDate || s.previewsStartDate || s.closingDate || null;
 }
 
 // Run length in days, for ordering closed candidates (a longer run is more
@@ -157,9 +160,6 @@ function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
 
     const anchor = catchupAnchorDate(s);
     if (!anchor) {
-      // An undated closed run that ended long ago is not worth a data fix.
-      const closedAgo = isClosed ? daysSince(s.closingDate, now) : null;
-      if (closedAgo != null && closedAgo > ageBoundDays) continue;
       if (s.noReviewsExpected) exempt.push(s.id);
       else undated.push(s.id);
       continue;

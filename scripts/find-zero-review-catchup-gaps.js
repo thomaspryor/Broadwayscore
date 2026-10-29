@@ -15,8 +15,8 @@
  * — recording it here unconditionally would burn the give-up budget on
  * transient gh-cli/API failures that never really attempted collection.
  *
- * Guard (BRO-4290): rows the selector can never dispatch (no openingDate and
- * no previewsStartDate), open rows left out past grace + 14 days, and closed
+ * Guard (BRO-4290): rows the selector can never dispatch (no openingDate,
+ * previewsStartDate or closingDate), open rows left out past grace + 14 days, and closed
  * rows the capped queue will not reach before the 90-day bound are printed as ::warning:: lines; --fail-on-stranded also
  * exits 1 after writing gap_shows, so the workflow's advisory guard step can
  * go red without blocking the dispatch.
@@ -64,7 +64,7 @@ function main() {
     console.log(`Closed, never attempted (one try each, ${closedBackfill.length} this batch): ${closedEligible.join(', ')}`);
   }
   if (undated.length) {
-    console.log(`::warning::catchup-zero-review-shows: ${undated.length} open/closed zero-review show(s) have no openingDate or previewsStartDate, so they can never be gathered. Set one of those dates in shows.json (or noReviewsExpected): ${undated.join(', ')}`);
+    console.log(`::warning::catchup-zero-review-shows: ${undated.length} open/closed zero-review show(s) have no openingDate, previewsStartDate or closingDate, so they can never be gathered. Set openingDate or previewsStartDate in shows.json (or noReviewsExpected): ${undated.join(', ')}`);
   }
   const waiting = stranded.filter((id) => !undated.includes(id));
   if (waiting.length) {
