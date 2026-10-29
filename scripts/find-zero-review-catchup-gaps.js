@@ -15,7 +15,13 @@
  * — recording it here unconditionally would burn the give-up budget on
  * transient gh-cli/API failures that never really attempted collection.
  *
- * Usage: node scripts/find-zero-review-catchup-gaps.js
+ * Guard (BRO-4290): rows the selector can never dispatch (no openingDate and
+ * no previewsStartDate) and never-attempted eligible rows still waiting past
+ * grace + 14 days are printed as ::warning:: lines; --fail-on-stranded also
+ * exits 1 after writing gap_shows, so the workflow's advisory guard step can
+ * go red without blocking the dispatch.
+ *
+ * Usage: node scripts/find-zero-review-catchup-gaps.js [--fail-on-stranded]
  */
 'use strict';
 
@@ -40,7 +46,10 @@ function main() {
   const attempts = loadAttempts(ATTEMPTS_PATH);
   const now = Date.now();
 
-  const { batch, tooOld, exempt, givenUp } = selectCatchupCandidates(shows, reviews, attempts, { now });
+  const failOnStranded = process.argv.includes('--fail-on-stranded');
+  const {
+    batch, closedBackfill, closedEligible, tooOld, exempt, givenUp, undated, stranded,
+  } = selectCatchupCandidates(shows, reviews, attempts, { now });
 
   if (exempt.length) {
     console.log(`Exempt (noReviewsExpected, never dispatched): ${exempt.join(', ')}`);
@@ -50,6 +59,16 @@ function main() {
   }
   if (tooOld.length) {
     console.log(`::warning::catchup-zero-review-shows: ${tooOld.length} zero-review show(s) past the 90-day age bound will NOT be re-dispatched — this is a status/data problem, not a discovery gap: ${tooOld.join(', ')}`);
+  }
+  if (closedEligible.length) {
+    console.log(`Closed, never attempted (one try each, ${closedBackfill.length} this batch): ${closedEligible.join(', ')}`);
+  }
+  if (undated.length) {
+    console.log(`::warning::catchup-zero-review-shows: ${undated.length} open/closed zero-review show(s) have no openingDate or previewsStartDate, so they can never be gathered. Set one of those dates in shows.json (or noReviewsExpected): ${undated.join(', ')}`);
+  }
+  const waiting = stranded.filter((id) => !undated.includes(id));
+  if (waiting.length) {
+    console.log(`::warning::catchup-zero-review-shows: ${waiting.length} zero-review show(s) eligible but never attempted for 14+ days past grace: ${waiting.join(', ')}`);
   }
   console.log(batch.length
     ? `Found ${batch.length} show(s) with 0 reviews needing collection: ${batch.join(', ')}`
@@ -62,6 +81,10 @@ function main() {
     // Local/manual run — no $GITHUB_OUTPUT to write to. Prefixed so a human
     // or script can grep it unambiguously instead of guessing at "the last line".
     console.log(`GAP_SHOWS=${batch.join(',')}`);
+  }
+  if (failOnStranded && stranded.length) {
+    console.log(`::error::catchup-zero-review-shows: ${stranded.length} stranded zero-review show(s) (see warnings above)`);
+    process.exitCode = 1;
   }
 }
 
