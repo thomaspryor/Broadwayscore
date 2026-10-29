@@ -213,6 +213,24 @@ Still unmeasurable:
 
 Ingest: the vetted gap list was 409 reviews across 323 shows from the WordPress and sitemap sources, plus 40 reviews across 40 shows from SERP sources (a movie review, a two-show roundup and a news item dropped while vetting). The largest shares: frontmezzjunkies 186, off-off-online 132, pages-on-stages 30, thestage 22, theatrely 12, talkinbroadway 11. Spend: about 4,465 ScrapingDog credits for SERP (about $0.40 prepaid), plus ingest fetches and Gemini scoring estimated at $1 to $3. Well under the $20 cap.
 
+### After ingest (CI re-measure, 2026-10-29, WordPress and sitemap outlets)
+
+Run on CI after the round-2 ingest batch had written its review files (run 40864937174).
+
+| Outlet | Recall before | Recall after | Gaps left |
+|---|---|---|---|
+| frontmezzjunkies | 0.346 | 0.99 | 3 |
+| off-off-online | 0.534 | 0.973 | 7 (300 of 776 page fetches failed this run, so its count is partial) |
+| thestage | 0.571 | 0.964 | 2 |
+| the-interested-bystander | 0.638 | 0.712 | 19, nearly all multi-show roundup posts, which the roundup rule excludes by design |
+| pages-on-stages | 0.826 | 0.985 | 3 |
+| theater-pizzazz | 0.891 | 1.00 | 0 |
+| dc-theater-arts | 0 | 1.00 | 0 |
+| komisar | 0.979 | 1.00 | 0 |
+| one-minute-critic | 0.98 | 0.993 | 1 |
+| stagebuddy, stageandcinema, culturesauce, dailybeast, theatermania, nysr | 0.989 to 0.999 | 1.00 | 0 |
+| theater-life | 0.992 | not measured (its API fetch failed this run) | |
+
 ## Fixes applied (pending-fix plans)
 
 - `bro-6481-2`: Illinoise and Clara misfile moves failed at apply time because the plan used `destinationPath`; the executor reads only `destPath`. Retried as `bro-6481-4`.
