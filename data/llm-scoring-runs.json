@@ -1,62 +1,5 @@
 [
   {
-    "startedAt": "2026-10-28T16:49:29.212Z",
-    "completedAt": "2026-10-28T16:52:30.039Z",
-    "totalReviews": 65243,
-    "processed": 70,
-    "skipped": 65166,
-    "errors": 4,
-    "tokensUsed": {
-      "input": 337016,
-      "output": 21024,
-      "cacheRead": 224163,
-      "cacheWrite": 56874,
-      "total": 954474
-    },
-    "costUsd": 0.76859695,
-    "runId": "40728904135",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-lion-king-tour-2021",
-        "outletId": "orlando-sentinel",
-        "error": "hallucinated_score: LLM admitted scoring non-review content"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-28T16:52:45.361Z",
-    "completedAt": "2026-10-28T16:54:15.900Z",
-    "totalReviews": 37,
-    "processed": 37,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 99861,
-      "output": 8498,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 108359
-    },
-    "costUsd": 0.27637100000000003,
-    "runId": "40728904135",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-28T18:24:48.526Z",
     "completedAt": "2026-10-28T18:25:43.324Z",
     "totalReviews": 101,
@@ -1746295,6 +1746238,25 @@
     },
     "costUsd": 0.0164598,
     "runId": "40910900747",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-29T17:02:41.528Z",
+    "completedAt": "2026-10-29T17:02:41.532Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "40893722931",
     "source": "comparative-rescore",
     "errorDetails": []
   }
