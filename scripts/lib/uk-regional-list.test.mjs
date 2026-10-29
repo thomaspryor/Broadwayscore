@@ -25,3 +25,15 @@ test('buildList groups reviews, drops Edinburgh and pre-2024', () => {
   assert.equal(l.length, 1);
   assert.equal(l[0].reviews.length, 2);
 });
+test('false-positive guards', () => {
+  assert.equal(hubFor('swept-away-review-longacre-theatre-new-york-city'), 'uk-regional');
+  assert.equal(hubFor('animal-farm-at-stratford-east'), 'uk-regional');
+  assert.equal(hubFor('x-review-york-theatre-royal'), 'yorkshire');
+  const l = buildList([
+    { outlet: 'thestage', url: 'https://x/reviews/swept-away-review-new-york-city', publishDate: '2025-01-01' },
+    { outlet: 'thestage', url: 'https://x/reviews/the-maids-review-donmar-warehouse-london', publishDate: '2025-01-01' },
+    { outlet: 'whatsonstage', url: 'https://x/news/beetlejuice-to-open-in-the-west-end_1', publishDate: '2025-01-01' },
+    { outlet: 'thestage', url: 'https://x/reviews/foo-review-pleasance-courtyard', publishDate: '2025-08-01' },
+  ]);
+  assert.equal(l.length, 0);
+});

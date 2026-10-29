@@ -8,14 +8,17 @@
 
 // Order matters: first match wins. Patterns run against the URL slug text.
 const HUBS = [
-  ['edinburgh', /edinburgh|fringe|traverse-theatre|royal-lyceum/],
+  ['edinburgh', /edinburgh|fringe|traverse-theatre|royal-lyceum|pleasance|summerhall|underbelly|gilded-balloon|assembly-(?:hall|rooms|george)/],
   ['scotland', /glasgow|dundee|aberdeen|inverness|perth-theatre|pitlochry|citizens-theatre|tramway|scotland|scottish|eden-court|dundee-rep|byre/],
   ['manchester', /manchester|royal-exchange|hope-mill|salford|lowry|bolton|octagon|oldham|rochdale|home-manchester|contact-theatre|palace-theatre-manchester/],
-  ['yorkshire', /leeds|sheffield|crucible|york-|york$|theatre-royal-york|bradford|hull|halifax|harrogate|huddersfield|scarborough|stephen-joseph|west-yorkshire-playhouse|playhouse-leeds|lyceum-sheffield|wakefield|doncaster/],
+  ['yorkshire', /leeds|sheffield|crucible|(?<!new-)york(?!-hall)|bradford|hull|halifax|harrogate|huddersfield|scarborough|stephen-joseph|west-yorkshire-playhouse|playhouse-leeds|wakefield|doncaster/],
   ['bristol-bath', /bristol|bath-|-bath|tobacco-factory|old-vic-bristol|ustinov|egg-theatre|watershed/],
-  ['stratford-rsc', /stratford|rsc|royal-shakespeare|swan-theatre|other-place/],
+  ['stratford-rsc', /stratford(?!-east)|\brsc\b|royal-shakespeare|swan-theatre|other-place/],
   ['chichester', /chichester/],
 ];
+
+// Not UK regional at all: London, NYC, West End (census leaks these in via held-other-market).
+const NOT_REGIONAL = /london|new-york|\bnyc\b|broadway|west-end|bethnal|stratford-east|hampstead|donmar|young-vic|almeida|kiln-theatre/;
 
 const TOURING = /on-tour|-tour(-|$)|uk-tour|tour-review/;
 
@@ -40,6 +43,7 @@ function titleSlug(slug) {
 function classify(item) {
   const slug = slugOf(item.url);
   return {
+    notRegional: NOT_REGIONAL.test(slug) || !/\/reviews\/|review/.test(String(item.url)),
     slug,
     title: titleSlug(slug),
     hub: hubFor(slug),
@@ -53,10 +57,10 @@ function buildList(items, { since = '2024-01-01' } = {}) {
   for (const it of items) {
     if (!it.publishDate || it.publishDate < since) continue;
     const c = classify(it);
-    if (!c.title || c.hub === 'edinburgh') continue; // Edinburgh Fringe out of scope
+    if (!c.title || c.notRegional || c.hub === 'edinburgh') continue; // Edinburgh Fringe out of scope
     const key = `${c.hub}|${c.title}|${it.publishDate.slice(0, 4)}`;
     let p = prods.get(key);
-    if (!p) prods.set(key, (p = { key, hub: c.hub, titleSlug: c.title, year: it.publishDate.slice(0, 4), touring: c.touring, reviews: [] }));
+    if (!p) prods.set(key, (p = { key, hub: c.hub, titleSlug: c.title, year: it.publishDate.slice(0, 4), touring: c.touring, reviews: [], needsVenueSplit: c.hub === 'uk-regional' }));
     p.touring = p.touring && c.touring;
     p.reviews.push({ outlet: it.outlet, url: it.url, publishDate: it.publishDate });
   }
