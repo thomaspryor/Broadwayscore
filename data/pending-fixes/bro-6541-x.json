@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-x",
   "planId": "a232b9de-c7a9-4cfb-adfe-1790893e79fb",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T20:21:36.248Z",
   "submitter": {
     "name": null,
@@ -241,5 +241,134 @@
         "description": "BRO-6541-wrong-production-octagon-bolton-not-a-review-of-this-production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T22:35:40.744Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted endgame-royal-bath-regional-2025/theatre-weekly--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted anna-karenina-chichester-festival-regional-2025/theargus--annabel-stock.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted redlands-chichester-festival-regional-2024/airmail--air-mail.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted i-can-die-too-pitlochry-festival-regional-2026/west-end-best-friend--jacob-bush.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lear-pitlochry-festival-regional-2026/herald--barry-didcock.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lear-pitlochry-festival-regional-2026/herald--brian-beacom.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted crown-of-blood-crucible-regional-2026/afridiziak-theatre-news--sophia-jackson.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted wish-you-werent-here-sheffield-regional-2024/broadwayworld--aa-cristi.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted driftwood-royal-shakespeare-regional-2026/stratford-herald--gill-sutherland.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted measure-for-measure-royal-shakespeare-regional-2025/stratford-herald--gill-sutherland.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted even-these-things-royal-exchange-regional-2026/ilovemanchester--beccie-simms.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-memory-of-water-octagon-regional-2026/ground--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
