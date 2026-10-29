@@ -783,5 +783,36 @@
       }
     ],
     "queuedAt": "2026-10-29T15:01:15.161Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6516-mvtceqe7",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6516-mvtceqe7",
+    "description": "land.yml did not land land/job/linear-BRO-6516-mvtceqe7: the rebase gate went red at b232b53d40. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6516-mvtceqe7 @ b232b53d40 (origin/land/job/linear-BRO-6516-mvtceqe7) → origin/main @ 11fe8e1a5d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 11fe8e1a5d: Rebasing (1/6) error: could not apply 3b91ef3c5c1... BRO-6516: UK regional production list builder (step 1) + acceptance test (fails until build completes) hint: Resolve all conflicts manually, ma Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40853206353",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6516-mvtceqe7"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b232b53d40db0a7e589cfd6b9b6f261433421cbe"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40853206353"
+      }
+    ],
+    "queuedAt": "2026-10-29T15:20:50.420Z"
   }
 ]
