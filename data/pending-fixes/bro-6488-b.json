@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6488-b",
   "planId": "b91201fb-fe3f-4114-b677-7d6386c524ff",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T22:38:27.942Z",
   "submitter": {
     "name": null,
@@ -93,5 +93,54 @@
         "description": "BRO-6488 follow-up: second copy of the same WhatsOnStage URL (first held as whatsonstage--unknown.json, renamed by byline enrichment at 13:39Z). The review is of the July 2026 Duke of Yorks run, after this Old Vic run closed 2026-03-21; the correct copy is held on arcadia-duke-of-yorks-west-end-2026."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T22:46:01.882Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2018/artsdesk--marianka-swain.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2018/artsdesk--marianka-swain.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2018/artsdesk--marianka-swain.json publishDate: \"2024-02-22\" -> \"2018-11-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "noises-off-west-end-2023/theatre-weekly--greg-stewart.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2024/theatre-weekly--greg-stewart.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2024/thereviewshub--the-reviews-hub-london.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2022/thereviewshub--the-reviews-hub-london.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arcadia-duke-of-yorks-west-end-2026/whatsonstage--alex-wood.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted arcadia-west-end-2026/whatsonstage--alex-wood.json"
+    }
+  ],
+  "executedIn": "ci"
 }
