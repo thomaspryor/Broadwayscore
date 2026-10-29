@@ -54,6 +54,8 @@ export interface BrowsePageConfig {
   source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional' | 'tour'; // Data source (default: broadway)
   /** Regional source defaults to US tryouts; UK houses share the regional feature flag. */
   regionalScope?: 'uk';
+  /** Offer a UK city-hub filter (BRO-6516). */
+  cityFilter?: boolean;
   /** Feature flag the page's data belongs to. While that flag is off the page
    *  does not exist: getAllBrowseSlugs() omits it and getBrowsePageConfig()
    *  returns undefined, so static params, sitemap, RSS, related links and
@@ -297,6 +299,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Discover major UK productions outside the capital, from Stratford-upon-Avon to Edinburgh. Browse every scored production from our Beyond London shelf, with shows on stage first and recent productions next. Closed productions stay listed so you can explore their reviews.',
     source: 'regional',
     regionalScope: 'uk',
+    cityFilter: true,
     customSort: shows => pickRegionalShelf(shows, { limit: Infinity, requireEnoughReviews: true }),
     hideRanks: true,
     howItWorks: 'CriticScore combines reviews from local and national UK critics, with major publications carrying more weight. Shows appear once they have enough reviews to display a score. Running productions appear first, followed by the most recently opened productions.',

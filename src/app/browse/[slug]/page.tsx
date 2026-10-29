@@ -15,6 +15,7 @@ import ToursByCity from '@/components/ToursByCity';
 import { getTourCities } from '@/lib/data-tour-cities';
 import type { BrowseShow } from '@/components/BrowseListClient';
 import { displaysCriticScore } from '@/lib/critic-score-display';
+import { ukHubForCity, ukHubFilterOptions } from '@/lib/uk-hubs';
 
 // "How This Works" default per market. The Broadway outlets (NYT, Vulture,
 // Variety) also review Off-Broadway; London and regional runs are reviewed by
@@ -205,8 +206,11 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
     const { creativeTeam: _ct, tags: _tags, ageRecommendation: _age, subtitle: _sub, subtitleColor: _subc, ...slim } = serializeShowForClient(show, {
       performances: grosses?.allTime?.performances ?? undefined,
     });
-    return slim;
+    return config.cityFilter ? { ...slim, hub: ukHubForCity(show.city) } : slim;
   });
+  // One pill per hub with shows; a single hub is no choice to offer.
+  const hubOptions = config.cityFilter ? ukHubFilterOptions(serializedShows.map(s => s.hub!)) : [];
+  const cityFilterOptions = hubOptions.length > 1 ? hubOptions : undefined;
 
   // Compute section group labels (server-side, since sectionGroup uses ComputedShow)
   const sectionLabels = config.sectionGroup
@@ -275,6 +279,7 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
           hasPerformanceData={hasPerformanceData}
           availableSorts={availableSorts}
           showTypeFilter={showTypeFilter}
+          cityFilterOptions={cityFilterOptions}
           showScoreToggle={showScoreToggle}
           sectionLabels={sectionLabels}
           upcomingContext={config.slug.startsWith('upcoming-')}
