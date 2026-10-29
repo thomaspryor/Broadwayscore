@@ -39,6 +39,8 @@ fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), STATE_SANDBOX
 // throw, which is what leaves these behind on a CI runner otherwise.
 process.on('exit', () => { try { fs.rmSync(STATE_SANDBOX_DIR, { recursive: true, force: true }); } catch { /* no-op */ } });
 
+// BRO-3048 live-data coupling audit: safe on live shows.json because it asserts the relative order of named West End vs Off West End shows, a ranking rule; extra shows in the window do not change that order, only a change to the named shows' rows does.
+// A "this week had exactly N things" assertion would need the fixture pattern instead (NEWSLETTER_TEST_SHOWS_PATH/REVIEWS_PATH).
 const WEEK_START = '2026-08-17';
 const WEST_END_SHOW = { id: 'abigails-party-west-end-2026', title: "Abigail’s Party" };
 const OFF_WEST_END_SHOWS = ['jeeves-takes-charge-west-end-2026', 'anansi-the-spider-west-end-2026'];

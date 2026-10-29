@@ -41,6 +41,8 @@ fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), STATE_SANDBOX
 // throw, which is what leaves these behind on a CI runner otherwise.
 process.on('exit', () => { try { fs.rmSync(STATE_SANDBOX_DIR, { recursive: true, force: true }); } catch { /* no-op */ } });
 
+// BRO-3048 live-data coupling audit: safe on live shows.json because it asserts a named show renders inside the section, not that the week had exactly N openings; unlike the quiet-week case (bw-quiet-week-fallback.test.mjs, fixture corpus, BRO-3042), a newly added show cannot invalidate that premise.
+// A "this week had exactly N things" assertion would need the fixture pattern instead (NEWSLETTER_TEST_SHOWS_PATH/REVIEWS_PATH).
 const WEEK_START = '2026-08-03';
 const SHOW_ID = 'im-every-woman-off-west-end-2026';
 

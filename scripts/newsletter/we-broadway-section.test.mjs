@@ -42,6 +42,8 @@ fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), STATE_SANDBOX
 // throw, which is what leaves these behind on a CI runner otherwise.
 process.on('exit', () => { try { fs.rmSync(STATE_SANDBOX_DIR, { recursive: true, force: true }); } catch { /* no-op */ } });
 
+// BRO-3048 live-data coupling audit: safe on live shows.json because it asserts that one named Broadway show fires the broadway-we section and that a named Off-Broadway show is excluded, not a week-wide count; a new show in the window cannot flip either, and the unit cases below build their own fixture shows.json.
+// A "this week had exactly N things" assertion would need the fixture pattern instead (NEWSLETTER_TEST_SHOWS_PATH/REVIEWS_PATH).
 const WEEK_START = '2026-08-24';
 const BW_SHOW_ID = 'paranormal-activity-2026';
 const BW_SHOW_TITLE = 'Paranormal Activity';
