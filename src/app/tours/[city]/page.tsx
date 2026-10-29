@@ -5,6 +5,10 @@ import { isCategoryEnabled } from '@/lib/markets';
 import { getTourCities, getTourCity, type TourCity } from '@/lib/data-tour-cities';
 import { getTourStopTickets } from '@/lib/data-tour-schedule';
 import { seasonLabel } from '@/lib/tour-cities';
+import { HUB_CITIES } from '@/lib/city-hub';
+import { getCityHubShows } from '@/lib/data-city-hub';
+import { getOutletRegistry } from '@/lib/outlet-id-mapper';
+import { localCriticStat, LOCAL_CRITICS_MIN, type OutletMetroEntry } from '@/lib/outlet-metro';
 import { shortCity, stopKey } from '@/lib/tour-schedule';
 import { isTourListed } from '@/lib/data-core';
 import { serializeShowForClient } from '@/lib/serialize-show';
@@ -26,7 +30,16 @@ const TOURS_HUB = '/browse/broadway-national-tours';
 
 export function generateStaticParams() {
   if (!isCategoryEnabled('tour')) return [];
-  return Array.from(getTourCities().keys()).map(city => ({ city }));
+  // A hub city keeps its URL even in a week with fewer than MIN_TOURS tours.
+  return Array.from(new Set([...getTourCities().keys(), ...Object.keys(HUB_CITIES)])).map(city => ({ city }));
+}
+
+/** The tour city, or an empty one for a hub city whose tours are all elsewhere this year. */
+function cityOrHub(slug: string): TourCity | undefined {
+  const c = getTourCity(slug);
+  if (c) return c;
+  const hub = HUB_CITIES[slug];
+  return hub ? { slug, city: hub.name, stops: [], upcomingListed: 0, indexed: true } : undefined;
 }
 
 type Stop = TourCity['stops'][number];
@@ -76,9 +89,20 @@ function intro(c: TourCity, today: string): string {
 
 export async function generateMetadata(props: { params: Promise<{ city: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const c = isCategoryEnabled('tour') ? getTourCity(params.city) : undefined;
+  const c = isCategoryEnabled('tour') ? cityOrHub(params.city) : undefined;
   if (!c) return { title: 'Page Not Found' };
   const today = new Date().toISOString().slice(0, 10);
+  const hub = HUB_CITIES[c.slug];
+  if (hub) {
+    const sec = getCityHubShows(c.slug, today);
+    const title = `${hub.short} Theater: Shows Playing Now & Critic Scores`;
+    const description = `${hub.short} theater on Broadway Scorecard: ${sec.now.length + split(c, today).now.length} playing now, ${sec.soon.length + split(c, today).ahead.length} coming soon, with critic scores for touring Broadway shows and ${hub.short} productions.`;
+    const url = `${BASE_URL}/tours/${c.slug}`;
+    return {
+      title, description, alternates: { canonical: url },
+      openGraph: { title, description, url, type: 'website', images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630, alt: title }] },
+    };
+  }
   const season = seasonLabel(c.stops.filter(s => s.end >= today));
   const title = `Broadway Shows in ${c.city}${season ? ` ${season}` : ''}: Tour Dates & Critic Scores`;
   const description = intro(c, today);
@@ -95,11 +119,14 @@ export async function generateMetadata(props: { params: Promise<{ city: string }
 export default async function TourCityPage(props: { params: Promise<{ city: string }> }) {
   const params = await props.params;
   if (!isCategoryEnabled('tour')) notFound();
-  const c = getTourCity(params.city);
+  const c = cityOrHub(params.city);
   if (!c) notFound();
 
   const today = new Date().toISOString().slice(0, 10);
   const place = shortCity(c.city);
+  const hub = HUB_CITIES[c.slug];
+  const local = hub ? getCityHubShows(c.slug, today) : null;
+  const registry = getOutletRegistry() as Record<string, OutletMetroEntry>;
   const { now, ahead, past } = split(c, today);
   const season = seasonLabel([...now, ...ahead]);
 
@@ -113,6 +140,9 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
       ticketLinks: [],
     };
     const range = stopRange(s);
+    const critics = hub && isTourListed(s.show)
+      ? localCriticStat(s.show.criticScore?.reviews ?? [], registry, c.slug)
+      : null;
     return (
       <li key={`${stopKey(s)}|${s.showId}|${i}`}>
         <p className="text-xs text-gray-500 mb-1.5 tabular-nums">
@@ -131,15 +161,35 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
             </>
           )}
         </p>
+        {hub && critics && critics.count >= LOCAL_CRITICS_MIN && critics.average != null && (
+          <p className="text-xs text-gray-400 mb-1.5">{hub.short} critics: {critics.average} average, {critics.count} {critics.count === 1 ? 'review' : 'reviews'}</p>
+        )}
         <ShowListCard show={show} index={i} priorityFirstImage scoreMode="critics" variant="compact" showReviewCount />
       </li>
     );
   };
 
-  const section = (title: string, stops: Stop[], when: 'now' | 'ahead' | 'past') => stops.length > 0 && (
+  const localCard = (s: ReturnType<typeof getCityHubShows>['now'][number], i: number) => (
+    <li key={`local|${s.id}`}>
+      <p className="text-xs text-gray-500 mb-1.5 tabular-nums">
+        {s.openingDate ? formatShowDate(s.openingDate, { month: 'short', day: 'numeric', year: 'numeric' }) : ''}
+        {s.closingDate ? `–${formatShowDate(s.closingDate, { month: 'short', day: 'numeric', year: 'numeric' })}` : ''}
+        {s.venue ? ` · ${s.venue.replace(/,\s*Chicago,\s*IL$/, '')}` : ''}
+      </p>
+      <ShowListCard show={{ ...serializeShowForClient(s), tourNowNext: null, ticketLinks: [] }} index={i} scoreMode="critics" variant="compact" showReviewCount />
+    </li>
+  );
+
+  const section = (
+    title: string, stops: Stop[], when: 'now' | 'ahead' | 'past',
+    localShows: NonNullable<typeof local>['now'] = [],
+  ) => (stops.length > 0 || localShows.length > 0) && (
     <section className="mb-10" aria-labelledby={`tc-${when}`}>
       <h2 id={`tc-${when}`} className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 mb-3">{title}</h2>
-      <ul className="space-y-4">{stops.map((s, i) => card(s, i, when))}</ul>
+      <ul className="space-y-4">
+        {stops.map((s, i) => card(s, i, when))}
+        {localShows.map((s, i) => localCard(s, stops.length + i))}
+      </ul>
     </section>
   );
 
@@ -168,13 +218,22 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
           { label: place },
         ]} />
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-1">Broadway Shows Coming to {place}</h1>
-          <p className="text-sm text-gray-500 mb-3">{c.city}{season ? ` · ${season} touring season` : ''}</p>
-          <p className="text-gray-300 leading-relaxed">{intro(c, today)}</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-1">{hub ? `${hub.short} Theater` : `Broadway Shows Coming to ${place}`}</h1>
+          <p className="text-sm text-gray-500 mb-3">{c.city}{!hub && season ? ` · ${season} touring season` : ''}</p>
+          <p className="text-gray-300 leading-relaxed">
+            {hub
+              ? `Touring Broadway shows and ${hub.short} productions with critic scores, split into what is playing now, what opens soon and what closed in the past year.`
+              : intro(c, today)}
+          </p>
         </div>
-        {section('Now playing', now, 'now')}
-        {section('Coming up', ahead, 'ahead')}
-        {section('Played in the past year', past, 'past')}
+        {section('Now playing', now, 'now', local?.now)}
+        {section(hub ? 'Coming soon' : 'Coming up', ahead, 'ahead', local?.soon)}
+        {section(hub ? 'Recently closed' : 'Played in the past year', past, 'past', local?.closedRecent)}
+        {local && local.archive.length > 0 && (
+          <p className="text-sm text-gray-400 mb-6">
+            <Link href={`/tours/${c.slug}/archive`} className="text-brand hover:text-brand-hover font-medium">{local.archive.length} older {hub.short} productions →</Link>
+          </p>
+        )}
         <p className="text-sm text-gray-400">
           <Link href={TOURS_HUB} className="text-brand hover:text-brand-hover font-medium">All national tours →</Link>
         </p>

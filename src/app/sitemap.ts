@@ -36,6 +36,7 @@ import { seasonSlug } from '@/lib/tony-seasons';
 import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getTourCities } from '@/lib/data-tour-cities';
+import { HUB_CITIES } from '@/lib/city-hub';
 import { getSeasonsWithCommercialData, isIndexedCommercialSeason } from '@/lib/data-commercial';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -296,8 +297,11 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
   // National-tour city pages (BRO-4601): only the indexed ones; the rest are
   // noindex. No lastModified: the schedules behind them change daily.
   const tourCityPages = isCategoryEnabled('tour')
-    ? Array.from(getTourCities().values()).filter(c => c.indexed).map(c => ({
-        url: `${BASE_URL}/tours/${c.slug}`,
+    ? Array.from(new Set([
+        ...Array.from(getTourCities().values()).filter(c => c.indexed).map(c => c.slug),
+        ...Object.keys(HUB_CITIES), // hubs are always indexable (BRO-6517)
+      ])).map(slug => ({
+        url: `${BASE_URL}/tours/${slug}`,
         changeFrequency: 'weekly' as const,
         priority: 0.7,
       }))
