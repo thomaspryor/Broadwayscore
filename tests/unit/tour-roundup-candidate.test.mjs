@@ -80,6 +80,30 @@ test('retired candidates resolve existing source and digest conditions and remov
   assert.deepEqual(JSON.parse(fs.readFileSync(queue, 'utf8')), [{ conditionKey: controlKey }]);
 });
 
+test('stale tour-candidate conditions resolve with their digest line; still-open candidates are untouched (BRO-6208)', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'resolve-stale-tours-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const staleKey = 'tour-candidate:mexodus-off-broadway-2026:2026-07-08';
+  const staleDigest = 'digest-needs-you:Tour candidate: Mexodus national tour';
+  const liveKey = 'tour-candidate:other-2025:2026-10-23';
+  const entry = { status: 'open', lastSeen: '2026-10-24T00:00:00Z' };
+  const write = (name, value) => { const file = path.join(dir, name); fs.writeFileSync(file, JSON.stringify(value)); return file; };
+  const ledger = write('ledger.json', { conditions: {
+    [staleKey]: { ...entry, title: 'Tour candidate: Mexodus national tour' }, [staleDigest]: { ...entry },
+    [liveKey]: { ...entry, title: 'Tour candidate: Other national tour' } } });
+  const queue = write('queue.json', [staleKey, staleDigest, liveKey].map(conditionKey => ({ conditionKey })));
+  execFileSync(process.execPath, ['-e', `
+    const { resolveStaleTourCandidateConditions } = require('./scripts/lib/tour-roundup-candidate');
+    const router = require('./scripts/lib/owner-alert-router');
+    if (resolveStaleTourCandidateConditions(['other-2025:2026-10-23'], router.loadLedger(), router) !== 1) process.exit(3);
+  `], { cwd: path.resolve(import.meta.dirname, '../..'), env: { ...process.env, ALERT_LEDGER_PATH: ledger, ALERT_DIGEST_QUEUE_PATH: queue } });
+  const result = JSON.parse(fs.readFileSync(ledger, 'utf8')).conditions;
+  assert.equal(result[staleKey].status, 'resolved');
+  assert.equal(result[staleDigest].status, 'resolved');
+  assert.equal(result[liveKey].status, 'open');
+  assert.deepEqual(JSON.parse(fs.readFileSync(queue, 'utf8')), [{ conditionKey: liveKey }]);
+});
+
 test('national tour roundup slugs are recognised; UK tours and look-alike words are not', () => {
   for (const s of [
     'Review-Roundup-DIRTY-DANCING-Launches-North-AMERICAN-Tour-20260923',
