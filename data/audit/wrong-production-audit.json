@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T02:13:43.082Z",
+  "timestamp": "2026-10-29T02:28:43.068Z",
   "stats": {
-    "totalReviews": 65859,
-    "alreadyFlagged": 22053,
+    "totalReviews": 65856,
+    "alreadyFlagged": 22057,
     "dateGuardCatches": 233,
-    "directorMismatch": 2636,
-    "tvFilmSignals": 1861,
-    "londonSignals": 3187,
-    "offBroadwaySignals": 597,
+    "directorMismatch": 2640,
+    "tvFilmSignals": 1862,
+    "londonSignals": 3188,
+    "offBroadwaySignals": 598,
     "yearMismatch": 240,
-    "noPublishDate": 6006
+    "noPublishDate": 5990
   },
   "findings": [
     {
@@ -11346,7 +11346,7 @@
     },
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "file": "theater-life--unknown.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 78,
       "publishDate": "2026-10-19",
       "url": "https://theaterlife.com/copperfield-the-new-musical/",
@@ -16683,6 +16683,19 @@
       "score": 80,
       "publishDate": "April 6, 2012",
       "url": "https://online.wsj.com/article/SB10001424052702303299604577324311953757058.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2014",
+      "file": "nytimes--unknown.json",
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2014/09/28/nyregion/a-review-of-evita-in-northport.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -41846,6 +41859,20 @@
       ]
     },
     {
+      "showId": "richard-iii-west-end-2014",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2014-07-09",
+      "url": "https://variety.com/2014/legit/reviews/richard-iii-review-martin-freeman-london-theater-1201259724/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim carroll\" from richard-iii-2013"
+        }
+      ]
+    },
+    {
       "showId": "ride-the-cyclone-off-broadway-2016",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 45,
@@ -43549,6 +43576,20 @@
     },
     {
       "showId": "skylight-west-end-2014",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "http://www.timeout.com/london/theatre/skylight",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
       "file": "whatsonstage--michael-coveney.json",
       "score": 98,
       "publishDate": "2014-06-19",
@@ -45224,6 +45265,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "stalker-off-broadway-2024",
+      "file": "front-row-center--tulis-mccall.json",
+      "score": 87,
+      "publishDate": "April 1st, 2024",
+      "url": "https://thefrontrowcenter.com/2024/04/35138/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -47187,6 +47242,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2017",
+      "file": "deadline--jeremy-gerard.json",
+      "score": 77,
+      "publishDate": "February 9th, 2017",
+      "url": "http://deadline.com/2017/02/review-glenn-close-in-sunset-boulevard-1201907285/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from sunset-boulevard-1994"
         }
       ]
     },
@@ -96052,6 +96121,20 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2016",
+      "file": "express-uk--michael-arditti.json",
+      "score": null,
+      "publishDate": "2016-05-31",
+      "url": "https://www.express.co.uk/entertainment/theatre/675494/Theatre-reviews-Romeo-and-Juliet-Running-Wild-Blue-Orange",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2016",
       "file": "london-theatre--unknown.json",
       "score": 43,
       "publishDate": "2016-06-08",
@@ -96251,6 +96334,20 @@
       "file": "vulture--jackson-mchenry.json",
       "score": 36,
       "publishDate": "October 25, 2024",
+      "url": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
+      "file": "vulture--unknown.json",
+      "score": 25,
+      "publishDate": "October 24, 2024",
       "url": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
       "findings": [
         {
