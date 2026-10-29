@@ -2592789,21 +2592789,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T10:31:57.597Z",
-    "completedAt": "2026-10-29T10:32:07.038Z",
-    "totalReviews": 10,
-    "processed": 2,
-    "skipped": 8,
+    "startedAt": "2026-10-29T10:30:17.124Z",
+    "completedAt": "2026-10-29T10:30:23.346Z",
+    "totalReviews": 70,
+    "processed": 1,
+    "skipped": 69,
     "errors": 0,
     "tokensUsed": {
-      "input": 11383,
-      "output": 626,
-      "cacheRead": 7614,
+      "input": 7178,
+      "output": 340,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 29212
+      "total": 16859
     },
-    "costUsd": 0.0437279,
-    "runId": "40847658166",
+    "costUsd": 0.026538199999999998,
+    "runId": "40847614142",
     "errorDetails": [],
     "validation": [
       {
@@ -2602119,10 +2602119,10 @@
       {
         "showId": "drag-the-musical-off-broadway-2024",
         "ourDistribution": {
-          "up": 9,
+          "up": 7,
           "flat": 1,
           "down": 0,
-          "total": 10
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -2616522,9 +2616522,9 @@
         "showId": "romeo-juliet-2024",
         "ourDistribution": {
           "up": 25,
-          "flat": 12,
+          "flat": 13,
           "down": 12,
-          "total": 50
+          "total": 51
         },
         "dtliDistribution": {
           "up": 7,
@@ -2616538,7 +2616538,8 @@
           "down": 5,
           "total": 20
         },
-        "hasDisagreement": false
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Flat thumbs differ by 25% (ours: 25%, theirs: 0%)"
       },
       {
         "showId": "roosevelvis-west-end-2015",
@@ -2628692,8 +2628693,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T10:34:30.941Z",
-    "completedAt": "2026-10-29T10:34:30.944Z",
+    "startedAt": "2026-10-29T10:33:08.471Z",
+    "completedAt": "2026-10-29T10:33:08.497Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2628706,7 +2628707,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40847658166",
+    "runId": "40847614142",
     "errorDetails": []
   }
 ]
