@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5586",
   "planId": "c1f9f0dd-2507-4300-804a-61e3ecd8066b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T17:14:17.036Z",
   "submitter": {
     "name": null,
@@ -71,5 +71,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T18:30:00.147Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-masked-ball-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
