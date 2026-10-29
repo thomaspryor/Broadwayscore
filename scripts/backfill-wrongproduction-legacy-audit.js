@@ -12,6 +12,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { AUDIT_FIELD, legacyAuditStamp } = require('./lib/wrongproduction-legacy-audit');
 
 const REVIEW_DIR = path.join(__dirname, '../data/review-texts');
@@ -24,9 +25,8 @@ function sameExceptStamp(before, after) {
 function backfill({ apply, reviewDir = REVIEW_DIR, at = new Date().toISOString(), expect = null }) {
   const report = { scanned: 0, eligible: 0, written: 0, refused: [], dryRun: !apply };
   const targets = [];
-  for (const showId of fs.readdirSync(reviewDir)) {
+  for (const showId of listShowDirs(reviewDir, { silent: true })) {
     const showDir = path.join(reviewDir, showId);
-    if (!fs.statSync(showDir).isDirectory()) continue;
     for (const file of fs.readdirSync(showDir).filter(f => f.endsWith('.json'))) {
       const filePath = path.join(showDir, file);
       let record;
