@@ -2,7 +2,7 @@
 // Tested by tests/unit/commercial-apply-gate.test.mjs.
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
-const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, lossDesignationFor, returnedEstimatePct, REPORTED_WIN_DESIGNATIONS } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, isUnrecoupedDesignation, lossDesignationFor, returnedEstimatePct, REPORTED_WIN_DESIGNATIONS } = require('./commercial-designations');
 const { refuseClearedField } = require('./cleared-field-guard');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { addedPlaceholderSources } = require('./commercial-sources');
@@ -190,7 +190,7 @@ function recoupClaimDesignationAction(existing) {
   // Our estimate gives way to a verified recoupment, on any tier (BRO-6158).
   if (existing.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE && existing.humanReviewedDesignation !== true
     && designation && designation !== 'TBD') return 'reset';
-  if (!isLossDesignation(designation)) return 'keep';
+  if (!isUnrecoupedDesignation(designation)) return 'keep';
   if (existing.humanReviewedDesignation === true) return 'block';
   if (existing.classifiedBy === 'classify-stale-closures') return 'reset';
   if (existing.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return 'reset';

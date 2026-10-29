@@ -14,7 +14,7 @@
 const crypto = require('crypto');
 const { getSeasonForDate } = require('./broadway-seasons');
 const { playedOnOpeningNight } = require('./cast-principals');
-const { isLossDesignation, RECOUPED_DESIGNATIONS } = require('./commercial-designations');
+const { isUnrecoupedDesignation, RECOUPED_DESIGNATIONS } = require('./commercial-designations');
 
 const FIRST_SEASON = '2004-2005';
 // Headliner classification buckets. "screen" is the headline metric (it is
@@ -225,7 +225,7 @@ const RECOUPED = new Set(RECOUPED_DESIGNATIONS);
 
 function commercialOutcome(designation) {
   if (RECOUPED.has(designation)) return 'recouped';
-  if (isLossDesignation(designation)) return 'not-recouped';
+  if (isUnrecoupedDesignation(designation)) return 'not-recouped';
   return null;
 }
 

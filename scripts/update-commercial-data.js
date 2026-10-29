@@ -1568,7 +1568,7 @@ function filterByConfidence(proposedChanges, commercialData) {
   const skipped = [];
   const deepResearchConflicts = [];  // Sprint 3: Track Deep Research conflicts
 
-  const protectedDesignations = new Set(['Miracle', 'Nonprofit', 'Tour Stop']);
+  const protectedDesignations = new Set(['Miracle', 'Nonprofit', 'Tour Stop', 'Squeaker', 'Wait & See']);
 
   for (const change of (proposedChanges || [])) {
     const { slug, field, oldValue, newValue, confidence } = change;

@@ -23,14 +23,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { canonicalDesignation, isLossDesignation, RECOUPED_DESIGNATIONS } = require('./lib/commercial-designations');
+const { canonicalDesignation, isUnrecoupedDesignation, RECOUPED_DESIGNATIONS } = require('./lib/commercial-designations');
 
 const RECOUPED = new Set(RECOUPED_DESIGNATIONS);
 const CAP_TOLERANCE = 0.2;
 
 function outcomeClass(d) {
   if (RECOUPED.has(d)) return 'recouped';
-  if (isLossDesignation(d)) return 'lost';
+  if (isUnrecoupedDesignation(d)) return 'lost';
   if (d === 'Nonprofit') return 'nonprofit';
   return null;
 }
