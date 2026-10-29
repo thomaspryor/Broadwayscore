@@ -79,3 +79,16 @@ test('a stored show.city never disagrees with the venue table', () => {
   const bad = shows.filter((s) => s.market === 'regional' && s.city && resolveMetro(s.venue) !== s.city).map((s) => s.id);
   assert.deepEqual(bad, []);
 });
+
+test('false positives from adversarial review resolve null or to the right metro', () => {
+  const nul = ['Some Hall, Birmingham, AL', 'Some Hall, Arlington, TX', 'Courtyard Theatre, Stratford', 'Some Hall, Stratford, CT',
+    'Cambridge Arts Theatre, Cambridge', 'Palace Theatre, Manchester, NH', 'Home for Contemporary Theatre and Art', 'Curve at the Barbican',
+    'Albert Theatre, Huddersfield', 'Royal Shakespeare Company, Garrick Theatre', 'Pan Alley Theatre, London',
+    'Richard B. Fisher Center for the Performing Arts, Annandale-on-Hudson, NY', 'Goodman Theatre / Guthrie Theater'];
+  for (const v of nul) assert.equal(resolveMetro(v), null, v);
+  assert.equal(resolveMetro('Some Hall, Birmingham, UK'), 'birmingham-uk');
+  assert.equal(resolveMetro('Some Hall, Arlington, VA'), 'washington-dc');
+  assert.equal(resolveMetro('HOME, Manchester'), 'manchester-uk');
+  assert.equal(resolveMetro('Albert Theatre, Chicago, IL'), 'chicago-il');
+  assert.equal(resolveMetro('Royal Shakespeare Company, Stratford-upon-Avon'), 'stratford-upon-avon-uk');
+});

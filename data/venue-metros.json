@@ -64,148 +64,181 @@
   "chicago-il": {
    "name": "Chicago",
    "country": "US",
+   "state": "il",
    "cities": [
-    "Evanston"
+    "Evanston, IL"
    ]
   },
   "washington-dc": {
    "name": "Washington",
    "country": "US",
+   "state": "dc",
    "cities": [
-    "Arlington"
+    "Arlington, VA",
+    "Washington, D.C."
    ]
   },
   "los-angeles-ca": {
    "name": "Los Angeles",
    "country": "US",
+   "state": "ca",
    "cities": [
-    "Pasadena"
+    "Pasadena, CA"
    ]
   },
   "san-francisco-ca": {
    "name": "San Francisco",
    "country": "US",
+   "state": "ca",
    "cities": [
-    "Berkeley"
+    "Berkeley, CA"
    ]
   },
   "san-diego-ca": {
    "name": "San Diego",
    "country": "US",
+   "state": "ca",
    "cities": [
-    "La Jolla"
+    "La Jolla, CA"
    ]
   },
   "boston-ma": {
    "name": "Boston",
    "country": "US",
+   "state": "ma",
    "cities": [
-    "Cambridge"
+    "Cambridge, MA"
    ]
   },
   "seattle-wa": {
    "name": "Seattle",
-   "country": "US"
+   "country": "US",
+   "state": "wa"
   },
   "atlanta-ga": {
    "name": "Atlanta",
-   "country": "US"
+   "country": "US",
+   "state": "ga"
   },
   "minneapolis-mn": {
    "name": "Minneapolis",
-   "country": "US"
+   "country": "US",
+   "state": "mn"
   },
   "dallas-tx": {
    "name": "Dallas",
-   "country": "US"
+   "country": "US",
+   "state": "tx"
   },
   "houston-tx": {
    "name": "Houston",
-   "country": "US"
+   "country": "US",
+   "state": "tx"
   },
   "denver-co": {
    "name": "Denver",
-   "country": "US"
+   "country": "US",
+   "state": "co"
   },
   "philadelphia-pa": {
    "name": "Philadelphia",
-   "country": "US"
+   "country": "US",
+   "state": "pa"
   },
   "cleveland-oh": {
    "name": "Cleveland",
-   "country": "US"
+   "country": "US",
+   "state": "oh"
   },
   "cincinnati-oh": {
    "name": "Cincinnati",
-   "country": "US"
+   "country": "US",
+   "state": "oh"
   },
   "nashville-tn": {
    "name": "Nashville",
-   "country": "US"
+   "country": "US",
+   "state": "tn"
   },
   "new-haven-ct": {
    "name": "New Haven",
-   "country": "US"
+   "country": "US",
+   "state": "ct"
   },
   "hartford-ct": {
    "name": "Hartford",
-   "country": "US"
+   "country": "US",
+   "state": "ct"
   },
   "providence-ri": {
    "name": "Providence",
-   "country": "US"
+   "country": "US",
+   "state": "ri"
   },
   "millburn-nj": {
    "name": "Millburn",
-   "country": "US"
+   "country": "US",
+   "state": "nj"
   },
   "princeton-nj": {
    "name": "Princeton",
-   "country": "US"
+   "country": "US",
+   "state": "nj"
   },
   "red-bank-nj": {
    "name": "Red Bank",
-   "country": "US"
+   "country": "US",
+   "state": "nj"
   },
   "new-brunswick-nj": {
    "name": "New Brunswick",
-   "country": "US"
+   "country": "US",
+   "state": "nj"
   },
   "east-haddam-ct": {
    "name": "East Haddam",
-   "country": "US"
+   "country": "US",
+   "state": "ct"
   },
   "westport-ct": {
    "name": "Westport",
-   "country": "US"
+   "country": "US",
+   "state": "ct"
   },
   "new-hope-pa": {
    "name": "New Hope",
-   "country": "US"
+   "country": "US",
+   "state": "pa"
   },
   "ashland-or": {
    "name": "Ashland",
-   "country": "US"
+   "country": "US",
+   "state": "or"
   },
   "williamstown-ma": {
    "name": "Williamstown",
-   "country": "US"
+   "country": "US",
+   "state": "ma"
   },
   "pittsfield-ma": {
    "name": "Pittsfield",
-   "country": "US"
+   "country": "US",
+   "state": "ma"
   },
   "laguna-beach-ca": {
    "name": "Laguna Beach",
-   "country": "US"
+   "country": "US",
+   "state": "ca"
   },
   "stratford-on": {
    "name": "Stratford",
-   "country": "CA"
+   "country": "CA",
+   "state": "on"
   },
   "niagara-on-the-lake-on": {
    "name": "Niagara-on-the-Lake",
-   "country": "CA"
+   "country": "CA",
+   "state": "on"
   }
  },
  "venues": [
@@ -214,7 +247,7 @@
    "metro": "stratford-upon-avon-uk",
    "aliases": [
     "royal shakespeare theatre",
-    "royal shakespeare",
+    "royal shakespeare company, stratford",
     "swan theatre, stratford",
     "the other place, stratford"
    ]
@@ -238,11 +271,9 @@
    ]
   },
   {
-   "venue": "HOME",
+   "venue": "HOME, Manchester",
    "metro": "manchester-uk",
    "aliases": [
-    "home",
-    "home manchester",
     "home, manchester"
    ]
   },
@@ -335,11 +366,10 @@
    ]
   },
   {
-   "venue": "Curve",
+   "venue": "Curve, Leicester",
    "metro": "leicester-uk",
    "aliases": [
-    "curve",
-    "curve leicester",
+    "curve, leicester",
     "curve theatre"
    ]
   },
@@ -437,8 +467,8 @@
    "aliases": [
     "goodman theatre",
     "goodman theater",
-    "albert theatre",
-    "albert theater"
+    "albert theatre, chicago",
+    "albert theater, chicago"
    ]
   },
   {
@@ -583,10 +613,9 @@
    ]
   },
   {
-   "venue": "Alley Theatre",
+   "venue": "Alley Theatre, Houston",
    "metro": "houston-tx",
    "aliases": [
-    "alley theatre",
     "alley theatre, houston",
     "alley theater, houston"
    ]
@@ -623,10 +652,9 @@
    ]
   },
   {
-   "venue": "Fisher Center for the Performing Arts",
+   "venue": "Fisher Center for the Performing Arts, Nashville",
    "metro": "nashville-tn",
    "aliases": [
-    "fisher center for the performing arts",
     "fisher center for the performing arts, nashville"
    ]
   },
