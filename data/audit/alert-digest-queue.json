@@ -1588,5 +1588,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T20:14:34.920Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6541-census-ingest",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6541-census-ingest",
+    "description": "land.yml did not land land/bro-6541-census-ingest: the scripts-lib-tests gate went red at ff76def532. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40950501918",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6541-census-ingest"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "ff76def532256ac1fdc8aca5b288890e9ec580ec"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40950501918"
+      }
+    ],
+    "queuedAt": "2026-10-29T20:56:53.023Z"
   }
 ]
