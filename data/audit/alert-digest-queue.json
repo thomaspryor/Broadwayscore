@@ -707,5 +707,36 @@
       }
     ],
     "queuedAt": "2026-10-29T14:29:00.975Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6529-masked-email",
+    "title": "Landing blocked: colocated-tests red on land/bro-6529-masked-email",
+    "description": "land.yml did not land land/bro-6529-masked-email: the colocated-tests gate went red at f6aeeaf1aa. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6529-masked-email @ f6aeeaf1aa (origin/land/bro-6529-masked-email) → origin/main @ ed003f4781 [land] attempt 1/3: rebased onto 3fea2894df, 6 file(s) changed — running checks [land] verified-base: main moved 5b302862b9 → 3fea2894df across 306 file(s), substantive — re-checking on the merged tree (+9 test file(s) changed on main since the verified base); full re-check: branch and mai Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40875824250",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6529-masked-email"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "f6aeeaf1aa4e6923371da7affa25d82126ebe058"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40875824250"
+      }
+    ],
+    "queuedAt": "2026-10-29T15:01:15.161Z"
   }
 ]
