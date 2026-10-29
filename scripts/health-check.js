@@ -40,6 +40,7 @@ const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-dr
 const { checkBizOgCoverage, RENDER_HINT: BIZ_OG_RENDER_HINT } = require('./lib/audit-biz-og-coverage');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
+const { summarizeMissedForHealth } = require('./lib/missed-broadcasts');
 const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
 const { playbookWorkerHint, hasPlaybookAction, ownerDigestInstruction } = require('./lib/playbook-copy.js');
 const { untrackedPersistentRowsResult, ROW_NAME: UNTRACKED_ROWS_ROW_NAME } = require('./lib/untracked-persistent-rows.js');
@@ -1769,10 +1770,11 @@ function checkQuality() {
       if (age > 48) {
         return { name, status: 'error', message: `Missed-broadcast snapshot is ${formatAge(age)} old (>48h) — the sweep itself has stopped running, so missed sends are going unreported again`, hint: 'Check the "Missed opening-night broadcast sweep" step in data-health-check.yml' };
       }
-      if (snap.missedCount > 0) {
-        return { name, status: 'warn', message: `${snap.missedCount} show(s) opened and qualified but never emailed subscribers (${snap.alertableCount} still alertable, ${snap.agedOutCount} aged out past the paging window, ${formatAge(age)} ago)`, hint: 'node scripts/check-missed-broadcasts.js --dry-run to list them with per-show remediation' };
+      const { uncovered, covered, alertable, agedOut } = summarizeMissedForHealth(snap);
+      if (uncovered > 0) {
+        return { name, status: 'warn', message: `${uncovered} show(s) opened and qualified but never emailed subscribers (${alertable} still alertable, ${agedOut} aged out past the paging window${covered ? `; ${covered} more were covered by a weekly round-up` : ''}, ${formatAge(age)} ago)`, hint: 'node scripts/check-missed-broadcasts.js --dry-run to list them with per-show remediation' };
       }
-      return { name, status: 'pass', message: `Every qualifying show reached subscribers (${formatAge(age)} ago)` };
+      return { name, status: 'pass', message: covered ? `No qualifying show was missed (${covered} reached subscribers via a weekly round-up rather than their own email, ${formatAge(age)} ago)` : `Every qualifying show reached subscribers (${formatAge(age)} ago)` };
     }),
 
     // Stale announced-shows audit (BRO-2620, BRO-93). audit-stale-announced-

@@ -427,3 +427,16 @@ test('applyLiveBroadcastStatus: a hung Resend cannot outlast the time budget', a
   assert.strictEqual(out.missed.length, 2, 'both still page');
   assert.strictEqual(out.notes.length, 2);
 });
+
+test('summarizeMissedForHealth: round-up covered shows do not count as unreached (BRO-5447)', () => {
+  const { summarizeMissedForHealth } = require('./missed-broadcasts.js');
+  const snap = { missedCount: 3, missed: [
+    { id: 'a', state: 'covered-by-roundup' },
+    { id: 'b', state: 'covered-by-roundup' },
+    { id: 'c', state: 'never-drafted' },
+  ] };
+  assert.deepStrictEqual(summarizeMissedForHealth(snap), { uncovered: 1, covered: 2, alertable: 0, agedOut: 1 });
+  assert.deepStrictEqual(summarizeMissedForHealth({ missedCount: 2, missed: [{ state: 'covered-by-roundup' }, { state: 'covered-by-roundup' }] }), { uncovered: 0, covered: 2, alertable: 0, agedOut: 0 });
+  assert.deepStrictEqual(summarizeMissedForHealth({ missedCount: 4 }), { uncovered: 4, covered: 0, alertable: 0, agedOut: 0 }, 'older snapshot without a missed array keeps the raw count');
+  assert.deepStrictEqual(summarizeMissedForHealth(null), { uncovered: 0, covered: 0, alertable: 0, agedOut: 0 });
+});

@@ -432,8 +432,28 @@ function selectPageableStaleDrafts(staleDrafts, {
     && !d.showIds.every((id) => roundup.has(id)));
 }
 
+/**
+ * Health-digest view of a missed-broadcast snapshot (BRO-5447). Shows covered by
+ * a weekly round-up did reach subscribers, so they are reported separately and
+ * do not make the daily health row warn. alertable/agedOut are recounted over the
+ * uncovered shows only (a covered show is stored alertable:false, so the raw
+ * agedOutCount includes it). A snapshot without a `missed` array (older format)
+ * falls back to its raw counts.
+ * @returns {{uncovered:number, covered:number, alertable:number, agedOut:number}}
+ */
+function summarizeMissedForHealth(snap) {
+  if (!snap) return { uncovered: 0, covered: 0, alertable: 0, agedOut: 0 };
+  if (!Array.isArray(snap.missed)) {
+    return { uncovered: snap.missedCount || 0, covered: 0, alertable: snap.alertableCount || 0, agedOut: snap.agedOutCount || 0 };
+  }
+  const open = snap.missed.filter((m) => !(m && m.state === 'covered-by-roundup'));
+  const alertable = open.filter((m) => m && m.alertable).length;
+  return { uncovered: open.length, covered: snap.missed.length - open.length, alertable, agedOut: open.length - alertable };
+}
+
 module.exports = {
   STALE_DRAFT_MAX_ALERT_AGE_DAYS,
+  summarizeMissedForHealth,
   selectPageableStaleDrafts,
   findMissedBroadcasts,
   classifyBroadcastState,
