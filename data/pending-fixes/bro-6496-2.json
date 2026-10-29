@@ -1,0 +1,648 @@
+{
+  "issueNumber": "bro-6496-2",
+  "planId": "a4892c08-ff89-4960-8906-0ca39ebe8bbe",
+  "status": "pending",
+  "createdAt": "2026-10-29T22:00:46.548Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6496 option B: add 20 pre-COVID Off-Broadway shows (2018-06..2020-03) whose dates two sources agree on: BroadwayWorld show page with closing matched by TheaterMania or Broadway.com, opening within -3..+30 days of the critics' earliest review, venue checked against TheaterMania or a second listing",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bella-bella-off-broadway-2019",
+          "title": "Bella Bella",
+          "slug": "bella-bella-off-broadway-2019",
+          "venue": "New York City Center – Stage I",
+          "previewsStartDate": "2019-10-01",
+          "openingDate": "2019-10-22",
+          "closingDate": "2019-12-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Bella-Bella-333256.html",
+            "https://www.broadway.com/shows/bella-bella/story/",
+            "https://deadline.com/2019/10/bella-abzug-harvey-fierstein-off-broadway-mtc-1202765806/",
+            "https://nystagereview.com/2019/10/22/bella-bella-hats-off-to-harvey-fiersteins-abzug-homage/",
+            "https://www.theatermania.com/news/harvey-fierstein-takes-on-new-york-politics-in-bella-bella_90023/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sing-street-off-broadway-2019",
+          "title": "Sing Street",
+          "slug": "sing-street-off-broadway-2019",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2019-11-25",
+          "openingDate": "2019-12-16",
+          "closingDate": "2020-01-26",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Sing-Street-333164.html",
+            "https://nystagereview.com/2019/12/16/sing-street-the-magic-of-once-is-not-replicated-alas/",
+            "https://www.theatermania.com/news/sing-street-is-positioned-as-the-next-once-but-lightning-hasnt-struck-twice_90315/",
+            "https://exeuntnyc.com/reviews/review-sing-street-new-york-theatre-workshop/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "broadway-bounty-hunter-off-broadway-2019",
+          "title": "Broadway Bounty Hunter",
+          "slug": "broadway-bounty-hunter-off-broadway-2019",
+          "venue": "Greenwich House Theater",
+          "previewsStartDate": "2019-07-09",
+          "openingDate": "2019-07-23",
+          "closingDate": "2019-08-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Broadway-Bounty-Hunter-333075.html",
+            "https://www.broadway.com/shows/broadway-bounty-hunter/story/",
+            "https://nystagereview.com/2019/07/23/broadway-bounty-hunter-exploiting-a-darling-character-in-pursuit-of-laughs/",
+            "https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/",
+            "https://www.theatermania.com/news/broadway-bounty-hunter-is-the-nuttiest-musical-of-the-summer_89357/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nantucket-sleigh-ride-off-broadway-2019",
+          "title": "Nantucket Sleigh Ride",
+          "slug": "nantucket-sleigh-ride-off-broadway-2019",
+          "venue": "Lincoln Center Theater/Mitzi E. Newhouse Theater",
+          "previewsStartDate": "2019-02-21",
+          "openingDate": "2019-03-18",
+          "closingDate": "2019-05-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Nantucket-Sleigh-Ride-332894.html",
+            "https://www.broadway.com/shows/nantucket-sleigh-ride/story/",
+            "https://www.theatermania.com/news/nantucket-sleigh-ride-starring-john-larroquette-makes-a-whirlwind-of-a-memory-play_88152/",
+            "https://variety.com/2019/legit/reviews/nantucket-sleigh-ride-review-john-guare-1203166021/",
+            "https://exeuntnyc.com/reviews/review-nantucket-sleigh-ride-mitzi-e-newhouse-theatre/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "soft-power-off-broadway-2019",
+          "title": "Soft Power",
+          "slug": "soft-power-off-broadway-2019",
+          "venue": "Public Theater/Newman Theater",
+          "previewsStartDate": "2019-09-24",
+          "openingDate": "2019-10-15",
+          "closingDate": "2019-11-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Soft-Power-333155.html",
+            "https://www.broadway.com/shows/soft-power/story/",
+            "https://exeuntnyc.com/reviews/review-soft-power-public-theater/",
+            "https://www.theatermania.com/news/soft-power-imagines-a-broadway-romance-between-a-chinese-executive-and-hillary-clinton_89975/",
+            "https://variety.com/2019/legit/reviews/soft-power-review-musical-public-theater-1203369974/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "american-moor-off-broadway-2019",
+          "title": "American Moor",
+          "slug": "american-moor-off-broadway-2019",
+          "venue": "Cherry Lane Theatre",
+          "previewsStartDate": "2019-08-27",
+          "openingDate": "2019-09-08",
+          "closingDate": "2019-10-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/American-Moor-333244.html",
+            "https://nystagereview.com/2019/09/08/american-moor-keith-hamilton-cobb-turns-an-othello-audition-red-hot/",
+            "https://exeuntnyc.com/reviews/review-american-moor-red-bull-theater/",
+            "https://www.theatermania.com/news/seeing-othello-through-a-black-actors-eyes-in-american-moor_89713/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "heroes-of-the-fourth-turning-off-broadway-2019",
+          "title": "Heroes of the Fourth Turning",
+          "slug": "heroes-of-the-fourth-turning-off-broadway-2019",
+          "venue": "Playwrights Horizons",
+          "previewsStartDate": "2019-09-13",
+          "openingDate": "2019-10-07",
+          "closingDate": "2019-11-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Heroes-of-the-Fourth-Turning-333188.html",
+            "https://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
+            "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
+            "https://www.theatermania.com/news/heroes-of-the-fourth-turning-and-the-conservative-millennials-preparing-for-war_89919/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "long-lost-off-broadway-2019",
+          "title": "Long Lost",
+          "slug": "long-lost-off-broadway-2019",
+          "venue": "New York City Center – Stage I",
+          "previewsStartDate": "2019-05-14",
+          "openingDate": "2019-06-04",
+          "closingDate": "2019-06-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Long-Lost-332983.html",
+            "https://www.broadway.com/shows/long-lost/story/",
+            "https://nystagereview.com/2019/06/04/long-lost-donald-margulies-prodigal-returns-lobbing-grenades/",
+            "https://www.theatermania.com/news/donald-marguliess-long-lost-is-a-long-lost-opportunity-for-new-dramatic-insights_88940/",
+            "https://variety.com/2019/legit/reviews/long-lost-review-donald-margulies-alex-wolff-kelly-aucoin-lee-tergesen-1203233527/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-wrong-man-off-broadway-2019",
+          "title": "The Wrong Man",
+          "slug": "the-wrong-man-off-broadway-2019",
+          "venue": "The Robert W. Wilson MCC Theater Space",
+          "previewsStartDate": "2019-09-18",
+          "openingDate": "2019-10-07",
+          "closingDate": "2019-11-24",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm+broadway.com",
+          "closingDateSource": "two-source:bww+tm+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Wrong-Man-333175.html",
+            "https://www.broadway.com/shows/wrong-man/story/",
+            "https://nystagereview.com/2019/10/07/the-wrong-man-how-wrong-a-wrong-man-can-go-in-song-and-dance/",
+            "https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/",
+            "https://variety.com/2019/legit/reviews/the-wrong-man-review-musical-ross-golan-1203364892/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "this-aint-no-disco-off-broadway-2018",
+          "title": "This Ain't No Disco",
+          "slug": "this-aint-no-disco-off-broadway-2018",
+          "venue": "Atlantic Theater Company/Linda Gross Theater",
+          "previewsStartDate": "2018-06-29",
+          "openingDate": "2018-07-24",
+          "closingDate": "2018-08-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/This-Aint-No-Disco-332071.html",
+            "https://nystagereview.com/2018/07/24/this-aint-no-disco-an-era-through-a-glass-murkily/",
+            "https://www.theatermania.com/news/the-dancing-denizens-of-studio-54-insist-this-aint-no-disco_85958/",
+            "https://variety.com/2018/legit/reviews/this-aint-no-disco-review-1202883003/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "molly-sweeney-off-broadway-2019",
+          "title": "Molly Sweeney",
+          "slug": "molly-sweeney-off-broadway-2019",
+          "venue": "Theatre Row",
+          "previewsStartDate": "2019-10-08",
+          "openingDate": "2019-10-23",
+          "closingDate": "2019-11-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Molly-Sweeney-333299.html",
+            "https://theaterlife.com/molly-sweeney-1-2/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-keen-companys-molly-sweeney-at-theatre-row",
+            "https://www.theaterscene.net/plays/offbway-plays/molly-sweeney/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-other-josh-cohen-off-broadway-2018",
+          "title": "The Other Josh Cohen",
+          "slug": "the-other-josh-cohen-off-broadway-2018",
+          "venue": "Westside Theatre",
+          "previewsStartDate": "2018-10-26",
+          "openingDate": "2018-11-12",
+          "closingDate": "2019-04-07",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Other-Josh-Cohen-332829.html",
+            "https://www.broadway.com/shows/the-other-josh-cohen/story/",
+            "https://nystagereview.com/2018/11/12/the-other-josh-cohen/",
+            "https://www.theatermania.com/news/an-eternal-optimist-finally-gets-his-wish-in-the-other-josh-cohen_87021/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-the-other-josh-cohen-at-westside-theatre"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-underlying-chris-off-broadway-2019",
+          "title": "The Underlying Chris",
+          "slug": "the-underlying-chris-off-broadway-2019",
+          "venue": "Second Stage Theater/Tony Kiser Theater",
+          "previewsStartDate": "2019-10-29",
+          "openingDate": "2019-11-21",
+          "closingDate": "2019-12-15",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Underlying-Chris-333468.html",
+            "https://www.broadway.com/shows/underlying-chris/story/",
+            "https://nystagereview.com/2019/11/21/the-underlying-chris-the-circle-of-life-through-a-rainbow-of-lenses/",
+            "https://variety.com/2019/legit/reviews/the-underlying-chris-review-will-eno-1203412767/",
+            "https://exeuntnyc.com/reviews/review-underlying-chris-second-stage-theater/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "white-noise-off-broadway-2019",
+          "title": "White Noise",
+          "slug": "white-noise-off-broadway-2019",
+          "venue": "Public Theater/Anspacher Theater",
+          "previewsStartDate": "2019-03-05",
+          "openingDate": "2019-03-20",
+          "closingDate": "2019-05-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/White-Noise-332741.html",
+            "https://www.broadway.com/shows/white-noise/story/",
+            "https://newyorktheater.me/2019/03/20/white-noise-review-pics-daveed-diggs-as-slave/",
+            "https://exeuntnyc.com/reviews/review-white-noise-public-theater/",
+            "https://variety.com/2019/legit/reviews/white-noise-review-daveed-diggs-suzan-lori-parks-play-1203168757/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "caesar-and-cleopatra-off-broadway-2019",
+          "title": "Caesar and Cleopatra",
+          "slug": "caesar-and-cleopatra-off-broadway-2019",
+          "venue": "Theatre Row",
+          "previewsStartDate": "2019-09-03",
+          "openingDate": "2019-09-03",
+          "closingDate": "2019-10-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Caesar-and-Cleopatra-333384.html",
+            "https://www.theatermania.com/news/a-young-woman-attaches-herself-to-an-older-man-for-power-in-caesar-and-cleopatra_89839/",
+            "https://nystagereview.com/2019/09/25/caesar-and-cleopatra-shaw-redux-with-reverent-irreverence/",
+            "https://theaterlife.com/caesar-and-cleopatra/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dr-rides-american-beach-house-off-broadway-2019",
+          "title": "Dr. Ride's American Beach House",
+          "slug": "dr-rides-american-beach-house-off-broadway-2019",
+          "venue": "Greenwich House Theater",
+          "previewsStartDate": "2019-10-21",
+          "openingDate": "2019-11-05",
+          "closingDate": "2019-11-23",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Doctor-Rides-American-Beach-House-333213.html",
+            "https://newyorktheater.me/2019/11/05/dr-rides-american-beach-house-review-lesbian-desire-disguised-in-1983/",
+            "https://theaterlife.com/dr-rides-american-beach-house-1-2/",
+            "https://www.theaterscene.net/plays/offbway-plays/dr-rides-american-beach-house/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "london-assurance-off-broadway-2019",
+          "title": "London Assurance",
+          "slug": "london-assurance-off-broadway-2019",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2019-12-06",
+          "openingDate": "2019-12-15",
+          "closingDate": "2020-02-09",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/London-Assurance-333462.html",
+            "https://nystagereview.com/2019/12/15/london-assurance-high-jinks-among-the-high-born/",
+            "https://www.theatermania.com/news/london-assurance-is-a-victorian-comedy-about-old-man-swagger_90309/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-london-assurance-at-irish-repertory-theatre"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "make-believe-off-broadway-2019",
+          "title": "Make Believe",
+          "slug": "make-believe-off-broadway-2019",
+          "venue": "Second Stage Theater/Tony Kiser Theater",
+          "previewsStartDate": "2019-07-30",
+          "openingDate": "2019-08-15",
+          "closingDate": "2019-09-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Make-Believe-333233.html",
+            "https://www.broadway.com/shows/make-believe/story/",
+            "https://nystagereview.com/2019/08/15/make-believe-the-games-that-kids-play/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-make-believe-at-second-stage-theater",
+            "https://exeuntnyc.com/reviews/review-make-believe-second-stage-theater/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "only-yesterday-off-broadway-2019",
+          "title": "Only Yesterday",
+          "slug": "only-yesterday-off-broadway-2019",
+          "venue": "59E59 Theaters",
+          "previewsStartDate": "2019-09-07",
+          "openingDate": "2019-09-12",
+          "closingDate": "2019-09-29",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Only-Yesterday-333247.html",
+            "https://nystagereview.com/2019/09/12/only-yesterday-a-day-and-night-in-the-life-of-lennon-and-mccartney/",
+            "https://www.theatermania.com/news/paul-mccartney-and-john-lennon-are-here-today-in-new-beatles-play-only-yesterday_89732/",
+            "https://exeuntnyc.com/reviews/review-yesterday-59e59/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "runboyrun-and-in-old-age-off-broadway-2019",
+          "title": "runboyrun & In Old Age",
+          "slug": "runboyrun-and-in-old-age-off-broadway-2019",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2019-09-04",
+          "openingDate": "2019-09-23",
+          "closingDate": "2019-10-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+tm",
+          "closingDateSource": "two-source:bww+tm",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/runboyrun-333242.html",
+            "https://nystagereview.com/2019/09/23/runboyrun-in-old-age-ghosts-haunt-a-nigerian-american-family-saga/",
+            "https://www.theatermania.com/news/a-nigerian-american-family-tells-its-story-in-runboyrun-and-in-old-age_89823/",
+            "https://exeuntnyc.com/reviews/review-runboyrun-old-age-new-york-theatre-workshop/"
+          ]
+        }
+      }
+    ]
+  }
+}
