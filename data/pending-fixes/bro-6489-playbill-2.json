@@ -1,0 +1,168 @@
+{
+ "issueNumber": "bro-6489-playbill-2",
+ "planId": "fcad8d2a-931c-41a6-8dd0-f728ff50a3a0",
+ "status": "pending",
+ "createdAt": "2026-10-29T08:48:41.599Z",
+ "submitter": {
+  "name": null,
+  "email": null
+ },
+ "plan": {
+  "summary": "BRO-6489 NYC facts full run: 15 edits on 12 rows where the Playbill production page (venue matched) contradicts the stored value and a checker agreed with Playbill",
+  "steps": [
+   "shows.json: heartbreak-hotel-off-broadway-2026.openingDate",
+   "shows.json: the-dinosaurs-off-broadway-2026.openingDate",
+   "shows.json: the-receptionist-off-broadway-2026.isRevival",
+   "shows.json: data-off-broadway-2026.openingDate",
+   "shows.json: ulysses-off-broadway-2026.openingDate",
+   "shows.json: trophy-boys-off-broadway-2025.previewsStartDate",
+   "shows.json: trophy-boys-off-broadway-2025.openingDate",
+   "shows.json: trophy-boys-off-broadway-2025.closingDate",
+   "shows.json: cat-cohen-broad-strokes-off-broadway-2026.type",
+   "shows.json: small-off-broadway-2026.openingDate",
+   "shows.json: shifters-off-broadway-2026.openingDate",
+   "shows.json: henry-vi-a-trilogy-in-two-parts-off-broadway-2026.openingDate",
+   "shows.json: the-invention-of-love-off-broadway-2026.openingDate",
+   "shows.json: the-tragedy-of-coriolanus-off-broadway-2026.openingDate",
+   "shows.json: the-tragedy-of-coriolanus-off-broadway-2026.isRevival"
+  ],
+  "riskLevel": "low",
+  "actions": [
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "heartbreak-hotel-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-03-20",
+    "newValue": "2026-03-24",
+    "description": "shows.json: heartbreak-hotel-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/heartbreak-hotel-off-broadway-dr2-theatre-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "the-dinosaurs-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-02-04",
+    "newValue": "2026-02-16",
+    "description": "shows.json: the-dinosaurs-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/the-dinosaurs-off-broadway-playwrights-horizons-the-judy-theater-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "the-receptionist-off-broadway-2026",
+    "field": "isRevival",
+    "oldValue": false,
+    "newValue": true,
+    "description": "shows.json: the-receptionist-off-broadway-2026.isRevival (Playbill production page https://playbill.com/production/the-receptionist-off-broadway-the-pershing-square-signature-center-irene-diamond-stage-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "data-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-01-09",
+    "newValue": "2026-01-25",
+    "description": "shows.json: data-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/data-off-broadway-lucille-lortel-theatre-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "ulysses-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-01-13",
+    "newValue": "2026-01-25",
+    "description": "shows.json: ulysses-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/ulysses-off-broadway-public-theater-martinson-hall-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "trophy-boys-off-broadway-2025",
+    "field": "previewsStartDate",
+    "oldValue": "2025-06-10",
+    "newValue": "2025-06-05",
+    "description": "shows.json: trophy-boys-off-broadway-2025.previewsStartDate (Playbill production page https://playbill.com/production/trophy-boys-off-broadway-the-robert-w-wilson-mcc-theater-space-2025)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "trophy-boys-off-broadway-2025",
+    "field": "openingDate",
+    "oldValue": "2025-06-25",
+    "newValue": "2025-06-24",
+    "description": "shows.json: trophy-boys-off-broadway-2025.openingDate (Playbill production page https://playbill.com/production/trophy-boys-off-broadway-the-robert-w-wilson-mcc-theater-space-2025)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "trophy-boys-off-broadway-2025",
+    "field": "closingDate",
+    "oldValue": "2025-07-27",
+    "newValue": "2025-08-03",
+    "description": "shows.json: trophy-boys-off-broadway-2025.closingDate (Playbill production page https://playbill.com/production/trophy-boys-off-broadway-the-robert-w-wilson-mcc-theater-space-2025)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+    "field": "type",
+    "oldValue": "play",
+    "newValue": "musical",
+    "description": "shows.json: cat-cohen-broad-strokes-off-broadway-2026.type (Playbill production page https://playbill.com/production/cat-cohen-broad-strokes-off-broadway-lucille-lortel-theatre-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "small-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-05-29",
+    "newValue": "2026-05-28",
+    "description": "shows.json: small-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/small-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "shifters-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-07-16",
+    "newValue": "2026-07-15",
+    "description": "shows.json: shifters-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/shifters-off-broadway-cherry-lane-theatre-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-06-09",
+    "newValue": "2026-06-21",
+    "description": "shows.json: henry-vi-a-trilogy-in-two-parts-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/henry-vi-a-trilogy-in-two-parts-off-broadway-public-theater-newman-theater-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "the-invention-of-love-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-09-21",
+    "newValue": "2026-09-20",
+    "description": "shows.json: the-invention-of-love-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/the-invention-of-love-off-broadway-theaterlab-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "the-tragedy-of-coriolanus-off-broadway-2026",
+    "field": "openingDate",
+    "oldValue": "2026-02-03",
+    "newValue": "2026-02-14",
+    "description": "shows.json: the-tragedy-of-coriolanus-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/the-tragedy-of-coriolanus-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026)"
+   },
+   {
+    "type": "data-edit",
+    "file": "shows.json",
+    "showId": "the-tragedy-of-coriolanus-off-broadway-2026",
+    "field": "isRevival",
+    "oldValue": false,
+    "newValue": true,
+    "description": "shows.json: the-tragedy-of-coriolanus-off-broadway-2026.isRevival (Playbill production page https://playbill.com/production/the-tragedy-of-coriolanus-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026)"
+   }
+  ]
+ }
+}
