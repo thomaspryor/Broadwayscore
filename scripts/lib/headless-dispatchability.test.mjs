@@ -84,8 +84,14 @@ test('linear-brain create --child files In Progress with a child claim comment; 
 // BRO-6443: the board's own tooling writes these two lines; they must clear the gate.
 test('commentClearsOwnerGate: triage "Owner gate removed" and the answer path "Owner decision" comments clear it', () => {
   assert.equal(commentClearsOwnerGate(['Owner gate removed by BRO-6235 (checked 2026-10-25): this is not a question for the owner.']), true);
-  assert.equal(commentClearsOwnerGate(['**Owner decision** (answered by the owner through the email link, 2026-10-25 UTC)\n\nChose: Option A', 'Listed in the owner\'s decisions email.']), true);
+  assert.equal(commentClearsOwnerGate(['**Owner decision** (answered by the owner through the email link, 2026-10-25 UTC)\n\nChose: Option A', 'Listed in the owner\'s decisions email.'], ''), true);
   assert.equal(commentClearsOwnerGate(['OWNER-CLEARED: technical call']), true);
+});
+
+test('commentClearsOwnerGate: an answered-decision comment does not clear a card that still has an open question', () => {
+  const answered = ['**Owner decision** (answered by the owner through the email link)\n\nChose: Option A'];
+  assert.equal(commentClearsOwnerGate(answered, 'ANSWERED by the owner: first? -> A\nDECISION NEEDED: second question?'), false);
+  assert.equal(commentClearsOwnerGate(answered, 'ANSWERED by the owner: first? -> A'), true);
 });
 
 test('commentClearsOwnerGate: ordinary comments, a mid-line mention and a re-ask do not clear it', () => {

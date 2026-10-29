@@ -81,7 +81,7 @@ function waitsOnOwner(issue, bodies, { secret, nowMs }) {
   if (visualAskOpen(issue.description, bodies)) return true;
   const d = findOwnerDecisions([issue])[0];
   if (!d) return false;
-  if (commentClearsOwnerGate(bodies)) return false;
+  if (commentClearsOwnerGate(bodies, issue.description)) return false;
   if (d.question) {
     const hold = holdReason(issue, d, { secret, now: nowMs });
     if (hold && hold.reason === 'answered') return false;
