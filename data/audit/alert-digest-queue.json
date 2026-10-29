@@ -1024,5 +1024,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T01:06:04.192Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:a-few-good-men-2026",
+    "title": "Review gap — \"A Few Good Men\" missing 3 cited review(s)",
+    "description": "A Few Good Men (a-few-good-men-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-few-good-men-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T01:32:30.972Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-29.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T01:33:42.398Z"
   }
 ]
