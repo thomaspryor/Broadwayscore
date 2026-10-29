@@ -477,7 +477,9 @@ async function runOutlet(outletId, o, shared) {
   const results = items.map((it) => {
     const idm = idRe && idRe.exec(it.url);
     const aliasKey = idm ? heldById.get(idm[1]) : undefined;
-    const full = { ...it, aliasKey, outletId, sourceSaysReview: !!src.sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
+    // requireReviewAuthor: the source path mixes reviews with listings; only a page naming its critic counts.
+    const sourceSaysReview = !!src.sourceSaysReview && (!src.requireReviewAuthor || !!it.reviewAuthor);
+    const full = { ...it, aliasKey, outletId, sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
     return { ...full, ...census.bucketItem(full, ctx) };
   });
 
