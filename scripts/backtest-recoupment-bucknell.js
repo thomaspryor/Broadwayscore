@@ -38,7 +38,7 @@ const split = splitNoCommercial(result.rows, noSourceDoc);
 
 if (argv.includes('--json')) {
   const documentedIds = new Set(split.documented.map((r) => r.showId));
-  const rows = result.rows.map((r) => (documentedIds.has(r.showId) ? { ...r, documentedNoSource: true } : r));
+  const rows = result.rows.map((r) => (documentedIds.has(r.showId) && !r.commercialKey ? { ...r, documentedNoSource: true } : r));
   console.log(JSON.stringify({ ...result, rows, staleDoc: split.staleDoc }, null, 2));
   process.exit(0);
 }
