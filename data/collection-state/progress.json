@@ -457,7 +457,8 @@
     "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
     "surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-    "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
+    "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -818,7 +819,7 @@
     ]
   },
   "startTime": "2026-10-29T00:13:45.924Z",
-  "lastProcessed": "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-10-29T00:14:07.792Z",
@@ -956,6 +957,23 @@
       "event": "bb-session",
       "session": "c8fd724c",
       "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-10-29T05:35:03.262Z",
+      "event": "bb-session",
+      "session": "11d71255",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-29T05:35:03.900Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T05:39:14.414Z",
+      "event": "bb-session",
+      "session": "258142e6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
   ],
   "recoveredAfterFailure": [
