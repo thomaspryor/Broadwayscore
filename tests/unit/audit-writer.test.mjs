@@ -90,7 +90,7 @@ test('actual workflow shell accepts designed outcomes and fails on audit-write e
 // swallowed audit writers may only go down. Going below the baseline only
 // warns (a session fixing workflows must not be tripped by this file); lower
 // the number when you can. Reaching 0 means the lint can be wired into test.yml.
-const REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE = 85;
+const REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE = 78;
 
 test('swallowed audit-writer violations never exceed the triage baseline', () => {
   const { isAuditWriterFile, validateAllowlist, allowlistKey } = require('../../scripts/lib/swallowed-audit-writer-check.js');

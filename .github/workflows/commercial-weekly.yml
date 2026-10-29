@@ -489,8 +489,10 @@ jobs:
       - name: Run commercial audit
         # continue-on-error: true — audit is read-only/informational; a failure
         # shouldn't block the deploy. Audit findings surface in the daily digest.
-        run: node scripts/audit-commercial-data.js
-        continue-on-error: true
+        run: |
+          rc=0
+          node scripts/audit-commercial-data.js || rc=$?
+          if [ "$rc" -ne 0 ]; then echo "::warning title=Run commercial audit::scripts/audit-commercial-data.js exited $rc (non-blocking step, see log above)"; fi
 
       - name: Commercial coverage by season
         # BRO-4990: read-only weekly health. Coverage % of 2020+ Broadway
@@ -511,8 +513,10 @@ jobs:
         # update-commercial.yml's manual-dispatch fallback intentionally do
         # NOT advance history. continue-on-error: true — same reasoning as
         # "Run commercial audit" above; informational, not ship-blocking.
-        run: node scripts/audit-commercial-data.js --write-history
-        continue-on-error: true
+        run: |
+          rc=0
+          node scripts/audit-commercial-data.js --write-history || rc=$?
+          if [ "$rc" -ne 0 ]; then echo "::warning title=Update commercial model drift history::scripts/audit-commercial-data.js exited $rc (non-blocking step, see log above)"; fi
 
       - name: Commercial scope-contamination audit (informational)
         # OUT_OF_MARKET_SCOPE/SHOW_NOT_IN_DB are warn-only (not ship-blocking,
