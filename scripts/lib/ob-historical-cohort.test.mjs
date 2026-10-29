@@ -81,6 +81,11 @@ test('playbillFacts: takes Playbill play/musical and revival labels, and whether
   assert.deepEqual(playbillFacts(r, { type: 'play' }), { type: 'musical', isRevival: true, openingFromPlaybill: false });
   const r2 = { parsed: { tagLine: { showType: null, revivalStatus: 'unknown' }, dates: { openingDate: '2025-02-01' } } };
   assert.deepEqual(playbillFacts(r2, { type: 'play' }), { type: 'play', isRevival: null, openingFromPlaybill: true });
+  // BRO-6470: a bare ["Off-Broadway","Revival"] tag-line is not trusted (The Bedwetter, Black No More).
+  const r3 = { parsed: { tagLine: { showType: null, revivalStatus: 'revival' }, dates: { openingDate: '2022-06-07' } } };
+  assert.equal(playbillFacts(r3, { type: 'play' }).isRevival, null);
+  const r4 = { parsed: { tagLine: { showType: null, revivalStatus: 'original' }, dates: {} } };
+  assert.equal(playbillFacts(r4, { type: 'play' }).isRevival, false);
 });
 
 test('isTmRowInWindow: uses the earliest of preview/opening; no dates → false', () => {
