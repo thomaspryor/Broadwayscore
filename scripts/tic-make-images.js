@@ -32,7 +32,7 @@ async function main() {
     if (fs.existsSync(path.join(dir, 'poster.webp'))) { skipped++; continue; }
     if (!rec.poster) { skipped++; continue; }
     try {
-      const res = await fetch(rec.poster.startsWith('http') ? rec.poster : `https://www.theatreinchicago.com${rec.poster}`);
+      const res = await fetch(rec.poster.startsWith('http') ? rec.poster : `https://www.theatreinchicago.com${rec.poster}`, { signal: AbortSignal.timeout(30000) });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const buf = Buffer.from(await res.arrayBuffer());
       fs.mkdirSync(dir, { recursive: true });
