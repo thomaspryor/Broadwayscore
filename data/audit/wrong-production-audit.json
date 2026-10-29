@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T00:31:57.665Z",
+  "timestamp": "2026-10-29T00:57:41.958Z",
   "stats": {
     "totalReviews": 65814,
-    "alreadyFlagged": 22043,
+    "alreadyFlagged": 22048,
     "dateGuardCatches": 233,
-    "directorMismatch": 2627,
+    "directorMismatch": 2629,
     "tvFilmSignals": 1853,
-    "londonSignals": 3183,
+    "londonSignals": 3184,
     "offBroadwaySignals": 597,
     "yearMismatch": 239,
-    "noPublishDate": 6019
+    "noPublishDate": 6010
   },
   "findings": [
     {
@@ -15867,6 +15867,7 @@
     {
       "showId": "english-off-broadway-2022",
       "file": "front-row-center--sarah-downs.json",
+      "score": 95,
       "publishDate": "2022-02-22",
       "url": "https://thefrontrowcenter.com/2022/02/english/",
       "findings": [
@@ -15982,6 +15983,7 @@
     {
       "showId": "english-off-broadway-2022",
       "file": "theater-scene--victor-gluck.json",
+      "score": 88,
       "publishDate": "2022-02-28",
       "url": "http://www.theaterscene.net/plays/offbway-plays/english/victor-gluck/",
       "findings": [
@@ -21858,6 +21860,34 @@
     },
     {
       "showId": "hand-to-god-west-end-2016",
+      "file": "radio-times--tony-peters.json",
+      "score": 87,
+      "publishDate": "2016-02-16",
+      "url": "http://www.radiotimes.com/news/2016-02-16/this-week-in-the-west-end-dudley-dursley-is-at-the-mercy-of-a-satanic-sock-puppet-in-hand-to-god",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moritz von stuelpnagel\" from hand-to-god-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-west-end-2016",
+      "file": "standard--fiona-mountford.json",
+      "score": 45,
+      "publishDate": "2016-02-16",
+      "url": "https://www.standard.co.uk/goingout/theatre/hand-to-god-theatre-review-it-s-a-darn-shame-but-terrific-cast-can-t-redeem-this-bizarre-sock-puppet-a3181431.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moritz von stuelpnagel\" from hand-to-god-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-west-end-2016",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 44,
       "publishDate": "2016-02-16",
@@ -21976,6 +22006,7 @@
     {
       "showId": "harmony-off-broadway-2022",
       "file": "amny--matt-windman.json",
+      "score": 59,
       "publishDate": "2022-04-17",
       "url": "https://www.amny.com/entertainment/reviews-american-buffalo-if-you-can-stand-mamet-is-damn-good/",
       "findings": [
@@ -22157,6 +22188,7 @@
     {
       "showId": "harmony-off-broadway-2022",
       "file": "theatrely--juan-a-ramirez.json",
+      "score": 75,
       "publishDate": "2022-04-13",
       "url": "https://www.theatrely.com/post/historic-harmony-in-turbulent-times-review",
       "findings": [
@@ -45789,6 +45821,7 @@
     {
       "showId": "suffs-off-broadway-2022",
       "file": "dailybeast--tim-teeman.json",
+      "score": 68,
       "publishDate": "2022-04-06",
       "url": "https://www.thedailybeast.com/how-suffs-makes-a-musical-out-of-womens-right-to-vote",
       "findings": [
@@ -45816,6 +45849,7 @@
     {
       "showId": "suffs-off-broadway-2022",
       "file": "ew--andrea-towers.json",
+      "score": 92,
       "publishDate": "2022-04-06",
       "url": "https://ew.com/theater/suffs-review-shaina-taub/",
       "findings": [
@@ -50458,6 +50492,7 @@
     {
       "showId": "the-elephant-man-west-end-2015",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 84,
       "publishDate": "2015-06-01",
       "url": "https://www.whatsonstage.com/news/the-elephant-man-theatre-royal-haymarket_37926/",
       "findings": [
@@ -92839,6 +92874,7 @@
     {
       "showId": "on-sugarland-off-broadway-2022",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 57,
       "publishDate": null,
       "url": null,
       "findings": [
@@ -93903,6 +93939,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "britishtheatrecom--richard-earl.json",
+      "score": null,
+      "publishDate": "2016-05-16",
+      "url": "https://www.britishtheatre.com/posts/review-people-places-and-things-wyndhams-theatre-5stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -101365,6 +101415,7 @@
     {
       "showId": "the-caretaker-west-end-2016",
       "file": "whatsonstage--holly-williams.json",
+      "score": 78,
       "publishDate": "2016-04-07",
       "url": "https://www.whatsonstage.com/news/the-caretaker-old-vic_40138/",
       "findings": [
@@ -102179,6 +102230,7 @@
     {
       "showId": "the-crucible-west-end-2014",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 57,
       "publishDate": "2014-07-04",
       "url": "https://www.whatsonstage.com/news/the-crucible-old-vic_34958/",
       "findings": [
@@ -103227,6 +103279,7 @@
     {
       "showId": "the-father-west-end-2015",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 96,
       "publishDate": "2015-10-06",
       "url": "https://www.whatsonstage.com/news/the-father-wyndhams-theatre_38875/",
       "findings": [
@@ -105905,6 +105958,7 @@
     {
       "showId": "the-master-builder-west-end-2016",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 82,
       "publishDate": "2016-02-04",
       "url": "https://www.whatsonstage.com/news/the-master-builder-old-vic_39642/",
       "findings": [
@@ -108931,6 +108985,7 @@
     {
       "showId": "the-truth-west-end-2016",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 78,
       "publishDate": "2016-06-28",
       "url": "https://www.whatsonstage.com/news/the-truth-wyndhams-theatre_41161/",
       "findings": [
@@ -111766,7 +111821,7 @@
     {
       "showId": "violence-and-son-west-end-2015",
       "file": "guardian--unknown.json",
-      "score": 57,
+      "score": 63,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/jun/09/violence-and-son-review-royal-court",
       "findings": [
@@ -111780,6 +111835,7 @@
     {
       "showId": "violence-and-son-west-end-2015",
       "file": "whatsonstage--matt-trueman.json",
+      "score": 61,
       "publishDate": "2015-06-09",
       "url": "https://www.whatsonstage.com/news/violence-and-son-royal-court_37997/",
       "findings": [
