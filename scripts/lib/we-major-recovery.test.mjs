@@ -193,3 +193,11 @@ test('Guardian news and blog pieces tagged tone/reviews are not reviews (BRO-650
   assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/x', 'Clybourne Park', { starRating: ' ' })]).length, 0);
   assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/x', 'Clybourne Park and more: review roundup')]).length, 0);
 });
+
+test('guardianItemIsReview is the shared Guardian review predicate (BRO-6503, outlet-census)', () => {
+  const { guardianItemIsReview } = require('./we-major-recovery.js');
+  assert.equal(guardianItemIsReview({ webUrl: 'https://www.theguardian.com/stage/theatreblog/2011/x', fields: { headline: 'Why theatre review culture matters' } }), false);
+  assert.equal(guardianItemIsReview({ webUrl: 'https://www.theguardian.com/stage/2011/apr/19/clybourne-park-pulitzer', fields: { headline: 'Clybourne Park wins Pulitzer prize' } }), false);
+  assert.equal(guardianItemIsReview({ webUrl: 'https://www.theguardian.com/stage/2011/feb/04/x', fields: { headline: 'Clybourne Park', starRating: '4' } }), true);
+  assert.equal(guardianItemIsReview({ webUrl: 'https://www.theguardian.com/stage/2011/feb/04/y', fields: { headline: 'Clybourne Park – review' } }), true);
+});

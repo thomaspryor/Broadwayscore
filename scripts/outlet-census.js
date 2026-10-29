@@ -28,6 +28,7 @@ const zlib = require('zlib');
 const { SOURCES, LONDON_SOURCES, sourceFromJson } = require('./lib/outlet-census-sources');
 const census = require('./lib/outlet-census');
 const { parseSitemapXml } = require('./lib/outlet-listing-helpers');
+const { guardianItemIsReview } = require('./lib/we-major-recovery');
 const { urlKey } = require('./lib/outlet-feed-reconcile');
 const { fetchViaSitemap } = require('./outlet-listing-poller');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -132,7 +133,7 @@ async function enumerateGuardian(src, since, until) {
       const got = [];
       for (let page = 1; page < 20; page++) {
         const q = new URLSearchParams({ section: 'stage', tag: 'tone/reviews', 'from-date': from, 'to-date': to, 'page-size': '200', page: String(page),
-          'order-by': 'oldest', 'show-fields': 'headline,standfirst,publication,byline', 'api-key': key, ...(src.params || {}) });
+          'order-by': 'oldest', 'show-fields': 'headline,standfirst,publication,byline,starRating', 'api-key': key, ...(src.params || {}) });
         let r;
         try { r = await get(`https://content.guardianapis.com/search?${q}`); } catch (e) { notes.push(`${from} p${page}: ${e.message}`); break; }
         if (r.status !== 200) { notes.push(`${from} p${page}: HTTP ${r.status}`); break; }
@@ -146,9 +147,13 @@ async function enumerateGuardian(src, since, until) {
     for (const g of guardianMonths.get(mk)) {
       const f = g.fields || {};
       if (src.publication && !src.publication.test(f.publication || '')) continue;
+      // News and blog pieces before 2013 carry tone/reviews too (BRO-6503); theatreblog posts
+      // are dropped, other non-review-looking items fall back to the headline classifier.
+      if (/\/theatreblog\//.test(g.webUrl || '')) continue;
       items.push({ url: g.webUrl, headline: census.decodeEntities(f.headline || g.webTitle || ''),
         description: census.decodeEntities(String(f.standfirst || '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim().slice(0, 400),
-        publishDate: String(g.webPublicationDate || '').slice(0, 10), byline: f.byline || null, publication: f.publication || null });
+        publishDate: String(g.webPublicationDate || '').slice(0, 10), byline: f.byline || null, publication: f.publication || null,
+        ...(guardianItemIsReview(g) ? {} : { sourceSaysReview: false }) });
     }
   }
   return { items, notes };
@@ -479,7 +484,7 @@ async function runOutlet(outletId, o, shared) {
     const idm = idRe && idRe.exec(it.url);
     const aliasKey = idm ? heldById.get(idm[1]) : undefined;
     // requireReviewAuthor: the source path mixes reviews with listings; only a page naming its critic counts.
-    const sourceSaysReview = !!src.sourceSaysReview && (!src.requireReviewAuthor || !!it.reviewAuthor);
+    const sourceSaysReview = !!src.sourceSaysReview && it.sourceSaysReview !== false && (!src.requireReviewAuthor || !!it.reviewAuthor);
     const full = { ...it, aliasKey, outletId, sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
     return { ...full, ...census.bucketItem(full, ctx) };
   });

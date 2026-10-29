@@ -168,6 +168,17 @@ function matchWosPosts(rows, shows, posts) {
  * [opening-14d, opening+60d], and its text names the show's venue (a same-titled regional or Broadway
  * production is another production). More than one such result means the title is ambiguous, so none is kept.
  */
+// Pre-2013 news and blog pieces also carry tone/reviews (a Pulitzer story, a
+// casting item, a theatreblog essay), so a review needs a star rating or
+// "review" in its headline, and theatreblog posts never count (BRO-6503).
+// outlet-census.js uses this too.
+function guardianItemIsReview(r) {
+  if (/\/theatreblog\//.test(r.webUrl || '')) return false;
+  const f = r.fields || {};
+  const headline = f.headline || r.webTitle || '';
+  if (/\b(round ?up|readers?'? reviews?)\b/i.test(headline)) return false;
+  return /\breview\b/i.test(headline) || /^[1-5]$/.test(String(f.starRating || '').trim());
+}
 function matchGuardianResults(show, results) {
   if (!show || !show.openingDate) return [];
   const lo = addDays(show.openingDate, -14), hi = addDays(show.openingDate, 60);
@@ -179,14 +190,9 @@ function matchGuardianResults(show, results) {
     // Web-first pieces before the July 2013 domain move carry 'guardian.co.uk' (BRO-6503).
     if (!/^(the guardian|theguardian\.com|guardian\.co\.uk)$/i.test((r.fields && r.fields.publication) || '')) return false;
     if (!(r.tags || []).some(x => x.id === 'tone/reviews')) return false;
+    if (!guardianItemIsReview(r)) return false;
     const f = r.fields || {};
-    // Pre-2013 news and blog pieces also carry tone/reviews (a Pulitzer story, a
-    // casting item, a theatreblog essay), so a review needs a star rating or
-    // "review" in its headline, and theatreblog posts never count (BRO-6503).
-    if (/\/theatreblog\//.test(r.webUrl || '')) return false;
     const headline = f.headline || r.webTitle || '';
-    if (/\b(round ?up|readers?'? reviews?)\b/i.test(headline)) return false;
-    if (!/\breview\b/i.test(headline) && !/^[1-5]$/.test(String(f.starRating || '').trim())) return false;
     if (!` ${norm(headline)} `.includes(` ${t} `)) return false;
     const text = ` ${norm([f.standfirst, f.trailText, f.bodyText].filter(Boolean).join(' '))} `;
     return venueInText(show.venue, text);
@@ -253,5 +259,5 @@ function hostMatchesSlot(m, host) {
 
 module.exports = {
   hostMatchesSlot, MAJOR, BY_SLOT, SLOT_OF, buildSlots, summarize, orderQueue, showWindow,
-  norm, venueAgrees, matchWosPosts, matchGuardianResults, ledgerUsd, CostTally, addDays,
+  norm, venueAgrees, matchWosPosts, matchGuardianResults, guardianItemIsReview, ledgerUsd, CostTally, addDays,
 };
