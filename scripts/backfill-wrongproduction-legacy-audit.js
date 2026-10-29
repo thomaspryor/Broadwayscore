@@ -9,6 +9,7 @@
  * wrong --expect refuses before any write (the workflow pushes review-texts even after a failure).
  * Runs in CI via execute-approved-fix (run-script).
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { AUDIT_FIELD, legacyAuditStamp } = require('./lib/wrongproduction-legacy-audit');
