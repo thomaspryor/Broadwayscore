@@ -1238424,21 +1238424,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T00:19:31.280Z",
-    "completedAt": "2026-10-29T00:19:45.247Z",
-    "totalReviews": 3,
-    "processed": 3,
-    "skipped": 0,
+    "startedAt": "2026-10-29T00:18:26.115Z",
+    "completedAt": "2026-10-29T00:18:51.796Z",
+    "totalReviews": 6,
+    "processed": 5,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 17505,
-      "output": 906,
-      "cacheRead": 11421,
+      "input": 31255,
+      "output": 1645,
+      "cacheRead": 19035,
       "cacheWrite": 0,
-      "total": 44516
+      "total": 77448
     },
-    "costUsd": 0.06623390000000001,
-    "runId": "40792728971",
+    "costUsd": 0.11842970000000003,
+    "runId": "40792696842",
     "errorDetails": [],
     "validation": [
       {
@@ -1246442,6 +1246442,16 @@
           "up": 0,
           "flat": 2,
           "down": 3,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "dark-disabled-stories-off-broadway-2023",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 1,
           "total": 5
         },
         "hasDisagreement": false
@@ -1273830,8 +1273840,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T00:21:57.625Z",
-    "completedAt": "2026-10-29T00:21:57.626Z",
+    "startedAt": "2026-10-29T00:20:07.859Z",
+    "completedAt": "2026-10-29T00:20:07.860Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1273844,7 +1273854,7 @@
       "total": 6757
     },
     "costUsd": 0,
-    "runId": "40792728971",
+    "runId": "40792696842",
     "errorDetails": []
   }
 ]
