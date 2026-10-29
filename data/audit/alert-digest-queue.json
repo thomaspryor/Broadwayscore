@@ -1082,18 +1082,35 @@
     "queuedAt": "2026-10-29T02:48:40.447Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
+    "conditionKey": "land:land/bro-6490-backfill-prune",
+    "title": "Landing blocked: race red on land/bro-6490-backfill-prune",
+    "description": "land.yml did not land land/bro-6490-backfill-prune: the race gate went red at 73795f6024. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6490-backfill-prune @ 73795f6024 (origin/land/bro-6490-backfill-prune) → origin/main @ a2433048dd [land] attempt 1/3: rebased onto a2433048dd, 3 file(s) changed — running checks [land] linked 22 gitignored path(s) into the worktree (node_modules/core data) [land] verified-base: main moved aa124d672e → a2433048dd across 152 inert path(s) only — reusing the upstream verdict, gauntlet Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40808582532",
+    "severity": "error",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T03:31:39.023Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6490-backfill-prune"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "73795f6024d474f80cf78154665c2bdc48207b6a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40808582532"
+      }
+    ],
+    "queuedAt": "2026-10-29T03:40:09.474Z"
   },
   {
     "conditionKey": "land:land/bro-6487-sitemap-pn",
