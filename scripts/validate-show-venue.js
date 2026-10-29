@@ -211,6 +211,10 @@ function isExemptFromPlaybillCheck(show) {
   // dated Guardian review of a hub-house production, carried in evidenceUrls.
   if (show.category === 'regional' && src === 'uk-regional-guardian-backfill'
     && (show.evidenceUrls || []).some((u) => /^https:\/\/www\.theguardian\.com\/stage\//.test(u))) return true;
+  // Chicago local productions (BRO-6518): theatreinchicago.com lists them with 3+
+  // dated critic reviews; Playbill has no page for most, and the page it does have
+  // for a same-title show is usually the Broadway transfer. localOnly shows.
+  if (show.category === 'regional' && show.discoverySource === 'theatreinchicago') return true;
   // Same rule for national tours (BRO-4211): a BWW tour roundup is dated,
   // third-party proof the tour exists and reviewed, which is what this check
   // establishes for a stub. A tour without a roundup still goes through the

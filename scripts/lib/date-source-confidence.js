@@ -65,6 +65,8 @@ const ALWAYS_UNCONFIRMED = new Set([
   // Off-West End rows): press night was on or before it, usually a day or
   // more earlier, so any press-night source may overwrite it.
   'guardian-review',
+  // theatreinchicago.com first-review publish date (BRO-6518), same reasoning.
+  'tic-first-review',
   null,
   undefined,
   '',
