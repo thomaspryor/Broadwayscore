@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5622",
   "planId": "fa45f968-5c60-4bdc-a9be-3687c2068b81",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T21:04:21.256Z",
   "submitter": {
     "name": null,
@@ -212,5 +212,119 @@
         "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews Shucked (book by Robert Horn, country score, corn), not Fat Ham; same text in camelot-2023 and shucked-2023 Broadway News files."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T22:10:53.398Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "falsettos-1992/zeal-nyc--chris-caggiano.json wrongProductionReason: null -> \"BRO-5622: showScoreExcerpt is the 2016 revival review (text calls it the revival cast; the 1992 run was not a revival); same text sits in falsettos-2016/zeal-nyc--chris-caggiano.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "falsettos-1992/zeal-nyc--chris-caggiano.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1975/newsday--linda-winer.json wrongProductionReason: null -> \"BRO-5622: bwwExcerpt is the 1996 revival review (text calls it a revival of a 21-year-old show and refers to the 90s); belongs to chicago-1996\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1975/newsday--linda-winer.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2008/washpost--peter-marks.json url: \"/people/Peter-Marks/\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2008/washpost--peter-marks.json wrongProductionReason: null -> \"BRO-5622: bwwExcerpt reviews the 2016 Broadway revival (names Birgitte Hjort Sorensen, Raffi Barsoumian, Elena Kampouris, Mary Beth Peil), not the 2008 Roundabout production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2008/washpost--peter-marks.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-off-broadway-2024/dailybeast--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt reviews the Broadway run (text places it at the Lyceum; off-Broadway ran at the Lucille Lortel); same text in oh-mary-2024/dailybeast--tim-teeman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-off-broadway-2024/dailybeast--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-mattress-1996/nytimes--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt reviews the 2024 revival (names Michael Urie and Sutton Foster); same text in once-upon-a-mattress-2024/nytimes--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-mattress-1996/nytimes--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/theatrely--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt is verbatim the 2025 Broadway review held by purpose-2025/theatrely--juan-a-ramirez.json (dtliExcerpt), relayed onto the 2026 Huntington run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/theatrely--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/variety--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt is verbatim the 2025 Broadway review held by purpose-2025/variety--aramide-tinubu.json (dtliExcerpt), relayed onto the 2026 Huntington run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/variety--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "well-2006/ap--mark-kennedy.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "job-2024/ap--mark-kennedy.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "well-2006/new-jersey-newsroom--michael-sommers.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/new-jersey-newsroom--michael-sommers.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lestat-2006/oc-register--paul-hodgins.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lennon-2005/oc-register--paul-hodgins.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/broadwaynews--unknown.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
