@@ -181,6 +181,35 @@ test('onCollision drop-orphan-target: the renamed row keeps its entry, the orpha
   assert.ok(validateRegistry([{ repo: 'web', path: 'a.json', shape: 'list', keyPath: [], onCollision: 'drop-orphan-target' }]).length > 0);
 });
 
+test('a target already filed by a scraper: aggregator captures park the old one, disjoint review dirs merge (BRO-4315 batches 2-3)', () => {
+  const fx = buildFixture();
+  try {
+    const ss = path.join(fx.rt, 'aggregator-archive', 'show-score');
+    fs.writeFileSync(path.join(ss, `${NEW}.html.mismatch`), '<html>newer capture</html>\n');
+    writeJson(path.join(fx.rt, '_pending', NEW, 'times-uk--pending.json'), { showId: NEW, outletId: 'times-uk' });
+    git(fx.rt, ['add', '-A']); git(fx.rt, ['commit', '-q', '-m', 'scraper guessed the new id']);
+    const plan = planShowIdRename(OLD, NEW, fx.trees);
+    assert.equal(plan.ok, true, plan.refusals.join('\n'));
+    const park = plan.moves.find((m) => m.path.endsWith(`show-score/${OLD}.html.mismatch`));
+    assert.ok(park.toPath.endsWith(`show-score/${NEW}.pre-rename.html.mismatch`), park.toPath);
+    assert.equal(plan.moves.find((m) => m.path.endsWith(`_pending/${OLD}`)).merge, true);
+    applyShowIdRename(plan);
+    assert.equal(fs.readFileSync(path.join(ss, `${NEW}.html.mismatch`), 'utf8'), '<html>newer capture</html>\n');
+    assert.equal(fs.readFileSync(path.join(ss, `${NEW}.pre-rename.html.mismatch`), 'utf8'), '<html>mismatch</html>\n');
+    assert.ok(!fs.existsSync(path.join(ss, `${OLD}.html.mismatch`)));
+    const pend = path.join(fx.rt, '_pending');
+    assert.ok(!fs.existsSync(path.join(pend, OLD)));
+    assert.deepEqual(fs.readdirSync(path.join(pend, NEW)).sort(), ['guardian--pending.json', 'times-uk--pending.json']);
+    assert.equal(readJson(path.join(pend, NEW, 'guardian--pending.json')).showId, NEW);
+    // a re-plan after the apply finds nothing left to move
+    const again = planShowIdRename(OLD, NEW, { ...fx.trees });
+    assert.ok(!again.moves.some((m) => m.path.includes(OLD)), again.moves.map((m) => m.path).join('\n'));
+    // the registry only takes each mode on its own shape
+    assert.ok(validateRegistry([{ repo: 'web', path: 'a', shape: 'dir', onMoveCollision: 'park-old' }]).length > 0);
+    assert.ok(validateRegistry([{ repo: 'web', path: 'a', shape: 'file', pattern: '{id}.json', onMoveCollision: 'merge-dir' }]).length > 0);
+  } finally { fs.rmSync(fx.base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
 test('dry-run plan lists every key, ref and path and writes nothing', () => {
   const fx = buildFixture();
   try {
@@ -414,12 +443,17 @@ test('refusals: target exists, old id missing, retired target, slug/alias clash,
     plan = planShowIdRename(OLD, 'some-old-alias-2020', fx.trees);
     assert.ok(plan.refusals.some((r) => r.includes('already an alias of')));
 
-    // an id-named path already present for the target refuses too
-    fs.mkdirSync(path.join(fx.rt, NEW), { recursive: true });
+    // an id-named path already present for the target refuses too: a review
+    // dir sharing a file name (merge-dir only takes disjoint dirs), and a
+    // superseded file (no collision mode)
+    writeJson(path.join(fx.rt, NEW, 'nytimes--jesse-green.json'), { showId: NEW });
+    fs.writeFileSync(path.join(fx.rt, '_superseded-misattributed', `${NEW}--dupe-standard--nick-curtis.json`), '{}');
     plan = planShowIdRename(OLD, NEW, fx.trees);
     assert.equal(plan.ok, false);
-    assert.ok(plan.refusals.some((r) => r.includes(`review-texts:${NEW} already exists`)), plan.refusals.join('\n'));
+    assert.ok(plan.refusals.some((r) => r.includes(`review-texts:${NEW} already exists and shares 1 file name(s)`)), plan.refusals.join('\n'));
+    assert.ok(plan.refusals.some((r) => r.includes(`${NEW}--dupe-standard--nick-curtis.json already exists — cannot move`)), plan.refusals.join('\n'));
     fs.rmSync(path.join(fx.rt, NEW), { recursive: true });
+    fs.rmSync(path.join(fx.rt, '_superseded-misattributed', `${NEW}--dupe-standard--nick-curtis.json`));
 
     // a registered map already holding the target key refuses (a merge is not a rename)
     const dtli = path.join(fx.web, 'data', 'dtli-slug-map.json');
