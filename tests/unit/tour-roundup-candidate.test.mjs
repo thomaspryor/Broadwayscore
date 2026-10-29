@@ -555,3 +555,14 @@ test('a standalone tour is already tracked despite apostrophe style or title dri
   ];
   assert.deepEqual(openTourCandidates(rows, shows).map(r => r.key), ['page:potted-potter']);
 });
+
+test('stale-condition sweep keeps a legacy parent-only key while a candidate of that parent is open (BRO-6208)', () => {
+  const { resolveStaleTourCandidateConditions } = require('../../scripts/lib/tour-roundup-candidate');
+  const resolved = [];
+  const ledger = { conditions: {
+    'tour-candidate:come-from-away-2017': { status: 'open', title: 'Tour candidate: Come From Away national tour' },
+    'tour-candidate:gone-2020:2021-01-01': { status: 'open', title: 'Tour candidate: Gone national tour' } } };
+  const router = { resolveCondition: k => resolved.push(k), removeDigestLines: () => {} };
+  assert.equal(resolveStaleTourCandidateConditions(['come-from-away-2017:2026-09-20'], ledger, router), 1);
+  assert.ok(resolved.every(k => !k.includes('come-from-away')));
+});

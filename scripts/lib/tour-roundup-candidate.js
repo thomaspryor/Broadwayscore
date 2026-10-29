@@ -304,7 +304,12 @@ function resolveStaleTourCandidateConditions(openKeys, ledger, router) {
   const open = new Set(openKeys);
   let n = 0;
   for (const [key, cond] of Object.entries((ledger && ledger.conditions) || {})) {
-    if (!key.startsWith('tour-candidate:') || cond.status !== 'open' || open.has(key.slice('tour-candidate:'.length))) continue;
+    if (!key.startsWith('tour-candidate:') || cond.status !== 'open') continue;
+    const id = key.slice('tour-candidate:'.length);
+    if (open.has(id)) continue;
+    // A legacy key without the segment-start suffix (tour-candidate:<parent>) is
+    // still live while any open candidate of that parent exists (Come From Away).
+    if ([...open].some(o => o.startsWith(id + ':'))) continue;
     const keys = [key, `digest-needs-you:${cond.title}`];
     router.resolveCondition(key, { reason: 'Tour candidate is settled: a tour entry now exists' });
     if (cond.title) router.resolveCondition(keys[1], { reason: 'Tour candidate is settled: a tour entry now exists' });
