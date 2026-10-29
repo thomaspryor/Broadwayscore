@@ -13,7 +13,7 @@ const kenrex = { id: 'kenrex-off-broadway-2026', title: 'Kenrex', market: 'broad
 const westEnd = { id: 'kenrex-west-end-2025', title: 'Kenrex', market: 'west-end', openingDate: '2025-05-01' };
 const shows = [beaches, giant, giantOld, kenrex];
 
-function ctxFor(rows) {
+function ctxFor(rows, shows = [beaches, giant, giantOld, kenrex]) {
   return {
     shows,
     nycIds: new Set(shows.map((s) => s.id)),
@@ -23,6 +23,82 @@ function ctxFor(rows) {
   };
 }
 const tm = (over) => ({ outletId: 'theatermania', sourceSaysReview: true, ...over });
+
+test('BRO-6514: person names and lowercase prose are not single-word show titles in either matching stage', () => {
+  const daphne = { id: 'daphne-off-broadway-2023', title: 'Daphne', openingDate: '2023-10-23', closingDate: '2023-11-19' };
+  const small = { id: 'small-off-broadway-2026', title: 'Small', openingDate: '2026-05-29', closingDate: '2026-07-25' };
+  for (const [show, headline, publishDate] of [
+    [daphne, 'Daphne Rubin-Vega steals the show in ‘The Night of the Iguana’ (Off Broadway review)', '2023-12-17'],
+    [small, 'At Signature Theatre, ‘Merrily We Roll Along’ makes every small choice count', '2026-09-05'],
+  ]) {
+    const r = census.bucketItem(tm({ headline, publishDate, url: 'https://example.com/review' }), ctxFor([], [show]));
+    assert.deepEqual(r.matchedIds, []);
+    assert.notEqual(r.bucket, 'gap');
+    assert.deepEqual(census.variantMatches({ headline, publishDate }, [show]), []);
+    for (const title of [show.title, `‘${show.title}’`, `${show.title} review`, `Review: ${show.title}`]) {
+      assert.equal(census.bucketItem(tm({ headline: title, publishDate, url: 'https://example.com/review' }), ctxFor([], [show])).bucket, 'gap', title);
+    }
+  }
+});
+
+test('BRO-6514: Chicago as a city in another show review cannot become a Chicago gap', () => {
+  const chicago = { id: 'chicago-1996', title: 'Chicago', venue: 'Ambassador Theatre', openingDate: '1996-11-14' };
+  const r = census.bucketItem(tm({ headline: 'This underground Chicago theater just made ‘Amélie’ better than Broadway', publishDate: '2025-08-04', url: 'https://1minutecritic.com/amelie-kokandy-chicago-review/' }), ctxFor([], [chicago]));
+  assert.deepEqual(r.matchedIds, []);
+  assert.equal(r.bucket, 'not-review');
+  assert.equal(census.bucketItem(tm({ headline: '‘Chicago’ review: still dazzling on Broadway', publishDate: '2025-08-04', url: 'https://example.com/review' }), ctxFor([], [chicago])).bucket, 'gap');
+});
+
+test('BRO-6514: collision guards preserve punctuated, parenthetical and legitimate one-word titles', () => {
+  for (const [title, headline] of [
+    ['Two Strangers (Carry a Cake Across New York)', '‘Two Strangers (Carry a Cake Across New York)’ delivers more crumbs than confection'],
+    ['Macbeth (An Undoing)', '‘Macbeth (An Undoing)’ finds the daggers in women’s smiles'],
+    ['Ta-Da!', '‘Josh Sharp’s ta-da!’ is a PowerPoint-perfect comedic gem'],
+    ['Redwood', 'Five Reasons Why Redwood Reaches Soaring Heights'],
+  ]) {
+    const show = { id: 'production-2026', title, openingDate: '2026-04-01' };
+    assert.equal(census.titleOnlyInVenue(show, headline, [], true), false, title);
+    assert.equal(census.bucketItem(tm({ headline, publishDate: '2026-04-26', url: 'https://example.com/review' }), ctxFor([], [show])).bucket, 'gap', title);
+  }
+});
+
+test('BRO-6514: separately rated shows and paired review headlines are roundups even with one catalog match', () => {
+  for (const headline of ['Chess ***, Practice ***', 'Bat Boy ****, Oh Happy Day! ***', '‘Kenrex’ and ‘Unknown Play’: Two theater reviews']) {
+    const r = census.bucketItem(tm({ headline, publishDate: '2026-04-26', url: 'https://example.com/reviews/kenrex' }), ctxFor([]));
+    assert.equal(r.bucket, 'not-review', headline);
+    assert.equal(r.classifyReason, 'multi-show-headline');
+  }
+  assert.equal(census.classifyItem({ headline: 'Joy: A New True Musical **1/2' }, { sourceSaysReview: true }).review, true);
+  assert.equal(census.bucketItem(tm({ headline: 'Review: Kenrex, a Remarkable Tale', publishDate: '2026-04-26', url: 'https://example.com/reviews/kenrex' }), ctxFor([])).bucket, 'gap');
+});
+
+test('BRO-6514: explicit touring headlines outweigh Broadway promotional wording', () => {
+  for (const headline of ['Kenrex national tour review', 'Kenrex on tour: Broadway arrives in Boston', 'The Broadway touring production of Kenrex']) {
+    const r = census.bucketItem(tm({ headline, description: 'The Broadway hit is on the road.', publishDate: '2026-04-26', url: 'https://example.com/review' }), ctxFor([]));
+    assert.equal(r.bucket, 'not-review', headline);
+    assert.equal(r.classifyReason, 'other-market');
+  }
+});
+
+test('BRO-6514: review-category news posts remain news', () => {
+  for (const headline of ['Company on Broadway Will Close July 31', 'T.Oliver Reid will play Hermes in Hadestown', 'New Production of Cat On a Hot Tin Roof']) {
+    assert.equal(census.classifyItem({ headline, url: 'https://theaterpizzazz.com/reviews/news/' }, { sourceSaysReview: true }).review, false, headline);
+  }
+  assert.equal(census.classifyItem({ headline: 'Review: Kenrex Opens a Window on Vigilante Justice' }, { sourceSaysReview: true }).review, true);
+  assert.equal(census.classifyItem({ headline: 'Review: A new production of Hamlet dazzles' }, { sourceSaysReview: true }).review, true);
+});
+
+test('BRO-6514: Teeth venue runs are distinct productions and wrong-run holdings stay visible', () => {
+  const first = { id: 'teeth-playwrights-horizons-off-broadway-2024', title: 'Teeth', venue: 'Playwrights Horizons', previewsStartDate: '2024-02-21', openingDate: '2024-03-12', closingDate: '2024-04-28' };
+  const transfer = { id: 'teeth-off-broadway-2024', title: 'Teeth', venue: 'New World Stages Stage 1', previewsStartDate: '2024-10-16', openingDate: '2024-10-31', closingDate: '2025-01-05', priorRuns: [{ id: first.id, openingDate: first.openingDate, closingDate: first.closingDate, venue: first.venue }] };
+  const url = 'https://www.newyorktheatreguide.com/reviews/teeth-off-broadway-review';
+  for (const [date, expected] of [['2024-03-19', first.id], ['2024-10-31', transfer.id]]) {
+    const r = census.bucketItem(tm({ headline: 'Teeth review', publishDate: date, url }), ctxFor([], [first, transfer]));
+    assert.equal(r.bucket, 'gap');
+    assert.deepEqual(r.matchedIds, [expected]);
+  }
+  assert.equal(census.bucketItem(tm({ headline: 'Teeth review', publishDate: '2024-10-31', url }), ctxFor([{ showId: first.id, url }], [first, transfer])).bucket, 'misfile');
+});
 
 test('a held URL under the matched show is held (www/query/trailing slash ignored)', () => {
   const ctx = ctxFor([{ showId: kenrex.id, outletId: 'theatermania', url: 'https://theatermania.com/news/review-kenrex/?utm_source=x' }]);

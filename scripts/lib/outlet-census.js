@@ -188,6 +188,14 @@ function extractPageMeta(html) {
 // Headline shapes that are lists, news or features, never one show's review.
 const NOT_REVIEW_RE = /\b(best (?:of|shows|plays|musicals|theater|theatre)|top \d+|\d+ (?:best|shows|plays|musicals)|round-?up|what to see|shows to see|recap|interview|obituar|dies at|tony (?:award )?(?:nominations|predictions|winners)|announce[sd]?|cast(?:ing)? (?:announced|set)|first look|photos?:|video:|podcast|newsletter|gift guide)\b/i;
 const BOOK_FILM_RE = /\b(book review|film review|movie review|tv review|album review|cast album|concert review|opera review|dance review|season \d+|episode|tony awards? (?:telecast|broadcast|ceremony|show)|the (?:\d{4}|\d+(?:st|nd|rd|th)(?: annual)?) tony awards|(?:pro-?shot|filmed|film|screen|movie) (?:capture|version|adaptation)|(?:on|streaming on) (?:disney\+|netflix|hbo|max|hulu|amazon|prime video|pbs|apple tv)|metropolitan opera|the met opera|\bat the met\b|broadway by the year)\b/i;
+// Review categories also contain closing/casting notices (Theater Pizzazz).
+const PRODUCTION_NEWS_RE = /\bwill (?:close|open|join|star|begin)\b|^new production of\b/i;
+function multiShowHeadline(headline) {
+  // Theater Life rates each show in its headline, including shows absent from our catalog.
+  if ((headline.match(/\*{1,5}(?:\s*1\/2)?/g) || []).length > 1) return true;
+  // Paired quoted titles in review columns; a comparison elsewhere in the prose is not enough.
+  return /[‘“"'][^‘’“”"']+[’”"']\s*(?:,?\s+and|&)\s*[‘“"'][^‘’“”"']+[’”"']\s*[:;,]/i.test(headline);
+}
 
 /**
  * Is this item a theater review? `sourceSaysReview` is true when the enumeration source
@@ -201,6 +209,8 @@ function slugHeadline(url) {
 
 function classifyItem(item, { sourceSaysReview = false } = {}) {
   const text = `${item.headline || ''} ${item.url || ''}`;
+  if (multiShowHeadline(item.headline || '')) return { review: false, reason: 'multi-show-headline' };
+  if (PRODUCTION_NEWS_RE.test(item.headline || '') || /\bwill play\s+(?:the role of\s+)?[A-Z]/.test(item.headline || '')) return { review: false, reason: 'list-or-news-headline' };
   if (NOT_REVIEW_RE.test(item.headline || '')) return { review: false, reason: 'list-or-news-headline' };
   if (BOOK_FILM_RE.test(text)) return { review: false, reason: 'other-medium' };
   if (sourceSaysReview) return { review: true, reason: 'source' };
@@ -225,6 +235,11 @@ const SIGNAL_MARKETS = {
 function marketSignal(item, venues, market = 'nyc') {
   const m = SIGNAL_MARKETS[market] || SIGNAL_MARKETS.nyc;
   const hay = `${item.headline || ''} ${item.description || ''}`;
+  if (market === 'nyc' && /\bChicago\s+(?:theat(?:er|re)|Shakespeare)\b/i.test(item.headline || '')
+    && !/\b(new york|nyc|manhattan|brooklyn)\b/i.test(item.headline || '')) return 'other-market';
+  // "Broadway" often advertises a touring hit, rather than locating this production.
+  if (market === 'nyc' && /\b(?:(?:national|north american|international|uk) tour|on tour|touring production|tour review)\b/i.test(item.headline || '')
+    && !/\b(new york|nyc|manhattan|brooklyn)\b/i.test(item.headline || '')) return 'other-market';
   // London: the headline names the venue and city ("X review – Royal Exchange,
   // Manchester"); a standfirst's "after its Chichester run" must not outvote it.
   // The staged venue ("Hamlet review – Bristol Old Vic", "(Dominion Theatre)") decides
@@ -275,10 +290,10 @@ function nycVenuePhrases(shows, market = 'nyc') {
  */
 const HEADLINE_FOLLOWERS = new Set(('a an and are as at by does for from gets has hits in is isnt its makes ' +
   'of on opens or returns review reviews revival soars stuns takes the to was with dazzles delivers ' +
-  'arrives comes lands shines falls fails struggles wows').split(' '));
+  'arrives comes lands shines falls fails struggles wows reaches').split(' '));
 function shortVariantStandsAlone(headline, title, variant, slugGuard = false) {
   const words = normalizeForMention(title).split(' ');
-  if (variant.includes(' ') || words.length < 2) return true;
+  if (variant.includes(' ') || (slugGuard && words.length < 2)) return true;
   const nextTitleWord = words[words.indexOf(variant) + 1];
   const raw = foldDiacritics(String(headline)).replace(/[‘’]/g, "'");
   // An all-caps headline carries no casing signal, so keep the match.
@@ -291,6 +306,10 @@ function shortVariantStandsAlone(headline, title, variant, slugGuard = false) {
   let seen = false;
   for (const m of raw.matchAll(re)) {
     seen = true;
+    // A full one-word title still collides with prose ("every small choice") and
+    // names ("Daphne Rubin-Vega"). Quoted lowercase titles remain valid.
+    if (words.length === 1 && /^[a-z]+$/.test(variant) && /[A-Z]/.test(raw) && /^[a-z]/.test(m[0])
+      && !/[‘“"']/.test(raw.charAt(m.index - 1))) continue;
     const next = m[1] && m[1].toLowerCase();
     const cutInCaps = variant.length > 1 && !/[a-z]/.test(m[0].slice(0, variant.length));
     if (!next || !/^[A-Z]/.test(m[1]) || next === nextTitleWord || cutInCaps
@@ -309,11 +328,11 @@ function shortVariantStandsAlone(headline, title, variant, slugGuard = false) {
  */
 function variantMatches(item, shows, { london = false } = {}) {
   if (Number.isNaN(toDateMs(item.publishDate)) || !item.headline) return [];
-  const headline = String(item.headline).replace(/^\s*[^:]{0,40}\breview\s*:\s*/i, '');
+  const headline = String(item.headline).replace(/^\s*(?:(?:theat(?:er|re)|broadway|bww)\s+)?review\s*:\s*/i, '');
   const hits = shows.filter((s) => {
     if (!s.title || !runWindowMs(s) || !inRunWindow(s, item.publishDate)) return false;
     const v = textMentionsTitle(headline, s.title);
-    return v && shortVariantStandsAlone(headline, s.title, v, london);
+    return v && shortVariantStandsAlone(headline, s.title, v, london) && (london || !titleOnlyInVenue(s, headline, [], true));
   });
   // "Henry VI" and "Henry VI: A Trilogy" both hit: keep the longest titles only.
   const longest = Math.max(0, ...hits.map((s) => s.title.length));
@@ -351,13 +370,17 @@ function titleWordsAppear(show, text) {
  * Bridge Theatre"): strip the market's venue phrases and "<title> theatre", then re-check the
  * title words (BRO-6488: 16 false London Theatre gaps against the-bridge-off-west-end-2026).
  */
-function titleOnlyInVenue(show, text, venues) {
+function titleOnlyInVenue(show, text, venues, requireVenuePhrase = false) {
   const t = normTitle(show && show.title).replace(/^the /, '');
   if (!t) return false;
   let hay = ` ${normTitle(text)} `;
   if (!hay.includes(` ${t} `)) return false;
   const phrases = [...(venues || []).map(normTitle), `${t} theatre`, `${t} theater`].filter((v) => v && ` ${v} `.includes(` ${t} `));
   if (!phrases.length) return false;
+  // Raw headlines omit parenthetical words after normTitle. Only the new headline
+  // guards require a venue to actually appear; existing headline+slug checks keep
+  // their matching behaviour (including short, punctuation-only title words).
+  if (requireVenuePhrase && !phrases.some((v) => hay.includes(` ${v} `))) return false;
   for (const v of phrases.sort((a, b) => b.length - a.length)) hay = hay.split(` ${v} `).join(' | ');
   return !titleWordsAppear(show, hay);
 }
@@ -468,9 +491,18 @@ function bucketItem(item, ctx) {
   // London only: the two headline-shape guards below were measured on the London corpus.
   const london = (ctx.market || 'nyc') !== 'nyc';
   const venueMismatchIds = [];
+  const collisionIds = new Set();
   const headlineFits = (s) => {
     // A show we already hold this URL under keeps its match: the guards are for gaps.
-    if (!london || (heldIds && heldIds.has(s.id))) return true;
+    if (heldIds && heldIds.has(s.id)) return true;
+    if (!london) {
+      const v = textMentionsTitle(item.headline || '', s.title);
+      if ((v && !shortVariantStandsAlone(item.headline, s.title, v)) || titleOnlyInVenue(s, item.headline, ctx.nycVenues, true)) {
+        collisionIds.add(s.id);
+        return false;
+      }
+      return true;
+    }
     if (titleOnlyInTagline(s, item.headline || '')) return false;
     if (venueContradicts(s, item.headline || '')) { venueMismatchIds.push(s.id); return false; }
     return true;
@@ -483,7 +515,7 @@ function bucketItem(item, ctx) {
   }
   const inIds = inWindow.map((s) => s.id);
   // A venue-mismatched show is another production, not an out-of-window one.
-  const out = { bucket: null, classifyReason: cls.reason, matchVia, held, matchedIds: inIds, outOfWindowIds: matched.filter((s) => !inIds.includes(s.id) && !venueMismatchIds.includes(s.id)).map((s) => s.id) };
+  const out = { bucket: null, classifyReason: cls.reason, matchVia, held, matchedIds: inIds, outOfWindowIds: matched.filter((s) => !inIds.includes(s.id) && !venueMismatchIds.includes(s.id) && !collisionIds.has(s.id)).map((s) => s.id) };
   if (venueMismatchIds.length) out.venueMismatchIds = [...new Set(venueMismatchIds)];
 
   if (held.length > 0) {

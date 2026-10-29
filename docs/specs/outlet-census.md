@@ -23,8 +23,24 @@ Outputs, one pair per outlet, in `data/audit/outlet-census/`:
 Run locally, the corpus is `data/reviews.json` only, so flagged, unscored or excluded files in `data/review-texts` are invisible and local gap counts are **upper bounds**. For true gaps run it on CI with the private review texts:
 
 ```
-node scripts/cloud-run-script.js --review-texts scripts/outlet-census.js --all --print-gaps
+node scripts/cloud-run-script.js --review-texts scripts/outlet-census.js --outlet=theatermania,nytg --print-gaps
 ```
+
+For CI runs, split the work with the existing `--outlet` selector. Running every
+outlet with `--all` can exceed CI's 55 minute limit, especially with paid SERP
+sources. Run each large SERP outlet separately, for example:
+
+```
+node scripts/cloud-run-script.js --review-texts scripts/outlet-census.js --outlet=nytimes --print-gaps
+node scripts/cloud-run-script.js --review-texts scripts/outlet-census.js --outlet=wsj --print-gaps
+```
+
+Each invocation writes only its selected outlets' reports. Combine them with
+`--summary` after collecting the reports. Sharding adds no queries; the existing
+`--serp-budget` applies separately to each invocation, rather than to the whole batch.
+Recheck failed sources separately: Theater Life had a transient `wp-json` failure
+on CI, and Slant's configured sitemap returned HTTP 403 (BRO-6514). A failed or
+empty enumeration cannot establish complete coverage.
 
 ## Source kinds
 
