@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-28T15:46:51.588Z",
+  "generatedAt": "2026-10-29T16:19:23.800Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-28T15:31:09.274Z",
-    "reviewsJsonAgeHours": 0.3,
+    "reviewsJsonLastUpdated": "2026-10-29T16:14:44.590Z",
+    "reviewsJsonAgeHours": 0.1,
     "freshnessBreach": false,
-    "showsScanned": 27,
-    "allShowsScanned": 3164,
-    "filesScanned": 64984,
+    "showsScanned": 24,
+    "allShowsScanned": 3377,
+    "filesScanned": 67283,
     "showsOverThreshold": 0,
-    "newOffenders": 0,
-    "blindShows": 20,
+    "newOffenders": 1,
+    "blindShows": 25,
     "orphanReviews": 4
   },
   "thresholds": {
@@ -18,7 +18,19 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [],
+  "newOffenders": [
+    {
+      "showDir": "seussical-the-musical-west-end-2013",
+      "suppressed": 1,
+      "actual": 0,
+      "files": [
+        "everything-theatre--everything-theatre.json"
+      ],
+      "newFiles": [
+        "everything-theatre--everything-theatre.json"
+      ]
+    }
+  ],
   "staleBaseline": [
     {
       "showDir": "china-doll-2015",
@@ -57,8 +69,8 @@
   "perShow": [
     {
       "showDir": "aftermath-art-new-york-off-broadway-2026",
-      "actual": 7,
-      "scanned": 10,
+      "actual": 8,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -72,35 +84,19 @@
       "overThreshold": false
     },
     {
-      "showDir": "derren-brown-only-human-west-end-2026",
-      "actual": 27,
-      "scanned": 37,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "garry-starr-classic-penguins-off-west-end-2026",
       "actual": 14,
-      "scanned": 29,
+      "scanned": 30,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "girls-off-west-end-2026",
-      "actual": 4,
-      "scanned": 21,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "thestage--sam-marlowe.json",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2026-10-28",
-          "url": "https://www.thestage.co.uk/reviews/girls-review-young-vic-theatre-london"
-        }
-      ],
+      "actual": 10,
+      "scanned": 36,
+      "suppressedCount": 0,
+      "suppressed": [],
       "overThreshold": false
     },
     {
@@ -113,48 +109,40 @@
     },
     {
       "showDir": "i-became-we-off-broadway-2026",
-      "actual": 5,
-      "scanned": 6,
+      "actual": 7,
+      "scanned": 10,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "memoriam-off-west-end-2026",
-      "actual": 14,
-      "scanned": 21,
+      "actual": 17,
+      "scanned": 26,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "phyl-off-broadway-2026",
-      "actual": 12,
-      "scanned": 15,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
-      "actual": 1,
-      "scanned": 5,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "showDir": "seussical-the-musical-west-end-2013",
+      "actual": 0,
+      "scanned": 1,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "everything-theatre--everything-theatre.json",
+          "outletId": "everything-theatre",
+          "criticName": "Everything Theatre",
+          "publishDate": "2013-12-09",
+          "url": "https://everything-theatre.co.uk/2013/12/seussical-musical-arts-theatre-review/"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "specimen-off-broadway-2026",
       "actual": 1,
       "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-imaginary-invalid-2026",
-      "actual": 20,
-      "scanned": 35,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -168,17 +156,17 @@
       "overThreshold": false
     },
     {
-      "showDir": "the-master-builder-off-west-end-2026",
-      "actual": 20,
-      "scanned": 27,
+      "showDir": "the-lives-of-others-west-end-2026",
+      "actual": 1,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "the-pianist-off-west-end-2026",
-      "actual": 32,
-      "scanned": 44,
+      "showDir": "the-revlon-girl-off-west-end-2026",
+      "actual": 5,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
