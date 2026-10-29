@@ -38,3 +38,50 @@ export function seasonLabel(stops: TourStop[]): string {
   const last = Number(stops.reduce((m, s) => (s.end > m ? s.end : m), stops[0].end).slice(0, 4));
   return first === last ? String(first) : `${first}–${String(last % 100).padStart(2, '0')}`;
 }
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const md = (d: string) => `${MONTHS[Number(d.slice(5, 7)) - 1]} ${Number(d.slice(8, 10))}`;
+
+/** "Nov 6", "Nov 6–21", "Jan 19–Feb 7". Dates are YYYY-MM-DD. */
+export function stopDateRange(start: string, end: string): string {
+  if (start === end) return md(start);
+  if (start.slice(0, 7) === end.slice(0, 7)) return `${md(start)}–${Number(end.slice(8, 10))}`;
+  return `${md(start)}–${md(end)}`;
+}
+
+/** A tour's engagement in one city, as the tours hub's city picker needs it. */
+export interface CityAgendaStop {
+  showId: string;
+  venue: string;
+  start: string;
+  end: string;
+}
+
+export interface CityAgenda {
+  /** Playing on `today`, soonest-closing first. */
+  now: CityAgendaStop[];
+  /** Starting after `today`, grouped by the month they open in ("November 2026"), soonest first. */
+  coming: Array<{ month: string; stops: CityAgendaStop[] }>;
+  /** How many stops `coming` holds. */
+  comingCount: number;
+}
+
+const LONG_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+/**
+ * What a city has on `today` (YYYY-MM-DD) and what is coming, for the tours
+ * hub's "Touring near you" view (BRO-6544). Ended stops are dropped; at most
+ * `limit` upcoming stops are kept (the city page has the rest).
+ */
+export function cityAgenda(stops: CityAgendaStop[], today: string, limit = Infinity): CityAgenda {
+  const now = stops.filter(s => s.start <= today && today <= s.end).sort((a, b) => a.end.localeCompare(b.end));
+  const ahead = stops.filter(s => s.start > today).sort((a, b) => a.start.localeCompare(b.start) || a.showId.localeCompare(b.showId));
+  const coming: CityAgenda['coming'] = [];
+  for (const s of ahead.slice(0, limit)) {
+    const month = `${LONG_MONTHS[Number(s.start.slice(5, 7)) - 1]} ${s.start.slice(0, 4)}`;
+    const last = coming[coming.length - 1];
+    if (last && last.month === month) last.stops.push(s);
+    else coming.push({ month, stops: [s] });
+  }
+  return { now, coming, comingCount: ahead.length };
+}

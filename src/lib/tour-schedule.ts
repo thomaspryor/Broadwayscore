@@ -81,3 +81,15 @@ export function stopPlace(city: string): StopPlace {
   if (code === 'MX') return { locality, country: 'MX' };
   return { locality, region: code, country: CANADA.has(code) ? 'CA' : 'US' };
 }
+
+/**
+ * The stop label for a review's byline (BRO-6544), or null when the outlet's
+ * own name already says the city ("Behind the Curtain Cincinnati" in
+ * "Cincinnati, OH"), so the row doesn't repeat it.
+ */
+export function bylineStopLabel(outlet: string, stopLabel: string | null | undefined): string | null {
+  if (!stopLabel) return null;
+  // Whole words only, so "Erie, PA" still shows for "Valerie's Theater Blog".
+  const place = shortCity(stopLabel).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(^|[^a-z])${place}([^a-z]|$)`, 'i').test(outlet) ? null : stopLabel;
+}

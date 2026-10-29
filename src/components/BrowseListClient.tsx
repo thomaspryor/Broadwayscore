@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, startTransition } from 'react';
+import { useState, useMemo, useEffect, startTransition, type ReactNode } from 'react';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -8,6 +8,7 @@ import { createSortToggle } from '@/lib/sort-toggle';
 import { compareScore } from '@/lib/browse-sort';
 import { sectionLabelsContiguous } from '@/lib/browse-sections';
 import { sameTitleShowIds } from '@/lib/same-title-shows';
+import TourCityPicker, { type TourCityOption } from '@/components/TourCityPicker';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -81,7 +82,20 @@ interface BrowseListClientProps {
    *  Keeps 700-show pages under Googlebot's 2MB fetch limit (BRO-5968). The server
    *  page lists the remaining shows as plain links so they stay crawlable. */
   initialRenderLimit?: number;
+  /** Tours hub (BRO-6544): a Status row (On the road / Coming soon / Closed)
+   *  that defaults to On the road. Replaces section headings. */
+  statusFilter?: boolean;
+  /** Tours hub: cities for the "Touring near you" picker above the list. */
+  tourCities?: TourCityOption[];
+  /** Server-rendered content placed between the city picker and the controls
+   *  (the tours hub's Top Touring Shows shelf). */
+  beforeControls?: ReactNode;
 }
+
+type StatusBucket = 'road' | 'soon' | 'all' | 'closed';
+const STATUS_LABELS: Record<StatusBucket, string> = { road: 'On the road', soon: 'Coming soon', all: 'All', closed: 'Closed' };
+const statusBucket = (status: string): Exclude<StatusBucket, 'all'> =>
+  status === 'closed' ? 'closed' : status === 'upcoming' ? 'soon' : 'road';
 
 
 const SORT_LABELS: Record<SortOption, string> = {
@@ -108,6 +122,9 @@ export default function BrowseListClient({
   sectionLabels,
   upcomingContext,
   initialRenderLimit,
+  statusFilter,
+  tourCities,
+  beforeControls,
 }: BrowseListClientProps) {
   const [fullListReady, setFullListReady] = useState(initialRenderLimit === undefined);
   useEffect(() => setFullListReady(true), []);
@@ -126,6 +143,16 @@ export default function BrowseListClient({
     'score'
   );
   const [typeFilter, setTypeFilter] = useState<'all' | 'musical' | 'play'>('all');
+  // Status buckets present on this page, in display order; All only when it adds something.
+  const statusOptions = useMemo(() => {
+    if (!statusFilter) return [];
+    const present = new Set(initialShows.map(s => statusBucket(s.status)));
+    // No "All": a newest-first mix of past, live and announced tours reads as
+    // noise, and it pushed the row onto two lines on phones.
+    const opts = (['road', 'soon', 'closed'] as const).filter(b => present.has(b)) as StatusBucket[];
+    return opts.length ? opts : ['all' as StatusBucket];
+  }, [statusFilter, initialShows]);
+  const [status, setStatus] = useState<StatusBucket>(statusOptions[0] ?? 'all');
 
   const hasAnyAudienceData = useMemo(
     () => initialShows.some(s => s.audienceCombinedScore !== null),
@@ -138,6 +165,9 @@ export default function BrowseListClient({
     // Type filter
     if (typeFilter !== 'all') {
       result = result.filter(s => s.type === typeFilter);
+    }
+    if (statusFilter && status !== 'all') {
+      result = result.filter(s => statusBucket(s.status) === status);
     }
 
     // Helper: effective score for sorting (null = TBD, sorts to bottom
@@ -193,7 +223,7 @@ export default function BrowseListClient({
     });
 
     return result;
-  }, [initialShows, typeFilter, sort, scoreMode]);
+  }, [initialShows, typeFilter, sort, scoreMode, statusFilter, status]);
   // Rows that share a title with another visible row get a venue line (BRO-4309).
   const sameTitleIds = useMemo(() => sameTitleShowIds(filteredAndSorted), [filteredAndSorted]);
 
@@ -205,13 +235,16 @@ export default function BrowseListClient({
     return sectionLabelsContiguous(filteredAndSorted.map(s => sectionLabels[indexOf.get(s)!]));
   }, [sectionLabels, filteredAndSorted, initialShows]);
 
-  const showControls = availableSorts.length > 1 || showTypeFilter || (showScoreToggle && hasAnyAudienceData);
+  const showControls = availableSorts.length > 1 || showTypeFilter || statusOptions.length > 1 || (showScoreToggle && hasAnyAudienceData);
   // score_asc (reversed Critics) would otherwise label the lowest-scored show
   // "#1" — misleading on a page that advertises itself as ranked by critic score.
   const showRankNumbers = showRanks && sort !== 'score_asc';
 
   return (
     <>
+      {tourCities && tourCities.length > 0 && <TourCityPicker cities={tourCities} shows={initialShows} />}
+      {beforeControls}
+
       {/* Controls */}
       {showControls && (
         <div className={availableSorts.length > 1 || showTypeFilter ? 'mb-5 space-y-2.5' : '-mt-4 mb-4'}>
@@ -224,6 +257,16 @@ export default function BrowseListClient({
               value={typeFilter}
               onChange={setTypeFilter}
               ariaLabel="Filter by show type"
+            />
+          )}
+
+          {statusOptions.length > 1 && (
+            <ToggleBar
+              label="Status:"
+              options={statusOptions.map(b => ({ value: b, label: STATUS_LABELS[b] }))}
+              value={status}
+              onChange={setStatus}
+              ariaLabel="Filter by status"
             />
           )}
 

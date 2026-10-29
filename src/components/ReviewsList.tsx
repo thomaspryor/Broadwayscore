@@ -12,6 +12,7 @@ import { isLondonMarket } from '@/lib/market-utils';
 import { TIER_DISPLAY, TIER_LIST, tierPercent, type OutletTier } from '@/config/tier-display';
 import { TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
 import { nestQuotes } from '@/lib/nest-quotes';
+import { bylineStopLabel } from '@/lib/tour-schedule';
 
 export interface ReviewListItem {
   outletId: string;
@@ -339,7 +340,26 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   // otherwise squeezes the outlet name to a letter or two next to the tier
   // chip and Critics Pick pill (BRO-4881).
   const dateLabel = formatDate(review.publishDate);
-  const mobileDate = dateLabel ? <span className="sm:hidden block text-xs text-gray-500 mt-0.5">{dateLabel}</span> : null;
+  // National tours: the stop rides in the byline instead of its own pill line
+  // (BRO-6544), and is dropped when the outlet's name already says the city.
+  // Phones put it on the date line under the byline so the name never wraps.
+  const stop = hideStop ? null : bylineStopLabel(review.outlet, review.stopLabel);
+  const pin = <svg aria-hidden="true" className="inline w-3 h-3 -mt-0.5 mr-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" /><circle cx="12" cy="10" r="2.5" /></svg>;
+  const stopTag = stop ? (
+    <span className="hidden sm:inline text-gray-500 whitespace-nowrap" title={`Reviewed during the tour's stop in ${stop}`}>
+      <span aria-hidden="true" className="text-gray-600"> · </span>{pin}<span className="sr-only">Reviewed in </span>{stop}
+    </span>
+  ) : null;
+  const mobileDate = dateLabel && !stop ? <span className="sm:hidden block text-xs text-gray-500 mt-0.5">{dateLabel}</span> : null;
+  // With a stop, phones get one full-width line under the byline row instead
+  // ("Oct 5 · Rochester, NY"), so it never squeezes against Full Review. Only
+  // this year's dates lose the year; an older tour's review keeps it.
+  const mobileStopLine = stop ? (
+    <div className="sm:hidden text-xs text-gray-500 mt-0.5">
+      {dateLabel && <>{dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}<span aria-hidden="true" className="text-gray-600"> · </span></>}
+      {pin}<span className="sr-only">Reviewed in </span>{stop}
+    </div>
+  ) : null;
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
@@ -397,14 +417,6 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
             {review.priorRunLabel}
           </span>
         )}
-        {review.stopLabel && !hideStop && (
-          <span
-            className="inline-block mb-1 px-2 py-0.5 rounded-pill bg-surface-overlay text-[10px] font-bold uppercase tracking-[0.08em] text-gray-400"
-            title={`Reviewed during the tour's stop in ${review.stopLabel}`}
-          >
-            {review.stopLabel}
-          </span>
-        )}
         {review.quote && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
             &ldquo;{nestQuotes(review.quote)}&rdquo;
@@ -425,9 +437,9 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
           {review.criticName && review.criticName !== 'Unknown' ? (
             <span className="text-sm text-gray-500">By {featureFlags.criticPages && review.criticSlug ? (
               <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
-            ) : review.criticName}{mobileDate}</span>
+            ) : review.criticName}{stopTag}{mobileDate}</span>
           ) : (
-            <span className="text-sm text-gray-400">{review.outlet} Staff{mobileDate}</span>
+            <span className="text-sm text-gray-400">{review.outlet} Staff{stopTag}{mobileDate}</span>
           )}
           {review.url && (
             <a
@@ -442,6 +454,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
             </a>
           )}
         </div>
+        {mobileStopLine}
       </div>
     </article>
   );

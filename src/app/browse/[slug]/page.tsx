@@ -15,6 +15,12 @@ import ToursByCity from '@/components/ToursByCity';
 import { getTourCities } from '@/lib/data-tour-cities';
 import type { BrowseShow } from '@/components/BrowseListClient';
 import { displaysCriticScore } from '@/lib/critic-score-display';
+import FeaturedRowServer from '@/components/FeaturedRowServer';
+import type { TourCityOption } from '@/components/TourCityPicker';
+import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
+import { isLiveTour, isTourScored, isTourScoreHidden } from '@/lib/tour-listing';
+import { shortCity } from '@/lib/tour-schedule';
+import { stopDateRange } from '@/lib/tour-cities';
 
 // "How This Works" default per market. The Broadway outlets (NYT, Vulture,
 // Variety) also review Off-Broadway; London and regional runs are reviewed by
@@ -79,8 +85,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 }
 
 // Determine which sort options make sense for this page
-function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: string }): Array<'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom'> {
+function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: string; source?: string }): Array<'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom'> {
   const sorts: Array<'score' | 'alpha' | 'newest' | 'oldest' | 'closing' | 'performances' | 'custom'> = [];
+
+  // Tours hub (BRO-6544): newest tour first by default, like the homepage.
+  if (config.source === 'tour') return ['newest', 'score', 'alpha'];
 
   // Pages with customSort preserve server ordering as default
   if (config.customSort) {
@@ -208,8 +217,55 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
     return slim;
   });
 
+  // Tours hub (BRO-6544): Status filter + Newest default replace the section
+  // headings; the server order (customSort) still feeds the ItemList schema.
+  const isTourHub = config.source === 'tour';
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Top Touring Shows: the best-scored tours on the road now, each with where it is.
+  const shelfIds = new Set(isTourHub
+    ? shows
+        // Same gate as the show page's badge, so the shelf never shows a number the page hides.
+        .filter(s => isLiveTour(s) && isTourScored(s) && !isTourScoreHidden(s) && s.criticScore?.score != null)
+        .sort((a, b) => (b.criticScore!.score - a.criticScore!.score) || a.title.localeCompare(b.title))
+        .slice(0, 12)
+        .map(s => s.id)
+    : []);
+  const shelfShows = serializedShows
+    .filter(s => shelfIds.has(s.id))
+    .sort((a, b) => (b.criticScore!.score! - a.criticScore!.score!) || a.title.localeCompare(b.title));
+  const shelfCaptions: Record<string, string> = {};
+  for (const s of shelfShows) {
+    const nn = getTourNowNextForShow(s, today);
+    if (nn?.now) shelfCaptions[s.id] = `Now in ${shortCity(nn.now.city)}`;
+    else if (nn?.next) shelfCaptions[s.id] = `Next: ${shortCity(nn.next.city)}, ${stopDateRange(nn.next.start, nn.next.start)}`;
+  }
+
+  // "Touring near you": every city with a page and something still to come; the
+  // five busiest as chips. Stops are kept through yesterday (UTC build date):
+  // the picker re-filters in the visitor's own time zone, so a run's last
+  // night in the Americas survives an evening build.
+  const listedIds = new Set(serializedShows.map(s => s.id));
+  const keepFrom = new Date(Date.parse(`${today}T00:00:00Z`) - 86400000).toISOString().slice(0, 10);
+  const tourCityList = isTourHub
+    ? Array.from(getTourCities().values()).filter(c => c.stops.some(st => st.end >= today && listedIds.has(st.showId)))
+    : [];
+  const chipSlugs = new Set(
+    [...tourCityList].sort((a, b) => b.upcomingListed - a.upcomingListed || a.city.localeCompare(b.city)).slice(0, 5).map(c => c.slug),
+  );
+  const tourCities: TourCityOption[] = tourCityList
+    .map(c => ({
+      slug: c.slug,
+      city: c.city,
+      chip: chipSlugs.has(c.slug),
+      stops: c.stops
+        .filter(st => st.end >= keepFrom && listedIds.has(st.showId))
+        .map(st => ({ showId: st.showId, venue: st.venue, start: st.start, end: st.end })),
+    }))
+    .sort((a, b) => a.city.localeCompare(b.city));
+
   // Compute section group labels (server-side, since sectionGroup uses ComputedShow)
-  const sectionLabels = config.sectionGroup
+  const sectionLabels = !isTourHub && config.sectionGroup
     ? shows.map(show => config.sectionGroup!(show, getShowById, { getShowGrosses }))
     : undefined;
 
@@ -271,7 +327,7 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
           showRanks={!config.hideRanks && config.limit !== 1 && config.sort !== 'opening-date-asc' && config.sort !== 'opening-date' && config.sort !== 'closing-date'}
           isMixedType={isMixedType}
           isMixedStatus={isMixedStatus}
-          defaultSort={config.customSort ? 'custom' : (config.sort || 'score')}
+          defaultSort={isTourHub ? 'opening-date' : config.customSort ? 'custom' : (config.sort || 'score')}
           hasPerformanceData={hasPerformanceData}
           availableSorts={availableSorts}
           showTypeFilter={showTypeFilter}
@@ -279,12 +335,17 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
           sectionLabels={sectionLabels}
           upcomingContext={config.slug.startsWith('upcoming-')}
           initialRenderLimit={isLongList ? INITIAL_RENDER_LIMIT : undefined}
+          statusFilter={isTourHub}
+          tourCities={isTourHub ? tourCities : undefined}
+          beforeControls={shelfShows.length > 0 ? (
+            <FeaturedRowServer shows={shelfShows} title="Top Touring Shows" captions={shelfCaptions} />
+          ) : undefined}
         />
 
-        {isLongList && (
+        {(isLongList || isTourHub) && (
           <details className="mt-6 card p-4">
             <summary className="cursor-pointer text-sm font-medium text-gray-300">
-              Plain list of all {shows.length} shows
+              Plain list of all {shows.length} {isTourHub ? 'tours' : 'shows'}
             </summary>
             <ul className="mt-3 columns-1 sm:columns-2 gap-6 text-sm text-gray-400">
               {shows.map(show => (

@@ -34,7 +34,7 @@ export interface ServerShelfShow {
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
 }
 
-function ServerMiniShowCard({ show, priority, eager }: { show: ServerShelfShow; priority: boolean; eager: boolean }) {
+function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerShelfShow; priority: boolean; eager: boolean; caption?: string }) {
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
@@ -95,6 +95,7 @@ function ServerMiniShowCard({ show, priority, eager }: { show: ServerShelfShow; 
       <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
         {show.title}
       </h3>
+      {caption && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{caption}</p>}
     </Link>
   );
 }
@@ -108,6 +109,7 @@ export default function FeaturedRowServer({
   title = 'Best Recent Shows',
   subtitle,
   viewAllHref,
+  captions,
 }: {
   shows: ServerShelfShow[];
   /** Shelf heading. Defaults to the homepage's "Best Recent Shows". */
@@ -117,6 +119,9 @@ export default function FeaturedRowServer({
   /** When set, renders a "See all" link to this href. Omit to hide it (matches
    *  the West End / Off-Broadway inline shelves, which have no See-all link). */
   viewAllHref?: string;
+  /** Optional one-line caption under each card's title, keyed by show id
+   *  (the tours hub's "Now in Detroit", BRO-6544). */
+  captions?: Record<string, string>;
 }) {
   if (shows.length === 0) return null;
 
@@ -139,7 +144,7 @@ export default function FeaturedRowServer({
         {shows.map((show, index) => (
           // One high-priority image per page: the LCP poster. Four high
           // ones (plus the list below) split the bandwidth and delayed it.
-          <ServerMiniShowCard key={show.id} show={show} priority={index === 0} eager={index < 4} />
+          <ServerMiniShowCard key={show.id} show={show} priority={index === 0} eager={index < 4} caption={captions?.[show.id]} />
         ))}
       </ScrollRow>
     </section>
