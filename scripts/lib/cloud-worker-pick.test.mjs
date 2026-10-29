@@ -605,15 +605,15 @@ test('model: same policy as linear-next (P0 and Model: Opus get Opus, the rest S
   const bounced = issue({ priority: 2, comments: { nodes: [{ body: `${require('./codex-runner.js').BOUNCED_MARKER}\nCodex could not land it.`, createdAt: at(60_000) }] } });
   assert.equal(pickModel(bounced, opts).model, 'opus');
   assert.equal(cloudPriorAttempts(issue({ comments: { nodes: [report('done', 'Closed.', 60_000), { body: 'a note', createdAt: at(1) }] } })), 0);
-  // A P0 keeps Opus over the 24h cap or with an unreadable ledger (BRO-5773); any other Opus card falls back to Sonnet.
-  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
+  // No Opus cap (BRO-6502): a P0, or an Opus card, keeps Opus with a full day of Opus launches or an unreadable ledger.
+  const busy = Array.from({ length: 30 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${900 + i}`, model: 'opus', ts: new Date(NOW - 3600_000).toISOString() }));
+  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, readEntries: () => busy }).model, 'opus');
   assert.equal(pickModel(issue({ priority: 1 }), { ...opts, readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
   const opusP2 = issue({ priority: 2, description: `${BODY}\n\nModel: Opus` });
-  assert.equal(pickModel(opusP2, { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
-  assert.equal(pickModel(opusP2, { ...opts, readEntries: () => { throw new Error('EIO'); } }).model, 'sonnet');
-  assert.equal(pickModel(paused, { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '1' } }).model, 'opus');
+  assert.deepEqual(pickModel(opusP2, { ...opts, readEntries: () => busy }), { model: 'opus', reason: 'Model: opus on the card' });
+  assert.equal(pickModel(opusP2, { ...opts, readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
   // No dispatch ledger at all (a cloud container): the real reader returns [], so a P0 still gets Opus.
-  assert.equal(pickModel(issue({ priority: 1 }), { nowMs: NOW, readEntries: () => require('./dispatch-ledger.js').readEntries('/nonexistent/dispatch-ledger.jsonl'), env: {} }).model, 'opus');
+  assert.equal(pickModel(issue({ priority: 1 }), { nowMs: NOW, readEntries: () => require('./dispatch-ledger.js').readEntries('/nonexistent/dispatch-ledger.jsonl') }).model, 'opus');
 });
 
 test('P2 fallback: comments are read for P2 Todo and resumable P2 cards, never parked P2 or no-priority', () => {
@@ -1000,15 +1000,21 @@ test('opusClaimEntries: only "Worker model: opus" claim comments become Opus lau
   assert.deepEqual(opusClaimEntries(null), []);
 });
 
-test('modelPicker: cloud Opus claims count toward the 24h cap; an unreadable count picks Sonnet (BRO-5730)', () => {
+test('modelPicker: Opus cards stay Opus however many cloud Opus claims exist; no cap note (BRO-6502)', () => {
   const { modelPicker } = require('./cloud-worker-pick.js');
   const opusCard = issue({ identifier: 'BRO-555', priority: 2, description: `${BODY}\n\nModel: Opus` });
-  const claims = Array.from({ length: 6 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${900 + i}`, model: 'opus', ts: new Date(NOW - 3600_000).toISOString() }));
-  const capped = modelPicker(NOW, { cloudClaims: claims })(opusCard);
-  assert.equal(capped.model, 'sonnet');
-  assert.match(capped.reason, /Model: opus on the card, but/);
-  assert.equal(modelPicker(NOW, { cloudClaims: null })(opusCard).model, 'sonnet');
-  assert.doesNotMatch(modelPicker(NOW, { cloudClaims: [] })(opusCard).reason, /counts Mac launches only/);
+  const m = modelPicker()(opusCard);
+  assert.equal(m.model, 'opus');
+  assert.doesNotMatch(m.reason, /cap/i);
+});
+
+test('noDispatchHold: a NO-DISPATCH line in the description holds the card; a quoting comment or a lifted line does not (BRO-6502)', () => {
+  const { noDispatchHold } = require('./cloud-worker-pick.js');
+  assert.equal(noDispatchHold(issue({ description: `${BODY}\n\nNO-DISPATCH: coordinator freeze until 2026-10-30` })), 'no-dispatch-marker');
+  assert.equal(noDispatchHold(issue({ description: `${BODY}\n\n- **NO-DISPATCH**: frozen` })), 'no-dispatch-marker');
+  assert.equal(noDispatchHold(issue({ description: BODY, comments: { nodes: [{ body: 'NO-DISPATCH: quoted' }] } })), null);
+  assert.equal(noDispatchHold(issue({ description: `${BODY} mentions NO-DISPATCH: mid-sentence` })), null);
+  assert.equal(noDispatchHold(null), null);
 });
 
 test('withCloudOpusClaims: a claim within the hour of a ledger launch of the card is not counted twice (BRO-5730)', () => {
@@ -1024,7 +1030,7 @@ test('withCloudOpusClaims: a claim within the hour of a ledger launch of the car
   assert.equal(withCloudOpusClaims(null, null).length, 0);
 });
 
-test('cloud claim rows count toward the Opus cap but not as prior launches of the card (BRO-5730)', () => {
+test('cloud claim rows count toward the Opus usage count but not as prior launches of the card (BRO-5730)', () => {
   const { withCloudOpusClaims, opusClaimEntries } = require('./cloud-worker-pick.js');
   const { countPriorLaunches, countRecentLinearOpusLaunches } = require('./bsc-next-model.js');
   const now = Date.parse('2026-10-20T16:00:00Z');

@@ -421,7 +421,7 @@ async function allIssueComments(identifier, max = 2000) {
 }
 
 // Comments across the workspace created after sinceIso whose body contains `text`, newest first,
-// up to `max` (BRO-5730: the cloud's 24h Opus cap counts "Worker model: opus" claim comments).
+// up to `max` (BRO-5730: the board's 24h Opus count includes "Worker model: opus" claim comments).
 async function listRecentCommentsContaining({ sinceIso, text, max = 250 }) {
   const out = [];
   let after = null;

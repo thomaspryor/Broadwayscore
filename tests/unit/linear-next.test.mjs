@@ -2275,10 +2275,10 @@ test('reportDispatchOnIssue: still claims the state when the fresh refetch confi
 });
 
 for (const [label, claims, expect, priority] of [
-  ['six cloud Opus claims in 24h fill the cap', 6, 'sonnet', 2],
-  ['five leave room', 5, 'opus', 2],
-  ['a full cap does not hold back a P0, BRO-5773', 6, 'opus', 1],
-]) test(`BRO-5730: the Mac Opus cap counts cloud claim comments (${label})`, () => {
+  ['six cloud Opus claims in 24h change nothing', 6, 'opus', 2],
+  ['five change nothing', 5, 'opus', 2],
+  ['a P0 with many claims', 30, 'opus', 1],
+]) test(`BRO-6502: no Opus cap, cloud claim comments do not hold Opus back (${label})`, () => {
   const script = `
     const { main } = require('./scripts/linear-next.js');
     const issue = {

@@ -350,7 +350,7 @@ function isSessionSpecificRef(ref) {
   return !String(ref).startsWith('a session on ');
 }
 
-// BRO-5730: the model that works the card, so the cloud can count its 24h Opus cap (it has no
+// BRO-5730: the model that works the card, so the board's 24h Opus count includes cloud work (it has no
 // dispatch ledger) and the board can see which model did the work.
 const WORKER_MODELS = ['sonnet', 'opus', 'codex'];
 const WORKER_MODEL_RE = /^Worker model: (sonnet|opus|codex)\b/m;

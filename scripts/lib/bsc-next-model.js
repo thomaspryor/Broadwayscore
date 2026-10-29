@@ -18,8 +18,8 @@
  *   4. sonnet floor — no triage data (card never triaged, or queue missing).
  *
  * Linear dispatch (linear-next.js) uses pickLinearModel() below instead: flag,
- * then retry escalation, then the filer's "Model:" line (capped), then P0 →
- * Opus (P0 is exempt from the cap). The filer's line is written by linear-brain.js create --model.
+ * then retry escalation, then the filer's "Model:" line, then P0 →
+ * Opus. There is no Opus launch cap (owner decision 2026-10-29, BRO-6502). The filer's line is written by linear-brain.js create --model.
  *
  * Fable/Mythos is excluded from every hint/triage path: MODEL_HINT_RE has no
  * fable alternative, and pickModel() itself throws on a forbidden tier — only
@@ -124,21 +124,11 @@ function resolveModel({ explicitFlag, task, card, notionId, queuePath = QUEUE_PA
 // it combines with the flag and the filer's Model: line): a P0 card, or a card that already carries a
 // "Dispatched ..." comment (a re-run after a prior worker failed to close
 // it), gets Opus. Same retry rule digest-autofix.js already uses
-// (`attempt >= 2 ? 'opus'`). A rolling 24h cap on Opus Linear launches
-// keeps a backlog drain from spending the week's allowance on Opus; over
-// the cap the card falls back to Sonnet rather than waiting. P0 cards are
-// exempt (owner decision 2026-10-20, BRO-5773: two P0s a week, and a weak
-// first attempt costs most there); their launches still count toward it.
-const LINEAR_OPUS_DAILY_CAP_DEFAULT = 6;
+// (`attempt >= 2 ? 'opus'`). There is no cap on Opus launches (owner decision
+// 2026-10-29, BRO-6502: Claude-plan usage is not a constraint while within
+// plan limits). countRecentLinearOpusLaunches survives as a usage display only.
 const LINEAR_OPUS_WINDOW_MS = 24 * 60 * 60 * 1000;
 const PRIOR_DISPATCH_RE = /^Dispatched\b/;
-
-function linearOpusDailyCap(env = process.env) {
-  const raw = env.LINEAR_OPUS_DAILY_CAP;
-  if (raw === undefined || raw === '') return LINEAR_OPUS_DAILY_CAP_DEFAULT;
-  const n = Number(raw);
-  return Number.isInteger(n) && n >= 0 ? n : LINEAR_OPUS_DAILY_CAP_DEFAULT;
-}
 
 // A launch row that never ran a worker (`unverified`: the launch failed) or
 // that only renumbers a live workspace (`remapped`) is not an attempt.
@@ -164,7 +154,7 @@ function countRecentLinearOpusLaunches(entries, nowMs, windowMs = LINEAR_OPUS_WI
 function countPriorLaunches(entries, taskId) {
   let n = 0;
   for (const e of Array.isArray(entries) ? entries : []) {
-    // Cloud claim rows (BRO-5730) feed the Opus cap only; a cloud attempt is not a Mac retry.
+    // Cloud claim rows (BRO-5730) feed the Opus usage display only; a cloud attempt is not a Mac retry.
     if (isRealLaunch(e) && e.source !== 'cloud-claim' && e.taskId === taskId) n++;
   }
   return n;
@@ -173,18 +163,14 @@ function countPriorLaunches(entries, taskId) {
 /**
  * @param {object} opts
  * @param {object} opts.issue - Linear issue ({ priority, comments: { nodes } })
- * @param {number} opts.recentOpusLaunches - from countRecentLinearOpusLaunches
- * @param {number} opts.cap - from linearOpusDailyCap
  * @param {number} [opts.priorLaunches] - from countPriorLaunches
  * @returns {{ model: 'opus'|'sonnet', reason: string }}
  */
-function linearEscalationModel({ issue, recentOpusLaunches, cap, priorLaunches = 0 }) {
+function linearEscalationModel({ issue, priorLaunches = 0 }) {
   const priorDispatches = countPriorDispatches(issue, priorLaunches);
   const isP0 = isP0Issue(issue);
   if (!isP0 && priorDispatches === 0) return { model: 'sonnet', reason: 'first attempt, not P0' };
   const why = isP0 && priorDispatches === 0 ? 'P0' : `retry after ${priorDispatches} prior dispatch(es)`;
-  if (isP0) return { model: 'opus', reason: recentOpusLaunches >= cap ? `${why} (${p0CapNote(recentOpusLaunches, cap)})` : why };
-  if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `${why}, but ${capNote(recentOpusLaunches, cap)}` };
   return { model: 'opus', reason: why };
 }
 
@@ -201,16 +187,6 @@ function isP0Issue(issue) {
   return !!issue && Number(issue.priority) === 1;
 }
 
-function p0CapNote(recentOpusLaunches, cap) {
-  return `P0 is exempt from the Opus cap; ${capNote(recentOpusLaunches, cap)}`;
-}
-
-function capNote(recentOpusLaunches, cap) {
-  return Number.isFinite(recentOpusLaunches)
-    ? `Opus cap reached (${recentOpusLaunches}/${cap} in 24h)`
-    : 'dispatch ledger unreadable, so the Opus cap counts as reached';
-}
-
 /**
  * The whole Linear dispatch model choice:
  *   1. --model flag: absolute.
@@ -218,35 +194,26 @@ function capNote(recentOpusLaunches, cap) {
  *      the card says: re-running a failed card on the same model is the
  *      failure BRO-4523 fixed.
  *   3. a "Model:" line the filer stamped (linear-brain.js create --model):
- *      opus counts against the same 24h Opus cap as escalation, so a filer
- *      cannot bypass it (a P0 is exempt); sonnet (or haiku: there are no haiku workers) is
+ *      opus or sonnet (haiku runs as sonnet: there are no haiku workers) is
  *      honored on the first attempt, even on a P0 the filer judged easy.
- *   4. otherwise the escalation rule (P0 → Opus, exempt from the cap).
- * P0 cards are exempt from the cap (BRO-5773); a filer's sonnet line still
- * wins on a P0's first run.
- * Reading the ledger can fail; then the cap counts as reached (Sonnet, the
- * safe side, except for a P0) and the reason says so.
+ *   4. otherwise the escalation rule (P0 → Opus).
+ * Reading the ledger can fail; then no prior launches are counted and the
+ * comment-based retry count still applies.
  * Used by Mac dispatch (linear-next.js) and the cloud picker
  * (cloud-worker-pick.js pickModel); bsc-next.js resolveModel() is the legacy
  * Notion path.
  * @returns {{ model: string, reason: string }}
  */
-function pickLinearModel({ explicitFlag, issue, taskId, readEntries, nowMs = Date.now(), env = process.env }) {
+function pickLinearModel({ explicitFlag, issue, taskId, readEntries }) {
   if (typeof explicitFlag === 'string') return { model: explicitFlag, reason: '--model flag' };
   let entries = null;
   try { entries = readEntries(); } catch { entries = null; }
-  const recentOpusLaunches = entries ? countRecentLinearOpusLaunches(entries, nowMs) : Infinity;
   const priorLaunches = entries ? countPriorLaunches(entries, taskId) : 0;
-  const cap = linearOpusDailyCap(env);
-  const escalation = linearEscalationModel({ issue, recentOpusLaunches, cap, priorLaunches });
+  const escalation = linearEscalationModel({ issue, priorLaunches });
   const hint = explicitModelHint({ description: issue && issue.description }, null);
   if (!hint) return escalation;
   if (countPriorDispatches(issue, priorLaunches) > 0) return { ...escalation, reason: `${escalation.reason} (overrides Model: ${hint} on the card)` };
-  if (hint === 'opus') {
-    if (recentOpusLaunches < cap) return { model: 'opus', reason: 'Model: opus on the card' };
-    if (isP0Issue(issue)) return { model: 'opus', reason: `Model: opus on the card (${p0CapNote(recentOpusLaunches, cap)})` };
-    return { model: 'sonnet', reason: `Model: opus on the card, but ${capNote(recentOpusLaunches, cap)}` };
-  }
+  if (hint === 'opus') return { model: 'opus', reason: 'Model: opus on the card' };
   return { model: 'sonnet', reason: `Model: ${hint} on the card` };
 }
 
@@ -269,6 +236,6 @@ function stampModelHint(description, model) {
 
 module.exports = {
   QUEUE_PATH, MODEL_HINT_RE, SHORT_ALIAS, explicitModelHint, triageSizeFor, modelForSize, resolveModel,
-  isRealLaunch, LINEAR_OPUS_DAILY_CAP_DEFAULT, LINEAR_OPUS_WINDOW_MS, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, countPriorDispatches, pickLinearModel,
+  isRealLaunch, LINEAR_OPUS_WINDOW_MS, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, countPriorDispatches, pickLinearModel,
   FILING_MODELS, stampModelHint,
 };

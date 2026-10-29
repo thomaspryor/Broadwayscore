@@ -157,7 +157,7 @@ async function firstUnpaused(queue, nowMs, historySkipped, breakerSkip = () => f
 async function main() {
   const { listOpenIssuesWithDescriptions, listIssueComments } = require('./lib/linear-client.js');
   const { verifyCommand } = require('./lib/linear-drain-parked.js');
-  const { pickCloudCard, buildPickQueue, needsComments, isStartNow, modelPicker, fetchOpusClaimEntries } = require('./lib/cloud-worker-pick.js');
+  const { pickCloudCard, buildPickQueue, needsComments, isStartNow, modelPicker } = require('./lib/cloud-worker-pick.js');
   const issues = await listOpenIssuesWithDescriptions();
   const nowMs = Date.now();
   // A VERIFY posted as a comment arms a card, and a newer one corrects the
@@ -183,9 +183,7 @@ async function main() {
   // for Codex, bounced).
   const queue = buildPickQueue(findResume(issues, nowMs), tiers);
   const counts = { eligible, eligibleP2, eligibleP3, open: issues.length, skipped, skippedP2, skippedP3, startNowSkipped };
-  // BRO-5730: the cloud's own Opus claims feed the 24h Opus cap (null: the read failed, cap counts as reached).
-  const cloudClaims = await fetchOpusClaimEntries(nowMs).catch((err) => { console.error(`[cloud-worker-pick] Opus cap read failed, non-P0 Opus picks fall back to Sonnet: ${String(err && err.message || err).split('\n')[0]}`); return null; });
-  const modelOf = modelPicker(nowMs, { cloudClaims });
+  const modelOf = modelPicker();
   const historySkipped = {};
   const listN = listArg(process.argv);
   if (listN) {

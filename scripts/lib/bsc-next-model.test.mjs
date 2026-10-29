@@ -106,41 +106,30 @@ test('resolveModel: fable is never auto-selected (no triage, no hint, or hint te
 });
 
 // BRO-4523: Linear cards had no layer-3 path (notionId:null), so every one ran on Sonnet.
-const { linearEscalationModel, countRecentLinearOpusLaunches, countPriorLaunches, pickLinearModel, linearOpusDailyCap, stampModelHint } = require('./bsc-next-model.js');
+const { linearEscalationModel, countRecentLinearOpusLaunches, countPriorLaunches, pickLinearModel, stampModelHint } = require('./bsc-next-model.js');
 
 test('linearEscalationModel: P0 or a prior "Dispatched" comment escalates to opus; a first-run P1 stays on sonnet', () => {
   const dispatched = { body: 'Dispatched 46f3f8b6 to linear:BRO-1-x at 2026-09-29T19:37:37.296Z (headless)' };
-  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [] } }, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
-  assert.equal(linearEscalationModel({ issue: { priority: 1, comments: { nodes: [] } }, recentOpusLaunches: 0, cap: 6 }).model, 'opus');
-  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [dispatched] } }, recentOpusLaunches: 0, cap: 6 }).model, 'opus');
+  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [] } } }).model, 'sonnet');
+  assert.equal(linearEscalationModel({ issue: { priority: 1, comments: { nodes: [] } } }).model, 'opus');
+  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [dispatched] } } }).model, 'opus');
   // a comment that merely mentions dispatching mid-sentence is not a prior attempt
-  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [{ body: 'Not yet Dispatched anywhere' }] } }, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
+  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [{ body: 'Not yet Dispatched anywhere' }] } } }).model, 'sonnet');
   // missing comments / missing issue never throw and never escalate
-  assert.equal(linearEscalationModel({ issue: { priority: 3 }, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
-  assert.equal(linearEscalationModel({ issue: null, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
+  assert.equal(linearEscalationModel({ issue: { priority: 3 } }).model, 'sonnet');
+  assert.equal(linearEscalationModel({ issue: null }).model, 'sonnet');
 });
 
-test('linearEscalationModel: over the rolling cap falls back to sonnet and says why', () => {
-  const retry = { priority: 2, comments: { nodes: [{ body: 'Dispatched to worker' }] } };
-  const r = linearEscalationModel({ issue: retry, recentOpusLaunches: 6, cap: 6 });
-  assert.equal(r.model, 'sonnet');
-  assert.match(r.reason, /cap reached \(6\/6/);
-  // an unreadable ledger is passed in as Infinity by the caller: fail toward sonnet
-  assert.equal(linearEscalationModel({ issue: retry, recentOpusLaunches: Infinity, cap: 6 }).model, 'sonnet');
-});
-
-test('linearEscalationModel: a P0 is exempt from the cap (BRO-5773)', () => {
+test('linearEscalationModel: P0 and retries get Opus with no cap (BRO-6502)', () => {
   const p0 = { priority: 1, comments: { nodes: [] } };
-  const r = linearEscalationModel({ issue: p0, recentOpusLaunches: 6, cap: 6 });
-  assert.deepEqual(r, { model: 'opus', reason: 'P0 (P0 is exempt from the Opus cap; Opus cap reached (6/6 in 24h))' });
-  const unreadable = linearEscalationModel({ issue: p0, recentOpusLaunches: Infinity, cap: 6 });
-  assert.equal(unreadable.model, 'opus');
-  assert.match(unreadable.reason, /ledger unreadable/);
+  const retry = { priority: 2, comments: { nodes: [{ body: 'Dispatched to worker' }] } };
+  assert.equal(linearEscalationModel({ issue: retry }).model, 'opus');
+  assert.doesNotMatch(linearEscalationModel({ issue: retry }).reason, /cap/);
   // a string priority still counts as P0; 0 ("no priority") does not
-  assert.equal(linearEscalationModel({ issue: { ...p0, priority: '1' }, recentOpusLaunches: 9, cap: 6 }).model, 'opus');
-  assert.equal(linearEscalationModel({ issue: { ...p0, priority: 0 }, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
-  assert.deepEqual(linearEscalationModel({ issue: p0, recentOpusLaunches: 0, cap: 6 }), { model: 'opus', reason: 'P0' });
-  const p0retry = linearEscalationModel({ issue: { priority: 1, comments: { nodes: [{ body: 'Dispatched' }] } }, recentOpusLaunches: 9, cap: 6 });
+  assert.equal(linearEscalationModel({ issue: { ...p0, priority: '1' } }).model, 'opus');
+  assert.equal(linearEscalationModel({ issue: { ...p0, priority: 0 } }).model, 'sonnet');
+  assert.deepEqual(linearEscalationModel({ issue: p0 }), { model: 'opus', reason: 'P0' });
+  const p0retry = linearEscalationModel({ issue: { priority: 1, comments: { nodes: [{ body: 'Dispatched' }] } } });
   assert.equal(p0retry.model, 'opus');
 });
 
@@ -160,14 +149,6 @@ test('countRecentLinearOpusLaunches: counts only linear opus launch rows inside 
   ];
   assert.equal(countRecentLinearOpusLaunches(rows, now), 2);
   assert.equal(countRecentLinearOpusLaunches(undefined, now), 0);
-});
-
-test('linearOpusDailyCap: env override, 0 allowed (Opus off), junk falls back to the default', () => {
-  assert.equal(linearOpusDailyCap({}), 6);
-  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '10' }), 10);
-  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '0' }), 0);
-  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: 'lots' }), 6);
-  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '-1' }), 6);
 });
 
 // A worker that crashed never posts "Dispatched"; the ledger launch row is the
@@ -199,12 +180,12 @@ test('pickLinearModel: flag, then hint, then escalation; a crashed earlier run e
   const retry = pickLinearModel({ ...base, explicitFlag: null, issue: p1, readEntries: () => crashed });
   assert.equal(retry.model, 'opus');
   assert.match(retry.reason, /retry after 1 prior/);
-  // ledger unreadable: no retry signal and the cap counts as reached
+  // ledger unreadable: no retry signal, and no cap to count as reached (BRO-6502)
   const broken = pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Opus' }, readEntries: () => { throw new Error('EIO'); } });
-  assert.equal(broken.model, 'sonnet');
-  // the env cap is honoured, except by a P0 (BRO-5773)
-  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Opus' }, readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
-  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
+  assert.equal(broken.model, 'opus');
+  // a recorded Opus-heavy day changes nothing: there is no cap
+  const busy = Array.from({ length: 50 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${100 + i}`, model: 'opus', ts: '2026-10-02T10:00:00Z' }));
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Opus' }, readEntries: () => busy, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
   assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
 });
 
@@ -215,24 +196,13 @@ test('pickLinearModel: a Model: hint picked at filing', () => {
   // opus hint on a first attempt, under the cap
   const o = pickLinearModel({ ...base, issue: card(2, 'x\n\nModel: Opus'), readEntries: () => [] });
   assert.deepEqual(o, { model: 'opus', reason: 'Model: opus on the card' });
-  // opus hint counts against the same daily cap
-  const capped = pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } });
-  assert.equal(capped.model, 'sonnet');
-  assert.match(capped.reason, /Model: opus on the card, but Opus cap reached \(0\/0/);
-  // unreadable ledger: the cap counts as reached, and the reason says why
-  const broken = pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => { throw new Error('EIO'); } });
-  assert.equal(broken.model, 'sonnet');
-  assert.match(broken.reason, /ledger unreadable/);
-  // a P0 with an opus line keeps Opus over the cap, and the reason says so (BRO-5773)
-  const p0Hint = pickLinearModel({ ...base, issue: card(1, 'Model: Opus'), readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } });
-  assert.equal(p0Hint.model, 'opus');
-  assert.match(p0Hint.reason, /Model: opus on the card \(P0 is exempt from the Opus cap; Opus cap reached/);
-  // a P0 sonnet line stays on Sonnet with an unreadable ledger; a P0 retry over the cap escalates past it
+  // unreadable ledger or a full day of Opus launches: still Opus (BRO-6502)
+  assert.equal(pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
+  const p0Launches = Array.from({ length: 20 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${100 + i}`, model: 'opus', ts: '2026-10-02T10:00:00Z' }));
+  assert.deepEqual(pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => p0Launches }), { model: 'opus', reason: 'Model: opus on the card' });
+  // a P0 sonnet line stays on Sonnet; a P0 retry escalates past it
   assert.equal(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet'), readEntries: () => { throw new Error('EIO'); } }).model, 'sonnet');
-  assert.equal(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet', [{ body: 'Dispatched to worker' }]), readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
-  // P0 Opus launches still count toward the cap, so they crowd out a later non-P0 Opus card
-  const p0Launches = [1, 2].map((i) => ({ event: 'launch', taskId: `linear:BRO-${i}`, model: 'opus', ts: '2026-10-02T10:00:00Z' }));
-  assert.equal(pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => p0Launches, env: { LINEAR_OPUS_DAILY_CAP: '2' } }).model, 'sonnet');
+  assert.equal(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet', [{ body: 'Dispatched to worker' }]), readEntries: () => [] }).model, 'opus');
   // a P0 the filer judged easy runs on Sonnet the first time
   assert.deepEqual(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet'), readEntries: () => [] }), { model: 'sonnet', reason: 'Model: sonnet on the card' });
   // haiku hint maps to sonnet (no haiku workers)

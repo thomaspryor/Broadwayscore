@@ -26,7 +26,7 @@ const { landedPerLane, LANDED_LOG_FORMAT } = require('./codex-runner.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isAwaitingOwner } = require('./owner-approval-channel.js');
 const cardDedupe = require('./card-dedupe.js');
-const { countRecentLinearOpusLaunches, linearOpusDailyCap } = require('./bsc-next-model.js');
+const { countRecentLinearOpusLaunches } = require('./bsc-next-model.js');
 const { fetchOpusClaimEntries, withCloudOpusClaims } = require('./cloud-worker-pick.js');
 const { readDispatchLedgers, PRIMARY_LEDGER } = require('./board-targeting-sources.js');
 const sessionCost = require('./claude-session-cost.js');
@@ -273,10 +273,9 @@ function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now
 }
 
 /** Same ledger + deduplicated cloud claims and counter as pickLinearModel (BRO-5770).
- * P0 launches count even above the cap. Missing either source is unknown, not zero.
- * Cap fallback reasons are console-only, so historical Sonnet fallback counts are unavailable.
+ * Usage display only: there is no Opus cap (BRO-6502). Missing either source is unknown, not zero.
  */
-async function fetchOpusUsage({ now = new Date(), env = process.env, readLedger = readDispatchLedgers, fetchClaims = fetchOpusClaimEntries } = {}) {
+async function fetchOpusUsage({ now = new Date(), readLedger = readDispatchLedgers, fetchClaims = fetchOpusClaimEntries } = {}) {
   // Use the canonical Mac ledger path, as the dispatcher does, even from a digest worktree.
   const ledger = readLedger({ files: [PRIMARY_LEDGER] });
   if (!ledger.sources.some((s) => s.file === PRIMARY_LEDGER && s.present)) {
@@ -287,7 +286,6 @@ async function fetchOpusUsage({ now = new Date(), env = process.env, readLedger 
   if (!Array.isArray(claims)) throw new Error('could not read cloud Opus claims');
   return {
     count: countRecentLinearOpusLaunches(withCloudOpusClaims(ledger.rows, claims), nowMs),
-    cap: linearOpusDailyCap(env),
   };
 }
 
@@ -391,7 +389,7 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     technicalInReview: num(technicalInReview),
     parked: ok(data.parked) ? num(data.parked.count) : null,
     bySource: ok(data.bySource) ? data.bySource : null,
-    opus: { count: pick(data.opus, 'count'), cap: ok(data.opus) ? num(data.opus.cap) : linearOpusDailyCap() },
+    opus: { count: pick(data.opus, 'count') },
     lanes: { d1: data.landed1 || null, d7: data.landed7 || null },
     cost: ok(data.cost) ? data.cost : null,
     // BRO-6081: per-day added/closed for the owner summary chart (board-summary.js).
@@ -457,7 +455,7 @@ function renderBoardNumbersLines(m) {
   const lane = (l) => (l ? `Codex ${l.codex}, Claude ${l.claude}` : 'n/a');
   lines.push(`Landed on main, 24h: ${lane(m.lanes.d1)}`);
   lines.push(`Landed on main, 7 days: ${lane(m.lanes.d7)}`);
-  lines.push(`Opus in last 24h: ${show(m.opus.count)} of ${show(m.opus.cap)}`);
+  lines.push(`Opus in last 24h: ${show(m.opus.count)} (no cap)`);
   lines.push(m.cost ? sessionCost.renderCostLine(m.cost) : 'Claude cost, 7 days: n/a');
   if (m.floors) lines.push('Some counts hit the page limit and are minimums.');
   return lines;

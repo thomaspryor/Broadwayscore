@@ -105,7 +105,6 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { buildAutoTitle, projectOf } = require('./lib/workspace-naming.js');
 const { pickLinearModel } = require('./lib/bsc-next-model.js');
-const { fetchOpusClaimEntries, withCloudOpusClaims } = require('./lib/cloud-worker-pick.js');
 // The shared guard/gate lib (task #1303 plan review item 2) — see that
 // file's header for the DispatchGuardTask shape these expect.
 const {
@@ -481,21 +480,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const taskId = ledgerTaskId(issue.identifier);
   const pseudoTask = { id: taskId, subject: `${issue.identifier} ${issue.title}`, description: issue.description || '' };
   const explicitModel = typeof args.model === 'string' ? args.model : null;
-  // BRO-4523: flag, then a "Model:" hint line, then P0-or-retry → Opus under
-  // a rolling daily cap. (resolveModel's Notion triage layer never applied
+  // BRO-4523: flag, then a "Model:" hint line, then P0-or-retry → Opus, no cap
+  // (BRO-6502). (resolveModel's Notion triage layer never applied
   // to Linear cards, so every card used to land on Sonnet.)
-  // BRO-5730: the cap also counts cloud Opus claims ("Worker model: opus" comments). A failed read
-  // counts the Mac ledger alone (warned): the ledger is this machine's own record of its launches.
-  let cloudOpusClaims = [];
-  if (!explicitModel && typeof reportLinearFn.listRecentCommentsContaining === 'function') {
-    try {
-      cloudOpusClaims = await fetchOpusClaimEntries(Date.now(), reportLinearFn);
-    } catch (e) {
-      console.warn(`[linear-next] could not read cloud Opus claims, the Opus cap counts Mac launches only: ${e.message}`);
-    }
-  }
-  const readEntries = () => withCloudOpusClaims(readLedgerEntriesFn(), cloudOpusClaims);
-  const pick = pickLinearModel({ explicitFlag: explicitModel, issue, taskId, readEntries });
+  const pick = pickLinearModel({ explicitFlag: explicitModel, issue, taskId, readEntries: readLedgerEntriesFn });
   const model = pick.model;
   console.log(`[linear-next] model: ${model} (${pick.reason})`);
   const project = projectOf({ tags: ld.issueLabelNames(issue).join(','), category: null, subject: issue.title });

@@ -13,6 +13,7 @@
  * Pass `model` to create_session and put `MODEL-REASON: <modelReason>` in the
  * prompt, plus a `BUDGET: <hours>h` line (1-12) and a `REPORT-BACK:` line for a
  * Broadwayscore session (BRO-5673, BRO-5781). Exit 1 when Linear can't be read or a card is missing.
+ * Exit 3 (JSON has `refused`, no `model`) when a card's description carries a NO-DISPATCH line (BRO-6502).
  */
 
 'use strict';
@@ -29,7 +30,7 @@ if (hasHelpFlag(process.argv)) {
 require('./lib/load-env').loadEnv();
 
 async function main() {
-  const { modelPicker, sessionModelFor, fetchOpusClaimEntries } = require('./lib/cloud-worker-pick.js');
+  const { modelPicker, sessionModelFor, noDispatchHold } = require('./lib/cloud-worker-pick.js');
   if (process.argv.includes('--no-card')) {
     console.log(JSON.stringify({ model: sessionModelFor([]).model, modelReason: 'no card', cards: [] }, null, 2));
     return;
@@ -40,11 +41,15 @@ async function main() {
     process.exit(2);
   }
   const { getIssue } = require('./lib/linear-client.js');
-  const nowMs = Date.now();
-  // BRO-5730: count the cloud's own Opus claims against the 24h cap (null: read failed, cap reached).
-  const cloudClaims = await fetchOpusClaimEntries(nowMs).catch(() => null);
-  const modelOf = modelPicker(nowMs, { cloudClaims });
+  const modelOf = modelPicker();
   const issues = await Promise.all(ids.map((id) => getIssue(id)));
+  // BRO-6502: a card held with a NO-DISPATCH line gets no model at all, so a create_session
+  // that follows this output has nothing to pass. Exit 3.
+  const held = issues.filter((issue) => issue && noDispatchHold(issue)).map((issue) => issue.identifier);
+  if (held.length) {
+    console.log(JSON.stringify({ refused: held, refusedReason: `${held.join(', ')} carry a NO-DISPATCH line in the description: do not start a worker on them (remove the line to lift the hold)` }, null, 2));
+    process.exit(3);
+  }
   const cards = issues.map((issue, i) => {
     if (!issue) throw new Error(`${ids[i]} not found`);
     // getIssue reads 50 comments; past that a retry may be missed (as in cloud-worker-pick.js).

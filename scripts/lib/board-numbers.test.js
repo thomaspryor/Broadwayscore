@@ -197,14 +197,14 @@ test('fetchBoardNumbersData asks for 1 and 7 day windows and survives one failur
     graphql: null,
     fetchOpen: async () => { throw new Error('boom'); },
     fetchStuck: async () => ({ count: 2 }),
-    fetchOpus: async () => ({ count: 7, cap: 6 }),
+    fetchOpus: async () => ({ count: 7 }),
     fetchInflow: async ({ windowDays }) => { seen.push(windowDays); return inflow(windowDays, 1); },
     readLandedFn: () => ({ d1: { codex: 1, claude: 0 }, d7: { codex: 7, claude: 0 } }),
   });
   assert.deepEqual(seen.sort(), [1, 7]);
   assert.equal(d.open.error, 'boom');
   assert.equal(d.stuckCards.count, 2);
-  assert.deepEqual(d.opus, { count: 7, cap: 6 });
+  assert.deepEqual(d.opus, { count: 7 });
   assert.deepEqual(d.landed7, { codex: 7, claude: 0 });
 });
 
@@ -339,7 +339,7 @@ function opusLedger(t, rows) {
   return ({ files }) => readDispatchLedgers({ repo, files });
 }
 
-test('BRO-5770: Opus usage shares the cap counter and cloud dedupe, including P0 above the cap', async (t) => {
+test('BRO-5770: Opus usage shares the launch counter and cloud dedupe (no cap, BRO-6502)', async (t) => {
   const readLedger = opusLedger(t, [
     ...Array.from({ length: 6 }, (_, i) => opusLaunch(i, 4)),
     opusLaunch(7, 1, { priority: 1 }), // P0 exemption still counts as launch 7.
@@ -352,26 +352,26 @@ test('BRO-5770: Opus usage shares the cap counter and cloud dedupe, including P0
     { event: 'job-spawned', taskId: 'linear:BRO-7', model: 'opus', ts: opusNow.toISOString() },
   ]);
   const usage = await B.fetchOpusUsage({
-    now: opusNow, env: {}, readLedger,
+    now: opusNow, readLedger,
     fetchClaims: async (nowMs) => {
       assert.equal(nowMs, opusNow.getTime());
       return [opusLaunch(7, 0.9, { source: 'cloud-claim' }), opusLaunch(14, 2, { source: 'cloud-claim' })];
     },
   });
-  assert.deepEqual(usage, { count: 8, cap: 6 });
+  assert.deepEqual(usage, { count: 8 });
   const model = B.buildBoardNumbers({ data: { opus: usage } });
-  assert.ok(B.renderBoardNumbersLines(model).includes('Opus in last 24h: 8 of 6'));
-  assert.match(B.renderBoardNumbersHtml(model), /Opus in last 24h<\/td><td[^>]*>8 of 6/);
+  assert.ok(B.renderBoardNumbersLines(model).includes('Opus in last 24h: 8 (no cap)'));
+  assert.match(B.renderBoardNumbersHtml(model), /Opus in last 24h<\/td><td[^>]*>8 \(no cap\)/);
 });
 
-test('BRO-5770: readable empty ledgers show zero and use the configured cap, including zero', async (t) => {
+test('BRO-5770: readable empty ledgers show zero', async (t) => {
   const readLedger = opusLedger(t, []);
-  for (const cap of [0, 10]) {
+  {
     const usage = await B.fetchOpusUsage({
-      now: opusNow, env: { LINEAR_OPUS_DAILY_CAP: String(cap) }, readLedger, fetchClaims: async () => [],
+      now: opusNow, readLedger, fetchClaims: async () => [],
     });
-    assert.deepEqual(usage, { count: 0, cap });
-    assert.ok(B.renderBoardNumbersLines(B.buildBoardNumbers({ data: { opus: usage } })).includes(`Opus in last 24h: 0 of ${cap}`));
+    assert.deepEqual(usage, { count: 0 });
+    assert.ok(B.renderBoardNumbersLines(B.buildBoardNumbers({ data: { opus: usage } })).includes('Opus in last 24h: 0 (no cap)'));
   }
 });
 
@@ -407,7 +407,7 @@ test('BRO-5770: an Opus read failure preserves the rest of the digest and render
   assert.equal(data.opus.error, 'cloud unavailable');
   const lines = B.renderBoardNumbersLines(B.buildBoardNumbers({ data }));
   assert.ok(lines.includes('Added: 3 in 24h (7-day average 0.4/day), 3 in 7 days'));
-  assert.ok(lines.includes(`Opus in last 24h: n/a of ${require('./bsc-next-model.js').linearOpusDailyCap()}`));
+  assert.ok(lines.includes('Opus in last 24h: n/a (no cap)'));
 });
 
 test('BRO-6338: filingOutpacesClosingLine names the top filer only when added > closed on both of the last 2 days', () => {

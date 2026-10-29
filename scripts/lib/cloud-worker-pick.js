@@ -548,28 +548,26 @@ function cloudPriorAttempts(issue) {
  * The model a cloud worker should run this card on, by the same policy as a
  * Mac dispatch (linear-next.js -> bsc-next-model.js pickLinearModel): a retry
  * escalates, a filer's "Model:" line is honored on the first attempt, a P0
- * gets Opus (exempt from the 24h Opus cap, BRO-5773), other Opus picks stay
- * within the cap the ledger can see. Cloud retries
- * (cloudPriorAttempts) count as prior launches; they are added as ledger rows
- * with no model, so they never count against the Opus cap. A ledger read that
- * throws makes the cap count as reached (Sonnet, P0s excepted), as on the Mac.
+ * gets Opus, and there is no Opus launch cap (owner decision 2026-10-29,
+ * BRO-6502). Cloud retries (cloudPriorAttempts) count as prior launches; they
+ * are added as ledger rows with no model.
  * @param {object} issue - Linear issue, with prefetched comments
- * @param {{nowMs?:number, readEntries?:Function, env?:object}} [opts] - readEntries defaults to the dispatch ledger
+ * @param {{readEntries?:Function}} [opts] - readEntries defaults to the dispatch ledger
  * @returns {{ model: string, reason: string }}
  */
-function pickModel(issue, { nowMs = Date.now(), readEntries, env = process.env } = {}) {
+function pickModel(issue, { readEntries } = {}) {
   const { pickLinearModel } = require('./bsc-next-model.js');
   const baseRead = readEntries || require('./dispatch-ledger.js').readEntries;
   const taskId = `linear:${issue && issue.identifier}`;
   const prior = cloudPriorAttempts(issue);
   const read = () => [...baseRead(), ...Array.from({ length: prior }, () => ({ event: 'launch', taskId, model: null }))];
-  return pickLinearModel({ explicitFlag: null, issue, taskId, readEntries: read, nowMs, env });
+  return pickLinearModel({ explicitFlag: null, issue, taskId, readEntries: read });
 }
 
 /**
  * Ledger-shaped launch rows for the cloud's own Opus work (BRO-5730): one per claim comment whose
- * "Worker model:" line says opus. The cloud has no dispatch ledger, so without these the 24h Opus
- * cap never saw a cloud launch. comments: [{ body, createdAt, issue: { identifier } }].
+ * "Worker model:" line says opus. The cloud has no dispatch ledger, so without these the board's
+ * 24h Opus usage count never saw a cloud launch. comments: [{ body, createdAt, issue: { identifier } }].
  */
 function opusClaimEntries(comments) {
   const { parseWorkerModel } = require('./linear-session-reporting.js');
@@ -581,7 +579,7 @@ function opusClaimEntries(comments) {
 /**
  * Ledger entries plus cloud Opus claim rows, leaving out a claim within an hour of any real ledger
  * launch of the same card (a Mac-dispatched worker that also posted a claim). Claim rows carry
- * source 'cloud-claim': they count toward the 24h Opus cap only, not as prior launches of a card.
+ * source 'cloud-claim': they count toward the 24h Opus usage count only, not as prior launches of a card.
  */
 function withCloudOpusClaims(entries, claims) {
   const { isRealLaunch } = require('./bsc-next-model.js');
@@ -604,25 +602,33 @@ async function fetchOpusClaimEntries(nowMs = Date.now(), client = require('./lin
 
 /**
  * pickModel with the dispatch ledger read once per run. The ledger is the Mac's
- * (gitignored); in a cloud container it is absent and reads as [].
- * cloudClaims: fetchOpusClaimEntries() rows, so the 24h Opus cap also counts cloud
- * Opus claims; null when that read failed, which counts the cap as reached (Sonnet),
- * as a failed ledger read does on the Mac; undefined (not fetched) leaves the old note.
+ * (gitignored); in a cloud container it is absent and reads as [], so Mac
+ * retries are invisible there (the card's "Dispatched" comments still count).
  * Shared by scripts/cloud-worker-pick.js and scripts/session-model.js.
  */
-function modelPicker(nowMs = Date.now(), { cloudClaims } = {}) {
+function modelPicker() {
   const ledger = require('./dispatch-ledger.js');
   const ledgerMissing = !require('fs').existsSync(ledger.LEDGER_PATH);
   let entries;
   const readEntries = () => {
-    if (cloudClaims === null) throw new Error('cloud Opus claims could not be read');
-    if (entries === undefined) entries = withCloudOpusClaims(ledger.readEntries(), cloudClaims);
+    if (entries === undefined) entries = ledger.readEntries();
     return entries;
   };
   return (issue) => {
-    const m = pickModel(issue, { nowMs, readEntries });
-    return ledgerMissing && cloudClaims === undefined && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: the 24h Opus cap counts Mac launches only)` } : m;
+    const m = pickModel(issue, { readEntries });
+    return ledgerMissing && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: Mac launches of this card are not counted as retries)` } : m;
   };
+}
+
+/**
+ * Why no worker may be started on this card (BRO-6502): its description carries a
+ * "NO-DISPATCH:" line (BRO-2204). Description only, as headlessUnfitReason: comments quote the
+ * marker, and deleting the line from the description is how a hold is lifted.
+ * Used by session-model.js so a hand-started create_session cannot dodge the hold.
+ * @returns {'no-dispatch-marker'|null}
+ */
+function noDispatchHold(issue) {
+  return require('./no-dispatch-marker.js').hasNoDispatchMarker(issue && issue.description) ? 'no-dispatch-marker' : null;
 }
 
 /**
@@ -795,6 +801,6 @@ module.exports = {
   isMachineComment, laneUnworkableReason, LANE_UNWORKABLE_MAX_MS,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
   AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
-  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
+  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, noDispatchHold, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, namesOwnerHold, FALLBACK_PARK_DENY_RE,
 };
