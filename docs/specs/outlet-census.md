@@ -245,7 +245,8 @@ Run on CI after the round-2 ingest batch had written its review files (run 40864
 | komisar | 0.979 | 1.00 | 0 |
 | one-minute-critic | 0.98 | 0.993 | 1 |
 | stagebuddy, stageandcinema, culturesauce, dailybeast, theatermania, nysr | 0.989 to 0.999 | 1.00 | 0 |
-| theater-life | 0.992 | not measured (its API fetch failed this run) | |
+| timeout | 0.632 (0.889 after bug class 11) | 0.989 (after the JSON-LD critic fix landed) | 2 |
+| theater-life | 0.992 (measured from a cloud session) | not measurable on CI: theaterlife.com refuses GitHub Actions runners (two runs, `fetch failed`) while answering a cloud session; its 4 gaps were ingested | |
 
 ## Fixes applied (pending-fix plans)
 
