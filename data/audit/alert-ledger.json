@@ -15069,20 +15069,23 @@
       "resolveReason": "absent"
     },
     "test-yml:red:Unit Tests:501c5e0a": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
       "firstSeen": "2026-10-11T06:16:18.103Z",
-      "incidentOpenedAt": "2026-10-11T06:16:18.103Z",
-      "lastSeen": "2026-10-11T06:36:05.641Z",
-      "lastNotifiedAt": "2026-10-11T06:16:18.103Z",
+      "incidentOpenedAt": "2026-10-29T07:05:28.373Z",
+      "lastSeen": "2026-10-29T07:05:28.373Z",
+      "lastNotifiedAt": "2026-10-29T07:05:28.373Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-5035",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-11T06:56:42.683Z",
-      "resolveReason": "job-green"
+      "linearIdentifier": "BRO-6505",
+      "dispatch": {
+        "requestedAt": "2026-10-29T07:05:28.373Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40829220706",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40829220706"
+      }
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
       "status": "resolved",
