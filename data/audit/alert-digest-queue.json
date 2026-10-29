@@ -1301,6 +1301,20 @@
     "queuedAt": "2026-10-29T07:17:00.265Z"
   },
   {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run data validation (still open — BRO-5882)",
+    "description": "Still firing after 30 notifications since it was filed. Tracked at BRO-5882.\n\nCorpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40840993325",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5882",
+    "fields": [],
+    "queuedAt": "2026-10-29T08:53:30.416Z"
+  },
+  {
     "conditionKey": "land:land/bro-5447-covered",
     "title": "Landing blocked: deadline red on land/bro-5447-covered",
     "description": "land.yml did not land land/bro-5447-covered: the deadline gate went red at 6585b72f78. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5447-covered @ 6585b72f78 (origin/land/bro-5447-covered) → origin/main @ a41857720c [land] train: + land/bro-6496-ob-precovid @ da5e9a2f0f (1 commit(s)) [land] train: + land/job/linear-BRO-6505-mvt7951x @ 3bef4740ff (1 commit(s)) [land] train: land/bro-6503-we-2010-11-promote not taken — would not rebase onto the train: Rebasing (1/2) error: could not apply 2d5ee202597... data(BRO- Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40824524183",
