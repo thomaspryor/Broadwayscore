@@ -1082,20 +1082,6 @@
     "queuedAt": "2026-10-29T02:48:40.447Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T03:31:39.023Z"
-  },
-  {
     "conditionKey": "land:land/bro-6487-sitemap-pn",
     "title": "Landing blocked: race red on land/bro-6487-sitemap-pn",
     "description": "land.yml did not land land/bro-6487-sitemap-pn: the race gate went red at 47fb1a0cba. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6487-sitemap-pn @ 47fb1a0cba (origin/land/bro-6487-sitemap-pn) → origin/main @ 9b53a379b6 [land] attempt 1/3: rebased onto 9b53a379b6, 17 file(s) changed — running checks [land] linked 22 gitignored path(s) into the worktree (node_modules/core data) [land] verified-base: main moved 2c75a21c35 → 9b53a379b6 across 56 inert path(s) only — reusing the upstream verdict, gauntlet skipped Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40807657645",
@@ -1288,5 +1274,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T04:51:42.146Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-29.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T06:12:14.189Z"
   }
 ]
