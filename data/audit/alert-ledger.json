@@ -255,8 +255,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
       "sweptTracker": "BRO-6422",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-29T20:33:00.853Z"
+      "resolvedAt": "2026-10-29T20:35:04.587Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4358,7 +4357,7 @@
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
       },
-      "resolvedAt": "2026-10-29T20:33:00.605Z",
+      "resolvedAt": "2026-10-29T20:35:07.934Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
@@ -15078,11 +15077,12 @@
       "linearIdentifier": "BRO-6505",
       "silentRefires": 1,
       "absentRunIds": [
-        "40861673753",
-        "40887937386"
+        "40860133605",
+        "40883919555",
+        "40921725234"
       ],
-      "resolvedAt": "2026-10-29T20:33:00.639Z",
-      "resolveReason": "job-green"
+      "resolvedAt": "2026-10-29T20:35:07.978Z",
+      "resolveReason": "stale-signature"
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
       "status": "resolved",
@@ -29634,9 +29634,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6522",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-29T20:33:00.652Z",
-      "resolveReason": "job-green"
+      "absentRunIds": [
+        "40921725234"
+      ]
     },
     "land:land/bro-6485-timeout-author": {
       "status": "open",
