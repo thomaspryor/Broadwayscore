@@ -545,9 +545,9 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
             <div className="flex items-baseline gap-2 sm:gap-3 flex-wrap text-sm">
               <span className="text-brand font-bold tabular-nums">{trackRecordPct}%</span>
               <span className="text-gray-300">Our #1 pick wins the Tony</span>
-              <span className="text-gray-500 text-xs">across {accuracyStats.seasonCount} seasons &middot; tap to see track record</span>
+              <span className="text-fg-muted text-xs">across {accuracyStats.seasonCount} seasons &middot; tap to see track record</span>
             </div>
-            <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className="w-4 h-4 text-fg-muted transition-transform group-open:rotate-180 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </summary>
@@ -615,7 +615,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-gray-500">Our #1 pick</p>
+                        <p className="text-xs text-fg-muted">Our #1 pick</p>
                         <p className="text-sm font-medium text-white truncate">{rc.predicted.title}</p>
                       </div>
                       <BlendedTrioDisplay
@@ -696,7 +696,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
               <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
                 Learn about our scoring methodology &rarr;
               </Link>
-              <p className="text-xs text-gray-500 leading-relaxed mt-4 pt-3 border-t border-white/5">
+              <p className="text-xs text-fg-muted leading-relaxed mt-4 pt-3 border-t border-white/5">
                 Score model updated 2026-05-23: Best Play now uses a two-signal awards score (40% top-cat
                 precursor + 60% broad ceremony signal), and Best Musical/Best Revival Musical recipes were
                 rebalanced. Best Play in-sample accuracy 11/11. Total backtest accuracy {trackRecordHits} of {trackRecordCells} ({trackRecordPct}%).
@@ -782,7 +782,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
               <div key={group.key} className="mb-8 last:mb-0">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
                   {group.title}
-                  <span className="ml-2 text-gray-600 tabular-nums">{group.shows.length}</span>
+                  <span className="ml-2 text-fg-muted tabular-nums">{group.shows.length}</span>
                 </h3>
                 <div className="space-y-3" role="list" aria-label={group.title}>
                   {group.shows.map((show, i) => (
@@ -825,13 +825,13 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
         )}
 
         {/* Data Source Note */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6">
           <p>
             Rankings are derived from aggregated critic reviews.
             Tony eligibility based on opening dates within the {season.label} season.
             Category classifications (new vs. revival) are subject to official Tony Awards Administration Committee rulings.
           </p>
-          <p className="mt-3 text-xs text-gray-600">
+          <p className="mt-3 text-xs text-fg-muted">
             Score model updated 2026-05-16. Awards Score now uses tier-weighted precursor nominations
             (Drama League, OCC, Drama Desk). Backtest accuracy: {blendedHits} of {accuracyStats.categorySeasonCount} contests ({accuracyStats.blendedRank1WinPct}%) across {accuracyStats.seasonCount} years of Tony history.
           </p>

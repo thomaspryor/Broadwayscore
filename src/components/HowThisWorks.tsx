@@ -19,7 +19,7 @@ export default function HowThisWorks({ children, heading = 'How This Works', cla
       <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-white uppercase tracking-wide hover:text-brand transition-colors list-none [&::-webkit-details-marker]:hidden flex items-center justify-between">
         {heading}
         <svg
-          className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180"
+          className="w-4 h-4 text-fg-muted transition-transform group-open:rotate-180"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

@@ -87,7 +87,7 @@ function WinnerRow({
       )}
 
       <div className="flex-1 min-w-0">
-        <div className="text-[11px] text-gray-500 mb-0.5 truncate">{category.title}</div>
+        <div className="text-[11px] text-fg-muted mb-0.5 truncate">{category.title}</div>
         <div className="font-semibold text-white text-sm leading-snug truncate">
           {personUrl ? (
             <Link href={personUrl} className="hover:text-brand transition-colors">{name}</Link>
@@ -106,13 +106,13 @@ function WinnerRow({
         {picksCount > 0 && (
           <div className="text-center">
             <div className="text-xs font-bold text-white leading-none">{picksCount}</div>
-            <div className="text-[9px] text-gray-500 uppercase tracking-wide leading-none mt-0.5">picks</div>
+            <div className="text-[9px] text-fg-muted uppercase tracking-wide leading-none mt-0.5">picks</div>
           </div>
         )}
         {odds && (
           <div className="text-center min-w-[40px]">
             <div className="text-sm font-bold text-brand leading-none">{odds}</div>
-            <div className="text-[9px] text-gray-500 uppercase tracking-wide leading-none mt-0.5">GD odds</div>
+            <div className="text-[9px] text-fg-muted uppercase tracking-wide leading-none mt-0.5">GD odds</div>
           </div>
         )}
         <span className={`text-[10px] font-bold px-2 py-1 rounded-full whitespace-nowrap ${
@@ -140,7 +140,7 @@ function WinnerGroup({
   if (visible.length === 0) return null;
   return (
     <section className="mb-8">
-      <h2 className="text-[11px] font-semibold uppercase tracking-widest text-gray-500 mb-3">{heading}</h2>
+      <h2 className="text-[11px] font-semibold uppercase tracking-widest text-fg-muted mb-3">{heading}</h2>
       <div className="space-y-2">
         {visible.map(cat => (
           <WinnerRow key={cat.key} category={cat} winner={cat.shows[0]} isPrediction={isPrediction} />
@@ -226,7 +226,7 @@ export default function TonyWinners2026Page() {
           </Link>
         </div>
 
-        <p className="mt-4 text-xs text-gray-600">
+        <p className="mt-4 text-xs text-fg-muted">
           Win odds from GoldDerby (crowd predictions). Critic picks from 20+ outlets. Updated daily until ceremony night.
         </p>
       </div>

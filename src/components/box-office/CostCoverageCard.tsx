@@ -13,7 +13,7 @@ const TONE_TEXT: Record<PillTone, string> = {
   near: 'text-gray-300',
   below: 'text-score-tepid',
   muted: 'text-gray-400',
-  pending: 'text-gray-500',
+  pending: 'text-fg-muted',
 };
 
 function list(titles: string[], max = 3): string {
@@ -62,12 +62,12 @@ export default function CostCoverageCard({ counts, shares }: { counts: StatusCou
                   ))}
                 </ul>
               ) : (
-                <p className="mt-1.5 text-sm text-gray-500">None</p>
+                <p className="mt-1.5 text-sm text-fg-muted">None</p>
               )}
             </div>
           ))}
         </div>
-        {notRated && <p className="mt-5 pt-4 border-t border-white/10 text-xs text-gray-500">{notRated}</p>}
+        {notRated && <p className="mt-5 pt-4 border-t border-white/10 text-xs text-fg-muted">{notRated}</p>}
       </div>
     </section>
   );

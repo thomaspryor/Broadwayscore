@@ -129,7 +129,7 @@ export default function AudienceBuzzPage() {
           <p className="text-gray-400 mt-2">
             What real theatergoers think. Combined AudienceGrade ratings from Show Score, Mezzanine, Theatr, Broadway.com, and Reddit.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithBuzz.length} shows · {totalReviews.toLocaleString()}+ audience reviews · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -175,7 +175,7 @@ export default function AudienceBuzzPage() {
                     >
                       {g.grade}
                     </span>
-                    <span className="text-gray-500 text-sm">{shows.length} show{shows.length !== 1 ? 's' : ''}</span>
+                    <span className="text-fg-muted text-sm">{shows.length} show{shows.length !== 1 ? 's' : ''}</span>
                   </div>
                   <ul className="space-y-1">
                     {shows.slice(0, 8).map(item => (
@@ -186,7 +186,7 @@ export default function AudienceBuzzPage() {
                       </li>
                     ))}
                     {shows.length > 8 && (
-                      <li className="text-gray-500 text-xs">+{shows.length - 8} more</li>
+                      <li className="text-fg-muted text-xs">+{shows.length - 8} more</li>
                     )}
                   </ul>
                 </div>
@@ -221,7 +221,7 @@ export default function AudienceBuzzPage() {
         </div>
 
         {/* Data Source Note */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Audience data aggregated from {marketSources.map(s => s.name).join(', ')}.
             Sources weighted proportionally by review count (80% cap per source). Updated weekly.

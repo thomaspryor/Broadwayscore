@@ -168,7 +168,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
               />
             </div>
             {theater.images?.attribution && (
-              <p className="text-[10px] text-gray-600 mt-1 text-right">Photo: {theater.images.attribution}</p>
+              <p className="text-[10px] text-fg-muted mt-1 text-right">Photo: {theater.images.attribution}</p>
             )}
           </div>
 
@@ -176,7 +176,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{theater.name}</h1>
               {theater.formerNames && theater.formerNames.length > 0 && (
-                <p className="text-gray-500 text-xs mt-0.5">Formerly {theater.formerNames.join(', ')}</p>
+                <p className="text-fg-muted text-xs mt-0.5">Formerly {theater.formerNames.join(', ')}</p>
               )}
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
                 {theater.address && (
@@ -193,9 +193,9 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
                   </a>
                 )}
                 {theater.operator && (
-                  <span className="text-gray-500 text-xs">{theater.operator}</span>
+                  <span className="text-fg-muted text-xs">{theater.operator}</span>
                 )}
-                <Link href="/broadway-theaters-map" className="text-gray-500 text-xs hover:text-brand transition-colors">View on Map</Link>
+                <Link href="/broadway-theaters-map" className="text-fg-muted text-xs hover:text-brand transition-colors">View on Map</Link>
               </div>
             </div>
           </div>
@@ -204,17 +204,17 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
           <div className={`grid ${theater.capacity ? 'grid-cols-3' : 'grid-cols-2'} gap-3 mb-4`}>
             {theater.capacity && (
               <div className="card p-3 sm:p-4 text-center">
-                <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Seats</p>
+                <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Seats</p>
                 <p className="text-xl sm:text-2xl font-bold text-white">{theater.capacity.toLocaleString('en-US')}</p>
               </div>
             )}
             <div className="card p-3 sm:p-4 text-center">
-              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
+              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
               <p className="text-xl sm:text-2xl font-bold text-white">{theater.allShows.length}</p>
-              <p className="text-[10px] text-gray-600 mt-0.5">1970 to present</p>
+              <p className="text-[10px] text-fg-muted mt-0.5">1970 to present</p>
             </div>
             <div className="card p-3 sm:p-4 text-center">
-              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
+              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
               <div className="flex justify-center">
                 <ScoreBadge score={avgScore ?? undefined} size="sm" />
               </div>
@@ -256,13 +256,13 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg font-bold text-white group-hover:text-brand transition-colors truncate">{theater.currentShow.title}</h3>
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-fg-muted">
                     <FormatPill type={theater.currentShow.type} />
                     {theater.currentShow.isRevival && <ProductionPill isRevival />}
                     <StatusBadge status={theater.currentShow.status} />
                     {(() => {
                       const duration = getBroadwayDuration(theater.currentShow!.openingDate || theater.currentShow!.previewsStartDate || '');
-                      return duration ? <span className="text-gray-500">{duration}</span> : null;
+                      return duration ? <span className="text-fg-muted">{duration}</span> : null;
                     })()}
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
 
         {/* Show list with sort/toggle */}
         <h2 className="text-lg font-bold text-white mb-1">All Shows</h2>
-        <p className="text-xs text-gray-500 mb-3">Covers productions from 1970 to present. Critic scores available from 2005.</p>
+        <p className="text-xs text-fg-muted mb-3">Covers productions from 1970 to present. Critic scores available from 2005.</p>
         <TheaterDetailClient shows={theaterShows} />
       </div>
     </>

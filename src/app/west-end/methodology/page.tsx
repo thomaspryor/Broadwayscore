@@ -197,43 +197,43 @@ export default function WestEndMethodologyPage() {
                 <div className="w-14 h-10 rounded-lg score-must-see flex items-center justify-center font-bold text-sm flex-shrink-0">85+</div>
                 <div>
                   <span className="text-white font-medium">Critical Gold™</span>
-                  <span className="text-gray-500 block sm:inline sm:ml-2">Drop everything. If you see one show, make it this one.</span>
-                  <span className="text-gray-500 block text-xs mt-0.5">The bar is higher than on Broadway (83), because British critics nearly always give stars and stars run high.</span>
+                  <span className="text-fg-muted block sm:inline sm:ml-2">Drop everything. If you see one show, make it this one.</span>
+                  <span className="text-fg-muted block text-xs mt-0.5">The bar is higher than on Broadway (83), because British critics nearly always give stars and stars run high.</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="w-14 h-10 rounded-lg score-great flex items-center justify-center font-bold text-sm flex-shrink-0">75-84</div>
                 <div>
                   <span className="text-white font-medium">Recommended</span>
-                  <span className="text-gray-500 block sm:inline sm:ml-2">A strong pick. Most people will have a great time.</span>
+                  <span className="text-fg-muted block sm:inline sm:ml-2">A strong pick. Most people will have a great time.</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="w-14 h-10 rounded-lg score-good flex items-center justify-center font-bold text-sm flex-shrink-0">65-74</div>
                 <div>
                   <span className="text-white font-medium">Worth Seeing</span>
-                  <span className="text-gray-500 block sm:inline sm:ml-2">Good, with some reservations. Best if the story or the cast is your thing.</span>
+                  <span className="text-fg-muted block sm:inline sm:ml-2">Good, with some reservations. Best if the story or the cast is your thing.</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="w-14 h-10 rounded-lg score-tepid flex items-center justify-center font-bold text-sm flex-shrink-0">55-64</div>
                 <div>
                   <span className="text-white font-medium">Mixed</span>
-                  <span className="text-gray-500 block sm:inline sm:ml-2">Critics are split. Worth a look if the premise grabs you.</span>
+                  <span className="text-fg-muted block sm:inline sm:ml-2">Critics are split. Worth a look if the premise grabs you.</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="w-14 h-10 rounded-lg score-skip flex items-center justify-center font-bold text-sm flex-shrink-0">&lt;55</div>
                 <div>
                   <span className="text-white font-medium">Critical Miss</span>
-                  <span className="text-gray-500 block sm:inline sm:ml-2">Most critics didn&apos;t like it. Save your time and money.</span>
+                  <span className="text-fg-muted block sm:inline sm:ml-2">Most critics didn&apos;t like it. Save your time and money.</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="w-14 h-10 rounded-lg bg-surface-overlay border border-white/10 flex items-center justify-center font-bold text-gray-400 text-sm flex-shrink-0">TBD</div>
                 <div>
                   <span className="text-white font-medium">Not enough reviews yet</span>
-                  <span className="text-gray-500 block sm:inline sm:ml-2">We wait for 5 reviews (3 for Off-West End) before showing a score.</span>
+                  <span className="text-fg-muted block sm:inline sm:ml-2">We wait for 5 reviews (3 for Off-West End) before showing a score.</span>
                 </div>
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function WestEndMethodologyPage() {
 
               <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 4</span>
+                  <span className="px-2 py-0.5 rounded bg-surface text-fg-muted text-xs font-medium">Tier 4</span>
                   <span className="text-xs text-gray-400">counts 20%</span>
                 </div>
                 <p className="text-gray-300 text-sm">
@@ -396,7 +396,7 @@ export default function WestEndMethodologyPage() {
           <BuyMeACoffeeWidget siteName="West End Scorecard" />
 
           {/* Version */}
-          <div className="text-center text-gray-500 text-sm pt-4">
+          <div className="text-center text-fg-muted text-sm pt-4">
             <p>Methodology version 2.3 · Last updated October 2026</p>
           </div>
         </div>

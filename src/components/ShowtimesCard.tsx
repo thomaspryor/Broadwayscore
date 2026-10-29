@@ -184,16 +184,16 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
               }`}
             >
               <span className={`w-10 shrink-0 text-sm font-medium ${
-                isToday ? 'text-brand' : isDark ? 'text-gray-500' : 'text-gray-300'
+                isToday ? 'text-brand' : isDark ? 'text-fg-muted' : 'text-gray-300'
               }`}>
                 {DAY_NAMES[i]}
               </span>
               {isToday && (
                 <span className="text-[10px] text-brand/70 uppercase tracking-wider mr-2">today</span>
               )}
-              <span className={`ml-auto text-sm ${isDark ? 'text-gray-600' : ''}`}>
+              <span className={`ml-auto text-sm ${isDark ? 'text-fg-muted' : ''}`}>
                 {isDark ? (
-                  <span className="text-gray-600">–</span>
+                  <span className="text-fg-muted">–</span>
                 ) : (
                   <>
                     {day.m && (hasTicketLink ? (
@@ -209,7 +209,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
                         {formatTime(day.m)}
                       </TicketLink>
                     ) : <span className="text-white">{formatTime(day.m)}</span>)}
-                    {day.m && day.e && <span className="text-gray-500 mx-1.5">&middot;</span>}
+                    {day.m && day.e && <span className="text-fg-muted mx-1.5">&middot;</span>}
                     {day.e && (hasTicketLink ? (
                       <TicketLink
                         showName={showName ?? ''}
@@ -250,7 +250,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
           </TicketLink>
         )}
         {isBwayrushSchedule && (
-          <p className="text-gray-600 text-[11px]">
+          <p className="text-fg-muted text-[11px]">
             Schedule via{' '}
             <a href="https://bwayrush.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 underline underline-offset-2">
               bwayrush.com

@@ -118,7 +118,7 @@ export function BlendedTrioDisplay({
               {audienceGrade!.grade}
             </div>
           ) : (
-            <div className={`${boxClass} bg-surface-overlay text-gray-500`}>
+            <div className={`${boxClass} bg-surface-overlay text-fg-muted`}>
               –
             </div>
           )}

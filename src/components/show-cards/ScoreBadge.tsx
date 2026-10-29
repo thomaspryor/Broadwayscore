@@ -132,7 +132,7 @@ function TbdBadge({ sizeClass, labelTbd, caption }: { sizeClass: string; labelTb
   return (
     <div className="flex flex-col items-center gap-1">
       {badge}
-      <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
+      <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-fg-muted">
         Not Yet Rated
       </span>
     </div>

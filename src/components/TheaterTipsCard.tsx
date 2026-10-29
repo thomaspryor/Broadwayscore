@@ -127,10 +127,10 @@ function DiningSection({ dining }: { dining: NonNullable<TheaterStructuredTips['
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-gray-200">{r.name}</p>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
-                      {r.cuisine && <span className="text-xs text-gray-500">{r.cuisine}</span>}
-                      {r.priceRange && <span className="text-xs text-gray-500">{r.priceRange}</span>}
+                      {r.cuisine && <span className="text-xs text-fg-muted">{r.cuisine}</span>}
+                      {r.priceRange && <span className="text-xs text-fg-muted">{r.priceRange}</span>}
                     </div>
-                    {r.notes && <p className="text-xs text-gray-500 mt-0.5">{r.notes}</p>}
+                    {r.notes && <p className="text-xs text-fg-muted mt-0.5">{r.notes}</p>}
                   </div>
                   {r.walkMinutes != null && (
                     <span className="flex items-center gap-1 text-xs text-amber-400 font-medium whitespace-nowrap mt-0.5">

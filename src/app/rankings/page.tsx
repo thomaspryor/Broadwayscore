@@ -103,13 +103,13 @@ function RankingCard({ href, title, description, showCount, icon, color = 'text-
       <div className="flex-1 min-w-0">
         <h3 className="font-semibold text-white group-hover:text-brand transition-colors flex items-center gap-2">
           {title}
-          <svg className="w-4 h-4 text-gray-500 group-hover:text-brand group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-fg-muted group-hover:text-brand group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </h3>
         <p className="text-sm text-gray-400 mt-1">{description}</p>
         {showCount !== undefined && (
-          <p className="text-xs text-gray-500 mt-1">{showCount} shows</p>
+          <p className="text-xs text-fg-muted mt-1">{showCount} shows</p>
         )}
       </div>
     </Link>
@@ -196,7 +196,7 @@ export default function RankingsPage() {
           <p className="text-xl text-gray-400 mt-3">
             {openShows.length} shows. Ranked by what actually matters.
           </p>
-          <p className="text-gray-500 mt-2">
+          <p className="text-fg-muted mt-2">
             Pick a category to see how the shows stack up.
           </p>
         </div>
@@ -466,7 +466,7 @@ export default function RankingsPage() {
         </section>
 
         {/* Footer note */}
-        <div className="text-center text-sm text-gray-500 border-t border-white/5 pt-8 mt-8">
+        <div className="text-center text-sm text-fg-muted border-t border-white/5 pt-8 mt-8">
           <p>
             Data from {openShows.length} Broadway shows. Rankings update as we add new reviews.
           </p>

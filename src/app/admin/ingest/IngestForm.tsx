@@ -160,7 +160,7 @@ function SubmissionLog({ entries }: { entries: LogEntry[] }) {
     <div className="rounded-lg border border-white/10 bg-surface-raised/60 p-3 space-y-2">
       <div className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
         Recent submissions{' '}
-        <span className="normal-case text-gray-500 font-normal">
+        <span className="normal-case text-fg-muted font-normal">
           ({entries.length})
         </span>
       </div>
@@ -227,7 +227,7 @@ function LogRow({ entry }: { entry: LogEntry }) {
           )}
         </div>
         {isRejected && (
-          <div className="text-[11px] text-gray-500 truncate" title={entry.error}>
+          <div className="text-[11px] text-fg-muted truncate" title={entry.error}>
             {entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 70)}
           </div>
         )}
@@ -247,12 +247,12 @@ function LogRow({ entry }: { entry: LogEntry }) {
           </div>
         )}
         {detectionWarningCount && (
-          <div className="text-[11px] text-gray-500 mt-0.5">
+          <div className="text-[11px] text-fg-muted mt-0.5">
             ⓘ {detectionWarningCount} detection warning{detectionWarningCount === 1 ? '' : 's'}: auto-detected fields may need a check
           </div>
         )}
       </div>
-      <span className="text-[11px] text-gray-500 shrink-0 tabular-nums">
+      <span className="text-[11px] text-fg-muted shrink-0 tabular-nums">
         {new Date(entry.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
       </span>
     </li>
@@ -279,7 +279,7 @@ function describeDispatchEta(workflow?: string): { label: string; tone: string }
       tone: 'text-gray-400',
     };
   }
-  return { label: `Dispatched ${workflow}`, tone: 'text-gray-500' };
+  return { label: `Dispatched ${workflow}`, tone: 'text-fg-muted' };
 }
 
 // ─── Single-paste form ──────────────────────────────────────────────
@@ -460,7 +460,7 @@ function SinglePasteForm({
           placeholder="Paste the entire review here, including the byline if visible…"
         />
         {fullText.length > 0 && (
-          <div className="text-xs text-gray-500 mt-1">{fullText.length.toLocaleString()} characters</div>
+          <div className="text-xs text-fg-muted mt-1">{fullText.length.toLocaleString()} characters</div>
         )}
       </Field>
 
@@ -544,13 +544,13 @@ function SinglePasteForm({
           'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
           readyToSubmit && !submitting
             ? 'bg-brand text-black hover:bg-brand/90'
-            : 'bg-white/5 text-gray-500 cursor-not-allowed',
+            : 'bg-white/5 text-fg-muted cursor-not-allowed',
         ].join(' ')}
       >
         {buttonLabel}
       </button>
       {!readyToSubmit && missingPieces.length > 1 && (
-        <ul className="-mt-3 text-xs text-gray-500 space-y-0.5">
+        <ul className="-mt-3 text-xs text-fg-muted space-y-0.5">
           <li className="text-gray-400">Also missing:</li>
           {missingPieces.slice(1).map((p, i) => (
             <li key={i}>· {p}</li>
@@ -874,7 +874,7 @@ function BatchPasteForm({
           <div className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-raised px-3 py-2.5">
             <div>
               <div className="text-sm text-white">{selectedShow.title}</div>
-              <div className="text-[11px] text-gray-500">
+              <div className="text-[11px] text-fg-muted">
                 {selectedShow.id}
                 {selectedShow.openingDate || selectedShow.od ? ` · opened ${selectedShow.openingDate || selectedShow.od}` : ''}
                 {selectedShow.status ? ` · ${selectedShow.status}` : ''}
@@ -919,7 +919,7 @@ function BatchPasteForm({
                     className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors"
                   >
                     <div className="text-sm text-white">{s.title}</div>
-                    <div className="text-[11px] text-gray-500">
+                    <div className="text-[11px] text-fg-muted">
                       {s.id}
                       {s.openingDate || s.od ? ` · opened ${s.openingDate || s.od}` : ''}
                       {s.status ? ` · ${s.status}` : ''}
@@ -930,7 +930,7 @@ function BatchPasteForm({
               </div>
             )}
             {showQuery.trim().length >= 2 && showResults.length === 0 && showsLoaded && (
-              <div className="text-xs text-gray-500">No matches.</div>
+              <div className="text-xs text-fg-muted">No matches.</div>
             )}
           </div>
         )}
@@ -986,7 +986,7 @@ function BatchPasteForm({
               'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
               readyToSubmit && !submitting
                 ? 'bg-brand text-black hover:bg-brand/90'
-                : 'bg-white/5 text-gray-500 cursor-not-allowed',
+                : 'bg-white/5 text-fg-muted cursor-not-allowed',
             ].join(' ')}
           >
             {submitting
@@ -1022,13 +1022,13 @@ function SlotEditor({
   return (
     <div className="rounded-lg border border-white/10 bg-surface-raised p-3 space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs uppercase tracking-wider text-gray-500">Review {index + 1}</span>
+        <span className="text-xs uppercase tracking-wider text-fg-muted">Review {index + 1}</span>
         {onRemove && (
           <button
             type="button"
             onClick={onRemove}
             disabled={disabled}
-            className="text-[11px] text-gray-500 hover:text-score-skip"
+            className="text-[11px] text-fg-muted hover:text-score-skip"
           >
             remove
           </button>
@@ -1055,7 +1055,7 @@ function SlotEditor({
         className={`${inputClass()} font-mono text-xs leading-5 resize-y`}
       />
       <div className="flex items-center justify-between text-[11px]">
-        <span className={textOk ? 'text-gray-500' : 'text-score-skip'}>
+        <span className={textOk ? 'text-fg-muted' : 'text-score-skip'}>
           {slot.fullText.length > 0
             ? `${slot.fullText.length.toLocaleString()} chars${textOk ? '' : ' (need ≥50)'}`
             : ''}
@@ -1137,7 +1137,7 @@ function DetectedSection({
 
   if (idle) {
     return (
-      <div className="rounded-lg border border-white/5 bg-surface-raised/40 p-4 text-xs text-gray-500">
+      <div className="rounded-lg border border-white/5 bg-surface-raised/40 p-4 text-xs text-fg-muted">
         Once you paste a URL and the review text, we&apos;ll auto-fill outlet, critic, show, and
         date here. You&apos;ll be able to fix anything that&apos;s wrong before submitting.
       </div>
@@ -1148,7 +1148,7 @@ function DetectedSection({
     <div className="rounded-lg border border-white/10 bg-surface-raised p-4 space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-gray-200">Detected from URL + text</h3>
-        {loading && <span className="text-xs text-gray-500">Detecting…</span>}
+        {loading && <span className="text-xs text-fg-muted">Detecting…</span>}
       </div>
 
       <DetectedField
@@ -1302,12 +1302,12 @@ function DetectedField({
         <div className="text-xs text-score-skip">⚠ {missingHint}</div>
       )}
       {!inputVisible && !value && optional && !override?.length && (
-        <div className="text-xs text-gray-500">{missingHint || 'not detected (optional)'}</div>
+        <div className="text-xs text-fg-muted">{missingHint || 'not detected (optional)'}</div>
       )}
 
       {candidates && candidates.length > 1 && (
         <div className="mt-2 flex flex-wrap gap-1.5">
-          <span className="text-[11px] text-gray-500 self-center mr-1">Or pick:</span>
+          <span className="text-[11px] text-fg-muted self-center mr-1">Or pick:</span>
           {candidates.map(c => (
             <button
               key={c.id}
@@ -1317,7 +1317,7 @@ function DetectedField({
               className="text-[11px] px-2 py-1 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200"
             >
               {c.title}
-              {c.openingDate && <span className="text-gray-500"> · {c.openingDate}</span>}
+              {c.openingDate && <span className="text-fg-muted"> · {c.openingDate}</span>}
             </button>
           ))}
         </div>
@@ -1346,7 +1346,7 @@ function Field({
         {required && <span className="text-score-skip ml-1">*</span>}
       </label>
       {children}
-      {hint && <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{hint}</p>}
+      {hint && <p className="text-xs text-fg-muted mt-1.5 leading-relaxed">{hint}</p>}
     </div>
   );
 }

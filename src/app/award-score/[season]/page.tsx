@@ -104,7 +104,7 @@ export default async function AwardScoreSeasonPage(props: { params: Promise<{ se
           <p className="text-gray-400 mt-2">
             Which shows dominated the {seasonLabel} Broadway awards season? Each score weighs seven ceremonies (Tonys, Pulitzer, Olivier, Drama Desk, OCC, Drama League, and NYDCC), with Tony wins carrying the most weight.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithScore.length} show{showsWithScore.length !== 1 ? 's' : ''} with award activity
           </p>
         </div>

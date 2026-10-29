@@ -104,7 +104,7 @@ const statusParamToFilter: Record<StatusParam, StatusFilter> = {
 
 function SearchIcon() {
   return (
-    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <svg className="w-5 h-5 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
     </svg>
   );
@@ -121,7 +121,7 @@ function FeaturedRow({ title, subtitle, shows, minShows = 4, viewAllHref }: { ti
         {viewAllHref && <Link href={viewAllHref} className="text-xs text-brand hover:text-brand-hover shrink-0 ml-3">View all<span className="sr-only"> {title}</span></Link>}
       </div>
       {subtitle && (
-        <p className="text-xs text-gray-500 mb-2">{subtitle}</p>
+        <p className="text-xs text-fg-muted mb-2">{subtitle}</p>
       )}
       <ScrollRow>
         {shows.slice(0, SHELF_MAX_ITEMS).map((show) => (
@@ -563,7 +563,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
             <p className="text-gray-400 text-lg sm:text-xl">
               Every show. Every review. One score.
             </p>
-            <p className="text-gray-500 text-sm sm:text-base mt-1">
+            <p className="text-fg-muted text-sm sm:text-base mt-1">
               {scoredShows} scored shows. {totalReviews.toLocaleString()} critic reviews. And counting.
             </p>
           </div>
@@ -573,7 +573,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
               <div className="flex items-center justify-between mb-1">
                 <h2 className="text-base font-bold text-white">Top Musicals</h2>
               </div>
-              <p className="text-xs text-gray-500 mb-2">Ranked by critical consensus</p>
+              <p className="text-xs text-fg-muted mb-2">Ranked by critical consensus</p>
               <ScrollRow>
                 {topMusicals.map((show, index) => (
                   <MiniShowCard key={show.id} show={show} priority={index === 0} eager={index < 4} />
@@ -745,7 +745,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       {showListEmptyState === 'empty' && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
-            <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg className="w-8 h-8 text-fg-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>

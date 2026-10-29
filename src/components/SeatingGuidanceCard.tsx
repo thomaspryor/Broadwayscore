@@ -33,14 +33,14 @@ export default function SeatingGuidanceCard({ sections, bestSeats, variant = 'th
         <h2 id={headingId} className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
           {config.title}
         </h2>
-        <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+        <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
           {sections.length} {sections.length === 1 ? 'section' : 'sections'}
         </span>
       </header>
 
       <SeatingGuidance sections={sections} bestSeats={bestSeats} compactRationale={config.compactRationale} />
 
-      <p className="text-[10px] text-gray-600 mt-4 pt-3 border-t border-white/5 leading-relaxed">
+      <p className="text-[10px] text-fg-muted mt-4 pt-3 border-t border-white/5 leading-relaxed">
         Based on aggregated audience reports and editorial judgment. Sightlines vary by show and seat.
       </p>
     </section>

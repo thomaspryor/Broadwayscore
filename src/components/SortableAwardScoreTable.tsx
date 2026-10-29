@@ -44,7 +44,7 @@ function toSeasonSlug(fullSeason: string): string {
 }
 
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
-  if (!active) return <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">↕</span>;
+  if (!active) return <span className="ml-1 text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">↕</span>;
   return <span className="ml-1 text-brand">{direction === 'asc' ? '↑' : '↓'}</span>;
 }
 
@@ -106,7 +106,7 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
     <div className="card overflow-hidden">
       {/* Filters — always show status filter; season filter only when multiple seasons in data */}
       <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-white/10 bg-surface-overlay/50">
-        <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">Filter</span>
+        <span className="text-xs text-fg-muted font-medium uppercase tracking-wide">Filter</span>
         {seasons.length > 1 && (
           <select
             value={seasonFilter}
@@ -134,12 +134,12 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
         {(seasonFilter !== 'all' || statusFilter !== 'all') && (
           <button
             onClick={() => { setSeasonFilter('all'); setStatusFilter('all'); }}
-            className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+            className="text-xs text-fg-muted hover:text-gray-300 transition-colors"
           >
             Clear filters
           </button>
         )}
-        <span className="ml-auto text-xs text-gray-500">{sortedData.length} show{sortedData.length !== 1 ? 's' : ''}</span>
+        <span className="ml-auto text-xs text-fg-muted">{sortedData.length} show{sortedData.length !== 1 ? 's' : ''}</span>
       </div>
 
       <div className="overflow-x-auto">
@@ -179,7 +179,7 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
                   {/* Rank */}
                   <td className="py-3 pl-4 pr-2 text-center align-middle hidden sm:table-cell">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-fg-muted'
                     }`}>
                       {index + 1}
                     </span>
@@ -201,7 +201,7 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
                             height={56}
                             loading="lazy"
                             fallback={
-                              <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
+                              <div className="w-full h-full flex items-center justify-center text-fg-muted text-lg">🎭</div>
                             }
                           />
                         </div>
@@ -218,7 +218,7 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
                         <div className="flex flex-wrap items-center gap-2 mt-1">
                           {show.status && <StatusBadge status={show.status} />}
                           {awardScore.tonySeason && (
-                            <span className="text-xs text-gray-500">{formatSeason(awardScore.tonySeason)}</span>
+                            <span className="text-xs text-fg-muted">{formatSeason(awardScore.tonySeason)}</span>
                           )}
                         </div>
                       </div>
@@ -248,7 +248,7 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
                   <td className="py-3 px-4 text-center align-middle hidden lg:table-cell">
                     {notableWin
                       ? <span className="text-amber-300 text-xs font-medium">{notableWin}</span>
-                      : <span className="text-gray-600">–</span>
+                      : <span className="text-fg-muted">–</span>
                     }
                   </td>
 
@@ -261,7 +261,7 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
             })}
             {sortedData.length === 0 && (
               <tr>
-                <td colSpan={6} className="py-12 text-center text-gray-500 text-sm">
+                <td colSpan={6} className="py-12 text-center text-fg-muted text-sm">
                   No shows match the current filters.
                 </td>
               </tr>

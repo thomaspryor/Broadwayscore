@@ -69,7 +69,7 @@ export default function FantasyShowPicker({
   if (selectedShow && !isOpen) {
     return (
       <div className="flex items-center gap-3 rounded-lg bg-surface-raised border border-white/10 p-3">
-        <span className="text-xs text-gray-500 font-mono w-5">{slotIndex + 1}</span>
+        <span className="text-xs text-fg-muted font-mono w-5">{slotIndex + 1}</span>
         {selectedShow.image && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img src={getOptimizedImageUrl(selectedShow.image, 'thumbnail')} alt="" className="w-8 h-8 rounded object-cover shrink-0" />
@@ -98,7 +98,7 @@ export default function FantasyShowPicker({
                 {selectedShow.audienceGrade != null && (
                   <span className="text-gray-300 whitespace-nowrap">
                     Grade: {selectedShow.audienceGrade}
-                    {isAudienceLockedForEntry(selectedShow.audienceGradeSince, now.toISOString()) && <span className="text-gray-500"> (public: no audience pts)</span>}
+                    {isAudienceLockedForEntry(selectedShow.audienceGradeSince, now.toISOString()) && <span className="text-fg-muted"> (public: no audience pts)</span>}
                   </span>
                 )}
               </>
@@ -108,7 +108,7 @@ export default function FantasyShowPicker({
         <span className="font-bold text-emerald-400">${selectedShow.price}</span>
         <button
           onClick={() => onRemove(selectedShow.id)}
-          className="text-gray-500 hover:text-red-400 transition-colors p-2 -m-1"
+          className="text-fg-muted hover:text-red-400 transition-colors p-2 -m-1"
           aria-label={`Remove ${selectedShow.title}`}
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,7 +132,7 @@ export default function FantasyShowPicker({
         onClick={() => setIsOpen(true)}
         onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsOpen(true); } }}
       >
-        <span className="text-xs text-gray-500 font-mono w-5">{slotIndex + 1}</span>
+        <span className="text-xs text-fg-muted font-mono w-5">{slotIndex + 1}</span>
         {isOpen ? (
           <input
             type="text"
@@ -143,7 +143,7 @@ export default function FantasyShowPicker({
             autoFocus
           />
         ) : (
-          <span className="flex-1 text-sm text-gray-500">Pick a show...</span>
+          <span className="flex-1 text-sm text-fg-muted">Pick a show...</span>
         )}
       </div>
 
@@ -167,7 +167,7 @@ export default function FantasyShowPicker({
               />
             </div>
             {sorted.length === 0 ? (
-              <div className="p-3 text-sm text-gray-500 text-center">No matching shows</div>
+              <div className="p-3 text-sm text-fg-muted text-center">No matching shows</div>
             ) : (
             sorted.map(show => {
               const affordable = show.price <= remainingBudget + (selectedShow?.price ?? 0);
@@ -177,7 +177,7 @@ export default function FantasyShowPicker({
                   className={`w-full flex items-center gap-3 p-3 text-left transition-colors border-b border-white/5 last:border-0 ${
                     affordable
                       ? 'hover:bg-surface-overlay text-white'
-                      : 'opacity-40 cursor-not-allowed text-gray-500'
+                      : 'opacity-40 cursor-not-allowed text-fg-muted'
                   }`}
                   onClick={() => {
                     if (!affordable) return;
@@ -215,11 +215,11 @@ export default function FantasyShowPicker({
                           {show.audienceGrade != null && (
                             <span className="text-gray-300 whitespace-nowrap">
                               Grade: {show.audienceGrade}
-                              {isAudienceLockedForEntry(show.audienceGradeSince, now.toISOString()) && <span className="text-gray-500"> (public: no audience pts)</span>}
+                              {isAudienceLockedForEntry(show.audienceGradeSince, now.toISOString()) && <span className="text-fg-muted"> (public: no audience pts)</span>}
                             </span>
                           )}
                           {show.openingDate && (
-                            <span className="text-gray-500 whitespace-nowrap">opens {new Date(`${show.openingDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
+                            <span className="text-fg-muted whitespace-nowrap">opens {new Date(`${show.openingDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
                           )}
                         </>
                       )}
@@ -232,7 +232,7 @@ export default function FantasyShowPicker({
                       <FantasyOwnershipTag showId={show.id} />
                     </div>
                   </div>
-                  <span className={`font-bold shrink-0 ${affordable ? 'text-emerald-400' : 'text-gray-600'}`}>
+                  <span className={`font-bold shrink-0 ${affordable ? 'text-emerald-400' : 'text-fg-muted'}`}>
                     ${show.price}
                   </span>
                 </button>

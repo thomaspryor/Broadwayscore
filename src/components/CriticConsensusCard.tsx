@@ -29,7 +29,7 @@ export default function CriticConsensusCard({ consensus }: CriticConsensusCardPr
           </p>
         </div>
       </div>
-      <div className="text-[10px] text-gray-500 uppercase tracking-wide mt-3 pt-3 border-t border-white/5">
+      <div className="text-[10px] text-fg-muted uppercase tracking-wide mt-3 pt-3 border-t border-white/5">
         Based on {consensus.reviewCount} {consensus.reviewCount === 1 ? 'review' : 'reviews'}
       </div>
     </div>

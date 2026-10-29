@@ -35,10 +35,10 @@ export default function Page() {
       <ul className="space-y-2" data-testid="recoup-list">
         {data.recoups.map((r) => (
           <ShowLinkListItem key={r.slug} href={`/show/${r.slug}`} className="card rounded-xl px-4 py-3 flex items-center gap-3">
-            <span className="w-6 shrink-0 text-center text-sm font-semibold text-gray-500">{r.rank}</span>
+            <span className="w-6 shrink-0 text-center text-sm font-semibold text-fg-muted">{r.rank}</span>
             <div className="min-w-0 flex-1">
               <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand break-words"><RowLinkArrow label={r.title} /></Link>
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-fg-muted">
                 {r.type === 'musical' ? 'Musical' : 'Play'} · opened {r.year}{r.capitalization != null && ` · ${formatMillions(r.capitalization)} capitalization`}
               </div>
             </div>
@@ -47,7 +47,7 @@ export default function Page() {
         ))}
       </ul>
       </MoneyGate>
-      <p className="text-xs text-gray-500 mt-3">
+      <p className="text-xs text-fg-muted mt-3">
         Weeks run from opening night to the month the recoupment was reported, so they are approximate.
         {data.recoupsWithoutDate > 0 && ` ${data.recoupsWithoutDate} recouped shows without a usable recoup date (none reported, or reported after closing) are not ranked.`}
       </p>

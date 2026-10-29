@@ -32,15 +32,15 @@ export default function ReviewCard({ review }: { review: BlogReview }) {
           </h2>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-sm text-gray-400">
             <span className="font-medium text-gray-300">{review.show}</span>
-            <span className="text-gray-500">at {review.venue}</span>
+            <span className="text-fg-muted">at {review.venue}</span>
           </div>
-          <p className="mt-1.5 text-xs text-gray-500">
+          <p className="mt-1.5 text-xs text-fg-muted">
             By{' '}
             <Link href={AUTHOR.url} className="relative z-10 text-gray-400 hover:text-brand transition-colors underline-offset-2 hover:underline">
               {AUTHOR.name}
             </Link>
           </p>
-          <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-500">
+          <div className="flex items-center gap-3 mt-1.5 text-xs text-fg-muted">
             <time dateTime={review.publishDate}>{formattedDate}</time>
             <span>{review.readingTime} min read</span>
           </div>

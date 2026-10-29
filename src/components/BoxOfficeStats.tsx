@@ -85,10 +85,10 @@ function ChangeIndicator({ change, label, roundNearest = false }: ChangeIndicato
     <div className="flex items-center justify-center gap-0.5 text-[10px]">
       {isPositive && <ArrowUp className="text-emerald-400" />}
       {isNegative && <ArrowDown className="text-red-400" />}
-      <span className={isPositive ? 'text-emerald-400' : isNegative ? 'text-red-400' : 'text-gray-500'}>
+      <span className={isPositive ? 'text-emerald-400' : isNegative ? 'text-red-400' : 'text-fg-muted'}>
         {formattedChange}%
       </span>
-      <span className="text-gray-500 ml-0.5">{label}</span>
+      <span className="text-fg-muted ml-0.5">{label}</span>
     </div>
   );
 }
@@ -112,7 +112,7 @@ function StatCard({ value, valueTitle, label, wowChange, yoyChange, stackChanges
       <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight" title={valueTitle}>
         {value}
       </div>
-      <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+      <div className="text-[10px] sm:text-xs text-fg-muted uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
         {label}
       </div>
       {hasChanges && (
@@ -151,10 +151,10 @@ function TrendSparkline({ points }: { points: { weekEnding: string; gross: numbe
   return (
     <div className="bg-surface-overlay rounded-lg sm:rounded-xl border border-white/5 px-3.5 py-3 mb-4">
       <div className="flex items-baseline justify-between mb-1">
-        <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500">
+        <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-fg-muted">
           {points.length}-week trend
         </span>
-        <span className="text-[11px] text-gray-500 tabular-nums">
+        <span className="text-[11px] text-fg-muted tabular-nums">
           {min === max ? formatCurrency(min) : `${formatCurrency(min)} to ${formatCurrency(max)}`}
         </span>
       </div>
@@ -206,7 +206,7 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackC
   const hasAttendanceTile = hasThisWeek && grosses.thisWeek?.attendance != null;
   return (
     <div className={className}>
-      <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">
+      <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-fg-muted mb-2">
         This Week
       </div>
       <div className={`grid grid-cols-2 ${hasAttendanceTile ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-2 sm:gap-3`}>
@@ -251,7 +251,7 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackC
         )}
       </div>
       {(grosses.thisWeek.capacity ?? 0) > 100 && (
-        <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
+        <p className="text-[10px] sm:text-xs text-fg-muted mt-2">
           <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
         </p>
       )}
@@ -289,12 +289,12 @@ export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOffi
       {/* Unified scorecard chrome: eyebrow + source attribution */}
       <header className="flex items-center justify-between gap-3 mb-1">
         <h2 id="box-office-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Box Office Scorecard</h2>
-        <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
+        <span className="text-[10px] tracking-[0.06em] text-fg-muted italic shrink-0">
           source · Broadway League, public
         </span>
       </header>
       {hasThisWeek && weekEnding ? (
-        <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase italic m-0 mb-3">
+        <p className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase italic m-0 mb-3">
           week of {weekEnding}{rankLabel}
         </p>
       ) : (
@@ -329,7 +329,7 @@ export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOffi
       {/* All Time Row */}
       {totals && (
         <div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">{totalsLabel}</div>
+          <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-fg-muted mb-2">{totalsLabel}</div>
           <div className="flex gap-2 sm:gap-3">
             <StatCard
               value={formatCurrency(totals.gross)}

@@ -125,7 +125,7 @@ export default function BoxOfficePage() {
               ? 'What Broadway sold this week, which shows are really in demand, and how the new ones compare.'
               : 'Weekly grosses and all-time statistics for every Broadway show.'}
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             Week ending {weekEnding} · {market ? 'Broadway League figures' : <>Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</>}
           </p>
         </div>
@@ -152,7 +152,7 @@ export default function BoxOfficePage() {
               Click any column header to sort. Shows are ranked by weekly gross by default.
             </p>
             <ThisWeekTable data={showsWithGrosses} />
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-fg-muted mt-3">
               <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
             </p>
           </section>
@@ -169,7 +169,7 @@ export default function BoxOfficePage() {
         )}
 
         {/* Data Source Note */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6">
           <p>
             Box office data sourced from BroadwayWorld, which aggregates official figures from The Broadway League.
             Updated weekly after the reporting period ends.

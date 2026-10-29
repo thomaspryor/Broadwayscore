@@ -23,7 +23,7 @@ export default function FooterAccountBox() {
   return (
     <div className="py-4">
       <p className="text-sm font-semibold text-white mb-1">{ACCOUNT_PROMO_COPY.heading(isLondon)}</p>
-      <p className="text-xs text-gray-500 mb-3">{ACCOUNT_PROMO_COPY.pitch}</p>
+      <p className="text-xs text-fg-muted mb-3">{ACCOUNT_PROMO_COPY.pitch}</p>
       <div className="min-h-[40px]">
         {loading ? null : isAuthenticated ? (
           <Link href="/my-shows" className={BUTTON}>{ACCOUNT_PROMO_COPY.signedInButton}</Link>
@@ -47,7 +47,7 @@ export function FooterAccountLink() {
   if (!featureFlags.userAccounts || loading) return null;
   return (
     <>
-      <span className="text-gray-500 hidden sm:inline">|</span>
+      <span className="text-fg-muted hidden sm:inline">|</span>
       {isAuthenticated ? (
         <Link href="/my-shows" className="hover:text-white transition-colors">{ACCOUNT_PROMO_COPY.linkSignedIn}</Link>
       ) : (

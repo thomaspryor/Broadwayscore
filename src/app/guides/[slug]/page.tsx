@@ -255,7 +255,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
 
           {/* Meta line */}
           {shows.length > 0 && (
-            <p className="text-gray-500 text-sm mt-3">
+            <p className="text-fg-muted text-sm mt-3">
               {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {metadata.monthYear}
             </p>
           )}
@@ -264,7 +264,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
           {shows.length > 0 && (
             <details className="mt-4 text-sm border border-white/10 rounded-lg px-4 py-3 group">
               <summary className="text-gray-300 hover:text-white cursor-pointer font-medium transition-colors flex items-center gap-2 list-none [&::-webkit-details-marker]:hidden">
-                <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-fg-muted transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
                 How We Rank
@@ -285,7 +285,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
         {/* Year Page Navigation */}
         {yearPages.length > 0 && (
           <div className="mb-8 flex flex-wrap gap-2">
-            <span className="text-gray-500 text-sm py-1.5">By year:</span>
+            <span className="text-fg-muted text-sm py-1.5">By year:</span>
             <Link
               href={`/guides/${config.slug}`}
               className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
@@ -346,7 +346,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                         loading="lazy"
                         fallback={
                           <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                            <span className="text-3xl text-gray-500">🎭</span>
+                            <span className="text-3xl text-fg-muted">🎭</span>
                           </div>
                         }
                       />
@@ -404,7 +404,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                   {/* Critic Consensus or Synopsis fallback — clamped so long
                       press copy doesn't balloon one card vs its neighbors */}
                   {displayText && (
-                    <p className={`text-sm leading-relaxed mt-3 line-clamp-3 ${criticsTakeMode === 'coming-soon' ? 'text-gray-500 italic' : 'text-gray-400'}`}>
+                    <p className={`text-sm leading-relaxed mt-3 line-clamp-3 ${criticsTakeMode === 'coming-soon' ? 'text-fg-muted italic' : 'text-gray-400'}`}>
                       {displayText}
                     </p>
                   )}
@@ -510,7 +510,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                       {lotteryRush && (
                         <Link
                           href={`/show/${show.slug}#discount-tickets`}
-                          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-xs font-medium transition-colors border border-white/5"
+                          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-fg-muted hover:text-gray-300 text-xs font-medium transition-colors border border-white/5"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -588,7 +588,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
         </div>
 
         {/* Methodology Link */}
-        <div className="mt-8 text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="mt-8 text-sm text-fg-muted border-t border-white/5 pt-6">
           <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
             How are scores calculated? →
           </Link>

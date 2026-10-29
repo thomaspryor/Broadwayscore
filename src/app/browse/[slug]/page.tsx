@@ -305,7 +305,7 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl leading-tight sm:leading-tight font-bold text-white mb-3">{config.h1}</h1>
           <p className="text-gray-300 leading-relaxed">{config.intro}</p>
-          <p className="text-gray-500 text-sm mt-3">
+          <p className="text-fg-muted text-sm mt-3">
             {shows.length} {shows.length === 1 ? 'show' : 'shows'} | Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>

@@ -245,11 +245,11 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         <h2 id="commercial-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
           Profitability Scorecard
         </h2>
-        <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
+        <span className="text-[10px] tracking-[0.06em] text-fg-muted italic shrink-0">
           {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? (commercial.analystRecoupPct ? 'source · filings, press, analyst estimate + our model' : 'source · filings, press + our model') : analystRange ? (commercial.analystRecoupPct ? 'source · filings, press + analyst estimate' : 'source · filings, press + our estimate') : 'source · filings + press'}
         </span>
       </header>
-      <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 italic m-0 mb-3">
+      <p className="text-[11px] font-medium tracking-[0.06em] text-fg-muted italic m-0 mb-3">
         ~ marks an estimate ·{' '}
         <Link href="/methodology#commercial" className="underline hover:text-gray-300">
           how we measure
@@ -308,7 +308,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           {commercial.likelyOutcome && (
             <p className="text-[13px] text-gray-300 mt-1.5 leading-[1.4]" data-testid="likely-outcome">
               <span className="font-semibold">{commercial.likelyOutcome}</span>
-              <span className="text-xs text-gray-500">{` · ${LIKELY_OUTCOME_BASIS[commercial.likelyOutcomeBasis ?? 'model']}`}</span>
+              <span className="text-xs text-fg-muted">{` · ${LIKELY_OUTCOME_BASIS[commercial.likelyOutcomeBasis ?? 'model']}`}</span>
             </p>
           )}
           {reportedReturnLine && (
@@ -318,7 +318,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           )}
           {/* A loss label describes the show as it closed; tours and licensing can still pay it back (BRO-5645). */}
           {lossCanChange && (
-            <p className="text-xs text-gray-500 mt-1 leading-[1.4]" data-testid="loss-can-change">
+            <p className="text-xs text-fg-muted mt-1 leading-[1.4]" data-testid="loss-can-change">
               {lossCanChange}
             </p>
           )}
@@ -352,7 +352,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 ? 'Undisclosed'
                 : formatCapitalization(commercial.capitalization, isEstimatedCapitalization(commercial), isMaximumCapitalization(commercial))}
             </div>
-            <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+            <div className="text-[10px] sm:text-xs text-fg-muted uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
               Capitalization
             </div>
           </div>
@@ -363,7 +363,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                 {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), isEstimatedRunningCost(commercial))}
               </div>
-              <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+              <div className="text-[10px] sm:text-xs text-fg-muted uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 {weeklyCostLabel(commercial.weeklyRunningCostBasis)}
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-emerald-400 tracking-tight">
                 {formatWeeksToRecoup(commercial.recoupedWeeks)}
               </div>
-              <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+              <div className="text-[10px] sm:text-xs text-fg-muted uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 To Recoup
               </div>
             </div>
@@ -388,7 +388,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-300 tracking-tight">
                 ~{formatCurrency(breakEven)}
               </div>
-              <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+              <div className="text-[10px] sm:text-xs text-fg-muted uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 Est. Break-even
               </div>
             </div>
@@ -400,7 +400,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
                 {formatCurrency(allTimeGross)}
               </div>
-              <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+              <div className="text-[10px] sm:text-xs text-fg-muted uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 Total Gross
               </div>
             </div>
@@ -426,7 +426,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               </span>
             </div>
             {attribution.sourceText && (
-              <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+              <p className="text-xs text-fg-muted mt-1 line-clamp-2">
                 Source:{' '}
                 {attributionLink?.href ? (
                   <a
@@ -492,7 +492,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         {breakevenComparison && (
           <div className="bg-surface-overlay rounded-lg sm:rounded-xl border border-white/5 px-3.5 py-3">
             <div className="flex items-baseline justify-between gap-3 mb-1.5 flex-wrap">
-              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500">
+              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-fg-muted">
                 Latest week vs break-even
               </span>
               <span className="text-xs text-gray-300 tabular-nums">
@@ -513,7 +513,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
         {/* Source Attribution (visible without expanding) */}
         {capSourceText && !hasDetails && (
-          <p className="text-xs text-gray-500 break-words">
+          <p className="text-xs text-fg-muted break-words">
             Source: <SourceText text={capSourceText} />
           </p>
         )}
@@ -538,12 +538,12 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 )}
                 {/* The recoupment date and source print once, in the attribution block above. */}
                 {capSourceText && (
-                  <p className="text-xs text-gray-500 break-words">
+                  <p className="text-xs text-fg-muted break-words">
                     Capitalization source: <SourceText text={capSourceText} />
                   </p>
                 )}
                 {weeklyCostSourceText && (
-                  <p className="text-xs text-gray-500 mt-1 break-words">
+                  <p className="text-xs text-fg-muted mt-1 break-words">
                     Weekly cost source: <SourceText text={weeklyCostSourceText} />
                   </p>
                 )}
@@ -560,7 +560,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </span>
             {/* The recoupment headline already prints the qualifier ("Not publicly announced"). */}
             {confidence.basis !== attribution?.qualifier && (
-              <span className="text-[11px] text-gray-500 italic text-right">{confidence.basis}</span>
+              <span className="text-[11px] text-fg-muted italic text-right">{confidence.basis}</span>
             )}
           </div>
         )}

@@ -111,9 +111,9 @@ function ShowLine({ show }: { show: OriginListShow }) {
     <li className="py-1.5 border-b border-white/5 last:border-b-0 min-w-0 [overflow-wrap:anywhere]">
       <div className="flex flex-wrap items-baseline justify-between gap-x-3">
         <Link href={`/show/${show.slug}`} className="text-gray-200 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white">{show.title}</Link>
-        <span className="text-xs text-gray-500 whitespace-nowrap">{show.openingDate.slice(0, 4)} · {show.type === 'musical' ? 'Musical' : 'Play'}</span>
+        <span className="text-xs text-fg-muted whitespace-nowrap">{show.openingDate.slice(0, 4)} · {show.type === 'musical' ? 'Musical' : 'Play'}</span>
       </div>
-      <p className="text-xs text-gray-500 mt-0.5">
+      <p className="text-xs text-fg-muted mt-0.5">
         {show.pathNote ? `${show.pathNote}. ` : ''}
         {show.sourceTitle ? `Based on ${show.sourceTitle} (${src.toLowerCase()}).` : `${src}.`}
         {show.evidence && (
@@ -152,7 +152,7 @@ export default function PathToBroadwayPage() {
               Where {f.newProductions} new Broadway productions since the 2000-01 season came from ({f.musicals} musicals
               and {f.plays} plays), what they were based on, and, for recent seasons, which kinds earned their money back.
             </p>
-            <p className="text-xs text-gray-500 mt-1" data-testid="path-asof">
+            <p className="text-xs text-fg-muted mt-1" data-testid="path-asof">
               As of {formatDataDate(today) ?? today}. Eras count shows that have opened. New productions only: revivals and
               return engagements are counted separately. The 2020s column runs from 2020-21 to now, including the
               pandemic shutdown; the far-right column is the current season alone, including new productions announced or in previews that have not opened yet.
@@ -185,7 +185,7 @@ export default function PathToBroadwayPage() {
                   </li>
                 ))}
               </ul>
-              <p className="text-xs text-gray-500 mt-3">
+              <p className="text-xs text-fg-muted mt-3">
                 Revivals that came from London:{' '}
                 {ERAS.map((e, i) => `${e.id} ${f.revivalsFromLondon.totals[i] ? pct(f.revivalsFromLondon.counts[i], f.revivalsFromLondon.totals[i]) : '–'} (${f.revivalsFromLondon.counts[i]} of ${f.revivalsFromLondon.totals[i]})`).join(', ')}.
               </p>
@@ -217,7 +217,7 @@ export default function PathToBroadwayPage() {
               <OriginRecoupTable rows={f.routeRecoup} testId="route-recoup" noun="route" />
               <h3 className="text-lg font-semibold text-white mt-5 mb-2">By source</h3>
               <OriginRecoupTable rows={f.sourceRecoup} testId="source-recoup" noun="source" />
-              <p className="mt-3 text-xs text-gray-500">
+              <p className="mt-3 text-xs text-fg-muted">
                 Leaves out nonprofit-only runs and tour stops, which have no investors to repay, and the 2019-20 and
                 2020-21 seasons. Shows still running count as not recouped yet, so rates can only go up. Recoupment
                 comes from producer announcements and trade press. These are counts, not causes: shows that try out
@@ -236,7 +236,7 @@ export default function PathToBroadwayPage() {
               {byRoute.map((g) => (
                 <details key={g.id} className="card rounded-xl px-4 py-3">
                   <summary className="cursor-pointer text-white font-semibold">
-                    {ROUTE_LABEL.get(g.id)} <span className="text-gray-500 font-normal">({g.shows.length})</span>
+                    {ROUTE_LABEL.get(g.id)} <span className="text-fg-muted font-normal">({g.shows.length})</span>
                   </summary>
                   <ul className="mt-2 text-sm">
                     {g.shows.map((s) => <ShowLine key={s.slug} show={s} />)}
@@ -246,7 +246,7 @@ export default function PathToBroadwayPage() {
             </div>
           </section>
 
-          <section className="mb-8 text-xs text-gray-500 space-y-1">
+          <section className="mb-8 text-xs text-fg-muted space-y-1">
             <p>
               How we label shows: for each production we searched IBDB, Playbill, Wikipedia and trade press for its
               earlier staged runs and its source material, and kept only labels backed by a page we could link.

@@ -60,7 +60,7 @@ export default function ResearchIndexPage() {
               href={`/research/${s.slug}`}
               className="block group p-5 rounded-lg border border-white/10 hover:border-amber-400/40 hover:bg-white/[0.02] transition-colors"
             >
-              <div className="text-xs text-gray-500 mb-2">{s.date}</div>
+              <div className="text-xs text-fg-muted mb-2">{s.date}</div>
               <h2 className="text-xl sm:text-2xl font-semibold text-white group-hover:text-amber-300 transition-colors">
                 {s.title}
               </h2>

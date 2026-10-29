@@ -64,7 +64,7 @@ export default function TonyPressPicksPage() {
       <main className="min-h-screen bg-surface">
         <div className="max-w-3xl mx-auto px-4 py-8 sm:py-10">
           <header>
-            <Link href="/tony-awards/nominees" className="text-xs text-gray-500 hover:text-brand transition-colors">
+            <Link href="/tony-awards/nominees" className="text-xs text-fg-muted hover:text-brand transition-colors">
               ← Tony Nominations Center
             </Link>
             <h1 className="mt-2 text-2xl sm:text-3xl font-bold text-white">
@@ -73,7 +73,7 @@ export default function TonyPressPicksPage() {
             <PressPicksBoard categories={categories} sources={sources} />
           </header>
 
-          <footer className="mt-8 text-center text-[11px] text-gray-600">
+          <footer className="mt-8 text-center text-[11px] text-fg-muted">
             Broadway Scorecard · broadwayscorecard.com/tony-awards/press-picks
           </footer>
         </div>

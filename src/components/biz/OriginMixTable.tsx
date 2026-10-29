@@ -31,15 +31,15 @@ export default function OriginMixTable<Id extends string>({
             {ERAS.map((e, i) => (
               <th key={e.id} className="py-2 px-1 sm:px-4 font-medium text-center">
                 <span className="block text-white">{e.id}</span>
-                <span className="block text-[11px] leading-tight font-normal text-gray-500">{e.short}</span>
-                <span className="block text-xs font-normal text-gray-500">{totals[i]} {totals[i] === 1 ? 'show' : 'shows'}</span>
+                <span className="block text-[11px] leading-tight font-normal text-fg-muted">{e.short}</span>
+                <span className="block text-xs font-normal text-fg-muted">{totals[i]} {totals[i] === 1 ? 'show' : 'shows'}</span>
               </th>
             ))}
             {current && (
               <th className="py-2 px-1 sm:px-4 font-medium text-center border-l border-white/10">
                 <span className="block text-white whitespace-nowrap">{current.label}</span>
-                <span className="block text-[11px] leading-tight font-normal text-gray-500">opened + announced</span>
-                <span className="block text-xs font-normal text-gray-500">{current.total} {current.total === 1 ? 'show' : 'shows'}</span>
+                <span className="block text-[11px] leading-tight font-normal text-fg-muted">opened + announced</span>
+                <span className="block text-xs font-normal text-fg-muted">{current.total} {current.total === 1 ? 'show' : 'shows'}</span>
               </th>
             )}
           </tr>
@@ -53,7 +53,7 @@ export default function OriginMixTable<Id extends string>({
                 return (
                   <td key={ERAS[i].id} className="py-2.5 px-1 sm:px-4 text-center align-top">
                     <span className="font-semibold text-white">{totals[i] ? `${Math.round(s * 100)}%` : '—'}</span>
-                    <span className="block text-xs text-gray-500">{n}</span>
+                    <span className="block text-xs text-fg-muted">{n}</span>
                     <div className="mt-1 h-1.5 rounded-full bg-white/5 mx-auto max-w-[6rem]">
                       <div className="h-1.5 rounded-full bg-brand" style={{ width: `${s * 100}%` }} />
                     </div>
@@ -63,7 +63,7 @@ export default function OriginMixTable<Id extends string>({
               {current && (
                 <td className="py-2.5 px-1 sm:px-4 text-center align-top border-l border-white/10">
                   <span className={`font-semibold ${current.total >= SOLID_SEASON ? 'text-white' : 'text-gray-400'}`}>{current.total ? `${Math.round(share(r.current, current.total) * 100)}%` : '—'}</span>
-                  <span className="block text-xs text-gray-500">{r.current}</span>
+                  <span className="block text-xs text-fg-muted">{r.current}</span>
                   <div className="mt-1 h-1.5 rounded-full bg-white/5 mx-auto max-w-[6rem]">
                     <div className="h-1.5 rounded-full bg-brand" style={{ width: `${share(r.current, current.total) * 100}%` }} />
                   </div>

@@ -17,7 +17,7 @@ interface AnalystEstimateCreditProps {
 
 export default function AnalystEstimateCredit({ asOf, url, compact = false, withModel = false, ours = false }: AnalystEstimateCreditProps) {
   if (ours) {
-    return <p className={compact ? 'text-[10px] text-gray-500 mt-1' : 'text-[11px] text-gray-500'} data-testid="analyst-credit">Our estimate</p>;
+    return <p className={compact ? 'text-[10px] text-fg-muted mt-1' : 'text-[11px] text-fg-muted'} data-testid="analyst-credit">Our estimate</p>;
   }
   const when = formatEstimateDate(asOf, compact ? 'short' : 'long');
   // The date never splits; a narrow table cell breaks before it instead of
@@ -30,7 +30,7 @@ export default function AnalystEstimateCredit({ asOf, url, compact = false, with
       {when && <>{compact ? ' · ' : ', '}<span className="whitespace-nowrap">{when}</span></>}
     </>
   );
-  const className = compact ? 'text-[10px] text-gray-500 mt-1' : 'text-[11px] text-gray-500';
+  const className = compact ? 'text-[10px] text-fg-muted mt-1' : 'text-[11px] text-fg-muted';
   if (!url) return <p className={className} data-testid="analyst-credit">{text}</p>;
   return (
     <p className={className} data-testid="analyst-credit">

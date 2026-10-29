@@ -26,14 +26,14 @@ function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show, cityHref }: 
 }) {
   return (
     <li className={`flex items-baseline gap-3 py-2 border-b border-white/5 last:border-b-0 ${past ? 'opacity-60' : ''}`}>
-      <span className="w-24 shrink-0 text-xs text-gray-500 tabular-nums">{range(stop)}</span>
+      <span className="w-24 shrink-0 text-xs text-fg-muted tabular-nums">{range(stop)}</span>
       <span className="flex-1 min-w-0">
         {cityHref ? (
           <Link href={cityHref} className="block py-0.5 text-sm text-white underline decoration-white/40 underline-offset-4 hover:text-brand-hover hover:decoration-brand-hover break-words transition-colors">{stop.city}</Link>
         ) : (
           <span className="block text-sm text-white break-words">{stop.city}</span>
         )}
-        <span className="block text-xs text-gray-500 truncate">{stop.venue}</span>
+        <span className="block text-xs text-fg-muted truncate">{stop.venue}</span>
       </span>
       {isNow ? <StatusBadge status="open" /> : reviewCount > 0 ? (
         <span className="text-[11px] text-gray-400 whitespace-nowrap">{reviewCount} review{reviewCount > 1 ? 's' : ''}</span>
@@ -79,7 +79,7 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source, t
     <section id="tour-schedule" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="tour-schedule-heading">
       <header className="flex items-center justify-between gap-3 mb-2">
         <h2 id="tour-schedule-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Tour Schedule</h2>
-        <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">{stops.length} stops</span>
+        <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">{stops.length} stops</span>
       </header>
       {shown.length > 0 ? <ul>{shown.map(row)}</ul> : <p className="text-sm text-gray-400 py-2">The tour has played its last scheduled stop.</p>}
       <details className="mt-2 group">
@@ -90,7 +90,7 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source, t
         <ul>{stops.map(row)}</ul>
       </details>
       {source && (
-        <p className="mt-3 pt-3 border-t border-white/5 text-xs text-gray-500">
+        <p className="mt-3 pt-3 border-t border-white/5 text-xs text-fg-muted">
           Dates from <a href={source} target="_blank" rel="noopener noreferrer" className="hover:text-brand-hover transition-colors">Tours To You</a>. {Object.keys(tickets).length ? 'Tickets for some stops through TodayTix; check the venue for the rest.' : 'Check the venue for showtimes and tickets.'}
         </p>
       )}

@@ -327,7 +327,7 @@
   }
 
   .score-none {
-    @apply bg-surface-overlay text-gray-500 border border-white/10;
+    @apply bg-surface-overlay text-fg-muted border border-white/10;
   }
 
   /* Status chips - pill style like TodayTix */
@@ -478,7 +478,7 @@
   }
 
   .score-grid-label {
-    @apply text-xs text-gray-500 uppercase tracking-wide mb-1;
+    @apply text-xs text-fg-muted uppercase tracking-wide mb-1;
   }
 
   .score-grid-value {
@@ -492,7 +492,7 @@
 
   /* Header nav link - subtle, secondary navigation */
   .nav-link {
-    @apply relative px-2 py-1 text-xs text-gray-500 hover:text-gray-300 transition-colors;
+    @apply relative px-2 py-1 text-xs text-fg-muted hover:text-gray-300 transition-colors;
   }
 
   .nav-link::after {
@@ -539,7 +539,7 @@
   }
 
   .tier-3 {
-    @apply bg-surface-overlay text-gray-500;
+    @apply bg-surface-overlay text-fg-muted;
   }
 
   /* Mobile touch targets */

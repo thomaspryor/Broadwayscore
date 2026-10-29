@@ -93,7 +93,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
+          <div className="w-full h-full flex items-center justify-center text-fg-muted">
             <div className="text-3xl">🎭</div>
           </div>
         )}
@@ -116,7 +116,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
         {/* SRO Details */}
         <div className="mt-2 text-sm text-gray-400">
           <p>{sro.time}</p>
-          <p className="text-gray-500 mt-1">{sro.instructions}</p>
+          <p className="text-fg-muted mt-1">{sro.instructions}</p>
         </div>
 
         {/* Other options */}
@@ -139,7 +139,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
       {/* Score Badge */}
       <div className="flex-shrink-0 flex items-center justify-center sm:flex-col sm:items-center gap-2 sm:w-20">
         <ScoreBadge score={score} size="md" showCrown />
-        <span className="text-xs text-gray-500 hidden sm:block">
+        <span className="text-xs text-fg-muted hidden sm:block">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
       </div>
@@ -193,7 +193,7 @@ export default function StandingRoomPage() {
           <p className="text-gray-400 mt-2">
             When a Broadway show sells out, standing room tickets let you see it from the back of the orchestra. The last resort for sold-out hits.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithSRO.length} shows with SRO · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -205,16 +205,16 @@ export default function StandingRoomPage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-gray-300">{cheapestSRO ? formatTicketPrice(cheapestSRO.sroData?.standingRoom?.price, 'broadway') : '–'}</div>
-            <div className="text-xs text-gray-500 mt-1">Cheapest SRO</div>
+            <div className="text-xs text-fg-muted mt-1">Cheapest SRO</div>
             <div className="text-xs text-gray-400 truncate">{cheapestSRO?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithSRO.length}</div>
-            <div className="text-xs text-gray-500 mt-1">Shows with SRO</div>
+            <div className="text-xs text-fg-muted mt-1">Shows with SRO</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-gray-400">{avgPrice !== null ? formatTicketPrice(avgPrice, 'broadway') : '–'}</div>
-            <div className="text-xs text-gray-500 mt-1">Average Price</div>
+            <div className="text-xs text-fg-muted mt-1">Average Price</div>
           </div>
         </div>
 
@@ -223,19 +223,19 @@ export default function StandingRoomPage() {
           <h2 className="font-bold text-white mb-2">How Standing Room Works</h2>
           <ul className="text-sm text-gray-400 space-y-2">
             <li className="flex gap-2">
-              <span className="text-gray-500">1.</span>
+              <span className="text-fg-muted">1.</span>
               <span><strong className="text-gray-300">Only when sold out</strong>: SRO tickets are only available when all seats are sold. If there are empty seats, no standing room.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gray-500">2.</span>
+              <span className="text-fg-muted">2.</span>
               <span><strong className="text-gray-300">Day of show</strong>: Go to the box office when it opens (usually 10 AM) and ask if SRO is available.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gray-500">3.</span>
+              <span className="text-fg-muted">3.</span>
               <span><strong className="text-gray-300">Back of orchestra</strong>: You&apos;ll stand at a rail behind the last row. No sitting for the entire show.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gray-500">4.</span>
+              <span className="text-fg-muted">4.</span>
               <span><strong className="text-gray-300">Limited quantity</strong>: Only 10-20 SRO spots per show. Arrive early for popular shows.</span>
             </li>
           </ul>
@@ -247,7 +247,7 @@ export default function StandingRoomPage() {
           {showsWithSRO.length > 0 ? (
             <StandingRoomTable data={showsWithSRO.map(item => ({ show: item.show, sroData: item.sroData! }))} />
           ) : (
-            <p className="text-sm text-gray-500">No standing-room information in our database right now. Call the box office directly if the show you want is sold out. Many theaters offer SRO that we don&apos;t have on file.</p>
+            <p className="text-sm text-fg-muted">No standing-room information in our database right now. Call the box office directly if the show you want is sold out. Many theaters offer SRO that we don&apos;t have on file.</p>
           )}
         </div>
 
@@ -269,7 +269,7 @@ export default function StandingRoomPage() {
         )}
 
         {/* Data Source Note */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Standing room information sourced from Playbill and official show websites.
             SRO availability depends on show selling out. Always call the box office to confirm.

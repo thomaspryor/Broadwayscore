@@ -35,7 +35,7 @@ export function TitleTabs({ items, isActive, onSelect, panelFor = tab => `panel-
             aria-selected={on}
             aria-controls={panelFor(item.tab)}
             onClick={() => onSelect(item.tab)}
-            className={`relative pb-1.5 text-2xl sm:text-3xl font-extrabold tracking-tight transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm ${on ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+            className={`relative pb-1.5 text-2xl sm:text-3xl font-extrabold tracking-tight transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm ${on ? 'text-white' : 'text-fg-muted hover:text-gray-300'}`}
           >
             {item.label}
             {on && <span aria-hidden="true" className="absolute left-0 right-0 bottom-0 h-[3px] rounded-full bg-brand" />}

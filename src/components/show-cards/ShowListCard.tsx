@@ -208,7 +208,7 @@ const ShowListCard = memo(function ShowListCard({
           : <FormatPill type={show.type} />)}
         {isRevival && <ProductionPill isRevival={true} />}
       </div>
-      <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
+      <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-fg-muted">
         {showPerformances && show.performances ? (
           <span className="text-emerald-400">{show.performances.toLocaleString()} performances</span>
         ) : (
@@ -371,10 +371,10 @@ const ShowListCard = memo(function ShowListCard({
         ) : isCompact ? (
           // Compact no-data state
           <>
-            <span className="text-[9px] font-semibold uppercase tracking-wide text-gray-600 whitespace-nowrap">
+            <span className="text-[9px] font-semibold uppercase tracking-wide text-fg-muted whitespace-nowrap">
               No Data
             </span>
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center font-bold text-lg bg-surface-overlay text-gray-600 border border-white/10">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center font-bold text-lg bg-surface-overlay text-fg-muted border border-white/10">
               --
             </div>
           </>
@@ -387,7 +387,7 @@ const ShowListCard = memo(function ShowListCard({
         // Critics mode
         <>
           {show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? (
-            <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
+            <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-fg-muted">
               Not Yet Rated
             </span>
           ) : tier ? (
@@ -460,10 +460,10 @@ const ShowListCard = memo(function ShowListCard({
         sizes="(min-width: 640px) 112px, 96px"
         className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300${isCompact ? '' : ' will-change-transform'}`}
         fallback={
-          <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
+          <div className="w-full h-full flex flex-col items-center justify-center text-fg-muted px-2" aria-hidden="true">
             <div className="text-2xl mb-0.5">🎭</div>
             {(show.status === 'previews' || show.status === 'upcoming') && (
-              <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>
+              <div className="text-[9px] text-fg-muted text-center font-medium leading-tight">Images<br/>soon</div>
             )}
           </div>
         }

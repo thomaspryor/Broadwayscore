@@ -52,7 +52,7 @@ function formatDate(dateStr: string): string {
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );
@@ -107,7 +107,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
   if (shows.length === 0) {
     return (
       <div className="card rounded-xl p-6 text-center">
-        <p className="text-gray-500">No recent recoupments</p>
+        <p className="text-fg-muted">No recent recoupments</p>
       </div>
     );
   }
@@ -177,18 +177,18 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                   {show.weeksToRecoup === null && show.reportedAfterClosing ? (
                     <span className="text-gray-400" title="The recoupment was reported after the Broadway run closed, and the report month is the only date known, so weeks from opening cannot be measured">Reported after closing</span>
                   ) : show.weeksToRecoup === null ? (
-                    <span className="text-gray-500" title="Only the year of recoupment was reported">—</span>
+                    <span className="text-fg-muted" title="Only the year of recoupment was reported">—</span>
                   ) : show.weeksIsEstimate ? (
                     <span title={show.weeksEstimateNote ?? undefined}>
                       <span className="text-emerald-400/60 font-semibold">~{show.weeksToRecoup}</span>{' '}
-                      <span className="text-xs text-gray-500">est.</span>
+                      <span className="text-xs text-fg-muted">est.</span>
                     </span>
                   ) : (
                     <span className="text-emerald-400 font-semibold">~{show.weeksToRecoup}</span>
                   )}
                 </td>
                 <td className="py-3 px-4">{formatCapitalization(show.capitalization, show.capitalizationIsEstimate, show.capitalizationIsMaximum)}</td>
-                <td className="py-3 px-4 text-gray-500 hidden sm:table-cell">
+                <td className="py-3 px-4 text-fg-muted hidden sm:table-cell">
                   {show.recoupDateIsEstimate ? '~' : ''}{formatDate(show.recoupDate)}
                 </td>
               </tr>

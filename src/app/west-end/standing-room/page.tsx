@@ -84,7 +84,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
+          <div className="w-full h-full flex items-center justify-center text-fg-muted">
             <div className="text-3xl">🎭</div>
           </div>
         )}
@@ -107,7 +107,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
 
         <div className="mt-2 text-sm text-gray-400">
           {sro.time && <p>{sro.time}</p>}
-          {sro.instructions && <p className="text-gray-500 mt-1">{sro.instructions}</p>}
+          {sro.instructions && <p className="text-fg-muted mt-1">{sro.instructions}</p>}
         </div>
 
         {(sroData.lottery || sroData.rush) && (
@@ -128,7 +128,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
 
       <div className="flex-shrink-0 flex items-center justify-center sm:flex-col sm:items-center gap-2 sm:w-20">
         <ScoreBadge score={score} size="md" showCrown />
-        <span className="text-xs text-gray-500 hidden sm:block">
+        <span className="text-xs text-fg-muted hidden sm:block">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
       </div>
@@ -180,7 +180,7 @@ export default function WestEndStandingRoomPage() {
           <p className="text-gray-400 mt-2">
             When a West End show sells out, standing places let you see it from the back of the stalls or circle. The last resort for sold-out hits.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithSRO.length} shows with standing room · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -191,16 +191,16 @@ export default function WestEndStandingRoomPage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-gray-300">{cheapestSRO ? formatTicketPrice(cheapestSRO.sroData?.standingRoom?.price, 'west-end') : '–'}</div>
-            <div className="text-xs text-gray-500 mt-1">Cheapest SRO</div>
+            <div className="text-xs text-fg-muted mt-1">Cheapest SRO</div>
             <div className="text-xs text-gray-400 truncate">{cheapestSRO?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithSRO.length}</div>
-            <div className="text-xs text-gray-500 mt-1">Shows with SRO</div>
+            <div className="text-xs text-fg-muted mt-1">Shows with SRO</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-gray-400">{avgPrice !== null ? formatTicketPrice(avgPrice, 'west-end') : '–'}</div>
-            <div className="text-xs text-gray-500 mt-1">Average Price</div>
+            <div className="text-xs text-fg-muted mt-1">Average Price</div>
           </div>
         </div>
 
@@ -208,19 +208,19 @@ export default function WestEndStandingRoomPage() {
           <h2 className="font-bold text-white mb-2">How West End Standing Room Works</h2>
           <ul className="text-sm text-gray-400 space-y-2">
             <li className="flex gap-2">
-              <span className="text-gray-500">1.</span>
+              <span className="text-fg-muted">1.</span>
               <span><strong className="text-gray-300">Only when sold out</strong>: Standing places are only released when every seat has been sold. No SRO if there are empty seats.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gray-500">2.</span>
+              <span className="text-fg-muted">2.</span>
               <span><strong className="text-gray-300">Day of the performance</strong>: Go to the box office when it opens (usually 10 AM) and ask if standing places are available.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gray-500">3.</span>
+              <span className="text-fg-muted">3.</span>
               <span><strong className="text-gray-300">Back of stalls or circle</strong>: You&apos;ll stand at a rail behind the last row. No sitting for the entire show.</span>
             </li>
             <li className="flex gap-2">
-              <span className="text-gray-500">4.</span>
+              <span className="text-fg-muted">4.</span>
               <span><strong className="text-gray-300">Limited quantity</strong>: Usually 10–20 standing places per show. Arrive early for popular shows.</span>
             </li>
           </ul>
@@ -234,7 +234,7 @@ export default function WestEndStandingRoomPage() {
               market="west-end"
             />
           ) : (
-            <p className="text-sm text-gray-500">No standing-room information in our database right now. Check with the venue directly if the show you want is sold out.</p>
+            <p className="text-sm text-fg-muted">No standing-room information in our database right now. Check with the venue directly if the show you want is sold out.</p>
           )}
         </div>
 
@@ -254,7 +254,7 @@ export default function WestEndStandingRoomPage() {
           </>
         )}
 
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Standing room information is collected from official show websites and TodayTix.
             SRO availability depends on a show selling out completely. Always ring the box office to confirm before you travel.

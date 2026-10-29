@@ -50,7 +50,7 @@ export default function RecentDevelopmentsList({
   if (displayItems.length === 0) {
     return (
       <div className="card rounded-xl p-4">
-        <p className="text-sm text-gray-500">No recent developments</p>
+        <p className="text-sm text-fg-muted">No recent developments</p>
       </div>
     );
   }
@@ -62,7 +62,7 @@ export default function RecentDevelopmentsList({
           const styles = getTypeStyles(item.type);
           return (
             <li key={index} className="flex items-start gap-3">
-              <span className="text-xs text-gray-500 w-20 shrink-0">
+              <span className="text-xs text-fg-muted w-20 shrink-0">
                 {item.date}
               </span>
               <span className={styles.dotClass} aria-label={styles.label}>

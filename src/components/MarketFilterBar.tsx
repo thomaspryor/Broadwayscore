@@ -91,7 +91,7 @@ export default function MarketFilterBar({
     if (active && accent === 'dark') return 'text-gray-800/70';
     if (active && accent === 'purple') return 'text-purple-300/70';
     if (active && accent === 'violet') return 'text-violet-300/70';
-    return 'text-gray-500';
+    return 'text-fg-muted';
   };
 
   return (

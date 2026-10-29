@@ -123,7 +123,7 @@ function ScoreDots({ score, label, icon }: { score: number; label: string; icon:
           />
         ))}
       </div>
-      <span className={`text-xs font-medium text-gray-500 ml-1`}>{score}/5</span>
+      <span className={`text-xs font-medium text-fg-muted ml-1`}>{score}/5</span>
     </div>
   );
 }
@@ -203,7 +203,7 @@ export default function TheaterScorecardCard({
           {/* Accessibility badges */}
           {hasAccessibility && (
             <div className="border-t border-white/5 pt-3 mb-3">
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-2">Accessibility</p>
+              <p className="text-[10px] text-fg-muted uppercase tracking-wider font-semibold mb-2">Accessibility</p>
               <div className="flex flex-wrap gap-1.5">
                 {accessibility!.wheelchair && (
                   <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
@@ -227,7 +227,7 @@ export default function TheaterScorecardCard({
                 )}
               </div>
               {accessibility!.notes && (
-                <p className="text-xs text-gray-500 mt-1.5">{accessibility!.notes}</p>
+                <p className="text-xs text-fg-muted mt-1.5">{accessibility!.notes}</p>
               )}
             </div>
           )}
@@ -235,7 +235,7 @@ export default function TheaterScorecardCard({
           {/* External links */}
           {hasExternal && (
             <div className="border-t border-white/5 pt-3">
-              <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold mb-2">Find Your Seat</p>
+              <p className="text-[10px] text-fg-muted uppercase tracking-wider font-semibold mb-2">Find Your Seat</p>
               <div className="flex flex-wrap gap-2">
                 {externalLinks!.seatplan && (
                   <a
@@ -262,7 +262,7 @@ export default function TheaterScorecardCard({
           )}
 
           {/* Methodology note */}
-          <p className="text-[9px] text-gray-600 mt-3 leading-relaxed">
+          <p className="text-[9px] text-fg-muted mt-3 leading-relaxed">
             Venue ratings based on audience reviews from SeatPlan, A View From My Seat, and community feedback.
           </p>
         </>

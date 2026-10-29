@@ -280,7 +280,7 @@ export default function LotteryRushCard({ data, showId, showName, showStatus, sh
           </div>
         )}
       </div>
-      <p className="text-[10px] text-gray-600 mt-3">Some links may earn us a commission at no extra cost to you.</p>
+      <p className="text-[10px] text-fg-muted mt-3">Some links may earn us a commission at no extra cost to you.</p>
     </section>
   );
 }

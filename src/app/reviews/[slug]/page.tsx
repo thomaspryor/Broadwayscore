@@ -145,14 +145,14 @@ export default async function ReviewPage(props: { params: Promise<{ slug: string
             </p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-gray-400">
               <span className="font-medium text-gray-200">{review.show}</span>
-              <span className="text-gray-500">at {review.venue}</span>
+              <span className="text-fg-muted">at {review.venue}</span>
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-gray-500">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-sm text-fg-muted">
               <time dateTime={review.publishDate}>{formattedDate}</time>
               <span>{review.readingTime} min read</span>
             </div>
             {review.dateAttended !== review.publishDate && (
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-fg-muted">
                 Attended {attendedDate}
               </p>
             )}
@@ -199,7 +199,7 @@ export default async function ReviewPage(props: { params: Promise<{ slug: string
 
       {/* Disclaimer */}
       <div className="border-t border-white/5 pt-6">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-muted">
           Broadway Scorecard aggregates critic scores from {totalOutlets}+ outlets. These personal reviews are separate from those scores.
         </p>
       </div>

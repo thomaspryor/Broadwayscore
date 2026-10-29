@@ -45,7 +45,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
                 <td className="py-2.5 px-4 text-gray-300">{b.label}</td>
                 <td className="py-2.5 px-4 text-center whitespace-nowrap">
                   <span className="font-semibold text-white">{r == null ? '—' : `${Math.round(r * 100)}%`}</span>
-                  <span className="block text-xs text-gray-500">{b.recouped} of {b.total}</span>
+                  <span className="block text-xs text-fg-muted">{b.recouped} of {b.total}</span>
                 </td>
                 <td className="py-2.5 px-4">
                   <div className="h-2 rounded-full bg-white/5">
@@ -73,12 +73,12 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
                   </div>
                   <span className="text-right whitespace-nowrap">
                     <span className="font-semibold text-white">{Math.round(row.r * 100)}%</span>{' '}
-                    <span className="text-xs text-gray-500">{row.band.recouped} of {row.band.total}</span>
+                    <span className="text-xs text-fg-muted">{row.band.recouped} of {row.band.total}</span>
                   </span>
                 </div>
               ))}
             </div>
-            <p className="mt-2 text-xs text-gray-500">Share that recouped, counting shows that have closed or recouped.</p>
+            <p className="mt-2 text-xs text-fg-muted">Share that recouped, counting shows that have closed or recouped.</p>
           </div>
         )}
         {findings.recoupedAvgScore != null && findings.closedUnrecoupedAvgScore != null && (
@@ -99,7 +99,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
                 {b.recoupedShows.map((s) => (
                   <ShowLinkListItem key={s.slug} href={`/show/${s.slug}`}>
                     <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white"><RowLinkArrow label={s.title} /></Link>
-                    <span className="text-gray-500"> ({s.year})</span>
+                    <span className="text-fg-muted"> ({s.year})</span>
                   </ShowLinkListItem>
                 ))}
               </ul>
@@ -107,7 +107,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
           ))}
         </div>
       )}
-      <p className="px-4 pb-4 text-xs text-gray-500">
+      <p className="px-4 pb-4 text-xs text-fg-muted">
         Leaves out nonprofit-only runs and tour stops, which have no investors to repay. Shows still running count as
         not recouped yet, so the rates by show type can only go up. The critic rows count shows with a critic score
         that have recouped or closed, and show a correlation only. Recoupment comes from producer announcements and

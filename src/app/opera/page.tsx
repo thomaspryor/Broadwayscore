@@ -95,7 +95,7 @@ export default function OperaPage() {
       />
 
       {/* Tiny footer note explaining the flat-tier methodology */}
-      <div className="mt-12 mb-8 mx-auto max-w-2xl text-center text-xs text-gray-500 px-4">
+      <div className="mt-12 mb-8 mx-auto max-w-2xl text-center text-xs text-fg-muted px-4">
         <p>
           Opera reviews count equally: Operawire, Parterre Box, New York Classical Review, Bachtrack,
           Classical Voice America, and Seen-and-Heard International carry the same weight as The New York

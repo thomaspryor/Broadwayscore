@@ -84,7 +84,7 @@ export default function TheaterTracker({
             className={`${pressableClass} relative flex items-center justify-center gap-1 rounded-lg border px-1.5 py-1.5 min-h-[44px] min-w-0 ${
               h.visited
                 ? 'bg-brand/15 border-brand/40 hover:bg-brand/25 text-white'
-                : 'border-white/10 hover:border-white/25 text-gray-500 hover:text-gray-300'
+                : 'border-white/10 hover:border-white/25 text-fg-muted hover:text-gray-300'
             }`}
           >
             <span className="text-xs font-semibold text-center leading-tight line-clamp-2 break-words">{houseShortName(h.name)}</span>

@@ -149,7 +149,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
           </div>
           <button
             onClick={handleDismiss}
-            className="flex-shrink-0 p-1 text-gray-500 hover:text-white transition-colors mt-0.5"
+            className="flex-shrink-0 p-1 text-fg-muted hover:text-white transition-colors mt-0.5"
             aria-label="Dismiss"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -306,9 +306,9 @@ function ListRow({ list, showMap, onClick }: { list: UserList; showMap: ShowMap;
       <div className="flex-1 min-w-0">
         <h4 className="font-bold text-white text-base truncate">{list.name}</h4>
         {list.description && (
-          <p className="text-xs text-gray-600 truncate mt-0.5">{list.description}</p>
+          <p className="text-xs text-fg-muted truncate mt-0.5">{list.description}</p>
         )}
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-xs text-fg-muted mt-0.5">
           {list.item_count || 0} {(list.item_count || 0) === 1 ? 'Show' : 'Shows'}
           {list.is_ranked && <span className="ml-1.5 text-xs font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
         </p>
@@ -320,7 +320,7 @@ function ListRow({ list, showMap, onClick }: { list: UserList; showMap: ShowMap;
             {show.posterUrl ? (
               <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-600 text-sm">🎭</div>
+              <div className="w-full h-full flex items-center justify-center text-fg-muted text-sm">🎭</div>
             )}
           </div>
         ))}
@@ -490,14 +490,14 @@ function ListDetailView({
               ) : (
                 <div className="flex items-center gap-2 px-4 py-2.5 text-sm">
                   <button type="button" onClick={() => { setShowOverflow(false); onDelete(); }} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
-                  <button type="button" onClick={() => setConfirmDelete(false)} className="text-gray-500 hover:text-white">No</button>
+                  <button type="button" onClick={() => setConfirmDelete(false)} className="text-fg-muted hover:text-white">No</button>
                 </div>
               )}
             </div>
           )}
         </div>
       </div>
-      <p className="text-xs text-gray-500 mb-1">
+      <p className="text-xs text-fg-muted mb-1">
         {items.length} {items.length === 1 ? 'Show' : 'Shows'}
         {list.is_ranked && <span className="ml-1.5 text-xs font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
         {list.is_public && <span className="ml-1.5 text-xs font-semibold text-green-400/70 bg-green-400/10 px-1.5 py-0.5 rounded">Public</span>}
@@ -691,7 +691,7 @@ function ListItemContent({
           type="button"
           ref={dragHandleRef}
           {...(dragHandleProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
-          className="relative z-[1] flex-shrink-0 touch-none cursor-grab active:cursor-grabbing p-1 -ml-1 text-gray-600 hover:text-gray-400 transition-colors"
+          className="relative z-[1] flex-shrink-0 touch-none cursor-grab active:cursor-grabbing p-1 -ml-1 text-fg-muted hover:text-gray-400 transition-colors"
           aria-label="Drag to reorder"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -707,7 +707,7 @@ function ListItemContent({
 
       {/* Rank number */}
       {isRanked && (
-        <span className="relative z-[1] flex-shrink-0 w-6 text-center text-sm font-bold text-gray-500 pointer-events-none">
+        <span className="relative z-[1] flex-shrink-0 w-6 text-center text-sm font-bold text-fg-muted pointer-events-none">
           {index + 1}
         </span>
       )}
@@ -717,14 +717,14 @@ function ListItemContent({
         {show?.posterUrl ? (
           <img src={show.posterUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
+          <div className="w-full h-full flex items-center justify-center text-fg-muted text-lg">🎭</div>
         )}
       </div>
 
       {/* Info */}
       <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
         <h4 className="font-bold text-white text-base group-hover/item:text-brand transition-colors truncate">{title}</h4>
-        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
+        {show?.venue && <p className="text-sm text-fg-muted truncate">{show.venue}</p>}
       </div>
 
       {/* Remove button — 2-step confirm with 4s auto-reset */}
@@ -739,7 +739,7 @@ function ListItemContent({
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onCancelRemove(); }}
-              className="text-xs text-gray-500 hover:text-white px-2 py-1.5 min-h-[36px] flex items-center"
+              className="text-xs text-fg-muted hover:text-white px-2 py-1.5 min-h-[36px] flex items-center"
             >No</button>
           </div>
         ) : (
@@ -749,7 +749,7 @@ function ListItemContent({
               e.preventDefault(); e.stopPropagation();
               onConfirmRemove(item.id);
             }}
-            className="relative z-[1] text-xs text-gray-600 hover:text-red-400 transition-colors"
+            className="relative z-[1] text-xs text-fg-muted hover:text-red-400 transition-colors"
             aria-label={`Remove ${title} from list`}
           >Remove</button>
         )
@@ -833,7 +833,7 @@ function ListModal({
             type="button"
             onClick={handleSave}
             disabled={!canSave}
-            className={`text-sm font-bold ${canSave ? 'text-brand hover:text-brand/80' : 'text-gray-600'}`}
+            className={`text-sm font-bold ${canSave ? 'text-brand hover:text-brand/80' : 'text-fg-muted'}`}
           >
             {saving ? '...' : 'Save'}
           </button>
@@ -895,7 +895,7 @@ function ListModal({
                 <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isRanked ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
               </button>
             </div>
-            <p className="text-xs text-gray-500 -mt-1">Numbers your shows 1, 2, 3…</p>
+            <p className="text-xs text-fg-muted -mt-1">Numbers your shows 1, 2, 3…</p>
           </div>
 
           {/* Public toggle (edit mode only) */}
@@ -913,7 +913,7 @@ function ListModal({
                   <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isPublic ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
                 </button>
               </div>
-              <p className="text-xs text-gray-500 -mt-1">Anyone can see a public list, along with your name and profile photo</p>
+              <p className="text-xs text-fg-muted -mt-1">Anyone can see a public list, along with your name and profile photo</p>
               {isPublic && list?.share_slug && (
                 <p className="text-xs text-brand mt-1 truncate">
                   {`${SITE_URL}/list/${list.share_slug}`}
@@ -938,7 +938,7 @@ function ListModal({
                   <button type="button" onClick={onDelete} className="text-sm text-red-400 hover:text-red-300 font-medium">
                     Confirm Delete
                   </button>
-                  <button type="button" onClick={() => setConfirmDelete(false)} className="text-sm text-gray-500 hover:text-white">
+                  <button type="button" onClick={() => setConfirmDelete(false)} className="text-sm text-fg-muted hover:text-white">
                     Cancel
                   </button>
                 </div>

@@ -49,7 +49,7 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod, varia
     return (
       <div data-testid="recoupment-progress" className="mt-1">
         <div className="flex items-baseline justify-between mb-1.5">
-          <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500">
+          <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-fg-muted">
             Est. recoupment
           </span>
           <span className="text-[22px] leading-none font-extrabold tracking-tight text-brand-light tabular-nums">
@@ -72,7 +72,7 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod, varia
           <p className="text-[11px] text-gray-400 mt-1.5 first-letter:uppercase">{belowCostsNote}</p>
         )}
         <div className="flex items-center justify-between mt-1.5">
-          {rangeLabel && <span className="text-[10px] text-gray-500">{rangeLabel}</span>}
+          {rangeLabel && <span className="text-[10px] text-fg-muted">{rangeLabel}</span>}
           {methodLabel && <span className="text-[10px] text-gray-400">{methodLabel}</span>}
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod, varia
       <div className="flex items-center justify-between mb-1">
         <span className="text-xs font-medium text-gray-400">{label}</span>
         {rangeLabel && (
-          <span className="text-[10px] text-gray-500">{rangeLabel}</span>
+          <span className="text-[10px] text-fg-muted">{rangeLabel}</span>
         )}
       </div>
       <div className="relative w-full bg-surface-overlay/50 rounded-full h-2.5">
@@ -108,7 +108,7 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod, varia
       </div>
       <div className="flex items-center justify-between mt-1">
         {methodLabel && (
-          <p className="text-[10px] text-gray-500">
+          <p className="text-[10px] text-fg-muted">
             <span className="text-gray-400">{methodLabel}</span>
           </p>
         )}

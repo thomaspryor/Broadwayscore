@@ -106,7 +106,7 @@ export default function OffBroadwayVsBroadwayGuide() {
             <span className="text-brand font-semibold">{openOffBroadway} Off-Broadway shows</span> running
             in New York City. Here{'\u2019'}s what you need to know about each.
           </p>
-          <p className="text-gray-500 text-sm mt-3">
+          <p className="text-fg-muted text-sm mt-3">
             Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>
@@ -330,12 +330,12 @@ export default function OffBroadwayVsBroadwayGuide() {
                 <div>
                   <div className="text-2xl font-bold text-yellow-400">$100-200+</div>
                   <div className="text-gray-400 text-sm">Broadway average</div>
-                  <div className="text-gray-500 text-xs mt-1">Premium seats can exceed $300</div>
+                  <div className="text-fg-muted text-xs mt-1">Premium seats can exceed $300</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-emerald-400">$40-100</div>
                   <div className="text-gray-400 text-sm">Off-Broadway average</div>
-                  <div className="text-gray-500 text-xs mt-1">Many shows under $75</div>
+                  <div className="text-fg-muted text-xs mt-1">Many shows under $75</div>
                 </div>
               </div>
             </div>

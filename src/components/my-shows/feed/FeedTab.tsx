@@ -101,7 +101,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
             {noPhotos && <AppPhotoHint className="mb-4" />}
             <FeedTimeline groups={groups} showMap={showMap} onOpenPhoto={openEntryPhoto} uploads={uploads} />
             {undatedCount > 0 && (
-              <p className="mt-2 text-xs text-gray-500 text-center">
+              <p className="mt-2 text-xs text-fg-muted text-center">
                 {undatedCount} {undatedCount === 1 ? 'entry has' : 'entries have'} no date seen, so {undatedCount === 1 ? 'it isn’t' : 'they aren’t'} on the timeline.
               </p>
             )}
@@ -122,7 +122,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
         />
       ) : (
         <>
-          <p className="mb-3 text-xs text-gray-500">
+          <p className="mb-3 text-xs text-fg-muted">
             {wallSlides.length} {wallSlides.length === 1 ? 'photo' : 'photos'} from {nightsWithPhotos} {nightsWithPhotos === 1 ? 'night' : 'nights'}
           </p>
           <PhotoWall slides={wallSlides} showMap={showMap} onOpen={openWallPhoto} />

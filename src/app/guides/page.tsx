@@ -82,7 +82,7 @@ export default function GuidesIndexPage() {
                 <span>{guide.showCount} {guide.showCount === 1 ? 'show' : 'shows'}</span>
                 {guide.topShow && (
                   <>
-                    <span className="text-gray-600">|</span>
+                    <span className="text-fg-muted">|</span>
                     <span>
                       Top pick: {guide.topShow}
                       {guide.topScore !== null && (
@@ -146,7 +146,7 @@ export default function GuidesIndexPage() {
         </div>
 
         {/* Methodology Link */}
-        <div className="mt-8 text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="mt-8 text-sm text-fg-muted border-t border-white/5 pt-6">
           <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
             How are scores calculated? →
           </Link>

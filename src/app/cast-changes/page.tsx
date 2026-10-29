@@ -158,7 +158,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
             height={48}
             className="w-full h-full object-cover"
             fallback={
-              <div className="w-full h-full flex items-center justify-center text-gray-500">
+              <div className="w-full h-full flex items-center justify-center text-fg-muted">
                 <span className="text-lg">🎭</span>
               </div>
             }
@@ -168,7 +168,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
           <h3 className="font-bold text-white text-base group-hover:text-brand transition-colors truncate">
             {show.title}
           </h3>
-          <p className="text-xs text-gray-500">{show.venue}</p>
+          <p className="text-xs text-fg-muted">{show.venue}</p>
         </div>
         <ScoreBadge score={score} size="sm" showCrown />
       </Link>
@@ -185,7 +185,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
                   <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                     {event.name && <span className="text-white font-semibold text-sm">{event.name}</span>}
                     <span className={`text-xs font-medium ${config.colorClass}`}>{config.label}</span>
-                    {event.role && event.role !== 'Unknown' && <span className="text-gray-500 text-xs">as {event.role}</span>}
+                    {event.role && event.role !== 'Unknown' && <span className="text-fg-muted text-xs">as {event.role}</span>}
                   </div>
                   <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400">
                     {event.date && (
@@ -283,7 +283,7 @@ export default function CastChangesPage() {
           <p className="text-gray-400 mt-2">
             Upcoming cast departures, arrivals, and limited engagements across currently running Broadway shows.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithCast.length} shows with updates · Last updated {formatEventDate(lastUpdated)}
           </p>
         </div>
@@ -292,15 +292,15 @@ export default function CastChangesPage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-rose-400">{departures}</div>
-            <div className="text-xs text-gray-500 mt-1">Departures</div>
+            <div className="text-xs text-fg-muted mt-1">Departures</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-emerald-400">{arrivals}</div>
-            <div className="text-xs text-gray-500 mt-1">Arrivals</div>
+            <div className="text-xs text-fg-muted mt-1">Arrivals</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{totalEvents}</div>
-            <div className="text-xs text-gray-500 mt-1">Total Updates</div>
+            <div className="text-xs text-fg-muted mt-1">Total Updates</div>
           </div>
         </div>
 
@@ -313,14 +313,14 @@ export default function CastChangesPage() {
           </div>
         ) : (
           <div className="card p-8 text-center">
-            <PersonIcon className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+            <PersonIcon className="w-12 h-12 text-fg-muted mx-auto mb-3" />
             <p className="text-gray-400">No upcoming cast changes tracked yet.</p>
-            <p className="text-sm text-gray-500 mt-1">Cast changes are updated weekly from Playbill, BroadwayWorld, and official show sites.</p>
+            <p className="text-sm text-fg-muted mt-1">Cast changes are updated weekly from Playbill, BroadwayWorld, and official show sites.</p>
           </div>
         )}
 
         {/* Data Source Note */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-8">
           <p>
             Cast change data sourced from Playbill, BroadwayWorld, official show websites, and r/Broadway.
             Updated weekly. Only star-level changes are tracked. Information may not reflect last-minute absences or understudies.

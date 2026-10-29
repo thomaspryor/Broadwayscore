@@ -137,7 +137,7 @@ export default function TonyAwardsHubPage() {
               <Link href={`/tony-awards/predictions/${season.label}`} className="block">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Tony Predictions</h2>
-                  <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg className="w-5 h-5 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
@@ -148,7 +148,7 @@ export default function TonyAwardsHubPage() {
                   <div className="space-y-1.5">
                     {categoryTeasers.slice(0, 4).map(t => (
                       <div key={t.label} className="flex items-center gap-2 text-sm">
-                        <span className="text-gray-500 flex-shrink-0 truncate">{t.label}</span>
+                        <span className="text-fg-muted flex-shrink-0 truncate">{t.label}</span>
                         <span className="text-white font-medium truncate flex-1">{t.showTitle}</span>
                       </div>
                     ))}
@@ -174,7 +174,7 @@ export default function TonyAwardsHubPage() {
               <Link href={`/tony-awards/predictions/${season.label}`} className="block">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Season Tracker</h2>
-                  <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg className="w-5 h-5 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
@@ -204,7 +204,7 @@ export default function TonyAwardsHubPage() {
             <Link href="/tony-awards/winners-2026" className="p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">2026 Tony Winners</h2>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-amber-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 text-fg-muted group-hover:text-amber-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -222,7 +222,7 @@ export default function TonyAwardsHubPage() {
             <Link href="/tony-awards/nominees" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Nominees</h2>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -232,7 +232,7 @@ export default function TonyAwardsHubPage() {
               <div className="space-y-1.5">
                 {categoryTeasers.slice(0, 3).map(t => (
                   <div key={t.label} className="flex items-center gap-2 text-sm">
-                    <span className="text-gray-500 flex-shrink-0 truncate">{t.label}</span>
+                    <span className="text-fg-muted flex-shrink-0 truncate">{t.label}</span>
                     <span className="text-white font-medium truncate flex-1">{t.showTitle}</span>
                   </div>
                 ))}
@@ -248,7 +248,7 @@ export default function TonyAwardsHubPage() {
             <Link href="/tony-awards/people" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">All-Time Leaderboard</h2>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
@@ -291,7 +291,7 @@ export default function TonyAwardsHubPage() {
                       <h3 className="text-sm font-semibold text-white">Tony Winners on Broadway</h3>
                       <p className="text-xs text-gray-400 mt-1">Award-winning productions currently playing</p>
                     </div>
-                    <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg className="w-5 h-5 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
@@ -303,7 +303,7 @@ export default function TonyAwardsHubPage() {
                         <h3 className="text-sm font-semibold text-white">{nomineeYear} Tony Nominees</h3>
                         <p className="text-xs text-gray-400 mt-1">{nomineeYear === season.ceremonyYear ? 'This year\'s' : 'Last year\'s'} celebrated shows still playing</p>
                       </div>
-                      <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <svg className="w-5 h-5 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
@@ -324,7 +324,7 @@ export default function TonyAwardsHubPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-xs text-gray-500 uppercase tracking-wide border-b border-white/5">
+                  <tr className="text-left text-xs text-fg-muted uppercase tracking-wide border-b border-white/5">
                     <th className="pb-3 pr-4">Season</th>
                     <th className="pb-3 pr-4">Show</th>
                     <th className="pb-3 pr-4">Category</th>
@@ -351,10 +351,10 @@ export default function TonyAwardsHubPage() {
                               {Math.round(displayScore)}
                             </span>
                           ) : (
-                            <span className="text-sm text-gray-500">–</span>
+                            <span className="text-sm text-fg-muted">–</span>
                           )}
                         </td>
-                        <td className="py-2.5 text-right text-sm text-gray-500">{winner.reviewCount || '–'}</td>
+                        <td className="py-2.5 text-right text-sm text-fg-muted">{winner.reviewCount || '–'}</td>
                       </tr>
                     );
                   })}
@@ -368,7 +368,7 @@ export default function TonyAwardsHubPage() {
         )}
 
         {/* Footer links */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6">
           <div className="flex flex-wrap gap-4">
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
               Scoring methodology &rarr;

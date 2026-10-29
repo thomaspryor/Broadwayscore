@@ -18,7 +18,7 @@ const OUTCOME: Record<MusicalOutcome, { label: string; className: string }> = {
   recouped: { label: 'Recouped', className: 'text-status-open' },
   lost: { label: 'In the red', className: 'text-score-skip' },
   running: { label: 'Still running', className: 'text-gray-300' },
-  unknown: { label: 'Closed with no verdict', className: 'text-gray-500' },
+  unknown: { label: 'Closed with no verdict', className: 'text-fg-muted' },
 };
 import TopicPageShell from '@/components/biz/TopicPageShell';
 import MoneyGate from '@/components/biz/MoneyGate';
@@ -54,7 +54,7 @@ export default function Page() {
               <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand"><RowLinkArrow label={r.title} /></Link>
               <span className={`text-sm font-semibold ${OUTCOME[r.outcome].className}`}>{OUTCOME[r.outcome].label}</span>
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-fg-muted mt-1">
               {r.award}, {r.season}
               {r.monthsToRecoup != null && ` · recouped in about ${r.monthsToRecoup} months`}
               {r.capitalization != null && ` · ${formatMillions(r.capitalization)} capitalization`}
@@ -63,7 +63,7 @@ export default function Page() {
         ))}
       </ul>
       </MoneyGate>
-      <p className="text-xs text-gray-500 mt-3">
+      <p className="text-xs text-fg-muted mt-3">
         In the red means a loss label (Fizzle, Flop or similar). Closed with no verdict means the show has no final label yet. Nonprofit productions with no investors are left out.
       </p>
     </TopicPageShell>

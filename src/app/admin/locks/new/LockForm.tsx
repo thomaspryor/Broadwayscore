@@ -159,7 +159,7 @@ export default function LockForm({
           <div className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-raised px-3 py-2.5">
             <div>
               <div className="text-sm text-white">{selectedShow.title}</div>
-              <div className="text-[11px] text-gray-500">
+              <div className="text-[11px] text-fg-muted">
                 {selectedShow.id}
                 {selectedShow.status ? ` · ${selectedShow.status}` : ''}
               </div>
@@ -203,7 +203,7 @@ export default function LockForm({
                     className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors"
                   >
                     <div className="text-sm text-white">{s.title}</div>
-                    <div className="text-[11px] text-gray-500">
+                    <div className="text-[11px] text-fg-muted">
                       {s.id}
                       {s.status ? ` · ${s.status}` : ''}
                     </div>
@@ -281,7 +281,7 @@ export default function LockForm({
         />
         <div
           className={`text-[11px] mt-1 ${
-            reasonOk ? 'text-status-open' : 'text-gray-500'
+            reasonOk ? 'text-status-open' : 'text-fg-muted'
           }`}
         >
           {reason.trim().length} / {MIN_REASON_LENGTH} chars
@@ -295,7 +295,7 @@ export default function LockForm({
           'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
           ready
             ? 'bg-brand text-black hover:bg-brand/90'
-            : 'bg-white/5 text-gray-500 cursor-not-allowed',
+            : 'bg-white/5 text-fg-muted cursor-not-allowed',
         ].join(' ')}
       >
         {buttonLabel}
@@ -365,7 +365,7 @@ function Field({
         {required && <span className="text-score-skip ml-1">*</span>}
       </label>
       {children}
-      {hint && <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{hint}</p>}
+      {hint && <p className="text-xs text-fg-muted mt-1.5 leading-relaxed">{hint}</p>}
     </div>
   );
 }

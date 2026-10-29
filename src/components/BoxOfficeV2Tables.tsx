@@ -34,7 +34,7 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, extra }: Props) {
       render: (slug) => {
         if (extra[slug]?.isNew) return <span className="text-xs font-bold uppercase text-gray-400">new</span>;
         const v = extra[slug]?.perSeat;
-        return v == null ? <span className="text-gray-500">–</span> : <span className="text-white">${Math.round(v)}</span>;
+        return v == null ? <span className="text-fg-muted">–</span> : <span className="text-white">${Math.round(v)}</span>;
       },
     },
     {
@@ -45,7 +45,7 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, extra }: Props) {
       render: (slug) => {
         const e = extra[slug];
         if (e?.isNew) return <span className="text-xs font-bold uppercase text-gray-400">new</span>;
-        if (e?.yoyPct == null) return <span className="text-gray-500">–</span>;
+        if (e?.yoyPct == null) return <span className="text-fg-muted">–</span>;
         if (Math.round(e.yoyPct) === 0) return <span className="text-gray-400">flat</span>;
         const up = e.yoyPct >= 0;
         return (
@@ -99,7 +99,7 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, extra }: Props) {
             Ranked by gross. Per seat is the gross divided by every seat the show had to sell, averaged over its last 4 weeks.
           </p>
           <ThisWeekTable data={thisWeek} extraColumns={columns} hideColumns={['attendance']} />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-fg-muted mt-1">
             <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
           </p>
         </>
