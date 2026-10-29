@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-x-b",
   "planId": "17a443c0-70e0-4a43-a34f-2cfa3969b12a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T20:21:36.248Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "BRO-6541: wrong-production-octagon-bolton, not a review of waiting-for-godot-citizens-regional-2026"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T22:40:26.809Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted waiting-for-godot-citizens-regional-2026/ilovemanchester--lois-barnett.json"
+    }
+  ],
+  "executedIn": "ci"
 }
