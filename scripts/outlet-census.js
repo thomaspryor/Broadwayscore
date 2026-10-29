@@ -336,7 +336,8 @@ async function fillMeta(outletId, items, { refresh, concurrency }) {
   let fetched = 0; let failed = 0;
   await pool(items, concurrency, async (item) => {
     const k = urlKey(item.url);
-    if (!cache[k]) {
+    // Entries cached before reviewAuthor existed are re-read once (BRO-6485).
+    if (!cache[k] || (!cache[k].error && !('reviewAuthor' in cache[k]))) {
       try {
         const { status, body } = await get(item.url);
         cache[k] = status === 200 ? census.extractPageMeta(body) : { error: `HTTP ${status}` };
