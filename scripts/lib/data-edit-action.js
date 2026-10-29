@@ -42,6 +42,12 @@ function dataEditAllowProblem({ file, field }) {
   return null;
 }
 
+// Another fix already wrote this exact value: the edit is satisfied, so it is
+// a no-op success, not a refusal (BRO-6489: one such edit turned a run red).
+function alreadyNewValue(currentVal, newValue) {
+  return newValue !== undefined && JSON.stringify(currentVal) === JSON.stringify(newValue ?? null);
+}
+
 function applyDataEdit(data, action, { root = ROOT } = {}) {
   const { file, showId, field, oldValue, newValue, unreject } = action;
   const notAllowed = dataEditAllowProblem(action);
@@ -56,6 +62,9 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     // oldValue null, so compare it as null (BRO-4623).
     const currentVal = shows[idx][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
+      if (alreadyNewValue(currentVal, newValue)) {
+        return { ok: true, msg: `shows.json: ${field} already ${JSON.stringify(currentVal)} for ${showId}, nothing to change` };
+      }
       return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
     }
     if (field === 'images') {
@@ -160,6 +169,9 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
 
     const currentVal = data.shows[showId][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
+      if (alreadyNewValue(currentVal, newValue)) {
+        return { ok: true, msg: `audience-buzz.json: ${field} already set for ${showId}, nothing to change` };
+      }
       return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
     }
 

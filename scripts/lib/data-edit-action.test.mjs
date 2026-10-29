@@ -27,6 +27,22 @@ test('refuses a stale oldValue and leaves data unchanged', () => {
   assert.equal(data.shows[0].venue, 'Old Theatre');
 });
 
+test('a stale oldValue whose newValue is already in place is a no-op success, not a refusal (BRO-6489)', () => {
+  const data = shows();
+  const before = JSON.stringify(data);
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'venue', oldValue: 'Older Theatre', newValue: 'Old Theatre' });
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.msg, /already/);
+  assert.equal(JSON.stringify(data), before);
+});
+
+test('audience-buzz: a stale oldValue whose newValue is already in place is a no-op success (BRO-6489)', () => {
+  const data = { shows: { 'a-2026': { title: 'New Title' } } };
+  const r = applyDataEdit(data, { file: 'audience-buzz.json', showId: 'a-2026', field: 'title', oldValue: 'Old Title', newValue: 'New Title' });
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.msg, /already/);
+});
+
 test('an absent field compares as oldValue null (BRO-4623)', () => {
   const data = shows();
   const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'runtime', oldValue: null, newValue: '2h' });
