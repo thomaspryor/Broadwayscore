@@ -18,6 +18,8 @@ const { execSync } = require('child_process');
 const { execErrorDetail } = require('./exec-error-detail');
 const { downstreamWorkflows } = require('./ingest-downstream');
 const { isReviewTextsClone } = require('./review-texts-dir');
+const { CAPS, checkCap } = require('./workflow-queue-cap');
+const { isUrgentShowId } = require('./scoring-lane');
 
 /**
  * Push the given absolute file paths. Returns {pushed: boolean, error?: string}.
@@ -93,11 +95,29 @@ function pushReviewTexts({
   }
 }
 
-/** Dispatch the downstream workflows. Returns array of {name, ok}. */
-function dispatchDownstream({ showId, newReviews, only, exec = execSync, log = console.log }) {
+/**
+ * Dispatch the downstream workflows. Returns array of {name, ok, deferred?}.
+ *
+ * BRO-6532: the per-show scoring dispatch goes through the bulk-workflow cap.
+ * With too many scoring runs already in flight, a show outside its opening-night
+ * window is deferred to the scheduled half-price batch runs (4x daily), which is
+ * where routine catch-up scoring goes anyway (BRO-5047). Real
+ * runs check the cap by default; tests that inject `exec` opt in via `capCheck`.
+ */
+function dispatchDownstream({
+  showId, newReviews, only, exec = execSync, log = console.log,
+  capCheck = exec === execSync ? checkCap : null, urgent = isUrgentShowId,
+}) {
   let workflows = downstreamWorkflows(showId, newReviews);
   if (only) workflows = workflows.filter((w) => only.includes(w.file));
   return workflows.map((wf) => {
+    if (capCheck && CAPS[wf.file]) {
+      const cap = capCheck({ workflow: wf.file, log });
+      if (!cap.ok && !urgent(showId)) {
+        log(`::warning::${wf.name} deferred for ${showId}: ${cap.reason}. The next scheduled batch run will score it.`);
+        return { name: wf.name, ok: true, deferred: true };
+      }
+    }
     try {
       exec(`gh workflow run ${wf.file} ${wf.args}`, { stdio: 'pipe' });
       log(`  ✓ ${wf.name} triggered`);

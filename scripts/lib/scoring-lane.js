@@ -50,7 +50,25 @@ function isPlainBacklogDispatch({ eventName, showId, rescoreReason, forceRun, sy
   return true;
 }
 
-module.exports = { urgentScoringShowIds, isPlainBacklogDispatch };
+/**
+ * Is one show urgent right now, read from data/shows.json and the review
+ * evidence file (BRO-6532: callers that may defer a show's work). If the data
+ * cannot be read the answer is true: an unreadable file must never defer
+ * opening-night work.
+ */
+function isUrgentShowId(showId, { showsPath = 'data/shows.json', now = new Date() } = {}) {
+  try {
+    const fs = require('fs');
+    const { loadReviewEvidence } = require('./review-evidence');
+    const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const shows = Array.isArray(raw) ? raw : (raw.shows || []);
+    return urgentScoringShowIds(shows, { now, evidence: loadReviewEvidence() }).has(showId);
+  } catch {
+    return true;
+  }
+}
+
+module.exports = { urgentScoringShowIds, isPlainBacklogDispatch, isUrgentShowId };
 
 // CLI for the workflow: prints "true"/"false" from the env the step sets.
 if (require.main === module) {
