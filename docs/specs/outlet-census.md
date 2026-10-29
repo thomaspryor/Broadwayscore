@@ -129,6 +129,8 @@ Round 2 (BRO-6485):
 8. **Archival film reviews.** Vulture slugs ending in a pre-2015 year ("beverly-hills-cop-1984") matched a current show of the same name. A slug-end year the show title does not carry now reads as not-review.
 9. **Entity and site-name titles.** `&mdash;`, `&rsquo;` and friends were left encoded, and page titles carried the site name. Titles now decode named entities and strip exactly `og:site_name`; SERP titles strip only a suffix the outlet's results repeat, so "Theater Review - Hamlet" keeps "Hamlet".
 10. **Silent SERP truncation.** Pagination stopped on any page under 10 results or when the URL filter rejected a whole page. It now stops on a short page (under 8) or a page with no new URLs, and notes when the page cap was hit.
+11. **Time Out listings read as reviews.** Most `/newyork/theater/<show>` pages are listings with an unsigned blurb: 111 of the 119 round-2 Time Out gaps had no critic. Those pages count as reviews only when their JSON-LD Review names an author (`requireReviewAuthor`). Time Out recall moved from .632 to .889 on a local run.
+12. **Same-titled shows at LA and Chicago houses.** Front Mezz Junkies' "Fountain Theatre's Fatherland" (Los Angeles) matched the off-Broadway Fatherland. The Fountain Theatre and Kokandy are now other-market terms.
 
 The production matcher `findMatchingShows` is unchanged. The census adds its own dated title-variant stage on top, so these fixes cannot change live review routing.
 
