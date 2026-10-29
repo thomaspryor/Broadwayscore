@@ -17,6 +17,14 @@ const { buildRegionalShowEntry } = require('../promote-ob-venue-candidates');
 const { resolveMetroInfo, norm, TABLE } = require('./venue-metro');
 const { applyAddShow } = require('./add-show-action');
 const { sanitizeVenueForWrite } = require('./venue-classification');
+const UK_REGIONAL_VENUES = require('../../data/uk-regional-venues.json');
+
+// Same test as isUkRegionalShow (src/lib/market-utils.ts): a venue the site does not
+// recognise lands on the Pre-Broadway shelf instead of Beyond London.
+const siteSeesUkRegional = (venue) => {
+  const v = String(venue || '').toLowerCase();
+  return UK_REGIONAL_VENUES.some((e) => v.includes(e.match) || (e.aliases || []).some((a) => v.includes(a)));
+};
 
 
 const kebab = (s) => norm(s).replace(/ /g, '-');
@@ -52,12 +60,26 @@ function decode(t) {
     .replace(/^['"]+|['"]+$/g, '').trim();
 }
 
+// A Guardian standfirst sometimes lands as the title ("Stranger things turn ... Lanny").
+// When it runs past nine words, the URL slug before "-review" names the show.
+function headlineFallback(title, url) {
+  if (title.split(/\s+/).length <= 9) return title;
+  const m = String(url || '').match(/\/([a-z0-9-]+?)-review(?:-|$)/);
+  if (!m) return title;
+  const words = m[1].split('-');
+  const t = norm(title);
+  if (!words.every((w) => t.includes(w))) return title;
+  return words.map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
+}
+
 function buildAction(row, shows) {
   const info = resolveMetroInfo(row.venue);
   if (!info || info.country !== 'UK' || !info.hub) return { skip: `not a hub venue: ${row.venue}` };
-  const title = decode(row.title);
+  if (/^the week in theatre\b/i.test(row.title)) return { skip: 'roundup article' };
+  const title = headlineFallback(decode(row.title), row.guardianUrl);
   const { venue, houseKey } = canonicalVenue(row.venue, info);
   if (!venue) return { skip: `placeholder venue: ${row.venue}` };
+  if (!siteSeesUkRegional(venue)) return { skip: `venue not in uk-regional-venues.json: ${venue}` };
   const base = buildRegionalShowEntry({ title, venue, articlePublishedAt: `${row.date}T12:00:00Z`, source: 'guardian-review', sourceUrl: row.guardianUrl });
   const year = base.id.match(/-(\d{4})$/)[1];
   const id = `${kebab(title)}-${houseKey}-regional-${year}`.replace(/-+/g, '-');
@@ -81,4 +103,4 @@ function buildAction(row, shows) {
   return { action: { type: 'add-show', show } };
 }
 
-module.exports = { buildAction, canonicalVenue };
+module.exports = { buildAction, canonicalVenue, siteSeesUkRegional, headlineFallback };
