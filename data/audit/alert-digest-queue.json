@@ -1268,6 +1268,37 @@
     "queuedAt": "2026-10-29T06:38:10.934Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40831867237",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40831867237)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40831278053)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "6"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-29T07:41:16.113Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:cirque-berserk-west-end-2026",
     "title": "Review gap — \"Cirque Berserk\" missing 2 cited review(s)",
     "description": "Cirque Berserk (cirque-berserk-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cirque-berserk-west-end-2026 --checkpoint --ingest-missing",
@@ -1296,48 +1327,6 @@
     "queuedAt": "2026-10-29T07:30:39.428Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
-    "title": "Review gap — \"King of the Yees\" missing 2 cited review(s)",
-    "description": "King of the Yees (king-of-the-yees-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T07:30:39.445Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:martin-guerre-west-end-2026",
-    "title": "Review gap — \"Martin Guerre\" missing 2 cited review(s)",
-    "description": "Martin Guerre (martin-guerre-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=martin-guerre-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T07:30:39.466Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:murder-cathedral-off-west-end-2026",
-    "title": "Review gap — \"Murder in the Cathedral\" missing 2 cited review(s)",
-    "description": "Murder in the Cathedral (murder-cathedral-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=murder-cathedral-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T07:30:39.506Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-bridge-off-west-end-2026",
     "title": "Review gap — \"The Bridge\" missing 1 cited review(s)",
     "description": "The Bridge (the-bridge-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bridge-off-west-end-2026 --checkpoint --ingest-missing",
@@ -1350,34 +1339,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T07:30:39.564Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-master-builder-off-west-end-2026",
-    "title": "Review gap — \"The Master Builder\" missing 1 cited review(s)",
-    "description": "The Master Builder (the-master-builder-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-master-builder-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T07:30:39.626Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-revlon-girl-off-west-end-2026",
-    "title": "Review gap — \"The Revlon Girl\" missing 2 cited review(s)",
-    "description": "The Revlon Girl (the-revlon-girl-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-revlon-girl-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T07:30:39.664Z"
   },
   {
     "conditionKey": "feedback-requests-stuck:missing-show:the way we get by:2026-10-19T05:04:34.150097+00:00",
