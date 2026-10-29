@@ -23,6 +23,9 @@
  * Usage:
  *   node scripts/plan-ob-historical-cohort.js --from=2024-06-01 --to=2025-05-31 [--limit=N] [--time-budget-min=50] [--today=YYYY-MM-DD]
  *   node scripts/plan-ob-historical-cohort.js --from=... --to=... --no-playbill   (steps 1-2 only, no keys needed)
+ *   node scripts/plan-ob-historical-cohort.js --from=... --to=... --candidates-file=PATH
+ *     (BRO-6496: outlet-first. Step 1 reads the census candidates in PATH instead of
+ *     TheaterMania, and step 5 also requires the Playbill run to start in the window.)
  */
 'use strict';
 
@@ -38,6 +41,9 @@ Usage:
   node scripts/plan-ob-historical-cohort.js --from=YYYY-MM-DD --to=YYYY-MM-DD [--limit=N] [--time-budget-min=50] [--today=YYYY-MM-DD]
   node scripts/plan-ob-historical-cohort.js --from=... --to=... --no-playbill   (TheaterMania + dedup only, no scraper keys)
   --titles-file=PATH   keep only candidates whose title is in this JSON array (the outlet census's notable catalog gaps, BRO-6481)
+  --candidates-file=PATH   take candidates from this JSON array instead of TheaterMania (BRO-6496):
+                       [{title, openingDate (earliest review date), closingDate?, venue?, evidenceUrls?}],
+                       as written by scripts/ob-census-candidates.js. Rows get discoverySource ob-historical:census.
 `;
 
 function arg(name) {
@@ -65,6 +71,7 @@ async function main() {
   const budgetMs = (Number(arg('time-budget-min')) || 50) * 60 * 1000;
   const noPlaybill = process.argv.includes('--no-playbill');
   const titlesFile = arg('titles-file');
+  const candidatesFile = arg('candidates-file');
   const wantTitles = titlesFile ? new Set(JSON.parse(fs.readFileSync(titlesFile, 'utf8')).map(titleKey)) : null;
   const started = Date.now();
 
@@ -72,24 +79,24 @@ async function main() {
   const { checkForDuplicate } = require('./lib/deduplication');
   const { isNonTheaterContent, isOneNightShow } = require('./discover-new-shows');
   const { selectPromotable } = require('./promote-ob-historical');
-  const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, transferLinkFields } = require('./lib/ob-historical-cohort');
+  const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, transferLinkFields, isEntryInWindow } = require('./lib/ob-historical-cohort');
 
   const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
   const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const shows = Array.isArray(showsData) ? showsData : showsData.shows;
 
-  // 1. TheaterMania window. ~80 pages of 100; ordered by id so edits mid-scan
-  // cannot shift pages.
-  const feed = await fetchTmOffBroadway({
+  // 1. TheaterMania window (or, with --candidates-file, the census list).
+  // ~80 pages of 100; ordered by id so edits mid-scan cannot shift pages.
+  const feed = candidatesFile ? censusFeed(candidatesFile) : await fetchTmOffBroadway({
     maxPages: 120,
     rowFilter: r => isTmRowInWindow(r, { fromIso, toIso }),
     stopWhenPageEmpty: false,
     orderby: 'id',
   });
-  console.log(`TheaterMania: ${feed.rawCount} rows over ${feed.pagesFetched} pages; ${feed.rows.length} start in ${fromIso}..${toIso}`);
+  console.log(`${candidatesFile ? 'Census candidates' : 'TheaterMania'}: ${feed.rawCount} rows over ${feed.pagesFetched} pages; ${feed.rows.length} start in ${fromIso}..${toIso}`);
   if (feed.pagesFetched >= 120) console.log('::warning::hit the 120-page cap; the scan may be truncated');
   if (feed.rawCount === 0) {
-    console.error('::error::TheaterMania returned no rows (feed blind) — not a real empty cohort');
+    console.error(candidatesFile ? `::error::${candidatesFile} has no rows` : '::error::TheaterMania returned no rows (feed blind) — not a real empty cohort');
     process.exit(1);
   }
 
@@ -98,15 +105,20 @@ async function main() {
   const note = (k) => { skips[k] = (skips[k] || 0) + 1; };
   const candidates = [];
   for (const row of feed.rows) {
-    const r = parseTmOffBroadwayRow(row, { venuesById: feed.venuesById, genresById: feed.genresById });
+    const r = candidatesFile ? { candidate: row, gateShape: { title: row.title, venue: row.venue } }
+      : parseTmOffBroadwayRow(row, { venuesById: feed.venuesById, genresById: feed.genresById });
     if (r.skip) { note('parse'); continue; }
     if (isNonTheaterContent(r.gateShape) || isOneNightShow(r.gateShape)) { note('gate'); continue; }
     const c = r.candidate;
     // BRO-6254: a transfer (other venue, runs apart) is its own production here.
-    if (findTmSameTitleShow(c, shows, { allowTransfers: true })) { note('in-catalog'); continue; }
+    // Census rows have no venue yet, so a later Broadway transfer cannot be told
+    // apart here (isDistinctTransfer needs both venues). Only an Off-Broadway row
+    // counts as in-catalog for them; selectPromotable re-checks with Playbill's venue.
+    const sameRun = (s) => s && (!candidatesFile || s.category === 'off-broadway');
+    if (sameRun(findTmSameTitleShow(c, shows, { allowTransfers: true }))) { note('in-catalog'); continue; }
     let dup = null;
     try { dup = checkForDuplicate(c, shows); } catch (e) { note('dedup-error'); console.log(`  ! checkForDuplicate failed for "${c.title}": ${e.message}`); dup = null; }
-    if (dup && dup.isDuplicate) { note('in-catalog'); continue; }
+    if (dup && dup.isDuplicate && (!candidatesFile || sameRun(dup.existingShow))) { note('in-catalog'); continue; }
     if (wantTitles && !wantTitles.has(titleKey(c.title))) { note('not-in-titles-file'); continue; }
     candidates.push(c);
   }
@@ -134,7 +146,7 @@ async function main() {
     if (isStructuralOnlyMismatch(r, { claimedOpening: target.openingDate })) r = { ...r, result: 'match', structuralOnly: r.mismatches.map(m => m.field) };
     verdicts[r.result] = (verdicts[r.result] || 0) + 1;
     if (r.result === 'match' && r.playbillUrl && r.parsed && r.parsed.dates) {
-      results.push({ ...r, title: c.title, venue: c.venue, tmUrl: c.theatermaniaUrl });
+      results.push({ ...r, title: c.title, venue: c.venue, tmUrl: c.theatermaniaUrl, censusUrls: c.evidenceUrls || [] });
     }
   }
   console.log(`Playbill: checked ${checked}; ${JSON.stringify(verdicts)}`);
@@ -144,6 +156,7 @@ async function main() {
   const { toPromote, skipped, transferOf } = selectPromotable(results, shows);
   const showById = new Map(shows.map(s => [s.id, s]));
   const tmById = new Map(results.map(r => [r.playbillUrl, r.tmUrl]));
+  const censusById = new Map(results.map(r => [r.playbillUrl, r.censusUrls]));
   const resultByUrl = new Map(results.map(r => [r.playbillUrl, r]));
   const actions = [];
   const ruleSkips = [];
@@ -151,10 +164,12 @@ async function main() {
     const e = { ...raw, ...playbillFacts(resultByUrl.get(raw.playbillUrl), raw) };
     const d = decideObHistoricalEntry(e, { todayIso });
     if (!d.ok) { ruleSkips.push(`${e.title}: ${d.reason}`); continue; }
+    if (candidatesFile && !isEntryInWindow(e, { fromIso, toIso })) { ruleSkips.push(`${e.title}: Playbill run starts ${e.previewsStartDate || e.openingDate}, outside ${fromIso}..${toIso}`); continue; }
     const action = toAddShowAction(e, {
       discoveredAt: `${todayIso}T00:00:00.000Z`,
       dateSource: 'playbill-ob-historical',
-      evidenceUrls: [e.playbillUrl, tmById.get(e.playbillUrl)],
+      evidenceUrls: [e.playbillUrl, tmById.get(e.playbillUrl), ...(censusById.get(e.playbillUrl) || []).slice(0, 3)],
+      ...(candidatesFile ? { discoverySource: 'ob-historical:census' } : {}),
     });
     if (!action) { ruleSkips.push(`${e.title}: venue "${e.venue}" failed sanitizeVenueForWrite`); continue; }
     // BRO-6254: link a split-off transfer to the run already in shows.json.
@@ -168,6 +183,22 @@ async function main() {
   console.log('ACTIONS_BEGIN');
   console.log(JSON.stringify(actions));
   console.log('ACTIONS_END');
+}
+
+// BRO-6496: census candidates in the shape step 2 reads from a TheaterMania row.
+function censusFeed(file) {
+  const rows = JSON.parse(fs.readFileSync(file, 'utf8')).map(x => ({
+    title: String(x.title || '').trim(),
+    venue: x.venue || '',
+    slug: String(x.title || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    openingDate: x.openingDate || null,
+    previewsStartDate: null,
+    closingDate: x.closingDate || null,
+    category: 'off-broadway',
+    source: 'outlet-census',
+    evidenceUrls: x.evidenceUrls || [],
+  })).filter(x => x.title && x.slug);
+  return { rows, rawCount: rows.length, pagesFetched: 1, venuesById: {}, genresById: {} };
 }
 
 if (require.main === module) {

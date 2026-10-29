@@ -96,7 +96,7 @@ function playbillFacts(r, entry) {
  * sanitizeVenueForWrite. discoverySource marks the row as backfilled so a
  * cohort can be audited or reverted as a set.
  */
-function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] }) {
+function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [], discoverySource = 'ob-historical:tm' }) {
   const venue = sanitizeVenueForWrite(entry.venue);
   if (!venue) return null;
   const show = {
@@ -118,7 +118,7 @@ function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] })
     // select these rows by discoverySource instead (isObHistoricalRow).
     tags: entry.isRevival === true ? ['revival'] : entry.isRevival === false ? ['new'] : [],
     ...(typeof entry.isRevival === 'boolean' ? { isRevival: entry.isRevival } : {}),
-    discoverySource: 'ob-historical:tm',
+    discoverySource,
     discoveredAt,
     openingDateSource: dateSource,
     closingDateSource: dateSource,
@@ -151,4 +151,16 @@ function isObHistoricalRow(s) {
     || String(s.discoverySource || '').startsWith('ob-historical:');
 }
 
-module.exports = { transferLinkFields, isObHistoricalRow, decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, MIN_RUN_DAYS };
+/**
+ * BRO-6496: a census candidate's Playbill run must start in the cohort window.
+ * TheaterMania rows are window-filtered before Playbill; census titles carry
+ * only a review date, so a same-title page for another year (a 2008 revival
+ * of a play reviewed in 2019) must not get through. First preview counts as
+ * the start, as in isTmRowInWindow.
+ */
+function isEntryInWindow(entry, { fromIso, toIso }) {
+  const start = entry && (entry.previewsStartDate || entry.openingDate);
+  return !!start && start >= fromIso && start <= toIso;
+}
+
+module.exports = { isEntryInWindow, transferLinkFields, isObHistoricalRow, decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, MIN_RUN_DAYS };
