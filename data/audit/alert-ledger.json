@@ -248,15 +248,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-29T13:21:52.482Z",
-      "lastSeen": "2026-10-29T17:15:07.700Z",
-      "lastNotifiedAt": "2026-10-29T13:21:52.482Z",
-      "lastSurfacedAt": "2026-10-29T13:21:52.482Z",
+      "incidentOpenedAt": "2026-10-29T13:53:55.122Z",
+      "lastSeen": "2026-10-29T17:38:46.100Z",
+      "lastNotifiedAt": "2026-10-29T13:53:55.122Z",
+      "lastSurfacedAt": "2026-10-29T13:53:55.122Z",
       "notifyCount": 185,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
-      "sweptTracker": "BRO-6422"
+      "sweptTracker": "BRO-6422",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4343,9 +4344,9 @@
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
-      "incidentOpenedAt": "2026-10-29T13:21:51.837Z",
-      "lastSeen": "2026-10-29T17:15:07.644Z",
-      "lastNotifiedAt": "2026-10-29T13:21:51.837Z",
+      "incidentOpenedAt": "2026-10-29T13:53:54.552Z",
+      "lastSeen": "2026-10-29T17:38:46.085Z",
+      "lastNotifiedAt": "2026-10-29T13:53:54.552Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
@@ -4355,7 +4356,8 @@
         "mode": "dispatch-at-filing",
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
-      }
+      },
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
@@ -15076,8 +15078,8 @@
       "linearIdentifier": "BRO-6505",
       "silentRefires": 1,
       "absentRunIds": [
-        "40860133605",
-        "40883919555"
+        "40861673753",
+        "40887416786"
       ]
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
@@ -29633,14 +29635,15 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
-      "firstSeen": "2026-10-29T13:21:52.232Z",
-      "incidentOpenedAt": "2026-10-29T13:21:52.232Z",
-      "lastSeen": "2026-10-29T17:15:07.686Z",
-      "lastNotifiedAt": "2026-10-29T13:21:52.232Z",
+      "firstSeen": "2026-10-29T13:53:54.915Z",
+      "incidentOpenedAt": "2026-10-29T13:53:54.915Z",
+      "lastSeen": "2026-10-29T17:38:46.066Z",
+      "lastNotifiedAt": "2026-10-29T13:53:54.915Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6522"
+      "linearIdentifier": "BRO-6522",
+      "silentRefires": 1
     },
     "land:land/bro-6485-timeout-author": {
       "status": "open",
