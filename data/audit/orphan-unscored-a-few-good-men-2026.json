@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "a-few-good-men-2026",
   "openingDate": "2026-10-29",
-  "detectedAt": "2026-10-29T17:53:24.918Z",
+  "detectedAt": "2026-10-29T18:54:03.366Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "nytimes--nancy-coleman.json",
+      "outletId": "nytimes",
+      "criticName": "Nancy Coleman",
+      "url": "https://www.nytimes.com/2026/10/29/t-magazine/a-few-good-men-broadway-live.html",
+      "fullTextLen": 3738,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-29T18:54:03.366Z"
 }

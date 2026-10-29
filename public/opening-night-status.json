@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T14:40:08.284Z",
+  "generatedAt": "2026-10-29T18:54:45.401Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "musical",
       "openingDate": "2026-10-29",
-      "status": "previews",
+      "status": "open",
       "slug": "the-lives-of-others-west-end",
       "thumbnail": null,
       "siteScore": null,
@@ -175,7 +175,7 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-10-29",
-      "status": "previews",
+      "status": "open",
       "slug": "a-few-good-men",
       "thumbnail": "/images/shows/a-few-good-men-2026/thumbnail.webp",
       "siteScore": null,
@@ -212,10 +212,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -551,7 +547,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-10-29",
-      "status": "previews",
+      "status": "open",
       "slug": "the-heart-off-broadway",
       "thumbnail": "/images/shows/the-heart-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -595,10 +591,6 @@
         {
           "name": "Vulture",
           "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -927,7 +919,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-29",
-      "status": "upcoming",
+      "status": "open",
       "slug": "kelly-mccaughan-catholic-guilt-off-broadway",
       "thumbnail": "/images/shows/kelly-mccaughan-catholic-guilt-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1303,7 +1295,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-29",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-greatest-story-ever-off-broadway",
       "thumbnail": "/images/shows/the-greatest-story-ever-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -2058,27 +2050,25 @@
       "status": "open",
       "slug": "the-revlon-girl-off-west-end",
       "thumbnail": "/images/shows/the-revlon-girl-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 79.95,
-      "liveScore": 80,
-      "scoreDrift": 0.04999999999999716,
+      "siteScore": 83.4,
+      "liveScore": 83,
+      "scoreDrift": -0.4000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 8,
       "t1": 0,
       "t2": 2,
-      "t3": 1,
-      "positive": 3,
+      "t3": 6,
+      "positive": 8,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:0/3",
-          "hi-conf:3/6"
+          "T1:0/3"
         ],
-        "highConfidence": 3,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2137,10 +2127,6 @@
         },
         {
           "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -2226,6 +2212,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-29T18:54:45.401Z",
+          "rc": 8,
+          "s": 83.4,
+          "t1": 0,
+          "t2": 2,
+          "t3": 6,
+          "p": 8,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -2239,23 +2237,23 @@
       "status": "open",
       "slug": "girls-off-west-end",
       "thumbnail": "/images/shows/girls-off-west-end-2026/thumbnail.webp",
-      "siteScore": 76.24,
-      "liveScore": 76,
-      "scoreDrift": -0.23999999999999488,
+      "siteScore": 78.59,
+      "liveScore": 79,
+      "scoreDrift": 0.4099999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 12,
       "t1": 3,
       "t2": 3,
-      "t3": 3,
-      "positive": 6,
+      "t3": 6,
+      "positive": 9,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2336,10 +2334,6 @@
         },
         {
           "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
           "isDualMarket": false
         },
         {
@@ -2503,6 +2497,18 @@
           "m": 3,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-29T18:54:45.401Z",
+          "rc": 12,
+          "s": 78.59,
+          "t1": 3,
+          "t2": 3,
+          "t3": 6,
+          "p": 9,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -2516,17 +2522,17 @@
       "status": "open",
       "slug": "memoriam-off-west-end",
       "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 72.28,
-      "liveScore": 72,
-      "scoreDrift": -0.28000000000000114,
+      "siteScore": 72.52,
+      "liveScore": 73,
+      "scoreDrift": 0.480000000000004,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 0,
       "t2": 5,
-      "t3": 11,
-      "positive": 6,
+      "t3": 12,
+      "positive": 7,
       "mixed": 10,
       "negative": 0,
       "readiness": {
@@ -2534,7 +2540,7 @@
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2593,10 +2599,6 @@
         },
         {
           "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -2847,6 +2849,18 @@
           "t2": 5,
           "t3": 11,
           "p": 6,
+          "m": 10,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-29T18:54:45.401Z",
+          "rc": 17,
+          "s": 72.52,
+          "t1": 0,
+          "t2": 5,
+          "t3": 12,
+          "p": 7,
           "m": 10,
           "n": 0,
           "bc": "waiting"
