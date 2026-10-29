@@ -41,7 +41,7 @@ function dataEditAllowProblem({ file, field }) {
 }
 
 function applyDataEdit(data, action, { root = ROOT } = {}) {
-  const { file, showId, field, oldValue, newValue } = action;
+  const { file, showId, field, oldValue, newValue, unreject } = action;
   const notAllowed = dataEditAllowProblem(action);
   if (notAllowed) return { ok: false, reason: notAllowed };
 
@@ -101,7 +101,7 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
 
     if (field === 'rejectedImageUrls') {
       const { rejectedUrlsValueProblem } = require('./feedback-pipeline-fields.js');
-      const problem = rejectedUrlsValueProblem(newValue, oldValue);
+      const problem = rejectedUrlsValueProblem(newValue, oldValue, unreject);
       if (problem) return { ok: false, reason: problem };
     }
 
