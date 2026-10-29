@@ -2010820,21 +2010820,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T22:12:06.055Z",
-    "completedAt": "2026-10-29T22:12:50.902Z",
-    "totalReviews": 12,
-    "processed": 9,
+    "startedAt": "2026-10-29T22:12:51.100Z",
+    "completedAt": "2026-10-29T22:13:27.705Z",
+    "totalReviews": 10,
+    "processed": 7,
     "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 58673,
-      "output": 2596,
-      "cacheRead": 34263,
+      "input": 47988,
+      "output": 2266,
+      "cacheRead": 26649,
       "cacheWrite": 0,
-      "total": 142781
+      "total": 114539
     },
-    "costUsd": 0.21603470000000002,
-    "runId": "40963418235",
+    "costUsd": 0.17748370000000002,
+    "runId": "40963410416",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2014606,6 +2014606,16 @@
           "flat": 4,
           "down": 2,
           "total": 12
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "antigone-regional-2024",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 0,
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -2042262,16 +2042272,6 @@
         "disagreementDetails": "DTLI: Flat thumbs differ by 47% (ours: 47%, theirs: 0%)"
       },
       {
-        "showId": "the-lion-in-winter-regional-2023",
-        "ourDistribution": {
-          "up": 9,
-          "flat": 0,
-          "down": 0,
-          "total": 9
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-lion-in-winter-west-end-2011",
         "ourDistribution": {
           "up": 0,
@@ -2048579,8 +2048579,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T22:17:46.538Z",
-    "completedAt": "2026-10-29T22:17:46.540Z",
+    "startedAt": "2026-10-29T22:18:23.866Z",
+    "completedAt": "2026-10-29T22:18:23.868Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2048593,7 +2048593,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40963418235",
+    "runId": "40963410416",
     "source": "comparative-rescore",
     "errorDetails": []
   }
