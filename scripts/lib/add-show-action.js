@@ -27,6 +27,8 @@ const ALLOWED = new Set([
   'firstRunStart',
   // BRO-6515: metro slug from data/venue-metros.json (scripts/lib/venue-metro.js)
   'city',
+  // BRO-6518: local (non-transfer) show, see scripts/lib/local-market.js
+  'localOnly',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];

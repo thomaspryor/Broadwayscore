@@ -23,6 +23,7 @@ const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { consensusDisplayCount } = require('./lib/consensus-display-count');
 const { publicCoverageVerdict } = require('./lib/public-coverage-verdict');
 const { isHiddenFromAppFeed } = require('./lib/markets');
+const { isLocalOnlyShow } = require('./lib/local-market');
 const { mayServeDiskImage } = require('./lib/image-source-match');
 const { versionedImagePath } = require('./lib/versioned-image-path');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
@@ -970,7 +971,7 @@ if (!SHOW_ARG) {
   // as grace-satisfied, since workflows that commit never restore the hash cache.
   const showById = new Map(shows.map(s => [s.id, s]));
   // Index omits app-feed-hidden categories (tours): their absence is not grace evidence.
-  const indexCovers = id => !showById.has(id) || !isHiddenFromAppFeed(showById.get(id).category);
+  const indexCovers = id => !showById.has(id) || (!isHiddenFromAppFeed(showById.get(id).category) && !isLocalOnlyShow(showById.get(id)));
   const priorIndexIds = loadPriorIndexIds(path.join(__dirname, '../public/data/mobile-shows.json'));
   const orphanFiles = new Map();
   for (const f of fs.readdirSync(outputDir)) {

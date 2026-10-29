@@ -1,4 +1,5 @@
 import { getAllShows } from '@/lib/data-core';
+import { isLocalOnlyShow } from '@/lib/local-market';
 import { getMarketDate } from '@/lib/date-utils';
 import { pickWelcomeShows, WELCOME_MARKETS, type WelcomeMarket, type WelcomeShow } from '@/lib/welcome-onboarding';
 
@@ -10,7 +11,7 @@ import { pickWelcomeShows, WELCOME_MARKETS, type WelcomeMarket, type WelcomeShow
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const sources = getAllShows().map(s => ({
+  const sources = getAllShows().filter(s => !isLocalOnlyShow(s)).map(s => ({
     id: s.id,
     title: s.title,
     slug: s.slug,
