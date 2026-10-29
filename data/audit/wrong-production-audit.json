@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-29T06:19:26.801Z",
+  "timestamp": "2026-10-29T06:34:33.285Z",
   "stats": {
-    "totalReviews": 66470,
+    "totalReviews": 66510,
     "alreadyFlagged": 22074,
     "dateGuardCatches": 233,
-    "directorMismatch": 2699,
+    "directorMismatch": 2703,
     "tvFilmSignals": 1892,
-    "londonSignals": 3214,
+    "londonSignals": 3226,
     "offBroadwaySignals": 606,
     "yearMismatch": 244,
     "noPublishDate": 6451
@@ -321,6 +321,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2015-07-24",
+      "url": "https://www.standard.co.uk/culture/theatre/1984-playhouse-theatre-theatre-review-9342590.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
         }
       ]
     },
@@ -6863,7 +6876,7 @@
     {
       "showId": "birthright-off-broadway-2026",
       "file": "nysr--frank-scheck.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-06-29",
       "url": "https://nystagereview.com/2026/06/29/birthright-political-and-personal-issues-intersect-to-powerful-effect/",
       "findings": [
@@ -17068,6 +17081,19 @@
       ]
     },
     {
+      "showId": "evita-west-end-2014",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2014-10-22",
+      "url": "https://www.standard.co.uk/culture/theatre/evita-dominion-theatre-theatre-review-madalena-albertos-mercurial-eva-keeps-us-at-a-distance-in-revival-of-andrew-lloyd-webber-s-classic-9750403.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from evita-2012"
+        }
+      ]
+    },
+    {
       "showId": "evita-west-end-2017",
       "file": "telegraph--dominic-cavendish.json",
       "score": 63,
@@ -24239,7 +24265,7 @@
     {
       "showId": "how-i-learned-to-drive-2022",
       "file": "nysr--elysa-gardner.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2022-04-19T20:53:39",
       "url": "https://nystagereview.com/2022/04/19/how-i-learned-to-drive-costly-lessons-in-paula-vogels-pulitzer-winner/",
       "findings": [
@@ -51785,6 +51811,19 @@
     },
     {
       "showId": "the-elephant-man-west-end-2015",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2015-06-05",
+      "url": "https://www.standard.co.uk/culture/theatre/the-elephant-man-theatre-royal-haymarket-review-bradley-cooper-ditches-the-cad-in-focused-performance-10288354.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-west-end-2015",
       "file": "thestage--natasha-tripney.json",
       "score": 45,
       "publishDate": "2015-06-01T12:14:40+00:00",
@@ -60784,6 +60823,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-winslow-boy-west-end-2013",
+      "file": "standard--unknown.json",
+      "publishDate": "2013-05-09",
+      "url": "https://www.standard.co.uk/culture/theatre/the-winslow-boy-the-old-vic-theatre-review-8541879.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lindsay posner\" from the-winslow-boy-2013"
         }
       ]
     },
@@ -74758,6 +74810,19 @@
       ]
     },
     {
+      "showId": "children-of-the-sun-west-end-2013",
+      "file": "standard--unknown.json",
+      "publishDate": "2013-05-21",
+      "url": "https://www.standard.co.uk/culture/theatre/children-of-the-sun-nationals-lyttelton-theatre-review-8576011.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "chinglish-2011",
       "file": "theater-life--eric-march.json",
       "score": 39,
@@ -75006,6 +75071,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-west-end-2016",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2016-02-24",
+      "url": "https://www.standard.co.uk/culture/theatre/cleansed-theatre-review-love-is-cruel-in-sarah-kanes-gory-world-a3187716.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -77275,6 +77353,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "doktor-glas-west-end-2013",
+      "file": "standard--unknown.json",
+      "publishDate": "2013-05-08",
+      "url": "https://www.standard.co.uk/culture/theatre/doktor-glas-wyndhams-theatre-review-8579780.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -81801,6 +81892,19 @@
       ]
     },
     {
+      "showId": "guys-and-dolls-west-end-2016",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2016-02-08",
+      "url": "https://www.standard.co.uk/culture/theatre/guys-and-dolls-theatre-review-stand-up-and-clap-this-witty-show-really-rocks-the-boat-a3150841.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "hadestown-2019",
       "file": "cititour--brian-scott-lipton.json",
       "score": 82,
@@ -84009,6 +84113,19 @@
       ]
     },
     {
+      "showId": "high-society-west-end-2015",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2015-05-18",
+      "url": "https://www.standard.co.uk/culture/theatre/high-society-review-champagne-flows-in-night-of-magic-madness-and-moonlight-10253005.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "high-society-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 80,
@@ -84752,6 +84869,19 @@
       "score": 78,
       "publishDate": "2015-02-12",
       "url": "https://www.britishtheatre.com/posts/review-how-to-hold-your-breath-royal-court-theatre-4stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "how-to-hold-your-breath-west-end-2015",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2015-03-19",
+      "url": "https://www.standard.co.uk/culture/theatre/how-to-hold-your-breath-royal-court-theatre-review-even-in-her-fiercest-moments-maxine-peake-remains-elfin-and-delicate-10038505.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -88855,6 +88985,19 @@
     },
     {
       "showId": "linda-west-end-2015",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2015-12-02",
+      "url": "https://www.standard.co.uk/culture/theatre/linda-theatre-review-heartfelt-and-wise-performance-that-will-only-get-better-a3127731.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "linda-west-end-2015",
       "file": "whatsonstage--michael-coveney.json",
       "score": 61,
       "publishDate": "2015-12-02",
@@ -92191,6 +92334,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-henderson-presents-west-end-2016",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2016-02-17",
+      "url": "https://www.standard.co.uk/culture/theatre/mrs-henderson-presents-theatre-review-windmill-girls-licked-hitler-but-their-story-leaves-a-nasty-taste-a3182551.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -95702,6 +95858,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2016-03-24",
+      "url": "https://www.standard.co.uk/culture/theatre/people-places-and-things-theatre-review-denise-gough-gives-unmissable-performance-of-humour-and-humanity-a3210961.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -102725,6 +102894,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-bodyguard-west-end-2012",
+      "file": "standard--unknown.json",
+      "publishDate": "2013-08-21",
+      "url": "https://www.standard.co.uk/culture/theatre/the-bodyguard-adelphi-theatre-wc2-review-8389032.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -111093,6 +111275,19 @@
       ]
     },
     {
+      "showId": "the-war-of-the-worlds-west-end-2016",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2016-02-18",
+      "url": "https://www.standard.co.uk/culture/theatre/the-war-of-the-worlds-theatre-review-you-can-t-help-but-root-for-the-martians-in-this-overblown-display-of-prog-rock-pomp-a3183281.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "the-waverly-gallery-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 63,
@@ -115105,6 +115300,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "wonder-land-west-end-2015",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2015-12-11",
+      "url": "https://www.standard.co.uk/culture/theatre/wonder-land-review-we-can-only-wonder-at-lack-of-satisfying-tunes-in-damon-albarns-dazzling-dive-into-the-surreal-a3135341.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
