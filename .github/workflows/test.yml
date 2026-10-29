@@ -153,6 +153,7 @@ on:
       # tests/unit/html-publish-date.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/backfill-network-tier-dates.js'
       - 'scripts/backfill-roundup-pull-quote-compilation.js'
+      - 'scripts/backfill-wrongproduction-legacy-audit.js'
       # tests/unit/enrich-dtli-thumbs.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/enrich-dtli-thumbs.js'
       # BRO-2410: blog-reviews generator + its manifest-registered test (resolver is under scripts/lib/**).
@@ -395,6 +396,7 @@ on:
       - 'scripts/backfill-html-override-rename.js'
       # tests/unit/review-factcheck-bro5081.test.mjs (BRO-5081)
       - 'scripts/backfill-html-only-ratings.js'
+      - 'scripts/backfill-wrongproduction-legacy-audit.js'
       - 'scripts/review-factcheck/**'
       # tests/unit/backfill-lbo-help-safety.test.mjs
       - 'scripts/backfill-lbo-individual-stars.js'
