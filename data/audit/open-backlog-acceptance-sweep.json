@@ -1,46 +1,28 @@
 {
-  "generatedAt": "2026-10-28T08:35:01.766Z",
+  "generatedAt": "2026-10-29T09:15:10.003Z",
   "shadow": true,
-  "checkoutSha": "3b1995a68e1a659cc18e69131e129fb3589b0cb7",
-  "totalCandidates": 480,
-  "eligibleCandidates": 117,
+  "checkoutSha": "74f1ec71a27d4512e06c5f537d084154e0a74dee",
+  "totalCandidates": 429,
+  "eligibleCandidates": 99,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 23,
+    "pass": 18,
     "fail": 1,
-    "unverifiable": 6
+    "unverifiable": 11
   },
   "alreadyDone": [
     {
-      "id": "BRO-6420",
-      "name": "UK Regional market pill on show page + /browse/beyond-london view-all page",
-      "verifyCmd": "npx tsx --test tests/unit/uk-regional-placement.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6410",
-      "name": "Web: '1 shows' / '1 reviews' count labels; port the app's count-plurals guard",
-      "verifyCmd": "node --test tests/unit/count-plurals.test.mjs",
+      "id": "BRO-6514",
+      "name": "Outlet census matcher: false-positive classes and Teeth duplicate-show ambiguity",
+      "verifyCmd": "node --test scripts/lib/outlet-census.test.mjs",
       "detail": null
     },
     {
       "id": "BRO-6409",
       "name": "Queued commercial tips: give the owner a one-click approve link (owner-decision + execute-approved-fix) instead of a hand edit",
       "verifyCmd": "node --test scripts/lib/commercial-tip-record.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6404",
-      "name": "Upgrade sanity 3.x -> 6.x (and next-sanity, @sanity/vision) to clear the sanity-bound npm audit findings",
-      "verifyCmd": "node --test tests/unit/dependency-audit-clean.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6403",
-      "name": "LLM scoring prompts: frame review text as untrusted data (prompt-injection guard), with the §13 A/B",
-      "verifyCmd": "node --test tests/unit/llm-scoring-untrusted-framing.test.mjs",
       "detail": null
     },
     {
@@ -62,12 +44,6 @@
       "detail": null
     },
     {
-      "id": "BRO-6375",
-      "name": "Money Scorecard topic pages: same row arrow + whole-row click as the season tables",
-      "verifyCmd": "node --test tests/unit/money-gate.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-6372",
       "name": "Email-list monitor: confirm sign-in joins from Formspree auth-auto submissions, not just sign_in_completed",
       "verifyCmd": "node --test scripts/lib/email-gate-funnel-rules.test.mjs",
@@ -80,26 +56,14 @@
       "detail": null
     },
     {
-      "id": "BRO-6352",
-      "name": "Outlet poller: alert when a configured feed/sitemap goes stale while the outlet keeps publishing",
-      "verifyCmd": "node --test tests/unit/outlet-listing-poller.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6349",
-      "name": "Missing show: Akhnaten",
-      "verifyCmd": "node scripts/validate-data.js --strict",
+      "id": "BRO-6355",
+      "name": "Model two-part productions: recoupment model reads sourced non-recouper above 100%",
+      "verifyCmd": "node --test scripts/lib/star-play-loss-side.test.mjs",
       "detail": null
     },
     {
       "id": "BRO-6348",
       "name": "Missing show: Hundred Days",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6342",
-      "name": "enrich-reviews drain never commits data/audit/alert-ledger.json: pending-unrecoverable raise/resolve is lost outside poller runs",
       "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
@@ -110,21 +74,15 @@
       "detail": null
     },
     {
-      "id": "BRO-6327",
-      "name": "Use sm/ variants in the remaining small show-image slots (CompareShowPicker 36px, upcoming-cards, others)",
-      "verifyCmd": "node --test scripts/lib/show-image-variants.test.mjs",
+      "id": "BRO-6268",
+      "name": "West End history: extend back to 2010-11 (six seasons, 2015-16 first; Theatre Record scanned-PDF OCR)",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
-      "id": "BRO-6304",
-      "name": "Cloud Codex lane: disk runs out mid-firing (stale Claude worktrees never pruned) and each cloud slot works only one card per run",
-      "verifyCmd": "node --test tests/unit/codex-lane-health.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6296",
-      "name": "Give /biz topic and season pages the new /biz hero style (eyebrow pill, larger tagline)",
-      "verifyCmd": "node --test tests/unit/biz-header-hero-style.test.mjs",
+      "id": "BRO-6261",
+      "name": "Fix remaining 85 swallowed audit-writer steps in workflows (BRO-267 follow-up)",
+      "verifyCmd": "node --test tests/unit/audit-writer.test.mjs",
       "detail": null
     },
     {
@@ -146,9 +104,21 @@
       "detail": null
     },
     {
-      "id": "BRO-6223",
-      "name": "Redate trade/producer cost anchors still on a guessed date (dateBasis migrated) to the period each source measured",
+      "id": "BRO-6228",
+      "name": "Diary photos: enforce the 6-per-entry limit and file size/type in Supabase, not only in the clients",
+      "verifyCmd": "node --test scripts/verify-photo-limits.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6221",
+      "name": "shows.json lists poster/thumbnail paths for ~272 shows whose image files don't exist (404 on prod)",
       "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6215",
+      "name": "Commercial: owner-set 'our estimate' recoupment range (Joe Turner ~100%, Oedipus 70-95%)",
+      "verifyCmd": "node --test tests/unit/our-recoup-estimate.test.mjs",
       "detail": null
     }
   ],
@@ -162,10 +132,28 @@
   ],
   "unverifiable": [
     {
-      "id": "BRO-6408",
-      "name": "Declare the packages the code imports but only gets by transitive hoisting (glob, yaml, https-proxy-agent, node-fetch, acorn-walk, @next/env, entities, ajv) + guard test; check-secrets-health should flag a classic REVIEW_TEXTS_TOKEN",
-      "verifyCmd": "node --test tests/unit/declared-dependencies.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/declared-dependencies.test.mjs"
+      "id": "BRO-6447",
+      "name": "UX audit: The 'Add date' button on mobile__watchlist_list appears inactive or non-clickable due to its subdued color.",
+      "verifyCmd": "node --test tests/unit/add-date-button-mobile-watchlist.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/add-date-button-mobile-watchlist.test.mjs"
+    },
+    {
+      "id": "BRO-6427",
+      "name": "TR probe: listings-index page picked for end-of-longing, di-and-viv-and-rose, 1984 (WE historical)",
+      "verifyCmd": "node --test scripts/check-we-historical-tr-coverage.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-we-historical-tr-coverage.test.mjs"
+    },
+    {
+      "id": "BRO-6412",
+      "name": "Social video: Benjamin Button London vs Off-Broadway compare video (TikTok/Shorts/Reels)",
+      "verifyCmd": "node --test scripts/social-autopost/social-autopost.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/social-autopost/social-autopost.test.mjs"
+    },
+    {
+      "id": "BRO-6406",
+      "name": "Import: same-venue production picked by logged date (La Bohème Met 2024 flagged as date mismatch)",
+      "verifyCmd": "node --test tests/unit/show-match.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/show-match.test.mjs"
     },
     {
       "id": "BRO-6269",
@@ -186,47 +174,31 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/review-gate.test.mjs"
     },
     {
-      "id": "BRO-6228",
-      "name": "Diary photos: enforce the 6-per-entry limit and file size/type in Supabase, not only in the clients",
-      "verifyCmd": "node --test scripts/verify-photo-limits.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/verify-photo-limits.test.mjs"
+      "id": "BRO-6247",
+      "name": "iOS: Your favorites (three ranked shows) on the Stats tab",
+      "verifyCmd": "node --test tests/unit/favorite-shows.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/favorite-shows.test.mjs"
+    },
+    {
+      "id": "BRO-6232",
+      "name": "iOS: Guides and tools list at the bottom of Home",
+      "verifyCmd": "node --test tests/unit/home-guides.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/home-guides.test.mjs"
     },
     {
       "id": "BRO-6224",
       "name": "iOS Stats: 'Critic nemesis' can be a 70% match or the same critic shown as a closest/rising match",
       "verifyCmd": "node --test tests/unit/aisle-mates.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/aisle-mates.test.mjs"
+    },
+    {
+      "id": "BRO-6219",
+      "name": "iOS alerts v2: fix reviews-in + rate duplicate, prefs, closing alerts (plan-reviewed)",
+      "verifyCmd": "test -f memory/push-alerts.md",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/push-alerts.md"
     }
   ],
   "landedButOpen": [
-    {
-      "id": "BRO-6420",
-      "name": "UK Regional market pill on show page + /browse/beyond-london view-all page",
-      "branch": "land/codex-bro-6420",
-      "sha": "ba13120499afcbd008ab7978a907e943abd5899e",
-      "landedAt": "2026-10-28T08:18:42.905Z"
-    },
-    {
-      "id": "BRO-6410",
-      "name": "Web: '1 shows' / '1 reviews' count labels; port the app's count-plurals guard",
-      "branch": "land/codex-bro-6410",
-      "sha": "408b3c7f16e89b9941d02100f1a962df242ff66a",
-      "landedAt": "2026-10-27T08:06:30.067Z"
-    },
-    {
-      "id": "BRO-6404",
-      "name": "Upgrade sanity 3.x -> 6.x (and next-sanity, @sanity/vision) to clear the sanity-bound npm audit findings",
-      "branch": "land/codex-bro-6404",
-      "sha": "1d2a4dd061912e362c588744f44642bd3111f2d2",
-      "landedAt": "2026-10-28T04:31:44.587Z"
-    },
-    {
-      "id": "BRO-6403",
-      "name": "LLM scoring prompts: frame review text as untrusted data (prompt-injection guard), with the §13 A/B",
-      "branch": "land/codex-bro-6403",
-      "sha": "49a1369f875ab63df8e23706ec6353d835ffe1f7",
-      "landedAt": "2026-10-28T02:28:24.911Z"
-    },
     {
       "id": "BRO-6391",
       "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
@@ -242,11 +214,11 @@
       "landedAt": "2026-10-27T16:25:30.395Z"
     },
     {
-      "id": "BRO-6375",
-      "name": "Money Scorecard topic pages: same row arrow + whole-row click as the season tables",
-      "branch": "land/bro-6375-row-click-fixes",
-      "sha": "798c743eea71d756994cfc67f0f5f949a3e62cf2",
-      "landedAt": "2026-10-26T20:53:36.500Z"
+      "id": "BRO-6372",
+      "name": "Email-list monitor: confirm sign-in joins from Formspree auth-auto submissions, not just sign_in_completed",
+      "branch": "land/bro-6372-formspree-auth-joins",
+      "sha": "7f6af780c0b47756abb48e5964a983e1f7d8d2d5",
+      "landedAt": "2026-10-29T06:30:08.000Z"
     },
     {
       "id": "BRO-6356",
@@ -256,6 +228,13 @@
       "landedAt": "2026-10-27T05:47:03.427Z"
     },
     {
+      "id": "BRO-6348",
+      "name": "Missing show: Hundred Days",
+      "branch": "land/bro-6348-hundred-days",
+      "sha": "280306d1c334fc8594e2585e7985d88f6c436d3f",
+      "landedAt": "2026-10-28T14:28:15.246Z"
+    },
+    {
       "id": "BRO-6333",
       "name": "Money Scorecard: keep running hits' Trickle/Windfall labels current",
       "branch": "land/codex-bro-6333",
@@ -263,25 +242,11 @@
       "landedAt": "2026-10-27T07:47:02.967Z"
     },
     {
-      "id": "BRO-6327",
-      "name": "Use sm/ variants in the remaining small show-image slots (CompareShowPicker 36px, upcoming-cards, others)",
-      "branch": "land/codex-bro-6327",
-      "sha": "1ddc8edfd5cf03cb655595911d80bc7e7fa1d5ab",
-      "landedAt": "2026-10-28T01:49:56.472Z"
-    },
-    {
-      "id": "BRO-6304",
-      "name": "Cloud Codex lane: disk runs out mid-firing (stale Claude worktrees never pruned) and each cloud slot works only one card per run",
-      "branch": "land/bro-6304-codex-disk-prune-v2",
-      "sha": "69f247041c4ce5e87488369fb1dfdbe9855af155",
-      "landedAt": "2026-10-26T13:01:26.399Z"
-    },
-    {
-      "id": "BRO-6296",
-      "name": "Give /biz topic and season pages the new /biz hero style (eyebrow pill, larger tagline)",
-      "branch": "land/codex-bro-6296",
-      "sha": "211864c44f2753716dd409ba871f81ca3f420fc8",
-      "landedAt": "2026-10-27T20:27:11.927Z"
+      "id": "BRO-6268",
+      "name": "West End history: extend back to 2010-11 (six seasons, 2015-16 first; Theatre Record scanned-PDF OCR)",
+      "branch": "land/job/linear-BRO-6268-state",
+      "sha": "503967cfe7c4ce4792ca027d149368a1a0b1dc56",
+      "landedAt": "2026-10-27T17:05:22.928Z"
     },
     {
       "id": "BRO-6260",
@@ -296,6 +261,20 @@
       "branch": "land/bro-6236-codex-model-ab",
       "sha": "90c4ed80aa38506340dd6d7f930d1838bc1cda75",
       "landedAt": "2026-10-25T20:53:57.715Z"
+    },
+    {
+      "id": "BRO-6228",
+      "name": "Diary photos: enforce the 6-per-entry limit and file size/type in Supabase, not only in the clients",
+      "branch": "land/bro-6228-photo-limits",
+      "sha": "12feda7937d305e5cfacbcb0ae1bd7fd238dc690",
+      "landedAt": "2026-10-28T10:08:30.100Z"
+    },
+    {
+      "id": "BRO-6215",
+      "name": "Commercial: owner-set 'our estimate' recoupment range (Joe Turner ~100%, Oedipus 70-95%)",
+      "branch": "land/codex-bro-6215",
+      "sha": "c024c2e1c28266157ae9e405fc03ce73e97a871a",
+      "landedAt": "2026-10-29T06:46:55.867Z"
     }
   ]
 }
