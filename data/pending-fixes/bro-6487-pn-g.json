@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-6487-pn-g",
+  "planId": "62361d1c-77f6-4f0c-819d-6d9ab41647a9",
+  "status": "pending",
+  "createdAt": "2026-10-29T02:25:56.872Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 7 of 10)",
+    "steps": [
+      "shows.json: stop-the-play-west-end-2015.openingDateSource",
+      "shows.json: close-to-you-bacharach-reimagined-west-end-2015.openingDate",
+      "shows.json: close-to-you-bacharach-reimagined-west-end-2015.openingDateSource",
+      "shows.json: a-christmas-carol-west-end-2015.openingDate",
+      "shows.json: a-christmas-carol-west-end-2015.openingDateSource",
+      "shows.json: mrs-henderson-presents-west-end-2016.openingDate",
+      "shows.json: mrs-henderson-presents-west-end-2016.openingDateSource",
+      "shows.json: all-that-fall-west-end-2016.openingDate",
+      "shows.json: all-that-fall-west-end-2016.openingDateSource",
+      "shows.json: cabaret-west-end-2012.previewsStartDate",
+      "shows.json: cabaret-west-end-2012.openingDate",
+      "shows.json: cabaret-west-end-2012.openingDateSource",
+      "shows.json: all-that-fall-west-end-2012.openingDate",
+      "shows.json: all-that-fall-west-end-2012.openingDateSource",
+      "shows.json: quartermaines-terms-west-end-2013.previewsStartDate",
+      "shows.json: quartermaines-terms-west-end-2013.openingDate",
+      "shows.json: quartermaines-terms-west-end-2013.openingDateSource",
+      "shows.json: the-low-road-west-end-2013.previewsStartDate",
+      "shows.json: the-low-road-west-end-2013.openingDate",
+      "shows.json: the-low-road-west-end-2013.openingDateSource",
+      "shows.json: the-play-that-goes-wrong-west-end-2013.previewsStartDate",
+      "shows.json: the-play-that-goes-wrong-west-end-2013.openingDate",
+      "shows.json: the-play-that-goes-wrong-west-end-2013.openingDateSource",
+      "shows.json: chimerica-west-end-2013.openingDate",
+      "shows.json: chimerica-west-end-2013.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stop-the-play-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-06-03 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: stop-the-play-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "close-to-you-bacharach-reimagined-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-10-03",
+        "newValue": "2015-10-15",
+        "description": "shows.json: close-to-you-bacharach-reimagined-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "close-to-you-bacharach-reimagined-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-10-15 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: close-to-you-bacharach-reimagined-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-11-30",
+        "newValue": "2015-12-09",
+        "description": "shows.json: a-christmas-carol-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-12-09 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: a-christmas-carol-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mrs-henderson-presents-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-02-09",
+        "newValue": "2016-02-16",
+        "description": "shows.json: mrs-henderson-presents-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mrs-henderson-presents-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-02-16 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: mrs-henderson-presents-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-that-fall-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-04-13",
+        "newValue": "2016-04-18",
+        "description": "shows.json: all-that-fall-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-that-fall-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-04-18 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: all-that-fall-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-west-end-2012",
+        "field": "previewsStartDate",
+        "oldValue": "2012-10-09",
+        "newValue": "2012-10-03",
+        "description": "shows.json: cabaret-west-end-2012.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-10-09",
+        "newValue": "2012-10-09",
+        "description": "shows.json: cabaret-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-10-09 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: cabaret-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-that-fall-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-11-06",
+        "newValue": "2012-11-08",
+        "description": "shows.json: all-that-fall-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-that-fall-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-11-08 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: all-that-fall-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quartermaines-terms-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-01-29",
+        "newValue": "2013-01-23",
+        "description": "shows.json: quartermaines-terms-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quartermaines-terms-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-01-29",
+        "newValue": "2013-01-29",
+        "description": "shows.json: quartermaines-terms-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quartermaines-terms-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-01-29 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: quartermaines-terms-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-low-road-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-03-23",
+        "newValue": "2013-03-22",
+        "description": "shows.json: the-low-road-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-low-road-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-03-23",
+        "newValue": "2013-03-27",
+        "description": "shows.json: the-low-road-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-low-road-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-03-27 (royalcourttheatre.com; BRO-6487)",
+        "description": "shows.json: the-low-road-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-05-10",
+        "newValue": "2013-04-30",
+        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-05-10",
+        "newValue": "2013-05-03",
+        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-05-03 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-play-that-goes-wrong-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chimerica-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-08-06",
+        "newValue": "2013-08-15",
+        "description": "shows.json: chimerica-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chimerica-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-08-15 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: chimerica-west-end-2013.openingDateSource"
+      }
+    ]
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-6487-pn-h",
+  "planId": "3002862d-d418-4e3c-a1fc-e3d3b8ce3db6",
+  "status": "pending",
+  "createdAt": "2026-10-29T02:25:56.872Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 8 of 10)",
+    "steps": [
+      "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.previewsStartDate",
+      "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDate",
+      "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDateSource",
+      "shows.json: blithe-spirit-west-end-2014.openingDate",
+      "shows.json: blithe-spirit-west-end-2014.openingDateSource",
+      "shows.json: 1984-west-end-2014.openingDate",
+      "shows.json: 1984-west-end-2014.openingDateSource",
+      "shows.json: shakespeare-in-love-west-end-2014.openingDate",
+      "shows.json: shakespeare-in-love-west-end-2014.openingDateSource",
+      "shows.json: evita-west-end-2014.openingDate",
+      "shows.json: evita-west-end-2014.openingDateSource",
+      "shows.json: the-ruling-class-west-end-2015.openingDate",
+      "shows.json: the-ruling-class-west-end-2015.openingDateSource",
+      "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDate",
+      "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDateSource",
+      "shows.json: the-importance-of-being-earnest-west-end-2015.previewsStartDate",
+      "shows.json: the-importance-of-being-earnest-west-end-2015.openingDate",
+      "shows.json: the-importance-of-being-earnest-west-end-2015.openingDateSource",
+      "shows.json: the-father-west-end-2015.previewsStartDate",
+      "shows.json: the-father-west-end-2015.openingDate",
+      "shows.json: the-father-west-end-2015.openingDateSource",
+      "shows.json: peter-pan-goes-wrong-west-end-2015.openingDate",
+      "shows.json: peter-pan-goes-wrong-west-end-2015.openingDateSource",
+      "shows.json: motown-the-musical-west-end-2016.previewsStartDate",
+      "shows.json: motown-the-musical-west-end-2016.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-11-12",
+        "newValue": "2013-10-30",
+        "description": "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-11-12",
+        "newValue": "2013-11-12",
+        "description": "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-11-12 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: jeeves-and-wooster-in-perfect-nonsense-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blithe-spirit-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-03-01",
+        "newValue": "2014-03-18",
+        "description": "shows.json: blithe-spirit-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blithe-spirit-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-03-18 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: blithe-spirit-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-04-28",
+        "newValue": "2014-05-08",
+        "description": "shows.json: 1984-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-05-08 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: 1984-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shakespeare-in-love-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-07-02",
+        "newValue": "2014-07-23",
+        "description": "shows.json: shakespeare-in-love-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shakespeare-in-love-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-07-23 (westendtheatre.com; BRO-6487)",
+        "description": "shows.json: shakespeare-in-love-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evita-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-09-16",
+        "newValue": "2014-09-22",
+        "description": "shows.json: evita-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evita-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-09-22 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: evita-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ruling-class-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-01-16",
+        "newValue": "2015-01-27",
+        "description": "shows.json: the-ruling-class-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ruling-class-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-01-27 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: the-ruling-class-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "light-shining-in-buckinghamshire-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-04-15",
+        "newValue": "2015-04-23",
+        "description": "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "light-shining-in-buckinghamshire-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-04-23 (nicholasatthetheatre.blogspot.com; BRO-6487)",
+        "description": "shows.json: light-shining-in-buckinghamshire-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-07-01",
+        "newValue": "2015-06-24",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-07-01",
+        "newValue": "2015-07-01",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-07-01 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: the-importance-of-being-earnest-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-10-05",
+        "newValue": "2015-09-30",
+        "description": "shows.json: the-father-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-10-05",
+        "newValue": "2015-10-05",
+        "description": "shows.json: the-father-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-10-05 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-father-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-12-04",
+        "newValue": "2015-12-09",
+        "description": "shows.json: peter-pan-goes-wrong-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-12-09 (unitedagents.co.uk; BRO-6487)",
+        "description": "shows.json: peter-pan-goes-wrong-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "motown-the-musical-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-03-08",
+        "newValue": "2016-02-11",
+        "description": "shows.json: motown-the-musical-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "motown-the-musical-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-03-08",
+        "newValue": "2016-03-08",
+        "description": "shows.json: motown-the-musical-west-end-2016.openingDate"
+      }
+    ]
+  }
+}

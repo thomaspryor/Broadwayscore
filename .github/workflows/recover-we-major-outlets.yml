@@ -130,6 +130,11 @@ jobs:
             node scripts/we-major-recovery.js guardian --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/guardian.json | tee -a $RUNNER_TEMP/recovery.log || echo '[]' > $RUNNER_TEMP/guardian.json
             node -e "const f=require('fs'),d=process.env.RUNNER_TEMP;f.writeFileSync(d+'/wos.json',JSON.stringify([...JSON.parse(f.readFileSync(d+'/wos.json')),...JSON.parse(f.readFileSync(d+'/guardian.json'))],null,1))"
           fi
+          # BRO-6487: Evening Standard monthly sitemaps. Free (plain fetch), production-specific by slug title + venue.
+          if [ -z "$INPUT_SLOTS" ] || echo ",$INPUT_SLOTS," | grep -q ',standard,'; then
+            node scripts/we-major-recovery.js sitemap --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/standard.json | tee -a $RUNNER_TEMP/recovery.log || echo '[]' > $RUNNER_TEMP/standard.json
+            node -e "const f=require('fs'),d=process.env.RUNNER_TEMP;f.writeFileSync(d+'/wos.json',JSON.stringify([...JSON.parse(f.readFileSync(d+'/wos.json')),...JSON.parse(f.readFileSync(d+'/standard.json'))],null,1))"
+          fi
           [ "$INPUT_MODE" = "run" ] && FLAGS="$FLAGS --serp"
           node scripts/we-major-recovery.js run --candidates=$RUNNER_TEMP/wos.json $FLAGS 2>&1 | tee $RUNNER_TEMP/recovery.log
           { echo '### Recovery'; grep -E 'COST TALLY|OUTCOMES|STOPPED' $RUNNER_TEMP/recovery.log | tail -4; } >> "$GITHUB_STEP_SUMMARY"
@@ -144,6 +149,7 @@ jobs:
             ${{ runner.temp }}/recovery.log
             ${{ runner.temp }}/wos.json
             ${{ runner.temp }}/guardian.json
+            ${{ runner.temp }}/standard.json
           if-no-files-found: ignore
 
       - name: Commit new review files

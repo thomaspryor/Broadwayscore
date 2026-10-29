@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-6487-pn-j",
+  "planId": "74b3bd5e-cd07-4c76-bf40-05648e5a71dc",
+  "status": "pending",
+  "createdAt": "2026-10-29T02:25:56.872Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights for 2012-13..2015-16 opening rows (98 sourced, 12 searched-none) (part 10 of 10)",
+    "steps": [
+      "shows.json: daytona-west-end-2014.previewsStartDate",
+      "shows.json: daytona-west-end-2014.openingDate",
+      "shows.json: daytona-west-end-2014.openingDateSource",
+      "shows.json: nevilles-island-west-end-2014.previewsStartDate",
+      "shows.json: nevilles-island-west-end-2014.openingDate",
+      "shows.json: nevilles-island-west-end-2014.openingDateSource",
+      "shows.json: man-and-superman-west-end-2015.previewsStartDate",
+      "shows.json: man-and-superman-west-end-2015.openingDate",
+      "shows.json: man-and-superman-west-end-2015.openingDateSource",
+      "shows.json: high-society-west-end-2015.openingDate",
+      "shows.json: high-society-west-end-2015.openingDateSource",
+      "shows.json: the-mentalists-west-end-2015.previewsStartDate",
+      "shows.json: the-mentalists-west-end-2015.openingDate",
+      "shows.json: the-mentalists-west-end-2015.openingDateSource",
+      "shows.json: the-winters-tale-west-end-2015.openingDate",
+      "shows.json: the-winters-tale-west-end-2015.openingDateSource",
+      "shows.json: guys-and-dolls-west-end-2016.previewsStartDate",
+      "shows.json: guys-and-dolls-west-end-2016.openingDate",
+      "shows.json: guys-and-dolls-west-end-2016.openingDateSource",
+      "shows.json: how-the-other-half-loves-west-end-2016.previewsStartDate",
+      "shows.json: how-the-other-half-loves-west-end-2016.openingDate",
+      "shows.json: how-the-other-half-loves-west-end-2016.openingDateSource",
+      "shows.json: the-truth-west-end-2016.previewsStartDate",
+      "shows.json: the-truth-west-end-2016.openingDate",
+      "shows.json: the-truth-west-end-2016.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "daytona-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-07-07",
+        "newValue": "2014-06-30",
+        "description": "shows.json: daytona-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "daytona-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-07-07",
+        "newValue": "2014-07-07",
+        "description": "shows.json: daytona-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "daytona-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-07-07 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: daytona-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nevilles-island-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-10-21",
+        "newValue": "2014-10-10",
+        "description": "shows.json: nevilles-island-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nevilles-island-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-10-21",
+        "newValue": "2014-10-21",
+        "description": "shows.json: nevilles-island-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nevilles-island-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-10-21 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: nevilles-island-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-superman-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-02-01",
+        "newValue": "2015-02-17",
+        "description": "shows.json: man-and-superman-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-superman-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-02-01",
+        "newValue": "2015-02-25",
+        "description": "shows.json: man-and-superman-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-superman-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-02-25 (playbill.com; BRO-6487)",
+        "description": "shows.json: man-and-superman-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-04-30",
+        "newValue": "2015-05-14",
+        "description": "shows.json: high-society-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-05-14 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: high-society-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mentalists-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-07-13",
+        "newValue": "2015-07-03",
+        "description": "shows.json: the-mentalists-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mentalists-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-07-13",
+        "newValue": "2015-07-13",
+        "description": "shows.json: the-mentalists-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mentalists-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-07-13 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-mentalists-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-winters-tale-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-10-17",
+        "newValue": "2015-11-07",
+        "description": "shows.json: the-winters-tale-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-winters-tale-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-11-07 (playbill.com; BRO-6487)",
+        "description": "shows.json: the-winters-tale-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-01-06",
+        "newValue": "2015-12-10",
+        "description": "shows.json: guys-and-dolls-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-01-06",
+        "newValue": "2016-01-06",
+        "description": "shows.json: guys-and-dolls-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-01-06 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: guys-and-dolls-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "how-the-other-half-loves-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-03-31",
+        "newValue": "2016-03-23",
+        "description": "shows.json: how-the-other-half-loves-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "how-the-other-half-loves-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-03-31",
+        "newValue": "2016-03-31",
+        "description": "shows.json: how-the-other-half-loves-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "how-the-other-half-loves-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-03-31 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: how-the-other-half-loves-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-06-27",
+        "newValue": "2016-06-22",
+        "description": "shows.json: the-truth-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-06-27",
+        "newValue": "2016-06-27",
+        "description": "shows.json: the-truth-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-06-27 (playbill.com; BRO-6487)",
+        "description": "shows.json: the-truth-west-end-2016.openingDateSource"
+      }
+    ]
+  }
+}

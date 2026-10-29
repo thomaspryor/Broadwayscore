@@ -6,6 +6,7 @@
  *   report                       per-season averages + missing slots (reads data/)
  *   wos --out=FILE               free WhatsOnStage WP-API match for missing WoS slots
  *   guardian --out=FILE          Guardian Content API match for missing guardian slots (needs GUARDIAN_API_KEY)
+ *   sitemap --out=FILE           Evening Standard monthly sitemaps match for missing standard slots (free)
  *   run  [flags]                 recover slots (CI: needs scraper keys + review-texts)
  *
  * run flags:
@@ -100,6 +101,42 @@ async function cmdGuardian() {
   console.log(`GUARDIAN shows missing ${rows.length}; searched ${asked}; failed ${failed}; with candidates ${out.length}`);
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(out, null, 1));
   if (asked && failed === asked) { console.error('GUARDIAN: every API call failed (bad key or rate limit)'); process.exit(1); }
+}
+
+
+// BRO-6487: Evening Standard monthly article sitemaps (free, no scraper spend). One fetch per month
+// the shows' windows touch; slugs matched on title + venue (lib/we-sitemap-candidates.js). Output has
+// the same shape as `wos`, so `run --candidates` ingests through the same date-window and wrong-show guards.
+async function cmdSitemap() {
+  const sm = require('./lib/we-sitemap-candidates.js');
+  const rows = loadRows().filter(r => r.missing.includes('standard'));
+  const shows = new Map(rd('data/shows.json').shows.map(s => [s.id, s]));
+  const monthUrls = new Map();
+  let fetched = 0;
+  const getMonth = async (ym) => {
+    if (monthUrls.has(ym)) return monthUrls.get(ym);
+    let urls = [];
+    const url = `https://www.standard.co.uk/sitemaps/sitemap-articles-${ym}.xml`;
+    // Node's fetch is 403'd by the host's TLS check where curl is not. Free path only: no scraper fallback, so a
+    // sitemap pass can never spend outside the campaign cap (a failed month is counted and reported below).
+    const xml = spawnSync('curl', ['-sS', '-m', '90', '-A', 'Mozilla/5.0', '-f', url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).stdout || '';
+    if (xml.includes('<urlset')) { urls = sm.standardReviewUrls(xml); fetched++; } else console.log(`${ym}: sitemap not fetched`);
+    monthUrls.set(ym, urls);
+    return urls;
+  };
+  const out = [];
+  for (const r of rows) {
+    const s = shows.get(r.id);
+    const w = s && sm.candidateWindow(s);
+    if (!w) continue;
+    const urls = [];
+    for (const ym of sm.monthsBetween(w.lo, w.hi)) urls.push(...await getMonth(ym));
+    const hits = sm.matchStandardSlugs(s, urls);
+    if (hits.length) out.push({ showId: r.id, slot: 'standard', posts: hits.map(url => ({ url })) });
+  }
+  console.log(`STANDARD SITEMAP shows missing ${rows.length}; months fetched ${fetched}/${monthUrls.size}; with candidates ${out.length}`);
+  if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(out, null, 1));
+  if (monthUrls.size && !fetched) { console.error('STANDARD SITEMAP: every month failed to fetch (host blocked?)'); process.exit(1); }
 }
 
 // ---- run -------------------------------------------------------------------
@@ -247,8 +284,8 @@ async function cmdRun() {
 }
 
 const cmd = process.argv[2];
-const table = { report: cmdReport, wos: cmdWos, guardian: cmdGuardian, run: cmdRun };
+const table = { report: cmdReport, wos: cmdWos, guardian: cmdGuardian, sitemap: cmdSitemap, run: cmdRun };
 if (require.main === module) {
-  if (!table[cmd]) { console.error('Usage: node scripts/we-major-recovery.js <report|wos|guardian|run> [flags] (see header)'); process.exit(2); }
+  if (!table[cmd]) { console.error('Usage: node scripts/we-major-recovery.js <report|wos|guardian|sitemap|run> [flags] (see header)'); process.exit(2); }
   table[cmd]().catch(e => { console.error(e); process.exit(1); });
 }
