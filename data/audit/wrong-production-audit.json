@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T07:12:24.063Z",
+  "timestamp": "2026-10-29T07:48:52.326Z",
   "stats": {
-    "totalReviews": 66518,
-    "alreadyFlagged": 22072,
+    "totalReviews": 66531,
+    "alreadyFlagged": 22077,
     "dateGuardCatches": 233,
     "directorMismatch": 2703,
-    "tvFilmSignals": 1893,
+    "tvFilmSignals": 1894,
     "londonSignals": 3227,
     "offBroadwaySignals": 606,
     "yearMismatch": 244,
-    "noPublishDate": 6451
+    "noPublishDate": 6454
   },
   "findings": [
     {
@@ -7841,6 +7841,7 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "stagebuddy--unknown.json",
+      "score": 85,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/buena-vista-social-club",
       "findings": [
@@ -21331,7 +21332,7 @@
     {
       "showId": "gypsy-2024",
       "file": "guardian--adrian-horton.json",
-      "score": 79,
+      "score": 75,
       "publishDate": "December 20, 2024",
       "url": "https://www.theguardian.com/stage/2024/dec/20/gypsy-broadway-play-review-audra-mcdonald",
       "findings": [
@@ -21573,6 +21574,7 @@
     {
       "showId": "gypsy-2024",
       "file": "stagebuddy--unknown.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/gypsy",
       "findings": [
@@ -21614,7 +21616,7 @@
     {
       "showId": "gypsy-2024",
       "file": "theater-life--barry-gordin.json",
-      "score": 99,
+      "score": 97,
       "publishDate": "2025-01-28T15:24:08",
       "url": "https://theaterlife.com/gypsy-3/",
       "findings": [
@@ -21633,7 +21635,7 @@
     {
       "showId": "gypsy-2024",
       "file": "theater-life--david-sheward.json",
-      "score": 99,
+      "score": 97,
       "publishDate": "2025-01-28T15:24:08",
       "url": "https://theaterlife.com/gypsy-3/",
       "findings": [
@@ -21732,7 +21734,7 @@
     {
       "showId": "gypsy-2024",
       "file": "timeout--adam-feldman.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "December 19, 2024",
       "url": "https://www.timeout.com/newyork/theater/gypsy-broadway-revival-review-audra-mcdonald-rose",
       "findings": [
@@ -31430,6 +31432,7 @@
     {
       "showId": "liberation-off-broadway-2025",
       "file": "stagebuddy--unknown.json",
+      "score": 63,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/liberation",
       "findings": [
@@ -32820,7 +32823,7 @@
     {
       "showId": "mary-jane-2024",
       "file": "nypost--johnny-oleksinski.json",
-      "score": 77,
+      "score": 82,
       "publishDate": "2024-04-24",
       "url": "https://nypost.com/2024/04/24/entertainment/mary-jane-review-rachel-mcadams-is-a-strong-mom-in-teary-broadway-play/",
       "findings": [
@@ -39915,7 +39918,7 @@
     {
       "showId": "patriots-2024",
       "file": "nysr--frank-scheck.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "April 22, 2024",
       "url": "https://nystagereview.com/2024/04/22/patriots-russian-history-rendered-with-shakespearean-theatricality/",
       "findings": [
@@ -42963,7 +42966,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "guardian--adrian-horton.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "October 24, 2024",
       "url": "https://www.theguardian.com/stage/2024/oct/24/romeo-juliet-broadway-review",
       "findings": [
@@ -43038,7 +43041,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 55,
+      "score": 56,
       "publishDate": "2024-10-24T22:57:29",
       "url": "https://nystagereview.com/2024/10/24/romeo-juliet-shakespeare-for-the-tiktok-generation/",
       "findings": [
@@ -43122,7 +43125,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "timeout--adam-feldman.json",
-      "score": 60,
+      "score": 65,
       "publishDate": "October 24, 2024",
       "url": "https://www.timeout.com/newyork/theater/romeo-juliet-broadway-review-kit-connor-rachel-zegler",
       "findings": [
@@ -54609,7 +54612,7 @@
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "nysr--michael-sommers.json",
-      "score": 59,
+      "score": 65,
       "publishDate": "2025-03-11",
       "url": "https://nystagereview.com/2025/03/11/the-jonathan-larson-project-seasoned-with-love/",
       "findings": [
@@ -54683,6 +54686,7 @@
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "stagebuddy--unknown.json",
+      "score": 74,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/jonathan-larson-project",
       "findings": [
@@ -60869,6 +60873,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-winters-tale-off-broadway-2026",
+      "file": "pages-on-stages--unknown.json",
+      "publishDate": null,
+      "url": "https://pagesonstages.com/2026/08/11/the-winters-tale/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -73719,7 +73736,7 @@
     {
       "showId": "cabaret-2024",
       "file": "nysr--frank-scheck.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "April 21, 2024",
       "url": "https://nystagereview.com/2024/04/21/cabaret-come-for-the-pre-show-and-oh-theres-also-the-musical/",
       "findings": [
@@ -90859,7 +90876,7 @@
     {
       "showId": "mary-jane-2024",
       "file": "nysr--frank-scheck.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2024-04-23T20:56:33",
       "url": "https://nystagereview.com/2024/04/23/mary-jane-rachel-mcadams-suffering-with-a-smile/",
       "findings": [
@@ -100395,7 +100412,7 @@
     {
       "showId": "stereophonic-2024",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2024-04-19T23:55:25",
       "url": "https://nystagereview.com/2024/04/19/stereophonic-were-with-the-band/",
       "findings": [
@@ -100464,7 +100481,7 @@
     {
       "showId": "stereophonic-2024",
       "file": "timeout--adam-feldman.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "April 19, 2024",
       "url": "https://www.timeout.com/newyork/theater/stereophonic-broadway-play-review-david-adjmi-will-butler",
       "findings": [
@@ -106201,6 +106218,7 @@
     {
       "showId": "the-hills-of-california-2024",
       "file": "stagebuddy--unknown.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/the-hills-of-california",
       "findings": [
