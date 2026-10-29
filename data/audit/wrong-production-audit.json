@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-29T01:49:38.623Z",
+  "timestamp": "2026-10-29T02:13:43.082Z",
   "stats": {
-    "totalReviews": 65845,
-    "alreadyFlagged": 22051,
+    "totalReviews": 65859,
+    "alreadyFlagged": 22053,
     "dateGuardCatches": 233,
-    "directorMismatch": 2631,
-    "tvFilmSignals": 1858,
+    "directorMismatch": 2636,
+    "tvFilmSignals": 1861,
     "londonSignals": 3187,
     "offBroadwaySignals": 597,
-    "yearMismatch": 239,
+    "yearMismatch": 240,
     "noPublishDate": 6006
   },
   "findings": [
@@ -5535,6 +5535,19 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "the-artswire-weekly--mateo-moreno.json",
+      "publishDate": "2025-04-03",
+      "url": "https://www.theartswireweekly.com/reviews/a-theatre-review-of-back-to-the-future-the-musical",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "the-cap-times--lindsay-christians.json",
       "score": 63,
       "publishDate": "2026-03-11",
@@ -6668,6 +6681,7 @@
     {
       "showId": "billy-crystal-860-2026",
       "file": "thedaviddesk2--davidsheward.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://thedaviddesk2.blogspot.com/2026/10/broadway-review-billy-crystal-860.html",
       "findings": [
@@ -6681,6 +6695,7 @@
     {
       "showId": "billy-crystal-860-2026",
       "file": "totaltheater1--unknown.json",
+      "score": 85,
       "publishDate": "2026-10-26",
       "url": "https://totaltheater1.wordpress.com/2026/10/26/billy-crystal-860/",
       "findings": [
@@ -7105,6 +7120,19 @@
       "score": 88,
       "publishDate": "2025-09-13",
       "url": "https://www.thepitchkc.com/book-of-mormon-on-tour-rings-true-with-sharp-satire-and-perfect-pitch/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "theonlycritic--nate-adams.json",
+      "publishDate": "2025-04-03",
+      "url": "https://www.theonlycritic.com/post/the-book-of-mormon-review-still-outrageous-still-hilarious-and-still-unstoppable",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33028,6 +33056,7 @@
     {
       "showId": "merrily-we-roll-along-west-end-2013",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 97,
       "publishDate": "2013-05-02",
       "url": "https://www.whatsonstage.com/news/merrily-we-roll-along_336/",
       "findings": [
@@ -33813,6 +33842,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "broadwayworld--shanti-m-kennedy.json",
+      "publishDate": "2025-03-19",
+      "url": "https://www.broadwayworld.com/sarasota/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Van-Wezel-20250319",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -37502,6 +37544,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "musical-theatre-review--william-keeling.json",
+      "score": 86,
       "publishDate": "2026-10-27",
       "url": "https://musicaltheatrereview.com/operation-mincemeat-victoria-theatre-halifax-and-touring/",
       "findings": [
@@ -37565,19 +37608,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "fairypoweredproductions--lauren-fordham.json",
-      "publishDate": "2026-10-28",
-      "url": "https://fairypoweredproductions.com/operation-mincemeat-a-new-musical-review/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (3x) more than 2023 (0x). 2026 matches production: operation-mincemeat-tour-2026"
         }
       ]
     },
@@ -38900,19 +38930,6 @@
       "score": 82,
       "publishDate": "December 16th, 2025",
       "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatre-london-felix-barrett",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "file": "west-end-best-friend--laura-lott.json",
-      "publishDate": "2026-10-28",
-      "url": "https://www.westendbestfriend.co.uk/news/review-paranormal-activity-the-alexandra-tour",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44050,6 +44067,24 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "broadwayworld--christine-swerczek.json",
+      "publishDate": "2025-03-28",
+      "url": "https://www.broadwayworld.com/omaha/article/Review-SOME-LIKE-IT-HOT-at-Orpheum-Theatre-is-Unstoppable-20250328",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (4x) more than 2024 (0x). 2022 matches production: some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "broadwayworld--courtney-symes.json",
       "score": 92,
       "publishDate": "2025-09-11",
@@ -44125,6 +44160,29 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2025-05-07",
+      "url": "https://hotchka.com/some-like-it-hot-tour-review-baltimore-hippodrome",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2024 (1x). 2022 matches production: some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "houston-press--margaret-downing.json",
       "publishDate": "2026-03-18",
       "url": "https://www.houstonpress.com/arts/some-like-it-hot-the-musical-told-with-a-modern-eye/",
@@ -44185,6 +44243,19 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "oklahoman--unknown.json",
+      "publishDate": "2025-03-29",
+      "url": "https://www.oklahoman.com/story/entertainment/2025/03/29/new-some-like-it-hot-musical-heads-to-okc-on-national-tour-what-to-know/82657256007/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "onstage-colorado--kimberly-nicoletti.json",
       "score": 88,
       "publishDate": "2025-07-09",
@@ -44207,6 +44278,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "roc-city-mag--katherine-varga.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.roccitymag.com/arts-entertainment/theater-review-some-like-it-hot-19089374/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -53485,6 +53574,7 @@
     {
       "showId": "the-judas-kiss-west-end-2013",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 97,
       "publishDate": "2013-01-23",
       "url": "https://www.whatsonstage.com/news/the-judas-kiss_1458/",
       "findings": [
@@ -57356,6 +57446,7 @@
     {
       "showId": "the-play-that-goes-wrong-west-end-2013",
       "file": "whatsonstage--unknown.json",
+      "score": 96,
       "publishDate": "2013-05-07",
       "url": "https://www.whatsonstage.com/news/the-play-that-goes-wrong_295/",
       "findings": [
@@ -94041,7 +94132,7 @@
     {
       "showId": "people-places-and-things-west-end-2016",
       "file": "britishtheatrecom--richard-earl.json",
-      "score": null,
+      "score": 99,
       "publishDate": "2016-05-16",
       "url": "https://www.britishtheatre.com/posts/review-people-places-and-things-wyndhams-theatre-5stars",
       "findings": [
@@ -94055,7 +94146,7 @@
     {
       "showId": "people-places-and-things-west-end-2016",
       "file": "thestage--natasha-tripney.json",
-      "score": 97,
+      "score": 94,
       "publishDate": "2016-03-31",
       "url": "https://www.thestage.co.uk/reviews/2016/people-places-and-things-review-at-wyndhams-theatre-london/",
       "findings": [
@@ -105885,6 +105976,7 @@
     {
       "showId": "the-low-road-west-end-2013",
       "file": "whatsonstage--unknown.json",
+      "score": 80,
       "publishDate": "2013-03-28",
       "url": "https://www.whatsonstage.com/news/the-low-road_711/",
       "findings": [
