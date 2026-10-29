@@ -1,57 +1,5 @@
 [
   {
-    "startedAt": "2026-10-28T01:36:17.467Z",
-    "completedAt": "2026-10-28T01:39:09.535Z",
-    "totalReviews": 64161,
-    "processed": 3,
-    "skipped": 64155,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 23977,
-      "output": 914,
-      "cacheRead": 7482,
-      "cacheWrite": 3741,
-      "total": 53655
-    },
-    "costUsd": 0.049182875,
-    "runId": "40615550581",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-28T01:39:24.267Z",
-    "completedAt": "2026-10-28T01:39:29.591Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "40615550581",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-28T01:56:49.585Z",
     "completedAt": "2026-10-28T01:56:54.526Z",
     "totalReviews": 64195,
@@ -1291205,21 +1291153,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T03:10:53.474Z",
-    "completedAt": "2026-10-29T03:11:08.321Z",
-    "totalReviews": 6,
-    "processed": 3,
-    "skipped": 3,
+    "startedAt": "2026-10-29T03:11:06.372Z",
+    "completedAt": "2026-10-29T03:11:16.714Z",
+    "totalReviews": 4,
+    "processed": 2,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 17445,
-      "output": 931,
-      "cacheRead": 11376,
+      "input": 11289,
+      "output": 689,
+      "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 44444
+      "total": 29250
     },
-    "costUsd": 0.066602,
-    "runId": "40809724329",
+    "costUsd": 0.0441934,
+    "runId": "40809925527",
     "errorDetails": [],
     "validation": [
       {
@@ -1302655,378 +1302603,6 @@
           "flat": 2,
           "down": 2,
           "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "girls-off-west-end-2026",
-        "ourDistribution": {
-          "up": 10,
-          "flat": 4,
-          "down": 0,
-          "total": 14
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-        "ourDistribution": {
-          "up": 11,
-          "flat": 11,
-          "down": 3,
-          "total": 25
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
-        "ourDistribution": {
-          "up": 16,
-          "flat": 0,
-          "down": 1,
-          "total": 17
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "glengarry-glen-ross-2012",
-        "ourDistribution": {
-          "up": 45,
-          "flat": 27,
-          "down": 29,
-          "total": 101
-        },
-        "dtliDistribution": {
-          "up": 11,
-          "flat": 0,
-          "down": 5,
-          "total": 24
-        },
-        "bwwDistribution": {
-          "up": 10,
-          "flat": 0,
-          "down": 1,
-          "total": 17
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
-      },
-      {
-        "showId": "glengarry-glen-ross-1984",
-        "ourDistribution": {
-          "up": 45,
-          "flat": 27,
-          "down": 29,
-          "total": 101
-        },
-        "dtliDistribution": {
-          "up": 11,
-          "flat": 0,
-          "down": 5,
-          "total": 24
-        },
-        "bwwDistribution": {
-          "up": 10,
-          "flat": 0,
-          "down": 1,
-          "total": 17
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
-      },
-      {
-        "showId": "glengarry-glen-ross-2025",
-        "ourDistribution": {
-          "up": 45,
-          "flat": 27,
-          "down": 29,
-          "total": 101
-        },
-        "dtliDistribution": {
-          "up": 11,
-          "flat": 0,
-          "down": 5,
-          "total": 24
-        },
-        "bwwDistribution": {
-          "up": 10,
-          "flat": 0,
-          "down": 1,
-          "total": 17
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
-      },
-      {
-        "showId": "glengarry-glen-ross-2005",
-        "ourDistribution": {
-          "up": 45,
-          "flat": 27,
-          "down": 29,
-          "total": 101
-        },
-        "dtliDistribution": {
-          "up": 11,
-          "flat": 0,
-          "down": 5,
-          "total": 24
-        },
-        "bwwDistribution": {
-          "up": 10,
-          "flat": 0,
-          "down": 1,
-          "total": 17
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
-      },
-      {
-        "showId": "glengarry-glen-ross-west-end-2026",
-        "ourDistribution": {
-          "up": 17,
-          "flat": 14,
-          "down": 6,
-          "total": 37
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "glory-days-2008",
-        "ourDistribution": {
-          "up": 0,
-          "flat": 0,
-          "down": 3,
-          "total": 3
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "goats-west-end-2017",
-        "ourDistribution": {
-          "up": 3,
-          "flat": 6,
-          "down": 6,
-          "total": 15
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "gobstopper-off-broadway-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "god-of-carnage-2009",
-        "ourDistribution": {
-          "up": 18,
-          "flat": 1,
-          "down": 5,
-          "total": 24
-        },
-        "dtliDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 1,
-          "total": 2
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "goddess-off-broadway-2025",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 0,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "godspell-1976",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 7,
-          "down": 12,
-          "total": 27
-        },
-        "dtliDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 50% (ours: 30%, theirs: 80%)"
-      },
-      {
-        "showId": "godspell-2011",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 7,
-          "down": 12,
-          "total": 27
-        },
-        "dtliDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 50% (ours: 30%, theirs: 80%)"
-      },
-      {
-        "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
-        "ourDistribution": {
-          "up": 7,
-          "flat": 1,
-          "down": 1,
-          "total": 9
-        },
-        "bwwDistribution": {
-          "up": 0,
-          "flat": 0,
-          "down": 0,
-          "total": 3
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "BWW: Up thumbs differ by 78% (ours: 78%, theirs: 0%)"
-      },
-      {
-        "showId": "golden-boy-2012",
-        "ourDistribution": {
-          "up": 16,
-          "flat": 3,
-          "down": 2,
-          "total": 21
-        },
-        "dtliDistribution": {
-          "up": 5,
-          "flat": 0,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "golden-boy-off-west-end-2026",
-        "ourDistribution": {
-          "up": 41,
-          "flat": 12,
-          "down": 1,
-          "total": 54
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "good-1982",
-        "ourDistribution": {
-          "up": 3,
-          "flat": 1,
-          "down": 1,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "good-bones-off-broadway-2024",
-        "ourDistribution": {
-          "up": 10,
-          "flat": 5,
-          "down": 4,
-          "total": 19
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "good-night-and-good-luck-2025",
-        "ourDistribution": {
-          "up": 25,
-          "flat": 9,
-          "down": 12,
-          "total": 46
-        },
-        "dtliDistribution": {
-          "up": 9,
-          "flat": 0,
-          "down": 5,
-          "total": 24
-        },
-        "bwwDistribution": {
-          "up": 11,
-          "flat": 0,
-          "down": 4,
-          "total": 20
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "good-night-oscar-2023",
-        "ourDistribution": {
-          "up": 41,
-          "flat": 8,
-          "down": 6,
-          "total": 55
-        },
-        "dtliDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 3,
-          "total": 11
-        },
-        "bwwDistribution": {
-          "up": 6,
-          "flat": 0,
-          "down": 3,
-          "total": 12
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 75%, theirs: 36%)"
-      },
-      {
-        "showId": "good-people-2011",
-        "ourDistribution": {
-          "up": 21,
-          "flat": 3,
-          "down": 1,
-          "total": 25
-        },
-        "dtliDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "good-people-west-end-2014",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 0,
-          "down": 0,
-          "total": 2
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "good-vibrations-2005",
-        "ourDistribution": {
-          "up": 0,
-          "flat": 1,
-          "down": 1,
-          "total": 2
-        },
-        "dtliDistribution": {
-          "up": 0,
-          "flat": 0,
-          "down": 1,
-          "total": 1
         },
         "hasDisagreement": false
       },
@@ -1343918,8 +1343494,8 @@
         "ourDistribution": {
           "up": 1,
           "flat": 1,
-          "down": 0,
-          "total": 2
+          "down": 2,
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1362615,8 +1362191,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T03:14:26.578Z",
-    "completedAt": "2026-10-29T03:14:26.589Z",
+    "startedAt": "2026-10-29T03:13:25.234Z",
+    "completedAt": "2026-10-29T03:13:25.236Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1362629,7 +1362205,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40809994770",
+    "runId": "40809925527",
     "errorDetails": []
   }
 ]
