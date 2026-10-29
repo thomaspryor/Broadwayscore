@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4673",
   "planId": "37c1816e-7278-4d52-84ae-df20b3b3b947",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T05:04:45.319Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,30 @@
         "description": "BRO-4673: filename follows the corrected byline."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T06:52:00.239Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted indian-princesses-off-broadway-2025/talkinbroadway--howard-miller.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json criticName: \"Thom Geier\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json publishDate: null -> \"2026-05-19\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json → indian-princesses-off-broadway-2025/talkinbroadway--howard-miller.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
