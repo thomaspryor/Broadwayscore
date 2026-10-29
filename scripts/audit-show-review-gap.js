@@ -1600,6 +1600,15 @@ async function dispatchGatherFor(showId) {
     console.log(`  ⏸  gather-reviews dispatched within last 2h for ${showId} — skipping`);
     return false;
   }
+  // BRO-6532: through the bulk-workflow cap. A show outside its opening-night
+  // window waits for a later run (hourly cron) rather than piling onto the queue.
+  const { checkCap } = require('./lib/workflow-queue-cap');
+  const { isUrgentShowId } = require('./lib/scoring-lane');
+  const cap = checkCap({ workflow: 'gather-reviews.yml', priority: isUrgentShowId(showId) });
+  if (!cap.ok) {
+    console.log(`  ⏸  gather-reviews deferred for ${showId}: ${cap.reason}`);
+    return false;
+  }
   try {
     execFileSync('gh', ['workflow', 'run', 'gather-reviews.yml', '-f', `shows=${showId}`], { stdio: 'pipe' });
     return true;

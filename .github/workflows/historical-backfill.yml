@@ -65,14 +65,28 @@ jobs:
         if: steps.pick.outputs.shows != ''
         env:
           GH_TOKEN: ${{ github.token }}
+          WORKFLOW_CAP_DISABLED: ${{ vars.WORKFLOW_CAP_DISABLED }}
         run: |
           echo "since=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
-          gh workflow run gather-reviews.yml \
+          # BRO-6532: through the bulk-workflow cap, with no wait (a waiting
+          # runner is itself one of the ~40). Deferred: the cursor stays put and
+          # tomorrow's run re-sends this slice.
+          set +e
+          node scripts/capped-workflow-dispatch.js --workflow=gather-reviews.yml \
             -f shows="${{ steps.pick.outputs.shows }}" \
             -f parallel_jobs=10 \
             -f max_tier=2 \
             -f no_sb_serp=true \
             -f spend_purpose=historical-backfill
+          RC=$?
+          set -e
+          if [ "$RC" = "3" ]; then
+            echo "::notice::gather-reviews is at its in-flight cap; cursor not advanced, slice retried tomorrow"
+            echo "dispatched=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          [ "$RC" = "0" ] || exit "$RC"
+          echo "dispatched=true" >> "$GITHUB_OUTPUT"
 
       # Advance the cursor only once our run has actually started; if it is
       # cancelled before starting, leave the cursor so tomorrow re-sends the same
@@ -81,7 +95,7 @@ jobs:
       # shows in_progress while it waits.)
       - name: Wait for the gather run to start
         id: started
-        if: steps.pick.outputs.shows != ''
+        if: steps.dispatch.outputs.dispatched == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           SINCE: ${{ steps.dispatch.outputs.since }}
