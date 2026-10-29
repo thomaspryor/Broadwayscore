@@ -248,11 +248,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-29T13:53:55.122Z",
-      "lastSeen": "2026-10-29T17:38:46.100Z",
-      "lastNotifiedAt": "2026-10-29T13:53:55.122Z",
-      "lastSurfacedAt": "2026-10-29T13:53:55.122Z",
-      "notifyCount": 185,
+      "incidentOpenedAt": "2026-10-29T17:42:27.875Z",
+      "lastSeen": "2026-10-29T17:42:27.875Z",
+      "lastNotifiedAt": "2026-10-29T17:42:27.875Z",
+      "lastSurfacedAt": "2026-10-29T17:42:27.875Z",
+      "notifyCount": 186,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
@@ -4340,7 +4340,7 @@
       "resolveReason": "absent"
     },
     "test-yml:red:Lint Workflows:1ff49e04": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
@@ -4357,7 +4357,8 @@
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
       },
-      "silentRefires": 1
+      "resolvedAt": "2026-10-29T17:42:27.826Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
@@ -15079,7 +15080,7 @@
       "silentRefires": 1,
       "absentRunIds": [
         "40861673753",
-        "40887416786"
+        "40891527152"
       ]
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
@@ -29637,7 +29638,7 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-10-29T13:53:54.915Z",
       "incidentOpenedAt": "2026-10-29T13:53:54.915Z",
-      "lastSeen": "2026-10-29T17:38:46.066Z",
+      "lastSeen": "2026-10-29T17:42:27.859Z",
       "lastNotifiedAt": "2026-10-29T13:53:54.915Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
