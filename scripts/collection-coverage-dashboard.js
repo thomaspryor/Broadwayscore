@@ -24,7 +24,6 @@ const { isRejectedByReasonExclusion } = require('./lib/review-guards');
 const { fetchGitHubJSON } = require('./lib/gh-api-client');
 const fs = require('fs');
 const path = require('path');
-const { isLondonMarket } = require('./lib/venue-classification');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -88,7 +87,14 @@ function classifyReview(review) {
   return 'unscored';
 }
 
-function getMarket(showId) {
+const MARKETS = ['broadway', 'west-end', 'off-west-end', 'off-broadway'];
+
+// shows.json category decides the market; the id is only a fallback for a dir
+// with no shows.json row. Ids are not market labels: noises-off-west-end-2023
+// is a West End show (BRO-4315). A row in another category (regional, tour)
+// belongs to no market bucket: null, counted in the grand total only.
+function getMarket(showId, show) {
+  if (show) return MARKETS.includes(show.category) ? show.category : null;
   if (showId.includes('-off-west-end-')) return 'off-west-end';
   if (showId.includes('-west-end-')) return 'west-end';
   if (showId.includes('-off-broadway-')) return 'off-broadway';
@@ -127,7 +133,7 @@ function scanReviewTexts() {
 
   // Structure: market → segment → bucket
   const data = {};
-  const markets = ['broadway', 'west-end', 'off-west-end', 'off-broadway'];
+  const markets = MARKETS;
   const segments = ['open', 'recent', 'rest'];
   for (const m of markets) {
     data[m] = {};
@@ -146,8 +152,8 @@ function scanReviewTexts() {
   for (const showDir of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
     const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
-    const market = getMarket(showDir);
     const show = showMap[showDir];
+    const market = getMarket(showDir, show);
     const segment = getSegment(show);
 
     for (const file of files) {
@@ -156,7 +162,7 @@ function scanReviewTexts() {
         review = JSON.parse(fs.readFileSync(path.join(showPath, file), 'utf8'));
       } catch { continue; }
 
-      const buckets = [data[market][segment], data[market]._total, data._grand];
+      const buckets = market ? [data[market][segment], data[market]._total, data._grand] : [data._grand];
 
       // Check flags
       const isFlagged = review.wrongShow || review.wrongProduction || review.wrongAttribution ||
@@ -325,7 +331,7 @@ function updateHistory(data) {
     thumbOnly: g.thumbOnly,
     unscored: g.unscored,
     byMarket: Object.fromEntries(
-      ['broadway', 'west-end', 'off-west-end', 'off-broadway'].map(m => {
+      MARKETS.map(m => {
         const mt = data[m]._total;
         const a = mt.total - mt.flagged;
         return [m, { active: a, scored: a - mt.unscored, fullText: mt.fullText + mt.fullTextThumb }];
@@ -389,7 +395,7 @@ async function main() {
     recentCutoff: RECENT_CUTOFF,
     grand: data._grand,
     markets: Object.fromEntries(
-      ['broadway', 'west-end', 'off-west-end', 'off-broadway'].map(m => [m, {
+      MARKETS.map(m => [m, {
         total: data[m]._total,
         open: data[m].open,
         recent: data[m].recent,
@@ -433,4 +439,6 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+if (require.main === module) main().catch(e => { console.error(e); process.exit(1); });
+
+module.exports = { getMarket };

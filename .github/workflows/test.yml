@@ -57,6 +57,8 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # BRO-4315: tests/unit/collection-coverage-market.test.mjs requires it (getMarket).
+      - 'scripts/collection-coverage-dashboard.js'
       # BRO-6488: scripts/lib/outlet-census-london.test.mjs requires it (readEmittedItems, cdxItems).
       - 'scripts/outlet-census.js'
       # BRO-6391: scripts/lib/cost-report-alerts.test.mjs requires it (routeLines, renderActionHtml).

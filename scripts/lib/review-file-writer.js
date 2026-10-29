@@ -238,8 +238,8 @@ function _getShowCategory(showId) {
   }
   // Fallback: infer from show ID if not in shows.json (e.g. new shows)
   if (_showCategoryCache[showId]) return _showCategoryCache[showId];
-  if (showId.includes('-west-end-')) return 'west-end';
   if (showId.includes('-off-west-end-')) return 'off-west-end';
+  if (showId.includes('-west-end-')) return 'west-end';
   return null;
 }
 
