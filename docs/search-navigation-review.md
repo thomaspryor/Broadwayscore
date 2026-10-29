@@ -192,8 +192,8 @@ the previous week is within about 10% on every row):
 What it says. In the current week 231 header searchers sit against 6158
 pageview visitors (about 3.8%; desktop 3.8%, mobile 3.7%), and searchers made
 3.5 (desktop) and 5.9 (mobile) searches each, a heavy-user minority. The
-previous week was the same shape (about 3.5% of visitors; 4.6 and 4.7 searches
-per mobile and desktop searcher). Roughly 3 in 100 searches return nothing
+previous week was the same shape (about 3.5% of visitors; 4.6 (desktop) and 4.7
+(mobile) searches per searcher). Roughly 3 in 100 searches return nothing
 (30 of 1086 events), so search itself works. Browse pages were reached by 732
 desktop plus mobile visitors, about three times the searchers; these are
 distinct counts that cannot be summed to a site total and are not a conversion
