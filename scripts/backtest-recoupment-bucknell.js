@@ -20,7 +20,7 @@
  */
 
 const path = require('path');
-const { runBacktest, accuracy, alwaysNoBaseline } = require('./lib/bucknell-backtest');
+const { runBacktest, accuracy, alwaysNoBaseline, splitNoCommercial } = require('./lib/bucknell-backtest');
 
 const argv = process.argv.slice(2);
 const dataDirArg = argv.find((a) => a.startsWith('--data-dir='));
@@ -33,8 +33,12 @@ const commercialShows = require(path.join(dataDir, 'commercial.json')).shows || 
 
 const result = runBacktest(study.shows, shows, commercialShows);
 
+const noSourceDoc = require(path.join(__dirname, '..', 'data', 'analysis', 'bucknell-no-readable-source.json')).shows || {};
+const split = splitNoCommercial(result.rows, noSourceDoc);
+
 if (argv.includes('--json')) {
-  console.log(JSON.stringify(result, null, 2));
+  for (const r of result.rows) if (noSourceDoc[r.showId] && !r.commercialKey) r.documentedNoSource = true;
+  console.log(JSON.stringify({ ...result, staleDoc: split.staleDoc }, null, 2));
   process.exit(0);
 }
 
@@ -50,12 +54,7 @@ const fmt = (m, { baseline = false } = {}) => {
 const matched = result.rows.filter((r) => r.commercialKey);
 const neverOpened = result.rows.filter((r) => !r.showId && r.neverOpened);
 const noShow = result.rows.filter((r) => !r.showId && !r.neverOpened);
-const noSourceDoc = require(path.join(__dirname, '..', 'data', 'analysis', 'bucknell-no-readable-source.json')).shows || {};
-const noCommAll = result.rows.filter((r) => r.showId && !r.commercialKey);
-// BRO-6182: shows researched and documented as having no free readable press source stop resurfacing as open work.
-const documented = noCommAll.filter((r) => noSourceDoc[r.showId]);
-const noComm = noCommAll.filter((r) => !noSourceDoc[r.showId]);
-const staleDoc = Object.keys(noSourceDoc).filter((id) => !noCommAll.some((r) => r.showId === id));
+const { documented, open: noComm, staleDoc } = split; // BRO-6182
 const loose = result.rows.filter((r) => r.matchRule && r.matchRule !== 'opening');
 console.log(`Bucknell backtest: ${result.rows.length} study musicals; ${matched.length} have a commercial.json record`);
 console.log(`  never opened (no page expected): ${neverOpened.length}; missing from shows.json: ${noShow.length}; page but no commercial record: ${noComm.length} (+${documented.length} documented as no readable source)`);

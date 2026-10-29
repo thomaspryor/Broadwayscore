@@ -174,4 +174,19 @@ function alwaysNoBaseline(m) {
   return n ? (m.fp + m.tn) / n : null;
 }
 
-module.exports = { studyVerdict, normalizeTitle, matchShow, matchShowDetailed, neverOpened, commercialFor, runBacktest, accuracy, alwaysNoBaseline, VERDICT };
+/**
+ * Split study rows that have a page but no commercial record into open work and
+ * shows documented as having no readable press source (BRO-6182). staleDoc lists
+ * documented ids that no longer belong (they got a record, or lost their page).
+ */
+function splitNoCommercial(rows, documentedShows) {
+  const doc = documentedShows || {};
+  const noCommAll = rows.filter((r) => r.showId && !r.commercialKey);
+  return {
+    documented: noCommAll.filter((r) => doc[r.showId]),
+    open: noCommAll.filter((r) => !doc[r.showId]),
+    staleDoc: Object.keys(doc).filter((id) => !noCommAll.some((r) => r.showId === id)),
+  };
+}
+
+module.exports = { splitNoCommercial, studyVerdict, normalizeTitle, matchShow, matchShowDetailed, neverOpened, commercialFor, runBacktest, accuracy, alwaysNoBaseline, VERDICT };

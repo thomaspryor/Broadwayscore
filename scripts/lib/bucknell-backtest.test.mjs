@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { studyVerdict, normalizeTitle, matchShow, matchShowDetailed, neverOpened, commercialFor, runBacktest, accuracy, alwaysNoBaseline } = require('./bucknell-backtest.js');
+const { studyVerdict, normalizeTitle, matchShow, matchShowDetailed, neverOpened, commercialFor, runBacktest, accuracy, alwaysNoBaseline, splitNoCommercial } = require('./bucknell-backtest.js');
 const study = require('../../data/analysis/bucknell-recoupment-2008-2017.json');
 
 test('every study label maps to a verdict', () => {
@@ -105,4 +105,18 @@ test('runBacktest does not score an ai-estimated record as the model', () => {
   assert.deepEqual(r.model.firm, { tp: 0, fp: 0, fn: 0, tn: 0, unknown: 0 });
   assert.equal(r.rows[0].modelConflict, false);
   assert.equal(r.rows[0].reportedConflict, true);
+});
+
+test('splitNoCommercial separates documented no-source shows and flags stale entries (BRO-6182)', () => {
+  const rows = [
+    { showId: 'a', commercialKey: null },
+    { showId: 'b', commercialKey: null },
+    { showId: 'c', commercialKey: 'c' },
+    { showId: null, commercialKey: null },
+  ];
+  const out = splitNoCommercial(rows, { a: { reason: 'x' }, c: { reason: 'now has a record' }, gone: { reason: 'no page' } });
+  assert.deepEqual(out.documented.map((r) => r.showId), ['a']);
+  assert.deepEqual(out.open.map((r) => r.showId), ['b']);
+  assert.deepEqual(out.staleDoc.sort(), ['c', 'gone']);
+  assert.deepEqual(splitNoCommercial(rows, undefined).open.map((r) => r.showId), ['a', 'b']);
 });
