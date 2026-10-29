@@ -70,7 +70,7 @@ test('detail page: show type, venue, address, closing date', () => {
 
 test('type filter and mapping', () => {
   for (const x of ['Cabaret', 'Magic', 'Comedy', 'Stand-up Comedy', 'Improv']) assert.equal(t.isExcludedType(x), true, x);
-  for (const x of ['Play', 'Musical', 'Drama']) assert.equal(t.isExcludedType(x), false, x);
+  for (const x of ['Play', 'Musical', 'Drama', 'Comedy/Drama', 'Musical Comedy']) assert.equal(t.isExcludedType(x), false, x);
   assert.equal(t.mapShowType('Musical'), 'musical');
   assert.equal(t.mapShowType('Play'), 'play');
 });
