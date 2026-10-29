@@ -309,6 +309,8 @@ jobs:
         run: |
           if [ -f "${RUNNER_TEMP}/.skip-push-core-data" ]; then echo "core-data push skipped, not dispatching ingest"; exit 0; fi
           node scripts/tic-daily.js --dispatch-ingest
+          # Deferred shows ride in the audit file to the next run.
+          bash scripts/lib/git-add-existing.sh data/audit/tic-daily-added.json
 
       # Images — card #1456: this promotion path is a go-live event like
       # previews->open in update-show-status.yml, but it never dispatched
