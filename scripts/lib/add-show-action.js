@@ -25,6 +25,8 @@ const ALLOWED = new Set([
   'closingDateSource', 'closingDateUpdatedAt', 'discoveredAt', 'season', 'evidenceUrls',
   // BRO-4768: an earlier run of the same production (return engagement)
   'firstRunStart',
+  // BRO-6515: metro slug from data/venue-metros.json (scripts/lib/venue-metro.js)
+  'city',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];
@@ -104,6 +106,7 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   const extra = Object.keys(show).filter(k => !ALLOWED.has(k));
   if (extra.length) return { ok: false, reason: `add-show: fields not allowed: ${extra.join(', ')}` };
   if (!ID_RE.test(show.id) || !ID_RE.test(show.slug)) return { ok: false, reason: 'add-show: id/slug must be lowercase-kebab' };
+  if (show.city != null && !ID_RE.test(show.city)) return { ok: false, reason: `add-show: city "${show.city}" must be a metro slug (scripts/lib/venue-metro.js)` };
   if (!STATUSES.includes(show.status)) return { ok: false, reason: `add-show: bad status "${show.status}"` };
   if (!CATEGORIES.includes(show.category)) return { ok: false, reason: `add-show: bad category "${show.category}"` };
   const shape = marketShapeProblem(shows, show);
