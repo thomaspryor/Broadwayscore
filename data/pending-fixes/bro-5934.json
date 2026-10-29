@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5934",
   "planId": "db47b5f5-26ac-40a8-a533-86a533ff4f9a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T00:59:59.330Z",
   "submitter": {
     "name": null,
@@ -95,5 +95,54 @@
         "description": "Populate the named Theater Life row with the date printed on the article before its existing sibling merge."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T02:16:09.104Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json criticName: \"Suzanna Bowling\" -> \"Steven Ross\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json wrongAttribution: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json crossOutletVerifiedNote: null -> \"BRO-5934: checked Times Square Chronicles article dated October 17, 2026; byline Ross (Steven Ross, /author/steve-ross/), matching the October 16 Front Mezz Junkies article. Valid author cross-post on both outlets; Suzanna Bowling was the wrong credit.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/frontmezzjunkies--unknown.json criticName: \"Unknown\" -> \"Steven Ross\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/cititour--brian-scott.json criticName: \"Brian Scott\" -> \"Brian Scott Lipton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/cititour--brian-scott-lipton.json publishDate: null -> \"2026-10-09\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "copperfield-the-new-musical-off-broadway-2026/theater-life--unknown.json criticName: \"Unknown\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "copperfield-the-new-musical-off-broadway-2026/theater-life--samuel-l-leiter.json publishDate: null -> \"2026-10-19\""
+    }
+  ],
+  "executedIn": "ci"
 }
