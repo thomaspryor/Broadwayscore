@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T22:54:25.157Z",
+  "timestamp": "2026-10-29T23:12:51.591Z",
   "stats": {
-    "totalReviews": 68646,
-    "alreadyFlagged": 22251,
+    "totalReviews": 68829,
+    "alreadyFlagged": 22254,
     "dateGuardCatches": 233,
-    "directorMismatch": 2806,
-    "tvFilmSignals": 1973,
+    "directorMismatch": 2824,
+    "tvFilmSignals": 1974,
     "londonSignals": 3379,
     "offBroadwaySignals": 624,
-    "yearMismatch": 277,
-    "noPublishDate": 7438
+    "yearMismatch": 278,
+    "noPublishDate": 7570
   },
   "findings": [
     {
@@ -1676,6 +1676,19 @@
       ]
     },
     {
+      "showId": "a-dolls-house-crucible-regional-2024",
+      "file": "guardian--nick-ahad.json",
+      "publishDate": "2024-09-29",
+      "url": "https://www.theguardian.com/stage/2024/sep/29/a-dolls-house-review-chris-bush-elin-schofield-siena-kelly-crucible-sheffield",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from a-dolls-house-2023"
+        }
+      ]
+    },
+    {
       "showId": "a-dolls-house-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 82,
@@ -2234,6 +2247,32 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-regional-2023",
+      "file": "buzznews--john-accrocco.json",
+      "publishDate": null,
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5275-review-a-view-from-the-bridge-at-theater-wit.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-regional-2023",
+      "file": "chicagocultureauthority--frank-sennett.json",
+      "publishDate": null,
+      "url": "https://chicagocultureauthority.com/2023/09/20/shattered-globes-stripped-down-a-view-from-the-bridge-packs-a-savage-punch-at-theater-wit/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
         }
       ]
     },
@@ -23050,6 +23089,97 @@
       ]
     },
     {
+      "showId": "gypsy-regional-2023",
+      "file": "around-the-town-chicago--jacob-davis.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/gypsy-4/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "chi-mt--barry-reszel.json",
+      "publishDate": null,
+      "url": "https://www.chi-mt.com/reviews/marriott-gypsy-aug-23",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "chicago-sun-times--alex-huntsberger.json",
+      "publishDate": null,
+      "url": "https://chicago.suntimes.com/2023/8/31/23854400/gypsy-review-marriott-theatre-lincolnshire-lucia-spina-mama-rose",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2023/08/everythings-coming-up-rose/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "chicagoonstage--kelly-macblane.json",
+      "publishDate": null,
+      "url": "https://www.chicagoonstage.com/marriott-theatres-gypsy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "chicagotheaterandarts--jodie-jacobs.json",
+      "publishDate": null,
+      "url": "https://chicagotheaterandarts.com/2023/09/01/everything-is-coming-up-roses-for-gypsy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": null,
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2023/9/1/picksinsix-review-gypsy-a-musical-fable-marriott-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
       "showId": "gypsy-west-end-2015",
       "file": "britishtheatrecom--stephen-collins.json",
       "score": 97,
@@ -25364,6 +25494,7 @@
     {
       "showId": "highway-patrol-regional-2024",
       "file": "around-the-town-chicago--jacob-davis.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/highway-patrol/",
       "findings": [
@@ -25390,6 +25521,7 @@
     {
       "showId": "highway-patrol-regional-2024",
       "file": "buzznews--kimberly-katz.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5406-dana-delaney-shines-in-true-life-tale-of-computer-love-in-goodman-s-highway-patrol.html",
       "findings": [
@@ -30523,6 +30655,19 @@
       "file": "curtain-call-reviews--unknown.json",
       "publishDate": null,
       "url": "https://www.curtaincallreviews.co.uk/kenrex",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ed stambollouian\" from kenrex-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "kenrex-sheffield-regional-2024",
+      "file": "guardian--mark-fisher.json",
+      "publishDate": "2024-11-01",
+      "url": "https://www.theguardian.com/stage/2024/nov/01/kenrex-review-jack-holden-ed-stambollouian-playhouse-sheffield",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36977,6 +37122,24 @@
     },
     {
       "showId": "much-ado-about-nothing-royal-shakespeare-regional-2025",
+      "file": "guardian--mark-lawson.json",
+      "publishDate": "2025-04-23",
+      "url": "https://www.theguardian.com/stage/2025/apr/23/much-ado-about-nothing-review-rsc-boots-the-action-to-elite-italian-football-in-a-play-of-two-halves",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-royal-shakespeare-regional-2025",
       "file": "mycultural--unknown.json",
       "publishDate": "2025-04-23",
       "url": "https://mycultural.life/theatre/much-ado-about-nothing-royal-shakespeare-company-stratford-upon-avon/",
@@ -40969,6 +41132,19 @@
       ]
     },
     {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "fairypoweredproductions--unknown.json",
+      "publishDate": "2026-10-29",
+      "url": "https://fairypoweredproductions.com/the-multiple-award-winning-critically-acclaimed-smash-hit-production-of-paddington-the-musical-extends-until-25-june-2028/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2027 (3x) more than 2025 (0x). 2027 matches production: paddington-the-musical-2026"
+        }
+      ]
+    },
+    {
       "showId": "parade-2023",
       "file": "broadwaynews--brittani-samuel.json",
       "score": 80,
@@ -42770,6 +42946,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-bristol-old-vic-regional-2025",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2025-01-19",
+      "url": "https://www.theguardian.com/stage/2025/jan/19/play-on-review-bristol-old-vic-talawa-belgrade-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
         }
       ]
     },
@@ -44731,6 +44920,71 @@
       ]
     },
     {
+      "showId": "ring-of-fire-the-music-of-johnny-cash-regional-2023",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/ring-of-fire-the-johnny-cash-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from ring-of-fire-2006"
+        }
+      ]
+    },
+    {
+      "showId": "ring-of-fire-the-music-of-johnny-cash-regional-2023",
+      "file": "chi-mt--unknown.json",
+      "publishDate": null,
+      "url": "https://www.chi-mt.com/reviews/lyric-opera-flying-dutchman-milwaukee-rep-run-bambi-run-opera-drury-lane-ring-of-fire-sep-23",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from ring-of-fire-2006"
+        }
+      ]
+    },
+    {
+      "showId": "ring-of-fire-the-music-of-johnny-cash-regional-2023",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2023/09/the-music-of-johnny-cash-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from ring-of-fire-2006"
+        }
+      ]
+    },
+    {
+      "showId": "ring-of-fire-the-music-of-johnny-cash-regional-2023",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": null,
+      "url": "https://www.letsplaytheatricalreview.com/blog/ring-of-fire-the-music-of-johnny-cash",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from ring-of-fire-2006"
+        }
+      ]
+    },
+    {
+      "showId": "ring-of-fire-the-music-of-johnny-cash-regional-2023",
+      "file": "splash-magazines--susan-lillis.json",
+      "publishDate": null,
+      "url": "https://chicago.splashmags.com/index.php/2023/09/09/drury-lane-theatre-presents-ring-of-fire-the-music-of-johnny-cash-through-october-22/#gsc.tab=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from ring-of-fire-2006"
+        }
+      ]
+    },
+    {
       "showId": "rock-of-ages-2009",
       "file": "ew--thom-geier.json",
       "score": 66,
@@ -44761,7 +45015,7 @@
     {
       "showId": "rock-of-ages-off-broadway-2019",
       "file": "newsday--barbara-schuler.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2019-07-05",
       "url": "https://www.newsday.com/entertainment/theater/rock-of-ages-y48039",
       "findings": [
@@ -44775,7 +45029,7 @@
     {
       "showId": "rock-of-ages-off-broadway-2019",
       "file": "nytg--stanford-friedman.json",
-      "score": null,
+      "score": 58,
       "publishDate": "2019-07-08",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-rock-of-ages-at-new-world-stages",
       "findings": [
@@ -44789,7 +45043,7 @@
     {
       "showId": "rock-of-ages-off-broadway-2019",
       "file": "nytimes--elisabeth-vincentelli.json",
-      "score": null,
+      "score": 73,
       "publishDate": "2019-07-04",
       "url": "https://www.nytimes.com/2019/07/04/theater/rock-of-ages-review.html",
       "findings": [
@@ -44803,7 +45057,7 @@
     {
       "showId": "rock-of-ages-off-broadway-2019",
       "file": "theatermania--zachary-stewart.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2019-07-08",
       "url": "https://www.theatermania.com/off-broadway/reviews/rock-of-ages-still-rocks_89228.html",
       "findings": [
@@ -44817,7 +45071,7 @@
     {
       "showId": "rock-of-ages-off-broadway-2019",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
-      "score": null,
+      "score": 70,
       "publishDate": "2019-07-11",
       "url": "https://slleiter.blogspot.com/2019/07/40-2019-2020-review-rock-of-ages-seen.html",
       "findings": [
@@ -60611,6 +60865,7 @@
     {
       "showId": "the-penelopiad-regional-2024",
       "file": "broadwayworld--rachel-weinberg.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/chicago/article/Review-THE-PENELOPIAD-at-Goodman-Theatre-20240317",
       "findings": [
@@ -82903,6 +83158,7 @@
     {
       "showId": "fefu-and-her-friends-off-broadway-2019",
       "file": "vulture--helen-shaw.json",
+      "score": 90,
       "publishDate": "2019-11-25",
       "url": "https://www.vulture.com/2019/11/reviews-fefu-and-her-friends-and-a-bright-room-called-day.html",
       "findings": [
