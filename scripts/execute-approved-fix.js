@@ -770,7 +770,9 @@ async function main() {
 
     results.push({ action: action.type, ...result });
     if (result.ok) {
-      applied.push(result.msg);
+      // An edit another fix already made is not this plan's fix: it must not
+      // email or thank the reader a second time (BRO-6489).
+      if (!result.noop) applied.push(result.msg);
       console.log(`  OK: ${result.msg}`);
     } else {
       failed.push(result.reason);
