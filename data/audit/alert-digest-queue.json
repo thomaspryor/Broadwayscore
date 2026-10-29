@@ -300,9 +300,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 19 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 20 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Lint Workflows, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40870784977",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40873014918",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -311,22 +311,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40870784977)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40873014918)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40864524395)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40870784977)"
       },
       {
         "name": "Consecutive failures",
-        "value": "19"
+        "value": "20"
       },
       {
         "name": "Currently failing job(s)",
-        "value": "Unit Tests, Lint Workflows"
+        "value": "Lint Workflows, Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-29T14:45:14.907Z"
+    "queuedAt": "2026-10-29T15:00:10.720Z"
   },
   {
     "conditionKey": "land:land/bro-6485-timeout-author",
