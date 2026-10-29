@@ -9,6 +9,7 @@
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { formatReceipt, evaluateReceipt } = require('./lib/review-receipt.js');
 
 const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3) || null;
@@ -50,6 +51,11 @@ function stamp() {
   sh('git', ['commit', '--amend', '--no-verify', '--cleanup=verbatim', '-m', `${msg}\n\n${line}`]);
   console.log(`review-receipt: stamped HEAD\n${line}`);
   return 0;
+}
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('usage: review-receipt.js stamp | check --base=<sha> --tip=<sha>');
+  process.exit(0);
 }
 
 const cmd = process.argv[2];
