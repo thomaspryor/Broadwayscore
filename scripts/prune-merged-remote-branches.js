@@ -17,23 +17,23 @@ const apply = process.argv.includes('--apply');
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).trim();
 
 function main() {
-  git(['fetch', '-q', 'origin', '+refs/heads/*:refs/remotes/origin/*']);
+  git(['fetch', '-q', '--prune', 'origin', '+refs/heads/*:refs/remotes/origin/*']);
   const merged = new Set(git(['branch', '-r', '--merged', 'origin/main', '--format=%(refname:short)']).split('\n').filter(Boolean));
   const live = new Set(git(['worktree', 'list', '--porcelain']).split('\n').filter((l) => l.startsWith('branch ')).map((l) => l.replace('branch refs/heads/', '')));
   const openPrs = new Set();
   try {
     const { runGhWithFallback } = require('./lib/land-retry-on-cancel');
     const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
-    JSON.parse(runGhWithFallback([`repos/${repo}/pulls?state=open&per_page=100`], { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN })).forEach((p) => openPrs.add(p.head && p.head.ref));
+    JSON.parse(runGhWithFallback(['--paginate', '--slurp', `repos/${repo}/pulls?state=open&per_page=100`], { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN })).flat().forEach((p) => openPrs.add(p.head && p.head.ref));
   } catch (err) {
     console.log(`open PR list unreadable (${String(err.message).split('\n')[0]}): refusing to delete`);
-    if (apply) process.exit(1);
+    process.exit(1); // a dry run that lists open-PR branches as candidates would mislead
   }
-  const rows = git(['for-each-ref', '--format=%(refname:short)|%(objectname)|%(committerdate:iso-strict)', 'refs/remotes/origin/']).split('\n').filter(Boolean);
+  const rows = git(['for-each-ref', '--format=%(refname:short)%09%(objectname)%09%(committerdate:iso-strict)', 'refs/remotes/origin/']).split('\n').filter(Boolean);
   const candidates = [];
   const keptBy = {};
   for (const row of rows) {
-    const [short, tip, date] = row.split('|');
+    const [short, tip, date] = row.split('\t');
     const branch = short.replace(/^origin\//, '');
     const d = decideRemoteBranchPrune({ branch, mergedIntoMain: merged.has(short), tipCommittedAt: date, openPr: openPrs.has(branch), liveWorktree: live.has(branch) });
     if (d.prune) candidates.push({ branch, tip, date });

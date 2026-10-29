@@ -25,6 +25,6 @@ test('keeps unmerged, open-PR, live-worktree, young and undated branches', () =>
   assert.equal(decideRemoteBranchPrune({ ...b, mergedIntoMain: false }).reason, 'unmerged');
   assert.equal(decideRemoteBranchPrune({ ...b, openPr: true }).reason, 'open-pr');
   assert.equal(decideRemoteBranchPrune({ ...b, liveWorktree: true }).reason, 'live-worktree');
-  assert.equal(decideRemoteBranchPrune({ ...b, tipCommittedAt: '2026-10-28T12:00:00Z' }).reason, 'too-young');
+  assert.equal(decideRemoteBranchPrune({ ...b, tipCommittedAt: '2026-10-25T12:00:00Z' }).reason, 'too-young');
   assert.equal(decideRemoteBranchPrune({ ...b, tipCommittedAt: null }).reason, 'tip-date-unreadable');
 });
