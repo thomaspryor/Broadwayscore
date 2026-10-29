@@ -73,8 +73,9 @@ async function main() {
       const dates = await openingDateFor(page);
       if (!dates) { manifest.rejected[id] = 'no-publish-date'; continue; }
       const entry = stage.buildShowEntry({ page, detail, dates, discoveredAt: today });
-      const dupe = stage.findDuplicate(entry, existing);
+      const dupe = stage.findDuplicate(entry, [...existing, ...Object.values(manifest.staged).map((r) => r.show)]);
       if (dupe) { manifest.rejected[id] = `duplicate:${dupe.id}`; continue; }
+      stage.dedupeId(entry, page, new Set([...existing.map((x) => x.id), ...Object.values(manifest.staged).map((r) => r.show.id)]));
       manifest.staged[id] = {
         show: entry,
         poster: page.poster || detail.poster || null,

@@ -29,3 +29,10 @@ test('findDuplicate: same-title Chicago regional or nearby tour', () => {
   assert.ok(s.findDuplicate(e, [{ id: 'p', title: 'Parade', category: 'tour', openingDate: '2025-02-01' }]));
   assert.equal(s.findDuplicate(e, [{ id: 'p', title: 'Parade', category: 'broadway', openingDate: '1998-12-17' }]), null);
 });
+
+test('dedupeId: venue suffix on an id collision', () => {
+  const e = { id: 'hamlet-regional-2024', slug: 'hamlet-regional-2024', venue: 'Writers Theatre, Glencoe, IL' };
+  s.dedupeId(e, { id: 77 }, new Set(['hamlet-regional-2024']));
+  assert.equal(e.id, 'hamlet-regional-2024-writers-theatre');
+  assert.equal(e.slug, e.id);
+});

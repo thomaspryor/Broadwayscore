@@ -73,13 +73,27 @@ function detailFilter(detail) {
 }
 
 /** "<Theater>, <City>, IL" from the detail page (address ends with the city). */
+const IL_CITIES = ['Chicago Heights', 'Oak Park', 'Oak Brook', 'Oakbrook Terrace', 'Highland Park', 'Arlington Heights', 'Lake Forest', 'Lake Zurich', 'Des Plaines', 'Park Ridge', 'Glen Ellyn', 'Downers Grove', 'La Grange', 'Forest Park', 'Morton Grove', 'Crystal Lake', 'Western Springs', 'Evergreen Park', 'Blue Island', 'Park Forest', 'Richton Park', 'St. Charles', 'Chicago', 'Evanston', 'Skokie', 'Glencoe', 'Lincolnshire', 'Aurora', 'Naperville', 'Wilmette', 'Winnetka', 'Rosemont', 'Schaumburg', 'Woodstock', 'Joliet', 'Elgin', 'Batavia', 'Geneva', 'Wheaton', 'Lombard', 'Berwyn', 'Cicero', 'Northbrook', 'Glenview', 'Niles', 'Lincolnwood', 'Palatine', 'Waukegan', 'Libertyville', 'Mundelein', 'Lemont', 'Highwood', 'Barrington', 'Harvey', 'Steger', 'Palos Heights', 'Palos Park', 'Hinsdale', 'Elmhurst', 'Villa Park', 'Bolingbrook', 'Orland Park', 'Tinley Park', 'Mokena', 'Munster', 'Oak Lawn', 'Skokie'];
+const IN_CITIES = ['Hammond', 'Gary', 'Munster', 'Valparaiso', 'Michigan City'];
+
+/** "<Theater>, <City>, <ST>" from the detail page (the address ends with the city). */
 function venueLine(detail, page) {
   const theater = (detail && detail.venue) || String(page.venue || '').split(/\s+at\s+/i).pop();
-  const addr = (detail && detail.address) || '';
-  // The address text is "<street> <City>"; the last capitalised run is the city.
-  const cityMatch = addr.match(/\b(Chicago|Evanston|Skokie|Oak Park|Oak Brook|Oakbrook Terrace|Glencoe|Highland Park|Lincolnshire|Aurora|Naperville|Arlington Heights|Wilmette|Winnetka|Lake Forest|Des Plaines|Park Ridge|Rosemont|Schaumburg|Woodstock|Joliet|Elgin|Batavia|Geneva|St\. Charles|Glen Ellyn|Wheaton|Lombard|Downers Grove|La Grange|Berwyn|Cicero|Forest Park|Northbrook|Glenview|Morton Grove|Niles|Lincolnwood|Palatine|Crystal Lake|Waukegan|Libertyville|Mundelein|Lemont|Hammond|Gary|Munster|Highwood|Barrington|Western Springs|Evergreen Park|Blue Island|Harvey|Chicago Heights|Park Forest|Steger|Richton Park|Lake Zurich)\b/i);
-  const city = cityMatch ? cityMatch[1] : 'Chicago';
-  return `${theater}, ${city}, IL`;
+  const addr = String((detail && detail.address) || '');
+  // The address is "<street> <City>": the city is the last place name in it, so
+  // "1010 Chicago Ave Evanston" is Evanston and "Chicago Heights" is not Chicago.
+  let best = null;
+  for (const city of [...IL_CITIES, ...IN_CITIES]) {
+    const re = new RegExp(`\\b${city.replace('.', '\\.')}\\b`, 'gi');
+    let m;
+    while ((m = re.exec(addr))) {
+      const end = m.index + city.length;
+      if (!best || end > best.end || (end === best.end && city.length > best.city.length)) best = { city, end };
+    }
+  }
+  const city = best ? best.city : 'Chicago';
+  const state = IN_CITIES.includes(city) && !/\bIL\b/.test(addr) ? 'IN' : 'IL';
+  return `${theater}, ${city}, ${state}`;
 }
 
 function pickYear(openingDate) {
@@ -95,7 +109,10 @@ function buildShowEntry({ page, detail, dates, discoveredAt }) {
   const base = slugify(page.title);
   const id = `${base}-regional-${year}`;
   const closing = detail && detail.closingDate ? detail.closingDate : page.closingDate;
-  const status = closing && closing < discoveredAt.slice(0, 10) ? 'closed' : 'open';
+  const today = discoveredAt.slice(0, 10);
+  // No "Thru" date: a run opened >120 days ago is treated as closed (open-ended listings are rare).
+  const daysOld = (Date.parse(today) - Date.parse(dates.openingDate)) / 86400000;
+  const status = closing ? (closing < today ? 'closed' : 'open') : (daysOld > 120 ? 'closed' : 'open');
   const entry = {
     id,
     title: page.title,
@@ -110,10 +127,9 @@ function buildShowEntry({ page, detail, dates, discoveredAt }) {
     discoverySource: 'theatreinchicago',
     localOnly: true,
     discoveredAt,
-    evidenceUrls: [`https://www.theatreinchicago.com/${page.slug}/${page.id}/`],
+    evidenceUrls: [`https://www.theatreinchicago.com/${page.slug || 'show'}/${page.id}/`],
   };
   if (closing) entry.closingDate = closing;
-  if (status === 'closed' && !closing) delete entry.status;
   return entry;
 }
 
@@ -128,7 +144,7 @@ function findDuplicate(entry, existingShows) {
   for (const s of existingShows) {
     if (normTitle(s.title) !== nt) continue;
     const so = Date.parse(s.openingDate || '');
-    if (s.category === 'regional' && /chicago/i.test(s.venue || '')) return s;
+    if (s.category === 'regional' && /, (chicago|[a-z. ]+), (il|in)\b/i.test(s.venue || '') && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
     if (s.category === 'tour') {
       if (Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 400 * 86400000) return s;
       continue;
@@ -138,7 +154,23 @@ function findDuplicate(entry, existingShows) {
   return null;
 }
 
+/**
+ * Two different companies can stage the same title in the same year, and the id
+ * is a live URL: on a collision (existing show or already staged) the venue
+ * slug is appended, then the theatreinchicago id as a last resort.
+ */
+function dedupeId(entry, page, taken) {
+  if (!taken.has(entry.id)) return entry;
+  const venueSlug = slugify(String(entry.venue).split(',')[0]);
+  for (const suffix of [venueSlug, `${venueSlug}-${page.id}`, String(page.id)]) {
+    const id = `${entry.id}-${suffix}`;
+    if (!taken.has(id)) { entry.id = id; entry.slug = id; return entry; }
+  }
+  return entry;
+}
+
 module.exports = {
+  dedupeId,
   MIN_REVIEWS, TOUR_HOUSES, VIRTUAL_VENUE,
   normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, buildShowEntry, findDuplicate,
 };
