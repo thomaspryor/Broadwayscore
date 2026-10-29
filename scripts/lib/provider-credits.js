@@ -32,8 +32,10 @@
  * preference. serp/serp-news/serp-images (url-discovery.js) share one rate;
  * only the telemetry `host` differs by search type, not the credit cost.
  *
- * Every recordSbCall()/sbBilledCredits() call site derives its credits from here (BRO-3072);
- * tests/unit/sb-credits-no-literals.test.mjs fails if a numeric literal comes back.
+ * The SB call sites named in BRO-3072 (scraper.js, site-search-discovery.js, reddit-api.js,
+ * check-cookie-health.js) derive credits from here; tests/unit/sb-credits-no-literals.test.mjs
+ * covers top-level scripts/ and scripts/lib/ .js files only. reddit-api.js still hand-codes
+ * the SD tier table (follow-up).
  */
 'use strict';
 
