@@ -129,6 +129,11 @@ function parseWosReviewTitle(rawTitle, rawTeaser) {
     if (plain && !/\b(?:tour|touring|uk tour|preview|interview|revival|video|live|q&a|q&amp;a|festival|fringe)\b|[–—]/i.test(plain[2])) {
       return { title: cleanReviewedTitle(plain[1]), venue: plain[2].replace(/^the\s+/i, '').trim(), plainForm: true };
     }
+    // 2012-13 house style: the bare show title ("Chimerica"), no venue. Only
+    // fetchWosReviews keeps it, and only when the post carries a rating.
+    if (!plain && t && t.length <= 80 && !/[:?!]|\b(?:round-?up|critics|reviews?|news|photos?|cast|announced)\b/i.test(t)) {
+      return { title: cleanReviewedTitle(t), venue: null, plainForm: true };
+    }
     return null;
   }
   const v = teaser.match(/\bat (?:the )?([A-Z@][\w'’ .&-]*?(?:Theatre|Palladium|Vic|Warehouse|Coliseum|sohoplace|Court|Playhouse))\b/);

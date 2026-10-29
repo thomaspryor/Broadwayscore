@@ -113,3 +113,9 @@ test('parseWosReviewTitle: 2013-14 plain "Title (Venue)" form', () => {
   assert.equal(parseWosReviewTitle('Helen (Tour \u2013 Salford)', ''), null);
   assert.equal(parseWosReviewTitle('Great Britain transfer falls below the fold for critics', ''), null);
 });
+
+test('parseWosReviewTitle: 2012-13 bare "Title" form has no venue and rejects headlines', () => {
+  assert.deepEqual(parseWosReviewTitle('Chimerica', ''), { title: 'Chimerica', venue: null, plainForm: true });
+  assert.equal(parseWosReviewTitle('Review Round-up: Critics persuaded by Disgraced?', ''), null);
+  assert.equal(parseWosReviewTitle('Cast announced for Hamlet', ''), null);
+});
