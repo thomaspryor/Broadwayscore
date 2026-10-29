@@ -59,6 +59,9 @@ const COHORTS = {
     },
   },
 };
+// BRO-6489: NYC show facts. Carries its own fields, prompt and comparisons (scripts/lib/nyc-facts-audit.js);
+// a getter because that module reads this one's helpers.
+Object.defineProperty(COHORTS, 'nyc-facts', { enumerable: true, get: () => require('./nyc-facts-audit').NYC_COHORT });
 
 /** mulberry32: tiny seeded PRNG, so a sample re-draws identically from the same seed. */
 function prng(seed) {
@@ -87,7 +90,7 @@ function seededShuffle(rows, seed) {
  * Proportional allocation by largest remainder, at least one row per stratum
  * when n allows. Returns rows in stratum order, each with `stratum` noted.
  */
-function stratifiedSample(rows, stratumOf, n, seed) {
+function stratifiedSample(rows, stratumOf, n, seed, allocation = 'proportional') {
   const groups = new Map();
   for (const r of rows) {
     const k = stratumOf(r);
@@ -102,6 +105,11 @@ function stratifiedSample(rows, stratumOf, n, seed) {
     const q = (groups.get(k).length / total) * want;
     return { k, base: Math.floor(q), rem: q - Math.floor(q) };
   });
+  // 'equal': the same share per stratum (capped at its size), for a pilot that must see every stratum.
+  if (allocation === 'equal') {
+    const each = Math.floor(want / keys.length);
+    quotas.forEach((q) => { q.base = Math.min(each, groups.get(q.k).length); q.rem = 1; });
+  }
   for (const { k, base } of quotas) alloc.set(k, base);
   if (want >= keys.length) for (const k of keys) if (alloc.get(k) === 0) alloc.set(k, 1);
   let used = [...alloc.values()].reduce((a, b) => a + b, 0);
@@ -150,7 +158,7 @@ function drawSample(shows, cohortName, n, seed) {
   const cohort = COHORTS[base];
   const label = season && base === 'we-historical' ? `West End historical backfill ${season} (we-historical:wos + we-historical:tr + we-historical:olt)` : cohort.label;
   const rows = cohortRows(shows, cohortName);
-  const sample = stratifiedSample(rows, cohort.stratum, n, seed);
+  const sample = stratifiedSample(rows, cohort.stratum, n, seed, cohort.allocation);
   const strata = {};
   for (const r of rows) { const k = cohort.stratum(r); strata[k] = strata[k] || { population: 0, sampled: 0 }; strata[k].population++; }
   for (const r of sample) strata[r.stratum].sampled++;
@@ -415,19 +423,21 @@ const FIELD_KIND = { theatre: 'venue', previewsStart: 'date', openingNight: 'dat
  *   unsourced    no checker gave a page-supported answer
  *   not-stored   we store nothing (a gap, counted apart from errors)
  */
-function triageField(field, show, checks, market) {
+function triageField(field, show, checks, market, impl = {}) {
+  const compare = impl.compareField || compareField;
+  const storedOf = impl.storedValue || storedValue;
   const sourced = [];
   const loose = [];
   for (const raw of checks) {
     const c = { ...raw, answer: normalizeAnswer(raw.answer) };
     const v = answerValue(c.answer, field);
-    const cmp = compareField(field, show, v, market);
+    const cmp = compare(field, show, v, market);
     const source = c.answer && c.answer[field] && c.answer[field].source;
     const row = { checker: c.checker, value: v, source, cmp, supported: !!(c.support && c.support[field]) && !isSelfSource(source) };
     (row.supported ? sourced : loose).push(row);
   }
   const all = [...sourced, ...loose];
-  const stored = storedValue(show, field);
+  const stored = storedOf(show, field);
   if (stored == null || (Array.isArray(stored) && stored.length === 0)) return { status: 'not-stored', detail: all };
   if (sourced.some((r) => r.cmp === 'disagree')) return { status: 'adjudicate', detail: all };
   if (sourced.some((r) => r.cmp === 'agree')) return { status: loose.some((r) => r.cmp === 'disagree') ? 'adjudicate' : 'ok', detail: all };

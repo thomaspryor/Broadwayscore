@@ -1,0 +1,233 @@
+{
+  "the-notebook-2024|previewsStart": {
+    "verdict": "unverifiable",
+    "url": "https://shubert.nyc/press/the-notebook-will-arrive-on-broadway-in-spring-2024/",
+    "correctValue": null,
+    "note": "Only page fetched is the 2023 announcement (Feb 6); no page confirms the actual first preview.",
+    "judgedStored": "2024-02-10"
+  },
+  "between-riverside-and-crazy-2022|previewsStart": {
+    "verdict": "wrong",
+    "url": "https://www.newyorktheatreguide.com/show/26311-between-riverside-and-crazy-tickets",
+    "correctValue": "2022-11-30",
+    "note": "NY Theatre Guide: start date November 30th, 2022.",
+    "judgedStored": "2022-12-01"
+  },
+  "between-riverside-and-crazy-2022|revival": {
+    "verdict": "correct",
+    "url": "https://www.ibdb.com/broadway-production/between-riverside-and-crazy-535124",
+    "correctValue": null,
+    "note": "First Broadway production (IBDB). Its earlier runs were Off-Broadway (Atlantic 2014, Second Stage 2015); it was a 2023 Tony nominee for Best Play, not Best Revival. Broadway rows follow IBDB, so stored new is right. Checker answer counted a pre-Broadway Off-Broadway run (prompt fixed).",
+    "judgedStored": "new"
+  },
+  "the-little-prince-2022|type": {
+    "verdict": "unverifiable",
+    "url": "https://www.broadway.com/shows/the-little-prince-broadway/",
+    "correctValue": null,
+    "note": "Dance/acrobatic adaptation; play vs special is a taste call.",
+    "judgedStored": "play"
+  },
+  "kate-allie-and-the-86-mets-off-broadway-2026|tier": {
+    "verdict": "unverifiable",
+    "url": "https://www.broadwayworld.com/off-off-broadway/regional/KateAllie-and-the--86-Mets-4412245",
+    "correctValue": null,
+    "note": "Both checkers say Off-Off-Broadway (BWW lists it under off-off-broadway) but the page is bot-walled (403); Asylum NYC is a comedy club.",
+    "judgedStored": "off-broadway"
+  },
+  "kate-allie-and-the-86-mets-off-broadway-2026|closing": {
+    "verdict": "unverifiable",
+    "url": "https://www.broadwayworld.com/off-off-broadway/regional/KateAllie-and-the--86-Mets-4412245",
+    "correctValue": null,
+    "note": "BWW 403.",
+    "judgedStored": "2026-11-08"
+  },
+  "kate-allie-and-the-86-mets-off-broadway-2026|revival": {
+    "verdict": "unverifiable",
+    "url": null,
+    "correctValue": null,
+    "note": "Checkers split; no page.",
+    "judgedStored": "new"
+  },
+  "the-morbs-off-broadway-2026|previewsStart": {
+    "verdict": "wrong",
+    "url": "https://art-newyork.org/events/the-morbs/",
+    "correctValue": "2026-10-26",
+    "note": "A.R.T./New York event page: October 26, 2026 - November 14, 2026.",
+    "judgedStored": "2026-10-27"
+  },
+  "the-morbs-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://www.tdf.org/shows/23532/the-morbs/",
+    "correctValue": "2026-11-02",
+    "note": "TDF listing and BWW 2026-10-22 extension article: first preview Oct 26, opening Nov 2, closing Nov 21 (extended from Nov 14). Stored opening was the old first-performance date.",
+    "judgedStored": "2026-10-27"
+  },
+  "do-not-try-this-at-home-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "url": "https://www.newvictory.org/events/2627-live-performance-do-not-try-this-at-home",
+    "correctValue": null,
+    "note": "STREB new show (BWW 2025 headline: debuts new show).",
+    "judgedStored": "new"
+  },
+  "hadestown-2019|revival": {
+    "verdict": "correct",
+    "url": "https://playbill.com/article/hadestown-opens-tonight-at-new-york-theatre-workshop",
+    "correctValue": null,
+    "note": "Transfer of the NYTW production; Tony Best Musical 2019. Checkers called the transfer a revival.",
+    "judgedStored": "new"
+  },
+  "hadestown-2019|otherRuns": {
+    "verdict": "wrong",
+    "url": "https://playbill.com/article/hadestown-opens-tonight-at-new-york-theatre-workshop",
+    "correctValue": null,
+    "note": "2016 New York Theatre Workshop run is neither a priorRun nor a row.",
+    "judgedStored": []
+  },
+  "anthony-devito-jersey-boy-off-broadway-2026|type": {
+    "verdict": "unverifiable",
+    "url": "https://www.sohoplayhouse.com/shows/anthony-devito-jersey-boy",
+    "correctValue": null,
+    "note": "Solo show by a comedian; play vs special is a taste call.",
+    "judgedStored": "play"
+  },
+  "lord-nil-7-deadly-sins-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "url": "https://www.lordnil.com/",
+    "correctValue": "special",
+    "note": "Magic/illusion show; stored play.",
+    "judgedStored": "play"
+  },
+  "duality-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "url": "https://playbill.com/production/duality-off-broadway-a-r-t-new-york-theatres-2024",
+    "correctValue": null,
+    "note": "Playbill production page supports Dec 11.",
+    "judgedStored": "2024-12-11"
+  },
+  "kowalski-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "url": "https://playbill.com/production/kowalski-off-broadway-the-duke-on-42nd-street-2025",
+    "correctValue": null,
+    "note": "Playbill: begins January 12.",
+    "judgedStored": "2025-01-12"
+  },
+  "kowalski-off-broadway-2025|openingNight": {
+    "verdict": "unverifiable",
+    "url": "https://www.tdf.org/shows/22303/kowalski/",
+    "correctValue": null,
+    "note": "No fetched page states either date.",
+    "judgedStored": "2025-01-25"
+  },
+  "clowns-like-me-off-broadway-2024|closing": {
+    "verdict": "wrong",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/clowns-like-me_17372",
+    "correctValue": "2024-08-18",
+    "note": "TheaterMania: Closing Night August 18, 2024 (extension not picked up).",
+    "judgedStored": "2024-07-28"
+  },
+  "five-the-parody-musical-off-broadway-2024|closing": {
+    "verdict": "unverifiable",
+    "url": null,
+    "correctValue": null,
+    "note": "No fetched page.",
+    "judgedStored": "2024-04-21"
+  },
+  "everythings-fine-off-broadway-2022|previewsStart": {
+    "verdict": "unverifiable",
+    "url": "https://www.theatermania.com/news/john-lithgow-to-direct-douglas-mcgrath-in-new-solo-show-",
+    "correctValue": null,
+    "note": "Only an announcement (Sept 20) was fetched.",
+    "judgedStored": "2022-09-28"
+  },
+  "everythings-fine-off-broadway-2022|closing": {
+    "verdict": "wrong",
+    "url": "https://www.thepressroomnyc.com/everythings-fine",
+    "correctValue": "2022-11-03",
+    "note": "Press rep page: closed November 3, 2022.",
+    "judgedStored": "2022-11-01"
+  },
+  "la-fille-du-regiment-off-broadway-2025|type": {
+    "verdict": "correct",
+    "url": "https://www.metopera.org/",
+    "correctValue": null,
+    "note": "Donizetti opera at the Met; checkers answered other.",
+    "judgedStored": "opera"
+  },
+  "la-fille-du-regiment-off-broadway-2025|revival": {
+    "verdict": "unverifiable",
+    "url": null,
+    "correctValue": null,
+    "note": "Met repertory revival; site revival flag is not defined for Met rep.",
+    "judgedStored": "new"
+  },
+  "three-houses-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://playbill.com/article/new-dave-malloy-musical-three-houses-extends-off-broadway",
+    "correctValue": "2024-05-20",
+    "note": "Playbill: official opening May 20; stored May 22 is the opening-night photo article date.",
+    "judgedStored": "2024-05-22"
+  },
+  "jesa-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://publictheater.org/media/4w0f2ckt/jesa-casting-press-release.pdf",
+    "correctValue": "2026-03-20",
+    "note": "Public Theater release: begins March 10, officially opens March 20. Stored = previews.",
+    "judgedStored": "2026-03-10"
+  },
+  "between-two-knees-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "url": "https://playbill.com/article/new-york-premiere-of-between-two-knees-officially-opens-february-13",
+    "correctValue": null,
+    "note": "Playbill: beginning performances February 4.",
+    "judgedStored": "2024-02-04"
+  },
+  "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025|type": {
+    "verdict": "correct",
+    "url": "https://www.metopera.org/about/press-releases/the-metropolitan-operas-202526-season/",
+    "correctValue": null,
+    "note": "Met world-premiere opera.",
+    "judgedStored": "opera"
+  },
+  "encores-the-wild-party-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "url": null,
+    "correctValue": null,
+    "note": "NYT review dated Mar 19 is the morning after a Mar 18 opening.",
+    "judgedStored": "2026-03-18"
+  },
+  "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/mrs-stern-wanders-the-prussian-state-library_",
+    "correctValue": null,
+    "note": "TheaterMania: Opening Night September 12, 2026.",
+    "judgedStored": "2026-09-12"
+  },
+  "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "url": "https://59e59.org/shows/show-detail/mrs-stern-wanders-the-prussian-state-library/",
+    "correctValue": null,
+    "note": "Luna Stage (NJ) production transferring to 59E59; a transfer is new.",
+    "judgedStored": "new"
+  },
+  "orlando-off-broadway-2026|previewsStart": {
+    "verdict": "wrong",
+    "url": "https://www.newyorktheatreguide.com/theatre-news/news/orlando-sets-off-broadway-cast-joining",
+    "correctValue": "2024-04-02",
+    "note": "NY Theatre Guide: runs April 2 to May 12, opening night April 21.",
+    "judgedStored": "2024-03-28"
+  },
+  "orlando-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://www.newyorktheatreguide.com/theatre-news/news/orlando-sets-off-broadway-cast-joining",
+    "correctValue": "2024-04-21",
+    "note": "NY Theatre Guide: opening night April 21.",
+    "judgedStored": "2024-04-15"
+  },
+  "orlando-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "url": "https://www.broadwayworld.com/off-broadway/article/Classic-Stage-Company-Presents-Sarah-Ruhl",
+    "correctValue": "revival",
+    "note": "Sarah Ruhl Orlando had a 2010 Classic Stage Company production.",
+    "judgedStored": "new"
+  }
+}
