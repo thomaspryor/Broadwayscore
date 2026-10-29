@@ -355,7 +355,10 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --limit=10
+          # BRO-6549: bound each model call and review so one hang cannot eat the step.
+          LLM_CALL_TIMEOUT_MS: '60000'
+          LLM_REVIEW_BUDGET_MS: '150000'
+        run: npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --limit=10 --time-budget-min=7
 
       # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
       # files pushed by other jobs since this job's checkout (never files

@@ -1450,6 +1450,14 @@ async function main(): Promise<void> {
   const skipAlreadyAnchored: boolean = (options as any).skipAlreadyAnchored === true;
   let budgetUsed = 0;
   let budgetAborted = false;
+  // BRO-6549: wall-clock run budget (--time-budget-min=N, 0 = off). The poller's
+  // inline-scoring step has a hard 10-minute step timeout; stop starting new
+  // reviews once the next one could not finish within the remaining time.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { parseTimeBudgetMin, createRunBudget } = require('../lib/run-budget');
+  const runBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
+  // 2x: the ensemble call plus a possible serial Haiku fallback (handleScoringResult).
+  const reviewReserveMs = (Number(process.env.LLM_REVIEW_BUDGET_MS) || 0) * 2;
 
   // Phase B-WE ship-check fix P0-2: --max-cost requires --ensemble shape.
   // ReviewScorer (single) returns flat {input, output, total}; the delta
@@ -2160,6 +2168,11 @@ async function main(): Promise<void> {
   for (let i = 0; !skipNewWork && i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
 
+    if (!runBudget.canStartItem(reviewReserveMs)) {
+      console.log(`\n⏱️  Run time budget (${runBudget.minutes} min) reached after ${runBudget.elapsedMin()} min; leaving ${finalFiles.length - i} review(s) unscored for the next run`);
+      break;
+    }
+
     // Already written by this run's resume drain — don't re-queue it.
     if (resumedFilePaths.has(filePath)) continue;
 
@@ -2723,6 +2736,7 @@ Options:
   --dry-run             Don't save results, just print what would happen
   --verbose             Detailed logging
   --limit=N             Only process N reviews
+  --time-budget-min=N   Stop starting new reviews after N minutes (default: off)
   --calibrate           Run calibration analysis after scoring
   --validate            Run aggregator validation after scoring
   --calibrate-only      Only run calibration (no scoring)

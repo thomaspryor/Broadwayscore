@@ -10,6 +10,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES, GEMINI_CALIBRATION_OFFSET } from './config';
+const { createReviewBudget, callWithTimeout } = require('../lib/llm-call-budget.js');
 
 // ========================================
 // TYPES
@@ -91,13 +92,16 @@ export class GeminiScorer {
     let outputTokens = 0;
     let parseFailureCount = 0;
 
+    const budget = createReviewBudget(); // BRO-6549
+
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      if (attempt > 1 && !budget.canRetry()) break;
       try {
         if (this.options.verbose && attempt > 1) {
           console.log(`  Gemini retry attempt ${attempt}/${this.options.maxRetries}...`);
         }
 
-        const result = await model.generateContent(fullPrompt);
+        const result = await callWithTimeout(() => model.generateContent(fullPrompt, { timeout: budget.callTimeout() }), budget.callTimeout(), 'Gemini call');
         const response = result.response;
 
         // Track tokens (Gemini may not provide exact counts)
@@ -158,7 +162,7 @@ export class GeminiScorer {
         if (this.options.verbose) {
           console.log(`  Gemini error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
-        await new Promise(r => setTimeout(r, waitTime));
+        if (!(await budget.sleepOrGiveUp(waitTime))) break;
       }
     }
 

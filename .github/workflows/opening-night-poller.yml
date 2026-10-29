@@ -865,7 +865,22 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # BRO-6549: one hung model call (runs 9168/9169, girls-off-west-end-2026)
+          # used to burn the whole 10-min step. Bound each call and each review,
+          # and give index.ts a shared run deadline (8 of the 10 step minutes).
+          # Only this step opts in; the bulk crons keep the long quota backoffs.
+          LLM_CALL_TIMEOUT_MS: '60000'
+          LLM_REVIEW_BUDGET_MS: '150000'
         run: |
+          SCORE_DEADLINE=$(( $(date +%s) + 480 ))
+          # Minutes left on the shared deadline, one decimal (0 once spent).
+          score_budget_min() { awk -v d="$SCORE_DEADLINE" -v n="$(date +%s)" 'BEGIN{r=(d-n)/60; if (r<0) r=0; printf "%.1f", r}'; }
+          # index.ts only starts a review with 2x LLM_REVIEW_BUDGET_MS (5 min) left
+          # (ensemble + a possible serial fallback call), so below that an invocation
+          # would pay ts-node startup and score nothing. A 0 budget also means
+          # "disabled" to --time-budget-min, so never pass it one.
+          score_has_time() { awk -v d="$SCORE_DEADLINE" -v n="$(date +%s)" 'BEGIN{exit !((d-n)/60 >= 5.0)}'; }
+          SCORE_DEFERRED=0
           SHOWS="${{ steps.find.outputs.shows }}"
           IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
           # BRO-735: same per-show crash counting as the gather stage above —
@@ -876,8 +891,13 @@ jobs:
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
             echo "Scoring: $SHOW_ID"
             SCORE_TOTAL=$((SCORE_TOTAL + 1))
+            if ! score_has_time; then
+              echo "  ⚠️ score time budget spent before $SHOW_ID — left for the next poll"
+              SCORE_DEFERRED=$((SCORE_DEFERRED + 1))
+              continue
+            fi
             SCORE_RC=0
-            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble 2>&1 || SCORE_RC=$?
+            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --time-budget-min="$(score_budget_min)" 2>&1 || SCORE_RC=$?
             # Rescore reviews first scored off a roundup excerpt whose full
             # text has since arrived (often from a parallel job, so the
             # collect-time trigger never saw a score to invalidate). The
@@ -895,11 +915,13 @@ jobs:
               } } catch (_) {}
               console.log(n);
             " 2>/dev/null || echo 0)
-            if [ "${PENDING_RESCORE:-0}" -gt 0 ]; then
+            if [ "${PENDING_RESCORE:-0}" -gt 0 ] && ! score_has_time; then
+              echo "  ⚠️ score time budget spent — $PENDING_RESCORE rescore(s) for $SHOW_ID left queued for the next poll"
+            elif [ "${PENDING_RESCORE:-0}" -gt 0 ]; then
               echo "  Rescoring $PENDING_RESCORE excerpt-scored review(s) on full text for $SHOW_ID"
               # A failure here is logged, not counted as a score-stage crash:
               # one unrescoreable file must not fail every poll.
-              npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --needs-rescore 2>&1 \
+              npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --needs-rescore --time-budget-min="$(score_budget_min)" 2>&1 \
                 || echo "  ⚠️ needs-rescore pass exited non-zero for $SHOW_ID (flags stay queued for the daily drain)"
             fi
             if [ "$SCORE_RC" -ne 0 ]; then
@@ -909,6 +931,8 @@ jobs:
           done
           echo "score_failed=$SCORE_FAILED" >> $GITHUB_OUTPUT
           echo "score_total=$SCORE_TOTAL" >> $GITHUB_OUTPUT
+          echo "score_deferred=$SCORE_DEFERRED" >> $GITHUB_OUTPUT
+          [ "$SCORE_DEFERRED" -gt 0 ] && echo "::warning::$SCORE_DEFERRED show(s) deferred to the next poll (score time budget spent)" || true
         continue-on-error: true
         timeout-minutes: 10
 

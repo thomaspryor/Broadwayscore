@@ -7,6 +7,7 @@
 
 import { LLMScoringResult, ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
+const { createReviewBudget } = require('../lib/llm-call-budget.js');
 
 // ========================================
 // TYPES
@@ -150,14 +151,17 @@ export class OpenAIReviewScorer {
     let inputTokens = 0;
     let outputTokens = 0;
 
+    const budget = createReviewBudget(); // BRO-6549
+
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      if (attempt > 1 && !budget.canRetry()) break;
       try {
         if (this.options.verbose && attempt > 1) {
           console.log(`  OpenAI retry attempt ${attempt}/${this.options.maxRetries}...`);
         }
 
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
-          signal: AbortSignal.timeout(300000),
+          signal: AbortSignal.timeout(budget.callTimeout()),
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -189,7 +193,7 @@ export class OpenAIReviewScorer {
           if (this.options.verbose) {
             console.log(`  OpenAI error (${response.status}): ${errorBody.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
           }
-          await new Promise(r => setTimeout(r, waitTime));
+          if (!(await budget.sleepOrGiveUp(waitTime))) break;
           continue;
         }
 
@@ -233,7 +237,7 @@ export class OpenAIReviewScorer {
         if (this.options.verbose) {
           console.log(`  OpenAI network error: ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
-        await new Promise(r => setTimeout(r, waitTime));
+        if (!(await budget.sleepOrGiveUp(waitTime))) break;
       }
     }
 
@@ -308,14 +312,17 @@ export class OpenAIReviewScorer {
     let outputTokens = 0;
     let parseFailureCount = 0;
 
+    const budget = createReviewBudget(); // BRO-6549
+
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      if (attempt > 1 && !budget.canRetry()) break;
       try {
         if (this.options.verbose && attempt > 1) {
           console.log(`  OpenAI V5 retry attempt ${attempt}/${this.options.maxRetries}...`);
         }
 
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
-          signal: AbortSignal.timeout(300000),
+          signal: AbortSignal.timeout(budget.callTimeout()),
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -347,7 +354,7 @@ export class OpenAIReviewScorer {
           if (this.options.verbose) {
             console.log(`  OpenAI V5 error (${response.status}): ${errorBody.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
           }
-          await new Promise(r => setTimeout(r, waitTime));
+          if (!(await budget.sleepOrGiveUp(waitTime))) break;
           continue;
         }
 
@@ -406,7 +413,7 @@ export class OpenAIReviewScorer {
         if (this.options.verbose) {
           console.log(`  OpenAI V5 network error: ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
-        await new Promise(r => setTimeout(r, waitTime));
+        if (!(await budget.sleepOrGiveUp(waitTime))) break;
       }
     }
 

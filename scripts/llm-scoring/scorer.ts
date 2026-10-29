@@ -10,6 +10,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { LLMScoringResult, ScoredReviewFile, ReviewTextFile, SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
+const { createReviewBudget, callWithTimeout } = require('../lib/llm-call-budget.js');
 
 // Import text quality assessment module
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -175,20 +176,23 @@ export class ReviewScorer {
     let inputTokens = 0;
     let outputTokens = 0;
 
+    const budget = createReviewBudget(); // BRO-6549
+
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      if (attempt > 1 && !budget.canRetry()) break;
       try {
         if (this.options.verbose && attempt > 1) {
           console.log(`  Retry attempt ${attempt}/${this.options.maxRetries}...`);
         }
 
-        const response = await this.client.messages.create({
+        const response = await callWithTimeout(() => this.client.messages.create({
           model: this.options.model,
           max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: [
             { role: 'user', content: prompt }
           ]
-        });
+        }, { timeout: budget.callTimeout(), maxRetries: 0 }), budget.callTimeout(), 'Anthropic call');
 
         // Track tokens
         inputTokens = response.usage.input_tokens;
@@ -197,7 +201,7 @@ export class ReviewScorer {
         this.totalOutputTokens += outputTokens;
 
         // Extract text content
-        const textContent = response.content.find(c => c.type === 'text');
+        const textContent = response.content.find((c: any) => c.type === 'text');
         if (!textContent || textContent.type !== 'text') {
           lastError = 'No text content in response';
           continue;
@@ -232,7 +236,7 @@ export class ReviewScorer {
         if (this.options.verbose) {
           console.log(`  Error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
-        await new Promise(r => setTimeout(r, waitTime));
+        if (!(await budget.sleepOrGiveUp(waitTime))) break;
       }
     }
 
@@ -352,13 +356,16 @@ export class ReviewScorer {
     let outputTokens = 0;
     let parseFailureCount = 0;
 
+    const budget = createReviewBudget(); // BRO-6549
+
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      if (attempt > 1 && !budget.canRetry()) break;
       try {
         if (this.options.verbose && attempt > 1) {
           console.log(`  Claude V5 retry attempt ${attempt}/${this.options.maxRetries}...`);
         }
 
-        const response = await this.client.messages.create({
+        const response = await callWithTimeout(() => this.client.messages.create({
           model: this.options.model,
           max_tokens: 500,
           // Pin temperature so A/B reruns on the same input give the same score.
@@ -379,7 +386,7 @@ export class ReviewScorer {
           messages: [
             { role: 'user', content: prompt }
           ]
-        });
+        }, { timeout: budget.callTimeout(), maxRetries: 0 }), budget.callTimeout(), 'Anthropic call');
 
         // Track tokens. With caching on, input_tokens EXCLUDES cached tokens —
         // the cache fields must be tracked separately or cost math undercounts.
@@ -391,7 +398,7 @@ export class ReviewScorer {
         this.totalCacheReadTokens += Number(response.usage.cache_read_input_tokens) || 0;
 
         // Extract text content
-        const textContent = response.content.find(c => c.type === 'text');
+        const textContent = response.content.find((c: any) => c.type === 'text');
         if (!textContent || textContent.type !== 'text') {
           lastError = 'No text content in response';
           continue;
@@ -442,7 +449,7 @@ export class ReviewScorer {
         if (this.options.verbose) {
           console.log(`  Claude error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
-        await new Promise(r => setTimeout(r, waitTime));
+        if (!(await budget.sleepOrGiveUp(waitTime))) break;
       }
     }
 

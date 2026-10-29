@@ -377,6 +377,9 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          # BRO-6549: a hung model call must not burn the 90-min job on opening night.
+          LLM_CALL_TIMEOUT_MS: '60000'
+          LLM_REVIEW_BUDGET_MS: '150000'
         run: |
           echo "=== Scoring reviews (all 3 models) ==="
           # Score only this show's unscored reviews
@@ -384,7 +387,8 @@ jobs:
             --show="${INPUT_SHOW_ID}" \
             --ensemble \
             --unscored-only \
-            --limit=30
+            --limit=30 \
+            --time-budget-min=25
           echo "Scoring complete."
 
       # GAP 1 FIX: Push scored review-text files back to private repo.

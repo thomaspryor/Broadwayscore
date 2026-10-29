@@ -7,6 +7,7 @@
 
 import { SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
+const { createReviewBudget } = require('../lib/llm-call-budget.js');
 
 // ========================================
 // TYPES
@@ -61,14 +62,17 @@ export class KimiScorer {
     let outputTokens = 0;
     let parseFailureCount = 0;
 
+    const budget = createReviewBudget(); // BRO-6549
+
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      if (attempt > 1 && !budget.canRetry()) break;
       try {
         if (this.options.verbose && attempt > 1) {
           console.log(`  Kimi retry attempt ${attempt}/${this.options.maxRetries}...`);
         }
 
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          signal: AbortSignal.timeout(300000),
+          signal: AbortSignal.timeout(budget.callTimeout()),
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -100,7 +104,7 @@ export class KimiScorer {
           if (this.options.verbose) {
             console.log(`  Kimi error (${response.status}): ${errorBody.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
           }
-          await new Promise(r => setTimeout(r, waitTime));
+          if (!(await budget.sleepOrGiveUp(waitTime))) break;
           continue;
         }
 
@@ -164,7 +168,7 @@ export class KimiScorer {
         if (this.options.verbose) {
           console.log(`  Kimi network error: ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
         }
-        await new Promise(r => setTimeout(r, waitTime));
+        if (!(await budget.sleepOrGiveUp(waitTime))) break;
       }
     }
 
