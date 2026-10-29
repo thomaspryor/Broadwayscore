@@ -1,26 +1,76 @@
 {
-  "updatedAt": "2026-10-29T00:32:56.107Z",
-  "processed": 57,
-  "failed": 12,
-  "successRate": "82.6%",
+  "updatedAt": "2026-10-29T00:56:40.244Z",
+  "processed": 68,
+  "failed": 56,
+  "successRate": "54.8%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 7,
-    "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 11
+    "scrapingdog": 6,
+    "scrapingbee": 3,
+    "brightdata": 1,
+    "archiveToday": 5,
+    "archive": 20
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-29T00:24:52.634Z",
       "event": "bb-session",
-      "session": "1ac9b975",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "7dd7e515",
+      "url": "https://www.wsj.com/articles/dreaming-zenzile-miriam-makeba-somi-kakoma-pata-pat"
+    },
+    {
+      "t": "2026-10-29T00:14:08.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-29T00:16:46.201Z",
+      "event": "bb-session",
+      "session": "84947c17",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/english-03-21-22"
+    },
+    {
+      "t": "2026-10-29T00:16:46.986Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-29T00:16:58.778Z",
+      "event": "bb-session",
+      "session": "27b855af",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/english-03-21-22"
+    },
+    {
+      "t": "2026-10-29T00:16:59.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-29T00:34:57.032Z",
+      "event": "bb-session",
+      "session": "0f30a53a",
+      "url": "https://www.express.co.uk/entertainment/theatre/605574/First-night-review-Nichol"
+    },
+    {
+      "t": "2026-10-29T00:35:14.207Z",
+      "event": "bb-session",
+      "session": "ec54c826",
+      "url": "https://www.washingtonpost.com/books/2024/06/24/gentleman-thief-dean-jobb-review"
+    },
+    {
+      "t": "2026-10-29T00:35:15.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-29T00:40:17.950Z",
+      "event": "bb-session",
+      "session": "4ba6ac20",
+      "url": "http://www.hollywoodreporter.com/review/kit-harrington-doctor-faustus-theater-88"
     }
   ]
 }
