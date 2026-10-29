@@ -2102329,21 +2102329,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T23:25:48.716Z",
-    "completedAt": "2026-10-29T23:26:37.126Z",
-    "totalReviews": 10,
-    "processed": 10,
-    "skipped": 0,
+    "startedAt": "2026-10-29T23:27:19.904Z",
+    "completedAt": "2026-10-29T23:27:25.478Z",
+    "totalReviews": 3,
+    "processed": 1,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 61970,
-      "output": 3087,
-      "cacheRead": 38070,
+      "input": 5773,
+      "output": 246,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 153499
+      "total": 14695
     },
-    "costUsd": 0.23264050000000003,
-    "runId": "40972473555",
+    "costUsd": 0.0214712,
+    "runId": "40972773110",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2106207,6 +2106207,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "anything-goes-regional-2024",
+        "ourDistribution": {
+          "up": 13,
+          "flat": 0,
+          "down": 0,
+          "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "apologia-west-end-2017",
         "ourDistribution": {
           "up": 7,
@@ -2107042,16 +2107052,6 @@
           "flat": 0,
           "down": 0,
           "total": 7
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "beautiful-the-carole-king-musical-regional-2025",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 2,
-          "down": 0,
-          "total": 10
         },
         "hasDisagreement": false
       },
@@ -2116713,6 +2116713,16 @@
           "flat": 5,
           "down": 2,
           "total": 19
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hit-me-like-a-flower-regional-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2127947,6 +2127957,16 @@
           "flat": 7,
           "down": 2,
           "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "seagulls-regional-2023",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2140358,8 +2140378,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T23:31:33.391Z",
-    "completedAt": "2026-10-29T23:31:33.395Z",
+    "startedAt": "2026-10-29T23:32:21.392Z",
+    "completedAt": "2026-10-29T23:32:21.393Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2140372,7 +2140392,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40972473555",
+    "runId": "40972773110",
     "source": "comparative-rescore",
     "errorDetails": []
   }
