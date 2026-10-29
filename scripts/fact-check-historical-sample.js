@@ -11,6 +11,8 @@
  *           per show, so a re-run only pays for rows not yet checked.
  *   report  triage every field, merge the human adjudications file, print
  *           the per-field error table (wrong / checked, Wilson 95%).
+ *   consistency  nyc-facts only: free whole-scope checks (venue registry,
+ *           status vs dates, preview = opening), no model calls (BRO-6489).
  *
  * Usage:
  *   node scripts/fact-check-historical-sample.js sample --cohort=we-historical --n=100 --seed=5080
@@ -18,6 +20,7 @@
  *     (a season sample is cohort "we-historical-2024-2025" for check/report)
  *   node scripts/fact-check-historical-sample.js check  --cohort=we-historical [--limit=N] [--ids=a,b] [--max-usd=12] [--concurrency=4]
  *   node scripts/fact-check-historical-sample.js report --cohort=we-historical [--json] [--triage]
+ *   node scripts/fact-check-historical-sample.js sample --cohort=nyc-facts --n=40 --seed=6489  (then check/report)
  *
  * Files (data/audit/fact-check/): <cohort>-sample.json (ids, seed, strata),
  * <cohort>-checks.jsonl (checker answers, cited URLs, support flags; no page
@@ -35,7 +38,7 @@ const { foldDiacritics } = require('./lib/title-match');
 const { hasHelpFlag } = require('./lib/cli-help');
 
 if (require.main === module && (!process.argv[2] || hasHelpFlag(process.argv.slice(2)))) {
-  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 27).join('\n'));
+  console.log(fs.readFileSync(__filename, 'utf8').split("\n").slice(2, 30).join('\n'));
   process.exit(0);
 }
 
@@ -61,6 +64,22 @@ function loadShows() {
   const j = JSON.parse(fs.readFileSync(p, 'utf8'));
   return Array.isArray(j) ? j : j.shows;
 }
+
+/** Per-cohort fields and comparisons; cohorts without their own use the BRO-5080 set. */
+function cohortImpl(cohort) {
+  const c = fc.COHORTS[fc.parseCohortKey(cohort).base];
+  return {
+    fields: c.fields || fc.FACT_FIELDS,
+    fieldKind: c.fieldKind || fc.FIELD_KIND,
+    pageSupports: c.pageSupports || fc.pageSupports,
+    storedValue: c.storedValue || fc.storedValue,
+    compareField: c.compareField || fc.compareField,
+    buildPrompt: c.buildPrompt ? (show) => c.buildPrompt(show, todayNy()) : (show) => fc.buildFactPrompt(show, cohort),
+    skip: new Set(c.skip || []),
+  };
+}
+
+function todayNy() { return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date()); }
 
 const files = (cohort) => ({
   sample: path.join(OUT_DIR, `${cohort}-sample.json`),
@@ -163,10 +182,10 @@ async function fetchPage(url) {
 }
 
 /** For each fact field: does the cited page state the answered value? */
-async function supportFor(rawAnswer) {
+async function supportFor(rawAnswer, impl = cohortImpl('we-historical')) {
   const answer = fc.normalizeAnswer(rawAnswer);
   const support = {}; const resolved = {};
-  for (const field of fc.FACT_FIELDS) {
+  for (const field of impl.fields) {
     const f = answer && answer[field];
     if (!f || f.value == null || (Array.isArray(f.value) && !f.value.length)) continue;
     const page = await fetchPage(f.source);
@@ -174,13 +193,14 @@ async function supportFor(rawAnswer) {
     // Gemini cites redirect links: keep the resolved URL as the source, and never count our own site.
     if (!page.error && page.url) f.source = page.url;
     if (page.error || fc.isSelfSource(page.url)) { support[field] = false; continue; }
-    const kind = fc.FIELD_KIND[field];
-    const values = Array.isArray(f.value) ? f.value.map((v) => (v && typeof v === 'object' ? v.name : v)) : [f.value];
+    const kind = impl.fieldKind[field];
+    // 'run' items ({theatre, began, relation}) are checked whole by the cohort's pageSupports.
+    const values = Array.isArray(f.value) ? f.value.map((v) => (v && typeof v === 'object' && kind !== 'run' ? v.name : v)) : [f.value];
     let ok = true;
     for (let i = 0; i < values.length; i++) {
       if (!values[i]) continue;
       const own = f.itemSources && f.itemSources[i] && f.itemSources[i] !== f.source ? await fetchPage(f.itemSources[i]) : page;
-      if (own.error || fc.isSelfSource(own.url) || !fc.pageSupports(own.text, values[i], kind)) { ok = false; break; }
+      if (own.error || fc.isSelfSource(own.url) || !impl.pageSupports(own.text, values[i], kind)) { ok = false; break; }
     }
     support[field] = ok;
   }
@@ -207,7 +227,8 @@ function posterPath(show) {
 
 async function checkShow(show, cohort) {
   const out = { id: show.id, checkedAt: new Date().toISOString(), facts: {}, synopsis: {}, poster: {} };
-  const prompt = fc.buildFactPrompt(show, cohort);
+  const impl = cohortImpl(cohort);
+  const prompt = impl.buildPrompt(show);
   const runs = await Promise.allSettled([
     askGemini([{ text: prompt }], { grounded: true }),
     askOpenAI([{ type: 'input_text', text: prompt }], { search: true }),
@@ -215,11 +236,11 @@ async function checkShow(show, cohort) {
   for (const [i, name] of [[0, 'gemini'], [1, 'openai']]) {
     const r = runs[i];
     if (r.status !== 'fulfilled') { out.facts[name] = { error: String(r.reason && r.reason.message || r.reason).slice(0, 200) }; continue; }
-    const { support, resolved, answer } = await supportFor(fc.parseJsonReply(r.value.text));
+    const { support, resolved, answer } = await supportFor(fc.parseJsonReply(r.value.text), impl);
     out.facts[name] = { answer, support, resolved, citations: [...new Set(r.value.chunks)].slice(0, 8) };
   }
 
-  if (show.synopsis) {
+  if (show.synopsis && !impl.skip.has('synopsis')) {
     out.synopsis.rules = synopsisStoryProblems(show, nonStoryReason);
     const sp = synopsisPrompt(show, cohort);
     const s = await Promise.allSettled([
@@ -230,7 +251,7 @@ async function checkShow(show, cohort) {
     out.synopsis.openai = s[1].status === 'fulfilled' ? fc.parseJsonReply(s[1].value.text) : { error: String(s[1].reason).slice(0, 200) };
   }
 
-  const pfile = posterPath(show);
+  const pfile = impl.skip.has('poster') ? null : posterPath(show);
   if (pfile) {
     const ext = path.extname(pfile).slice(1).toLowerCase();
     const mime = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
@@ -251,13 +272,14 @@ async function checkShow(show, cohort) {
 /** Re-normalize cached answers and re-fetch cited pages (no model calls). */
 async function cmdResupport() {
   const f = files(arg('cohort'));
+  const impl = cohortImpl(arg('cohort'));
   const checks = readChecks(f.checks);
   const out = [];
   for (const r of checks.values()) {
     for (const k of ['gemini', 'openai']) {
       const x = r.facts[k];
       if (!x || !x.answer) continue;
-      const { support, resolved, answer } = await supportFor(x.answer);
+      const { support, resolved, answer } = await supportFor(x.answer, impl);
       // Never downgrade: a page that supported the value at check time and
       // fails now (throttled, moved) keeps its earlier support.
       for (const [field, v] of Object.entries(x.support || {})) if (v) support[field] = true;
@@ -321,15 +343,23 @@ function triage(cohort) {
   const byId = new Map(loadShows().map((s) => [s.id, s]));
   const checks = readChecks(f.checks);
   const market = fc.parseCohortKey(cohort).base === 'we-historical' ? 'west-end' : 'broadway';
+  const impl = cohortImpl(cohort);
+  const shows = [...byId.values()];
   const rows = [];
-  for (const { id } of sample.ids) {
+  for (const { id, stratum } of sample.ids) {
     const show = byId.get(id); const c = checks.get(id);
     if (!show || !c) continue;
     const cs = ['gemini', 'openai'].map((k) => ({ checker: k, answer: c.facts[k] && c.facts[k].answer, support: c.facts[k] && c.facts[k].support }));
-    for (const field of fc.FACT_FIELDS) {
-      const t = fc.triageField(field, show, cs, market);
-      rows.push({ id, title: show.title, field, stored: fc.storedValue(show, field), status: t.status, detail: t.detail });
+    for (const field of impl.fields) {
+      if (field === 'otherRuns') {
+        const t = require('./lib/nyc-facts-audit').otherRunsTriage(show, shows, cs.map((x) => ({ ...x, answer: fc.normalizeAnswer(x.answer) })));
+        rows.push({ id, stratum, title: show.title, field, stored: (show.priorRuns || []).map((p) => p.venue), status: t.status, detail: t.runs });
+        continue;
+      }
+      const t = fc.triageField(field, show, cs, market, impl);
+      rows.push({ id, stratum, title: show.title, field, stored: impl.storedValue(show, field), status: t.status, detail: t.detail });
     }
+    if (impl.skip.has('category')) continue; // nyc-facts checks category as its own `tier` field and skips synopsis/poster
     // Category = market. Flag when a checker places the production outside it.
     const cities = cs.map((x) => { const a = fc.normalizeAnswer(x.answer); return a && a.city && a.city.value; }).filter(Boolean).map(String);
     const wrongCity = cities.filter((x) => (market === 'west-end' ? !/london/i.test(x) : !/new york|manhattan|broadway/i.test(x)));
@@ -405,20 +435,47 @@ function cmdReport() {
     return;
   }
   const verdicts = verdictsFor(cohort);
-  const table = fc.errorTable(verdicts.map((v) => (v.verdict === 'pending' ? { ...v, verdict: 'unverifiable' } : v)));
+  const asTable = (vs) => fc.errorTable(vs.map((v) => (v.verdict === 'pending' ? { ...v, verdict: 'unverifiable' } : v)));
+  const table = asTable(verdicts);
   const pending = verdicts.filter((v) => v.verdict === 'pending').length;
-  if (arg('json')) { console.log(JSON.stringify({ cohort, table, pending, wrong: verdicts.filter((v) => v.verdict === 'wrong') }, null, 2)); return; }
+  // An equal-allocation sample over-weights small strata: the pooled rate is not a
+  // population rate, so report each stratum on its own (BRO-6489).
+  const sample = JSON.parse(fs.readFileSync(files(cohort).sample, 'utf8'));
+  const stratumOf = new Map(sample.ids.map((r) => [r.id, r.stratum]));
+  const byStratum = {};
+  for (const k of new Set(sample.ids.map((r) => r.stratum))) byStratum[k] = asTable(verdicts.filter((v) => stratumOf.get(v.id) === k));
+  if (arg('json')) { console.log(JSON.stringify({ cohort, table, byStratum, strata: sample.strata, pending, wrong: verdicts.filter((v) => v.verdict === 'wrong') }, null, 2)); return; }
   console.log(`${cohort}: ${new Set(rows.map((r) => r.id)).size} shows checked; ${pending} field verdicts still pending adjudication`);
-  console.log('field          wrong/checked   rate    95% CI          unverifiable  not stored');
-  for (const [field, t] of Object.entries(table)) {
-    console.log(`${field.padEnd(14)} ${`${t.wrong}/${t.checked}`.padEnd(15)} ${(t.rate * 100).toFixed(1).padStart(5)}%  ${(t.ci95[0] * 100).toFixed(1)}-${(t.ci95[1] * 100).toFixed(1)}%`.padEnd(64) + `${String(t.unverifiable).padEnd(13)} ${t.notStored}`);
+  const print = (tbl) => {
+    console.log('field          wrong/checked   rate    95% CI          unverifiable  not stored');
+    for (const [field, t] of Object.entries(tbl)) {
+      console.log(`${field.padEnd(14)} ${`${t.wrong}/${t.checked}`.padEnd(15)} ${(t.rate * 100).toFixed(1).padStart(5)}%  ${(t.ci95[0] * 100).toFixed(1)}-${(t.ci95[1] * 100).toFixed(1)}%`.padEnd(64) + `${String(t.unverifiable).padEnd(13)} ${t.notStored}`);
+    }
+  };
+  print(table);
+  if (fc.COHORTS[fc.parseCohortKey(cohort).base].allocation === 'equal') {
+    for (const [k, tbl] of Object.entries(byStratum)) { console.log(`\n[${k}] population ${(sample.strata[k] || {}).population}`); print(tbl); }
   }
+}
+
+/** Free whole-scope NYC checks (nyc-facts-audit consistencyFindings); no model calls. */
+function cmdConsistency() {
+  const findings = require('./lib/nyc-facts-audit').consistencyFindings(loadShows(), todayNy());
+  const counts = {};
+  for (const f of findings) counts[f.class] = (counts[f.class] || 0) + 1;
+  fs.mkdirSync(OUT_DIR, { recursive: true });
+  const out = path.join(OUT_DIR, 'nyc-facts-consistency.json');
+  fs.writeFileSync(out, JSON.stringify({ generatedAt: new Date().toISOString(), counts, findings }, null, 2) + '\n');
+  console.log(JSON.stringify(counts));
+  if (arg('list')) for (const f of findings.filter((x) => !arg('class') || x.class === arg('class'))) console.log(`${f.class}\t${f.id}\t${f.detail}`);
+  console.log(`-> ${path.relative(ROOT, out)}`);
 }
 
 if (require.main === module) {
   const cmd = process.argv[2];
-  const run = { sample: cmdSample, check: cmdCheck, report: cmdReport, resupport: cmdResupport }[cmd];
+  const run = { sample: cmdSample, check: cmdCheck, report: cmdReport, resupport: cmdResupport, consistency: cmdConsistency }[cmd];
   if (!run) { console.error(`unknown command ${cmd}`); process.exit(2); }
+  if (cmd !== 'consistency' && !arg('cohort')) { console.error(`${cmd} needs --cohort=<name> (e.g. we-historical, nyc-facts)`); process.exit(2); }
   Promise.resolve(run()).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }
 

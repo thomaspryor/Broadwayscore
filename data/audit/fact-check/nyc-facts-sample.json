@@ -1,0 +1,188 @@
+{
+  "cohort": "nyc-facts",
+  "label": "NYC shows (Broadway + Off-Broadway) begun since 2021-06-01, plus current and upcoming",
+  "seed": 6489,
+  "n": 40,
+  "population": 1085,
+  "strata": {
+    "current-upcoming": {
+      "population": 330,
+      "sampled": 10
+    },
+    "bway-recent": {
+      "population": 169,
+      "sampled": 10
+    },
+    "ob-recent": {
+      "population": 316,
+      "sampled": 10
+    },
+    "ob-backfilled": {
+      "population": 270,
+      "sampled": 10
+    }
+  },
+  "ids": [
+    {
+      "id": "the-notebook-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "death-of-a-salesman-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-shark-is-broken-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "how-to-dance-in-ohio-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "patriots-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "american-buffalo-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "eureka-day-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "between-riverside-and-crazy-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-little-prince-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "gutenberg-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "let-em-eat-cake-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "kate-allie-and-the-86-mets-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "now-you-see-me-live-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-morbs-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "do-not-try-this-at-home-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "dead-centre-deaf-republic-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "hadestown-2019",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "anthony-devito-jersey-boy-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "stripped-gertrude-or-aspargus-soup-in-august-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "lord-nil-7-deadly-sins-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "duality-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-black-wolfe-tone-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "another-shot-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "kowalski-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "clowns-like-me-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "five-the-parody-musical-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "everythings-fine-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "heaux-church-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-knock-on-the-roof-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "titus-andronicus-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "la-fille-du-regiment-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "three-houses-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "jesa-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "indian-princesses-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "between-two-knees-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "encores-the-wild-party-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "orlando-off-broadway-2026",
+      "stratum": "ob-recent"
+    }
+  ],
+  "drawnAt": "2026-10-29T02:22:06.284Z"
+}
