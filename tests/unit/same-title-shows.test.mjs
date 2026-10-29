@@ -6,13 +6,21 @@ import { sameTitleShowIds } from '../../src/lib/same-title-shows.ts';
 
 test('flags both productions of a same-title pair, leaves the rest alone', () => {
   const ids = sameTitleShowIds([
-    { id: 'dream-globe', title: "A Midsummer Night's Dream" },
+    { id: 'dream-globe', title: "A Midsummer Night's Dream", venue: "Shakespeare's Globe" },
     { id: 'dream-park', title: 'A Midsummer Night’s Dream' },
-    { id: 'cinderella-pal', title: 'Cinderella' },
-    { id: 'cinderella-lyric', title: ' cinderella ' },
+    { id: 'cinderella-pal', title: 'Cinderella', venue: 'London Palladium' },
+    { id: 'cinderella-lyric', title: ' cinderella ', venue: 'Lyric Hammersmith' },
     { id: 'hamilton', title: 'Hamilton' },
   ]);
   assert.deepEqual([...ids].sort(), ['cinderella-lyric', 'cinderella-pal', 'dream-globe', 'dream-park']);
+});
+
+test('same title but identical venue (two tours) is not flagged', () => {
+  const ids = sameTitleShowIds([
+    { id: 'a', title: 'Beetlejuice', venue: 'North American Tour' },
+    { id: 'b', title: 'Beetlejuice', venue: 'North American Tour' },
+  ]);
+  assert.equal(ids.size, 0);
 });
 
 test('no duplicates -> empty set; empty list -> empty set', () => {
@@ -20,14 +28,15 @@ test('no duplicates -> empty set; empty list -> empty set', () => {
   assert.equal(sameTitleShowIds([]).size, 0);
 });
 
-test('real shows.json: every same-title group in the current list is flagged', () => {
+test('real shows.json: every flagged row has a same-title twin at a different venue', () => {
   const shows = JSON.parse(readFileSync('data/shows.json', 'utf8')).shows;
   const open = shows.filter((s) => s.status === 'open');
   const flagged = sameTitleShowIds(open);
-  const counts = {};
-  for (const s of open) counts[s.title.toLowerCase().trim()] = (counts[s.title.toLowerCase().trim()] || 0) + 1;
-  const dupRows = open.filter((s) => counts[s.title.toLowerCase().trim()] > 1).length;
-  assert.ok(flagged.size >= dupRows);
+  for (const id of flagged) {
+    const s = open.find((x) => x.id === id);
+    const twins = open.filter((x) => x.title.toLowerCase().trim() === s.title.toLowerCase().trim());
+    assert.ok(twins.length > 1 && new Set(twins.map((x) => x.venue)).size > 1, id);
+  }
 });
 
 test('ShowListCard renders venue only behind showVenue, in both variants; lists wire it', () => {
