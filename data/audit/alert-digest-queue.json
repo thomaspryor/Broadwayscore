@@ -1286,9 +1286,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 20 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 21 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40951761599",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40954212563",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -1297,22 +1297,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40951761599)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40954212563)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40948259968)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40951761599)"
       },
       {
         "name": "Consecutive failures",
-        "value": "20"
+        "value": "21"
       },
       {
         "name": "Currently failing job(s)",
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-29T21:39:14.068Z"
+    "queuedAt": "2026-10-29T21:44:01.291Z"
   },
   {
     "conditionKey": "corpus-drift:autoclear-vs-ensemble",
