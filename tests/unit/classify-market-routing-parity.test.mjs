@@ -100,6 +100,12 @@ test('classify-market-routing parity vs committed baseline (95 samples)', () => 
   const shows = loadShows().filter(s =>
     !s.discoveredAt || !(Date.parse(s.discoveredAt) > baselineAt));
   const showById = new Map(shows.map(s => [s.id, s]));
+  // A show renamed after the baseline keeps its old id in aliases[] (BRO-6505:
+  // broken-glass-west-end-2026 -> broken-glass-off-west-end-2026). Resolve
+  // through aliases so a rename isn't reported as a missing show.
+  for (const s of shows) {
+    for (const a of s.aliases || []) if (!showById.has(a)) showById.set(a, s);
+  }
   const siblingIndex = buildSiblingIndex(shows);
 
   assert.ok(Array.isArray(baseline.samples), 'baseline.samples must be an array');
@@ -123,7 +129,7 @@ test('classify-market-routing parity vs committed baseline (95 samples)', () => 
       continue;
     }
     const input = {
-      showId: sample.showId,
+      showId: show.id,
       url: sample.url,
       outletId: sample.outletId,
       publishDate: sample.publishDate,
