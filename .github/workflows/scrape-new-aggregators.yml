@@ -265,6 +265,32 @@ jobs:
           fi
           exit 0
 
+      # BRO-6518: Chicago local productions from theatreinchicago.com. Advisory:
+      # it adds rows to data/shows.json (validated; rolled back together with its
+      # audit files on failure) so the push below carries them.
+      - name: Pick up new Chicago productions (theatreinchicago)
+        if: always()
+        continue-on-error: true
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          F="data/shows.json data/audit/tic-daily-seen.json data/audit/tic-daily-added.json data/audit/last-promotion-ids.json"
+          mkdir -p /tmp/tic-pre data/audit
+          for f in $F; do if [ -f "$f" ]; then cp "$f" "/tmp/tic-pre/$(basename $f)"; else touch "/tmp/tic-pre/$(basename $f).absent"; fi; done
+          node scripts/tic-daily.js || true
+          if node scripts/validate-data.js; then
+            git add data/audit/tic-daily-seen.json data/audit/tic-daily-added.json
+          else
+            echo "::warning::validate-data failed after Chicago pickup, rolling back"
+            for f in $F; do
+              if [ -f "/tmp/tic-pre/$(basename $f).absent" ]; then rm -f "$f"; else cp "/tmp/tic-pre/$(basename $f)" "$f"; fi
+            done
+            # A failed validate leaves the skip-push sentinel; a passing re-run clears it.
+            node scripts/validate-data.js || echo "::warning::validate-data still failing after rollback"
+          fi
+          exit 0
+
       - name: Push core data (regional auto-promotion)
         id: push_core_regional
         if: always()
@@ -272,6 +298,17 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: auto-promote regional shows from aggregator roundups"
+
+      # BRO-6518: ingest + score the Chicago shows the pickup step added. Runs only
+      # after the push really happened (no skip sentinel).
+      - name: Ingest + score new Chicago productions
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f "${RUNNER_TEMP}/.skip-push-core-data" ]; then echo "core-data push skipped, not dispatching ingest"; exit 0; fi
+          node scripts/tic-daily.js --dispatch-ingest
 
       # Images — card #1456: this promotion path is a go-live event like
       # previews->open in update-show-status.yml, but it never dispatched
