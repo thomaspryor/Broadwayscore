@@ -1,47 +1,35 @@
 {
-  "generatedAt": "2026-10-28T08:48:14.958Z",
+  "generatedAt": "2026-10-29T09:35:43.027Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "ba13120499afcbd008ab7978a907e943abd5899e",
+  "latestRunHeadSha": "6be7ac30aa5ddf85f4c577f35668b25701ba483d",
   "state": "RED",
-  "consecutiveFailures": 5,
+  "consecutiveFailures": 10,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-28T04:31:32Z",
-  "redForHours": 4.278599444444445,
+  "redSince": "2026-10-29T05:41:33Z",
+  "redForHours": 3.902785277777778,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-28T02:41:19Z",
-  "latestFailedRunId": "40655868825",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40655868825",
-  "decidedRuns": 98,
+  "lastSuccessAt": "2026-10-29T02:27:38Z",
+  "latestFailedRunId": "40836890738",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40836890738",
+  "decidedRuns": 97,
   "verdictLag": {
-    "verdictSha": "ba13120499afcbd008ab7978a907e943abd5899e",
-    "verdictAt": "2026-10-28T08:18:43Z",
-    "verdictAgeHours": 0.49221055555555554,
-    "newerHeads": 2,
-    "runsInFlight": 2,
+    "verdictSha": "6be7ac30aa5ddf85f4c577f35668b25701ba483d",
+    "verdictAt": "2026-10-29T07:39:59Z",
+    "verdictAgeHours": 1.9288963888888888,
+    "newerHeads": 3,
+    "runsInFlight": 3,
     "lagging": false
   },
   "failingJobs": [
     {
-      "name": "Data Validation",
+      "name": "Unit Tests",
       "steps": [
-        "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "TypeScript Check",
-      "steps": [
-        "tsc — scripts/llm-scoring/"
-      ]
-    },
-    {
-      "name": "E2E Tests",
-      "steps": [
-        "Run E2E tests"
+        "Run unit tests (no-data-dependency)",
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
       ]
     },
     {
@@ -53,17 +41,35 @@
   ],
   "failingPaths": [
     {
-      "path": "scripts/verify-prior-run-former-cast-sweep.test.mjs",
-      "job": "Data Validation",
-      "step": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
-      "evidence": "not ok 1 - excerptMentionsFormerCast flags exactly the known-good set across every priorRuns show"
+      "path": "tests/unit/a.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "# ❌ REFUSED (own-verify-failed) — BRO-1 not moved to Done"
     },
     {
-      "path": "tests/e2e/smoke.spec.ts",
-      "job": "E2E Tests",
-      "step": "Run E2E tests",
-      "evidence": "##[error]  1) [chromium] › tests/e2e/smoke.spec.ts:200:7 › Post-deploy smoke tests › Profitability Scorecard is live"
+      "path": "tests/unit/classify-market-routing-parity.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 6030 - classify-market-routing parity vs committed baseline (95 samples)"
+    },
+    {
+      "path": "scripts/lib/audit-ledger-merge-attrs.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 594 - REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption"
+    },
+    {
+      "path": "scripts/lib/dummy-helper.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 1 - foo returns the contracted value"
+    },
+    {
+      "path": "scripts/merge-worktree-to-main.sh",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "❌ post-merge test floor failed — scroll up to the 'post-merge test floor: FAILED (...)' line for the gate's own reason, which distinguishes a NEW-since-origin/main scripts/lib/ colocated test failure "
     }
   ],
-  "topFailingJob": "TypeScript Check"
+  "topFailingJob": "Unit Tests"
 }
