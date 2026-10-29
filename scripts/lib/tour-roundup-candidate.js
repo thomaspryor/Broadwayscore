@@ -301,10 +301,13 @@ function resolveRetiredTourCandidates(rows, shows, router, options) {
  * line stayed open forever (BRO-6208).
  */
 function resolveStaleTourCandidateConditions(openKeys, ledger, router) {
-  const open = new Set(openKeys);
+  // A roundup row paired with a later schedule row is re-keyed to <base>:<segmentStart>
+  // but keeps notifiedAt, so its ledger row (old key) still names a live question:
+  // match on the date-stripped base too.
+  const open = new Set(openKeys.flatMap(k => [k, k.replace(/:\d{4}-\d{2}-\d{2}$/, '')]));
   let n = 0;
   for (const [key, cond] of Object.entries((ledger && ledger.conditions) || {})) {
-    if (!key.startsWith('tour-candidate:') || cond.status !== 'open' || open.has(key.slice('tour-candidate:'.length))) continue;
+    if (!key.startsWith('tour-candidate:') || cond.status !== 'open' || open.has(key.slice('tour-candidate:'.length)) || open.has(key.slice('tour-candidate:'.length).replace(/:\d{4}-\d{2}-\d{2}$/, ''))) continue;
     const keys = [key, `digest-needs-you:${cond.title}`];
     router.resolveCondition(key, { reason: 'Tour candidate is settled: a tour entry now exists' });
     if (cond.title) router.resolveCondition(keys[1], { reason: 'Tour candidate is settled: a tour entry now exists' });

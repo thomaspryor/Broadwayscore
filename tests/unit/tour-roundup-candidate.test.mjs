@@ -86,22 +86,25 @@ test('stale tour-candidate conditions resolve with their digest line; still-open
   const staleKey = 'tour-candidate:mexodus-off-broadway-2026:2026-07-08';
   const staleDigest = 'digest-needs-you:Tour candidate: Mexodus national tour';
   const liveKey = 'tour-candidate:other-2025:2026-10-23';
+  const rekeyedKey = 'tour-candidate:rekeyed-2025';
   const entry = { status: 'open', lastSeen: '2026-10-24T00:00:00Z' };
   const write = (name, value) => { const file = path.join(dir, name); fs.writeFileSync(file, JSON.stringify(value)); return file; };
   const ledger = write('ledger.json', { conditions: {
     [staleKey]: { ...entry, title: 'Tour candidate: Mexodus national tour' }, [staleDigest]: { ...entry },
-    [liveKey]: { ...entry, title: 'Tour candidate: Other national tour' } } });
-  const queue = write('queue.json', [staleKey, staleDigest, liveKey].map(conditionKey => ({ conditionKey })));
+    [liveKey]: { ...entry, title: 'Tour candidate: Other national tour' },
+    [rekeyedKey]: { ...entry, title: 'Tour candidate: Rekeyed national tour' } } });
+  const queue = write('queue.json', [staleKey, staleDigest, liveKey, rekeyedKey].map(conditionKey => ({ conditionKey })));
   execFileSync(process.execPath, ['-e', `
     const { resolveStaleTourCandidateConditions } = require('./scripts/lib/tour-roundup-candidate');
     const router = require('./scripts/lib/owner-alert-router');
-    if (resolveStaleTourCandidateConditions(['other-2025:2026-10-23'], router.loadLedger(), router) !== 1) process.exit(3);
+    if (resolveStaleTourCandidateConditions(['other-2025:2026-10-23', 'rekeyed-2025:2026-09-01'], router.loadLedger(), router) !== 1) process.exit(3);
   `], { cwd: path.resolve(import.meta.dirname, '../..'), env: { ...process.env, ALERT_LEDGER_PATH: ledger, ALERT_DIGEST_QUEUE_PATH: queue } });
   const result = JSON.parse(fs.readFileSync(ledger, 'utf8')).conditions;
   assert.equal(result[staleKey].status, 'resolved');
   assert.equal(result[staleDigest].status, 'resolved');
   assert.equal(result[liveKey].status, 'open');
-  assert.deepEqual(JSON.parse(fs.readFileSync(queue, 'utf8')), [{ conditionKey: liveKey }]);
+  assert.equal(result[rekeyedKey].status, 'open', 're-keyed (roundup paired with schedule row) candidate stays live');
+  assert.deepEqual(JSON.parse(fs.readFileSync(queue, 'utf8')), [{ conditionKey: liveKey }, { conditionKey: rekeyedKey }]);
 });
 
 test('national tour roundup slugs are recognised; UK tours and look-alike words are not', () => {
