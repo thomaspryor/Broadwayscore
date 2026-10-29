@@ -55,6 +55,10 @@ function main() {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) { console.error('--date must be YYYY-MM-DD'); return 2; }
   let results = JSON.parse(fs.readFileSync(args['from-json'], 'utf8'));
   if (!Array.isArray(results)) results = [results];
+  // --cards: the session's own card ids, for a session that has not landed a commit yet (BRO-6504 wrap-up self-record).
+  const extraCards = typeof args.cards === 'string' ? args.cards.split(',').map((x) => x.trim().toUpperCase()).filter(Boolean) : [];
+  if (args.cards !== undefined && (!extraCards.length || extraCards.some((x) => !/^BRO-\d+$/.test(x)))) { console.error('--cards must be BRO-N[,BRO-N...]'); return 2; }
+  if (extraCards.length && results.length !== 1) { console.error('--cards only applies to a single session result'); return 2; }
   const landed = C.landedSessions({ cwd: REPO, hours, ref });
   const rows = [];
   let failed = 0;
@@ -62,8 +66,7 @@ function main() {
     const p = C.parseGetSession(res);
     if (p.error) { failed += 1; console.error(`skip ${p.session || '?'}: ${p.error}`); continue; }
     const e = landed.get(p.session);
-    // --cards: the session's own card ids, for a session that has not landed a commit yet (BRO-6504 wrap-up self-record).
-    const cards = e ? [...e.cards].sort() : (typeof args.cards === 'string' ? args.cards.split(',').map((x) => x.trim()).filter(Boolean) : []);
+    const cards = [...new Set([...(e ? e.cards : []), ...extraCards])].sort();
     rows.push({ date, session: p.session, model: p.model, origin: p.origin, costUsd: p.costUsd, cards });
   }
   if (args['dry-run']) { rows.forEach((r) => console.log(JSON.stringify(r))); return failed ? 1 : 0; }
