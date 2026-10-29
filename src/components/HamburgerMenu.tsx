@@ -1,5 +1,6 @@
 'use client';
 
+import AvatarImage from '@/components/AvatarImage';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
@@ -95,17 +96,15 @@ export default function HamburgerMenu({
         aria-expanded={isOpen}
       >
         {isAuthenticated && (
-          profile?.avatar_url ? (
-            <img
-              src={profile.avatar_url}
-              alt=""
-              className="sm:hidden w-7 h-7 rounded-full border border-white/20"
-            />
-          ) : (
-            <span className="ph-mask sm:hidden w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-xs">
-              {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
-            </span>
-          )
+          <AvatarImage
+            src={profile?.avatar_url}
+            className="sm:hidden w-7 h-7 rounded-full border border-white/20"
+            fallback={
+              <span className="ph-mask sm:hidden w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-xs">
+                {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
+              </span>
+            }
+          />
         )}
         <svg className={`w-5 h-5 ${isAuthenticated ? 'hidden sm:block' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -149,17 +148,15 @@ export default function HamburgerMenu({
               <div className="px-5 pb-4 border-b border-white/[0.06]">
                 {isAuthenticated ? (
                   <div className="flex items-center gap-3">
-                    {profile?.avatar_url ? (
-                      <img
-                        src={profile.avatar_url}
-                        alt=""
-                        className="w-10 h-10 rounded-full border border-white/10"
-                      />
-                    ) : (
-                      <div className="ph-mask w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
-                        {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
-                      </div>
-                    )}
+                    <AvatarImage
+                      src={profile?.avatar_url}
+                      className="w-10 h-10 rounded-full border border-white/10"
+                      fallback={
+                        <div className="ph-mask w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
+                          {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
+                        </div>
+                      }
+                    />
                     <div className="min-w-0">
                       <p className="ph-mask text-sm font-semibold text-white truncate">{profile?.display_name || email || 'Signed In'}</p>
                     </div>

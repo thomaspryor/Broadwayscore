@@ -1,5 +1,6 @@
 'use client';
 
+import { isIsoDateOnly } from '@/lib/iso-date-only';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Modal from '@/components/show-cards/Modal';
@@ -90,7 +91,7 @@ export default function RatingEditor({
     // to today (local), unless a watchlist planned-date was supplied — never past
     // the cap (e.g. a show that closed years ago).
     if (reviewId) return initialDateSeen || '';
-    const fallback = initialDateSeen || suggestedDateSeen || today;
+    const fallback = initialDateSeen || (isIsoDateOnly(suggestedDateSeen) ? suggestedDateSeen : null) || today;
     return fallback > maxDate ? maxDate : fallback;
   });
   const [saving, setSaving] = useState(false);
@@ -112,7 +113,7 @@ export default function RatingEditor({
   // above has already run by then, so without this effect the field stayed on
   // today's date (owner report, 2026-07-17).
   useEffect(() => {
-    if (reviewId || initialDateSeen || dateTouched.current || !suggestedDateSeen) return;
+    if (reviewId || initialDateSeen || dateTouched.current || !isIsoDateOnly(suggestedDateSeen)) return;
     setDateSeen(suggestedDateSeen > maxDate ? maxDate : suggestedDateSeen);
   }, [suggestedDateSeen, reviewId, initialDateSeen, maxDate]);
   // Live hover value from the stars — previewed in the big number so half-star
