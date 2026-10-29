@@ -630,7 +630,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-29T14:25:16.493Z"
+    "queuedAt": "2026-10-29T14:52:22.576Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-revlon-girl-off-west-end-2026",
@@ -709,18 +709,32 @@
     "queuedAt": "2026-10-29T14:29:00.975Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
+    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
+    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "severity": "warning",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-29T15:21:30.320Z"
+    "queuedAt": "2026-10-29T14:55:59.332Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:fences-off-west-end-2026",
+    "title": "1 review(s) for fences-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--5a0f0ca7.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tom-skerritt-actor-picket-fences-alien-top-gun-dies/6562233/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T14:56:35.577Z"
   },
   {
     "conditionKey": "land:land/bro-6518-chicago-local",
