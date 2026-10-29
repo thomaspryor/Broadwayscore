@@ -189,4 +189,7 @@ test('Guardian news and blog pieces tagged tone/reviews are not reviews (BRO-650
   assert.equal(lib.matchGuardianResults(s, [r('theatreblog/2011/apr/19/x', 'Clybourne Park review: why it works')]).length, 0);
   assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/clybourne-park-billington', 'Clybourne Park', { starRating: 4 })]).length, 1);
   assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/clybourne-park-review', 'Clybourne Park – review')]).length, 1);
+  assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/x', 'Clybourne Park', { starRating: '4' })]).length, 1);
+  assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/x', 'Clybourne Park', { starRating: ' ' })]).length, 0);
+  assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/x', 'Clybourne Park and more: review roundup')]).length, 0);
 });

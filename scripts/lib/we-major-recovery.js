@@ -185,7 +185,8 @@ function matchGuardianResults(show, results) {
     // "review" in its headline, and theatreblog posts never count (BRO-6503).
     if (/\/theatreblog\//.test(r.webUrl || '')) return false;
     const headline = f.headline || r.webTitle || '';
-    if (!/\breview\b/i.test(headline) && !f.starRating) return false;
+    if (/\b(round ?up|readers?'? reviews?)\b/i.test(headline)) return false;
+    if (!/\breview\b/i.test(headline) && !/^[1-5]$/.test(String(f.starRating || '').trim())) return false;
     if (!` ${norm(headline)} `.includes(` ${t} `)) return false;
     const text = ` ${norm([f.standfirst, f.trailText, f.bodyText].filter(Boolean).join(' '))} `;
     return venueInText(show.venue, text);
