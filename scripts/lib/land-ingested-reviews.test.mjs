@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { landIngestedReviews } = require('./land-ingested-reviews.js');
+const { landIngestedReviews, pushFailureAction } = require('./land-ingested-reviews.js');
 const { isReviewTextsClone } = require('./review-texts-dir.js');
 import fs from 'node:fs';
 import os from 'node:os';
@@ -19,11 +19,19 @@ const base = {
   log: () => {}, isCheckout: () => true,
 };
 
+// Stands in for push-with-retry: records 'PUSH <cwd> <branch>' in the same call log as exec.
+const pushStub = (calls, ok = true) => (opts) => {
+  calls.push(`PUSH ${opts.cwd} ${opts.branch}`);
+  return ok ? { ok: true, code: 0, stderr: '' } : { ok: false, code: 1, stderr: 'a\nb\n::error::rejected (fetch first)' };
+};
+
 test('pushes before dispatching scoring, scoped to the show', () => {
   const calls = [];
   const exec = (cmd) => { calls.push(cmd); return cmd.includes('status --porcelain') ? 'A  x' : ''; };
-  const r = landIngestedReviews({ ...base, exec, only: ['llm-ensemble-score.yml'] });
-  const pushIdx = calls.findIndex((c) => c.includes(' push origin main'));
+  const r = landIngestedReviews({ ...base, exec, pushRetry: pushStub(calls), only: ['llm-ensemble-score.yml'] });
+  const commitIdx = calls.findIndex((c) => c.includes(' commit -m'));
+  const pushIdx = calls.indexOf('PUSH /rt HEAD:main');
+  assert.ok(commitIdx >= 0 && pushIdx > commitIdx, 'push-with-retry runs on the clone, after the commit');
   const dispIdx = calls.findIndex((c) => c.startsWith('gh workflow run llm-ensemble-score.yml -f show_id=rent-west-end-2026'));
   assert.ok(pushIdx >= 0 && dispIdx > pushIdx);
   assert.equal(calls.filter((c) => c.startsWith('gh workflow run')).length, 1);
@@ -31,10 +39,10 @@ test('pushes before dispatching scoring, scoped to the show', () => {
 });
 
 test('failed push never dispatches', () => {
-  const exec = (cmd) => { if (cmd.includes(' push origin main')) throw new Error('rejected'); return 'A  x'; };
   const calls = [];
-  const r = landIngestedReviews({ ...base, exec: (c, o) => { calls.push(c); return exec(c, o); } });
+  const r = landIngestedReviews({ ...base, exec: (c) => { calls.push(c); return 'A  x'; }, pushRetry: pushStub(calls, false) });
   assert.equal(r.push.pushed, false);
+  assert.match(r.push.error, /fetch first/, 'the tail of the helper stderr is reported');
   assert.equal(r.dispatched.length, 0);
   assert.ok(!calls.some((c) => c.startsWith('gh workflow run')));
 });
@@ -42,15 +50,15 @@ test('failed push never dispatches', () => {
 test('clean tree with an earlier unpushed local commit still pushes', () => {
   const calls = [];
   const exec = (cmd) => { calls.push(cmd); if (cmd.includes('status --porcelain')) return ''; if (cmd.includes('rev-list')) return '1\n'; return ''; };
-  const r = landIngestedReviews({ ...base, exec, only: ['llm-ensemble-score.yml'] });
-  assert.ok(calls.some((c) => c.includes(' push origin main')));
+  const r = landIngestedReviews({ ...base, exec, pushRetry: pushStub(calls), only: ['llm-ensemble-score.yml'] });
+  assert.ok(calls.includes('PUSH /rt HEAD:main'));
   assert.equal(r.dispatched.length, 1);
 });
 
 test('multi-show fan-out dispatches scoring per child show', () => {
   const calls = [];
   const exec = (cmd) => { calls.push(cmd); return cmd.includes('status --porcelain') ? 'A  x' : ''; };
-  const r = landIngestedReviews({ ...base, exec, extraShowIds: ['other-show'], only: ['llm-ensemble-score.yml'] });
+  const r = landIngestedReviews({ ...base, exec, pushRetry: pushStub(calls), extraShowIds: ['other-show'], only: ['llm-ensemble-score.yml'] });
   assert.equal(r.dispatched.length, 2);
   assert.ok(calls.some((c) => c.includes('show_id=other-show')));
 });
@@ -112,8 +120,24 @@ test('a legitimate ..name path is not mistaken for an escape', () => {
   const r = landIngestedReviews({
     ...base, touchedPaths: ['/rt/..shadow-show/a.json'],
     exec: (c) => { calls.push(c); return c.includes('status --porcelain') ? 'A  x' : ''; },
-    only: ['llm-ensemble-score.yml'],
+    pushRetry: pushStub(calls), only: ['llm-ensemble-score.yml'],
   });
   assert.equal(r.push.pushed, true);
-  assert.ok(calls.some((c) => c.includes(' push origin main')));
+  assert.ok(calls.includes('PUSH /rt HEAD:main'));
+});
+
+// BRO-6485: a test that stubs exec but forgets pushRetry must not reach the real
+// push script, which could push a real clone.
+test('a stubbed exec without a pushRetry never runs the real push', () => {
+  const r = landIngestedReviews({ ...base, exec: (c) => (c.includes('status --porcelain') ? 'A  x' : '') });
+  assert.equal(r.push.pushed, false);
+  assert.match(r.push.error, /not injected/);
+  assert.equal(r.dispatched.length, 0);
+});
+
+test('pushFailureAction: CI commit step recovers, so only a run outside it fails (BRO-6485)', () => {
+  assert.equal(pushFailureAction({ inCiWithCommitStep: true, noRebuild: false }), 'write-marker');
+  assert.equal(pushFailureAction({ inCiWithCommitStep: true, noRebuild: true }), 'none');
+  assert.equal(pushFailureAction({ inCiWithCommitStep: false, noRebuild: true }), 'fail');
+  assert.equal(pushFailureAction({ inCiWithCommitStep: false, noRebuild: false }), 'fail');
 });
