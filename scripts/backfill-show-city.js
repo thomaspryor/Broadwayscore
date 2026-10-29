@@ -6,9 +6,11 @@
  *
  * Usage: node scripts/backfill-show-city.js [--dry-run]
  */
+const { exitOnHelp } = require('./lib/cli-help');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { resolveMetro } = require('./lib/venue-metro');
 
+exitOnHelp(module);
 const DRY_RUN = process.argv.includes('--dry-run');
 
 function backfill(shows) {
