@@ -8,7 +8,7 @@
 
 // Order matters: first match wins. Patterns run against the URL slug text.
 const HUBS = [
-  ['edinburgh', /edinburgh|fringe|traverse|lyceum/],
+  ['edinburgh', /edinburgh|fringe|traverse-theatre|royal-lyceum/],
   ['scotland', /glasgow|dundee|aberdeen|inverness|perth-theatre|pitlochry|citizens-theatre|tramway|scotland|scottish|eden-court|dundee-rep|byre/],
   ['manchester', /manchester|royal-exchange|hope-mill|salford|lowry|bolton|octagon|oldham|rochdale|home-manchester|contact-theatre|palace-theatre-manchester/],
   ['yorkshire', /leeds|sheffield|crucible|york-|york$|theatre-royal-york|bradford|hull|halifax|harrogate|huddersfield|scarborough|stephen-joseph|west-yorkshire-playhouse|playhouse-leeds|lyceum-sheffield|wakefield|doncaster/],
