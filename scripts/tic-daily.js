@@ -54,10 +54,12 @@ async function stageAndAdd() {
   console.log(`[tic-daily] added ${added.length}`);
   if (flag('dry-run')) return;
   fs.mkdirSync(path.dirname(SEEN), { recursive: true });
+  // shows.json first: a crash after it only re-evaluates the ids (dedupe catches them),
+  // whereas audit files written first would claim shows that never landed.
+  if (added.length) fs.writeFileSync(SHOWS, JSON.stringify(raw, null, 2) + '\n');
   fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
   fs.writeFileSync(ADDED, JSON.stringify({ on: today, added }, null, 1) + '\n');
   if (!added.length) return;
-  fs.writeFileSync(SHOWS, JSON.stringify(raw, null, 2) + '\n');
   // Let the existing image-fetch step pick the new ids up.
   const prev = readJson(PROMOTED, { promoted: [] });
   prev.promoted = (prev.promoted || []).concat(added.map((a) => ({ id: a.id, source: 'theatreinchicago' })));

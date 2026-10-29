@@ -29,11 +29,15 @@ function ticIdOf(show) {
 /** Listing rows still worth evaluating: not on the site yet, not finally rejected, enough reviews listed. */
 function pickCandidates(listing, shows, seen) {
   const have = new Set(shows.map(ticIdOf).filter(Boolean));
-  return listing.filter((row) => {
+  const open = listing.filter((row) => {
     if (have.has(row.id)) return false;
-    if (seen[row.id] && !seen[row.id].retry) return false;
+    const s = seen[row.id];
+    // 'added' but absent from shows.json: the core-data push failed, so look again.
+    if (s && !s.retry && s.reason !== 'added') return false;
     return row.reviewCount >= stage.MIN_REVIEWS;
   });
+  // Never-seen ids first so a backlog of retries cannot starve new productions.
+  return [...open.filter((r) => !seen[r.id]), ...open.filter((r) => seen[r.id])];
 }
 
 function isRetry(reason) {
