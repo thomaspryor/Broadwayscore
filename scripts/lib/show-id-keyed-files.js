@@ -139,7 +139,8 @@ const SHOW_ID_KEYED_FILES = [
   { repo: 'web', path: 'data/llm-evaluation-results.json', shape: 'records', keyPath: ['results'], idField: 'showId' },
   { repo: 'web', path: 'data/llm-scoring-garbage-skips.json', shape: 'records', keyPath: [], idField: 'showId',
     note: '`filePath` embeds the CI checkout path data/review-texts/<id>/…; left as-is (reported by the residual scan)' },
-  { repo: 'web', path: 'data/llm-scoring-runs.json', shape: 'records', keyPath: ['*', 'validation'], idField: 'showId' },
+  { repo: 'web', path: 'data/llm-scoring-runs.json', shape: 'records', keyPath: ['*', 'validation'], idField: 'showId', lateAppend: true,
+    note: 'append-only run log: a scoring run that started before a rename appends old-id validation rows when it finishes; --check warns, a later --apply sweeps them' },
   { repo: 'web', path: 'data/todaytix-validation-results.json', shape: 'records', keyPath: ['invalid'], idField: 'showId',
     generated: 'node scripts/validate-todaytix-ids.js (audit output)' },
 
