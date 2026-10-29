@@ -2105043,21 +2105043,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T23:39:36.554Z",
-    "completedAt": "2026-10-29T23:39:46.497Z",
-    "totalReviews": 4,
-    "processed": 1,
+    "startedAt": "2026-10-29T23:37:14.733Z",
+    "completedAt": "2026-10-29T23:37:38.605Z",
+    "totalReviews": 7,
+    "processed": 5,
     "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 11085,
-      "output": 567,
-      "cacheRead": 7614,
-      "cacheWrite": 0,
-      "total": 28731
+      "input": 32071,
+      "output": 1573,
+      "cacheRead": 15228,
+      "cacheWrite": 3807,
+      "total": 78582
     },
-    "costUsd": 0.0421545,
-    "runId": "40974175060",
+    "costUsd": 0.13318445,
+    "runId": "40973694627",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2110081,6 +2110081,16 @@
           "flat": 0,
           "down": 0,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "bernarda-regional-2023",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 1,
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -2132524,16 +2132534,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "sunsets-two-acts-on-a-beach-regional-2024",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "superhoe-west-end-2019",
         "ourDistribution": {
           "up": 6,
@@ -2143132,8 +2143132,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T23:44:43.258Z",
-    "completedAt": "2026-10-29T23:44:43.259Z",
+    "startedAt": "2026-10-29T23:42:36.454Z",
+    "completedAt": "2026-10-29T23:42:36.456Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2143146,7 +2143146,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40974175060",
+    "runId": "40973694627",
     "source": "comparative-rescore",
     "errorDetails": []
   }
