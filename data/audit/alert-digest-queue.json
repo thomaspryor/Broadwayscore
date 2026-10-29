@@ -1106,6 +1106,63 @@
     "queuedAt": "2026-10-29T17:13:27.864Z"
   },
   {
+    "conditionKey": "cron-health-failed:Test Suite",
+    "title": "Cron's latest run failed (not yet stale): Test Suite",
+    "description": "Test Suite: Latest run failed (last success 15h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558)"
+      }
+    ],
+    "queuedAt": "2026-10-29T17:59:59.323Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Fetch All Image Formats",
+    "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
+    "description": "Fetch All Image Formats: Latest run failed (last success 3h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558)"
+      }
+    ],
+    "queuedAt": "2026-10-29T17:59:59.346Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Audit Aggregator Review Gap",
+    "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
+    "description": "Audit Aggregator Review Gap: Latest run failed (last success 10h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558)"
+      }
+    ],
+    "queuedAt": "2026-10-29T17:59:59.366Z"
+  },
+  {
     "conditionKey": "corpus-drift:monitor-only",
     "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-29.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
