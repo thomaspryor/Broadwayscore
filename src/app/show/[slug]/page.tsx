@@ -44,7 +44,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
-import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, ScoreBadge, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
+import { StatusBadge, ReviewsSyncingBadge, FormatPill, ProductionPill, CategoryBadge, ScoreBadge, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
@@ -58,6 +58,7 @@ import RelatedShowsCompactAB from '@/components/RelatedShowsCompactAB';
 import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
+import { shouldShowReviewsSyncing } from '../../../../scripts/lib/show-page-provisional-state';
 import ShowTrustLines from '@/components/show-page/ShowTrustLines';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
@@ -488,6 +489,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // and which fallback fills the Critics' Take slot when there's no consensus.
   // One server-side verdict for every place on the page (see review-expectation.ts).
   const noReviewsExpected = noCriticReviewsExpected(show, reviewCount);
+  const reviewsSyncing = shouldShowReviewsSyncing(show);
   const reviewsRemaining = showTBD && show.status !== 'previews' && show.status !== 'upcoming'
     ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
     : 0;
@@ -663,13 +665,16 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                     <div className="flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0">{scoreBox}</div>
                       <div className="pt-0.5 min-w-0 break-words">
-                        {showTBD ? (
+                        {reviewsSyncing ? <ReviewsSyncingBadge show={show} /> : showTBD ? (
                           <div className="text-base sm:text-lg font-bold text-gray-400">{isLiveTour(show) ? 'Reviews coming in' : 'Awaiting Reviews'}</div>
                         ) : sentiment && (
                           <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
                         )}
                         <div className="flex items-center gap-2 sm:gap-3 flex-wrap mt-0.5">
                           {(() => {
+                            if (reviewsSyncing) {
+                              return <span className="text-xs sm:text-sm text-gray-400">Critic reviews are being collected.</span>;
+                            }
                             // When TBD is due to low review count (not previews/upcoming),
                             // tell the user how many more reviews are needed rather than a
                             // bare "Based on N Critic Reviews" (which sits next to "TBD" and
