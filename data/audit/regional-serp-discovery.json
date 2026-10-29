@@ -1,136 +1,648 @@
 {
-  "lastRun": "2026-10-29T19:08:57.061Z",
+  "lastRun": "2026-10-29T19:15:06.715Z",
   "shows": [
     {
-      "showId": "small-hotel-royal-bath-regional-2025",
-      "query": "\"Small Hotel\" review Bath",
+      "showId": "as-you-like-it-royal-bath-regional-2025",
+      "query": "\"As You Like It\" review Bath",
       "candidates": 10,
       "ingested": [],
       "newOutletCandidates": [
         {
-          "url": "https://thebathmagazine.co.uk/review-small-hotel-starring-ralph-fiennes-at-theatre-royal-bath/",
-          "domain": "thebathmagazine.co.uk",
-          "title": "Review: 'Small Hotel', starring Ralph Fiennes, at Theatre Royal Bath"
-        },
-        {
-          "url": "https://www.facebook.com/thestage/posts/-review-small-hotel-ralph-fiennes-stars-in-rebecca-lenkiewiczs-opaque-new-playre/1284201767072803/",
+          "url": "https://www.facebook.com/TheatreRoyalBath/posts/-the-sensational-reviews-for-as-you-like-it-%EF%B8%8F-ralph-fiennes-one-of-our-finest-sh/1169567288539068/",
           "domain": "facebook.com",
-          "title": "Small Hotel – Ralph Fiennes stars in Rebecca Lenkiewicz's opaque ..."
-        },
-        {
-          "url": "https://www.facebook.com/TheatreRoyalBath/videos/-the-sensational-new-trailer-behind-the-scenes-footage-of-small-hotel-the-final-/1164651195512734/",
-          "domain": "facebook.com",
-          "title": "The sensational new trailer & behind the scenes footage of SMALL ..."
+          "title": "The sensational reviews for AS YOU LIKE IT - Facebook"
         }
       ],
-      "skippedExisting": 5,
-      "skippedUnregistered": 3,
-      "skippedNotReview": 2
+      "skippedExisting": 6,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 3
     },
     {
-      "showId": "treasure-island-bristol-old-vic-regional-2025",
-      "query": "\"Treasure Island\" review Bristol",
+      "showId": "endgame-royal-bath-regional-2025",
+      "query": "\"Endgame\" review Bath",
       "candidates": 10,
       "ingested": [
         {
-          "url": "https://theatreandtonic.co.uk/blog/treasure-island-at-bristol-old-vic-review",
+          "url": "https://theatreweekly.com/first-look-production-images-released-for-endgame-at-theatre-royal-bath/",
+          "outletId": "theatre-weekly",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://peterviney.com/stage/endgame-bath-2025/",
+          "domain": "peterviney.com",
+          "title": "Endgame – Bath 2025 - Peter Viney's Blog"
+        }
+      ],
+      "skippedExisting": 2,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 6
+    },
+    {
+      "showId": "hedda-royal-bath-regional-2025",
+      "query": "\"Hedda\" review Bath",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://thebathmagazine.co.uk/review-hedda-at-theatre-royal-bath/",
+          "domain": "thebathmagazine.co.uk",
+          "title": "Review: 'HEDDA' at the Ustinov Studio - The Bath Magazine"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/lily-allen-stage-triumph-hedda-theatre-royal-bath-review/",
+          "domain": "telegraph.co.uk",
+          "title": "Lily Allen proves any naysayers wrong with her biggest stage ..."
+        }
+      ],
+      "skippedExisting": 5,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "choir-chichester-festival-regional-2025",
+      "query": "\"Choir\" review Chichester",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://www.theguardian.com/stage/2025/aug/10/choir-review-gurpreet-kaur-bhatti-minerva-chichester-festival-theatre",
+          "outletId": "guardian",
+          "action": "new"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/choir-minerva-theatre-24731",
+          "outletId": "british-theatre",
+          "action": "new"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-choir-chichester-festival-theatre",
+          "outletId": "west-end-best-friend",
+          "action": "new"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/choir-at-chichester-festival-theatre-minerva-review",
           "outletId": "theatreandtonic",
           "action": "new"
         },
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-treasure-island-a-new-musical-adventure-bristol-old-vic",
+          "url": "https://www.whatsonstage.com/news/choir-at-chichesters-minerva-theatre-review_1690116/",
+          "outletId": "whatsonstage",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/ChichesterObserver/posts/review-chichesters-choir-hits-a-few-high-notes-amid-the-disharmonyyoull-see-plen/1171230835021599/",
+          "domain": "facebook.com",
+          "title": "Chichester's Choir hits a few high notes amid the disharmony"
+        },
+        {
+          "url": "https://www.cft.org.uk/news/choir-production-photos",
+          "domain": "cft.org.uk",
+          "title": "Choir is 'a fantastic, laugh-out-loud night out' | Chichester Festival ..."
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "hamlet-chichester-festival-regional-2025",
+      "query": "\"Hamlet\" review Chichester",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/hamlet-chichester-festival-theatre-review",
+          "outletId": "theatreandtonic",
+          "action": "new"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/sep/17/hamlet-review-minerva-theatre-chichester-giles-terera-justin-audibert",
+          "outletId": "guardian",
+          "action": "new"
+        },
+        {
+          "url": "https://theatrevibe.co.uk/2025/09/17/review-hamlet-minerva-theatre-chichester-2025/",
+          "outletId": "theatre-vibe",
+          "action": "new"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-hamlet-minerva-chichester-festival-theatre",
           "outletId": "all-that-dazzles-uk",
           "action": "new"
         },
         {
-          "url": "https://www.theguardian.com/stage/2025/dec/11/treasure-island-review-bristol-old-vic",
+          "url": "https://www.westendbestfriend.co.uk/news/review-hamlet-chichester-festival-theatre",
+          "outletId": "west-end-best-friend",
+          "action": "new"
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2025/09/17/hamlet-minerva-cft-org-uk/",
+          "outletId": "viewfromthegods",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.cft.org.uk/news/a-behind-the-scenes-look-at-hamlet",
+          "domain": "cft.org.uk",
+          "title": "The reviews are in for Hamlet - Chichester Festival Theatre"
+        },
+        {
+          "url": "https://jangledandtetchy.com/hamlet-without-tragedy/",
+          "domain": "jangledandtetchy.com",
+          "title": "Hamlet, Minerva Theatre, Chichester : Review - Jangled & Tetchy"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "lord-of-the-flies-chichester-festival-regional-2025",
+      "query": "\"Lord of the Flies\" review Chichester",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-lord-of-the-flies-chichester-festival-theatre",
+          "outletId": "all-that-dazzles-uk",
+          "action": "new"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/sep/26/lord-of-the-flies-review-chichester-festival-theatre-william-golding-nigel-williams",
+          "outletId": "guardian",
+          "action": "new"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/lord-of-the-flies-chichester-festival-theatre-review",
+          "outletId": "theatreandtonic",
+          "action": "new"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/lord-of-the-flies-at-chichester-festival-theatre-review_1696050/",
+          "outletId": "whatsonstage",
+          "action": "new"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/lord-of-the-flies-review-chichester-festival-theatre-william-golding-nigel-williams",
+          "outletId": "thestage",
+          "action": "new"
+        },
+        {
+          "url": "https://playsinternational.org.uk/lord-of-the-flies-chichester-festival-theatre/",
+          "outletId": "plays-international",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.in-common.co.uk/2025/09/26/review-lord-of-the-flies-chichester-festival-theatre/",
+          "domain": "in-common.co.uk",
+          "title": "Review: Lord of the Flies, Chichester Festival Theatre, 25 ..."
+        },
+        {
+          "url": "https://www.cft.org.uk/news/lord-of-the-flies-reviews",
+          "domain": "cft.org.uk",
+          "title": "Last chance: 'Exhilarating and wildly exciting' Lord of the Flies ends ..."
+        },
+        {
+          "url": "https://www.facebook.com/ChichesterObserver/posts/lord-of-the-flies-at-chichester-festival-theatre-heres-what-we-thoughtfull-story/1211099747701374/",
+          "domain": "facebook.com",
+          "title": "Lord of the Flies at Chichester Festival Theatre Here's what we ..."
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/lord-of-the-flies-chichester-review/",
+          "domain": "telegraph.co.uk",
+          "title": "Lord of the Flies Chichester, review: It still has the power to shock"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 4,
+      "skippedNotReview": 0
+    },
+    {
+      "showId": "maybe-tomorrow-oran-mor-regional-2025",
+      "query": "\"Maybe Tomorrow\" review Glasgow",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [],
+      "skippedExisting": 1,
+      "skippedUnregistered": 0,
+      "skippedNotReview": 9
+    },
+    {
+      "showId": "our-brother-oran-mor-regional-2025",
+      "query": "\"Our Brother\" review Glasgow",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://www.theguardian.com/stage/2025/sep/10/our-brother-review-pol-pot-oran-mor-glasgow",
           "outletId": "guardian",
           "action": "new"
         }
       ],
       "newOutletCandidates": [
         {
-          "url": "https://thebristolmag.co.uk/bristol-old-vic-treasure-island-musical-review/",
-          "domain": "thebristolmag.co.uk",
-          "title": "Review: 'Treasure Island: A New Musical Adventure' at Bristol Old Vic"
+          "url": "https://scottishstage.wordpress.com/2025/09/14/review-our-brother-oran-mor/",
+          "domain": "scottishstage.wordpress.com",
+          "title": "Review: Our Brother, Òran Mór, Glasgow | Scottish Stage"
         },
         {
-          "url": "https://www.facebook.com/thestage/posts/-review-treasure-island-new-take-on-the-classic-emphasises-its-bristol-roots-but/1340259328133713/",
+          "url": "https://www.facebook.com/playpiepint/photos/some-amazing-reviews-for-this-weeks-unforgettable-drama-dont-miss-our-brother-at/1587503072665526/",
           "domain": "facebook.com",
-          "title": "Treasure Island – New take on the classic emphasises its Bristol ..."
-        },
-        {
-          "url": "https://epigram.org.uk/review-treasure-island-bristol-old-vic/",
-          "domain": "epigram.org.uk",
-          "title": "Review: 'Treasure Island' at the Bristol Old Vic - Epigram"
-        },
-        {
-          "url": "https://www.lifestyledistrict.co.uk/2025/12/review-treasure-island-at-bristol-old-vic/",
-          "domain": "lifestyledistrict.co.uk",
-          "title": "Review: Treasure Island at Bristol Old Vic - Lifestyle District"
-        },
-        {
-          "url": "https://www.watchingfromthecheapseats.com/post/treasure-island-bristol-old-vic-review",
-          "domain": "watchingfromthecheapseats.com",
-          "title": "Treasure Island - Bristol Old Vic REVIEW"
+          "title": "A Play, - Some amazing reviews for this week's \"unforgettable ..."
         }
       ],
       "skippedExisting": 0,
-      "skippedUnregistered": 5,
-      "skippedNotReview": 1
+      "skippedUnregistered": 2,
+      "skippedNotReview": 7
     },
     {
-      "showId": "safe-space-chichester-festival-regional-2025",
-      "query": "\"Safe Space\" review Chichester",
+      "showId": "small-acts-of-love-citizens-regional-2025",
+      "query": "\"Small Acts of Love\" review Glasgow",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://theqr.co.uk/2025/09/15/small-acts-of-love-citizens-theatre-glasgow/",
+          "outletId": "theqr",
+          "action": "new"
+        },
+        {
+          "url": "https://www.scotsman.com/arts-and-culture/theatre-and-stage/theatre-reviews-small-acts-of-love-the-invaders-fear-of-memories-5319212",
+          "outletId": "the-scotsman",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/citizenstheatre/videos/small-acts-of-love-by-ricky-ross/738406549247108/",
+          "domain": "facebook.com",
+          "title": "Small Acts of Love by Ricky Ross - Citizens Theatre - Facebook"
+        },
+        {
+          "url": "https://www.facebook.com/citizenstheatre/videos/small-acts-of-love-in-rehearsals/4136744629948268/",
+          "domain": "facebook.com",
+          "title": "where the cast of Small Acts of Love has been bringing this powerful ..."
+        },
+        {
+          "url": "https://www.facebook.com/citizenstheatre/posts/-just-one-week-to-go-small-acts-of-love-opens-soon-at-the-citizens-theatre-the-f/1189606443197980/",
+          "domain": "facebook.com",
+          "title": "Just one week to go! Small Acts of Love opens soon at the Citizens ..."
+        },
+        {
+          "url": "https://www.facebook.com/NationalTheatreScotland/videos/small-acts-of-love-in-rehearsals/1301122401624536/",
+          "domain": "facebook.com",
+          "title": "Small Acts of Love - National Theatre of Scotland"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 4,
+      "skippedNotReview": 4
+    },
+    {
+      "showId": "ideal-lowry-regional-2025",
+      "query": "\"Ideal\" review Salford",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://northernartsreview.co.uk/central-north/ideal-stage-adaptation-reveals-full-cast-lineup-ahead-of-premiere-at-salfords-lowry/",
+          "outletId": "northernartsreview",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.northernsoul.me.uk/ideal-at-lowry/",
+          "domain": "northernsoul.me.uk",
+          "title": "Ideal Stage Show Review - Northern Soul"
+        },
+        {
+          "url": "https://www.facebook.com/ILoveMCR/posts/the-bbcs-salford-based-hit-sitcom-ideal-is-back-starring-johnny-vegas-but-this-t/1201939005304606/",
+          "domain": "facebook.com",
+          "title": "The BBC's Salford based hit sitcom Ideal is back, starring Johnny ..."
+        },
+        {
+          "url": "https://confidentials.com/manchester/review-ideal-20th-anniversary-live-show-at-the-lowry-tuesday-9-september",
+          "domain": "confidentials.com",
+          "title": "Review: IDEAL 20th Anniversary Live Show at The Lowry, Tuesday ..."
+        },
+        {
+          "url": "https://honorarymancblog.com/2025/09/10/ideal-starring-johnny-vegas-lowry/",
+          "domain": "honorarymancblog.com",
+          "title": "IDEAL starring Johnny Vegas – Lowry - honorary manc"
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 4,
+      "skippedNotReview": 3
+    },
+    {
+      "showId": "a-toast-fae-the-lassies-pitlochry-festival-regional-2025",
+      "query": "\"A Toast Fae the Lassies\" review Pitlochry",
       "candidates": 10,
       "ingested": [],
       "newOutletCandidates": [
         {
-          "url": "https://www.cft.org.uk/news/safe-space-is-now-on-in-the-minerva",
-          "domain": "cft.org.uk",
-          "title": "Safe Space is 'a season finale must-see' | Chichester Festival Theatre"
+          "url": "https://www.facebook.com/pitlochryfestivaltheatre/posts/a-sneak-peek-into-the-a-toast-fae-the-lassies-rehearsal-room-the-entire-run-for-/1304717788327231/",
+          "domain": "facebook.com",
+          "title": "A sneak peek into the A Toast Fae The Lassies rehearsal room The ..."
         },
         {
-          "url": "https://www.facebook.com/WestEndBestFriend/posts/-review-jamie-bogyos-whip-smart-hilarious-and-bracing-new-play-safe-space-curren/848569567702063/",
-          "domain": "facebook.com",
-          "title": "REVIEW Jamie Bogyo's whip-smart, hilarious and bracing new play ..."
+          "url": "https://www.theatrescotland.com/a-toast-fae-the-lassies/",
+          "domain": "theatrescotland.com",
+          "title": "A Toast fae the Lassies - Theatre SCOTLAND"
+        },
+        {
+          "url": "https://www.jeanarmourburnstrust.co.uk/a-toast-fae-the-lassies-performed-at-the-studio-theatre-pitlochry/",
+          "domain": "jeanarmourburnstrust.co.uk",
+          "title": "A Toast Fae the Lassies performed at The Studio Theatre, Pitlochry"
         }
       ],
-      "skippedExisting": 5,
-      "skippedUnregistered": 2,
-      "skippedNotReview": 3
+      "skippedExisting": 0,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 7
     },
     {
-      "showId": "jack-and-the-beanstalk-dundee-rep-regional-2025",
-      "query": "\"Jack and the Beanstalk\" review Dundee",
+      "showId": "the-great-gatsby-pitlochry-festival-regional-2025",
+      "query": "\"The Great Gatsby\" review Pitlochry",
       "candidates": 10,
       "ingested": [
         {
-          "url": "https://www.scotsman.com/arts-and-culture/theatre-and-stage/theatre-reviews-jack-and-the-beanstalk-jack-and-the-beanstalk-aladdin-5450237",
-          "outletId": "the-scotsman",
+          "url": "https://www.theguardian.com/stage/2025/aug/31/the-great-gatsby-review-pitlochry-festival-theatre",
+          "outletId": "guardian",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/pitlochryfestivaltheatre/videos/jay-gatsby-or-jay-z-we-put-the-cast-of-the-great-gatsby-and-a-sneaky-additional-/775515611870794/",
+          "domain": "facebook.com",
+          "title": "Jay Gatsby or Jay-Z? We put the cast of The Great ... - Facebook"
+        },
+        {
+          "url": "https://www.facebook.com/pitlochryfestivaltheatre/posts/the-great-gatsby-closes-in-derby-tomorrow-congratulations-to-the-whole-gatsby-te/1366256308840045/",
+          "domain": "facebook.com",
+          "title": "The Great Gatsby closes in Derby tomorrow! Congratulations to the ..."
+        },
+        {
+          "url": "https://www.facebook.com/pitlochryfestivaltheatre/videos/jay-gatsby-or-jay-z-we-put-the-cast-of-the-great-gatsby-and-a-sneaky-additional-/1936940953773476/",
+          "domain": "facebook.com",
+          "title": "Jay Gatsby or Jay-Z? We put the cast of The Great ... - Facebook"
+        },
+        {
+          "url": "http://derbytheatre.co.uk/event/the-great-gatsby/",
+          "domain": "derbytheatre.co.uk",
+          "title": "The Great Gatsby - Derby Theatre"
+        },
+        {
+          "url": "https://www.facebook.com/EmpireTheatre/videos/-opening-day-energy-the-great-gatsby-is-lighting-up-the-empire-today-tonight-and/1873374436876983/",
+          "domain": "facebook.com",
+          "title": "Opening day energy! The Great Gatsby is lighting up The Empire ..."
+        },
+        {
+          "url": "https://www.facebook.com/atQPAC/posts/the-reviews-are-in-and-gatsby-get-the-green-light-critics-are-calling-the-great-/1400384615465018/",
+          "domain": "facebook.com",
+          "title": "Queensland Theatre Company – The Great Gatsby | Playhouse, QPAC"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 6,
+      "skippedNotReview": 3
+    },
+    {
+      "showId": "earth-angel-stephen-joseph-regional-2025",
+      "query": "\"Earth Angel\" review Scarborough",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://charleshutchpress.co.uk/review-alan-ayckbourns-earth-angel-stephen-joseph-theatre-scarborough/",
+          "domain": "charleshutchpress.co.uk",
+          "title": "Alan Ayckbourn's Earth Angel, Stephen Joseph Theatre, Scarborough"
+        },
+        {
+          "url": "https://www.yeahlifestyle.com/review-sir-alan-ayckbourns-earth-angel-at-the-new-vic-theatre/",
+          "domain": "yeahlifestyle.com",
+          "title": "Review: Sir Alan Ayckbourn's Earth Angel at the New Vic Theatre"
+        },
+        {
+          "url": "https://www.facebook.com/welcometoyorkshire/posts/what-is-alan-ayckbourns-new-play-earth-angel-about-at-the-stephen-joseph-theatre/1168822658607528/",
+          "domain": "facebook.com",
+          "title": "What Is Alan Ayckbourn's New Play Earth Angel About at The ..."
+        },
+        {
+          "url": "https://www.facebook.com/StephenJosephTheatre/videos/earth-angel-press-night/735187842888401/",
+          "domain": "facebook.com",
+          "title": "So much joy at the press night of Alan Ayckbourn's Earth Angel ..."
+        },
+        {
+          "url": "https://www.facebook.com/StephenJosephTheatre/posts/and-its-a-shining-for-alan-ayckbourns-earth-angel-from-the-yorkshire-post-descri/1655623972237157/",
+          "domain": "facebook.com",
+          "title": "And it's a shining for Alan Ayckbourn's Earth Angel from ... - Facebook"
+        },
+        {
+          "url": "https://www.yeahlifestyle.com/sir-alan-ayckbourn-brings-his-91st-play-earth-angel-to-the-new-vic/",
+          "domain": "yeahlifestyle.com",
+          "title": "Sir Alan Ayckbourn Brings his 91st play Earth Angel to the New Vic"
+        }
+      ],
+      "skippedExisting": 2,
+      "skippedUnregistered": 6,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "dancing-at-lughnasa-crucible-regional-2025",
+      "query": "\"Dancing at Lughnasa\" review Sheffield",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/dancing-at-lughnasa-sheffield-crucible-review",
+          "outletId": "theatreandtonic",
           "action": "new"
         },
         {
-          "url": "https://www.broadwayworld.com/scotland/article/Review-JACK-AND-THE-BEANSTALK-Festival-Theatre-20251217",
+          "url": "https://www.theguardian.com/stage/2025/sep/19/dancing-at-lughnasa-review-flashes-of-rapture-in-brian-friels-story-of-sisterhood",
+          "outletId": "guardian",
+          "action": "new"
+        },
+        {
+          "url": "https://eastmidlandstheatre.com/2025/09/19/review-dancing-at-lughnasa-crucible-theatre-sheffield/",
+          "outletId": "east-midlands-theatre",
+          "action": "new"
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2025/09/review-dancing-at-lughnasa-crucible-theatre-sheffield/",
+          "outletId": "everything-theatre",
+          "action": "new"
+        },
+        {
+          "url": "https://northernartsreview.co.uk/central-north/review-dancing-at-lughnasa-at-crucible-theatre/",
+          "outletId": "northernartsreview",
+          "action": "new"
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2025/10/17/review-dancing-at-lughnasa/",
+          "outletId": "a-youngish-perspective",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.northernsoul.me.uk/dancing-lughnasa-crucible-sheffield/",
+          "domain": "northernsoul.me.uk",
+          "title": "Theatre Review: Dancing at Lughnasa, Crucible, Sheffield"
+        },
+        {
+          "url": "https://www.facebook.com/shefftheatres/posts/the-reviews-are-in-and-dancing-at-lughnasa-is-a-friel-hit-whatsonstage-the-stage/1210909381071165/",
+          "domain": "facebook.com",
+          "title": "The reviews are in... and Dancing at Lughnasa is a 'Friel' hit ..."
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "fat-ham-royal-shakespeare-regional-2025",
+      "query": "\"Fat Ham\" review Stratford-upon-Avon",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://www.theguardian.com/stage/2025/aug/21/fat-ham-review-hamlet-james-ijames-shakespeare",
+          "outletId": "guardian",
+          "action": "new"
+        },
+        {
+          "url": "https://www.elementaltheatre.com/post/fat-ham",
+          "outletId": "elementaltheatre",
+          "action": "new"
+        },
+        {
+          "url": "https://alt-africa.com/2025/08/26/andi-osho-on-rsc-debut-in-fat-ham-need-for-diversity-behind-the-scenes-cheeseburgers/",
+          "outletId": "alt-africa",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/thestage/posts/-review-fat-ham-infectiously-fun-uk-premiere-of-james-ijames-joyful-and-bombasti/1238429391650041/",
+          "domain": "facebook.com",
+          "title": "Fat Ham — Infectiously fun UK premiere of James Ijames' joyful and ..."
+        },
+        {
+          "url": "https://www.facebook.com/thersc/posts/a-hamlet-for-our-time-timesreviews-for-fat-ham-are-in-hear-what-audiences-have-t/1186431316854596/",
+          "domain": "facebook.com",
+          "title": "'A Hamlet for our time' (Times) Reviews for Fat Ham are in Hear what ..."
+        },
+        {
+          "url": "https://www.facebook.com/whatsonstage/posts/dont-miss-fat-ham-this-summer-winner-of-the-pulitzer-prize-for-drama-this-sizzli/1161729135987454/",
+          "domain": "facebook.com",
+          "title": "Don't miss Fat Ham this summer Winner of the Pulitzer Prize for ..."
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/fat-ham-a-modern-spin-on-shakespeare/",
+          "domain": "telegraph.co.uk",
+          "title": "This spin on Shakespeare sets Hamlet at a barbecue - The Telegraph"
+        },
+        {
+          "url": "https://www.facebook.com/thersc/videos/a-hamlet-for-our-time-timesreviews-for-fat-ham-are-in-hear-what-audiences-have-t/764389969536777/",
+          "domain": "facebook.com",
+          "title": "'A Hamlet for our time' (Times) Reviews for Fat Ham are in Hear what ..."
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 5,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "measure-for-measure-royal-shakespeare-regional-2025",
+      "query": "\"Measure for Measure\" review Stratford-upon-Avon",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://www.stratford-herald.com/news/beyond-all-measure-9434864/",
+          "outletId": "stratford-herald",
+          "action": "new"
+        },
+        {
+          "url": "https://www.stratford-herald.com/news/getting-the-measure-of-the-duke-9436254/",
+          "outletId": "stratford-herald",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://brokenlegsblog.co.uk/2025/10/03/measure-for-measure-rsc-2025/",
+          "domain": "brokenlegsblog.co.uk",
+          "title": "“Measure for Measure” – RSC - Broken Legs Blog"
+        },
+        {
+          "url": "https://theboar.org/2025/09/measure-for-measure-another-off-the-scale-rsc-production/",
+          "domain": "theboar.org",
+          "title": "Measure for Measure: Another off-the-scale RSC production"
+        },
+        {
+          "url": "https://warks.muddystilettos.co.uk/latest-news/first-look-measure-for-measure-rsc-stratford-upon-avon-until-25-oct/",
+          "domain": "warks.muddystilettos.co.uk",
+          "title": "Measure for Measure, RSC, Stratford-upon-Avon, until 25 Oct"
+        },
+        {
+          "url": "https://stratfordobserver.co.uk/lifestyle/getting-the-measure-of-immorality-in-high-office-at-the-rsc-2-58115/",
+          "domain": "stratfordobserver.co.uk",
+          "title": "Getting the measure of immorality in high office at the RSC"
+        },
+        {
+          "url": "https://theatreboard.co.uk/thread/14089/measure-rsc?page=3",
+          "domain": "theatreboard.co.uk",
+          "title": "Measure For Measure - RSC | TheatreBoard"
+        },
+        {
+          "url": "https://presidentshusbandsreviews.blogspot.com/2025/09/measure-for-measure-royal-shakespeare.html",
+          "domain": "presidentshusbandsreviews.blogspot.com",
+          "title": "\"Measure for Measure\". Royal Shakespeare Theatre"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 6,
+      "skippedNotReview": 1
+    },
+    {
+      "showId": "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
+      "query": "\"The Two Gentlemen of Verona\" review Stratford-upon-Avon",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://therealchrisparkle.com/2025/09/01/review-the-two-gentlemen-of-verona-royal-shakespeare-company-at-the-other-place-stratford-upon-avon-30th-august-2025/",
+          "outletId": "therealchrisparkle",
+          "action": "new"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/two-gentlemen-verona-rsc-stratford-review-not-quite-intended-gateway-drug-shakespeare",
+          "outletId": "artsdesk",
+          "action": "new"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-TWO-GENTLEMEN-OF-VERONA-The-Other-Place-20250813",
           "outletId": "broadwayworld",
           "action": "new"
         }
       ],
       "newOutletCandidates": [
         {
-          "url": "https://www.facebook.com/DundeeRep/videos/as-we-sow-the-final-seeds-for-the-opening-of-jack-and-the-beanstalk-heres-a-love/1164075612375340/",
+          "url": "https://www.facebook.com/morningstaronline/posts/theatre-review-the-two-gentlemen-of-verona-at-the-other-place-stratford-upon-avo/1155337589946692/",
           "domain": "facebook.com",
-          "title": "As we sow the final seeds for the opening of Jack and the Beanstalk ..."
+          "title": "Theatre Review: The Two Gentlemen of Verona () at The Other ..."
         },
         {
-          "url": "https://www.xploredundee.com/jack-and-beanstalk-0",
-          "domain": "xploredundee.com",
-          "title": "Jack and the Beanstalk - Xplore Dundee"
+          "url": "https://www.goodreads.com/en/book/show/82346.The_Two_Gentlemen_of_Verona",
+          "domain": "goodreads.com",
+          "title": "The Two Gentlemen of Verona by William Shakespeare | Goodreads"
         },
         {
-          "url": "https://www.dundeeculture.com/post/here-is-everything-you-need-to-know-about-dundee-rep-s-christmas-show-jack-and-the-beanstalk",
-          "domain": "dundeeculture.com",
-          "title": "Here is everything you need to know about Dundee Rep's Christmas ..."
+          "url": "https://peterviney.com/stage/two-gentlemen-of-verona-2/",
+          "domain": "peterviney.com",
+          "title": "Two Gentlemen of Verona- RSC 2025 - Peter Viney's Blog"
         }
       ],
       "skippedExisting": 0,
@@ -138,548 +650,139 @@
       "skippedNotReview": 4
     },
     {
-      "showId": "the-glass-menagerie-dundee-rep-regional-2025",
-      "query": "\"The Glass Menagerie\" review Dundee",
+      "showId": "the-winters-tale-royal-shakespeare-regional-2025",
+      "query": "\"The Winter's Tale\" review Stratford-upon-Avon",
       "candidates": 10,
       "ingested": [
         {
-          "url": "https://www.heraldscotland.com/life_style/25518553.dundee-rep-revives-glass-menagerie-heartbreaking-grace/",
-          "outletId": "herald",
+          "url": "https://therealchrisparkle.com/2025/07/23/review-the-winters-tale-rsc-at-the-royal-shakespeare-theatre-stratford-upon-avon-22nd-july-2025/",
+          "outletId": "therealchrisparkle",
           "action": "new"
         },
         {
-          "url": "https://www.scotsman.com/arts-and-culture/theatre-and-stage/andrew-panton-on-directing-the-glass-menagerie-its-one-of-the-most-beautiful-plays-ever-written-5320377",
-          "outletId": "the-scotsman",
+          "url": "https://www.theguardian.com/stage/2025/jul/23/the-winters-tale-review-bertie-carvel-yael-farber-royal-shakespeare-theatre-stratford-upon-avon",
+          "outletId": "guardian",
           "action": "new"
         },
         {
-          "url": "https://www.heraldscotland.com/life_style/25507376.dolly-partons----glass-menagerie-offers-hope/",
-          "outletId": "herald",
-          "action": "new"
-        }
-      ],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/theaterlatteda/posts/the-glass-menagerie-is-a-compelling-drama-brought-to-life-by-a-brilliant-cast-in/1722678022492889/",
-          "domain": "facebook.com",
-          "title": "\"THE GLASS MENAGERIE is a compelling drama brought to life by ..."
-        },
-        {
-          "url": "https://www.dundeeculture.com/post/the-glass-menagerie-opens-up-at-the-dundee-rep",
-          "domain": "dundeeculture.com",
-          "title": "The Glass Menagerie to open up at the Dundee Rep tonight"
-        },
-        {
-          "url": "https://www.simonwilkinson.net/the-glass-menagerie",
-          "domain": "simonwilkinson.net",
-          "title": "The Glass Menagerie - Simon Wilkinson - Lighting Design"
-        }
-      ],
-      "skippedExisting": 0,
-      "skippedUnregistered": 3,
-      "skippedNotReview": 4
-    },
-    {
-      "showId": "cheapo-oran-mor-regional-2025",
-      "query": "\"Cheapo\" review Glasgow",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/thestage/posts/-review-cheapo-insightful-adolescent-drama-set-in-a-kfc-%C3%B2ran-m%C3%B3rread-the-stages-/1275293661296947/",
-          "domain": "facebook.com",
-          "title": "Cheapo – Insightful adolescent drama set in a KFC (Òran Mór) Read ..."
-        }
-      ],
-      "skippedExisting": 1,
-      "skippedUnregistered": 1,
-      "skippedNotReview": 8
-    },
-    {
-      "showId": "someones-knockin-at-the-door-oran-mor-regional-2026",
-      "query": "\"Someone's Knockin' at the Door\" review Glasgow",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/playpiepint/posts/thats-a-wrap-for-someones-knockin-at-the-door-at-%C3%B2ran-m%C3%B3rthank-you-to-everyone-w/1741156813966817/",
-          "domain": "facebook.com",
-          "title": "That's a wrap for Someone's Knockin' at The Door at Òran Mór ..."
-        }
-      ],
-      "skippedExisting": 2,
-      "skippedUnregistered": 1,
-      "skippedNotReview": 7
-    },
-    {
-      "showId": "macbeth-hull-truck-regional-2026",
-      "query": "\"Macbeth\" review Hull",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/hulltruck/videos/bbc-radio-humberside-sally-fairfax-rehearsals-of-macbeth-at-hull-truck-theatre/2030755574515287/",
-          "domain": "facebook.com",
-          "title": "Sally Fairfax - Rehearsals of Macbeth at Hull Truck Theatre - Facebook"
-        }
-      ],
-      "skippedExisting": 1,
-      "skippedUnregistered": 1,
-      "skippedNotReview": 8
-    },
-    {
-      "showId": "marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025",
-      "query": "\"Marina Abramović: Balkan Erotic Epic\" review Manchester",
-      "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://rolandcat.substack.com/p/review-marina-abramovic-balkan-erotic",
-          "outletId": "rolandcat",
+          "url": "https://www.thestage.co.uk/reviews/the-winters-tale-review-royal-shakespeare-theatre",
+          "outletId": "thestage",
           "action": "new"
         },
         {
-          "url": "https://www.thereviewshub.com/marina-abramovic-balkan-erotic-epic-aviva-studios-manchester/",
+          "url": "https://www.thereviewshub.com/the-winters-tale-royal-shakespeare-theatre-stratford-upon-avon/",
           "outletId": "thereviewshub",
           "action": "new"
         },
         {
-          "url": "https://louderthanwar.com/marina-abramovic-a-four-hour-theatrical-piece-of-mind-boggling-thought-provoking-non-stop-erotic-cabaret/",
-          "outletId": "louder-than-war",
+          "url": "https://www.westendbestfriend.co.uk/news/review-the-winters-tale-rsc",
+          "outletId": "west-end-best-friend",
           "action": "new"
         },
         {
-          "url": "https://www.theguardian.com/stage/2025/oct/15/marina-abramovic-balkan-erotic-epic-review-aviva-studios-manchester",
-          "outletId": "guardian",
+          "url": "https://observer.co.uk/culture/theatre/article/the-problems-of-the-winters-tale",
+          "outletId": "observer",
+          "action": "new"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-winters-tale-at-the-royal-shakespeare-theatre-review_1687809/",
+          "outletId": "whatsonstage",
           "action": "new"
         }
       ],
       "newOutletCandidates": [
         {
-          "url": "https://www.facebook.com/johnrobbofficial/posts/i-went-to-this-playit-was-mind-blowingmarina-abramovic-balkan-erotic-epic-theatr/1604700587468546/",
+          "url": "https://www.facebook.com/thersc/posts/the-movement-in-this-piece-adds-a-wild-world-to-the-winters-tale-%EF%B8%8F-shakespeares/1149936427170752/",
           "domain": "facebook.com",
-          "title": "I went to this play...it was mind blowing... Marina Abramovic 'Balkan ..."
+          "title": "\"The movement in this piece adds a wild world to The Winter's Tale ..."
         },
         {
-          "url": "https://artreview.com/what-keeps-marina-abramovic-going-balkan-erotic-epic-review-philippa-snow/",
-          "domain": "artreview.com",
-          "title": "What Keeps Marina Abramović Going? 'Balkan Erotic Epic', Reviewed"
+          "url": "https://www.weekendnotes.co.uk/the-winters-tale-at-rsc-stratforduponavon-review/",
+          "domain": "weekendnotes.co.uk",
+          "title": "The Winter's Tale at RSC Stratford-upon-Avon Review"
         }
       ],
       "skippedExisting": 0,
       "skippedUnregistered": 2,
-      "skippedNotReview": 3
-    },
-    {
-      "showId": "road-royal-exchange-regional-2026",
-      "query": "\"Road\" review Manchester",
-      "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://www.elementaltheatre.com/post/road-at-the-royal-exchange-theatre-manchester-review",
-          "outletId": "elementaltheatre",
-          "action": "new"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/feb/20/road-review-royal-exchange-manchester",
-          "outletId": "guardian",
-          "action": "new"
-        }
-      ],
-      "newOutletCandidates": [
-        {
-          "url": "https://brokenlegsblog.co.uk/2026/03/01/road-manchester-royal-exchange/",
-          "domain": "brokenlegsblog.co.uk",
-          "title": "“Road” – Manchester Royal Exchange - Broken Legs Blog"
-        },
-        {
-          "url": "https://hamzajahanzeb.substack.com/p/review-road-by-jim-cartwright-royal",
-          "domain": "hamzajahanzeb.substack.com",
-          "title": "REVIEW Road by Jim Cartwright Royal Exchange Theatre ..."
-        },
-        {
-          "url": "https://stageyreviews.co.uk/2026/02/20/road-royal-exchange-manchester/",
-          "domain": "stageyreviews.co.uk",
-          "title": "Road | Royal Exchange, Manchester - Stagey Reviews"
-        },
-        {
-          "url": "https://www.facebook.com/WhatsOnInManchester/posts/road-is-playing-at-manchesters-royal-exchange-theatre-to-mark-the-40th-anniversa/1364763635691404/",
-          "domain": "facebook.com",
-          "title": "Road is playing at Manchester's Royal Exchange theatre to mark the ..."
-        }
-      ],
-      "skippedExisting": 0,
-      "skippedUnregistered": 4,
-      "skippedNotReview": 3
-    },
-    {
-      "showId": "singin-in-the-rain-royal-exchange-regional-2025",
-      "query": "\"Singin' in the Rain\" review Manchester",
-      "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://www.manchestertheatres.com/news/in-conversation-with-danny-collins-discussing-singin-in-the-rain-at-the-royal-exchange,-manchester",
-          "outletId": "manchestertheatres",
-          "action": "new"
-        },
-        {
-          "url": "https://theweek.com/culture-life/theatre/singin-in-the-rain-fun-christmas-show-is-pure-bottled-sunshine",
-          "outletId": "theweek",
-          "action": "new"
-        }
-      ],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/manctheatres/photos/singin-in-the-rain-is-on-at-the-royal-exchange-theatre-until-january-25threview-/1280238720791460/",
-          "domain": "facebook.com",
-          "title": "Manchester - Singin' In The Rain is on at the Royal Exchange ..."
-        },
-        {
-          "url": "https://www.facebook.com/100064892704034/videos/rain-rain-dont-go-away-audiences-are-enchanted-by-singin-in-the-rainwith-many-sh/1198452079080119/",
-          "domain": "facebook.com",
-          "title": "Rain, rain, don't go away! Audiences are enchanted by Singin' in the ..."
-        },
-        {
-          "url": "https://www.manchester-rocks.co.uk/things-to-do/singin-in-the-rain---royal-exchange-theatre",
-          "domain": "manchester-rocks.co.uk",
-          "title": "Singin' in the Rain - Royal Exchange Theatre | Manchester Rocks"
-        },
-        {
-          "url": "https://www.londontheatres.com/news/review-_-singin-in-the-rain-is-iconic-and-puddles-of-fun",
-          "domain": "londontheatres.com",
-          "title": "REVIEW - Singin' In The Rain is iconic and puddles of fun!"
-        }
-      ],
-      "skippedExisting": 0,
-      "skippedUnregistered": 4,
-      "skippedNotReview": 4
-    },
-    {
-      "showId": "the-memory-of-water-octagon-regional-2026",
-      "query": "\"The Memory of Water\" review Bolton",
-      "candidates": 9,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/BurbageTheatreCo/posts/-exceptional-the-poplar-review-the-memory-of-water-is-now-playing-at-burbage-dee/1478827064247576/",
-          "domain": "facebook.com",
-          "title": "“EXCEPTIONAL.” – The Poplar Review The Memory of Water is now ..."
-        },
-        {
-          "url": "https://www.creativetourist.com/event/the-memory-of-water/",
-          "domain": "creativetourist.com",
-          "title": "The Memory of Water at The Octagon Theatre | Creative Tourist"
-        },
-        {
-          "url": "https://www.londontheatres.com/news/review-_-the-memory-of-water-is-a-wonderfully-entertaining-and-thought_provoking-piece-of-theatre",
-          "domain": "londontheatres.com",
-          "title": "REVIEW - The Memory of Water is a wonderfully ... - London Theatres"
-        },
-        {
-          "url": "https://www.facebook.com/ILoveMCR/posts/the-memory-of-water-is-a-laugh-out-loud-comedy-that-follows-three-dysfunctional-/1323498749815297/",
-          "domain": "facebook.com",
-          "title": "The Memory of Water is a laugh-out-loud comedy that follows three ..."
-        },
-        {
-          "url": "https://www.facebook.com/OctagonBolton/videos/were-thrilled-to-introduce-the-cast-of-the-memory-of-water-a-comedy-that-finds-l/2401557720264949/",
-          "domain": "facebook.com",
-          "title": "We're thrilled to introduce the cast of The Memory of Water - Facebook"
-        },
-        {
-          "url": "https://www.facebook.com/everymanplayhouse/videos/witty-moving-and-deeply-relatable-the-memory-of-water-is-winning-audiences-heart/26312541691687027/",
-          "domain": "facebook.com",
-          "title": "“Witty, moving, and deeply relatable”, The Memory of Water is ..."
-        }
-      ],
-      "skippedExisting": 1,
-      "skippedUnregistered": 6,
-      "skippedNotReview": 2
-    },
-    {
-      "showId": "crown-of-blood-crucible-regional-2026",
-      "query": "\"Crown of Blood\" review Sheffield",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/thestage/posts/-review-crown-of-blood-the-queen-reigns-supreme-in-a-yoruba-adaptation-of-macbet/1386103006882678/",
-          "domain": "facebook.com",
-          "title": "Crown of Blood – The queen reigns supreme in a Yoruba adaptation ..."
-        },
-        {
-          "url": "https://forgepress.org/this-production-had-so-much-life-utopia-theatres-crown-of-blood/",
-          "domain": "forgepress.org",
-          "title": "\"This production had so much life\": Utopia Theatre's Crown of Blood"
-        },
-        {
-          "url": "https://royalliteraryfund.substack.com/p/crown-of-blood-adapting-the-scottish",
-          "domain": "royalliteraryfund.substack.com",
-          "title": "Crown of Blood: adapting the Scottish play into a Yoruba epic"
-        }
-      ],
-      "skippedExisting": 6,
-      "skippedUnregistered": 3,
       "skippedNotReview": 1
     },
     {
-      "showId": "gwendas-garage-sheffield-regional-2025",
-      "query": "\"Gwenda's Garage\" review Sheffield",
+      "showId": "his-last-report-york-royal-regional-2025",
+      "query": "\"His Last Report\" review York",
       "candidates": 10,
       "ingested": [
         {
-          "url": "https://www.thereviewshub.com/gwendas-garage-the-musical-tanya-moiseiwitsch-playhouse-sheffield/",
-          "outletId": "thereviewshub",
+          "url": "https://www.theguardian.com/stage/2025/jul/25/his-last-report-review-york-theatre-royal-seebohm-rowntree",
+          "outletId": "guardian",
+          "action": "new"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/his-last-report-york-theatre-ro-24614",
+          "outletId": "british-theatre",
+          "action": "new"
+        },
+        {
+          "url": "https://fairypoweredproductions.com/his-last-report-review/",
+          "outletId": "fairypoweredproductions",
           "action": "new"
         }
       ],
       "newOutletCandidates": [
         {
-          "url": "https://www.threads.com/@thereviewshub/post/DP6oXPJCtKU/theatre-review-gwendas-garage-the-musical-sheffieldtheatres-entertaining-sporadi",
-          "domain": "threads.com",
-          "title": "Theatre review - Gwenda's Garage The Musical @sheffieldtheatres ..."
-        },
-        {
-          "url": "https://www.facebook.com/HistoricEngland/posts/gwendas-garage-was-founded-in-1985-in-sheffield-south-yorkshire-by-three-women-m/1116750570563195/?locale=az_AZ",
+          "url": "https://www.facebook.com/thestage/photos/-review-his-last-report-inspirational-story-of-the-rowntree-chocolate-factory-is/1213973447428969/",
           "domain": "facebook.com",
-          "title": "Gwenda's Garage was founded in 1985 in Sheffield ... - Facebook"
+          "title": "His Last Report – Inspirational story of the Rowntree chocolate ..."
         },
         {
-          "url": "https://www.timeout.com/london/theatre/gwendas-garage-review",
-          "domain": "timeout.com",
-          "title": "Gwenda's Garage, Southwark Playhouse Borough review - Time Out"
+          "url": "https://www.linkedin.com/posts/charlotte-davies-a15ab7_review-his-last-report-at-york-theatre-royal-activity-7354963682776297472-2hgR",
+          "domain": "linkedin.com",
+          "title": "Charlotte Davies - His Last Report at York Theatre Royal - LinkedIn"
+        },
+        {
+          "url": "https://www.facebook.com/yorktheatreroyal/posts/everyones-talking-about-his-last-report-huge-shoutout-to-the-incredible-team-you/1320916516067790/",
+          "domain": "facebook.com",
+          "title": "Everyone's talking about His Last Report Huge shoutout ... - Facebook"
         }
       ],
-      "skippedExisting": 4,
-      "skippedUnregistered": 3,
-      "skippedNotReview": 2
-    },
-    {
-      "showId": "my-brothers-a-genius-sheffield-regional-2026",
-      "query": "\"My Brother's a Genius\" review Sheffield",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/shefftheatres/posts/my-brothers-a-genius-has-been-chosen-as-a-theatre-pick-for-2026-in-the-guardian-/1305689674926468/",
-          "domain": "facebook.com",
-          "title": "My Brother's A Genius has been chosen as a theatre pick for 2026 in ..."
-        },
-        {
-          "url": "https://www.facebook.com/morningstaronline/posts/theatre-review-my-brothers-a-genius-at-crucible-theatre-sheffield-geoff-bottoms-/1293628596117590/",
-          "domain": "facebook.com",
-          "title": "My brother's a genius () at Crucible Theatre, Sheffield - Facebook"
-        }
-      ],
-      "skippedExisting": 5,
-      "skippedUnregistered": 2,
-      "skippedNotReview": 2
-    },
-    {
-      "showId": "the-ladies-football-club-crucible-regional-2026",
-      "query": "\"The Ladies Football Club\" review Sheffield",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://rmcmedia.co.uk/2026/03/06/review-the-ladies-football-club/",
-          "domain": "rmcmedia.co.uk",
-          "title": "Review: The Ladies Football Club - RMC Media"
-        },
-        {
-          "url": "https://www.rotherhamadvertiser.co.uk/whats-on/things-to-do/review-the-ladies-football-club-sheffield-crucible-5624914",
-          "domain": "rotherhamadvertiser.co.uk",
-          "title": "REVIEW: The Ladies Football Club, Sheffield Crucible"
-        },
-        {
-          "url": "https://www.facebook.com/thestage/posts/review-the-ladies-football-club-first-world-war-footballing-drama-never-finds-i/1413001687526143/",
-          "domain": "facebook.com",
-          "title": "First World War footballing drama never finds its feet - Facebook"
-        },
-        {
-          "url": "https://charleshutchpress.co.uk/last-chance-to-see-the-ladies-football-club-crucible-theatre-sheffield/",
-          "domain": "charleshutchpress.co.uk",
-          "title": "Last chance to see: The Ladies Football Club, Crucible Theatre ..."
-        },
-        {
-          "url": "https://historicalnovelsociety.org/reviews/the-scandalous-ladies-football-club/",
-          "domain": "historicalnovelsociety.org",
-          "title": "The Scandalous Ladies Football Club - Historical Novel Society"
-        },
-        {
-          "url": "https://www.facebook.com/shefftheatres/posts/ahead-of-the-final-performances-of-the-ladies-football-club-in-the-crucible-tomo/1377852397710195/",
-          "domain": "facebook.com",
-          "title": "Ahead of the final performances of The Ladies Football Club in the ..."
-        }
-      ],
-      "skippedExisting": 1,
-      "skippedUnregistered": 6,
-      "skippedNotReview": 3
-    },
-    {
-      "showId": "all-is-but-fantasy-royal-shakespeare-regional-2026",
-      "query": "\"All Is But Fantasy\" review Stratford-upon-Avon",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/thersc/posts/all-is-but-fantasy-is-about-to-explode-into-the-other-place-experience-whitney-w/1299992962165097/",
-          "domain": "facebook.com",
-          "title": "All Is But Fantasy is about to explode into The Other Place ..."
-        },
-        {
-          "url": "https://www.facebook.com/thestage/posts/-review-all-is-but-fantasy-bold-and-interrogatory-piece-of-gig-theatre-is-a-jumb/1386817836811195/",
-          "domain": "facebook.com",
-          "title": "All Is But Fantasy – Bold and interrogatory piece of gig theatre is a ..."
-        },
-        {
-          "url": "https://www.vogue.co.uk/article/all-is-but-fantasy-play",
-          "domain": "vogue.co.uk",
-          "title": "Inside Whitney White's Dazzling New Take On Shakespeare"
-        }
-      ],
-      "skippedExisting": 2,
+      "skippedExisting": 0,
       "skippedUnregistered": 3,
       "skippedNotReview": 4
     },
     {
-      "showId": "macbeth-royal-shakespeare-regional-2025",
-      "query": "\"Macbeth\" review Stratford-upon-Avon",
+      "showId": "military-wives-the-musical-york-royal-regional-2025",
+      "query": "\"Military Wives: The Musical\" review York",
       "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/macbeth-at-the-other-place-rsc-review",
-          "outletId": "theatreandtonic",
-          "action": "new"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/oct/22/macbeth-review-daniel-raggett-stratford-rsc",
-          "outletId": "guardian",
-          "action": "new"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/macbeth-review-the-other-place-stratford-upon-avon-william-shakespeare-sam-heughan",
-          "outletId": "thestage",
-          "action": "new"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/macbeth-rsc-stratford-review-glaswegian-gangs-and-ghoulies-prove-gripping",
-          "outletId": "artsdesk",
-          "action": "new"
-        },
-        {
-          "url": "https://www.reviewsgate.co.uk/all-reviews/macbeth-william-shakespearersc-at-the-other-place-stratford-upon-avon",
-          "outletId": "reviewsgate",
-          "action": "new"
-        },
-        {
-          "url": "http://partially-obstructed-view.blogspot.com/2025/11/theatre-review-macbeth-rsc-other-place.html",
-          "outletId": "partially-obstructed-view",
-          "action": "new"
-        }
-      ],
+      "ingested": [],
       "newOutletCandidates": [
         {
-          "url": "https://theboar.org/2025/10/is-this-a-five-star-review-i-see-before-me-rscs-macbeth-is-bloody-brilliant/",
-          "domain": "theboar.org",
-          "title": "Is this a five star review I see before me? RSC's Macbeth is 'bloody ..."
+          "url": "https://www.militarywagschoir.co.uk/Details/military-wags-choir-to-perform-at-press-night-of-military-wives-the-musical-in-york",
+          "domain": "militarywagschoir.co.uk",
+          "title": "Military WAGS Choir to Perform at Press Night of Military Wives"
         },
         {
-          "url": "https://peterviney.com/stage/macbeth-rsc-2025/",
-          "domain": "peterviney.com",
-          "title": "Macbeth – RSC 2025 - Peter Viney's Blog"
+          "url": "https://www.yorkpress.co.uk/news/25474040.standing-ovation-military-wives-musical-york/",
+          "domain": "yorkpress.co.uk",
+          "title": "Standing ovation for Military Wives The Musical in York"
+        },
+        {
+          "url": "https://www.facebook.com/CuldroseMWC/videos/military-wives-the-musical-is-opening-at-the-york-theatre-royal-in-september-how/1956750518448840/",
+          "domain": "facebook.com",
+          "title": "“Military Wives the Musical is opening at the York Theatre Royal in ..."
+        },
+        {
+          "url": "https://york.mumbler.co.uk/event/military-wives-the-musical-at-york-theatre-royal/",
+          "domain": "york.mumbler.co.uk",
+          "title": "Military Wives - The Musical at York Theatre Royal"
+        },
+        {
+          "url": "https://www.yo1radio.co.uk/blogs/julies-blog/post/military-wives-the-musical/",
+          "domain": "yo1radio.co.uk",
+          "title": "Military Wives The Musical - York - YO1 Radio"
         }
       ],
       "skippedExisting": 0,
-      "skippedUnregistered": 2,
-      "skippedNotReview": 2
-    },
-    {
-      "showId": "sleeping-beauty-york-royal-regional-2025",
-      "query": "\"Sleeping Beauty\" review York",
-      "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://www.theguardian.com/stage/2025/dec/09/sleeping-beauty-review-york-theatre-royal-panto",
-          "outletId": "guardian",
-          "action": "new"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-sleeping-beauty-york-theatre-royal",
-          "outletId": "west-end-best-friend",
-          "action": "new"
-        }
-      ],
-      "newOutletCandidates": [
-        {
-          "url": "https://alwaystimefortheatre.com/2025/12/10/review-sleeping-beauty-at-york-theatre-royal/",
-          "domain": "alwaystimefortheatre.com",
-          "title": "Review: Sleeping Beauty at York Theatre Royal"
-        },
-        {
-          "url": "https://charleshutchpress.co.uk/review-sleeping-beauty-york-theatre-royal-no-rest-for-the-wicked-or-the-wacky-until-january-4-2026/",
-          "domain": "charleshutchpress.co.uk",
-          "title": "REVIEW: Sleeping Beauty, York Theatre Royal, no rest for the ..."
-        },
-        {
-          "url": "https://www.facebook.com/yorktheatreroyal/posts/the-first-golden-reviews-are-in-for-sleeping-beauty-have-you-already-been-wed-lo/1436544634504977/",
-          "domain": "facebook.com",
-          "title": "The first golden reviews are in for Sleeping Beauty! Have you ..."
-        },
-        {
-          "url": "https://www.facebook.com/wizardwalkofyork/posts/last-night-we-saw-sleeping-beauty-by-evolution-pantomimes-at-york-theatre-royalw/868821655508869/",
-          "domain": "facebook.com",
-          "title": "Last night we saw Sleeping Beauty by Evolution Pantomimes at ..."
-        }
-      ],
-      "skippedExisting": 0,
-      "skippedUnregistered": 4,
-      "skippedNotReview": 2
-    },
-    {
-      "showId": "the-last-picture-york-royal-regional-2026",
-      "query": "\"The Last Picture\" review York",
-      "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/feb/09/the-last-picture-review-york-theatre-royal-catherine-dyson",
-          "outletId": "guardian",
-          "action": "new"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-last-picture-review-york-theatre-royal",
-          "outletId": "thestage",
-          "action": "new"
-        },
-        {
-          "url": "https://www.nytimes.com/2026/08/06/movies/the-last-picture-shows-review.html",
-          "outletId": "nytimes",
-          "action": "new"
-        }
-      ],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.facebook.com/WestEndBestFriend/posts/-review-the-last-picture-now-playing-at-york-theatre-royal-is-a-play-is-about-em/935518332340519/",
-          "domain": "facebook.com",
-          "title": "REVIEW The Last Picture, now playing at York Theatre Royal, is a ..."
-        },
-        {
-          "url": "https://filmyap.substack.com/p/the-last-picture-shows",
-          "domain": "filmyap.substack.com",
-          "title": "The Last Picture Shows - by Christopher Lloyd - Film Yap"
-        },
-        {
-          "url": "https://www.hammertonail.com/reviews/the-last-picture-shows/",
-          "domain": "hammertonail.com",
-          "title": "THE LAST PICTURE SHOWS - Hammer to Nail"
-        },
-        {
-          "url": "https://insessionfilm.com/movie-review-the-last-picture-shows/",
-          "domain": "insessionfilm.com",
-          "title": "Movie Review: 'The Last Picture Shows' is a Bittersweet Story Of ..."
-        }
-      ],
-      "skippedExisting": 0,
-      "skippedUnregistered": 4,
-      "skippedNotReview": 2
+      "skippedUnregistered": 5,
+      "skippedNotReview": 5
     }
   ]
 }
