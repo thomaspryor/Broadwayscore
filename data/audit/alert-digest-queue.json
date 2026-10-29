@@ -645,5 +645,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T14:21:55.789Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6485-queue-wait",
+    "title": "Landing blocked: rebase red on land/bro-6485-queue-wait",
+    "description": "land.yml did not land land/bro-6485-queue-wait: the rebase gate went red at e31d1ec069. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40870629864",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6485-queue-wait"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e31d1ec0696e876d7dea934f912947d5e11f7aa8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40870629864"
+      }
+    ],
+    "queuedAt": "2026-10-29T14:29:00.975Z"
   }
 ]
