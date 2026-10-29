@@ -156,3 +156,8 @@ test('an answer written before the latest ask is not this ask\'s answer', () => 
   const older = { ...ownerComment('Approved'), createdAt: at(ASK_AT - 1000) };
   assert.match(land.planRecovery(lost([askComment, older]), S, facts).skip, /not answered/);
 });
+
+test('a comment that only quotes the ref, not the recorder\'s answer shape, is not an answer', () => {
+  const quoted = { id: 'q', createdAt: at(ANS_AT), body: `Chose: Approved\n\nDecision ref ODA${link.decisionRef(S, ID, link.questionHash(TITLE))}` };
+  assert.match(land.planRecovery(lost([askComment, quoted]), S, facts).skip, /not answered/);
+});

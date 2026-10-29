@@ -113,7 +113,8 @@ function askedHold(issue) {
  */
 function lostBlockAnswer(issue, secret, ask) {
   const marker = link.answerMarker(link.decisionRef(secret, issue.identifier, link.questionHash(issue.title)));
-  const c = link.markerComments(issue.comments, marker).find((x) => new Date(x.createdAt).getTime() >= ask.at);
+  // Residual risk: the ODA ref also appears in the "Emailed the owner" comment, so a session that writes the recorder's exact comment shape could forge this. Same-identity Linear comments cannot prove authorship; the shape check only rules out accidents.
+  const c = link.markerComments(issue.comments, marker).find((x) => new Date(x.createdAt).getTime() >= ask.at && /^\*\*Owner decision\*\* \(answered by the owner through /.test(link.unescapeMarkdown(x.body).trim()));
   if (!c) return null;
   const chose = ((/^\s*Chose:\s*(.+)$/m.exec(link.unescapeMarkdown(c.body)) || [])[1] || '').trim();
   if (/^(Approved|Option A: approve)\b/i.test(chose)) return 'approve';
@@ -167,6 +168,7 @@ async function fetchOpenIssues(linear) {
 /** Reads the held change from git, then puts the lost machine lines (and, for an owner Approve, the signed approval) back on the card. True when the card can be planned this pass. */
 async function restoreLostBlock(issue, secret, linear, dryRun, comment) {
   const ask = askedHold(issue);
+  if (!ask || !lostBlockAnswer(issue, secret, ask)) return false; // nothing to recover: skip the git fetches
   const hold = va.holdBranch(issue.identifier);
   const ev = va.evidenceBranch(issue.identifier);
   const facts = { patch: null, evidenceSha: null, files: [], verdictRaw: '' };
@@ -183,14 +185,15 @@ async function restoreLostBlock(issue, secret, linear, dryRun, comment) {
   console.log(`[visual-land] ${issue.identifier}: visual block was deleted from the description; ${dryRun ? 'would restore' : 'restoring'} it (owner answer: ${r.answer})`);
   if (dryRun) return false;
   const row = await linear.getIssue(issue.identifier);
-  const body = `${String(row.description || '').trimEnd()}\n\n${r.lines.join('\n')}\n`;
-  await linear.updateIssue(row.id, { description: body });
-  issue.description = body;
+  // Signed approval first: a crash between the two writes then repeats the whole restore next pass (the card still lacks the line) instead of leaving a line with no approval.
   if (r.answer === 'approve') {
     const signed = `Visual change approved by the owner. The lander will ship the held change (${r.hold}).\n\n${link.visualMarker(link.visualMac(secret, issue.identifier, r.patch, r.verdict))}`;
     await linear.createComment(row.id, signed);
     issue.comments.nodes.push({ id: 'restored', body: signed, createdAt: new Date().toISOString() });
   }
+  const body = `${String(row.description || '').trimEnd()}\n\n${r.lines.join('\n')}\n`;
+  await linear.updateIssue(row.id, { description: body });
+  issue.description = body;
   return true;
 }
 
