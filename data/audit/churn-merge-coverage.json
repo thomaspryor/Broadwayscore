@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-29T01:00:36.729Z",
+    "generatedAt": "2026-10-29T02:50:34.419Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,14 +9,14 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 3,
-    "exemptCount": 25,
+    "exemptCount": 24,
     "coveredCount": 44,
-    "highChurnTracked": 72
+    "highChurnTracked": 71
   },
   "flagged": [
     {
       "path": "data/audit/bundle-size-history.json",
-      "churn": 58
+      "churn": 53
     },
     {
       "path": "data/audit/outlet-registry-staging.json",
@@ -30,66 +30,62 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 938
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 239
+      "churn": 917
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 231
+      "churn": 235
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 231
+      "churn": 235
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 231
+      "churn": 235
+    },
+    {
+      "path": "data/audit/alert-digest-queue.json",
+      "churn": 228
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 200
+      "churn": 207
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 171
+      "churn": 175
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 137
+      "churn": 138
     },
     {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2025.json",
-      "churn": 102
+      "churn": 105
     },
     {
       "path": "public/data/shows/translations-west-end-2018.json",
-      "churn": 102
+      "churn": 105
     },
     {
       "path": "public/data/shows/memoriam-off-west-end-2026.json",
       "churn": 52
     },
     {
-      "path": "public/data/shows/the-pianist-off-west-end-2026.json",
-      "churn": 42
-    },
-    {
-      "path": "public/data/shows/martin-guerre-west-end-2026.json",
+      "path": "public/data/shows/jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026.json",
       "churn": 41
     },
     {
+      "path": "public/data/shows/the-pianist-off-west-end-2026.json",
+      "churn": 41
+    },
+    {
+      "path": "public/data/shows/martin-guerre-west-end-2026.json",
+      "churn": 40
+    },
+    {
       "path": "public/data/shows/billy-crystal-860-2026.json",
-      "churn": 39
-    },
-    {
-      "path": "public/data/shows/the-curious-case-of-benjamin-button-off-broadway-2026.json",
-      "churn": 39
-    },
-    {
-      "path": "public/data/shows/jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026.json",
       "churn": 38
     },
     {
@@ -97,11 +93,15 @@
       "churn": 36
     },
     {
-      "path": "public/data/shows/other-desert-cities-2026.json",
-      "churn": 35
+      "path": "public/data/shows/the-curious-case-of-benjamin-button-off-broadway-2026.json",
+      "churn": 36
     },
     {
-      "path": "public/data/shows/aftermath-art-new-york-off-broadway-2026.json",
+      "path": "public/data/shows/girls-off-west-end-2026.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/other-desert-cities-2026.json",
       "churn": 34
     },
     {
@@ -109,165 +109,161 @@
       "churn": 34
     },
     {
-      "path": "public/data/shows/derren-brown-only-human-west-end-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/garry-starr-classic-penguins-off-west-end-2026.json",
-      "churn": 33
-    },
-    {
       "path": "public/data/shows/midnight-off-broadway-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/girls-off-west-end-2026.json",
       "churn": 32
     },
     {
-      "path": "public/data/shows/cirque-berserk-west-end-2026.json",
+      "path": "public/data/shows/aftermath-art-new-york-off-broadway-2026.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/derren-brown-only-human-west-end-2026.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/garry-starr-classic-penguins-off-west-end-2026.json",
       "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 1277,
+      "churn": 1282,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 670,
+      "churn": 681,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
+      "churn": 474,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
       "churn": 467,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 461,
+      "churn": 467,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 461,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 460,
+      "churn": 467,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 419,
+      "churn": 426,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 361,
+      "churn": 366,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 307,
+      "churn": 304,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 279,
+      "churn": 285,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 238,
+      "churn": 240,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 234,
+      "churn": 236,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 231,
+      "churn": 235,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 223,
+      "churn": 231,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 137,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 135,
+      "churn": 137,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 122,
+      "churn": 128,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/score-public-since.json",
-      "churn": 106,
+      "churn": 108,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 87,
+      "churn": 89,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 83,
+      "churn": 85,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 77,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 77,
+      "churn": 79,
       "mergeAttr": "ours"
     },
     {
@@ -281,18 +277,23 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/main-streak-failing-jobs.json",
+      "path": "data/audit/poller-backoff/memoriam-off-west-end-2026.json",
       "churn": 44,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/main-streak-failing-jobs.json",
+      "churn": 43,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/girls-off-west-end-2026.json",
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/hospital-hour-off-broadway-2026.json",
-      "churn": 44,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/memoriam-off-west-end-2026.json",
-      "churn": 42,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
@@ -306,43 +307,38 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/girls-off-west-end-2026.json",
-      "churn": 41,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/lane-rehearsal.json",
+      "path": "data/audit/poller-backoff/ceilidh-the-musical-off-west-end-2026.json",
       "churn": 40,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/ceilidh-the-musical-off-west-end-2026.json",
-      "churn": 38,
+      "path": "data/audit/poller-backoff/i-became-we-off-broadway-2026.json",
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/i-became-we-off-broadway-2026.json",
+      "path": "data/audit/lane-rehearsal.json",
       "churn": 35,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026.json",
+      "path": "data/audit/gather-collisions.json",
       "churn": 34,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 33,
+      "path": "data/audit/poller-backoff/the-morbs-off-broadway-2026.json",
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/the-morbs-off-broadway-2026.json",
+      "path": "data/audit/poller-backoff/tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026.json",
       "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
