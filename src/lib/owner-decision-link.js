@@ -622,5 +622,5 @@ module.exports = {
   VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
-  VOID_LABEL, loadDecision, recordAnswer, reconcileAnswered, updateIssue, markerComments, unparkOwnerHolds,
+  VOID_LABEL, ANSWERED_LINE, loadDecision, recordAnswer, reconcileAnswered, updateIssue, markerComments, unparkOwnerHolds,
 };

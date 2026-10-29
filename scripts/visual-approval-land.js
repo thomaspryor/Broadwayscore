@@ -95,8 +95,58 @@ function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedS
   return { action: 'wait', v, mac };
 }
 
+// BRO-6543: a description rewrite (the acceptance-criteria enricher on BRO-6517) can delete the VISUAL-APPROVAL
+// block after the ask. The owner's tap is then recorded as a generic "Approved" with no signed approval, and the
+// card no longer matches the lander's search, so the held change never ships. The worker's own "Asked the owner"
+// comment still names the hold branch and a 12-char patch, and git still holds the rest.
+const ASK_RE = /Held change: (visual-hold\/[a-z0-9][a-z0-9-]{0,60}) \(patch ([0-9a-f]{12})\)/;
+function askedHold(issue) {
+  const asks = ((issue.comments && issue.comments.nodes) || []).map((c) => ({ m: ASK_RE.exec(link.unescapeMarkdown(c.body)), t: new Date(c.createdAt).getTime() }))
+    .filter((x) => x.m).sort((a, b) => b.t - a.t);
+  return asks.length ? { hold: asks[0].m[1], patch12: asks[0].m[2], at: asks[0].t } : null;
+}
+
+/**
+ * How the owner answered a card whose visual block was lost: 'approve' | 'reject' | null.
+ * Only an answer comment whose ref the secret reproduces for this card's own title-level question counts
+ * (workers can copy a ref string but not mint one), written after the ask.
+ */
+function lostBlockAnswer(issue, secret, ask) {
+  const marker = link.answerMarker(link.decisionRef(secret, issue.identifier, link.questionHash(issue.title)));
+  const c = link.markerComments(issue.comments, marker).find((x) => new Date(x.createdAt).getTime() >= ask.at);
+  if (!c) return null;
+  const chose = ((/^\s*Chose:\s*(.+)$/m.exec(link.unescapeMarkdown(c.body)) || [])[1] || '').trim();
+  if (/^(Approved|Option A: approve)\b/i.test(chose)) return 'approve';
+  if (/^(Rejected|Option B: reject)\b/i.test(chose)) return 'reject';
+  return null;
+}
+
+/**
+ * Pure. `facts` is what git says about the held change: {patch, evidenceSha, files, verdictRaw}.
+ * Returns {restore:{lines, answer}} to put the machine lines back, or {skip:why}.
+ */
+function planRecovery(issue, secret, facts) {
+  if (link.parseVisualApproval(issue.description)) return { skip: 'description still has the visual block' };
+  const ask = askedHold(issue);
+  if (!ask) return { skip: 'no ask comment' };
+  if (ask.hold !== va.holdBranch(issue.identifier)) return { skip: 'ask names another card\'s hold branch' };
+  if (!facts || !facts.patch || !facts.patch.startsWith(ask.patch12)) return { skip: 'the held branch no longer matches the asked patch' };
+  if (!facts.evidenceSha) return { skip: 'no evidence commit' };
+  let verdict;
+  try { verdict = JSON.parse(facts.verdictRaw); } catch { return { skip: 'evidence has no readable verdict.json' }; }
+  if (!verdict || verdict.overallPass !== true || !/^[0-9a-f]{12,64}$/.test(String(verdict.contentHash || ''))) return { skip: 'the evidence verdict did not pass' };
+  const answer = lostBlockAnswer(issue, secret, ask);
+  // Unanswered: leave the card alone so the owner's later generic tap is still seen here (a restored line would hide it).
+  if (!answer) return { skip: 'the owner has not answered yet' };
+  const evidence = (facts.files || []).filter((f) => /\.(png|jpe?g)$/i.test(f)).slice(0, 8)
+    .map((f) => `Evidence: ${va.labelFor(f)} | https://raw.githubusercontent.com/${va.REPO}/${facts.evidenceSha}/${f}`);
+  const lines = [...evidence, `VISUAL-APPROVAL: patch=${facts.patch} verdict=${verdict.contentHash} hold=${ask.hold}`];
+  lines.unshift(link.ANSWERED_LINE);
+  return { restore: { lines, answer, patch: facts.patch, verdict: verdict.contentHash, hold: ask.hold } };
+}
+
 const QUERY = `query($teamKey: String!, $after: String) {
-  issues(first: 50, after: $after, filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } }, description: { contains: "VISUAL-APPROVAL" } }) {
+  issues(first: 50, after: $after, filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } }, or: [{ description: { contains: "VISUAL-APPROVAL" } }, { comments: { some: { body: { contains: "Held change: visual-hold/" } } } }] }) {
     pageInfo { hasNextPage endCursor }
     nodes { identifier description createdAt comments(first: 100) { nodes { id body createdAt } } }
   }
@@ -114,6 +164,36 @@ async function fetchOpenIssues(linear) {
   throw new Error('too many cards; refusing to act on a partial list');
 }
 
+/** Reads the held change from git, then puts the lost machine lines (and, for an owner Approve, the signed approval) back on the card. True when the card can be planned this pass. */
+async function restoreLostBlock(issue, secret, linear, dryRun, comment) {
+  const ask = askedHold(issue);
+  const hold = va.holdBranch(issue.identifier);
+  const ev = va.evidenceBranch(issue.identifier);
+  const facts = { patch: null, evidenceSha: null, files: [], verdictRaw: '' };
+  try {
+    va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`, `+refs/heads/${ev}:refs/remotes/origin/${ev}`]);
+    facts.patch = va.patchId('origin/main', `origin/${hold}`);
+    facts.evidenceSha = va.git(['rev-parse', `origin/${ev}`]);
+    facts.files = va.git(['ls-tree', '-r', '--name-only', facts.evidenceSha]).split('\n').filter(Boolean);
+    facts.verdictRaw = va.git(['show', `${facts.evidenceSha}:verdict.json`]);
+  } catch (e) { console.log(`[visual-land] ${issue.identifier}: lost visual block, held branch unreadable (${String(e.message).split('\n')[0]})`); return false; }
+  const plan = planRecovery(issue, secret, facts);
+  if (!plan.restore) { console.log(`[visual-land] ${issue.identifier}: lost visual block, not restoring (${plan.skip})`); return false; }
+  const r = plan.restore;
+  console.log(`[visual-land] ${issue.identifier}: visual block was deleted from the description; ${dryRun ? 'would restore' : 'restoring'} it (owner answer: ${r.answer})`);
+  if (dryRun) return false;
+  const row = await linear.getIssue(issue.identifier);
+  const body = `${String(row.description || '').trimEnd()}\n\n${r.lines.join('\n')}\n`;
+  await linear.updateIssue(row.id, { description: body });
+  issue.description = body;
+  if (r.answer === 'approve') {
+    const signed = `Visual change approved by the owner. The lander will ship the held change (${r.hold}).\n\n${link.visualMarker(link.visualMac(secret, issue.identifier, r.patch, r.verdict))}`;
+    await linear.createComment(row.id, signed);
+    issue.comments.nodes.push({ id: 'restored', body: signed, createdAt: new Date().toISOString() });
+  }
+  return true;
+}
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const dryRun = argv.includes('--dry-run');
@@ -121,7 +201,7 @@ async function main(argv = process.argv.slice(2)) {
   if (!secret) { console.error('[visual-land] APPROVAL_HMAC_SECRET is not set'); return dryRun ? 0 : 3; }
   const linear = require('./lib/linear-client.js');
   let issues;
-  try { issues = (await fetchOpenIssues(linear)).filter((i) => link.parseVisualApproval(i.description)); } catch (e) { console.error(`[visual-land] could not read Linear: ${e.message}`); return 3; }
+  try { issues = (await fetchOpenIssues(linear)).filter((i) => link.parseVisualApproval(i.description) || askedHold(i)); } catch (e) { console.error(`[visual-land] could not read Linear: ${e.message}`); return 3; }
   console.log(`[visual-land] ${issues.length} card(s) with a visual approval line`);
   const comment = async (issue, body) => {
     const row = await linear.getIssue(issue.identifier);
@@ -129,6 +209,9 @@ async function main(argv = process.argv.slice(2)) {
   };
   let failures = 0;
   for (const issue of issues) {
+    if (!link.parseVisualApproval(issue.description)) {
+      try { if (!(await restoreLostBlock(issue, secret, linear, dryRun, comment))) continue; } catch (e) { failures++; console.error(`[visual-land] ${issue.identifier}: could not restore the visual block: ${e.message}`); continue; }
+    }
     let shippedSha = null;
     // A VISUAL-OK prefix is on every UI commit, so a match alone proves nothing: the held change must also be gone from the hold branch (deleted, or no diff left against main).
     let holdSettled = false;
@@ -205,4 +288,4 @@ async function main(argv = process.argv.slice(2)) {
 if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[visual-land] ${e.stack || e.message}`); process.exitCode = 3; });
 }
-module.exports = { planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };
+module.exports = { planRecovery, askedHold, lostBlockAnswer, planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };

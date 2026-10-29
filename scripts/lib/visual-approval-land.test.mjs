@@ -102,3 +102,57 @@ test('evidenceSha: only Evidence lines count and the last one wins', () => {
   assert.equal(va.evidenceSha(later), other);
   assert.equal(va.evidenceSha('no evidence here'), null);
 });
+
+// ── BRO-6543: BRO-6517's real shape. The acceptance-criteria enricher deleted the VISUAL-APPROVAL block after the
+// ask, so the owner's email tap was recorded as a generic "Approved" (no signed approval) on a card the lander never read.
+const ID = 'BRO-6517';
+const TITLE = 'City hubs: Chicago hub page';
+const P40 = 'a75a2508efee'.padEnd(40, '1');
+const V16 = 'e'.repeat(16);
+const EVSHA = 'd'.repeat(40);
+const ASK_AT = Date.parse('2026-10-29T10:18:25Z');
+const ANS_AT = Date.parse('2026-10-29T13:46:18Z');
+const askComment = { id: 'a1', createdAt: at(ASK_AT), body: 'Asked the owner to look at 6 screenshot(s). Held change: visual-hold/bro-6517 (patch a75a2508efee). It ships by itself after Approve; Reject returns the card with the owner\'s note.' };
+const ownerComment = (chose, ref = link.decisionRef(S, ID, link.questionHash(TITLE))) => ({ id: 'o1', createdAt: at(ANS_AT), body: `**Owner decision** (answered by the owner through the email link, 2026-10-29 UTC)\n\nChose: ${chose}\n\nDecision ref ODA${ref}` });
+const lost = (comments) => ({ identifier: ID, title: TITLE, createdAt: at(ASK_AT - 3600e3), description: 'Parent: BRO-6498\n\n## Acceptance criteria\n\n* The hub renders\n\nFiled by: session (kind: city hub)\n', comments: { nodes: comments } });
+const facts = { patch: P40, evidenceSha: EVSHA, files: ['hub__mobile-360.png', 'hub__desktop-1440.png', 'verdict.json'], verdictRaw: JSON.stringify({ overallPass: true, contentHash: V16 }) };
+
+test('lost block + email Approve: the lander restores the machine lines and the next pass lands it', () => {
+  const issue = lost([askComment, ownerComment('Approved')]);
+  assert.equal(land.planCard(issue, S, NOW).action, 'skip', 'before the fix the card was invisible to the lander');
+  const plan = land.planRecovery(issue, S, facts);
+  assert.equal(plan.restore.answer, 'approve');
+  assert.ok(plan.restore.lines.some((l) => l === `VISUAL-APPROVAL: patch=${P40} verdict=${V16} hold=visual-hold/bro-6517`));
+  assert.ok(plan.restore.lines.some((l) => /^Evidence: hub mobile 360 \| https:\/\/raw\.githubusercontent\.com\/.+\/d{40}\/hub__mobile-360\.png$/.test(l)));
+  assert.ok(!plan.restore.lines.some((l) => /verdict\.json/.test(l)), 'only images become Evidence lines');
+  // What the CLI writes: lines onto the description plus the signed approval comment.
+  const restored = { ...issue, description: `${issue.description}\n${plan.restore.lines.join('\n')}\n`, comments: { nodes: [...issue.comments.nodes, { id: 'v', createdAt: at(ANS_AT + 1000), body: link.visualMarker(link.visualMac(S, ID, P40, V16)) }] } };
+  assert.equal(land.planCard(restored, S, ANS_AT + 60e3, null).action, 'land');
+  assert.equal(land.planCard(restored, S, ANS_AT + 60e3, P40).action, 'land');
+  assert.equal(va.evidenceSha(restored.description), EVSHA);
+});
+
+test('lost block: nothing is restored without a genuine owner answer, a matching patch and a passing verdict', () => {
+  assert.match(land.planRecovery(lost([askComment]), S, facts).skip, /not answered/);
+  assert.match(land.planRecovery(lost([askComment, ownerComment('Approved', 'f'.repeat(16))]), S, facts).skip, /not answered/, 'a ref the secret does not reproduce is not an answer');
+  assert.match(land.planRecovery(lost([askComment, ownerComment('Approved')]), 'other-secret', facts).skip, /not answered/);
+  const answered = lost([askComment, ownerComment('Approved')]);
+  assert.match(land.planRecovery(answered, S, { ...facts, patch: 'f'.repeat(40) }).skip, /no longer matches/);
+  assert.match(land.planRecovery(answered, S, { ...facts, verdictRaw: JSON.stringify({ overallPass: false, contentHash: V16 }) }).skip, /did not pass/);
+  assert.match(land.planRecovery(answered, S, { ...facts, evidenceSha: null }).skip, /no evidence/);
+  assert.match(land.planRecovery(lost([ownerComment('Approved')]), S, facts).skip, /no ask/);
+  assert.match(land.planRecovery({ ...answered, identifier: 'BRO-9999' }, S, facts).skip, /another card/);
+});
+
+test('lost block + Reject: lines come back without an approval, so the next pass cleans up and never lands', () => {
+  const issue = lost([askComment, ownerComment('Rejected')]);
+  const plan = land.planRecovery(issue, S, facts);
+  assert.equal(plan.restore.answer, 'reject');
+  const restored = { ...issue, description: `${issue.description}\n${plan.restore.lines.join('\n')}\n` };
+  assert.equal(land.planCard(restored, S, ANS_AT + 60e3).action, 'cleanup');
+});
+
+test('an answer written before the latest ask is not this ask\'s answer', () => {
+  const older = { ...ownerComment('Approved'), createdAt: at(ASK_AT - 1000) };
+  assert.match(land.planRecovery(lost([askComment, older]), S, facts).skip, /not answered/);
+});

@@ -733,6 +733,21 @@ test('spliceNotes: replaces an existing unarmed Acceptance criteria section in p
   assert.doesNotMatch(result, /owner agrees it looks better/);
 });
 
+test('spliceNotes: keeps a visual-approval block appended after the body (BRO-6543, BRO-6517 shape)', () => {
+  const block = [
+    'DECISION NEEDED: Does the change to the Chicago hub look right? (ref 0123456789abcdef0123456789abcdef)',
+    'Option A \u2014 Approve: the change goes live by itself within about 20 minutes / nothing else for you to do',
+    'Evidence: Home | https://raw.githubusercontent.com/thomaspryor/Broadwayscore/' + 'c'.repeat(40) + '/home.png',
+    'VISUAL-APPROVAL: patch=' + 'a'.repeat(40) + ' verdict=' + 'b'.repeat(16) + ' hold=visual-hold/bro-6517',
+  ].join('\n');
+  const original = `Parent: BRO-6498\n\n## Acceptance criteria\n\n* The hub renders\n\nFiled by: session (kind: city hub)\n\n${block}\n`;
+  const result = spliceNotes(original, '## Acceptance criteria\n`npx tsc --noEmit` is clean');
+  assert.match(result, /npx tsc --noEmit/);
+  assert.match(result, /Filed by: session/);
+  assert.ok(result.includes(block), 'the whole DECISION NEEDED / VISUAL-APPROVAL block survives');
+  assert.equal(result.split('Filed by:').length, 2, 'footer is not duplicated');
+});
+
 test('spliceNotes: appends when no existing section is present', () => {
   const result = spliceNotes('## Problem\nBug.', '## Acceptance criteria\n`npx tsc --noEmit`');
   assert.match(result, /## Problem/);

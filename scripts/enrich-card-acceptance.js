@@ -980,6 +980,8 @@ function allFailed(results) {
 // criteria section if one exists, otherwise appending. Uses the CANONICAL
 // SECTION_RE (autonomous-verify-cmd.js) so this never drifts from what
 // evaluateVerifiability itself scans for.
+// First line of an owner-decision block (scripts/lib/visual-approval.js buildBlock, the worker's DECISION NEEDED block, a settled ANSWERED line).
+const DECISION_TAIL_RE = /^[ \t]*(?:DECISION NEEDED:|VISUAL-APPROVAL:|ANSWERED by the owner)/im;
 function spliceNotes(notes, draftedSection) {
   const text = String(notes || '');
   const section = SECTION_RE.exec(text);
@@ -989,7 +991,12 @@ function spliceNotes(notes, draftedSection) {
   // appends after the body; 83 enriched cards lost it and read as "unknown"
   // in the digest's inflow-by-source. Carry the footer over.
   const footer = FOOTER_RE.exec(section[0]);
-  const kept = footer ? `\n\n${footer[0].trim()}` : '';
+  // BRO-6543: the same swallow ate a DECISION NEEDED / VISUAL-APPROVAL block appended after the body
+  // (BRO-6517: the owner's tap then had no visual binding and the held change never landed). Carry it over.
+  const decision = DECISION_TAIL_RE.exec(section[0]);
+  const decisionTail = decision ? section[0].slice(decision.index).trimEnd() : '';
+  const footerKept = footer && !decisionTail.includes(footer[0]) ? `\n\n${footer[0].trim()}` : '';
+  const kept = footerKept + (decisionTail ? `\n\n${decisionTail}` : '');
   return text.slice(0, section.index) + draftedSection.trim() + kept + '\n' + text.slice(section.index + section[0].length);
 }
 
