@@ -142,7 +142,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
   for (const alias of t.aliases || []) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(alias));
 }
 const { classifyShow } = require('./lib/classify-show');
-const { titleSaysMusical } = require('./lib/title-says-musical');
+const { titleSaysMusical, knownShowType } = require('./lib/title-says-musical');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
@@ -2905,6 +2905,10 @@ async function discoverShows() {
 
     // Guard: skip if generated ID collides with existing DB or batch.
     if (existingIds.has(showId)) {
+      // BRO-6506: when an earlier source in this batch minted the id (Playbill
+      // runs before TheaterMania), keep TM's genre for type detection below.
+      const batchTwin = show.listingGenre && newShows.find(n => n.id === showId);
+      if (batchTwin && !batchTwin.listingGenre) batchTwin.listingGenre = show.listingGenre;
       skippedDuplicates.push({ title: show.title, reason: `ID collision: ${showId} already exists`, existingId: showId });
       continue;
     }
@@ -3152,6 +3156,12 @@ async function discoverShows() {
       // IBDB classification is authoritative (from the production page itself)
       detectedType = show.ibdbShowType;
       confidence = 'high';
+    } else if (show.listingGenre && knownShowType(show.title, show.listingGenre)) {
+      // BRO-6506: the source's own genre label (TheaterMania genre names,
+      // venue-listing genre). TM rows carry no TodayTix category, so a musical
+      // whose title lacks the word went in as a play (The Apple Boys).
+      detectedType = knownShowType(show.title, show.listingGenre);
+      if (confidence === 'low') confidence = 'high';
     } else if (titleSaysMusical(show.title)) {
       // Title suffix like "Dog Man - The Musical", "Show: A New Musical" or
       // "Death Note The Musical" (lib/title-says-musical.js); avoids false
@@ -3215,15 +3225,19 @@ async function discoverShows() {
         const marketMismatch = tagLine?.market && !playbillMarketMatchesCategory(tagLine.market, det.show.category);
         if (wrongPage || marketMismatch) {
           console.log(`  ⚠️  Playbill page for "${det.show.title}" looks like a different production (${wrongPage ? (result.mismatches.map(m => m.field).join('/') + ' mismatch') : `market ${tagLine.market} vs ${det.show.category || 'broadway'}`}) — ignoring its tag line`);
-        } else if (tagLine && tagLine.revivalStatus !== 'unknown') {
-          const playbillIsRevival = tagLine.revivalStatus === 'revival';
-          if (det.isRevival !== playbillIsRevival) {
-            console.log(`  📋 Playbill override: "${det.show.title}" isRevival ${det.isRevival} → ${playbillIsRevival} (${tagLine.tags.join(' | ')})`);
+        } else if (tagLine && (tagLine.revivalStatus !== 'unknown' || tagLine.showType)) {
+          if (tagLine.revivalStatus !== 'unknown') {
+            const playbillIsRevival = tagLine.revivalStatus === 'revival';
+            if (det.isRevival !== playbillIsRevival) {
+              console.log(`  📋 Playbill override: "${det.show.title}" isRevival ${det.isRevival} → ${playbillIsRevival} (${tagLine.tags.join(' | ')})`);
+            }
+            det.isRevival = playbillIsRevival;
+            det.confidence = 'high';
+            det.revivalSource = 'playbill-tag';
+            det.revivalSourceUrl = result.playbillUrl || null;
           }
-          det.isRevival = playbillIsRevival;
-          det.confidence = 'high';
-          det.revivalSource = 'playbill-tag';
-          det.revivalSourceUrl = result.playbillUrl || null;
+          // BRO-6506: the Play/Musical tag stands on its own; a tag-line with
+          // no Original/Revival tag ("Off-Broadway | Musical") used to drop it.
           if (tagLine.showType) det.detectedType = tagLine.showType;
         } else if (result?.playbillUrl) {
           console.log(`  ℹ️  Playbill page found for "${det.show.title}" but no genre tag line parsed (markup may have changed) — ${result.playbillUrl}`);

@@ -87,6 +87,10 @@ test('real scraper HTML/JSON calls skip cooled hosts without paid HTTP or spend'
     });
     return req;
   });
+  // scraper.js tops an empty BRIGHTDATA_TOKEN up from a local .env (load-env
+  // readEnvKeys), so on a developer Mac Bright Data answered and wrote a 7th
+  // ledger row; CI has no .env. Keep the top-up out of this test.
+  t.mock.method(require('./load-env'), 'readEnvKeys', () => ({}));
   delete require.cache[require.resolve('./scraper')];
   const scraper = require('./scraper');
   const skips = [];

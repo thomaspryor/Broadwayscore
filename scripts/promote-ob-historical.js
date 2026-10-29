@@ -28,7 +28,8 @@
 
 'use strict';
 
-const { titleSaysMusical } = require('./lib/title-says-musical');
+const { knownShowType } = require('./lib/title-says-musical');
+const { normalizeTitle } = require('./lib/title-match');
 // A retired id must not be re-minted (BRO-5557: promote-ob-venue-candidates re-added one).
 const { matchesRetired } = require('./lib/retired-show-ids');
 const fs = require('fs');
@@ -81,7 +82,42 @@ function slugify(s) {
     .replace(/^-|-$/g, '');
 }
 
-function buildShowEntry(r, venueVocabulary) {
+// BRO-6506: 'play' used to be the only fallback when the title lacked the
+// word "musical", so the BRO-6489 audit found 15 Off-Broadway musicals stored
+// as plays (The Connector, Wesley, Kilgallen ...). Order: Playbill's own
+// Play/Musical tag-line > the TheaterMania genre (listingGenre, from
+// parseTmOffBroadwayRow) > a title that says musical > a title the catalog
+// only knows as a musical (still flagged: Peter Pan, Three Sisters and 24
+// other titles are both a play and a musical, so those never count) > 'play',
+// flagged. Flagged rows are listed in the dry run for a hand check. Callers
+// pass the normalized title (the one written). Cf. promote-historical-we.js
+// inferShowType.
+// Type is required for closed rows (BRO-3716), so it cannot stay null.
+function inferObShowType(r, musicalTitles = new Set()) {
+  const tag = r?.parsed?.tagLine?.showType;
+  if (tag === 'musical' || tag === 'play') return { type: tag, guessed: false };
+  const fromGenre = knownShowType(r?.title, r?.listingGenre);
+  if (fromGenre) return { type: fromGenre, guessed: false };
+  // TM genres are discrete names: an explicit "Play" counts even beside
+  // "Comedy", which knownShowType reads as no type.
+  if (/(?:^|;\s*)play(?:\s*;|$)/i.test(r?.listingGenre || '')) return { type: 'play', guessed: false };
+  // The catalog only speaks when the source gave no genre at all.
+  if (!r?.listingGenre && musicalTitles.has(normalizeTitle(r?.title || ''))) return { type: 'musical', guessed: true };
+  return { type: 'play', guessed: true };
+}
+
+/** Normalized titles every catalog row of which is a musical. */
+function onlyMusicalTitles(shows) {
+  const types = new Map();
+  for (const s of shows) {
+    const k = normalizeTitle(s.title || '');
+    if (!types.has(k)) types.set(k, new Set());
+    types.get(k).add(s.type);
+  }
+  return new Set([...types].filter(([, t]) => t.size === 1 && t.has('musical')).map(([k]) => k));
+}
+
+function buildShowEntry(r, venueVocabulary, musicalTitles = new Set()) {
   // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
   // Aggregator listings disambiguate same-title productions by appending the
   // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
@@ -129,14 +165,14 @@ function buildShowEntry(r, venueVocabulary) {
     status: 'closed',
     category: 'off-broadway',
     market: 'broadway',
-    // 'play' (not null) when the title doesn't say "musical" — off-broadway
+    // Never null (inferObShowType falls back to a flagged 'play') — off-broadway
     // is gated by validate-market-expansion.js's required-fields check,
     // which only exempts type when status==='announced'; 'closed' is not
     // exempt. Same fix, same reasoning, as the aggregator-roundup builders
     // in promote-we-aggregator-candidates.js / promote-ob-venue-candidates.js
     // (BRO-3716 — a null type here would reproduce that exact CI-red
     // incident the next time this script runs).
-    type: titleSaysMusical(r.title) ? 'musical' : 'play',
+    type: inferObShowType({ ...r, title: normalizedTitle }, musicalTitles).type,
     discoverySource: 'historical-backfill',
     discoveredAt: new Date().toISOString(),
     playbillUrl: r.playbillUrl || null,
@@ -170,13 +206,15 @@ function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}
   // venue is "Bridge". Writer/gate equivalence is the point of routing both
   // through normalizeShowTitle (adversarial review finding).
   const venueVocabulary = buildVenueVocabulary(shows);
+  const musicalTitles = onlyMusicalTitles(shows);
 
   const toPromote = [];
   const skipped = [];
+  const typeGuessed = [];
   // new venue-scoped id -> id of the other production it was split from
   const transferOf = new Map();
   for (const r of matches) {
-    const entry = buildShowEntry(r, venueVocabulary);
+    const entry = buildShowEntry(r, venueVocabulary, musicalTitles);
     // sanitizeVenueForWrite (card #994) returns null for a placeholder/
     // neighbourhood-blob venue — refuse to write a garbage venue string
     // rather than silently promoting it (card #1922, cousin of BRO-160/#1921).
@@ -208,10 +246,11 @@ function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}
     if (existingIds.has(entry.id)) { skipped.push({ entry, reason: 'duplicate id' }); continue; }
     if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
     toPromote.push(entry);
+    if (inferObShowType({ ...r, title: entry.title }, musicalTitles).guessed) typeGuessed.push(entry.id);
     knownShows.push({ title: entry.title, venue: entry.venue });
     existingIds.set(entry.id, entry);
   }
-  return { toPromote, skipped, transferOf };
+  return { toPromote, skipped, transferOf, typeGuessed };
 }
 
 function main() {
@@ -222,7 +261,7 @@ function main() {
   console.log(`Audit has ${audit.results?.length || 0} results; ${matches.length} promotable matches.`);
 
   const showsData = loadShows();
-  const { toPromote, skipped } = selectPromotable(matches, showsData.shows, { onSkipInvalidVenue: logEntry });
+  const { toPromote, skipped, typeGuessed } = selectPromotable(matches, showsData.shows, { onSkipInvalidVenue: logEntry });
 
   console.log('');
   console.log(`Will promote: ${toPromote.length}`);
@@ -232,6 +271,10 @@ function main() {
   if (skipped.length) {
     console.log(`Skipped: ${skipped.length}`);
     for (const s of skipped) console.log(`  - ${s.entry.title} (${s.reason})`);
+  }
+  if (typeGuessed.length) {
+    console.log(`Type guessed as 'play' (no Playbill tag, genre or title signal; check by hand): ${typeGuessed.length}`);
+    for (const id of typeGuessed) console.log(`  ? ${id}`);
   }
 
   if (!apply) {
@@ -265,4 +308,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildShowEntry, selectPromotable };
+module.exports = { buildShowEntry, selectPromotable, inferObShowType, onlyMusicalTitles };

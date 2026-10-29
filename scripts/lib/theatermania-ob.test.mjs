@@ -233,3 +233,17 @@ test('HERE alias keeps a room qualifier', () => {
     [{ id: 'a', slug: 'arias-with-a-twist', title: 'Arias with a Twist', venue: 'HERE Arts Center (Mainstage)', category: 'off-broadway', openingDate: '2026-09-23' }]);
   assert.equal(r.isDuplicate, true);
 });
+
+// BRO-6506: the TM genre reaches the candidate, so discovery and the OB
+// historical promoter type a musical whose title lacks the word.
+test('candidate carries TM genre names as listingGenre; knownShowType reads it', async () => {
+  const { knownShowType } = require('./title-says-musical.js');
+  const heart = parse(/^The Heart$/).candidate;
+  assert.equal(heart.listingGenre, 'Musical');
+  assert.equal(knownShowType(heart.title, heart.listingGenre), 'musical');
+  const fantasma = parse(/^Fantasma$/).candidate;
+  assert.equal(fantasma.listingGenre, 'Play');
+  assert.equal(knownShowType(fantasma.title, fantasma.listingGenre), 'play');
+  const noGenre = parseTmOffBroadwayRow({ ...row(/^Fantasma$/), genre: [] }, { venuesById, genresById }).candidate;
+  assert.equal('listingGenre' in noGenre, false);
+});

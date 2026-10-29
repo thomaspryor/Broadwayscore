@@ -50,7 +50,9 @@ test('the six deferred probes actually skip before their dates without reading d
   const earlyClock = 'data:text/javascript,' + encodeURIComponent("Date.now = () => Date.parse('2026-08-01T00:00:00Z');");
   for (const probe of probes) {
     await t.test(probe, () => {
-      const output = execFileSync(process.execPath, ['--import', earlyClock, '--test', path.join(root, probe)], {
+      // --test-reporter=tap: newer Node defaults to the spec reporter ("ℹ skipped 1"),
+      // which the TAP assertions below never matched (BRO-6506 land floor).
+      const output = execFileSync(process.execPath, ['--import', earlyClock, '--test', '--test-reporter=tap', path.join(root, probe)], {
         encoding: 'utf8', timeout: 30_000,
         // node:test otherwise treats this child as part of its parent's TAP.
         env: Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== 'NODE_TEST_CONTEXT')),
