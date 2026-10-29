@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T03:09:36.556Z",
+  "timestamp": "2026-10-29T03:22:07.538Z",
   "stats": {
-    "totalReviews": 65934,
-    "alreadyFlagged": 22064,
+    "totalReviews": 65986,
+    "alreadyFlagged": 22072,
     "dateGuardCatches": 233,
-    "directorMismatch": 2657,
-    "tvFilmSignals": 1867,
-    "londonSignals": 3200,
+    "directorMismatch": 2666,
+    "tvFilmSignals": 1872,
+    "londonSignals": 3207,
     "offBroadwaySignals": 600,
-    "yearMismatch": 240,
-    "noPublishDate": 6034
+    "yearMismatch": 241,
+    "noPublishDate": 6063
   },
   "findings": [
     {
@@ -8641,6 +8641,19 @@
     },
     {
       "showId": "caroline-or-change-2021",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/caroline-or-change-fire-shut-up-in-my-bones/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. wolfe\" from caroline-or-change-2004"
+        }
+      ]
+    },
+    {
+      "showId": "caroline-or-change-2021",
       "file": "theater-scene--joel-benjamin.json",
       "score": 73,
       "publishDate": "2021-11-09",
@@ -12511,6 +12524,34 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "daytona-west-end-2014",
+      "file": "independent--paul-taylor.json",
+      "score": 49,
+      "publishDate": "2014-07-08",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/daytona-theatre-royal-haymarket-review-fails-to-ring-true-9592032.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "daytona-west-end-2014",
+      "file": "independent--unknown.json",
+      "score": 49,
+      "publishDate": "2014-07-08",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/daytona-theatre-royal-haymarket-review-fails-to-ring-true-9592032.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -16754,6 +16795,20 @@
     },
     {
       "showId": "evita-west-end-2014",
+      "file": "bestoftheatre--phil-willmott.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/blog/post/evita-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from evita-2012"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2014",
       "file": "nytimes--unknown.json",
       "publishDate": null,
       "url": "https://www.nytimes.com/2014/09/28/nyregion/a-review-of-evita-in-northport.html",
@@ -20050,6 +20105,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "god-of-carnage-off-broadway-2023",
+      "file": "theatermania--pete-hempstead.json",
+      "score": 42,
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/review-off-broadway-revival-of-god-of-carnage-exposes-a-mediocre-hit_1700212/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from god-of-carnage-2009"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2009 (3x) more than 2023 (0x). 2009 matches production: god-of-carnage-2009"
         }
       ]
     },
@@ -24214,6 +24288,19 @@
       ]
     },
     {
+      "showId": "hyprov-improv-under-hypnosis-off-broadway-2022",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": null,
+      "url": "https://stagebuddy.com/theater/theater-review/hyprov-improv-hypnosis",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "i-can-get-it-for-you-wholesale-off-broadway-2023",
       "file": "vulture--jackson-mchenry.json",
       "score": 67,
@@ -24548,6 +24635,7 @@
     {
       "showId": "illinoise-off-broadway-2024",
       "file": "nysr--frank-scheck.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://nystagereview.com/2024/03/07/illinoise-an-explosion-of-transporting-music-and-dance/",
       "findings": [
@@ -24594,6 +24682,7 @@
     {
       "showId": "illinoise-off-broadway-2024",
       "file": "theatermania--zachary-stewart.json",
+      "score": 72,
       "publishDate": null,
       "url": "https://www.theatermania.com/news/review-illinoise-is-a-folk-ballet-for-the-emotionally-wounded_1732498/",
       "findings": [
@@ -28912,6 +29001,39 @@
     },
     {
       "showId": "king-charles-iii-west-end-2014",
+      "file": "broadwayworld--laura-jones.json",
+      "score": null,
+      "publishDate": "September 12, 2014",
+      "url": "http://www.broadwayworld.com/westend/article/BWW-Reviews-KING-CHARLES-III-Wyndhams-Theatre-September-11-2014-20140912#",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from king-charles-iii-2015"
+        }
+      ]
+    },
+    {
+      "showId": "king-charles-iii-west-end-2014",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "December 15, 2014",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-charles-iii-almeida-theatre-review-9254326.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from king-charles-iii-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "king-charles-iii-west-end-2014",
       "file": "standard--nick-curtis.json",
       "publishDate": "2014-11-19",
       "url": "https://www.standard.co.uk/culture/theatre/writing-the-wrongs-mike-bartlett-on-his-plays-king-charles-iii-bull-and-game-9869931.html",
@@ -30996,6 +31118,7 @@
     {
       "showId": "lights-out-nat-king-cole-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
+      "score": 58,
       "publishDate": null,
       "url": "https://culturesauce.com/lights-out-nat-king-cole-off-broadway-review/",
       "findings": [
@@ -31009,6 +31132,7 @@
     {
       "showId": "lights-out-nat-king-cole-off-broadway-2025",
       "file": "theatermania--pete-hempstead.json",
+      "score": 63,
       "publishDate": null,
       "url": "https://www.theatermania.com/news/review-dule-hill-and-daniel-j-watts-are-unforgettable-in-a-murky-lights-out_1779864/",
       "findings": [
@@ -37799,6 +37923,20 @@
       ]
     },
     {
+      "showId": "orpheus-descending-off-broadway-2023",
+      "file": "nysr--frank-scheck.json",
+      "score": 56,
+      "publishDate": null,
+      "url": "https://nystagereview.com/2023/07/19/orpheus-descending-tennessee-williams-revival-doesnt-bring-the-heat/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"peter hall\" from orpheus-descending-1989"
+        }
+      ]
+    },
+    {
       "showId": "othello-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -42970,6 +43108,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "shakespeare-in-love-west-end-2014",
+      "file": "independent--paul-taylor.json",
+      "score": 86,
+      "publishDate": "July 23, 2014",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/shakespeare-in-love-noel-coward-theatre-review-deliciously-funny-and-absurd-9623905.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -58482,6 +58639,20 @@
     },
     {
       "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "musical-theatre-review--unknown.json",
+      "score": null,
+      "publishDate": "2014-10-21",
+      "url": "https://musicaltheatrereview.com/scottsboro-boys-garrick-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
       "file": "standard--fiona-mountford.json",
       "score": 84,
       "publishDate": "2014-10-21T18:58:19-04:00",
@@ -58491,6 +58662,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -58505,6 +58681,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -64721,6 +64902,19 @@
       ]
     },
     {
+      "showId": "what-the-end-will-be-off-broadway-2022",
+      "file": "nyt-theater--unknown.json",
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2022/06/02/theater-reviews-what-the-end-will-be-and-exception-to-the-rule/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
       "file": "hollywood-reporter--unknown.json",
       "publishDate": null,
@@ -65557,6 +65751,34 @@
       "score": null,
       "publishDate": "2015-03-31",
       "url": "https://www.londontheatre1.com/reviews/review-of-women-on-the-verge-of-a-nervous-breakdown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from women-on-the-verge-of-a-nervous-breakdown-2010"
+        }
+      ]
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": "2015-03-09",
+      "url": "https://www.standard.co.uk/culture/theatre/women-on-the-verge-of-a-nervous-breakdown-playhouse-theatre-theatre-review-tamsin-greig-is-the-show-s-emotional-core-9974225.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from women-on-the-verge-of-a-nervous-breakdown-2010"
+        }
+      ]
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": "2015-01-13",
+      "url": "https://www.whatsonstage.com/news/critics-not-nervous-about-women-on-the-verge_36897/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -77803,6 +78025,20 @@
       ]
     },
     {
+      "showId": "evita-west-end-2014",
+      "file": "everything-theatre--neil-johnson.json",
+      "score": null,
+      "publishDate": "2014-10-08",
+      "url": "https://everything-theatre.co.uk/2014/10/evita-dominion-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "evita-west-end-2017",
       "file": "a-younger-theatre--unknown.json",
       "score": 39,
@@ -88246,6 +88482,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "made-in-dagenham-west-end-2014",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2014-11-09",
+      "url": "https://www.ayoungertheatre.com/review-made-in-dagenham-the-adelphi/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -100661,6 +100911,7 @@
     {
       "showId": "teeth-off-broadway-2024",
       "file": "theatermania--pete-hempstead.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://www.theatermania.com/news/review-in-little-shop-style-horror-musical-teeth-audrey-ii-is-a-carnivorous-cooter_1754471/",
       "findings": [
@@ -111880,6 +112131,20 @@
       "score": 81,
       "publishDate": "2014-12-11",
       "url": "https://www.theguardian.com/stage/2014/dec/11/treasure-island-review-olivier-london-national-robert-louis-stevenson",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "treasure-island-west-end-2014",
+      "file": "maturetimes--unknown.json",
+      "score": null,
+      "publishDate": "2014-12-23",
+      "url": "http://www.maturetimes.co.uk/treasure-island-stage-dead-proverbial-parrot/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
