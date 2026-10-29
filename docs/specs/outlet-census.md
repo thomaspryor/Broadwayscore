@@ -194,3 +194,31 @@ No WordPress API and no sitemap configured yet: timeout, washpost, dailybeast, p
 
 - Configure sitemaps for the "not configured" outlets above; most have one.
 - Re-run the census on CI after each ingest batch to measure the recall change, and vet each batch's URLs against the show's dates before ingest.
+
+## Round 2 (BRO-6485, 2026-10-29)
+
+Hand-vetted the 668 round-1 gaps: 561 URLs across 350 shows kept, 128 skipped (multi-show roundups, tour reviews, news posts, name collisions, other-market items). Ingested 14 pilot URLs plus 547 in 341 per-show `ingest-urls.yml` runs (356 runs, all success). Deleted 22 misfiled review files (plan `bro-6485`) and re-ingested 13 URLs into the matched show. Two misfiles stay (Teeth duplicate shows, a Vulture multi-show piece).
+
+Outlets present in both runs (24): held 5028 -> 5540, gaps 668 -> 97 (76 of them Exeunt, BRO-6486; 2 dc-theater-arts, excluded).
+
+| Outlet | Gap before | Gap after | Recall before | Recall after |
+|---|---|---|---|---|
+| stagebuddy | 125 | 2 | 0.339 | 0.989 |
+| culturesauce | 86 | 1 | 0.758 | 0.997 |
+| theatre-reviews-limited | 64 | 0 | 0.680 | 1.000 |
+| stageandcinema | 61 | 1 | 0.551 | 0.992 |
+| theatermania | 52 | 1 | 0.917 | 0.998 |
+| theater-life | 52 | 0 | 0.880 | 1.000 |
+| nysr | 49 | 1 | 0.935 | 0.999 |
+| theater-pizzazz | 27 | 7 | 0.563 | 0.891 |
+| amny | 15 | 0 | 0.864 | 1.000 |
+| nyt-theater | 15 | 0 | 0.957 | 1.000 |
+| nytg | 13 | 0 | 0.972 | 0.998 |
+| one-minute-critic | 11 | 3 | 0.918 | 0.980 |
+| thewrap | 11 | 0 | 0.943 | 1.000 |
+| vulture | 8 | 2 | 0.967 | 0.991 |
+| exeunt-magazine | 76 | 76 | 0.743 | 0.743 |
+
+Outlets first enumerated in round 2 (no baseline) still hold about 600 unvetted gaps: BRO-6513. Matcher false-positive classes and the Teeth duplicate shows: BRO-6514.
+
+Operational limits seen: `--all` on CI exceeds the 55 minute script limit once the SERP outlets are included (run in shards); `theater-life` wp-json failed once with "fetch failed" and passed on retry; `slantmagazine` sitemap returns HTTP 403.
