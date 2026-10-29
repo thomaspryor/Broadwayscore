@@ -2129634,21 +2129634,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T22:56:43.740Z",
-    "completedAt": "2026-10-29T22:56:58.143Z",
-    "totalReviews": 5,
-    "processed": 3,
-    "skipped": 2,
+    "startedAt": "2026-10-29T22:55:53.413Z",
+    "completedAt": "2026-10-29T22:56:18.252Z",
+    "totalReviews": 6,
+    "processed": 5,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 17180,
-      "output": 869,
-      "cacheRead": 11421,
+      "input": 28741,
+      "output": 1502,
+      "cacheRead": 19035,
       "cacheWrite": 0,
-      "total": 44001
+      "total": 73516
     },
-    "costUsd": 0.0649539,
-    "runId": "40968950632",
+    "costUsd": 0.1094107,
+    "runId": "40968830542",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2140145,16 +2140145,6 @@
           "flat": 4,
           "down": 2,
           "total": 13
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "eurydice-regional-2023",
-        "ourDistribution": {
-          "up": 6,
-          "flat": 1,
-          "down": 0,
-          "total": 7
         },
         "hasDisagreement": false
       },
@@ -2155362,6 +2155352,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "she-loves-me-regional-2023",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "sherlock-holmes-west-end-2026",
         "ourDistribution": {
           "up": 19,
@@ -2161195,16 +2161195,6 @@
           "flat": 0,
           "down": 0,
           "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "the-light-regional-2023",
-        "ourDistribution": {
-          "up": 3,
-          "flat": 0,
-          "down": 0,
-          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2167563,8 +2167553,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T23:01:55.385Z",
-    "completedAt": "2026-10-29T23:01:55.387Z",
+    "startedAt": "2026-10-29T23:01:15.929Z",
+    "completedAt": "2026-10-29T23:01:15.933Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2167577,7 +2167567,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40968950632",
+    "runId": "40968830542",
     "source": "comparative-rescore",
     "errorDetails": []
   }
