@@ -114,7 +114,7 @@ test('refuse: rubber-stamp sha committed AFTER the terminal row (empty commit pu
   assert.equal(skew.ok, true, skew.refusals.join('\n'));
 });
 
-test('stranded row: --sha must be the stranded sha (or an ancestor of it); a later landing is allowed only then', () => {
+test('stranded row: --sha must be the stranded sha (or its rebased patch twin); a later landing is allowed only then', () => {
   const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T04:11:36.000Z', event: 'job-stranded', taskId: TASK, jobId: `${TASK}-fixture`, sha: 'deadbeef' }];
   const tied = core.decideAck(happy({ rows, landing: { ...happy().landing, sha: 'deadbeef', commitTs: '2026-09-16T04:05:00.000Z', message: 'merge worktree', tiedToStranded: true } }));
   assert.equal(tied.ok, true, tied.refusals.join('\n'));
@@ -122,7 +122,7 @@ test('stranded row: --sha must be the stranded sha (or an ancestor of it); a lat
   // A commit that merely names the ref but is not the stranded sha's history is refused.
   const untied = core.decideAck(happy({ rows, landing: { ...happy().landing, commitTs: '2026-09-16T05:00:00.000Z', tiedToStranded: false } }));
   assert.equal(untied.ok, false);
-  assert.match(untied.refusals.join('\n'), /must be the stranded sha deadbeef itself, an ancestor of it, or an origin\/main commit patch-identical/);
+  assert.match(untied.refusals.join('\n'), /must be the stranded sha deadbeef itself, or an origin\/main commit patch-identical/);
   // Landing later than the terminal row is fine for stranded (that is the whole point of the row).
   const lateButTied = core.decideAck(happy({ rows, landing: { ...happy().landing, sha: 'deadbeef', commitTs: '2026-09-16T04:05:00.000Z', message: 'x', tiedToStranded: true } }));
   assert.equal(lateButTied.ok, true);

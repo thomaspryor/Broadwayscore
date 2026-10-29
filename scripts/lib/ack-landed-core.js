@@ -301,9 +301,9 @@ function reasonRefusals(reason) {
  *   when present it is the timestamp the job window is checked against,
  *   because scripts/land.js REBASES before pushing, which re-stamps the
  *   committer date at landing time while the author date stays the job's.
- *   tiedToStranded: sha === the job-stranded row's sha, or sha is an ancestor of it
- *   tiedToStrandedByPatch: sha is an origin/main commit patch-identical to one
- *     of the stranded job's own commits — the rebase-landed case (BRO-4074)
+ *   tiedToStranded: sha resolves to the job-stranded row's recorded tip
+ *   tiedToStrandedByPatch: sha is an origin/main commit patch-identical to
+ *     the stranded job's recorded tip: the rebase-landed case (BRO-4074)
  * @param {object} input.checkout       {containsSha:boolean, dirtyCodePaths:string[]}
  * @param {object} input.verify         {cmd, safe:boolean, unsafeReason, exitCode:number|null}
  * @param {string} input.reason
@@ -359,13 +359,13 @@ function decideAck(input) {
   }
   const namesRef = messageNamesRef(landing.message, ref);
   if (strandedTieApplies) {
-    // BRO-4074: ancestry OR patch-equivalence. Landing through land.yml rebases,
+    // BRO-4080: tip identity OR tip patch-equivalence. Landing through land.yml rebases,
     // which rewrites the sha, so ancestry alone can never hold for a
     // rebase-landed stranded job and nothing could ever ack one. The patch tie
     // compares the diff rather than the prose, so it is stronger evidence than
     // the name check the non-stranded path uses, not weaker.
     if (!landing.tiedToStranded && !landing.tiedToStrandedByPatch) {
-      refusals.push(`for a job-stranded row the sha must be the stranded sha ${stranded.sha} itself, an ancestor of it, or an origin/main commit patch-identical to one of its commits (a rebase-landed twin) — got ${landing.sha || '<sha>'}`);
+      refusals.push(`for a job-stranded row the sha must be the stranded sha ${stranded.sha} itself, or an origin/main commit patch-identical to that tip (a rebase-landed twin); got ${landing.sha || '<sha>'}`);
     }
   } else if (!namesRef) {
     refusals.push(`the sha's commit message does not name ${ref} — pass the job's own commit, not an unrelated one`);
