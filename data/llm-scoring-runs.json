@@ -1436242,21 +1436242,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T03:37:30.865Z",
-    "completedAt": "2026-10-29T03:37:37.043Z",
-    "totalReviews": 6,
-    "processed": 1,
-    "skipped": 5,
+    "startedAt": "2026-10-29T03:37:59.823Z",
+    "completedAt": "2026-10-29T03:38:19.897Z",
+    "totalReviews": 20,
+    "processed": 4,
+    "skipped": 16,
     "errors": 0,
     "tokensUsed": {
-      "input": 6400,
-      "output": 342,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 15709
+      "input": 25687,
+      "output": 1294,
+      "cacheRead": 11421,
+      "cacheWrite": 3762,
+      "total": 62882
     },
-    "costUsd": 0.024332600000000003,
-    "runId": "40812123596",
+    "costUsd": 0.1097437,
+    "runId": "40812195230",
     "errorDetails": [],
     "validation": [
       {
@@ -1439218,10 +1439218,10 @@
       {
         "showId": "american-buffalo-2022",
         "ourDistribution": {
-          "up": 26,
+          "up": 27,
           "flat": 6,
-          "down": 14,
-          "total": 46
+          "down": 15,
+          "total": 48
         },
         "dtliDistribution": {
           "up": 5,
@@ -1439230,15 +1439230,15 @@
           "total": 12
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 30% (ours: 30%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
         "showId": "american-buffalo-2008",
         "ourDistribution": {
-          "up": 26,
+          "up": 27,
           "flat": 6,
-          "down": 14,
-          "total": 46
+          "down": 15,
+          "total": 48
         },
         "dtliDistribution": {
           "up": 5,
@@ -1439247,7 +1439247,7 @@
           "total": 12
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 30% (ours: 30%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
         "showId": "american-buffalo-west-end-2015",
@@ -1448248,10 +1448248,10 @@
       {
         "showId": "grenfell-in-the-words-of-survivors-off-broadway-2024",
         "ourDistribution": {
-          "up": 0,
+          "up": 1,
           "flat": 1,
           "down": 0,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -1459130,10 +1459130,10 @@
       {
         "showId": "queens-off-broadway-2025",
         "ourDistribution": {
-          "up": 8,
-          "flat": 3,
-          "down": 0,
-          "total": 11
+          "up": 10,
+          "flat": 4,
+          "down": 1,
+          "total": 15
         },
         "hasDisagreement": false
       },
@@ -1463012,10 +1463012,10 @@
       {
         "showId": "the-bookstore-off-broadway-2026",
         "ourDistribution": {
-          "up": 5,
+          "up": 4,
           "flat": 0,
           "down": 1,
-          "total": 6
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -1464006,10 +1464006,10 @@
       {
         "showId": "the-effect-off-broadway-2024",
         "ourDistribution": {
-          "up": 1,
+          "up": 3,
           "flat": 1,
           "down": 0,
-          "total": 2
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1471958,21 +1471958,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T03:40:08.882Z",
-    "completedAt": "2026-10-29T03:40:08.889Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-10-29T03:40:13.104Z",
+    "completedAt": "2026-10-29T03:40:17.825Z",
+    "totalReviews": 2,
+    "processed": 2,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 6911,
+      "output": 414,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 7325
     },
-    "costUsd": 0,
-    "runId": "40812123596",
+    "costUsd": 0.0175496,
+    "runId": "40812195230",
     "errorDetails": []
   }
 ]
