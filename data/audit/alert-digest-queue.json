@@ -3047,6 +3047,20 @@
     "queuedAt": "2026-10-29T22:09:49.165Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-29.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T23:04:15.188Z"
+  },
+  {
     "conditionKey": "land:land/bro-6553-b",
     "title": "Landing blocked: unit-tests-node red on land/bro-6553-b",
     "description": "land.yml did not land land/bro-6553-b: the unit-tests-node gate went red at 6db7ca85a2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40964010768",

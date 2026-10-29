@@ -3680,13 +3680,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-29T20:09:04.362Z",
+      "lastSeen": "2026-10-29T23:04:15.083Z",
       "lastNotifiedAt": "2026-10-29T15:21:29.978Z",
       "lastSurfacedAt": "2026-10-24T11:26:05.130Z",
       "notifyCount": 39,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3694,13 +3694,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-10-25T09:22:42.540Z",
-      "lastSeen": "2026-10-29T20:09:04.409Z",
+      "lastSeen": "2026-10-29T23:04:15.138Z",
       "lastNotifiedAt": "2026-10-29T12:20:58.996Z",
       "lastSurfacedAt": "2026-10-25T09:22:42.540Z",
       "notifyCount": 35,
       "cardId": null,
       "linearIdentifier": "BRO-5503",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "resolved",
@@ -4457,13 +4457,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-27T05:01:18.291Z",
-      "lastSeen": "2026-10-29T20:09:04.331Z",
+      "lastSeen": "2026-10-29T23:04:15.045Z",
       "lastNotifiedAt": "2026-10-29T12:20:58.585Z",
       "lastSurfacedAt": "2026-10-29T12:20:58.585Z",
       "notifyCount": 34,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -6635,13 +6635,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-26T19:23:29.367Z",
-      "lastSeen": "2026-10-29T20:09:04.262Z",
+      "lastSeen": "2026-10-29T23:04:14.745Z",
       "lastNotifiedAt": "2026-10-28T23:28:57.926Z",
       "lastSurfacedAt": "2026-10-24T11:26:01.064Z",
       "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": "BRO-6113",
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -6695,19 +6695,17 @@
       "resolvedAt": "2026-09-28T20:13:44.531Z"
     },
     "corpus-drift:duplicate-shows": {
-      "status": "resolved",
-      "disposition": "auto",
+      "status": "open",
+      "disposition": "digest",
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
-      "incidentOpenedAt": "2026-10-19T16:00:04.306Z",
-      "lastSeen": "2026-10-26T18:57:40.926Z",
-      "lastNotifiedAt": "2026-10-26T02:09:45.175Z",
+      "incidentOpenedAt": "2026-10-29T23:04:14.776Z",
+      "lastSeen": "2026-10-29T23:04:14.776Z",
+      "lastNotifiedAt": "2026-10-29T23:04:14.776Z",
       "lastSurfacedAt": "2026-10-26T02:09:45.175Z",
-      "notifyCount": 24,
+      "notifyCount": 25,
       "cardId": null,
-      "linearIdentifier": "BRO-6280",
-      "silentRefires": 10,
-      "resolvedAt": "2026-10-26T19:23:29.679Z"
+      "linearIdentifier": "BRO-6280"
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -10297,13 +10295,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-26T23:27:47.707Z",
-      "lastSeen": "2026-10-29T20:09:04.347Z",
+      "lastSeen": "2026-10-29T23:04:15.065Z",
       "lastNotifiedAt": "2026-10-29T00:31:46.188Z",
       "lastSurfacedAt": "2026-10-29T00:31:46.188Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-5823",
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -13275,12 +13273,13 @@
       "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
       "firstSeen": "2026-10-08T11:25:20.264Z",
       "incidentOpenedAt": "2026-10-29T20:09:04.377Z",
-      "lastSeen": "2026-10-29T20:09:04.377Z",
+      "lastSeen": "2026-10-29T23:04:15.101Z",
       "lastNotifiedAt": "2026-10-29T20:09:04.377Z",
       "lastSurfacedAt": "2026-10-29T20:09:04.377Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "resolved",
@@ -16153,13 +16152,13 @@
       "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
       "firstSeen": "2026-10-12T12:34:40.002Z",
       "incidentOpenedAt": "2026-10-22T14:17:35.428Z",
-      "lastSeen": "2026-10-29T20:09:04.395Z",
+      "lastSeen": "2026-10-29T23:04:15.120Z",
       "lastNotifiedAt": "2026-10-29T16:49:09.424Z",
       "lastSurfacedAt": "2026-10-29T16:49:09.424Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-3999-empty-body-sweep": {
       "status": "resolved",
@@ -23520,13 +23519,13 @@
       "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
       "firstSeen": "2026-10-22T02:01:04.201Z",
       "incidentOpenedAt": "2026-10-22T02:01:04.201Z",
-      "lastSeen": "2026-10-29T20:09:04.300Z",
+      "lastSeen": "2026-10-29T23:04:15.012Z",
       "lastNotifiedAt": "2026-10-29T12:20:58.555Z",
       "lastSurfacedAt": "2026-10-29T12:20:58.555Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5706-retire-eno-dup": {
       "status": "resolved",
