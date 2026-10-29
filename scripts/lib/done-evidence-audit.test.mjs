@@ -60,3 +60,19 @@ test('missing evidence does not make a GitHub request', () => {
   assert.equal(commitIsOnMain('', { runGh }), 'unknown');
   assert.equal(pullIsOnMain('', { runGh }), 'unknown');
 });
+
+test('a failing check whose output quotes an email never lands it in the committed report (BRO-6520)', () => {
+  const { evaluateVerifyRun } = require('./done-evidence-audit.js');
+  const { firstRealEmail } = require('./pii-scan.js');
+  const r = evaluateVerifyRun({ status: 'fail', detail: 'hit → email-shaped string (x***x@xxxxxx.xx.xx)' }, 'node scripts/lint-committed-pii.js');
+  assert.ok(r.detail.includes('email-shaped string'));
+  assert.equal(firstRealEmail(r.detail), null);
+  assert.ok(!/x\*\*\*x@/.test(r.detail));
+});
+
+test('an unverifiable run detail is redacted too (BRO-6520)', () => {
+  const { evaluateVerifyRun } = require('./done-evidence-audit.js');
+  const { firstRealEmail } = require('./pii-scan.js');
+  const r = evaluateVerifyRun({ status: 'unverifiable', detail: 'check exited 3: contact alice@example.com' }, 'node scripts/x.js');
+  assert.equal(firstRealEmail(r.detail || ''), null);
+});

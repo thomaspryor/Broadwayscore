@@ -50,6 +50,8 @@
 
 'use strict';
 
+const { redactEmails } = require('./pii-scan.js');
+
 // ── verdicts ────────────────────────────────────────────────────────────────
 // Ordered by how much they demand of a reader: the two that accuse come
 // first, then the two that merely note, then the absence of an answer.
@@ -353,6 +355,8 @@ function evaluatePrEvidence(prRef, ancestry) {
  * @returns {{state:string, detail:string|null}}
  */
 function evaluateVerifyRun(runResult, cmd) {
+  // Command output lands in committed data/audit reports (BRO-6520): redact every verdict's detail.
+  if (runResult && runResult.detail) runResult = { ...runResult, detail: redactEmails(runResult.detail) };
   if (!cmd) return { state: EVIDENCE.UNKNOWN, detail: null };
   // Checked BEFORE the missing-result branch: a non-probative command is
   // deliberately never executed, so it always arrives here with runResult

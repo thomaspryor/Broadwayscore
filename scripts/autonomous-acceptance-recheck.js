@@ -47,6 +47,7 @@ const os = require('os');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { redactEmails } = require('./lib/pii-scan.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { findClaimedTask } = require('./lib/autonomous-triage-core.js');
@@ -421,8 +422,8 @@ async function main(argv = process.argv.slice(2)) {
         // (ship-check finding). note stays for the human reading the ledger.
         status: r.skip ? null : r.status,
         skip: r.skip || null,
-        detail: r.detail ? String(r.detail).slice(0, 300) : null,
-        note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${String(r.detail).slice(0, 300)}` : ''}`,
+        detail: r.detail ? redactEmails(String(r.detail).slice(0, 300)) : null,
+        note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${redactEmails(String(r.detail).slice(0, 300))}` : ''}`,
         verifyCmd: t.verifyCmd || null,
         shadow: true,
       }, RECHECK_LEDGER_PATH);

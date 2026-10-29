@@ -300,9 +300,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 16 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Lint Workflows, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 19 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40861673753",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40870784977",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -311,22 +311,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40861673753)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40870784977)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40860133605)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40864524395)"
       },
       {
         "name": "Consecutive failures",
-        "value": "16"
+        "value": "19"
       },
       {
         "name": "Currently failing job(s)",
         "value": "Unit Tests, Lint Workflows"
       }
     ],
-    "queuedAt": "2026-10-29T13:53:55.123Z"
+    "queuedAt": "2026-10-29T14:45:14.907Z"
   },
   {
     "conditionKey": "land:land/bro-6485-timeout-author",
@@ -631,5 +631,81 @@
       }
     ],
     "queuedAt": "2026-10-29T13:51:48.717Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-revlon-girl-off-west-end-2026",
+    "title": "Auto-remediation gave up on the-revlon-girl-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-revlon-girl-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T14:21:55.789Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6485-spec",
+    "title": "Landing blocked: rebase red on land/bro-6485-spec",
+    "description": "land.yml did not land land/bro-6485-spec: the rebase gate went red at 5fb7f19922. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6485-spec @ 5fb7f19922 (origin/land/bro-6485-spec) → origin/main @ cd3005d4af REFUSED: rebase: branch would not rebase cleanly onto origin/main @ ab74780cf3: warning: skipped previously applied commit f241b98f09a hint: use --reapply-cherry-picks to include skipped commits hint: Disable this message with \"git config set advice.skippedCherryPicks false\" Rebasing (1/1) error: could no Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40847387146",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6485-spec"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5fb7f19922d663e619c86e1f692ec984115e0e47"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40847387146"
+      }
+    ],
+    "queuedAt": "2026-10-29T14:32:35.160Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6485-queue-wait",
+    "title": "Landing blocked: rebase red on land/bro-6485-queue-wait",
+    "description": "land.yml did not land land/bro-6485-queue-wait: the rebase gate went red at e31d1ec069. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40870629864",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6485-queue-wait"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e31d1ec0696e876d7dea934f912947d5e11f7aa8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40870629864"
+      }
+    ],
+    "queuedAt": "2026-10-29T14:29:00.975Z"
   }
 ]

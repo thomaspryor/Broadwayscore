@@ -27,7 +27,9 @@ EDITABLE_DATA_FIELDS['commercial.json'] = [...EDITABLE_DATA_FIELDS['commercial.j
 // Plan-only (owner-approved) extras, not user-feedback fields (BRO-5975): the exemption a
 // show earns when Playbill's page is a different production, which validate-show-venue.js
 // honors only alongside a substantive statusBackfillSource.
-EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource', 'ibdbRevivalChecked', 'ibdbUrl'];
+EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource', 'ibdbRevivalChecked', 'ibdbUrl',
+  // BRO-6515: metro slug for regional/tour city hubs (scripts/lib/venue-metro.js)
+  'city'];
 
 // BRO-6191: plan-only (owner-approved) commercial.json extras with value checks
 // (cleared-field-guard.js planOnlyValueProblem); not offered to the feedback-plan LLM.

@@ -181,3 +181,10 @@ import { createRequire as __cr6114 } from 'node:module';
     assert.equal(r.ok, true, r.reason);
   });
 }
+// BRO-6515: a regional row carries its metro slug; anything else is refused.
+test('accepts a metro-slug city and refuses a free-text one', () => {
+  const shows = [];
+  assert.equal(applyAddShow(shows, { show: { ...base(), city: 'manchester-uk' } }).ok, true);
+  assert.equal(shows[0].city, 'manchester-uk');
+  assert.equal(applyAddShow([], { show: { ...base(), city: 'Manchester, UK' } }).ok, false);
+});

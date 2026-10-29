@@ -57,6 +57,7 @@ const { withMarketSuffix } = require('./lib/market-slug');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
+const { resolveMetro } = require('./lib/venue-metro');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows, findSameProduction } = require('./lib/uk-regional-guardian');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -622,11 +623,14 @@ function buildRegionalShowEntry(candidate) {
   // would show a closed production as running (Millions @ Alliance test seed,
   // 2026-07-09). closingDate stays null either way (unknown).
   const ageDays = openingDate ? (Date.now() - new Date(openingDate).getTime()) / 86400000 : 0;
+  const venue = sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null;
   return {
     id,
     title: candidate.title,
     slug: id, // regional slugs must contain '-regional' (useCurrentMarket)
-    venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,
+    venue,
+    // Metro slug for the city hubs (BRO-6515), from the one venue->metro table.
+    city: resolveMetro(venue),
     openingDate,
     openingDateSource: candidate.source === 'guardian-review' ? 'guardian-review' : 'aggregator-roundup',
     previewsStartDate: null,

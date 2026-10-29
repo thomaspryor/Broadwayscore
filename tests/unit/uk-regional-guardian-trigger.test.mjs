@@ -43,8 +43,8 @@ test('a London tag still wins over a flagship-house tag (RSC at the Barbican sta
 test('a non-flagship regional house is still dropped', () => {
   const r = extractGuardianReview({
     title: 'Educating Rita review – Willy Russell revival',
-    link: 'https://www.theguardian.com/stage/2026/oct/05/educating-rita-review-willy-russell-curve-theatre-leicester',
-    categories: ['Theatre', 'Stage', 'Curve theatre'],
+    link: 'https://www.theguardian.com/stage/2026/oct/05/educating-rita-review-willy-russell-everyman-theatre-cheltenham',
+    categories: ['Theatre', 'Stage', 'Everyman theatre'],
   });
   assert.equal(r, null);
 });
@@ -286,4 +286,15 @@ test('feeder venue spellings: curly apostrophe, one-word Playhouse; Tin Pan Alle
   assert.equal(feederVenueCity('Cleveland Playhouse'), 'Cleveland, OH');
   assert.equal(feederVenueCity('Tin Pan Alley Theater'), null);
   assert.equal(feederVenueCity('Alley Theatre'), 'Houston, TX');
+});
+
+// BRO-6516 ship-check: receiving houses host tours, so they never trigger.
+test('a Guardian review at a receiving house (guardianTrigger: false) is not promoted', () => {
+  assert.equal(ukFlagshipVenueFor({ tags: ['The Lowry'], slug: 'les-miserables-review-lowry-salford' }), null);
+  assert.equal(decideUkFlagshipPromotion({ ...staged, venue: 'Theatre Royal Bath, Bath' }).confirmed, false);
+});
+
+test('a slug naming one house beats an earlier house matched only by tag', () => {
+  const r = ukFlagshipVenueFor({ tags: ['Liverpool Everyman and Playhouse'], slug: 'x-review-everyman-liverpool' });
+  assert.equal(r && r.venue, 'Liverpool Everyman');
 });
