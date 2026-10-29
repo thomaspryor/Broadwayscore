@@ -50,6 +50,7 @@ import theaterMetaData from '../../data/theater-metadata.json';
 import venueComplexesData from '../../data/venue-complexes.json';
 import venueComplexesWestEndData from '../../data/venue-complexes-west-end.json';
 import { displaysCriticScore } from './critic-score-display';
+import { getShowYear } from './date-utils';
 
 // Type the imported data
 // BRO-5954: rows that page generation would crash on are dropped here (and named
@@ -1494,7 +1495,7 @@ export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, status
   }
 
   const currentTags = new Set(show.tags || []);
-  const currentYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 2020;
+  const currentYear = show.openingDate ? getShowYear(show.openingDate) ?? 2020 : 2020;
   const currentScore = show.criticScore?.score ?? null;
 
   // Score bands for proximity matching
@@ -1562,7 +1563,7 @@ export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, status
       }
 
       // Temporal proximity
-      const candidateYear = candidate.openingDate ? new Date(candidate.openingDate).getFullYear() : 2020;
+      const candidateYear = candidate.openingDate ? getShowYear(candidate.openingDate) ?? 2020 : 2020;
       const yearDiff = Math.abs(currentYear - candidateYear);
       if (yearDiff <= 2) score += 3;
       else if (yearDiff <= 5) score += 1;

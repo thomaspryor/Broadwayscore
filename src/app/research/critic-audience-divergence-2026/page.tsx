@@ -4,6 +4,7 @@ import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
 import { BASE_URL } from '@/lib/seo';
+import { getShowYear } from '@/lib/date-utils';
 
 type Row = {
   id: string;
@@ -180,7 +181,7 @@ function RowTable({
                       : r.category === 'off-broadway'
                       ? 'Off-Broadway'
                       : 'Broadway'}
-                    {r.openingDate ? ` · ${new Date(r.openingDate).getFullYear()}` : ''}
+                    {r.openingDate ? ` · ${getShowYear(r.openingDate)}` : ''}
                     {' · '}
                     {r.reviewCount} critic{r.reviewCount === 1 ? '' : 's'},{' '}
                     {r.audienceCount.toLocaleString()} audience

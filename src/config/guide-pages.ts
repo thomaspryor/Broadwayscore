@@ -7,6 +7,7 @@ import { isAnnouncedCurrent } from '@/config/browse-pages';
 import { getVisibleTicketLinks } from '@/lib/ticket-utils';
 // "Best …" guides rank by CriticScore: include only shows that display one (BRO-4312).
 import { displaysCriticScore } from '@/lib/critic-score-display';
+import { getShowYear } from '@/lib/date-utils';
 
 export interface GuidePageConfig {
   slug: string;
@@ -213,8 +214,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaDescriptionTemplate: 'The {count} best Broadway shows from the 2010s decade. Hamilton, Dear Evan Hansen, and more legendary productions from 2010-2019.',
     introFallback: 'The 2010s were a transformative decade for Broadway, bringing groundbreaking productions like Hamilton, Dear Evan Hansen, and Book of Mormon. These {count} shows defined an era of theatrical innovation.',
     filter: (show) => {
-      const openDate = new Date(show.openingDate);
-      const year = openDate.getFullYear();
+      const year = getShowYear(show.openingDate) ?? 0;
       return year >= 2010 && year <= 2019 && (show.criticScore?.score ?? 0) >= 60;
     },
     sort: 'score',
@@ -231,8 +231,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaDescriptionTemplate: 'The {count} highest-rated Broadway shows since 2020, ranked by aggregated critic scores from 400+ outlets. From Stereophonic to Sunset Blvd.',
     introFallback: "The 2020s have seen Broadway's remarkable comeback. From the pandemic shutdown to triumphant reopening, these {count} shows represent the best of the current decade.",
     filter: (show) => {
-      const openDate = new Date(show.openingDate);
-      return openDate.getFullYear() >= 2020 && (show.criticScore?.score ?? 0) >= 60;
+      return (getShowYear(show.openingDate) ?? 0) >= 2020 && (show.criticScore?.score ?? 0) >= 60;
     },
     sort: 'score',
     limit: 30,
@@ -534,8 +533,7 @@ export function getGuideConfig(slug: string): GuidePageConfig | null {
     ...baseConfig,
     filter: (show: ComputedShow) => {
       if (!show.openingDate) return false;
-      const openDate = new Date(show.openingDate);
-      if (openDate.getFullYear() !== year) return false;
+      if (getShowYear(show.openingDate) !== year) return false;
       if ((show.criticScore?.score ?? 0) <= 0) return false;
       if (!displaysCriticScore(show)) return false;
       if (baseSlug === 'best-broadway-musicals' && show.type !== 'musical') return false;
