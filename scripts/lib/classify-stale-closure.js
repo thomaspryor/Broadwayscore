@@ -59,7 +59,7 @@ const SKIP_DESIGNATIONS = new Set([
   'Nonprofit',        // pure nonprofits — recoupment doesn't apply
   'Tour Stop',        // tour stops never measured against original cap
   ...RECOUPED_DESIGNATIONS, // already classified as recouped
-  ...UNRECOUPED_DESIGNATIONS, // already classified as not recouped (loss labels, Wait and See)
+  ...UNRECOUPED_DESIGNATIONS, // already classified as not recouped (loss labels, Wait & See)
 ]);
 
 function daysAgo(isoString, now = Date.now()) {

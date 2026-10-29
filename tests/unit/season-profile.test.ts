@@ -596,13 +596,13 @@ test('the average base stays the latest 11 seasons however many rows the table l
   assert.equal(base[10].season, '2015-2016');
 });
 
-test('a Squeaker counts as recouped, a Wait and See as not recouped (BRO-6499)', () => {
+test('a Squeaker counts as recouped, a Wait & See as not recouped (BRO-6499)', () => {
   const [p] = buildSeasonProfiles([
     show({ openingDate: '2024-10-01', status: 'closed', commercial: com({ designation: 'Squeaker', recouped: true, capitalization: 5e6 }) }),
-    show({ openingDate: '2024-10-02', status: 'closed', commercial: com({ designation: 'Wait and See', recouped: false, capitalization: 5e6, analystRecoupPct: [60, 60] }) }),
+    show({ openingDate: '2024-10-02', status: 'closed', commercial: com({ designation: 'Wait & See', recouped: false, capitalization: 5e6, analystRecoupPct: [60, 60] }) }),
   ]);
   assert.deepEqual([p.commercial, p.recouped, p.outcomeKnown], [2, 1, 2]);
   assert.equal(p.capitalByOutcome.closedUnrecoupedShows, 1);
-  const share = returnedCapitalShare(com({ designation: 'Wait and See', recouped: false, analystRecoupPct: [60, 60] }), 'closed');
+  const share = returnedCapitalShare(com({ designation: 'Wait & See', recouped: false, analystRecoupPct: [60, 60] }), 'closed');
   assert.ok(share && share.mid === 0.6);
 });

@@ -103,7 +103,7 @@ function estimateFitsDesignation(range, designation) {
   if (designation === 'Nonprofit') return true;
   const mid = range.length === 3 ? range[1] : (range[0] + range[1]) / 2;
   if (designation === 'Flop') return mid < FIZZLE_MIN_RETURNED_PCT;
-  if (designation === 'Wait and See') return mid >= WAIT_AND_SEE_MIN_RETURNED_PCT && mid < 100;
+  if (designation === 'Wait & See') return mid >= WAIT_AND_SEE_MIN_RETURNED_PCT && mid < 100;
   if (designation === 'Fizzle') return mid >= FIZZLE_MIN_RETURNED_PCT && mid < 100;
   return false;
 }

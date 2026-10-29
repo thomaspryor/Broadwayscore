@@ -19,7 +19,7 @@ export type CommercialDesignation =
   | 'Nonprofit'
   | 'Tour Stop'
   | 'Squeaker'
-  | 'Wait and See';
+  | 'Wait & See';
 
 export interface DesignationConfig {
   name: CommercialDesignation;
@@ -107,7 +107,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   },
   {
     // Closed without recouping, never phrased as a loss (owner 2026-10-29, BRO-6499).
-    name: 'Wait and See',
+    name: 'Wait & See',
     color: 'text-amber-400',
     description: `Closed without recouping so far; ${WAIT_AND_SEE_MIN_RETURNED_PCT}% or more has come back and later income may still get it there`,
     sortOrder: 7,

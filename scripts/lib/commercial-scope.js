@@ -51,7 +51,7 @@ const DESIGNATION_CRITERIA = `Designation — pick EXACTLY one, using these crit
 - Flop: closed without recouping, and a source says less than ${FIZZLE_MIN_RETURNED_PCT}% of its capitalization came back.
 - Did Not Recoup: closed without recouping, but no source says how much of the capitalization came back.
 - Squeaker: recouped, but only because the NY State theater tax credit pushed returns over 100%; a source must report both the recoupment and the credit's part in it. Never guess it from a figure.
-- Wait and See: closed without recouping, a source says 50% or more of the capitalization has come back, and later money (tour, licensing, a sale or buyout) may still get it there. Never phrase it as a loss.
+- Wait & See: closed without recouping, a source says 50% or more of the capitalization has come back, and later money (tour, licensing, a sale or buyout) may still get it there. Never phrase it as a loss.
 - Nonprofit: produced by a nonprofit theater (Lincoln Center, Roundabout, MTC, Second Stage) — subscriber-funded, no traditional investor recoupment.
 - TBD: still running and too early to tell, or insufficient data to judge.`;
 

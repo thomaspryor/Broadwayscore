@@ -11,10 +11,10 @@
 const VALID_DESIGNATIONS = [
   'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
   'TBD', 'Fizzle', 'Did Not Recoup', 'Flop', 'Nonprofit', 'Tour Stop',
-  'Squeaker', 'Wait and See',
+  'Squeaker', 'Wait & See',
 ];
 
-const keyOf = (s) => s.trim().toLowerCase().replace(/[\s_-]+/g, ' ');
+const keyOf = (s) => s.trim().toLowerCase().replace(/\s*&\s*/g, ' and ').replace(/[\s_-]+/g, ' ');
 const DESIGNATION_BY_KEY = new Map(VALID_DESIGNATIONS.map(d => [keyOf(d), d]));
 
 // Returns the canonical spelling, or undefined for anything not in the list.
@@ -59,13 +59,13 @@ function ownReturnedRangePct(entry) {
   return null;
 }
 /**
- * Wait and See (owner 2026-10-29, BRO-6499): closed without recouping, but this
+ * Wait & See (owner 2026-10-29, BRO-6499): closed without recouping, but this
  * % of capitalization or more has come back and later money (tour, licensing,
  * a sale or buyout) may still get it there. Boundary with Fizzle (30% to under
  * 100%): the two overlap on 50-99%, and the difference is documented later
- * money, which a figure cannot show. So Wait and See is never inferred: the
+ * money, which a figure cannot show. So Wait & See is never inferred: the
  * automatic sizing (lossDesignationFor, estimatedDesignationForClosed) keeps
- * choosing Fizzle or Flop, and Wait and See is a reviewed, cited label that
+ * choosing Fizzle or Flop, and Wait & See is a reviewed, cited label that
  * needs recouped:false and an own estimate at or above this line
  * (commercial-record-checks.js). It counts as NOT recouped and is not a loss
  * label (isLossDesignation stays false), so no loss phrase prints for it.
@@ -139,7 +139,7 @@ function isLossDesignation(designation) {
  * and See (not a loss, never phrased as one). Season stats count all of them as
  * not recouped; loss wording stays on isLossDesignation.
  */
-const WAIT_AND_SEE = 'Wait and See';
+const WAIT_AND_SEE = 'Wait & See';
 const UNRECOUPED_DESIGNATIONS = Object.freeze([...LOSS_DESIGNATIONS, WAIT_AND_SEE]);
 function isUnrecoupedDesignation(designation) {
   return LOSS_DESIGNATION_SET.has(designation) || designation === WAIT_AND_SEE;
@@ -246,7 +246,7 @@ function planModelLossResizes(entries, limit = MODEL_LOSS_RESIZE_LIMIT) {
   return { moves, held: moves.length > limit };
 }
 /** Classes the recoupment rule never moves. */
-const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop', 'Squeaker', 'Wait and See']);
+const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop', 'Squeaker', 'Wait & See']);
 
 /**
  * Labels that say the show recouped. Use these lists, never a hand-written

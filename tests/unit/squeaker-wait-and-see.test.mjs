@@ -1,4 +1,4 @@
-// Squeaker and Wait and See (owner 2026-10-29, BRO-6499). Real functions only.
+// Squeaker and Wait & See (owner 2026-10-29, BRO-6499). Real functions only.
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -12,27 +12,29 @@ const { estimateFitsDesignation } = require('../../scripts/lib/model-display-gua
 const src = [{ type: 'trade', url: 'https://example.com/a', date: '2026-01-01' }];
 
 describe('label lists', () => {
-  it('are valid, Squeaker recouped and reported, Wait and See unrecouped but not a loss', () => {
-    assert.ok(D.VALID_DESIGNATIONS.includes('Squeaker') && D.VALID_DESIGNATIONS.includes('Wait and See'));
+  it('are valid, Squeaker recouped and reported, Wait & See unrecouped but not a loss', () => {
+    assert.ok(D.VALID_DESIGNATIONS.includes('Squeaker') && D.VALID_DESIGNATIONS.includes('Wait & See'));
     assert.ok(D.RECOUPED_DESIGNATIONS.includes('Squeaker'));
     assert.ok(D.REPORTED_WIN_DESIGNATIONS.includes('Squeaker'));
     assert.ok(!D.MODEST_RETURN_DESIGNATIONS.includes('Squeaker'));
-    assert.equal(D.isLossDesignation('Wait and See'), false);
-    assert.equal(D.isUnrecoupedDesignation('Wait and See'), true);
+    assert.equal(D.isLossDesignation('Wait & See'), false);
+    assert.equal(D.isUnrecoupedDesignation('Wait & See'), true);
     assert.equal(D.isUnrecoupedDesignation('Flop'), true);
     assert.equal(D.isUnrecoupedDesignation('Squeaker'), false);
-    assert.equal(D.canonicalDesignation('wait-and-see'), 'Wait and See');
+    assert.equal(D.canonicalDesignation('wait-and-see'), 'Wait & See');
+    assert.equal(D.canonicalDesignation('Wait and See'), 'Wait & See');
+    assert.equal(D.canonicalDesignation('wait & see'), 'Wait & See');
     assert.equal(D.canonicalDesignation('SQUEAKER'), 'Squeaker');
   });
   it('automatic sizing never picks either label', () => {
-    for (const pct of [0, 30, 55, 99]) assert.ok(!['Squeaker', 'Wait and See'].includes(D.lossDesignationFor(pct)));
+    for (const pct of [0, 30, 55, 99]) assert.ok(!['Squeaker', 'Wait & See'].includes(D.lossDesignationFor(pct)));
     for (const pct of [55, 120, 200]) {
       const d = D.estimatedDesignationForClosed({ estimatedRecoupmentPct: pct });
-      assert.ok(!['Squeaker', 'Wait and See'].includes(d), String(d));
+      assert.ok(!['Squeaker', 'Wait & See'].includes(d), String(d));
     }
   });
   it('the designation rule leaves both alone', () => {
-    for (const designation of ['Squeaker', 'Wait and See']) {
+    for (const designation of ['Squeaker', 'Wait & See']) {
       const r = proposeDesignation({ record: { designation, recouped: designation === 'Squeaker' }, show: { closingDate: '2020-01-01' }, model: null });
       assert.equal(r.changed, false, designation);
     }
@@ -42,10 +44,10 @@ describe('label lists', () => {
     assert.equal(D.modelPctWithoutCredit(e), 90);
     assert.equal(D.modelPctWithoutCredit({ modelReturnedExCreditPct: [90, 110, 130] }), null);
   });
-  it('a Wait and See estimate fits 50 to under 100 only', () => {
-    assert.equal(estimateFitsDesignation([50, 60, 70], 'Wait and See'), true);
-    assert.equal(estimateFitsDesignation([20, 30, 40], 'Wait and See'), false);
-    assert.equal(estimateFitsDesignation([90, 105, 120], 'Wait and See'), false);
+  it('a Wait & See estimate fits 50 to under 100 only', () => {
+    assert.equal(estimateFitsDesignation([50, 60, 70], 'Wait & See'), true);
+    assert.equal(estimateFitsDesignation([20, 30, 40], 'Wait & See'), false);
+    assert.equal(estimateFitsDesignation([90, 105, 120], 'Wait & See'), false);
   });
 });
 
@@ -59,10 +61,10 @@ describe('validator', () => {
     assert.ok(errs({ ...ok, recouped: null }).some((e) => /recouped=null/.test(e)));
     assert.ok(errs({ ...ok, recouped: null, designationBasis: 'model-estimate' }).some((e) => /model estimate/.test(e)));
   });
-  it('Wait and See needs recouped false, a cited 50-99% estimate and a closed run', () => {
-    const ok = { ...base, designation: 'Wait and See', recouped: false, analystRecoupPct: [60, 60] };
-    assert.deepEqual(errs(ok).filter((e) => /Wait and See/.test(e)), []);
-    assert.ok(errs({ ...ok, recouped: true }).some((e) => /Wait and See/.test(e)));
+  it('Wait & See needs recouped false, a cited 50-99% estimate and a closed run', () => {
+    const ok = { ...base, designation: 'Wait & See', recouped: false, analystRecoupPct: [60, 60] };
+    assert.deepEqual(errs(ok).filter((e) => /Wait & See/.test(e)), []);
+    assert.ok(errs({ ...ok, recouped: true }).some((e) => /Wait & See/.test(e)));
     assert.ok(errs({ ...ok, analystRecoupPct: [40, 40] }).some((e) => /40%/.test(e)));
     assert.ok(errs({ ...ok, analystRecoupPct: null }).some((e) => /missing/.test(e)));
     assert.ok(errs({ ...ok, sources: [] }).some((e) => /no source/.test(e)));

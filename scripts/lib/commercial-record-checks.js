@@ -244,7 +244,7 @@ function commercialRecordErrors(showId, show, ctx = {}) {
       out.push(`commercial.json: "${showId}" is Squeaker but recoupedSource does not cite the NY State tax credit's part in the recoupment`);
     }
   }
-  // Wait and See (BRO-6499): closed without recouping, 50%+ back, later money may still recoup it.
+  // Wait & See (BRO-6499): closed without recouping, 50%+ back, later money may still recoup it.
   if (show.designation === WAIT_AND_SEE) {
     if (show.recouped !== false) {
       out.push(`commercial.json: "${showId}" is ${WAIT_AND_SEE} but recouped=${JSON.stringify(show.recouped)} (it counts as not recouped, so recouped must be false)`);
