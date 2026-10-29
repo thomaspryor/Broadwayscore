@@ -16,6 +16,14 @@
  * The marker holds while the fields the search is built from (title, venue,
  * opening date) are unchanged. Change any of them, delete the marker, or run
  * fetch-show-images-auto.js with --retry-no-art, and the row is searched again.
+ *
+ * Markers on rows that have not closed also expire (NON_CLOSED_MARKER_TTL_DAYS).
+ * Closed rows have a frozen set of search hits, so "nothing reliable" stays
+ * true. A running or upcoming production is the opposite: its key art and press
+ * photos keep arriving through previews and opening night. The-lives-of-others-
+ * west-end-2026 had a wrong poster nulled and marked on 2026-10-20 (BRO-5739);
+ * the real Adelphi art was on TodayTix within days, but the permanent marker
+ * kept every sweep and the imageless self-heal away from it past opening night.
  */
 
 function norm(v) {
@@ -37,12 +45,25 @@ function buildNoReliableArtMarker(show, { reason, now = new Date() } = {}) {
   };
 }
 
-// True when the row carries a marker that still applies to its current fields.
-function hasActiveNoArtMarker(show) {
+// How long a marker on a not-yet-closed row (announced, upcoming, previews,
+// open) suppresses searching. Long enough that the self-heal does not refill
+// the row with the next wrong hit within hours (the BRO-5022 failure), short
+// enough that launch art is picked up within a week.
+const NON_CLOSED_MARKER_TTL_DAYS = 7;
+
+// True when the row carries a marker that still applies to its current fields
+// and, for a row that has not closed, is still inside the TTL. An unreadable
+// `at` on such a row counts as expired: searching again is cheap, a marker
+// that can never lapse is not.
+function hasActiveNoArtMarker(show, now = Date.now()) {
   const m = show && show.noReliableArt;
   if (!m || typeof m !== 'object') return false;
   if (typeof m.key !== 'string' || !m.key) return false;
-  return m.key === noArtFingerprint(show);
+  if (m.key !== noArtFingerprint(show)) return false;
+  if (show.status === 'closed') return true;
+  const at = Date.parse(m.at || '');
+  if (Number.isNaN(at)) return false;
+  return new Date(now).getTime() - at <= NON_CLOSED_MARKER_TTL_DAYS * 86400000;
 }
 
 // Which tier runs in strict mode: the title-only Google Images search for a
@@ -83,10 +104,10 @@ function noArtOutcome(show, images, tally) {
 }
 
 // Selection filter for every fetch mode: marked rows are not searched again.
-function partitionNoReliableArt(shows) {
+function partitionNoReliableArt(shows, now = Date.now()) {
   const kept = [];
   const skipped = [];
-  for (const s of shows || []) (hasActiveNoArtMarker(s) ? skipped : kept).push(s);
+  for (const s of shows || []) (hasActiveNoArtMarker(s, now) ? skipped : kept).push(s);
   return { kept, skipped };
 }
 
@@ -101,6 +122,7 @@ function validateNoReliableArtValue(value, show) {
 }
 
 module.exports = {
+  NON_CLOSED_MARKER_TTL_DAYS,
   noArtFingerprint,
   buildNoReliableArtMarker,
   hasActiveNoArtMarker,

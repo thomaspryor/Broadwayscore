@@ -20,7 +20,7 @@ test('a stored opening checked correct is left alone', () => {
 });
 
 test('changing the opening date re-keys an active no-reliable-art marker', () => {
-  const marked = { ...show, title: 'Betrayal', venue: 'Harold Pinter Theatre', noReliableArt: { at: '2026-10-11', reason: 'r', key: 'betrayal|harold pinter theatre|2019-03-05' } };
+  const marked = { ...show, status: 'closed', title: 'Betrayal', venue: 'Harold Pinter Theatre', noReliableArt: { at: '2026-10-11', reason: 'r', key: 'betrayal|harold pinter theatre|2019-03-05' } };
   const a = rowActions(marked, rv('2019-03-14', '2019-03-14', '2019-03-14'), new Map());
   const m = a.find((x) => x.field === 'noReliableArt');
   assert.equal(m.newValue.key, 'betrayal|harold pinter theatre|2019-03-13');
