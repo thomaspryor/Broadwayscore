@@ -26,7 +26,7 @@ function emptyShows(plan) {
 /**
  * The ingest-urls.yml `urls` input: one "url outlet" per line, duplicate urls dropped.
  * ingest-urls.js splits each line on whitespace, so a space inside either field would
- * shift the outlet; `knownOutlets` (registry ids and aliases), when given, must hold the outlet.
+ * shift the outlet; `knownOutlets` (canonical registry ids), when given, must hold the outlet.
  */
 function formatUrlsInput(entries, knownOutlets) {
   const seen = new Set();
