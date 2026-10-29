@@ -41,9 +41,9 @@ const ANSWER_RES = [
 const QUESTION_RES = [/DECISION NEEDED/, /^Asked the owner to look at/i];
 // Approved/chosen answers close the question; a decline sends work back to the
 // worker, who may legitimately ask again afterwards.
-const DECLINE_RE = /^owner declined\b|\bChose:\s*(?:reject|no)\b/i;
+const DECLINE_RE = /^owner declined\b|\bChose:\s*(?:reject(?:ed)?|no)\b/i;
 // Later states that undo an Approve (visual-approval.js classifyStatus: void, unverified, expired).
-const UNDO_RES = [MARK.void, MARK.unverified, MARK.expired].map((m) => new RegExp(m.replace(/\s+/g, '\\s+')));
+const UNDO_RES = [MARK.void, MARK.unverified, MARK.expired, MARK.stale].map((m) => new RegExp(m.replace(/\s+/g, '\\s+')));
 
 const plain = (body) => link.unescapeMarkdown(String(body || '')).trim();
 const ms = (c) => { const t = new Date(c && c.createdAt).getTime(); return Number.isFinite(t) ? t : null; };
@@ -115,6 +115,9 @@ function decisionCardsFromTranscript(text) {
   const ids = new Set();
   for (const line of String(text || '').split('\n')) {
     if (!line.includes('DECISION NEEDED')) continue;
+    // Only the assistant's own turns: tool results and file reads quote the phrase too.
+    let entry; try { entry = JSON.parse(line); } catch { continue; }
+    if ((entry.type || (entry.message && entry.message.role)) !== 'assistant') continue;
     for (const m of line.matchAll(/\bBRO-(\d+)\b/g)) ids.add(`BRO-${m[1]}`);
   }
   return [...ids];

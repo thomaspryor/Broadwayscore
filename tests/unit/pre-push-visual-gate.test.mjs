@@ -229,7 +229,7 @@ test('manual CLI implementation retains argument parsing, recursive crops and er
 
 // BRO-6539: BRO-4303 got a second "Waiting on your approval" 2.5h after the owner approved,
 // because the only dedupe was a marker file in one worktree.
-test('a card the owner already approved, or that already carries this evidence, gets no new ask', async (t) => {
+test('a card that already carries this evidence gets no new ask; an old legacy approval does not vouch for new evidence', async (t) => {
   const approved = fixture(t);
   const events = [];
   const client = fakeClient(events);
@@ -238,9 +238,7 @@ test('a card the owner already approved, or that already carries this evidence, 
     { body: '**Owner decision** (answered by the owner through the email link, 2026-10-29 UTC)\n\nChose: Approve', createdAt: '2026-10-29T14:33:00Z' },
   ]]]);
   const result = await notifyBlockedApproval(approved, { client, logger });
-  assert.equal(result.status, 'skipped');
-  assert.match(result.reason, /owner already answered/);
-  assert.equal(events.filter(([type]) => type === 'comment' || type === 'crop').length, 0);
+  assert.equal(result.status, 'attached');
 
   // Fresh worktree, no local marker: the card's own fingerprint stops the repeat.
   const fresh = fixture(t);

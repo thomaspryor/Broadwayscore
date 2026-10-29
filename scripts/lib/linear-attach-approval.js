@@ -9,7 +9,6 @@ const linear = require('./linear-client.js');
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
 const { hasHelpFlag } = require('./cli-help.js');
 const { withFileLock } = require('./file-lock.js');
-const { answerState } = require('./decision-restate.js');
 
 const USAGE = `linear-attach-approval - attach visual-qa crops to a Linear issue as an
 owner-approval ask (BRO-282).
@@ -152,12 +151,8 @@ function cardAlreadySettled(comments, fingerprint) {
   if (fps.includes(String(fingerprint).slice(0, 12))) return 'this evidence is already on the card';
   // Asks that carry a fingerprint are matched exactly: an old approval says nothing about new crops.
   if (fps.length) return null;
-  // Legacy card (asks posted before fingerprints): an answer after the latest ask stands. No ask yet: post.
-  const ask = (comments || []).filter((c) => /^Waiting on your approval/i.test(body(c).trim()) || /^Asked the owner to look at/i.test(body(c).trim()))
-    .map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite).sort((a, b) => b - a)[0];
-  if (!ask) return null;
-  const st = answerState(comments, { askedAt: ask });
-  return st.answered ? `the owner already answered (${st.answer.at ? String(st.answer.at).slice(0, 10) : 'earlier'})` : null;
+  // Legacy card (no fingerprints yet): an old answer cannot vouch for this evidence, so post once; the posted comment carries the fingerprint and dedupes from then on.
+  return null;
 }
 
 function issueFromContext(branch, repo) {
