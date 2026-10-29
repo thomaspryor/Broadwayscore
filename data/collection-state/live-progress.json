@@ -1,37 +1,132 @@
 {
-  "updatedAt": "2026-10-29T15:47:16.470Z",
-  "processed": 60,
-  "failed": 40,
-  "successRate": "60.0%",
+  "updatedAt": "2026-10-29T15:50:11.728Z",
+  "processed": 329,
+  "failed": 175,
+  "successRate": "65.3%",
   "tierBreakdown": {
-    "playwright": 30,
-    "amp": 0,
-    "browserbase": 1,
+    "playwright": 164,
+    "amp": 1,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 3,
-    "brightdata": 1,
-    "archiveToday": 1,
-    "archive": 20
+    "scrapingdog": 28,
+    "scrapingbee": 14,
+    "brightdata": 4,
+    "archiveToday": 29,
+    "archive": 96
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-10-29T15:19:21.423Z",
+      "t": "2026-10-29T13:43:27.497Z",
       "event": "bb-session",
-      "session": "9c7b84bb",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+      "session": "712e366e",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
     },
     {
-      "t": "2026-10-29T15:19:21.775Z",
+      "t": "2026-10-29T13:43:28.163Z",
       "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
+      "domain": "variety.com"
     },
     {
-      "t": "2026-10-29T15:46:08.828Z",
+      "t": "2026-10-29T13:43:36.937Z",
       "event": "bb-session",
-      "session": "7023ea25",
-      "url": "http://www.publictheater.org/"
+      "session": "33dc40f8",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-29T13:43:37.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-29T14:40:27.392Z",
+      "event": "bb-session",
+      "session": "af685618",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-29T14:40:27.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T14:47:06.319Z",
+      "event": "bb-session",
+      "session": "ab911bb1",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-29T14:47:07.145Z",
+      "event": "bb-session",
+      "session": "63bcb80a",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-29T14:47:07.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T14:47:14.732Z",
+      "event": "bb-session",
+      "session": "29ddf467",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-29T14:48:12.215Z",
+      "event": "bb-session",
+      "session": "3ff4a119",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-29T14:48:20.629Z",
+      "event": "bb-session",
+      "session": "0f96ebfe",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-29T14:51:15.293Z",
+      "event": "bb-session",
+      "session": "3bd93656",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-29T14:51:15.531Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-29T14:51:22.649Z",
+      "event": "bb-session",
+      "session": "a5751445",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-29T14:51:22.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-29T14:57:19.336Z",
+      "event": "bb-session",
+      "session": "85d8f421",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-29T14:57:23.238Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-29T14:57:40.411Z",
+      "event": "bb-session",
+      "session": "7f9cfcdb",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-29T14:57:44.390Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
