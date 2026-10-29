@@ -161,7 +161,7 @@ function parseDetailPage(html) {
 }
 
 // Show types that are not scripted theatre with critic coverage we want.
-const EXCLUDED_TYPES = [/cabaret/i, /magic/i, /comedy/i, /stand.?up/i, /improv/i, /sketch/i, /performance art/i, /variety/i, /concert/i, /dance/i, /children|family/i, /burlesque/i, /circus/i, /puppet/i, /film|cinema/i];
+const EXCLUDED_TYPES = [/cabaret/i, /magic/i, /^comedy$/i, /stand.?up/i, /improv/i, /sketch/i, /performance art/i, /variety/i, /concert/i, /dance/i, /children|family/i, /burlesque/i, /circus/i, /puppet/i, /film|cinema/i];
 
 function isExcludedType(showType) {
   if (!showType) return false;
