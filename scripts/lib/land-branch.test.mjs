@@ -570,6 +570,7 @@ test('BRO-6035: rebase conflict in only DEPENDENCIES.md is regenerated and the l
     assert.equal(r.landed, true);
     assert.equal(pushes, 1);
     assert.equal(w.isAncestorOfOrigin(r.sha), true);
+    assert.equal(sh(w.repoDir, ['show', `${r.sha}:.github/workflows/DEPENDENCIES.md`]), 'regenerated');
   } finally { w.cleanup(); }
 });
 

@@ -767,20 +767,21 @@ function landBranch(o) {
     // generator, stage it and continue. True when the rebase then finished; false (rebase left stopped, the caller
     // aborts) on any other conflict or a generator failure.
     const resolveGeneratedDocConflicts = () => {
+      let lastErr = null;
       for (let step = 0; step < 50; step++) {
         const files = gitOrNull(['diff', '--name-only', '--diff-filter=U'], workdir);
-        if (!isGeneratedDocConflict((files || '').split('\n').filter(Boolean))) return false;
+        if (!isGeneratedDocConflict((files || '').split('\n').filter(Boolean))) return { done: false, lastErr };
         try {
           execFileSync('node', ['scripts/generate-workflow-dependencies.js'], { cwd: workdir, stdio: 'pipe', timeout: 120000 });
           git(['add', '--', ...GENERATED_DOC_PATHS], workdir);
-        } catch { return false; }
+        } catch { return { done: false, lastErr }; }
         try {
           git(['rebase', '--continue'], workdir, { env: { ...process.env, GIT_EDITOR: 'true' } });
           log(`[land] rebase conflict in ${GENERATED_DOC_PATHS.join(', ')} only: regenerated it and continued (BRO-6035)`);
-          return true;
-        } catch { /* stopped on the next commit's conflict: look again */ }
+          return { done: true };
+        } catch (e) { lastErr = e; /* stopped on the next commit's conflict, or failed: look again */ }
       }
-      return false;
+      return { done: false, lastErr };
     };
     // rangeFrom/tip: rebase `rangeFrom..tip` onto `onto` instead of HEAD's own
     // commits (a train rider; HEAD becomes the rebased rider).
@@ -790,15 +791,19 @@ function landBranch(o) {
         try {
           git(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto], workdir);
           return;
-        } catch (err) {
-          const errText = String(err.stderr || err.message || '');
+        } catch (caught) {
+          let err = caught;
           // BRO-6035: a conflict in nothing but the generated DEPENDENCIES.md is regenerated, not refused.
-          if (resolveGeneratedDocConflicts()) return;
-          if (retry >= PROMISOR_REBASE_RETRIES || !isPromisorFetchFailure(errText)) throw err;
+          const fixed = resolveGeneratedDocConflicts();
+          if (fixed.done) return;
+          // After a resolved stop the failure that matters is the LAST one (a later real conflict, a lazy-fetch failure).
+          if (fixed.lastErr) { err = fixed.lastErr; }
+          const errText2 = String(err.stderr || err.message || '');
+          if (retry >= PROMISOR_REBASE_RETRIES || !isPromisorFetchFailure(errText2)) throw err;
           gitOrNull(['rebase', '--abort'], workdir);
           discardResidue(`promisor retry ${retry + 1}`);
           const gitVersion = gitOrNull(['--version'], workdir) || 'git ?';
-          log(`[land] rebase onto ${onto.slice(0, 10)} hit a partial-clone lazy-fetch failure (${gitVersion}) — retry ${retry + 1}/${PROMISOR_REBASE_RETRIES}: ${errText.split('\n').find(l => /fatal|error/.test(l)) || errText.slice(0, 200)}`);
+          log(`[land] rebase onto ${onto.slice(0, 10)} hit a partial-clone lazy-fetch failure (${gitVersion}) — retry ${retry + 1}/${PROMISOR_REBASE_RETRIES}: ${errText2.split('\n').find(l => /fatal|error/.test(l)) || errText2.slice(0, 200)}`);
         }
       }
     };
