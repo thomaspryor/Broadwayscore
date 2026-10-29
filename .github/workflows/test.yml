@@ -227,6 +227,7 @@ on:
       - 'scripts/sync-review-texts.js'
       # BRO-2437/BRO-6199: top-level scripts (outside scripts/lib/**) that new tests require or spawn, plus the preload stubs they use.
       - 'scripts/detect-show-changes.js'
+      - 'scripts/autonomous-email.js'
       - 'scripts/send-welcome-emails.js'
       - 'scripts/test-fixtures/stub-autonomous-email-io.cjs'
       - 'scripts/test-fixtures/stub-fetch-resend.cjs'

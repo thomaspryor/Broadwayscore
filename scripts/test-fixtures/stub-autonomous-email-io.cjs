@@ -19,6 +19,8 @@ ledger.readEntries = () => ({
 // notion-brain.js is spawned with execFileSync: answer list/get in-process.
 const realExec = cp.execFileSync;
 cp.execFileSync = function (file, args, ...rest) {
+  // overnight-digest runs a real `git fetch origin main`; keep the test off the network and .git.
+  if (file === 'git' && Array.isArray(args) && args[0] === 'fetch') return '';
   if (Array.isArray(args) && /notion-brain\.js$/.test(String(args[0]))) {
     const verb = args[1];
     if (verb === 'list') return JSON.stringify([{ id: 'card-1', name: 'Fix the thing' }]);
