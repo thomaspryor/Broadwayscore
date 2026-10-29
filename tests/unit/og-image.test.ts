@@ -81,3 +81,13 @@ test('a fetch that always throws returns null after 3 attempts, 500 is retried, 
   const options = server.mock.calls[0].arguments[1] as RequestInit;
   assert.ok(options.signal, 'each attempt has a timeout signal');
 });
+
+test('versioned show art (?v=<hash>) reaches the optimizer as a bare path', async t => {
+  const bytes = await sharp({ create: { width: 10, height: 10, channels: 3, background: 'red' } }).jpeg().toBuffer();
+  const fetchMock = t.mock.method(globalThis, 'fetch', async () => new Response(new Uint8Array(bytes), { headers: { 'content-type': 'image/jpeg' } }));
+  const uri = await fetchImageDataUri('/images/shows/i-became-we-off-broadway-2026/poster.jpg?v=abcd1234#frag', 1200);
+  assert.equal(uri, `data:image/jpeg;base64,${bytes.toString('base64')}`);
+  const requested = new URL(String(fetchMock.mock.calls[0].arguments[0]));
+  assert.equal(requested.pathname, '/_next/image');
+  assert.equal(requested.searchParams.get('url'), '/images/shows/i-became-we-off-broadway-2026/poster.jpg');
+});

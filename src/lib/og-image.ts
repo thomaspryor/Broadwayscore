@@ -22,7 +22,12 @@ export async function fetchImageDataUri(
   // shows can carry remote poster URLs; they are skipped, not proxied.
   if (!isSameOriginImagePath(imagePath)) return null;
   try {
-    const url = `${BASE_URL}/_next/image?url=${encodeURIComponent(imagePath)}&w=${width}&q=75`;
+    // Show art carries a ?v=<md5> cache-buster (versionedImagePath, BRO-6197).
+    // The optimizer 400s (INVALID_IMAGE_OPTIMIZE_REQUEST) on a local path with a
+    // query string, which sent every show to the generic share card. It only
+    // needs the file path, so drop the query and fragment.
+    const barePath = imagePath.split(/[?#]/)[0];
+    const url = `${BASE_URL}/_next/image?url=${encodeURIComponent(barePath)}&w=${width}&q=75`;
     // A static build asks the optimizer for thousands of images across parallel
     // workers; a dropped connection or 429/5xx there is transient, and without
     // a retry it silently degrades the show to the generic share card (BRO-3204).
