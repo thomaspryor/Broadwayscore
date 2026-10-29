@@ -362,6 +362,18 @@ function assessClearSafety({ filePath, data, show, result, showTitle, fsImpl }) 
     });
   }
 
+  // GUARD 5 — a heuristic verdict is no model's judgment. The keyword fallback
+  // returned isValid/high on an unrelated artshub Singapore art-fair article
+  // (art-west-end-2016, BRO-6474) and wrote a permanent wrongProductionOverride
+  // over the earlier LLM exclusion. Only an LLM verdict may clear an exclusion.
+  const verifiedBy = result && result.verifiedBy;
+  if (typeof verifiedBy !== 'string' || !verifiedBy.startsWith('llm:')) {
+    refusals.push({
+      code: 'non-llm-verdict',
+      detail: `verdict verifiedBy=${verifiedBy == null ? 'missing' : verifiedBy} (only an llm:* verdict may clear an exclusion)`,
+    });
+  }
+
   return { safe: refusals.length === 0, refusals };
 }
 
