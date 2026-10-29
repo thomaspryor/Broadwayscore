@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T23:30:32.545Z",
+  "timestamp": "2026-10-29T23:47:39.815Z",
   "stats": {
-    "totalReviews": 69084,
-    "alreadyFlagged": 22256,
+    "totalReviews": 69279,
+    "alreadyFlagged": 22261,
     "dateGuardCatches": 233,
-    "directorMismatch": 2828,
-    "tvFilmSignals": 1981,
+    "directorMismatch": 2841,
+    "tvFilmSignals": 1984,
     "londonSignals": 3378,
     "offBroadwaySignals": 624,
     "yearMismatch": 278,
-    "noPublishDate": 7753
+    "noPublishDate": 7895
   },
   "findings": [
     {
@@ -3000,6 +3000,7 @@
     {
       "showId": "aint-misbehavin-regional-2024",
       "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 80,
       "publishDate": null,
       "url": "https://www.letsplaytheatricalreview.com/blog/aint-misbehavin-the-fats-waller-musical-show",
       "findings": [
@@ -7348,6 +7349,19 @@
       ]
     },
     {
+      "showId": "billy-elliot-the-musical-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": null,
+      "url": "https://www.chicagotribune.com/2024/02/19/review-billy-elliot-at-paramount-theatre/?clearUserState=true",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from billy-elliot-the-musical-2008"
+        }
+      ]
+    },
+    {
       "showId": "birthright-off-broadway-2026",
       "file": "newyorker--emily-nussbaum.json",
       "score": 67,
@@ -9540,6 +9554,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"nicholas hytner\" from carousel-1994"
+        }
+      ]
+    },
+    {
+      "showId": "carousel-regional-2024",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-CAROUSEL-at-Music-Theater-Works-At-The-North-Shore-Center-For-The-Performing-Arts-20240811",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -19092,6 +19119,45 @@
       ]
     },
     {
+      "showId": "fiddler-on-the-roof-regional-2024",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2024/02/breaking-with-tradition/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": null,
+      "url": "https://www.chicagotribune.com/2024/02/05/review-drury-lane-fiddler-on-the-roof-both-timeless-and-brand-new/?clearUserState=true",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-regional-2024",
+      "file": "wttw--hedy-weiss.json",
+      "publishDate": null,
+      "url": "https://news.wttw.com/2024/02/03/drury-lane-profound-interpretation-fiddler-roof-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
       "showId": "fiddler-on-the-roof-west-end-2019",
       "file": "standard--fiona-mountford.json",
       "score": 91,
@@ -28522,6 +28588,97 @@
       ]
     },
     {
+      "showId": "into-the-woods-regional-2024",
+      "file": "around-the-town-chicago--jacob-davis.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/into-the-woods-7/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2024",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": null,
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5675-into-the-woods-an-exciting-musical-fairytale-mashup-at-chopin-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2024",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": null,
+      "url": "https://chicago.suntimes.com/theater/2024/10/28/into-the-woods-review-kokandy-productions-chicago-stephen-sondheim",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2024",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2024/10/i-wish/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": null,
+      "url": "https://www.chicagotribune.com/2024/11/04/review-into-the-woods-by-kokandy-productions-is-a-magical-sondheim-adventure/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2024",
+      "file": "new-city-stage--mary-wisniewski.json",
+      "publishDate": null,
+      "url": "https://www.newcitystage.com/2024/10/29/bedtime-fairy-tales-a-review-of-kokandys-into-the-woods-at-the-chopin-studio-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2024",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": null,
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2024/10/28/picksinsix-review-into-the-woods-kokandy-productions-chopin-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 93,
@@ -30601,6 +30758,19 @@
       ]
     },
     {
+      "showId": "just-one-of-those-things-and-more-the-nat-king-cole-story-regional-2023",
+      "file": "around-the-town-chicago--julia-w-rath.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/cabaret/just-one-of-those-things-the-nat-king-cole-story-reviewed-by-frank-meccia/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
       "file": "londontheatre1--mary-beer.json",
       "score": 64,
@@ -31806,6 +31976,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "legally-blonde-the-musical-regional-2024",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-LEGALLY-BLONDE-THE-MUSICAL-at-Music-Theater-Works-At-The-North-Shore-Center-For-The-Performing-Arts-20241223",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "legally-blonde-the-musical-regional-2024",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2024/12/what-you-want/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from legally-blonde-2007"
         }
       ]
     },
@@ -40023,6 +40219,19 @@
       "score": 68,
       "publishDate": "2026-05-29",
       "url": "https://www.theguardian.com/stage/2026/may/29/once-review-pitlochry-festival-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from once-2012"
+        }
+      ]
+    },
+    {
+      "showId": "once-pitlochry-festival-regional-2026",
+      "file": "west-end-best-friend--lorna-murray.json",
+      "publishDate": "2026-05-31",
+      "url": "https://www.westendbestfriend.co.uk/news/review-once-pitlochry-festival-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51945,6 +52154,7 @@
     {
       "showId": "the-audience-regional-2024",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://chicago.suntimes.com/theater/2024/09/09/the-audience-review-drury-lane-theatre-queen-elizabeth-janet-ulrich-brooks",
       "findings": [
@@ -51958,6 +52168,7 @@
     {
       "showId": "the-audience-regional-2024",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://www.chicagotheatrereview.com/2024/09/a-tribute-to-a-great-leader/",
       "findings": [
@@ -51971,6 +52182,7 @@
     {
       "showId": "the-audience-regional-2024",
       "file": "chicagoonstage--kelly-macblane.json",
+      "score": 80,
       "publishDate": null,
       "url": "https://www.chicagoonstage.com/a-lovely-evening-with-the-queen-at-drury-lane/",
       "findings": [
@@ -51984,6 +52196,7 @@
     {
       "showId": "the-audience-regional-2024",
       "file": "chicagotribune--chris-jones.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/09/06/review-the-audience-at-drury-lane-theatre-has-new-resonance-after-the-death-of-queen-elizabeth-ii/",
       "findings": [
@@ -51997,6 +52210,7 @@
     {
       "showId": "the-audience-regional-2024",
       "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.letsplaytheatricalreview.com/blog/the-audience",
       "findings": [
