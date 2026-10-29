@@ -13,6 +13,7 @@
  */
 
 const { titleMatchWords, textHasWord } = require('./title-word-match');
+const { creditsFor } = require('./provider-credits');
 const https = require('https');
 require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const http = require('http');
@@ -1290,7 +1291,7 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
     const _rec = (success, status) => {
       if (_recorded) return;
       _recorded = true;
-      const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 5;
+      const billed = (status === 401 || status === 402 || status === 'error') ? 0 : creditsFor('sb', 'render');
       try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
     };
     const req = https.get(apiUrl, (res) => {

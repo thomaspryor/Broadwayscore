@@ -18,6 +18,7 @@
 const https = require('https');
 require('./lib/cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const fs = require('fs');
+const { creditsFor } = require('./lib/provider-credits');
 const path = require('path');
 const { loadCookiesByFileKey, loadCookieMeta, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
@@ -409,7 +410,7 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
     // no ledger row, so the twice-weekly cookie probe was invisible spend.
     try {
       recordSbCall({ url: testUrl, fn: 'premium', success: res.status === 200,
-        status: res.status || 'error', credits: sbBilledCredits(res.status || 'error', 25) });
+        status: res.status || 'error', credits: sbBilledCredits(res.status || 'error', creditsFor('sb', 'render_premium')) });
     } catch (_) { /* telemetry must never fail the health check */ }
 
     if (res.status === 0) return { status: 'warn', message: `Request failed: ${res.body}` };

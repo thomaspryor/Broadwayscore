@@ -1965,13 +1965,13 @@ async function fetchJSON(url, options = {}) {
         req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
       });
       _scraperStats.sbRequests++;
-      _scraperStats.sbCredits += 1; // render_js=false = 1 credit
+      _scraperStats.sbCredits += creditsFor('sb', 'page'); // render_js=false
       sbHostCooldown.record(url, true);
-      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: 1 });
+      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: creditsFor('sb', 'page') });
       return JSON.parse(response);
     } catch (err) {
       sbHostCooldown.record(url, false);
-      recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: 1 });
+      recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: creditsFor('sb', 'page') });
       console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
       if ([401, 403, 429].includes(err.statusCode)) {
         _scrapingBeePageExhausted = true;

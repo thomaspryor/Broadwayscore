@@ -19,6 +19,7 @@
 const https = require('https');
 require('./cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
+const { creditsFor } = require('./provider-credits');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 const { consultBrightData } = require('./brightdata-caps');
 const { sbRedditVerdict, sbRunBreakerOpen, readLedgerTail } = require('./reddit-dispatch-cooldown');
@@ -199,7 +200,7 @@ async function fetchViaScrapingBee(url) {
     if (_recorded) return;
     _recorded = true;
     sbRunConsecutiveFailures = success ? 0 : sbRunConsecutiveFailures + 1;
-    try { recordSbCall({ url, fn: 'json', success, status, credits: sbBilledCredits(status, 10) }); } catch (_) {}
+    try { recordSbCall({ url, fn: 'json', success, status, credits: sbBilledCredits(status, creditsFor('sb', 'premium')) }); } catch (_) {}
   };
 
   return new Promise((resolve, reject) => {
