@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-28T08:35:06.984Z",
-  "bannerText": "98/345 Done(14d) verified on main · 4 FAILED · 0 vacuous · 16 stuck-but-done — PARTIAL RUN: 236 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-29T09:16:14.548Z",
+  "bannerText": "129/231 Done(14d) verified on main · 1 FAILED · 2 vacuous · 27 stuck-but-done · 3 mis-armed, needs re-arming (BRO-5599, BRO-5055, BRO-3837) — PARTIAL RUN: 98 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-6310 — BSC Daily: Deploy to Vercel",
-      "detail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Deploy to Vercel\" still listed in the 2026-10-28T08:30:36.553Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6310/bsc-daily-deploy-to-vercel"
+      "title": "FAILED BRO-6423 — main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
+      "detail": "❌ Possible submitter PII in a committed, PUBLIC-repo data/audit file: data/audit/we-historical-tr-probe.json — 6 hit(s) exceeds its allowlisted baseline of 5. New content in this …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6423/main-testyml-red-lint-workflows-audit-no-submitter-pii-in-committed"
     },
     {
-      "title": "FAILED BRO-6291 — land-retry-cancelled skips a Land run cancelled mid mutex wait (land-started-work), stranding it forever",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-mutex.test.js",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6291/land-retry-cancelled-skips-a-land-run-cancelled-mid-mutex-wait-land"
-    },
-    {
-      "title": "FAILED BRO-6253 — Delete the retired Twitter-only social system (generate-social-post.js, social-image-generator.js, social-infographics/, social-post.yml) now that social-autopost replaces it",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/retired-social-system-cleanup.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6253/delete-the-retired-twitter-only-social-system-generate-social-postjs"
-    },
-    {
-      "title": "FAILED BRO-6226 — Critics' Take 'Based on N reviews' overcounts vs the on-site review count (Benjamin Button OB shows 27, score uses 23)",
-      "detail": "[audit-critic-consensus-contamination] 1334 fail, 0 warn [fail] 1536-west-end-2026 REVIEWCOUNT_DRIFT:consensus=19,actual=0,diff=19 text: Ava Pickett's debut play earns rave review…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6226/critics-take-based-on-n-reviews-overcounts-vs-the-on-site-review-count"
-    },
-    {
-      "title": "STUCK BRO-6392 — Commercial source verifier: fall back to web.archive.org when a cited page blocks every fetcher",
+      "title": "STUCK BRO-4681 — Hook markRescoreNeeded into clear-stale-wrong-production/show-flags.js (BRO-2407 cousin)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6392/commercial-source-verifier-fall-back-to-webarchiveorg-when-a-cited"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4681/hook-markrescoreneeded-into-clear-stale-wrong-productionshow-flagsjs"
     },
     {
-      "title": "STUCK BRO-6364 — Cron stale 3+ consecutive days: Update Lottery/Rush",
+      "title": "STUCK BRO-4371 — chore: re-extract BWW roundups where a digit-leading outlet corrupted a prior quote",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6364/cron-stale-3-consecutive-days-update-lotteryrush"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4371/chore-re-extract-bww-roundups-where-a-digit-leading-outlet-corrupted-a"
     },
     {
-      "title": "STUCK BRO-6363 — Cron stale 3+ consecutive days: GitLab Code Mirror",
+      "title": "STUCK BRO-4315 — P1: S8-T1 show-id renames — 96 Off-West End rows carry a -west-end- id suffix, 9 Broadway ids and 45 drifted ids need rename-show-id.js (blocked in cloud: classifier denies the tool)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6363/cron-stale-3-consecutive-days-gitlab-code-mirror"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4315/p1-s8-t1-show-id-renames-96-off-west-end-rows-carry-a-west-end-id"
     },
     {
-      "title": "STUCK BRO-6358 — Weekly traffic report: PostHog 91-day queries time out (504), email mislabels as unreachable",
+      "title": "STUCK BRO-4297 — Cousins of the 2026-09-29 guard fixes: blank env read as zero in bsc-runner disk floor; echo|grep -q under pipefail in gate scripts",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6358/weekly-traffic-report-posthog-91-day-queries-time-out-504-email"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4297/cousins-of-the-2026-09-29-guard-fixes-blank-env-read-as-zero-in-bsc"
+    },
+    {
+      "title": "STUCK BRO-4290 — P1: evidence-promoted OWE rows never reach review gathering — zero-review catch-up is open-only, 44/49 audit promotions are closed shows",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4290/p1-evidence-promoted-owe-rows-never-reach-review-gathering-zero-review"
+    },
+    {
+      "title": "STUCK BRO-4279 — Tour routing: catch The Guardian's UK stage reviews for tour targets",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4279/tour-routing-catch-the-guardians-uk-stage-reviews-for-tour-targets"
+    },
+    {
+      "title": "STUCK BRO-4269 — main Unit Tests permanently red: branch-protection live check runs in CI (gh auth now succeeds there) and fails by design",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4269/main-unit-tests-permanently-red-branch-protection-live-check-runs-in"
     }
   ],
-  "moreCount": 12
+  "moreCount": 22
 }
