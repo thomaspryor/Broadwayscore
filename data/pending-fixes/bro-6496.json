@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6496",
   "planId": "1fb02431-3912-492b-a2e5-ecf56140eb99",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T15:25:18.940Z",
   "submitter": {
     "name": null,
@@ -101,5 +101,24 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T17:22:12.813Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-bright-room-called-day-off-broadway-2019"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fefu-and-her-friends-off-broadway-2019"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rock-of-ages-off-broadway-2019"
+    }
+  ],
+  "executedIn": "ci"
 }
