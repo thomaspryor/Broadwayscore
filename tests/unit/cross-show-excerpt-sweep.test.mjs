@@ -21,6 +21,7 @@ const {
   buildExcerptIndex,
   findCrossShowMatches,
   shouldAutoFlag,
+  isQuarantinedTargetMatch,
   targetOwnsMatchedText,
   planName,
   PLAN_ID_RE,
@@ -119,6 +120,8 @@ describe('flag plans', () => {
 //  negative: no reason, but the text itself names the target's title -> skip.
 //  unscored targets and holding dirs are never queued.
 const SHADOWLANDS_TEXT = 'Crompton also finds that the script skates along the surface of multiple moral dilemmas: the production could do more to illuminate the internal struggle of the man who wrote a seven book Christian allegory.';
+// BRO-5622: parked-domain junk two records both quarantined in wrongFullText.
+const PARKED_TEXT = 'The domain name theaternewsonline.com is for sale! Premium verified domain, get a price in less than 24 hours. First name, last name, email, phone, country.';
 const NAMED_TEXT = 'Come From Away remains a big-hearted, foot-stomping account of the Gander airlift, staged with brisk economy and an ensemble that switches roles with real precision across the evening.';
 
 function fixtureCorpus() {
@@ -134,6 +137,10 @@ function fixtureCorpus() {
   write('shadowlands-west-end-2024/stage--a.json', { theStageExcerpt: SHADOWLANDS_TEXT, llmScore: { score: 70 } });
   write('hp-west-end-2021/stage--c.json', { wrongFullText: NAMED_TEXT, wrongShow: true });
   write('come-from-away-west-end-2019/x--y.json', { bwwExcerpt: NAMED_TEXT, llmScore: { score: 80 } });
+  // BRO-5622: a scored, unflagged excerpt review whose own quarantined
+  // wrongFullText is the same junk another (flagged) record quarantined.
+  write('torch-song-2018/tno--a.json', { bwwExcerpt: 'A tender, funny revival that earns every one of its tears, with a lead performance of real wit and warmth in a beautifully paced staging.', wrongFullText: PARKED_TEXT, llmScore: { score: 64 } });
+  write('all-my-sons-2008/tno--b.json', { wrongFullText: PARKED_TEXT, wrongProduction: true, wrongProductionReason: 'Production mismatch.' });
   write('other-show-2020/unscored.json', { bwwExcerpt: BRIGADOON_TEXT });
   write('_superseded-misattributed/old.json', { westEndTheatreExcerpt: BRIGADOON_TEXT, llmScore: { score: 40 } });
   return { tmp, rt };
@@ -147,12 +154,16 @@ test('script: corpus-wide default flags only true contamination of scored files'
   run([`--review-texts-dir=${rt}`, `--report-path=${report}`, `--plan-out=${plans}`, '--shows-path=/nonexistent']);
   const r = JSON.parse(fs.readFileSync(report, 'utf8'));
   assert.equal(r.config.target, 'corpus');
-  assert.equal(r.summary.backlogEntries, 7, 'underscore dir excluded');
+  assert.equal(r.summary.backlogEntries, 9, 'underscore dir excluded');
   const byRel = Object.fromEntries(r.files.map((f) => [f.rel, f.action]));
   assert.equal(byRel['book-of-mormon-west-end-2024/guardian--arifa-akbar.json'], 'auto-flag-eligible');
   assert.equal(byRel['shadowlands-west-end-2024/stage--a.json'], 'needs-manual-review-target-owns-text');
   assert.equal(byRel['come-from-away-west-end-2019/x--y.json'], 'needs-manual-review-target-owns-text');
   assert.equal(r.summary.targetOwnsTextSkipped, 2);
+  assert.equal(byRel['torch-song-2018/tno--a.json'], 'quarantined-target-text-only', 'junk-vs-junk wrongFullText leaves the manual queue');
+  // the three HP quarantine records and all-my-sons' match only through their own wrongFullText too
+  assert.equal(r.summary.quarantinedTargetTextOnly, 5);
+  assert.equal(byRel['hp-west-end-2021/stage--a.json'], 'quarantined-target-text-only');
   const plan = JSON.parse(fs.readFileSync(path.join(plans, 'bro-4159.json'), 'utf8'));
   assert.deepEqual(plan.plan.actions.map((a) => a.file), ['book-of-mormon-west-end-2024/guardian--arifa-akbar.json'], 'unscored other-show-2020 not queued');
   assert.equal(plan.plan.actions[0].oldValue, false, 'compare-and-set uses the stored false');
@@ -196,4 +207,15 @@ test('shouldAutoFlag: positive cross-show case passes, target-owned text does no
   const own = findCrossShowMatches('brigadoon-west-end-2024', 'g.json', { westEndTheatreExcerpt: BRIGADOON_TEXT }, idx);
   assert.equal(own[0].targetOwnsText, true);
   assert.equal(shouldAutoFlag(own[0]), false);
+});
+
+test('BRO-5622: a match through the target\'s own wrongFullText never auto-flags', () => {
+  const idx = buildExcerptIndex([{ showId: 'all-my-sons-2008', file: 'b.json', data: { wrongFullText: PARKED_TEXT, wrongProduction: true, wrongProductionReason: 'Production mismatch.' } }]);
+  const m = findCrossShowMatches('torch-song-2018', 'a.json', { wrongFullText: PARKED_TEXT }, idx);
+  assert.equal(m.length, 1);
+  assert.equal(m[0].targetField, 'wrongFullText');
+  assert.equal(isQuarantinedTargetMatch(m[0]), true);
+  assert.equal(shouldAutoFlag(m[0]), false, 'otherwise corroborated: only the quarantined target field blocks it');
+  assert.equal(shouldAutoFlag({ ...m[0], targetField: 'bwwExcerpt' }), true, 'same match through a scored excerpt still flags');
+  assert.equal(isQuarantinedTargetMatch(null), false);
 });
