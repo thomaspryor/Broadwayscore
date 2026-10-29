@@ -1543438,21 +1543438,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T04:10:28.787Z",
-    "completedAt": "2026-10-29T04:10:40.065Z",
-    "totalReviews": 46,
-    "processed": 2,
-    "skipped": 44,
+    "startedAt": "2026-10-29T04:13:32.957Z",
+    "completedAt": "2026-10-29T04:13:37.662Z",
+    "totalReviews": 18,
+    "processed": 1,
+    "skipped": 17,
     "errors": 0,
     "tokensUsed": {
-      "input": 11657,
-      "output": 687,
-      "cacheRead": 7569,
+      "input": 5899,
+      "output": 295,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 29604
+      "total": 14889
     },
-    "costUsd": 0.0453177,
-    "runId": "40813768447",
+    "costUsd": 0.0221919,
+    "runId": "40814090382",
     "errorDetails": [],
     "validation": [
       {
@@ -1549783,10 +1549783,10 @@
       {
         "showId": "caroline-off-broadway-2026",
         "ourDistribution": {
-          "up": 16,
+          "up": 15,
           "flat": 0,
           "down": 0,
-          "total": 16
+          "total": 15
         },
         "hasDisagreement": false
       },
@@ -1553296,9 +1553296,9 @@
         "showId": "eurydice-off-broadway-2026",
         "ourDistribution": {
           "up": 6,
-          "flat": 2,
+          "flat": 3,
           "down": 2,
-          "total": 10
+          "total": 11
         },
         "hasDisagreement": false
       },
@@ -1554437,29 +1554437,12 @@
         "hasDisagreement": false
       },
       {
-        "showId": "funny-girl-2022",
-        "ourDistribution": {
-          "up": 30,
-          "flat": 10,
-          "down": 18,
-          "total": 58
-        },
-        "dtliDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 6,
-          "total": 17
-        },
-        "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 28% (ours: 52%, theirs: 24%)"
-      },
-      {
         "showId": "funny-girl-2002",
         "ourDistribution": {
-          "up": 30,
-          "flat": 10,
+          "up": 27,
+          "flat": 9,
           "down": 18,
-          "total": 58
+          "total": 54
         },
         "dtliDistribution": {
           "up": 4,
@@ -1554468,7 +1554451,24 @@
           "total": 17
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 28% (ours: 52%, theirs: 24%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 26% (ours: 50%, theirs: 24%)"
+      },
+      {
+        "showId": "funny-girl-2022",
+        "ourDistribution": {
+          "up": 27,
+          "flat": 9,
+          "down": 18,
+          "total": 54
+        },
+        "dtliDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 6,
+          "total": 17
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "DTLI: Up thumbs differ by 26% (ours: 50%, theirs: 24%)"
       },
       {
         "showId": "funny-girl-west-end-2016",
@@ -1554707,8 +1554707,8 @@
         "ourDistribution": {
           "up": 4,
           "flat": 3,
-          "down": 3,
-          "total": 10
+          "down": 2,
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -1554924,10 +1554924,10 @@
       {
         "showId": "glengarry-glen-ross-2012",
         "ourDistribution": {
-          "up": 46,
-          "flat": 28,
+          "up": 45,
+          "flat": 27,
           "down": 29,
-          "total": 103
+          "total": 101
         },
         "dtliDistribution": {
           "up": 11,
@@ -1554947,10 +1554947,10 @@
       {
         "showId": "glengarry-glen-ross-1984",
         "ourDistribution": {
-          "up": 46,
-          "flat": 28,
+          "up": 45,
+          "flat": 27,
           "down": 29,
-          "total": 103
+          "total": 101
         },
         "dtliDistribution": {
           "up": 11,
@@ -1554970,10 +1554970,10 @@
       {
         "showId": "glengarry-glen-ross-2025",
         "ourDistribution": {
-          "up": 46,
-          "flat": 28,
+          "up": 45,
+          "flat": 27,
           "down": 29,
-          "total": 103
+          "total": 101
         },
         "dtliDistribution": {
           "up": 11,
@@ -1554993,10 +1554993,10 @@
       {
         "showId": "glengarry-glen-ross-2005",
         "ourDistribution": {
-          "up": 46,
-          "flat": 28,
+          "up": 45,
+          "flat": 27,
           "down": 29,
-          "total": 103
+          "total": 101
         },
         "dtliDistribution": {
           "up": 11,
@@ -1555923,9 +1555923,9 @@
         "showId": "hamlet-1975",
         "ourDistribution": {
           "up": 9,
-          "flat": 7,
+          "flat": 6,
           "down": 2,
-          "total": 18
+          "total": 17
         },
         "dtliDistribution": {
           "up": 0,
@@ -1555939,9 +1555939,9 @@
         "showId": "hamlet-1995",
         "ourDistribution": {
           "up": 9,
-          "flat": 7,
+          "flat": 6,
           "down": 2,
-          "total": 18
+          "total": 17
         },
         "dtliDistribution": {
           "up": 0,
@@ -1555955,9 +1555955,9 @@
         "showId": "hamlet-2009",
         "ourDistribution": {
           "up": 9,
-          "flat": 7,
+          "flat": 6,
           "down": 2,
-          "total": 18
+          "total": 17
         },
         "dtliDistribution": {
           "up": 0,
@@ -1555981,9 +1555981,9 @@
         "showId": "hamlet-off-broadway-2026",
         "ourDistribution": {
           "up": 13,
-          "flat": 10,
+          "flat": 9,
           "down": 6,
-          "total": 29
+          "total": 28
         },
         "hasDisagreement": false
       },
@@ -1559422,10 +1559422,10 @@
       {
         "showId": "kramerfauci-off-broadway-2026",
         "ourDistribution": {
-          "up": 3,
+          "up": 2,
           "flat": 2,
           "down": 0,
-          "total": 5
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1559462,10 +1559462,10 @@
       {
         "showId": "kyoto-off-broadway-2025",
         "ourDistribution": {
-          "up": 8,
-          "flat": 1,
+          "up": 9,
+          "flat": 2,
           "down": 3,
-          "total": 12
+          "total": 14
         },
         "hasDisagreement": false
       },
@@ -1560111,9 +1560111,9 @@
         "showId": "lets-love-off-broadway-2026",
         "ourDistribution": {
           "up": 3,
-          "flat": 5,
+          "flat": 6,
           "down": 4,
-          "total": 12
+          "total": 13
         },
         "hasDisagreement": false
       },
@@ -1560864,8 +1560864,8 @@
         "ourDistribution": {
           "up": 29,
           "flat": 34,
-          "down": 63,
-          "total": 126
+          "down": 61,
+          "total": 124
         },
         "dtliDistribution": {
           "up": 0,
@@ -1560881,8 +1560881,8 @@
         "ourDistribution": {
           "up": 29,
           "flat": 34,
-          "down": 63,
-          "total": 126
+          "down": 61,
+          "total": 124
         },
         "dtliDistribution": {
           "up": 0,
@@ -1560898,8 +1560898,8 @@
         "ourDistribution": {
           "up": 29,
           "flat": 34,
-          "down": 63,
-          "total": 126
+          "down": 61,
+          "total": 124
         },
         "dtliDistribution": {
           "up": 0,
@@ -1560915,8 +1560915,8 @@
         "ourDistribution": {
           "up": 29,
           "flat": 34,
-          "down": 63,
-          "total": 126
+          "down": 61,
+          "total": 124
         },
         "dtliDistribution": {
           "up": 0,
@@ -1560932,8 +1560932,8 @@
         "ourDistribution": {
           "up": 29,
           "flat": 34,
-          "down": 63,
-          "total": 126
+          "down": 61,
+          "total": 124
         },
         "dtliDistribution": {
           "up": 0,
@@ -1560949,8 +1560949,8 @@
         "ourDistribution": {
           "up": 29,
           "flat": 34,
-          "down": 63,
-          "total": 126
+          "down": 61,
+          "total": 124
         },
         "dtliDistribution": {
           "up": 0,
@@ -1560966,8 +1560966,8 @@
         "ourDistribution": {
           "up": 29,
           "flat": 34,
-          "down": 63,
-          "total": 126
+          "down": 61,
+          "total": 124
         },
         "dtliDistribution": {
           "up": 0,
@@ -1562023,10 +1562023,10 @@
       {
         "showId": "merrily-we-roll-along-1981",
         "ourDistribution": {
-          "up": 54,
+          "up": 52,
           "flat": 7,
           "down": 1,
-          "total": 62
+          "total": 60
         },
         "dtliDistribution": {
           "up": 11,
@@ -1562045,10 +1562045,10 @@
       {
         "showId": "merrily-we-roll-along-2023",
         "ourDistribution": {
-          "up": 54,
+          "up": 52,
           "flat": 7,
           "down": 1,
-          "total": 62
+          "total": 60
         },
         "dtliDistribution": {
           "up": 11,
@@ -1564501,8 +1564501,8 @@
         "ourDistribution": {
           "up": 1,
           "flat": 0,
-          "down": 1,
-          "total": 2
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -1569089,9 +1569089,9 @@
         "showId": "sunset-boulevard-1994",
         "ourDistribution": {
           "up": 94,
-          "flat": 21,
+          "flat": 20,
           "down": 19,
-          "total": 134
+          "total": 133
         },
         "dtliDistribution": {
           "up": 6,
@@ -1569106,15 +1569106,15 @@
           "total": 16
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 70%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 31% (ours: 71%, theirs: 40%)"
       },
       {
         "showId": "sunset-boulevard-2024",
         "ourDistribution": {
           "up": 94,
-          "flat": 21,
+          "flat": 20,
           "down": 19,
-          "total": 134
+          "total": 133
         },
         "dtliDistribution": {
           "up": 6,
@@ -1569129,15 +1569129,15 @@
           "total": 16
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 70%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 31% (ours: 71%, theirs: 40%)"
       },
       {
         "showId": "sunset-boulevard-2017",
         "ourDistribution": {
           "up": 94,
-          "flat": 21,
+          "flat": 20,
           "down": 19,
-          "total": 134
+          "total": 133
         },
         "dtliDistribution": {
           "up": 6,
@@ -1569152,7 +1569152,7 @@
           "total": 16
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 70%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 31% (ours: 71%, theirs: 40%)"
       },
       {
         "showId": "sunset-boulevard-west-end-2023",
@@ -1576658,9 +1576658,9 @@
         "showId": "three-houses-off-broadway-2026",
         "ourDistribution": {
           "up": 7,
-          "flat": 6,
+          "flat": 7,
           "down": 1,
-          "total": 14
+          "total": 15
         },
         "hasDisagreement": false
       },
@@ -1577113,10 +1577113,10 @@
       {
         "showId": "translations-2007",
         "ourDistribution": {
-          "up": 3,
+          "up": 2,
           "flat": 3,
           "down": 0,
-          "total": 6
+          "total": 5
         },
         "dtliDistribution": {
           "up": 1,
@@ -1579154,21 +1579154,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T04:13:05.532Z",
-    "completedAt": "2026-10-29T04:13:22.478Z",
-    "totalReviews": 8,
-    "processed": 8,
+    "startedAt": "2026-10-29T04:15:52.156Z",
+    "completedAt": "2026-10-29T04:15:52.165Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 24243,
-      "output": 1765,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 26008
+      "total": 0
     },
-    "costUsd": 0.0640893,
-    "runId": "40813768447",
+    "costUsd": 0,
+    "runId": "40814090382",
     "errorDetails": []
   }
 ]
