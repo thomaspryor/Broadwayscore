@@ -13,6 +13,9 @@
 const { execFileSync } = require('child_process');
 const { decideRemoteBranchPrune, MAX_DELETES_PER_RUN } = require('./lib/remote-branch-prune');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const USAGE = 'usage: node scripts/prune-merged-remote-branches.js [--apply]';
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const apply = process.argv.includes('--apply');
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).trim();
 
