@@ -51,6 +51,7 @@ jobs:
       - name: Write new-show-types snapshot
         if: steps.core-data.outcome == 'success'
         id: new-show-types
+        # lint-allow-swallow: a failure here must not block the score-drift commit; the outcome is checked by the warn and notify steps below
         continue-on-error: true
         run: node scripts/produce-new-show-types-snapshot.js
 

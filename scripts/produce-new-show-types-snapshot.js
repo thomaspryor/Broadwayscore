@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const lib = require('./lib/new-show-types');
+require('./lib/cli-help').exitOnHelp(module);
 
 const REPO = path.join(__dirname, '..');
 const SHOWS_FILE = path.join(REPO, 'data', 'shows.json');
