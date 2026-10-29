@@ -114,3 +114,17 @@ test('a clean excerpt on a file the rebuild excludes is not recoverable', () => 
   assert.ok(recoverableQuote({ ...data, wrongProduction: false }, 'Some Show', 'closed'), 'control: same file without the flag is recoverable');
   assert.equal(recoverableQuote({ ...data }, 'Some Show', 'closed', { show, filePath: 'x/timeout-london--a.json' }), null);
 });
+
+test('BRO-6201: changedSinceRebuildScan separates rebuild lag from a wiring gap', () => {
+  const { changedSinceRebuildScan } = require('../../scripts/backfill-missing-pullquotes.js');
+  const scan = '2026-10-29T00:29:43.534Z';
+  // The 2026-10-29 Time Out file: text fetched before the scan, LLM-scored after it.
+  assert.equal(changedSinceRebuildScan({ textFetchedAt: '2026-10-29T00:16:21.558Z', llmMetadata: { scoredAt: '2026-10-29T00:39:30.310Z' } }, scan), true);
+  assert.equal(changedSinceRebuildScan({ firstSeenAt: '2026-10-29T01:00:00Z' }, scan), true);
+  // Every stamp before the scan: the rebuild saw this file, so a missing quote is a real gap.
+  assert.equal(changedSinceRebuildScan({ textFetchedAt: '2026-10-01T00:00:00Z', llmMetadata: { scoredAt: '2026-10-02T00:00:00Z' } }, scan), false);
+  assert.equal(changedSinceRebuildScan({}, scan), false);
+  // No scan stamp on reviews.json: never skip, so the check cannot go quiet.
+  assert.equal(changedSinceRebuildScan({ firstSeenAt: '2099-01-01T00:00:00Z' }, undefined), false);
+  assert.equal(changedSinceRebuildScan({ firstSeenAt: '2099-01-01T00:00:00Z' }, 'not a date'), false);
+});

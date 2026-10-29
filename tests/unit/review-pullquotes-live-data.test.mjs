@@ -14,7 +14,7 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const { fileForReview, loadShowTexts } = require('../../scripts/audit-pull-quotes.js');
-const { findTargetReviews, recoverableQuote } = require('../../scripts/backfill-missing-pullquotes.js');
+const { findTargetReviews, recoverableQuote, changedSinceRebuildScan } = require('../../scripts/backfill-missing-pullquotes.js');
 const REQUIRE_CORPUS = process.env.REQUIRE_REVIEW_CORPUS === '1';
 
 // Integration check against the live corpus: the BRO-767 audit query
@@ -39,7 +39,10 @@ test('no review missing a pullQuote has a recoverable excerpt sitting unused in 
     return t.skip('reviews.json / outlet-registry.json / review-texts not present in this checkout');
   }
 
-  const reviews = JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews;
+  const reviewsData = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
+  const reviews = reviewsData.reviews;
+  // BRO-6201: review-texts can be checked out ahead of reviews.json (a file scored after the last rebuild's scan).
+  const scannedAt = reviewsData._meta && reviewsData._meta.reviewTextsScannedAt;
   const shows = JSON.parse(fs.readFileSync(showsFile, 'utf8')).shows || [];
   const outlets = JSON.parse(fs.readFileSync(outletRegistryFile, 'utf8')).outlets || {};
   const titleById = new Map(shows.map(s => [s.id, s.title]));
@@ -55,9 +58,14 @@ test('no review missing a pullQuote has a recoverable excerpt sitting unused in 
   }
 
   const stillRecoverable = [];
+  const awaitingRebuild = [];
   for (const target of targets) {
     const entry = fileForReview(textsFor(target.showId), target);
     if (!entry) continue; // no source file at all — not a wiring gap
+    if (changedSinceRebuildScan(entry.data, scannedAt)) { // the next rebuild fills it: lag, not a wiring gap
+      awaitingRebuild.push(`${target.showId}/${entry.file}`);
+      continue;
+    }
     let excerpt;
     try {
       excerpt = recoverableQuote(entry.data, titleById.get(target.showId), statusById.get(target.showId), { show: showById.get(target.showId), filePath: path.join(reviewTextsDir, target.showId, entry.file) });
@@ -69,6 +77,7 @@ test('no review missing a pullQuote has a recoverable excerpt sitting unused in 
     }
   }
 
+  if (awaitingRebuild.length) t.diagnostic(`${awaitingRebuild.length} file(s) changed after reviews.json's review-texts scan (${scannedAt}), left to the next rebuild: ${awaitingRebuild.join(', ')}`);
   assert.deepEqual(
     stillRecoverable, [],
     `${stillRecoverable.length} review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js`

@@ -80,6 +80,34 @@ function recoverableQuote(data, showTitle, showStatus, exclusion) {
   return q ? decodeHtmlEntities(q) : null;
 }
 
+// Per-file timestamps a writer stamps when it adds what selectBestExcerpt reads
+// (fullText, llmScore, aggregator excerpts). BRO-6201: a file ingested or scored
+// after the rebuild's review-texts scan is lag the next rebuild fills, not the
+// BRO-5798 wiring gap the live-data test exists to catch (every 2026-10-28/29
+// red was this: WOS posts and a Time Out file scored minutes after the scan).
+const FILE_CHANGE_STAMPS = [
+  (d) => d.llmMetadata && d.llmMetadata.scoredAt,
+  (d) => d.textFetchedAt,
+  (d) => d.firstSeenAt,
+  (d) => d.addedAt,
+  (d) => d.scoreRecoveredAt,
+];
+
+/**
+ * True when this review-texts file changed after the rebuild that produced
+ * reviews.json scanned review-texts (`_meta.reviewTextsScannedAt`). A missing
+ * or unparseable scan time returns false, so the check never goes quiet on a
+ * reviews.json that lacks the stamp.
+ */
+function changedSinceRebuildScan(data, reviewTextsScannedAt) {
+  const scanned = Date.parse(reviewTextsScannedAt || '');
+  if (!data || !Number.isFinite(scanned)) return false;
+  return FILE_CHANGE_STAMPS.some((get) => {
+    const t = Date.parse(get(data) || '');
+    return Number.isFinite(t) && t > scanned;
+  });
+}
+
 function main() {
   const dryRun = process.argv.includes('--dry-run');
   const allScope = process.argv.includes('--all');
@@ -169,4 +197,4 @@ if (require.main === module) {
   process.exit(main());
 }
 
-module.exports = { findTargetReviews, findAllMissingPullQuoteReviews, recoverableQuote };
+module.exports = { findTargetReviews, findAllMissingPullQuoteReviews, recoverableQuote, changedSinceRebuildScan };
