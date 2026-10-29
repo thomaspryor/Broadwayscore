@@ -53,6 +53,8 @@ const EXEMPT = {
     "staged: audit-aggregator-gap.yml lists this file in its audit-state for-f loop and git adds \"$f\"",
   "scripts/codex-trust-ladder.js|data/audit/codex-trust-ladder-owner.json":
     "human-only file: the ladder script only reads it (BRO-6263); the bot never writes or stages it, so a bot commit cannot erase an owner edit",
+  "scripts/audit-stale-announced-shows.js|data/audit/stale-announced-shows-ack.json":
+    "manual mode only: the ack file is rewritten only by --prune-orphan-acks (BRO-5263); data-health-check.yml runs the audit without that flag, and a human commits the pruned file",
   "scripts/audit-score-vs-models.js|data/audit/score-vs-models-baseline.json":
     "manual mode only: baseline writes require --write-baseline or --renew-baseline; weekly-integrity.yml invokes neither",
   "scripts/audit-show-review-gap.js|data/audit/gap-audit-checkpoint.json":

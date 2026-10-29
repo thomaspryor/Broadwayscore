@@ -589,3 +589,19 @@ test('BRO-6302 a one-word caption that opens our title stays ours', () => {
   assert.equal(sharesTitleWord('KING', 'King Lear'), true);
   assert.equal(sharesTitleWord('KING', 'The Lion King'), false);
 });
+
+// BRO-6507: skeleton windows must reach the review page, not stop at index hits.
+import { createRequire as __cr6507 } from 'node:module';
+import { test as __t6507 } from 'node:test';
+import __a6507 from 'node:assert/strict';
+__t6507('skeletonKeepLines prefers the bare title line over contents/index hits', () => {
+  const { skeletonKeepLines } = __cr6507(import.meta.url)('./tr-pdf-parse.js');
+  const lines = [];
+  for (let i = 0; i < 12; i++) lines.push(`NO MAN'S LAND - Review of the play ${i}`);
+  for (let i = 0; i < 400; i++) lines.push(`filler ${i}`);
+  lines.push('NO MAN\u2019S LAND   Index');
+  const keep = skeletonKeepLines(lines, "No Man's Land");
+  __a6507.ok(keep.has(lines.length - 1), 'reaches the bare title line');
+  __a6507.ok(keep.has(lines.length - 100));
+  __a6507.ok(!keep.has(250), 'does not spend the window on contents hits');
+});

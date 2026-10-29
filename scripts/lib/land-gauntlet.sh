@@ -457,6 +457,7 @@ lint_workflows() {
   local s
   for s in \
     audit-workflow-concurrency \
+    audit-aggregator-url-duplicates \
     audit-data-gate-heal-paths \
     audit-get-route-dispatch \
     audit-raw-mean-scores \

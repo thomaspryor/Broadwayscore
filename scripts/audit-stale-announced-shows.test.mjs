@@ -7,6 +7,7 @@ const {
   evaluateAnnouncedShow,
   isAcked,
   addAck,
+  findOrphanAcks,
 } = require('./lib/stale-announced-audit.js');
 
 // Fixed clock so results don't drift: "today" is 2026-08-20.
@@ -137,4 +138,18 @@ test('BRO-93 acceptance: current shows.json produces zero stale announced flags'
   }
 
   assert.deepEqual(flagged, [], `expected zero stale announced shows, got: ${JSON.stringify(flagged, null, 2)}`);
+});
+
+// BRO-5263: a stale ack (retired/closed/missing show) hid a 2-year-old announced
+// row behind an inaccurate note. Orphan acks must be detectable.
+test('findOrphanAcks: flags acks whose show is missing or no longer announced', () => {
+  const shows = [
+    { id: 'live', status: 'announced' },
+    { id: 'opened', status: 'open' },
+    { id: 'shut', status: 'closed' },
+  ];
+  const acks = [{ id: 'live' }, { id: 'opened' }, { id: 'shut' }, { id: 'retired-gone' }];
+  assert.deepEqual(findOrphanAcks(shows, acks).map(a => a.id), ['opened', 'shut', 'retired-gone']);
+  assert.deepEqual(findOrphanAcks(shows, []), []);
+  assert.deepEqual(findOrphanAcks(shows, null), []);
 });

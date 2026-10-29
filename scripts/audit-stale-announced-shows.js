@@ -43,6 +43,7 @@
  *   node scripts/audit-stale-announced-shows.js --fail-on-gap
  *   node scripts/audit-stale-announced-shows.js --ack=<show-id> --ack-note="..."
  *   node scripts/audit-stale-announced-shows.js --unack=<show-id>
+ *   node scripts/audit-stale-announced-shows.js --prune-orphan-acks   # drop acks whose show is retired/no longer announced
  *
  * Output: data/audit/stale-announced-shows.json
  */
@@ -56,6 +57,7 @@ const {
   loadAcks,
   addAck,
   saveAcks,
+  findOrphanAcks,
   evaluateAnnouncedShow,
   hasEvidenceOfOpening,
   describeOpeningEvidence,
@@ -80,6 +82,7 @@ const argv = process.argv.slice(2);
 const STALE_DAYS = parseInt((argv.find(a => a.startsWith('--stale-days=')) || '').replace('--stale-days=', ''), 10) || 30;
 const FAIL_ON_GAP = argv.includes('--fail-on-gap');
 const DRY_RUN = argv.includes('--dry-run');
+const PRUNE_ORPHAN_ACKS = argv.includes('--prune-orphan-acks');
 const ACK_ID = (argv.find(a => a.startsWith('--ack=')) || '').replace('--ack=', '') || null;
 const ACK_NOTE = (argv.find(a => a.startsWith('--ack-note=')) || '').replace('--ack-note=', '') || '';
 const UNACK_ID = (argv.find(a => a.startsWith('--unack=')) || '').replace('--unack=', '') || null;
@@ -231,6 +234,18 @@ async function main() {
     }
   }
 
+  // BRO-5263: acks for rows that are no longer 'announced' (retired, closed,
+  // promoted) are dead; pruning keeps a stale ack from hiding a row later.
+  const orphanAcks = findOrphanAcks(showsData.shows, acks);
+  if (orphanAcks.length > 0) {
+    console.log(`audit-stale-announced-shows: ${orphanAcks.length} orphan ack(s) (show retired or no longer 'announced'): ${orphanAcks.map(a => a.id).join(', ')}`);
+    if (PRUNE_ORPHAN_ACKS && !DRY_RUN && showsData.shows.length >= 100) {
+      const dead = new Set(orphanAcks.map(a => a.id));
+      saveAcks(acks.filter(a => !(a && dead.has(a.id))));
+      console.log('  pruned from data/audit/stale-announced-shows-ack.json');
+    }
+  }
+
   const silencedByContamination = findSilencedByContamination(showsData.shows);
   const postponed = await findPostponed(showsData, now);
 
@@ -242,6 +257,8 @@ async function main() {
     flagged,
     postponedCount: postponed.length,
     postponed,
+    orphanAckCount: orphanAcks.length,
+    orphanAcks: orphanAcks.map(a => a.id),
     silencedByContaminationCount: silencedByContamination.length,
     silencedByContamination,
   };

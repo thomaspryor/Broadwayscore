@@ -792,7 +792,30 @@ function locateReviews(text, reviews, showTitle) {
   });
 }
 
+// BRO-6507: which lines of a volume PDF the committed skeleton keeps. A
+// title also appears in the issue's contents and index (and in other
+// productions' prose), so the first 8 hits alone never reached the review page
+// for No Man's Land. Lines that are the bare production title come first.
+const titleKey = (t) => foldDiacritics(String(t || '')).toUpperCase().replace(/[\u2018\u2019']/g, '').replace(/[^A-Z0-9]+/g, ' ').trim();
+function skeletonKeepLines(lines, title, { maxHits = 8, radius = 110 } = {}) {
+  const key = titleKey(title);
+  if (!key) return new Set();
+  const loose = new RegExp(String(title).replace(/[^A-Za-z0-9]+/g, '.{0,3}').replace(/^\.\{0,3\}|\.\{0,3\}$/g, ''), 'i');
+  const exact = [];
+  const other = [];
+  lines.forEach((l, i) => {
+    const t = stripIndexSuffix(l.trim());
+    if (titleKey(t) === key) exact.push(i);
+    else if (loose.test(l)) other.push(i);
+  });
+  const picked = [...exact.slice(0, maxHits), ...other.slice(0, Math.max(0, maxHits - exact.length))];
+  const keep = new Set();
+  for (const i of picked) for (let j = Math.max(0, i - radius); j <= Math.min(lines.length - 1, i + radius); j++) keep.add(j);
+  return keep;
+}
+
 module.exports = {
+  skeletonKeepLines,
   productionRuns,
   sharesTitleWord,
   captionOwnedBy,

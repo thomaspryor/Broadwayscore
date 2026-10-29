@@ -43,7 +43,7 @@ concurrency:
 jobs:
   enrich-dates:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -106,6 +106,21 @@ jobs:
 
           echo "Running: node scripts/enrich-west-end-dates.js $FLAGS"
           node scripts/enrich-west-end-dates.js $FLAGS
+
+      # Audit trail (BRO-3651): same file and schema as enrich-off-broadway-dates.yml.
+      # push-core-data does not carry it, so it is staged and committed explicitly.
+      - name: Commit audit trail
+        if: always()
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add data/audit/date-enrichment-corrections.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No audit changes to commit"
+            exit 0
+          fi
+          git commit -m "data: enrich-west-end-dates audit trail"
+          bash scripts/lib/push-with-retry.sh
 
       # shows.json is gitignored in the public repo — see note in
       # enrich-ibdb-dates.yml. push-core-data below handles the sync.

@@ -1807,6 +1807,7 @@ on:
       # ack mechanism) is intentionally NOT listed here — already covered by
       # the scripts/lib/** glob above.
       - 'scripts/audit-stale-announced-shows.js'
+      - 'scripts/audit-aggregator-url-duplicates.js'
       - 'scripts/fixtures/postponed/**'
       - 'scripts/audit-stale-review-texts.js'
       # Open-card premise re-check — the mirror of autonomous-acceptance-recheck.js
@@ -3618,6 +3619,15 @@ jobs:
         # annotations and exits 0; only a crash fails. Promote to --strict after
         # green main runs. Logic + fixtures: scripts/lib/raw-mean-scores.js(.test.mjs).
         run: node scripts/audit-raw-mean-scores.js
+
+      - name: Audit — duplicate aggregator URLs across shows (BRO-3517)
+        if: always() && steps.deps.outcome == 'success'
+        # Two shows mapped to one BWW/DTLI/LBO/Playbill slug or URL ingest one
+        # show's reviews under the other. Advisory (CLAUDE.md §19) by
+        # omitting --strict: it prints ::warning:: and exits 0. This job bans
+        # continue-on-error (workflow-audit-steps-always.test.mjs).
+        # Tests: tests/unit/aggregator-url-duplicates.test.mjs.
+        run: node scripts/audit-aggregator-url-duplicates.js
 
       - name: Audit — new blocking gates land advisory or baselined (BRO-2123)
         if: always() && steps.deps.outcome == 'success'

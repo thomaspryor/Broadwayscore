@@ -797,6 +797,18 @@ function extractReviewsHubScore(html, text) {
   return null;
 }
 
+// BRO-3593: the slice of a WhatsOnStage page that holds the article's own
+// rating widget: from #article-star-rating-container to the start of the
+// review body (div.news-content), capped so a missing body marker cannot pull
+// in the rest of the page. Returns '' when the container is absent.
+function wosStarScope(html) {
+  const start = html.search(/id=["']article-star-rating-container["']/);
+  if (start < 0) return '';
+  const rest = html.slice(start, start + 3000);
+  const body = rest.search(/class=["'][^"']*news-content/);
+  return body > 0 ? rest.slice(0, body) : rest;
+}
+
 /**
  * Extract star rating from UK outlets that use /5 star systems.
  * Checks JSON-LD ratingValue, CSS star classes, and text patterns.
@@ -822,8 +834,17 @@ function extractUKStarRating(html, text) {
 
   // 2a. WhatsOnStage: yellow.png (filled) vs star-grey.png (empty) images
   if (html.includes('article-star-rating-container') || html.includes('whatsonstage.com')) {
-    const yellow = (html.match(/yellow\.png/g) || []).length;
-    const grey = (html.match(/star-grey\.png/g) || []).length;
+    // BRO-3593: when the article's own rating container is present, count only
+    // the star images inside it (a "related reviews" sidebar carries its own
+    // yellow.png/star-grey.png). No container, or no complete 5-star set in it:
+    // fall back to the whole page, whose count must still be exactly five.
+    const wosScope = wosStarScope(html);
+    let yellow = (wosScope.match(/yellow\.png/g) || []).length;
+    let grey = (wosScope.match(/star-grey\.png/g) || []).length;
+    if (yellow + grey !== 5) {
+      yellow = (html.match(/yellow\.png/g) || []).length;
+      grey = (html.match(/star-grey\.png/g) || []).length;
+    }
     if (yellow > 0 && yellow + grey === 5) {
       return {
         originalScore: `${yellow}/5 stars`,
@@ -892,7 +913,10 @@ function extractUKStarRating(html, text) {
   }
 
   // 2d. Daily Mail: star rating in image filename (rating_showbiz_N.gif) — old format
-  const dailyMailMatch = html.match(/rating_showbiz_(\d)\.gif/);
+  // BRO-3593: distinct values on one page (sidebar / roundup) are ambiguous,
+  // so abstain instead of taking the first, as the CSS branch below does.
+  const dailyMailAll = [...html.matchAll(/rating_showbiz_(\d)\.gif/g)].map(m => m[1]);
+  const dailyMailMatch = new Set(dailyMailAll).size === 1 ? [null, dailyMailAll[0]] : null;
   if (dailyMailMatch) {
     const rating = parseInt(dailyMailMatch[1]);
     if (rating >= 1 && rating <= 5) {

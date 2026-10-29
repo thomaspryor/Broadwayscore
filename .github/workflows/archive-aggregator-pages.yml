@@ -43,8 +43,8 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install axios
-        run: npm install axios
+      - name: Install dependencies
+        run: npm ci || npm install
 
       - name: Archive aggregator pages
         env:
@@ -57,68 +57,21 @@ jobs:
         run: |
           node << 'EOF'
           const fs = require('fs');
-          const axios = require('axios');
 
           const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-          // TIER 1: ScrapingBee (primary)
-          async function fetchWithScrapingBee(url, apiKey) {
-            const response = await axios.get('https://app.scrapingbee.com/api/v1/', {
-              params: {
-                api_key: apiKey.trim(),
-                url: url,
-                render_js: true,
-                premium_proxy: true,
-                wait: 5000,
-                block_ads: true,
-                block_resources: false,
-              },
-              timeout: 30000,
-            });
-
-            return response.data;
-          }
-
-          // TIER 2: Bright Data via scraper.js (REST /request + Bearer, capped) (BRO-3486: the old
-          // raw-proxy tier sent the API token as a proxy password -> 407)
-          const { fetchWithBrightData: bdFetch } = require('./scripts/lib/archive-aggregator.js');
-          const fetchWithBrightData = (url) => bdFetch(url);
+          // BRO-3606: one fetchPage() call replaces the inline axios ScrapingBee tier
+          // and the Bright Data tier; scraper.js owns the fallback chain, caps and
+          // spend telemetry.
+          const { fetchArchivePage } = require('./scripts/lib/archive-aggregator.js');
 
           async function archivePage(showId, aggregator, url, config) {
             try {
               console.log(`Fetching ${aggregator} for ${showId}...`);
               console.log(`  URL: ${url}`);
 
-              let html;
-              let method;
-
-              // Try ScrapingBee first
-              if (config.scrapingBeeKey) {
-                try {
-                  console.log(`  Trying ScrapingBee...`);
-                  html = await fetchWithScrapingBee(url, config.scrapingBeeKey);
-                  method = 'scrapingbee';
-                  console.log(`  ✓ ScrapingBee succeeded`);
-                } catch (sbError) {
-                  console.log(`  ✗ ScrapingBee failed: ${sbError.message}`);
-
-                  // Fall back to Bright Data
-                  if (config.brightDataKey) {
-                    console.log(`  Trying Bright Data...`);
-                    html = await fetchWithBrightData(url, config.brightDataKey, null, config.brightDataZone);
-                    method = 'brightdata';
-                    console.log(`  ✓ Bright Data succeeded`);
-                  } else {
-                    throw sbError;
-                  }
-                }
-              } else if (config.brightDataKey) {
-                // No ScrapingBee, use Bright Data directly
-                html = await fetchWithBrightData(url, config.brightDataKey, null, config.brightDataZone);
-                method = 'brightdata';
-              } else {
-                throw new Error('No scraping service configured');
-              }
+              const { html, method } = await fetchArchivePage(url);
+              console.log(`  ✓ fetched via ${method}`);
 
               const dir = `data/aggregator-archive/${aggregator}`;
               if (!fs.existsSync(dir)) {

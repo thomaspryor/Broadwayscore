@@ -45,6 +45,17 @@ function saveAcks(acks) {
   fs.writeFileSync(ACK_PATH, JSON.stringify(acks, null, 2) + '\n');
 }
 
+/**
+ * BRO-5263: an ack is only meaningful while its show is still 'announced'. Once
+ * the row is retired, closed or promoted the ack is dead weight, and a stale ack
+ * with a wrong note is how a 2-year-old announced row stayed out of the report.
+ * Pure: returns the acks whose show is missing or no longer 'announced'.
+ */
+function findOrphanAcks(shows, acks) {
+  const status = new Map((shows || []).map((s) => [s.id, s.status]));
+  return (acks || []).filter((a) => a && status.get(a.id) !== 'announced');
+}
+
 function daysSince(dateStr, now) {
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return null;
@@ -186,6 +197,7 @@ module.exports = {
   loadAcks,
   isAcked,
   addAck,
+  findOrphanAcks,
   saveAcks,
   daysSince,
   evaluateAnnouncedShow,

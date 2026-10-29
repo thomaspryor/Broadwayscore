@@ -22,4 +22,23 @@ async function fetchWithBrightData(url, fetchBd) {
   return res.content;
 }
 
-module.exports = { fetchWithBrightData };
+/**
+ * Fetch one aggregator page as HTML through the shared fallback chain
+ * (BRO-3606 item 1: replaces the workflow's inline axios ScrapingBee call).
+ * Archived pages are parsed as markup later, so a markdown result is refused.
+ * fetchPageFn defaults to scraper.js fetchPage; injectable for tests.
+ * @returns {Promise<{html: string, method: string}>}
+ */
+async function fetchArchivePage(url, fetchPageFn) {
+  const doFetch = fetchPageFn || require('./scraper').fetchPage;
+  const res = await doFetch(url, { wait: 5000, skipVerify: true });
+  if (!res || typeof res.content !== 'string' || res.content.trim() === '') {
+    throw new Error('fetchPage returned no content');
+  }
+  if (res.format !== 'html') {
+    throw new Error(`fetchPage returned '${res.format}', archive needs html`);
+  }
+  return { html: res.content, method: res.source || 'fetchpage' };
+}
+
+module.exports = { fetchWithBrightData, fetchArchivePage };

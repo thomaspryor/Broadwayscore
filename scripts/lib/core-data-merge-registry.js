@@ -1110,7 +1110,7 @@ const CORE_DATA_MERGE_REGISTRY = [
   {
     file: 'audit/date-enrichment-corrections.json',
     surface: 'public-repo',
-    status: 'single-writer',
+    status: 'single-writer', // writers: enrich-off-broadway-dates.yml + enrich-west-end-dates.yml (BRO-3651), both in shows-json-writer
     apiFallbackSafe: true,
     concurrencyGroup: 'shows-json-writer',
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (enrich-off-broadway-dates.yml), group shows-json-writer (cancel-in-progress: false).',

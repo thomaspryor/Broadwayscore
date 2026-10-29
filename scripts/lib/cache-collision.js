@@ -126,8 +126,27 @@ function applyAssignmentsWithoutCollisions(map, assignments) {
   return { map: next, refused };
 }
 
+/**
+ * Every normalized value claimed by 2+ keys: [{ value, keys }]. `value` is the
+ * raw value of the first claimant. Entries that claim nothing are skipped.
+ * The audit-side twin of findConflictingKey (BRO-3517).
+ */
+function findDuplicateValues(map) {
+  const byNormalized = new Map();
+  for (const [key, entry] of Object.entries(map || {})) {
+    const raw = cacheEntryValue(entry);
+    if (!raw) continue;
+    const norm = normalizeCacheValue(raw);
+    if (!norm) continue;
+    if (!byNormalized.has(norm)) byNormalized.set(norm, { value: raw, keys: [] });
+    byNormalized.get(norm).keys.push(key);
+  }
+  return [...byNormalized.values()].filter((e) => e.keys.length > 1);
+}
+
 module.exports = {
   normalizeCacheValue,
+  findDuplicateValues,
   cacheEntryValue,
   findConflictingKey,
   applyAssignmentsWithoutCollisions,

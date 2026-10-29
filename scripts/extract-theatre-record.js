@@ -31,7 +31,7 @@ const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isTrNoRecordCandidate, shouldSweepNoRecord } = require('./lib/review-text-identity');
 
-const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
+const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, skeletonKeepLines, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
 
 // BRO-6097 coverage probe: per-show outcome (counts and reasons only, never
@@ -205,16 +205,9 @@ function dumpPdfText(showId, mode, text, title) {
   if (!skeletonDone.has(showId)) { if (skeletonDone.size >= skeletonMax) return; skeletonDone.add(showId); }
   fs.mkdirSync(dumpDir, { recursive: true });
   const keepWords = String(title || '').split(/\W+/).filter(w => w.length >= 3);
-  // A volume PDF is ~10k lines: keep +-110 lines around the first title hits only.
+  // A volume PDF is ~10k lines: keep +-110 lines around the bare-title hits (then loose hits).
   const lines = text.split('\n');
-  const re = new RegExp(String(title || '').replace(/[^A-Za-z0-9]+/g, '.{0,3}').replace(/^\.\{0,3\}|\.\{0,3\}$/g, ''), 'i');
-  const keep = new Set();
-  let hits = 0;
-  for (let i = 0; i < lines.length && hits < 8; i++) {
-    if (!re.test(lines[i])) continue;
-    hits++;
-    for (let j = Math.max(0, i - 110); j <= Math.min(lines.length - 1, i + 110); j++) keep.add(j);
-  }
+  const keep = skeletonKeepLines(lines, title);
   const out = lines.filter((_, i) => keep.has(i)).join('\n');
   fs.writeFileSync(path.join(dumpDir, `${showId}.${mode}.txt`), maskPdfText(out, keepWords));
 }

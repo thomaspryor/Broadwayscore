@@ -60,6 +60,9 @@ Usage:
 `;
 // hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+// Uniform audit trail shared with enrich-off-broadway-dates.js (BRO-3651).
+const { appendAuditRun } = require('./lib/date-enrichment-audit');
+const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'date-enrichment-corrections.json');
 const PLAYBILL_URL = 'https://playbill.com/article/schedule-of-upcoming-london-shows';
 const TM_INDEX_URL = 'https://www.theatremonkey.com/shows/';
 const TM_SHOW_URL = 'https://www.theatremonkey.com/show/';
@@ -581,6 +584,11 @@ async function scrapeOfficialLondonTheatre(weShows) {
 // MAIN
 // ============================================================
 
+function appendAudit(entries) {
+  appendAuditRun(AUDIT_PATH, 'enrich-west-end-dates',
+    { dryRun, verify, force, fixUnconfirmed, showFilter: showSlug }, entries);
+}
+
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
@@ -672,6 +680,15 @@ async function main() {
   // Phase 4: Match to shows.json and compute changes
   const changes = [];
   const discrepancies = [];
+  let auditWritten = false;
+  const writeAudit = () => {
+    if (auditWritten) return;
+    auditWritten = true;
+    appendAudit([
+      ...changes.map(c => ({ kind: 'applied', ...c })),
+      ...discrepancies.map(d => ({ kind: 'discrepancy', ...d })),
+    ]);
+  };
   const unmatched = [];
   let matchCount = 0;
 
@@ -771,7 +788,7 @@ async function main() {
       changes.push({ show: show.title, slug: show.slug, id: show.id, changes: showChanges });
     }
     if (showDiscrepancies.length > 0) {
-      discrepancies.push({ show: show.title, slug: show.slug, discrepancies: showDiscrepancies });
+      discrepancies.push({ show: show.title, slug: show.slug, id: show.id, discrepancies: showDiscrepancies });
     }
   }
 
@@ -872,6 +889,9 @@ async function main() {
 
     saveShows(data);
     console.log(`Updated ${updated} show(s) in shows.json`);
+    // Audit before validation: a validate-data failure exits 1, and applied
+    // writes must still leave an audit row.
+    writeAudit();
 
     // Run validation
     console.log('');
@@ -899,6 +919,9 @@ async function main() {
     fs.appendFileSync(process.env.GITHUB_OUTPUT, `olt_changes_count=${oltResult.changes.length}\n`);
     fs.appendFileSync(process.env.GITHUB_OUTPUT, `olt_matched_count=${oltResult.matched}\n`);
   }
+
+  // Always append audit (even on dry-run/verify, so operators can review).
+  writeAudit();
 
   console.log('');
   console.log('Done.');
