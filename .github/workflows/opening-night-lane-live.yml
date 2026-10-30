@@ -276,7 +276,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           LANE_REASON: ${{ steps.lane.outputs.reason }}
-        run: node scripts/lane-only-markets.js stood-down "--show=${SHOW}" "--night=${NIGHT}" "--reason=${LANE_REASON}" "--run-url=${RUN_URL}"
+        run: node scripts/lane-stood-down-page.js "--show=${SHOW}" "--night=${NIGHT}" "--reason=${LANE_REASON}" "--run-url=${RUN_URL}"
 
       # Scored reviews are written to data/review-texts/<show>/ before publish, so persist them whatever the lane did.
       - name: Push scored reviews to review-texts

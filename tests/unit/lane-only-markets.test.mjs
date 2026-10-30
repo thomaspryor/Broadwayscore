@@ -377,7 +377,7 @@ test('standDownPage: exit 3 pages inside [embargo - 3h, embargo + 6h], a notice 
 });
 
 test('CLI stood-down: fails the step (dry run) inside the window, a notice outside and for held-by-other / LANE_STANDDOWN', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
-  const run = (now) => spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, `--now=${now}`, '--dry-run'], { cwd: repo, encoding: 'utf8' });
+  const run = (now) => spawnSync(process.execPath, ['scripts/lane-stood-down-page.js', `--show=${realBway.id}`, `--night=${night}`, `--now=${now}`, '--dry-run'], { cwd: repo, encoding: 'utf8' });
   const inside = run('2026-11-06T03:30:00Z');
   assert.equal(inside.status, 1, 'inside the window the step fails so Notify on failure pages: ' + inside.stdout + inside.stderr);
   assert.match(inside.stdout, /::error::opening-night lane stood down/);
@@ -386,14 +386,14 @@ test('CLI stood-down: fails the step (dry run) inside the window, a notice outsi
   assert.equal(outside.status, 0);
   assert.match(outside.stdout, /::notice::.*no page/);
   assert.doesNotMatch(outside.stdout, /page=/);
-  const second = spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=held-by-other', '--dry-run'], { cwd: repo, encoding: 'utf8' });
+  const second = spawnSync(process.execPath, ['scripts/lane-stood-down-page.js', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=held-by-other', '--dry-run'], { cwd: repo, encoding: 'utf8' });
   assert.equal(second.status, 0);
   assert.match(second.stdout, /::notice::.*another run holds the lease.*no page/);
   assert.doesNotMatch(second.stdout, /page=/);
-  const owner = spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=stood-down:broadway', '--dry-run'], { cwd: repo, encoding: 'utf8' });
+  const owner = spawnSync(process.execPath, ['scripts/lane-stood-down-page.js', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=stood-down:broadway', '--dry-run'], { cwd: repo, encoding: 'utf8' });
   assert.equal(owner.status, 0);
   assert.match(owner.stdout, /LANE_STANDDOWN.*no page/);
-  const unarmed = spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=not-armed:no-recorded-rehearsal'], { cwd: repo, encoding: 'utf8' });
+  const unarmed = spawnSync(process.execPath, ['scripts/lane-stood-down-page.js', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=not-armed:no-recorded-rehearsal'], { cwd: repo, encoding: 'utf8' });
   assert.equal(unarmed.status, 1, 'not-armed fails the step without calling routeAlert');
   assert.match(unarmed.stdout, /page=driver-digest/);
 });
@@ -408,7 +408,7 @@ test('lane-live pages on exit 3 after the marker, on main, with the run URL, and
   assert.match(s.cond, /always\(\) && steps\.lane\.outputs\.exit == '3'/);
   assert.match(s.cond, /github\.ref == 'refs\/heads\/main'/);
   assert.doesNotMatch(s.body, /continue-on-error/);
-  assert.match(s.body, /lane-only-markets\.js stood-down "--show=\$\{SHOW\}" "--night=\$\{NIGHT\}" "--reason=\$\{LANE_REASON\}" "--run-url=\$\{RUN_URL\}"/);
+  assert.match(s.body, /lane-stood-down-page\.js "--show=\$\{SHOW\}" "--night=\$\{NIGHT\}" "--reason=\$\{LANE_REASON\}" "--run-url=\$\{RUN_URL\}"/);
   assert.match(s.body, /LANE_REASON: \$\{\{ steps\.lane\.outputs\.reason \}\}/);
   assert.match(read('scripts/opening-night-lane.js'), /GITHUB_OUTPUT, `reason=\$\{/, 'the lane writes its exit reason as a step output');
   const release = steps.findIndex((s2) => s2.name === 'Release night lease');
