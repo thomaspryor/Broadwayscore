@@ -71,8 +71,8 @@ function buildReminder(entry, titles, numbers, nth) {
   const html = `
 <p>The opening-night email for <strong>${esc(names.join(', '))}</strong> is still a draft in Resend (made ${Math.round(entry.hoursSince)} hours ago). Subscribers have not received it.</p>
 <table style="margin:16px 0;border-collapse:collapse;">${rows}</table>
-<p><a href="${url}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Resend →</a></p>
-<p style="color:#888;font-size:12px;margin-top:16px;">Reminder ${nth} of ${MAX_REMINDERS}. If the numbers change, the draft is rebuilt and you get an updated preview first.</p>`;
+<p><a href="${url}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Open the draft in Resend →</a></p>
+<p style="color:#888;font-size:12px;margin-top:16px;">Reminder ${nth} of ${MAX_REMINDERS}. If the numbers change, the draft is updated in place and you get an email saying so.</p>`;
   return { subject, html };
 }
 

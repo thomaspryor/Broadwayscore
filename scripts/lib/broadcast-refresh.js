@@ -3,9 +3,10 @@
  *
  * Owner ask 2026-10-30: while a show's opening-night email has not gone out,
  * every change to the numbers the email shows (the rounded Critic Score and
- * the review count) should reach the owner right away, as an updated
- * [PREVIEW] and, once a Resend draft exists, as a rebuilt draft. A draft that
- * sits unsent gets a reminder every REMINDER_GAP_HOURS, up to MAX_REMINDERS.
+ * the review count) should reach the owner right away: the unsent Resend draft
+ * is updated in place with the new numbers and the owner is emailed that it
+ * changed. No approval step: the owner sends from Resend. A draft that sits
+ * unsent gets a reminder every REMINDER_GAP_HOURS, up to MAX_REMINDERS.
  *
  * Pure functions over the opening-night-sent.json `shows` map. "Numbers" are
  * always { [showId]: { score, reviewCount } } with score already rounded the
@@ -113,7 +114,7 @@ function draftBaseline(sentShows, entry) {
 }
 
 /**
- * Unsent drafts whose numbers moved, so the workflow rebuilds them.
+ * Unsent drafts whose numbers moved, so the workflow updates them.
  * @param {object} sentShows      opening-night-sent.json `shows`
  * @param {function} readNumbers  showId → {score, reviewCount} | null
  * @param {string[]} [onlyIds]    restrict to drafts whose shows are all in here (ready set)
@@ -137,6 +138,33 @@ function draftsNeedingRefresh(sentShows, readNumbers, onlyIds = null) {
     out.push({ broadcastKey: e.broadcastKey, market: e.market, ids: e.ids, was, now });
   }
   return out;
+}
+
+/**
+ * Decide whether `--update-unsent-draft` should PATCH the draft recorded under
+ * broadcastKey with the numbers the email now shows.
+ * @returns {{action:'skip', reason:string} | {action:'update', record:object, was:object}}
+ */
+function unsentDraftUpdatePlan(sentShows, broadcastKey, nowNumbers) {
+  const record = (sentShows || {})[broadcastKey];
+  if (!isUnsentDraft(record)) return { action: 'skip', reason: `no unsent draft is recorded for ${broadcastKey}` };
+  const ids = broadcastKey.slice(broadcastKey.indexOf(':') + 1).split('+').filter(Boolean);
+  const was = draftBaseline(sentShows, { ids, record });
+  if (was && !numbersDiffer(was, nowNumbers)) return { action: 'skip', reason: 'the draft already shows these numbers' };
+  return { action: 'update', record, was };
+}
+
+// Stamp an in-place draft update on the record and its per-show mirrors.
+// draftCreatedAt and the reminder fields are kept, so the reminder clock
+// still runs from when the draft first appeared.
+function stampDraftUpdate(sentShows, broadcastKey, numbers, at, reviewCount) {
+  const rec = sentShows[broadcastKey];
+  if (!rec) return;
+  for (const [key, r] of Object.entries(sentShows)) {
+    if (key === broadcastKey || (r && r.broadcastKey === broadcastKey && r.draftId === rec.draftId)) {
+      sentShows[key] = { ...r, draftNumbers: numbers, draftUpdatedAt: at, reviewCount };
+    }
+  }
 }
 
 /**
@@ -174,4 +202,5 @@ module.exports = {
   displayScore, numbersFromEmailRows, readShowNumbers, numbersDiffer,
   previewKeyIds, latestPreviewForShow, isUnsentDraft, unsentDraftRecords,
   draftBaseline, draftsNeedingRefresh, remindersDue, stampReminder,
+  unsentDraftUpdatePlan, stampDraftUpdate,
 };
