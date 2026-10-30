@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6493-c",
   "planId": "802b0fc1-00b6-436a-96e3-281b458feb48",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T23:07:42.862Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "BRO-6493: Indexed production page explicitly lists both first preview and opening March 18, 2026; contemporaneous article confirms the City Center Encores run. Source: https://playbill.com/production/the-wild-party-off-broadway-new-york-city-center-2026 Corroboration: https://playbill.com/article/jasmine-amy-rogers-adrienne-warren-more-star-in-encores-the-wild-party-beginning-march-18"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T00:36:54.052Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-listening-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for puppet-up-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for no-excuses-no-limits-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for la-traviata-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for encores-the-wild-party-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
