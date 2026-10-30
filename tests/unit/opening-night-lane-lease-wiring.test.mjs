@@ -301,7 +301,9 @@ const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 test('structural: every competing workflow syncs leases after each review-texts checkout', () => {
   for (const w of ['opening-night-poller', 'opening-night-express', 'gather-reviews', 'enrich-reviews', 'rebuild-reviews', 'rebuild-fast',
     // BRO-6648 S1-T1..T5: the old-path writers
-    'collect-review-texts', 'overnight-collect', 'llm-ensemble-score', 'recollect-for-scores', 'opening-night-reviews', 'scrape-theatre-reviews', 'scrape-new-aggregators']) {
+    'collect-review-texts', 'overnight-collect', 'llm-ensemble-score', 'recollect-for-scores', 'opening-night-reviews', 'scrape-theatre-reviews', 'scrape-new-aggregators',
+    // they push review-texts themselves
+    'ingest-urls', 'recover-we-major-outlets']) {
     const y = read(`.github/workflows/${w}.yml`);
     const checkouts = [...y.matchAll(/uses: \.\/\.github\/actions\/checkout-review-texts/g)].length;
     const syncs = [...y.matchAll(/uses: \.\/\.github\/actions\/opening-night-lease-sync/g)].length;
@@ -317,6 +319,21 @@ test('structural: the watcher and the orchestrator sync leases after the core-da
     assert.ok(syncAt > 0, `${w} has no lease sync step`);
     assert.ok(syncAt > y.indexOf('uses: ./.github/actions/checkout-core-data'), `${w}: sync must follow the core-data checkout (tonight's list reads shows.json)`);
   }
+});
+
+test('structural: a workflow step that pushes review-texts itself enforces the lease before git add (BRO-6648)', () => {
+  const dir = path.join(ROOT, '.github/workflows');
+  const direct = [];
+  for (const f of fs.readdirSync(dir).filter((n) => /\.ya?ml$/.test(n))) {
+    for (const step of fs.readFileSync(path.join(dir, f), 'utf8').split(/\n\s*- (?=name:|uses:)/)) {
+      if (!/^\s*cd data\/review-texts\s*$/m.test(step) || !/push-with-retry\.sh/.test(step)) continue;
+      direct.push(f);
+      const enforceAt = step.indexOf('opening-night-lease.js" enforce');
+      assert.ok(enforceAt > 0 && enforceAt < step.lastIndexOf('git add'),
+        `${f} (${step.split('\n')[0].trim()}): pushes review-texts without opening-night-lease.js enforce before git add (use push-review-texts, or enforce first)`);
+    }
+  }
+  for (const w of ['ingest-urls.yml', 'recover-we-major-outlets.yml', 'opening-night-poller.yml']) assert.ok(direct.includes(w), `scan missed ${w} (pattern is stale): found ${direct.join(', ')}`);
 });
 
 test('structural: push-review-texts enforces the lease before staging, and the sync action runs the CLI', () => {

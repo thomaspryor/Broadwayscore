@@ -6198,6 +6198,14 @@ function pushReviewTextsCheckpoint(processed) {
       execSync("find . -type l -not -path './.git/*' -delete", { cwd: rtDir, stdio: 'pipe' });
     }
 
+    // BRO-6648, mirrors push-review-texts: a checkpoint commits mid-run, so the push action's lease
+    // enforce at job end cannot undo it. Re-sync and undo changes under shows the lane now holds first.
+    const leaseCli = path.join(__dirname, 'opening-night-lease.js');
+    try { execSync(`node "${leaseCli}" sync`, { stdio: 'inherit', timeout: 120000 }); } catch { /* sync writes the unknown marker itself */ }
+    try { execSync(`node "${leaseCli}" enforce --dir="${rtDir}"`, { stdio: 'inherit', timeout: 60000 }); } catch (e) {
+      console.log(`::warning::checkpoint: opening-night lease enforce failed to run (${e.message.split('\n')[0]})`);
+    }
+
     // Stage all changes
     execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
 

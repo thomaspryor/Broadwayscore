@@ -132,6 +132,12 @@ test('source: the remaining writer entry points filter through the shared guard 
   const col = read('scripts/collect-review-texts.js');
   const dropAt = col.indexOf('const kept = dropLeasedReviews(reviews)');
   assert.ok(dropAt > 0 && dropAt < col.indexOf('promoteAgedStubs(reviews)', col.indexOf('reviews.sort((a, b) => compareReviewPriority')), 'collect drops held reviews before the reserved slices and caps');
+  const ing = read('scripts/ingest-urls.js');
+  const ingAt = ing.indexOf("writableShowIds([showId], { label: 'ingest-urls' })");
+  assert.ok(ingAt > ing.indexOf('Show not found') && ingAt < ing.indexOf('createOrMergeReviewFile(showId'), 'ingest-urls returns before writing a held show (it commits itself, so push-time enforce cannot undo it)');
+  const cp = col.slice(col.indexOf('function pushReviewTextsCheckpoint'));
+  const cpEnforce = cp.indexOf('enforce --dir=');
+  assert.ok(cpEnforce > 0 && cpEnforce < cp.indexOf("execSync('git add -A'"), 'the mid-run checkpoint commit enforces the lease before staging');
   const watch = read('scripts/watch-aggregator-urls.js');
   assert.match(watch, /for \(const show of writableOpenings\(openings\)\)/, 'each watcher pass re-reads the guard');
   assert.match(watch, /writableOpenings\(openings\)\.map\(s => s\.id\)\.join/, '--list-active (the orchestrator dispatch list) leaves held shows out');

@@ -97,6 +97,12 @@ if (!show) {
   console.error('Hint: check data/shows.json for the correct show ID');
   process.exit(1);
 }
+// BRO-6648: while the opening-night lane holds this show, the lane writes its reviews; this run writes nothing.
+// This script commits before it pushes, so push-time enforce cannot undo it: the check has to be here.
+if (!require('./lib/opening-night-lane/lease-guard').writableShowIds([showId], { label: 'ingest-urls' }).length) {
+  console.log(`::warning::ingest-urls: ${showId} is held by the opening-night lane; nothing ingested. Re-run after the lane releases it.`);
+  process.exit(0);
+}
 
 // Read and parse URL file
 if (!fs.existsSync(urlsFile)) {

@@ -741,6 +741,10 @@ jobs:
           cd data/review-texts
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+          # BRO-6648: a direct review-texts push, so enforce the lease here (a lease taken mid-poll is caught at commit)
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
+            echo "::warning::opening-night lease enforce failed to run"
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
@@ -831,6 +835,10 @@ jobs:
           cd data/review-texts
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+          # BRO-6648: a direct review-texts push, so enforce the lease here (a lease taken mid-poll is caught at commit)
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
+            echo "::warning::opening-night lease enforce failed to run"
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — collected review texts"
@@ -864,6 +872,10 @@ jobs:
           cd data/review-texts
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+          # BRO-6648: a direct review-texts push, so enforce the lease here (a lease taken mid-poll is caught at commit)
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
+            echo "::warning::opening-night lease enforce failed to run"
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — flagged combined reviews"
@@ -959,6 +971,10 @@ jobs:
           cd data/review-texts
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+          # BRO-6648: a direct review-texts push, so enforce the lease here (a lease taken mid-poll is caught at commit)
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
+            echo "::warning::opening-night lease enforce failed to run"
           git add -A
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — scored reviews"

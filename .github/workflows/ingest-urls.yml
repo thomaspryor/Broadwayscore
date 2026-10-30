@@ -74,6 +74,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Opening-night lease sync (BRO-6648)
+        uses: ./.github/actions/opening-night-lease-sync
+
       - name: Setup Node
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
@@ -155,6 +158,10 @@ jobs:
           else
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
+            # BRO-6648: this step pushes review-texts itself (not via push-review-texts), so it enforces the lease too
+            node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
+            node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
+              echo "::warning::opening-night lease enforce failed to run"
             git add -A
             git diff --cached --quiet || git commit -m "data: Ingest URLs for ${INPUT_SHOW_ID}"
             bash ../../scripts/lib/push-with-retry.sh 5 main
