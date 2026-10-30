@@ -22,8 +22,8 @@ runs:
       run: |
         if ! node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync; then
           # A crash before sync wrote its marker would leave no file, which reads as "nothing leased".
-          # Write the unknown marker instead, so tonight's shows wait (BRO-6648).
-          echo "::warning::opening-night lease sync crashed; writing the unknown marker (tonight's shows wait)"
+          # Write the unknown marker instead, so only tonight's LANE_ONLY_MARKETS-covered shows wait (BRO-6648, BRO-6672).
+          echo "::warning::opening-night lease sync crashed; writing the unknown marker (tonight's lane-only shows wait)"
           F="$GITHUB_WORKSPACE/data/opening-night/leases.json"
           node -e "require(process.argv[1]).markUnknown()" "$GITHUB_WORKSPACE/scripts/lib/opening-night-lane/lease-guard.js" \
             || { mkdir -p "$(dirname "$F")"; printf '{"leases":{},"unknown":true}\n' > "$F"; }

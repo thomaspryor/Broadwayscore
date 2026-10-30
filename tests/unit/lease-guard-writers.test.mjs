@@ -1,6 +1,6 @@
 // BRO-6648 S1-T7: every old-path writer entry point skips a show only while the opening-night lane
 // holds it. For each: a leased show writes nothing, an unleased show writes, and with the lease store
-// unknown tonight's show waits while another show writes.
+// unknown tonight's show waits only when LANE_ONLY_MARKETS covers it (BRO-6672), while another show writes.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -29,7 +29,9 @@ fs.writeFileSync(showsFile, JSON.stringify({ shows: [TONIGHT, LATER] }));
 const SCENARIOS = {
   leased: { leases: { [`${TONIGHT.id}|${TONIGHT.openingDate}`]: { holder: 'lane-gha', acquiredAt: new Date(NOW).toISOString(), heartbeatAt: new Date(NOW).toISOString(), expiresAt: new Date(NOW + 30 * 60000).toISOString() } } },
   unleased: { leases: {} },
-  unknown: { leases: {}, unknown: true, tonight: [], at: new Date(NOW).toISOString() }, // tonight [] = the guard must recompute it
+  // tonight [] = the guard must recompute it
+  unknown: { leases: {}, unknown: true, tonight: [], laneOnly: { ok: true, value: 'broadway' }, at: new Date(NOW).toISOString() },
+  unknownShadow: { leases: {}, unknown: true, tonight: [], laneOnly: { ok: true, value: '' }, at: new Date(NOW).toISOString() }, // the Nov 8 hold
 };
 const files = {};
 for (const [k, v] of Object.entries(SCENARIOS)) { files[k] = path.join(dir, `leases-${k}.json`); fs.writeFileSync(files[k], JSON.stringify(v)); }
@@ -61,8 +63,11 @@ for (const [name, run] of Object.entries(WRITERS)) {
   test(`${name}: with no lease every show writes`, () => {
     assert.deepEqual(withLeases('unleased', run), [TONIGHT.id, LATER.id]);
   });
-  test(`${name}: lease store unknown, tonight's show waits while another show writes`, () => {
+  test(`${name}: lease store unknown and LANE_ONLY_MARKETS covers tonight's show: it waits while another show writes`, () => {
     assert.deepEqual(withLeases('unknown', run), [LATER.id]);
+  });
+  test(`${name}: lease store unknown and LANE_ONLY_MARKETS unset (shadow): every show writes`, () => {
+    assert.deepEqual(withLeases('unknownShadow', run), [TONIGHT.id, LATER.id]);
   });
 }
 
@@ -95,12 +100,16 @@ test('watch-aggregator-urls loop: lease state is re-fetched at most every 5 minu
   assert.equal(marked, 1, 'a failed re-sync falls back to the unknown marker, not a stale known state');
 });
 
-test('markUnknown writes the marker the guard reads: tonight waits, another show writes', () => {
+test('markUnknown writes the marker the guard reads: covered tonight waits, unread variable writes everything', () => {
+  const env = { OPENING_NIGHT_SHOWS_FILE: showsFile };
   const f = path.join(dir, 'leases-marked.json');
-  const tonight = guard.markUnknown({ file: f, now: NOW, env: { OPENING_NIGHT_SHOWS_FILE: showsFile } });
-  assert.deepEqual(tonight, [TONIGHT.id]);
+  assert.deepEqual(guard.markUnknown({ file: f, now: NOW, env, laneOnly: { ok: true, value: 'broadway' } }), { tonight: [TONIGHT.id], held: [TONIGHT.id] });
   assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).unknown, true);
-  assert.deepEqual(guard.writableShowIds([TONIGHT.id, LATER.id], { file: f, now: NOW, env: { OPENING_NIGHT_SHOWS_FILE: showsFile } }), [LATER.id]);
+  assert.deepEqual(guard.writableShowIds([TONIGHT.id, LATER.id], { file: f, now: NOW, env }), [LATER.id]);
+  // No job env and no REVIEW_TEXTS_TOKEN: the variable is unread, so nothing waits.
+  assert.deepEqual(guard.markUnknown({ file: f, now: NOW, env }), { tonight: [TONIGHT.id], held: [] });
+  assert.deepEqual(JSON.parse(fs.readFileSync(f, 'utf8')).laneOnly, { ok: false, value: '' });
+  assert.deepEqual(guard.writableShowIds([TONIGHT.id, LATER.id], { file: f, now: NOW, env }), [TONIGHT.id, LATER.id]);
 });
 
 test('skip lines go to stderr: --list-active stdout (read by the orchestrator) stays empty when every show is held', () => {
@@ -157,7 +166,7 @@ test('land-ingested-reviews pushReviewTexts: a held show (fan-out sibling) is re
   const res = withLeases('leased', ({ now }) => pushReviewTexts({
     reviewTextsDir: repo, touchedPaths: touched, message: 'test', exec: execSync, log: () => {},
     isCheckout: () => true, pushRetry: () => { pushed++; return { ok: true }; },
-    leaseRevert: (dir) => guard.revertLeasedChanges(dir, guard.writeBlockedShowIds({ now }).shows),
+    leaseRevert: (dir) => guard.revertLeasedChanges(dir, guard.revertableShowIds({ now }).revert),
   }));
   assert.equal(res.pushed, true);
   assert.equal(pushed, 1);

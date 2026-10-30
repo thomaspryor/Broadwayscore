@@ -10,10 +10,11 @@
  *   claim|heartbeat|release --show= --night=YYYY-MM-DD --holder= [--ttl-min=30]
  *
  * claim exits 0 when this holder owns the night, 3 when another holder does, 1 on any failure.
- * sync retries 3x, then writes an `unknown` marker carrying `tonight` (the shows whose press night is now):
- * writers hold only those until the next successful sync, every other show writes (BRO-6648); the publish
- * view (rebuild) warns and proceeds. scripts/opening-night-lease-alert.js raises it (the sync action, page: 'true').
- * enforce reverts uncommitted changes under blocked shows (known: leased; unknown: tonight's).
+ * sync retries 3x, then writes an `unknown` marker carrying `tonight` (the shows whose press night is now) and the
+ * LANE_ONLY_MARKETS read: writers hold only tonight's shows that variable covers until the next successful sync, every
+ * other show writes (BRO-6648, BRO-6672); the publish view (rebuild) warns and proceeds.
+ * scripts/opening-night-lease-alert.js raises it (the sync action, page: 'true').
+ * enforce reverts uncommitted changes only under a KNOWN lease held by someone else; unknown reverts nothing.
  */
 const path = require('path');
 const store = require('./lib/opening-night-lane/lease-store');
@@ -37,11 +38,11 @@ function main() {
         return 0;
       } catch (e) { lastErr = e; if (i < 3) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2000 * i); }
     }
-    // Could not reach the store: a blip must not unlock the lane's show tonight, and must not
-    // silence every other show either. The marker names tonight's shows; they wait.
-    const tonight = guard.markUnknown();
+    // Could not reach the store: a blip must not silence a press night. Only a show the lane could be
+    // publishing (tonight, and LANE_ONLY_MARKETS covers it) waits; every other show writes (BRO-6672).
+    const { tonight, held } = guard.markUnknown();
     const why = String((lastErr && lastErr.message) || lastErr).slice(0, 160);
-    console.log(`::warning::opening-night lease sync failed after 3 tries; tonight's show(s) wait [${tonight.join(', ') || 'none'}], every other show writes (${why})`);
+    console.log(`::warning::opening-night lease sync failed after 3 tries; tonight [${tonight.join(', ') || 'none'}], waiting [${held.join(', ') || 'none'}], every other show writes (${why})`);
     return 0;
   }
   if (cmd === 'list') {
@@ -51,11 +52,14 @@ function main() {
   }
   if (cmd === 'enforce') {
     const dir = path.resolve(arg('dir') || 'data/review-texts');
-    const { unknown, shows } = guard.writeBlockedShowIds();
-    const reverted = guard.revertLeasedChanges(dir, shows);
-    const what = unknown ? `tonight's show(s) while the lease store is unknown` : 'leased show(s)';
-    if (reverted.length) console.log(`::${unknown ? 'error' : 'warning'}::opening-night lease: held back ${reverted.length} write(s) under ${what} ${shows.join(', ')} (a later run collects them again):\n${reverted.slice(0, 20).join('\n')}`);
-    else console.log(`opening-night lease: no writes to ${what} (${shows.length} blocked)`);
+    const { unknown, shows, revert } = guard.revertableShowIds();
+    if (unknown) { // BRO-6672: never delete under unknown; what a writer still wrote is committed and published
+      console.log(`opening-night lease: store unknown, nothing reverted${shows.length ? ` (writers skip ${shows.join(', ')}; any write already made is kept)` : ''}`);
+      return 0;
+    }
+    const reverted = guard.revertLeasedChanges(dir, revert);
+    if (reverted.length) console.log(`::warning::opening-night lease: held back ${reverted.length} write(s) under leased show(s) ${revert.join(', ')} (a later run collects them again):\n${reverted.slice(0, 20).join('\n')}`);
+    else console.log(`opening-night lease: no writes to leased show(s) (${revert.length} blocked)`);
     return 0;
   }
   if (['claim', 'heartbeat', 'release'].includes(cmd)) {

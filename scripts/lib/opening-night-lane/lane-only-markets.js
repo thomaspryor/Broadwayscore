@@ -6,7 +6,7 @@
  * `lane_only` step). Manual Express runs, the 08:00 UTC day-after Express fire and day-after sweeps are untouched.
  *
  * Fail toward publishing. lease-guard.js answers "may I WRITE this show?" and under an unknown lease holds only
- * tonight's shows (BRO-6648; every other show writes). This module answers "may the old path PUBLISH?" and treats every unknown as yes. The old path stands down
+ * tonight's shows that LANE_ONLY_MARKETS was read and covers (BRO-6648, BRO-6672; every other show writes). This module answers "may the old path PUBLISH?" and treats every unknown as yes. The old path stands down
  * only on positive evidence that a lane holds the night right now:
  *   1. LANE_ONLY_MARKETS was read (read-actions-variable.sh exit 0; a failed read keeps the old path on);
  *   2. it names the show's market or category, matched like LANE_STANDDOWN ("broadway" covers Off-Broadway, whose
@@ -37,6 +37,11 @@ const DEFAULT_MARKERS_DIR = path.join(__dirname, '../../../data/opening-night/la
 function parseOnlyMarkets(value) {
   const p = parseStanddown(value, { unknown: 'ignore' });
   return { tokens: p.tokens, unknown: p.unknown };
+}
+
+/** Does a read LANE_ONLY_MARKETS ({ok, value}) cover the show? Unread, unset, empty or a typo = no. Pure. */
+function coversShow(onlyMarkets, show) {
+  return !!(onlyMarkets && onlyMarkets.ok && show && tokensMatchShow(parseOnlyMarkets(onlyMarkets.value).tokens, show));
 }
 
 /** The live lease on `show` (any night) with its raw fields, or null. Pure. */
@@ -183,6 +188,22 @@ function envInputs(env = process.env) {
   };
 }
 
+/**
+ * LANE_ONLY_MARKETS as {ok, value} for a step that may not have run read-lane-only-vars (BRO-6672): the job env when
+ * it did (LANE_ONLY_MARKETS_READ set), else a live read-actions-variable.sh with REVIEW_TEXTS_TOKEN when the step has
+ * it, else unread. Never throws; any failure = {ok:false}.
+ */
+function readOnlyMarkets(env = process.env) {
+  if (env.LANE_ONLY_MARKETS_READ) return envInputs(env).onlyMarkets;
+  if (!env.REVIEW_TEXTS_TOKEN) return { ok: false, value: '' };
+  try {
+    const r = require('child_process').spawnSync('bash', [path.join(__dirname, '../read-actions-variable.sh'), VARIABLE], {
+      env: { ...env, GH_TOKEN: env.REVIEW_TEXTS_TOKEN }, encoding: 'utf8', timeout: 25000, stdio: ['ignore', 'pipe', 'inherit'],
+    });
+    return r.status === 0 ? { ok: true, value: String(r.stdout || '').replace(/[\r\n]/g, '') } : { ok: false, value: '' };
+  } catch { return { ok: false, value: '' }; }
+}
+
 /** A per-show-id decider over the synced lease file and the marker dir, read once. `findShow(id)` -> show|null. */
 function createDecider({ findShow, env = process.env, leasesFile, markersDir, now } = {}) {
   const inputs = envInputs(env);
@@ -196,7 +217,7 @@ function createDecider({ findShow, env = process.env, leasesFile, markersDir, no
 }
 
 module.exports = {
-  envInputs, createDecider,
+  envInputs, createDecider, readOnlyMarkets, coversShow,
   VARIABLE, WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN, DEFAULT_MARKERS_DIR,
   parseOnlyMarkets, liveLeaseFor, embargoForNight, inPressNightWindow, markerKey,
   oldPathStandsDown, standDownPage, readMarkers, writeMarker, readLeaseState, pollerSuppress, changedShowIds,

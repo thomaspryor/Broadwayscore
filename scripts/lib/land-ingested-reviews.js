@@ -26,7 +26,7 @@ const { pushWithRetry } = require('./push-with-retry');
 // real clone), so only the real exec gets the real helper.
 function revertHeldShows(reviewTextsDir) {
   const guard = require('./opening-night-lane/lease-guard');
-  return guard.revertLeasedChanges(reviewTextsDir, guard.writeBlockedShowIds().shows);
+  return guard.revertLeasedChanges(reviewTextsDir, guard.revertableShowIds().revert); // unknown reverts nothing (BRO-6672)
 }
 
 const refusePush = () => ({ ok: false, code: null, stderr: 'pushRetry not injected alongside a stub exec' });

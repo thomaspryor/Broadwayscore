@@ -7,10 +7,13 @@
  *  - No file = no lane has ever been armed = nothing leased.
  *  - Known state: a show is blocked while someone else holds a live lease on it.
  *  - Unknown state (the marker `sync` writes after it cannot reach the store, or a file that cannot be
- *    read or parsed), BRO-6648: only TONIGHT's shows wait; every other show writes. Tonight = now is inside
- *    [embargo - 3h, embargo + 9h] of the show's openingDate (the lane can start 3h late and run ~6h, so the
- *    writer window outlasts lane-only-markets' publish window). Computed here with the caller's `now`, plus
- *    the `tonight` list the marker carries from `sync`. Unreadable shows.json = only the marker's list.
+ *    read or parsed), BRO-6648 + BRO-6672: fail toward publishing. A show waits only when its press night is
+ *    tonight AND LANE_ONLY_MARKETS was read and covers it, i.e. the lane could be the one publishing it. The
+ *    variable unset (the shadow hold), empty, a typo or unread = every show writes. Tonight = now is inside
+ *    lane-only-markets' press-night window [embargo - 3h, embargo + 6h] (the publish view uses the same one; the
+ *    latest lane lease, started embargo + 1h with a 270-min window and 30-min TTL, ends at + 6h). The variable comes
+ *    from the marker (`sync` records the read it made) or this process's env (read-lane-only-vars).
+ *    Unknown never deletes: `enforce` (revertableShowIds) reverts only under a KNOWN lease held by someone else.
  *  - OPENING_NIGHT_LANE_HOLDER lets the lane's own writes through.
  *
  * Writers ask writeBlockedShowIds / leaseSkipReason / partitionLeased (one policy). leasedShowIds is the
@@ -26,31 +29,38 @@ const DEFAULT_SHOWS_FILE = path.join(__dirname, '../../../data/shows.json');
 const leasesFile = (env = process.env) => env.OPENING_NIGHT_LEASES_FILE || DEFAULT_LEASES_FILE;
 const showsFile = (env = process.env) => env.OPENING_NIGHT_SHOWS_FILE || DEFAULT_SHOWS_FILE;
 
-const WRITER_WINDOW_BEFORE_MIN = 180;
-const WRITER_WINDOW_AFTER_MIN = 540;
+const laneOnlyMarkets = () => require('./lane-only-markets'); // lazy: lane-only-markets requires this file
 
-/** Show ids whose press night (openingDate) writer window contains `now`. Unreadable shows.json = []. */
-function tonightShowIds({ now, file } = {}) {
-  let shows;
-  try { const d = JSON.parse(fs.readFileSync(file || showsFile(), 'utf8')); shows = Array.isArray(d) ? d : d.shows || []; } catch { return []; }
-  const { embargoForNight } = require('./lane-only-markets'); // lazy: lane-only-markets requires this file
-  const nowMs = now === undefined ? Date.now() : new Date(now).getTime();
-  const inWindow = (s) => {
-    const at = Date.parse(embargoForNight(s, s.openingDate) || '');
-    return Number.isFinite(at) && nowMs >= at - WRITER_WINDOW_BEFORE_MIN * 60000 && nowMs <= at + WRITER_WINDOW_AFTER_MIN * 60000;
-  };
-  return shows.filter((s) => s && s.id && s.openingDate && inWindow(s)).map((s) => s.id);
+function readShows(file) {
+  try { const d = JSON.parse(fs.readFileSync(file || showsFile(), 'utf8')); return Array.isArray(d) ? d : d.shows || []; } catch { return null; }
 }
 
-/** The local lease view: {unknown:false, state} or {unknown:true, tonight:[ids]|null} (null = not computed). */
+/** Shows whose openingDate press-night window (lane-only-markets inPressNightWindow) contains `now`. */
+function tonightShows(shows, now) {
+  const nowMs = now === undefined ? Date.now() : new Date(now).getTime();
+  return (shows || []).filter((s) => s && s.id && s.openingDate && laneOnlyMarkets().inPressNightWindow(s, s.openingDate, nowMs));
+}
+
+/** Show ids whose press night is tonight. Unreadable shows.json = []. */
+function tonightShowIds({ now, file } = {}) {
+  return tonightShows(readShows(file), now).map((s) => s.id);
+}
+
+/**
+ * The local lease view: {unknown:false, state} or {unknown:true, tonight:[ids]|null, laneOnly:{ok,value}|null}
+ * (tonight null = not computed; laneOnly null = the marker carries no read, so the env decides).
+ */
 function readView(f) {
   let parsed;
   try { parsed = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) {
     if (e && e.code === 'ENOENT') return { unknown: false, state: { leases: {} } };
-    return { unknown: true, tonight: null };
+    return { unknown: true, tonight: null, laneOnly: null };
   }
-  if (parsed && parsed.unknown === true) return { unknown: true, tonight: Array.isArray(parsed.tonight) ? parsed.tonight : null };
-  try { return { unknown: false, state: lease.readState(f) }; } catch { return { unknown: true, tonight: null }; }
+  if (parsed && parsed.unknown === true) {
+    const lo = parsed.laneOnly && typeof parsed.laneOnly.ok === 'boolean' ? { ok: parsed.laneOnly.ok, value: String(parsed.laneOnly.value || '') } : null;
+    return { unknown: true, tonight: Array.isArray(parsed.tonight) ? parsed.tonight : null, laneOnly: lo };
+  }
+  try { return { unknown: false, state: lease.readState(f) }; } catch { return { unknown: true, tonight: null, laneOnly: null }; }
 }
 
 /** True when the local lease file is the marker `sync` writes after it could not reach the store. */
@@ -58,43 +68,63 @@ function readUnknownMarker(f) {
   try { return JSON.parse(fs.readFileSync(f, 'utf8')).unknown === true; } catch { return false; }
 }
 
-const tonightMemo = new Map();
-function tonightFor(view, now, env) {
-  const computed = tonightNow(now, env);
-  return view.tonight ? [...new Set([...view.tonight, ...computed])] : computed;
-}
-function tonightNow(now, env) {
-  const key = `${showsFile(env)}@${Math.floor((now === undefined ? Date.now() : new Date(now).getTime()) / 60000)}`;
-  if (!tonightMemo.has(key)) tonightMemo.set(key, tonightShowIds({ now, file: showsFile(env) }));
-  return tonightMemo.get(key);
+/**
+ * Under an unknown view: {tonight, held}. tonight = every show whose press night is now (the marker's list from
+ * `sync` plus shows.json now); held = those LANE_ONLY_MARKETS covers. A tonight id missing from shows.json is not
+ * held (its market cannot be matched). Memoised per shows file, minute and variable read.
+ */
+const unknownMemo = new Map();
+function unknownHolds(view, now, env) {
+  const laneOnly = view.laneOnly || laneOnlyMarkets().envInputs(env).onlyMarkets;
+  const key = `${showsFile(env)}@${Math.floor((now === undefined ? Date.now() : new Date(now).getTime()) / 60000)}|${JSON.stringify(view.tonight)}|${JSON.stringify(laneOnly)}`;
+  if (!unknownMemo.has(key)) {
+    const shows = readShows(showsFile(env)) || [];
+    const byId = new Map(shows.filter((s) => s && s.id).map((s) => [s.id, s]));
+    const tonight = [...new Set([...(view.tonight || []), ...tonightShows(shows, now).map((s) => s.id)])];
+    const held = tonight.filter((id) => laneOnlyMarkets().coversShow(laneOnly, byId.get(id)));
+    unknownMemo.set(key, { tonight, held, laneOnly });
+  }
+  return unknownMemo.get(key);
 }
 
 let warnedUnknown = false;
-function warnUnknownOnce(tonight) {
+function warnUnknownOnce({ tonight, held, laneOnly }) {
   if (warnedUnknown) return;
   warnedUnknown = true;
-  console.warn(`::warning::opening-night lease state unknown (store unreachable): tonight's show(s) wait [${tonight.join(', ') || 'none'}], every other show writes`);
+  const lo = laneOnly.ok ? `LANE_ONLY_MARKETS=${laneOnly.value || '<unset>'}` : 'LANE_ONLY_MARKETS unread';
+  console.warn(`::warning::opening-night lease state unknown (store unreachable): tonight [${tonight.join(', ') || 'none'}], ${lo}; ` +
+    `wait [${held.join(', ') || 'none'}], every other show writes`);
 }
 
 /**
- * The shows a writer must not touch now. {unknown, shows}: known = shows with a live lease held by
- * someone else; unknown = tonight's shows.
+ * The shows a writer must not touch now. {unknown, shows, tonight?}: known = shows with a live lease held by
+ * someone else; unknown = tonight's shows LANE_ONLY_MARKETS covers (`tonight` = all of tonight's, for the alert).
  */
 function writeBlockedShowIds({ file, now, env = process.env } = {}) {
   const view = readView(file || leasesFile(env));
-  if (view.unknown) { const tonight = tonightFor(view, now, env); warnUnknownOnce(tonight); return { unknown: true, shows: tonight }; }
+  if (view.unknown) { const u = unknownHolds(view, now, env); warnUnknownOnce(u); return { unknown: true, shows: u.held, tonight: u.tonight }; }
   const ignoreHolder = env.OPENING_NIGHT_LANE_HOLDER || undefined;
   const shows = new Set(Object.keys(view.state.leases).map((k) => k.split('|')[0]));
   return { unknown: false, shows: [...shows].filter((s) => lease.activeLeaseFor(view.state, s, { now, ignoreHolder })) };
+}
+
+/**
+ * The shows `enforce` may revert (and so delete new files under): only a KNOWN live lease held by someone else.
+ * Unknown reverts nothing (BRO-6672): the writers already skipped the held shows, and on an ephemeral runner a file
+ * held back uncommitted is a file deleted. Whatever a writer still wrote is committed and published.
+ */
+function revertableShowIds(opts = {}) {
+  const b = writeBlockedShowIds(opts);
+  return { ...b, revert: b.unknown ? [] : b.shows };
 }
 
 /** Lease info when `show` must not be written now (see writeBlockedShowIds), else null. */
 function leaseSkipReason(show, { file, now, env = process.env } = {}) {
   const view = readView(file || leasesFile(env));
   if (view.unknown) {
-    const tonight = tonightFor(view, now, env);
-    warnUnknownOnce(tonight);
-    return tonight.includes(show) ? { show, night: null, holder: 'unknown', expiresAt: null, unreadable: true, unknown: true } : null;
+    const u = unknownHolds(view, now, env);
+    warnUnknownOnce(u);
+    return u.held.includes(show) ? { show, night: null, holder: 'unknown', expiresAt: null, unreadable: true, unknown: true } : null;
   }
   return lease.activeLeaseFor(view.state, show, { now, ignoreHolder: env.OPENING_NIGHT_LANE_HOLDER || undefined });
 }
@@ -121,15 +151,19 @@ function writableShowIds(showIds, { label = 'writer', ...opts } = {}) {
   return kept;
 }
 
-/** Write the unknown marker (store unreachable): writers then hold only tonight's shows. */
-function markUnknown({ file, now, env = process.env } = {}) {
+/**
+ * Write the unknown marker (store unreachable) with tonight's shows and the LANE_ONLY_MARKETS read (lane-only-markets
+ * readOnlyMarkets: job env, else a live read with REVIEW_TEXTS_TOKEN, else unread). Returns {tonight, held}.
+ */
+function markUnknown({ file, now, env = process.env, laneOnly } = {}) {
   const f = file || leasesFile(env);
   const tonight = tonightShowIds({ now, file: showsFile(env) });
+  const lo = laneOnly || laneOnlyMarkets().readOnlyMarkets(env);
   fs.mkdirSync(path.dirname(f), { recursive: true });
   const tmp = `${f}.${process.pid}.tmp`;
-  fs.writeFileSync(tmp, JSON.stringify({ leases: {}, unknown: true, tonight, at: new Date(now === undefined ? Date.now() : now).toISOString() }) + '\n');
+  fs.writeFileSync(tmp, JSON.stringify({ leases: {}, unknown: true, tonight, laneOnly: lo, at: new Date(now === undefined ? Date.now() : now).toISOString() }) + '\n');
   fs.renameSync(tmp, f);
-  return tonight;
+  return { tonight, held: unknownHolds({ tonight, laneOnly: lo }, now, env).held };
 }
 
 /** PUBLISH view: every show id with a live lease (all nights). Unknown names none (old path publishes). Unreadable file throws. */
@@ -172,9 +206,9 @@ function revertLeasedChanges(repoDir, shows) {
   return reverted;
 }
 
-const describe = (l) => `${l.show} leased to ${l.holder}${l.expiresAt ? ` until ${l.expiresAt}` : ''}${l.unknown ? ' (lease store unknown and its press night is tonight, so it waits)' : ''}`;
+const describe = (l) => `${l.show} leased to ${l.holder}${l.expiresAt ? ` until ${l.expiresAt}` : ''}${l.unknown ? ' (lease store unknown, its press night is tonight and LANE_ONLY_MARKETS covers it, so it waits)' : ''}`;
 
 module.exports = {
-  WRITER_WINDOW_BEFORE_MIN, WRITER_WINDOW_AFTER_MIN, readUnknownMarker, DEFAULT_LEASES_FILE, DEFAULT_SHOWS_FILE, leasesFile, showsFile, tonightShowIds, readView,
+  readUnknownMarker, tonightShows, revertableShowIds, DEFAULT_LEASES_FILE, DEFAULT_SHOWS_FILE, leasesFile, showsFile, tonightShowIds, readView,
   writeBlockedShowIds, leaseSkipReason, partitionLeased, writableShowIds, markUnknown, leasedShowIds, revertLeasedChanges, describe,
 };

@@ -175,7 +175,7 @@ const acquireLease = (file, args) => transition(file, acquire, args);
 const heartbeatLease = (file, args) => transition(file, heartbeat, args);
 const releaseLease = (file, args) => transition(file, release, args);
 // A state file that cannot be read returns an `unknown` lease: this pure layer cannot tell, so it never says "free".
-// The writer policy for unknown (only tonight's shows wait, BRO-6648) lives in lease-guard.js.
+// The writer policy for unknown (only tonight's LANE_ONLY_MARKETS-covered shows wait, BRO-6648/BRO-6672) lives in lease-guard.js.
 const isShowLeased = (file, show, opts) => {
   try { return activeLeaseFor(readState(file), show, opts); } catch (e) {
     return { show, night: null, holder: 'unknown', expiresAt: null, unreadable: true, unknown: true };

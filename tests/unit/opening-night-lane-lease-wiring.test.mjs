@@ -117,104 +117,167 @@ test('skip predicate: leased skips, others / expired / missing file do not, lane
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
-// BRO-6648 S1-T0: unknown lease state = only tonight's shows wait; every other show writes.
-const { embargoForNight } = require('../../scripts/lib/opening-night-lane/lane-only-markets.js');
+// BRO-6648 S1-T0 + BRO-6672: unknown lease state = only tonight's shows that LANE_ONLY_MARKETS (read OK) covers wait;
+// every other show writes. Unset (the shadow hold), empty, a typo or unread = every show writes.
+const lom = require('../../scripts/lib/opening-night-lane/lane-only-markets.js');
+const { embargoForNight } = lom;
 const TONIGHT_SHOW = { id: SHOW, title: 'Other Desert Cities', openingDate: NIGHT, category: 'broadway', status: 'previews' };
 const LATER_SHOW = { id: 'later-show-2026', title: 'Later Show', openingDate: '2026-12-10', category: 'broadway', status: 'previews' };
 const PRESS_NIGHT = Date.parse(embargoForNight(TONIGHT_SHOW, NIGHT));
 function showsFixture(dir) { const f = path.join(dir, 'shows.json'); fs.writeFileSync(f, JSON.stringify({ shows: [TONIGHT_SHOW, LATER_SHOW] })); return f; }
+const COVERS = { ok: true, value: 'broadway' };
+function marker(dir, name, extra) { const f = path.join(dir, name); fs.writeFileSync(f, JSON.stringify({ leases: {}, unknown: true, tonight: [SHOW], ...extra })); return f; }
+// Spawned CLIs must never read the real variable: no job env, no token.
+const NO_VARS = { LANE_ONLY_MARKETS: '', LANE_ONLY_MARKETS_READ: '', REVIEW_TEXTS_TOKEN: '' };
 
-test('unknown lease state: tonight waits, every other show writes (marker list, corrupt file, unreadable shows.json)', () => {
+test('unknown + LANE_ONLY_MARKETS unset, empty, a typo or unread: tonight\'s show writes (Nov 8 shadow night)', () => {
   assert.ok(Number.isFinite(PRESS_NIGHT), 'fixture show has an embargo');
   const dir = tmp();
   try {
     const env = { OPENING_NIGHT_SHOWS_FILE: showsFixture(dir) };
     const now = PRESS_NIGHT;
-    assert.deepEqual(guard.tonightShowIds({ now, file: env.OPENING_NIGHT_SHOWS_FILE }), [SHOW]);
-    assert.deepEqual(guard.tonightShowIds({ now: PRESS_NIGHT + 10 * 3600e3, file: env.OPENING_NIGHT_SHOWS_FILE }), [], 'window closes 9h after the embargo');
-    assert.deepEqual(guard.tonightShowIds({ now, file: path.join(dir, 'nope.json') }), [], 'unreadable shows.json = nothing tonight');
-
-    const marker = path.join(dir, 'unk.json'); fs.writeFileSync(marker, JSON.stringify({ leases: {}, unknown: true, tonight: [SHOW] }));
-    const held = guard.leaseSkipReason(SHOW, { file: marker, env, now });
-    assert.equal(held.unknown, true, 'tonight\'s show waits');
-    assert.match(guard.describe(held), /press night is tonight/);
-    assert.equal(guard.leaseSkipReason(LATER_SHOW.id, { file: marker, env, now }), null, 'another show writes');
-    assert.deepEqual(guard.partitionLeased([SHOW, LATER_SHOW.id], { file: marker, env, now }).kept, [LATER_SHOW.id]);
-    assert.deepEqual(guard.writeBlockedShowIds({ file: marker, env, now }), { unknown: true, shows: [SHOW] });
-    assert.deepEqual(guard.leasedShowIds({ file: marker, env }), [], 'publish view names no show (old path publishes, as lane-only-markets)');
-
-    const old = path.join(dir, 'old.json'); fs.writeFileSync(old, JSON.stringify({ leases: {}, unknown: true }));
-    assert.equal(guard.leaseSkipReason(SHOW, { file: old, env, now }).unknown, true, 'a marker without a list computes tonight from shows.json');
-    assert.equal(guard.leaseSkipReason(SHOW, { file: old, env, now: PRESS_NIGHT - 2 * 86400e3 }), null, 'two days before, the same show writes');
-
+    const cases = {
+      'marker read it unset': marker(dir, 'unset.json', { laneOnly: { ok: true, value: '' } }),
+      'marker read a typo': marker(dir, 'typo.json', { laneOnly: { ok: true, value: 'brodway' } }),
+      'marker could not read it': marker(dir, 'unread.json', { laneOnly: { ok: false, value: '' } }),
+      'legacy marker, no env read': marker(dir, 'legacy.json', {}),
+    };
+    for (const [why, f] of Object.entries(cases)) {
+      assert.equal(guard.leaseSkipReason(SHOW, { file: f, env, now }), null, why);
+      assert.deepEqual(guard.writeBlockedShowIds({ file: f, env, now }), { unknown: true, shows: [], tonight: [SHOW] }, why);
+    }
     const bad = path.join(dir, 'bad.json'); fs.writeFileSync(bad, '{not json');
-    assert.equal(guard.leaseSkipReason(SHOW, { file: bad, env, now }).unknown, true, 'corrupt file = unknown: tonight waits');
-    assert.equal(guard.leaseSkipReason(LATER_SHOW.id, { file: bad, env, now }), null, 'corrupt file: another show writes');
-    assert.equal(guard.leaseSkipReason(SHOW, { file: bad, env: { OPENING_NIGHT_SHOWS_FILE: path.join(dir, 'nope.json') }, now }), null, 'no shows.json: nothing is tonight, so it writes');
+    assert.equal(guard.leaseSkipReason(SHOW, { file: bad, env, now }), null, 'corrupt file, variable unread: writes');
+    assert.equal(guard.leaseSkipReason(SHOW, { file: bad, env: { ...env, LANE_ONLY_MARKETS_READ: 'unknown', LANE_ONLY_MARKETS: 'broadway' }, now }), null,
+      'job read failed (read-lane-only-vars READ=unknown): writes');
+    assert.deepEqual(guard.leasedShowIds({ file: cases['marker read it unset'], env }), [], 'publish view names no show');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
-test('sync failure: marker names tonight atomically, exits 0; alert routing is a card only on a press night', () => {
+test('unknown + LANE_ONLY_MARKETS covers the show: tonight waits, every other show writes', () => {
+  const dir = tmp();
+  try {
+    const env = { OPENING_NIGHT_SHOWS_FILE: showsFixture(dir) };
+    const now = PRESS_NIGHT;
+    const f = marker(dir, 'covers.json', { laneOnly: COVERS });
+    const held = guard.leaseSkipReason(SHOW, { file: f, env, now });
+    assert.equal(held.unknown, true, 'tonight\'s covered show waits');
+    assert.match(guard.describe(held), /LANE_ONLY_MARKETS covers it/);
+    assert.equal(guard.leaseSkipReason(LATER_SHOW.id, { file: f, env, now }), null, 'another show writes');
+    assert.deepEqual(guard.partitionLeased([SHOW, LATER_SHOW.id], { file: f, env, now }).kept, [LATER_SHOW.id]);
+    assert.deepEqual(guard.writeBlockedShowIds({ file: f, env, now }), { unknown: true, shows: [SHOW], tonight: [SHOW] });
+    assert.deepEqual(guard.revertableShowIds({ file: f, env, now }).revert, [], 'unknown never reverts');
+    assert.equal(guard.leaseSkipReason(SHOW, { file: marker(dir, 'wE.json', { laneOnly: { ok: true, value: 'west-end' } }), env, now }), null,
+      'variable names another market: writes');
+
+    // No read in the marker: this process's job env decides (read-lane-only-vars).
+    const legacy = marker(dir, 'legacy.json', {});
+    assert.equal(guard.leaseSkipReason(SHOW, { file: legacy, env: { ...env, LANE_ONLY_MARKETS_READ: 'ok', LANE_ONLY_MARKETS: 'broadway' }, now }).unknown, true);
+    const bad = path.join(dir, 'bad.json'); fs.writeFileSync(bad, '{not json');
+    assert.equal(guard.leaseSkipReason(SHOW, { file: bad, env: { ...env, LANE_ONLY_MARKETS_READ: 'ok', LANE_ONLY_MARKETS: 'broadway' }, now }).unknown, true,
+      'corrupt file + env covers: waits');
+    assert.equal(guard.leaseSkipReason(SHOW, { file: marker(dir, 'nolist.json', { tonight: [], laneOnly: COVERS }), env, now: PRESS_NIGHT - 2 * 86400e3 }), null,
+      'two days before, the same show writes');
+    assert.equal(guard.leaseSkipReason(SHOW, { file: f, env: { OPENING_NIGHT_SHOWS_FILE: path.join(dir, 'nope.json') }, now }), null,
+      'no shows.json: the market cannot be matched, so it writes');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
+});
+
+test('sync failure: marker records tonight and the variable read atomically, exits 0; alert pages on every press night', () => {
   const dir = tmp();
   try {
     const lf = path.join(dir, 'leases.json');
-    const r = spawnSync(process.execPath, ['scripts/opening-night-lease.js', 'sync', `--remote=${path.join(dir, 'no-such-remote.git')}`], {
+    const sync = (extra) => spawnSync(process.execPath, ['scripts/opening-night-lease.js', 'sync', `--remote=${path.join(dir, 'no-such-remote.git')}`], {
       cwd: ROOT, encoding: 'utf8', timeout: 90000,
-      env: { ...process.env, OPENING_NIGHT_LEASES_FILE: lf, OPENING_NIGHT_SHOWS_FILE: path.join(dir, 'nope.json') },
+      env: { ...process.env, ...NO_VARS, OPENING_NIGHT_LEASES_FILE: lf, OPENING_NIGHT_SHOWS_FILE: path.join(dir, 'nope.json'), ...extra },
     });
+    let r = sync({});
     assert.equal(r.status, 0, r.stderr);
-    assert.match(r.stdout, /sync failed after 3 tries; tonight's show\(s\) wait \[none\], every other show writes/);
-    const m = JSON.parse(fs.readFileSync(lf, 'utf8'));
+    assert.match(r.stdout, /sync failed after 3 tries; tonight \[none\], waiting \[none\], every other show writes/);
+    let m = JSON.parse(fs.readFileSync(lf, 'utf8'));
     assert.equal(m.unknown, true);
     assert.deepEqual(m.tonight, []);
+    assert.deepEqual(m.laneOnly, { ok: false, value: '' }, 'no job read and no token: unread');
+    r = sync({ LANE_ONLY_MARKETS_READ: 'ok', LANE_ONLY_MARKETS: 'broadway' });
+    assert.equal(r.status, 0, r.stderr);
+    m = JSON.parse(fs.readFileSync(lf, 'utf8'));
+    assert.deepEqual(m.laneOnly, COVERS, 'job env read is recorded');
     assert.deepEqual(fs.readdirSync(dir).filter((n) => n.endsWith('.tmp')), [], 'no tmp file left behind');
 
     const { leaseStoreAlert } = require('../../scripts/opening-night-lease-alert.js');
-    const night = leaseStoreAlert({ unknown: true, shows: [SHOW] });
-    assert.match(night.description, new RegExp(SHOW));
-    assert.equal(leaseStoreAlert({ unknown: true, shows: [] }), null, 'nothing tonight: warning only, no ledger write');
+    const covered = leaseStoreAlert({ unknown: true, shows: [SHOW], tonight: [SHOW] });
+    assert.match(covered.description, new RegExp(`hold ${SHOW}`));
+    const shadow = leaseStoreAlert({ unknown: true, shows: [], tonight: [SHOW] });
+    assert.ok(shadow, 'a press night pages even when nothing is held');
+    assert.match(shadow.description, /old path keeps writing and publishing/);
+    assert.equal(leaseStoreAlert({ unknown: true, shows: [], tonight: [] }), null, 'nothing tonight: warning only, no ledger write');
     assert.equal(leaseStoreAlert({ unknown: false, shows: [SHOW] }), null, 'known state: no alert');
     const src = fs.readFileSync(path.join(ROOT, 'scripts/opening-night-lease.js'), 'utf8');
     assert.doesNotMatch(src, /owner-alert-router|guard-escalation/, 'the lease CLI must not reach routeAlert (alert-ledger LINEAR_API_KEY rule)');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
-test('unknown: the writer window covers a lane that starts late and runs long; the marker list is a union, not a freeze', () => {
+test('the writer window is the publish window, [embargo - 3h, embargo + 6h], on both sides of each edge', () => {
   const dir = tmp();
   try {
     const sf = showsFixture(dir);
     const env = { OPENING_NIGHT_SHOWS_FILE: sf };
     const H = 3600000;
-    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT + 8.5 * H }), [SHOW], '+8.5h: lane may still hold, tonight waits');
-    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT - 2.9 * H }), [SHOW], '-2.9h: inside');
-    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT + 9.1 * H }), [], '+9.1h: outside');
-    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT - 3.1 * H }), [], '-3.1h: outside');
-    const lf = path.join(dir, 'leases.json');
-    fs.writeFileSync(lf, JSON.stringify({ leases: {}, unknown: true, tonight: [] }));
+    const M = 60000;
+    const edges = [[-3 * H - M, false], [-3 * H, true], [6 * H, true], [6 * H + M, false], [8.5 * H, false]];
+    for (const [off, inside] of edges) {
+      const now = PRESS_NIGHT + off;
+      assert.deepEqual(guard.tonightShowIds({ file: sf, now }), inside ? [SHOW] : [], `writer ${off / H}h`);
+      assert.equal(lom.inPressNightWindow(TONIGHT_SHOW, NIGHT, now), inside, `publish ${off / H}h`);
+    }
+    const lf = marker(dir, 'empty.json', { tonight: [], laneOnly: COVERS });
     assert.equal(guard.leaseSkipReason(SHOW, { file: lf, env, now: PRESS_NIGHT }).unknown, true, 'marker written earlier with [] still holds tonight at read time');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
-test('enforce under unknown holds back only tonight\'s show changes', () => {
+function textsRepo(dir) {
+  const repo = path.join(dir, 'texts'); fs.mkdirSync(repo);
+  git(repo, 'init', '-q'); git(repo, 'config', 'user.email', 't@t'); git(repo, 'config', 'user.name', 't');
+  fs.mkdirSync(path.join(repo, SHOW)); fs.mkdirSync(path.join(repo, LATER_SHOW.id));
+  fs.writeFileSync(path.join(repo, SHOW, 'a.json'), '1'); fs.writeFileSync(path.join(repo, LATER_SHOW.id, 'a.json'), '1');
+  git(repo, 'add', '-A'); git(repo, 'commit', '-qm', 'base');
+  fs.writeFileSync(path.join(repo, SHOW, 'a.json'), '2'); fs.writeFileSync(path.join(repo, SHOW, 'new.json'), 'n');
+  fs.writeFileSync(path.join(repo, LATER_SHOW.id, 'a.json'), '2'); fs.writeFileSync(path.join(repo, LATER_SHOW.id, 'new.json'), 'n');
+  return repo;
+}
+const enforce = (repo, lf, extra = {}) => spawnSync(process.execPath, ['scripts/opening-night-lease.js', 'enforce', `--dir=${repo}`], {
+  cwd: ROOT, encoding: 'utf8', timeout: 60000, env: { ...process.env, ...NO_VARS, OPENING_NIGHT_LEASES_FILE: lf, OPENING_NIGHT_LANE_HOLDER: '', ...extra },
+});
+
+test('enforce under unknown never deletes: tonight\'s held show keeps its files (covered or not)', () => {
   const dir = tmp();
   try {
-    const repo = path.join(dir, 'texts'); fs.mkdirSync(repo);
-    git(repo, 'init', '-q'); git(repo, 'config', 'user.email', 't@t'); git(repo, 'config', 'user.name', 't');
-    fs.mkdirSync(path.join(repo, SHOW)); fs.mkdirSync(path.join(repo, LATER_SHOW.id));
-    fs.writeFileSync(path.join(repo, SHOW, 'a.json'), '1'); fs.writeFileSync(path.join(repo, LATER_SHOW.id, 'a.json'), '1');
-    git(repo, 'add', '-A'); git(repo, 'commit', '-qm', 'base');
-    fs.writeFileSync(path.join(repo, SHOW, 'a.json'), '2'); fs.writeFileSync(path.join(repo, SHOW, 'new.json'), 'n');
-    fs.writeFileSync(path.join(repo, LATER_SHOW.id, 'a.json'), '2'); fs.writeFileSync(path.join(repo, LATER_SHOW.id, 'new.json'), 'n');
-    const lf = path.join(dir, 'leases.json'); fs.writeFileSync(lf, JSON.stringify({ leases: {}, unknown: true, tonight: [SHOW] }));
-    const r = spawnSync(process.execPath, ['scripts/opening-night-lease.js', 'enforce', `--dir=${repo}`], {
-      cwd: ROOT, encoding: 'utf8', timeout: 60000, env: { ...process.env, OPENING_NIGHT_LEASES_FILE: lf, OPENING_NIGHT_LANE_HOLDER: '' },
-    });
+    for (const laneOnly of [COVERS, { ok: true, value: '' }]) {
+      const repo = textsRepo(fs.mkdtempSync(path.join(dir, 'r-')));
+      const lf = marker(dir, 'leases.json', { laneOnly });
+      const r = enforce(repo, lf);
+      assert.equal(r.status, 0, r.stderr);
+      assert.match(r.stdout, /store unknown, nothing reverted/);
+      assert.equal(fs.readFileSync(path.join(repo, SHOW, 'a.json'), 'utf8'), '2', `tonight: tracked edit kept (${laneOnly.value || 'unset'})`);
+      assert.equal(fs.existsSync(path.join(repo, SHOW, 'new.json')), true, `tonight: new file kept (${laneOnly.value || 'unset'})`);
+      assert.equal(fs.existsSync(path.join(repo, LATER_SHOW.id, 'new.json')), true, 'other show: new file kept');
+    }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
+});
+
+test('enforce under a KNOWN live lease by another holder reverts as before', () => {
+  const dir = tmp();
+  try {
+    const repo = textsRepo(dir);
+    const lf = leaseFile(dir, { [`${SHOW}|${NIGHT}`]: live('gha-1') });
+    const r = enforce(repo, lf);
     assert.equal(r.status, 0, r.stderr);
-    assert.match(r.stdout, /::error::.*held back 2 write\(s\) under tonight's show/);
-    assert.equal(fs.readFileSync(path.join(repo, SHOW, 'a.json'), 'utf8'), '1', 'tonight: tracked edit restored');
-    assert.equal(fs.existsSync(path.join(repo, SHOW, 'new.json')), false, 'tonight: new file held back');
+    assert.match(r.stdout, /::warning::.*held back 2 write\(s\) under leased show/);
+    assert.equal(fs.readFileSync(path.join(repo, SHOW, 'a.json'), 'utf8'), '1', 'leased: tracked edit restored');
+    assert.equal(fs.existsSync(path.join(repo, SHOW, 'new.json')), false, 'leased: new file held back');
     assert.equal(fs.readFileSync(path.join(repo, LATER_SHOW.id, 'a.json'), 'utf8'), '2', 'other show: edit kept');
     assert.equal(fs.existsSync(path.join(repo, LATER_SHOW.id, 'new.json')), true, 'other show: new file kept');
+    assert.match(enforce(repo, lf, { OPENING_NIGHT_LANE_HOLDER: 'gha-1' }).stdout, /0 blocked/, 'the holder itself passes through');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
