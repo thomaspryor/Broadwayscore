@@ -35,6 +35,10 @@ interface AuthContextValue {
    */
   signIn: (provider: 'google' | 'apple', source?: string, returnTo?: string) => void;
   signOut: () => Promise<void>;
+  /** Email a one-time sign-in code. `source`/`returnTo` as for signIn. */
+  sendEmailCode: (email: string, source: string, returnTo?: string) => Promise<{ error?: string }>;
+  /** Sign in with the code from that email. */
+  verifyEmailCode: (email: string, code: string, source: string, returnTo?: string) => Promise<{ error?: string }>;
   /**
    * Permanently delete the signed-in account and everything it saved (the
    * delete-account edge function), then sign out. Resolves 'deleted' on
@@ -335,6 +339,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // ─── Email sign-in with a one-time code (BRO-6575) ───────────────────
+  // signInWithOtp emails a 6-digit code (supabase/templates/
+  // sign-in-code.html) and creates the account on first use. Code only, no
+  // link: sign-in stays in this tab, whichever device reads the email.
+  const sendEmailCode = useCallback(async (email: string, source: string, returnTo?: string): Promise<{ error?: string }> => {
+    const client = await getSupabaseClient();
+    if (!client) return { error: 'Sign-in is unavailable right now. Please try again.' };
+    markSignInStarted('email', source);
+    const { error } = await client.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+    if (error) {
+      // A too-soon resend (429) is not a failed sign-in: keep the pending
+      // marker so the code already sent still counts when typed.
+      if (error.status !== 429) markSignInFailed('email', source, error.message);
+      if (error.status !== 429) reportUgcError('auth.email_send_code', { message: error.message, code: error.code || 'otp_send', status: error.status });
+      return { error: emailAuthErrorMessage(error) };
+    }
+    trackUgc('sign_in_email_code_sent', { context: source });
+    return {};
+  }, []);
+
+  const verifyEmailCode = useCallback(async (email: string, code: string, source: string, returnTo?: string): Promise<{ error?: string }> => {
+    const client = await getSupabaseClient();
+    if (!client) return { error: 'Sign-in is unavailable right now. Please try again.' };
+    const { error } = await client.auth.verifyOtp({ email, token: code, type: 'email' });
+    if (error) {
+      // Not markSignInFailed: it clears the pending sign-in, so a correct
+      // code typed next would never count as sign_in_completed.
+      trackUgc('sign_in_email_code_rejected', { context: source, reason: (error.code || error.message).slice(0, 80) });
+      return { error: emailAuthErrorMessage(error, "That code didn't work. Check it, or send a new one.") };
+    }
+    // Signed in without leaving the page (SIGNED_IN closes the modal).
+    clearReturnUrl();
+    if (returnTo) {
+      const target = safeReturnPath(returnTo);
+      if (target !== window.location.pathname + window.location.search) window.location.assign(target);
+    }
+    return {};
+  }, []);
+
   const signOut = useCallback(async () => {
     const client = await getSupabaseClient();
     if (!client) return;
@@ -412,6 +455,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signIn(provider, modalSource, modalReturnTo ?? undefined);
   }, [signIn, modalSource, modalReturnTo]);
 
+  const handleModalSendEmailCode = useCallback(
+    (email: string) => sendEmailCode(email, modalSource, modalReturnTo ?? undefined),
+    [sendEmailCode, modalSource, modalReturnTo],
+  );
+  const handleModalVerifyEmailCode = useCallback(
+    (email: string, code: string) => verifyEmailCode(email, code, modalSource, modalReturnTo ?? undefined),
+    [verifyEmailCode, modalSource, modalReturnTo],
+  );
+
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
     setModalReturnTo(null);
@@ -427,6 +479,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         signIn,
         signOut,
+        sendEmailCode,
+        verifyEmailCode,
         deleteAccount,
         showSignIn,
       }}
@@ -436,6 +490,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isOpen={modalOpen}
         onClose={handleModalClose}
         onSignIn={handleModalSignIn}
+        onSendEmailCode={handleModalSendEmailCode}
+        onVerifyEmailCode={handleModalVerifyEmailCode}
         context={modalContext}
         loading={signInLoading}
         error={signInError}
@@ -451,9 +507,30 @@ const DEFAULT_AUTH: AuthContextValue = {
   isAuthenticated: false,
   signIn: () => {},
   signOut: async () => {},
+  sendEmailCode: async () => ({ error: 'Sign-in is unavailable right now.' }),
+  verifyEmailCode: async () => ({ error: 'Sign-in is unavailable right now.' }),
   deleteAccount: async () => 'failed',
   showSignIn: () => {},
 };
+
+/** Plain words for the GoTrue errors email sign-in can hit. */
+export function emailAuthErrorMessage(
+  error: { message?: string; status?: number; code?: string },
+  fallback = 'Something went wrong sending your code. Please try again.',
+): string {
+  const msg = error.message || '';
+  const code = error.code || '';
+  // GoTrue error codes first; message text only for older servers.
+  if (code === 'over_email_send_rate_limit' || /only request this after/i.test(msg)) {
+    return 'Please wait a minute before asking for another code.';
+  }
+  if (code === 'over_request_rate_limit' || error.status === 429) return 'Too many tries. Please wait a few minutes and try again.';
+  if (code === 'email_address_invalid' || /validate email|email address .* invalid/i.test(msg)) return 'Enter a valid email address.';
+  if (code === 'otp_expired' || /token has expired or is invalid/i.test(msg)) {
+    return "That code didn't work. Check it, or send a new one.";
+  }
+  return fallback;
+}
 
 export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { prepareAppleSignIn } from '@/lib/apple-auth';
+import EmailCodeForm, { type EmailAuthResult } from './EmailCodeForm';
 
 type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic';
 
@@ -11,6 +12,9 @@ interface SignInModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSignIn: (provider: 'google' | 'apple') => void;
+  /** Email sign-in with a one-time code (BRO-6575). Hidden when omitted. */
+  onSendEmailCode?: (email: string) => Promise<EmailAuthResult>;
+  onVerifyEmailCode?: (email: string, code: string) => Promise<EmailAuthResult>;
   context?: SignInContext;
   loading?: boolean;
   error?: string | null;
@@ -32,8 +36,13 @@ const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   generic: 'Track shows, rate performances, and build your theater diary.',
 };
 
-export default function SignInModal({ isOpen, onClose, onSignIn, context = 'generic', loading = false, error = null }: SignInModalProps) {
+export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode, onVerifyEmailCode, context = 'generic', loading = false, error = null }: SignInModalProps) {
   const [appleReady, setAppleReady] = useState(false);
+  const [emailMode, setEmailMode] = useState(false);
+  // Every opening starts at the provider buttons.
+  useEffect(() => {
+    if (!isOpen) setEmailMode(false);
+  }, [isOpen]);
   const [prepareError, setPrepareError] = useState<string | null>(null);
   // Set Apple up while the box is open, so the tap opens its popup directly
   // (Safari blocks a popup that opens after any waiting).
@@ -69,7 +78,15 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
           {CONTEXT_SUBTEXT[context]}
         </p>
 
-        {/* Sign in buttons */}
+        {emailMode && onSendEmailCode && onVerifyEmailCode ? (
+          <EmailCodeForm
+            onSendCode={onSendEmailCode}
+            onVerifyCode={onVerifyEmailCode}
+            onBack={() => setEmailMode(false)}
+            disabled={loading}
+          />
+        ) : (
+        /* Sign in buttons: Google and Apple first, email third (owner, 2026-10-30) */
         <div className="space-y-3">
           {/* Google */}
           <button
@@ -100,7 +117,30 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
             </svg>
             {loading ? 'Signing in...' : 'Continue with Apple'}
           </button>
+
+          {onSendEmailCode && onVerifyEmailCode && (
+            <>
+              <div className="flex items-center gap-3 pt-1" aria-hidden="true">
+                <div className="h-px flex-1 bg-white/10" />
+                <span className="text-xs text-gray-500">or</span>
+                <div className="h-px flex-1 bg-white/10" />
+              </div>
+              <button
+                type="button"
+                onClick={() => setEmailMode(true)}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-transparent text-gray-200 font-semibold text-sm rounded-lg border border-white/20 hover:bg-surface-overlay disabled:opacity-50 transition-colors"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="M3 7l9 6 9-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Continue with email
+              </button>
+            </>
+          )}
         </div>
+        )}
 
         {(error || prepareError) && (
           <p role="alert" className="mt-4 text-sm text-score-skip">
