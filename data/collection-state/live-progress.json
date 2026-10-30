@@ -1,31 +1,19 @@
 {
-  "updatedAt": "2026-10-30T16:28:49.059Z",
-  "processed": 11,
-  "failed": 2,
-  "successRate": "84.6%",
+  "updatedAt": "2026-10-30T17:10:00.733Z",
+  "processed": 68,
+  "failed": 42,
+  "successRate": "61.8%",
   "tierBreakdown": {
-    "playwright": 2,
-    "amp": 2,
-    "browserbase": 2,
+    "playwright": 39,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 3,
+    "scrapingdog": 5,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 4
+    "archiveToday": 8,
+    "archive": 16
   },
-  "browserbaseSessions": 1,
-  "recentActivity": [
-    {
-      "t": "2026-10-30T16:27:32.434Z",
-      "event": "bb-session",
-      "session": "4282e27e",
-      "url": "https://www.wsj.com/arts-culture/fine-art/george-lucass-museum-confuses-illustra"
-    },
-    {
-      "t": "2026-10-30T16:27:32.999Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
