@@ -141,6 +141,10 @@ const THRESHOLDS = {
   saveFailureDevices: 2,
   errorSpike: 10,           // non-quiet ugc_error events
   errorSpikeDevices: 3,
+  // Email sign-in (BRO-6575/BRO-6644): a code request for a new address makes
+  // an account that stays never-signed-in until the code is typed. A few a day
+  // are people who gave up; this many in 24 hours is a script asking for codes.
+  unfinishedEmailCodes: 25,
 };
 
 const ALERT_KEYS = {
@@ -149,7 +153,46 @@ const ALERT_KEYS = {
   errorSpike: 'ugc:error-spike',
   signInRedirect: 'ugc:signin-redirect-broken:', // + provider
   signInCheckBlind: 'ugc:signin-check-blind:', // + provider; digest: the daily check could not tell
+  emailCodeFlood: 'ugc:email-code-flood',
 };
+
+/**
+ * Email-code sign-in health from the slim users list (BRO-6644). An address
+ * that asked for a code and never typed it in is an email-provider account
+ * with no lastSignInAt. Real people only (owner and test accounts dropped).
+ */
+function summarizeEmailCodes(allUsers, now = Date.now()) {
+  let requested24h = 0, unfinished24h = 0, unfinished3h = 0, unfinishedTotal = 0;
+  for (const u of allUsers || []) {
+    if ((u.kind && u.kind !== 'person') || u.provider !== 'email') continue;
+    const unfinished = !u.lastSignInAt;
+    if (unfinished) unfinishedTotal++;
+    const c = u.createdAt ? Date.parse(u.createdAt) : NaN;
+    if (!Number.isFinite(c)) continue;
+    if (now - c < DAY) {
+      requested24h++;
+      if (unfinished) unfinished24h++;
+    }
+    if (unfinished && now - c < 3 * 3600000) unfinished3h++;
+  }
+  return { requested24h, unfinished24h, unfinished3h, unfinishedTotal };
+}
+
+/** The bot-flood alert, or null when the account list could not be read. */
+function evaluateEmailCodeAlert(emailCodes) {
+  if (!emailCodes) return null;
+  const n = emailCodes.unfinished24h;
+  return {
+    key: ALERT_KEYS.emailCodeFlood,
+    firing: n >= THRESHOLDS.unfinishedEmailCodes,
+    resolvable: n < THRESHOLDS.unfinishedEmailCodes,
+    title: 'Email sign-in codes may be requested by bots',
+    description: `In the last 24 hours ${n} new email addresses asked for a sign-in code and never used it` +
+      ` (${emailCodes.unfinished3h} in the last 3 hours, out of ${emailCodes.requested24h} email sign-ups).` +
+      ' Real people only finish when they type the code, so a pile of unfinished ones usually means a script.' +
+      ' The fix is the robot check on the sign-in box (card BRO-6642).',
+  };
+}
 
 const sqlList = (xs) => xs.map((x) => `'${x}'`).join(', ');
 const utcDay = 'toDate(toTimeZone(timestamp, \'UTC\'))';
@@ -312,8 +355,12 @@ function slimUsers(rawUsers, { ownerEmail, ownerEmails } = {}) {
  */
 function summarizeAccounts(allUsers, activity, now = Date.now(), days = 60) {
   // Every number below is real people only; the owner's and fake accounts are counted, not included.
-  const users = allUsers.filter((u) => !u.kind || u.kind === 'person');
+  // An email address that asked for a code and never used it is not an
+  // account anyone made (BRO-6644): counted under excluded, not as a sign-up.
+  const unfinishedEmail = (u) => u.provider === 'email' && !u.lastSignInAt;
+  const users = allUsers.filter((u) => (!u.kind || u.kind === 'person') && !unfinishedEmail(u));
   const excluded = {
+    unfinishedEmailCode: allUsers.filter((u) => (!u.kind || u.kind === 'person') && unfinishedEmail(u)).length,
     yours: allUsers.filter((u) => u.kind === 'owner').length,
     test: allUsers.filter((u) => u.kind === 'test').length,
     prelaunch: allUsers.filter((u) => u.kind === 'prelaunch').length,
@@ -369,6 +416,7 @@ function summarizeAccounts(allUsers, activity, now = Date.now(), days = 60) {
   return {
     total: users.length,
     excluded,
+    emailCodes: summarizeEmailCodes(allUsers, now),
     // One row per real account, newest first: dates and sign-in method only.
     people: users
       .map((u) => ({
@@ -527,6 +575,10 @@ function weeklySummaryLines(d) {
   const ex = a.excluded || {};
   const skipped = [ex.yours ? `${ex.yours} of yours` : '', ex.test ? `${ex.test} test` : '', ex.prelaunch ? `${ex.prelaunch} from before launch` : ''].filter(Boolean).join(', ');
   lines.push(`${plural(a.total, 'real account', 'real accounts')} in total, ${a.newLast7} new this past week${skipped ? ` (not counting ${skipped})` : ''}.`);
+  const e = a.emailCodes;
+  if (e && (e.requested24h || e.unfinishedTotal)) {
+    lines.push(`Email sign-in, last 24 hours: ${e.requested24h} asked for a code, ${e.unfinished24h} never used it (${e.unfinishedTotal} unused in total, not counted as accounts).`);
+  }
   if (d.active) lines.push(`${plural(d.active.wau, 'signed-in person', 'signed-in people')} used the site this week (${d.active.dau} in the last day, ${d.active.mau} in the last 30 days).`);
   const seenPart = a.withSeen ? `, ${a.withSeen} marked shows as seen without stars` : '';
   lines.push(`${plural(a.withAnything, 'account has', 'accounts have')} saved something: ${a.withRating} rated a show, ${a.withWatchlist} used the watchlist, ${a.withList} made a list${seenPart}.`);
@@ -552,6 +604,8 @@ function weeklySummaryLines(d) {
 }
 
 module.exports = {
+  summarizeEmailCodes,
+  evaluateEmailCodeAlert,
   TEST_EMAIL_SUFFIX,
   ACTION_LABELS,
   ACTIVATION_EVENTS,

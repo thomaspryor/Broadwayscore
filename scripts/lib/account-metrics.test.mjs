@@ -226,7 +226,7 @@ test('summarizeAccounts counts real people only and reports what it left out', (
   ], { ownerEmail: 'janedoe@gmail.com' });
   const a = m.summarizeAccounts(users, { ratings: [{ user_id: 'p' }, { user_id: 'o' }], watchlist: [], lists: [] }, NOW);
   assert.equal(a.total, 1);
-  assert.deepEqual(a.excluded, { yours: 1, test: 1, prelaunch: 0 });
+  assert.deepEqual(a.excluded, { unfinishedEmailCode: 0, yours: 1, test: 1, prelaunch: 0 });
   assert.equal(a.withRating, 1);
   assert.equal(a.people.length, 1);
   assert.deepEqual(Object.keys(a.people[0]).sort(), ['joined', 'lastSignIn', 'provider', 'saved']);
@@ -319,6 +319,41 @@ test('accounts made before the public launch are counted as pre-launch, not peop
   assert.deepEqual(users.map((u) => u.kind), ['prelaunch', 'person', 'test']);
   const a = m.summarizeAccounts(users, { ratings: [{ user_id: 'old' }], watchlist: [], lists: [] }, Date.parse('2026-10-08T00:00:00Z'));
   assert.equal(a.total, 1);
-  assert.deepEqual(a.excluded, { yours: 0, test: 1, prelaunch: 1 });
+  assert.deepEqual(a.excluded, { unfinishedEmailCode: 0, yours: 0, test: 1, prelaunch: 1 });
   assert.equal(a.withRating, 0, "a pre-launch account's rating is not a real person's");
+});
+
+// BRO-6644: email sign-in codes requested and never used (bot flood signal).
+test('summarizeEmailCodes counts unused codes by window, real people only', () => {
+  const NOW = Date.parse('2026-10-30T12:00:00Z');
+  const h = (n) => new Date(NOW - n * 3600000).toISOString();
+  const users = [
+    { id: 'a', kind: 'person', provider: 'email', createdAt: h(1), lastSignInAt: null },
+    { id: 'b', kind: 'person', provider: 'email', createdAt: h(5), lastSignInAt: null },
+    { id: 'c', kind: 'person', provider: 'email', createdAt: h(2), lastSignInAt: h(2) },
+    { id: 'd', kind: 'person', provider: 'email', createdAt: h(50), lastSignInAt: null },
+    { id: 'e', kind: 'person', provider: 'google', createdAt: h(1), lastSignInAt: null },
+    { id: 'f', kind: 'test', provider: 'email', createdAt: h(1), lastSignInAt: null },
+  ];
+  assert.deepEqual(m.summarizeEmailCodes(users, NOW), { requested24h: 3, unfinished24h: 2, unfinished3h: 1, unfinishedTotal: 3 });
+});
+
+test('unused email codes are not counted as accounts', () => {
+  const NOW = Date.parse('2026-10-30T12:00:00Z');
+  const users = [
+    { id: 'a', kind: 'person', provider: 'email', createdAt: '2026-10-30T10:00:00Z', lastSignInAt: null },
+    { id: 'c', kind: 'person', provider: 'email', createdAt: '2026-10-30T10:00:00Z', lastSignInAt: '2026-10-30T10:01:00Z' },
+  ];
+  const s = m.summarizeAccounts(users, { ratings: [], watchlist: [], lists: [] }, NOW);
+  assert.equal(s.total, 1);
+  assert.equal(s.excluded.unfinishedEmailCode, 1);
+  assert.equal(s.emailCodes.unfinished24h, 1);
+});
+
+test('evaluateEmailCodeAlert fires at the threshold and needs the account list', () => {
+  const at = (n) => m.evaluateEmailCodeAlert({ requested24h: n, unfinished24h: n, unfinished3h: 0, unfinishedTotal: n });
+  assert.equal(at(m.THRESHOLDS.unfinishedEmailCodes - 1).firing, false);
+  assert.equal(at(m.THRESHOLDS.unfinishedEmailCodes).firing, true);
+  assert.equal(at(m.THRESHOLDS.unfinishedEmailCodes).key, 'ugc:email-code-flood');
+  assert.equal(m.evaluateEmailCodeAlert(null), null, 'no account list, no verdict either way');
 });
