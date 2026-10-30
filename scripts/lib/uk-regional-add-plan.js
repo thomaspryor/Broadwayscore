@@ -8,7 +8,9 @@
  * the Guardian standfirst venue tidied ("Bolton Octagon" -> "Bolton Octagon,
  * Bolton"). id: <title>-<house>-regional-<year>, the shape the Guardian
  * flagship trigger mints (king-lear-royal-exchange-regional-2026). Rows whose
- * id, or city + title + year, already exist in shows.json are skipped.
+ * id, or city + title + year, already exist in shows.json are skipped, as are
+ * rows at the same house whose title matches with and/the dropped and whose
+ * run opened from 200 days before to 45 days after the review (BRO-6578).
  *
  *   node scripts/uk-regional-add-plan.js --hub=yorkshire --limit=5 --out=/tmp/a.json
  *   node scripts/uk-regional-add-plan.js --urls=<guardianUrl>,... --out=...   # explicit rows

@@ -61,9 +61,14 @@ test('skips a production whose title differs only by and/& or opens in the previ
   const lear = [{ id: 'king-lear-crucible-regional-2025', title: 'The King Lear', city: 'sheffield-uk', venue: 'Crucible Theatre, Sheffield', openingDate: '2025-12-20' }];
   assert.match(buildAction(row({ date: '2026-01-08' }), lear).skip, /exists/);
   // Another house in the same city is a different production.
-  const octagon = [{ id: 'king-lear-octagon-regional-2025', title: 'The King Lear', city: 'sheffield-uk', venue: 'Lyceum Theatre, Sheffield', openingDate: '2025-12-20' }];
-  assert.ok(buildAction(row({ date: '2026-01-08' }), octagon).action);
-  // A revival two years on is a new production.
-  const old = [{ id: 'king-lear-crucible-regional-2024', title: 'King Lear', city: 'sheffield-uk', openingDate: '2024-03-01' }];
-  assert.ok(buildAction(row(), old).action);
+  const lyceum = [{ id: 'king-lear-lyceum-regional-2025', title: 'The King Lear', city: 'sheffield-uk', venue: 'Lyceum Theatre, Sheffield', openingDate: '2025-12-20' }];
+  assert.ok(buildAction(row({ date: '2026-01-08' }), lyceum).action);
+  // A same-house run that opened over 200 days before the review is a different production.
+  const earlier = [{ id: 'king-lear-crucible-regional-2025', title: 'The King Lear', city: 'sheffield-uk', venue: 'Crucible Theatre, Sheffield', openingDate: '2025-12-30' }];
+  assert.ok(buildAction(row(), earlier).action, '250 days before');
+  assert.match(buildAction(row({ date: '2026-07-10' }), earlier).skip, /exists/, '192 days before');
+  // No opening date: fall back to the id year.
+  const undated = (y) => [{ id: `king-lear-crucible-regional-${y}`, title: 'The King Lear', city: 'sheffield-uk', venue: 'Crucible Theatre, Sheffield' }];
+  assert.match(buildAction(row(), undated(2026)).skip, /exists/);
+  assert.ok(buildAction(row(), undated(2024)).action);
 });
