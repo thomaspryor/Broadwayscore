@@ -1,0 +1,117 @@
+{
+  "issueNumber": "bro-6640",
+  "planId": "30cc2637-5de2-49d9-80f0-1d2c6aaa6e96",
+  "status": "pending",
+  "createdAt": "2026-10-30T17:16:54.826Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear 5 CV/cross-market false wrongProduction flags on Off-Broadway reviews (each text read; venue matches the show)",
+    "steps": [
+      "angry-alan-off-broadway-2025/culturesauce--thom-geier.json: wrongProductionManualClear",
+      "angry-alan-off-broadway-2025/culturesauce--thom-geier.json: wrongProduction",
+      "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json: wrongProductionManualClear",
+      "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json: wrongProduction",
+      "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json: wrongProductionManualClear",
+      "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json: wrongProduction",
+      "bella-bella-off-broadway-2019/timeout--adam-feldman.json: wrongProductionManualClear",
+      "bella-bella-off-broadway-2019/timeout--adam-feldman.json: wrongProduction",
+      "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json: allowCrossMarket",
+      "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json: wrongProductionManualClear",
+      "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "angry-alan-off-broadway-2025/culturesauce--thom-geier.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": "BRO-6640: text names Studio Seaview (the show's venue) and Krasinski as the lead; CV doubted the casting only",
+        "description": "angry-alan-off-broadway-2025/culturesauce--thom-geier.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angry-alan-off-broadway-2025/culturesauce--thom-geier.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "angry-alan-off-broadway-2025/culturesauce--thom-geier.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": "BRO-6640: text says it opened at Brooklyn's Theatre for a New Audience, which is the show's venue (Polonsky, Fort Greene)",
+        "description": "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": "BRO-6640: Manhattan Theatre Club world premiere; MTC's Off-Broadway house is New York City Center Stage I, the show's venue",
+        "description": "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bella-bella-off-broadway-2019/timeout--adam-feldman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": "BRO-6640: credits Manhattan Theatre Club (Off Broadway), i.e. City Center Stage I, the show's venue; same opening date",
+        "description": "bella-bella-off-broadway-2019/timeout--adam-feldman.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bella-bella-off-broadway-2019/timeout--adam-feldman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "bella-bella-off-broadway-2019/timeout--adam-feldman.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json",
+        "field": "allowCrossMarket",
+        "oldValue": null,
+        "newValue": true,
+        "description": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json: allowCrossMarket"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": "BRO-6640: Telegraph NYC critic reviewing the world premiere at The Shed, the show's venue, one day after opening",
+        "description": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json: wrongProduction"
+      }
+    ]
+  }
+}
