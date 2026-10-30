@@ -3121,19 +3121,19 @@
   },
   {
     "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-6656",
-    "description": "This condition already has an open tracker (BRO-6656); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 30 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 30 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41110116852",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41112083724",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-6656",
+    "model": "opus",
+    "tracked": null,
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41110116852)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41112083724)"
       },
       {
         "name": "Previous failed run",
@@ -3148,7 +3148,7 @@
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-30T19:48:32.334Z"
+    "queuedAt": "2026-10-30T19:49:00.400Z"
   },
   {
     "conditionKey": "ob-venue-go-live:the-unraveling-off-broadway-2027",
