@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-30T21:58:48.454Z",
+  "generated": "2026-10-30T22:24:21.316Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 45,
+  "count": 44,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -310,13 +310,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "oslo-2017",
-      "loserFile": "theater-scene--david-kaufman.json",
-      "targetFile": "theater-scene--cynthia-allen.json",
-      "reason": "orphaned-duplicate-heal: theater-scene--cynthia-allen.json was flagged invalid after theater-scene--david-kaufman.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }

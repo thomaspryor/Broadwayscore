@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-30T22:07:58.091Z",
+  "timestamp": "2026-10-30T22:33:22.692Z",
   "stats": {
-    "totalReviews": 72321,
-    "alreadyFlagged": 22359,
+    "totalReviews": 72328,
+    "alreadyFlagged": 22360,
     "dateGuardCatches": 229,
-    "directorMismatch": 2933,
-    "tvFilmSignals": 2034,
-    "londonSignals": 3407,
+    "directorMismatch": 2935,
+    "tvFilmSignals": 2035,
+    "londonSignals": 3408,
     "offBroadwaySignals": 645,
-    "yearMismatch": 300,
+    "yearMismatch": 299,
     "noPublishDate": 8840
   },
   "findings": [
@@ -18245,6 +18245,19 @@
       ]
     },
     {
+      "showId": "evening-at-the-talk-house-off-broadway-2017",
+      "file": "newsday--linda-winer.json",
+      "publishDate": "2017-02-16",
+      "url": "https://www.newsday.com/entertainment/theater/evening-at-the-talk-house-review-a-grim-theater-party-indeed-o50667",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 5\""
+        }
+      ]
+    },
+    {
       "showId": "every-brilliant-thing-2026",
       "file": "ew--dalton-ross.json",
       "score": 86,
@@ -25290,7 +25303,7 @@
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 82,
       "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QAXRCO",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42184,6 +42197,34 @@
     },
     {
       "showId": "oslo-off-broadway-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "July 12, 2016",
+      "url": "http://www.hollywoodreporter.com/review/oslo-theater-review-909909",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "oslo-off-broadway-2016",
+      "file": "njcom--christopher-kelly.json",
+      "score": null,
+      "publishDate": "July 11, 2016",
+      "url": "http://www.nj.com/entertainment/index.ssf/2016/07/oslo_play_lincoln_center_theater_review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "oslo-off-broadway-2016",
       "file": "nytimes--ben-brantley.json",
       "score": null,
       "publishDate": "July 11, 2016",
@@ -42840,19 +42881,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2027 (3x) more than 2025 (0x). 2027 matches production: paddington-the-musical-2026"
-        }
-      ]
-    },
-    {
-      "showId": "paddington-the-musical-west-end-2025",
-      "file": "london-theatre-reviews--unknown.json",
-      "publishDate": "2026-10-29",
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29482",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2027 (2x) more than 2025 (0x). 2027 matches production: paddington-the-musical-2026"
         }
       ]
     },
@@ -73564,7 +73592,7 @@
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 78,
       "publishDate": null,
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-IVH5U",
+      "url": null,
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -114130,6 +114158,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 86d before show (October 30, 2015 vs 2016-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "britishtheatrecom--sophie-hartley.json",
+      "score": null,
+      "publishDate": "2025-11-22",
+      "url": "https://www.britishtheatre.com/posts/hunger-games-on-stage-london-guide",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
