@@ -31829,13 +31829,13 @@
       "title": "Placeholder synopsis on Tosca",
       "firstSeen": "2026-10-30T00:14:57.578Z",
       "incidentOpenedAt": "2026-10-30T00:14:57.578Z",
-      "lastSeen": "2026-10-30T14:17:24.641Z",
+      "lastSeen": "2026-10-30T17:23:12.095Z",
       "lastNotifiedAt": "2026-10-30T00:14:57.578Z",
       "lastSurfacedAt": "2026-10-30T00:14:57.578Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-revival-unverified-tosca-off-broadway-2026": {
       "status": "open",
@@ -31843,13 +31843,13 @@
       "title": "Unverified revival on Tosca",
       "firstSeen": "2026-10-30T00:14:57.596Z",
       "incidentOpenedAt": "2026-10-30T00:14:57.596Z",
-      "lastSeen": "2026-10-30T14:17:24.656Z",
+      "lastSeen": "2026-10-30T17:23:12.112Z",
       "lastNotifiedAt": "2026-10-30T00:14:57.596Z",
       "lastSurfacedAt": "2026-10-30T00:14:57.596Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-6553-cost-row": {
       "status": "resolved",
@@ -32096,7 +32096,7 @@
       "silentRefires": 3
     },
     "opening-night-sla:pages-stuck:medea-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Opening-night reviews stuck ≥60 min: medea-off-broadway-2026 (1)",
       "firstSeen": "2026-10-30T07:14:22.431Z",
@@ -32107,7 +32107,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6593",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-30T17:23:16.926Z"
     },
     "test-yml:red:Unit Tests:ae3e74cd": {
       "status": "resolved",
@@ -32303,13 +32304,13 @@
       "title": "Auto-remediation gave up on the-lives-of-others-west-end-2026",
       "firstSeen": "2026-10-30T10:59:59.925Z",
       "incidentOpenedAt": "2026-10-30T10:59:59.925Z",
-      "lastSeen": "2026-10-30T14:17:24.612Z",
+      "lastSeen": "2026-10-30T17:23:12.065Z",
       "lastNotifiedAt": "2026-10-30T10:59:59.925Z",
       "lastSurfacedAt": "2026-10-30T10:59:59.925Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-empty-cast:tosca-off-broadway-2026": {
       "status": "open",
@@ -32317,13 +32318,13 @@
       "title": "Auto-remediation gave up on tosca-off-broadway-2026",
       "firstSeen": "2026-10-30T10:59:59.963Z",
       "incidentOpenedAt": "2026-10-30T10:59:59.963Z",
-      "lastSeen": "2026-10-30T14:17:24.626Z",
+      "lastSeen": "2026-10-30T17:23:12.080Z",
       "lastNotifiedAt": "2026-10-30T10:59:59.963Z",
       "lastSurfacedAt": "2026-10-30T10:59:59.963Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-t1-missing:a-few-good-men-2026": {
       "status": "open",
@@ -32331,13 +32332,13 @@
       "title": "Auto-remediation gave up on a-few-good-men-2026",
       "firstSeen": "2026-10-30T11:11:57.337Z",
       "incidentOpenedAt": "2026-10-30T11:11:57.337Z",
-      "lastSeen": "2026-10-30T14:33:12.120Z",
+      "lastSeen": "2026-10-30T17:23:12.127Z",
       "lastNotifiedAt": "2026-10-30T11:11:57.337Z",
       "lastSurfacedAt": "2026-10-30T11:11:57.337Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-6417-reply-voice": {
       "status": "resolved",
@@ -32413,13 +32414,13 @@
       "title": "Auto-remediation gave up on the-heart-off-broadway-2026",
       "firstSeen": "2026-10-30T14:14:15.088Z",
       "incidentOpenedAt": "2026-10-30T14:14:15.088Z",
-      "lastSeen": "2026-10-30T14:17:24.699Z",
+      "lastSeen": "2026-10-30T17:23:13.821Z",
       "lastNotifiedAt": "2026-10-30T14:14:15.088Z",
       "lastSurfacedAt": "2026-10-30T14:14:15.088Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast:overdue:a-few-good-men-2026": {
       "status": "open",
@@ -32590,6 +32591,19 @@
       "lastSeen": "2026-10-30T16:47:06.841Z",
       "lastNotifiedAt": "2026-10-30T16:47:06.841Z",
       "lastSurfacedAt": "2026-10-30T16:47:06.841Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-the-moth-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on The Moth",
+      "firstSeen": "2026-10-30T17:23:13.803Z",
+      "incidentOpenedAt": "2026-10-30T17:23:13.803Z",
+      "lastSeen": "2026-10-30T17:23:13.803Z",
+      "lastNotifiedAt": "2026-10-30T17:23:13.803Z",
+      "lastSurfacedAt": "2026-10-30T17:23:13.803Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
