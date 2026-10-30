@@ -371,7 +371,7 @@ test('BRO-5488: an opt-out name not in DEDUPE_OPT_OUTS throws before any API cal
 test('BRO-5488: every dedupe opt-out in the repo is on the allowed list, and the list is exactly these', async () => {
   const { DEDUPE_OPT_OUTS } = require('./card-dedupe.js');
   // Adding a name here is a reviewed decision: the filer must group its own filings.
-  assert.deepEqual(Object.keys(DEDUPE_OPT_OUTS).sort(), ['alert-router', 'auto-fix-first', 'digest-autofix', 'posthog-friction', 'rollup', 'sentry-triage']);
+  assert.deepEqual(Object.keys(DEDUPE_OPT_OUTS).sort(), ['alert-router', 'auto-fix-first', 'digest-autofix', 'posthog-friction', 'press-night-grade', 'rollup', 'sentry-triage']);
   for (const reason of Object.values(DEDUPE_OPT_OUTS)) assert.ok(reason.length >= 30, 'each opt-out carries its reason');
   const fs = require('fs'); const path = require('path');
   const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
