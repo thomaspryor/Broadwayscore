@@ -26,6 +26,7 @@ const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-n
 const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
+const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
 function isRegisteredOutletId(id) {
@@ -142,6 +143,9 @@ async function main() {
 
   for (let i = 0; i < entries.length; i++) {
     let { url, outletOverride } = entries[i];
+    // A Wayback snapshot url is fetched as given but stored under the original article url (BRO-6448).
+    const { fetchUrl, url: unwrappedUrl } = unwrapWaybackUrl(url);
+    url = unwrappedUrl;
     const prefix = `[${i + 1}/${entries.length}]`;
 
     // Resolve outlet
@@ -184,7 +188,7 @@ async function main() {
     if (fetchPage && !noFetch) {
       try {
         if (verbose) console.log(`    Fetching text...`);
-        const result = await fetchPage(url);
+        const result = await fetchPage(fetchUrl);
         if (result && result.content) {
           fetchMethod = result.source;
           // Extract main article text from outlet HTML rather than storing
