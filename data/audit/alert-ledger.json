@@ -245,10 +245,10 @@
       "disposition": "auto",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-30T19:49:00.398Z",
-      "lastSeen": "2026-10-30T20:33:23.764Z",
-      "lastNotifiedAt": "2026-10-30T19:49:00.398Z",
-      "lastSurfacedAt": "2026-10-30T19:49:00.398Z",
+      "incidentOpenedAt": "2026-10-30T19:57:21.546Z",
+      "lastSeen": "2026-10-30T20:33:42.166Z",
+      "lastNotifiedAt": "2026-10-30T19:57:21.546Z",
+      "lastSurfacedAt": "2026-10-30T19:57:21.546Z",
       "notifyCount": 191,
       "cardId": null,
       "linearIdentifier": "BRO-6656",
@@ -32779,6 +32779,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:64c11b72": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency)",
+      "firstSeen": "2026-10-30T20:33:40.263Z",
+      "incidentOpenedAt": "2026-10-30T20:33:40.263Z",
+      "lastSeen": "2026-10-30T20:33:40.263Z",
+      "lastNotifiedAt": "2026-10-30T20:33:40.263Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6660",
+      "dispatch": {
+        "requestedAt": "2026-10-30T20:33:40.263Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41119666955",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41119666955"
+      }
     },
     "land:land/bro-6519-land-lock": {
       "status": "open",
