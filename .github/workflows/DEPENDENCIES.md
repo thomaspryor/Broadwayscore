@@ -333,8 +333,8 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `BLOOMBERG_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BLOOMBERG_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BRIGHTDATA_SERP_ZONE` | 1 cross-repo writers (of 2 workflows using it): `commercial-rss-poll.yml` |
-| `BRIGHTDATA_TOKEN` | 75 cross-repo writers (of 102 workflows using it) |
-| `BRIGHTDATA_ZONE` | 69 cross-repo writers (of 94 workflows using it) |
+| `BRIGHTDATA_TOKEN` | 75 cross-repo writers (of 103 workflows using it) |
+| `BRIGHTDATA_ZONE` | 69 cross-repo writers (of 95 workflows using it) |
 | `BROWSERBASE_API_KEY` | 17 cross-repo writers (of 21 workflows using it) |
 | `BROWSERBASE_PROJECT_ID` | 17 cross-repo writers (of 21 workflows using it) |
 | `COOKIES_BUNDLE_1` | 18 cross-repo writers (of 20 workflows using it) |
@@ -366,7 +366,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GUARDIAN_API_KEY` | 11 cross-repo writers (of 13 workflows using it) |
 | `HTML_HANDOFF_PRIVATE_KEY` | 1 cross-repo writers (of 2 workflows using it): `execute-approved-fix.yml` |
 | `LANE_RECORDING_KEY` | 1 cross-repo writers (of 2 workflows using it): `opening-night-lane-live.yml` |
-| `LINEAR_API_KEY` | 30 cross-repo writers (of 85 workflows using it) |
+| `LINEAR_API_KEY` | 30 cross-repo writers (of 86 workflows using it) |
 | `MEZZANINE_APP_ID` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
@@ -389,8 +389,8 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `RESEND_API_KEY` | 72 cross-repo writers (of 152 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
 | `REVIEW_TEXTS_TOKEN` | 140 cross-repo writers (of 252 workflows using it) |
-| `SCRAPINGBEE_API_KEY` | 79 cross-repo writers (of 106 workflows using it) |
-| `SCRAPINGDOG_API_KEY` | 82 cross-repo writers (of 108 workflows using it) |
+| `SCRAPINGBEE_API_KEY` | 79 cross-repo writers (of 107 workflows using it) |
+| `SCRAPINGDOG_API_KEY` | 82 cross-repo writers (of 109 workflows using it) |
 | `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 9 workflows using it): `update-mezzanine.yml` |
 | `THEATR_REFRESH_TOKEN` | 1 cross-repo writers (of 1 workflows using it): `update-theatr.yml` |
 | `TR_EMAIL` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |
