@@ -342,3 +342,26 @@ test('shouldRewriteRehearsalRecord handles missing, unreadable and future record
   assert.equal(rh.shouldRewriteRehearsalRecord({ at: '2026-10-27T00:00:00Z', pass: true }, rec, { now }), true);
   assert.equal(rh.shouldRewriteRehearsalRecord({ at: '2026-10-25T23:00:00Z', pass: true }, rec, { now }), false);
 });
+
+test('BRO-5201: the rehearsal runs the production adapter list, and an adapter error the fixture did not plan fails it', async () => {
+  const { laneAdapters } = require('../../scripts/lib/opening-night-lane/adapters.js');
+  const fixture = buildSyntheticFixture();
+  const names = (list) => list.map((a) => a.name);
+  assert.deepEqual(names(rh.buildAdapters(fixture, () => 0)), names(laneAdapters({ search: async () => [] })));
+  assert.ok(names(rh.buildAdapters(fixture, () => 0)).includes('playbill-verdict'));
+
+  const clean = await rh.runRehearsal({ fixture });
+  assert.equal(clean.pass, true);
+  assert.deepEqual(clean.checks.adapterErrors, [], 'only the planned flaky page errors');
+  assert.ok(clean.checks.errors.length >= 1, 'the planned 503 still shows in errors');
+
+  // Playbill's Verdict page goes missing: before BRO-5201 the rehearsal never ran that adapter; now it must fail.
+  const broken = buildSyntheticFixture();
+  delete broken.pages['https://playbill.com/category/the-verdict'];
+  const res = await rh.runRehearsal({ fixture: broken });
+  assert.equal(res.pass, false);
+  assert.ok(res.checks.adapterErrors.some((e) => e.adapter === 'playbill-verdict'), JSON.stringify(res.checks.adapterErrors[0]));
+  // A fixture can plan an error explicitly.
+  const planned = await rh.runRehearsal({ fixture: { ...broken, expectedErrors: ['playbill.com/category/the-verdict'] } });
+  assert.equal(planned.pass, true);
+});

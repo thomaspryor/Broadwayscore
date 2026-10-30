@@ -13,8 +13,8 @@
  * lane-scores.jsonl as they happen, shadow-report.{json,md} every 2 minutes and at the end (also on SIGTERM). Spends scraper
  * credits (aggregator pages every 2 minutes, each review page once) and one ensemble scoring call per review.
  *
- * The adapter list below must match driver.js buildRealLaneDeps().runNight, or the shadow tests a different lane.
- * It is copied rather than shared because a change to driver.js changes rehearsal.laneCodeHash() and disarms the lane.
+ * The adapter list comes from lib/opening-night-lane/adapters.js laneAdapters, the same factory the production driver
+ * uses, so the shadow cannot test a different lane (BRO-5201: its old hand-copied list had lost the Google News decoder).
  */
 const fs = require('fs');
 const path = require('path');
@@ -93,12 +93,9 @@ async function main() {
     result = await runLaneNight({
       show, night, openingDate: show.openingDate, timeZone: show.market === 'west-end' ? 'Europe/London' : 'America/New_York',
       ledgerDir, fetchText, windowMs: windowMin * 60 * 1000, dryRun: true,
-      adapters: [
-        discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards), discovery.playbillVerdictAdapter(),
-        discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
-        discovery.rssAdapter({ feeds: adaptersConfig.feeds }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
-        discovery.serpAdapter({ search: adaptersConfig.search || serpSearch }),
-      ],
+      adapters: require('./lib/opening-night-lane/adapters').laneAdapters({
+        showScoreGuards, adaptersConfig, search: serpSearch, decodeImpl: require('./lib/google-news-decode').decodeGoogleNewsLink, now: Date.now,
+      }),
       missingOutlets: ({ seen }) => {
         const { resolveOutletFromUrl } = require('./lib/review-normalization');
         const have = new Set([...seen].map((u) => (resolveOutletFromUrl(u) || {}).outletId).filter(Boolean));

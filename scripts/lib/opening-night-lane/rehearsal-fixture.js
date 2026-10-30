@@ -97,6 +97,12 @@ function buildSyntheticFixture() {
     pages[`https://${host}/stage/${SLUG}-previews-review`] = `<html><head><meta property="article:published_time" content="2026-10-11T09:00:00+01:00"></head><body>early</body></html>`;
   }
 
+  // The other production adapters (adapters.js) answer, but list nothing for this show: a quiet source is the normal
+  // case, and an adapter error in the rehearsal then means something real broke.
+  pages['https://playbill.com/category/the-verdict'] = '<html><body><a href="https://playbill.com/article/the-verdict-another-show">The Verdict: Another Show</a></body></html>';
+  for (const ix of ['ob', 'bwaybway']) pages[`https://www.talkinbroadway.com/page/${ix}/index.html`] = '<html><body><a href="/page/ob/another-show.html">Another Show</a></body></html>';
+  pages[`https://news.google.com/rss/search?${new URLSearchParams({ q: `"${SHOW.title}" review`, hl: 'en-US', gl: 'US', ceid: 'US:en' })}`] = '<rss><channel><title>Google News</title></channel></rss>';
+
   // One section-index article date check fails once (a transient 503) and must succeed on a later pass.
   const flakyUrl = reviews.find((r) => r.via === 'section-index').url;
   // When each review's page first showed it (virtual ms after the lane starts): the page-to-live bar counts from here.

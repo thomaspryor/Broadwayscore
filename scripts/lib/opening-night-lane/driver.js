@@ -192,41 +192,79 @@ function buildRealLaneDeps({
     release: () => store.release(storeOpts, leaseArgs),
     standdown: require('./standdown').createStanddownCheck({ show, repo: env.GITHUB_REPOSITORY, token: env.LANE_STANDDOWN_TOKEN, envValue: env.LANE_STANDDOWN }),
     runNight: ({ shouldStop, abandonPending }) => {
-      const { runLaneNight } = require('./lane-runner');
-      const discovery = require('./discovery');
       const inline = require('./inline-score');
       const { createRealPublishPorts } = require('./real-ports');
       // One routed fetch for discovery and review fetch alike: Talkin' Broadway through one Browserbase session (BRO-6073).
       const laneFetch = require('./browserbase-fetch').createLaneFetch({ env });
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
-      const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts({ fetchPage: laneFetch.fetchPage }), scoreText: inline.ensembleScoreText(scorer) });
-      const fetchText = discovery.fetchTextFrom(laneFetch.fetchPage);
-      return runLaneNight({
-        show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop, abandonPending,
-        // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
-        ...(Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) > 0 ? { windowMs: Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) * 60 * 1000 } : {}),
-        reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
-        adapters: [
-          discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards(repoDir)), discovery.playbillVerdictAdapter(),
-          discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter({ decodeImpl: require('../google-news-decode').decodeGoogleNewsLink }),
-          discovery.rssAdapter({ feeds: adaptersConfig.feeds }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
-          discovery.serpAdapter({ search: adaptersConfig.search || realSerpSearch(env) }),
-        ],
-        // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
-        missingOutlets: ({ seen }) => {
-          const { resolveOutletFromUrl } = require('../review-normalization');
-          const have = new Set([...seen].map((u) => (resolveOutletFromUrl(u) || {}).outletId).filter(Boolean));
-          return (adaptersConfig.missingOutlets || []).filter((id) => !have.has(id));
-        },
-        fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
+      const reviewsFile = path.join(repoDir, 'data', 'reviews.json');
+      return wireLaneNight({
+        show, night, openingDate, timeZone, ledgerDir, adaptersConfig, laneFetch,
+        scoreText: inline.ensembleScoreText(scorer),
         // One instance for the whole night: its push queue and pending merges must be shared by every batch.
         publishPorts: createRealPublishPorts({ show: show.id, repoDir, coreDir, holder }),
-        onDiskUrls: onDiskUrlsFor(path.join(repoDir, 'data', 'reviews.json'), show.id),
-        onDiskRows: onDiskRowsFor(path.join(repoDir, 'data', 'reviews.json'), show.id),
         now: Date.now, wait: (ms) => new Promise((r) => setTimeout(r, ms)),
-      }).finally(() => laneFetch.close());
+        reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
+        onDiskUrls: onDiskUrlsFor(reviewsFile, show.id), onDiskRows: onDiskRowsFor(reviewsFile, show.id),
+        showScoreGuards: showScoreGuards(repoDir),
+        search: realSerpSearch(env), decodeImpl: require('../google-news-decode').decodeGoogleNewsLink,
+        // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
+        windowMs: Number(env.OPENING_NIGHT_LANE_WINDOW_MIN) > 0 ? Number(env.OPENING_NIGHT_LANE_WINDOW_MIN) * 60 * 1000 : undefined,
+      })({ shouldStop, abandonPending });
     },
   };
 }
 
-module.exports = { HEARTBEAT_MS, LEASE_TTL_MS, runProductionLane, buildRealLaneDeps, onDiskUrlsFor, onDiskRowsFor };
+// runLaneNight tuning a replay may set. dryRun is deliberately not among them: a replay passes ports that answer the
+// lease check, so it runs the same publish guard production does.
+const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pollMs', 'publishTimeoutMs', 'maxInflight'];
+
+/**
+ * One lane night with every port passed in (BRO-5201 S4-T2). buildRealLaneDeps passes the real ones; an offline replay
+ * of a recorded night passes recorded pages, recorded scores and a virtual clock, and so runs this same wiring: the
+ * adapter list, inline fetch-and-score, syndication rows and missing-outlet SERP gating. Nothing here reads env or the
+ * wall clock, and there is no default for any port, so nothing real can be reached by forgetting one.
+ *
+ *   laneFetch {fetchPage(url, opts), close()}, scoreText(text, meta), fetchPorts? {extractArticle, extractMeta}
+ *   (default: the real extractors over laneFetch), publishPorts | makePublishPorts(clock) (+ forkClock), now, wait,
+ *   reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards, search (SERP backend), decodeImpl (Google News; null = off),
+ *   windowMs?, tuning? (TUNING_KEYS)
+ * @returns {({shouldStop?, abandonPending?}) => Promise<runLaneNight result>}
+ */
+function wireLaneNight({
+  show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
+  now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search, decodeImpl, windowMs, tuning = {},
+} = {}) {
+  const required = { show, night, ledgerDir, laneFetch, scoreText, now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search };
+  for (const [k, v] of Object.entries(required)) if (v === undefined || v === null) throw new Error(`driver: wireLaneNight needs ${k}`);
+  if (typeof laneFetch.fetchPage !== 'function' || typeof laneFetch.close !== 'function') throw new Error('driver: laneFetch needs fetchPage and close');
+  if (decodeImpl === undefined) throw new Error('driver: wireLaneNight needs decodeImpl (null turns Google News decoding off)');
+  if (!publishPorts && !makePublishPorts) throw new Error('driver: wireLaneNight needs publishPorts or makePublishPorts');
+  const unknown = Object.keys(tuning).filter((k) => !TUNING_KEYS.includes(k));
+  if (unknown.length) throw new Error(`driver: unknown tuning ${unknown.join(', ')}`);
+  return ({ shouldStop, abandonPending } = {}) => {
+    const { runLaneNight } = require('./lane-runner');
+    const discovery = require('./discovery');
+    const inline = require('./inline-score');
+    const { laneAdapters } = require('./adapters');
+    const scoring = inline.createInlineScoring({ show, night, ledgerDir, now, fetchPage: laneFetch.fetchPage, ...(fetchPorts || inline.realFetchPorts({ fetchPage: laneFetch.fetchPage })), scoreText });
+    return Promise.resolve().then(() => runLaneNight({
+      show, night, openingDate, timeZone, ledgerDir, fetchText: discovery.fetchTextFrom(laneFetch.fetchPage), shouldStop, abandonPending,
+      ...(windowMs > 0 ? { windowMs } : {}),
+      ...tuning,
+      reviewTextsDir,
+      adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig, search, decodeImpl, now }),
+      // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
+      missingOutlets: ({ seen }) => {
+        const { resolveOutletFromUrl } = require('../review-normalization');
+        const have = new Set([...seen].map((u) => (resolveOutletFromUrl(u) || {}).outletId).filter(Boolean));
+        return (adaptersConfig.missingOutlets || []).filter((id) => !have.has(id));
+      },
+      fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
+      ...(publishPorts ? { publishPorts } : { makePublishPorts, forkClock }),
+      onDiskUrls, onDiskRows, now, wait,
+    })).finally(() => laneFetch.close());
+  };
+}
+
+module.exports = { HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };

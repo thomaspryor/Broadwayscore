@@ -228,3 +228,48 @@ test('live workflow sets a lane window shorter than the lane step timeout', () =
   assert.ok(win > 0 && win < cap, `window ${win} must be below the step cap ${cap}`);
   assert.match(fsWin.readFileSync(new URL('../../scripts/lib/opening-night-lane/driver.js', import.meta.url), 'utf8'), /OPENING_NIGHT_LANE_WINDOW_MIN/);
 });
+
+test('BRO-5201 wireLaneNight: every port is required, dryRun cannot be passed, and the driver, shadow and rehearsal share one adapter list', async (t) => {
+  const base = {
+    show: { ...SHOW, openingDate: NIGHT }, night: NIGHT, ledgerDir: '/nonexistent', laneFetch: { fetchPage: async () => ({ content: '' }), close: async () => {} },
+    scoreText: async () => ({ score: 50 }), now: () => 0, wait: async () => {}, reviewTextsDir: '/nonexistent', onDiskUrls: [], onDiskRows: [],
+    showScoreGuards: {}, search: async () => [], decodeImpl: null, publishPorts: {},
+  };
+  for (const k of ['laneFetch', 'scoreText', 'now', 'wait', 'reviewTextsDir', 'onDiskUrls', 'onDiskRows', 'showScoreGuards', 'search']) {
+    assert.throws(() => driver.wireLaneNight({ ...base, [k]: undefined }), new RegExp(`needs ${k}`), k);
+  }
+  assert.throws(() => driver.wireLaneNight({ ...base, decodeImpl: undefined }), /needs decodeImpl/);
+  assert.throws(() => driver.wireLaneNight({ ...base, publishPorts: undefined }), /publishPorts or makePublishPorts/);
+  assert.throws(() => driver.wireLaneNight({ ...base, tuning: { dryRun: true } }), /unknown tuning dryRun/);
+  assert.throws(() => driver.wireLaneNight({ ...base, laneFetch: { fetchPage: async () => ({}) } }), /fetchPage and close/);
+
+  // The list runLaneNight receives is laneAdapters' list, and the shadow and rehearsal build theirs from the same factory.
+  const runner = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+  const { laneAdapters } = require('../../scripts/lib/opening-night-lane/adapters.js');
+  let seen = null; let closed = 0;
+  t.mock.method(runner, 'runLaneNight', async (opts) => { seen = opts; return { passes: 0 }; });
+  await driver.wireLaneNight({ ...base, laneFetch: { ...base.laneFetch, close: async () => { closed++; } }, tuning: { maxPasses: 1 } })({});
+  assert.deepEqual(seen.adapters.map((a) => a.name), laneAdapters({ search: base.search }).map((a) => a.name));
+  assert.equal(seen.maxPasses, 1);
+  assert.equal(seen.dryRun, undefined, 'a wired night always runs the real publish guard');
+  assert.equal(closed, 1, 'the lane fetch is closed after the night');
+  const src = (f) => fs.readFileSync(path.join(import.meta.dirname, '../../scripts', f), 'utf8');
+  assert.match(src('opening-night-lane-shadow.js'), /laneAdapters\(/);
+  assert.doesNotMatch(src('opening-night-lane-shadow.js'), /discovery\.\w+Adapter\(/, 'the shadow must not hand-build adapters again');
+  assert.doesNotMatch(src('lib/opening-night-lane/rehearsal.js'), /discovery\.\w+Adapter\(/);
+});
+
+test('BRO-5201 laneAdapters: one clock drives every adapter that reads time', async () => {
+  const { laneAdapters } = require('../../scripts/lib/opening-night-lane/adapters.js');
+  let t = 0; let probes = 0;
+  const tb = laneAdapters({ search: async () => [], now: () => t }).find((a) => a.name === 'talkin-broadway');
+  const fetchText = async (u) => { if (/talkinbroadway\.com\/page\/(ob|bwaybway)\/index/.test(u)) return '<html></html>'; probes++; throw new Error(`404 ${u}`); };
+  const show = { id: 'x-2026', title: 'Some New Play', openingDate: '2026-10-20' };
+  await tb.discover({ show, night: '2026-10-20', fetchText }).catch(() => {});
+  const first = probes;
+  await tb.discover({ show, night: '2026-10-20', fetchText }).catch(() => {});
+  assert.equal(probes, first, 'a second pass at the same virtual time does not re-probe');
+  t += 60 * 60 * 1000;
+  await tb.discover({ show, night: '2026-10-20', fetchText }).catch(() => {});
+  assert.ok(probes > first, 'an hour later on the injected clock, it probes again');
+});

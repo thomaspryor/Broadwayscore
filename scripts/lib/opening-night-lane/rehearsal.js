@@ -25,6 +25,7 @@ const ledger = require('./ledger');
 const discovery = require('./discovery');
 const publish = require('./publish');
 const { runLaneNight } = require('./lane-runner');
+const { laneAdapters } = require('./adapters');
 const { resolveOutletFromUrl } = require('../review-normalization');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -39,9 +40,13 @@ function summaryReviews(events) {
   return ledger.reviewStates(events).map((r) => ({ reviewKey: r.reviewKey, live: r.firstAt['verified-live'] || null }));
 }
 
-function buildAdapters(fixture) {
+/**
+ * The production adapter list (adapters.js), on the rehearsal clock. The fixture serves no search engine and no Google
+ * News decoder, and Show Score's guards see only the fixture show.
+ */
+function buildAdapters(fixture, now) {
   const { feeds = [], outlets = [] } = fixture.adapters || {};
-  return [discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.rssAdapter({ feeds }), discovery.sectionIndexAdapter({ outlets })];
+  return laneAdapters({ showScoreGuards: { urlMap: {}, allShows: [fixture.show] }, adaptersConfig: { feeds, outlets }, search: async () => [], decodeImpl: null, now });
 }
 
 // BRO-6619: lane code that lives outside this folder, repo-relative. The night entry and the live workflow are hashed as
@@ -98,7 +103,8 @@ function laneCodeHash(dir = __dirname) {
 
 /**
  * @param {object} args
- *   fixture {show:{id,title}, night, openingDate?, pages, waves?, flaky?, reviews[], expectedKeys[], adapters, decoys[]}
+ *   fixture {show:{id,title}, night, openingDate?, pages, waves?, flaky?, expectedErrors? (substrings of adapter errors the
+ *   fixture plans; any other adapter error fails the rehearsal), reviews[], expectedKeys[], adapters, decoys[]}
  *   workDir? (a temp dir by default; removed unless keep), keep?, scoreReview?(row, entry), regenShow?(showId),
  *   startAt? ISO (virtual clock start; default 22:00 ET on the night), latency? (overrides DEFAULT_LATENCY), maxMs
  * @returns {Promise<{pass, verdict, checks, summary, workDir?}>}
@@ -165,7 +171,7 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
     };
 
     const run = await runLaneNight({
-      show, night, openingDate: fixture.openingDate, timeZone: fixture.timeZone, adapters: buildAdapters(fixture), fetchText, ledgerDir,
+      show, night, openingDate: fixture.openingDate, timeZone: fixture.timeZone, adapters: buildAdapters(fixture, now), fetchText, ledgerDir,
       fetchReview, scoreReview: scoreReview || ((row, fetched) => fetched.score), makePublishPorts, forkClock, maxInflight, dryRun: true,
       reviewTextsDir: path.join(dir, 'review-texts'),
       now, wait, latency: lat, passIntervalMs: lat.passIntervalMs, windowMs: Math.max(45 * 60 * 1000, ...(fixture.waves || []).map((w) => w.afterMs + 15 * 60 * 1000)), startedAt: startMs, pollMs: lat.pollMs, publishTimeoutMs: maxMs,
@@ -185,8 +191,12 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
     // was busy still counts. Each fixture review knows when its page showed it.
     const appears = new Map(fixture.reviews.map((r) => [discovery.canonicalUrl(r.url), (r.appearsAfterMs || 0)]));
     const pageToLiveSlow = summaryReviews(read.events).filter((r) => r.live && appears.has(r.reviewKey) && Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) > maxMs).map((r) => ({ reviewKey: r.reviewKey, ms: Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) }));
-    const checks = { unexpected: [...unexpected], decoyLeaks, syndicationLeaks, bystandersSurvived, errors: run.errors, timedOut, passes: run.passes, pageToLiveSlow, modelled: lat };
-    const pass = verdict.pass && unexpected.size === 0 && decoyLeaks.length === 0 && syndicationLeaks.length === 0 && bystandersSurvived && !timedOut && pageToLiveSlow.length === 0;
+    // Every adapter the production lane runs is served (BRO-5201), so an error the fixture did not plan (its flaky pages,
+    // or fixture.expectedErrors patterns) is a broken adapter, not background noise.
+    const planned = [...Object.keys(fixture.flaky || {}), ...(fixture.expectedErrors || [])];
+    const adapterErrors = run.errors.filter((e) => !planned.some((p) => String(e.error || '').includes(p)));
+    const checks = { unexpected: [...unexpected], decoyLeaks, syndicationLeaks, bystandersSurvived, errors: run.errors, adapterErrors, timedOut, passes: run.passes, pageToLiveSlow, modelled: lat };
+    const pass = verdict.pass && adapterErrors.length === 0 && unexpected.size === 0 && decoyLeaks.length === 0 && syndicationLeaks.length === 0 && bystandersSurvived && !timedOut && pageToLiveSlow.length === 0;
     return { pass, verdict, checks, summary: ledger.summarize(read.events), run, workDir: keep ? dir : null };
   } finally {
     await server.close();
@@ -196,7 +206,7 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
 
 /** Persist the outcome the arm gate reads. Failures are trimmed: the record is small and safe to commit. */
 function recordRehearsal(file, result, { at = Date.now(), kind = 'synthetic', laneHash = null, error = null } = {}) {
-  const rec = { at: new Date(at).toISOString(), pass: result.pass === true, kind, laneHash, ...(error ? { error: String(error).slice(0, 300) } : {}), checked: result.verdict && result.verdict.checked, failures: ((result.verdict && result.verdict.failures) || []).slice(0, 10), checks: result.checks ? { unexpected: result.checks.unexpected.length, decoyLeaks: result.checks.decoyLeaks.length, bystandersSurvived: result.checks.bystandersSurvived, timedOut: result.checks.timedOut } : null };
+  const rec = { at: new Date(at).toISOString(), pass: result.pass === true, kind, laneHash, ...(error ? { error: String(error).slice(0, 300) } : {}), checked: result.verdict && result.verdict.checked, failures: ((result.verdict && result.verdict.failures) || []).slice(0, 10), checks: result.checks ? { unexpected: result.checks.unexpected.length, adapterErrors: (result.checks.adapterErrors || []).length, decoyLeaks: result.checks.decoyLeaks.length, bystandersSurvived: result.checks.bystandersSurvived, timedOut: result.checks.timedOut } : null };
   // BRO-6276: the record is committed to main on every scripts/lib push (~54 commits a day, nearly all a new
   // `at` only), and every one of them races the land queue's push. Keep the file as it is when only `at` would
   // change and it is still fresh; the arm gate allows 8 days, so a pass up to 1 day old arms exactly the same.
