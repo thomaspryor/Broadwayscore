@@ -31,7 +31,6 @@ const { execFileSync } = require('child_process');
 
 const ledger = require('./lib/autonomous-ledger.js');
 const { gatherDigest } = require('./lib/overnight-digest.js');
-const { buildActionUrl } = require('./lib/autonomous-links.js');
 const { buildDispatchUrl, attachHealthFixUrls } = require('./lib/dispatch-link.js');
 const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText, actionableAttentionCountOf } = require('./lib/autonomous-email-render.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -311,8 +310,7 @@ async function main() {
     const evd = ev.evidence || {};
     let why = null;
     try { why = extractWhy(notionBrain(['get', row.id]).notes); } catch { /* keep null */ }
-    // Never sign action links for a branch we have no ledger evidence for —
-    // an approve tap must always refer to a branch the executor pushed.
+    // Skip rows with no ledger evidence for a branch the executor pushed.
     if (!evd.branch) { missingEvidence++; continue; }
     const branch = evd.branch;
     const newItem = {
@@ -326,8 +324,9 @@ async function main() {
       // when a look-at-it change arrived without screenshots.
       ui: evd.ui === true,
       screenshots: Array.isArray(evd.screenshots) ? evd.screenshots : [],
-      approveUrl: buildActionUrl({ action: 'approve', cardId: row.id, branch, exp, secret, baseUrl }),
-      rejectUrl: buildActionUrl({ action: 'reject', cardId: row.id, branch, exp, secret, baseUrl }),
+      // BRO-5146: no approve/reject links. /api/autonomous-action answers 410
+      // for those actions (BRO-4718), so a signed link would be a dead button.
+      // renderItem() omits a button whose URL is absent.
     };
     // Plain-language primary text (owner scope-add 2026-07-14) — fail-soft,
     // never blocks the email; renderItem() falls back to the old technical

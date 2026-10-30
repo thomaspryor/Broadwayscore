@@ -112,7 +112,9 @@ jobs:
     # 125->145 (BRO-5426): fast_path rebuild 5->15 and readiness rebuild 5->10
     # took other steps to 6660s; (6660+600)/0.85 = 8541s, so 145min = 8700s
     # (~17% margin). Real runs still finish in ~50-70 min.
-    timeout-minutes: 145
+    # 145->150 (BRO-6620): the lane-only gate adds a lease re-sync (2 min), a
+    # variable read (1 min) and the gate (2 min); (7260+240+60)/0.85 = 8894s.
+    timeout-minutes: 150
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -414,6 +416,8 @@ jobs:
           fi
 
           GUARDIAN_REDISPATCH_SHOWS=""
+          # BRO-6620: shows this run has work for, per show (CREATED below counts the whole checkout).
+          ACTION_SHOWS=""
           # BRO-735: per-show pipeline crash counters (gather stage). The loop
           # deliberately keeps polling every show even if one crashes (`|| true`
           # below preserves that resilience — GH Actions bash runs with -e, so
@@ -543,6 +547,10 @@ jobs:
                 ANY_READY=true
                 echo "  → $UNSCORED unscored or excerpt-scored review(s) waiting for $SHOW_ID"
               fi
+              SHOW_DIRTY=$(cd data/review-texts && git status --porcelain -- "$SHOW_ID" | wc -l | tr -d ' ')
+              if [ "$SHOW_DIRTY" -gt 0 ] || [ "$UNSCORED" -gt 0 ]; then
+                [[ ",$ACTION_SHOWS," == *",$SHOW_ID,"* ]] || ACTION_SHOWS="$ACTION_SHOWS,$SHOW_ID"
+              fi
               # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
               if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
                 [[ ",$GUARDIAN_REDISPATCH_SHOWS," == *",$SHOW_ID,"* ]] || GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
@@ -612,6 +620,7 @@ jobs:
           echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
           echo "any_ready=$ANY_READY" >> $GITHUB_OUTPUT
           echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
+          echo "action_shows=${ACTION_SHOWS#,}" >> $GITHUB_OUTPUT
           echo "gather_failed=$GATHER_FAILED" >> $GITHUB_OUTPUT
           echo "gather_total=$GATHER_TOTAL" >> $GITHUB_OUTPUT
           echo "guardian_redispatch_shows=$GUARDIAN_REDISPATCH_SHOWS" >> $GITHUB_OUTPUT
@@ -1013,17 +1022,47 @@ jobs:
       # its deploy. rebuild-reviews serializes via its concurrency group and
       # rebuild-fast uses per-run groups, so overlap is already safe.
 
+      # BRO-6620: LANE_ONLY_MARKETS. When every show with new work this run is one whose press night the
+      # opening-night lane holds (live lease, listed market, inside the window), the lane publishes it: skip
+      # the rebuild + deploy below. Any doubt (unread variable, unknown lease, mixed run, gate error) leaves
+      # them on. NYT picks still rebuild. Rules: scripts/lib/opening-night-lane/lane-only-markets.js.
+      # The poll loop can run for many minutes; the gate needs the lease state as of now, not as of checkout. A direct
+      # CLI call (not the sync action) so the one-sync-per-checkout structural test keeps its meaning.
+      - name: Lease re-sync for the lane-only gate (BRO-6620)
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/opening-night-lease.js sync
+
+      - name: Read lane-only variables (BRO-6620)
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        continue-on-error: true
+        timeout-minutes: 1
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Lane-only markets gate (BRO-6620)
+        id: lane_only
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          ACTION_SHOWS: ${{ steps.poll.outputs.action_shows }}
+        # --changed-dir: shows the no-byline drain wrote but the poll loop skipped also need their rebuild.
+        run: node scripts/lane-only-markets.js gate "--shows=${ACTION_SHOWS}" --changed-dir=data/review-texts
+
       # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
       # files pushed by other jobs since this job's checkout (never files
       # this job wrote), and record which shows drifted.
       - name: Sync review-texts drift before rebuild
         timeout-minutes: 2
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true') && (steps.lane_only.outputs.suppress != 'true' || steps.nyt_picks.outputs.picks_added == 'true')
         uses: ./.github/actions/sync-review-texts-drift
 
       - name: Rebuild reviews.json (fast_path)
         id: fast_rebuild
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true') && (steps.lane_only.outputs.suppress != 'true' || steps.nyt_picks.outputs.picks_added == 'true')
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -1270,7 +1309,7 @@ jobs:
 
       # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
       - name: Trigger rebuild + deploy (legacy)
-        if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true' && steps.lane_only.outputs.suppress != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

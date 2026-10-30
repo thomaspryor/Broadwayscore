@@ -238,6 +238,26 @@ async function cmdEvaluate() {
   }
 }
 
+/** showId -> true when the old path stands down for it (scripts/lib/opening-night-lane/lane-only-markets.js). */
+function laneHoldCheck() {
+  let decider;
+  try {
+    decider = require('./lib/opening-night-lane/lane-only-markets').createDecider({ findShow: loadShow });
+  } catch (e) {
+    console.log(`::warning::[express-retry-queue] lane-only markets check failed (${String(e.message).slice(0, 160)}); dispatching as usual`);
+    return () => false;
+  }
+  return (showId) => {
+    let d;
+    try { d = decider.decide(showId); } catch (e) {
+      console.log(`::warning::[express-retry-queue] ${showId}: lane-only markets check failed (${String(e.message).slice(0, 160)}); dispatching as usual`);
+      return false;
+    }
+    if (d.standDown) console.log(`::notice::[express-retry-queue] ${showId}: ${d.reason}; Express retry held until the lane releases (LANE_ONLY_MARKETS, BRO-6620)`);
+    return d.standDown;
+  };
+}
+
 async function cmdDispatchDue() {
   const nowIso = new Date().toISOString();
   let entries = readQueueEntries();
@@ -260,8 +280,12 @@ async function cmdDispatchDue() {
     return;
   }
 
+  // BRO-6620: a show whose press night a lane holds (LANE_ONLY_MARKETS) is not dispatched; its entries stay
+  // un-attempted, so they fire on the first tick after the lane releases. Any doubt leaves dispatch on.
+  const laneHeld = laneHoldCheck();
   const dispatchedShows = new Set();
   for (const entry of due.filter(isThinCoverageEntry)) {
+    if (laneHeld(entry.showId)) continue;
     const show = loadShow(entry.showId);
     if (isShowCoverageComplete(entry.showId, entry.market, show)) {
       console.log(`[express-retry-queue] ${entry.showId}: coverage already complete — skipping retry dispatch`);
@@ -294,6 +318,8 @@ async function cmdDispatchDue() {
     } else if (dispatchedShows.has(showId)) {
       console.log(`[express-retry-queue] ${showId}: Express retry already dispatched this tick — refetch rides along`);
       extra = { skipped: true, skipReason: 'express-retry-same-tick' };
+    } else if (laneHeld(showId)) {
+      continue;
     } else {
       console.log(`[express-retry-queue] dispatching truncated-T1 refetch for ${showId} (+${showEntries.map((e) => e.offsetHours).join('h/+')}h)`);
       // Plain is_retry Express run (gather + collect + score). The collector

@@ -203,8 +203,8 @@ async function main() {
     };
   }
 
-  const breaches = budgetBreaches(record, thresholds);
   const series = [...ledger.filter((r) => r.day !== DAY), record];
+  const breaches = budgetBreaches(record, thresholds, series);
   const streak = computeStreak(series, thresholds);
   const snapshot = renderSnapshot({
     record, streak, breaches, generatedAt: new Date().toISOString(), attribution,
@@ -275,7 +275,7 @@ async function main() {
       // "check the provider key/status" — a real technical investigation).
       ...(over ? {
         decision: true,
-        decisionPrompt: `Scraping spend over budget: ${breaches.overspend.join('; ')}. Should I raise the daily budget, or do you want scraping volume cut to stay within it?`,
+        decisionPrompt: `Scraping spend over budget: ${breaches.overspend.join('; ')}. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?`,
       } : {}),
     });
   }
@@ -384,7 +384,7 @@ function resolveClearedBudgetConditions(series, thresholds, day, resolveConditio
     const d = new Date(Date.parse(`${day}T00:00:00Z`) - i * 86400000).toISOString().slice(0, 10);
     const rec = byDay.get(d);
     if (!rec) return [];
-    breaches.push(budgetBreaches(rec, thresholds));
+    breaches.push(budgetBreaches(rec, thresholds, series));
   }
   const resolved = [];
   const noUnmeasured = breaches.every((b) => !b.unmeasured.length);

@@ -47,6 +47,10 @@ const EXEMPT = {
     "staged: audit-aggregator-gap.yml lists this file in its audit-state for-f loop and git adds \"$f\"",
   "scripts/audit-opening-night-coverage.js|data/audit/t1-coverage-signals.json":
     "staged: audit-aggregator-gap.yml lists this file in its audit-state for-f loop and git adds \"$f\"",
+  "scripts/audit-card-verifiability.js|data/audit/card-verifiability.json":
+    "retired Notion leg (BRO-5146): card-verifiability-audit.yml runs only --source linear and stages card-verifiability-linear.json; the Notion report is untracked and gitignored",
+  "scripts/enrich-card-acceptance.js|data/audit/card-verifiability.json":
+    "retired Notion leg (BRO-5146): the workflow enriches only --source linear; --from-report on the untracked Notion report is a manual mode",
   "scripts/audit-opening-night-coverage.js|data/audit/t1-coverage-stats.json":
     "staged: audit-aggregator-gap.yml lists this file in its audit-state for-f loop and git adds \"$f\"",
   "scripts/audit-outlet-ground-truth.js|data/audit/outlet-ground-truth.json":

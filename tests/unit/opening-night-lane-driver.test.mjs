@@ -211,7 +211,7 @@ test('an alert that throws (from the heartbeat timer or the summary) never crash
   assert.ok(logs.some((m) => /alert failed \(router down\)/.test(m)));
 });
 
-test('the lane folder does not pull the alert router or the TypeScript scorer into the arm hash', () => {
+test('the lane folder does not pull the alert router into the arm hash', () => {
   const rehearsal = require('../../scripts/lib/opening-night-lane/rehearsal.js');
   const files = rehearsal.laneCodeFiles().map((f) => path.basename(f));
   assert.ok(files.includes('driver.js'));

@@ -335,19 +335,21 @@ test('isUnusedEmailCode: stamped at creation = unused; signed in later = real; p
   assert.equal(m.isUnusedEmailCode({ provider: 'email', createdAt: at(2), lastSignInAt: at(2, 180000) }), false, 'typed the code 3 minutes later');
   assert.equal(m.isUnusedEmailCode({ provider: 'email', createdAt: at(2), lastSignInAt: null }), true);
   assert.equal(m.isUnusedEmailCode({ provider: 'email', createdAt: '2026-10-20T10:00:00Z', lastSignInAt: null }), false, 'before email codes launched');
+  assert.equal(m.isUnusedEmailCode({ provider: 'email', createdAt: '2026-10-30T01:00:00+05:00', lastSignInAt: null }), false, 'Oct 29 UTC written with an offset');
   assert.equal(m.isUnusedEmailCode({ provider: 'google', createdAt: at(1), lastSignInAt: at(1, 27) }), false);
 });
 
-test('summarizeEmailCodes counts unused codes by window, real people only', () => {
+test('summarizeEmailCodes counts unused codes by window, disposable inboxes included, owner left out', () => {
   const users = [
     unused('a', 1),
     unused('b', 5),
     { id: 'c', kind: 'person', provider: 'email', createdAt: at(2), lastSignInAt: at(2, 120000) },
     unused('d', 50),
     { id: 'e', kind: 'person', provider: 'google', createdAt: at(1), lastSignInAt: at(1, 27) },
-    { ...unused('f', 1), kind: 'test' },
+    { ...unused('f', 1), kind: 'test' }, // disposable inbox (mailinator): bots use these, so it counts
+    { ...unused('g', 1), kind: 'owner' },
   ];
-  assert.deepEqual(m.summarizeEmailCodes(users, CODES_NOW), { requested24h: 3, unfinished24h: 2, unfinished3h: 1, requested7d: 4, unfinished7d: 3, unfinishedTotal: 3 });
+  assert.deepEqual(m.summarizeEmailCodes(users, CODES_NOW), { requested24h: 4, unfinished24h: 3, unfinished3h: 2, requested7d: 5, unfinished7d: 4, unfinishedTotal: 4 });
 });
 
 test('unused email codes are not counted as accounts', () => {

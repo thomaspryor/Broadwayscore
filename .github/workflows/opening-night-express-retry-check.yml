@@ -44,7 +44,8 @@ permissions:
 jobs:
   dispatch-due-retries:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    # 8->10 (BRO-6620): the lease sync (2 min) and variable read (1 min) steps added before dispatch count toward the push-retry budget.
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -58,6 +59,20 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - uses: ./.github/actions/setup-node
+
+      # BRO-6620: LANE_ONLY_MARKETS holds a press-night retry while the opening-night lane holds the show's lease.
+      # Both fail toward publishing: no lease file or an unread variable keeps the dispatch on.
+      - name: Opening-night lease sync (BRO-4786)
+        continue-on-error: true
+        timeout-minutes: 2
+        uses: ./.github/actions/opening-night-lease-sync
+
+      - name: Read lane-only variables (BRO-6620)
+        continue-on-error: true
+        timeout-minutes: 1
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Dispatch due retries
         env:

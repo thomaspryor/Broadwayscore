@@ -21,10 +21,10 @@
       "title": "Cron's latest run failed (not yet stale): Test Suite",
       "firstSeen": "2026-10-12T20:42:23.460Z",
       "incidentOpenedAt": "2026-10-29T17:59:59.322Z",
-      "lastSeen": "2026-10-29T17:59:59.322Z",
-      "lastNotifiedAt": "2026-10-29T17:59:59.322Z",
-      "lastSurfacedAt": "2026-10-29T17:59:59.322Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-10-30T17:40:35.411Z",
+      "lastNotifiedAt": "2026-10-30T17:40:35.411Z",
+      "lastSurfacedAt": "2026-10-30T17:40:35.411Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -246,16 +246,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-30T13:06:49.922Z",
-      "lastSeen": "2026-10-30T17:23:42.676Z",
-      "lastNotifiedAt": "2026-10-30T13:06:49.922Z",
-      "lastSurfacedAt": "2026-10-30T13:06:49.922Z",
-      "notifyCount": 190,
+      "incidentOpenedAt": "2026-10-30T18:25:47.030Z",
+      "lastSeen": "2026-10-30T18:25:47.030Z",
+      "lastNotifiedAt": "2026-10-30T18:25:47.030Z",
+      "lastSurfacedAt": "2026-10-30T18:25:47.030Z",
+      "notifyCount": 191,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
-      "sweptTracker": "BRO-6422",
-      "silentRefires": 8
+      "sweptTracker": "BRO-6422"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -540,13 +539,13 @@
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
       "incidentOpenedAt": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-10-29T18:41:46.910Z",
+      "lastSeen": "2026-10-30T18:06:43.694Z",
       "lastNotifiedAt": "2026-10-24T16:06:12.018Z",
       "lastSurfacedAt": "2026-10-24T16:06:12.018Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "scheduled-email-count:2026-08-02": {
       "status": "resolved",
@@ -1911,13 +1910,13 @@
       "title": "Scrape WestEndTheatre has stopped updating (83 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
       "incidentOpenedAt": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-10-29T18:41:46.934Z",
+      "lastSeen": "2026-10-30T18:06:43.716Z",
       "lastNotifiedAt": "2026-10-24T16:06:12.032Z",
       "lastSurfacedAt": "2026-10-24T16:06:12.032Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "arm-yield:outlet:nysr": {
       "status": "resolved",
@@ -5502,13 +5501,13 @@
       "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-30T12:48:35.541Z",
+      "lastSeen": "2026-10-30T18:07:00.516Z",
       "lastNotifiedAt": "2026-10-30T09:02:33.302Z",
       "lastSurfacedAt": "2026-10-29T08:53:30.228Z",
       "notifyCount": 31,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -18750,13 +18749,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-10-30T17:26:37.527Z",
+      "lastSeen": "2026-10-30T18:38:36.052Z",
       "lastNotifiedAt": "2026-10-30T02:16:47.777Z",
       "lastSurfacedAt": "2026-10-30T02:16:47.777Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 57
+      "silentRefires": 66
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -21230,13 +21229,13 @@
       "title": "1 review(s) for the-ask-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-19T02:20:52.234Z",
       "incidentOpenedAt": "2026-10-19T02:20:52.234Z",
-      "lastSeen": "2026-10-30T15:55:19.065Z",
+      "lastSeen": "2026-10-30T17:22:07.991Z",
       "lastNotifiedAt": "2026-10-30T05:07:33.020Z",
       "lastSurfacedAt": "2026-10-30T05:07:33.020Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "land:land/worktree-week-voice-count-and-lede": {
       "status": "resolved",
@@ -26590,13 +26589,13 @@
       "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-24T22:25:42.024Z",
       "incidentOpenedAt": "2026-10-24T22:25:42.024Z",
-      "lastSeen": "2026-10-30T17:05:42.738Z",
+      "lastSeen": "2026-10-30T18:26:27.275Z",
       "lastNotifiedAt": "2026-10-30T01:56:18.627Z",
       "lastSurfacedAt": "2026-10-30T01:56:18.627Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/job/linear-BRO-6175-mvmy6lz4": {
       "status": "open",
@@ -26832,14 +26831,14 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
       "incidentOpenedAt": "2026-10-30T13:06:49.638Z",
-      "lastSeen": "2026-10-30T17:23:42.640Z",
+      "lastSeen": "2026-10-30T18:25:47.014Z",
       "lastNotifiedAt": "2026-10-30T13:06:49.638Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-6627",
       "absentRunIds": [],
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "open",
@@ -32595,6 +32594,20 @@
       "cardId": null,
       "linearIdentifier": null
     },
+    "pending-unrecoverable:in-the-heights-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+      "firstSeen": "2026-10-30T17:21:01.709Z",
+      "incidentOpenedAt": "2026-10-30T17:21:01.709Z",
+      "lastSeen": "2026-10-30T17:21:01.709Z",
+      "lastNotifiedAt": "2026-10-30T17:21:01.709Z",
+      "lastSurfacedAt": "2026-10-30T17:21:01.709Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
     "opening-night-placeholder-synopsis-the-moth-off-west-end-2026": {
       "status": "open",
       "disposition": "digest",
@@ -32604,6 +32617,78 @@
       "lastSeen": "2026-10-30T17:23:13.803Z",
       "lastNotifiedAt": "2026-10-30T17:23:13.803Z",
       "lastSurfacedAt": "2026-10-30T17:23:13.803Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-6645-mvv7jeb6": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6645-mvv7jeb6",
+      "firstSeen": "2026-10-30T17:59:21.939Z",
+      "incidentOpenedAt": "2026-10-30T17:59:21.939Z",
+      "lastSeen": "2026-10-30T17:59:21.939Z",
+      "lastNotifiedAt": "2026-10-30T17:59:21.939Z",
+      "lastSurfacedAt": "2026-10-30T17:59:21.939Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-6645-press-night-digest": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-6645-press-night-digest",
+      "firstSeen": "2026-10-30T18:02:23.138Z",
+      "incidentOpenedAt": "2026-10-30T18:02:23.138Z",
+      "lastSeen": "2026-10-30T18:39:36.801Z",
+      "lastNotifiedAt": "2026-10-30T18:02:23.138Z",
+      "lastSurfacedAt": "2026-10-30T18:02:23.138Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "workflow-alert:opening-night-stage-latency": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Opening-night stage-latency alert: scored entries missing",
+      "firstSeen": "2026-10-30T18:22:01.226Z",
+      "incidentOpenedAt": "2026-10-30T18:22:01.226Z",
+      "lastSeen": "2026-10-30T18:22:01.226Z",
+      "lastNotifiedAt": "2026-10-30T18:22:01.226Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6653",
+      "dispatch": {
+        "requestedAt": "2026-10-30T18:22:01.226Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41105683365",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41105683365"
+      }
+    },
+    "land:land/bro-6640-ob-audit": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-6640-ob-audit",
+      "firstSeen": "2026-10-30T18:24:09.989Z",
+      "incidentOpenedAt": "2026-10-30T18:24:09.989Z",
+      "lastSeen": "2026-10-30T18:24:09.989Z",
+      "lastNotifiedAt": "2026-10-30T18:24:09.989Z",
+      "lastSurfacedAt": "2026-10-30T18:24:09.989Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-5201-lane-factory": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-5201-lane-factory",
+      "firstSeen": "2026-10-30T18:27:58.049Z",
+      "incidentOpenedAt": "2026-10-30T18:27:58.049Z",
+      "lastSeen": "2026-10-30T18:27:58.049Z",
+      "lastNotifiedAt": "2026-10-30T18:27:58.049Z",
+      "lastSurfacedAt": "2026-10-30T18:27:58.049Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

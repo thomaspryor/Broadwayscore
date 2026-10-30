@@ -18,22 +18,32 @@ const ALL_VALUES = new Set(['all', 'true', '1', 'on', 'yes']);
 const KNOWN_TOKENS = new Set(['broadway', 'west-end', 'off-broadway', 'off-west-end', 'regional', 'tour']);
 const READ_TIMEOUT_MS = 10 * 1000;
 
-/** @returns {{all: boolean, tokens: Set<string>}} Pure. */
-function parseStanddown(value) {
+/**
+ * @returns {{all: boolean, tokens: Set<string>, unknown: string[]}} Pure.
+ * `unknown: 'all'` (LANE_STANDDOWN) reads a typo or "all" as every market. `unknown: 'ignore'` (LANE_ONLY_MARKETS,
+ * lane-only-markets.js) drops them instead and lists them in `unknown`, so a typo leaves the old path on.
+ */
+function parseStanddown(value, { unknown: onUnknown = 'all' } = {}) {
   const raw = String(value == null ? '' : value).trim().toLowerCase();
-  if (OFF_VALUES.has(raw)) return { all: false, tokens: new Set() };
+  if (OFF_VALUES.has(raw)) return { all: false, tokens: new Set(), unknown: [] };
   // Comma-separated; spaces inside an entry become hyphens, so "West End" reads as west-end.
   const tokens = new Set(raw.split(/[,;]+/).map((t) => t.trim().replace(/\s+/g, '-')).filter(Boolean));
-  const all = [...tokens].some((t) => ALL_VALUES.has(t) || !KNOWN_TOKENS.has(t));
-  return { all, tokens };
+  const unknown = [...tokens].filter((t) => ALL_VALUES.has(t) || !KNOWN_TOKENS.has(t));
+  if (onUnknown === 'ignore') return { all: false, tokens: new Set([...tokens].filter((t) => !unknown.includes(t))), unknown };
+  return { all: unknown.length > 0, tokens, unknown };
+}
+
+/** Whether a parsed token set names this show ({market, category}). "broadway" matches market, so Off-Broadway too. */
+function tokensMatchShow(tokens, show) {
+  const s = show || {};
+  return [s.market, s.category].some((x) => x && tokens.has(String(x).toLowerCase()));
 }
 
 /** Whether `value` stands the lane down for this show ({market, category}). Pure. */
 function standsDown(value, show) {
   const p = parseStanddown(value);
   if (p.all) return true;
-  const s = show || {};
-  return [s.market, s.category].some((x) => x && p.tokens.has(String(x).toLowerCase()));
+  return tokensMatchShow(p.tokens, show);
 }
 
 /**
@@ -66,4 +76,4 @@ function createStanddownCheck({ show, repo, token, envValue, fetchImpl, timeoutM
   };
 }
 
-module.exports = { VARIABLE, parseStanddown, standsDown, readStanddownLive, createStanddownCheck };
+module.exports = { VARIABLE, parseStanddown, tokensMatchShow, standsDown, readStanddownLive, createStanddownCheck };

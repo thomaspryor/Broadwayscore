@@ -898,25 +898,6 @@
     "queuedAt": "2026-10-29T17:53:54.219Z"
   },
   {
-    "conditionKey": "cron-health-failed:Test Suite",
-    "title": "Cron's latest run failed (not yet stale): Test Suite",
-    "description": "Test Suite: Latest run failed (last success 15h ago). Not stale yet; fix it before it is.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40925366558)"
-      }
-    ],
-    "queuedAt": "2026-10-29T17:59:59.323Z"
-  },
-  {
     "conditionKey": "cron-health-failed:Fetch All Image Formats",
     "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
     "description": "Fetch All Image Formats: Latest run failed (last success 3h ago). Not stale yet; fix it before it is.",
@@ -2444,37 +2425,6 @@
     "queuedAt": "2026-10-30T12:02:33.931Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41059613198",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41059613198)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41058537101)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-30T13:20:50.323Z"
-  },
-  {
     "conditionKey": "express-retry-still-thin:rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
     "title": "Opening Night Express retry still found thin review coverage for rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
     "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
@@ -3018,9 +2968,9 @@
     "queuedAt": "2026-10-30T16:47:06.842Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
-    "title": "6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/\n- nbcny--1daa444e.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-announces-pregnant-baby-no-3/6559878/\n- nbcny--77bcfc31.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/kaley-cuoco-tom-pelphrey-welcome-2nd-baby/6559563/",
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -3029,35 +2979,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-30T17:08:14.933Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
-    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T17:08:21.473Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:fences-off-west-end-2026",
-    "title": "1 review(s) for fences-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--5a0f0ca7.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tom-skerritt-actor-picket-fences-alien-top-gun-dies/6562233/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T17:08:57.919Z"
+    "queuedAt": "2026-10-30T17:21:01.711Z"
   },
   {
     "conditionKey": "pending-unrecoverable:dirty-dancing-the-classic-story-on-stage-west-end-2026",
@@ -3114,5 +3036,174 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T17:23:13.804Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41098813923",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41098813923)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41095108553)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-30T18:25:47.032Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6645-mvv7jeb6",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6645-mvv7jeb6",
+    "description": "land.yml did not land land/job/linear-BRO-6645-mvv7jeb6: the unit-tests-node gate went red at 52bfbbb571. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41100118139",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6645-mvv7jeb6"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "52bfbbb571dc4a32a0770f4feafc795bcc312195"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41100118139"
+      }
+    ],
+    "queuedAt": "2026-10-30T17:59:21.940Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6645-press-night-digest",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6645-press-night-digest",
+    "description": "land.yml did not land land/bro-6645-press-night-digest: the unit-tests-node gate went red at 8cd23b93d8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41100290360",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6645-press-night-digest"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8cd23b93d87dee058d8f391e7f81e467710910ad"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41100290360"
+      }
+    ],
+    "queuedAt": "2026-10-30T18:02:23.140Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
+    "title": "6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/\n- nbcny--1daa444e.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-announces-pregnant-baby-no-3/6559878/\n- nbcny--77bcfc31.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/kaley-cuoco-tom-pelphrey-welcome-2nd-baby/6559563/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T18:29:12.363Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6640-ob-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6640-ob-audit",
+    "description": "land.yml did not land land/bro-6640-ob-audit: the unit-tests-node gate went red at e42f436b87. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41102455741",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6640-ob-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e42f436b87a30e2eaf05dd27c953f872051dc6bb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41102455741"
+      }
+    ],
+    "queuedAt": "2026-10-30T18:24:09.990Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5201-lane-factory",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5201-lane-factory",
+    "description": "land.yml did not land land/bro-5201-lane-factory: the unit-tests-node gate went red at fe2f8f9ad3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41102196046",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5201-lane-factory"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fe2f8f9ad3b1aa5e036f51a9fc3ea5dade8a0f17"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41102196046"
+      }
+    ],
+    "queuedAt": "2026-10-30T18:27:58.050Z"
   }
 ]

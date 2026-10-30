@@ -64,3 +64,27 @@ test('every Chicago-tagged outlet in the real registry resolves to chicago-il', 
   }
   assert.ok(chi.length >= 17);
 });
+
+test('hubCandidates keeps local-only Chicago shows (BRO-6518) and drops UK houses and other markets', async () => {
+  const { hubCandidates } = await import('../../src/lib/city-hub');
+  const { isLocalOnlyShow } = await import('../../src/lib/local-market');
+  const local = show('thanksgiving-play-regional-2024', { category: 'regional', discoverySource: 'theatreinchicago', localOnly: true, status: 'closed', openingDate: '2024-03-01' });
+  const tryout = show('some-tryout-regional-2026', { category: 'regional', status: 'open', openingDate: '2026-09-01' });
+  const uk = show('rsc-show-regional-2026', { category: 'regional', uk: true });
+  const nyc = show('hamilton', { category: 'broadway' });
+  type Row = { id: string; city: string; category?: string; uk?: boolean; status?: string; openingDate?: string };
+  const pool = hubCandidates<Row>([local, tryout, uk, nyc] as Row[], s => !!s.uk);
+  assert.deepEqual(pool.map(s => s.id), [local.id, tryout.id]);
+  assert.equal(isLocalOnlyShow(local), true);
+  const sections = sectionHubShows(pool, 'chicago-il', TODAY);
+  const listed = [...sections.now, ...sections.soon, ...sections.closedRecent, ...sections.archive].map(s => s.id);
+  assert.ok(listed.includes(local.id), 'the local Chicago show appears in the hub sections');
+});
+
+test('getCityHubShows draws from getAllShows via hubCandidates, not getRegionalShows (BRO-6518 wiring)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../src/lib/data-city-hub.ts', import.meta.url), 'utf8');
+  assert.match(src, /hubCandidates\(getAllShows\(\)/);
+  assert.doesNotMatch(src, /getRegionalShows\(/);
+  assert.match(src, /isUkRegionalShow/);
+});

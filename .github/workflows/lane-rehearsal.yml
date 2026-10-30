@@ -2,9 +2,10 @@ name: Opening-night lane rehearsal
 
 # BRO-4787 (epic BRO-4210 phase 4). Replays the lane's fixture through its full path in dry-run (discovery, trust-model
 # rows, merge-by-key publish, a local static server standing in for the live site, the ledger) and commits the verdict
-# record the arm gate reads (data/audit/lane-rehearsal.json). The lane arms for a real opening only if the last
-# rehearsal passed, is recent and was run against the current lane code (scripts/opening-night-lane-rehearse.js
-# --arm-check). A failure here leaves the lane disarmed: the old pipeline runs unchanged, which is the safe direction.
+# record (data/audit/lane-rehearsal.json). This run is the lane's health check: since BRO-6619 a synthetic pass never
+# arms a real publish. The arm gate (scripts/opening-night-lane-rehearse.js --arm-check) reads the RECORDED rehearsal's
+# own record (data/audit/lane-rehearsal-recorded.json), which needs a fixture from a real opening, and arms only if it
+# passed, is recent and ran the current lane code. Not armed means the old pipeline runs unchanged (the safe direction).
 #
 # No secrets, no network beyond npm: every page is a fixture and the "live site" is 127.0.0.1. The fixture is
 # synthetic until a real opening is recorded; latencies are modelled (see rehearsal.js DEFAULT_LATENCY).
@@ -23,6 +24,10 @@ on:
     paths:
       - 'scripts/lib/**'
       - 'scripts/opening-night-lane-rehearse.js'
+      # BRO-6619: the lane hash also covers the scorer's .ts graph, the night entry and the live workflow.
+      - 'scripts/llm-scoring/**'
+      - 'scripts/opening-night-lane.js'
+      - '.github/workflows/opening-night-lane-live.yml'
       - '.github/workflows/lane-rehearsal.yml'
   workflow_dispatch: {}
 
@@ -71,7 +76,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening-night lane rehearsal failed'
-          description: 'The lane rehearsal failed or crashed, so the opening-night lane will NOT arm for the next opening and the old pipeline runs unchanged. Read data/audit/lane-rehearsal.json for the failing reviews (BRO-4787).'
+          description: 'The synthetic lane rehearsal (the weekly health check) failed or crashed, so the lane code has a regression; fix it before a recorded rehearsal can arm the lane. The old pipeline runs unchanged either way. Read data/audit/lane-rehearsal.json for the failing reviews (BRO-4787).'
           severity: 'warning'
           email: 'false'
           min_consecutive_failures: '2'

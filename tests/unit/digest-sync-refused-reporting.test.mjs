@@ -56,7 +56,7 @@ test('morning-digest.plist: sync-audit-checkout.sh refusal does NOT block the ex
 
 test('mutating sibling plists still fail closed (&& unchanged)', () => {
   for (const file of [
-    'com.broadwayscore.backlog-drain.plist',
+    // BRO-5146: com.broadwayscore.backlog-drain.plist retired with its CLI.
     'com.broadwayscore.autonomous-shadow.plist',
     'com.broadwayscore.predispatch-queue-audit.plist',
   ]) {

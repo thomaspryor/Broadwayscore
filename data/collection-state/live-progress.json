@@ -1,32 +1,97 @@
 {
-  "updatedAt": "2026-10-30T17:30:16.989Z",
-  "processed": 73,
-  "failed": 50,
-  "successRate": "59.3%",
+  "updatedAt": "2026-10-30T18:05:46.307Z",
+  "processed": 32,
+  "failed": 7,
+  "successRate": "82.1%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 18,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 6,
+    "scrapingdog": 1,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 16
+    "archiveToday": 4,
+    "archive": 13
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-10-30T17:22:51.871Z",
+      "t": "2026-10-30T17:49:12.621Z",
       "event": "bb-session",
-      "session": "695150c6",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "f3ebd6df",
+      "url": "https://www.wsj.com/articles/staff-meal-review-abe-koogler-playwrights-horizons-"
     },
     {
-      "t": "2026-10-30T17:23:58.860Z",
+      "t": "2026-10-30T17:49:13.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-30T17:49:30.200Z",
       "event": "bb-session",
-      "session": "aaeb45bd",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "ad4a9f8f",
+      "url": "https://www.wsj.com/articles/staff-meal-review-abe-koogler-playwrights-horizons-"
+    },
+    {
+      "t": "2026-10-30T17:49:30.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-30T17:56:41.587Z",
+      "event": "bb-session",
+      "session": "f36006fe",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/wet-brain-06-26-23"
+    },
+    {
+      "t": "2026-10-30T17:56:42.031Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-30T17:56:53.643Z",
+      "event": "bb-session",
+      "session": "23968a3f",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/wet-brain-06-26-23"
+    },
+    {
+      "t": "2026-10-30T17:56:54.087Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-30T17:58:40.004Z",
+      "event": "bb-session",
+      "session": "a657f033",
+      "url": "https://www.wsj.com/articles/shadow-land-review-family-history-in-hurricane-katr"
+    },
+    {
+      "t": "2026-10-30T17:58:40.608Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-30T17:58:58.348Z",
+      "event": "bb-session",
+      "session": "50052d0d",
+      "url": "https://www.wsj.com/articles/shadow-land-review-family-history-in-hurricane-katr"
+    },
+    {
+      "t": "2026-10-30T17:58:58.794Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-30T18:05:31.428Z",
+      "event": "bb-session",
+      "session": "f9b111fc",
+      "url": "https://www.nytimes.com/2022/05/08/theater/review-wedding-band.html?searchResult"
+    },
+    {
+      "t": "2026-10-30T18:05:31.922Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
