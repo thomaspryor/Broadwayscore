@@ -19,6 +19,7 @@
  */
 
 const { parseBuildOutput: parseBuildTable } = require('./lib/bundle-size-parse.js');
+const { parseBuildManifests } = require('./lib/bundle-size-manifests.js');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -73,7 +74,8 @@ function computeStalePages(baseline, liveRoutes, { staticRoutes = false } = {}) 
 
 const SHARED_JS_WARN_DELTA = 5; // kB
 const PAGE_JS_WARN_DELTA = 10;  // kB
-const PAGE_JS_ABSOLUTE_CAP = 260; // kB — no page should exceed this (updated 2026-05-20 after below-fold lazy split reduced /show/[slug] from 332→253kB)
+const PAGE_JS_ABSOLUTE_CAP = 330; // kB (re-measured from prerendered HTML after the Next 16 upgrade, 2026-10-30, BRO-6609; was 260 on the old table)
+// previously: 260 kB — no page should exceed this (updated 2026-05-20 after below-fold lazy split reduced /show/[slug] from 332→253kB)
 // Internal tools no visitor loads (Sanity Studio is ~1.6MB by design). The
 // cap guards public pages; these became visible to it once the parser stopped
 // skipping rows (BRO-5985).
@@ -116,7 +118,9 @@ function parseBuildOutput() {
 
   // Shared parser: the old inline regex skipped the homepage (┌ row) and
   // every route whose own code printed in bytes, show pages included.
-  const { pages, sharedJS } = parseBuildTable(output);
+  let { pages, sharedJS } = parseBuildTable(output);
+  // Next 16 prints no size table (BRO-6609): measure the prerendered pages instead.
+  if (sharedJS == null) ({ pages, sharedJS } = parseBuildManifests(path.join(__dirname, '..', '.next')));
 
   return { pages, sharedJS, timestamp: new Date().toISOString() };
 }
