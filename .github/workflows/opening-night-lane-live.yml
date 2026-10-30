@@ -144,7 +144,7 @@ jobs:
     # GitHub-hosted jobs stop at 360 minutes. The lane step is capped below that so the persist and commit steps
     # after it always get to run. The lane keeps its lease past its own exit (BRO-6618): "Release night lease" frees it
     # only after the review-texts push succeeded, so a failed push leaves the lease to expire by TTL (30 minutes) and
-    # pages through "Notify on failure". A lane cut off by its cap is released the same way.
+    # fails the run ("Notify on failure" is severity warning, so it does not page). A lane cut off by its cap is released the same way.
     timeout-minutes: 355
     env:
       # The lane's lease holder (scripts/opening-night-lane.js defaults --holder to gha-$GITHUB_RUN_ID). push-review-texts'
@@ -261,7 +261,8 @@ jobs:
           bash scripts/lib/push-with-retry.sh 5 main
 
       # Plan v2 step 2 (BRO-6620): inside [embargo - 3h, embargo + 6h] a lane exit 3 is a failure. The step queues a
-      # digest row (alert ledger committed below) and exits 1, so "Notify on failure" pages tonight. Outside the window,
+      # digest row (alert ledger committed below) and exits 1, which turns the run red. "Notify on failure" here is severity
+      # warning and this workflow is not on the page-worthy list, so it sends nothing tonight. Outside the window,
       # held-by-other (the second armed starter) and LANE_STANDDOWN (the owner's switch) stay a notice. The lease release
       # below (always(), keyed on the push) and the marker above bring the old path back.
       - name: Page if the lane stood down inside the press window (BRO-6620)

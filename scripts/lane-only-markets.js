@@ -61,7 +61,8 @@ async function stoodDown() {
     });
     console.log(`page=${(res && res.action) || 'sent'}`);
   }
-  // A digest row reaches the owner the next morning; failing the step makes "Notify on failure" page tonight.
+  // The digest row reaches the owner in the next Daily Digest; failing the step turns the run red. Notify on failure is
+  // severity warning in opening-night-lane-live.yml, so it sends nothing (a real-time page is BRO-6649's call).
   return 1;
 }
 
