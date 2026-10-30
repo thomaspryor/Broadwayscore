@@ -3,14 +3,14 @@
  * Audit review files whose `url` is not an absolute http(s) url (BRO-5075).
  * Prints counts per category and the deterministic fix for each fixable file.
  *
- *   node scripts/audit-relative-review-urls.js [--root=data/review-texts] [--json] [--strict]
+ *   node scripts/lib/audit-relative-review-urls.js [--root=data/review-texts] [--json] [--strict]
  *
  * --strict exits 1 when any non-absolute url remains. Exit 0 otherwise.
  * Categories and repairs: scripts/lib/relative-review-url.js.
  */
 const fs = require('fs');
 const path = require('path');
-const { classifyRelativeUrl } = require('./lib/relative-review-url');
+const { classifyRelativeUrl } = require('./relative-review-url');
 
 function scan(root) {
   const rows = [];
@@ -31,7 +31,7 @@ function scan(root) {
 
 function main(argv) {
   const arg = (k) => (argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=')[1];
-  const root = arg('root') || path.join(__dirname, '..', 'data', 'review-texts');
+  const root = arg('root') || path.join(__dirname, '..', '..', 'data', 'review-texts');
   if (!fs.existsSync(root)) { console.error(`audit-relative-review-urls: ${root} missing (run ./scripts/setup-local-data.sh)`); return 2; }
   const rows = scan(root);
   const by = {};
