@@ -3912,5 +3912,36 @@
       }
     ],
     "queuedAt": "2026-10-30T12:00:08.900Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5075-relurl-audit",
+    "title": "Landing blocked: lint-workflows red on land/bro-5075-relurl-audit",
+    "description": "land.yml did not land land/bro-5075-relurl-audit: the lint-workflows gate went red at 56d6d01b05. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41050140329",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5075-relurl-audit"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "56d6d01b053ea39d907d5cc96327ec4993adb4e0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41050140329"
+      }
+    ],
+    "queuedAt": "2026-10-30T12:02:33.931Z"
   }
 ]
