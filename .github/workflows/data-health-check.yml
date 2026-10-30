@@ -1760,3 +1760,124 @@ jobs:
             -f alert_title="Daily Data Health Check Crashed" \
             -f alert_context='{"note":"Health check script crashed — BSC Daily email may not have sent."}' \
             -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # BRO-6038: orphaned audits (docs/triage-audit-scripts.md bucket a) in SHADOW
+  # MODE (CLAUDE.md rule 19). Every audit step is continue-on-error and writes a
+  # counts-only file under data/audit/shadow-audits/ (scripts/lib/audit-counts.js);
+  # health-check.js's shadowAuditResults reads them on the next daily run as
+  # "Shadow audit: ..." rows at urgency 'low' (no card). Registry and baselines:
+  # scripts/lib/shadow-audits.js; tests/unit/shadow-audits.test.mjs pins each
+  # entry to its step here. A separate job keeps the health-check job's
+  # timeout budget untouched; `needs` (with always()) runs it after that job so
+  # its one push never contends with the health-check job's commit steps.
+  shadow-audits:
+    needs: health-check
+    # Runs even when health-check failed, but not on a cancelled run.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    # Sum of the capped steps below is 2+5+2+5+5+15+3 = 37 min plus the commit
+    # step's 900s PUSH_DEADLINE_SEC; 75 keeps the audit-push-retry-budgets.js
+    # job-timeout margin gate's 15% headroom.
+    timeout-minutes: 75
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # An audit that crashes or exits early writes nothing; without this the
+      # previous day's file would still read as a fresh pass. Removed, its
+      # digest row reports the file missing instead.
+      - name: Clear previous shadow audit counts
+        run: rm -f data/audit/shadow-audits/*.json
+
+      - name: Shadow audit announced-cast
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-announced-cast.js --counts=data/audit/shadow-audits/announced-cast.json
+
+      - name: Shadow audit scoreless-llmscore
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-scoreless-llmscore.js --counts=data/audit/shadow-audits/scoreless-llmscore.json
+
+      # Current calendar year (the audit's own default is a fixed 2026). The
+      # registry's year field makes the row warn once the year no longer
+      # matches the measured baseline.
+      - name: Shadow audit uncounted-real-reviews
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-uncounted-real-reviews.js --year="$(date -u +%Y)" --counts=data/audit/shadow-audits/uncounted-real-reviews.json
+
+      - name: Shadow audit listing-page-text
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-listing-page-text.js --counts=data/audit/shadow-audits/listing-page-text.json
+
+      - name: Shadow audit promo-booking-copy
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-promo-booking-copy.js --counts=data/audit/shadow-audits/promo-booking-copy.json
+
+      # Deepens the depth-1 review-texts clone by --shallow-since itself (about 4 min for 7 days).
+      - name: Shadow audit ownership-gate-losses
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 15
+        run: node scripts/audit-ownership-gate-losses.js --days=7 --counts=data/audit/shadow-audits/ownership-gate-losses.json
+
+      # Needs deploy-watermark.json history; actions/checkout is depth 1, so deepen first.
+      # Too few samples writes findings null (an "undetermined" row), never a pass.
+      - name: Shadow audit corpus-determinism
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: |
+          git fetch --quiet --shallow-since="3 days ago" origin main || true
+          node scripts/audit-corpus-determinism.js --since-hours=48 --report-out=data/audit/shadow-audits/corpus-determinism.json
+
+      - name: Commit shadow audit counts (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # One line per scripts/lib/shadow-audits.js entry (tests/unit/shadow-audits.test.mjs checks): a bare directory add is unprovable for the REST fallback (rule z).
+          git add data/audit/shadow-audits/announced-cast.json 2>/dev/null || true
+          git add data/audit/shadow-audits/scoreless-llmscore.json 2>/dev/null || true
+          git add data/audit/shadow-audits/uncounted-real-reviews.json 2>/dev/null || true
+          git add data/audit/shadow-audits/listing-page-text.json 2>/dev/null || true
+          git add data/audit/shadow-audits/promo-booking-copy.json 2>/dev/null || true
+          git add data/audit/shadow-audits/ownership-gate-losses.json 2>/dev/null || true
+          git add data/audit/shadow-audits/corpus-determinism.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No shadow audit count changes"
+          else
+            git commit -m "data: Update shadow audit counts [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi

@@ -4,7 +4,11 @@
  * reviews.json (no assignedScore), with the metadata that decides whether a
  * text-less fallback applies. Prints metadata only, never review text.
  *
- * Usage: node scripts/audit-uncounted-real-reviews.js [--year=2026] [--json]
+ * Usage: node scripts/audit-uncounted-real-reviews.js [--year=2026] [--json] [--counts=PATH]
+ * --counts (BRO-6038 shadow job) writes counts only and prints the summary only.
+ * Its findings are the `suspect` rows: no wrongShow/wrongProduction/roundup/
+ * rejection flag and a contentTier above stub, i.e. a real-looking review the
+ * rebuild did not count. The full row total is reported beside it.
  */
 const fs = require('fs');
 const path = require('path');
@@ -14,6 +18,8 @@ const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 const args = process.argv.slice(2);
 const year = (args.find(a => a.startsWith('--year=')) || '--year=2026').split('=')[1];
 const asJson = args.includes('--json');
+const { countsPathFromArgv, writeAuditCounts } = require('./lib/audit-counts');
+const countsPath = countsPathFromArgv(args);
 const root = path.join(__dirname, '..');
 const dir = path.join(root, 'data/review-texts');
 const shows = JSON.parse(fs.readFileSync(path.join(root, 'data/shows.json'), 'utf8'));
@@ -46,6 +52,10 @@ for (const s of listShowDirs(dir)) {
     });
   }
 }
-if (asJson) console.log(JSON.stringify(rows, null, 1));
+const EXCLUDING_FLAGS = new Set(['wrongShow', 'wrongProduction', 'isRoundupArticle', 'rejectionReason']);
+const isSuspect = (r) => !['invalid', 'stub'].includes(r.tier) && !r.flags.some(f => EXCLUDING_FLAGS.has(f.split('=')[0]));
+if (countsPath) {
+  writeAuditCounts(countsPath, 'audit-uncounted-real-reviews.js', { findings: rows.filter(isSuspect).length, uncounted: rows.length, year: Number(year) || year });
+} else if (asJson) console.log(JSON.stringify(rows, null, 1));
 else for (const r of rows) console.log(`${r.show}/${r.file} | ${r.outlet} | tier=${r.tier} len=${r.textLen} ex=[${r.excerpts}] og=${r.og} serp=${r.serp} stars=${r.stars} | pub=${r.publishDate} open=${r.opening} | ${r.flags.join(',')} | ${r.url}`);
-console.error(`uncounted files on ${year} shows: ${rows.length}`);
+console.error(`uncounted files on ${year} shows: ${rows.length} (${rows.filter(isSuspect).length} unflagged above stub)`);

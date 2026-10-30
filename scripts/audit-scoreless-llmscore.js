@@ -10,7 +10,8 @@
  * rejectedTextHash, the scorer's text-gate block), and lists them. Ids only,
  * no review text.
  *
- * Usage: node scripts/audit-scoreless-llmscore.js [--list=N] [--json]
+ * Usage: node scripts/audit-scoreless-llmscore.js [--list=N] [--json] [--counts=PATH]
+ * --counts writes counts only (BRO-6038 shadow job) and prints the summary only.
  */
 'use strict';
 
@@ -21,6 +22,8 @@ const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const listN = Number((args.find((a) => a.startsWith('--list=')) || '--list=200').slice(7));
 const asJson = args.includes('--json');
+const { countsPathFromArgv, writeAuditCounts } = require('./lib/audit-counts');
+const countsPath = countsPathFromArgv(args);
 
 function main() {
   const textsDir = path.join(ROOT, 'data', 'review-texts');
@@ -48,6 +51,11 @@ function main() {
   }
   const count = (key) => rows.reduce((m, r) => { const k = String(r[key]); m[k] = (m[k] || 0) + 1; return m; }, {});
   const summary = { scanned, scoreless: rows.length, byKeys: count('llmKeys'), byRejected: count('rejected'), byRejectionReason: count('rejectionReason'), byTier: count('tier') };
+  if (countsPath) {
+    writeAuditCounts(countsPath, 'audit-scoreless-llmscore.js', { findings: rows.length, scanned, rejected: rows.filter((r) => r.rejected).length });
+    console.log(`scanned: ${scanned}; scoreless: ${rows.length}`);
+    return;
+  }
   if (asJson) { console.log(JSON.stringify({ summary, rows: rows.slice(0, listN) }, null, 2)); return; }
   for (const [k, v] of Object.entries(summary)) console.log(`${k}: ${typeof v === 'object' ? JSON.stringify(v) : v}`);
   console.log('\nshow | file | rejected | reason | tier | chars | assignedScore | llmScore keys');

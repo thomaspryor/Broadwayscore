@@ -101,6 +101,18 @@ function loadWatermarkHistory(sinceHours) {
   return samples;
 }
 
+function writeReport(opts, body) {
+  try {
+    fs.mkdirSync(path.dirname(opts.reportOut), { recursive: true });
+    fs.writeFileSync(
+      opts.reportOut,
+      JSON.stringify({ generatedAt: new Date().toISOString(), script: 'audit-corpus-determinism.js', windowHours: opts.sinceHours, ...body }, null, 2) + '\n',
+    );
+  } catch (e) {
+    console.warn(`⚠️  Could not write report to ${opts.reportOut}: ${e.message}`);
+  }
+}
+
 function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
     console.log(USAGE);
@@ -120,6 +132,9 @@ function main() {
     // Under --gate this must NOT read as a pass. An acceptance recheck that green-lights
     // on "no data" is exactly the confident-unresolved pattern this card exists to kill.
     // Exit 2 = insufficient data (distinct from 1 = gate failed, 0 = pass).
+    // BRO-6038: the report still records the no-data run (findings null), so
+    // the shadow digest row says "undetermined" instead of reading an old pass.
+    if (!opts.noReport) writeReport(opts, { samples: samples.length, insufficientData: true, findings: null, undetermined: true });
     return opts.gate ? 2 : 0;
   }
 
@@ -148,26 +163,8 @@ function main() {
     for (const f of gate.failures) console.log(`   - ${f}`);
   }
 
-  if (!opts.noReport) {
-    try {
-      fs.mkdirSync(path.dirname(opts.reportOut), { recursive: true });
-      fs.writeFileSync(
-        opts.reportOut,
-        JSON.stringify(
-          {
-            generatedAt: new Date().toISOString(),
-            windowHours: opts.sinceHours,
-            gate,
-            ...report,
-          },
-          null,
-          2,
-        ) + '\n',
-      );
-    } catch (e) {
-      console.warn(`⚠️  Could not write report to ${opts.reportOut}: ${e.message}`);
-    }
-  }
+  // findings: the material-decrease count the BRO-6038 shadow digest row compares with its max.
+  if (!opts.noReport) writeReport(opts, { gate, ...report, findings: report.materialDecreases });
 
   return opts.gate && !gate.pass ? 1 : 0;
 }

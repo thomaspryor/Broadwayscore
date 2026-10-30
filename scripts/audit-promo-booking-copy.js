@@ -16,7 +16,10 @@
  * boilerplate phrases only, never review text.
  *
  * Usage:
- *   node scripts/audit-promo-booking-copy.js [--json] [--show=ID]
+ *   node scripts/audit-promo-booking-copy.js [--json] [--show=ID] [--counts=PATH]
+ * --counts (BRO-6038 shadow job) writes counts only and prints the summary only;
+ * findings = live promo + live show-hub rows. Blocked-domain rows are counted
+ * beside it, not in findings: rebuild-all-reviews.js drops isBlockedReviewRecord.
  * Exit 0 always (report only). Needs data/review-texts.
  */
 const fs = require('fs');
@@ -29,6 +32,7 @@ const { isBlockedReviewRecord } = require('./lib/domain-filters');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const { normalizeReviewUrl } = require('./lib/ingest-collision');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { countsPathFromArgv, writeAuditCounts } = require('./lib/audit-counts');
 
 function isLive(data) {
   return !(data.contentTier === 'invalid' || data.isNonReview || data.excludeFromScoring
@@ -75,6 +79,8 @@ function main(argv) {
   const dir = resolveReviewTextsDir();
   if (!dir || !fs.existsSync(dir)) {
     console.error('review-texts not found; run with --review-texts via cloud-run-script.js');
+    const missingCounts = countsPathFromArgv(argv);
+    if (missingCounts) writeAuditCounts(missingCounts, 'audit-promo-booking-copy.js', { findings: null, reason: 'review-texts not found' });
     return 0;
   }
   const shows = showArg ? [showArg] : listShowDirs(dir, { silent: true });
@@ -93,12 +99,22 @@ function main(argv) {
     const r = auditShowFiles(showId, files);
     for (const k of Object.keys(total)) total[k].push(...r[k]);
   }
+  const live = rows => rows.filter(r => r.live).length;
+  const countsPath = countsPathFromArgv(argv);
+  if (countsPath) {
+    writeAuditCounts(countsPath, 'audit-promo-booking-copy.js', {
+      findings: live(total.promo) + live(total.showHub), scanned, unreadable,
+      promo: total.promo.length, promoLive: live(total.promo), showHub: total.showHub.length, showHubLive: live(total.showHub),
+      blocked: total.blocked.length, blockedLive: live(total.blocked), liveUrlTwins: total.twins.length,
+    });
+    console.log(`Scanned ${scanned} files; live promo ${live(total.promo)}, live show-hub ${live(total.showHub)}, live blocked-domain ${live(total.blocked)}, same-URL live twins ${total.twins.length}`);
+    return 0;
+  }
   if (json) {
     console.log(JSON.stringify({ scanned, unreadable, ...total }, null, 2));
     return 0;
   }
   console.log(`Scanned ${scanned} files in ${shows.length} show folders (${unreadable} unreadable JSON skipped)`);
-  const live = rows => rows.filter(r => r.live).length;
   console.log(`\npromo booking copy: ${total.promo.length} (${live(total.promo)} live)`);
   for (const r of total.promo) console.log(`  ${r.live ? 'LIVE ' : 'excl '} ${r.id} [${r.source}/${r.contentTier}] ${r.matches.join(' | ')}`);
   console.log(`\nblocked-domain URL: ${total.blocked.length} (${live(total.blocked)} live)`);
@@ -115,7 +131,7 @@ module.exports = { auditShowFiles, isLive };
 if (require.main === module) {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/audit-promo-booking-copy.js [--json] [--show=ID]\nRead-only sweep: promo booking copy, blocked-domain URLs, aggregator show-hub URLs, same-URL live twins.');
+    console.log('Usage: node scripts/audit-promo-booking-copy.js [--json] [--show=ID] [--counts=PATH]\nRead-only sweep: promo booking copy, blocked-domain URLs, aggregator show-hub URLs, same-URL live twins.');
     process.exit(0);
   }
   process.exit(main(argv));

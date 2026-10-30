@@ -15,7 +15,12 @@
  * Each loss prints the restore inputs: fromCommit (40-char sha of the parent),
  * sourcePath, url, critic, text length.
  *
- *   node scripts/audit-ownership-gate-losses.js [--days=60] [--json]
+ *   node scripts/audit-ownership-gate-losses.js [--days=60] [--json] [--counts=PATH]
+ * --counts (BRO-6038 shadow job) writes counts only and prints the summary
+ * line only (no private paths or URLs in CI logs).
+ * Exits 3 when the review-texts dir is not its own git repo root: `git -C` on
+ * a plain folder (a cloud worktree's copy or symlink) would otherwise resolve
+ * to the PARENT repo and deepen its history (BRO-6038: that filled a disk).
  * Cloud: node scripts/cloud-run-script.js --review-texts scripts/audit-ownership-gate-losses.js
  */
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
@@ -73,8 +78,16 @@ function currentIndex() {
   return { byUrl, byShowOutletCritic, prints, anyByUrl };
 }
 
+function isOwnGitRoot(dir) {
+  try {
+    const top = execFileSync('git', ['-C', dir, 'rev-parse', '--show-toplevel'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return fs.realpathSync(top) === fs.realpathSync(dir);
+  } catch { return false; }
+}
+
 function main() {
   if (!fs.existsSync(DIR)) { console.error('data/review-texts missing'); process.exit(3); }
+  if (!isOwnGitRoot(DIR)) { console.error(`${DIR} is not its own git repository (git -C would use the parent repo); point REVIEW_TEXTS_DIR at a review-texts clone`); process.exit(3); }
   try { execFileSync('git', ['-C', DIR, 'fetch', '--quiet', `--shallow-since=${days + 2} days ago`, 'origin'], { stdio: 'ignore' }); } catch { /* full clone or offline */ }
   const commits = git(['log', `--since=${days} days ago`, '--format=%H %P %cI %s', '--grep=^ownership-gate: drop'])
     .split('\n').filter(Boolean).map((l) => { const [sha, parent, at] = l.split(' '); return { sha, parent, at }; });
@@ -104,9 +117,16 @@ function main() {
     }
   }
   const oldest = commits.length ? commits[commits.length - 1].at : null;
+  const countsPath = require('./lib/audit-counts').countsPathFromArgv(ARGS);
+  if (countsPath) {
+    require('./lib/audit-counts').writeAuditCounts(countsPath, 'audit-ownership-gate-losses.js', { findings: losses.length, days, dropCommits: commits.length, droppedFiles: drops.length });
+    console.log(`${commits.length} ownership-gate drop commits in ${days} days; ${drops.length} files dropped; ${losses.length} with text that exist nowhere today.`);
+    return;
+  }
   if (ARGS.includes('--json')) { console.log(JSON.stringify({ days, commits: commits.length, oldestDropCommit: oldest, drops: drops.length, losses }, null, 2)); return; }
   console.log(`${commits.length} ownership-gate drop commits in ${days} days (oldest ${oldest}); ${drops.length} files dropped; ${losses.length} with text that exist nowhere today.`);
   for (const l of losses) console.log(`LOSS ${l.sourcePath} | ${l.outletId} | ${l.critic} | ${l.textChars} chars | dropped ${l.at} | fromCommit ${l.fromCommit} | ${l.url || '-'} | url today: ${(l.urlHoldersToday || []).join('; ') || 'nowhere'}`);
 }
 
 if (require.main === module) main();
+module.exports = { isOwnGitRoot };

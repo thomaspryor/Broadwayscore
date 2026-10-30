@@ -15,12 +15,16 @@ path triggers do not count as wiring.
 
 | Population | Count |
 | --- | --- |
-| `scripts/audit-*.js` files | 283 |
-| Referenced by workflow/action/package or other non-test code (bucket c) | 192 |
-| Unreferenced and retained in the baseline | 91 |
-| Bucket a: alertable, awaiting wiring | 33 |
-| Bucket b: manual, one-shot, local-only or already covered by tests | 58 |
+| `scripts/audit-*.js` files | 293 |
+| Referenced by workflow/action/package or other non-test code (bucket c) | 206 |
+| Unreferenced and retained in the baseline | 87 |
+| Bucket a: alertable, awaiting wiring | 25 |
+| Bucket b: manual, one-shot, local-only or already covered by tests | 62 |
 | Bucket u: untriaged | 0 |
+
+Counts rechecked 2026-10-30 (BRO-6038 wiring pass), after seven of the top eight were
+wired in shadow mode and `audit-star-bands.js` moved to bucket b; see "Wired in shadow
+mode" below.
 
 The baseline actually contained **58** bucket-u entries, not the card's 59 or the
 older document's 57. All 58 now have a script-specific a/b decision below: 21 are
@@ -28,9 +32,9 @@ alertable and 37 stay manual. The original 12 bucket-a and 20 bucket-b records a
 unchanged. Classification changes do not run, disable or wire an audit and do not
 change any show, review, score or private-data record.
 
-## Bucket (a): orphaned and worth alerting on (33)
+## Bucket (a): orphaned and worth alerting on (25 unwired)
 
-The original 12 retain BRO-2688's priority order and historical sweep evidence below;
+The original 12 retain BRO-2688's priority order (ranks 1 to 8 are now wired or folded, see "Wired in shadow mode") and historical sweep evidence below;
 findings labelled "today" are from that sweep, not a new claim about the current corpus.
 The 21 newly classified alertable scripts are listed in the BRO-6038 triage section
 with rank 99 (unranked), leaving the top-eight priority order intact.
@@ -40,7 +44,7 @@ that a script already supports `--counts` or has a digest consumer.
 
 | Rank | Script | Why it matters |
 | --- | --- | --- |
-| 1 | `audit-star-bands.js` | CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0) |
+| 1 | `audit-star-bands.js` (now bucket b, covered by audit-star-band-drift.js) | CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0) |
 | 2 | `audit-announced-cast.js` | announced shows must not hold an older production's cast (BRO-5809); core data only; live run today flags the-wedding-march-off-broadway-2026 |
 | 3 | `audit-scoreless-llmscore.js` | files with an llmScore object but no numeric score are never scored or published (BRO-5395); needs review-texts |
 | 4 | `audit-uncounted-real-reviews.js` | review texts on 2026 shows missing from reviews.json (BRO-5794); needs review-texts |
@@ -59,9 +63,8 @@ Pattern for every item: add a step to `data-health-check.yml` modelled on the ex
 `audit-star-band-drift.js` and `audit-coverage-holes.js` steps (`--counts=data/audit/<name>.json`),
 shadow mode first (`continue-on-error: true`, rule 19), then one digest row fed from the counts
 file, then arm it after two clean weeks. Workflow edits need a recorded `/second-opinion`
-(CLAUDE.md §18). The unattended BRO-6038 worker is prohibited from editing workflows
-or running session skills, so this wiring remains outstanding; the triage below is
-completed independently.
+(CLAUDE.md §18). Items 2 to 8 are wired; item 1 was folded into the drift audit (see
+"Wired in shadow mode").
 
 1. `audit-star-bands.js`: wire first. Core data only, and it already reports 1 review out of band
    (`originalScore-priority0`). Check overlap with the wired `audit-star-band-drift.js` before
@@ -128,7 +131,7 @@ a digest. Tightening that indirect-call analysis is outside this triage.
 `scripts/lib/unit-test-collection.js`, so no workflow edit) fails when a new `scripts/audit-*.js`
 is referenced nowhere and is not in the baseline. A test.yml `paths:` entry does not count as
 wiring, because that line only decides when the test job triggers. The gate is a baseline gate
-(rule 19): the 90 unwired scripts are listed, so it blocks only new orphans. Wiring one of them
+(rule 19): the unwired scripts are listed, so it blocks only new orphans. Wiring one of them
 removes the need for its baseline entry; delete the entry in the same change.
 
 ## BRO-6038: completed stricter-detector triage (58)
@@ -211,14 +214,32 @@ without a scope, tied to a retired system, or unsafe without manual adjudication
 | `audit-wrong-article-parity.js` | BRO-3956 diagnostic compares wrongArticle checks to canonical rejection; medium-confidence and manual-clear disagreements are intentional in URL ownership routing, so a nonzero parity count is not a recurring defect. |
 | `audit-wt-integ-stashes.js` | Read-only triage of the shared workstation stash stack, including dangerous truncations; CI has no representative wt-integ recovery stashes, so run during local stash cleanup, never as a catalog cron. |
 
-### Outstanding workflow deliverable
+### Wired in shadow mode (BRO-6038, 2026-10-30)
 
-The top eight ranked audits remain unreferenced by `data-health-check.yml`.
-After the infrastructure review gate in CLAUDE.md section 18 is satisfied, wire each
-with `--counts=data/audit/<name>.json` (adding supported counts output where absent),
-`continue-on-error: true`, a digest row and any required private-data/history checkout.
-Remove each baseline entry when wired, as enforced by the stale-entry test. Preserve
-the recorded star-band-drift overlap check and shadow-mode observation period.
-No new cron, fetch, LLM request or API call is introduced by this classification change.
+Seven of the top eight now run daily in the `shadow-audits` job of
+`data-health-check.yml` (after the `health-check` job, every step
+`continue-on-error: true`). Each writes counts only to
+`data/audit/shadow-audits/<name>.json`; `health-check.js` `shadowAuditResults` reads
+them as "Shadow audit: ..." digest rows at playbook urgency `low` (counted, no card).
+Registry, baselines and hints: `scripts/lib/shadow-audits.js`; the step-to-registry
+pin is `tests/unit/shadow-audits.test.mjs`. Their baseline entries are deleted.
+Baselines measured on 2026-10-30 against a real review-texts clone (what CI checks out):
+
+| Script | findings counted | Baseline (max) |
+| --- | --- | --- |
+| `audit-announced-cast.js` | announced rows whose cast has a rejected or missing cast file | 0 (1 today: the-wedding-march-off-broadway-2026, no cast file) |
+| `audit-scoreless-llmscore.js` | files with an llmScore object and no numeric score | 0 (0 of 71,468) |
+| `audit-uncounted-real-reviews.js` | current-year files missing from reviews.json with no exclusion flag and a tier above stub | 231 (of 3,952 uncounted on 2026 shows) |
+| `audit-listing-page-text.js` | included texts with listing/search signals | 153 (of 39,252 included texts; none on a listing header) |
+| `audit-promo-booking-copy.js` | live promo copy plus live show-hub URLs | 0 (blocked-domain 192 live and 1,656 same-URL twins are counted beside it, not in findings; the rebuild drops blocked-domain records) |
+| `audit-ownership-gate-losses.js` | dropped reviews with text found nowhere, `--days=7` | 0 (143 drop commits, 3,048 files, about 6 minutes) |
+| `audit-corpus-determinism.js` | material (40+) decreases in 48h; too little history writes "undetermined" | 10 (its own gate) |
+
+`audit-star-bands.js` was not wired: `audit-star-band-drift.js` already checks the same
+invariant on published scores and has a digest row. Its two hits today sit one point
+outside band, inside the drift audit's `--tol=2`. It moved to bucket b.
+Arm an audit by giving its row a higher-urgency playbook entry after two clean weeks.
+`audit-ownership-gate-losses.js` now exits 3 when the review-texts folder is not its own
+git repository, because `git -C` on a plain folder fetched the parent repository.
 | `audit-excluded-with-own-show-evidence.js` | BRO-5805 read-only sweep of excluded review files whose text names the show's own cast; needs the private review-texts corpus, so run it through cloud-run-script. Gate mode exists but is unwired. Promote to (a) once a run finds real hits. |
 | `audit-malformed-review-urls.js` | BRO-5162 read-only sweep of review-text files whose url is not an absolute http(s) url with a dotted host, and which of them ship in reviews.json; needs the private review-texts corpus, so run it through cloud-run-script. Standing prevention is the write-time guard in review-write-guard. |

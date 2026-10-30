@@ -37,7 +37,15 @@ function parseSteps(allLines) {
   });
 }
 
-const steps = parseSteps(lines);
+// The health-check job only: BRO-6038 added a later shadow-audits job (needs:
+// health-check) with its own push, which is not part of this job's ordering.
+function jobLines(allLines, job) {
+  const start = allLines.findIndex((l) => l === `  ${job}:`);
+  const next = allLines.findIndex((l, i) => i > start && /^ {2}[a-z][\w-]*:\s*$/.test(l));
+  return allLines.slice(start, next < 0 ? allLines.length : next);
+}
+
+const steps = parseSteps(jobLines(lines, 'health-check'));
 const idx = (name) => steps.findIndex((s) => s.name === name);
 
 test('BRO-4521: triage data is parked right after the health check, before any push', () => {

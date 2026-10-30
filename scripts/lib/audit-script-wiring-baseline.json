@@ -2,44 +2,8 @@
   "_comment": "BRO-2688 baseline: audit-*.js scripts that no workflow, action, package.json script or other code references. Wire a new audit into CI instead of adding it here; add it only when it is intentionally manual (bucket b). Reasoning: docs/triage-audit-scripts.md.",
   "entries": {
     "audit-star-bands.js": {
-      "bucket": "a",
-      "rank": 1,
-      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
-    },
-    "audit-announced-cast.js": {
-      "bucket": "a",
-      "rank": 2,
-      "reason": "announced shows must not hold an older production's cast (BRO-5809); core data only; live run today flags the-wedding-march-off-broadway-2026"
-    },
-    "audit-scoreless-llmscore.js": {
-      "bucket": "a",
-      "rank": 3,
-      "reason": "files with an llmScore object but no numeric score are never scored or published (BRO-5395); needs review-texts"
-    },
-    "audit-uncounted-real-reviews.js": {
-      "bucket": "a",
-      "rank": 4,
-      "reason": "review texts on 2026 shows missing from reviews.json (BRO-5794); needs review-texts"
-    },
-    "audit-listing-page-text.js": {
-      "bucket": "a",
-      "rank": 5,
-      "reason": "listing or search page scored as a review (BRO-5375, scored 87 on the site); only a test.yml path trigger today; needs review-texts"
-    },
-    "audit-promo-booking-copy.js": {
-      "bucket": "a",
-      "rank": 6,
-      "reason": "booking and deal copy ingested as review text (BRO-5902, BRO-5906); only a test.yml path trigger today; needs review-texts"
-    },
-    "audit-ownership-gate-losses.js": {
-      "bucket": "a",
-      "rank": 7,
-      "reason": "reviews dropped by the push ownership gate that exist nowhere in the corpus (BRO-5373); needs review-texts git history"
-    },
-    "audit-corpus-determinism.js": {
-      "bucket": "a",
-      "rank": 8,
-      "reason": "published review count moving down or flapping; PASS today; needs deploy-watermark git history"
+      "bucket": "b",
+      "reason": "covered by the wired audit-star-band-drift.js (data-health-check.yml, digest row): same CLAUDE.md §3 star-band invariant on published scores with the canonical predicates; BRO-6038 run 2026-10-30: its 2 hits (and-juliet-west-end-2019 thestage 4/5 at 91, fun-home-2015 timeout 5/5 at 90) sit 1 point outside band, inside the drift audit's deliberate --tol=2. Keep for per-cohort manual sweeps."
     },
     "audit-flagged-file-contamination.js": {
       "bucket": "a",

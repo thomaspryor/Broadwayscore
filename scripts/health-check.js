@@ -324,6 +324,14 @@ const AUTO_FIX_PLAYBOOK = [
     ownerText: "The overall data counts have moved away from the last known good snapshot. Nothing is needed from you.",
     workerInstruction: "Run `node scripts/validate-data.js`, confirm the drift is legitimate, and update the validation baseline." },
 
+  // BRO-6038: audits in shadow mode (data-health-check.yml shadow-audits job,
+  // scripts/lib/shadow-audits.js). 'low' on purpose: counted in the digest,
+  // never a card, until an audit has run clean and is armed (raise its
+  // urgency with its own entry above this one).
+  { match: /^Shadow audit: /, urgency: 'low',
+    ownerText: "A new data check is running in trial mode and found more problems than its starting count. Nothing is needed from you.",
+    workerInstruction: "Run the audit named in this row's hint (scripts/lib/shadow-audits.js lists each one and its baseline max), triage the rows above the baseline, and fix the data or adjust the baseline with evidence (BRO-6038)." },
+
   // Pipeline — warn-only, no auto-fix needed (they run on schedule)
   { match: /^Pipeline:/, urgency: 'low',
     humanAction: "A scheduled pipeline hasn't run recently. It may just be delayed — check again tomorrow." },
@@ -4988,6 +4996,49 @@ function earlyPublishDatesResults(report, now = Date.now()) {
   return out;
 }
 
+const SHADOW_AUDIT_STALE_MS = 3 * 24 * 60 * 60 * 1000; // data-health-check.yml's shadow-audits job runs daily
+// A missing counts file is silent until this date (the job's first runs), then warns: a job that never commits must not read as clean.
+const SHADOW_AUDITS_EXPECTED_FROM = Date.parse('2026-11-06T00:00:00Z');
+
+/**
+ * BRO-6038: one "Shadow audit: <label>" row per scripts/lib/shadow-audits.js entry, from
+ * data/audit/shadow-audits/<name>.json (scripts/lib/audit-counts.js). Warn when findings exceed the
+ * registry max, when the audit could not judge (undetermined), or when the file is stale; pass when
+ * fresh and at or below max. The AUTO_FIX_PLAYBOOK entry keeps these at urgency 'low' (no card) while
+ * they are in shadow. `reports` maps name -> parsed file or null.
+ */
+function shadowAuditResults(audits, reports, now = Date.now()) {
+  const out = [];
+  for (const a of audits || []) {
+    const name = `Shadow audit: ${a.label}`;
+    const report = reports ? reports[a.name] : null;
+    const file = `data/audit/shadow-audits/${a.name}.json`;
+    if (!report || typeof report !== 'object') {
+      if (now >= SHADOW_AUDITS_EXPECTED_FROM) {
+        out.push({ name, status: 'warn', message: `${file} is missing or unreadable`, hint: `data-health-check.yml's shadow-audits job writes it ("${a.script}" step); check that job's last runs.` });
+      }
+      continue;
+    }
+    const at = Date.parse(report.generatedAt);
+    if (!(Number.isFinite(at) && now - at <= SHADOW_AUDIT_STALE_MS)) {
+      out.push({ name, status: 'warn', message: `${file} is missing a readable generatedAt or is more than 3 days old`, hint: `data-health-check.yml's shadow-audits job refreshes it daily ("${a.script}" step); check that job's last runs.` });
+      continue;
+    }
+    if (report.undetermined || !isCountValue(report.findings)) {
+      out.push({ name, status: 'warn', message: `${a.script} could not judge on its last run (${report.reason || (report.insufficientData ? 'insufficient history' : 'no findings count')})`, hint: a.hint });
+      continue;
+    }
+    if (a.year != null && Number(report.year) !== a.year) {
+      out.push({ name, status: 'warn', message: `${a.script} reported year ${report.year}, but its shadow baseline of ${a.max} was measured for ${a.year}`, hint: `Re-measure the baseline in scripts/lib/shadow-audits.js. ${a.hint}` });
+      continue;
+    }
+    const n = Number(report.findings);
+    if (n > a.max) out.push({ name, status: 'warn', message: `${n} finding(s), above the shadow baseline of ${a.max}`, hint: a.hint });
+    else out.push({ name, status: 'pass', message: `${n} finding(s), at or below the shadow baseline of ${a.max}` });
+  }
+  return out;
+}
+
 function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.now()) {
   const results = [];
   // BRO-5164: pass rows only from a fresh Linear report whose bucket was
@@ -5125,6 +5176,13 @@ function checkCorpusAudits() {
 function checkStarBandDrift() {
   const report = readAuditJsonOrNull('star-band-drift.json');
   return report ? starBandDriftResults(report) : [];
+}
+
+function checkShadowAudits() {
+  const { SHADOW_AUDITS } = require('./lib/shadow-audits');
+  const reports = {};
+  for (const a of SHADOW_AUDITS) reports[a.name] = readAuditJsonOrNull(`shadow-audits/${a.name}.json`);
+  return shadowAuditResults(SHADOW_AUDITS, reports);
 }
 
 function checkEarlyPublishDates() {
@@ -6227,6 +6285,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCoverageHoles(),
     ...checkStarBandDrift(),
     ...checkEarlyPublishDates(),
+    ...checkShadowAudits(),
     ...checkCorpusAudits(),
     ...checkReverseDiscovery(),
   ];
@@ -6423,4 +6482,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, shadowAuditResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };

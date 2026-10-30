@@ -464,6 +464,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-10-20 (BRO-5769): sole writer scripts/audit-early-unmarked-publish-dates.js --counts, invoked only by data-health-check.yml\'s "Early publish date audit" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
   },
   {
+    file: 'audit/shadow-audits/*.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-10-30 (BRO-6038): one file per audit in scripts/lib/shadow-audits.js; sole writers are those audits run with --counts (or --report-out for audit-corpus-determinism.js) by data-health-check.yml\'s shadow-audits job, committed only by its "Commit shadow audit counts (apiFallbackSafe)" step. That job needs: health-check, so it never pushes while the health-check job does. Counts only (corpus-determinism.json also carries public main-repo commit shas and subjects of any excursion), regenerated each run and cleared before it, so nothing to union.',
+  },
+  {
     file: 'audit/guard-audit-snapshot.json',
     surface: 'public-repo',
     status: 'single-writer',

@@ -14,7 +14,8 @@
  * Skips files the rebuild already excludes (review-guards isIncludableForRebuild). Prints show/file, outlet, critic, score,
  * signals; never the text.
  *
- *   node scripts/audit-listing-page-text.js [--show=a,b] [--json]
+ *   node scripts/audit-listing-page-text.js [--show=a,b] [--json] [--counts=PATH]
+ *   --counts (BRO-6038 shadow job) writes counts only and prints the summary only.
  */
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
@@ -84,6 +85,14 @@ function main() {
         hits.push({ file: `${show}/${f}`, outletId: r.outletId, critic: r.criticName, score: r.assignedScore ?? null, tier: r.contentTier, url: r.url || null, signals });
       }
     }
+  }
+  const countsPath = require('./lib/audit-counts').countsPathFromArgv(ARGS);
+  if (countsPath) {
+    require('./lib/audit-counts').writeAuditCounts(countsPath, 'audit-listing-page-text.js', {
+      findings: hits.length, scanned, headerSignal: hits.filter((h) => h.signals.some((x) => x.startsWith('header:'))).length,
+    });
+    console.log(`Scanned ${scanned} included files with text; ${hits.length} look like listing/search pages.`);
+    return;
   }
   if (ARGS.includes('--json')) { console.log(JSON.stringify({ scanned, hits }, null, 2)); return; }
   console.log(`Scanned ${scanned} included files with text; ${hits.length} look like listing/search pages.`);
