@@ -3,26 +3,25 @@
     "london-assurance-off-broadway-2019/talkinbroadway--david-hurst.json",
     "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json",
     "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json",
-    "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
-    "girls-off-west-end-2026/letterboxd--unknown.json",
-    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "girls-off-west-end-2026/theatre-weekly--unknown.json",
-    "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
-    "garry-starr-classic-penguins-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
-    "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
-    "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
-    "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json"
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "london-assurance-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
-    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
-    "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
-    "girls-off-west-end-2026/londontheatre1--unknown.json",
-    "girls-off-west-end-2026/radio-times--molly-moss.json",
-    "memoriam-off-west-end-2026/ground--unknown.json",
-    "memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
-    "cirque-berserk-west-end-2026/soundsandstage--unknown.json"
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/letterboxd--scott-alain.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,41 +38,51 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
     ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [
-      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
     ],
+    "scrapingbee": [],
     "brightdata": [
       "london-assurance-off-broadway-2019/talkinbroadway--david-hurst.json",
       "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json"
     ],
     "archiveToday": [
-      "data/review-texts/the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
-      "data/review-texts/girls-off-west-end-2026/londontheatre1--unknown.json",
-      "data/review-texts/memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json"
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
-      "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json"
+      "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-30T10:50:32.329Z",
-  "lastProcessed": "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json",
+  "lastProcessed": "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
   "log": [
     {
-      "t": "2026-10-30T11:05:26.252Z",
+      "t": "2026-10-30T11:13:26.723Z",
       "event": "bb-session",
-      "session": "7e18c5c0",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "5ae04d86",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
     },
     {
-      "t": "2026-10-30T11:06:55.855Z",
+      "t": "2026-10-30T11:13:27.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T11:15:03.323Z",
       "event": "bb-session",
-      "session": "11f68f4a",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "b600f290",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T11:15:03.645Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
