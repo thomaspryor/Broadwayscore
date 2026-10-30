@@ -575,7 +575,7 @@ test('silentGapBacklogResults: gaps with no automated path left never produce a 
   const base = { showId: 'p', tier: 1, outletId: 'nyt', firstSeen: '2026-10-10T00:00:00Z', gapSeenAt: '2026-10-11T00:00:00Z' };
   const paywalled = { ...base, type: 'paywalled', recoverable: false };
   const undispatchable = { ...base, type: 'unscored', dispatchable: false };
-  const forumTryLeft = { ...base, type: 'stub', recoverable: false, url: 'https://www.reddit.com/r/Broadway/comments/abc/x/', forumLinkRecoveryCount: 0 };
+  const forumTryLeft = { ...base, type: 'stub', recoverable: false, url: 'https://www.talkinbroadway.com/allthatchat_new/d.php?thread=1', forumLinkRecoveryCount: 0 };
   assert.deepEqual(silentGapBacklogResults({ gaps: [paywalled, undispatchable] }, now), []);
   assert.equal(silentGapBacklogResults({ gaps: [{ ...paywalled, recoverable: true }] }, now).length, 1);
   assert.equal(silentGapBacklogResults({ gaps: [{ ...undispatchable, dispatchable: true }] }, now).length, 1);
