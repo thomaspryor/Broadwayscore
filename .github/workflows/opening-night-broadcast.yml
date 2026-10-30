@@ -1376,26 +1376,17 @@ jobs:
         #    the push-retry budget above, so the email markers/commits after this step are safe.
         #  - Dispatch edge for scripts/generate-workflow-dependencies.js (the call itself lives in
         #    the script): gh workflow run send-notifications.yml --repo thomaspryor/BroadwayScorecard-app
-        if: ${{ !cancelled() && steps.readiness_gate.outputs.ready_shows != '' }}
+        #  - BRO-6662: the same step also RECHECKS shows pushed earlier (the score or audience grade
+        #    often lands after the critics): a show that gained a threshold mode gets one more
+        #    dispatch (recheck=true) that reaches only the newly qualifying devices. So it runs
+        #    whenever the opening-window has shows, ready or not; the script no-ops on empty --ready.
+        if: ${{ !cancelled() && steps.find.outputs.has_shows == 'true' }}
         continue-on-error: true
         timeout-minutes: 5
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           READY_SHOWS: ${{ steps.readiness_gate.outputs.ready_shows }}
-        run: node scripts/dispatch-reviews-in-push.js --ready="$READY_SHOWS" --budget-sec=180 --no-recheck
-
-      # BRO-6662: the score or audience grade often lands after the critics, so a Gold / 75+ /
-      # audience-A device can miss a show that qualifies later. For every show pushed once, push
-      # again ONLY to devices a newly satisfied mode reaches (app: once per mode in push_log, never
-      # 'all' or saved devices). Runs whether or not a show is ready this cycle; reads the live feed
-      # when the local one is stale. Small budget: it fits the job margin the step above leaves.
-      - name: Reviews-in recheck (late score / audience grade)
-        if: ${{ !cancelled() && steps.find.outputs.has_shows == 'true' }}
-        continue-on-error: true
-        timeout-minutes: 3
-        env:
-          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: node scripts/dispatch-reviews-in-push.js --budget-sec=90
+        run: node scripts/dispatch-reviews-in-push.js --ready="$READY_SHOWS" --budget-sec=180
 
       # BRO-2455 (2026-08-26): this used to be one "Commit data" step
       # bundling orphan-rescore-requeue-state.json (single-writer,
