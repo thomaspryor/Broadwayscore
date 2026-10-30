@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6580",
   "planId": "273af69c-95e6-41e4-9909-e32e489ac491",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T04:00:18.711Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,29 @@
         "description": "art-2025/nyt-theater--jonathan-mandell.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T05:16:39.440Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/nyt-theater--jonathan-mandell.json isNonReviewReason: null -> \"manual (not a review) BRO-6580: roundup of other critics reviews, not Mandell own review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/nyt-theater--jonathan-mandell.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/nyt-theater--jonathan-mandell.json isNonReviewReason: null -> \"manual (not a review) BRO-6580: verdict roundup of other critics reviews, not Mandell own review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/nyt-theater--jonathan-mandell.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
