@@ -1991,6 +1991,9 @@ test('LOOSEENDS: real loose-end closings + SAFE TO ARCHIVE → BLOCKED', skipNoR
     'Checked only with simulated inputs. Both will happen naturally the next time it runs.',
     'BRO-5003 is paused, waiting on the checking session\'s approval.',
     'The topic-pages session left three minor review notes for later.',
+    'One thing I haven\'t seen with my own eyes: the caption on a real live show page.',
+    'I didn\'t run the repo\'s /what-else and /wrap-up finishing steps. I closed the card by hand.',
+    'I left two stale branches on GitHub; deleting them is your call.',
     '```\n━━━ TESTED ━━━\nProduction verified: partly. I could not confirm the last commit deployed.\n━━━━━━\n```\nThe rewrite works.',
   ]) {
     assertLoose(runHook(t, `${body}\n\nNothing needed from you.\n\nSAFE TO ARCHIVE`, LE_ON), body);

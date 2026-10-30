@@ -1248,7 +1248,9 @@ _LOOSE_HARD_RE = re.compile(
     r"|(?:could not|couldn't|was unable to|unable to) (?:confirm|verify)|verified:? partly|partly verified"
     r"|(?:didn't|did not|couldn't|could not) (?:get )?fix\b|(?:isn't|wasn't|aren't|not yet|still not) fixed"
     r"|left (?:it|them|this|that|those) (?:alone|unfiled|unfixed)|\bunfiled\b"
-    r"|\bI(?:'ll| will) (?:re-?)?check\b|will happen naturally)",
+    r"|\bI(?:'ll| will) (?:re-?)?check\b|will happen naturally"
+    r"|\bI (?:haven't|have not|didn't|did not) (?:yet )?(?:run(?! into)|seen|see|checked|verified|confirmed|tested|deleted)\b"
+    r"|\b(?:is|it's|that's) your call\b)",
     re.IGNORECASE)
 # Phrases that a negation earlier in the same sentence turns into a finished
 # statement ("Nothing here needs an owner decision", "No longer waiting on
