@@ -58,16 +58,19 @@ test('the night entry and the arm-check CLI read the recorded record', () => {
   assert.equal(JSON.parse(r.stdout.trim()).reason, 'no-rehearsal-record');
 });
 
-test('a no-recorded-rehearsal refusal does not tell the owner to rerun the synthetic rehearsal', async () => {
-  const pages = [];
-  const out = await driver.runProductionLane({
-    show: { id: 'x-2026' }, night: '2026-10-30', holder: 'h',
-    deps: { armCheck: async () => ({ arm: false, reason: 'no-recorded-rehearsal' }), page: async (p) => { pages.push(p); }, claim: async () => assert.fail('must not claim'), heartbeat: async () => ({ ok: true }), release: async () => ({ ok: true }), runNight: async () => assert.fail('must not run'), log: () => {} },
-  });
-  assert.equal(out.exit, 3);
-  assert.equal(pages.length, 1);
-  assert.match(pages[0].description, /recorded from a real opening/);
-  assert.doesNotMatch(pages[0].description, /--rehearse/);
+test('a refusal for a missing or synthetic-only record does not tell the owner to rerun the synthetic rehearsal', async () => {
+  // no-rehearsal-record is what the night sees today: the recorded file does not exist yet.
+  for (const reason of ['no-recorded-rehearsal', 'no-rehearsal-record']) {
+    const pages = [];
+    const out = await driver.runProductionLane({
+      show: { id: 'x-2026' }, night: '2026-10-30', holder: 'h',
+      deps: { armCheck: async () => ({ arm: false, reason }), page: async (p) => { pages.push(p); }, claim: async () => assert.fail('must not claim'), heartbeat: async () => ({ ok: true }), release: async () => ({ ok: true }), runNight: async () => assert.fail('must not run'), log: () => {} },
+    });
+    assert.equal(out.exit, 3, reason);
+    assert.equal(pages.length, 1, reason);
+    assert.match(pages[0].description, /recorded from a real opening/, reason);
+    assert.doesNotMatch(pages[0].description, /--rehearse/, reason);
+  }
 });
 
 test('the real lane hash covers the scorer, its llm-scoring imports, both entries, the live workflow and the Browserbase route', () => {

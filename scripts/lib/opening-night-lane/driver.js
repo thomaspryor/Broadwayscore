@@ -61,7 +61,7 @@ async function runProductionLane({ show, night, holder, deps, heartbeatMs = HEAR
   const decision = await armCheck();
   if (!decision || !decision.arm) {
     const reason = (decision && decision.reason) || 'unknown';
-    await page({ conditionKey: key('arm-refused'), title: `Opening-night lane not armed for ${show.id} (${reason})`, description: `The lane refused to arm for ${show.id} on ${night}: ${reason}. The regular pipeline still covers the night. ${reason === 'no-recorded-rehearsal' ? 'Only a rehearsal on a fixture recorded from a real opening arms the lane (BRO-6619); none has passed on this code, and rerunning the synthetic one cannot fix that.' : 'Rehearse with scripts/opening-night-lane-rehearse.js --rehearse.'}` });
+    await page({ conditionKey: key('arm-refused'), title: `Opening-night lane not armed for ${show.id} (${reason})`, description: `The lane refused to arm for ${show.id} on ${night}: ${reason}. The regular pipeline still covers the night. ${['no-recorded-rehearsal', 'no-rehearsal-record'].includes(reason) ? 'Only a rehearsal on a fixture recorded from a real opening arms the lane (BRO-6619); none has passed on this code, and rerunning the synthetic one cannot fix that.' : 'Rehearse with scripts/opening-night-lane-rehearse.js --rehearse.'}` });
     return { exit: 3, reason: `not-armed:${reason}` };
   }
 
