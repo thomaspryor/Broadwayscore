@@ -117,14 +117,14 @@ test('END TO END: every push to main fails, the new review lands on a rescue bra
 
     const r = spawnSync('bash', [PUSH, '2', 'main'], {
       cwd: job, encoding: 'utf8', timeout: 120000,
-      env: { ...process.env, PUSH_API_FALLBACK_DISABLE: '1', PUSH_SKIP_LEDGER: '1', PUSH_SKIP_FAILURE_LEDGER: '1', PUSH_FAILURE_LOG: '/dev/null', DISK_PREFLIGHT_FLOOR_GB: '0', PUSH_DEADLINE_SEC: '60', GITHUB_RUN_ID: '777' },
+      env: { ...process.env, PUSH_API_FALLBACK_DISABLE: '1', PUSH_SKIP_LEDGER: '1', PUSH_SKIP_FAILURE_LEDGER: '1', PUSH_FAILURE_LOG: '/dev/null', DISK_PREFLIGHT_FLOOR_GB: '0', PUSH_DEADLINE_SEC: '60', GITHUB_RUN_ID: '777', GITHUB_RUN_ATTEMPT: '2' },
     });
     assert.notEqual(r.status, 0, 'the push must have failed');
     const out = r.stdout + r.stderr;
     assert.match(out, /new reviews rescued::2 new review file\(s\)/, out.slice(-3000));
     const refs = g(remote, 'for-each-ref', '--format=%(refname:short)', 'refs/heads/push-rescue/').trim().split('\n').filter(Boolean);
     assert.equal(refs.length, 1);
-    assert.match(refs[0], /^push-rescue\/\d{8}T\d{6}Z-777-[0-9a-f]{40}$/);
+    assert.match(refs[0], /^push-rescue\/\d{8}T\d{6}Z-777\.2-[0-9a-f]{40}$/);
     assert.equal(g(remote, 'show', `${refs[0]}:show-a/sun--jane-doe.json`), review);
 
     // Next hour: main accepts pushes again; replay restores onto a fresh clone.
@@ -145,6 +145,6 @@ test('END TO END: every push to main fails, the new review lands on a rescue bra
     execFileSync(process.execPath, [RESCUE, 'prune', `--manifest=${manifest}`], { cwd: fresh, encoding: 'utf8' });
     assert.equal(g(remote, 'for-each-ref', 'refs/heads/push-rescue/').trim(), '', 'deleted once on main');
   } finally {
-    rmSync(work, { recursive: true, force: true });
+    rmSync(work, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
