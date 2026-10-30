@@ -98,50 +98,77 @@ test('lastNight: the ET calendar day before the email', () => {
   assert.equal(D.lastNight(Date.parse('2026-10-31T02:00:00Z')), '2026-10-29'); // 10pm ET Oct 30
 });
 
+// In-memory Linear: cards keep their description and comments across runs, in any state (like the real
+// lookup, which reads archived and closed issues by their key line).
+function fakeLinear() {
+  const cards = [];
+  const created = [];
+  const comments = [];
+  return {
+    cards, created, comments,
+    lookupCard: async (key) => cards.find((c) => D.cardKeyOf(c.description) === key) || null,
+    createCard: async (c) => {
+      created.push(c);
+      const card = { identifier: `BRO-${9000 + created.length}`, description: c.notes, comments: [], state: 'Todo' };
+      cards.push(card);
+      return card.identifier;
+    },
+    commentCard: async (card, text) => { comments.push({ id: card.identifier, text }); card.comments.push(text); },
+  };
+}
+
 test('auto-filer: one card per show-night, nothing on re-run, a comment only for a new miss', async () => {
   const live = { 'a-few-good-men-2026': { score: 60, reviewCount: 24 }, 'the-heart-off-broadway-2026': { score: 75, reviewCount: 4 } };
   const build = (sentShows, redditDrafts) => D.buildSection({ night: '2026-10-29', records: [{ showId: AFGM_SHOW.id, rec: AFGM() }, { showId: HEART_SHOW.id, rec: HEART() }], shows: [AFGM_SHOW, HEART_SHOW], sentShows, redditDrafts, readNumbers: numbers(live), nowMs: AFTER_DEADLINE });
-  const created = [];
-  const comments = [];
-  const createCard = async (c) => { created.push(c); return `BRO-${9000 + created.length}`; };
-  const commentCard = async (id, text) => { comments.push({ id, text }); };
-  const ledger = {};
-  const fresh = build(sentWithDraft(), redditEmailed(60, 24)); // Reddit current: only the Resend draft is stale
+  const L = fakeLinear();
+  const run = (section) => D.fileFixCards({ section, lookupCard: L.lookupCard, createCard: L.createCard, commentCard: L.commentCard });
 
-  const r1 = await D.fileFixCards({ section: fresh, ledger, createCard, commentCard });
+  const r1 = await run(build(sentWithDraft(), redditEmailed(60, 24))); // Reddit current: only the Resend draft is stale
   assert.deepEqual(r1.filed.sort(), ['a-few-good-men-2026|2026-10-29', 'the-heart-off-broadway-2026|2026-10-29']);
-  assert.equal(created.length, 2);
-  const afgm = created.find((c) => c.title.includes('A Few Good Men'));
+  assert.equal(L.created.length, 2);
+  const afgm = L.created.find((c) => c.title.includes('A Few Good Men'));
   assert.equal(afgm.title, 'P1: Opening night miss: A Few Good Men (2026-10-29)');
   assert.equal(afgm.priority, 1);
   assert.match(afgm.notes, /TheWrap went live at 1:24am ET/);
   assert.match(afgm.notes, /opening-night email draft is out of date/);
+  assert.match(afgm.notes, /^press-night-card-key: a-few-good-men-2026\|2026-10-29$/m);
+  assert.match(afgm.notes, /^press-night-miss: email:broadcast$/m);
   assert.match(afgm.notes, /^VERIFY: node scripts\/press-night-record\.js --show=a-few-good-men-2026 --night=2026-10-29 --check --json$/m);
 
-  // Re-run with the same misses (persisted ledger round-trip): nothing filed, nothing commented.
-  const ledger2 = JSON.parse(JSON.stringify(ledger));
-  const r2 = await D.fileFixCards({ section: build(sentWithDraft(), redditEmailed(60, 24)), ledger: ledger2, createCard, commentCard });
-  assert.equal(created.length, 2);
-  assert.equal(comments.length, 0);
+  // Re-run with the same misses: nothing filed, nothing commented.
+  const r2 = await run(build(sentWithDraft(), redditEmailed(60, 24)));
+  assert.equal(L.created.length, 2);
+  assert.equal(L.comments.length, 0);
   assert.deepEqual(r2.filed, []);
+  assert.equal(r2.skipped.length, 2);
 
   // A new miss on the same show-night (the Reddit draft goes stale): a comment, not a second card.
-  const r3 = await D.fileFixCards({ section: build(sentWithDraft(), redditEmailed(60, 23)), ledger: ledger2, createCard, commentCard });
-  assert.equal(created.length, 2);
+  const r3 = await run(build(sentWithDraft(), redditEmailed(60, 23)));
+  assert.equal(L.created.length, 2);
   assert.deepEqual(r3.commented, ['a-few-good-men-2026|2026-10-29']);
-  assert.equal(comments[0].id, ledger2.cards['a-few-good-men-2026|2026-10-29'].identifier);
-  assert.match(comments[0].text, /Reddit draft emailed to you is out of date/);
-  const r4 = await D.fileFixCards({ section: build(sentWithDraft(), redditEmailed(60, 23)), ledger: ledger2, createCard, commentCard });
-  assert.equal(comments.length, 1);
+  assert.equal(L.comments[0].id, L.cards.find((c) => c.description === afgm.notes).identifier);
+  assert.match(L.comments[0].text, /Reddit draft emailed to you is out of date/);
+  assert.match(L.comments[0].text, /^press-night-miss: email:reddit$/m);
+  const r4 = await run(build(sentWithDraft(), redditEmailed(60, 23)));
+  assert.equal(L.comments.length, 1);
   assert.deepEqual(r4.commented, []);
+
+  // A closed card is still the card for that show-night: never filed again.
+  for (const c of L.cards) c.state = 'Done';
+  const r5 = await run(build(sentWithDraft(), redditEmailed(60, 23)));
+  assert.equal(L.created.length, 2);
+  assert.deepEqual(r5.filed, []);
 });
 
-test('auto-filer: an email-only miss files at P2', async () => {
+test('auto-filer: an email-only miss files at P2; a Linear failure is reported, not thrown', async () => {
   const entry = { showId: 's', night: '2026-10-29', title: 'S', line: 'S: ...', misses: [{ key: 'email:broadcast', kind: 'email', text: 'no opening-night email draft' }] };
-  const created = [];
-  await D.fileFixCards({ section: { entries: [entry] }, ledger: {}, createCard: async (c) => { created.push(c); return 'BRO-1'; }, commentCard: async () => {} });
-  assert.equal(created[0].priority, 2);
-  assert.equal(created[0].title, 'P2: Opening night miss: S (2026-10-29)');
+  const L = fakeLinear();
+  await D.fileFixCards({ section: { entries: [entry] }, lookupCard: L.lookupCard, createCard: L.createCard, commentCard: L.commentCard });
+  assert.equal(L.created[0].priority, 2);
+  assert.equal(L.created[0].title, 'P2: Opening night miss: S (2026-10-29)');
+  const r = await D.fileFixCards({ section: { entries: [entry] }, lookupCard: async () => { throw new Error('Linear down'); }, createCard: L.createCard, commentCard: L.commentCard });
+  assert.deepEqual(r.errors, ['s|2026-10-29: Linear down']);
+  assert.equal(L.created.length, 1);
 });
 
 test('email block: renders last night only, escapes the line, quiet when there were no openings', () => {

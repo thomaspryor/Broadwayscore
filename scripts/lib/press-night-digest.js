@@ -15,7 +15,7 @@
  *            after, scripts/lib/broadcast-deadline.js) a missing draft is "not due yet", never a miss.
  *
  * Times are ET. Pure: records, tracker files and the live numbers are passed in. The card filer takes
- * its Linear calls injected and a ledger, so a re-run never files twice (fileFixCards).
+ * its Linear calls injected and finds earlier cards by their key line, so a re-run never files twice (fileFixCards).
  */
 
 const { evaluateCheck, observedRecord, sameNightCheck, firstNightLive, DEFAULT_GATES } = require('./press-night-record');
@@ -246,6 +246,23 @@ function cardTitle(entry, priority) {
   return `P${priority}: Opening night miss: ${entry.title} (${entry.night})`;
 }
 
+const KEY_LINE_PREFIX = 'press-night-card-key: ';
+const MISS_LINE_PREFIX = 'press-night-miss: ';
+
+/** The show-night key a card's description carries (its first key line), or null. */
+function cardKeyOf(description) {
+  const m = new RegExp(`^${KEY_LINE_PREFIX}(.+)$`, 'm').exec(String(description || ''));
+  return m ? m[1].trim() : null;
+}
+
+/** Miss keys already written on a card (description and comments). */
+function listedMisses(texts) {
+  const out = new Set();
+  const re = new RegExp(`^${MISS_LINE_PREFIX}(.+)$`, 'gm');
+  for (const t of texts) for (const m of String(t || '').matchAll(re)) out.add(m[1].trim());
+  return out;
+}
+
 function cardNotes(entry, misses) {
   return [
     `The morning-email grade for ${entry.title} (show ${entry.showId}, press night ${entry.night}) failed (BRO-6645).`,
@@ -259,49 +276,52 @@ function cardNotes(entry, misses) {
     `Reviews: node scripts/press-night-record.js --show=${entry.showId} --night=${entry.night} --check (record data/audit/press-night/${entry.showId}-${entry.night}.json).`,
     'Email drafts: data/opening-night-sent.json (Resend draft, scripts/lib/broadcast-refresh.js) and data/audit/reddit-post-drafts.json (Reddit).',
     '',
-    `press-night-card-key: ${entry.showId}|${entry.night}`,
+    `${KEY_LINE_PREFIX}${entry.showId}|${entry.night}`,
+    ...misses.map((m) => `${MISS_LINE_PREFIX}${m.key}`),
     '',
     '## Acceptance criteria',
-    `- The cause of each miss above is fixed, so the next opening does not repeat it.`,
+    '- The cause of each miss above is fixed, so the next opening does not repeat it.',
     `VERIFY: node scripts/press-night-record.js --show=${entry.showId} --night=${entry.night} --check --json`,
   ].join('\n');
 }
 
 /**
- * File one card per show-night with misses; on a later run, comment the misses the card does not list yet.
- * The ledger ({ cards: { 'show|night': {identifier, misses:[key], filedAt} } }) is the idempotency record:
- * a show-night in it is never filed again, even after its card closes.
+ * File one card per show-night with misses; on a later run, comment only the misses the card does not list.
+ * Linear is the record (no ledger file): every card carries a "press-night-card-key: show|night" line and one
+ * "press-night-miss: <key>" line per miss, in its description or a later comment. lookupCard finds the card
+ * in any state (a closed card is never re-filed), as auto-fix-first does with its key line.
  * @param {object} p
  * @param {object} p.section       buildSection output
- * @param {object} p.ledger        mutated in place
+ * @param {function} p.lookupCard  (key) -> Promise<{identifier, description, comments: string[]} | null>
  * @param {function} p.createCard  ({title, notes, priority}) -> Promise<identifier>
- * @param {function} p.commentCard (identifier, text) -> Promise<void>
- * @param {function} [p.onFiled]  called after each ledger change (the caller checkpoints the ledger)
+ * @param {function} p.commentCard (card, text) -> Promise<void>
  * @returns {Promise<{filed:string[], commented:string[], skipped:string[], errors:string[]}>}
  */
-async function fileFixCards({ section, ledger, createCard, commentCard, onFiled = () => {}, nowIso = new Date().toISOString() }) {
-  ledger.cards = ledger.cards || {};
+async function fileFixCards({ section, lookupCard, createCard, commentCard }) {
   const res = { filed: [], commented: [], skipped: [], errors: [] };
   for (const entry of section.entries) {
     if (!entry.misses.length) continue;
     const key = `${entry.showId}|${entry.night}`;
-    const prior = ledger.cards[key];
     try {
-      if (!prior) {
+      const card = await lookupCard(key);
+      if (!card) {
         const priority = entry.misses.some((m) => m.kind === 'review') ? 1 : 2;
-        const identifier = await createCard({ title: cardTitle(entry, priority), notes: cardNotes(entry, entry.misses), priority });
-        ledger.cards[key] = { identifier, misses: entry.misses.map((m) => m.key), filedAt: nowIso };
+        await createCard({ title: cardTitle(entry, priority), notes: cardNotes(entry, entry.misses), priority });
         res.filed.push(key);
-        onFiled();
         continue;
       }
-      const fresh = entry.misses.filter((m) => !prior.misses.includes(m.key));
+      const known = listedMisses([card.description, ...(card.comments || [])]);
+      const fresh = entry.misses.filter((m) => !known.has(m.key));
       if (!fresh.length) { res.skipped.push(key); continue; }
-      await commentCard(prior.identifier, [`New misses found for ${entry.title} (${entry.night}) since this card was filed:`, ...fresh.map((m) => `- ${m.text}`), '', `Line in the email now: ${entry.line}`].join('\n'));
-      prior.misses = prior.misses.concat(fresh.map((m) => m.key));
-      prior.commentedAt = nowIso;
+      await commentCard(card, [
+        `New misses found for ${entry.title} (${entry.night}) since this card was filed:`,
+        ...fresh.map((m) => `- ${m.text}`),
+        '',
+        `Line in the email now: ${entry.line}`,
+        '',
+        ...fresh.map((m) => `${MISS_LINE_PREFIX}${m.key}`),
+      ].join('\n'));
       res.commented.push(key);
-      onFiled();
     } catch (e) {
       res.errors.push(`${key}: ${e.message}`);
     }
@@ -333,5 +353,6 @@ function renderPressNightBlock(snapshot, { esc = defaultEsc, nowMs = Date.now() 
 
 module.exports = {
   etTime, etDate, lastNight, gradeReviews, gradeEmails, buildShowLine, buildSection,
+  KEY_LINE_PREFIX, MISS_LINE_PREFIX, cardKeyOf, listedMisses,
   cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock,
 };

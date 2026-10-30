@@ -289,6 +289,7 @@ const DEDUPE_OPT_OUTS = Object.freeze({
   'digest-autofix': 'digest-autofix dedupes per digest row and dispatches the card it gets back (grouping fixed at the filer by BRO-5486)',
   'auto-fix-first': 'auto-fix-first files dispatch cards keyed by its own key line (lookupCards) and comments on the card it gets back',
   'posthog-friction': 'posthog-friction-analyzer dedupes by the fhash in the card description, and auto-fix-friction-card.js picks cards by that fhash and priority, so a finding must stay its own card',
+  'press-night-digest': 'produce-press-night-digest-snapshot.js finds its card per show-night by the press-night-card-key line (any state) and comments new misses on it, so a near-match on another show of the same night must not swallow it',
   'sentry-triage': 'triage-sentry.js dedupes by the sentry-issue line in the card (any state), and two different Sentry errors often share most title words, so a near-match must not swallow a distinct error (BRO-5593)',
   rollup: 'the rollup card itself; running the rules on it would recurse',
 });

@@ -7,10 +7,11 @@
  * scripts/lib/press-night-digest.js.
  *
  * Writes data/audit/press-night-digest-snapshot.json, read by scripts/send-morning-digest.js through the
- * digest-snapshots.js registry (key pressNight). With --file-cards every miss opens a fix card through
- * linear-brain.js create --dispatch (P1 for a late or missing review, P2 for an email draft miss), once per
- * show-night: data/audit/press-night-fix-cards.json is the ledger, so a re-run never files twice and a new
- * miss on a filed show-night becomes a comment on its card. Cards are only filed for finished records.
+ * digest-snapshots.js registry (key pressNight). With --file-cards every miss opens a START-NOW fix card
+ * (createLinearIssue dispatch, P1 for a late or missing review, P2 for an email draft miss), once per
+ * show-night. Linear is the record: the card carries a "press-night-card-key: show|night" line and a
+ * "press-night-miss: <key>" line per miss, so a re-run finds it in any state (closed included) and only
+ * comments misses it does not list yet. Cards are only filed for finished records.
  *
  * Runs hourly in opening-night-checklist.yml, after the press-night probe has committed the record.
  *
@@ -23,18 +24,19 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
 const D = require('./lib/press-night-digest');
 const { readShowNumbers } = require('./lib/broadcast-refresh');
 const { hasHelpFlag } = require('./lib/cli-help');
 
 const REPO = process.env.PRESS_NIGHT_ROOT || path.join(__dirname, '..');
 const SNAPSHOT = path.join(REPO, 'data', 'audit', 'press-night-digest-snapshot.json');
-const LEDGER = path.join(REPO, 'data', 'audit', 'press-night-fix-cards.json');
 // Cards start with the 2026-10-30 press night: the Oct 29 misses (A Few Good Men, The Heart) were already
 // being worked under the press-night coordinator card BRO-5955 when this landed, so a first run must not
 // dispatch duplicate workers onto them. The email lines still cover every night.
 const FIRST_FILING_NIGHT = '2026-10-30';
+// A card is looked up this far back by its key line (Linear updatedAt), wide enough for any show-night
+// still being graded (the producer only grades last night unless --night is given).
+const LOOKBACK_MS = 45 * 24 * 3600 * 1000;
 
 const readJson = (p, fallback) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; } };
 
@@ -65,19 +67,30 @@ function toSnapshot(section) {
   };
 }
 
-function linearBrain(args) {
-  return execFileSync(process.execPath, [path.join(__dirname, 'linear-brain.js'), ...args], { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], timeout: 120000 });
-}
-
-async function createCard({ title, notes, priority }) {
-  const out = linearBrain(['create', title, '--notes', notes, '--dispatch', '--priority', String(priority === 1 ? 2 : 3), '--model', 'opus', '--source', 'press-night-digest']);
-  const m = /"identifier"\s*:\s*"([A-Z]+-\d+)"/.exec(out);
-  if (!m) throw new Error(`linear-brain create printed no identifier: ${out.slice(0, 300)}`);
-  return m[1];
-}
-
-async function commentCard(identifier, text) {
-  linearBrain(['update', identifier, '--comment', text]);
+/** Linear calls, injected into D.fileFixCards (same shape as auto-fix-first.js defaultDeps). */
+function linearDeps(nowMs) {
+  const linear = require('./lib/linear-client.js');
+  return {
+    async lookupCard(key) {
+      const since = new Date(nowMs - LOOKBACK_MS).toISOString();
+      const issues = await linear.listIssuesByProvenance({ since, descriptionMarkers: [`${D.KEY_LINE_PREFIX}${key}`] });
+      const mine = issues.filter((i) => D.cardKeyOf(i.description) === key);
+      if (!mine.length) return null;
+      const comments = await linear.listIssueComments(mine.map((i) => i.identifier));
+      const card = mine[0];
+      const texts = (comments.get(card.identifier) || []).map((c) => (typeof c === 'string' ? c : c.body));
+      return { ...card, comments: texts };
+    },
+    async createCard({ title, notes, priority }) {
+      const { createLinearIssue } = require('./lib/linear-issue-create.js');
+      // Linear priority: 2 = High (our P1), 3 = Medium (our P2). See card-dedupe.js DEDUPE_OPT_OUTS for the opt-out.
+      const { issue } = await createLinearIssue({ title, description: notes, priority: priority === 1 ? 2 : 3, dispatch: true, model: 'opus', dedupeOptOut: 'press-night-digest' });
+      return issue.identifier;
+    },
+    async commentCard(card, body) {
+      await linear.createComment(card.id, body);
+    },
+  };
 }
 
 async function main() {
@@ -105,23 +118,16 @@ async function main() {
   if (night < FIRST_FILING_NIGHT) { console.log(`fix cards: none for ${night}, filing starts with the ${FIRST_FILING_NIGHT} night`); return 0; }
   // Only finished records file cards: a probe still sampling can still turn a miss into a pass.
   const graded = { ...section, entries: section.entries.filter((e) => e.verdict !== 'PENDING') };
-  const ledger = readJson(LEDGER, { cards: {} });
+  const deps = linearDeps(nowMs);
   if (dryRun) {
-    const would = await D.fileFixCards({ section: graded, ledger: JSON.parse(JSON.stringify(ledger)),
+    const would = await D.fileFixCards({ section: graded, lookupCard: deps.lookupCard,
       createCard: async (c) => { console.log(`  would file: ${c.title}`); return 'DRY-RUN'; },
-      commentCard: async (id) => { console.log(`  would comment on ${id}`); } });
+      commentCard: async (card) => { console.log(`  would comment on ${card.identifier}`); } });
     console.log(`fix cards (dry run): ${would.filed.length} new, ${would.commented.length} comments, ${would.skipped.length} already filed`);
+    for (const e of would.errors) console.error(`  lookup failed: ${e}`);
     return 0;
   }
-  // Checkpoint the ledger after every card, so a crash between two filings cannot re-file the first.
-  const save = () => fs.writeFileSync(LEDGER, JSON.stringify({ updatedAt: new Date().toISOString(), cards: ledger.cards || {} }, null, 2) + '\n');
-  const res = await D.fileFixCards({
-    section: graded, ledger,
-    createCard: async (c) => { const id = await createCard(c); ledger.cards = ledger.cards || {}; return id; },
-    commentCard,
-    onFiled: save,
-  });
-  save();
+  const res = await D.fileFixCards({ section: graded, ...deps });
   console.log(`fix cards: filed ${res.filed.join(', ') || 'none'}; commented ${res.commented.join(', ') || 'none'}; already filed ${res.skipped.length}`);
   for (const e of res.errors) console.error(`::warning::press-night fix card failed: ${e}`);
   return res.errors.length ? 1 : 0;
@@ -131,4 +137,4 @@ if (require.main === module) {
   main().then((code) => process.exit(code)).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }
 
-module.exports = { toSnapshot, loadInputs };
+module.exports = { toSnapshot, loadInputs, linearDeps };
