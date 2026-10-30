@@ -22,6 +22,8 @@ const WINDOW_H = 48;
 // Emails are graded this long after the draft deadline: the hourly Reddit and broadcast runs land minutes to an
 // hour late, and a grade must not fail a draft that is on its way.
 const EMAIL_GRACE_H = 2;
+// A night with no probe record is a miss once the probe's late job (embargo +6h) has had time to commit.
+const NO_RECORD_GRACE_H = 8;
 const EMAIL_MARKETS = new Set(['broadway', 'west-end']);
 const LEDGER_VERSION = 1;
 // First press night the filer files cards for (BRO-6645 landed 2026-10-30).
@@ -247,7 +249,11 @@ function gradeOpenings({ shows, readRecord, readNumbers, sentShows = null, reddi
 function gradeShow({ show, rec, numbersNow, readNumbers = () => null, sentShows, redditDrafts, nowMs, outletName }) {
   const rv = reviewGrade(rec, { outletName });
   const em = emailGrade({ show, sentShows, redditDrafts, numbersNow, readNumbers, nowMs });
-  let verdict = rv.verdict;
+  // The probe runs for every non-tour opening, so no record by the next morning means it never started: a miss.
+  // Before then the late job may simply not have committed yet.
+  const noCheck = !rec && nowMs - Date.parse(`${show.openingDate}T23:59:00Z`) >= NO_RECORD_GRACE_H * HOUR;
+  if (noCheck) rv.misses.push({ key: 'review:no-check', text: 'the overnight review check did not run' });
+  let verdict = noCheck ? 'FAIL' : rv.verdict;
   if (em.status === 'miss') verdict = 'FAIL';
   const word = verdict === 'PASS' ? 'Passed.' : (verdict === 'FAIL' ? 'Failed.' : 'Not graded.');
   const body = [rv.text, em.text].filter(Boolean).join('; ');
@@ -389,6 +395,6 @@ function renderPressNightGradesBlock(snapshot, { esc = (x) => String(x) } = {}) 
 }
 
 module.exports = {
-  WINDOW_H, EMAIL_GRACE_H, FILE_FROM, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
+  WINDOW_H, EMAIL_GRACE_H, NO_RECORD_GRACE_H, FILE_FROM, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
   findBroadcastRecord, gradeOpenings, gradeShow, emptyLedger, planFiling, applyFiling, renderPressNightGradesBlock, scoreboard,
 };

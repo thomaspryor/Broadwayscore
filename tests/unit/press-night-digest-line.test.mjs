@@ -97,8 +97,17 @@ test('missing draft past the deadline is a miss; an unreadable tracker is unknow
   assert.equal(sent.text, 'opening-night email sent, Reddit draft emailed');
 });
 
-test('no record and nothing published read as not graded, never failed', () => {
-  assert.equal(grade({ ...heartShow, id: 'x', title: 'X' }, null).line, 'X: The overnight review check did not run, so reviews could not be graded. Not graded.');
+test('no record fails once the probe had time to report; nothing published is not graded', () => {
+  const x = { ...heartShow, id: 'x', title: 'X' };
+  // 05:00Z the morning after: the late job (embargo +6h) may not have committed yet.
+  const early = grade(x, null, { nowMs: Date.parse('2026-10-30T05:00:00Z') });
+  assert.equal(early.line, 'X: The overnight review check did not run, so reviews could not be graded. Not graded.');
+  assert.deepEqual(early.misses, []);
+  const late = grade(x, null);
+  assert.equal(late.line, 'X: The overnight review check did not run, so reviews could not be graded. Failed.');
+  assert.deepEqual(late.misses.map((m) => m.key), ['review:no-check']);
+  const plan = L.planFiling([{ ...late, night: '2026-10-30' }], L.emptyLedger());
+  assert.equal(plan[0].priority, 1);
   const empty = load('the-greatest-story-ever-off-broadway-2026-2026-10-29.json');
   assert.equal(grade({ ...heartShow, title: 'The Greatest Story Ever' }, empty).line,
     'The Greatest Story Ever: No reviews came out overnight, so there was nothing to grade. Not graded.');
