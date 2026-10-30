@@ -11,18 +11,30 @@
  */
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 const { decrypt } = require('../opening-night-lane/fetch-recording');
 
-/** @returns {{entries: object[], page: (sha: string) => string|null, spanMs: number}} */
-function loadRecording(dir, { key }) {
+/**
+ * A recording is either the encrypted one a lane run wrote (pages/<sha>.enc, needs `key`) or the plaintext copy
+ * lane-recording-import.js keeps in the private archive (pages/<sha>.html.gz, no key). Same manifest either way.
+ * @returns {{entries: object[], page: (sha: string) => string|null, spanMs: number}}
+ */
+function loadRecording(dir, { key = null } = {}) {
   const file = path.join(dir, 'fetches.jsonl');
   if (!fs.existsSync(file)) throw new Error(`no recording at ${dir}`);
   const entries = fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((e) => e.url);
   const cache = new Map();
   const page = (sha) => {
     if (!cache.has(sha)) {
-      const f = path.join(dir, 'pages', `${sha}.enc`);
-      cache.set(sha, fs.existsSync(f) ? decrypt(key, fs.readFileSync(f)) : null);
+      const gz = path.join(dir, 'pages', `${sha}.html.gz`);
+      const enc = path.join(dir, 'pages', `${sha}.enc`);
+      let body = null;
+      if (fs.existsSync(gz)) body = zlib.gunzipSync(fs.readFileSync(gz)).toString('utf8');
+      else if (fs.existsSync(enc)) {
+        if (!key) throw new Error(`encrypted recording page ${sha} needs a key`);
+        body = decrypt(key, fs.readFileSync(enc));
+      }
+      cache.set(sha, body);
     }
     return cache.get(sha);
   };
