@@ -293,3 +293,30 @@ test('control: non-shallow repo + commit truly not on branch reports NOT_LANDED'
     fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// BRO-6638: a shallow graph can hide ancestry but never invent it, so a commit
+// inside the shallow window still reads LANDED when unshallow is impossible
+// (cloud clones; check-prod-deploy read every live commit as "could not tell").
+test('checkLanded reports LANDED for a commit inside the shallow window even when unshallow fails', (t) => {
+  forceUnshallowEnv(t, { skip: false });
+  const { root, workdir, shas } = makeThreeCommitRepo();
+  try {
+    const c3 = shas[2];
+    const tempOrigin = path.join(root, 'temp-origin.git');
+    execFileSync('git', ['init', '-q', '--bare', '-b', 'main', tempOrigin]);
+    execFileSync('git', ['remote', 'set-url', 'origin', tempOrigin], { cwd: workdir });
+    execFileSync('git', ['push', '-q', 'origin', 'main'], { cwd: workdir });
+    shallowGraftAtTip(workdir);
+    assert.equal(isShallowRepo(workdir), true, 'fixture precondition');
+    const deadOrigin = path.join(root, 'dead.git');
+    execFileSync('git', ['init', '-q', '--bare', '-b', 'main', deadOrigin]);
+    execFileSync('git', ['remote', 'set-url', 'origin', deadOrigin], { cwd: workdir });
+
+    const result = checkLanded({ sha: c3, branch: 'main', remote: 'origin', cwd: workdir });
+    assert.equal(result.verdict, 'LANDED');
+    assert.equal(result.landed, true);
+    assert.equal(result.shallow, true);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});

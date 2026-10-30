@@ -184,6 +184,13 @@ function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = proce
 
   const { shallow, skipped } = ensureFullHistory({ cwd, remote, log });
   if (shallow) {
+    // BRO-6638: a shallow graph can only hide ancestry, never invent it, so a
+    // positive ancestry check is still a real LANDED. Cloud clones cannot
+    // unshallow, and check-prod-deploy read every live commit as "could not
+    // tell" there. Only the negative/errored answer stays UNKNOWN.
+    if (isAncestor(sha, targetRef, cwd) === true) {
+      return { verdict: 'LANDED', landed: true, shallow: true, reason: null };
+    }
     // Two different roads to the same UNKNOWN, kept distinguishable: a fetch
     // that was TRIED and failed is a network/repo problem worth chasing, while
     // a deliberate CI skip is expected and not worth a single minute of
