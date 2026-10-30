@@ -403,6 +403,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         target = resolved.state;
       }
 
+      // BRO-6635: a pause written here skips linear-session.js report's hand-off check, so warn too (advisory).
+      if (target && /^paused$/i.test(target.name) && typeof args.comment === 'string') {
+        const pause = require('./lib/pause-report-guard').classifyPauseReport({ status: 'paused', summary: args.comment });
+        if (pause.wouldRefuse) console.error(`\n⚠️  pause-handoff (advisory) — ${identifier}:\n${pause.reason}\n`);
+      }
+
       // --duplicate-of only means anything on a move into a duplicate-type
       // state. Silently ignoring it elsewhere let `update BRO-1 --comment x
       // --duplicate-of BRO-2` exit 0 having created no relation, while the

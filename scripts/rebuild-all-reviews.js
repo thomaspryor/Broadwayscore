@@ -128,6 +128,7 @@ const { rebuildPreWindowHold } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
+const { checkExcerptDuplicate } = require('./lib/excerpt-fingerprint-dedup');
 const { createClaimLedger, primaryFilesFor, unknownOutletShadowTargets, orderAfterDependencies, syndicationShieldDecision, shadowShieldDecision } = require('./lib/dedup-survivor');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/rebuild-exclusion-audit');
@@ -2781,6 +2782,8 @@ showDirs.forEach(showId => {
   const seenFingerprintsByOutlet = new Map();
   // Track content fingerprints globally (cross-outlet) to catch same article under different outlet variations
   const seenFingerprintsGlobal = new Map();
+  // Same-outlet aggregator-excerpt claims for records with no usable fullText (BRO-6628 item 4)
+  const seenExcerptFingerprints = new Map();
   // Kept named-critic output entries per outlet (with their source fullText),
   // so the unknown-critic dedup below can hand a dropped Unknown twin's URL
   // to the URL-less named copy of the SAME review (decideUnknownTwinUrlCarry).
@@ -5289,6 +5292,20 @@ showDirs.forEach(showId => {
         }
       }
 
+      // BRO-6628 item 4: excerpt-only records (no fullText, often no url) carry no fullText
+      // fingerprint and no URL to dedup on, so a byline-mangled twin (independent--bcaitlin-hornik
+      // vs --caitlin-hornik, same bwwExcerpt) double-counted. Same outlet + same aggregator excerpt
+      // = same review; first-seen (quality-sorted) wins.
+      {
+        const excerptDup = checkExcerptDuplicate(data, normalizeOutletCanonical(data.outletId || data.outlet), file, seenExcerptFingerprints, (m, k, v) => ledger.setClaim(m, k, v));
+        if (excerptDup.duplicateOf) {
+          console.log(`  [EXCERPT FINGERPRINT DEDUP] ${showId}/${file}: same aggregator excerpt as ${excerptDup.duplicateOf} at ${data.outletId || data.outlet} (keeping ${excerptDup.duplicateOf})`);
+          logExclusion("skippedExcerptFingerprintDedup", showId, file, data);
+          stats.skippedExcerptFingerprintDedup = (stats.skippedExcerptFingerprintDedup || 0) + 1;
+          return;
+        }
+      }
+
       // BRO-5901: this file has won every dedup check. From here on, any drop
       // (contamination, skippedNoScore, a thrown error) gives the claims back.
       ledger.arm();
@@ -6346,6 +6363,7 @@ const output = {
       swappedFingerprintToDefault: stats.swappedFingerprintToDefault || 0,
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
+      skippedExcerptFingerprintDedup: stats.skippedExcerptFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedPlaceholderBylineTwin: stats.skippedPlaceholderBylineTwin || 0,
       skippedGluedBylineTwin: stats.skippedGluedBylineTwin || 0,
@@ -6837,6 +6855,7 @@ console.log(`  Skipped (same article under another critic, same outlet): ${stats
 console.log(`  Unknown-twin URL carried to named entry: ${stats.unknownTwinUrlCarried || 0}`);
 console.log(`  Skipped (unknown outlet dedup): ${stats.skippedUnknownOutletDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
+console.log(`  Skipped (excerpt fingerprint dedup): ${stats.skippedExcerptFingerprintDedup || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);
 if (stats.crossShowDupeDetails && stats.crossShowDupeDetails.length > 0) {
   stats.crossShowDupeDetails.forEach(d => console.log(`    - ${d}`));

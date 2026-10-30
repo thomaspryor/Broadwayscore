@@ -175,8 +175,9 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           sparse-paths: ${{ inputs.show }}
 
-      # Exit codes (driver.js): 0 done, 1 failure, 3 not armed / lease held elsewhere, 4 scored reviews unpublished or
-      # lease lost. 3 is a normal stand-down (the regular pipeline covers the night), so it does not fail the job.
+      # Exit codes (driver.js): 0 done, 1 failure, 3 not armed / lease held elsewhere / LANE_STANDDOWN set, 4 scored
+      # reviews unpublished or lease lost. 3 is a normal stand-down (the regular pipeline covers the night), so it does
+      # not fail the job.
       - name: Run the lane
         id: lane
         timeout-minutes: 280
@@ -211,11 +212,15 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # LANE_STANDDOWN (BRO-6617): the owner's switch. The driver re-reads it live at every heartbeat with this token
+          # (the PAT Express uses for ORCHESTRATOR_PAUSED); this job-start value is the fallback if that read fails.
+          LANE_STANDDOWN: ${{ vars.LANE_STANDDOWN }}
+          LANE_STANDDOWN_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           RC=0
           npx tsx scripts/opening-night-lane.js "--show=${SHOW}" "--night=${NIGHT}" --core-dir=/tmp/core-data-checkout || RC=$?
           echo "exit=${RC}" >> "$GITHUB_OUTPUT"
-          if [ "$RC" -eq 3 ]; then echo "::notice::lane stood down (not armed or lease held elsewhere)"; exit 0; fi
+          if [ "$RC" -eq 3 ]; then echo "::notice::lane stood down (not armed, lease held elsewhere, or LANE_STANDDOWN set)"; exit 0; fi
           exit "$RC"
 
       # Scored reviews are written to data/review-texts/<show>/ before publish, so persist them whatever the lane did.

@@ -11,8 +11,13 @@
  *      push failed) is reported once and the lane keeps going until the TTL decides.
  *   4. run the night; always release the lease, even when the night throws.
  *
- * Exit codes: 0 done, 1 failure, 3 not armed / lease held elsewhere, 4 finished with scored reviews unpublished or the
- * lease lost. Nothing schedules this yet; see scripts/opening-night-lane.js.
+ * LANE_STANDDOWN (BRO-6617, standdown.js) is checked before step 1 and at every heartbeat. Set before the start, the
+ * lane exits 3 without claiming. Set mid-run, the lane stops, drops its unpublished queue (already in review-texts,
+ * the regular pipeline publishes it), waits for in-flight publishes, then releases the lease in the usual `finally`.
+ * The owner flips it on purpose, so neither case pages.
+ *
+ * Exit codes: 0 done, 1 failure, 3 not armed / lease held elsewhere / stood down, 4 finished with scored reviews
+ * unpublished or the lease lost. Nothing schedules this yet; see scripts/opening-night-lane.js.
  */
 const fs = require('fs');
 const path = require('path');
@@ -31,6 +36,26 @@ async function runProductionLane({ show, night, holder, deps, heartbeatMs = HEAR
   const setTimer = deps.setInterval || setInterval;
   const clearTimer = deps.clearInterval || clearInterval;
   const key = (what) => `opening-night-lane-${what}:${show.id}:${night}`;
+  // A failed read never stands the lane down: readStanddownLive already falls back to the job-start value.
+  // A degraded read (no token, 403, timeout) is logged once so a switch the lane cannot see is visible in the run log.
+  let warnedFallback = false;
+  const checkStanddown = async () => {
+    if (typeof deps.standdown !== 'function') return null;
+    try {
+      const s = await deps.standdown();
+      if (s && s.source === 'env-fallback' && !warnedFallback) {
+        warnedFallback = true;
+        log(`opening-night lane: cannot read LANE_STANDDOWN live (${s.detail || 'unknown'}); using the job-start value "${s.value}", so a change made during this run will not be seen`);
+      }
+      return s && s.standDown ? s : null;
+    } catch (e) { log(`opening-night lane: stand-down check failed (${String(e && e.message).slice(0, 160)}); carrying on`); return null; }
+  };
+
+  const before = await checkStanddown();
+  if (before) {
+    log(`opening-night lane: LANE_STANDDOWN=${before.value} (${before.source}) stands ${show.id} down; not claiming`);
+    return { exit: 3, reason: `stood-down:${before.value}` };
+  }
 
   const decision = await armCheck();
   if (!decision || !decision.arm) {
@@ -48,9 +73,22 @@ async function runProductionLane({ show, night, holder, deps, heartbeatMs = HEAR
   }
 
   let leaseLost = null;
+  let stoodDown = null;
   let transientReported = false;
-  const timer = setTimer(() => { onHeartbeat().catch((e) => log(`opening-night lane: heartbeat handler failed: ${String(e && e.message).slice(0, 160)}`)); }, heartbeatMs);
+  let beat = null; // the heartbeat in progress; awaited before release so a late renew cannot read as a lost lease
+  const timer = setTimer(() => {
+    if (beat) return; // a slow store or variable read must not overlap the next tick
+    beat = onHeartbeat().catch((e) => log(`opening-night lane: heartbeat handler failed: ${String(e && e.message).slice(0, 160)}`)).finally(() => { beat = null; });
+  }, heartbeatMs);
   async function onHeartbeat() {
+    // Keep renewing after a stand-down: the lease is released once, in `finally`, after in-flight publishes drain.
+    if (!stoodDown && !leaseLost) {
+      const s = await checkStanddown();
+      if (s) {
+        stoodDown = s.value;
+        log(`opening-night lane: LANE_STANDDOWN=${s.value} (${s.source}) stands ${show.id} down mid-run; finishing in-flight publishes, then releasing the lease`);
+      }
+    }
     let hb;
     try { hb = await heartbeat(); } catch (e) { hb = { ok: false, reason: 'heartbeat-threw', detail: String(e && e.message) }; }
     if (hb && hb.ok) return;
@@ -68,19 +106,29 @@ async function runProductionLane({ show, night, holder, deps, heartbeatMs = HEAR
   let result;
   const restoreSpend = beginPressNightSpend(show);
   try {
-    result = await runNight({ shouldStop: () => leaseLost !== null });
+    result = await runNight({ shouldStop: () => leaseLost !== null || stoodDown !== null, abandonPending: () => stoodDown !== null });
   } catch (e) {
     await page({ conditionKey: key('crashed'), title: `Opening-night lane crashed for ${show.id}`, description: String((e && e.message) || e).slice(0, 400) });
     return { exit: 1, reason: 'run-threw' };
   } finally {
     restoreSpend();
     clearTimer(timer);
+    if (beat) await beat;
     try { await release(); } catch (e) { log(`opening-night lane: release failed (${String(e && e.message).slice(0, 160)}); the lease expires by TTL`); }
   }
 
   const unpublished = result.unpublished || [];
   const failed = result.failed || [];
   const errors = result.errors || [];
+  // A lost lease outranks the stand-down: exit 4 and its summary page still apply.
+  if (stoodDown !== null && !leaseLost) {
+    log(`opening-night lane: stood down for ${show.id}; ${unpublished.length} scored reviews left to the regular pipeline`);
+    if (failed.length || errors.length) {
+      await page({ conditionKey: key('summary'), title: `Opening-night lane for ${show.id} (stood down): ${failed.length} failed, ${errors.length} errors`,
+        description: [...failed.slice(0, 5).map((f) => `failed: ${f.key} (${f.reason})`), ...errors.slice(0, 5).map((e) => `error: ${e.adapter}: ${e.error}`)].join('\n') });
+    }
+    return { exit: 3, reason: `stood-down-mid-run:${stoodDown}`, result };
+  }
   if (unpublished.length || failed.length || errors.length || leaseLost) {
     await page({ conditionKey: key('summary'), title: `Opening-night lane for ${show.id}: ${unpublished.length} unpublished, ${failed.length} failed, ${errors.length} errors`,
       description: [`passes ${result.passes}, admitted ${(result.admitted || []).length}${leaseLost ? `, lease lost (${leaseLost})` : ''}`,
@@ -141,7 +189,8 @@ function buildRealLaneDeps({
     claim: () => store.claim(storeOpts, { ...leaseArgs, ttlMs: LEASE_TTL_MS }),
     heartbeat: () => store.heartbeat(storeOpts, { ...leaseArgs, ttlMs: LEASE_TTL_MS }),
     release: () => store.release(storeOpts, leaseArgs),
-    runNight: ({ shouldStop }) => {
+    standdown: require('./standdown').createStanddownCheck({ show, repo: env.GITHUB_REPOSITORY, token: env.LANE_STANDDOWN_TOKEN, envValue: env.LANE_STANDDOWN }),
+    runNight: ({ shouldStop, abandonPending }) => {
       const { runLaneNight } = require('./lane-runner');
       const discovery = require('./discovery');
       const inline = require('./inline-score');
@@ -151,7 +200,7 @@ function buildRealLaneDeps({
       const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts(), scoreText: inline.ensembleScoreText(scorer) });
       const fetchText = discovery.fetchTextFrom(fetchPage);
       return runLaneNight({
-        show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop,
+        show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop, abandonPending,
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
         ...(Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) > 0 ? { windowMs: Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) * 60 * 1000 } : {}),
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),

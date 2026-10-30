@@ -2,7 +2,8 @@
 /**
  * Aggregator URL fast-watcher.
  *
- * Runs on a 5-min cron during opening-night windows. For each show with
+ * Runs on a 5-min cron (best-effort, GitHub throttles it) and, during opening-night
+ * windows, in loop mode started by the orchestrator (BRO-6628). For each show with
  * openingDate === today (America/New_York), tries to discover the BWW
  * Review Roundup URL and the DTLI show-page URL. When either is newly
  * found, dispatches opening-night-poller.yml with the override URL so
@@ -24,6 +25,10 @@
  *   node scripts/watch-aggregator-urls.js               # production
  *   node scripts/watch-aggregator-urls.js --dry-run     # discover only, no dispatch
  *   node scripts/watch-aggregator-urls.js --show=ID     # force-target a specific show
+ *   node scripts/watch-aggregator-urls.js --list-active # print today's Broadway/Off-Broadway opening ids, exit
+ *   node scripts/watch-aggregator-urls.js --loop-minutes=270 [--interval-seconds=300]
+ *       # loop mode (BRO-6628): re-run every interval for up to N minutes in this one
+ *       # process; the opening set is fixed at start so the window survives midnight ET
  */
 
 const fs = require('fs');
@@ -34,8 +39,13 @@ const { discoverBwwRoundupUrl, scoreCandidate } = require('./lib/bww-rr-discover
 const { fetchPage } = require('./lib/scraper');
 const { findInFlightCoverage } = require('./lib/poller-idempotency');
 const { findConflictingKey } = require('./lib/cache-collision');
+const W = require('./lib/watcher-loop');
 
 const DRY_RUN = process.argv.includes('--dry-run');
+const LIST_ACTIVE = process.argv.includes('--list-active');
+const argNum = (name, dflt) => { const a = process.argv.find(x => x.startsWith(`--${name}=`)); const n = a ? Number(a.split('=')[1]) : NaN; return Number.isFinite(n) && n >= 0 ? n : dflt; };
+const LOOP_MINUTES = argNum('loop-minutes', 0);
+const INTERVAL_SECONDS = Math.max(argNum('interval-seconds', 300), 1);
 const FORCED_SHOW = (process.argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -310,18 +320,8 @@ function dispatchPoller(showId, overrides) {
   };
 }
 
-(async () => {
-  const shows = loadShows();
-  const openings = findActiveOpenings(shows);
-  const today = todayET();
-
-  console.log(`[watch] ${today} ET — ${openings.length} show(s) opening today (broadway/off-broadway)`);
-  if (openings.length === 0) {
-    console.log('[watch] Nothing to do.');
-    process.exit(0);
-  }
-
-  const slugMap = loadSlugMap();
+async function pass(openings, ctx) {
+  const { slugMap, state } = ctx;
   let dispatched = 0;
   let bwwFoundAny = false;
   let dtliFoundAny = false;
@@ -330,21 +330,29 @@ function dispatchPoller(showId, overrides) {
     console.log(`\n[watch] ${show.id} — "${show.title}"`);
     const overrides = {};
     let needsDispatch = false;
+    let bwwUrlFound = null;
+    let dtliSlugFound = null;
 
-    // BWW RR: homepage scrape (free) → reviews.php (Browserbase fallback)
-    const bwwResult = await checkBwwRoundup(show);
-    if (bwwResult.skipped) {
-      console.log(`  BWW RR: ${bwwResult.reason}${bwwResult.url ? ' (' + bwwResult.url + ')' : ''}`);
-    } else if (bwwResult.error) {
-      console.log(`  BWW RR error: ${bwwResult.error}`);
-    } else if (bwwResult.url) {
-      console.log(`  ✅ BWW RR discovered via ${bwwResult.source}: ${bwwResult.url}`);
-      overrides.bwwRoundupUrl = bwwResult.url;
-      needsDispatch = true;
-      bwwFoundAny = true;
+    // BWW RR: homepage scrape (free) → reviews.php (Browserbase fallback).
+    // Skipped once the URL has been handed to the poller (no repeat Browserbase spend).
+    if (W.shouldProbeBww(state, show.id)) {
+      const bwwResult = await checkBwwRoundup(show);
+      if (bwwResult.skipped) {
+        console.log(`  BWW RR: ${bwwResult.reason}${bwwResult.url ? ' (' + bwwResult.url + ')' : ''}`);
+      } else if (bwwResult.error) {
+        console.log(`  BWW RR error: ${bwwResult.error}`);
+      } else if (bwwResult.url) {
+        console.log(`  ✅ BWW RR discovered via ${bwwResult.source}: ${bwwResult.url}`);
+        overrides.bwwRoundupUrl = bwwResult.url;
+        bwwUrlFound = bwwResult.url;
+        needsDispatch = true;
+        bwwFoundAny = true;
+      } else {
+        const note = bwwResult.reason ? ` [${bwwResult.reason}]` : '';
+        console.log(`  BWW RR: not yet published (${bwwResult.anchors ?? 0} RR anchors scanned)${note}`);
+      }
     } else {
-      const note = bwwResult.reason ? ` [${bwwResult.reason}]` : '';
-      console.log(`  BWW RR: not yet published (${bwwResult.anchors ?? 0} RR anchors scanned)${note}`);
+      console.log('  BWW RR: already handed to the poller this window');
     }
 
     // DTLI via plain HTTPS sitemap (free)
@@ -360,11 +368,13 @@ function dispatchPoller(showId, overrides) {
     } else if (dtliResult.slug) {
       if (known === dtliResult.slug) {
         console.log(`  DTLI slug: ${dtliResult.slug} (already mapped)`);
+        // Mapped before this process started (or on an earlier pass): nothing new to announce.
+        W.markDtliDispatched(state, show.id, dtliResult.slug);
       } else if (dtliOwner) {
         console.log(`  ⚠ DTLI slug ${dtliResult.slug} already mapped to ${dtliOwner} — not assigning it to ${show.id} (cross-show collision)`);
       } else {
         console.log(`  ✅ DTLI slug ${known ? 'CHANGED' : 'NEW'}: ${dtliResult.slug}${known ? ` (was ${known})` : ''}`);
-        // Update slug map in place
+        // Update slug map in place (kept in memory across loop passes)
         slugMap.shows = slugMap.shows || {};
         slugMap.shows[show.id] = dtliResult.slug;
         slugMap._meta = slugMap._meta || {};
@@ -372,7 +382,8 @@ function dispatchPoller(showId, overrides) {
         if (!DRY_RUN) {
           fs.writeFileSync(SLUG_MAP_PATH, JSON.stringify(slugMap, null, 2) + '\n');
         }
-        needsDispatch = true;
+        dtliSlugFound = dtliResult.slug;
+        if (W.shouldDispatchDtli(state, show.id, dtliResult.slug)) needsDispatch = true;
         dtliFoundAny = true;
       }
     } else {
@@ -386,9 +397,14 @@ function dispatchPoller(showId, overrides) {
         const d = dispatchPoller(show.id, overrides);
         if (d.skipped) {
           console.log(`  ⏭  Dispatch skipped — ${d.reason}`);
+          // Not marked dispatched: the running poller may have been started for a
+          // different URL (an earlier DTLI dispatch, the orchestrator), so this URL
+          // could still never reach a poller. The next tick retries once it ends.
         } else if (d.exitCode === 0) {
           console.log(`  ✅ Dispatched opening-night-poller.yml`);
           dispatched++;
+          if (bwwUrlFound) W.markBwwDispatched(state, show.id, bwwUrlFound);
+          if (dtliSlugFound) W.markDtliDispatched(state, show.id, dtliSlugFound);
         } else {
           console.log(`  ❌ Dispatch failed (exit ${d.exitCode}): ${d.output.slice(0, 300)}`);
         }
@@ -397,6 +413,42 @@ function dispatchPoller(showId, overrides) {
   }
 
   console.log(`\n[watch] Summary: ${dispatched} dispatch(es), bww=${bwwFoundAny}, dtli=${dtliFoundAny}`);
+  return { done: !DRY_RUN && W.allDone(state, openings.map(s => s.id)) };
+}
+
+(async () => {
+  const shows = loadShows();
+  const openings = findActiveOpenings(shows);
+  const today = todayET();
+
+  if (LIST_ACTIVE) {
+    console.log(openings.map(s => s.id).join(','));
+    process.exit(0);
+  }
+
+  console.log(`[watch] ${today} ET — ${openings.length} show(s) opening today (broadway/off-broadway)`);
+  if (openings.length === 0) {
+    console.log('[watch] Nothing to do.');
+    process.exit(0);
+  }
+
+  const ctx = { slugMap: loadSlugMap(), state: W.createWatchState() };
+
+  if (LOOP_MINUTES > 0) {
+    const deadlineMs = Date.now() + LOOP_MINUTES * 60000;
+    console.log(`[watch] loop mode: every ${INTERVAL_SECONDS}s for up to ${LOOP_MINUTES} min (opening set fixed at start)`);
+    const r = await W.runLoop({
+      pass: (n) => { console.log(`\n[watch] ===== pass ${n} @ ${new Date().toISOString()} =====`); return pass(openings, ctx); },
+      intervalMs: INTERVAL_SECONDS * 1000,
+      deadlineMs,
+      sleep: (ms) => new Promise(res => setTimeout(res, ms)),
+      log: (m) => console.log(m),
+    });
+    console.log(`[watch] loop finished after ${r.iterations} pass(es): ${r.reason}`);
+    process.exit(0);
+  }
+
+  await pass(openings, ctx);
   process.exit(0);
 })().catch(err => {
   console.error(`[watch] Unhandled error: ${err.message}`);

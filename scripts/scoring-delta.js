@@ -77,6 +77,7 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { diffUrlDate, describeUrlDate } = require('./lib/url-date-replay');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const dataInputs = require('./lib/scoring-delta-data-inputs');
 const { loadDedupGuards, createBaselineShowSnapshot } = require('./lib/scoring-delta-dedup');
@@ -794,9 +795,10 @@ function loadWorkingTreeScoring() {
  *      loadBaselineGuards/loadWorkingTreeGuards below) — a URL-fallback-using
  *      version would silently use the SAME working-tree extractDateFromUrl on
  *      both replay sides, so a change to extractDateFromUrl itself could
- *      never show up as a delta here, and Phase B's SCORE_VALUE_FILES replay
- *      doesn't exercise extractDateFromUrl's date output either (it only
- *      compares getBestScore's score/source) — a real, silent blind spot.
+ *      never show up as a delta through these date replays. BRO-6628 closes that
+ *      blind spot separately: Phase B compares baselineScoring.extractDateFromUrl
+ *      against the working tree's per URL (lib/url-date-replay.js) and reports the
+ *      "URL DATE CHANGED" count, which feeds totalFlips and the exit code.
  *   2. Guard 3 below (the inline pre-window/date-guard check, ~line 940) only
  *      fires when `review.publishDate` itself is truthy — it does NOT use
  *      this resolved date. A URL-fallback-derived hasUsableDate could clear a
@@ -1995,6 +1997,7 @@ function main() {
   const flipsExcluded = [];   // newly excluded (Phase A)
   const flipsIncluded = [];   // newly included (Phase A)
   const scoreFlips = [];      // assignedScore/source flips (Phase B)
+  const urlDateFlips = [];    // extractDateFromUrl output changes (Phase B, BRO-6628)
   let processed = 0;
   // A flag change on a reference can flip an unchanged sibling. Replay the
   // entire affected show and give baseline guards the old sibling corpus.
@@ -2070,6 +2073,28 @@ function main() {
           // (Pre-existing behavior for Phase A was to ignore bad JSON earlier;
           // match that tolerance here.)
         }
+      }
+
+      // ── Phase B: URL-date replay (BRO-6628) ──
+      // extractDateFromUrl is not sandboxed anywhere else in this file (see
+      // resolveReviewDate), so compare the two sides' extractors directly.
+      if (runPhaseB && review.url) {
+        try {
+          const d = diffUrlDate(baselineScoring.extractDateFromUrl, workingScoring.extractDateFromUrl, review.url);
+          if (d) {
+            const outletKey = (review.outletId || review.outlet || '').toLowerCase().replace(/\s+/g, '-');
+            urlDateFlips.push({
+              showId,
+              outlet: review.outletId || review.outlet || 'unknown',
+              critic: review.criticName || '',
+              url: review.url,
+              publishDate: review.publishDate || '',
+              tier: T1_OUTLETS.has(outletKey) ? 'T1' : 'other',
+              baselineUrlDate: describeUrlDate(d.baseline),
+              workingUrlDate: describeUrlDate(d.working),
+            });
+          }
+        } catch (e) { /* a crashing extractor on one URL must not abort the delta */ }
       }
 
       // ── Phase A: inclusion replay ──
@@ -2154,12 +2179,14 @@ function main() {
   const t1InclusionFlips = flipsExcluded.filter(f => f.tier === 'T1').length
                           + flipsIncluded.filter(f => f.tier === 'T1').length;
   const t1ScoreFlips = scoreFlips.filter(f => f.tier === 'T1').length;
-  const t1Flips = t1InclusionFlips + t1ScoreFlips;
-  const totalFlips = flipsExcluded.length + flipsIncluded.length + scoreFlips.length;
+  const t1UrlDateFlips = urlDateFlips.filter(f => f.tier === 'T1').length;
+  const t1Flips = t1InclusionFlips + t1ScoreFlips + t1UrlDateFlips;
+  const totalFlips = flipsExcluded.length + flipsIncluded.length + scoreFlips.length + urlDateFlips.length;
 
   const affectedShowsExcluded = new Set(flipsExcluded.map(f => f.showId));
   const affectedShowsIncluded = new Set(flipsIncluded.map(f => f.showId));
   const affectedShowsScore = new Set(scoreFlips.map(f => f.showId));
+  const affectedShowsUrlDate = new Set(urlDateFlips.map(f => f.showId));
 
   // task #1929: a touched rebuild-all-reviews.js exclusion-loop site means
   // decideInclusion()'s replay above (however clean) does not cover the real
@@ -2180,12 +2207,14 @@ function main() {
       flipsExcluded: flipsExcluded.length,
       flipsIncluded: flipsIncluded.length,
       scoreFlips: scoreFlips.length,
+      urlDateFlips: urlDateFlips.length,
+      showsAffectedUrlDate: affectedShowsUrlDate.size,
       t1Flips,
       t1ScoreFlips,
       showsAffectedExcluded: affectedShowsExcluded.size,
       showsAffectedIncluded: affectedShowsIncluded.size,
       showsAffectedScore: affectedShowsScore.size,
-      t1Details: [...flipsExcluded, ...flipsIncluded, ...scoreFlips].filter(f => f.tier === 'T1'),
+      t1Details: [...flipsExcluded, ...flipsIncluded, ...scoreFlips, ...urlDateFlips].filter(f => f.tier === 'T1'),
       // Full flip detail (capped) — without this, a within-tolerance non-T1
       // delta is unexplainable: the human gate requires saying WHICH reviews
       // moved and why, and the text mode only prints per-show counts.
@@ -2193,6 +2222,7 @@ function main() {
         excluded: flipsExcluded.slice(0, 100),
         included: flipsIncluded.slice(0, 100),
         scoreChanged: scoreFlips.slice(0, 100),
+        urlDateChanged: urlDateFlips.slice(0, 100),
       },
       cannotAutoVerify,
       dataInputDrift,
@@ -2218,8 +2248,9 @@ function main() {
     }
     if (runPhaseB) {
       console.log(`SCORE CHANGED:    ${scoreFlips.length} reviews across ${affectedShowsScore.size} shows`);
+      console.log(`URL DATE CHANGED: ${urlDateFlips.length} reviews across ${affectedShowsUrlDate.size} shows`);
     }
-    console.log(`T1 outlet flips:  ${t1Flips}  (inclusion: ${t1InclusionFlips}, score: ${t1ScoreFlips})`);
+    console.log(`T1 outlet flips:  ${t1Flips}  (inclusion: ${t1InclusionFlips}, score: ${t1ScoreFlips}, url-date: ${t1UrlDateFlips})`);
     console.log('');
 
     if (flipsExcluded.length > 0) {
@@ -2239,6 +2270,15 @@ function main() {
       const sorted = [...byShow.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
       for (const [sid, count] of sorted) console.log(`  ${sid}: ${count}`);
       if (byShow.size > 10) console.log(`  ...and ${byShow.size - 10} more shows`);
+      console.log('');
+    }
+
+    if (urlDateFlips.length > 0) {
+      console.log('SAMPLE — URL date changed (extractDateFromUrl):');
+      for (const f of urlDateFlips.slice(0, 10)) {
+        console.log(`  - ${f.showId} · ${f.outlet}: ${f.baselineUrlDate} → ${f.workingUrlDate}  ${f.url}`);
+      }
+      if (urlDateFlips.length > 10) console.log(`  ...and ${urlDateFlips.length - 10} more`);
       console.log('');
     }
 

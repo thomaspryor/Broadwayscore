@@ -365,6 +365,38 @@ jobs:
             fi
           done <<< "$DUE"
 
+      - name: Start aggregator URL watcher loop
+        # BRO-6628: aggregator-url-watcher.yml is cron */5 but GitHub throttled it to ~4
+        # runs/day, so on the A Few Good Men press night (BRO-6585) it did not run 00:12Z-05:16Z.
+        # Dispatch it ONCE in loop mode (one long job, 5-min in-process cadence) instead of
+        # depending on the cron. Same shape as "Start press-night probes" above, and placed
+        # BEFORE the polling loop for the same reason: an Express takeover cancels this run
+        # mid-loop. Warn-only. Gated on a Broadway/Off-Broadway opening TODAY (ET), the only
+        # shows the watcher acts on (so West End and look-back ticks dispatch nothing), and
+        # skipped when a watcher LOOP run is already queued or running (matched by run title).
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! ACTIVE=$(node scripts/watch-aggregator-urls.js --list-active); then
+            echo "::warning::watcher --list-active failed; no watcher loop dispatched this tick"
+            exit 0
+          fi
+          if [ -z "$ACTIVE" ]; then
+            echo "No Broadway/Off-Broadway opening today (ET); watcher loop not needed."
+            exit 0
+          fi
+          RUNNING=$( (gh run list --workflow=aggregator-url-watcher.yml --status in_progress --json displayTitle,databaseId --jq '.[] | select(.displayTitle | endswith("(loop)")) | .databaseId'; \
+                      gh run list --workflow=aggregator-url-watcher.yml --status queued --json displayTitle,databaseId --jq '.[] | select(.displayTitle | endswith("(loop)")) | .databaseId') 2>/dev/null || true)
+          if [ -n "$RUNNING" ]; then
+            echo "Watcher loop already queued or running ($(echo "$RUNNING" | tr '\n' ' ')); not starting another loop."
+            exit 0
+          fi
+          echo "Starting aggregator URL watcher loop for: $ACTIVE"
+          if ! gh workflow run aggregator-url-watcher.yml -f loop_minutes=270; then
+            echo "::warning::Failed to dispatch aggregator-url-watcher loop"
+          fi
+
       - name: Check API budget
         id: budget
         if: steps.find.outputs.has_shows == 'true'

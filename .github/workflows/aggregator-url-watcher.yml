@@ -1,17 +1,31 @@
 name: Aggregator URL Watcher
 
-# Scheduled */5 but GitHub throttles it to ~1 run per 3-4h (BRO-4209): best-effort,
-# not a 5-minute path. During opening-night windows, for each show with
-# openingDate === today (America/New_York), tries to discover BWW Review
-# Roundup + DTLI show-page URLs. When found, dispatches opening-night-poller
-# with the override URL so the existing aggregator extractors fire
-# immediately instead of waiting for the next 13-min orchestrator cycle.
+# Loop runs are told apart from single cron passes by title, so the orchestrator only
+# skips its dispatch when a LOOP is already queued or running (BRO-6628).
+run-name: ${{ inputs.loop_minutes != '' && inputs.loop_minutes != '0' && 'Aggregator URL Watcher (loop)' || 'Aggregator URL Watcher' }}
+
+# Two entry points:
+#  1. cron */5 (best-effort: GitHub throttles it to ~1 run per 3-4h, BRO-4209, and it
+#     did not run 00:12Z-05:16Z on the A Few Good Men press night, BRO-6585).
+#  2. Loop mode (BRO-6628): opening-night-orchestrator.yml dispatches this workflow ONCE
+#     per opening day with loop_minutes set (step "Start aggregator URL watcher loop",
+#     placed before its polling loop like the press-night probes, BRO-5912). One job
+#     then re-runs the watcher every 5 min in-process, so the press-night window does
+#     not depend on the cron. Staying in one process keeps the DTLI slug map and the
+#     BWW anchor cache in memory, so a known slug is not re-announced and Browserbase
+#     is not re-paid each tick; the loop ends early once every show's BWW + DTLI URLs
+#     have been handed to the poller.
 #
-# Cost: ~$0.10/Browserbase call for BWW reviews.php scrape; DTLI is free
-# (plain HTTPS sitemap fetch). Worst-case ~$8 per opening over a 7h window.
+# For each show with openingDate === today (America/New_York), tries to discover the
+# BWW Review Roundup + DTLI show-page URLs. When found, dispatches opening-night-poller
+# with the override URL so the existing aggregator extractors fire immediately instead
+# of waiting for the next orchestrator cycle.
 #
-# Bails fast (exits 0) when no shows are opening today — so off-day cron
-# ticks are nearly free.
+# Cost: ~$0.10/Browserbase call for BWW reviews.php scrape (only until the roundup is
+# found); DTLI is free (plain HTTPS sitemap fetch).
+#
+# Bails fast (exits 0) when no shows are opening today, so off-day cron ticks are
+# nearly free.
 
 on:
   schedule:
@@ -22,6 +36,11 @@ on:
         description: 'Force-target a specific show (otherwise: today_ET openings only)'
         required: false
         type: string
+      loop_minutes:
+        description: 'Loop mode: re-run the watcher every 5 min for up to N minutes in this one job (0 = single pass)'
+        required: false
+        type: string
+        default: '0'
       dry_run:
         description: 'Discover URLs but do not dispatch poller'
         required: false
@@ -33,20 +52,28 @@ permissions:
   actions: write
 
 concurrency:
-  # Drop overlapping ticks — if a previous run is still going, skip this one.
-  # Watcher cycles should finish in <60s; if they don't, we don't want pileup.
-  group: aggregator-url-watcher
+  # Drop overlapping cron ticks: a single pass finishes in <60s, so queueing at most one
+  # is a debounce. Loop-mode runs (loop_minutes, BRO-6628) hold a slot for hours, so they
+  # get their OWN group: otherwise a cron tick arriving while a loop dispatch is pending
+  # would evict it (GitHub keeps one pending run per group) and the press-night loop
+  # would silently never start. The orchestrator only dispatches a loop when none is
+  # queued/running, and dispatchPoller's in-flight check absorbs cron+loop overlap.
+  # concurrency-queue-ok: cron ticks are a debounce; loop dispatches are deduped by the orchestrator step and never share this group
+  group: aggregator-url-watcher${{ inputs.loop_minutes != '' && inputs.loop_minutes != '0' && '-loop' || '' }}
   cancel-in-progress: false
 
 jobs:
   watch:
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # BRO-4266: checkout-core-data alone can take 3-5 min
+    # BRO-4266: checkout-core-data alone can take 3-5 min. Loop mode (BRO-6628) needs the
+    # window plus that setup; single passes are bounded by `timeout` in the Watch step.
+    timeout-minutes: 320
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
+          fetch-depth: 1000
 
       - name: Checkout core data (private)
         uses: ./.github/actions/checkout-core-data
@@ -104,15 +131,26 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_LOOP_MINUTES: ${{ inputs.loop_minutes }}
         run: |
           ARGS=""
+          LIMIT=8m   # single pass, the old 10-min job budget minus setup
+          case "${INPUT_LOOP_MINUTES:-0}" in
+            ''|*[!0-9]*) INPUT_LOOP_MINUTES=0 ;;
+          esac
+          if [ "$INPUT_LOOP_MINUTES" -gt 0 ]; then
+            # Cap at 300 min so the job timeout (320) always covers setup + window.
+            [ "$INPUT_LOOP_MINUTES" -gt 300 ] && INPUT_LOOP_MINUTES=300
+            ARGS="$ARGS --loop-minutes=${INPUT_LOOP_MINUTES}"
+            LIMIT="$((INPUT_LOOP_MINUTES + 5))m"
+          fi
           if [ -n "${INPUT_SHOW_ID}" ]; then
             ARGS="$ARGS --show=${INPUT_SHOW_ID}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          node scripts/watch-aggregator-urls.js $ARGS
+          timeout "$LIMIT" node scripts/watch-aggregator-urls.js $ARGS
 
       - name: Commit scraper-spend ledger
         if: always()

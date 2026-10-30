@@ -57,6 +57,7 @@ const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { isReviewTextFile } = require('./lib/review-text-sidecars.js');
 const { applyOutletRegistryFlag } = require('./lib/outlet-registry-flag-action.js');
+const { applyOutletRegistryAlias } = require('./lib/outlet-registry-alias-action.js');
 const { applyCoverageExpectationRedecide } = require('./lib/coverage-expectation-redecide-action.js');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape.js');
 const { applyDropOrphanKey, DROP_ORPHAN_KEY_FILES } = require('./lib/orphan-key-action.js');
@@ -495,6 +496,7 @@ function executeOutletRegistryAction(action, apply, label) {
 }
 
 const executeOutletRegistryFlag = (action) => executeOutletRegistryAction(action, applyOutletRegistryFlag, 'outlet-registry-flag');
+const executeOutletRegistryAlias = (action) => executeOutletRegistryAction(action, applyOutletRegistryAlias, 'outlet-registry-alias');
 const executeCoverageExpectationRedecide = (action) => executeOutletRegistryAction(action, applyCoverageExpectationRedecide, 'coverage-expectation-redecide');
 
 function executeRetitleShow(action) {
@@ -759,6 +761,9 @@ async function main() {
       case 'outlet-registry-flag':
         result = executeOutletRegistryFlag(action);
         break;
+      case 'outlet-registry-alias':
+        result = executeOutletRegistryAlias(action);
+        break;
       case 'coverage-expectation-redecide':
         result = executeCoverageExpectationRedecide(action);
         break;
@@ -808,11 +813,11 @@ async function main() {
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk
   // transform had no rollback path).
-  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'retitle-show' || a.type === 'add-commercial-entry' || a.type === 'drop-orphan-key' || a.type === 'outlet-registry-flag' || a.type === 'coverage-expectation-redecide');
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'retitle-show' || a.type === 'add-commercial-entry' || a.type === 'drop-orphan-key' || a.type === 'outlet-registry-flag' || a.type === 'coverage-expectation-redecide' || a.type === 'outlet-registry-alias');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
     // add-show / retire-show / retitle-show / add-commercial-entry carry no `file`.
-    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'retitle-show': 'shows.json', 'add-commercial-entry': 'commercial.json', 'outlet-registry-flag': 'outlet-registry.json', 'coverage-expectation-redecide': 'outlet-registry.json' };
+    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'retitle-show': 'shows.json', 'add-commercial-entry': 'commercial.json', 'outlet-registry-flag': 'outlet-registry.json', 'coverage-expectation-redecide': 'outlet-registry.json', 'outlet-registry-alias': 'outlet-registry.json' };
     const changedFiles = [...new Set(dataTouching.map(a => IMPLIED_FILE[a.type] || a.file || null).filter(Boolean))];
     // retire-show also drops or moves the id's audience-buzz.json key (BRO-3248).
     if (dataTouching.some(a => a.type === 'retire-show') && !changedFiles.includes('audience-buzz.json')) changedFiles.push('audience-buzz.json');
