@@ -43,7 +43,9 @@ function parseVerifyLog(text) {
 }
 
 function applyCommand(file) {
-  return `gh workflow run apply-migration.yml -f migration=supabase/migrations/${file} -f confirm=APPLY`;
+  // "Apply with:" prefix keeps this a hint string; audit-workflow-concurrency
+  // treats a bare leading `gh workflow run` in a script as a real dispatch.
+  return `Apply with: gh workflow run apply-migration.yml -f migration=supabase/migrations/${file} -f confirm=APPLY`;
 }
 
 const RISKY = /\b(drop\s+(table|column|policy|function|view|index|trigger|constraint|type)|alter\s+column|rename\s+(to|column)|delete\s+from|truncate|update\s+[\w."]+\s+set|insert\s+into|enable\s+row\s+level\s+security|disable\s+row\s+level\s+security|add\s+constraint)\b/i;
@@ -73,7 +75,7 @@ function buildCard({ entries, runUrl, readSql }) {
     lines.push(`Migration: supabase/migrations/${e.file}${sql ? ` [${classifyMigration(sql)}]` : ''}`);
     for (const m of e.missing.slice(0, 8)) lines.push(`  missing: ${m}`);
     for (const d of e.drifted.slice(0, 4)) lines.push(`  function body differs: ${d}`);
-    lines.push(`  apply: ${applyCommand(e.file)}`);
+    lines.push(`  ${applyCommand(e.file)}`);
   }
   lines.push(
     '',
