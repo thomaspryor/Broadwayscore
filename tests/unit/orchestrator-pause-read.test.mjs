@@ -62,8 +62,20 @@ describe('workflow shape: pause/standdown variable reads use REVIEW_TEXTS_TOKEN'
     const lines = fs.readFileSync(path.join(WF_DIR, f), 'utf8').split('\n');
     lines.forEach((line, i) => {
       if (/^\s*#/.test(line) || !READ.test(line)) return;
-      if (/\bgh variable (delete|set)\b/.test(line)) return;
+      if (/\bgh variable (delete|set)\b/.test(line)) {
+        // writes need variables scope too: an inline override must be VARS_TOKEN, or the step token REVIEW_TEXTS_TOKEN
+        const inline = line.match(/GH_TOKEN=("?)([^\s"]+)\1\s+gh variable/);
+        if (inline && inline[2] !== '$VARS_TOKEN') offenders.push(`${f}:${i + 1} (inline write token ${inline[2]})`);
+        return;
+      }
       reads++;
+      {
+        const inline = line.match(/GH_TOKEN=("?)([^\s"]+)\1\s+(bash|gh)\b/);
+        if (inline && inline[2] !== '$VARS_TOKEN' && !inline[2].includes('REVIEW_TEXTS_TOKEN')) {
+          offenders.push(`${f}:${i + 1} (inline read token ${inline[2]})`);
+          return;
+        }
+      }
       if (line.includes('REVIEW_TEXTS_TOKEN')) return;
       if (line.includes('GH_TOKEN="$VARS_TOKEN"')) {
         // inline override: the enclosing step must define VARS_TOKEN from REVIEW_TEXTS_TOKEN
@@ -90,6 +102,7 @@ describe('workflow shape: pause/standdown variable reads use REVIEW_TEXTS_TOKEN'
     const wf = fs.readFileSync(path.join(WF_DIR, 'opening-night-orchestrator.yml'), 'utf8');
     assert.match(wf, /PAUSED_SNAPSHOT: \$\{\{ vars\.ORCHESTRATOR_PAUSED \}\}/);
     assert.match(wf, /read-actions-variable\.sh ORCHESTRATOR_PAUSED\) \|\| \{[\s\S]*PAUSED="\$PAUSED_SNAPSHOT"/);
+    assert.match(wf, /if \[ "\$READ_OK" = "1" \]; then\s+GH_TOKEN="\$VARS_TOKEN" gh variable delete ORCHESTRATOR_PAUSED/);
     assert.doesNotMatch(wf, /PAUSED=\$\(gh api repos[^\n]*ORCHESTRATOR_PAUSED[^\n]*\|\| PAUSED=""/);
   });
   test('no read runs under GITHUB_TOKEN', () => {

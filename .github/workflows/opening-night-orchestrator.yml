@@ -600,9 +600,11 @@ jobs:
           # APPENDS to stdout, leaving PAUSED with the error body. That made the next case match
           # `*)` (Orchestrator PAUSED — value=<404 JSON>) and silently skip every iteration after
           # Express cleared the variable. Capturing exit code outside resets PAUSED="" on failure.
-          # BRO-6639: read-actions-variable.sh exits 0 (value, or empty on HTTP 404) or 3 (read
-          # FAILED = unknown). Unknown falls back to the job-start vars snapshot, never to "unset".
+          # BRO-6639: read-actions-variable.sh exits 0 (value, or empty on HTTP 404) or non-zero (read
+          # FAILED = unknown). Unknown falls back to the job-start vars snapshot, never silently to "unset".
+          READ_OK=1
           PAUSED=$(GH_TOKEN="$VARS_TOKEN" bash scripts/lib/read-actions-variable.sh ORCHESTRATOR_PAUSED) || {
+            READ_OK=0
             echo "::warning::ORCHESTRATOR_PAUSED live read failed; using job-start snapshot (${PAUSED_SNAPSHOT:-<unset>})"
             PAUSED="$PAUSED_SNAPSHOT"
           }
@@ -627,9 +629,14 @@ jobs:
               EXPIRED*)
                 AGE=$(echo "$DECISION" | cut -d'|' -f2)
                 echo "::warning::ORCHESTRATOR_PAUSED=express lease expired ($AGE, >90min). Auto-clearing and proceeding."
-                GH_TOKEN="$VARS_TOKEN" gh variable delete ORCHESTRATOR_PAUSED 2>/dev/null \
-                  && echo "Stale lease cleared." \
-                  || echo "::warning::Could not clear stale ORCHESTRATOR_PAUSED — continuing anyway"
+                # Only delete on a LIVE read: a snapshot may be stale and Express may have renewed the lease.
+                if [ "$READ_OK" = "1" ]; then
+                  GH_TOKEN="$VARS_TOKEN" gh variable delete ORCHESTRATOR_PAUSED 2>/dev/null \
+                    && echo "Stale lease cleared." \
+                    || echo "::warning::Could not clear stale ORCHESTRATOR_PAUSED — continuing anyway"
+                else
+                  echo "::warning::Expired lease seen only in the job-start snapshot; not deleting (live state unknown)."
+                fi
                 ;;
               ACTIVE*)
                 AGE=$(echo "$DECISION" | cut -d'|' -f3)

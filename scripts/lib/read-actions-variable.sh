@@ -14,7 +14,7 @@ if OUT=$(gh api "repos/${REPO}/actions/variables/${NAME}" --jq '.value' 2>"$ERR"
   printf '%s' "$OUT"
   exit 0
 fi
-if grep -qE 'HTTP 404|Not Found' "$ERR"; then
+if grep -qE 'HTTP 404' "$ERR"; then
   exit 0
 fi
 echo "::warning::Could not read Actions variable ${NAME} (state UNKNOWN, not 'unset'): $(tr '\n' ' ' < "$ERR" | cut -c1-200)" >&2
