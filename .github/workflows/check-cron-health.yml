@@ -247,6 +247,9 @@ jobs:
             # Same throttled-hourly band as audit-aggregator-gap (BRO-3867: real gap p95 8.0h, max 12.1h). Mirrored in
             # TIGHT_BY_DESIGN (scripts/audit-cron-health-coverage.js); do not tighten back.
             "codex-lane-health.yml|12|Codex Lane Health"
+            # BRO-6615: replays new review files rescued from failed review-texts pushes, hourly at :41.
+            # 13h: throttled-hourly lag (BRO-3867) plus the 12h cron-lag cushion; stale = rescued reviews sit off the site.
+            "replay-push-rescue.yml|13|Replay Push Rescue"
             # BRO-6244: ships owner-approved UI changes (cron 11,31,51). GitHub dropped its schedule
             # between 2026-10-25 and 01:20Z (an Approve sat 90 min), so cron-redispatch replaces a
             # missing run after 0.75h (input + redispatch-after-hours in the workflow). 13h = 1/3h gap
