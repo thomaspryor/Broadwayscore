@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-30T19:57:55.154Z",
-  "processed": 8,
-  "failed": 12,
-  "successRate": "40.0%",
+  "updatedAt": "2026-10-30T21:25:16.725Z",
+  "processed": 60,
+  "failed": 53,
+  "successRate": "53.1%",
   "tierBreakdown": {
-    "playwright": 8,
-    "amp": 0,
+    "playwright": 41,
+    "amp": 1,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 5,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 0
+    "archiveToday": 5,
+    "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -38,6 +38,17 @@
       "event": "bb-session",
       "session": "ecac9d1b",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-30T21:03:43.976Z",
+      "event": "bb-session",
+      "session": "758656ee",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-30T21:03:44.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     }
   ]
 }
