@@ -19,6 +19,10 @@ otherwise. They are guidelines; nothing blocks a send. BRO-6285.
      only, the owner cannot tell which one you mean, and nothing reads a reply to the email itself.
    - A child session sends its question to its parent session instead.
 
+   - A step only the owner's hands can do (no API, needs their login or identity) goes out the same way as a
+     task: `Owner step 1:` lines on the card instead of options, and the email offers Done. Rules in
+     `.claude/CLOUD.md` ("Only the owner's hands can do it"). BRO-6654.
+
 3. **One ask per email.** If a status email mentions a decision, give one plain-words
    recommendation and say what happens if the owner does nothing, then point at the card.
 

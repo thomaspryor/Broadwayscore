@@ -70,7 +70,8 @@ export async function GET(req: NextRequest) {
     return `<section class="box"><p class="q">${esc(d.question)}</p>
 ${d.title && d.title !== d.question ? `<p class="small">About: ${esc(d.title)}</p>` : ''}
 ${evidenceHtml(b.evidence)}
-${b.why ? `<p><strong>Why this is your call:</strong> ${esc(b.why)}</p>` : ''}
+${b.why ? `<p><strong>${b.task ? 'Why Claude cannot do this itself' : 'Why this is your call'}:</strong> ${esc(b.why)}</p>` : ''}
+${b.task ? `<ol>${(b.steps || []).map((st: string) => `<li>${esc(st)}</li>`).join('')}</ol>` : ''}
 ${options}
 ${b.recommendation ? `<p><strong>My recommendation:</strong> ${esc(b.recommendation)}</p>` : ''}
 ${b.defaultText ? `<p class="small"><strong>If you do not answer:</strong> ${esc(b.defaultText)}</p>` : ''}
