@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-30T16:50:22.044Z",
+  "timestamp": "2026-10-30T17:08:04.683Z",
   "stats": {
-    "totalReviews": 70466,
+    "totalReviews": 70476,
     "alreadyFlagged": 22304,
     "dateGuardCatches": 230,
     "directorMismatch": 2874,
     "tvFilmSignals": 2026,
-    "londonSignals": 3402,
+    "londonSignals": 3404,
     "offBroadwaySignals": 634,
     "yearMismatch": 288,
     "noPublishDate": 7994
@@ -82405,6 +82405,19 @@
       ]
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "file": "bestoftheatre--alan-ingram.json",
+      "publishDate": "2026-10-08",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "doktor-glas-west-end-2013",
       "file": "standard--unknown.json",
       "score": 78,
@@ -85123,6 +85136,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "frankenstein-west-end-2011",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "2011-02-24",
+      "url": "http://theater.nytimes.com/2011/02/26/theater/reviews/26franken.html?ref=theater",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
