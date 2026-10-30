@@ -19,7 +19,7 @@ function runNodeTest(files) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'check-detail-'));
   for (const [n, body] of Object.entries(files)) fs.writeFileSync(path.join(dir, n), body);
   try {
-    execFileSync('node', ['--test', ...Object.keys(files)], { cwd: dir, encoding: 'utf8', stdio: 'pipe', env: cleanEnv() });
+    execFileSync('node', ['--test', '--test-reporter=tap', ...Object.keys(files)], { cwd: dir, encoding: 'utf8', stdio: 'pipe', env: cleanEnv() });
     throw new Error('expected failure');
   } catch (err) {
     if (!err.status) throw err;

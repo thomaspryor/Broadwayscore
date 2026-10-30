@@ -1,5 +1,6 @@
 // BRO-6615: lost nightly pushes. Requires the REAL disqualifier and registry
 // (CLAUDE.md §15), so a registry or predicate change fails here.
+// TESTS-VS-DERIVED-DATA-EXEMPT: data/shows.json appears only as a path string fed to the push disqualifier; no data file is read.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

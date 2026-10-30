@@ -24,7 +24,7 @@ test('tier 1: colocated tests + tsc only, never lint or build', () => {
   const exists = present('scripts/lib/foo.test.mjs', 'tests/unit/bar.test.mjs');
   const out = decideChecks(['scripts/lib/foo.js', 'tests/unit/bar.test.mjs', 'src/lib/x.ts'], exists);
   assert.deepEqual(names(out), ['colocated-tests', 'tsc']);
-  assert.deepEqual(out[0].argv, ['node', '--test', 'scripts/lib/foo.test.mjs', 'tests/unit/bar.test.mjs']);
+  assert.deepEqual(out[0].argv, ['node', '--test', '--test-reporter=tap', 'scripts/lib/foo.test.mjs', 'tests/unit/bar.test.mjs']);
   assert.deepEqual(out[1].argv, ['npx', 'tsc', '--noEmit']);
 });
 
@@ -74,7 +74,7 @@ test('tier 3: a colocated .test.ts is derived and routed through tsx, not plain 
   const out = decideChecks(['scripts/lib/foo.ts'], exists, { tier: 3 });
   const tsxCheck = out.find(c => c.name === 'colocated-tests-tsx');
   assert.ok(tsxCheck, 'a colocated .test.ts must be auto-derived');
-  assert.deepEqual(tsxCheck.argv, ['npx', 'tsx', '--test', 'scripts/lib/foo.test.ts']);
+  assert.deepEqual(tsxCheck.argv, ['npx', 'tsx', '--test', '--test-reporter=tap', 'scripts/lib/foo.test.ts']);
   assert.equal(out.some(c => c.name === 'colocated-tests'), false,
     'a .test.ts colocated file must never be handed to plain node --test');
 });
@@ -83,8 +83,8 @@ test('tier 3: a diff mixing .test.mjs and .test.ts colocated tests runs two sepa
   const exists = f => f === 'scripts/lib/foo.test.mjs' || f === 'scripts/lib/bar.test.ts';
   const out = decideChecks(['scripts/lib/foo.js', 'scripts/lib/bar.ts'], exists, { tier: 3 });
   const byName = Object.fromEntries(out.map(c => [c.name, c]));
-  assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', 'scripts/lib/foo.test.mjs']);
-  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', 'scripts/lib/bar.test.ts']);
+  assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', '--test-reporter=tap', 'scripts/lib/foo.test.mjs']);
+  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', '--test-reporter=tap', 'scripts/lib/bar.test.ts']);
 });
 
 // Real-filesystem, real-execution proof (not just an argv assertion): a
@@ -130,8 +130,8 @@ test('a changed .test.mjs listed in the tsx manifest runs under tsx; an unlisted
   const tsxManifest = new Set(['tests/unit/uses-ts.test.mjs']);
   const out = decideChecks(['tests/unit/uses-ts.test.mjs', 'tests/unit/plain.test.mjs'], always, { tier: 3, tsxManifest });
   const byName = Object.fromEntries(out.map(c => [c.name, c]));
-  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', 'tests/unit/uses-ts.test.mjs']);
-  assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', 'tests/unit/plain.test.mjs']);
+  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', '--test-reporter=tap', 'tests/unit/uses-ts.test.mjs']);
+  assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', '--test-reporter=tap', 'tests/unit/plain.test.mjs']);
 });
 
 test('a colocated .test.mjs listed in the tsx manifest runs under tsx', () => {
@@ -224,7 +224,7 @@ test('a diff mixing a deleted test with a surviving one runs only the survivor',
   const out = decideChecks(['scripts/lib/gone.test.mjs', 'scripts/lib/kept.test.mjs', 'scripts/gone.js', 'scripts/kept.js'],
     present('scripts/lib/kept.test.mjs', 'scripts/kept.js'), { tier: 3 });
   assert.deepEqual(names(out), ['colocated-tests', 'node --check scripts/kept.js']);
-  assert.deepEqual(out[0].argv, ['node', '--test', 'scripts/lib/kept.test.mjs']);
+  assert.deepEqual(out[0].argv, ['node', '--test', '--test-reporter=tap', 'scripts/lib/kept.test.mjs']);
 });
 
 test('tier 1 never gains the tier-3 checks for the same diff', () => {

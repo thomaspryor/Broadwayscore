@@ -224,9 +224,10 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   }
   // Colocated tests are the changed files' own tests, so they are absolute on
   // purpose (no baseline, unlike merged-tree-tests): a failure there is the
-  // branch's to fix. `tap: true` makes runSafeChecks report `not ok` lines.
-  if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()], { tap: true });
-  if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()], { tap: true });
+  // branch's to fix. `tap: true` makes runSafeChecks report `not ok` lines; the
+  // reporter is forced because Node 25 prints spec even when piped.
+  if (testFiles.size) add('colocated-tests', ['node', '--test', '--test-reporter=tap', ...[...testFiles].sort()], { tap: true });
+  if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', '--test-reporter=tap', ...[...tsxTestFiles].sort()], { tap: true });
 
   // Syntax floor for tier-3 script edits: most scripts/ files have no
   // colocated test, and "it parses" is the cheapest true statement we can
