@@ -367,6 +367,11 @@ test('standDownPage: exit 3 pages inside [embargo - 3h, embargo + 6h], a notice 
   assert.equal(p('2026-11-06T03:00:00Z', null), true, 'unknown show pages');
   assert.equal(p('2026-11-06T03:00:00Z', BWAY, 'tonight'), true, 'bad night pages');
   assert.equal(p('2026-11-06T03:00:00Z', { ...BWAY, category: 'nowhere', market: 'nowhere' }), true, 'unknown embargo pages');
+  const r = (laneReason) => lom.standDownPage({ show: BWAY, night: '2026-11-05', now: '2026-11-06T03:00:00Z', laneReason }).page;
+  assert.equal(r('held-by-other'), false, 'the second armed starter is not a page');
+  assert.equal(r('not-armed:no-recorded-rehearsal'), true);
+  assert.equal(r('stood-down:broadway'), true);
+  assert.equal(r(''), true, 'an unknown reason pages');
 });
 
 test('CLI stood-down: pages (dry run) inside the window, a notice outside, never a page outside', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
@@ -379,6 +384,10 @@ test('CLI stood-down: pages (dry run) inside the window, a notice outside, never
   assert.equal(outside.status, 0);
   assert.match(outside.stdout, /::notice::.*no page/);
   assert.doesNotMatch(outside.stdout, /page=/);
+  const second = spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=held-by-other', '--dry-run'], { cwd: repo, encoding: 'utf8' });
+  assert.equal(second.status, 0);
+  assert.match(second.stdout, /::notice::.*another run holds the lease.*no page/);
+  assert.doesNotMatch(second.stdout, /page=/);
 });
 
 test('lane-live pages on exit 3 after the marker, on main, with the run URL, and does not swallow a failed page', () => {
@@ -391,7 +400,9 @@ test('lane-live pages on exit 3 after the marker, on main, with the run URL, and
   assert.match(s.cond, /always\(\) && steps\.lane\.outputs\.exit == '3'/);
   assert.match(s.cond, /github\.ref == 'refs\/heads\/main'/);
   assert.doesNotMatch(s.body, /continue-on-error/);
-  assert.match(s.body, /lane-only-markets\.js stood-down "--show=\$\{SHOW\}" "--night=\$\{NIGHT\}" "--run-url=\$\{RUN_URL\}"/);
+  assert.match(s.body, /lane-only-markets\.js stood-down "--show=\$\{SHOW\}" "--night=\$\{NIGHT\}" "--reason=\$\{LANE_REASON\}" "--run-url=\$\{RUN_URL\}"/);
+  assert.match(s.body, /LANE_REASON: \$\{\{ steps\.lane\.outputs\.reason \}\}/);
+  assert.match(read('scripts/opening-night-lane.js'), /GITHUB_OUTPUT, `reason=\$\{/, 'the lane writes its exit reason as a step output');
   const release = steps.findIndex((s2) => s2.name === 'Release night lease');
   assert.ok(release > pg && /always\(\)/.test(steps[release].cond), 'the lease release still runs on exit 3');
 });

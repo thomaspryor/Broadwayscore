@@ -95,11 +95,14 @@ function oldPathStandsDown({ onlyMarkets, standdown, show, leaseState, markers, 
 /**
  * Plan v2 step 2 (BRO-6620): a lane exit 3 inside the night's press window is a failure, not a success. The driver
  * exits 3 when it is not armed, LANE_STANDDOWN covers the show, or another run holds the lease. Inside
- * [embargo - 3h, embargo + 6h] that pages; outside it stays a notice. An unknown show or night pages too (fail loud). Pure.
+ * [embargo - 3h, embargo + 6h] that pages; outside it stays a notice. An unknown show or night pages too (fail loud).
+ * `laneReason` is the driver's exit reason. held-by-other does not page: it is the normal answer for the second of the
+ * two armed starters while the first publishes (driver.js), so paging on it would page every press night. Pure.
  * @returns {{page:boolean, reason:string}}
  */
-function standDownPage({ show, night, now }) {
+function standDownPage({ show, night, now, laneReason }) {
   const nowMs = now === undefined ? Date.now() : new Date(now).getTime();
+  if (laneReason === 'held-by-other') return { page: false, reason: 'another run holds the lease and publishes the night' };
   if (!show || !show.id) return { page: true, reason: 'show unknown' };
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(night || ''))) return { page: true, reason: `night unknown (${night})` };
   if (!Number.isFinite(Date.parse(embargoForNight(show, night) || ''))) return { page: true, reason: 'embargo unknown' };

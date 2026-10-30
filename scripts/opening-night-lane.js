@@ -51,6 +51,8 @@ async function main() {
   }
   const out = await driver.runProductionLane({ show, night, holder, deps });
   console.log(JSON.stringify({ show: showId, night, holder, exit: out.exit, reason: out.reason, passes: out.result && out.result.passes }));
+  // BRO-6620: lane-live's stood-down page step reads the reason (held-by-other is the second starter, not a page).
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `reason=${String(out.reason || '').replace(/[\r\n]/g, ' ')}\n`);
   return out.exit;
 }
 

@@ -263,6 +263,7 @@ jobs:
       # Plan v2 step 2 (BRO-6620): inside [embargo - 3h, embargo + 6h] a lane exit 3 is a failure. Page through the
       # alert router (its ledger is committed below); outside the window it stays a notice. The lease release below and
       # the marker above bring the old path back. A failed page fails this step, so the job's failure notice fires.
+      # held-by-other (the second armed starter, the lane's reason output) stays a notice.
       - name: Page if the lane stood down inside the press window (BRO-6620)
         if: always() && steps.lane.outputs.exit == '3' && github.ref == 'refs/heads/main'
         timeout-minutes: 5
@@ -273,7 +274,8 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/lane-only-markets.js stood-down "--show=${SHOW}" "--night=${NIGHT}" "--run-url=${RUN_URL}"
+          LANE_REASON: ${{ steps.lane.outputs.reason }}
+        run: node scripts/lane-only-markets.js stood-down "--show=${SHOW}" "--night=${NIGHT}" "--reason=${LANE_REASON}" "--run-url=${RUN_URL}"
 
       # Scored reviews are written to data/review-texts/<show>/ before publish, so persist them whatever the lane did.
       - name: Push scored reviews to review-texts

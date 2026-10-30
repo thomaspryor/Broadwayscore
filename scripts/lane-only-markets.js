@@ -8,8 +8,9 @@
  *                          --changed-dir adds every show with uncommitted files there; an unreadable dir = suppress=false.
  *   decide --show=ID       print one decision as JSON
  *   mark --show= --night= --holder= [--run-id=]   lane-live: record the lane's exit 3
- *   stood-down --show= --night= [--run-url=] [--dry-run]   lane-live: on exit 3, page through routeAlert inside the
- *                          press-night window (plan v2 step 2), a notice outside it. A failed page exits 1 so the job fails.
+ *   stood-down --show= --night= [--reason=] [--run-url=] [--dry-run]   lane-live: on exit 3, page through routeAlert inside
+ *                          the press-night window (plan v2 step 2), a notice outside it or when --reason=held-by-other (the
+ *                          second armed starter). A failed page exits 1 so the job fails.
  *
  * --markers-dir= and --now= exist for tests. Reads LANE_ONLY_MARKETS(+_READ=ok) and LANE_STANDDOWN(+_READ=ok) from the environment. Any error prints a
  * warning and leaves the old path on (exit 0, suppress=false): a gate that cannot decide never silences a night.
@@ -40,7 +41,8 @@ async function stoodDown() {
   let show = null;
   try { show = findShowFactory()(arg('show')); } catch (e) { console.log(`::warning::lane-only markets: cannot read shows.json (${String(e.message).slice(0, 120)})`); }
   const night = arg('night');
-  const d = lom.standDownPage({ show, night, now: arg('now') || undefined });
+  const laneReason = arg('reason') || '';
+  const d = lom.standDownPage({ show, night, now: arg('now') || undefined, laneReason });
   if (!d.page) { console.log(`::notice::opening-night lane stood down for ${arg('show')} (${night}), ${d.reason}; no page`); return 0; }
   console.log(`::error::opening-night lane stood down for ${arg('show')} (${night}) ${d.reason}; the old path publishes (no live lease)`);
   summary(`Lane stood down for ${arg('show')} (${night}) ${d.reason}: paged.`);
@@ -50,7 +52,7 @@ async function stoodDown() {
     severity: 'error', disposition: 'digest', cooldownHours: 12,
     conditionKey: `opening-night-lane:${arg('show')}:${night}:stood-down-in-window`,
     title: `Opening-night lane stood down inside the press window for ${arg('show')} (${night})`,
-    description: `The lane exited 3 (not armed, LANE_STANDDOWN, or the lease held by another run) ${d.reason}. With no live lane lease the old path (Express, poller rebuild/deploy) publishes the night. Run: ${arg('run-url') || 'unknown'}`,
+    description: `The lane exited 3 (${laneReason || 'reason unknown'}) ${d.reason}. With no live lane lease the old path (Express, poller rebuild/deploy) publishes the night. Run: ${arg('run-url') || 'unknown'}`,
     url: arg('run-url') || undefined,
   });
   console.log(`page=${(res && res.action) || 'sent'}`);
@@ -97,7 +99,7 @@ function main() {
     }
     return 0;
   }
-  console.error('usage: lane-only-markets.js gate --shows=a,b | decide --show=ID | mark --show= --night= --holder= [--run-id=] | stood-down --show= --night= [--run-url=] [--dry-run]');
+  console.error('usage: lane-only-markets.js gate --shows=a,b | decide --show=ID | mark --show= --night= --holder= [--run-id=] | stood-down --show= --night= [--reason=] [--run-url=] [--dry-run]');
   return 2;
 }
 
