@@ -9,6 +9,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine } = require('./wait-for-land.js');
+const waitForLand = require('./wait-for-land.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
 test('diagnostic first lines are bounded before parsing large messages', () => {
@@ -353,4 +354,38 @@ test('BRO-6257: cached dispatch identities do not pin their Checks logs (real re
   `], { encoding: 'utf8', timeout: 120_000 });
   assert.equal(child.error, undefined);
   assert.equal(child.status, 0, `child signal=${child.signal}: ${child.stderr.slice(0, 2000)}`);
+});
+
+// BRO-6638: after LANDED the waiter prints the main sha the tip became.
+function fakeIo({ rowsSeq, fetchOk = true }) {
+  let t = 0; let n = 0; const waits = [];
+  return {
+    waits,
+    io: {
+      fetch: () => fetchOk,
+      rows: () => { const r = rowsSeq[Math.min(n, rowsSeq.length - 1)]; n += 1; if (r instanceof Error) throw r; return r; },
+      wait: async (ms) => { waits.push(ms); t += ms; },
+      now: () => t,
+    },
+  };
+}
+
+test('reportLandedSha: finds the row after the ledger commit lags one look', async () => {
+  const { io, waits } = fakeIo({ rowsSeq: [[], [{ tip: 'aaa111', sha: 'bbb222' }]] });
+  assert.equal(await waitForLand.reportLandedSha('aaa111', { io }), 'bbb222');
+  assert.deepEqual(waits, [60_000]);
+});
+
+test('reportLandedSha: stays inside its budget when no row ever appears (train rider)', async () => {
+  const { io, waits } = fakeIo({ rowsSeq: [[]] });
+  assert.equal(await waitForLand.reportLandedSha('aaa111', { io }), null);
+  assert.ok(waits.reduce((a, b) => a + b, 0) <= 150_000, `waited ${waits}`);
+});
+
+test('reportLandedSha: null tip, failed fetch and unreadable ledger never throw', async () => {
+  assert.equal(await waitForLand.reportLandedSha(null), null);
+  assert.equal(await waitForLand.reportLandedSha('aaa111', { io: fakeIo({ rowsSeq: [[]], fetchOk: false }).io }), null);
+  const { io, waits } = fakeIo({ rowsSeq: [new Error('path does not exist')] });
+  assert.equal(await waitForLand.reportLandedSha('aaa111', { io }), null);
+  assert.deepEqual(waits, []);
 });

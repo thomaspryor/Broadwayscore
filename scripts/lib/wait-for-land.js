@@ -319,22 +319,27 @@ function mainLandingsRows() {
 // BRO-6638: print the sha the tip became on main. Read-only and never fatal:
 // a landing's exit code does not depend on it. The row rides land.yml's
 // ledger commit, which follows the ref delete, so the first look often
-// misses it; retry a few times, then say where to look.
-async function reportLandedSha(tip, { fetched = false, tries = 3 } = {}) {
+// misses it; retry 60s apart within budgetMs (default 150s; a wrapper such as
+// the Codex runner reserves only minutes for wrap-up), then say where to look.
+// io is injectable for tests.
+async function reportLandedSha(tip, { budgetMs = 150_000, io = {} } = {}) {
   if (!tip) return null;
-  for (let i = 0; i < tries; i += 1) {
+  const { fetch = fetchMain, rows = mainLandingsRows, wait = sleep, now = Date.now } = io;
+  const endMs = now() + budgetMs;
+  for (;;) {
     try {
-      if ((i > 0 || !fetched) && !fetchMain()) break;
-      const sha = landedShaForTip(mainLandingsRows(), tip);
+      if (!fetch()) break;
+      const sha = landedShaForTip(rows(), tip);
       if (sha) {
         console.log(`${stamp()} ON MAIN AS: ${sha} (${COMMIT_URL}${sha}). land.yml rebases, so branch tip ${tip.slice(0, 9)} never becomes an ancestor of main; check ${sha.slice(0, 9)}.`);
         return sha;
       }
     } catch (err) {
-      console.error(`${stamp()} could not read ${LANDINGS_REL} on main: ${firstLine(err.message || err)}`);
-      break;
+      console.error(`${stamp()} could not read ${LANDINGS_REL} on main (${firstLine(err.message || err)}); find the landed sha by "tip":"${tip}" there.`);
+      return null;
     }
-    if (i < tries - 1) await sleep(60_000);
+    if (now() + 60_000 > endMs) break;
+    await wait(60_000);
   }
   console.log(`${stamp()} ON MAIN AS: not recorded yet. land.yml rebases, so branch tip ${tip.slice(0, 9)} is never on main; find the landed sha later by "tip":"${tip}" in ${LANDINGS_REL} (train riders get no row).`);
   return null;
@@ -379,10 +384,10 @@ async function main(argv) {
           await reportLandedSha(tip);
           return 0;
         }
-        // waitForProd fetches main itself; by the time it returns the row is
-        // almost always committed.
+        // After the prod wait the ledger row has usually landed, so the
+        // first look (after a fresh fetch) tends to hit.
         const code = await waitForProd({ siteFiles: v.before ? null : siteFiles, prodMin: args.prodMin });
-        await reportLandedSha(tip, { fetched: true });
+        await reportLandedSha(tip);
         return code;
       }
       if (v.verdict === 'unknown') {
