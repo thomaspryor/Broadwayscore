@@ -23,6 +23,7 @@ import {
   getSeasonProfiles,
   getRecoupFindings,
   getCommercialHeadlineStats,
+  getCommercialWeeklySnapshot,
 } from '@/lib/data-commercial';
 import { getAllShows } from '@/lib/data-core';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
@@ -53,6 +54,7 @@ import CostCoverageCard from '@/components/box-office/CostCoverageCard';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 import { bizOgImage } from '@/lib/biz-og';
 import BizHeader from '@/components/biz/BizHeader';
+import CommercialScorecard from '@/components/CommercialScorecard';
 import { getMarketDate } from '@/lib/date-utils';
 
 const OG_ALT = 'Broadway Profitability Scorecard: who made money on Broadway, and who lost it';
@@ -236,6 +238,7 @@ export default function BizDashboard() {
         {/* Show-level detail: free with an email (BRO-6210). The season
             table and findings above and the analysis below stay free. */}
         <MoneyGate page="biz-dashboard">
+        <CommercialScorecard snapshot={getCommercialWeeklySnapshot(today)} />
         {/* Recent Developments */}
         {recentDevelopments.length > 0 && (
           <section className="mb-8">

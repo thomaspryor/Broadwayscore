@@ -56,7 +56,10 @@ import {
   meetsModelQualityFloor,
   hasNoInvestorsToRepay,
   publicHeldRange,
+  getDesignationDisplay,
 } from './commercial-display';
+import { buildCommercialWeekly } from '../../scripts/lib/commercial-weekly';
+import { mdyToIso, MAX_GROSSES_AGE_DAYS } from './grosses-week';
 import { continuationIds } from '../../scripts/lib/cap-comparables';
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
@@ -978,6 +981,27 @@ export function getAllOpenShowsWithCommercial(): CommercialShowRow[] {
   }
 
   return results;
+}
+
+/** Weekly /biz modules use the same guarded costs and outcomes as the show page. */
+export function getCommercialWeeklySnapshot(today = getMarketDate('broadway')) {
+  return buildCommercialWeekly({
+    shows: rawShows.map((show) => {
+      const data = commercial.shows[show.slug];
+      const outcome = getDesignationDisplay(data?.designation ?? 'TBD', show.status, data?.recouped);
+      return {
+        slug: show.slug, title: show.title, category: show.category ?? '', status: show.status,
+        startDate: show.previewsStartDate || show.openingDate,
+        closingDate: show.closingDate,
+        breakEven: data ? getBreakEven(data) : null,
+        outcome: { ...outcome, description: data ? lossBasisCaveat(data) ?? outcome.description : outcome.description },
+      };
+    }),
+    weeks: grossesHistory.weeks,
+    weekEnding: mdyToIso(getGrossesWeekEnding()),
+    today,
+    maxAgeDays: MAX_GROSSES_AGE_DAYS,
+  });
 }
 
 /**
