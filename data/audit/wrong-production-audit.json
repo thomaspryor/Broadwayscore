@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T17:27:05.785Z",
+  "timestamp": "2026-10-30T17:45:49.287Z",
   "stats": {
-    "totalReviews": 70515,
-    "alreadyFlagged": 22311,
+    "totalReviews": 70604,
+    "alreadyFlagged": 22314,
     "dateGuardCatches": 230,
-    "directorMismatch": 2874,
-    "tvFilmSignals": 2026,
+    "directorMismatch": 2883,
+    "tvFilmSignals": 2027,
     "londonSignals": 3405,
     "offBroadwaySignals": 633,
     "yearMismatch": 288,
-    "noPublishDate": 8009
+    "noPublishDate": 8015
   },
   "findings": [
     {
@@ -18652,6 +18652,123 @@
       ]
     },
     {
+      "showId": "falsettos-regional-2024",
+      "file": "around-the-town-chicago--jacob-davis.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/falsettos/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "buzznews--john-accrocco.json",
+      "publishDate": "2024-11-17",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5701-review-falsettos-at-court-theatre.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "chicago-reader--emily-mcclanathan.json",
+      "publishDate": "2024-11-19",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/falsettos-court-theatre-timeline-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": "2024-11-18",
+      "url": "https://chicago.suntimes.com/theater/2024/11/18/falsettos-at-court-theatre-review-love-triumphs-in-beautifully-crafted-production",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2024-11-24",
+      "url": "https://www.chicagotheatrereview.com/2024/11/hitting-all-the-high-notes/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2024-11-18",
+      "url": "https://www.chicagotribune.com/2024/11/18/review-falsettos-at-court-theatre-heralds-messy-love-in-one-of-the-best-shows-of-the-year/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2024-11-16",
+      "url": "https://www.letsplaytheatricalreview.com/blog/falsettos?ss_source=sscampaigns&ss_campaign_id=673a997e3c3a2d1b1fd7d875&ss_email_id=673a9bee8fbd38423e8fddf2&ss_campaign_name=Falsettos&ss_campaign_sent_date=2024-11-18T01%3A44%3A21Z",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "new-city-stage--sara-stern.json",
+      "publishDate": "2024-11-22",
+      "url": "https://www.newcitystage.com/2024/11/22/perfect-lesson-for-imperfect-time-a-review-of-falsettos-by-court-theatre-and-timeline-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-regional-2024",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2024-11-18",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2024/11/18/picksinsix-review-falsettos-timeline-theatre-company-court-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
       "showId": "farinelli-and-the-king-west-end-2015",
       "file": "standard--fiona-mountford.json",
       "score": 78,
@@ -26253,7 +26370,7 @@
     {
       "showId": "highway-patrol-regional-2024",
       "file": "broadwayworld--rachel-weinberg.json",
-      "publishDate": null,
+      "publishDate": "2024-01-31",
       "url": "https://www.broadwayworld.com/chicago/article/Review-HIGHWAY-PATROL-at-Goodman-Theatre-20240131",
       "findings": [
         {
@@ -26267,7 +26384,7 @@
       "showId": "highway-patrol-regional-2024",
       "file": "buzznews--kimberly-katz.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2024-02-02",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5406-dana-delaney-shines-in-true-life-tale-of-computer-love-in-goodman-s-highway-patrol.html",
       "findings": [
         {
@@ -44413,6 +44530,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "poor-people-the-parody-musical-regional-2024",
+      "file": "chicagotribune--emily-mcclanathan.json",
+      "publishDate": "2024-05-14",
+      "url": "https://www.chicagotribune.com/2024/05/14/review-hilarious-poor-people-takes-inspiration-from-annie-but-leave-the-kids-at-home/?clearUserState=true",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
