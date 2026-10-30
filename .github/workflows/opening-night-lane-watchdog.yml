@@ -188,6 +188,14 @@ jobs:
           echo "::error::the lane died or was stuck, and the old path was dispatched; see the Watch the lane step"
           exit 1
 
+      # BRO-6669: the stuck check's census fetches the live BWW roundup (fetchPage), which records spend.
+      - name: Commit scraper-spend ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-lane-watchdog
+
       # routeAlert's ledger and digest queue live on this runner's disk; commit them or cooldown/dedup resets.
       - name: Commit alert ledger
         if: always() && github.ref == 'refs/heads/main'
