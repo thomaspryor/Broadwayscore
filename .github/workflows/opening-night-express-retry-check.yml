@@ -59,6 +59,15 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
+      # BRO-6620: LANE_ONLY_MARKETS holds a press-night retry while the opening-night lane holds the show's lease.
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
+      - name: Read lane-only variables (BRO-6620)
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Dispatch due retries
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
