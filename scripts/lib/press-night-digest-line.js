@@ -271,7 +271,7 @@ function gradeShow({ show, rec, numbersNow, readNumbers = () => null, sentShows,
 /**
  * The running scoreboard above the per-night lines: every press-night record ever graded, by its verdict (the
  * observed-release verdict when the record has one, like the lines). Records carry no "fixed by hand that night"
- * field, so a PASS is counted as passing on its own.
+ * field yet, so the line says "passed", never "passed on its own" (a hand-fixed night can still read PASS).
  * @param {object[]} records  press-night records
  */
 function scoreboard(records) {
@@ -284,7 +284,7 @@ function scoreboard(records) {
   const total = n.PASS + n.FAIL + n.UNKNOWN;
   return {
     ...n, total,
-    line: `Openings that passed on their own: ${n.PASS} of ${total} graded so far (${n.FAIL} failed, ${n.UNKNOWN} could not be graded).`,
+    line: `Openings graded so far: ${total} (${n.PASS} passed, ${n.FAIL} failed, ${n.UNKNOWN} could not be graded).`,
   };
 }
 
