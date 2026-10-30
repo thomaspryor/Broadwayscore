@@ -537,6 +537,18 @@ function hasNoAutomatedPath(entry) {
   return true;
 }
 
+// BRO-6632: the narrower question the health-check backlog row asks: is this a
+// gap whose FETCH was abandoned (paywall, bot wall, spent forum budget) and
+// that the manual clock will move to the FYI line? Excludes the types that
+// are a real problem the operator must see now (unscored the scorer will not
+// take, rejected-unscoreable), and fails open when the clocks are unstamped,
+// since needsManualRecovery can never fire for those.
+function isFetchAbandonedAwaitingManual(entry) {
+  if (!hasNoAutomatedPath(entry)) return false;
+  if (entry.type === 'unscored' || entry.type === 'rejected-unscoreable') return false;
+  return !Number.isNaN(Date.parse(entry.firstSeen || '')) && !Number.isNaN(Date.parse(entry.gapSeenAt || ''));
+}
+
 function needsManualRecovery(entry, now = new Date()) {
   if (!hasNoAutomatedPath(entry)) return false;
   const fileAt = Date.parse(entry.firstSeen || '');
@@ -588,6 +600,7 @@ function staleOpenGapKeys(ledger, { dirExists, fileExists }) {
 
 module.exports = {
   hasNoAutomatedPath,
+  isFetchAbandonedAwaitingManual,
   manualRecoveryDigestLine,
   MANUAL_RECOVERY_CONDITION_KEY,
   needsManualRecovery,

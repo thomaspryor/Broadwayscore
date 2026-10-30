@@ -46,7 +46,7 @@ test('already present is an ok no-op', () => {
 
 test('refusals: slug mismatch, other outlet owns host, contradiction, bad input', () => {
   const r = reg();
-  assert.match(applyOutletRegistryAlias(r, act({ host: 'unrelated.com' })).reason, /slug-match/);
+  assert.match(applyOutletRegistryAlias(r, act({ host: 'unrelated.com' })).reason, /does not pair/);
   assert.match(applyOutletRegistryAlias(r, act({ outletId: 'nope' })).reason, /not in outlet-registry/);
   assert.match(applyOutletRegistryAlias(r, act({ host: 'https://x.com/a' })).reason, /bare hostname/);
   assert.match(applyOutletRegistryAlias(r, act({ reason: 'short' })).reason, /reason/);
@@ -59,10 +59,20 @@ test('refusals: slug mismatch, other outlet owns host, contradiction, bad input'
   assert.deepEqual(r2.outlets.theatreboard.domainAliases, undefined);
 });
 
+test('refuses the wrong outlet when two share a slug, and an own-host notDomainMove', () => {
+  const r = reg();
+  r.outlets.aaa = { domain: 'theatreboard.org' };
+  r.outlets.theatreboard.domain = 'theatreboard.com';
+  const first = findProbableDomainMoves(r.outlets, census('theatreboard.co.uk'))[0].outletId;
+  const wrong = first === 'theatreboard' ? 'aaa' : 'theatreboard';
+  assert.match(applyOutletRegistryAlias(r, act({ outletId: wrong })).reason, /pairs theatreboard.co.uk with/);
+  assert.match(applyOutletRegistryAlias(reg(), act({ kind: 'notDomainMove', host: 'theatreboard.com' })).reason, /own hosts/);
+});
+
 test('wired into the executor, plan docs and the codex allowlist', () => {
   const src = (p) => fs.readFileSync(new URL(p, import.meta.url), 'utf8');
   assert.match(src('../execute-approved-fix.js'), /case 'outlet-registry-alias':/);
   assert.match(src('../execute-approved-fix.js'), /a\.type === 'outlet-registry-alias'/);
   assert.match(src('../pending-fix-actions.md'), /outlet-registry-alias/);
-  assert.match(src('./codex-data-fixes.js'), /'outlet-registry-alias'/);
+  assert.doesNotMatch(src('./codex-data-fixes.js'), /new Set\(\[[^\]]*outlet-registry-alias/);
 });

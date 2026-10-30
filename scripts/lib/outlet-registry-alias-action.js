@@ -12,8 +12,8 @@
  * so every cloud worker on those rows paused:
  *   - domainAlias: the host IS that outlet (it moved) -> append to domainAliases
  *   - notDomainMove: checked, it is a different paper -> append to notDomainMoves
- * Guards: the host must slug-match the outlet's `domain` (the pairing the
- * detector reports; anything else is not this row), must not already be
+ * Guards: findProbableDomainMoves must pair the host with exactly this outlet
+ * (the row the detector reports; anything else is not this row), must not already be
  * registered under ANOTHER outlet (a silent steal), and a domainAlias must not
  * already be recorded as a notDomainMove (or vice versa) without the owner
  * resolving the contradiction. Already-present is an ok no-op.
@@ -21,7 +21,7 @@
  * Pure: mutates the parsed registry, returns {ok, msg} or {ok:false, reason}.
  */
 
-const { normalizeHostSlug, MIN_SLUG_LENGTH } = require('./silent-exclusion-detectors');
+const { findProbableDomainMoves } = require('./silent-exclusion-detectors');
 const { registrableHost } = require('./non-review-url-patterns');
 
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
@@ -44,21 +44,23 @@ function applyOutletRegistryAlias(registry, action, { nowMs = Date.now() } = {})
   const entry = outlets[outletId];
   if (!entry.domain) return { ok: false, reason: `${tag}: outlet has no domain, so there is no move to judge` };
 
-  const slug = normalizeHostSlug(host);
-  const domainSlug = normalizeHostSlug(entry.domain);
-  if (slug.length < MIN_SLUG_LENGTH || slug !== domainSlug) {
-    return { ok: false, reason: `${tag}: host ${host} does not slug-match domain ${entry.domain}, so the move detector never pairs them` };
-  }
-
   const field = KINDS[kind];
   const other = KINDS[kind === 'domainAlias' ? 'notDomainMove' : 'domainAlias'];
   const key = norm(host);
   if ((entry[field] || []).some((h) => norm(h) === key)) return { ok: true, changed: false, msg: `${outletId}: ${host} already in ${field}` };
+  if (hostsOf(entry).some((h) => norm(h) === key)) return { ok: false, reason: `${tag}: ${host} is already one of this outlet's own hosts` };
   if ((entry[other] || []).some((h) => norm(h) === key)) return { ok: false, reason: `${tag}: ${host} is already recorded in ${other}; a human resolves the contradiction` };
   if (kind === 'domainAlias') {
     for (const [id, o] of Object.entries(outlets)) {
       if (id !== outletId && o && hostsOf(o).some((h) => norm(h) === key)) return { ok: false, reason: `${tag}: ${host} is already registered under ${id}` };
     }
+  }
+
+  // The row exists only for the pairing the detector reports (first slug match
+  // wins, and 13 live slugs are shared by two outlets): refuse any other outlet.
+  const paired = findProbableDomainMoves(outlets, [{ host }])[0];
+  if (!paired || paired.outletId !== outletId) {
+    return { ok: false, reason: `${tag}: the move detector ${paired ? `pairs ${host} with ${paired.outletId}` : `does not pair ${host} with any outlet`}, so there is no row to clear here` };
   }
 
   entry[field] = [...(entry[field] || []), host];

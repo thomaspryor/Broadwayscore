@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { hasNoAutomatedPath } = require('../../scripts/lib/t1-silent-gap.js');
+const { hasNoAutomatedPath, isFetchAbandonedAwaitingManual } = require('../../scripts/lib/t1-silent-gap.js');
 const { silentGapBacklogResults, bwwRoundupMissBacklogResults, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
@@ -555,7 +555,7 @@ test('silentGapBacklogResults: real audit report shape', async t => {
   // Clock two days after the report: every gap is past the in-flight window.
   const rows = silentGapBacklogResults(report, new Date(Date.parse(report.generatedAt) + 86400000 * 2));
   // BRO-6082: needsManualRecovery gaps are the audit's FYI digest line, not a warn row.
-  assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true && !hasNoAutomatedPath(g)) ? 1 : 0);
+  assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true && !isFetchAbandonedAwaitingManual(g)) ? 1 : 0);
   if (rows.length) assert.match(rows[0].message, /Oldest:/);
 });
 
@@ -575,8 +575,13 @@ test('silentGapBacklogResults: gaps with no automated path left never produce a 
   const base = { showId: 'p', tier: 1, outletId: 'nyt', firstSeen: '2026-10-10T00:00:00Z', gapSeenAt: '2026-10-11T00:00:00Z' };
   const paywalled = { ...base, type: 'paywalled', recoverable: false };
   const undispatchable = { ...base, type: 'unscored', dispatchable: false };
+  const rejected = { ...base, type: 'rejected-unscoreable', recoverable: false };
   const forumTryLeft = { ...base, type: 'stub', recoverable: false, url: 'https://www.talkinbroadway.com/allthatchat_new/d.php?thread=1', forumLinkRecoveryCount: 0 };
-  assert.deepEqual(silentGapBacklogResults({ gaps: [paywalled, undispatchable] }, now), []);
+  assert.deepEqual(silentGapBacklogResults({ gaps: [paywalled] }, now), []);
+  // Real problems stay visible: unscorable-by-the-scorer, rejected, and unstamped (manual clock can never fire).
+  assert.equal(silentGapBacklogResults({ gaps: [undispatchable] }, now).length, 1);
+  assert.equal(silentGapBacklogResults({ gaps: [rejected] }, now).length, 1);
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...paywalled, gapSeenAt: undefined }] }, now).length, 1);
   assert.equal(silentGapBacklogResults({ gaps: [{ ...paywalled, recoverable: true }] }, now).length, 1);
   assert.equal(silentGapBacklogResults({ gaps: [{ ...undispatchable, dispatchable: true }] }, now).length, 1);
   assert.equal(hasNoAutomatedPath(forumTryLeft), false);

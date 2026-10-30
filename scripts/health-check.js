@@ -4827,7 +4827,7 @@ function checkUncollectedStrands() {
 // a gap clears for one audit run, so a flapping gap would hide forever.
 // Fail open when unstamped.
 const SILENT_GAP_IN_FLIGHT_HOURS = 24;
-const { hasNoAutomatedPath } = require('./lib/t1-silent-gap.js');
+const { isFetchAbandonedAwaitingManual } = require('./lib/t1-silent-gap.js');
 function silentGapBacklogResults(report, now = new Date()) {
   if (!report || !Array.isArray(report.gaps) || report.gaps.length === 0) return [];
   // BRO-6082: gaps with no automated path left (needsManualRecovery, stamped
@@ -4835,10 +4835,10 @@ function silentGapBacklogResults(report, now = new Date()) {
   // Counting them here kept this row warn forever, and digest-autofix sent
   // cloud sessions that cannot reach a paywall or the Mac cookie jar.
   // BRO-6632: also gaps whose fetch is already abandoned and that nothing can
-  // dispatch (hasNoAutomatedPath), before the 7-day manual clock above elapses.
+  // dispatch (isFetchAbandonedAwaitingManual), before the 7-day manual clock above elapses.
   // A dispatched session has nothing to run for them either; they join the FYI
   // line when the clock does. Without this the row fired on day one.
-  const automatable = report.gaps.filter((g) => g.needsManualRecovery !== true && !hasNoAutomatedPath(g));
+  const automatable = report.gaps.filter((g) => g.needsManualRecovery !== true && !isFetchAbandonedAwaitingManual(g));
   const gaps = automatable.filter((g) => {
     const seen = Date.parse(g.firstSeen || '');
     return Number.isNaN(seen) || now.getTime() - seen >= SILENT_GAP_IN_FLIGHT_HOURS * 3600000;
