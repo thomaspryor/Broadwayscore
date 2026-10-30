@@ -241,7 +241,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
@@ -254,7 +254,8 @@
       "linearIdentifier": "BRO-6656",
       "notifyCountAtRelease": 177,
       "sweptTracker": "BRO-6422",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-30T21:18:11.822Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1030,7 +1031,7 @@
       "resolvedAt": "2026-10-29T03:02:53.764Z"
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Main test.yml red — no confirmed-green run in 6.1h",
@@ -1041,7 +1042,8 @@
       "lastSurfacedAt": "2026-10-28T08:28:40.413Z",
       "notifyCount": 75,
       "cardId": null,
-      "linearIdentifier": "BRO-5817"
+      "linearIdentifier": "BRO-5817",
+      "resolvedAt": "2026-10-30T21:18:11.711Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "resolved",
@@ -26824,7 +26826,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:ba804f4f": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
@@ -26836,7 +26838,9 @@
       "cardId": null,
       "linearIdentifier": "BRO-6627",
       "absentRunIds": [],
-      "silentRefires": 12
+      "silentRefires": 12,
+      "resolvedAt": "2026-10-30T21:18:11.516Z",
+      "resolveReason": "job-green"
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "open",
@@ -32781,7 +32785,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:64c11b72": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency)",
       "firstSeen": "2026-10-30T20:33:40.263Z",
@@ -32800,7 +32804,9 @@
       },
       "absentRunIds": [
         "41124935485"
-      ]
+      ],
+      "resolvedAt": "2026-10-30T21:18:11.569Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-6519-land-lock": {
       "status": "open",
