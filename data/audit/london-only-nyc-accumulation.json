@@ -3,16 +3,86 @@
   "description": "London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.",
   "outlets": [
     {
+      "outletId": "west-end-best-friend",
+      "displayName": "West End Best Friend",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 58,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "a-dolls-house-crucible-regional-2024",
+        "a-man-for-all-seasons-royal-bath-regional-2025",
+        "a-manchester-anthem-hope-mill-regional-2025",
+        "a-midsummer-nights-dream-chichester-festival-regional-2026",
+        "a-small-and-quiet-light-chichester-festival-regional-2026",
+        "a-streetcar-named-desire-crucible-regional-2025",
+        "abigails-party-royal-exchange-regional-2025",
+        "antigone-exits-chichester-regional-2026",
+        "as-you-like-it-royal-bath-regional-2025",
+        "atlantis-chichester-festival-regional-2026",
+        "atonement-chichester-festival-regional-2026",
+        "being-mr-wickham-chichester-festival-regional-2026",
+        "chariots-of-fire-crucible-regional-2024",
+        "choir-chichester-festival-regional-2025",
+        "cinderella-chichester-festival-regional-2024",
+        "coram-boy-chichester-festival-regional-2024",
+        "crown-of-blood-crucible-regional-2026",
+        "dancing-at-lughnasa-crucible-regional-2025",
+        "east-is-east-octagon-regional-2026",
+        "eclipse-chichester-festival-regional-2026",
+        "escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+        "even-these-things-royal-exchange-regional-2026",
+        "fun-home-royal-exchange-regional-2026",
+        "gallus-in-weegieland-tron-regional-2025",
+        "grace-pervades-royal-bath-regional-2025",
+        "grease-pitlochry-festival-regional-2025",
+        "hamlet-chichester-festival-regional-2025",
+        "ill-be-seeing-you-pitlochry-festival-regional-2026",
+        "king-lear-royal-exchange-regional-2026",
+        "krapps-last-tape-york-royal-regional-2025",
+        "lear-pitlochry-festival-regional-2026",
+        "my-brothers-a-genius-sheffield-regional-2026",
+        "my-fair-lady-chichester-festival-regional-2026",
+        "my-fair-lady-leeds-regional-2024",
+        "of-mice-and-men-octagon-regional-2025",
+        "once-pitlochry-festival-regional-2026",
+        "peter-panto-and-the-incredible-stinkerbell-tron-regional-2024",
+        "present-laughter-royal-bath-regional-2026",
+        "private-lives-royal-exchange-regional-2026",
+        "redlands-chichester-festival-regional-2024",
+        "safe-space-chichester-festival-regional-2025",
+        "sleeping-beauty-york-royal-regional-2025",
+        "sweat-royal-exchange-regional-2024",
+        "the-birthday-party-royal-bath-regional-2024",
+        "the-caretaker-chichester-festival-regional-2024",
+        "the-cat-and-the-canary-chichester-festival-regional-2024",
+        "the-government-inspector-chichester-festival-regional-2025",
+        "the-ladies-football-club-crucible-regional-2026",
+        "the-other-boleyn-girl-chichester-festival-regional-2024",
+        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+        "the-secret-garden-york-royal-regional-2026",
+        "the-sound-of-music-pitlochry-festival-regional-2024",
+        "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
+        "the-surge-aviva-studios-regional-2026",
+        "the-winters-tale-royal-shakespeare-regional-2025",
+        "top-hat-chichester-festival-regional-2025",
+        "twelfth-night-crucible-regional-2026",
+        "war-horse-lowry-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "theatreandtonic",
       "displayName": "Theatre and Tonic",
       "tier": 3,
       "broadwayCount": 0,
-      "offBroadwayCount": 42,
+      "offBroadwayCount": 44,
       "broadwayShows": [],
       "offBroadwayShows": [
         "1984-citizens-regional-2026",
         "a-midsummer-nights-dream-chichester-festival-regional-2026",
         "a-small-and-quiet-light-chichester-festival-regional-2026",
+        "abigails-party-royal-exchange-regional-2025",
         "anna-karenina-chichester-festival-regional-2025",
         "antigone-exits-chichester-regional-2026",
         "atonement-chichester-festival-regional-2026",
@@ -46,12 +116,63 @@
         "the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026",
         "the-cherry-orchard-royal-shakespeare-regional-2026",
         "the-glass-menagerie-dundee-rep-regional-2025",
+        "the-government-inspector-chichester-festival-regional-2025",
         "the-long-drop-citizens-regional-2026",
         "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
         "top-hat-chichester-festival-regional-2025",
         "treasure-island-bristol-old-vic-regional-2025",
         "twelfth-night-crucible-regional-2026",
         "waiting-for-godot-citizens-regional-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "british-theatre",
+      "displayName": "British Theatre Guide",
+      "tier": 2,
+      "broadwayCount": 0,
+      "offBroadwayCount": 39,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "45-years-chichester-festival-regional-2026",
+        "all-male-as-you-like-it-regional-2026",
+        "antigone-tron-regional-2026",
+        "arlington-tron-regional-2025",
+        "as-you-like-it-royal-bath-regional-2025",
+        "beauty-and-the-beast-citizens-regional-2025",
+        "choir-chichester-festival-regional-2025",
+        "escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+        "even-these-things-royal-exchange-regional-2026",
+        "fun-home-royal-exchange-regional-2026",
+        "gallus-in-weegieland-tron-regional-2025",
+        "game-of-thrones-the-mad-king-regional-2026",
+        "his-last-report-york-royal-regional-2025",
+        "iron-home-regional-2026",
+        "king-lear-crucible-regional-2026",
+        "king-lear-royal-exchange-regional-2026",
+        "lanny-bristol-old-vic-regional-2026",
+        "lear-pitlochry-festival-regional-2026",
+        "macbeth-hull-truck-regional-2026",
+        "my-fair-lady-chichester-festival-regional-2026",
+        "my-romantic-history-tron-regional-2026",
+        "of-mice-and-men-octagon-regional-2025",
+        "oliver-twist-hull-truck-regional-2025",
+        "othello-royal-shakespeare-regional-2024",
+        "private-lives-royal-exchange-regional-2026",
+        "road-royal-exchange-regional-2026",
+        "small-island-leeds-regional-2026",
+        "the-bfg-royal-shakespeare-regional-2025",
+        "the-long-drop-citizens-regional-2026",
+        "the-memory-of-water-octagon-regional-2026",
+        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+        "the-psychic-york-royal-regional-2026",
+        "the-surge-aviva-studios-regional-2026",
+        "the-trials-tron-regional-2026",
+        "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+        "top-hat-chichester-festival-regional-2025",
+        "tristan-and-yseult-royal-bath-regional-2026",
+        "waiting-for-godot-citizens-regional-2026",
+        "what-im-here-for-tron-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -104,85 +225,86 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "british-theatre",
-      "displayName": "British Theatre Guide",
-      "tier": 2,
+      "outletId": "fairypoweredproductions",
+      "displayName": "Fairy Powered Productions",
+      "tier": 4,
       "broadwayCount": 0,
-      "offBroadwayCount": 17,
+      "offBroadwayCount": 19,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "all-male-as-you-like-it-regional-2026",
-        "as-you-like-it-royal-bath-regional-2025",
-        "choir-chichester-festival-regional-2025",
-        "game-of-thrones-the-mad-king-regional-2026",
+        "a-midsummer-nights-dream-chichester-festival-regional-2026",
+        "abigails-party-royal-exchange-regional-2025",
+        "crown-of-blood-crucible-regional-2026",
         "his-last-report-york-royal-regional-2025",
-        "iron-home-regional-2026",
-        "king-lear-royal-exchange-regional-2026",
-        "lanny-bristol-old-vic-regional-2026",
-        "my-fair-lady-chichester-festival-regional-2026",
-        "small-island-leeds-regional-2026",
+        "king-lear-crucible-regional-2026",
+        "living-sheffield-regional-2026",
+        "mary-and-the-hyenas-hull-truck-regional-2025",
+        "my-brothers-a-genius-sheffield-regional-2026",
+        "north-by-northwest-york-royal-regional-2025",
+        "our-public-house-leeds-regional-2026",
         "the-bfg-royal-shakespeare-regional-2025",
+        "the-borrowers-hull-truck-regional-2024",
+        "the-long-drop-citizens-regional-2026",
+        "the-other-boleyn-girl-chichester-festival-regional-2024",
         "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
         "the-psychic-york-royal-regional-2026",
-        "the-surge-aviva-studios-regional-2026",
-        "top-hat-chichester-festival-regional-2025",
-        "tristan-and-yseult-royal-bath-regional-2026",
-        "what-im-here-for-tron-regional-2026"
+        "the-secret-garden-york-royal-regional-2026",
+        "through-it-all-together-leeds-regional-2025",
+        "war-horse-lowry-regional-2024"
       ],
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "west-end-best-friend",
-      "displayName": "West End Best Friend",
-      "tier": 3,
+      "outletId": "a-youngish-perspective",
+      "displayName": "A Youngish Perspective",
+      "tier": 4,
       "broadwayCount": 0,
-      "offBroadwayCount": 17,
+      "offBroadwayCount": 16,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "antigone-exits-chichester-regional-2026",
-        "as-you-like-it-royal-bath-regional-2025",
-        "atonement-chichester-festival-regional-2026",
-        "choir-chichester-festival-regional-2025",
-        "crown-of-blood-crucible-regional-2026",
-        "eclipse-chichester-festival-regional-2026",
-        "fun-home-royal-exchange-regional-2026",
-        "hamlet-chichester-festival-regional-2025",
-        "king-lear-royal-exchange-regional-2026",
-        "my-brothers-a-genius-sheffield-regional-2026",
-        "present-laughter-royal-bath-regional-2026",
-        "sleeping-beauty-york-royal-regional-2025",
+        "a-man-for-all-seasons-royal-bath-regional-2025",
+        "abigails-party-royal-exchange-regional-2025",
+        "dancing-at-lughnasa-crucible-regional-2025",
+        "i-can-die-too-pitlochry-festival-regional-2026",
+        "once-pitlochry-festival-regional-2026",
+        "private-lives-royal-exchange-regional-2026",
+        "saint-joan-citizens-regional-2026",
+        "singin-in-the-rain-royal-exchange-regional-2025",
+        "small-acts-of-love-citizens-regional-2025",
+        "small-hotel-royal-bath-regional-2025",
+        "the-glass-menagerie-dundee-rep-regional-2025",
+        "the-long-drop-citizens-regional-2026",
         "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-        "the-secret-garden-york-royal-regional-2026",
         "the-surge-aviva-studios-regional-2026",
-        "the-winters-tale-royal-shakespeare-regional-2025",
-        "twelfth-night-crucible-regional-2026"
+        "through-the-shortbread-tin-tron-regional-2025",
+        "waiting-for-godot-citizens-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "artsdesk",
-      "displayName": "The Arts Desk",
+      "outletId": "thereviewshub",
+      "displayName": "The Reviews Hub",
       "tier": 2,
       "broadwayCount": 0,
       "offBroadwayCount": 16,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "a-raisin-in-the-sun-leeds-regional-2024",
-        "all-male-as-you-like-it-regional-2026",
-        "antigone-exits-chichester-regional-2026",
-        "atlantis-chichester-festival-regional-2026",
-        "eclipse-chichester-festival-regional-2026",
-        "edward-ii-royal-shakespeare-regional-2025",
-        "four-quartets-royal-bath-regional-2026",
-        "game-of-thrones-the-mad-king-regional-2026",
-        "lear-pitlochry-festival-regional-2026",
-        "macbeth-royal-shakespeare-regional-2025",
-        "magic-chichester-festival-regional-2026",
-        "my-fair-lady-chichester-festival-regional-2026",
-        "the-bfg-royal-shakespeare-regional-2025",
-        "the-birthday-party-royal-bath-regional-2024",
-        "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
-        "top-hat-chichester-festival-regional-2025"
+        "1984-citizens-regional-2026",
+        "bank-of-dave-the-musical-lowry-regional-2026",
+        "east-is-east-octagon-regional-2026",
+        "gwendas-garage-sheffield-regional-2025",
+        "king-lear-royal-exchange-regional-2026",
+        "living-sheffield-regional-2026",
+        "marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025",
+        "show-and-tell-stephen-joseph-regional-2024",
+        "small-island-leeds-regional-2026",
+        "the-borrowers-hull-truck-regional-2024",
+        "the-long-drop-citizens-regional-2026",
+        "the-penelopiad-york-royal-regional-2026",
+        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+        "the-surge-aviva-studios-regional-2026",
+        "the-winters-tale-royal-shakespeare-regional-2025",
+        "waiting-for-godot-citizens-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -213,76 +335,27 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "a-youngish-perspective",
-      "displayName": "A Youngish Perspective",
-      "tier": 4,
-      "broadwayCount": 0,
-      "offBroadwayCount": 14,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "abigails-party-royal-exchange-regional-2025",
-        "dancing-at-lughnasa-crucible-regional-2025",
-        "i-can-die-too-pitlochry-festival-regional-2026",
-        "once-pitlochry-festival-regional-2026",
-        "private-lives-royal-exchange-regional-2026",
-        "saint-joan-citizens-regional-2026",
-        "singin-in-the-rain-royal-exchange-regional-2025",
-        "small-acts-of-love-citizens-regional-2025",
-        "small-hotel-royal-bath-regional-2025",
-        "the-glass-menagerie-dundee-rep-regional-2025",
-        "the-long-drop-citizens-regional-2026",
-        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-        "the-surge-aviva-studios-regional-2026",
-        "waiting-for-godot-citizens-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
-      "outletId": "thereviewshub",
-      "displayName": "The Reviews Hub",
+      "outletId": "artsdesk",
+      "displayName": "The Arts Desk",
       "tier": 2,
       "broadwayCount": 0,
       "offBroadwayCount": 14,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "1984-citizens-regional-2026",
-        "bank-of-dave-the-musical-lowry-regional-2026",
-        "east-is-east-octagon-regional-2026",
-        "gwendas-garage-sheffield-regional-2025",
-        "king-lear-royal-exchange-regional-2026",
-        "living-sheffield-regional-2026",
-        "marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025",
-        "small-island-leeds-regional-2026",
-        "the-long-drop-citizens-regional-2026",
-        "the-penelopiad-york-royal-regional-2026",
-        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-        "the-surge-aviva-studios-regional-2026",
-        "the-winters-tale-royal-shakespeare-regional-2025",
-        "waiting-for-godot-citizens-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
-      "outletId": "fairypoweredproductions",
-      "displayName": "Fairy Powered Productions",
-      "tier": 4,
-      "broadwayCount": 0,
-      "offBroadwayCount": 13,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "a-midsummer-nights-dream-chichester-festival-regional-2026",
-        "crown-of-blood-crucible-regional-2026",
-        "his-last-report-york-royal-regional-2025",
-        "king-lear-crucible-regional-2026",
-        "living-sheffield-regional-2026",
-        "my-brothers-a-genius-sheffield-regional-2026",
-        "our-public-house-leeds-regional-2026",
+        "all-male-as-you-like-it-regional-2026",
+        "antigone-exits-chichester-regional-2026",
+        "atlantis-chichester-festival-regional-2026",
+        "eclipse-chichester-festival-regional-2026",
+        "edward-ii-royal-shakespeare-regional-2025",
+        "four-quartets-royal-bath-regional-2026",
+        "game-of-thrones-the-mad-king-regional-2026",
+        "lear-pitlochry-festival-regional-2026",
+        "macbeth-royal-shakespeare-regional-2025",
+        "my-fair-lady-chichester-festival-regional-2026",
         "the-bfg-royal-shakespeare-regional-2025",
-        "the-long-drop-citizens-regional-2026",
-        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-        "the-psychic-york-royal-regional-2026",
-        "the-secret-garden-york-royal-regional-2026",
-        "through-it-all-together-leeds-regional-2025"
+        "the-birthday-party-royal-bath-regional-2024",
+        "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
+        "top-hat-chichester-festival-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -291,10 +364,11 @@
       "displayName": "Plays International",
       "tier": 3,
       "broadwayCount": 0,
-      "offBroadwayCount": 13,
+      "offBroadwayCount": 14,
       "broadwayShows": [],
       "offBroadwayShows": [
         "a-midsummer-nights-dream-chichester-festival-regional-2026",
+        "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
         "as-you-like-it-royal-bath-regional-2025",
         "black-hole-sign-tron-regional-2025",
         "grace-pervades-royal-bath-regional-2025",
@@ -315,11 +389,12 @@
       "displayName": "The Real Chris Parkle",
       "tier": 4,
       "broadwayCount": 0,
-      "offBroadwayCount": 11,
+      "offBroadwayCount": 14,
       "broadwayShows": [],
       "offBroadwayShows": [
         "all-male-as-you-like-it-regional-2026",
         "antigone-exits-chichester-regional-2026",
+        "edward-ii-royal-shakespeare-regional-2025",
         "henry-v-royal-shakespeare-regional-2026",
         "king-lear-crucible-regional-2026",
         "my-fair-lady-chichester-festival-regional-2026",
@@ -328,7 +403,9 @@
         "the-cherry-orchard-royal-shakespeare-regional-2026",
         "the-constant-wife-royal-shakespeare-regional-2025",
         "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
-        "the-winters-tale-royal-shakespeare-regional-2025"
+        "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+        "the-winters-tale-royal-shakespeare-regional-2025",
+        "titus-andronicus-royal-shakespeare-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -337,16 +414,19 @@
       "displayName": "Northern Arts Review",
       "tier": 3,
       "broadwayCount": 0,
-      "offBroadwayCount": 10,
+      "offBroadwayCount": 13,
       "broadwayShows": [],
       "offBroadwayShows": [
+        "all-blood-runs-red-leeds-regional-2025",
         "brassed-off-leeds-regional-2026",
         "crown-of-blood-crucible-regional-2026",
         "dancing-at-lughnasa-crucible-regional-2025",
         "east-is-east-octagon-regional-2026",
         "fences-leeds-regional-2026",
         "iron-home-regional-2026",
+        "krapps-last-tape-york-royal-regional-2025",
         "living-sheffield-regional-2026",
+        "north-by-northwest-york-royal-regional-2025",
         "the-penelopiad-york-royal-regional-2026",
         "the-secret-garden-york-royal-regional-2026",
         "twelfth-night-crucible-regional-2026"
@@ -375,31 +455,11 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "everything-theatre",
-      "displayName": "Everything Theatre",
-      "tier": 3,
-      "broadwayCount": 0,
-      "offBroadwayCount": 9,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "crown-of-blood-crucible-regional-2026",
-        "dancing-at-lughnasa-crucible-regional-2025",
-        "king-lear-crucible-regional-2026",
-        "living-sheffield-regional-2026",
-        "mary-and-the-hyenas-hull-truck-regional-2025",
-        "my-brothers-a-genius-sheffield-regional-2026",
-        "our-public-house-leeds-regional-2026",
-        "the-ladies-football-club-crucible-regional-2026",
-        "twelfth-night-crucible-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
       "outletId": "herald",
       "displayName": "The Herald (Glasgow)",
       "tier": 3,
       "broadwayCount": 0,
-      "offBroadwayCount": 7,
+      "offBroadwayCount": 8,
       "broadwayShows": [],
       "offBroadwayShows": [
         "cry-laugh-oran-mor-regional-2026",
@@ -408,24 +468,8 @@
         "the-glass-menagerie-dundee-rep-regional-2025",
         "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
         "the-legend-of-davie-mckenzie-oran-mor-regional-2026",
-        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
-      "outletId": "north-west-end",
-      "displayName": "North West End",
-      "tier": 3,
-      "broadwayCount": 0,
-      "offBroadwayCount": 6,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "game-of-thrones-the-mad-king-regional-2026",
-        "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
-        "our-brother-oran-mor-regional-2025",
-        "the-ladies-football-club-crucible-regional-2026",
-        "the-legend-of-davie-mckenzie-oran-mor-regional-2026",
-        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
+        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+        "the-sound-of-music-pitlochry-festival-regional-2024"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -434,14 +478,66 @@
       "displayName": "East Midlands Theatre",
       "tier": 3,
       "broadwayCount": 0,
-      "offBroadwayCount": 5,
+      "offBroadwayCount": 7,
       "broadwayShows": [],
       "offBroadwayShows": [
         "dancing-at-lughnasa-crucible-regional-2025",
         "henry-v-royal-shakespeare-regional-2026",
         "king-lear-crucible-regional-2026",
+        "loves-labours-lost-royal-shakespeare-regional-2024",
         "present-laughter-royal-bath-regional-2026",
-        "the-bfg-royal-shakespeare-regional-2025"
+        "the-bfg-royal-shakespeare-regional-2025",
+        "titus-andronicus-royal-shakespeare-regional-2025"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "north-west-end",
+      "displayName": "North West End",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 7,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "game-of-thrones-the-mad-king-regional-2026",
+        "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+        "our-brother-oran-mor-regional-2025",
+        "the-borrowers-hull-truck-regional-2024",
+        "the-ladies-football-club-crucible-regional-2026",
+        "the-legend-of-davie-mckenzie-oran-mor-regional-2026",
+        "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "jadar",
+      "displayName": "JADAR",
+      "tier": 4,
+      "broadwayCount": 0,
+      "offBroadwayCount": 5,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "abigails-party-royal-exchange-regional-2025",
+        "bank-of-dave-the-musical-lowry-regional-2026",
+        "king-lear-royal-exchange-regional-2026",
+        "private-lives-royal-exchange-regional-2026",
+        "the-surge-aviva-studios-regional-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "on-magazine",
+      "displayName": "On: Yorkshire Magazine",
+      "tier": 4,
+      "broadwayCount": 0,
+      "offBroadwayCount": 5,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "brassed-off-leeds-regional-2026",
+        "earth-angel-stephen-joseph-regional-2025",
+        "gwendas-garage-sheffield-regional-2025",
+        "the-crucible-crucible-regional-2024",
+        "the-psychic-york-royal-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -462,32 +558,47 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "jadar",
-      "displayName": "JADAR",
+      "outletId": "partially-obstructed-view",
+      "displayName": "Partially Obstructed View",
       "tier": 4,
       "broadwayCount": 0,
       "offBroadwayCount": 4,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "bank-of-dave-the-musical-lowry-regional-2026",
-        "king-lear-royal-exchange-regional-2026",
-        "private-lives-royal-exchange-regional-2026",
-        "the-surge-aviva-studios-regional-2026"
+        "game-of-thrones-the-mad-king-regional-2026",
+        "kenrex-sheffield-regional-2024",
+        "macbeth-royal-shakespeare-regional-2025",
+        "twelfth-night-royal-shakespeare-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "on-magazine",
-      "displayName": "On: Yorkshire Magazine",
+      "outletId": "reviewsgate",
+      "displayName": "ReviewsGate",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 4,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "driftwood-royal-shakespeare-regional-2026",
+        "loves-labours-lost-royal-shakespeare-regional-2024",
+        "macbeth-royal-shakespeare-regional-2025",
+        "the-red-shoes-royal-shakespeare-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "viewfromthegods",
+      "displayName": "View From The Gods",
       "tier": 4,
       "broadwayCount": 0,
       "offBroadwayCount": 4,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "brassed-off-leeds-regional-2026",
-        "earth-angel-stephen-joseph-regional-2025",
-        "gwendas-garage-sheffield-regional-2025",
-        "the-psychic-york-royal-regional-2026"
+        "a-midsummer-nights-dream-chichester-festival-regional-2026",
+        "hamlet-chichester-festival-regional-2025",
+        "safe-space-chichester-festival-regional-2025",
+        "the-government-inspector-chichester-festival-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -534,6 +645,20 @@
       "disposition": "tolerated-off-broadway"
     },
     {
+      "outletId": "revstanstheatreblog",
+      "displayName": "Rev Stan's Theatre Blog",
+      "tier": 4,
+      "broadwayCount": 0,
+      "offBroadwayCount": 3,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "hamlet-royal-shakespeare-regional-2025",
+        "kenrex-sheffield-regional-2024",
+        "loves-labours-lost-royal-shakespeare-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "the-morning-star",
       "displayName": "The Morning Star",
       "tier": 3,
@@ -544,6 +669,20 @@
         "all-male-as-you-like-it-regional-2026",
         "king-lear-royal-exchange-regional-2026",
         "lanny-bristol-old-vic-regional-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "the-spy-in-the-stalls",
+      "displayName": "The Spy in the Stalls",
+      "tier": 4,
+      "broadwayCount": 0,
+      "offBroadwayCount": 3,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "a-small-and-quiet-light-chichester-festival-regional-2026",
+        "antigone-exits-chichester-regional-2026",
+        "much-ado-about-nothing-royal-shakespeare-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -576,16 +715,15 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "viewfromthegods",
-      "displayName": "View From The Gods",
-      "tier": 4,
+      "outletId": "arbuturian",
+      "displayName": "The Arbuturian",
+      "tier": 3,
       "broadwayCount": 0,
-      "offBroadwayCount": 3,
+      "offBroadwayCount": 2,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "a-midsummer-nights-dream-chichester-festival-regional-2026",
-        "hamlet-chichester-festival-regional-2025",
-        "safe-space-chichester-festival-regional-2025"
+        "a-man-for-all-seasons-royal-bath-regional-2025",
+        "small-hotel-royal-bath-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -616,6 +754,19 @@
       "disposition": "tolerated-off-broadway"
     },
     {
+      "outletId": "jonathan-baz",
+      "displayName": "Jonathan Baz",
+      "tier": 4,
+      "broadwayCount": 0,
+      "offBroadwayCount": 2,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "atonement-chichester-festival-regional-2026",
+        "titus-andronicus-royal-shakespeare-regional-2025"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "louder-than-war",
       "displayName": "Louder Than War",
       "tier": 3,
@@ -642,15 +793,15 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "partially-obstructed-view",
-      "displayName": "Partially Obstructed View",
-      "tier": 4,
+      "outletId": "mycultural",
+      "displayName": "Mycultural",
+      "tier": 3,
       "broadwayCount": 0,
       "offBroadwayCount": 2,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "game-of-thrones-the-mad-king-regional-2026",
-        "macbeth-royal-shakespeare-regional-2025"
+        "all-male-as-you-like-it-regional-2026",
+        "much-ado-about-nothing-royal-shakespeare-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -668,19 +819,6 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "reviewsgate",
-      "displayName": "ReviewsGate",
-      "tier": 3,
-      "broadwayCount": 0,
-      "offBroadwayCount": 2,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "driftwood-royal-shakespeare-regional-2026",
-        "macbeth-royal-shakespeare-regional-2025"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
       "outletId": "stagedtheatre",
       "displayName": "Staged Theatre",
       "tier": 4,
@@ -690,19 +828,6 @@
       "offBroadwayShows": [
         "all-male-as-you-like-it-regional-2026",
         "game-of-thrones-the-mad-king-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
-      "outletId": "the-spy-in-the-stalls",
-      "displayName": "The Spy in the Stalls",
-      "tier": 4,
-      "broadwayCount": 0,
-      "offBroadwayCount": 2,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "a-small-and-quiet-light-chichester-festival-regional-2026",
-        "antigone-exits-chichester-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -733,6 +858,19 @@
       "disposition": "tolerated-off-broadway"
     },
     {
+      "outletId": "theatrecat",
+      "displayName": "Theatrecat",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 2,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "a-midsummer-nights-dream-royal-shakespeare-regional-2024",
+        "loves-labours-lost-royal-shakespeare-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "theqr",
       "displayName": "Theqr",
       "tier": 3,
@@ -746,14 +884,27 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "arbuturian",
-      "displayName": "The Arbuturian",
+      "outletId": "whatsgoodtodo",
+      "displayName": "What's Good To Do",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 2,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "small-island-leeds-regional-2026",
+        "the-crucible-crucible-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "allthingstheatre",
+      "displayName": "All Things Theatre",
       "tier": 3,
       "broadwayCount": 0,
       "offBroadwayCount": 1,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "small-hotel-royal-bath-regional-2025"
+        "othello-royal-shakespeare-regional-2024"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -794,6 +945,18 @@
       "disposition": "tolerated-off-broadway"
     },
     {
+      "outletId": "getthechance",
+      "displayName": "Get The Chance",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "a-midsummer-nights-dream-royal-shakespeare-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "i-paper",
       "displayName": "The i",
       "tier": 1,
@@ -806,14 +969,14 @@
       "disposition": "tolerated-off-broadway"
     },
     {
-      "outletId": "jonathan-baz",
-      "displayName": "Jonathan Baz",
-      "tier": 4,
+      "outletId": "londonpubtheatres",
+      "displayName": "London Pub Theatres",
+      "tier": 3,
       "broadwayCount": 0,
       "offBroadwayCount": 1,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "atonement-chichester-festival-regional-2026"
+        "mary-and-the-hyenas-hull-truck-regional-2025"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -826,18 +989,6 @@
       "broadwayShows": [],
       "offBroadwayShows": [
         "saint-joan-citizens-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
-      "outletId": "mycultural",
-      "displayName": "Mycultural",
-      "tier": 3,
-      "broadwayCount": 0,
-      "offBroadwayCount": 1,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "all-male-as-you-like-it-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -878,6 +1029,42 @@
       "disposition": "tolerated-off-broadway"
     },
     {
+      "outletId": "susanelkin",
+      "displayName": "Susanelkin",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "the-other-boleyn-girl-chichester-festival-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "the-list",
+      "displayName": "The List",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "sunset-song-dundee-rep-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "theatre-news",
+      "displayName": "Theatre News",
+      "tier": 4,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "kenrex-sheffield-regional-2024"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "theatre-vibe",
       "displayName": "Theatre Vibe",
       "tier": 3,
@@ -898,18 +1085,6 @@
       "broadwayShows": [],
       "offBroadwayShows": [
         "game-of-thrones-the-mad-king-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
-      "outletId": "whatsgoodtodo",
-      "displayName": "What's Good To Do",
-      "tier": 3,
-      "broadwayCount": 0,
-      "offBroadwayCount": 1,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "small-island-leeds-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     }
