@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-q",
   "planId": "5bfb738a-1983-47cf-8d93-12cab7ec99c2",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-29T20:55:20.932Z",
   "submitter": {
     "name": null,
@@ -189,5 +189,134 @@
         "description": "BRO-6541: ingest thestage review for macbeth-tobacco-factory-regional-2026"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T01:07:16.975Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-watsons-chichester-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/the-watsons-review-at-minerva-theatre-chichester--inventive-adaptation-of-austens-unfinished-novel --outlet=thestage"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
