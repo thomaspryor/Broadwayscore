@@ -22,7 +22,7 @@ require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { pushCandidates, findDispatchedRun, runOutcome, runNameFor } = require('./lib/reviews-in-push');
+const { pushCandidates, feedFacts, feedIsFresh, findDispatchedRun, runOutcome, runNameFor } = require('./lib/reviews-in-push');
 
 const APP_REPO = 'thomaspryor/BroadwayScorecard-app';
 const WORKFLOW = 'send-notifications.yml';
@@ -40,6 +40,15 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 function readSent() {
   try { return JSON.parse(fs.readFileSync(SENT_PATH, 'utf8')); } catch { return { shows: {} }; }
+}
+
+/** id -> mobile feed entry, or null when the file is missing or older than 3h (the app then reads the live feed). */
+function readFeedById() {
+  try {
+    const feed = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json'), 'utf8'));
+    if (!feedIsFresh(feed._ts)) { console.log(`Local mobile feed is stale (${feed._ts}); the app will read the live feed for threshold modes.`); return null; }
+    return new Map((feed.shows || []).map(s => [s.id, s]));
+  } catch { return null; }
 }
 
 function writeMarker(showId) {
@@ -79,11 +88,18 @@ async function main() {
   const skipped = readyIds.filter(id => !candidates.some(c => c.id === id));
   if (skipped.length) console.log(`Not pushed (market, age, marker, or no opening date): ${skipped.join(', ')}`);
 
+  const feedById = readFeedById();
   for (const show of candidates) {
     if (!show.title) { console.log(`::warning::${show.id} has no title; not pushing`); continue; }
     const dispatchArgs = ['workflow', 'run', WORKFLOW, '--repo', APP_REPO,
       '-f', 'type=reviews-in', '-f', `show_id=${show.id}`, '-f', `show=${show.slug}`,
       '-f', `title=${show.title}`, '-f', `category=${show.category}`];
+    // Threshold modes (BRO-6583): the score, label and audience grade as of this build.
+    if (feedById) {
+      const facts = feedFacts(feedById.get(show.id));
+      dispatchArgs.push('-f', 'facts=dispatch', '-f', `critic_score=${facts.criticScore}`, '-f', `critic_label=${facts.criticLabel}`,
+      '-f', `audience_grade=${facts.audienceGrade}`, '-f', `show_type=${facts.showType}`);
+    }
     if (dryRun) { console.log(`[dry run] would dispatch ${runNameFor(show.id)}`); continue; }
     const dispatchedAt = Date.now();
     try {

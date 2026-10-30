@@ -38,6 +38,38 @@ function pushCandidates({ readyIds, shows, sent, now = Date.now() }) {
   return out;
 }
 
+/**
+ * What the app sender needs to match the "never miss" threshold modes (BRO-6583),
+ * read from the mobile feed entry the same job just built (generate-mobile-artifacts.sh
+ * runs before the push step). Same fields and gates the app shows:
+ *   criticScore / criticLabel  only when the feed marks the score displayable (cr.q === 1);
+ *                              an unqualified score never counts toward Gold or 75+
+ *   audienceGrade              the letter (ag.g)
+ *   showType                   'musical' | 'play' | ... (ty)
+ * Empty strings mean "unknown" and the dispatch marks the facts as final
+ * (facts=dispatch), so the app does not fill the gaps from an older live feed;
+ * a mode it cannot confirm does not match (it never guesses).
+ * @param {object|undefined} feedShow one entry of public/data/mobile-shows.json
+ */
+function feedFacts(feedShow) {
+  const cr = feedShow && feedShow.cr;
+  const shown = cr && cr.q === 1 && typeof cr.s === 'number' && Number.isFinite(cr.s);
+  const ag = feedShow && feedShow.ag && typeof feedShow.ag.g === 'string' ? feedShow.ag.g : '';
+  return {
+    criticScore: shown ? String(Math.round(cr.s)) : '',
+    criticLabel: shown && typeof cr.l === 'string' ? cr.l : '',
+    audienceGrade: ag,
+    showType: feedShow && typeof feedShow.ty === 'string' ? feedShow.ty : '',
+  };
+}
+
+/** The committed/built feed is trusted for facts only when it was built this recently (a retry can read an old committed file). */
+const FEED_MAX_AGE_MS = 3 * 60 * 60 * 1000;
+function feedIsFresh(ts, now = Date.now()) {
+  const t = Date.parse(String(ts || ''));
+  return !Number.isNaN(t) && now - t >= -60_000 && now - t <= FEED_MAX_AGE_MS;
+}
+
 /** The run we dispatched: matching name, created at or after the dispatch (clock-skew slack). */
 function findDispatchedRun(runs, showId, dispatchedAtMs, slackMs = 60_000) {
   const name = runNameFor(showId);
@@ -54,4 +86,4 @@ function runOutcome(run) {
   return run.conclusion === 'success' ? 'sent' : 'failed';
 }
 
-module.exports = { pushCandidates, findDispatchedRun, runOutcome, runNameFor, MAX_AGE_DAYS };
+module.exports = { pushCandidates, feedFacts, feedIsFresh, findDispatchedRun, runOutcome, runNameFor, MAX_AGE_DAYS };

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { pushCandidates, findDispatchedRun, runOutcome, runNameFor } = require('./reviews-in-push.js');
+const { pushCandidates, feedFacts, feedIsFresh, findDispatchedRun, runOutcome, runNameFor } = require('./reviews-in-push.js');
 
 const NOW = Date.parse('2026-10-26T15:00:00Z');
 const shows = [
@@ -61,4 +61,29 @@ test('runOutcome: only a successful finished run counts as sent', () => {
   assert.equal(runOutcome(run({})), 'sent');
   assert.equal(runOutcome(run({ conclusion: 'failure' })), 'failed');
   assert.equal(runOutcome(run({ conclusion: 'cancelled' })), 'failed');
+});
+
+test('feedFacts: a displayable score, its label, the audience grade and the type come through', () => {
+  const f = feedFacts({ id: 'x', ty: 'musical', cr: { s: 83.4, l: 'Critical Gold', q: 1 }, ag: { g: 'A+' } });
+  assert.deepEqual(f, { criticScore: '83', criticLabel: 'Critical Gold', audienceGrade: 'A+', showType: 'musical' });
+});
+
+test('feedFacts: an unqualified score (cr.q 0) is withheld so it never counts toward Gold or 75+', () => {
+  const f = feedFacts({ id: 'x', ty: 'play', cr: { s: 91, l: 'Critical Gold', q: 0 }, ag: { g: 'B' } });
+  assert.deepEqual(f, { criticScore: '', criticLabel: '', audienceGrade: 'B', showType: 'play' });
+});
+
+test('feedFacts: a show missing from the feed, or with no score or grade, gives empty strings (never a guess)', () => {
+  const empty = { criticScore: '', criticLabel: '', audienceGrade: '', showType: '' };
+  assert.deepEqual(feedFacts(undefined), empty);
+  assert.deepEqual(feedFacts({ id: 'y' }), empty);
+  assert.deepEqual(feedFacts({ id: 'y', cr: { s: null, q: 1 } }), empty);
+});
+
+test('feedIsFresh: only a feed built in the last 3h is trusted for facts', () => {
+  const now = Date.parse('2026-10-30T12:00:00Z');
+  assert.equal(feedIsFresh('2026-10-30T10:00:00Z', now), true);
+  assert.equal(feedIsFresh('2026-10-30T08:00:00Z', now), false);
+  assert.equal(feedIsFresh(undefined, now), false);
+  assert.equal(feedIsFresh('garbage', now), false);
 });
