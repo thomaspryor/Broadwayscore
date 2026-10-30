@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-6474",
+  "planId": "18ec5c22-d21a-4c84-bf14-b6dad6ffbf80",
+  "status": "pending",
+  "createdAt": "2026-10-30T13:07:25.505Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude the unrelated Singapore arts article from Art (2016) and retract its script-generated clear markers.",
+    "steps": [
+      "art-west-end-2016/artshub--gina-fairley.json: wrongProduction",
+      "art-west-end-2016/artshub--gina-fairley.json: wrongShow",
+      "art-west-end-2016/artshub--gina-fairley.json: wrongArticleManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": true,
+        "newValue": false,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongArticleManualClear"
+      }
+    ]
+  }
+}
