@@ -269,13 +269,14 @@ function citedCandidates(links, via, excerptField) {
 }
 
 /**
- * A review roundup that cites no known outlet is a page the lane cannot read (a layout change, a card picked as the
+ * A review roundup that cites no review on a known outlet is a page the lane cannot read (a layout change, a card picked as the
  * body), not a roundup without reviews: BWW's and Playbill's both parsed to one podcast or sidebar link for a whole
  * night, silently (BRO-6066). Throwing puts it in the pass's errors, so the shadow report names it.
  */
 function requireKnownOutletLinks(links, pageUrl, name) {
-  if (!links.some((l) => resolveOutletFromUrl(l.url))) {
-    throw new Error(`${name}: roundup ${pageUrl} parsed to ${links.length} cited link(s), none on a known outlet; page layout changed?`);
+  // A known outlet's review-shaped link: Broadway Podcast Network is a registered outlet, its episode page is not a review.
+  if (!links.some((l) => resolveOutletFromUrl(l.url) && !nonReviewReason(l.url, { aggregatorCited: true }))) {
+    throw new Error(`${name}: roundup ${pageUrl} parsed to ${links.length} cited link(s), no review on a known outlet; page layout changed?`);
   }
   return links;
 }
