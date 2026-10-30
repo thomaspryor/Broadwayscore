@@ -16,6 +16,7 @@ function main() {
   const base = arg('base', 'origin/main');
   const head = arg('head', 'HEAD');
   const nowMs = arg('now') ? Date.parse(arg('now')) : Date.now();
+  if (!Number.isFinite(nowMs)) return finish({ status: 'unknown', reason: `bad --now ${arg('now')}`, files: [], nights: [], skipped: [] });
   const changedFiles = [];
   const deletedFiles = [];
   let commitMessages = [];
@@ -40,7 +41,10 @@ function main() {
     const raw = JSON.parse(fs.readFileSync(path.resolve(ROOT, arg('shows', 'data/shows.json')), 'utf8'));
     shows = Array.isArray(raw) ? raw : raw.shows;
   } catch { shows = null; }
-  const { defaultEmbargoAt } = require('./lib/press-night-record');
+  let defaultEmbargoAt;
+  try { ({ defaultEmbargoAt } = require('./lib/press-night-record')); } catch (e) {
+    return finish({ status: 'unknown', reason: `press-night-record failed: ${String(e.message).split('\n')[0]}`, files: [], nights: [], skipped: [] });
+  }
   return finish(evaluateFreeze({ changedFiles, deletedFiles, laneFiles, shows, nowMs, commitMessages, disabled: ['1', 'true'].includes(String(process.env.LANE_FREEZE_DISABLED || '').toLowerCase()), embargoAtFn: defaultEmbargoAt }));
 }
 
