@@ -99,7 +99,13 @@ function refreshReviewTexts() {
   const dir = path.join(__dirname, '..', 'data', 'review-texts');
   if (!fs.existsSync(path.join(dir, '.git'))) return;
   try {
-    execFileSync('git', ['-C', dir, 'pull', '--ff-only', '-q'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 60000 });
+    // The checkout is shallow: a fetch with no depth bound pulls the whole repo (scripts/lib/shallow-fetch-args.js).
+    const { repoDepthArgs } = require('./lib/shallow-fetch-args');
+    const opts = { stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000 };
+    const branch = execFileSync('git', ['-C', dir, 'rev-parse', '--abbrev-ref', 'HEAD'], { ...opts, encoding: 'utf8' }).trim();
+    // unbounded-fetch-ok: repoDepthArgs IS the bound; the lint can't evaluate a spread.
+    execFileSync('git', ['-C', dir, 'fetch', '-q', ...repoDepthArgs({ repoRoot: dir }), 'origin', branch], opts);
+    execFileSync('git', ['-C', dir, 'merge', '--ff-only', '-q', 'FETCH_HEAD'], opts);
   } catch (e) { console.log(`::warning::review-texts refresh failed (${String(e.message).slice(0, 120)}); using the checked-out copy`); }
 }
 
