@@ -37,3 +37,10 @@ test('tolerates raw newlines inside the body string', () => {
 test('returns null without the story script', () => {
   assert.equal(extractToledoBladeBody(`<script>{"body":"<p>${filler}</p>"}</script>`), null);
 });
+
+test('BroadwayWorld page uses JSON-LD articleBody over sidebar chrome (BRO-6573)', () => {
+  const body = 'Synthetic review sentence about a touring musical. '.repeat(10).trim();
+  const html = `<html><head><script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'NewsArticle', headline: 'Review: X', articleBody: body })}</script></head><body><article><p>5. Pantry Girls 37 min Season 2, Episode 5 sidebar card</p></article></body></html>`;
+  const t = extractArticleTextFromUrl(html, 'https://www.broadwayworld.com/rhode-island/article/Review-X-20261024');
+  assert.equal(t, body);
+});

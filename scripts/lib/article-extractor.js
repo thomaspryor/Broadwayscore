@@ -933,6 +933,15 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
     if (sunText) return sunText;
   }
 
+  // BroadwayWorld regional review pages (rhode-island etc.): the generic pattern
+  // grabbed a sidebar episode card (384 chars) while the page's own JSON-LD
+  // NewsArticle.articleBody holds the full review (BRO-6573, Pokhylko/PPAC).
+  // Falls through to PATTERNS when absent.
+  if (host.includes('broadwayworld.com')) {
+    const bwwText = extractLaVoceBody(html);
+    if (bwwText) return bwwText;
+  }
+
   // The Stage: requires subscriber auth; body lives in <p> across multiple
   // aos-DS32-WYSEdit blocks with mid-article promo widgets. Logged-out HTML
   // has no body, so this returns null and the verifier still flags logout.
