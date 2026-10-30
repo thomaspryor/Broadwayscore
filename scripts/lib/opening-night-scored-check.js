@@ -55,6 +55,19 @@ function scoredShowIds(latencyLines, cutoffMs) {
   return scoredSet;
 }
 
+// BRO-6653: the 'scored' stage row is telemetry, committed by a late always() step that a
+// cancelled or timed-out poller run never reaches (Showstopper! The Kids Show: review
+// scored llm-v6/93 and live in reviews.json, no row). A show whose published reviews carry an
+// LLM score was scored, so the missing row is not the stalled-scorer failure this alert is for.
+function llmScoredShowIds(reviewsData) {
+  const list = Array.isArray(reviewsData) ? reviewsData : (reviewsData && reviewsData.reviews) || [];
+  const set = new Set();
+  for (const r of list) {
+    if (r && r.showId && /^(llm|anchored)/.test(r.scoreSource || '')) set.add(r.showId);
+  }
+  return set;
+}
+
 function findMissingScored(openingShows, scoredSet) {
   return openingShows.filter((s) => !scoredSet.has(s.id));
 }
@@ -92,6 +105,7 @@ function findOverdueMissingScored(openingShows, scoredSet, reviewedSet, today) {
 }
 
 module.exports = {
+  llmScoredShowIds,
   reviewedShowIds,
   findOverdueMissingScored,
   COVERED_CATEGORIES,

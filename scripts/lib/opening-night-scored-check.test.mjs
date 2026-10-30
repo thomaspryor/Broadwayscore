@@ -89,3 +89,14 @@ test('BRO-5975: findOverdueMissingScored skips same-day openings and shows with 
   const missing = findOverdueMissingScored(shows, new Set(), reviewedShowIds(lines), '2026-10-21').map((s) => s.id);
   assert.deepEqual(missing, ['yday-reviewed-unscored', 'yday-stalled']);
 });
+
+test('llmScoredShowIds counts shows with LLM-scored reviews even when the stage row is lost (BRO-6653)', async () => {
+  const { llmScoredShowIds } = require('./opening-night-scored-check.js');
+  const set = llmScoredShowIds({ reviews: [
+    { showId: 'lost-row', scoreSource: 'llm-v6' },
+    { showId: 'anchored', scoreSource: 'anchored-v6' },
+    { showId: 'thumb-only', scoreSource: 'thumb' },
+    { showId: 'unscored' },
+  ] });
+  assert.deepEqual([...set].sort(), ['anchored', 'lost-row']);
+});
