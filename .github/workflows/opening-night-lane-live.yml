@@ -237,6 +237,7 @@ jobs:
           RC=0
           npx tsx scripts/opening-night-lane.js "--show=${SHOW}" "--night=${NIGHT}" --core-dir=/tmp/core-data-checkout || RC=$?
           echo "exit=${RC}" >> "$GITHUB_OUTPUT"
+          # rc 3 is not a success inside the press window: the next step pages (plan v2 step 2, BRO-6620).
           if [ "$RC" -eq 3 ]; then echo "::notice::lane stood down (not armed, lease held elsewhere, or LANE_STANDDOWN set)"; exit 0; fi
           exit "$RC"
 
@@ -258,6 +259,21 @@ jobs:
           if git diff --cached --quiet; then echo "Marker unchanged"; exit 0; fi
           git commit -m "data: opening-night lane stood down for ${SHOW} (${NIGHT}) [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main
+
+      # Plan v2 step 2 (BRO-6620): inside [embargo - 3h, embargo + 6h] a lane exit 3 is a failure. Page through the
+      # alert router (its ledger is committed below); outside the window it stays a notice. The lease release below and
+      # the marker above bring the old path back. A failed page fails this step, so the job's failure notice fires.
+      - name: Page if the lane stood down inside the press window (BRO-6620)
+        if: always() && steps.lane.outputs.exit == '3' && github.ref == 'refs/heads/main'
+        timeout-minutes: 5
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/lane-only-markets.js stood-down "--show=${SHOW}" "--night=${NIGHT}" "--run-url=${RUN_URL}"
 
       # Scored reviews are written to data/review-texts/<show>/ before publish, so persist them whatever the lane did.
       - name: Push scored reviews to review-texts

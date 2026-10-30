@@ -93,6 +93,21 @@ function oldPathStandsDown({ onlyMarkets, standdown, show, leaseState, markers, 
 }
 
 /**
+ * Plan v2 step 2 (BRO-6620): a lane exit 3 inside the night's press window is a failure, not a success. The driver
+ * exits 3 when it is not armed, LANE_STANDDOWN covers the show, or another run holds the lease. Inside
+ * [embargo - 3h, embargo + 6h] that pages; outside it stays a notice. An unknown show or night pages too (fail loud). Pure.
+ * @returns {{page:boolean, reason:string}}
+ */
+function standDownPage({ show, night, now }) {
+  const nowMs = now === undefined ? Date.now() : new Date(now).getTime();
+  if (!show || !show.id) return { page: true, reason: 'show unknown' };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(night || ''))) return { page: true, reason: `night unknown (${night})` };
+  if (!Number.isFinite(Date.parse(embargoForNight(show, night) || ''))) return { page: true, reason: 'embargo unknown' };
+  if (inPressNightWindow(show, night, nowMs)) return { page: true, reason: `inside the ${night} press-night window` };
+  return { page: false, reason: `outside the ${night} press-night window` };
+}
+
+/**
  * Read every marker file. Missing dir = {} (no markers); an unreadable dir = null and an unreadable file =
  * {unreadable:true} under its key, both of which keep the old path on (the dir for every show, a file for its show).
  */
@@ -178,5 +193,5 @@ module.exports = {
   envInputs, createDecider,
   VARIABLE, WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN, DEFAULT_MARKERS_DIR,
   parseOnlyMarkets, liveLeaseFor, embargoForNight, inPressNightWindow, markerKey,
-  oldPathStandsDown, readMarkers, writeMarker, readLeaseState, pollerSuppress, changedShowIds,
+  oldPathStandsDown, standDownPage, readMarkers, writeMarker, readLeaseState, pollerSuppress, changedShowIds,
 };

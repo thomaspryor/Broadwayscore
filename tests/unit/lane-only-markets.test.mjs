@@ -181,7 +181,8 @@ test('envInputs reads the _READ=ok markers from read-lane-only-vars', () => {
 });
 
 // --- the real CLI, against temp lease and marker files ---
-const shows = JSON.parse(read('data/shows.json'));
+// Core data is gitignored (private repo): without it the CLI tests below skip instead of failing the whole file.
+const shows = fs.existsSync(path.join(repo, 'data/shows.json')) ? JSON.parse(read('data/shows.json')) : [];
 const showList = Array.isArray(shows.shows) ? shows.shows : shows;
 const realBway = showList.find((s) => s.market === 'broadway' && s.category === 'broadway' && !s.reviewEmbargoAt);
 const realWe = showList.find((s) => s.market === 'west-end' && s.category === 'west-end' && !s.reviewEmbargoAt);
@@ -202,7 +203,7 @@ function runCli(args, { only = 'broadway', onlyRead = 'ok', standdownRead = 'ok'
 const night = '2026-11-05';
 const cliNow = '--now=2026-11-06T03:30:00Z'; // inside Broadway's window for a non-opening night (market hour)
 
-test('CLI gate writes suppress=true only for a lane-held listed market', { skip: !realBway && 'no Broadway show in data' }, () => {
+test('CLI gate writes suppress=true only for a lane-held listed market', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
   const held = lease(realBway.id, night, 'gha-7', '2026-11-06T04:00:00Z');
   const r = runCli(['gate', `--shows=${realBway.id}`, cliNow], { leases: held });
   assert.equal(r.status, 0, r.stderr);
@@ -222,7 +223,7 @@ test('CLI gate writes suppress=true only for a lane-held listed market', { skip:
   }
 });
 
-test('CLI mark then gate: the lane\'s own exit 3 brings the old path back', { skip: !realBway && 'no Broadway show in data' }, () => {
+test('CLI mark then gate: the lane\'s own exit 3 brings the old path back', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lom-mark-'));
   const markers = path.join(dir, 'markers');
   const leasesFile = path.join(dir, 'leases.json');
@@ -250,7 +251,7 @@ const stepsOf = (yml, job) => {
   return body.split(/^      - /m).slice(1).map((b) => ({ body: b, name: (b.match(/name: (.+)/) || [])[1] || '', id: (b.match(/^\s+id: (\S+)/m) || [])[1], cond: (b.match(/^\s+if: (.+)/m) || [])[1] || '' }));
 };
 
-test('CLI gate --changed-dir: a show the drain changed this run keeps the rebuild on; a bad dir keeps it on', { skip: !realBway && 'no Broadway show in data' }, () => {
+test('CLI gate --changed-dir: a show the drain changed this run keeps the rebuild on; a bad dir keeps it on', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
   const held = lease(realBway.id, night, 'gha-7', '2026-11-06T04:00:00Z');
   const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'lom-rt-'));
   const git = (...a) => spawnSync('git', ['-C', rt, ...a], { encoding: 'utf8' });
@@ -354,4 +355,43 @@ test('(b) lane-live writes the explicit marker on exit 3, from the step output, 
 test('the marker directory is committed, not gitignored', () => {
   const r = spawnSync('git', ['check-ignore', '-q', 'data/opening-night/lane-stood-down/x__2026-11-05.json'], { cwd: repo });
   assert.equal(r.status, 1, 'git check-ignore must not match the marker path');
+});
+
+// --- plan v2 step 2: a lane exit 3 inside the press window pages ---
+test('standDownPage: exit 3 pages inside [embargo - 3h, embargo + 6h], a notice outside, and pages when it cannot tell', () => {
+  const p = (now, show = BWAY, n = '2026-11-05') => lom.standDownPage({ show, night: n, now }).page;
+  assert.equal(p('2026-11-06T00:00:00Z'), true, 'window opens 3h before the 03:00Z embargo');
+  assert.equal(p('2026-11-06T09:00:00Z'), true, 'window closes 6h after');
+  assert.equal(p('2026-11-05T23:59:59Z'), false, 'before the window: notice');
+  assert.equal(p('2026-11-06T09:00:01Z'), false, 'after the window: notice');
+  assert.equal(p('2026-11-06T03:00:00Z', null), true, 'unknown show pages');
+  assert.equal(p('2026-11-06T03:00:00Z', BWAY, 'tonight'), true, 'bad night pages');
+  assert.equal(p('2026-11-06T03:00:00Z', { ...BWAY, category: 'nowhere', market: 'nowhere' }), true, 'unknown embargo pages');
+});
+
+test('CLI stood-down: pages (dry run) inside the window, a notice outside, never a page outside', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
+  const run = (now) => spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, `--now=${now}`, '--dry-run'], { cwd: repo, encoding: 'utf8' });
+  const inside = run('2026-11-06T03:30:00Z');
+  assert.equal(inside.status, 0, inside.stdout + inside.stderr);
+  assert.match(inside.stdout, /::error::opening-night lane stood down/);
+  assert.match(inside.stdout, /page=dry-run/);
+  const outside = run('2026-11-05T12:00:00Z');
+  assert.equal(outside.status, 0);
+  assert.match(outside.stdout, /::notice::.*no page/);
+  assert.doesNotMatch(outside.stdout, /page=/);
+});
+
+test('lane-live pages on exit 3 after the marker, on main, with the run URL, and does not swallow a failed page', () => {
+  const steps = stepsOf(read('.github/workflows/opening-night-lane-live.yml'), 'night');
+  const mark = steps.findIndex((s) => s.name === 'Record lane stood down (BRO-6620)');
+  const pg = steps.findIndex((s) => s.name === 'Page if the lane stood down inside the press window (BRO-6620)');
+  const ledger = steps.findIndex((s) => s.name === 'Commit alert ledger');
+  assert.ok(mark >= 0 && pg > mark && ledger > pg, 'page after the marker, before the alert ledger commit');
+  const s = steps[pg];
+  assert.match(s.cond, /always\(\) && steps\.lane\.outputs\.exit == '3'/);
+  assert.match(s.cond, /github\.ref == 'refs\/heads\/main'/);
+  assert.doesNotMatch(s.body, /continue-on-error/);
+  assert.match(s.body, /lane-only-markets\.js stood-down "--show=\$\{SHOW\}" "--night=\$\{NIGHT\}" "--run-url=\$\{RUN_URL\}"/);
+  const release = steps.findIndex((s2) => s2.name === 'Release night lease');
+  assert.ok(release > pg && /always\(\)/.test(steps[release].cond), 'the lease release still runs on exit 3');
 });
