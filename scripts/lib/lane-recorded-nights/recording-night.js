@@ -11,13 +11,16 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { decrypt } = require('../opening-night-lane/fetch-recording');
+const { decrypt, KEY_VERSION } = require('../opening-night-lane/fetch-recording');
 
 /** @returns {{entries: object[], page: (sha: string) => string|null, spanMs: number}} */
 function loadRecording(dir, { key }) {
   const file = path.join(dir, 'fetches.jsonl');
   if (!fs.existsSync(file)) throw new Error(`no recording at ${dir}`);
-  const entries = fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((e) => e.url);
+  const rows = fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+  const header = rows.find((e) => e.header);
+  if (!header || header.keyVersion !== KEY_VERSION) throw new Error(`recording at ${dir} was made with key version ${header ? header.keyVersion : 'none'}, this loader derives version ${KEY_VERSION}`);
+  const entries = rows.filter((e) => e.url);
   const cache = new Map();
   const page = (sha) => {
     if (!cache.has(sha)) {

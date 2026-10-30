@@ -147,4 +147,10 @@ test('manifest starts with a key-version header; the loader ignores it; HKDF key
   assert.equal(loadRecording(dir, { key: KEY }).entries.length, 1);
   assert.equal(rec.KEY_VERSION, 1);
   assert.equal(rec.keyFromEnv({ LANE_RECORDING_KEY: 'k' }).toString('hex'), rec.keyFromEnv({ LANE_RECORDING_KEY: 'k' }).toString('hex'));
+  // Pinned: a silent change to the salt or info labels would make every stored recording undecryptable.
+  assert.equal(rec.keyFromEnv({ LANE_RECORDING_KEY: 'k' }).toString('hex'), 'e7c918a470aa6d1cf37380d9a63b433295c62f7c4cb6aaf0e24f71a65a2bac1e');
+  assert.equal(rec.keyFromEnv({ REVIEW_TEXTS_TOKEN: 'k' }).toString('hex'), 'f8d7a9ecb00ec9a7d6e54dde1803e2c475316b441ebd1fbf48dc7be8abed276e');
+  // A recording without a matching key-version header is refused by name, not with a generic GCM failure.
+  fs.writeFileSync(path.join(dir, 'fetches.jsonl'), JSON.stringify({ t: 0, url: 'https://a.example/p', status: 'ok', sha: 'x' }) + '\n');
+  assert.throws(() => loadRecording(dir, { key: KEY }), /key version none/);
 });

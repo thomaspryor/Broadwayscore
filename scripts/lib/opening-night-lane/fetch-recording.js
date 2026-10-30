@@ -68,7 +68,7 @@ function createFetchRecorder({ dir, key, now = Date.now, dateOf = () => null, ma
   const append = (line) => {
     try {
       if (!ready) { fs.mkdirSync(path.join(dir, 'pages'), { recursive: true }); ready = true; }
-      if (!headed) { headed = true; fs.appendFileSync(path.join(dir, 'fetches.jsonl'), `${JSON.stringify({ header: true, keyVersion: KEY_VERSION })}\n`); }
+      if (!headed) { fs.appendFileSync(path.join(dir, 'fetches.jsonl'), `${JSON.stringify({ header: true, keyVersion: KEY_VERSION })}\n`); headed = true; }
       fs.appendFileSync(path.join(dir, 'fetches.jsonl'), `${JSON.stringify(line)}\n`);
     } catch { stats.errors++; }
   };
