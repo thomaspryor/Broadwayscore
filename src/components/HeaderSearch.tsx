@@ -212,7 +212,7 @@ export default function HeaderSearch() {
             onKeyDown={handleKeyDown}
             placeholder="Search shows..."
             className="w-56 px-3 py-1.5 pl-9 text-sm bg-white/5 border border-white/10 rounded-lg
-                       text-white placeholder-gray-400
+                       text-white placeholder-fg-placeholder
                        focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50
                        transition-all duration-200"
             aria-label={searchLabel}
@@ -360,7 +360,7 @@ export default function HeaderSearch() {
                   onKeyDown={handleKeyDown}
                   placeholder={`${searchLabel}...`}
                   className="w-full px-4 py-2 pl-10 text-base bg-white/5 border border-white/10 rounded-lg
-                             text-white placeholder-gray-400
+                             text-white placeholder-fg-placeholder
                              focus:outline-none focus:ring-2 focus:ring-brand/50"
                   autoFocus
                 />

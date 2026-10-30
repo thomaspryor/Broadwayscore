@@ -62,9 +62,15 @@ const config: Config = {
           'low-bg': 'rgba(239, 68, 68, 0.15)',
           none: '#6b7280',
         },
-        // Readable muted text on dark surfaces: 6.3:1 on surface.raised, 4.6:1 on elevated (WCAG AA).
-        // Use instead of text-gray-500/600, which are 3.6:1 / 2.3:1. BRO-6511
-        'fg-muted': '#969da9',
+        // Supporting text matches review-quote brightness (text-gray-300 = #d1d5db). Tailwind's
+        // default gray-400 (#9ca3af, 6.8:1) read much dimmer than the quotes, so it is lifted to
+        // gray-300's value: 11.7:1 on surface.raised. BRO-6675 (app parity: BRO-6673)
+        gray: { 400: '#d1d5db' },
+        // Muted text (dates, critics, labels): 9.2:1 on surface.raised, 6.8:1 on elevated.
+        // Use instead of text-gray-500/600, which are 3.6:1 / 2.3:1. BRO-6511, brightened BRO-6675
+        'fg-muted': '#b8bec9',
+        // Input placeholders only: deliberately dimmer than text so a hint never reads as a value (4.6:1 on elevated)
+        'fg-placeholder': '#969da9',
         // Surface colors - deeper, richer darks
         surface: {
           DEFAULT: '#0f0f14',
