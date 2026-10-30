@@ -1,32 +1,42 @@
 {
-  "updatedAt": "2026-10-30T17:30:16.989Z",
-  "processed": 73,
-  "failed": 50,
-  "successRate": "59.3%",
+  "updatedAt": "2026-10-30T17:50:46.793Z",
+  "processed": 70,
+  "failed": 60,
+  "successRate": "53.8%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 41,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 6,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 15,
+    "archiveToday": 12,
     "archive": 16
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-30T17:22:51.871Z",
+      "t": "2026-10-30T17:43:13.714Z",
       "event": "bb-session",
-      "session": "695150c6",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "5fbe0ecc",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
     },
     {
-      "t": "2026-10-30T17:23:58.860Z",
+      "t": "2026-10-30T17:43:14.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T17:45:14.814Z",
       "event": "bb-session",
-      "session": "aaeb45bd",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "a5ac27b4",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T17:45:15.439Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
