@@ -131,7 +131,7 @@ test('unknown lease state: tonight waits, every other show writes (marker list, 
     const env = { OPENING_NIGHT_SHOWS_FILE: showsFixture(dir) };
     const now = PRESS_NIGHT;
     assert.deepEqual(guard.tonightShowIds({ now, file: env.OPENING_NIGHT_SHOWS_FILE }), [SHOW]);
-    assert.deepEqual(guard.tonightShowIds({ now: PRESS_NIGHT + 7 * 3600e3, file: env.OPENING_NIGHT_SHOWS_FILE }), [], 'window closes 6h after the embargo');
+    assert.deepEqual(guard.tonightShowIds({ now: PRESS_NIGHT + 10 * 3600e3, file: env.OPENING_NIGHT_SHOWS_FILE }), [], 'window closes 9h after the embargo');
     assert.deepEqual(guard.tonightShowIds({ now, file: path.join(dir, 'nope.json') }), [], 'unreadable shows.json = nothing tonight');
 
     const marker = path.join(dir, 'unk.json'); fs.writeFileSync(marker, JSON.stringify({ leases: {}, unknown: true, tonight: [SHOW] }));
@@ -169,11 +169,29 @@ test('sync failure: marker names tonight atomically, exits 0; alert routing is a
     assert.deepEqual(m.tonight, []);
     assert.deepEqual(fs.readdirSync(dir).filter((n) => n.endsWith('.tmp')), [], 'no tmp file left behind');
 
-    const { syncFailureAlert } = require('../../scripts/opening-night-lease.js');
-    const night = syncFailureAlert({ tonight: [SHOW], why: 'x' });
-    assert.equal(night.kind, 'card');
+    const { leaseStoreAlert } = require('../../scripts/opening-night-lease-alert.js');
+    const night = leaseStoreAlert({ unknown: true, shows: [SHOW] });
     assert.match(night.description, new RegExp(SHOW));
-    assert.equal(syncFailureAlert({ tonight: [], why: 'x' }).kind, 'digest');
+    assert.equal(leaseStoreAlert({ unknown: true, shows: [] }), null, 'nothing tonight: warning only, no ledger write');
+    assert.equal(leaseStoreAlert({ unknown: false, shows: [SHOW] }), null, 'known state: no alert');
+    const src = fs.readFileSync(path.join(ROOT, 'scripts/opening-night-lease.js'), 'utf8');
+    assert.doesNotMatch(src, /owner-alert-router|guard-escalation/, 'the lease CLI must not reach routeAlert (alert-ledger LINEAR_API_KEY rule)');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
+});
+
+test('unknown: the writer window covers a lane that starts late and runs long; the marker list is a union, not a freeze', () => {
+  const dir = tmp();
+  try {
+    const sf = showsFixture(dir);
+    const env = { OPENING_NIGHT_SHOWS_FILE: sf };
+    const H = 3600000;
+    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT + 8.5 * H }), [SHOW], '+8.5h: lane may still hold, tonight waits');
+    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT - 2.9 * H }), [SHOW], '-2.9h: inside');
+    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT + 9.1 * H }), [], '+9.1h: outside');
+    assert.deepEqual(guard.tonightShowIds({ file: sf, now: PRESS_NIGHT - 3.1 * H }), [], '-3.1h: outside');
+    const lf = path.join(dir, 'leases.json');
+    fs.writeFileSync(lf, JSON.stringify({ leases: {}, unknown: true, tonight: [] }));
+    assert.equal(guard.leaseSkipReason(SHOW, { file: lf, env, now: PRESS_NIGHT }).unknown, true, 'marker written earlier with [] still holds tonight at read time');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
