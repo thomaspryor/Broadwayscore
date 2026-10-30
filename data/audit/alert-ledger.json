@@ -246,11 +246,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-30T13:06:49.922Z",
-      "lastSeen": "2026-10-30T14:11:52.336Z",
-      "lastNotifiedAt": "2026-10-30T13:06:49.922Z",
-      "lastSurfacedAt": "2026-10-30T13:06:49.922Z",
-      "notifyCount": 190,
+      "incidentOpenedAt": "2026-10-30T13:20:50.321Z",
+      "lastSeen": "2026-10-30T14:21:33.532Z",
+      "lastNotifiedAt": "2026-10-30T13:20:50.321Z",
+      "lastSurfacedAt": "2026-10-30T13:20:50.321Z",
+      "notifyCount": 191,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
@@ -13273,7 +13273,7 @@
       "resolveReason": "absent"
     },
     "corpus-drift:autoclear-vs-ensemble": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
       "firstSeen": "2026-10-08T11:25:20.264Z",
@@ -13284,8 +13284,7 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8,
-      "resolvedAt": "2026-10-30T14:00:17.369Z"
+      "silentRefires": 8
     },
     "opening-night-remediation-exhausted-t1-missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "resolved",
@@ -23001,7 +23000,7 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1,
-      "resolvedAt": "2026-10-30T13:54:35.193Z",
+      "resolvedAt": "2026-10-30T13:27:10.307Z",
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired"
     },
     "pending-unrecoverable:jesus-christ-superstar-off-west-end-2026": {
@@ -26108,7 +26107,7 @@
       "resolveReason": "job-green"
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
       "firstSeen": "2026-10-24T13:07:31.042Z",
@@ -26119,9 +26118,7 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8,
-      "resolvedAt": "2026-10-30T14:05:55.551Z",
-      "resolveReason": "live-data test green"
+      "silentRefires": 8
     },
     "land:land/bro-6101-aggregator-repair": {
       "status": "resolved",
@@ -26833,15 +26830,15 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
-      "incidentOpenedAt": "2026-10-30T13:06:49.638Z",
-      "lastSeen": "2026-10-30T14:11:52.323Z",
-      "lastNotifiedAt": "2026-10-30T13:06:49.638Z",
+      "incidentOpenedAt": "2026-10-30T12:53:08.496Z",
+      "lastSeen": "2026-10-30T14:21:33.501Z",
+      "lastNotifiedAt": "2026-10-30T12:53:08.496Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-6627",
       "absentRunIds": [],
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "open",
@@ -27690,7 +27687,7 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1,
-      "resolvedAt": "2026-10-30T13:54:35.193Z",
+      "resolvedAt": "2026-10-30T13:27:10.307Z",
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired"
     },
     "land:land/job/linear-BRO-6276-mvol00jh": {
