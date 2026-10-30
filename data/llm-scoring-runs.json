@@ -1600918,21 +1600918,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-30T18:09:11.867Z",
-    "completedAt": "2026-10-30T18:10:01.666Z",
-    "totalReviews": 13,
-    "processed": 11,
-    "skipped": 2,
+    "startedAt": "2026-10-30T18:09:29.463Z",
+    "completedAt": "2026-10-30T18:10:46.938Z",
+    "totalReviews": 15,
+    "processed": 14,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 64219,
-      "output": 3275,
-      "cacheRead": 38070,
-      "cacheWrite": 3807,
-      "total": 163488
+      "input": 89203,
+      "output": 4733,
+      "cacheRead": 53298,
+      "cacheWrite": 0,
+      "total": 219501
     },
-    "costUsd": 0.25559985,
-    "runId": "41103314537",
+    "costUsd": 0.33905509999999994,
+    "runId": "41103467732",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1612446,16 +1612446,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "BWW: Up thumbs differ by 25% (ours: 87%, theirs: 62%)"
-      },
-      {
-        "showId": "every-brilliant-thing-regional-2024",
-        "ourDistribution": {
-          "up": 11,
-          "flat": 0,
-          "down": 0,
-          "total": 11
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "every-brilliant-thing-west-end-2025",
@@ -1642001,6 +1641991,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "you-will-get-sick-regional-2025",
+        "ourDistribution": {
+          "up": 12,
+          "flat": 1,
+          "down": 1,
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "young-frankenstein-2007",
         "ourDistribution": {
           "up": 3,
@@ -1642100,8 +1642100,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-30T18:14:59.787Z",
-    "completedAt": "2026-10-30T18:14:59.789Z",
+    "startedAt": "2026-10-30T18:15:43.874Z",
+    "completedAt": "2026-10-30T18:15:43.877Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1642114,7 +1642114,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41103314537",
+    "runId": "41103467732",
     "source": "comparative-rescore",
     "errorDetails": []
   },
