@@ -258,7 +258,7 @@ function buildSection({ night, records, shows, sentShows = {}, redditDrafts = {}
     entries.push({ showId, night, title: show.title || showId, verdict, line, misses });
   };
   for (const { showId, rec } of records) add(showId, rec);
-  for (const s of shows) if (s.openingDate === night && (s.category === 'broadway' || s.category === 'west-end')) add(s.id, null);
+  for (const s of shows) if (s.openingDate === night && BROADCAST_MARKETS.has(s.category)) add(s.id, null);
   const rank = { FAIL: 0, UNKNOWN: 1, PENDING: 2, PASS: 3 };
   entries.sort((a, b) => rank[a.verdict] - rank[b.verdict] || a.title.localeCompare(b.title));
   return { generatedAt: new Date(nowMs).toISOString(), night, entries };
