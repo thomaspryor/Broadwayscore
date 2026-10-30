@@ -32651,7 +32651,7 @@
       "silentRefires": 1
     },
     "workflow-alert:opening-night-stage-latency": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Opening-night stage-latency alert: scored entries missing",
       "firstSeen": "2026-10-30T18:22:01.226Z",
@@ -32667,7 +32667,9 @@
         "mode": "dispatch-at-filing",
         "runId": "41105683365",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41105683365"
-      }
+      },
+      "resolvedAt": "2026-10-30T19:09:20.424Z",
+      "resolveReason": "clear in latest run"
     },
     "land:land/bro-6640-ob-audit": {
       "status": "resolved",
