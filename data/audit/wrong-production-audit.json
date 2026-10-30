@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T00:34:37.163Z",
+  "timestamp": "2026-10-30T01:04:45.196Z",
   "stats": {
-    "totalReviews": 69507,
-    "alreadyFlagged": 22263,
+    "totalReviews": 69699,
+    "alreadyFlagged": 22269,
     "dateGuardCatches": 233,
-    "directorMismatch": 2848,
-    "tvFilmSignals": 1990,
+    "directorMismatch": 2849,
+    "tvFilmSignals": 1991,
     "londonSignals": 3378,
-    "offBroadwaySignals": 624,
-    "yearMismatch": 279,
-    "noPublishDate": 8091
+    "offBroadwaySignals": 623,
+    "yearMismatch": 280,
+    "noPublishDate": 8241
   },
   "findings": [
     {
@@ -226,6 +226,11 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2014 (0x). 2024 matches production: 1984-royal-bath-regional-2024"
         }
       ]
     },
@@ -5471,6 +5476,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+      "file": "the-interested-bystander--interested-bystander.json",
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -35441,7 +35459,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2026-10-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
       "findings": [
@@ -60612,6 +60630,19 @@
       "score": 81,
       "publishDate": "2026-06-24",
       "url": "https://slotkinletter.com/2026/06/review-the-outsiders",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "stageandcinema--michael-m-landman-karny.json",
+      "publishDate": "2026-10-23",
+      "url": "https://stageandcinema.com/2026/10/22/the-outsiders-national-tour-segerstrom-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -86585,19 +86616,6 @@
     },
     {
       "showId": "hamilton-2015",
-      "file": "variety--anna-tingley.json",
-      "publishDate": "2026-10-29",
-      "url": "https://variety.com/2026/shopping/news/hamilton-deluxe-vinyl-box-set-buy-online-1236934117/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
       "file": "variety--charles-isherwood.json",
       "score": 93,
       "publishDate": "August 6, 2015",
@@ -96213,7 +96231,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 57,
+      "score": 63,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
       "findings": [
