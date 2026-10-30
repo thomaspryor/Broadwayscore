@@ -12,7 +12,8 @@
  * Times are Eastern (the owner's clock), whatever the market.
  */
 
-const { evaluateCheck } = require('./press-night-record');
+const { evaluateCheck, EMBARGO_HOUR_LOCAL } = require('./press-night-record');
+const { isTrustedPressNightSource } = require('./press-night-trust');
 const { draftDeadlineAt } = require('./broadcast-deadline');
 const { isUnsentDraft, draftBaseline, draftChanged } = require('./broadcast-refresh');
 const { MIN_REVIEWS, emailedNumbers } = require('./reddit-opening-post');
@@ -151,7 +152,7 @@ function emailGrade({ show, sentShows = null, redditDrafts = {}, numbersNow = nu
   const wantsReddit = wantsBroadcast && minReddit != null && reviewCount != null && reviewCount >= minReddit;
   if (!wantsBroadcast) return { status: 'none', text: '', misses: [] };
   if (dueMs == null || nowMs < dueMs) {
-    return { status: 'pending', text: dueMs == null ? '' : `emails due by ${etClock(dueMs)} today`, misses: [] };
+    return { status: 'pending', text: dueMs == null ? '' : `emails due by ${etClock(deadline.getTime())} today`, misses: [] };
   }
   // No tracker (core-data checkout failed): unknown, never "no draft was made".
   if (!sentShows) return { status: 'unknown', text: 'emails could not be checked (the email tracker was not readable)', misses: [] };
@@ -245,14 +246,27 @@ function gradeOpenings({ shows, readRecord, readNumbers, sentShows = null, reddi
   return out.sort((a, b) => (a.night === b.night ? a.title.localeCompare(b.title) : (a.night < b.night ? 1 : -1)));
 }
 
+/**
+ * Whether the press-night probe runs for this show at all: only the markets with an embargo hour
+ * (probeDue), and not a West End show still in previews on an untrusted opening date (the orchestrator
+ * skips those, opening-night-selection.js). No record for any other show is expected, never a miss.
+ */
+function probeCovers(show) {
+  if (!Object.prototype.hasOwnProperty.call(EMBARGO_HOUR_LOCAL, show.category)) return false;
+  return !(show.category === 'west-end' && !isTrustedPressNightSource(show.openingDateSource) && show.status !== 'open');
+}
+
 /** One show-night: the sentence and the misses behind it. */
 function gradeShow({ show, rec, numbersNow, readNumbers = () => null, sentShows, redditDrafts, nowMs, outletName }) {
   const rv = reviewGrade(rec, { outletName });
   const em = emailGrade({ show, sentShows, redditDrafts, numbersNow, readNumbers, nowMs });
-  // The probe runs for every non-tour opening, so no record by the next morning means it never started: a miss.
+  // No record by the next morning for a show the probe covers means it never started: a miss.
   // Before then the late job may simply not have committed yet.
-  const noCheck = !rec && nowMs - Date.parse(`${show.openingDate}T23:59:00Z`) >= NO_RECORD_GRACE_H * HOUR;
-  if (noCheck) rv.misses.push({ key: 'review:no-check', text: 'the overnight review check did not run' });
+  const noCheck = !rec && probeCovers(show) && nowMs - Date.parse(`${show.openingDate}T23:59:00Z`) >= NO_RECORD_GRACE_H * HOUR;
+  if (noCheck) {
+    rv.misses.push({ key: 'review:no-check', text: 'the overnight review check did not run' });
+    rv.text = 'the overnight review check did not run';
+  }
   let verdict = noCheck ? 'FAIL' : rv.verdict;
   if (em.status === 'miss') verdict = 'FAIL';
   const word = verdict === 'PASS' ? 'Passed.' : (verdict === 'FAIL' ? 'Failed.' : 'Not graded.');
@@ -297,7 +311,8 @@ function emptyLedger() {
 /**
  * Card actions for the graded lines. One card per show-night: the first run with a miss creates it, a later
  * run that finds misses the card does not list yet comments them on it once. A show-night already in the
- * ledger never gets a second card. P1 when a review was missing or late, P2 when only email drafts missed.
+ * ledger never gets a second card. P1 when a review was missing or late, P2 when only email drafts missed
+ * (Linear priority 2 and 3).
  * @returns {({type:'create', key, title, priority, notes, missKeys} | {type:'comment', key, card, text, missKeys})[]}
  */
 function planFiling(entries, ledger, { fileFrom = FILE_FROM } = {}) {
@@ -316,7 +331,7 @@ function planFiling(entries, ledger, { fileFrom = FILE_FROM } = {}) {
       const reviewMiss = e.misses.some((m) => m.key.startsWith('review:'));
       actions.push({
         type: 'create', key, missKeys: fresh.map((m) => m.key),
-        priority: reviewMiss ? 1 : 2,
+        priority: reviewMiss ? 2 : 3, // Linear 2 = High = P1, 3 = Medium = P2 (cloud-worker-pick.js)
         title: `Opening night missed: ${e.title} (${e.night})`,
         notes: [
           `The morning-email grade for ${e.title}'s press night on ${e.night} failed. Find why each item below`,
@@ -330,9 +345,10 @@ function planFiling(entries, ledger, { fileFrom = FILE_FROM } = {}) {
           `press-night-grade-key: ${key}`,
           '',
           '## Acceptance criteria',
-          '- The cause of each miss is fixed in code, with a regression test that fails before the fix.',
-          '- Add that test\'s `node --test <file>` command to this card as its VERIFY: line (this night\'s own',
-          '  record cannot change, so re-grading it can never pass).',
+          '- The cause of each miss is fixed in code, with a regression test that fails before the fix, in the',
+          '  file named below (it does not exist yet, so this check fails until the test is written; this night\'s',
+          '  own record cannot change, so re-grading it can never pass).',
+          `VERIFY: \`node --test tests/unit/press-night-miss-${e.showId}-${e.night}.test.mjs\``,
         ].join('\n'),
       });
     } else {
@@ -378,7 +394,7 @@ async function applyFiling(actions, ledger, { fileCard, commentCard, save = () =
 function renderPressNightGradesBlock(snapshot, { esc = (x) => String(x) } = {}) {
   const items = (snapshot && Array.isArray(snapshot.items)) ? snapshot.items : [];
   const board = snapshot && snapshot.scoreboard && snapshot.scoreboard.line;
-  if (!items.length && !board) return '';
+  if (!items.length) return ''; // the scoreboard alone is not news
   const color = { PASS: '#1a7f37', FAIL: '#b42318' };
   const quiet = items.filter((it) => it.quiet);
   const graded = items.filter((it) => !it.quiet);
@@ -387,7 +403,7 @@ function renderPressNightGradesBlock(snapshot, { esc = (x) => String(x) } = {}) 
     : '';
   const rows = graded.map((it) => `<p style="font-size:14px;margin:0 0 8px;${color[it.verdict] ? `border-left:3px solid ${color[it.verdict]};padding-left:8px;` : 'padding-left:11px;'}">${esc(it.line)}</p>`).join('\n');
   return `<div style="margin:0 0 16px;">
-    <p style="font-size:14px;font-weight:700;margin:0 0 8px;">Last night's openings</p>
+    <p style="font-size:14px;font-weight:700;margin:0 0 8px;">Last night's openings <span style="font-weight:400;color:#666;">(times Eastern)</span></p>
     ${board ? `<p style="font-size:14px;margin:0 0 8px;">${esc(board)}</p>` : ''}
     ${rows}
     ${quietLine}

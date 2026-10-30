@@ -38,7 +38,7 @@ function afgmPassing() {
 
 test('late review (real AFGM record): exact sentence, observed release, emails pending the first morning', () => {
   const e = grade(afgmShow, AFGM);
-  assert.equal(e.line, `${REVIEW_LINE}; emails due by 12:00pm today. Failed.`);
+  assert.equal(e.line, `${REVIEW_LINE}; emails due by 10:00am today. Failed.`);
   assert.equal(e.verdict, 'FAIL');
   assert.deepEqual(e.misses.map((m) => m.key), ['review:thewrap', 'review:first-live']);
 });
@@ -104,10 +104,10 @@ test('no record fails once the probe had time to report; nothing published is no
   assert.equal(early.line, 'X: The overnight review check did not run, so reviews could not be graded. Not graded.');
   assert.deepEqual(early.misses, []);
   const late = grade(x, null);
-  assert.equal(late.line, 'X: The overnight review check did not run, so reviews could not be graded. Failed.');
+  assert.equal(late.line, 'X: The overnight review check did not run. Failed.');
   assert.deepEqual(late.misses.map((m) => m.key), ['review:no-check']);
   const plan = L.planFiling([{ ...late, night: '2026-10-30' }], L.emptyLedger());
-  assert.equal(plan[0].priority, 1);
+  assert.equal(plan[0].priority, 2);
   const empty = load('the-greatest-story-ever-off-broadway-2026-2026-10-29.json');
   assert.equal(grade({ ...heartShow, title: 'The Greatest Story Ever' }, empty).line,
     'The Greatest Story Ever: No reviews came out overnight, so there was nothing to grade. Not graded.');
@@ -128,7 +128,7 @@ test('auto-filer: files once per show-night, nothing on re-run, a new miss is on
 
   const a1 = L.planFiling([late], L.emptyLedger());
   assert.equal(a1.length, 1);
-  assert.equal(a1[0].priority, 1);
+  assert.equal(a1[0].priority, 2);
   assert.match(a1[0].notes, /press-night-grade-key: a-few-good-men-2026:2026-11-08/);
   assert.match(a1[0].notes, /## Acceptance criteria/);
   assert.doesNotMatch(a1[0].notes, /VERIFY: node scripts\/press-night-record/);
@@ -150,7 +150,7 @@ test('auto-filer: files once per show-night, nothing on re-run, a new miss is on
 
 test('auto-filer: email-only misses are P2; nights before launch and a failed create are never recorded', async () => {
   const emailOnly = { showId: 's', night: '2026-11-09', title: 'S', line: 'S: x. Failed.', misses: [{ key: 'email:broadcast-missing', text: 'no draft' }] };
-  assert.equal(L.planFiling([emailOnly], L.emptyLedger())[0].priority, 2);
+  assert.equal(L.planFiling([emailOnly], L.emptyLedger())[0].priority, 3);
   assert.deepEqual(L.planFiling([{ ...emailOnly, night: '2026-10-29' }], L.emptyLedger()), []);
   const { ledger, results } = await L.applyFiling(L.planFiling([emailOnly], L.emptyLedger()), L.emptyLedger(), { fileCard: async () => { throw new Error('Linear down'); }, commentCard: async () => {} });
   assert.equal(results[0].ok, false);
@@ -180,5 +180,25 @@ test('scoreboard over every record graded through Oct 29: exact sentence, shown 
   assert.equal(b.line, 'Openings graded so far: 15 (0 passed, 6 failed, 9 could not be graded).');
   const html = L.renderPressNightGradesBlock({ scoreboard: b, items: [grade(afgmShow, AFGM)] });
   assert.ok(html.indexOf('Openings graded so far') < html.indexOf('A Few Good Men:'));
-  assert.match(L.renderPressNightGradesBlock({ scoreboard: b, items: [] }), /graded so far: 15 \(0 passed/);
+  assert.equal(L.renderPressNightGradesBlock({ scoreboard: b, items: [] }), ''); // the scoreboard alone is not news
+  assert.match(html, /times Eastern/);
+});
+
+test('no record is a miss only where the probe runs (regional, West End previews on an untrusted date)', () => {
+  const regional = grade({ ...heartShow, id: 'r', title: 'R', category: 'regional' }, null);
+  assert.deepEqual(regional.misses, []);
+  assert.equal(regional.verdict, 'UNKNOWN');
+  const weUntrusted = grade({ ...heartShow, id: 'w', title: 'W', category: 'west-end', status: 'previews', openingDateSource: 'todaytix' }, null);
+  assert.deepEqual(weUntrusted.misses, []);
+  const weOpen = grade({ ...heartShow, id: 'w', title: 'W', category: 'west-end', status: 'open', openingDateSource: 'todaytix' }, null);
+  assert.deepEqual(weOpen.misses.map((m) => m.key), ['review:no-check']);
+});
+
+test('a filed card carries a safe VERIFY a worker can arm, failing until the regression test exists', async () => {
+  const { evaluateVerifiability } = require('../../scripts/lib/verify-gate.js');
+  const miss = { ...grade({ ...heartShow, id: 'x', title: 'X' }, null), night: '2026-10-30' };
+  const [card] = L.planFiling([miss], L.emptyLedger());
+  const v = evaluateVerifiability(card.notes, []);
+  assert.equal(v.cmd, 'node --test tests/unit/press-night-miss-x-2026-10-30.test.mjs');
+  assert.ok(!fs.existsSync(v.cmd.split(' ').pop()));
 });

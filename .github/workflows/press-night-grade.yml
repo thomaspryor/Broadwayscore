@@ -78,5 +78,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Press night grade failed'
-          description: 'The opening-night grades for the morning email did not update, so the email shows the last snapshot (flagged stale after 36h) and fix cards may not have been filed for every miss this run (the next run files the rest).'
+          description: 'The opening-night grades for the morning email did not update, so the email shows the last snapshot (flagged stale after 12h) and fix cards may not have been filed for every miss this run (the next run files the rest).'
           severity: 'warning'

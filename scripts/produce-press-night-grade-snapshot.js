@@ -9,7 +9,7 @@
  * a later miss on the same night is a comment on that card. Logic: scripts/lib/press-night-digest-line.js.
  *
  * Needs the private core data (shows.json, opening-night-sent.json). Runs after the press-night probe's record
- * job (press-night-probe.yml) and in daily-digest.yml, which grades the emails the morning after.
+ * job (press-night-grade.yml, on each probe run and every 3 hours, which also grades the emails the morning after).
  *
  *   node scripts/produce-press-night-grade-snapshot.js                    write the snapshot
  *   node scripts/produce-press-night-grade-snapshot.js --file             also file and comment fix cards
@@ -95,7 +95,7 @@ async function main(argv = process.argv.slice(2)) {
   console.log(board.line);
   for (const e of entries) console.log(`${e.verdict.padEnd(7)} ${e.line}`);
   if (!entries.length) console.log('No opening nights in the last 48 hours.');
-  for (const a of actions) console.log(`${dryRun || !file ? 'WOULD ' : ''}${a.type === 'create' ? `file P${a.priority} "${a.title}"` : `comment on ${a.card}`} (${a.missKeys.join(', ')})`);
+  for (const a of actions) console.log(`${dryRun || !file ? 'WOULD ' : ''}${a.type === 'create' ? `file P${a.priority - 1} "${a.title}"` : `comment on ${a.card}`} (${a.missKeys.join(', ')})`);
   if (dryRun) return 0;
 
   writeJson(SNAPSHOT_FILE, snapshot);
