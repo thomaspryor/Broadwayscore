@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json only supplies a real show id per market for the CLI; no factual value is pinned.
 // BRO-6620 (cutover card 6): LANE_ONLY_MARKETS stands the old path's press-night roles down for listed markets
 // while a lane holds the night, and brings them back on any doubt. Requires the real decision functions, runs the
 // real CLI in a subprocess against temp files, and pins the workflow wiring by reading the real YAML.
@@ -129,11 +130,30 @@ test('markers: writeMarker/readMarkers round trip; missing dir = none; an unread
   const m = lom.readMarkers(md);
   assert.deepEqual(m['bway-show__2026-11-05'], { show: 'bway-show', night: '2026-11-05', holder: 'gha-1', exit: 3, runId: '9', at: '2026-11-06T03:10:00Z' });
   assert.equal(decide({ markers: m }).standDown, false);
-  fs.writeFileSync(path.join(md, 'bad__2026-11-05.json'), '{not json');
-  assert.equal(lom.readMarkers(md), null);
+  fs.writeFileSync(path.join(md, 'bad-show__2026-11-05.json'), '{not json');
+  const m2 = lom.readMarkers(md);
+  assert.deepEqual(m2['bad-show__2026-11-05'], { unreadable: true }, 'a bad file is unreadable under its own key');
+  assert.equal(m2['bway-show__2026-11-05'].holder, 'gha-1', 'one bad file does not hide the other markers');
+  assert.equal(decide({ markers: { [lom.markerKey('bway-show', '2026-11-05')]: { unreadable: true } } }).standDown, false, 'own marker unreadable = old path on');
+  assert.equal(decide({ markers: { [lom.markerKey('other-show', '2026-11-05')]: { unreadable: true } } }).standDown, true, 'another show\'s bad marker does not touch this one');
   assert.throws(() => lom.writeMarker({ show: '../x', night: '2026-11-05', holder: 'h', dir: md }));
   assert.throws(() => lom.writeMarker({ show: 'x', night: 'tonight', holder: 'h', dir: md }));
   assert.throws(() => lom.writeMarker({ show: 'x', night: '2026-11-05', holder: '', dir: md }));
+});
+
+test('changedShowIds: show dirs from git status --porcelain inside review-texts', () => {
+  const porcelain = [
+    ' M bway-show/nyt.json',
+    '?? new-show/variety.json',
+    'R  old-name/a.json -> renamed-show/a.json',
+    '?? "quoted-show/a b.json"',
+    ' M README.md',
+    '?? .hidden/x.json',
+    '',
+  ].join('\n');
+  assert.deepEqual(lom.changedShowIds(porcelain).sort(), ['README.md', 'bway-show', 'new-show', 'quoted-show', 'renamed-show'].sort());
+  assert.deepEqual(lom.changedShowIds(''), []);
+  assert.deepEqual(lom.changedShowIds(undefined), []);
 });
 
 test('readLeaseState: missing file = no leases, corrupt = unknown, unknown marker passes through', () => {
@@ -161,7 +181,6 @@ test('envInputs reads the _READ=ok markers from read-lane-only-vars', () => {
 });
 
 // --- the real CLI, against temp lease and marker files ---
-// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json only supplies a real show id per market for the CLI; no factual value is pinned.
 const shows = JSON.parse(read('data/shows.json'));
 const showList = Array.isArray(shows.shows) ? shows.shows : shows;
 const realBway = showList.find((s) => s.market === 'broadway' && s.category === 'broadway' && !s.reviewEmbargoAt);
@@ -231,6 +250,26 @@ const stepsOf = (yml, job) => {
   return body.split(/^      - /m).slice(1).map((b) => ({ body: b, name: (b.match(/name: (.+)/) || [])[1] || '', id: (b.match(/^\s+id: (\S+)/m) || [])[1], cond: (b.match(/^\s+if: (.+)/m) || [])[1] || '' }));
 };
 
+test('CLI gate --changed-dir: a show the drain changed this run keeps the rebuild on; a bad dir keeps it on', { skip: !realBway && 'no Broadway show in data' }, () => {
+  const held = lease(realBway.id, night, 'gha-7', '2026-11-06T04:00:00Z');
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'lom-rt-'));
+  const git = (...a) => spawnSync('git', ['-C', rt, ...a], { encoding: 'utf8' });
+  git('init', '-q');
+  fs.mkdirSync(path.join(rt, realBway.id));
+  fs.writeFileSync(path.join(rt, realBway.id, 'a.json'), '{}');
+  const own = runCli(['gate', `--shows=${realBway.id}`, `--changed-dir=${rt}`, cliNow], { leases: held });
+  assert.equal(own.output.trim(), 'suppress=true', 'only the held show changed: still suppressed ' + own.stdout + own.stderr);
+  fs.mkdirSync(path.join(rt, 'drained-show'));
+  fs.writeFileSync(path.join(rt, 'drained-show', 'b.json'), '{}');
+  const dirty = runCli(['gate', `--shows=${realBway.id}`, `--changed-dir=${rt}`, cliNow], { leases: held });
+  assert.equal(dirty.output.trim(), 'suppress=false', 'a drained non-held show publishes ' + dirty.stdout);
+  const notRepo = fs.mkdtempSync(path.join(os.tmpdir(), 'lom-norepo-'));
+  const bad = runCli(['gate', `--shows=${realBway.id}`, `--changed-dir=${notRepo}`, cliNow], { leases: held });
+  assert.equal(bad.status, 0);
+  assert.equal(bad.output.trim(), 'suppress=false', 'git status failed = old path on ' + bad.stdout);
+  assert.equal(runCli(['gate', `--shows=${realBway.id}`, `--changed-dir=${path.join(notRepo, 'missing')}`, cliNow], { leases: held }).output.trim(), 'suppress=false', 'missing dir');
+});
+
 test('(c) read-lane-only-vars reads both variables with the token it is given and marks failed reads unknown', () => {
   const a = read('.github/actions/read-lane-only-vars/action.yml');
   assert.match(a, /read-actions-variable\.sh/);
@@ -259,6 +298,7 @@ test('(a)(c) poller: lease re-sync, variables read with REVIEW_TEXTS_TOKEN, gate
   assert.match(steps[vars].body, /secrets\.REVIEW_TEXTS_TOKEN/);
   assert.doesNotMatch(steps[vars].body, /GITHUB_TOKEN/);
   assert.match(steps[gate].body, /lane-only-markets\.js gate/);
+  assert.match(steps[gate].body, /--changed-dir=data\/review-texts/, 'shows the drain changed this run count as action shows');
   const cond = /steps\.lane_only\.outputs\.suppress != 'true' \|\| steps\.nyt_picks\.outputs\.picks_added == 'true'/;
   assert.match(steps[drift].cond, cond);
   assert.match(steps[fast].cond, cond);
