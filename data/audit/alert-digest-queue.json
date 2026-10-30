@@ -4067,5 +4067,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T14:38:41.392Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6628-press-night-fixes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6628-press-night-fixes",
+    "description": "land.yml did not land land/bro-6628-press-night-fixes: the unit-tests-node gate went red at 9e783afaa2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41071649264",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6628-press-night-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9e783afaa2a07e5c2fe15a40146b6fdcba8100bb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41071649264"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:48:58.944Z"
   }
 ]
