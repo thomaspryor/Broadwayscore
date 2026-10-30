@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "a-few-good-men-2026",
   "openingDate": "2026-10-29",
-  "detectedAt": "2026-10-30T05:02:58.693Z",
+  "detectedAt": "2026-10-30T05:14:26.678Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "thewrap--robert-hofler.json",
-      "outletId": "thewrap",
-      "criticName": "Robert Hofler",
-      "url": "https://www.thewrap.com/creative-content/theater/a-few-good-men-broadway-review-aaron-sorkin/",
-      "fullTextLen": 4005,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-30T05:02:58.693Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
