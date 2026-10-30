@@ -178,19 +178,21 @@ function stampDraftUpdate(sentShows, broadcastKey, numbers, at, reviewCount) {
 }
 
 /**
- * Unsent drafts due a "you have not sent this yet" reminder: last created or
- * reminded REMINDER_GAP_HOURS+ ago, fewer than MAX_REMINDERS so far.
+ * Unsent drafts due a "you have not sent this yet" reminder: last created,
+ * updated or reminded REMINDER_GAP_HOURS+ ago, fewer than MAX_REMINDERS so far.
  */
 function remindersDue(sentShows, nowMs = Date.now()) {
   const out = [];
   for (const e of unsentDraftRecords(sentShows)) {
     const r = e.record;
     if ((r.draftReminderCount || 0) >= MAX_REMINDERS) continue;
-    const last = Math.max(...[r.draftCreatedAt, r.draftReminderAt].map(x => Date.parse(x || '')).filter(Number.isFinite));
+    // An "updated with new numbers" email is also a nudge, so it restarts the gap.
+    const last = Math.max(...[r.draftCreatedAt, r.draftReminderAt, r.draftUpdatedAt].map(x => Date.parse(x || '')).filter(Number.isFinite));
     if (!Number.isFinite(last)) continue;
     const hours = (nowMs - last) / 3_600_000;
     if (hours < REMINDER_GAP_HOURS) continue;
-    out.push({ ...e, hoursSince: hours });
+    const created = Date.parse(r.draftCreatedAt || '');
+    out.push({ ...e, hoursSince: hours, draftAgeHours: Number.isFinite(created) ? (nowMs - created) / 3_600_000 : null });
   }
   return out;
 }

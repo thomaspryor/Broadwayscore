@@ -69,7 +69,7 @@ function buildReminder(entry, titles, numbers, nth) {
   }).join('');
   const subject = `[Reminder] ${market} opening-night email not sent yet: ${names.join(', ')}`;
   const html = `
-<p>The opening-night email for <strong>${esc(names.join(', '))}</strong> is still a draft in Resend (made ${Math.round(entry.hoursSince)} hours ago). Subscribers have not received it.</p>
+<p>The opening-night email for <strong>${esc(names.join(', '))}</strong> is still a draft in Resend${entry.draftAgeHours != null ? ` (made ${Math.round(entry.draftAgeHours)} hours ago)` : ''}. Subscribers have not received it.</p>
 <table style="margin:16px 0;border-collapse:collapse;">${rows}</table>
 <p><a href="${url}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Open the draft in Resend →</a></p>
 <p style="color:#888;font-size:12px;margin-top:16px;">Reminder ${nth} of ${MAX_REMINDERS}. If the numbers change, the draft is updated in place and you get an email saying so.</p>`;
@@ -104,7 +104,7 @@ async function main() {
     if (apiKey) {
       const { getBroadcastWithRetry } = require('./reconcile-broadcast-state');
       const live = await getBroadcastWithRetry(draftId);
-      const status = live && live.ok && live.data ? live.data.status : null;
+      const status = live && live.ok && live.data && live.data.status ? String(live.data.status).toLowerCase() : null;
       if (status !== 'draft') {
         // Sent, scheduled, deleted or unreadable: reconcile-broadcast-state.js
         // owns that record; a reminder now could nag about a sent email.

@@ -907,6 +907,11 @@ jobs:
                 DRAFTED="true"
                 return
               fi
+              # Resend already holds a sent/queued broadcast for this combo: a
+              # preview now would describe an email that already went out.
+              if echo "$OUTPUT" | grep -q "Resend already has broadcast"; then
+                return
+              fi
               echo "--- $market: no draft this run, preview to owner instead ---"
             else
               echo "--- $market preview ---"

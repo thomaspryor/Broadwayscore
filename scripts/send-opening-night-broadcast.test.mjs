@@ -474,3 +474,14 @@ test('BRO-6634 a legacy draft with no stored numbers refreshes on a review-count
   delete rec.reviewCount;
   assert.deepEqual(refresh.draftsNeedingRefresh(trackerWith(rec), () => n(60, 24)), []);
 });
+
+test('BRO-6634 remindersDue: an update email restarts the gap; age text uses draft age', () => {
+  const H = 3_600_000;
+  const T0 = Date.parse('2026-10-30T00:00:00Z');
+  const rec = { completed: true, draftId: 'd1', draftStatus: 'draft', sentAt: null, draftCreatedAt: new Date(T0).toISOString(), draftUpdatedAt: new Date(T0 + 5 * H).toISOString() };
+  const shows = { 'broadway:x': rec };
+  assert.equal(refresh.remindersDue(shows, T0 + 7 * H).length, 0, 'updated 2h ago: no reminder yet');
+  const [e] = refresh.remindersDue(shows, T0 + 11 * H);
+  assert.ok(e);
+  assert.equal(Math.round(e.draftAgeHours), 11);
+});

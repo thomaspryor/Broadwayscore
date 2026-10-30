@@ -1035,7 +1035,7 @@ ${rows}
   <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${escHtml(subject)}</td></tr>
 </table>
 <p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Open the draft in Resend →</a></p>
-<p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}</p>`;
+<p style="color:#888;font-size:12px;margin-top:16px;">The draft was rebuilt from the latest data, so any edits you made to it in Resend were replaced. Direct link: ${draftUrl}</p>`;
 }
 
 /**

@@ -18,7 +18,7 @@
 // lastReconciledAt (an observation stamp, not a content stamp) is excluded
 // from it.
 
-const { recordRecencyMs } = require('./tracker-record-recency');
+const { recordRecencyMs, carryDraftStamps } = require('./tracker-record-recency');
 
 function mergeOpeningNightSent(ours, remote) {
   ours = ours || { shows: {} };
@@ -35,10 +35,11 @@ function mergeOpeningNightSent(ours, remote) {
     const r = remoteShows[key];
     if (!o && r) { merged.shows[key] = r; added++; continue; }
     if (o && r && recordRecencyMs(r) > recordRecencyMs(o)) {
-      merged.shows[key] = r;
+      merged.shows[key] = carryDraftStamps(r, o);
       remoteNewer++;
       continue;
     }
+    if (o && r) merged.shows[key] = carryDraftStamps(o, r);
     kept++; // o present and not older than r (or neither present)
   }
 
