@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-29T09:16:14.548Z",
-  "bannerText": "129/231 Done(14d) verified on main · 1 FAILED · 2 vacuous · 27 stuck-but-done · 3 mis-armed, needs re-arming (BRO-5599, BRO-5055, BRO-3837) — PARTIAL RUN: 98 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-30T08:51:39.039Z",
+  "bannerText": "76/229 Done(14d) verified on main · 1 FAILED · 0 vacuous · 8 stuck-but-done · 2 mis-armed, needs re-arming (BRO-6291, BRO-6220) — PARTIAL RUN: 166 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-6423 — main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
-      "detail": "❌ Possible submitter PII in a committed, PUBLIC-repo data/audit file: data/audit/we-historical-tr-probe.json — 6 hit(s) exceeds its allowlisted baseline of 5. New content in this …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6423/main-testyml-red-lint-workflows-audit-no-submitter-pii-in-committed"
+      "title": "FAILED BRO-6467 — Commercial data: pending review",
+      "detail": "OPEN: 1 pending row(s) remain: a-few-good-men",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6467/commercial-data-pending-review"
     },
     {
-      "title": "STUCK BRO-4681 — Hook markRescoreNeeded into clear-stale-wrong-production/show-flags.js (BRO-2407 cousin)",
+      "title": "STUCK BRO-6458 — BSC Daily: Deploy to Vercel",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4681/hook-markrescoreneeded-into-clear-stale-wrong-productionshow-flagsjs"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6458/bsc-daily-deploy-to-vercel"
     },
     {
-      "title": "STUCK BRO-4371 — chore: re-extract BWW roundups where a digit-leading outlet corrupted a prior quote",
+      "title": "STUCK BRO-6430 — BSC Daily: Headless dispatch: success rate",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4371/chore-re-extract-bww-roundups-where-a-digit-leading-outlet-corrupted-a"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6430/bsc-daily-headless-dispatch-success-rate"
     },
     {
-      "title": "STUCK BRO-4315 — P1: S8-T1 show-id renames — 96 Off-West End rows carry a -west-end- id suffix, 9 Broadway ids and 45 drifted ids need rename-show-id.js (blocked in cloud: classifier denies the tool)",
+      "title": "STUCK BRO-6400 — Data: link London-Broadway transfers (transferOf/transferredTo) in shows.json",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4315/p1-s8-t1-show-id-renames-96-off-west-end-rows-carry-a-west-end-id"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6400/data-link-london-broadway-transfers-transferoftransferredto-in"
     },
     {
-      "title": "STUCK BRO-4297 — Cousins of the 2026-09-29 guard fixes: blank env read as zero in bsc-runner disk floor; echo|grep -q under pipefail in gate scripts",
+      "title": "STUCK BRO-6355 — Model two-part productions: recoupment model reads sourced non-recouper above 100%",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4297/cousins-of-the-2026-09-29-guard-fixes-blank-env-read-as-zero-in-bsc"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6355/model-two-part-productions-recoupment-model-reads-sourced-non-recouper"
     },
     {
-      "title": "STUCK BRO-4290 — P1: evidence-promoted OWE rows never reach review gathering — zero-review catch-up is open-only, 44/49 audit promotions are closed shows",
+      "title": "STUCK BRO-6343 — WE 2015-16: TR PDF header extraction yields 11 of 60 matched rows, fix so the season can be promoted (continues BRO-6298)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4290/p1-evidence-promoted-owe-rows-never-reach-review-gathering-zero-review"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6343/we-2015-16-tr-pdf-header-extraction-yields-11-of-60-matched-rows-fix"
     },
     {
-      "title": "STUCK BRO-4279 — Tour routing: catch The Guardian's UK stage reviews for tour targets",
+      "title": "STUCK BRO-6314 — BSC Daily: Autofix: jobs actually succeeding",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4279/tour-routing-catch-the-guardians-uk-stage-reviews-for-tour-targets"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6314/bsc-daily-autofix-jobs-actually-succeeding"
     },
     {
-      "title": "STUCK BRO-4269 — main Unit Tests permanently red: branch-protection live check runs in CI (gh auth now succeeds there) and fails by design",
+      "title": "STUCK BRO-6279 — Source per-show Covid-closing last-performance dates from IBDB (BRO-5088 item 4 leftover)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4269/main-unit-tests-permanently-red-branch-protection-live-check-runs-in"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6279/source-per-show-covid-closing-last-performance-dates-from-ibdb-bro"
     }
   ],
-  "moreCount": 22
+  "moreCount": 1
 }
