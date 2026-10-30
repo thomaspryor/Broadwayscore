@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T23:47:39.815Z",
+  "timestamp": "2026-10-30T00:02:30.531Z",
   "stats": {
-    "totalReviews": 69279,
-    "alreadyFlagged": 22261,
+    "totalReviews": 69420,
+    "alreadyFlagged": 22262,
     "dateGuardCatches": 233,
-    "directorMismatch": 2841,
-    "tvFilmSignals": 1984,
+    "directorMismatch": 2846,
+    "tvFilmSignals": 1988,
     "londonSignals": 3378,
     "offBroadwaySignals": 624,
-    "yearMismatch": 278,
-    "noPublishDate": 7895
+    "yearMismatch": 279,
+    "noPublishDate": 8035
   },
   "findings": [
     {
@@ -5844,6 +5844,58 @@
       ]
     },
     {
+      "showId": "baby-regional-2024",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2024/04/what-could-be-better-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from baby-1983"
+        }
+      ]
+    },
+    {
+      "showId": "baby-regional-2024",
+      "file": "chicagoonstage--karen-topham.json",
+      "publishDate": null,
+      "url": "https://www.chicagoonstage.com/growing-up-with-baby/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from baby-1983"
+        }
+      ]
+    },
+    {
+      "showId": "baby-regional-2024",
+      "file": "chicagotheaterandarts--jodie-jacobs.json",
+      "publishDate": null,
+      "url": "https://chicagotheaterandarts.com/2024/04/20/16311/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from baby-1983"
+        }
+      ]
+    },
+    {
+      "showId": "baby-regional-2024",
+      "file": "new-city-stage--tristan-bruns.json",
+      "publishDate": null,
+      "url": "https://www.newcitystage.com/2024/04/26/baby-blues-a-review-of-baby-at-citadel-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from baby-1983"
+        }
+      ]
+    },
+    {
       "showId": "bacchae-west-end-2025",
       "file": "artsdesk--heather-neill.json",
       "score": 59,
@@ -7351,6 +7403,7 @@
     {
       "showId": "billy-elliot-the-musical-regional-2024",
       "file": "chicagotribune--chris-jones.json",
+      "score": 72,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/02/19/review-billy-elliot-at-paramount-theatre/?clearUserState=true",
       "findings": [
@@ -9846,6 +9899,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-regional-2025",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-CATS-at-Paramount-Theatre-Aurora-IL-20250511",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -26828,6 +26894,19 @@
       ]
     },
     {
+      "showId": "in-the-heights-regional-2024",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-IN-THE-HEIGHTS-at-Marriott-Theatre-Lincolnshire-IL-20240201",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "in-transit-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 78,
@@ -39933,6 +40012,19 @@
       ]
     },
     {
+      "showId": "on-golden-pond-regional-2024",
+      "file": "buzznews--cj-burroughs.json",
+      "publishDate": null,
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5411-review-on-golden-pond-at-skokie-theatre.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "on-sugarland-off-broadway-2022",
       "file": "vulture--helen-shaw.json",
       "score": 73,
@@ -42649,6 +42741,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2024 (5x) more than 2012 (0x). 2024 matches production: peter-and-the-starcatcher-regional-2024"
+        }
+      ]
+    },
+    {
+      "showId": "peter-and-the-starcatcher-regional-2024",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": null,
+      "url": "https://www.chicagotheatrereview.com/2024/08/magic-soaring-up-into-the-sky/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2024 (1x). 2012 matches production: peter-and-the-starcatcher-2012"
         }
       ]
     },
@@ -62973,6 +63078,19 @@
       ]
     },
     {
+      "showId": "the-singularity-play-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": null,
+      "url": "https://www.chicagotribune.com/2024/06/10/review-the-singularity-play-by-jackalope-at-berger-park-unleashes-ai-terror-on-theater-people/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-smile-of-her-off-west-end-2026",
       "file": "artsdesk--helen-hawkins.json",
       "score": 59,
@@ -66960,6 +67078,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
+      "showId": "waitress-regional-2025",
+      "file": "chicagocultureauthority--frank-sennett.json",
+      "publishDate": null,
+      "url": "https://chicagocultureauthority.com/2025/02/22/michelle-lauto-serves-up-a-breakout-performance-in-waitress-at-the-paramount/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from waitress-2021"
         }
       ]
     },
@@ -115372,7 +115503,7 @@
     {
       "showId": "the-revlon-girl-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 93,
+      "score": 97,
       "publishDate": "2026-10-29",
       "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-park-theatre-review",
       "findings": [
