@@ -161,6 +161,7 @@ test('envInputs reads the _READ=ok markers from read-lane-only-vars', () => {
 });
 
 // --- the real CLI, against temp lease and marker files ---
+// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json only supplies a real show id per market for the CLI; no factual value is pinned.
 const shows = JSON.parse(read('data/shows.json'));
 const showList = Array.isArray(shows.shows) ? shows.shows : shows;
 const realBway = showList.find((s) => s.market === 'broadway' && s.category === 'broadway' && !s.reviewEmbargoAt);
