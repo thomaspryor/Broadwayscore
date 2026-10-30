@@ -2900,5 +2900,36 @@
       }
     ],
     "queuedAt": "2026-10-30T14:56:01.865Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6631-pull-quotes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6631-pull-quotes",
+    "description": "land.yml did not land land/bro-6631-pull-quotes: the unit-tests-node gate went red at 222a6efe48. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41075641332",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6631-pull-quotes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "222a6efe4856da7687e0e6dd17b02b91b5fce528"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41075641332"
+      }
+    ],
+    "queuedAt": "2026-10-30T15:10:13.176Z"
   }
 ]
