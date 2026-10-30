@@ -588,6 +588,40 @@ function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, opposit
   return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
 }
 
+// URL-path market indicators. 'us' = Broadway/tour text (flags a London show);
+// 'uk' = West End/London text (flags a Broadway/Off-Broadway show).
+const URL_PATH_OPPOSITE_MARKET_PATTERNS = {
+  us: [/[-/](broadway-review|on-broadway|broadway[-/])/, /\/(chicago|national-tour)[-/]/],
+  uk: [/[-/](west-end-review|london-review|london[-/])/],
+};
+
+/**
+ * Does a review URL path carry the opposite market's production indicator?
+ * The show's own title slug is masked first (token boundaries only, BRO-6496):
+ * every critic URL for "London Assurance" contains "/review-london-assurance",
+ * which matched the London indicator and excluded all of the show's reviews.
+ * A title that IS the bare indicator word (a WE show titled "Chicago") masks
+ * that word too; accepted, since its own reviews would otherwise all flag.
+ *
+ * @param {object} args
+ * @param {string} args.urlPath - lowercased URL pathname
+ * @param {'us'|'uk'} args.oppositeMarket - which market's indicators to look for
+ * @param {string|null} [args.showTitle] - this show's title (null = no masking)
+ * @returns {boolean}
+ */
+function urlPathOppositeMarketIndicator({ urlPath, oppositeMarket, showTitle }) {
+  const patterns = URL_PATH_OPPOSITE_MARKET_PATTERNS[oppositeMarket];
+  if (!patterns || !urlPath) return false;
+  let p = String(urlPath).toLowerCase();
+  const slug = foldDiacritics(String(showTitle || '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  if (slug) {
+    const esc = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // '_' keeps a delimiter in place without being one the patterns key on.
+    p = p.replace(new RegExp(`(^|[^a-z0-9])${esc}(?=[^a-z0-9]|$)`, 'g'), '$1_');
+  }
+  return patterns.some((re) => re.test(p));
+}
+
 // ---------------------------------------------------------------------------
 // Null-URL aggregator-relay guard (2026 data audit S6-T1, BRO-4204)
 // ---------------------------------------------------------------------------
@@ -846,6 +880,7 @@ module.exports = {
   evaluateForwardCrossMarketGuard,
   evaluateReverseLondonCrossMarketGuard,
   evaluateUrlPathCrossMarketGuard,
+  urlPathOppositeMarketIndicator,
   // Null-URL aggregator-relay guard (audit S6-T1)
   AGGREGATOR_RELAY_SOURCE_PREFIXES,
   RELAY_RUN_WINDOW_GRACE_DAYS,

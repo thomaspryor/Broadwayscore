@@ -11,6 +11,7 @@ const {
   evaluateReverseLondonCrossMarketGuard,
   evaluateForwardCrossMarketGuard,
   evaluateUrlPathCrossMarketGuard,
+  urlPathOppositeMarketIndicator,
 } = require('./cross-market-guard.js');
 
 const D = (s) => new Date(s + 'T00:00:00Z');
@@ -577,4 +578,45 @@ test('allowCrossMarket skips the forward US-on-WE check too (BRO-6369)', () => {
   const off = classifyUsOnWeCrossMarket(base).level;
   assert.notEqual(off, 'skip');
   assert.equal(classifyUsOnWeCrossMarket({ ...base, allowCrossMarket: true }).level, 'skip');
+});
+
+// BRO-6496: the show's own title slug must not count as a market indicator.
+test('urlPathOppositeMarketIndicator: London Assurance critic URLs are not London indicators', () => {
+  const t = 'London Assurance';
+  for (const urlPath of [
+    '/2019/12/15/theater/review-london-assurance-minds-its-manners.html',
+    '/london-assurance-review/',
+    '/review-london-assurance',
+  ]) {
+    assert.equal(urlPathOppositeMarketIndicator({ urlPath, oppositeMarket: 'uk', showTitle: t }), false, urlPath);
+    // without the title the old behaviour stands (this is what the self-heal keys on)
+    assert.equal(urlPathOppositeMarketIndicator({ urlPath, oppositeMarket: 'uk' }), true, urlPath);
+  }
+});
+
+test('urlPathOppositeMarketIndicator: real indicators still fire with title masking', () => {
+  const t = 'London Assurance';
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/london-assurance/london-review', oppositeMarket: 'uk', showTitle: t }), true);
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/review-london-assurance-west-end-review', oppositeMarket: 'uk', showTitle: t }), true);
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/theatre/hamlet-london-review', oppositeMarket: 'uk', showTitle: 'Hamlet' }), true);
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/foo/on-broadway/bar', oppositeMarket: 'us', showTitle: 'Hamlet' }), true);
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/reviews/chicago-tour', oppositeMarket: 'us', showTitle: 'Hamlet' }), true);
+});
+
+test('urlPathOppositeMarketIndicator: masking is token-bounded and symmetric', () => {
+  // "londonassurance" is not the title token, so it is not masked (and does not match either)
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/londonassurance/london-review', oppositeMarket: 'uk', showTitle: 'London Assurance' }), true);
+  // WE show whose title holds "broadway"
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/broadway-bounty-hunter-review', oppositeMarket: 'us', showTitle: 'Broadway Bounty Hunter' }), false);
+  // diacritics fold like normalizeTitleKey
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/london-cafe-review', oppositeMarket: 'uk', showTitle: 'London Café' }), false);
+  // a title equal to the bare indicator word masks it (accepted, see JSDoc)
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/reviews/chicago-review', oppositeMarket: 'us', showTitle: 'Chicago' }), false);
+});
+
+test('urlPathOppositeMarketIndicator: null/empty title and path are safe', () => {
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/x/london-review', oppositeMarket: 'uk', showTitle: null }), true);
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/x/london-review', oppositeMarket: 'uk', showTitle: '' }), true);
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '', oppositeMarket: 'uk', showTitle: 'X' }), false);
+  assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/x/london-review', oppositeMarket: 'nope', showTitle: 'X' }), false);
 });
