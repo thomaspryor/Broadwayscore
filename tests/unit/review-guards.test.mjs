@@ -712,8 +712,12 @@ describe('isRoundupUrl — Playbill Verdict roundup slugs (BRO-4272, School Girl
   });
 
   // The only two playbill-outlet rows live in reviews.json: must stay unmatched.
-  test('live Playbill rows are NOT roundups (week-in-review column, on-the-record)', () => {
-    assert.strictEqual(isRoundupUrl('https://playbill.com/article/playbill-theatre-week-in-review-april-14-20-critics-love-starcatcher-one-man-and-clybourne-park-com-199201').isRoundup, false);
+  // BRO-6580: the Week in Review column summarises what the critics said
+  // (clybourne-park 2012 quotes 10 outlets), so it is a roundup now.
+  // On the Record is a cast-album review: not a roundup, excluded instead by
+  // the cast-album-review named non-review rule.
+  test('Playbill week-in-review column is a roundup; on-the-record is not', () => {
+    assert.strictEqual(isRoundupUrl('https://playbill.com/article/playbill-theatre-week-in-review-april-14-20-critics-love-starcatcher-one-man-and-clybourne-park-com-199201').isRoundup, true);
     assert.strictEqual(isRoundupUrl('https://playbill.com/article/on-the-record-the-light-in-the-piazza-and-little-women-com-126426').isRoundup, false);
   });
 
