@@ -1894790,21 +1894790,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-30T19:27:16.175Z",
-    "completedAt": "2026-10-30T19:27:26.981Z",
-    "totalReviews": 4,
+    "startedAt": "2026-10-30T19:36:01.030Z",
+    "completedAt": "2026-10-30T19:36:10.588Z",
+    "totalReviews": 3,
     "processed": 2,
-    "skipped": 2,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 11811,
-      "output": 446,
+      "input": 11167,
+      "output": 543,
       "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 29712
+      "total": 28817
     },
-    "costUsd": 0.0429184,
-    "runId": "41114346563",
+    "costUsd": 0.042115400000000004,
+    "runId": "41115851460",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1901251,12 +1901251,32 @@
         "hasDisagreement": false
       },
       {
+        "showId": "bottle-fly-regional-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "bowl-ep-off-broadway-2025",
         "ourDistribution": {
           "up": 7,
           "flat": 2,
           "down": 0,
           "total": 9
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "boy-gets-girl-regional-2024",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -1906402,6 +1906422,16 @@
           "flat": 3,
           "down": 1,
           "total": 10
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "evil-perfect-regional-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -1929414,16 +1929444,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-love-object-regional-2024",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 0,
-          "down": 0,
-          "total": 2
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-loved-ones-off-broadway-2026",
         "ourDistribution": {
           "up": 10,
@@ -1933183,6 +1933203,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "this-is-our-youth-regional-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "this-is-rambert-west-end-2026",
         "ourDistribution": {
           "up": 4,
@@ -1936172,8 +1936202,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-30T19:32:25.014Z",
-    "completedAt": "2026-10-30T19:32:25.016Z",
+    "startedAt": "2026-10-30T19:41:07.931Z",
+    "completedAt": "2026-10-30T19:41:07.932Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1936186,7 +1936216,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41114346563",
+    "runId": "41115851460",
     "source": "comparative-rescore",
     "errorDetails": []
   }
