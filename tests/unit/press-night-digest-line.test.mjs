@@ -149,7 +149,7 @@ test('email block: renders last night only, escapes the line, quiet when there w
   const html = D.renderPressNightBlock(snap, { nowMs: MORNING });
   assert.match(html, /Last night's openings/);
   assert.match(html, /A &lt;b&gt;Show&lt;\/b&gt;: 1 of 2 reviews live by 1:02am\. Failed\./);
-  assert.match(html, /Each failed opening has a fix card/);
+  assert.match(html, /color:#b91c1c;/);
   assert.equal(D.renderPressNightBlock(snap, { nowMs: Date.parse('2026-11-01T11:30:00Z') }), ''); // an older night
   assert.equal(D.renderPressNightBlock({ night: '2026-10-29', lines: [] }, { nowMs: MORNING }), '');
 });

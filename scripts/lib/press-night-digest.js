@@ -312,7 +312,8 @@ async function fileFixCards({ section, ledger, createCard, commentCard, onFiled 
 // ── Morning email block ──────────────────────────────────────────────────────
 
 const defaultEsc = (x) => String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const MARK = { PASS: ['#15803d', 'Passed'], FAIL: ['#b91c1c', 'Failed'], UNKNOWN: ['#777', 'Not graded'], PENDING: ['#777', 'Not graded yet'] };
+// Each line already ends in its verdict, so the marker is only a colored dot.
+const DOT = { PASS: '#15803d', FAIL: '#b91c1c', UNKNOWN: '#999', PENDING: '#999' };
 
 /**
  * "Last night's openings" for send-morning-digest.js, from the press-night-digest snapshot. Renders nothing on
@@ -322,15 +323,11 @@ function renderPressNightBlock(snapshot, { esc = defaultEsc, nowMs = Date.now() 
   if (!snapshot || !Array.isArray(snapshot.lines) || !snapshot.lines.length) return '';
   if (snapshot.night !== lastNight(nowMs)) return '';
   const rows = snapshot.lines.map((l) => {
-    const [color, label] = MARK[l.verdict] || MARK.UNKNOWN;
-    return `<div style="margin:0 0 8px;font-size:14px;"><span style="color:${color};font-weight:700;">${esc(label)}</span> ${esc(l.line)}</div>`;
+    return `<div style="margin:0 0 8px;font-size:14px;"><span style="color:${DOT[l.verdict] || DOT.UNKNOWN};">&#9679;</span> ${esc(l.line)}</div>`;
   }).join('\n');
-  const failed = snapshot.lines.filter((l) => l.verdict === 'FAIL').length;
-  const note = failed ? `<p style="font-size:12px;color:#666;margin:0 0 8px;">Each failed opening has a fix card, already started.</p>` : '';
   return `<div style="margin:0 0 16px;">
     <p style="font-size:14px;font-weight:700;margin:0 0 8px;">Last night's openings</p>
     ${rows}
-    ${note}
   </div>`;
 }
 
