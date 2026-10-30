@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "showId": "a-few-good-men-2026",
+  "night": "2026-10-29",
+  "market": "broadway",
+  "embargoAt": "2026-10-30T02:00:00.000Z",
+  "probe": {
+    "startedAt": "2026-10-30T01:30:05.625Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-30T03:55:12.868Z",
+    "lastOkSampleAt": "2026-10-30T03:55:12.868Z"
+  },
+  "firstLiveAt": "2026-10-30T03:40:12.055Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-10-30T03:40:12.055Z",
+  "liveCount": 3,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-30T03:00:10.159Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-10-29",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "time out new york|adam feldman",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "tier": 1,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-30T03:40:12.055Z",
+      "prevOkSampleAt": "2026-10-30T03:35:11.760Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "talkin' broadway|howard miller",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "tier": 2,
+      "publishAt": "2026-10-29",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-30T03:40:12.055Z",
+      "prevOkSampleAt": "2026-10-30T03:35:11.760Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theater|jonathan mandell",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "tier": 2,
+      "publishAt": "2026-10-29",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-30T03:40:12.055Z",
+      "prevOkSampleAt": "2026-10-30T03:35:11.760Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-10-30T04:00:22.814Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "fileState": {
+    "capturedAt": "2026-10-30T04:00:26.645Z",
+    "files": [
+      {
+        "file": "av-club--drew-gillis.json",
+        "outletId": "av-club",
+        "outlet": "The A.V. Club",
+        "critic": "Drew Gillis",
+        "firstSeenAt": "2026-10-29T14:31:05.772Z",
+        "publishDate": "2026-10-06",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "cnn--david-mack.json",
+        "outletId": "cnn",
+        "outlet": "CNN",
+        "critic": "David Mack",
+        "firstSeenAt": "2026-10-29T17:19:03.550Z",
+        "publishDate": "2026-10-25",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "deadline--greg-evans.json",
+        "outletId": "deadline",
+        "outlet": "Deadline",
+        "critic": "Greg Evans",
+        "firstSeenAt": "2026-06-24T17:39:51Z",
+        "publishDate": null,
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "ew--dalton-ross.json",
+        "outletId": "ew",
+        "outlet": "Entertainment Weekly",
+        "critic": "Dalton Ross",
+        "firstSeenAt": "2026-10-29T01:27:42.671Z",
+        "publishDate": "2026-10-08",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "goldderby--ethan-alter.json",
+        "outletId": "goldderby",
+        "outlet": "Goldderby",
+        "critic": "Ethan Alter",
+        "firstSeenAt": "2026-10-29T01:27:50.418Z",
+        "publishDate": "2026-10-06",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "letterboxd--unknown.json",
+        "outletId": "letterboxd",
+        "outlet": "letterboxd",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-29T14:30:52.258Z",
+        "publishDate": "2026-10-28",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--frank-scheck.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck",
+        "firstSeenAt": "2026-10-30T03:53:13.642Z",
+        "publishDate": "2026-10-29",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo",
+        "firstSeenAt": "2026-10-30T03:53:06.141Z",
+        "publishDate": "2026-10-29",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outletId": "nyt-theater",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell",
+        "firstSeenAt": "2026-10-30T02:34:45.439Z",
+        "publishDate": "2026-10-29",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytimes--jesse-mckinley.json",
+        "outletId": "nytimes",
+        "outlet": "The New York Times",
+        "critic": "Jesse McKinley",
+        "firstSeenAt": "2026-10-29T01:27:58.306Z",
+        "publishDate": "2026-10-27",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytimes--michael-paulson.json",
+        "outletId": "nytimes",
+        "outlet": "The New York Times",
+        "critic": "Michael Paulson",
+        "firstSeenAt": "2026-10-29T14:31:12.637Z",
+        "publishDate": "2026-06-23",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytimes--nancy-coleman.json",
+        "outletId": "nytimes",
+        "outlet": "The New York Times",
+        "critic": "Nancy Coleman",
+        "firstSeenAt": "2026-10-29T14:39:44.989Z",
+        "publishDate": "2026-10-29",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "onstage-blog--christopher-peterson.json",
+        "outletId": "onstage-blog",
+        "outlet": "OnStage Blog",
+        "critic": "Christopher Peterson",
+        "firstSeenAt": "2026-10-29T14:30:59.926Z",
+        "publishDate": "2026-09-08",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "talkinbroadway--howard-miller.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller",
+        "firstSeenAt": "2026-10-30T01:36:29.214Z",
+        "publishDate": "2026-10-29",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "talkinbroadway--unknown.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller",
+        "firstSeenAt": "2026-10-30T01:36:29.214Z",
+        "publishDate": "2026-10-29",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--david-gordon.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "David Gordon",
+        "firstSeenAt": "2026-10-30T03:52:58.706Z",
+        "publishDate": "2026-10-29",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "timeout--adam-feldman.json",
+        "outletId": "timeout",
+        "outlet": "Time Out New York",
+        "critic": "Adam Feldman",
+        "firstSeenAt": "2026-10-30T02:34:46.439Z",
+        "publishDate": "2026-10-30",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "times-square-chronicles--genevieve-rafter-keddy.json",
+        "outletId": "times-square-chronicles",
+        "outlet": "Times Square Chronicles",
+        "critic": "Genevieve Rafter Keddy",
+        "firstSeenAt": "2026-10-08T17:45:44.609Z",
+        "publishDate": "2026-10-07",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "variety--anna-tingley.json",
+        "outletId": "variety",
+        "outlet": "Variety",
+        "critic": "Anna Tingley",
+        "firstSeenAt": "2026-10-15T15:29:19.469Z",
+        "publishDate": "2026-10-13",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "variety--daniel-daddario.json",
+        "outletId": "variety",
+        "outlet": "Variety",
+        "critic": "Daniel D'Addario",
+        "firstSeenAt": "2026-10-29T01:27:34.333Z",
+        "publishDate": "2026-10-02",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "vulture--jason-p-frank.json",
+        "outletId": "vulture",
+        "outlet": "Vulture",
+        "critic": "Jason P. Frank",
+        "firstSeenAt": "2026-10-29T01:36:15.000Z",
+        "publishDate": "2026-10-15",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
