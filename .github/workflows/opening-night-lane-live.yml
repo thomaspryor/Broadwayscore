@@ -233,6 +233,10 @@ jobs:
           # (the PAT Express uses for ORCHESTRATOR_PAUSED); this job-start value is the fallback if that read fails.
           LANE_STANDDOWN: ${{ vars.LANE_STANDDOWN }}
           LANE_STANDDOWN_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-6651: encrypted copies of the aggregator/index pages each pass read (the repo is public, so the key is required;
+          # without it nothing is recorded). Replayed by scripts/lib/lane-recorded-nights/recording-night.js.
+          LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY || secrets.REVIEW_TEXTS_TOKEN }}
+          LANE_RECORD_DIR: ${{ runner.temp }}/lane-recording
         run: |
           RC=0
           npx tsx scripts/opening-night-lane.js "--show=${SHOW}" "--night=${NIGHT}" --core-dir=/tmp/core-data-checkout || RC=$?
@@ -240,6 +244,16 @@ jobs:
           # rc 3 is not a success inside the press window: the next step pages (plan v2 step 2, BRO-6620).
           if [ "$RC" -eq 3 ]; then echo "::notice::lane stood down (not armed, lease held elsewhere, or LANE_STANDDOWN set)"; exit 0; fi
           exit "$RC"
+
+      - name: Upload the lane's page recording (encrypted)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: lane-recording-${{ inputs.show }}-${{ inputs.night }}
+          path: ${{ runner.temp }}/lane-recording
+          if-no-files-found: ignore
+          retention-days: 30
+          overwrite: true
 
       # BRO-6620: an explicit stood-down marker for LANE_ONLY_MARKETS. The old path (Express retry dispatch, poller
       # rebuild/deploy) reads data/opening-night/lane-stood-down/<show>__<night>.json, never this job's conclusion, and
@@ -409,6 +423,8 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          # BRO-6651: encrypted page recording lands in $RUNNER_TEMP/shadow/recording, uploaded with the report below.
+          LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY || secrets.REVIEW_TEXTS_TOKEN }}
         run: npx tsx scripts/opening-night-lane-shadow.js "--show=${SHOW}" "--night=${NIGHT}" "--window-min=${WINDOW}" "--out=${RUNNER_TEMP}/shadow"
 
       - name: Upload shadow report and ledger

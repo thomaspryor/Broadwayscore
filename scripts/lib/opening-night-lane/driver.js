@@ -167,6 +167,15 @@ function realSerpSearch(env) {
   };
 }
 
+/** BRO-6651: the discovery page recorder when LANE_RECORD_DIR is set and a key exists (otherwise null: nothing is recorded). */
+function recorderFromEnv(env) {
+  if (!env.LANE_RECORD_DIR) return null;
+  const rec = require('./fetch-recording');
+  const r = rec.createFetchRecorder({ dir: env.LANE_RECORD_DIR, key: rec.keyFromEnv(env), dateOf: require('./discovery').extractPublishDate });
+  if (!r.enabled) console.error('lane recording: LANE_RECORD_DIR set but no LANE_RECORDING_KEY / REVIEW_TEXTS_TOKEN, so nothing is recorded (pages are copyrighted and the repo is public)');
+  return r;
+}
+
 /**
  * Real dependencies. Checks the scorer keys before anything claims a lease. `routeAlert` and `ScorerClass`
  * (EnsembleReviewScorer, TypeScript, hence `npx tsx`) are passed in by the CLI rather than required here: anything this
@@ -200,6 +209,7 @@ function buildRealLaneDeps({
       const reviewsFile = path.join(repoDir, 'data', 'reviews.json');
       return wireLaneNight({
         show, night, openingDate, timeZone, ledgerDir, adaptersConfig, laneFetch,
+        recorder: recorderFromEnv(env),
         scoreText: inline.ensembleScoreText(scorer),
         // One instance for the whole night: its push queue and pending merges must be shared by every batch.
         publishPorts: createRealPublishPorts({ show: show.id, repoDir, coreDir, holder }),
@@ -225,14 +235,14 @@ const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pol
  * adapter list, inline fetch-and-score, syndication rows and missing-outlet SERP gating. Nothing here reads env or the
  * wall clock, and there is no default for any port, so nothing real can be reached by forgetting one.
  *
- *   laneFetch {fetchPage(url, opts), close()}, scoreText(text, meta), fetchPorts? {extractArticle, extractMeta}
+ *   laneFetch {fetchPage(url, opts), close()}, recorder? (fetch-recording.js: wraps the discovery fetchText only), scoreText(text, meta), fetchPorts? {extractArticle, extractMeta}
  *   (default: the real extractors over laneFetch), publishPorts | makePublishPorts(clock) (+ forkClock), now, wait,
  *   reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards, search (SERP backend), decodeImpl (Google News; null = off),
  *   windowMs?, tuning? (TUNING_KEYS)
  * @returns {({shouldStop?, abandonPending?}) => Promise<runLaneNight result>}
  */
 function wireLaneNight({
-  show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
+  show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, recorder = null, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
   now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search, decodeImpl, windowMs, tuning = {},
 } = {}) {
   const required = { show, night, ledgerDir, laneFetch, scoreText, now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search };
@@ -249,7 +259,7 @@ function wireLaneNight({
     const { laneAdapters } = require('./adapters');
     const scoring = inline.createInlineScoring({ show, night, ledgerDir, now, fetchPage: laneFetch.fetchPage, ...(fetchPorts || inline.realFetchPorts({ fetchPage: laneFetch.fetchPage })), scoreText });
     return Promise.resolve().then(() => runLaneNight({
-      show, night, openingDate, timeZone, ledgerDir, fetchText: discovery.fetchTextFrom(laneFetch.fetchPage), shouldStop, abandonPending,
+      show, night, openingDate, timeZone, ledgerDir, fetchText: recorder ? recorder.wrapFetchText(discovery.fetchTextFrom(laneFetch.fetchPage)) : discovery.fetchTextFrom(laneFetch.fetchPage), shouldStop, abandonPending,
       ...(windowMs > 0 ? { windowMs } : {}),
       ...tuning,
       reviewTextsDir,
@@ -267,4 +277,4 @@ function wireLaneNight({
   };
 }
 
-module.exports = { HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };
+module.exports = { recorderFromEnv, HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };

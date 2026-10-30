@@ -128,11 +128,14 @@ const replayPublishPorts = (now) => ({
   ...shadow.createShadowPublishPorts({ onRows: () => {}, now }), pushData: async () => ({ pushed: false }), isLeased: async () => true,
 });
 
-async function replayNight({ passes = 4, everyMin = 2, fetchOpts, site: useSite = false } = {}) {
+// recorder({now}) -> a fetch recorder; fetchPageFrom({now, T0, fallback}) -> a fetchPage (BRO-6651: record a night, replay the recording).
+async function replayNight({ passes = 4, everyMin = 2, fetchOpts, site: useSite = false, recorder = null, fetchPageFrom = null } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5201-ii-'));
   let clock = T0;
   const now = () => clock;
-  const { fetchPage, calls, reviewFetches } = replayFetch(fetchOpts);
+  const base = replayFetch(fetchOpts);
+  const { calls, reviewFetches } = base;
+  const fetchPage = fetchPageFrom ? fetchPageFrom({ now, T0, fallback: base.fetchPage }) : base.fetchPage;
   const reviewTextsDir = path.join(dir, 'review-texts');
   fs.mkdirSync(reviewTextsDir);
   // With `site`, a modelled live site stands behind the publish ports so the night can be graded like a real one.
@@ -144,6 +147,7 @@ async function replayNight({ passes = 4, everyMin = 2, fetchOpts, site: useSite 
       // No outlet feeds this night (the shadow ran with none) and no Browserbase: Talkin' Broadway answered directly.
       adaptersConfig: { feeds: [] },
       laneFetch: { fetchPage, close: async () => {} },
+      recorder: recorder ? recorder({ now }) : null,
       fetchPorts: {
         extractArticle: (html) => html,
         // A distinct critic per page, so no row reads as another's syndicated copy.

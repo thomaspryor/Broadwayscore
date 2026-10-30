@@ -716,7 +716,7 @@ function serpAllowed({ startedAt, now, missingOutlets = [], afterMs = SERP_AFTER
  */
 function fetchTextFrom(fetchPage) {
   return async (url, opts = {}) => {
-    const { withFinalUrl, ...pageOpts } = opts || {};
+    const { withFinalUrl, recordAs, ...pageOpts } = opts || {}; // recordAs is for the fetch recorder (fetch-recording.js), not the fetcher
     const r = await fetchPage(url, pageOpts);
     if (!r || !r.content) throw new Error(`fetchText: no content for ${url}`);
     return withFinalUrl ? { content: r.content, finalUrl: r.finalUrl || null } : r.content;
@@ -845,7 +845,7 @@ async function runDiscoveryPass({
       if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
       if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
       dateChecks++;
-      try { publishDate = extractPublishDate(await fetchText(c.fetchUrl || c.url)) || c.fallbackDate || null; } catch (e) {
+      try { publishDate = extractPublishDate(await fetchText(c.fetchUrl || c.url, { recordAs: 'date-check' })) || c.fallbackDate || null; } catch (e) {
         errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
         // A timeout or the pass deadline says nothing about the article: no strike (three strikes end the candidate for the night).
         if (/timed out|deadline reached/.test(String(e && e.message))) { deferredDateChecks.push(c.url); continue; }

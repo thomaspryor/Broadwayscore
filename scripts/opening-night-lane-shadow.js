@@ -55,7 +55,9 @@ async function main() {
   // the scorer adds Kimi, whose 300 s OpenRouter timeouts and retries cost ~15 minutes per review in the first CI run.
   const scorer = new EnsembleReviewScorer(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY);
   const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts({ fetchPage: laneFetch.fetchPage }), scoreText: inline.ensembleScoreText(scorer) });
-  const fetchText = discovery.fetchTextFrom(laneFetch.fetchPage);
+  // BRO-6651: record the aggregator/index pages each pass reads, encrypted (the repo is public) beside the report artifact.
+  const recorder = require('./lib/opening-night-lane/driver').recorderFromEnv({ ...env, LANE_RECORD_DIR: env.LANE_RECORD_DIR || path.resolve(outDir, 'recording') });
+  const fetchText = recorder.wrapFetchText(discovery.fetchTextFrom(laneFetch.fetchPage));
   const ss = require('./lib/show-score-discover');
   const showScoreGuards = { urlMap: ss.loadShowScoreUrlMap(repoDir), allShows: Array.isArray(shows) ? shows : shows.shows || [] };
   const serpSearch = async (query) => {
