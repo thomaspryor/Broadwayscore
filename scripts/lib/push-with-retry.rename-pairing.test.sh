@@ -136,7 +136,7 @@ gitc "$d/seed" rm -q "$OLD"; mkdir -p "$d/seed/$(dirname "$THR")"
 stub "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/medea-theater-review-1274662/" hollywood-reporter medea-off-broadway-2026 > "$d/seed/$THR"
 gitc "$d/seed" add -A; gitc "$d/seed" commit -q -m remote-run; gitc "$d/seed" push -q "$d/origin.git" main 2>/dev/null
 THR_REMOTE=$(git --git-dir="$d/origin.git" rev-parse "main:$THR")
-sed -i 's/"criticName": "Unknown"/"criticName": "Greg Evans"/' "$d/runner/$OLD"
+perl -pi -e 's/"criticName": "Unknown"/"criticName": "Greg Evans"/' "$d/runner/$OLD"
 gitc "$d/runner" commit -qam our-edit
 git clone -q -b main "$d/runner" "$d/probe" 2>/dev/null; gitc "$d/probe" fetch -q "$d/origin.git" main 2>/dev/null
 if gitc "$d/probe" rebase -q -X theirs FETCH_HEAD >/dev/null 2>&1 && grep -q 'Greg Evans' "$d/probe/$THR" 2>/dev/null; then
