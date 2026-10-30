@@ -10,7 +10,7 @@ export const TIER_CHIP_BOX_TIGHT = `${TIER_CHIP_BOX} max-sm:gap-[2px] max-sm:px-
 
 /** Text color of the resting chip: Tier 1 a touch brighter, the rest gray. */
 export function tierChipTextClass(tier: OutletTier): string {
-  return tier === 1 ? 'text-gray-300' : 'text-gray-400';
+  return tier === 1 ? 'text-gray-300' : 'text-fg-muted';
 }
 
 // Four ascending bars, lit one per step of weight (T1 all four, T4 one), so the

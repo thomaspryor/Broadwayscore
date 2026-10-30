@@ -88,7 +88,7 @@ export function GoldListNav({ currentListType, seasonSlug }: GoldListNavProps) {
             className={`flex items-center px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
               tier === currentTier
                 ? 'bg-brand/15 text-brand border-brand/30'
-                : 'text-gray-400 hover:text-gray-300 hover:bg-white/5 border-transparent'
+                : 'text-gray-400 hover:text-white hover:bg-white/5 border-transparent'
             }`}
           >
             {venueTierLabel(tier)}
@@ -110,7 +110,7 @@ export function GoldListNav({ currentListType, seasonSlug }: GoldListNavProps) {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                   isActive
                     ? `${c.bgClass} ${c.color} ${c.borderClass}`
-                    : 'text-gray-400 hover:text-gray-300 hover:bg-white/5 border-transparent'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5 border-transparent'
                 }`}
               >
                 <GoldListBadge type={lt} size="sm" />

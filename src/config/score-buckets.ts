@@ -83,8 +83,8 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     shortLabel: 'TBD',
     minScore: -1,
     maxScore: -1,
-    color: 'text-gray-400',       // Gray
-    bgColor: 'bg-gray-400/20',
+    color: 'text-fg-muted',      // Gray
+    bgColor: 'bg-fg-placeholder/20',
     description: 'Not enough reviews yet',
   },
 ];

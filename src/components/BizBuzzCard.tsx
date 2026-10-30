@@ -527,7 +527,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           <div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-300 transition-colors"
+              className="flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors"
             >
               <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
               {isExpanded ? 'Hide details' : 'Show details'}

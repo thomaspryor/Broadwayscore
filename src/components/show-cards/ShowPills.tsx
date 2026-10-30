@@ -14,12 +14,12 @@ export function StatusBadge({ status }: { status: string }) {
 
   const colorClass = {
     open: 'bg-emerald-500/15 text-emerald-400',
-    closed: 'bg-gray-500/15 text-gray-400',
+    closed: 'bg-gray-500/15 text-fg-muted',
     previews: 'bg-purple-500/15 text-purple-400',
     upcoming: 'bg-blue-500/15 text-blue-400',
     announced: 'bg-blue-500/15 text-blue-400',
     syncing: 'bg-status-previews-bg text-status-previews',
-  }[status] || 'bg-gray-500/15 text-gray-400';
+  }[status] || 'bg-gray-500/15 text-fg-muted';
 
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full ${status === 'syncing' ? 'text-xs' : 'text-[10px]'} leading-none font-semibold uppercase tracking-wide ${colorClass}`}>
@@ -128,7 +128,7 @@ export function CategoryBadge({ category, isOpera = false }: { category?: string
 export function ProductionPill({ isRevival }: { isRevival: boolean }) {
   const label = isRevival ? 'REVIVAL' : 'ORIGINAL';
   const colorClass = isRevival
-    ? 'bg-gray-500/20 text-gray-400'
+    ? 'bg-gray-500/20 text-fg-muted'
     : 'bg-amber-500/20 text-amber-400';
 
   return (

@@ -347,7 +347,7 @@ export default function TonyAwardsHubPage() {
                         <td className="py-2.5 pr-4 text-sm text-gray-400">{winner.category.replace('Best ', '')}</td>
                         <td className="py-2.5 pr-4 text-right">
                           {displayScore !== null ? (
-                            <span className="text-sm font-semibold" style={{ color: tier?.color || '#9ca3af' }}>
+                            <span className="text-sm font-semibold" style={{ color: tier?.color || '#b8bec9' }}>
                               {Math.round(displayScore)}
                             </span>
                           ) : (

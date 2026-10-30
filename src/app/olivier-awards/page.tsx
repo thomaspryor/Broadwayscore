@@ -221,7 +221,7 @@ export default function OlivierAwardsHubPage() {
                       <td className="py-2.5 pr-4 text-right text-sm text-gray-300">{w.wins.length}</td>
                       <td className="py-2.5 text-right">
                         {w.compositeScore !== null ? (
-                          <span className="text-sm font-semibold" style={{ color: tier?.color || '#9ca3af' }}>
+                          <span className="text-sm font-semibold" style={{ color: tier?.color || '#b8bec9' }}>
                             {Math.round(w.compositeScore)}
                           </span>
                         ) : (

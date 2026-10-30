@@ -79,7 +79,7 @@ export default function RatingsModule({
             <span className="text-xs font-bold text-white tabular-nums whitespace-nowrap">avg {avg.toFixed(1)}★</span>
             {/* Skip the count-label row so the line never crosses a number. */}
             <span className="h-5 flex-shrink-0" />
-            <span className="flex-1 w-0.5 rounded-full bg-gray-400/70" />
+            <span className="flex-1 w-0.5 rounded-full bg-fg-placeholder/70" />
           </div>
         </div>
       </div>

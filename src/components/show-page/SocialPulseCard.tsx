@@ -268,7 +268,7 @@ function parseRank(r: string | undefined): { position: string; total: string; ma
  * rank badge. Top 20% = gold-ish, top 40% = orange, then desaturating.
  */
 function rankBadgeColor(position: number, total: number): { bg: string; text: string } {
-  if (total === 0) return { bg: '#374151', text: '#9ca3af' };
+  if (total === 0) return { bg: '#374151', text: '#b8bec9' };
   const percentile = position / total;
   if (percentile <= 0.1) return { bg: '#f59e0b', text: '#1f2937' }; // top 10% — gold
   if (percentile <= 0.2) return { bg: '#f97316', text: '#ffffff' }; // top 20% — orange

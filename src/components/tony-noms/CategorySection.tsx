@@ -410,7 +410,7 @@ function PerformerRow({ show, hideMarketOdds = false }: { show: TonyCategory['sh
             <span className="text-sm font-bold text-white leading-tight block truncate">{show.nomineePersonName}</span>
           )}
         </div>
-        <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
+        <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-white transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
       </div>

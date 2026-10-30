@@ -547,7 +547,7 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                                 href={ensureHttps(item.show.officialUrl) || '#'}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 text-gray-400 hover:text-gray-300 font-medium text-xs mt-2 transition-colors"
+                                className="inline-flex items-center gap-1.5 text-gray-400 hover:text-white font-medium text-xs mt-2 transition-colors"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 Official site

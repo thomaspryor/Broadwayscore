@@ -154,7 +154,7 @@ export default function ShowSearchDropdown({
                     <span className={`px-1 py-0.5 rounded font-medium ${
                       show.status === 'open' ? 'bg-green-500/20 text-green-400' :
                       show.status === 'previews' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-gray-500/20 text-gray-400'
+                      'bg-gray-500/20 text-fg-muted'
                     }`}>
                       {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : show.status === 'upcoming' ? 'Upcoming' : show.status === 'announced' ? 'Announced' : 'Closed'}
                     </span>
@@ -174,7 +174,7 @@ export default function ShowSearchDropdown({
                     </span>
                     {show.od && <span className="text-fg-muted">{show.od.slice(0, 4)}</span>}
                     {show.dy && (
-                      <span className="px-1 py-0.5 rounded font-medium bg-gray-500/20 text-gray-400">No critic score</span>
+                      <span className="px-1 py-0.5 rounded font-medium bg-gray-500/20 text-fg-muted">No critic score</span>
                     )}
                   </div>
                 </div>
@@ -227,7 +227,7 @@ export default function ShowSearchDropdown({
                   {candidate.venue && <span className="truncate">{candidate.venue}</span>}
                   {candidate.city && <span>· {candidate.city}</span>}
                   {candidate.openingDate && <span>· {candidate.openingDate.slice(0, 4)}</span>}
-                  <span className="px-1 py-0.5 rounded font-medium bg-gray-500/20 text-gray-400 flex-shrink-0">No critic score</span>
+                  <span className="px-1 py-0.5 rounded font-medium bg-gray-500/20 text-fg-muted flex-shrink-0">No critic score</span>
                 </div>
               </div>
               <div className="flex-shrink-0 text-[10px] text-brand">{addingLiveId === candidate.id ? 'Adding...' : '+ Add'}</div>

@@ -316,10 +316,10 @@ export default function MethodologyPage() {
           </p>
           <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="text-gray-400">5 out of 5 stars</div><div className="text-gray-300">91 to 100</div>
-              <div className="text-gray-400">4 out of 5 stars</div><div className="text-gray-300">71 to 90</div>
-              <div className="text-gray-400">3 out of 5 stars</div><div className="text-gray-300">51 to 70</div>
-              <div className="text-gray-400">2 out of 5 stars</div><div className="text-gray-300">31 to 50</div>
+              <div className="text-fg-muted">5 out of 5 stars</div><div className="text-gray-300">91 to 100</div>
+              <div className="text-fg-muted">4 out of 5 stars</div><div className="text-gray-300">71 to 90</div>
+              <div className="text-fg-muted">3 out of 5 stars</div><div className="text-gray-300">51 to 70</div>
+              <div className="text-fg-muted">2 out of 5 stars</div><div className="text-gray-300">31 to 50</div>
             </div>
           </div>
           <p className="text-gray-300 text-sm mt-3">

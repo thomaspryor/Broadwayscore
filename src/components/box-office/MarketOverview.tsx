@@ -76,7 +76,7 @@ function SeasonChart({ c, week }: { c: MarketPage['seasonChart']; week: string }
           </g>
         ))}
         {band && <polygon points={band} className="fill-white/10" />}
-        <polyline points={line(c.lastSeason)} fill="none" className="stroke-gray-400" strokeWidth={1.5} strokeDasharray="4 3" />
+        <polyline points={line(c.lastSeason)} fill="none" className="stroke-fg-placeholder" strokeWidth={1.5} strokeDasharray="4 3" />
         <polyline points={line(c.thisSeason)} fill="none" className="stroke-brand" strokeWidth={2.5} strokeLinejoin="round" />
         {nowGross != null && <circle cx={x(lastThis)} cy={y(nowGross)} r={4} className="fill-brand" />}
         {months.map((m) => (
