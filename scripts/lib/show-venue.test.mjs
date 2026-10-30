@@ -23,9 +23,15 @@ function findShow(id) {
   return loadShows().find((s) => s.id === id);
 }
 
+// The id carries a category suffix (-west-end-2026 / -off-west-end-2026) that
+// gets reclassified in shows.json (BRO-6603); the slug stays stable, so key on it.
+function findBySlug(slug) {
+  return loadShows().find((s) => s.slug === slug);
+}
+
 test('BRO-2281: relocated Hackney Empire run carries the actual venue, not the cancelled Peacock Theatre booking', () => {
-  const show = findShow('im-every-woman-the-chaka-khan-musical-west-end-2026');
-  assert.ok(show, 'show im-every-woman-the-chaka-khan-musical-west-end-2026 must exist in shows.json');
+  const show = findBySlug('im-every-woman-the-chaka-khan-musical-west-end');
+  assert.ok(show, 'show with slug im-every-woman-the-chaka-khan-musical-west-end must exist in shows.json');
   assert.equal(show.venue, 'Hackney Empire');
 });
 
