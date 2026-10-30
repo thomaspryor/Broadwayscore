@@ -29,8 +29,9 @@ const fs = require('fs');
 const path = require('path');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
-const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow } = require('../rss-discovery');
+const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow, ALL_FEEDS } = require('../rss-discovery');
 const { resolveOutletFromUrl } = require('../review-normalization');
+const { isFeatureSectionReviewPath } = require('../domain-filters');
 const { admitLaneCandidate } = require('./trust-model');
 const ledger = require('./ledger');
 
@@ -151,7 +152,11 @@ function nonReviewReason(url, { aggregatorCited = false } = {}) {
   const segs = decodeURIComponent(u.pathname).toLowerCase().split('/').filter(Boolean);
   const words = segs.join(' ').replace(/[-_]+/g, ' ');
   const citedNewsReview = (s) => s === 'news' && aggregatorCited && /\breview\b/.test(segs[segs.length - 1].replace(/[-_]+/g, ' ')) && !ROUNDUP_SLUG.test(words);
-  if (segs.some((s) => NON_REVIEW_SEGMENTS.has(s) && !citedNewsReview(s))) return 'non-review-path';
+  // A /features/ section whose path names a review is a review (The Independent files its Broadway reviews under
+  // /theatre-dance/features/; A Few Good Men 2026 was lost to this rule, BRO-6066). The regular pipeline's rule
+  // (domain-filters.js isFeatureSectionReviewPath, BRO-6585), so the two paths agree; a round-up still never passes.
+  const featureReview = (s) => (s === 'features' || s === 'feature') && isFeatureSectionReviewPath(segs.join('/')) && !ROUNDUP_SLUG.test(words);
+  if (segs.some((s) => NON_REVIEW_SEGMENTS.has(s) && !citedNewsReview(s) && !featureReview(s))) return 'non-review-path';
   // An explicit "review" in the slug wins over a news word ("...-review-photos"): the review signal is the stronger claim.
   if (NON_REVIEW_SLUG.test(words) && !REVIEW_SIGNAL.test(words)) return 'non-review-slug';
   return null;
@@ -322,12 +327,28 @@ function parseFeedEntries(xml) {
   return parseFeedItems(text).map((it) => ({ ...it, date: dates.get(it.link) || feedDateInfo('', { atom }) }));
 }
 
-function rssAdapter({ feeds }) {
+/**
+ * The regular pipeline's review feeds (rss-discovery.js ALL_FEEDS) for the show's market: a feed tagged with the other
+ * market is skipped, an untagged one (the entertainment feeds) is kept. The lane read no feed at all on 2026-10-29
+ * (the shadow and the production driver both passed `feeds: []`), and New York Theater, which the regular pipeline
+ * found through its own feed, was never discovered (BRO-6066).
+ */
+function defaultLaneFeeds(show) {
+  const market = /west[-\s]?end/i.test(`${(show && show.market) || ''} ${(show && show.category) || ''}`) ? 'west-end' : 'broadway';
+  return ALL_FEEDS.filter((f) => !f.market || f.market === market).map((f) => ({ url: f.url, outletId: f.outletId, name: f.name }));
+}
+
+/** `feeds` omitted: defaultLaneFeeds(show). More feeds than MAX_SOURCES_PER_ADAPTER are read in turn, a window per pass. */
+function rssAdapter({ feeds } = {}) {
+  let turn = 0;
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
     async discover({ show, fetchText }) {
       const out = [];
-      for (const feed of (feeds || []).slice(0, MAX_SOURCES_PER_ADAPTER)) {
+      const all = feeds || defaultLaneFeeds(show);
+      const start = all.length > MAX_SOURCES_PER_ADAPTER ? (turn++ * MAX_SOURCES_PER_ADAPTER) % all.length : 0;
+      const batch = [...all, ...all].slice(start, start + Math.min(all.length, MAX_SOURCES_PER_ADAPTER));
+      for (const feed of batch) {
         let items;
         try { items = parseFeedEntries(await fetchText(feed.url)); } catch { continue; } // one dead feed never hides the others
         for (const it of items) {
@@ -832,7 +853,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 
 module.exports = {
   SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
+  nonReviewReason, hasReviewSignal, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

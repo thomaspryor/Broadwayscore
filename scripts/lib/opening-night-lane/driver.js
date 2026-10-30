@@ -158,7 +158,7 @@ function buildRealLaneDeps({
         adapters: [
           discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards(repoDir)), discovery.playbillVerdictAdapter(),
           discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter({ decodeImpl: require('../google-news-decode').decodeGoogleNewsLink }),
-          discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
+          discovery.rssAdapter({ feeds: adaptersConfig.feeds }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
           discovery.serpAdapter({ search: adaptersConfig.search || realSerpSearch(env) }),
         ],
         // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.

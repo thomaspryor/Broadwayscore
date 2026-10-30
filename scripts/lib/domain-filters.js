@@ -460,6 +460,19 @@ function isSocialMediaUrl(url, opts) {
  * Check if a URL is a non-review URL (social, ticket, aggregator, or reference site).
  * Use this to filter URLs that should never be treated as review sources.
  */
+// A singular whole-word "review"/"reviewed" anywhere in the (lowercased) path.
+function pathNamesReview(lowerPath) {
+  return /(^|[^a-z])review(ed)?([^a-z]|$)/.test(String(lowerPath || '').toLowerCase());
+}
+
+// A /features/ (or /feature/) section page that is a review: its path names a review and is not a round-up. The
+// Independent files its Broadway reviews under /theatre-dance/features/ (BRO-6585). Shared with the opening-night
+// lane's path rule (scripts/lib/opening-night-lane/discovery.js, BRO-6066) so the two never drift apart.
+function isFeatureSectionReviewPath(lowerPath) {
+  const p = String(lowerPath || '').toLowerCase();
+  return pathNamesReview(p) && !/round-?up/.test(p);
+}
+
 function isBlockedReviewUrl(url, opts) {
   try {
     const parsed = new URL(url);
@@ -494,7 +507,7 @@ function isBlockedReviewUrl(url, opts) {
     // section is /tickets/ (BRO-5876): a singular whole-word review/reviewed in the
     // path exempts the bare /tickets/ section only; /buy-tickets, /book-tickets and
     // tickets-in-london stay blocked (same rule as isEvergreenListingUrl).
-    const pathSaysReview = /(^|[^a-z])review(ed)?([^a-z]|$)/.test(lowerPath);
+    const pathSaysReview = pathNamesReview(lowerPath);
     if ((!pathSaysReview && lowerPath.includes('/tickets/')) || lowerPath.includes('/buy-tickets')
       || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')) return true;
     // Feature articles and interviews — not reviews
@@ -504,7 +517,7 @@ function isBlockedReviewUrl(url, opts) {
     // files its Broadway reviews under /theatre-dance/features/ (A Few Good Men
     // 2026, Every Brilliant Thing 2026 were dropped, BRO-6585). Interviews stay blocked.
     const pathParts = lowerPath.split('/').filter(Boolean);
-    const featureReviewExempt = pathSaysReview && !/round-?up/.test(lowerPath);
+    const featureReviewExempt = isFeatureSectionReviewPath(lowerPath);
     if (pathParts.some(p => p === 'interviews' || p === 'interview')) return true;
     if (!featureReviewExempt && pathParts.some(p => p === 'features' || p === 'feature')) return true;
     // The Stage publishes reviews only under /reviews/ and /long-reviews/.
@@ -582,6 +595,8 @@ function isOverseasHost(url) {
 }
 
 module.exports = {
+  pathNamesReview,
+  isFeatureSectionReviewPath,
   SOCIAL_DOMAINS,
   OVERSEAS_CCTLDS,
   isOverseasHost,

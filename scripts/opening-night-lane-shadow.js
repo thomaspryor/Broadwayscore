@@ -90,7 +90,7 @@ async function main() {
       adapters: [
         discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards), discovery.playbillVerdictAdapter(),
         discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
-        discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
+        discovery.rssAdapter({ feeds: adaptersConfig.feeds }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
         discovery.serpAdapter({ search: adaptersConfig.search || serpSearch }),
       ],
       missingOutlets: ({ seen }) => {
