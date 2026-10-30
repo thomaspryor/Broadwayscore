@@ -2107787,21 +2107787,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-30T00:03:23.198Z",
-    "completedAt": "2026-10-30T00:03:36.644Z",
-    "totalReviews": 5,
-    "processed": 3,
-    "skipped": 2,
+    "startedAt": "2026-10-30T00:03:04.039Z",
+    "completedAt": "2026-10-30T00:03:43.526Z",
+    "totalReviews": 12,
+    "processed": 8,
+    "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 19482,
-      "output": 922,
-      "cacheRead": 11421,
+      "input": 54103,
+      "output": 2606,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 47461
+      "total": 129985
     },
-    "costUsd": 0.07228590000000001,
-    "runId": "40976610055",
+    "costUsd": 0.2008473,
+    "runId": "40976455857",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2132716,6 +2132716,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "richard-iii-regional-2024",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 1,
+          "down": 0,
+          "total": 8
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "richard-iii-west-end-2014",
         "ourDistribution": {
           "up": 2,
@@ -2145986,8 +2145996,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-30T00:08:33.957Z",
-    "completedAt": "2026-10-30T00:08:33.958Z",
+    "startedAt": "2026-10-30T00:08:40.918Z",
+    "completedAt": "2026-10-30T00:08:40.920Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2146000,7 +2146010,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40976610055",
+    "runId": "40976455857",
     "source": "comparative-rescore",
     "errorDetails": []
   }
