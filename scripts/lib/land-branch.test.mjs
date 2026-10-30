@@ -20,7 +20,7 @@ const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
-  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath,
+  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath, isMergeableBothSidesLedger, jsonFileParses,
   isPromisorFetchFailure, isGeneratedDocConflict, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
@@ -1137,4 +1137,68 @@ test('BRO-6276 checkTimings: names where the in-lock re-check spent its time', (
     'safe-checks 4m12s, merged-tree-tests 9m3s, bash-syntax 1s',
   );
   assert.equal(checkTimings({ safeMs: 0 }), 'safe-checks 0s');
+});
+
+test('BRO-6519: a bot ledger BOTH sides changed is not an overlap (small re-check); anything else shared stays full', () => {
+  const AL = 'data/audit/alert-ledger.json';
+  const SP = 'data/audit/scraper-spend-ledger.jsonl';
+  const branch = ['scripts/lib/foo.js', AL, SP];
+  const yes = () => true;
+  const r = selectRecheckScope({ ancestor: true, intervening: [AL, SP], changedFiles: branch, ledgerOk: yes });
+  assert.equal(r.mode, 'small', r.reason);
+  // the union-merged .jsonl needs no parse check; the keyed .json does
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [SP], changedFiles: branch }).mode, 'small');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [AL], changedFiles: branch }).mode, 'full', 'no ledgerOk -> unknown -> full');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [AL], changedFiles: branch, ledgerOk: () => false }).mode, 'full', 'merged .json does not parse -> full');
+  // a real shared file next to a ledger still forces full
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [AL, 'scripts/lib/foo.js'], changedFiles: branch, ledgerOk: yes }).mode, 'full');
+  // other shared inert data keeps the conservative full re-check
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['data/audit/other.json'], changedFiles: ['data/audit/other.json'], ledgerOk: yes }).mode, 'full');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['data/audit/landings.jsonl'], changedFiles: ['data/audit/landings.jsonl'] }).mode, 'full');
+  assert.equal(isMergeableBothSidesLedger('scripts/alert-ledger.json', yes), false);
+  assert.equal(isMergeableBothSidesLedger('data/audit/alert-ledger.json.bak', yes), false);
+  // the switch still wins
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [SP], changedFiles: branch, disabled: true }).mode, 'full');
+  // trains: two members appending the union-merged ledger stay small
+  const t = selectTrainRecheckScope({ members: ['a', 'b'].map((n) => ({ name: n, base: 'a'.repeat(40), verified: true, ancestor: true, mainChanged: [SP], files: [SP, `scripts/lib/${n}.js`] })) });
+  assert.equal(t.mode, 'small', t.reason);
+});
+
+test('BRO-6519: jsonFileParses reads the merged ledger from disk', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ledger-parse-'));
+  const good = path.join(dir, 'good.json');
+  const bad = path.join(dir, 'bad.json');
+  fs.writeFileSync(good, '{"a":{"notifyCount":1}}\n');
+  fs.writeFileSync(bad, '{"a":1,\n<<<<<<< HEAD\n');
+  assert.equal(jsonFileParses(good), true);
+  assert.equal(jsonFileParses(bad), false);
+  assert.equal(jsonFileParses(path.join(dir, 'missing.json')), false);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('BRO-6519: makeVerifiedBaseChecks checks the MERGED alert ledger in cwd before calling a both-sides edit small', () => {
+  const v = 'a'.repeat(40);
+  const b = 'b'.repeat(40);
+  const AL = 'data/audit/alert-ledger.json';
+  const wt = fs.mkdtempSync(path.join(os.tmpdir(), 'ledger-wt-'));
+  fs.mkdirSync(path.join(wt, 'data', 'audit'), { recursive: true });
+  const ledger = path.join(wt, 'data', 'audit', 'alert-ledger.json');
+  let seen = null;
+  const git = (args) => {
+    if (args[0] === 'merge-base') return '';
+    if (args[0] !== 'diff') return '';
+    return String(args[args.length - 1]).endsWith('...HEAD') ? `scripts/lib/foo.js\n${AL}` : `scripts/lib/bar.js\n${AL}`; // substantive move: re-check
+  };
+  const scope = () => {
+    makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen = o; return []; }, git, prepare: () => [] })({ cwd: wt, baseSha: b, repoDir: '/repo', changedFiles: ['scripts/lib/foo.js', AL] });
+    return seen.recheckScope;
+  };
+  try {
+    fs.writeFileSync(ledger, '{"cond":{"notifyCount":2}}\n');
+    assert.equal(scope().mode, 'small', 'clean merged ledger -> small');
+    fs.writeFileSync(ledger, '{"cond":{"notifyCount":2},}\n');
+    assert.equal(scope().mode, 'full', 'merged ledger no longer parses -> full');
+  } finally {
+    fs.rmSync(wt, { recursive: true, force: true });
+  }
 });

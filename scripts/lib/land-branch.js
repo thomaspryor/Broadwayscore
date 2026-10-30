@@ -164,6 +164,29 @@ const INERT_FOR_VERIFICATION_RE = /^(data\/|public\/data\/|public\/images\/shows
 const CAPPED_DOCS_RE = /^(CLAUDE\.md|AGENTS\.md|\.claude\/CLOUD\.md)$/;
 const CAPPED_DOCS_TEST = 'scripts/tests/global-instructions.test.mjs';
 
+// BRO-6519: inert bot ledgers that a landing and main both write all the time
+// (the Land job's own alert-ledger update, ingest runs' spend rows), so "both
+// sides changed it" was the norm, and it sent every such landing to the full
+// 10-12 min re-check. The branch is already rebased onto main when the scope is
+// chosen (a conflicting rebase never reaches the checks), so a clean merge of
+// one of these is not a clash. The .jsonl is merge=union (.gitattributes); the
+// keyed-object .json counts only when the merged file still parses (ledgerOk).
+// Named one by one: other data/audit ledgers are not covered.
+const BOTH_SIDES_LEDGER_RE = /^data\/audit\/(alert-ledger\.json|scraper-spend-ledger\.jsonl)$/;
+
+/** True when `file` changed on both sides may still take the small re-check. ledgerOk(file) checks a .json ledger in the merged tree; null = unknown. */
+function isMergeableBothSidesLedger(file, ledgerOk = null) {
+  const f = String(file);
+  if (!BOTH_SIDES_LEDGER_RE.test(f) || !isInertForVerification(f)) return false;
+  if (f.endsWith('.jsonl')) return true;
+  return typeof ledgerOk === 'function' && ledgerOk(f) === true;
+}
+
+/** True when `file` exists and parses as JSON. */
+function jsonFileParses(file) {
+  try { JSON.parse(fs.readFileSync(file, 'utf8')); return true; } catch { return false; }
+}
+
 function isInertForVerification(file) {
   return !CAPPED_DOCS_RE.test(String(file)) && INERT_FOR_VERIFICATION_RE.test(String(file));
 }
@@ -335,16 +358,17 @@ function isBuildCodePath(file, buildScripts = null) {
  * production build runs only when the branch changed src/ and main changed
  * build code (isBuildCodePath). Unknown
  * ancestry, a failed diff, an overlap or the switch → 'full', today's
- * re-check. Fails closed.
- * @param {{ancestor:boolean, intervening:(string[]|null), changedFiles:string[], disabled?:boolean, buildScripts?:(Set<string>|null)}} o
+ * re-check. Fails closed. A bot ledger both sides wrote is not an overlap
+ * (isMergeableBothSidesLedger, BRO-6519).
+ * @param {{ancestor:boolean, intervening:(string[]|null), changedFiles:string[], disabled?:boolean, buildScripts?:(Set<string>|null), ledgerOk?:((file:string)=>boolean)|null}} o
  * @returns {{mode:'full'|'small', build:boolean, reason:string}}
  */
-function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = false, buildScripts = null }) {
+function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = false, buildScripts = null, ledgerOk = null }) {
   if (disabled) return { mode: 'full', build: true, reason: 'small re-check disabled (LAND_SMALL_RECHECK_DISABLED=true)' };
   if (ancestor !== true || !Array.isArray(intervening)) return { mode: 'full', build: true, reason: 'files main changed since the verified base are unknown' };
   if (!Array.isArray(changedFiles)) return { mode: 'full', build: true, reason: 'files the branch changed are unknown' };
   const mine = new Set((changedFiles || []).map(String));
-  const shared = intervening.map(String).filter((f) => mine.has(f));
+  const shared = intervening.map(String).filter((f) => mine.has(f) && !isMergeableBothSidesLedger(f, ledgerOk));
   if (shared.length) return { mode: 'full', build: true, reason: `branch and main both changed ${shared.length} file(s) (${shared.slice(0, 3).join(', ')})` };
   // runSafeChecks builds only for a src/ change on the branch (hasSrcChange).
   const build = [...mine].some((f) => f.startsWith('src/')) && intervening.some(f => isBuildCodePath(f, buildScripts));
@@ -433,6 +457,8 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
           disabled: process.env.LAND_SMALL_RECHECK_DISABLED === 'true',
           buildScripts: cwd && o.changedFiles?.some(f => f.startsWith('src/')) && intervening.some(f => f.startsWith('scripts/'))
             ? collectBuildScriptDependencies(cwd) : null,
+          // cwd holds the branch rebased onto baseSha: the merged ledger.
+          ledgerOk: cwd ? (f) => jsonFileParses(path.join(cwd, f)) : null,
         });
       log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (${extra}); ${recheckScope.mode} re-check: ${recheckScope.reason}`);
       return checks({ ...o, interveningTests, recheckScope });
@@ -1116,6 +1142,8 @@ module.exports = {
   selectRecheckScope,
   selectTrainRecheckScope,
   classifyIntervening,
+  isMergeableBothSidesLedger,
+  jsonFileParses,
   landBranch,
   defaultChecks,
   decideVerifiedBaseSkip,
