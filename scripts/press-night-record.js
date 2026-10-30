@@ -83,6 +83,13 @@ function printVerdict(result, asJson, rec) {
   for (const g of result.gates) {
     console.log(`  ${g.status.toUpperCase().padEnd(7)} ${g.name}: ${g.detail}${g.required ? '' : ' (not required)'}`);
   }
+  const rel = result.release;
+  if (rel) {
+    console.log(`[press-night] the first lane discovery (${rel.observedAt}) came ${rel.lateMin} min after the assumed embargo ${rel.assumedAt}; the verdict above uses the assumed embargo. Measured from the observed release: ${rel.observed.verdict}`);
+    for (const g of rel.observed.gates) {
+      console.log(`  ${g.status.toUpperCase().padEnd(7)} ${g.name}: ${g.detail}${g.required ? '' : ' (not required)'}`);
+    }
+  }
 }
 
 function listDue() {
@@ -91,10 +98,28 @@ function listDue() {
   const nowMs = arg('now') ? new Date(arg('now')).getTime() : Date.now();
   if (!ids.length || !Number.isFinite(nowMs)) { console.error('[press-night] --list-due needs --shows=a,b and a valid --now'); return 2; }
   for (const id of ids) {
-    const due = lib.probeDue(loadShow(id), nowMs);
+    const show = loadShow(id);
+    // stderr: the orchestrator reads stdout line by line as "show night market embargo".
+    const problem = lib.embargoOverrideProblem(show);
+    if (problem) console.error(`::warning::${id}: ${problem}; using the market default embargo`);
+    const due = lib.probeDue(show, nowMs);
     if (due) console.log(`${due.showId} ${due.night} ${due.market} ${due.embargoAt}`);
   }
   return 0;
+}
+
+/**
+ * BRO-6614: when the lane found the first review well after the assumed embargo, also judge +2h coverage
+ * from the observed release (reference['2h-observed']) against the same census, so --check can grade the
+ * night both ways. Removed again if the release no longer looks late.
+ */
+function setObservedReference(rec, census, { fetchedAt, excluded, note }) {
+  const rel = lib.observedRelease(rec);
+  if (!rel) { delete rec.reference['2h-observed']; return; }
+  const obsMs = new Date(rel.observedAt).getTime();
+  rec.reference['2h-observed'] = { ...lib.coverageAt({ ...rec, embargoAt: rel.observedAt }, census, obsMs + 2 * 3600000, { fetchedAt, excluded, deferLateSeen: true }), censusNote: note };
+  const r = rec.reference['2h-observed'];
+  console.log(`[press-night] reference 2h-observed (release ${rel.observedAt}, as of ${r.asOf}): ${r.status}${r.coverage != null ? ` coverage=${r.coverage} (${r.covered}/${r.count})` : ''}`);
 }
 
 function readJsonl(file) {
@@ -216,7 +241,8 @@ async function main() {
       if (!embargoAt) { console.error('[press-night] no --embargo-at, and shows.json has no entry opening on --night to derive one'); return 2; }
       const market = arg('market') || (show ? show.category : null);
       if (!market) { console.error('[press-night] market unknown: pass --market=broadway|west-end'); return 2; }
-      rec = lib.emptyRecord({ showId, night, market, embargoAt, intervalMin: Number(arg('interval-min', 5)) });
+      const embargoSource = show && show.openingDate === night ? lib.classifyEmbargo(show, embargoAt) : 'manual';
+      rec = lib.emptyRecord({ showId, night, market, embargoAt, embargoSource, intervalMin: Number(arg('interval-min', 5)) });
     } else if (arg('embargo-at') && new Date(arg('embargo-at')).getTime() !== new Date(rec.embargoAt).getTime()) {
       console.error(`[press-night] record already has embargo ${rec.embargoAt}; refusing to resume with --embargo-at=${arg('embargo-at')}`);
       return 2;
@@ -273,6 +299,7 @@ async function main() {
       if (rec.reference[label] && !rec.reference[`${label}-live`] && rec.reference[label].method !== 'timeline') rec.reference[`${label}-live`] = rec.reference[label];
       rec.reference[label] = { ...lib.coverageAt(rec, census, asOfMs, { fetchedAt, excluded, deferLateSeen: label === '2h' }), censusNote: note };
     }
+    setObservedReference(rec, census, { fetchedAt, excluded, note });
     writeRecord(file, rec);
     for (const label of ['2h', 'end']) {
       const r = rec.reference[label];
@@ -315,6 +342,7 @@ async function main() {
       rec.reference['2h'] = { ...lib.coverageAt(rec, census, new Date(rec.embargoAt).getTime() + 2 * 3600000, { fetchedAt, excluded, deferLateSeen: true }), censusNote: note };
       console.log(`[press-night] reference 2h filled from the live timeline: ${rec.reference['2h'].status} coverage=${rec.reference['2h'].coverage}`);
     }
+    if (label === 'end' && census && census.count) setObservedReference(rec, census, { fetchedAt, excluded, note });
     writeRecord(file, rec);
     console.log(`[press-night] reference ${label}: ${ref.status}${ref.coverage != null ? ` coverage=${ref.coverage} (${ref.covered}/${ref.count})` : ''}${note ? `; census: ${note}` : ''}`);
     return ref.status === 'error' ? 1 : 0;

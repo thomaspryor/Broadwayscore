@@ -28,8 +28,21 @@ const SCHEMA_VERSION = 1;
 const OFFSET_HOURS = [1, 2, 6];
 
 // Press embargo lifts, local hour on opening day. Broadway ~22:00 ET (860 and ODC
-// postmortem), West End ~21:00 UK. The orchestrator can override with an explicit time.
+// postmortem), West End ~21:00 UK. A show's `reviewEmbargoAt` (ISO UTC, shows.json) wins over the
+// market hour when it is on the opening night (BRO-6614: A Few Good Men's reviews came out ~23:00 ET).
 const EMBARGO_HOUR_LOCAL = { broadway: 22, 'off-broadway': 22, 'west-end': 21, 'off-west-end': 21 };
+
+// A reviewEmbargoAt counts as the opening night when it falls in [openingDate 12:00, next day 04:00) local.
+const OVERRIDE_NIGHT_FROM_HOUR = 12;
+const OVERRIDE_NIGHT_TO_HOUR_NEXT_DAY = 4;
+// The orchestrator dispatches the probe once per run, and its evening crons fire about an hour before the
+// market default (opening-night-orchestrator.yml schedule) with a [-150, +180] min start window (probeDue).
+// An override more than this far from the market default is not reached by any scheduled run.
+const OVERRIDE_REACH_MIN = { before: 180, after: 120 };
+// The probe waits until embargo - PROBE_LEAD_MIN (press-night-probe.yml) and starts the lane shadow then.
+const PROBE_LEAD_MIN = 30;
+// Grading: a first lane discovery more than this after the assumed embargo means the release was later.
+const LATE_RELEASE_MIN = 30;
 
 // sameNight*: BRO-6070. Files first seen between nightStartH before and sameNightEndH after the embargo
 // are "of the night"; those seen by +2h must be live at +2h, later ones within lateLiveWithinMin of first seen.
@@ -38,7 +51,8 @@ const DEFAULT_GATES = { firstLiveWithinMin: 30, coverage2h: 0.8, lateLiveWithinM
 const MIN = 60000;
 const HOUR = 3600000;
 
-function defaultEmbargoAt(show) {
+/** The market's fixed-hour embargo for the opening day, ignoring any per-show override. */
+function marketEmbargoAt(show) {
   const { MARKET_TZ, utcFromZoned } = require('./opening-night-windows');
   const tz = MARKET_TZ[show.category];
   const hour = EMBARGO_HOUR_LOCAL[show.category];
@@ -47,11 +61,86 @@ function defaultEmbargoAt(show) {
 }
 
 /**
+ * Why a show's reviewEmbargoAt cannot be used, or null when it is absent or valid. It must be an ISO time
+ * with Z or an explicit offset, on the show's opening night in the market's time zone, so a typo cannot
+ * move the night.
+ */
+function embargoOverrideProblem(show) {
+  if (!show || show.reviewEmbargoAt == null) return null;
+  const v = show.reviewEmbargoAt;
+  if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.test(v)) {
+    return `reviewEmbargoAt ${JSON.stringify(v)} is not an ISO time with Z or an offset`;
+  }
+  const ms = Date.parse(v);
+  // Date.parse rolls an impossible date forward (Feb 30 -> Mar 2); the written fields must round-trip.
+  const [y, mo, d, h, mi] = v.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/).slice(1).map(Number);
+  const f = new Date(Date.UTC(y, mo - 1, d, h, mi));
+  if (!Number.isFinite(ms) || f.getUTCFullYear() !== y || f.getUTCMonth() !== mo - 1 || f.getUTCDate() !== d || f.getUTCHours() !== h || f.getUTCMinutes() !== mi) {
+    return `reviewEmbargoAt ${v} does not parse`;
+  }
+  const { MARKET_TZ, utcFromZoned, nextDay } = require('./opening-night-windows');
+  const tz = MARKET_TZ[show.category];
+  if (!tz) return `reviewEmbargoAt set on a show whose category ${show.category || '(none)'} has no press-night market`;
+  if (!show.openingDate || !/^\d{4}-\d{2}-\d{2}$/.test(show.openingDate)) return 'reviewEmbargoAt set but openingDate is missing';
+  const from = utcFromZoned(show.openingDate, OVERRIDE_NIGHT_FROM_HOUR, 0, tz).getTime();
+  const to = utcFromZoned(nextDay(show.openingDate), OVERRIDE_NIGHT_TO_HOUR_NEXT_DAY, 0, tz).getTime();
+  if (ms < from || ms >= to) {
+    return `reviewEmbargoAt ${v} is not on the opening night of ${show.openingDate} (${tz} ${OVERRIDE_NIGHT_FROM_HOUR}:00 to ${OVERRIDE_NIGHT_TO_HOUR_NEXT_DAY}:00 next day)`;
+  }
+  return null;
+}
+
+/**
+ * A valid override the scheduled orchestrator cannot reach (it fires near the market default), or null.
+ * Advisory: the override is still honored, but the probe must be dispatched by hand.
+ */
+function embargoOverrideReachWarning(show) {
+  if (!show || show.reviewEmbargoAt == null || embargoOverrideProblem(show)) return null;
+  const def = marketEmbargoAt(show);
+  if (!def) return null;
+  const diffMin = (Date.parse(show.reviewEmbargoAt) - Date.parse(def)) / MIN;
+  if (diffMin < -OVERRIDE_REACH_MIN.before || diffMin > OVERRIDE_REACH_MIN.after) {
+    return `reviewEmbargoAt ${show.reviewEmbargoAt} is ${Math.round(diffMin)} min from the market default ${def}; no scheduled orchestrator run starts the probe for it, dispatch press-night-probe.yml by hand`;
+  }
+  return null;
+}
+
+/** {at, source: 'override'|'market-default'|null, problem}. An invalid override is ignored, never used. */
+function embargoInfo(show) {
+  const problem = embargoOverrideProblem(show);
+  if (show && show.reviewEmbargoAt != null && !problem) {
+    return { at: new Date(show.reviewEmbargoAt).toISOString(), source: 'override', problem: null };
+  }
+  const at = show ? marketEmbargoAt(show) : null;
+  return { at, source: at ? 'market-default' : null, problem };
+}
+
+function defaultEmbargoAt(show) {
+  return embargoInfo(show).at;
+}
+
+/**
+ * Where a record's embargo came from, by comparison: the probe workflow always passes --embargo-at, so the
+ * CLI cannot see whether the default was used. 'override' when it equals the show's valid override,
+ * 'market-default' when it equals the market hour, 'manual' otherwise (an operator's explicit time).
+ */
+function classifyEmbargo(show, embargoAt) {
+  const ms = Date.parse(embargoAt);
+  if (!show || !Number.isFinite(ms)) return 'manual';
+  const info = embargoInfo(show);
+  if (info.source === 'override' && Date.parse(info.at) === ms) return 'override';
+  const def = marketEmbargoAt(show);
+  if (def && Date.parse(def) === ms) return 'market-default';
+  return 'manual';
+}
+
+/**
  * Is this show's press night close enough for the orchestrator to start the probe now?
  * Only the opening-day embargo counts (night = openingDate), and the dispatch window is
  * [embargo - leadMin, embargo + lateMin]. Wide on purpose: the orchestrator marks later runs
  * of the same market redundant, so the one run that fires first must catch the night even
- * with GitHub's cron delay; a late start still yields a (baseline-flagged) record.
+ * with GitHub's cron delay; a late start still yields a (baseline-flagged) record. The embargo is the
+ * show's reviewEmbargoAt when set (BRO-6614), so the window moves with it.
  * Returns {showId, night, market, embargoAt} or null.
  */
 function probeDue(show, nowMs, { leadMin = 150, lateMin = 180 } = {}) {
@@ -67,13 +156,14 @@ function recordPath(dir, showId, night) {
   return `${dir.replace(/\/$/, '')}/${showId}-${night}.json`;
 }
 
-function emptyRecord({ showId, night, market = null, embargoAt, intervalMin = 5 }) {
+function emptyRecord({ showId, night, market = null, embargoAt, embargoSource = null, intervalMin = 5 }) {
   return {
     schemaVersion: SCHEMA_VERSION,
     showId,
     night,
     market,
     embargoAt,
+    ...(embargoSource ? { embargoSource } : {}),
     probe: { startedAt: null, endedAt: null, intervalMin, samples: 0, failedSamples: 0, lastSampleAt: null, lastOkSampleAt: null },
     firstLiveAt: null,
     firstLiveBaseline: false, // reviews were already live at the first sample, so firstLiveAt is an upper bound
@@ -578,7 +668,14 @@ function gate(name, status, detail, required = true) {
  * Anything that cannot be established is 'unknown', never 'pass'.
  */
 function evaluateCheck(rec, opts = {}) {
-  const g = { ...DEFAULT_GATES, ...opts };
+  const result = gradeNight(rec, { ...DEFAULT_GATES, ...opts });
+  const rel = rec ? observedRelease(rec) : null;
+  if (!rel) return result;
+  const observed = gradeNight(observedRecord(rec, rel), { ...DEFAULT_GATES, ...opts });
+  return { ...result, release: { ...rel, verdictUses: 'assumed', observed } };
+}
+
+function gradeNight(rec, g) {
   const gates = [];
   if (!rec) {
     return { verdict: 'UNKNOWN', gates: [gate('record', 'unknown', 'no record for this show and night (probe did not run, or the file is not committed yet)')] };
@@ -650,7 +747,7 @@ function evaluateCheck(rec, opts = {}) {
     gates.push(gate('coverage-2h', 'unknown', `no census (${ref2.status || 'missing'}), cannot judge coverage`));
   } else {
     gates.push(gate('coverage-2h', ref2.coverage >= g.coverage2h ? 'pass' : 'fail',
-      `${ref2.covered}/${ref2.count} census outlets live at +2h = ${ref2.coverage} (bar ${g.coverage2h}; census ${(ref2.source || []).join('+') || '?'}${ref2.method === 'timeline' ? `, fetched ${ref2.fetchedAt}, judged on the live timeline` : ''})${ref2.missing.length ? `; missing: ${ref2.missing.join(', ')}` : ''}${ref2.discoveredAfter && ref2.discoveredAfter.length ? `; first found by the lane after +2h: ${ref2.discoveredAfter.join(', ')}` : ''}`));
+      `${ref2.covered}/${ref2.count} census outlets live at +2h = ${ref2.coverage} (bar ${g.coverage2h}; census ${(ref2.source || []).join('+') || '?'}${ref2.method === 'timeline' ? `, fetched ${ref2.fetchedAt}, judged on the live timeline` : ''}${ref2.derivedFrom ? `, re-derived from ${ref2.derivedFrom}` : ''})${ref2.missing.length ? `; missing: ${ref2.missing.join(', ')}` : ''}${ref2.discoveredAfter && ref2.discoveredAfter.length ? `; first found by the lane after +2h: ${ref2.discoveredAfter.join(', ')}` : ''}`));
   }
 
   // same-night-completeness (BRO-6070)
@@ -689,9 +786,87 @@ function evaluateCheck(rec, opts = {}) {
   return { verdict, gates };
 }
 
+/**
+ * BRO-6614: the release looked later than the embargo the night was graded against. Only for an embargo
+ * that was assumed (the market default; legacy records without embargoSource count as assumed), never an
+ * override or an operator's explicit time, and only when the lane shadow was already polling before the
+ * assumed embargo (a shadow started late finds reviews late without the release being late). The observed
+ * release is the earlier of the lane's first discovery and the first night review seen live. A legacy record
+ * from an operator's explicit --embargo-at also counts as assumed (it carries no embargoSource).
+ * Returns {assumedAt, observedAt, lateMin} or null.
+ */
+function observedRelease(rec) {
+  if (!rec || rec.embargoSource === 'override' || rec.embargoSource === 'manual') return null;
+  const ls = rec.laneShadow;
+  const embMs = toMs(rec.embargoAt);
+  const discMs = ls ? toMs(ls.firstDiscoveredAt) : null;
+  const startMs = ls ? toMs(ls.startedAt) : null;
+  if (embMs == null || discMs == null || startMs == null || startMs > embMs) return null;
+  // A review the probe (or the shadow) saw live before the lane's first discovery was released by then:
+  // the lane found it late, the release was not late.
+  const live = firstNightLive(rec);
+  const liveMs = live ? toMs(live.at) : null;
+  const relMs = liveMs != null && liveMs < discMs ? liveMs : discMs;
+  if (relMs - embMs <= LATE_RELEASE_MIN * MIN) return null;
+  return { assumedAt: new Date(embMs).toISOString(), observedAt: new Date(relMs).toISOString(), lateMin: Math.round((relMs - embMs) / MIN) };
+}
+
+/**
+ * The record re-based on the observed release: embargoAt moves, and the +2h census reference is the one the
+ * capture computed for that time (reference['2h-observed']), or for a record captured before BRO-6614 one
+ * re-derived from the assumed +2h census (observedCoverage2h). Census exclusions stay as computed for the
+ * assumed embargo.
+ */
+function observedRecord(rec, rel) {
+  const obsMs = toMs(rel.observedAt);
+  const reference = { ...(rec.reference || {}) };
+  const stored = reference['2h-observed'];
+  const ref2 = stored && toMs(stored.asOf) === obsMs + 2 * HOUR ? stored : observedCoverage2h(rec, obsMs);
+  delete reference['2h-observed'];
+  // An assumed +2h with no census (no-census-yet) stays, so the gate says why; otherwise one that cannot be
+  // re-based is dropped and the gate reports the +2h as not captured.
+  if (ref2) reference['2h'] = ref2;
+  else if (!(reference['2h'] && reference['2h'].coverage == null)) delete reference['2h'];
+  return { ...rec, embargoAt: rel.observedAt, embargoSource: 'observed', reference };
+}
+
+/**
+ * +2h coverage at the observed release, from the assumed +2h census reference (records captured before
+ * reference['2h-observed'] existed). Outlets covered at the assumed +2h stay covered at the later mark
+ * unless a drop is open then (null: cannot tell). The rest (missing, deferred to the late rule) are
+ * re-judged by coverageAt itself, so the live rules are the same.
+ */
+function observedCoverage2h(rec, obsMs) {
+  const ref2 = rec.reference && rec.reference['2h'];
+  if (!ref2 || ref2.coverage == null || !Array.isArray(ref2.missing)) return null;
+  const asOfMs = obsMs + 2 * HOUR;
+  if (toMs(ref2.asOf || ref2.fetchedAt) == null || toMs(ref2.asOf || ref2.fetchedAt) > asOfMs) return null;
+  const openDrop = (rec.dropped || []).some((d) => toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
+  if (openDrop) return null;
+  const ids = [...new Set([...ref2.missing, ...(ref2.suppressedMissing || []), ...(ref2.deferredToLateRule || [])])];
+  const base = { ...ref2, asOf: new Date(asOfMs).toISOString(), method: 'timeline', derivedFrom: `the +2h census as of ${ref2.asOf || ref2.fetchedAt}` };
+  if (!ids.length) return base;
+  const census = { hadAnySource: true, sourcesPresent: ref2.source, count: ids.length, entries: ids.map((outletId) => ({ outletId })) };
+  const sub = coverageAt({ ...rec, embargoAt: new Date(obsMs).toISOString() }, census, asOfMs, { deferLateSeen: true });
+  const count = ref2.covered + sub.count;
+  const covered = ref2.covered + (sub.covered || 0);
+  return {
+    ...base,
+    status: sub.missing.length ? 'incomplete' : 'complete',
+    count,
+    covered,
+    coverage: count ? Math.round((covered / count) * 1000) / 1000 : null,
+    missing: sub.missing,
+    suppressedMissing: [],
+    discoveredAfter: sub.discoveredAfter,
+    ...(sub.deferredToLateRule ? { deferredToLateRule: sub.deferredToLateRule } : { deferredToLateRule: undefined }),
+  };
+}
+
 module.exports = {
-  SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL,
-  defaultEmbargoAt, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
+  SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL, PROBE_LEAD_MIN, LATE_RELEASE_MIN,
+  defaultEmbargoAt, marketEmbargoAt, embargoInfo, embargoOverrideProblem, embargoOverrideReachWarning, classifyEmbargo,
+  observedRelease, observedRecord, observedCoverage2h, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
   runProbe, referenceFrom, evaluateCheck, isNightReview, firstNightLive, laneShadowFrom, coverageAt,
   filterCensus, sameNightCheck, outletLiveMs,
 };

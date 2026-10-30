@@ -64,6 +64,7 @@ function summaryBlock(notPassing) {
   for (const r of notPassing) {
     const bad = r.gates.filter((g) => g.required && g.status !== 'pass').map((g) => `${g.name} ${g.status.toUpperCase()}: ${g.detail}`);
     lines.push(`- ${r.showId} ${r.night}: ${r.verdict}. ${bad.join(' | ')}`);
+    if (r.release) lines.push(`  The lane found the first review at ${r.release.observedAt}, ${r.release.lateMin} min after the assumed embargo ${r.release.assumedAt}; the verdict uses the assumed one. Measured from the observed release: ${r.release.observed.verdict}.`);
   }
   return lines.join('\n');
 }

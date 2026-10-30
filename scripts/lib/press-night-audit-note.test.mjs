@@ -70,3 +70,11 @@ test('follow-up comments get the banner only when they call the night clean', ()
   assert.equal(note.annotateAuditText('Opening-night audit 2026-10-23', 'closing, done', opts).changed, false);
   assert.equal(note.annotateAuditText('Opening-night audit 2026-10-23', 'No fixes required.', opts).changed, true);
 });
+
+test('BRO-6614: a night whose release came late carries the observed-release verdict into the audit note', () => {
+  const src = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'press-night', 'a-few-good-men-2026-2026-10-29.json');
+  const rec = JSON.parse(fs.readFileSync(src, 'utf8'));
+  const r = note.annotateAuditText('Opening-night audit 2026-10-30', 'Routine log; no fixes needed.', { dir: dirWith([rec]) });
+  assert.match(r.text, /a-few-good-men-2026 2026-10-29: FAIL/);
+  assert.match(r.text, /first review at 2026-10-30T03:02:18\.463Z, 62 min after the assumed embargo 2026-10-30T02:00:00\.000Z; the verdict uses the assumed one\. Measured from the observed release: FAIL\./);
+});
