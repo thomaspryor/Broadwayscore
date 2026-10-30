@@ -253,6 +253,13 @@ test('BRO-5201 wireLaneNight: every port is required, dryRun cannot be passed, a
   assert.equal(seen.maxPasses, 1);
   assert.equal(seen.dryRun, undefined, 'a wired night always runs the real publish guard');
   assert.equal(closed, 1, 'the lane fetch is closed after the night');
+  // The wiring, not just the names: the decoder wireLaneNight is given reaches Google News (the shadow once lost it).
+  const decoded = [];
+  await driver.wireLaneNight({ ...base, decodeImpl: async (u) => { decoded.push(u); return null; }, now: () => 1 })({});
+  const gn = seen.adapters.find((a) => a.name === 'google-news');
+  const rss = `<rss><channel><item><title>${SHOW.title} review: a night out</title><link>https://news.google.com/rss/articles/abc</link><source url="https://www.nytimes.com">NYT</source></item></channel></rss>`;
+  await gn.discover({ show: base.show, fetchText: async () => rss }).catch(() => {});
+  assert.deepEqual(decoded, ['https://news.google.com/rss/articles/abc']);
   const src = (f) => fs.readFileSync(path.join(import.meta.dirname, '../../scripts', f), 'utf8');
   assert.match(src('opening-night-lane-shadow.js'), /laneAdapters\(/);
   assert.doesNotMatch(src('opening-night-lane-shadow.js'), /discovery\.\w+Adapter\(/, 'the shadow must not hand-build adapters again');

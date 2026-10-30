@@ -364,4 +364,22 @@ test('BRO-5201: the rehearsal runs the production adapter list, and an adapter e
   // A fixture can plan an error explicitly.
   const planned = await rh.runRehearsal({ fixture: { ...broken, expectedErrors: ['playbill.com/category/the-verdict'] } });
   assert.equal(planned.pass, true);
+  // A flaky key excuses only its own transient 503: listing the page as flaky does not excuse it going missing (404).
+  const notFlaky = await rh.runRehearsal({ fixture: { ...broken, flaky: { ...broken.flaky, 'https://playbill.com/category/the-verdict': 0 } } });
+  assert.equal(notFlaky.pass, false);
+});
+
+test('BRO-5201: the rehearsal reads Show Score\'s page for the show, and a missing Show Score page fails it', async () => {
+  const fixture = buildSyntheticFixture();
+  const url = Object.values(fixture.adapters.showScoreUrlMap)[0];
+  const read = new Set();
+  const pages = new Proxy(fixture.pages, { get: (o, k) => { read.add(k); return o[k]; } });
+  const res = await rh.runRehearsal({ fixture: { ...fixture, pages } });
+  assert.equal(res.pass, true);
+  assert.ok(read.has(url), 'the Show Score adapter fetched the show page');
+  const broken = buildSyntheticFixture();
+  delete broken.pages[url];
+  const bad = await rh.runRehearsal({ fixture: broken });
+  assert.equal(bad.pass, false);
+  assert.ok(bad.checks.adapterErrors.some((e) => e.adapter === 'show-score'), JSON.stringify(bad.checks.adapterErrors));
 });

@@ -42,11 +42,11 @@ function summaryReviews(events) {
 
 /**
  * The production adapter list (adapters.js), on the rehearsal clock. The fixture serves no search engine and no Google
- * News decoder, and Show Score's guards see only the fixture show.
+ * News decoder; Show Score reads the page the fixture's showScoreUrlMap names.
  */
 function buildAdapters(fixture, now) {
-  const { feeds = [], outlets = [] } = fixture.adapters || {};
-  return laneAdapters({ showScoreGuards: { urlMap: {}, allShows: [fixture.show] }, adaptersConfig: { feeds, outlets }, search: async () => [], decodeImpl: null, now });
+  const { feeds = [], outlets = [], showScoreUrlMap = {} } = fixture.adapters || {};
+  return laneAdapters({ showScoreGuards: { urlMap: showScoreUrlMap, allShows: [fixture.show] }, adaptersConfig: { feeds, outlets }, search: async () => [], decodeImpl: null, now });
 }
 
 // BRO-6619: lane code that lives outside this folder, repo-relative. The night entry and the live workflow are hashed as
@@ -193,8 +193,14 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
     const pageToLiveSlow = summaryReviews(read.events).filter((r) => r.live && appears.has(r.reviewKey) && Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) > maxMs).map((r) => ({ reviewKey: r.reviewKey, ms: Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) }));
     // Every adapter the production lane runs is served (BRO-5201), so an error the fixture did not plan (its flaky pages,
     // or fixture.expectedErrors patterns) is a broken adapter, not background noise.
-    const planned = [...Object.keys(fixture.flaky || {}), ...(fixture.expectedErrors || [])];
-    const adapterErrors = run.errors.filter((e) => !planned.some((p) => String(e.error || '').includes(p)));
+    // A flaky page excuses only its own transient 503 (the exact URL, not a longer one it prefixes, and not any other error
+    // that merely mentions it); expectedErrors stay explicit substrings.
+    const esc = (u) => u.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const planned = [
+      ...Object.keys(fixture.flaky || {}).map((u) => new RegExp(`(^|: )503 ${esc(u)}$`)),
+      ...(fixture.expectedErrors || []).map((p) => ({ test: (s) => s.includes(p) })),
+    ];
+    const adapterErrors = run.errors.filter((e) => !planned.some((p) => p.test(String(e.error || ''))));
     const checks = { unexpected: [...unexpected], decoyLeaks, syndicationLeaks, bystandersSurvived, errors: run.errors, adapterErrors, timedOut, passes: run.passes, pageToLiveSlow, modelled: lat };
     const pass = verdict.pass && adapterErrors.length === 0 && unexpected.size === 0 && decoyLeaks.length === 0 && syndicationLeaks.length === 0 && bystandersSurvived && !timedOut && pageToLiveSlow.length === 0;
     return { pass, verdict, checks, summary: ledger.summarize(read.events), run, workDir: keep ? dir : null };

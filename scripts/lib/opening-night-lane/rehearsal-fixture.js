@@ -15,6 +15,7 @@
 const { canonicalUrl } = require('./discovery');
 
 const SHOW = { id: 'rehearsal-play-2026', title: 'The Rehearsal Play' };
+const SHOW_SCORE_URL = 'https://www.show-score.com/broadway-shows/the-rehearsal-play';
 const NIGHT = '2026-10-18';
 const SLUG = 'the-rehearsal-play';
 
@@ -101,6 +102,8 @@ function buildSyntheticFixture() {
   // case, and an adapter error in the rehearsal then means something real broke.
   pages['https://playbill.com/category/the-verdict'] = '<html><body><a href="https://playbill.com/article/the-verdict-another-show">The Verdict: Another Show</a></body></html>';
   for (const ix of ['ob', 'bwaybway']) pages[`https://www.talkinbroadway.com/page/${ix}/index.html`] = '<html><body><a href="/page/ob/another-show.html">Another Show</a></body></html>';
+  // Show Score: the show page the fixture's urlMap points at, with no critic tiles yet.
+  pages[SHOW_SCORE_URL] = '<html><body><h1>The Rehearsal Play</h1><p>No critic reviews yet.</p></body></html>';
   pages[`https://news.google.com/rss/search?${new URLSearchParams({ q: `"${SHOW.title}" review`, hl: 'en-US', gl: 'US', ceid: 'US:en' })}`] = '<rss><channel><title>Google News</title></channel></rss>';
 
   // One section-index article date check fails once (a transient 503) and must succeed on a later pass.
@@ -115,7 +118,7 @@ function buildSyntheticFixture() {
   const expectedKeys = reviews.filter((r) => !isCopy(r)).map((r) => canonicalUrl(r.url));
   return {
     kind: 'synthetic', show: SHOW, night: NIGHT, openingDate: NIGHT, pages, waves, flaky: { [flakyUrl]: 1 }, reviews, expectedKeys, syndicatedCopies,
-    adapters: { feeds, outlets },
+    adapters: { feeds, outlets, showScoreUrlMap: { [SHOW.id]: SHOW_SCORE_URL } },
     // Candidates the lane must NOT publish; the runner checks none reaches the ledger.
     decoys: ['https://rehearsal-blog.substack.com/p/the-rehearsal-play-review', `https://www.nytimes.com/2026/10/18/theater/${SLUG}-interview-1`],
   };
