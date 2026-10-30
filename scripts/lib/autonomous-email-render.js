@@ -1042,9 +1042,13 @@ function renderItem(item) {
         <div style="margin-top:4px;font-family:ui-monospace,Menlo,monospace;font-size:12px;background-color:#fff;border:1px solid #fde68a;border-radius:6px;padding:6px 8px;word-break:break-all;">npm run preview-branch ${esc(item.branch)}</div>
       </div>`
     : '';
-  const actions = uiUnseen
-    ? `<div>${btn('Reject', item.rejectUrl, '#6b7280')}</div>`
-    : `<div>${btn('Approve', item.approveUrl, '#16a34a')}${btn('Reject', item.rejectUrl, '#6b7280')}</div>`;
+  // BRO-5146: autonomous-email.js no longer builds approve/reject URLs (the
+  // endpoint answers 410), so a button renders only when its URL exists.
+  const buttons = [
+    !uiUnseen && item.approveUrl ? btn('Approve', item.approveUrl, '#16a34a') : '',
+    item.rejectUrl ? btn('Reject', item.rejectUrl, '#6b7280') : '',
+  ].join('');
+  const actions = buttons ? `<div>${buttons}</div>` : '';
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:16px;margin:0 0 14px;">
     <div style="font-size:15px;font-weight:700;margin-bottom:6px;">${esc(item.name)} ${badge}${cost}</div>
     ${body}

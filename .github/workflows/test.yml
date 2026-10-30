@@ -2493,21 +2493,13 @@ on:
       - 'scripts/check-alert-condition-absent.js'
       # BRO-5371: acceptance probe for commercial review cards; its test is scripts/lib/check-review-item-resolved.test.mjs.
       - 'scripts/check-review-item-resolved.js'
-      # Backlog drain engine (task #654) — pure selection/metric logic +
-      # dispatcher CLI; scripts/lib/backlog-drain.test.mjs runs in the
-      # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
-      # individually listed in the unit-test batch (scripts/ root-level tests
-      # aren't globbed) — path-listed here so a solo edit triggers CI.
-      # audit-test-yml-lib-deps.js's regression floor fails without this entry
-      # (it landed red on main 2026-09-14 — not this branch's change, but this
-      # branch's merge is what carried it into a CI run, so fixing it here).
-      # scripts/backfill-judged-dispatch-ts.test.mjs (BRO-3868) sits at this
-      # same scripts/ root — neither glob reaches it either — so it is
-      # registered in tests/unit-test-manifest.txt AND path-listed here, same
-      # shape as scripts/backlog-drain.test.mjs and scripts/trace-connect-
-      # phase.test.mjs below.
+      # Backlog drain shared lib (task #654): scripts/lib/backlog-drain.test.mjs
+      # runs in the scripts/lib/*.test.mjs glob step. Its Notion-era dispatcher
+      # CLI (the top-level backlog-drain script) was retired in BRO-5146.
+      # scripts/backfill-judged-dispatch-ts.test.mjs (BRO-3868) sits at the
+      # scripts/ root, which neither glob reaches, so it is path-listed here,
+      # same shape as scripts/trace-connect-phase.test.mjs below.
       - 'scripts/backfill-judged-dispatch-ts.js'
-      - 'scripts/backlog-drain.js'
       # BRO-2839 push-stall connect-phase breakdown. The logic lives in
       # scripts/lib/push-diagnostics.js and its colocated
       # scripts/lib/push-diagnostics.test.mjs runs in the scripts/lib/*.test.mjs
@@ -2515,8 +2507,7 @@ on:
       # scripts/trace-connect-phase.test.mjs sits at the scripts/ ROOT, which
       # neither glob reaches, so it is registered in
       # tests/unit-test-manifest.txt AND path-listed here. Without this entry a
-      # solo edit to it runs ZERO CI (the #1745 bug class). Same shape as
-      # scripts/backlog-drain.test.mjs directly above.
+      # solo edit to it runs ZERO CI (the #1745 bug class).
       - 'scripts/push-diagnostics-cli.js'
       # The captured CI trace that test asserts against, byte-for-byte (it
       # checks bytes === 2000 to prove the old redact-tail cap was a keyhole).

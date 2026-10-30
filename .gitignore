@@ -706,3 +706,9 @@ data/audit/skipped-show-rows.json
 # BRO-6230: --dry-run output (can hold signed dispatch links); was committed by accident 2026-10-17.
 data/audit/morning-digest-preview.html
 data/audit/outlet-census/.cache/
+
+# BRO-5146: Notion-era card verifiability report. Only a manual
+# `audit-card-verifiability.js --source notion|all` run still writes it (the
+# Notion board froze 2026-08-20); nothing reads it and CI no longer commits it.
+# The live Linear twin, data/audit/card-verifiability-linear.json, stays tracked.
+/data/audit/card-verifiability.json

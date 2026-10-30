@@ -286,7 +286,7 @@ test('checkPark ignores an entry with an unparseable ts instead of letting it co
 
   test('BRO-6632: isNoStartOutcome matches every reconciler ORPHAN row and nothing else', async () => {
     const fs = await import('node:fs');
-    for (const f of ['./digest-autofix.js', '../backlog-drain.js', '../linear-drain-parked.js']) {
+    for (const f of ['./digest-autofix.js', '../linear-drain-parked.js']) { // BRO-5146: ../backlog-drain.js retired
       const src = fs.readFileSync(new URL(f, import.meta.url), 'utf8');
       assert.ok(src.includes("outcomeKind: 'no-start'"), `${f} tags its ORPHAN row`);
       assert.ok(src.includes(am.NO_START_NOTE_PREFIX), `${f} note still uses the shared prefix`);
