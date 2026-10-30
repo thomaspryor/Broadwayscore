@@ -11,12 +11,12 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyRelativeUrl } = require('./relative-review-url');
+const { listShowDirs } = require('./list-show-dirs');
 
 function scan(root) {
   const rows = [];
-  for (const show of fs.readdirSync(root)) {
+  for (const show of listShowDirs(root, { silent: true })) {
     const dir = path.join(root, show);
-    if (!fs.statSync(dir).isDirectory()) continue;
     for (const f of fs.readdirSync(dir)) {
       if (!f.endsWith('.json')) continue;
       let j;
