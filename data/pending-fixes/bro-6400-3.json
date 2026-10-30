@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6400-3",
+  "planId": "a9f8a3ba-c5f9-4136-847a-e7a78830fd28",
+  "status": "pending",
+  "createdAt": "2026-10-30T05:17:36.684Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude an Artshub article about Singapore's art scene filed as a review of Art (title collision, not a review; the one error failing validate-data --strict) (BRO-6400)",
+    "steps": [
+      "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+      }
+    ]
+  }
+}

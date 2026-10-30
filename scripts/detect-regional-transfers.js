@@ -60,8 +60,9 @@ async function main() {
   }
 
   // London transfers / returns (S5-T5): suggestions only, never written —
-  // validate-data reserves transferOf/transferredTo for regional tryouts, and
-  // the priorRuns[] entry below is the cross-link the later row should carry.
+  // the priorRuns[] entry below is the cross-link the later row should carry
+  // (a confirmed Broadway <-> West End transfer may carry transferOf /
+  // transferredTo instead, BRO-6400, set by hand).
   for (const p of detectLondonTransferPairs(shows)) {
     if (!p.earlierId) {
       console.log(`::warning::London transfer detection ambiguous for ${p.laterId}: ${p.reason} — add priorRuns by hand`);

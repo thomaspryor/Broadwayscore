@@ -22,6 +22,7 @@ const fs = require('fs');
 const path = require('path');
 const { showsMissingOrigin, ORIGIN_GRACE_DAYS } = require('./lib/show-origins');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
+const { transferLinkProblems } = require('./lib/transfer-link-rules');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { findSharedSources } = require('./lib/shared-image-source');
 const { auditDuplicateImages } = require('./lib/duplicate-images');
@@ -383,37 +384,15 @@ function validateNoDuplicates(shows) {
     ok('No duplicate slugs');
   }
 
-  // Regional→Broadway transfer pairs: transferOf (on the Broadway show) and
-  // transferredTo (on the regional tryout) must reference existing shows AND
+  // Transfer pairs (regional tryout -> transfer, or Broadway <-> West End,
+  // BRO-6400): transferOf (on the later production) and transferredTo (on
+  // the earlier one) must reference existing shows AND
   // point back at each other — a dangling or one-way link renders a dead
   // cross-link chip on the show page.
   {
-    const byId = new Map(shows.map(s => [s.id, s]));
-    let transferIssues = 0;
-    for (const s of shows) {
-      for (const [field, reciprocal] of [['transferOf', 'transferredTo'], ['transferredTo', 'transferOf']]) {
-        const ref = s[field];
-        if (ref === undefined || ref === null) continue;
-        const target = byId.get(ref);
-        if (!target) {
-          error(`Show "${s.id}" ${field} "${ref}" does not reference an existing show`);
-          transferIssues++;
-        } else if (ref === s.id) {
-          error(`Show "${s.id}" ${field} points at itself`);
-          transferIssues++;
-        } else if (target[reciprocal] !== s.id) {
-          error(`Show "${s.id}" ${field} "${ref}" is not reciprocated — "${ref}" must set ${reciprocal}: "${s.id}"`);
-          transferIssues++;
-        } else if (field === 'transferOf' && target.category !== 'regional') {
-          error(`Show "${s.id}" transferOf "${ref}" must point at a category:'regional' show (got "${target.category}")`);
-          transferIssues++;
-        } else if (field === 'transferredTo' && s.category !== 'regional') {
-          error(`Show "${s.id}" has transferredTo but is category "${s.category}" — only regional tryouts carry transferredTo`);
-          transferIssues++;
-        }
-      }
-    }
-    if (transferIssues === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
+    const transferProblems = transferLinkProblems(shows);
+    for (const p of transferProblems) error(p);
+    if (transferProblems.length === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
   }
 
   // National tours (category:'tour', BRO-4211, BRO-4931): a tour names the

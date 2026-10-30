@@ -1,0 +1,198 @@
+{
+  "issueNumber": "bro-6400-2",
+  "planId": "ce8eb9b2-8e68-4ac7-a7fa-5aa45f6f9f7b",
+  "status": "pending",
+  "createdAt": "2026-10-30T05:06:18.287Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Link 9 Broadway -> West End transfer pairs with reciprocal transferOf/transferredTo (BRO-6400)",
+    "steps": [
+      "shows.json: beetlejuice-2025.transferredTo",
+      "shows.json: beetlejuice-west-end-2026.transferOf",
+      "shows.json: john-proctor-is-the-villain-2025.transferredTo",
+      "shows.json: john-proctor-is-the-villain-west-end-2026.transferOf",
+      "shows.json: moulin-rouge-2019.transferredTo",
+      "shows.json: moulin-rouge-the-musical-west-end-2021.transferOf",
+      "shows.json: come-from-away-2017.transferredTo",
+      "shows.json: come-from-away-west-end-2019.transferOf",
+      "shows.json: oh-mary-2024.transferredTo",
+      "shows.json: oh-mary-west-end-2025.transferOf",
+      "shows.json: stereophonic-2024.transferredTo",
+      "shows.json: stereophonic-west-end-2025.transferOf",
+      "shows.json: oklahoma-2019.transferredTo",
+      "shows.json: oklahoma-west-end-2023.transferOf",
+      "shows.json: to-kill-a-mockingbird-2018.transferredTo",
+      "shows.json: to-kill-a-mockingbird-west-end-2022.transferOf",
+      "shows.json: frozen-2018.transferredTo",
+      "shows.json: frozen-west-end-2021.transferOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beetlejuice-2025",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "beetlejuice-west-end-2026",
+        "description": "shows.json: beetlejuice-2025.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beetlejuice-west-end-2026",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "beetlejuice-2025",
+        "description": "shows.json: beetlejuice-west-end-2026.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "john-proctor-is-the-villain-west-end-2026",
+        "description": "shows.json: john-proctor-is-the-villain-2025.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-proctor-is-the-villain-west-end-2026",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "john-proctor-is-the-villain-2025",
+        "description": "shows.json: john-proctor-is-the-villain-west-end-2026.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "moulin-rouge-2019",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "moulin-rouge-the-musical-west-end-2021",
+        "description": "shows.json: moulin-rouge-2019.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "moulin-rouge-the-musical-west-end-2021",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "moulin-rouge-2019",
+        "description": "shows.json: moulin-rouge-the-musical-west-end-2021.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-2017",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "come-from-away-west-end-2019",
+        "description": "shows.json: come-from-away-2017.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-west-end-2019",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "come-from-away-2017",
+        "description": "shows.json: come-from-away-west-end-2019.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-mary-2024",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "oh-mary-west-end-2025",
+        "description": "shows.json: oh-mary-2024.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-mary-west-end-2025",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "oh-mary-2024",
+        "description": "shows.json: oh-mary-west-end-2025.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stereophonic-2024",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "stereophonic-west-end-2025",
+        "description": "shows.json: stereophonic-2024.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stereophonic-west-end-2025",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "stereophonic-2024",
+        "description": "shows.json: stereophonic-west-end-2025.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oklahoma-2019",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "oklahoma-west-end-2023",
+        "description": "shows.json: oklahoma-2019.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oklahoma-west-end-2023",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "oklahoma-2019",
+        "description": "shows.json: oklahoma-west-end-2023.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-kill-a-mockingbird-2018",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "to-kill-a-mockingbird-west-end-2022",
+        "description": "shows.json: to-kill-a-mockingbird-2018.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-kill-a-mockingbird-west-end-2022",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "to-kill-a-mockingbird-2018",
+        "description": "shows.json: to-kill-a-mockingbird-west-end-2022.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frozen-2018",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "frozen-west-end-2021",
+        "description": "shows.json: frozen-2018.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frozen-west-end-2021",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "frozen-2018",
+        "description": "shows.json: frozen-west-end-2021.transferOf"
+      }
+    ]
+  }
+}

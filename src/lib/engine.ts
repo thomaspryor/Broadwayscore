@@ -109,9 +109,9 @@ export interface RawShow {
   originalProductionId?: string | null; // ID of the original production (e.g., "cabaret-1966")
   productionNumber?: number;            // 1 for original, 2 for first revival, etc.
   season?: string;                      // Broadway season (e.g., "2024-2025")
-  // Regional→Broadway transfer pair (reciprocal ids; validate-data enforces).
-  transferOf?: string | null;           // on the Broadway show: id of its regional tryout
-  transferredTo?: string | null;        // on the regional show: id of its Broadway transfer
+  // Transfer pair: regional tryout or Broadway <-> West End (reciprocal ids; validate-data enforces).
+  transferOf?: string | null;           // on the later production: id of its regional tryout or other-market original (BRO-6400)
+  transferredTo?: string | null;        // on the earlier production: id of its Broadway / West End transfer
   // Multi-venue regional tryout (e.g. a national pre-Broadway tour with a
   // stop per city). Set on each per-venue leg; points at the aggregate show
   // that rolls up all legs' reviews into one combined score.

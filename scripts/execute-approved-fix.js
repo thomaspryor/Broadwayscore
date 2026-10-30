@@ -218,6 +218,10 @@ function runValidation(changedFiles, touchedCommercialKeys = [], priorCommercial
       for (const s of shows.slice(0, 50)) {
         if (!s.id || !s.title || !s.status) throw new Error(`Show missing required fields: ${JSON.stringify(s).slice(0, 100)}`);
       }
+      // BRO-6400: a plan sets a transfer pair as two actions; if one was refused
+      // the other would leave a one-way link that fails validate-data.
+      const transferProblems = require('./lib/transfer-link-rules.js').transferLinkProblems(shows);
+      if (transferProblems.length) throw new Error(`transfer links: ${transferProblems.slice(0, 5).join('; ')}`);
     },
     'data/commercial.json': (data) => {
       if (!data?.shows || !data?._meta) throw new Error('Missing shows or _meta');

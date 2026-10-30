@@ -25,8 +25,9 @@
  * London transfers / return engagements (BRO-4204 S5-T5) — see
  * detectLondonTransferPairs below. Those are SUGGESTIONS only: the driver
  * prints a ready-to-paste `priorRuns[]` entry for the later row and writes
- * nothing, because validate-data reserves transferOf/transferredTo for
- * regional tryouts (transferOf must point at a category:'regional' row).
+ * nothing. A Broadway <-> West End transfer can instead carry
+ * transferOf/transferredTo (BRO-6400, scripts/lib/transfer-link-rules.js),
+ * set by hand after the director and producers are confirmed.
  */
 
 const { normalizeTitle, titleTokens, jaccard } = require('./title-match');

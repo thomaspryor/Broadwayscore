@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-6400",
+  "planId": "90e249f6-5768-4648-a316-b9a00606cbbe",
+  "status": "pending",
+  "createdAt": "2026-10-30T05:06:05.815Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Link 12 West End -> Broadway transfer pairs with reciprocal transferOf/transferredTo (BRO-6400)",
+    "steps": [
+      "shows.json: oedipus-west-end-2024.transferredTo",
+      "shows.json: oedipus-2025.transferOf",
+      "shows.json: every-brilliant-thing-west-end-2025.transferredTo",
+      "shows.json: every-brilliant-thing-2026.transferOf",
+      "shows.json: stranger-things-the-first-shadow-west-end-2023.transferredTo",
+      "shows.json: stranger-things-2024.transferOf",
+      "shows.json: operation-mincemeat-west-end-2024.transferredTo",
+      "shows.json: operation-mincemeat-2025.transferOf",
+      "shows.json: sunset-boulevard-west-end-2023.transferredTo",
+      "shows.json: sunset-boulevard-2024.transferOf",
+      "shows.json: cabaret-at-the-kit-kat-club-west-end-2021.transferredTo",
+      "shows.json: cabaret-2024.transferOf",
+      "shows.json: prima-facie-west-end-2022.transferredTo",
+      "shows.json: prima-facie-2023.transferOf",
+      "shows.json: life-of-pi-west-end-2021.transferredTo",
+      "shows.json: life-of-pi-2023.transferOf",
+      "shows.json: and-juliet-west-end-2019.transferredTo",
+      "shows.json: and-juliet-2022.transferOf",
+      "shows.json: the-inheritance-west-end-2018.transferredTo",
+      "shows.json: the-inheritance-2019.transferOf",
+      "shows.json: the-ferryman-west-end-2017.transferredTo",
+      "shows.json: the-ferryman-2018.transferOf",
+      "shows.json: hadestown-west-end-2018.transferredTo",
+      "shows.json: hadestown-2019.transferOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oedipus-west-end-2024",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "oedipus-2025",
+        "description": "shows.json: oedipus-west-end-2024.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oedipus-2025",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "oedipus-west-end-2024",
+        "description": "shows.json: oedipus-2025.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "every-brilliant-thing-west-end-2025",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "every-brilliant-thing-2026",
+        "description": "shows.json: every-brilliant-thing-west-end-2025.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "every-brilliant-thing-2026",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "every-brilliant-thing-west-end-2025",
+        "description": "shows.json: every-brilliant-thing-2026.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stranger-things-the-first-shadow-west-end-2023",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "stranger-things-2024",
+        "description": "shows.json: stranger-things-the-first-shadow-west-end-2023.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stranger-things-2024",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "stranger-things-the-first-shadow-west-end-2023",
+        "description": "shows.json: stranger-things-2024.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "operation-mincemeat-west-end-2024",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "operation-mincemeat-2025",
+        "description": "shows.json: operation-mincemeat-west-end-2024.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "operation-mincemeat-2025",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "operation-mincemeat-west-end-2024",
+        "description": "shows.json: operation-mincemeat-2025.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sunset-boulevard-west-end-2023",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "sunset-boulevard-2024",
+        "description": "shows.json: sunset-boulevard-west-end-2023.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sunset-boulevard-2024",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "sunset-boulevard-west-end-2023",
+        "description": "shows.json: sunset-boulevard-2024.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "cabaret-2024",
+        "description": "shows.json: cabaret-at-the-kit-kat-club-west-end-2021.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-2024",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "cabaret-at-the-kit-kat-club-west-end-2021",
+        "description": "shows.json: cabaret-2024.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prima-facie-west-end-2022",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "prima-facie-2023",
+        "description": "shows.json: prima-facie-west-end-2022.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prima-facie-2023",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "prima-facie-west-end-2022",
+        "description": "shows.json: prima-facie-2023.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-of-pi-west-end-2021",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "life-of-pi-2023",
+        "description": "shows.json: life-of-pi-west-end-2021.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-of-pi-2023",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "life-of-pi-west-end-2021",
+        "description": "shows.json: life-of-pi-2023.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "and-juliet-west-end-2019",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "and-juliet-2022",
+        "description": "shows.json: and-juliet-west-end-2019.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "and-juliet-2022",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "and-juliet-west-end-2019",
+        "description": "shows.json: and-juliet-2022.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-inheritance-west-end-2018",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "the-inheritance-2019",
+        "description": "shows.json: the-inheritance-west-end-2018.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-inheritance-2019",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "the-inheritance-west-end-2018",
+        "description": "shows.json: the-inheritance-2019.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ferryman-west-end-2017",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "the-ferryman-2018",
+        "description": "shows.json: the-ferryman-west-end-2017.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ferryman-2018",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "the-ferryman-west-end-2017",
+        "description": "shows.json: the-ferryman-2018.transferOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hadestown-west-end-2018",
+        "field": "transferredTo",
+        "oldValue": null,
+        "newValue": "hadestown-2019",
+        "description": "shows.json: hadestown-west-end-2018.transferredTo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hadestown-2019",
+        "field": "transferOf",
+        "oldValue": null,
+        "newValue": "hadestown-west-end-2018",
+        "description": "shows.json: hadestown-2019.transferOf"
+      }
+    ]
+  }
+}

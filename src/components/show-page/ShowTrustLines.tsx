@@ -191,7 +191,9 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           tryout's critic score (often the only pre-Broadway signal). */}
       {!isRegional && featureFlags.regional && show.transferOf && (() => {
         const tryout = getShowById(show.transferOf);
-        if (!tryout) return null;
+        // transferOf can also name a Broadway <-> West End transfer (BRO-6400);
+        // that is not a tryout, so this line is for regional sources only.
+        if (!tryout || tryout.category !== 'regional') return null;
         // A tryout can itself be an aggregate rolling up several
         // per-city legs (a national tour) — venue is a summary phrase
         // in that case, not a single theater, so don't truncate it

@@ -29,7 +29,10 @@ EDITABLE_DATA_FIELDS['commercial.json'] = [...EDITABLE_DATA_FIELDS['commercial.j
 // honors only alongside a substantive statusBackfillSource.
 EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource', 'ibdbRevivalChecked', 'ibdbUrl',
   // BRO-6515: metro slug for regional/tour city hubs (scripts/lib/venue-metro.js)
-  'city'];
+  'city',
+  // BRO-6400: transfer links (a regional tryout, or a Broadway <-> West End
+  // transfer). A plan sets both ends; validate-data checks they reciprocate.
+  'transferOf', 'transferredTo'];
 
 // BRO-6191: plan-only (owner-approved) commercial.json extras with value checks
 // (cleared-field-guard.js planOnlyValueProblem); not offered to the feedback-plan LLM.
@@ -136,6 +139,21 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       const { priorRunsValueProblem } = require('./feedback-pipeline-fields.js');
       const problem = priorRunsValueProblem(newValue, prevValue, shows[idx]);
       if (problem) return { ok: false, reason: problem };
+    }
+
+    // BRO-6400: an existing other show's id (or null), in a pair
+    // transfer-link-rules.js allows. Reciprocity spans two actions, so
+    // validate-data checks it after the plan applies.
+    if (field === 'transferOf' || field === 'transferredTo') {
+      if (newValue !== null) {
+        if (typeof newValue !== 'string' || !newValue) return { ok: false, reason: `${field}: must be a show id string or null, got ${JSON.stringify(newValue)}` };
+        if (newValue === showId) return { ok: false, reason: `${field}: a show cannot link to itself` };
+        const target = shows.find(s => s.id === newValue);
+        if (!target) return { ok: false, reason: `${field}: no show "${newValue}" in shows.json` };
+        const { transferLinkCategoryError } = require('./transfer-link-rules.js');
+        const problem = transferLinkCategoryError(shows[idx], field, target);
+        if (problem) return { ok: false, reason: problem };
+      }
     }
 
     if (field === 'noReliableArt') {
