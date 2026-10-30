@@ -320,3 +320,19 @@ test('checkLanded reports LANDED for a commit inside the shallow window even whe
     fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+test('checkLanded reports LANDED for an in-window commit on the CI-skip path too, without the shallow warning', (t) => {
+  forceUnshallowEnv(t, { skip: true });
+  const { root, workdir, shas } = makeThreeCommitRepo();
+  try {
+    shallowGraftAtTip(workdir);
+    assert.equal(isShallowRepo(workdir), true, 'fixture precondition');
+    const warnings = [];
+    const result = checkLanded({ sha: shas[2], branch: 'main', remote: 'origin', cwd: workdir, log: (m) => warnings.push(m) });
+    assert.equal(result.verdict, 'LANDED');
+    assert.equal(result.reason, null);
+    assert.deepEqual(warnings, [], 'the positive path must not log "cannot be trusted"');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
