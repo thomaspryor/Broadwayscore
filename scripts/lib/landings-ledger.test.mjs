@@ -81,3 +81,24 @@ test('buildDirectPushAlert: stable conditionKey per sha, digest disposition', ()
   assert.match(real.description, /committer Tom Pryor/);
   assert.throws(() => buildDirectPushAlert({}), /requires sha/);
 });
+
+// BRO-6638: the waiter maps a land/ branch tip to the sha it became on main.
+test('landedShaForTip: finds the main sha for a rebased tip', () => {
+  const { landedShaForTip } = lib;
+  const text = [
+    JSON.stringify({ branch: 'land/x', sha: SHA, tip: OTHER }),
+    JSON.stringify({ branch: 'land/y', sha: 'c'.repeat(40), tip: null }),
+  ].join('\n');
+  assert.equal(landedShaForTip(parseLandings(text), OTHER), SHA);
+  assert.equal(landedShaForTip(parseLandings(text), 'd'.repeat(40)), null);
+  assert.equal(landedShaForTip(parseLandings(text), null), null, 'a null tip never matches a row with tip:null');
+});
+
+test('landedShaForTip: newest row wins when one tip landed twice; partial and empty text are safe', () => {
+  const { landedShaForTip } = lib;
+  const newer = 'e'.repeat(40);
+  const text = `${JSON.stringify({ sha: SHA, tip: OTHER })}\n${JSON.stringify({ sha: newer, tip: OTHER })}\n{"sha":"ff`;
+  assert.equal(landedShaForTip(parseLandings(text), OTHER), newer);
+  assert.equal(landedShaForTip(parseLandings(''), OTHER), null);
+  assert.equal(landedShaForTip(undefined, OTHER), null);
+});

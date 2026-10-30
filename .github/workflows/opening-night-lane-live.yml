@@ -136,12 +136,14 @@ jobs:
     if: inputs.mode == 'night'
     runs-on: ubuntu-latest
     # GitHub-hosted jobs stop at 360 minutes. The lane step is capped below that so the persist and commit steps
-    # after it always get to run; a lane cut off by its cap leaves its lease to expire by TTL (30 minutes).
+    # after it always get to run. The lane keeps its lease past its own exit (BRO-6618): "Release night lease" frees it
+    # only after the review-texts push succeeded, so a failed push leaves the lease to expire by TTL (30 minutes) and
+    # pages through "Notify on failure". A lane cut off by its cap is released the same way.
     timeout-minutes: 355
     env:
       # The lane's lease holder (scripts/opening-night-lane.js defaults --holder to gha-$GITHUB_RUN_ID). push-review-texts'
       # `opening-night-lease.js enforce` reverts writes under leased shows unless the lease is this holder's, which it
-      # still is when the lane step was cut off before releasing.
+      # still is: the lane keeps its lease until "Release night lease" runs after the push (BRO-6618).
       OPENING_NIGHT_LANE_HOLDER: gha-${{ github.run_id }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -182,6 +184,8 @@ jobs:
         id: lane
         timeout-minutes: 280
         env:
+          # The lease is released by the "Release night lease" step after the push, not by the lane process (BRO-6618).
+          OPENING_NIGHT_LANE_RELEASE_BY_WORKFLOW: '1'
           # The driver's window must end before the step cap, or every night is killed mid-run (BRO-4835 review).
           OPENING_NIGHT_LANE_WINDOW_MIN: '270'
           SHOW: ${{ inputs.show }}
@@ -229,11 +233,26 @@ jobs:
 
       # Scored reviews are written to data/review-texts/<show>/ before publish, so persist them whatever the lane did.
       - name: Push scored reviews to review-texts
+        id: push
         if: always() && steps.review_texts.outcome == 'success'
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: opening-night lane reviews for ${{ inputs.show }} (${{ inputs.night }})'
+
+      # BRO-6618: release only once the push action succeeded (it exits 1 after its last failed attempt), so old-path
+      # writers never resume while the lane's files are still local. A failed push keeps the lease for its TTL and the
+      # job fails, which pages. Releasing a lease this run never held (exit 3: held by another, no lease) is harmless.
+      - name: Release night lease
+        if: always() && steps.lane.outcome != 'skipped' && steps.push.outcome == 'success'
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+        run: |
+          RC=0
+          node scripts/opening-night-lease.js release "--show=${SHOW}" "--night=${NIGHT}" "--holder=${OPENING_NIGHT_LANE_HOLDER}" || RC=$?
+          if [ "$RC" -eq 3 ]; then echo "::notice::night lease is held by another run; left alone"
+          elif [ "$RC" -ne 0 ]; then echo "::warning::night lease release exited ${RC}; the lease expires by TTL"; fi
 
       # The driver pages through routeAlert( digest ) (owner-alert-router.js); its ledger and digest queue live on
       # this runner's disk, so commit them or the cooldown/dedup state resets every run.
@@ -260,7 +279,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening-night lane run failed'
-          description: 'The opening-night lane failed for this night (BRO-4835). The regular pipeline still covers it. Read the "Run the lane" step output; exit 4 means scored reviews are not yet live.'
+          description: 'The opening-night lane failed for this night (BRO-4835). The regular pipeline still covers it. Read the "Run the lane" step output; exit 4 means scored reviews are not yet live. If the review-texts push failed, the night lease is kept for up to 30 minutes so the regular writers do not take over half-written state.'
           severity: 'warning'
           email: 'false'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -69,6 +69,7 @@ const PROD_MAX_ERRORS = 3;
 // Error messages can contain entire API responses: firstLine bounds them
 // (shared with check-prod-deploy.js since BRO-6257).
 const { firstLine } = require('./log-lines');
+const { LANDINGS_REL, parseLandings, landedShaForTip } = require('./landings-ledger');
 
 // check-prod-deploy prints its verdict last. Preserve that line without
 // splitting all of stdout/stderr, and bound unusually long verdicts too.
@@ -307,6 +308,43 @@ async function waitForProd({ siteFiles, prodMin }) {
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 const stamp = () => new Date().toISOString().slice(11, 19) + 'Z';
 
+const COMMIT_URL = 'https://github.com/thomaspryor/Broadwayscore/commit/';
+
+// origin/main's landings.jsonl is over 1 MiB (execFileSync's default buffer).
+function mainLandingsRows() {
+  const text = execFileSync('git', ['show', `origin/main:${LANDINGS_REL}`], { encoding: 'utf8', maxBuffer: 64 << 20, stdio: ['ignore', 'pipe', 'ignore'], timeout: 60_000 });
+  return parseLandings(text);
+}
+
+// BRO-6638: print the sha the tip became on main. Read-only and never fatal:
+// a landing's exit code does not depend on it. The row rides land.yml's
+// ledger commit, which follows the ref delete, so the first look often
+// misses it; retry 60s apart within budgetMs (default 150s; a wrapper such as
+// the Codex runner reserves only minutes for wrap-up), then say where to look.
+// io is injectable for tests.
+async function reportLandedSha(tip, { budgetMs = 150_000, io = {} } = {}) {
+  if (!tip) return null;
+  const { pull = fetchMain, rows = mainLandingsRows, wait = sleep, now = Date.now } = io;
+  const endMs = now() + budgetMs;
+  for (;;) {
+    try {
+      if (!pull()) break;
+      const sha = landedShaForTip(rows(), tip);
+      if (sha) {
+        console.log(`${stamp()} ON MAIN AS: ${sha} (${COMMIT_URL}${sha}). land.yml rebases, so branch tip ${tip.slice(0, 9)} never becomes an ancestor of main; check ${sha.slice(0, 9)}.`);
+        return sha;
+      }
+    } catch (err) {
+      console.error(`${stamp()} could not read ${LANDINGS_REL} on main (${firstLine(err.message || err)}); find the landed sha by "tip":"${tip}" there.`);
+      return null;
+    }
+    if (now() + 60_000 > endMs) break;
+    await wait(60_000);
+  }
+  console.log(`${stamp()} ON MAIN AS: not recorded yet. land.yml rebases, so branch tip ${tip.slice(0, 9)} is never on main; find the landed sha later by "tip":"${tip}" in ${LANDINGS_REL} (train riders get no row).`);
+  return null;
+}
+
 async function main(argv) {
   const args = parseArgs(argv);
   if (!args) {
@@ -341,7 +379,16 @@ async function main(argv) {
       if (v.verdict === 'landed') {
         const before = v.before ? ` before this wait started; its last land run ${run.id} ${run.conclusion}` : '';
         console.log(`${stamp()} LANDED: ${args.ref} is gone from origin${before} (land.yml deletes it after the fast-forward)`);
-        return args.prodMin ? waitForProd({ siteFiles: v.before ? null : siteFiles, prodMin: args.prodMin }) : 0;
+        const tip = v.before ? (run && run.head_sha) || null : lastSha;
+        if (!args.prodMin) {
+          await reportLandedSha(tip);
+          return 0;
+        }
+        // After the prod wait the ledger row has usually landed, so the
+        // first look (after a fresh fetch) tends to hit.
+        const code = await waitForProd({ siteFiles: v.before ? null : siteFiles, prodMin: args.prodMin });
+        await reportLandedSha(tip);
+        return code;
       }
       if (v.verdict === 'unknown') {
         console.error(`${stamp()} UNKNOWN: ${args.ref} ${v.why}`);
@@ -374,4 +421,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
+module.exports = { reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
