@@ -2931,5 +2931,36 @@
       }
     ],
     "queuedAt": "2026-10-30T15:10:13.176Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6634-opening-night-refresh",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6634-opening-night-refresh",
+    "description": "land.yml did not land land/bro-6634-opening-night-refresh: the unit-tests-node gate went red at 5dbf59192c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41077518829",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6634-opening-night-refresh"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5dbf59192c4d63b6174e773ad2b2c7e5c0e86b08"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41077518829"
+      }
+    ],
+    "queuedAt": "2026-10-30T15:33:05.639Z"
   }
 ]
