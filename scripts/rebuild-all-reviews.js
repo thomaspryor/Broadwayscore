@@ -3582,13 +3582,14 @@ showDirs.forEach(showId => {
           if (healTitle
               && urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket })
               && !urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket, showTitle: healTitle })) {
+            const wasNote = data.wrongProductionNote;
             delete data.wrongProduction;
             delete data.wrongProductionNote;
-            data.wrongProductionAutoCleared = 'rebuild: URL-path indicator was the show title';
+            data.wrongProductionAutoCleared = `rebuild: URL-path indicator was the show title (was: ${wasNote})`;
             data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
             if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (URL-path matched show title)');
             try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
-            stats.autoClearedUrlPathTitleFp = (stats.autoClearedUrlPathTitleFp || 0) + 1;
+            stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
           }
         } catch (e) { /* ignore malformed URLs */ }
       }
