@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T18:33:57.679Z",
+  "timestamp": "2026-10-30T18:50:55.888Z",
   "stats": {
-    "totalReviews": 70967,
+    "totalReviews": 71119,
     "alreadyFlagged": 22326,
     "dateGuardCatches": 230,
     "directorMismatch": 2887,
     "tvFilmSignals": 2029,
-    "londonSignals": 3405,
+    "londonSignals": 3407,
     "offBroadwaySignals": 635,
-    "yearMismatch": 291,
-    "noPublishDate": 8091
+    "yearMismatch": 296,
+    "noPublishDate": 8138
   },
   "findings": [
     {
@@ -24111,6 +24111,20 @@
     },
     {
       "showId": "hadestown-2019",
+      "file": "bobs-theater-blog--robert-sholiton.json",
+      "score": 78,
+      "publishDate": "April 17th, 2019",
+      "url": "https://gotham-playgoer.blogspot.com/2019/04/hadestown-broadway.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2019 (0x). 2016 matches production: hadestown-off-broadway-2016"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
       "file": "musical-theatre-review--angela-thomas.json",
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/hadestown-new-cast-announced/",
@@ -24124,6 +24138,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "usatoday--brent-hallenbeck.json",
+      "score": 78,
+      "publishDate": "2019-06-06",
+      "url": "https://bearswire.usatoday.com/story/entertainment/2019/04/17/how-hadestown-review-broadway-musical-compares-anais-mitchell-vermont-shows/3475650002/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (3x) more than 2019 (0x). 2016 matches production: hadestown-off-broadway-2016"
         }
       ]
     },
@@ -26437,6 +26465,33 @@
     },
     {
       "showId": "hold-on-to-me-darling-off-broadway-2024",
+      "file": "nytimes--jesse-green.json",
+      "score": 44,
+      "publishDate": "2024-10-16",
+      "url": "https://www.nytimes.com/2024/10/16/theater/hold-on-to-me-darling-review-driver.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2024 (0x). 2016 matches production: hold-on-to-me-darling-off-broadway-2016"
+        }
+      ]
+    },
+    {
+      "showId": "hold-on-to-me-darling-off-broadway-2024",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2024-10-16",
+      "url": "https://www.nytimes.com/2024/10/16/theater/hold-on-to-me-darling-review-driver.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2024 (0x). 2016 matches production: hold-on-to-me-darling-off-broadway-2016"
+        }
+      ]
+    },
+    {
+      "showId": "hold-on-to-me-darling-off-broadway-2024",
       "file": "off-off-online--edward-karam.json",
       "score": 79,
       "publishDate": null,
@@ -26446,6 +26501,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "hold-on-to-me-darling-off-broadway-2024",
+      "file": "vulture--sara-holdren.json",
+      "score": 75,
+      "publishDate": "2024-10-16",
+      "url": "https://www.vulture.com/article/theater-review-adam-driver-hold-on-to-me-darling-lonergan.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2024 (0x). 2016 matches production: hold-on-to-me-darling-off-broadway-2016"
         }
       ]
     },
@@ -54828,6 +54897,7 @@
     {
       "showId": "the-color-purple-regional-2025",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 92,
       "publishDate": "2025-07-02",
       "url": "https://www.chicagotheatrereview.com/2025/07/too-beautiful-for-words/",
       "findings": [
@@ -54841,6 +54911,7 @@
     {
       "showId": "the-color-purple-regional-2025",
       "file": "chicagotribune--chris-jones.json",
+      "score": 77,
       "publishDate": "2025-07-01",
       "url": "https://www.chicagotribune.com/2025/07/01/review-color-purple-goodman-theatre/",
       "findings": [
@@ -54854,6 +54925,7 @@
     {
       "showId": "the-color-purple-regional-2025",
       "file": "third-coast-review--unknown.json",
+      "score": 44,
       "publishDate": "2025-07-02",
       "url": "https://thirdcoastreview.com/stages/2025/07/02/review-goodman-theatre-the-color-purple",
       "findings": [
@@ -107823,6 +107895,19 @@
       ]
     },
     {
+      "showId": "sunny-afternoon-the-story-of-the-kinks-regional-2025",
+      "file": "chicagotheaterandarts--jodie-jacobs.json",
+      "publishDate": "2025-04-05",
+      "url": "https://chicagotheaterandarts.com/2025/04/05/a-very-sunny-afternoon/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "sunny-afternoon-west-end-2014",
       "file": "londontheatre1--laura-jane-foley.json",
       "score": 80,
@@ -114639,6 +114724,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lord-of-the-rings-a-musical-tale-regional-2024",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": "2024-07-28",
+      "url": "https://chicago.suntimes.com/theater/2024/07/28/high-intensity-lord-of-the-rings-musical-has-precious-little-time-for-emotional-connections",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
