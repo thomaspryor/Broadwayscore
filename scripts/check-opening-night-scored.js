@@ -19,7 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  etDateToday, etDateYesterday, selectOpeningWindowShows, scoredShowIds, reviewedShowIds, llmScoredShowIds, findOverdueMissingScored,
+  etDateToday, etDateYesterday, selectOpeningWindowShows, scoredShowIds, reviewedShowIds, llmScoredShowIds, openingDayReviewShowIds, findOverdueMissingScored,
 } = require('./lib/opening-night-scored-check.js');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -44,13 +44,16 @@ const latencyLines = fs.existsSync(LATENCY_FILE)
   : [];
 const scoredSet = scoredShowIds(latencyLines, cutoffMs);
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
+let openingDayShowIds = null;
 if (fs.existsSync(REVIEWS_FILE)) {
-  for (const id of llmScoredShowIds(JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8')), openingShows)) scoredSet.add(id);
+  const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8'));
+  for (const id of llmScoredShowIds(reviewsData, openingShows)) scoredSet.add(id);
+  openingDayShowIds = openingDayReviewShowIds(reviewsData, openingShows);
 } else {
   console.warn(`WARN: ${REVIEWS_FILE} missing; cannot cross-check lost 'scored' rows against reviews.json`);
 }
 
-const missing = findOverdueMissingScored(openingShows, scoredSet, reviewedShowIds(latencyLines), today);
+const missing = findOverdueMissingScored(openingShows, scoredSet, reviewedShowIds(latencyLines, openingDayShowIds), today);
 console.log(`Opening window: ${yesterday} → ${today}`);
 console.log(`Shows in window: ${openingShows.map((s) => s.id).join(', ')}`);
 console.log(`Shows with a "scored" entry in the last 48h: ${openingShows.filter((s) => scoredSet.has(s.id)).map((s) => s.id).join(', ') || '(none)'}`);

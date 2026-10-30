@@ -105,3 +105,17 @@ test('llmScoredShowIds counts opening-day LLM-scored reviews when the stage row 
   ] }, shows);
   assert.deepEqual([...set].sort(), ['adj', 'anchored', 'lost-row']);
 });
+
+test('a preview-only review does not make a show "reviewed" for the overdue alert (BRO-6653)', () => {
+  const { reviewedShowIds, openingDayReviewShowIds, findOverdueMissingScored } = require('./opening-night-scored-check.js');
+  const shows = [{ id: 'preview-only', openingDate: '2026-10-29' }, { id: 'has-opening-review', openingDate: '2026-10-29' }];
+  const lines = shows.map((s) => JSON.stringify({ showId: s.id, stage: 'rebuilt', at: '2026-10-30T10:00:00Z', metadata: { reviewCount: 1 } }));
+  const opening = openingDayReviewShowIds({ reviews: [
+    { showId: 'preview-only', publishDate: '2026-10-27' },
+    { showId: 'has-opening-review', publishDate: '2026-10-29' },
+  ] }, shows);
+  const missing = findOverdueMissingScored(shows, new Set(), reviewedShowIds(lines, opening), '2026-10-30').map((s) => s.id);
+  assert.deepEqual(missing, ['has-opening-review']);
+  // without reviews.json the old behaviour (any rebuilt count) is kept
+  assert.equal(reviewedShowIds(lines).has('preview-only'), true);
+});

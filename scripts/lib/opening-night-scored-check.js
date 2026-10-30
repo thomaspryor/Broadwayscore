@@ -64,12 +64,21 @@ function scoredShowIds(latencyLines, cutoffMs) {
 // originalScore-* are not LLM evidence, so those shows still alert.
 const LLM_SCORE_SOURCE = /^(llm|anchored|adjudicated)/;
 
+// Shows with any review published on/after their opening day (any score source).
+function openingDayReviewShowIds(reviewsData, openingShows) {
+  return reviewShowIds(reviewsData, openingShows, () => true);
+}
+
 function llmScoredShowIds(reviewsData, openingShows) {
+  return reviewShowIds(reviewsData, openingShows, (r) => LLM_SCORE_SOURCE.test(r.scoreSource || ''));
+}
+
+function reviewShowIds(reviewsData, openingShows, accept) {
   const list = Array.isArray(reviewsData) ? reviewsData : (reviewsData && reviewsData.reviews) || [];
   const opening = new Map((openingShows || []).map((s) => [s.id, s.openingDate]));
   const set = new Set();
   for (const r of list) {
-    if (!r || !opening.has(r.showId) || !LLM_SCORE_SOURCE.test(r.scoreSource || '')) continue;
+    if (!r || !opening.has(r.showId) || !accept(r)) continue;
     if (r.publishDate && r.publishDate >= opening.get(r.showId)) set.add(r.showId);
   }
   return set;
@@ -81,7 +90,10 @@ function findMissingScored(openingShows, scoredSet) {
 
 // Shows the review pipeline has actually collected text for (BRO-5975): a show with no
 // reviews yet has nothing to score, and that gap belongs to the coverage gates.
-function reviewedShowIds(latencyLines) {
+// openingDayShowIds (optional, from reviews.json): when given, a non-zero 'rebuilt' count only
+// counts for shows holding a review published on/after opening day. A preview-period blog
+// review alone is not an opening-night review awaiting a score (BRO-6653, The Lives of Others).
+function reviewedShowIds(latencyLines, openingDayShowIds) {
   const set = new Set();
   const collected = new Map();
   const excluded = new Map();
@@ -90,8 +102,9 @@ function reviewedShowIds(latencyLines) {
     if (!line) continue;
     try {
       const e = JSON.parse(line);
-      if (e.stage === 'scored'
-        || (e.stage === 'rebuilt' && e.metadata && e.metadata.reviewCount > 0)) set.add(e.showId);
+      if (e.stage === 'scored') set.add(e.showId);
+      else if (e.stage === 'rebuilt' && e.metadata && e.metadata.reviewCount > 0
+        && (!openingDayShowIds || openingDayShowIds.has(e.showId))) set.add(e.showId);
       else if (e.stage === 'review-text-collected' || e.stage === 'review-first-seen') bump(collected, e.showId);
       else if (e.stage === 'excluded') bump(excluded, e.showId);
     } catch { /* skip malformed line */ }
@@ -112,6 +125,7 @@ function findOverdueMissingScored(openingShows, scoredSet, reviewedSet, today) {
 }
 
 module.exports = {
+  openingDayReviewShowIds,
   llmScoredShowIds,
   reviewedShowIds,
   findOverdueMissingScored,
