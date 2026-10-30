@@ -3737,20 +3737,6 @@
     "queuedAt": "2026-10-30T08:00:30.149Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-30.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T09:00:58.896Z"
-  },
-  {
     "conditionKey": "aggregator-health:thestage-roundups:workflow-failing:scrape-thestage-roundups.yml",
     "title": "The Stage roundups: scrape-thestage-roundups.yml failed its last 20 runs in a row (last success 2026-06-09)",
     "description": "The Stage roundups: scrape-thestage-roundups.yml failed its last 20 runs in a row (last success 2026-06-09)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 runs.",
@@ -3841,18 +3827,18 @@
     "queuedAt": "2026-10-30T10:27:34.131Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
-    "title": "6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/\n- nbcny--1daa444e.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-announces-pregnant-baby-no-3/6559878/\n- nbcny--77bcfc31.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/kaley-cuoco-tom-pelphrey-welcome-2nd-baby/6559563/",
-    "severity": "warning",
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-30.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
     "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-30T10:54:08.156Z"
+    "queuedAt": "2026-10-30T11:18:05.973Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-lives-of-others-west-end-2026",
