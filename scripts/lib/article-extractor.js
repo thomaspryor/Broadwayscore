@@ -574,24 +574,33 @@ function extractNubNewsBody(html) {
  * BRO-6573: Lillian King's Bodyguard review saved as an empty stub without this.
  */
 function extractToledoBladeBody(html) {
-  const src = String(html || '');
-  const start = src.search(/"body"\s*:\s*"/);
-  if (start < 0) return null;
-  const open = src.indexOf('"', src.indexOf(':', start)) ;
-  let i = open + 1;
-  let esc = false;
-  for (; i < src.length; i++) {
-    const c = src[i];
-    if (esc) { esc = false; continue; }
-    if (c === '\\') { esc = true; continue; }
-    if (c === '"') break;
+  const full = String(html || '');
+  // Scope to the story script: JSON-LD and ad config elsewhere also carry "body" keys.
+  const at = full.indexOf('pgStoryZeroJSON');
+  if (at < 0) return null;
+  const src = full.slice(at);
+  let best = null;
+  for (const m of src.matchAll(/"body"\s*:\s*"/g)) {
+    const open = m.index + m[0].length - 1;
+    let i = open + 1;
+    let esc = false;
+    for (; i < src.length; i++) {
+      const c = src[i];
+      if (esc) { esc = false; continue; }
+      if (c === '\\') { esc = true; continue; }
+      if (c === '"') break;
+    }
+    if (i >= src.length) continue;
+    let body;
+    // Raw newlines/tabs inside the string are invalid JSON; the CMS may emit them.
+    try { body = JSON.parse(src.slice(open, i + 1).replace(/[\u0000-\u001f]/g, ' ')); } catch { continue; }
+    const paras = [...String(body).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+      .map((p) => stripHtml(p[1]).replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+    const text = paras.join('\n\n');
+    if (text && (!best || text.length > best.length)) best = text;
   }
-  let body;
-  try { body = JSON.parse(src.slice(open, i + 1)); } catch { return null; }
-  const paras = [...String(body).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
-    .map((p) => stripHtml(p[1]).replace(/\s+/g, ' ').trim())
-    .filter(Boolean);
-  return paras.length ? paras.join('\n\n') : null;
+  return best;
 }
 
 function extractRadioTimesBody(html) {

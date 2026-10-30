@@ -21,3 +21,19 @@ test('extracts paragraphs from the embedded JSON body', () => {
 test('returns null when the page has no body field', () => {
   assert.equal(extractToledoBladeBody('<html><p>nothing</p></html>'), null);
 });
+
+test('ignores earlier "body" keys outside the story script and keeps the longest body', () => {
+  const html = `<script type="application/ld+json">{"body":"<p>${filler}</p>"}</script>` + page.replace('"other":"x"', '"related":{"body":"<p>short teaser</p>"}');
+  const t = extractToledoBladeBody(html);
+  assert.match(t, /^First/);
+  assert.doesNotMatch(t, /short teaser/);
+});
+
+test('tolerates raw newlines inside the body string', () => {
+  const html = `<script>pgStoryZeroJSON = {"articles":[{"body": "<p>${filler}\nsecond line</p>"}]}</script>`;
+  assert.match(extractToledoBladeBody(html), /second line/);
+});
+
+test('returns null without the story script', () => {
+  assert.equal(extractToledoBladeBody(`<script>{"body":"<p>${filler}</p>"}</script>`), null);
+});
