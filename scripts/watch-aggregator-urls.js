@@ -339,6 +339,8 @@ async function pass(openings, ctx) {
       const bwwResult = await checkBwwRoundup(show);
       if (bwwResult.skipped) {
         console.log(`  BWW RR: ${bwwResult.reason}${bwwResult.url ? ' (' + bwwResult.url + ')' : ''}`);
+        // Already in shows.json: the poller reads it from there, nothing left to hand over.
+        if (bwwResult.url) W.markBwwDispatched(state, show.id, bwwResult.url);
       } else if (bwwResult.error) {
         console.log(`  BWW RR error: ${bwwResult.error}`);
       } else if (bwwResult.url) {
@@ -368,8 +370,14 @@ async function pass(openings, ctx) {
     } else if (dtliResult.slug) {
       if (known === dtliResult.slug) {
         console.log(`  DTLI slug: ${dtliResult.slug} (already mapped)`);
-        // Mapped before this process started (or on an earlier pass): nothing new to announce.
-        W.markDtliDispatched(state, show.id, dtliResult.slug);
+        // Mapped before this process started (or on an earlier pass): nothing new to announce,
+        // unless an earlier pass found it and its dispatch was skipped (retry it).
+        if (ctx.pendingDtli.get(show.id) === dtliResult.slug) {
+          dtliSlugFound = dtliResult.slug;
+          needsDispatch = true;
+        } else {
+          W.markDtliDispatched(state, show.id, dtliResult.slug);
+        }
       } else if (dtliOwner) {
         console.log(`  ⚠ DTLI slug ${dtliResult.slug} already mapped to ${dtliOwner} — not assigning it to ${show.id} (cross-show collision)`);
       } else {
@@ -400,11 +408,13 @@ async function pass(openings, ctx) {
           // Not marked dispatched: the running poller may have been started for a
           // different URL (an earlier DTLI dispatch, the orchestrator), so this URL
           // could still never reach a poller. The next tick retries once it ends.
+          if (dtliSlugFound) ctx.pendingDtli.set(show.id, dtliSlugFound);
         } else if (d.exitCode === 0) {
           console.log(`  ✅ Dispatched opening-night-poller.yml`);
           dispatched++;
           if (bwwUrlFound) W.markBwwDispatched(state, show.id, bwwUrlFound);
           if (dtliSlugFound) W.markDtliDispatched(state, show.id, dtliSlugFound);
+          ctx.pendingDtli.delete(show.id);
         } else {
           console.log(`  ❌ Dispatch failed (exit ${d.exitCode}): ${d.output.slice(0, 300)}`);
         }
@@ -432,7 +442,7 @@ async function pass(openings, ctx) {
     process.exit(0);
   }
 
-  const ctx = { slugMap: loadSlugMap(), state: W.createWatchState() };
+  const ctx = { slugMap: loadSlugMap(), state: W.createWatchState(), pendingDtli: new Map() };
 
   if (LOOP_MINUTES > 0) {
     const deadlineMs = Date.now() + LOOP_MINUTES * 60000;

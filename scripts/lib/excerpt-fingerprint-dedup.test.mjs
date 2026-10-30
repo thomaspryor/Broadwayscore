@@ -93,6 +93,18 @@ test('the survivor tie-break keeps the unmangled byline in either file order (BR
   assert.equal([b, a].sort(cmp)[0].file, b.file);
 });
 
+test('tie-break only prefers a one-character glued byline, and stays transitive (BRO-6628 ship-check)', () => {
+  const { compareFilesForDedupPriority: cmp } = require('./rebuild-helpers.js');
+  const f = n => ({ file: `nytimes--${n}.json` });
+  // surname-only vs full name is NOT a glue artifact: falls through to the alphabetical order
+  assert.equal([f('jesse-green'), f('green')].sort(cmp)[0].file, 'nytimes--green.json');
+  assert.equal([f('green'), f('jesse-green')].sort(cmp)[0].file, 'nytimes--green.json');
+  assert.equal(cmp(f('jesse-green'), f('green')) > 0, true);
+  assert.equal(cmp(f('green'), f('jesse-green')) < 0, true);
+  // tiny slugs never count as glued twins (keeps the pairwise order cycle-free): plain alphabetical
+  assert.equal([f('ac'), f('c')].sort(cmp)[0].file, 'nytimes--ac.json');
+});
+
 test('West End excerpt fields are fingerprinted too (shared EXCERPT_FIELDS list)', () => {
   const seen = new Map();
   const rec = { theStageExcerpt: EXCERPT };

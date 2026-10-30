@@ -1605,10 +1605,18 @@ function compareFilesForDedupPriority(a, b) {
   // unmangled one and wins, so the garbled byline is not the one published.
   const sa = criticSlugOfFile(a.file), sb = criticSlugOfFile(b.file);
   if (sa && sb && sa !== sb) {
-    if (sb.endsWith(sa)) return -1;
-    if (sa.endsWith(sb)) return 1;
+    // Exactly one glued character ('bcaitlin-hornik' vs 'caitlin-hornik'). A longer prefix is a real
+    // different name ('jesse-green' vs 'green'), and the 1-char bound keeps the order transitive.
+    if (isGluedTwin(sa, sb)) return -1;
+    if (isGluedTwin(sb, sa)) return 1;
   }
   return String(a.file).localeCompare(String(b.file));
+}
+
+/** True when `long` is `short` with one stray leading character. `short` must look like a real "first-last" slug,
+ *  so tiny slugs ('c' vs 'ac') never trigger it and the pairwise order cannot form a cycle through them. */
+function isGluedTwin(short, long) {
+  return short.length >= 5 && short.includes('-') && long.length === short.length + 1 && long.endsWith(short);
 }
 
 /** 'independent--bcaitlin-hornik.json' -> 'bcaitlin-hornik' (null when the name has no outlet--critic shape). */
