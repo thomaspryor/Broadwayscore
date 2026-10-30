@@ -620,3 +620,18 @@ test('reddit email: a 59 to 60 move on an emailed draft sends an update (BRO-663
   assert.deepEqual(mail.dueEmails({ drafts: { afgm: d } }, Date.parse('2026-10-30T09:00:00Z')).map(x => x.kind), ['update']);
   assert.deepEqual(mail.dueEmails({ drafts: { afgm: { ...d, score: 59 } } }, Date.parse('2026-10-30T09:00:00Z')).map(x => x.kind), [], 'unchanged: quiet');
 });
+
+test('reddit-opening-posts-due gate flags exactly the shows the draft job would redraft (BRO-6634)', () => {
+  const { dueShows } = require('../reddit-opening-posts-due.js');
+  const shows = [show];
+  const slims = new Map([[show.id, slim()]]);
+  const f = lib.buildFacts(show, slim(), []);
+  const accurate = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: `Trainspotting scores ${f.score}/100`, body: `${f.reviewCount} reviews.`, emailedAt: '2026-09-29T06:00:00Z' };
+  const due = d => dueShows({ shows, slims, drafts: { drafts: d ? { [show.id]: d } : {} }, today: '2026-09-29' });
+  assert.deepEqual(due(null), [show.id], 'never drafted, inside the window: due');
+  assert.deepEqual(due(accurate), [], 'emailed and still matches the page: not due, the hourly run stops early');
+  assert.deepEqual(due({ ...accurate, title: `Trainspotting scores ${f.score - 1}/100` }), [show.id], 'one-point score move (59 to 60): due');
+  const more = new Map([[show.id, slim({ n: 12 })]]);
+  assert.deepEqual(dueShows({ shows, slims: more, drafts: { drafts: { [show.id]: accurate } }, today: '2026-09-29' }), [show.id], 'two more reviews landed on the page: due');
+  assert.deepEqual(due({ ...accurate, status: 'posted' }), [], 'already posted: never due');
+});
