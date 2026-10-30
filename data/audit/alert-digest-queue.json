@@ -3856,5 +3856,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T07:55:13.861Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",
+    "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nnew same-show/same-outlet critic-name near-duplicate(s) found — this is the Markoski/Markosky double-count shape (BRO-4156). Either merge the duplicate files (keep the richer/real-URL record, dedupe criticName to the outlet's own byline spelling), or if this is a genuine two-different-critics collision, add it to KNOWN_BACKLOG/allow-list with a note why.\n+ actual - expected\n\n+ [\n+   [\n+     'a-few-good-men-2026',\n+     'independent',\n+     'BCaitlin Hornik',\n+     'Caitlin Hornik'\n+   ]\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T08:00:30.149Z"
   }
 ]

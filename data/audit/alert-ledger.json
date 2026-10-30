@@ -23996,20 +23996,17 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
-      "incidentOpenedAt": "2026-10-28T10:58:13.708Z",
-      "lastSeen": "2026-10-29T01:09:19.898Z",
-      "lastNotifiedAt": "2026-10-28T10:58:13.708Z",
-      "lastSurfacedAt": "2026-10-28T10:58:13.708Z",
-      "notifyCount": 7,
+      "incidentOpenedAt": "2026-10-30T08:00:30.148Z",
+      "lastSeen": "2026-10-30T08:00:30.148Z",
+      "lastNotifiedAt": "2026-10-30T08:00:30.148Z",
+      "lastSurfacedAt": "2026-10-30T08:00:30.148Z",
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10,
-      "resolvedAt": "2026-10-29T02:57:50.472Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24762,13 +24759,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-30T04:04:59.940Z",
+      "lastSeen": "2026-10-30T08:00:30.132Z",
       "lastNotifiedAt": "2026-10-29T12:25:46.533Z",
       "lastSurfacedAt": "2026-10-29T12:25:46.533Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -26036,13 +26033,13 @@
       "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
       "firstSeen": "2026-10-24T13:07:31.042Z",
       "incidentOpenedAt": "2026-10-29T20:14:34.919Z",
-      "lastSeen": "2026-10-30T04:04:59.920Z",
+      "lastSeen": "2026-10-30T08:00:30.113Z",
       "lastNotifiedAt": "2026-10-29T20:14:34.919Z",
       "lastSurfacedAt": "2026-10-29T20:14:34.919Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-6101-aggregator-repair": {
       "status": "resolved",
@@ -31475,13 +31472,13 @@
       "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.391Z",
       "incidentOpenedAt": "2026-10-29T23:10:05.391Z",
-      "lastSeen": "2026-10-30T04:04:59.956Z",
+      "lastSeen": "2026-10-30T08:00:30.166Z",
       "lastNotifiedAt": "2026-10-29T23:10:05.391Z",
       "lastSurfacedAt": "2026-10-29T23:10:05.391Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows": {
       "status": "open",
@@ -31489,13 +31486,13 @@
       "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.416Z",
       "incidentOpenedAt": "2026-10-29T23:10:05.416Z",
-      "lastSeen": "2026-10-30T04:04:59.970Z",
+      "lastSeen": "2026-10-30T08:00:30.181Z",
       "lastNotifiedAt": "2026-10-29T23:10:05.416Z",
       "lastSurfacedAt": "2026-10-29T23:10:05.416Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-6546-voidfix": {
       "status": "open",
