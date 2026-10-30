@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6585-d",
   "planId": "b0357cf5-43b1-4d24-966c-2d656fff59d0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T13:57:30.727Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "description": "letterboxd /film/a-few-good-men/reviews/page/5/ hub (1992 film), not a review"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T14:07:17.286Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-few-good-men-2026/letterboxd--scott-alain.json"
+    }
+  ],
+  "executedIn": "ci"
 }
