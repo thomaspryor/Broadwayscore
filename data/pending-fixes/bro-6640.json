@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6640",
   "planId": "30cc2637-5de2-49d9-80f0-1d2c6aaa6e96",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T17:16:54.826Z",
   "submitter": {
     "name": null,
@@ -113,5 +113,64 @@
         "description": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json: wrongProduction"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T19:32:20.873Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angry-alan-off-broadway-2025/culturesauce--thom-geier.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angry-alan-off-broadway-2025/culturesauce--thom-geier.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "macbeth-an-undoing-off-broadway-2024/culturesauce--thom-geier.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brooklyn-laundry-off-broadway-2024/theatermania--david-gordon.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bella-bella-off-broadway-2019/timeout--adam-feldman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bella-bella-off-broadway-2019/timeout--adam-feldman.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json allowCrossMarket: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-off-broadway-2023/sunday-telegraph--diane-snyder.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
 }
