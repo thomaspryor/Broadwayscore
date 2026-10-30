@@ -185,6 +185,8 @@ test('CLI: imports a fixture, replays it (--verify), exits 78 with no key, and p
   assert.match(ok.stdout, /imported demo 2026-11-08 shadow: 2 pages/);
   assert.ok(!(ok.stdout + ok.stderr).includes('SECRET'), 'no page text in output');
   assert.ok(!(ok.stdout + ok.stderr).includes(ENV.REVIEW_TEXTS_TOKEN), 'no secret in output');
+  const spaced = cli(['--archive', root, '--verify']);
+  assert.equal(spaced.status, 0, 'space-separated flag form (used by the workflow) works: ' + spaced.stdout + spaced.stderr);
   const v = cli([`--archive=${root}`, '--verify']);
   assert.equal(v.status, 0, v.stdout + v.stderr);
   assert.match(v.stdout, /verify demo\/2026-11-08\/shadow: 2\/2 bodies replayed/);

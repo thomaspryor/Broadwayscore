@@ -18,7 +18,15 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const imp = require('./lib/lane-recorded-nights/recording-import');
 
-const arg = (n, d = null) => { const a = process.argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : d; };
+/** Accepts both `--name=value` and `--name value`. */
+const arg = (n, d = null) => {
+  const i = process.argv.findIndex((x) => x === `--${n}` || x.startsWith(`--${n}=`));
+  if (i < 0) return d;
+  const a = process.argv[i];
+  if (a.includes('=')) return a.slice(n.length + 3);
+  const next = process.argv[i + 1];
+  return next && !next.startsWith('--') ? next : d;
+};
 const flag = (n) => process.argv.includes(`--${n}`);
 
 const gh = (apiPath, binary = false) => execFileSync('gh', ['api', apiPath], { maxBuffer: 256 * 1024 * 1024, ...(binary ? {} : { encoding: 'utf8' }) });
