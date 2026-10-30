@@ -655,4 +655,10 @@ runs:
         done
 
         echo "WARNING: Failed to push review-texts after 5 attempts"
+        # BRO-6615: save new review files to a push-rescue/* branch so they
+        # outlive this runner; replay-push-rescue.yml restores them. Fail-open.
+        RESCUE_BASE=$(git merge-base HEAD origin/main 2>/dev/null || true)
+        if [ -n "$RESCUE_BASE" ]; then
+          node "${GITHUB_WORKSPACE}/scripts/lib/push-rescue.js" rescue "$RESCUE_BASE" HEAD || true
+        fi
         exit 1

@@ -850,6 +850,21 @@ announce_unpushed_work() {
   echo "::error title=push-with-retry discarded unpushed work::$msg"
 }
 
+# BRO-6615: in the review-texts repo, ADDED review files cannot ride the Git
+# Data API fallback (the ownership gate needs a working tree, BRO-5589), so a
+# fully failed push used to drop new reviews with the runner (run 41013824281
+# lost 29 files). Push the unpushed head to a fresh push-rescue/* branch
+# (creating a new ref cannot lose a race to main); replay-push-rescue.yml
+# restores the added files through the ownership gate. Fail-open: never
+# changes this script's exit code. PUSH_RESCUE_DISABLE=1 turns it off.
+rescue_unpushed_review_texts() {
+  [ "${PUSH_API_REVIEW_TEXTS:-}" = "1" ] || return 0
+  [ "${PUSH_RESCUE_DISABLE:-}" = "1" ] && return 0
+  [ -n "${SCRIPT_ENTRY_HEAD:-}" ] && [ -n "${SCRIPT_ENTRY_BASE:-}" ] || return 0
+  command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/push-rescue.js" ] || return 0
+  _timeout $(( GIT_NET_TIMEOUT_SEC + 30 )) node "$SCRIPT_DIR/push-rescue.js" rescue "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" || true
+}
+
 record_push_failure() {
   local reason="${1:-unknown}" attempt="${2:-0}"
   # autostash-conflict is recorded after the push itself, and
@@ -1116,7 +1131,7 @@ fi
 # against a half-restored tree). Same `command -v` guard as above: the stale-marker
 # exit below fires before it is defined. `|| true` is load-bearing: under set -e a
 # failing statement inside an EXIT trap aborts the trap before `exit $rc`.
-trap 'rc=$?; { [ "$rc" -ne 0 ] && announce_unpushed_work; } || true; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
+trap 'rc=$?; { [ "$rc" -ne 0 ] && announce_unpushed_work; } || true; { [ "$rc" -ne 0 ] && rescue_unpushed_review_texts; } || true; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to fetch/rebase/merge on top of an in-progress-operation
