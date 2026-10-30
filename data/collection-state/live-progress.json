@@ -1,32 +1,42 @@
 {
-  "updatedAt": "2026-10-30T16:22:43.349Z",
-  "processed": 93,
-  "failed": 57,
-  "successRate": "62.0%",
+  "updatedAt": "2026-10-30T16:26:45.996Z",
+  "processed": 99,
+  "failed": 74,
+  "successRate": "57.2%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 58,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 6,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 22
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archiveToday": 12,
+    "archive": 23
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-30T16:09:13.596Z",
+      "t": "2026-10-30T16:20:06.238Z",
       "event": "bb-session",
-      "session": "6f4d8972",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "0c1a2517",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
     },
     {
-      "t": "2026-10-30T16:09:51.807Z",
+      "t": "2026-10-30T16:20:06.721Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T16:22:02.452Z",
       "event": "bb-session",
-      "session": "40767bb6",
-      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+      "session": "154dfc28",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T16:22:02.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

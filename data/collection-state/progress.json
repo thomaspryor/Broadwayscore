@@ -90,9 +90,12 @@
     "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
     "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
     "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
-    "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
-    "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
-    "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json"
+    "the-heart-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-heart-off-broadway-2026/vulture--jackson-mchenry.json",
+    "a-few-good-men-2026/aussie-theatre--james-kennedy.json",
+    "a-few-good-men-2026/lighting-and-sound-america--david-barbour.json",
+    "the-heart-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+    "in-the-heights-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "dracula-west-end-2025/talkinbroadway--unknown.json",
@@ -151,7 +154,19 @@
     "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
-    "hamilton-west-end-2021/theatermania--zachary-stewart.json"
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -210,11 +225,15 @@
       "paddington-the-musical-west-end-2025/rhombus-rota--west-end-live.json",
       "paddington-the-musical-west-end-2025/west-end-wilma--unknown.json",
       "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
-      "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
-      "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json"
+      "a-few-good-men-2026/aussie-theatre--james-kennedy.json",
+      "a-few-good-men-2026/lighting-and-sound-america--david-barbour.json",
+      "the-heart-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+      "in-the-heights-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/jamr--unknown.json",
@@ -224,8 +243,13 @@
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "oh-mary-west-end-2025/matineemouse--matinee-mouse.json"
     ],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "the-heart-off-broadway-2026/cititour--brian-scott-lipton.json"
+    ],
+    "brightdata": [
+      "the-heart-off-broadway-2026/vulture--jackson-mchenry.json"
+    ],
     "archiveToday": [
       "data/review-texts/daytona-west-end-2014/standard--unknown.json",
       "data/review-texts/girls-off-west-end-2026/londontheatre1--unknown.json",
@@ -234,7 +258,10 @@
       "data/review-texts/some-woman-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-to-see--olivia-hurton.json",
       "data/review-texts/golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json"
+      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
@@ -261,7 +288,30 @@
       "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
     ]
   },
-  "startTime": "2026-10-30T15:38:54.398Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
-  "log": []
+  "startTime": "2026-10-30T14:43:34.813Z",
+  "lastProcessed": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-30T16:20:06.238Z",
+      "event": "bb-session",
+      "session": "0c1a2517",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-30T16:20:06.721Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T16:22:02.452Z",
+      "event": "bb-session",
+      "session": "154dfc28",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T16:22:02.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
