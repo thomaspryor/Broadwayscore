@@ -245,16 +245,16 @@
       "disposition": "auto",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-30T20:14:04.618Z",
-      "lastSeen": "2026-10-30T20:46:54.852Z",
-      "lastNotifiedAt": "2026-10-30T20:14:04.618Z",
-      "lastSurfacedAt": "2026-10-30T20:14:04.618Z",
+      "incidentOpenedAt": "2026-10-30T19:57:21.546Z",
+      "lastSeen": "2026-10-30T21:10:28.852Z",
+      "lastNotifiedAt": "2026-10-30T19:57:21.546Z",
+      "lastSurfacedAt": "2026-10-30T19:57:21.546Z",
       "notifyCount": 191,
       "cardId": null,
       "linearIdentifier": "BRO-6656",
       "notifyCountAtRelease": 177,
       "sweptTracker": "BRO-6422",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26829,14 +26829,14 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
       "incidentOpenedAt": "2026-10-30T13:06:49.638Z",
-      "lastSeen": "2026-10-30T20:46:54.834Z",
+      "lastSeen": "2026-10-30T21:10:28.834Z",
       "lastNotifiedAt": "2026-10-30T13:06:49.638Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-6627",
       "absentRunIds": [],
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "open",
@@ -32797,7 +32797,10 @@
         "mode": "dispatch-at-filing",
         "runId": "41119666955",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41119666955"
-      }
+      },
+      "absentRunIds": [
+        "41124935485"
+      ]
     },
     "land:land/bro-6519-land-lock": {
       "status": "open",
