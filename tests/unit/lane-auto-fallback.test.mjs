@@ -467,6 +467,9 @@ test('stuck: the census never comes from the lane, and the watchdog workflow car
   assert.match(cli, /require\('\.\/lib\/press-night-census'\)/);
   assert.match(cli, /CI_UNFETCHABLE_OUTLETS/);
   assert.match(cli, /censusExclusions/);
+  // Progress carried in for a different show or night is dropped, never used to judge this one.
+  assert.match(cli, /parseProgress\(arg\('progress'\), `\$\{show\.id\}\|\$\{night\}`\)/);
+  assert.match(cli, /if \(p\.key === key\) return p;/);
   // The census lives outside the lane folder, so it is not part of the lane code hash.
   assert.ok(!/press-night-census|review-census|scraper/.test(read('scripts/lib/opening-night-lane/auto-fallback.js').replace(/^ \*.*$/gm, '')));
   assert.match(read('scripts/press-night-record.js'), /require\('\.\/lib\/press-night-census'\)/);

@@ -30,15 +30,19 @@ const PROD_BASE = 'https://broadwayscorecard.com/data/shows';
 const CENSUS_REFRESH_MIN = 15;
 const FETCH_TIMEOUT_MS = 60000;
 
-/** Parse --progress; anything but a JSON object starts fresh. */
-function parseProgress(raw) {
-  if (!raw) return {};
+/** Parse --progress; anything but a JSON object for this show and night starts fresh. */
+function parseProgress(raw, key) {
+  if (!raw) return { key };
   try {
     const p = JSON.parse(raw);
-    if (p && typeof p === 'object' && !Array.isArray(p)) return p;
+    if (p && typeof p === 'object' && !Array.isArray(p)) {
+      if (p.key === key) return p;
+      console.log(`::warning::--progress is for ${p.key || 'an unknown night'}, not ${key}; starting the stuck check fresh`);
+      return { key };
+    }
   } catch (_) { /* fall through */ }
   console.log('::warning::--progress is not a JSON object; starting the stuck check fresh');
-  return {};
+  return { key };
 }
 
 /**
@@ -154,7 +158,7 @@ async function watchdog() {
   let fallbackDone = flag('fallback-done');
   let leaseSeen = flag('lease-seen');
   let claimFailures = 0;
-  let progress = parseProgress(arg('progress'));
+  let progress = parseProgress(arg('progress'), `${show.id}|${night}`);
   const times = af.nightTimes(show, night);
   const observe = times && createObserver(show, night, times);
   for (;;) {
