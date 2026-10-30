@@ -75,7 +75,8 @@ function laneCodeFiles(dir = __dirname) {
   const walkTs = (file) => {
     if (seen.has(file) || !fs.existsSync(file)) return;
     seen.add(file);
-    for (const m of fs.readFileSync(file, 'utf8').matchAll(/\bfrom\s+['"](\.\/[^'"]+)['"]/g)) {
+    // `import x from`, `import type`, `export ... from` and a bare `import './x'` all end in from/import + the path.
+    for (const m of fs.readFileSync(file, 'utf8').matchAll(/\b(?:from|import)\s+['"](\.\/[^'"]+)['"]/g)) {
       const base = path.resolve(path.dirname(file), m[1]);
       const hit = [base, `${base}.ts`].find((f) => f.endsWith('.ts') && fs.existsSync(f) && fs.statSync(f).isFile());
       if (hit) walkTs(hit);

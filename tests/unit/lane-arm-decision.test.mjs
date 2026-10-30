@@ -94,3 +94,22 @@ test('changing ensemble-scorer.ts, a prompt it imports, the entry script or the 
     assert.equal(rh.laneCodeHash(lane), before, 'a shadow entry edit does not disarm');
   } finally { fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 5 }); }
 });
+
+test('the scorer walk follows every relative .ts import form, and nothing outside its folder', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6619t-'));
+  try {
+    const lane = path.join(root, 'scripts', 'lib', 'opening-night-lane');
+    const llm = path.join(root, 'scripts', 'llm-scoring');
+    fs.mkdirSync(lane, { recursive: true });
+    fs.mkdirSync(llm, { recursive: true });
+    fs.writeFileSync(path.join(lane, 'a.js'), 'module.exports = 1;');
+    fs.writeFileSync(path.join(llm, 'ensemble-scorer.ts'), [
+      "import { A } from './a';", 'import type { B } from "./b";', "export { C } from './c';", "import './d';", "const x = require('../lib/excluded');",
+    ].join('\n'));
+    for (const n of ['a', 'b', 'c', 'd']) fs.writeFileSync(path.join(llm, `${n}.ts`), `export const ${n.toUpperCase()} = 1;`);
+    fs.mkdirSync(path.join(root, 'scripts', 'lib'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'scripts', 'lib', 'excluded.js'), 'module.exports = 1;');
+    const files = rh.laneCodeFiles(lane).map((f) => path.relative(root, f));
+    assert.deepEqual(files, ['scripts/lib/opening-night-lane/a.js', ...['a', 'b', 'c', 'd'].map((n) => `scripts/llm-scoring/${n}.ts`), 'scripts/llm-scoring/ensemble-scorer.ts'].sort());
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 5 }); }
+});
