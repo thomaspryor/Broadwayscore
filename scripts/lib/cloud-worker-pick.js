@@ -139,14 +139,18 @@ function isStartNow(issue, nowMs) {
 // was only waiting on that, so the card skips the idle wait and the pause
 // cooldown and goes to the front, like START-NOW, while the tap is the newest
 // human comment and under 48 h old. The comment's createdAt is set by Linear,
-// so no card text can fake the window.
+// so editing the card cannot reopen the window; the comment must also carry
+// the answer ref recordAnswer writes. Bodies are unescaped first, as every
+// other marker test does (Linear escapes markdown in stored bodies).
 const OWNER_TASK_DONE_RE = /^\*\*Owner decision\*\* \(answered by the owner\b[^\n]*\n\s*\nChose: Done, I did it\s*(?:\n|$)/;
 const OWNER_TASK_RESUME_MS = 48 * HOUR_MS;
 function isOwnerTaskResume(issue, nowMs) {
   const nodes = (issue && issue.comments && Array.isArray(issue.comments.nodes)) ? issue.comments.nodes : [];
   const newest = nodes.filter((c) => c && Number.isFinite(Date.parse(c.createdAt)) && !isMachineComment(c.body))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
-  if (!newest || !OWNER_TASK_DONE_RE.test(String(newest.body || ''))) return false;
+  const { unescapeMarkdown, ANSWER_REF_RE } = require('../../src/lib/owner-decision-link.js');
+  const body = newest ? unescapeMarkdown(String(newest.body || '')) : '';
+  if (!OWNER_TASK_DONE_RE.test(body) || !ANSWER_REF_RE.test(body)) return false;
   const age = nowMs - Date.parse(newest.createdAt);
   return age >= 0 && age < OWNER_TASK_RESUME_MS;
 }

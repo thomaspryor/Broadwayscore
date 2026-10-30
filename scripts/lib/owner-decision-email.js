@@ -89,7 +89,7 @@ ${block.why ? `<p style="margin:0 0 12px;"><strong>Why Claude cannot do this its
 <ol style="padding-left:22px;margin:12px 0 16px;">${steps}</ol>
 ${buttons}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
-<p style="margin:16px 0 0;color:#666;font-size:13px;">When you tap Done, the work picks back up on its own within about two hours. You do not need to find the Claude chat. Each button asks you to confirm first.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''} This link works for 14 days.</p>
+<p style="margin:16px 0 0;color:#666;font-size:13px;">When you tap Done, the work goes back in the queue and carries on by itself. You do not need to find the Claude chat. Each button asks you to confirm first.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''} This link works for 14 days.</p>
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
 }
