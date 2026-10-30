@@ -47,7 +47,7 @@ on:
 # group) and drop that day's digest snapshot. The draft jobs also share a
 # job-level group, so an hourly and a daily drafter never overlap.
 concurrency:
-  group: reddit-engagement-digest-${{ github.event.schedule == '17 * * * *' && 'hourly' || 'daily' }}
+  group: reddit-engagement-digest-${{ github.event.schedule == '41 * * * *' && 'hourly' || 'daily' }}
   cancel-in-progress: false
 
 permissions:
