@@ -468,13 +468,14 @@ function stampPublishedBy(rec, decision, { checkedAt, label = null, error = null
  */
 function addManualAction(rec, { at, outletId = null, outlet = null, kind = 'hand-fix', source = null }) {
   if (toMs(at) == null) throw new Error('manual action: --at must be an ISO time');
+  if (!source) throw new Error('manual action: --source must name the card or comment');
   if (!Array.isArray(rec.manualActions)) rec.manualActions = [];
   const dup = rec.manualActions.find((m) => toMs(m.at) === toMs(at) && (m.outletId || null) === (outletId || null) && m.kind === kind);
-  if (dup) return dup;
+  if (dup) return { entry: dup, added: false };
   const entry = { at: new Date(toMs(at)).toISOString(), outletId, outlet, kind, source };
   rec.manualActions.push(entry);
   rec.manualActions.sort((a, b) => toMs(a.at) - toMs(b.at));
-  return entry;
+  return { entry, added: true };
 }
 
 /** Hand fixes inside the night window ([embargo - nightStartH, embargo + 6h]). Undefined = never stamped. */

@@ -373,12 +373,12 @@ async function main() {
   }
 
   if (has('log-manual')) {
-    let entry;
+    let res;
     try {
-      entry = lib.addManualAction(rec, { at: arg('at'), outletId: arg('outlet-id'), outlet: arg('outlet'), kind: arg('kind', 'hand-fix'), source: arg('source') });
+      res = lib.addManualAction(rec, { at: arg('at'), outletId: arg('outlet-id'), outlet: arg('outlet'), kind: arg('kind', 'hand-fix'), source: arg('source') });
     } catch (e) { console.error(`[press-night] ${e.message}`); return 2; }
-    writeRecord(file, rec);
-    console.log(`[press-night] manual action logged: ${JSON.stringify(entry)}`);
+    if (res.added) writeRecord(file, rec);
+    console.log(`[press-night] manual action ${res.added ? 'logged' : 'already logged'}: ${JSON.stringify(res.entry)}`);
     return 0;
   }
 

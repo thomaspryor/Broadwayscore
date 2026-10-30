@@ -394,12 +394,13 @@ test('passed on their own: AFGM 10-29 (TheWrap hand-ingested 12:42am) never coun
   assert.match(html, /Press nights so far: 2 of 5 passed, 1 passed on their own \(no hand fixes\)\./);
 });
 
-test('manual action log: dedupes, sorts, refuses a bad time; a new record starts with an empty list', () => {
+test('manual action log: dedupes, sorts, refuses a bad time or no source; a new record starts with an empty list', () => {
   const rec = R.emptyRecord({ showId: 's', night: '2026-10-29', embargoAt: '2026-10-30T02:00:00Z' });
   assert.deepEqual(rec.manualActions, []);
   R.addManualAction(rec, { at: '2026-10-30T05:00:00Z', outletId: 'b', source: 'x' });
   R.addManualAction(rec, { at: '2026-10-30T04:00:00Z', outletId: 'a', source: 'x' });
-  R.addManualAction(rec, { at: '2026-10-30T05:00:00.000Z', outletId: 'b', source: 'again' });
+  assert.equal(R.addManualAction(rec, { at: '2026-10-30T05:00:00.000Z', outletId: 'b', source: 'again' }).added, false);
   assert.deepEqual(rec.manualActions.map((m) => m.outletId), ['a', 'b']);
-  assert.throws(() => R.addManualAction(rec, { at: 'soon' }), /ISO time/);
+  assert.throws(() => R.addManualAction(rec, { at: 'soon', source: 'x' }), /ISO time/);
+  assert.throws(() => R.addManualAction(rec, { at: '2026-10-30T04:00:00Z' }), /--source/);
 });
