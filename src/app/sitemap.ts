@@ -42,6 +42,12 @@ import { getSeasonsWithCommercialData, isIndexedCommercialSeason } from '@/lib/d
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
+// Preserve established markets' indexability policy and thin-page cohort.
+// New categories must meet the shared review minimum before sitemap inclusion.
+const ESTABLISHED_SHOW_CATEGORIES = new Set([
+  'broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional', 'tour',
+]);
+
 export function generateSitemaps() {
   return SITEMAP_SHARDS.map((_, i) => ({ id: i }));
 }
@@ -80,8 +86,10 @@ function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
   const operaSlugs = new Set(getOperaShows().map(s => s.slug));
   return getAllShowSlugs()
     .filter(slug => !operaSlugs.has(slug))
-    // Require hasEnoughReviews via the shared display gate, plus page indexability.
-    .filter(slug => { const s = getShowBySlug(slug); return s && displaysCriticScore(s) && isShowIndexable(s, slug); })
+    .filter(slug => {
+      const s = getShowBySlug(slug);
+      return !s || ((ESTABLISHED_SHOW_CATEGORIES.has(s.category ?? '') || displaysCriticScore(s)) && isShowIndexable(s, slug));
+    })
     .map((slug) => {
       const show = getShowBySlug(slug);
       const isOpen = show?.status === 'open';
@@ -98,7 +106,7 @@ function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
 function buildOperaShard(ctx: DateContext): MetadataRoute.Sitemap {
   const operaShows = getOperaShows();
   const showPages = operaShows
-    .filter(s => s.status !== 'upcoming' && displaysCriticScore(s))
+    .filter(s => s.status !== 'upcoming' && (ESTABLISHED_SHOW_CATEGORIES.has(s.category ?? '') || displaysCriticScore(s)))
     .map((show) => {
       const isOpen = show.status === 'open';
       return {
