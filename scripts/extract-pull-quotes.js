@@ -26,7 +26,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, hasUsableLlmQuote, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, hasUsableLlmQuote, snapToSourceSpan, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -95,6 +95,7 @@ AVOID:
 - Sentences that are mostly about a single actor unless the whole review focuses on that performance
 - Generic praise/criticism that could apply to any show ("It's worth seeing", "Don't miss it")
 - Sentences with parenthetical asides, em-dashes creating subclauses, or other structures that make them hard to read out of context
+- Sentences that point back at something said earlier: "Despite this elaborate choreography, ...", "If only the rest of the production ...", "That makes ...", "This is hardly a problem ...", "Truth be told, though, ...", "the latter", "Even his ..." — a reader of the quote alone cannot tell what "this", "that" or "the rest" refers to
 - MOST IMPORTANTLY: on a POSITIVE review, any sentence that starts with But / Yet / Still / Though / Although / However / Despite / While — these are reservation markers and will misrepresent the critic's verdict.
 
 Return ONLY the extracted sentence. Nothing else — no quotes, no attribution, no explanation.
@@ -461,6 +462,22 @@ async function processReview(entry) {
       return;
     }
 
+    // Context check (BRO-6631): a sentence that leans on the one before it
+    // ("Despite this elaborate choreography, ...", "If only the rest of the
+    // production felt as up-to-date.") is meaningless on a show card. The
+    // rebuild defers these, so retry once for a standalone verdict.
+    if (isContextDependentQuote(quote, { showTitle: data.showTitle })) {
+      if (attempt === 1) {
+        stats.contextRetried = (stats.contextRetried || 0) + 1;
+        if (VERBOSE) console.log(`  CONTEXT-DEPENDENT: "${quote.slice(0, 80)}..." — retrying`);
+        hint = `Your previous attempt ("${quote}") depends on the sentence before it: a reader seeing only this quote cannot tell what it refers to. Pick a DIFFERENT sentence that names what it is judging and makes complete sense on its own.`;
+        continue;
+      }
+      stats.contextRejected = (stats.contextRejected || 0) + 1;
+      if (VERBOSE) console.log(`  CONTEXT-DEPENDENT rejected after retry: ${path.basename(filePath)}`);
+      return;
+    }
+
     // Length check: a too-short/too-long candidate that gives up here falls
     // through to the raw-fullText heuristic scrape, which tends to grab an
     // awkward parenthetical aside or plot-summary sentence instead of a real
@@ -491,6 +508,28 @@ async function processReview(entry) {
       return;
     }
 
+    // Verbatim check (BRO-6631): the model sometimes trims words out of the
+    // middle of a sentence ("...staging pushes it to its limit" where the
+    // critic wrote "...staging with four additional...") and the quote was
+    // then dropped as not-in-text, leaving the old weak quote in place. Snap
+    // to the critic's own sentence(s) first (same helper the rebuild uses);
+    // only if that fails, retry once asking for the exact wording.
+    if (!verifyInText(quote, data.fullText)) {
+      const snapped = snapToSourceSpan(quote, data.fullText);
+      if (snapped && verifyInText(snapped, data.fullText) && !isBadCandidateLength(snapped)
+          && !isContextDependentQuote(snapped, { showTitle: data.showTitle })
+          && !isPromoTeaser(snapped) && !shouldRejectAsReservation(snapped, score)) {
+        stats.snappedToSource = (stats.snappedToSource || 0) + 1;
+        if (VERBOSE) console.log(`  SNAPPED to source: "${snapped.slice(0, 80)}..."`);
+        quote = snapped;
+      } else if (attempt === 1) {
+        stats.notInTextRetried = (stats.notInTextRetried || 0) + 1;
+        if (VERBOSE) console.log(`  NOT IN TEXT (attempt 1): "${quote.slice(0, 80)}..." — retrying`);
+        hint = `Your previous attempt ("${quote}") was not copied exactly: words were changed or left out. Return one sentence copied character for character from the review, without shortening it.`;
+        continue;
+      }
+    }
+
     // Accepted.
     break;
   }
@@ -498,7 +537,7 @@ async function processReview(entry) {
   // Verify the quote actually appears in the review text
   if (!verifyInText(quote, data.fullText)) {
     stats.notInText++;
-    if (VERBOSE) console.log(`  NOT IN TEXT: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
+    if (VERBOSE) console.log(`  NOT IN TEXT: "${quote.slice(0, 300)}..." — ${path.basename(filePath)}`);
     return;
   }
 
@@ -626,6 +665,9 @@ async function main() {
   if (stats.upgraded) console.log(`Upgraded (replaced existing): ${stats.upgraded}`);
   if (stats.reservationRetried) console.log(`Hedge-opener retries: ${stats.reservationRetried}`);
   if (stats.reservationRejected) console.log(`Hedge-opener rejects (after retry): ${stats.reservationRejected}`);
+  if (stats.snappedToSource) console.log(`Snapped to the critic's exact sentence: ${stats.snappedToSource}`);
+  if (stats.notInTextRetried) console.log(`Not-in-text retries: ${stats.notInTextRetried}`);
+  if (stats.contextRetried) console.log(`Context-dependent retries: ${stats.contextRetried}, rejects after retry: ${stats.contextRejected || 0}`);
   console.log(`Time: ${elapsed}s`);
 
   if (DRY_RUN) {

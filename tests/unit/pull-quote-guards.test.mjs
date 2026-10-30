@@ -660,3 +660,57 @@ test('a name cut after a short prefix ("Mc", "Lu") is still a mid-word cut', () 
   const q2 = 'Nobody else on Broadway sings the role quite the way it is sung by Patti Lu';
   assert.strictEqual(isMidWordTruncation(q2, [`${q2}Pone tonight`]), true);
 });
+
+// BRO-6631: sentences that lean on the one before them (A Few Good Men, 2026-10-29).
+describe('isContextDependentQuote', () => {
+  const { isContextDependentQuote, endsWithSourceEllipsis, snapToSourceSpan: snap } = require('../../scripts/lib/pull-quote-guards.js');
+  test('flags the shipped A Few Good Men quotes the owner saw', () => {
+    for (const q of [
+      'Despite this elaborate choreography, Arden’s production works as theater only intermittently.',
+      'If only the rest of the production felt as up-to-date.',
+      'Truth be told, though, the main struggle here has to be within Kaffee and that really is not visible at all.',
+      'That makes the clumsiness in some of his writing regrettable.',
+      'This is hardly a problem, just an oddity in what is ultimately another Chekhov banger.',
+      'Yet despite this, and the brilliant work of a strong ensemble, the play still feels strangely remote.',
+      'Even his skills can’t salvage this show.',
+      'Fortunately, the verdict rests with the former.',
+      '“If only these actors could dedicate themselves to better material.',
+    ]) assert.strictEqual(isContextDependentQuote(q), true, q);
+  });
+  test('leaves standalone verdicts alone', () => {
+    for (const q of [
+      'It’s a starchy, listless production that never finds a proper sense of scale.',
+      'This is pitch-perfect theatre-making that manages to be utterly clear and technically brilliant.',
+      'This is not to be missed.',
+      'This makes for a highly watchable drama.',
+      'Despite this production’s flaws, the cast is superb.',
+      'For all those who love this great Broadway musical, the present revival is not to be missed.',
+      'The result is a play that feels vital and gripping.',
+      'Even so, 1776 succeeds where it counts.',
+      'Her performance is a revelation.',
+      'The former Harry Potter plays the title role and casts a spell.',
+      'That said, Dad Don’t Read This is highly entertaining.',
+    ]) assert.strictEqual(isContextDependentQuote(q), false, q);
+  });
+  test('endsWithSourceEllipsis spots aggregator-clipped blurbs', () => {
+    assert.strictEqual(endsWithSourceEllipsis('But Sorkin’s script evens out, and ...'), true);
+    assert.strictEqual(endsWithSourceEllipsis('you’d be foolish not to grab a ticket ‒…”'), true);
+    assert.strictEqual(endsWithSourceEllipsis('A complete sentence.'), false);
+  });
+  test('snapToSourceSpan does not end a sentence at "Oct." or "Lt."', () => {
+    const body = 'Intro line here. It’s a tough act to follow, but under Arden’s direction the show is as compelling as ever in a revival that opened Oct. 29 at the Beaumont. Lt. Kaffee is sharp. Next.';
+    const s = snap('under Arden’s direction the show is as compelling as ever in a revival.', body);
+    assert.strictEqual(s, 'It’s a tough act to follow, but under Arden’s direction the show is as compelling as ever in a revival that opened Oct. 29 at the Beaumont.');
+  });
+  test('a back-reference that names the show is standalone', () => {
+    assert.strictEqual(isContextDependentQuote('That makes A Strange Loop the best new musical of the Broadway season.', { showTitle: 'A Strange Loop' }), false);
+    assert.strictEqual(isContextDependentQuote('That is emphatically not the case with Skylight, thrillingly revived.', { showTitle: 'Skylight' }), false);
+    assert.strictEqual(isContextDependentQuote('Despite this elaborate choreography, Arden’s production works only intermittently.', { showTitle: 'A Few Good Men' }), true);
+  });
+  test('isClippedAggregatorBlurb: multi-sentence clipped blurbs only', () => {
+    const { isClippedAggregatorBlurb } = require('../../scripts/lib/pull-quote-guards.js');
+    assert.strictEqual(isClippedAggregatorBlurb('In some ways, it is a classic tale. This particular story gets off to a slow start. But Sorkin’s script evens out, and ...'), true);
+    assert.strictEqual(isClippedAggregatorBlurb('This is strong stuff, and the cast is up to the task...'), false);
+    assert.strictEqual(isClippedAggregatorBlurb('A complete two-sentence quote. It ends properly.'), false);
+  });
+});

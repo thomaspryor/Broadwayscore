@@ -63,6 +63,7 @@ const {
   hasListingChrome, stripListingPrelude, stripLeadingCredits, isTagCloudExcerpt, isMidWordTruncation,
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
+  isClippedAggregatorBlurb,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
@@ -932,6 +933,18 @@ function selectBestExcerpt(data, showTitle) {
     if (!pendingDeferral && isOverlongExcerpt(excerpt)) {
       stats.overlongExcerptsDeferred = (stats.overlongExcerptsDeferred || 0) + 1;
       pendingDeferral = 'overlong';
+    }
+
+    // Layer 2h2: a multi-sentence aggregator blurb the aggregator clipped
+    // with "..." (BWW roundups cut at a fixed length) is a partial passage.
+    // Deferred as a fallback only, so a complete critic sentence (even a
+    // hedge-deferred one) wins: A Few Good Men / USA Today and The
+    // Independent shipped a three-sentence BWW blurb ending "and ..." over a
+    // clean LLM verdict (BRO-6631). A one-line blurb with "..." appended is
+    // kept: the 2026-10-30 corpus A/B found its fallbacks no better.
+    if (!pendingDeferral && !LLM_DERIVED_SOURCES.has(source) && isClippedAggregatorBlurb(excerpt)) {
+      stats.sourceTruncatedExcerptsDeferred = (stats.sourceTruncatedExcerptsDeferred || 0) + 1;
+      pendingDeferral = 'source-truncated';
     }
 
     // Layer 2i: raw body text that opens with page chrome ("Gift this

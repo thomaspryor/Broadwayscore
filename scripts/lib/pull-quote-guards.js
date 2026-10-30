@@ -176,6 +176,87 @@ function isInServiceSection(quote, fullText) {
   return SERVICE_SECTION_HEADING_RE.test(text.slice(Math.max(0, at - 500), at));
 }
 
+// ---------------------------------------------------------------------------
+// Context dependence: a quote that leans on the sentence before it.
+//
+// BRO-6631 (owner report, A Few Good Men opening 2026-10-29): the shipped
+// quotes included "Despite this elaborate choreography, Arden's production
+// works as theater only intermittently." (NYT), "If only the rest of the
+// production felt as up-to-date." (NYTG) and "Truth be told, though, the main
+// struggle here has to be within Kaffee..." (Chicago Tribune). Each is a real
+// critic sentence, but read alone on a show card it points at something the
+// reader never saw. The extractor prompt already says "must make sense without
+// the surrounding context"; nothing enforced it.
+//
+// Used at extraction time only (extract-pull-quotes retries; a stored quote
+// that trips it is re-extracted). The rebuild does NOT defer on it: a
+// 2026-10-30 A/B of the 205 shipped quotes it would swap found the fallback
+// candidates (keyPhrases, aggregator blurbs, body slices) no better half the
+// time. A fresh LLM pick from the full review is the fix.
+//
+// Deliberately narrow (291 of 39,642 shipped quotes on 2026-10-30): plain
+// "It..." / "This is a..." / "His performance..." openers read fine alone and
+// are NOT flagged, nor are mild markers like "Even so," / "That said," /
+// "The result is", whose clause still states a verdict.
+// ---------------------------------------------------------------------------
+// Words that, right after "despite this" / "for all that", mean the
+// demonstrative names the show itself ("Despite this production's flaws").
+const CONTEXT_SHOW_NOUN = '(?:show|production|revival|play|musical|staging|evening|night|piece|work|drama|comedy|opera|adaptation|version|incarnation|outing|transfer|cast|company|ensemble|year|season|theater|theatre|tour|concert|run|one|new|latest)';
+const CONTEXT_DEPENDENT_PATTERNS = [
+  // Discourse markers that only make sense after a previous sentence.
+  /^(?:if only|even then|in other words|in that sense|to that end|on top of that|more than that|beyond that|worse still|better still|by contrast|in contrast|similarly|likewise|then again|nor|which is why|this is why|that is why|that's why|that’s why|hence|for that reason|for this reason)\b/i,
+  // "Truth be told, though, ..." / "To be fair, however, ..."
+  /^(?:truth be told|in truth|to be fair|to be sure|admittedly|granted|in fairness|frankly|honestly)[,\s]+(?:though|however)\b/i,
+  // Bare demonstrative pronoun as the subject: "That makes the clumsiness...",
+  // "These are the moments where...", "This is hardly a problem".
+  /^(?:that|those|these)\s+(?:is|was|'s|’s|are|were|makes|made|means|meant|would|could|should|might|may|leaves|left|explains|isn't|isn’t|doesn't|doesn’t|wasn't|wasn’t|did|does|alone|aside|helps|matters|changes)\b/i,
+  /^this\s+(?:is|was|'s|’s)\s+(?:hardly|no mere|also|partly|precisely|exactly|why|because|true|the problem|a problem|in part)\b/i,
+  /^this\s+(?:makes(?!\s+for)|made(?!\s+for)|means|meant|leaves|left|explains|would|could|helps|matters|changes|aside)\b/i,
+  // A concessive pointing back: "Despite this elaborate choreography",
+  // "Yet despite this, ...", "For all that, ...". Not "Despite this
+  // production's flaws" or "For all those who love...".
+  new RegExp(`^(?:\\S+\\s+){0,2}(?:despite|for all|because of|in spite of|thanks to|beyond|besides|apart from|aside from)\\s+(?:all\\s+)?(?:this|that|these|those|it|them)\\b(?!\\s+who\\b)(?!\\s+${CONTEXT_SHOW_NOUN}\\b)`, 'i'),
+  // An unnamed person: "Even his skills can't salvage this show."
+  /^even\s+(?:his|her|their)\s/i,
+  // An earlier-named pair: "the verdict rests with the former."
+  /\bthe (?:latter|former)(?=\s*[.,;:!?—–]|\s+(?:is|was|are|were|has|had|proves|wins|works)\b)/i,
+];
+
+// A quote that names the show stands on its own even with a back-reference:
+// "That makes A Strange Loop the best new musical of the Broadway season."
+// (The 2026-10-30 A/B judged these better than any replacement.)
+function namesShowTitle(quote, showTitle) {
+  if (!showTitle || typeof showTitle !== 'string') return false;
+  const norm = t => foldDiacritics(String(t)).toLowerCase().replace(/[’'"“”‘]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  const title = norm(showTitle).replace(/^(?:the|a|an) /, '');
+  return title.length >= 4 && ` ${norm(quote)} `.includes(` ${title} `);
+}
+
+function isContextDependentQuote(quote, { showTitle } = {}) {
+  if (!quote || typeof quote !== 'string') return false;
+  const s = quote.replace(/^[\s"“‘'`(\[]+/, '');
+  if (!CONTEXT_DEPENDENT_PATTERNS.some(re => re.test(s))) return false;
+  return !namesShowTitle(s, showTitle);
+}
+
+// An aggregator excerpt the aggregator itself cut short ("...the plebeian ear
+// requiring a careful listen. But Sorkin's script evens out, and ..."): BWW
+// roundups clip at a fixed length. It is a partial passage, not a quote.
+function endsWithSourceEllipsis(excerpt) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  return /(?:\.\.\.|…)[\s"”’']*$/.test(excerpt);
+}
+
+// Only the long, multi-sentence clipped blurbs: a single line with "..."
+// appended ("This is strong stuff, and the cast is up to the task...") still
+// reads as a quote (BRO-6631 corpus A/B, 2026-10-30).
+function isClippedAggregatorBlurb(excerpt) {
+  if (!endsWithSourceEllipsis(excerpt)) return false;
+  const body = excerpt.replace(/(?:\.\.\.|…)[\s"”’']*$/, '');
+  const sentenceEnds = (body.match(/[.!?]["'”’)\]]*\s+(?=["'“‘(]*[A-Z0-9])/g) || []).length;
+  return sentenceEnds >= 1 || excerpt.length > 200;
+}
+
 function isPromoTeaser(excerpt) {
   if (!excerpt || typeof excerpt !== 'string') return false;
   return PROMO_TEASER_PATTERNS.some(re => re.test(excerpt));
@@ -512,8 +593,12 @@ function llmQuoteHardRejectReason(quote, fullText) {
 // A stored llmPullQuote that fails the write-time guard is treated as absent,
 // so the extractor's skip-if-present does not pin it forever: the rebuild
 // drops or trims it and nothing else replaces it (BRO-5796).
+// BRO-6631: a stored quote that only makes sense after the sentence before it
+// is also re-extracted (the extractor now retries those), without making it a
+// hard reject that review-field-edit would refuse.
 function hasUsableLlmQuote(data) {
-  return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText));
+  return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText)
+    && !isContextDependentQuote(data.llmPullQuote, { showTitle: data.showTitle }));
 }
 
 // ---------------------------------------------------------------------------
@@ -652,8 +737,10 @@ function isContiguousInSource(excerpt, fullText) {
 // followed by whitespace and a sentence-starting character, or a newline.
 // Not after an initial or a common abbreviation ("Christopher J. Hanke",
 // "240 W. 44th", "Mr. Diamond"): splitting there snapped quotes that ended
-// mid-name.
-const SOURCE_SENTENCE_SPLIT_RE = /(?<=[.!?]["'”’)\]]*)(?<!(?:^|[\s(])[A-Z]\.)(?<!\b(?:Mr|Mrs|Ms|Dr|St|Jr|Sr|Mt|No|Nos|Ave|Vol|vs)\.)\s+(?=["'“‘(\[]*[A-Z0-9])|\s*\n\s*/;
+// mid-name. Month abbreviations and military/academic titles too (BRO-6631:
+// USA Today on A Few Good Men snapped to "...a bang-up revival that opened
+// Oct." and the play is full of "Lt." / "Col." / "Cpl.").
+const SOURCE_SENTENCE_SPLIT_RE = /(?<=[.!?]["'”’)\]]*)(?<!(?:^|[\s(])[A-Z]\.)(?<!\b(?:Mr|Mrs|Ms|Dr|St|Jr|Sr|Mt|No|Nos|Ave|Vol|vs|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec|Lt|Col|Gen|Capt|Cpl|Sgt|Pvt|Cmdr|Adm|Maj|Prof|Rev|Gov|Sen|Rep|Hon)\.)\s+(?=["'“‘(\[]*[A-Z0-9])|\s*\n\s*/;
 
 function sourceSentences(views) {
   if (views.sentences) return views.sentences;
@@ -700,7 +787,10 @@ const SNAP_MAX_LEAD = 40;
 // production detail. Shorter tails (the Guardian's "– perhaps too eerily")
 // are restored in full: they can change the meaning.
 const SNAP_PREFIX_SLACK = 120;
-const SNAP_CHROME_RE = /©|\ball rights reserved\b|\bsubscribe\b|\bsign in\b/i;
+// Dateline/byline furniture too ("BY Aly Prouty Milwaukee PUBLISHED 1:12 PM
+// ET Sep. 23, 2026 SHARE"): once "Sep." stopped ending a sentence (BRO-6631)
+// a snap could swallow the whole header into the quote.
+const SNAP_CHROME_RE = /©|\ball rights reserved\b|\bsubscribe\b|\bsign in\b|\b(?:PUBLISHED|UPDATED)\s+\d|\b\d{1,2}:\d{2}\s*[AP]M\b/i;
 
 /**
  * Does any start/end anchor of `excerpt` occur in `fullText`? When none does,
@@ -1091,11 +1181,17 @@ function pickExcerptCandidate({ accepted = null, deferred = [], rawSourceRank = 
 // paraphrases slightly still beats a raw-body plot summary (Deadline / 1984,
 // Variety / 1776 ship-check, 2026-10-19). It still loses to every accepted
 // curated quote, which returns before raw ranks are reached.
-const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'sentiment-mismatch', 'page-chrome']);
+// 'source-truncated' (BRO-6631): an aggregator blurb clipped with "..." must
+// not beat a complete critic sentence that was only hedge-deferred.
+const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'source-truncated', 'sentiment-mismatch', 'page-chrome']);
 // When nothing was accepted: lower tier wins, then source rank.
-const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'sentiment-mismatch': 3, 'page-chrome': 4 };
+const DEFERRAL_REASON_TIER = { overlong: 1, 'source-truncated': 1, 'non-contiguous': 2, 'sentiment-mismatch': 3, 'page-chrome': 4 };
 
 module.exports = {
+  isContextDependentQuote,
+  CONTEXT_DEPENDENT_PATTERNS,
+  endsWithSourceEllipsis,
+  isClippedAggregatorBlurb,
   llmQuoteHardRejectReason,
   hasUsableLlmQuote,
   HEDGE_OPENER_RE,
