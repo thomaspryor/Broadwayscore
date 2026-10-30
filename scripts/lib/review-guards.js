@@ -1608,7 +1608,10 @@ function isRoundupUrl(url) {
   // first-party BWW review on the-oresteia-west-end-2026 (2026-07-19); a
   // corpus scan found 71 files with this primary-URL shape, every one already
   // flagged excluded — zero legitimate reviews live at these URLs.
-  if (/broadwayworld\.com\/(?:[a-z0-9-]+\/)?article\/review-roundup-/i.test(url)) {
+  // BWW also serves the same roundups translated, at /translate/{lang}/Review-
+  // Roundup-... with no /article/ segment (BRO-6580: game-of-thrones-the-mad-
+  // king-regional-2026 scored its roundup as a BWW review).
+  if (/broadwayworld\.com\/(?:(?:[a-z0-9-]+\/)?article|translate\/[a-z-]+)\/review-roundup-/i.test(url)) {
     return { isRoundup: true, reason: 'BroadwayWorld Review-Roundup article (multi-outlet quote compilation)' };
   }
 
@@ -1657,6 +1660,48 @@ function isRoundupUrl(url) {
   }
   if (/latimes\.com\/[^?#]*what-did-(?:the-)?critics-think/i.test(url)) {
     return { isRoundup: true, reason: 'LA Times what-did-the-critics-think roundup' };
+  }
+
+  // BRO-6580: five more roundup slug shapes found live in reviews.json after
+  // the owner spotted an aggregator-looking outlet page. Host-scoped like the
+  // rest; each was checked against every corpus URL on its host.
+  //   WhatsOnStage /news/ "did the critics enjoy X", "critics split over X",
+  //     "X splits critics", "X reviews_<id>": quote compilations under a WOS
+  //     staff byline (9 live: birdland, high-society, wise-children, ...). WOS
+  //     reviews also live under /news/ but always carry the singular token
+  //     "review" (we-will-rock-you "...review-its-already-defied-critics_..."),
+  //     so a slug with "review" is never matched here.
+  //   Evening Standard .../{show}-reviews-round-up-... (all-about-eve 2019,
+  //     bitter-wheat 2019).
+  //   Playbill "playbill-theatre-week-in-review-...": Robert Simonson's weekly
+  //     summary of what the critics said (clybourne-park 2012 quotes 10
+  //     outlets). The Verdict slug rule below excluded it as Playbill's own
+  //     criticism; it is not.
+  //   Daily Mail / Mail on Sunday tvshowbiz "X branded unengaging by critics",
+  //     "Critics head over heels for X", "X panned by critics": showbiz-desk
+  //     reaction pieces quoting the reviews (pillowman 2023, abba-voyage,
+  //     an-enemy-of-the-people 2024). Its critics' own reviews live under
+  //     /tvshowbiz/article-N/QUENTIN-LETTS-... and /news/, without "critics".
+  const wosSlug = url.match(/whatsonstage\.com\/(?:[a-z-]+-theatre\/)?news\/([^/?#]+)/i);
+  if (wosSlug) {
+    const tokens = wosSlug[1].toLowerCase().replace(/(?:_\d+)?(?:\.html)?$/, '').split(/[-_]/);
+    if (!tokens.includes('review')
+        && (tokens.includes('critics') || tokens.includes('critic') || tokens[tokens.length - 1] === 'reviews')) {
+      return { isRoundup: true, reason: 'WhatsOnStage critics-reaction roundup article' };
+    }
+  }
+  if (/standard\.co\.uk\/[^?#]*-reviews?-round-?up/i.test(url)) {
+    return { isRoundup: true, reason: 'Evening Standard reviews round-up article' };
+  }
+  if (/playbill\.com\/(?:news\/)?article\/playbill(?:coms)?-theatre-week-in-review-/i.test(url)) {
+    return { isRoundup: true, reason: 'Playbill Theatre Week in Review column (summary of other critics)' };
+  }
+  // Any section (the Devil Wears Prada roundup sits under /lifestyle/) and the
+  // /amp/ copy. A bylined Mail critic's own slug (QUENTIN-LETTS-..., PATRICK-
+  // MARMION-...) is never a roundup, whatever its headline says about critics.
+  if (/dailymail\.(?:co\.uk|com)\/[a-z]+\/article-\d+\/(?:amp\/)?[^/?#]*critics/i.test(url)
+      && !/\/article-\d+\/(?:amp\/)?[^/?#]*(?:LETTS|MARMION)/i.test(url)) {
+    return { isRoundup: true, reason: 'Daily Mail showbiz critics-reaction article' };
   }
 
   // NOTE: Do NOT add generic cross-domain roundup URL patterns (e.g. bare
@@ -3021,6 +3066,10 @@ const ROUNDUP_HOST_OUTLETS = {
   'londontheatredirect.com': ['londontheatredirect', 'london-theatre-direct'],
   'independent.co.uk': ['independent', 'the-independent'],
   'latimes.com': ['latimes', 'la-times', 'los-angeles-times'],
+  // BRO-6580, with their isRoundupUrl patterns.
+  'standard.co.uk': ['standard', 'evening-standard'],
+  'dailymail.co.uk': ['daily-mail', 'mail-on-sunday', 'dailymail'],
+  'dailymail.com': ['daily-mail', 'mail-on-sunday', 'dailymail'],
   // Policy decided 2026-07-11 (user): a NAMED CRITIC reviewing the show
   // counts; a site's AGGREGATED score does not. isRoundupUrl matches only
   // these hosts' aggregate/roundup pages — never their individual critic

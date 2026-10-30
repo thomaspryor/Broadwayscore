@@ -594,3 +594,21 @@ test('namedNonReviewReason: cbsnews.com /video/ segment pages are named (BRO-586
   assert.equal(namedNonReviewReason('https://www.cbsnews.com/newyork/news/some-show-review/'), null);
   assert.equal(namedNonReviewReason('https://notcbsnews.com/video/x'), null);
 });
+
+test('namedNonReviewReason: cast-album reviews are not production reviews (BRO-6580)', () => {
+  for (const u of [
+    'https://www.npr.org/2015/09/21/440925873/first-listen-cast-recording-hamilton',
+    'https://www.billboard.com/music/music-news/hamilton-original-broadway-cast-recording-album-review-6715240/',
+    'https://www.vulture.com/2019/09/the-moulin-rouge-broadway-cast-album-is-surprisingly-good.html',
+    'https://musicaltheatrereview.com/music-review-the-little-big-things-original-west-end-cast-recording/',
+    'https://playbill.com/article/on-the-record-the-light-in-the-piazza-and-little-women-com-126426',
+  ]) assert.equal(namedNonReviewReason(u), 'cast-album-review', u);
+  // The same hosts' stage reviews stay reviews.
+  assert.equal(namedNonReviewReason('https://www.vulture.com/2019/07/moulin-rouge-broadway-review.html'), null);
+  assert.equal(namedNonReviewReason('https://musicaltheatrereview.com/review-hamilton-victoria-palace/'), null);
+  assert.equal(namedNonReviewReason('https://www.npr.org/2015/08/06/hamilton-broadway-review'), null);
+});
+
+test('namedNonReviewReason: Musical Theatre Review cd-review slugs are album reviews (BRO-6580)', () => {
+  assert.equal(namedNonReviewReason('https://musicaltheatrereview.com/cd-review-the-prince-of-egypt-original-london-cast/'), 'cast-album-review');
+});

@@ -512,6 +512,17 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // and roundups live under /news/ only. Every corpus file at these shapes was
   // promo copy and none scored (2026-10-13); the census cited
   // /play/the-standard-of-living-tickets.
+  // BRO-6580: cast-album reviews scored as reviews of the stage production
+  // (6 live: Hamilton on NPR and Billboard, Groundhog Day on NPR, Moulin
+  // Rouge on Vulture, The Light in the Piazza in Playbill's "On the Record",
+  // The Little Big Things on Musical Theatre Review). An album review judges
+  // the recording, not the night in the theatre. Host-scoped: each pattern
+  // was checked against every corpus URL on its host.
+  { host: /(^|\.)npr\.org$/, path: /cast-(?:recording|album)/i, reason: 'cast-album-review', allSources: true },
+  { host: /(^|\.)billboard\.com$/, path: /cast-(?:recording|album)/i, reason: 'cast-album-review', allSources: true },
+  { host: /(^|\.)(?:vulture|nymag)\.com$/, path: /cast-(?:recording|album)/i, reason: 'cast-album-review', allSources: true },
+  { host: /(^|\.)musicaltheatrereview\.com$/, path: /cast-(?:recording|album)|^\/(?:cd|music)-review-/i, reason: 'cast-album-review', allSources: true },
+  { host: /(^|\.)playbill\.com$/, path: /^\/(?:news\/)?article\/on-the-record-/i, reason: 'cast-album-review', allSources: true },
   { host: /(^|\.)londontheatredirect\.com$/, path: /^\/(?:[a-z]{2}\/)?(?:play|musical|dance|opera|concert|comedy|experience|booking|show|event)s?\//i, reason: 'ticket-seller-product-page', allSources: true },
 ];
 
