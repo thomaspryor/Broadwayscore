@@ -1,15 +1,15 @@
 <!-- Supabase Auth email for email sign-in (BRO-6575). Used for both the
      "Magic link" and "Confirm signup" templates, applied by
-     scripts/apply-supabase-email-auth.js. Keep {{ .Token }} and
-     {{ .ConfirmationURL }}: the web modal and iOS app ask for the code, and
-     the link signs in the browser that opens it. -->
+     scripts/apply-supabase-email-auth.mjs. Code only, no link: the link and
+     the code share one token, so a mail scanner opening the link (Outlook
+     Safe Links) or a tap that opens Safari instead of the iOS app would
+     spend the code the person is about to type. -->
 <div style="background:#f4f4f5;padding:32px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#18181b">
   <div style="max-width:440px;margin:0 auto;background:#ffffff;border-radius:12px;padding:32px 28px;text-align:center">
     <p style="margin:0 0 24px;font-size:18px;font-weight:700">Broadway Scorecard</p>
     <p style="margin:0 0 8px;font-size:16px">Your sign-in code is</p>
     <p style="margin:0 0 24px;font-size:36px;font-weight:700;letter-spacing:8px;font-family:'SF Mono',Menlo,Consolas,monospace">{{ .Token }}</p>
     <p style="margin:0 0 24px;font-size:14px;color:#52525b;line-height:20px">Type it on the screen where you asked to sign in. It works for one hour.</p>
-    <p style="margin:0 0 24px"><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#18181b;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 20px;border-radius:8px">Or sign in on this device</a></p>
     <p style="margin:0;font-size:12px;color:#71717a;line-height:18px">If you didn't ask to sign in, you can ignore this email. Nobody can get into your account without this code.</p>
   </div>
 </div>

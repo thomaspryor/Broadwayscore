@@ -341,19 +341,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ─── Email sign-in with a one-time code (BRO-6575) ───────────────────
   // signInWithOtp emails a 6-digit code and a link (supabase/templates/
-  // sign-in-code.html) and creates the account on first use. The code keeps
-  // sign-in in this tab, whichever device reads the email; the link lands on
-  // the OAuth return page, which already handles tokens in the URL hash.
+  // sign-in-code.html) and creates the account on first use. Code only, no
+  // link: sign-in stays in this tab, whichever device reads the email.
   const sendEmailCode = useCallback(async (email: string, source: string, returnTo?: string): Promise<{ error?: string }> => {
     const client = await getSupabaseClient();
     if (!client) return { error: 'Sign-in is unavailable right now. Please try again.' };
     markSignInStarted('email', source);
-    // For the link: the return page sends this browser back here.
-    saveReturnUrl(returnTo);
-    const { error } = await client.auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: true, emailRedirectTo: oauthRedirectUrl(window.location.origin) },
-    });
+    const { error } = await client.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
     if (error) {
       markSignInFailed('email', source, error.message);
       // 429s are the per-address once-a-minute limit, not a fault.
@@ -369,7 +363,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!client) return { error: 'Sign-in is unavailable right now. Please try again.' };
     const { error } = await client.auth.verifyOtp({ email, token: code, type: 'email' });
     if (error) {
-      markSignInFailed('email', source, error.message);
+      // Not markSignInFailed: it clears the pending sign-in, so a correct
+      // code typed next would never count as sign_in_completed.
+      trackUgc('sign_in_email_code_rejected', { context: source, reason: (error.code || error.message).slice(0, 80) });
       return { error: emailAuthErrorMessage(error, "That code didn't work. Check it, or send a new one.") };
     }
     // Signed in without leaving the page (SIGNED_IN closes the modal).
@@ -522,11 +518,14 @@ export function emailAuthErrorMessage(
   fallback = 'Something went wrong sending your code. Please try again.',
 ): string {
   const msg = error.message || '';
-  if (error.status === 429 || /only request this after|rate limit/i.test(msg)) {
+  const code = error.code || '';
+  // GoTrue error codes first; message text only for older servers.
+  if (code === 'over_email_send_rate_limit' || /only request this after/i.test(msg)) {
     return 'Please wait a minute before asking for another code.';
   }
-  if (/email address .* invalid|validate email/i.test(msg)) return 'Enter a valid email address.';
-  if (error.code === 'otp_expired' || /expired|invalid/i.test(msg)) {
+  if (code === 'over_request_rate_limit' || error.status === 429) return 'Too many tries. Please wait a few minutes and try again.';
+  if (code === 'email_address_invalid' || /validate email|email address .* invalid/i.test(msg)) return 'Enter a valid email address.';
+  if (code === 'otp_expired' || /token has expired or is invalid/i.test(msg)) {
     return "That code didn't work. Check it, or send a new one.";
   }
   return fallback;

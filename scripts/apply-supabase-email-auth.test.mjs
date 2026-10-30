@@ -7,12 +7,16 @@ import { buildEmailAuthPatch, diffPatch } from './apply-supabase-email-auth.mjs'
 
 const template = readFileSync(new URL('../supabase/templates/sign-in-code.html', import.meta.url), 'utf8');
 
-test('committed template builds a patch with the code and link', () => {
+test('committed template builds a patch with the code and no link', () => {
   const p = buildEmailAuthPatch({ template, resendKey: 're_x' });
   assert.match(p.mailer_templates_magic_link_content, /\{\{ \.Token \}\}/);
   assert.equal(p.mailer_templates_confirmation_content, p.mailer_templates_magic_link_content);
   assert.equal(p.mailer_otp_length, 6);
   assert.equal(p.smtp_host, 'smtp.resend.com');
+});
+
+test('a template with a sign-in link is refused', () => {
+  assert.throws(() => buildEmailAuthPatch({ template: '{{ .Token }} <a href="{{ .ConfirmationURL }}">x</a>', resendKey: 'k' }), /link/);
 });
 
 test('a template without the code is refused', () => {

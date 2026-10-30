@@ -107,6 +107,7 @@ const VERCEL_UGC_PROPS = new Map<string, readonly [string, string?]>([
   ['sign_in_failed', ['provider', 'context']],
   ['sign_in_completed', ['provider', 'context']],
   ['sign_in_email_code_sent', ['context']],
+  ['sign_in_email_code_rejected', ['context', 'reason']],
   ['menu_opened', ['signed_in', 'had_dot']],
   ['rating_editor_opened', ['show_id', 'source']],
   ['rating_submitted', ['show_id', 'source']],

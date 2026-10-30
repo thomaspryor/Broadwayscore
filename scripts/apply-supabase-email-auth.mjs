@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * apply-supabase-email-auth.mjs — the Supabase Auth settings behind email
- * sign-in (BRO-6575): a 6-digit code plus a one-tap link, no password.
+ * sign-in (BRO-6575): a 6-digit code, no password and no link.
  *
  * Why a script: the settings live in the Supabase dashboard, not in the repo.
  * Supabase's built-in mailer sends 2 emails an hour for the whole project and
@@ -28,7 +28,8 @@ const SECRET_KEYS = new Set(['smtp_pass']);
 /** The auth config fields this script owns. Pure; tested. */
 export function buildEmailAuthPatch({ template, resendKey }) {
   if (!/\{\{ \.Token \}\}/.test(template)) throw new Error('template must contain {{ .Token }}');
-  if (!/\{\{ \.ConfirmationURL \}\}/.test(template)) throw new Error('template must contain {{ .ConfirmationURL }}');
+  // A link would share the code's token (see the template's comment).
+  if (/\{\{ \.ConfirmationURL \}\}/.test(template.replace(/<!--[\s\S]*?-->/g, ''))) throw new Error('template must not contain a sign-in link');
   return {
     external_email_enabled: true,
     // Codes, not passwords: 6 digits are what people expect to type.

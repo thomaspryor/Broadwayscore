@@ -34,10 +34,18 @@ export default function EmailCodeForm({ onSendCode, onVerifyCode, onBack, disabl
   const [notice, setNotice] = useState<string | null>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const codeRef = useRef<HTMLInputElement>(null);
+  // State updates lag a tick, so autofill firing onChange twice could verify
+  // twice and spend the code; a ref blocks the second call at once.
+  const verifying = useRef(false);
 
   useEffect(() => {
     (step === 'email' ? emailRef : codeRef).current?.focus();
   }, [step]);
+
+  // An input disabled while checking loses focus; give it back after an error.
+  useEffect(() => {
+    if (!busy && error) (step === 'email' ? emailRef : codeRef).current?.select();
+  }, [busy, error, step]);
 
   const send = async (resend = false) => {
     const address = email.trim();
@@ -60,13 +68,15 @@ export default function EmailCodeForm({ onSendCode, onVerifyCode, onBack, disabl
   };
 
   const verify = async (value: string) => {
-    if (value.length !== EMAIL_CODE_LENGTH || busy) return;
+    if (value.length !== EMAIL_CODE_LENGTH || verifying.current) return;
+    verifying.current = true;
     setBusy(true);
     setError(null);
     setNotice(null);
     const result = await onVerifyCode(email.trim(), value);
     // On success the auth listener closes the modal; keep the spinner until then.
     if (result?.error) {
+      verifying.current = false;
       setBusy(false);
       setError(result.error);
     }
