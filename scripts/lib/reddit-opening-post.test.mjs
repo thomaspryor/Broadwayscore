@@ -224,7 +224,7 @@ test('an unsent draft is redrafted when its numbers go stale, kept when still ac
   const day = { createdAt: '2026-09-28T06:00:00Z', emailedAt: '2026-09-28T06:00:00Z' };
   const stale = { ...accurate, body: 'Now #3 of 24 shows.', ...day };
   assert.equal(pick({ ...stale, reminderAt: '2026-09-29T06:00:00Z' }), 1, 'reminder sent, window open: redrafted so an update can go out (BRO-5879)');
-  assert.equal(pick({ ...stale, reminderAt: '2026-09-29T06:00:00Z', updateCount: lib.MAX_UPDATE_EMAILS }), 0, 'out of update emails: left alone');
+  assert.equal(pick({ ...stale, reminderAt: '2026-09-29T06:00:00Z', updateCount: lib.MAX_UPDATE_EMAILS }), 1, 'updates capped: still refreshed so the final numbers can go out (BRO-6634)');
   assert.equal(pick({ ...stale, reminderAt: '2026-09-29T06:00:00Z', updateCount: lib.MAX_UPDATE_EMAILS - 1 }), 1, 'one update left');
   assert.equal(pick({ ...stale, reminderAt: '2026-09-29T06:00:00Z', createdAt: '2026-09-20T06:00:00Z' }), 0, 'past the TTL: left alone');
 });
@@ -402,8 +402,8 @@ test('a refresh never takes a new opening\'s slot, and is never starved by them 
   // Reminder already sent: still refreshed while its update window is open (BRO-5879) ...
   const sel = d => lib.selectCandidates({ shows, slims, drafts: { drafts: { big: d } }, peersByMarket: {}, today: '2026-09-29' }).map(c => c.show.id);
   assert.ok(sel({ ...stale, reminderAt: '2026-09-29T06:00:00Z' }).includes('big'), 'reminded draft is refreshed for a possible update');
-  // ... and left alone once its updates are used up.
-  assert.ok(!sel({ ...stale, reminderAt: '2026-09-29T06:00:00Z', updateCount: lib.MAX_UPDATE_EMAILS }).includes('big'), 'no updates left: not redrafted');
+  // ... and still refreshed once its updates are capped, so the final numbers reach the owner (BRO-6634).
+  assert.ok(sel({ ...stale, reminderAt: '2026-09-29T06:00:00Z', updateCount: lib.MAX_UPDATE_EMAILS }).includes('big'), 'capped: still redrafted');
 });
 
 test('an emailed draft is refreshed before its reminder even past the opening-age window (BRO-5083)', () => {
@@ -416,8 +416,8 @@ test('an emailed draft is refreshed before its reminder even past the opening-ag
   assert.deepEqual(sel({}, '2026-11-26'), [], 'a show past the window with no draft still gets no first email');
   // Past the sender's TTL no reminder will ever go out: never redraft it again.
   assert.deepEqual(sel({ old: stale }, '2026-12-01'), [], 'reminder window closed: no daily redraft');
-  // An emailed LLM-fallback draft whose updates are used up is not a refresh either.
-  assert.deepEqual(sel({ old: { ...stale, source: 'template', lintProblems: ['llm error'], reminderAt: '2026-11-26T08:00:00Z', updateCount: lib.MAX_UPDATE_EMAILS } }, '2026-11-27'), []);
+  // An emailed LLM-fallback draft with capped updates is still refreshed inside the TTL (BRO-6634).
+  assert.deepEqual(sel({ old: { ...stale, source: 'template', lintProblems: ['llm error'], reminderAt: '2026-11-26T08:00:00Z', updateCount: lib.MAX_UPDATE_EMAILS } }, '2026-11-27'), ['old']);
 });
 
 test('refreshes per run are capped as a backstop (BRO-5083)', () => {
@@ -488,11 +488,11 @@ test('buildPeers leaves out Broadway previews and thin shows; Broadway draft ema
   assert.doesNotMatch(html, /Also post to/);
 });
 
-test('numbersMoved: a changed score, or 3+ reviews either way, against the last email (BRO-5879)', () => {
+test('numbersMoved: any change to the displayed score or review count, against the last email (BRO-6634)', () => {
   const sent = { emailedScore: 70, emailedReviewCount: 12 };
   assert.equal(lib.numbersMoved({ ...sent, score: 70, reviewCount: 12 }), false);
-  assert.equal(lib.numbersMoved({ ...sent, score: 70, reviewCount: 14 }), false, '2 more reviews is not a bunch');
-  assert.equal(lib.numbersMoved({ ...sent, score: 70, reviewCount: 15 }), true, '3 more reviews');
+  assert.equal(lib.numbersMoved({ ...sent, score: 70, reviewCount: 13 }), true, 'one more review');
+  assert.equal(lib.numbersMoved({ emailedScore: 59, emailedReviewCount: 23, score: 60, reviewCount: 23 }), true, '59 to 60 is due');
   assert.equal(lib.numbersMoved({ ...sent, score: 70, reviewCount: 9 }), true, 'reviews removed shift the text too');
   assert.equal(lib.numbersMoved({ ...sent, score: 71, reviewCount: 12 }), true, 'any score change');
   assert.equal(lib.numbersMoved({ score: 70, reviewCount: 12 }), false, 'never emailed numbers: nothing to compare');
@@ -519,10 +519,11 @@ test('reddit email: an emailed draft whose numbers moved gets an update, whateve
     steady: mk('steady', { reminderAt: '2026-10-21T06:00:00Z' }),
     steadyDue: mk('steadyDue'),
     spent: mk('spent', { score: 80, reminderAt: '2026-10-21T06:00:00Z', updateCount: 3 }),
+    spentRecent: mk('spentRecent', { score: 80, emailedAt: '2026-10-22T02:00:00Z', updateCount: 3 }),
     posted: mk('posted', { score: 80, status: 'posted' }),
   } };
   const due = mail.dueEmails(drafts, now).map(x => `${x.draft.showId}:${x.kind}`).sort();
-  assert.deepEqual(due, ['reviewsLanded:update', 'scoreMoved:update', 'steadyDue:reminder'], 'moved numbers beat the reminder; steady ones keep the old reminder; spent and posted are quiet');
+  assert.deepEqual(due, ['reviewsLanded:update', 'scoreMoved:update', 'spent:update', 'steadyDue:reminder'], 'moved numbers beat the reminder; steady ones keep the old reminder; a capped draft updates after a 6h gap; posted is quiet');
   // A just-emailed draft (same run, a few hours ago) still updates if the numbers moved.
   const justSent = { drafts: { a: mk('a', { score: 72, emailedAt: '2026-10-22T03:00:00Z' }) } };
   assert.deepEqual(mail.dueEmails(justSent, now).map(x => x.kind), ['update']);
@@ -562,10 +563,12 @@ test('full chain: emailed, redrafted with new numbers, update sent, redrafted ag
   d = send(d, 'update', day(2));
   assert.deepEqual([d.emailedScore, d.emailedReviewCount, d.updateCount, d.reminderAt], [74, 17, 1, day(2)]);
   assert.deepEqual(due(d, day(2)), [], 'nothing more until the numbers move again');
-  // Day 3: a second redraft at the same numbers keeps the new baseline; 2 more reviews is not a bunch.
+  // Day 3: a redraft keeps the new baseline; 2 more reviews is an update (BRO-6634: any change).
   d = redraft(d, 74, 19, day(3));
   assert.deepEqual([d.emailedScore, d.emailedReviewCount], [74, 17]);
-  assert.deepEqual(due(d, day(3)), []);
+  assert.deepEqual(due(d, day(3)), ['update']);
+  d = redraft(d, 74, 17, day(3));
+  assert.deepEqual(due(d, day(3)), [], 'back to the emailed numbers: nothing to send');
 });
 
 test('legacy reminded draft (no stamps) still gets its update after the first redraft (BRO-5879 review)', () => {
@@ -601,4 +604,19 @@ test('liveMatchesDraft: screenshots only when the live page shows the draft numb
   assert.equal(await mail.liveMatchesDraft(d, { fetchJson: seq({}), sleep }), 'unknown', 'unreadable payload: fail open');
   const html = mail.buildHtml({ status: 'ready', title: 't', body: 'b', subreddit: 'Broadway', submitUrl: 'https://a', showTitle: 'X', score: 74, reviewCount: 18 }, 'update', [], { siteBehind: true });
   assert.match(html, /No screenshots this time/);
+});
+
+test('updateAllowed: the 3-update cap only spaces out later updates, never drops the final numbers (BRO-6634)', () => {
+  const now = Date.parse('2026-10-30T12:00:00Z');
+  assert.equal(lib.updateAllowed({ updateCount: 2, emailedAt: '2026-10-30T11:59:00Z' }, now), true, 'under the cap: any time');
+  assert.equal(lib.updateAllowed({ updateCount: 3, emailedAt: '2026-10-30T08:00:00Z' }, now), false, 'capped, 4h since the last email');
+  assert.equal(lib.updateAllowed({ updateCount: 3, emailedAt: '2026-10-30T05:00:00Z', reminderAt: '2026-10-30T09:00:00Z' }, now), false, 'the latest send counts');
+  assert.equal(lib.updateAllowed({ updateCount: 3, emailedAt: '2026-10-30T05:00:00Z' }, now), true, 'capped, 7h gap: the newest numbers go out');
+  assert.equal(lib.updateAllowed(null, now), false);
+});
+
+test('reddit email: a 59 to 60 move on an emailed draft sends an update (BRO-6634)', () => {
+  const d = { showId: 'afgm', status: 'ready', title: 't', body: 'b', subreddit: 'Broadway', submitUrl: 'https://a', showTitle: 'A Few Good Men', createdAt: '2026-10-30T07:00:00Z', emailedAt: '2026-10-30T07:51:28Z', emailedScore: 59, emailedReviewCount: 23, score: 60, reviewCount: 23 };
+  assert.deepEqual(mail.dueEmails({ drafts: { afgm: d } }, Date.parse('2026-10-30T09:00:00Z')).map(x => x.kind), ['update']);
+  assert.deepEqual(mail.dueEmails({ drafts: { afgm: { ...d, score: 59 } } }, Date.parse('2026-10-30T09:00:00Z')).map(x => x.kind), [], 'unchanged: quiet');
 });

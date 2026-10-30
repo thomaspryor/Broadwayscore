@@ -283,15 +283,15 @@ test('carryOverState keeps the verification across a redraft', () => {
   assert.deepEqual(entry.verification, { status: 'fixed', pendingScoring: true });
 });
 
-test('while the check\'s additions are being scored, any review-count change triggers the update', () => {
+test('any review-count change triggers the update, pending scoring or not (BRO-6634)', () => {
   const emailed = { emailedAt: hoursAgo(30), emailedScore: 74, emailedReviewCount: 14 };
   const plain = baseDraft({ ...emailed, reviewCount: 15 });
-  assert.equal(opening.numbersMoved(plain), false, '+1 review alone is not a bunch');
+  assert.equal(opening.numbersMoved(plain), true, '+1 review is a change');
   const pending = baseDraft({ ...emailed, reviewCount: 15, verification: { status: 'fixed', pendingScoring: true } });
   assert.equal(opening.numbersMoved(pending), true);
   assert.deepEqual(mail.dueEmails({ drafts: { x: pending } }, NOW).map(x => x.kind), ['update']);
   const settled = baseDraft({ ...emailed, reviewCount: 15, verification: { status: 'fixed', pendingScoring: false } });
-  assert.equal(opening.numbersMoved(settled), false);
+  assert.equal(opening.numbersMoved(settled), true);
 });
 
 test('an update email ends the pending-scoring watch; a first email does not', () => {
