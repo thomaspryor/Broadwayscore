@@ -43,6 +43,9 @@
  *                    reference list (data/audit/we-season-reference/<season>.json,
  *                    build-we-season-reference.js) that has a west-end row,
  *                    with the missing titles listed. Gate once the backfill lands.
+ *                    gap-justifications.json maps a miss to an existing row
+ *                    (same-production) or out of scope; wouldPass uses the
+ *                    in-scope share.
  *
  * Usage:
  *   node scripts/audit-we-historical-season.js --season=2024-2025 [--json] [--ids=a,b]
@@ -62,7 +65,7 @@ const { isRejectedImage } = require('./lib/image-source-match');
 const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
 const { seasonSummary } = require('./lib/fact-check-sample');
 const { WOS_FIRST_PERFORMANCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE, THEATRICALIA_FIRST_PERFORMANCE_SOURCE } = require('./lib/we-historical-dates');
-const { referenceCoverage } = require('./lib/we-season-reference');
+const { referenceCoverage, loadGapJustifications } = require('./lib/we-season-reference');
 
 const NYC_ONLY_IMAGE_HOST_RE = /theatr-app\.appspot\.com/;
 const CENSORED_TITLE_RE = /[a-z]\*+[a-z]/i;
@@ -116,7 +119,7 @@ const windowExceptionKey = (showId, outletId, publishDate) => `${showId}|${outle
 // other sign of why (2016-17: 215 such files, BRO-5851).
 const isUnfetched = f => f && f.contentTier === 'stub' && f.incompleteReason === 'not_attempted' && !f.wrongProduction;
 
-function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [], windowExceptions = [], textFiles = {}, reference = null }) {
+function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [], windowExceptions = [], textFiles = {}, reference = null, gapJustifications = [] }) {
   const excepted = new Map(windowExceptions.map(e => [windowExceptionKey(e.showId, e.outletId, e.publishDate), e]));
   const exempted = [];
   const promoted = shows.filter(s => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && s.season === season
@@ -201,7 +204,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     // pre-existing row carries its reference entry too. Advisory until the
     // backfill lands (CLAUDE.md §19); `wouldPass` is what gating would say.
     completeness: reference
-      ? (({ pass, ...rest }) => ({ pass: null, wouldPass: pass, ...rest }))(referenceCoverage({ reference, shows }))
+      ? (({ pass, ...rest }) => ({ pass: null, wouldPass: pass, ...rest }))(referenceCoverage({ reference, shows, justifications: gapJustifications }))
       : { pass: null, total: 0, present: [], missing: [], share: null, wouldPass: null },
   };
   const gated = Object.values(checks).filter(c => c.pass !== null);
@@ -259,7 +262,14 @@ function main() {
     // Advisory input: a broken list must not turn into a SEASON FAIL.
     if (e.code !== 'ENOENT') console.log(`INFO completeness: reference list unreadable (${e.message.split('\n')[0]}); skipped`);
   }
-  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions, textFiles, reference });
+  // Sourced reasons for reference entries the matcher misses (gap-justifications.json).
+  let gapJustifications = [];
+  try {
+    gapJustifications = loadGapJustifications(root, season);
+  } catch (e) {
+    console.log(`INFO completeness: gap justifications unreadable (${e.message.split('\n')[0]}); ignored`);
+  }
+  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions, textFiles, reference, gapJustifications });
 
   if (args.includes('--json')) { console.log(JSON.stringify(result, null, 2)); }
   else {
@@ -300,8 +310,12 @@ function main() {
     }
     const k = c.completeness;
     if (k.total) {
-      console.log(`INFO completeness: ${k.present.length}/${k.total} reference production(s) on the site (${k.share}, ${k.wouldPass ? 'meets' : 'below'} ${k.threshold}; advisory)`);
+      const scope = k.outOfScope.length ? `, ${k.present.length}/${k.inScopeTotal} in scope = ${k.inScopeShare}` : '';
+      console.log(`INFO completeness: ${k.present.length}/${k.total} reference production(s) on the site (${k.share}${scope}, ${k.wouldPass ? 'meets' : 'below'} ${k.threshold}; advisory)`);
       for (const r of k.missing) console.log(`    missing: ${r.title} (${r.venue}, ${r.start})`);
+      for (const r of k.present.filter(p => p.via)) console.log(`    same production: ${r.title} (${r.start}) = ${r.showId}`);
+      for (const r of k.outOfScope) console.log(`    out of scope (${r.category}): ${r.title} (${r.venue}, ${r.start})`);
+      for (const r of k.staleJustifications) console.log(`    WARN stale justification: ${r.title} (${r.start})${r.showId ? ` -> ${r.showId}` : ''}`);
     } else {
       console.log(`INFO completeness: no reference list for ${season} (node scripts/build-we-season-reference.js --season=${season})`);
     }

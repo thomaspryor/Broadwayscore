@@ -18,6 +18,8 @@
 
 const { foldDiacritics } = require('./title-match');
 const { getSeasonDates } = require('./we-seasons');
+const fs = require('fs');
+const path = require('path');
 const { THEATRICALIA_FIRST_PERFORMANCE_SOURCE } = require('./we-historical-dates');
 
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
@@ -191,12 +193,27 @@ const firstDate = s => s.previewsStartDate || s.openingDate || null;
  * its first date is within MATCH_WINDOW_DAYS of the entry's start, its run
  * spans the entry's start (a transfer or extension stored as one row), or it
  * closed under RETURN_RUN_DAYS before the entry's start (a return run).
- * @param {{ reference: object[], shows: object[] }} input  reference: corroborated entries only
+ *
+ * `justifications` (gap-justifications.json for the season, see
+ * GAP_JUSTIFICATIONS_FILE) apply only to entries the matcher misses:
+ *   same-production  the entry is that west-end row under another title
+ *                    (an alias, or a play staged in repertory with it); counts
+ *                    as present when the row exists and starts within
+ *                    MATCH_WINDOW_DAYS of the entry, else stays missing and is
+ *                    listed in `staleJustifications`.
+ *   out-of-scope     the entry is outside what the site lists (category in
+ *                    OUT_OF_SCOPE_CATEGORIES); leaves the in-scope denominator.
+ * `share` is present / every entry; `pass` uses `inScopeShare`, present /
+ * (entries - out-of-scope), so an excluded entry is visible, never silent.
+ * @param {{ reference: object[], shows: object[], justifications?: object[] }} input  reference: corroborated entries only
  */
-function referenceCoverage({ reference, shows }) {
+function referenceCoverage({ reference, shows, justifications = [] }) {
   const westEnd = shows.filter(s => s.category === 'west-end');
   const present = [];
   const missing = [];
+  const outOfScope = [];
+  const staleJustifications = [];
+  const justificationFor = r => justifications.find(j => j.title === r.title && j.start === r.start);
   for (const r of reference) {
     const refStart = Date.parse(r.start);
     const hit = westEnd.find(s => {
@@ -213,12 +230,88 @@ function referenceCoverage({ reference, shows }) {
       // production (The Kite Runner: Wyndham's to Mar 2017, Playhouse from Jun).
       return close >= refStart || refStart - close <= RETURN_RUN_DAYS * DAY_MS;
     });
-    if (hit) present.push({ title: r.title, venue: r.venue, start: r.start, showId: hit.id });
-    else missing.push({ title: r.title, venue: r.venue, start: r.start, end: r.end });
+    if (hit) { present.push({ title: r.title, venue: r.venue, start: r.start, showId: hit.id }); continue; }
+    const j = justificationFor(r);
+    if (j && j.kind === 'same-production') {
+      const row = westEnd.find(s => s.id === j.showId);
+      const f = row ? Date.parse(firstDate(row)) : NaN;
+      if (!Number.isNaN(f) && Math.abs(f - refStart) <= MATCH_WINDOW_DAYS * DAY_MS) {
+        present.push({ title: r.title, venue: r.venue, start: r.start, showId: row.id, via: 'same-production' });
+        continue;
+      }
+      staleJustifications.push({ title: r.title, start: r.start, showId: j.showId || null });
+    } else if (j && j.kind === 'out-of-scope' && OUT_OF_SCOPE_CATEGORIES.has(j.category)) {
+      outOfScope.push({ title: r.title, venue: r.venue, start: r.start, category: j.category, reason: j.reason });
+      continue;
+    } else if (j) {
+      staleJustifications.push({ title: r.title, start: r.start, showId: j.showId || null });
+    }
+    missing.push({ title: r.title, venue: r.venue, start: r.start, end: r.end });
   }
   const total = reference.length;
   const share = total ? present.length / total : 0;
-  return { total, present, missing, share: Math.round(share * 100) / 100, pass: total > 0 && share >= MIN_REFERENCE_COVERAGE, threshold: MIN_REFERENCE_COVERAGE };
+  const inScopeTotal = total - outOfScope.length;
+  // Integer comparison: 51/60 must meet 0.85 without float drift.
+  const inScopePass = inScopeTotal > 0 && present.length * 100 >= Math.round(MIN_REFERENCE_COVERAGE * 100) * inScopeTotal;
+  return {
+    total,
+    present,
+    missing,
+    outOfScope,
+    staleJustifications,
+    share: Math.round(share * 100) / 100,
+    inScopeTotal,
+    inScopeShare: inScopeTotal ? Math.round((present.length / inScopeTotal) * 100) / 100 : 0,
+    pass: inScopePass,
+    threshold: MIN_REFERENCE_COVERAGE,
+  };
+}
+
+// Hand-curated, sourced reasons for reference entries the matcher misses
+// (BRO-6450). Kept apart from <season>.json, which the builder rewrites.
+const GAP_JUSTIFICATIONS_FILE = path.join('data', 'audit', 'we-season-reference', 'gap-justifications.json');
+const GAP_KINDS = new Set(['same-production', 'out-of-scope']);
+// A category joins this set only with a stated rule the rest of the site
+// already follows; children's shows, magic and comedy are NOT out of scope
+// (the-gruffalo-west-end-2010, impossible-west-end-2015 are listed).
+const OUT_OF_SCOPE_CATEGORIES = new Set([
+  // Student/youth ensembles (National Youth Theatre REP seasons): the site
+  // lists professional productions only and carries no youth-company row.
+  'non-professional-company',
+]);
+
+/** The season's justifications; [] when the file or season is absent. */
+function loadGapJustifications(root, season) {
+  try {
+    const all = JSON.parse(fs.readFileSync(path.join(root, GAP_JUSTIFICATIONS_FILE), 'utf8'));
+    return Array.isArray(all.seasons?.[season]) ? all.seasons[season] : [];
+  } catch (e) {
+    if (e.code === 'ENOENT') return [];
+    throw e;
+  }
+}
+
+/** Structural problems in one season's justifications against its reference list ([] = valid). */
+function validateGapJustifications(justifications, reference) {
+  const errors = [];
+  const seen = new Set();
+  for (const j of justifications) {
+    const label = `${j.title} (${j.start})`;
+    const key = `${j.title}\u0000${j.start}`;
+    if (seen.has(key)) errors.push(`${label}: duplicate`);
+    seen.add(key);
+    if (!reference.some(r => r.title === j.title && r.start === j.start)) errors.push(`${label}: no such reference entry`);
+    if (!GAP_KINDS.has(j.kind)) errors.push(`${label}: unknown kind ${j.kind}`);
+    if (j.kind === 'same-production' && !(typeof j.showId === 'string' && j.showId)) errors.push(`${label}: same-production needs showId`);
+    if (j.kind === 'out-of-scope' && !OUT_OF_SCOPE_CATEGORIES.has(j.category)) errors.push(`${label}: unknown out-of-scope category ${j.category}`);
+    if (!(typeof j.reason === 'string' && j.reason.trim().length >= 20)) errors.push(`${label}: reason missing or too short`);
+    let evidenceOk = Array.isArray(j.evidence) && j.evidence.length > 0;
+    if (evidenceOk) {
+      try { evidenceOk = j.evidence.every(u => new URL(u).protocol === 'https:'); } catch { evidenceOk = false; }
+    }
+    if (!evidenceOk) errors.push(`${label}: evidence needs one or more https URLs`);
+  }
+  return errors;
 }
 
 const REVIEW_SIGNAL_SOURCES = { guardian: 'Guardian review', 'tr-az': 'Theatre Record review' };
@@ -230,8 +323,8 @@ const REVIEW_SIGNAL_SOURCES = { guardian: 'Guardian review', 'tr-az': 'Theatre R
  * the press-night repair and the audit's opening check both see it. Entries
  * with no closing date stay out (decideWeHistoricalPromotion refuses them).
  */
-function referenceCandidates({ season, reference, shows }) {
-  const missing = referenceCoverage({ reference, shows }).missing.sort((a, b) => a.start.localeCompare(b.start));
+function referenceCandidates({ season, reference, shows, justifications = [] }) {
+  const missing = referenceCoverage({ reference, shows, justifications }).missing.sort((a, b) => a.start.localeCompare(b.start));
   // A return run of a production this list already adds (The Father:
   // Wyndham's to Nov 2015, Duke of York's from Feb 2016) is that row, not a second one.
   const kept = missing.filter((m, i) => !missing.slice(0, i).some(e => titlesMatch(e.title, m.title) && e.end
@@ -262,6 +355,10 @@ module.exports = {
   parseTheatricaliaList,
   buildSeasonReference,
   referenceCoverage,
+  loadGapJustifications,
+  validateGapJustifications,
+  GAP_JUSTIFICATIONS_FILE,
+  OUT_OF_SCOPE_CATEGORIES,
   titlesMatch,
   titleKey,
   inSeason,
