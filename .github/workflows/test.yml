@@ -139,6 +139,7 @@ on:
       # BRO-2427: CLI over scripts/lib/timeout-pattern-audit.js; with-timeout.test.mjs runs its audit().
       - 'scripts/audit-timeout-patterns.js'
       - 'scripts/audit-exclusion-flags.js'
+      - 'scripts/audit-ownership-gate-losses.js'
       - 'scripts/audit-outlet-text-status.js'
       - 'scripts/audit-syndicated-critic-pairs.js'
       # BRO-6056: CLI over scripts/lib/default-critic-diversity.js (globbed); a solo edit would otherwise trigger ZERO CI.
