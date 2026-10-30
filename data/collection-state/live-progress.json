@@ -1,31 +1,31 @@
 {
-  "updatedAt": "2026-10-30T06:44:04.462Z",
-  "processed": 27,
-  "failed": 2,
-  "successRate": "93.1%",
+  "updatedAt": "2026-10-30T07:17:46.877Z",
+  "processed": 28,
+  "failed": 21,
+  "successRate": "57.1%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 2,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 1,
     "brightdata": 2,
-    "archiveToday": 1,
-    "archive": 9
+    "archiveToday": 6,
+    "archive": 10
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-30T06:37:30.482Z",
+      "t": "2026-10-30T07:09:24.556Z",
       "event": "bb-session",
-      "session": "e7ed8110",
-      "url": "https://www.nytimes.com/2019/03/20/theater/white-noise-review.html"
+      "session": "fdd14ef8",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
     },
     {
-      "t": "2026-10-30T06:37:31.126Z",
+      "t": "2026-10-30T07:09:24.958Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "talkinbroadway.com"
     }
   ]
 }

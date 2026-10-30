@@ -26,11 +26,31 @@
     "white-noise-off-broadway-2019/nysr--melissa-rose-bernardo.json",
     "white-noise-off-broadway-2019/philadelphia-inquirer--toby-zinman.json",
     "white-noise-off-broadway-2019/theater-scene--david-kaufman.json",
-    "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json"
+    "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "white-noise-off-broadway-2019/nyt-theater--jonathan-mandell.json",
-    "white-noise-off-broadway-2019/bobs-theater-blog--robert-sholiton.json"
+    "white-noise-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/letterboxd--unknown.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -55,7 +75,9 @@
     ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
+    ],
     "scrapingbee": [
       "white-noise-off-broadway-2019/dailybeast--tim-teeman.json"
     ],
@@ -64,7 +86,12 @@
       "white-noise-off-broadway-2019/philadelphia-inquirer--toby-zinman.json"
     ],
     "archiveToday": [
-      "data/review-texts/white-noise-off-broadway-2019/nyt-theater--jonathan-mandell.json"
+      "data/review-texts/white-noise-off-broadway-2019/nyt-theater--jonathan-mandell.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
     ],
     "archive": [
       "white-noise-off-broadway-2019/thewrap--robert-hofler.json",
@@ -75,10 +102,23 @@
       "white-noise-off-broadway-2019/nytimes--ben-brantley.json",
       "white-noise-off-broadway-2019/amny--matt-windman.json",
       "white-noise-off-broadway-2019/broadwayworld--michael-dale.json",
-      "white-noise-off-broadway-2019/njcom--patrick-maley.json"
+      "white-noise-off-broadway-2019/njcom--patrick-maley.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-30T06:36:24.415Z",
-  "lastProcessed": "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json",
-  "log": []
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
+  "log": [
+    {
+      "t": "2026-10-30T07:09:24.556Z",
+      "event": "bb-session",
+      "session": "fdd14ef8",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T07:09:24.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
