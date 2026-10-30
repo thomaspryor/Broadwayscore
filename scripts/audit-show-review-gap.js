@@ -63,6 +63,7 @@ const {
   provisionalOutletIdFromHost,
   sameOutletUrlVariant,
   _buildDomainMap,
+  resolveUrlEditionOutletId,
 } = require('./lib/outlet-canonicalize');
 const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
 const { isIncludableForRebuild, explainExclusion } = require('./lib/review-guards');
@@ -1303,7 +1304,10 @@ async function auditShow(show, opts = {}) {
   for (const aggUrl of aggUrls) {
     const aggHost = hostOf(aggUrl);
     if (!aggHost) continue;
-    const knownOutletId = knownDomains.get(aggHost) || null;
+    // BRO-6640: timeout.com is shared by two editions and the domain map keeps the
+    // last one (timeout-london); the URL path decides, as every writer does.
+    const _hostOutlet = knownDomains.get(aggHost) || null;
+    const knownOutletId = _hostOutlet ? resolveUrlEditionOutletId({ outletId: _hostOutlet, url: aggUrl }).outletId : null;
     // W3.D (task #1073): coverage is exact-URL first. Host-level fallback only
     // counts dir files whose OWN url is itself a plausible review URL (or has
     // no url — manual entries) — a BWW /shows/…/cast stub must not "cover"
