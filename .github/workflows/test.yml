@@ -2555,6 +2555,7 @@ on:
       # glob step; produce-coverage-digest-snapshot.test.mjs is scripts-root
       # so it's also registered in tests/unit-test-manifest.txt.
       - 'scripts/produce-coverage-digest-snapshot.js'
+      - 'scripts/produce-press-night-grade-snapshot.js'
       # Coverage Verdict S5 (task #903) — the seeded weekly adversarial probe.
       # Never added a path entry when it shipped (task #907 day-one triage
       # found this gap): none of these were path-listed, so a push touching
