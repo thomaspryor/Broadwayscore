@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6630-s1516-b",
   "planId": "59dc12e0-a084-4501-a3db-23050705f4a0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T16:59:19.242Z",
   "submitter": {
     "name": null,
@@ -154,5 +154,34 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T18:40:02.835Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added peer-gynt-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sojourners-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added straight-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-body-of-an-american-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added turn-me-loose-off-broadway-2016"
+    }
+  ],
+  "executedIn": "ci"
 }
