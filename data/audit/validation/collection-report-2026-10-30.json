@@ -1,63 +1,70 @@
 {
-  "runDate": "2026-10-30T19:07:22.963Z",
+  "runDate": "2026-10-30T20:03:21.799Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "medea-off-broadway-2026,the-moth-off-west-end-2026,specimen-off-broadway-2026,a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+    "showFilter": "in-the-heights-off-broadway-2026,girls-off-west-end-2026,the-lives-of-others-west-end-2026,a-few-good-men-2026,memoriam-off-west-end-2026,i-became-we-off-broadway-2026,the-heart-off-broadway-2026,the-revlon-girl-off-west-end-2026,kelly-mccaughan-catholic-guilt-off-broadway-2026,the-greatest-story-ever-off-broadway-2026,showstopper-the-kids-show-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 8,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 14,
+    "tier1Success": 11,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 2,
+    "tier1_9Attempts": 2,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 9,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 12,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.7,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 8,
+    "failed": 12,
     "shows": [
-      "medea-off-broadway-2026"
+      "a-few-good-men-2026",
+      "girls-off-west-end-2026",
+      "i-became-we-off-broadway-2026",
+      "in-the-heights-off-broadway-2026",
+      "memoriam-off-west-end-2026",
+      "the-heart-off-broadway-2026",
+      "the-lives-of-others-west-end-2026",
+      "the-revlon-girl-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,27 +72,90 @@
       "failed": 0
     }
   },
-  "processed": [],
+  "processed": [
+    "the-heart-off-broadway-2026/boothhistory--unknown.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
+    "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+    "girls-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "girls-off-west-end-2026/letterboxd--unknown.json",
+    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "girls-off-west-end-2026/theatre-weekly--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+  ],
   "failed": [
-    "medea-off-broadway-2026/express-uk--neil-norman.json"
+    "the-heart-off-broadway-2026/thewrap--robert-hofler.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "girls-off-west-end-2026/londontheatre1--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "memoriam-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "the-heart-off-broadway-2026/boothhistory--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
+      "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+      "girls-off-west-end-2026/british-theatre--keith-mckenna.json",
+      "girls-off-west-end-2026/letterboxd--unknown.json",
+      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "girls-off-west-end-2026/theatre-weekly--unknown.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+    ],
     "failed": [
-      "medea-off-broadway-2026/express-uk--neil-norman.json"
+      "the-heart-off-broadway-2026/thewrap--robert-hofler.json",
+      "a-few-good-men-2026/variety--anna-tingley.json",
+      "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+      "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+      "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+      "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+      "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+      "i-became-we-off-broadway-2026/timeout--unknown.json",
+      "girls-off-west-end-2026/londontheatre1--unknown.json",
+      "girls-off-west-end-2026/radio-times--molly-moss.json",
+      "memoriam-off-west-end-2026/ground--unknown.json",
+      "memoriam-off-west-end-2026/thestage--dave-fargnoli.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-heart-off-broadway-2026/boothhistory--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
+      "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+      "girls-off-west-end-2026/british-theatre--keith-mckenna.json",
+      "girls-off-west-end-2026/letterboxd--unknown.json",
+      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "girls-off-west-end-2026/theatre-weekly--unknown.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-heart-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/girls-off-west-end-2026/londontheatre1--unknown.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Ground": {
+      "count": 1,
+      "domain": "ground.news",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
