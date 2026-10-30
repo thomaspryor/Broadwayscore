@@ -290,6 +290,7 @@ const DEDUPE_OPT_OUTS = Object.freeze({
   'auto-fix-first': 'auto-fix-first files dispatch cards keyed by its own key line (lookupCards) and comments on the card it gets back',
   'posthog-friction': 'posthog-friction-analyzer dedupes by the fhash in the card description, and auto-fix-friction-card.js picks cards by that fhash and priority, so a finding must stay its own card',
   'sentry-triage': 'triage-sentry.js dedupes by the sentry-issue line in the card (any state), and two different Sentry errors often share most title words, so a near-match must not swallow a distinct error (BRO-5593)',
+  'press-night-grade': 'produce-press-night-grade-snapshot.js files one card per show-night, keyed by its own ledger (data/audit/press-night-grade-filed.json), and every title shares the "Opening night missed" prefix, so a near-match would swallow a different show (BRO-6645)',
   rollup: 'the rollup card itself; running the rules on it would recurse',
 });
 

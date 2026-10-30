@@ -24,6 +24,8 @@ const WINDOW_H = 48;
 const EMAIL_GRACE_H = 2;
 const EMAIL_MARKETS = new Set(['broadway', 'west-end']);
 const LEDGER_VERSION = 1;
+// First press night the filer files cards for (BRO-6645 landed 2026-10-30).
+const FILE_FROM = '2026-10-30';
 
 const ET = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true });
 /** 2026-10-30T05:24:12Z -> "1:24am" (Eastern). */
@@ -59,12 +61,12 @@ function nothingPublished(rec) {
 /**
  * The reviews half of a line. Uses the observed-release grade when the record has one.
  * @param {object|null} rec  press-night record
- * @param {{outletName?: (id: string) => string}} [opts]
+ * @param {{outletName?: (id: string) => string, gates?: object}} [opts]  gates: bar overrides for evaluateCheck
  * @returns {{verdict: 'PASS'|'FAIL'|'UNKNOWN', text: string, misses: {key: string, text: string}[]}}
  */
-function reviewGrade(rec, { outletName = humanizeId } = {}) {
+function reviewGrade(rec, { outletName = humanizeId, gates = {} } = {}) {
   if (!rec) return { verdict: 'UNKNOWN', text: 'the overnight review check did not run, so reviews could not be graded', misses: [] };
-  const full = evaluateCheck(rec);
+  const full = evaluateCheck(rec, gates);
   const rel = full.release || null;
   const result = rel ? rel.observed : full;
   const parts = [];
@@ -77,7 +79,7 @@ function reviewGrade(rec, { outletName = humanizeId } = {}) {
 
   const sn = gateOf(result, 'same-night-completeness');
   const facts = sn && sn.facts;
-  const nameOf = (m) => m.outlet || outletName(m.outletId);
+  const nameOf = (m) => (m.outlet && m.outlet !== m.outletId ? m.outlet : outletName(m.outletId));
   if (facts && facts.outlets.length) {
     const lateOrMissing = facts.misses.filter((m) => m.phase === '2h');
     const live = facts.outlets.length - lateOrMissing.length;
@@ -86,7 +88,7 @@ function reviewGrade(rec, { outletName = humanizeId } = {}) {
       const name = nameOf(m);
       const text = m.liveAt
         ? `${name} went live at ${etClock(m.liveAt)} (late)`
-        : `${name} still not live at ${etClock(facts.probeEndAt) || 'the end of the check'}`;
+        : `${name} still not live when the check ended${facts.probeEndAt ? ` at ${etClock(facts.probeEndAt)}` : ''}`;
       misses.push({ key: `review:${m.outletId}`, text });
       return text;
     });
@@ -134,9 +136,9 @@ function reviewGrade(rec, { outletName = humanizeId } = {}) {
 /**
  * The email half of a line: the opening-night email draft (Broadway and West End only) and the Reddit draft.
  * Not graded before the draft deadline plus EMAIL_GRACE_H.
- * @returns {{status: 'ok'|'miss'|'pending'|'none', text: string, misses: {key: string, text: string}[]}}
+ * @returns {{status: 'ok'|'miss'|'pending'|'unknown'|'none', text: string, misses: {key: string, text: string}[]}}
  */
-function emailGrade({ show, sentShows = {}, redditDrafts = {}, numbersNow = null, nowMs }) {
+function emailGrade({ show, sentShows = null, redditDrafts = {}, numbersNow = null, readNumbers = () => null, nowMs }) {
   const market = show.category || 'broadway';
   const deadline = draftDeadlineAt(show.openingDate);
   const dueMs = deadline ? deadline.getTime() + EMAIL_GRACE_H * HOUR : null;
@@ -149,6 +151,8 @@ function emailGrade({ show, sentShows = {}, redditDrafts = {}, numbersNow = null
   if (dueMs == null || nowMs < dueMs) {
     return { status: 'pending', text: dueMs == null ? '' : `emails due by ${etClock(dueMs)} today`, misses: [] };
   }
+  // No tracker (core-data checkout failed): unknown, never "no draft was made".
+  if (!sentShows) return { status: 'unknown', text: 'emails could not be checked (the email tracker was not readable)', misses: [] };
   const misses = [];
   const ok = [];
   const fmt = (n) => (n && n.score != null ? `score ${n.score}, ${n.reviewCount} reviews` : null);
@@ -163,10 +167,9 @@ function emailGrade({ show, sentShows = {}, redditDrafts = {}, numbersNow = null
   } else if (isUnsentDraft(rec.record)) {
     const was = draftBaseline(sentShows, rec);
     const now = {};
-    for (const id of rec.ids) now[id] = id === show.id ? numbersNow : null;
-    const own = { [show.id]: numbersNow };
-    const stale = numbersNow && draftChanged(was ? { [show.id]: was[show.id] } : null, own, rec.ids.length === 1 ? rec.record : null);
-    if (stale) {
+    for (const id of rec.ids) now[id] = id === show.id ? numbersNow : readNumbers(id);
+    const complete = rec.ids.every((id) => now[id] && now[id].reviewCount != null);
+    if (complete && draftChanged(was, now, rec.record)) {
       const wasTxt = was && fmt(was[show.id]);
       misses.push({ key: 'email:broadcast-stale', text: `the opening-night email draft is out of date${wasTxt ? ` (it says ${wasTxt}, the site says ${fmt(numbersNow)})` : ''}` });
     } else ok.push(`opening-night email draft ready${numbersNow && numbersNow.score != null ? ` at ${numbersNow.score}` : ''}`);
@@ -216,12 +219,12 @@ function findBroadcastRecord(sentShows, showId) {
  * @param {object[]} p.shows            shows.json entries
  * @param {(id: string, night: string) => object|null} p.readRecord
  * @param {(id: string) => ({score, reviewCount}|null)} p.readNumbers
- * @param {object} [p.sentShows]        opening-night-sent.json `shows`
+ * @param {object|null} [p.sentShows]   opening-night-sent.json `shows`; null when unreadable (emails then ungraded)
  * @param {object} [p.redditDrafts]     reddit-post-drafts.json `drafts`
  * @param {number} p.nowMs
  * @param {(id: string) => string} [p.outletName]
  */
-function gradeOpenings({ shows, readRecord, readNumbers, sentShows = {}, redditDrafts = {}, nowMs, outletName }) {
+function gradeOpenings({ shows, readRecord, readNumbers, sentShows = null, redditDrafts = {}, nowMs, outletName }) {
   const out = [];
   const fromYmd = new Date(nowMs - (WINDOW_H + 24) * HOUR).toISOString().slice(0, 10);
   const toYmd = new Date(nowMs).toISOString().slice(0, 10);
@@ -234,15 +237,15 @@ function gradeOpenings({ shows, readRecord, readNumbers, sentShows = {}, redditD
     // Without a record the opening date stands in (its evening is the press night).
     const nightMs = Number.isFinite(embargoMs) ? embargoMs : Date.parse(`${night}T23:59:00Z`);
     if (nightMs > nowMs || nowMs - nightMs > WINDOW_H * HOUR) continue;
-    out.push(gradeShow({ show, rec, numbersNow: readNumbers(show.id), sentShows, redditDrafts, nowMs, outletName }));
+    out.push(gradeShow({ show, rec, numbersNow: readNumbers(show.id), readNumbers, sentShows, redditDrafts, nowMs, outletName }));
   }
   return out.sort((a, b) => (a.night === b.night ? a.title.localeCompare(b.title) : (a.night < b.night ? 1 : -1)));
 }
 
 /** One show-night: the sentence and the misses behind it. */
-function gradeShow({ show, rec, numbersNow, sentShows, redditDrafts, nowMs, outletName }) {
+function gradeShow({ show, rec, numbersNow, readNumbers = () => null, sentShows, redditDrafts, nowMs, outletName }) {
   const rv = reviewGrade(rec, { outletName });
-  const em = emailGrade({ show, sentShows, redditDrafts, numbersNow, nowMs });
+  const em = emailGrade({ show, sentShows, redditDrafts, numbersNow, readNumbers, nowMs });
   let verdict = rv.verdict;
   if (em.status === 'miss') verdict = 'FAIL';
   const word = verdict === 'PASS' ? 'Passed.' : (verdict === 'FAIL' ? 'Failed.' : 'Not graded.');
@@ -268,13 +271,15 @@ function emptyLedger() {
  * ledger never gets a second card. P1 when a review was missing or late, P2 when only email drafts missed.
  * @returns {({type:'create', key, title, priority, notes, missKeys} | {type:'comment', key, card, text, missKeys})[]}
  */
-function planFiling(entries, ledger) {
+function planFiling(entries, ledger, { fileFrom = FILE_FROM } = {}) {
   const filed = (ledger && ledger.filed) || {};
   const actions = [];
   for (const e of entries) {
     if (!e.misses.length) continue;
     const key = `${e.showId}:${e.night}`;
     const prior = filed[key];
+    // Nights before the filer existed were graded by hand and already have their cards (BRO-6614, BRO-6634).
+    if (e.night < fileFrom) continue;
     const fresh = e.misses.filter((m) => !(prior && (prior.missKeys || []).includes(m.key)));
     if (!fresh.length) continue;
     const list = fresh.map((m) => `- ${m.text}`).join('\n');
@@ -337,6 +342,6 @@ async function applyFiling(actions, ledger, { fileCard, commentCard, save = () =
 }
 
 module.exports = {
-  WINDOW_H, EMAIL_GRACE_H, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
+  WINDOW_H, EMAIL_GRACE_H, FILE_FROM, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
   findBroadcastRecord, gradeOpenings, gradeShow, emptyLedger, planFiling, applyFiling,
 };
