@@ -1890193,5 +1890193,49 @@
     "runId": "41093443068",
     "source": "comparative-rescore",
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-30T16:55:21.415Z",
+    "completedAt": "2026-10-30T17:01:12.372Z",
+    "totalReviews": 70684,
+    "processed": 377,
+    "skipped": 70018,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 2388407,
+      "output": 118257,
+      "cacheRead": 1084950,
+      "cacheWrite": 433675,
+      "total": 6004532
+    },
+    "costUsd": 5.232404075,
+    "runId": "41092677538",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-30T17:01:28.110Z",
+    "completedAt": "2026-10-30T17:01:55.654Z",
+    "totalReviews": 8,
+    "processed": 8,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 24521,
+      "output": 1915,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 26436
+    },
+    "costUsd": 0.0661692,
+    "runId": "41092677538",
+    "source": "comparative-rescore",
+    "errorDetails": []
   }
 ]
