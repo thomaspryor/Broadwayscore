@@ -469,7 +469,7 @@ async function findAggregatorArticles(show) {
         // girl-interrupted 2026-06-06). Verdict slugs embed the title, so a real
         // match passes; "weather-girl" matches only "girl" and is rejected.
         const clean = u.split('?')[0].split('#')[0];
-        if (!urlMatchesShow(clean, tokens)) continue;
+        if (!urlMatchesShow(clean, tokens) || namesLongerShowTitle(clean, show)) continue;
         // Playbill Verdict article patterns
         if (/playbill\.com\/article\/(read|what|reviews|critics)/i.test(u) && /\.html?$|article\//.test(u)) {
           urls.add(clean);
@@ -501,7 +501,7 @@ async function findAggregatorArticles(show) {
       const hit = await searchPlaybillVerdict(show, { fetchHtml: fetchVerdictCategoryOnce });
       const clean = hit && hit.articleUrl ? hit.articleUrl.split('?')[0].split('#')[0] : null;
       // Same slug gate the SERP results above pass through.
-      if (clean && urlMatchesShow(clean, tokens)) urls.add(clean);
+      if (clean && urlMatchesShow(clean, tokens) && !namesLongerShowTitle(clean, show)) urls.add(clean);
     } catch (e) {
       if (verbose) console.error(`  Playbill Verdict lookup error for ${id}: ${e.message}`);
     }
@@ -587,6 +587,36 @@ function urlMatchesShow(href, tokens) {
     if (tokens.length <= 2) return matched === tokens.length;
     return matched >= tokens.length - 1;
   } catch { return false; }
+}
+
+// BRO-6640: a short title matches any slug that contains its words, so
+// "Other" (Greenwich House 2025) took in Playbill's Verdict for "The Other
+// Americans" and every review it linked, and "Babe" or "Archduke" are just as
+// exposed. Reject a URL whose path spells out the whole title of ANOTHER show
+// in shows.json that is longer and contains this show's tokens.
+let _showTitleTokens = null;
+function namesLongerShowTitle(href, show, shows = null) {
+  const tokens = titleTokens(show && show.title);
+  if (!tokens.length) return false;
+  if (shows || !_showTitleTokens) {
+    const list = (shows || (() => { try { return loadShows(); } catch { return []; } })())
+      .map(s => ({ id: s.id, tokens: titleTokens(s.title) }));
+    if (shows) return _namesLonger(href, show, tokens, list);
+    _showTitleTokens = list;
+  }
+  return _namesLonger(href, show, tokens, _showTitleTokens);
+}
+function _namesLonger(href, show, tokens, list) {
+  let segs;
+  try { segs = new URL(href).pathname.toLowerCase().split(/[\/\-_.\s]+/).filter(Boolean); } catch { return false; }
+  const mine = new Set(tokens);
+  // in title order, so "review-and-juliet-romeo" (& Juliet) is not "Romeo and Juliet"
+  const inOrder = (want) => { let i = 0; for (const seg of segs) if (seg === want[i]) i++; return i === want.length; };
+  return list.some(o => o.id !== show.id
+    && o.tokens.length > tokens.length
+    && tokens.every(t => o.tokens.includes(t))
+    && o.tokens.some(t => !mine.has(t))
+    && inOrder(o.tokens));
 }
 
 const BOOK_HOST_RE = /(^|\.)(amazon\.[a-z.]+|goodreads\.com|bookbrowse\.com|hardcover\.app|bestthrillerbooks\.com|barnesandnoble\.com|kirkusreviews\.com|publishersweekly\.com|bookshop\.org|storygraph\.com)$/i;
@@ -697,7 +727,7 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   const u = sr && (sr.url || sr.link);
   if (!u || !isReviewUrl(u)) return null;
   const tokens = titleTokens(show.title);
-  if (!urlMatchesShow(u, tokens)) return null;
+  if (!urlMatchesShow(u, tokens) || namesLongerShowTitle(u, show)) return null;
   // BRO-5732: fail closed. An unregistered host must show review-shaped evidence
   // (url/title/snippet), not merely avoid every known-bad pattern. `priorVetted`:
   // a URL seeded from the prior census already passed this once and its SERP
@@ -817,7 +847,7 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href') || '';
     if (!isReviewUrl(href)) return;
-    if (!urlMatchesShow(href, tokens)) return;
+    if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show)) return;
     urls.add(normalizeReviewUrl(href));
   });
   // Production identity (2026-07-11): urlMatchesShow filters wrong SHOWS, not
@@ -3356,4 +3386,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
