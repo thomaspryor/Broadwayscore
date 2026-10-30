@@ -1812031,8 +1812031,27 @@
       "cacheWrite": 3807,
       "total": 140133
     },
-    "costUsd": 0.22601925000000003,
-    "runId": "41115026684",
+    "costUsd": 0,
+    "runId": "41113064649",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-30T19:35:53.493Z",
+    "completedAt": "2026-10-30T19:36:24.318Z",
+    "totalReviews": 7,
+    "processed": 6,
+    "skipped": 1,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 37707,
+      "output": 1877,
+      "cacheRead": 22842,
+      "cacheWrite": 0,
+      "total": 93056
+    },
+    "costUsd": 0.14151149999999998,
+    "runId": "41115659184",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1818475,6 +1818494,16 @@
           "flat": 0,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "bottle-fly-regional-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 0,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -1846610,6 +1846639,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-long-christmas-dinner-regional-2025",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 0,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-long-drop-citizens-regional-2026",
         "ourDistribution": {
           "up": 8,
@@ -1853410,8 +1853449,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-30T19:39:05.699Z",
-    "completedAt": "2026-10-30T19:39:05.701Z",
+    "startedAt": "2026-10-30T19:41:21.677Z",
+    "completedAt": "2026-10-30T19:41:21.679Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1853424,7 +1853463,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41115026684",
+    "runId": "41115659184",
     "source": "comparative-rescore",
     "errorDetails": []
   }
