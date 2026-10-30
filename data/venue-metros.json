@@ -36,6 +36,14 @@
     "los-angeles": {
       "name": "Los Angeles",
       "country": "US"
+    },
+    "birmingham": {
+      "name": "Birmingham",
+      "country": "UK"
+    },
+    "liverpool": {
+      "name": "Liverpool",
+      "country": "UK"
     }
   },
   "metros": {
@@ -110,11 +118,13 @@
     },
     "birmingham-uk": {
       "name": "Birmingham",
-      "country": "UK"
+      "country": "UK",
+      "hub": "birmingham"
     },
     "liverpool-uk": {
       "name": "Liverpool",
-      "country": "UK"
+      "country": "UK",
+      "hub": "liverpool"
     },
     "nottingham-uk": {
       "name": "Nottingham",
@@ -745,6 +755,33 @@
       "aliases": [
         "òran mór",
         "oran mor"
+      ]
+    },
+    {
+      "venue": "Birmingham Hippodrome",
+      "metro": "birmingham-uk",
+      "aliases": [
+        "birmingham hippodrome",
+        "hippodrome, birmingham"
+      ]
+    },
+    {
+      "venue": "Liverpool Royal Court",
+      "metro": "liverpool-uk",
+      "aliases": [
+        "liverpool royal court",
+        "royal court, liverpool",
+        "royal court theatre, liverpool"
+      ]
+    },
+    {
+      "venue": "Liverpool Unity Theatre",
+      "metro": "liverpool-uk",
+      "aliases": [
+        "liverpool unity theatre",
+        "unity theatre liverpool",
+        "unity theatre, liverpool",
+        "unity liverpool"
       ]
     }
   ],

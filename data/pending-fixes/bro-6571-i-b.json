@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-6571-i-b",
+  "planId": "37ecff1a-6195-47b8-9c4d-4d8f64e5ad85",
+  "status": "pending",
+  "createdAt": "2026-10-30T05:19:08.698Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6571: ingest census reviews for the new UK hub productions (part 2 of 2)",
+    "steps": [
+      "BRO-6571: ingest british-theatre review for sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025",
+      "BRO-6571: ingest west-end-best-friend review for sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025 --url=https://www.britishtheatreguide.info/reviews/sherlock-holmes-birmingham-rep-25104 --outlet=british-theatre",
+        "description": "BRO-6571: ingest british-theatre review for sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep --outlet=west-end-best-friend",
+        "description": "BRO-6571: ingest west-end-best-friend review for sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025"
+      }
+    ]
+  }
+}

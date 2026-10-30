@@ -30,3 +30,13 @@ test('a British Theatre Guide slug cut to "the birthd" never joins "The Caretake
   ]);
   assert.deepEqual(g.map((x) => [x.title, x.items.length]), [['The Caretaker', 1]]);
 });
+
+test('retired foundings and receiving houses stay out; "Barriers" and "The Barriers" are one title', () => {
+  const m = require('../uk-regional-census-productions.js');
+  assert.ok(m.RETIRED_FOUNDINGS.has('the-watsons-chichester-festival-regional-2025'));
+  assert.ok(m.RETIRED_FOUNDINGS.has('east-is-east-citizens-regional-2026'));
+  assert.ok(m.RECEIVING_HOUSES.has('Birmingham Hippodrome') && m.RECEIVING_HOUSES.has('Liverpool Royal Court'));
+  assert.ok(m.sameTitle('Barriers', 'The Barriers'));
+  assert.ok(!m.sameTitle('Jack', 'Jack and the Beanstalk'));
+  assert.ok(m.sameTitle('Grease', 'Grease the Musical'));
+});

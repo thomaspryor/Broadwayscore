@@ -24,10 +24,15 @@ const ROOT = path.join(__dirname, '..');
 const CENSUS_DIR = path.join(ROOT, 'data', 'audit', 'outlet-census', 'london');
 const REVIEW_SPAN_DAYS = 120;
 // Not a single production: tours, roundups, festivals, opera/dance seasons, best-of lists.
-const NOT_A_PRODUCTION = /\b(tour|touring|roundup|round up|best of|festival review|fringe|edinburgh|panto(?:mime)? season|interview|preview|first look|photos|cast (?:announced|revealed)|university|student|amateur)\b/i;
+const NOT_A_PRODUCTION = /\b(tour|touring|roundup|round up|best of|festival review|fringe|edinburgh|panto(?:mime)? season|ballet|interview|preview|first look|photos|cast (?:announced|revealed)|university|student|amateur)\b/i;
 // Receiving houses: a title reviewed there is almost always a tour stop, and the census
 // cannot tell the house's own work from a visiting show, so it founds no production there.
-const RECEIVING_HOUSES = new Set(['The Lowry', 'Lyceum Theatre, Sheffield']);
+const RECEIVING_HOUSES = new Set(['The Lowry', 'Lyceum Theatre, Sheffield', 'Birmingham Hippodrome', 'Liverpool Royal Court']);
+// Founded from one census item, then retired because the review page belongs to an older
+// production (data/pending-fixes/bro-6541-z.json). A rerun must not found them again.
+const RETIRED_FOUNDINGS = new Set(['the-watsons-chichester-festival-regional-2025', 'east-is-east-citizens-regional-2026']);
+const foldTitle = (t) => norm(t).replace(/\b(the|a|musical|play)\b/g, '').replace(/\s+/g, ' ').trim();
+const sameTitle = (a, b) => foldTitle(a) === foldTitle(b);
 const SAFE_URL = /^[A-Za-z0-9:/._~%=+,-]+$/;
 
 const ALIASES = TABLE.venues
@@ -158,17 +163,21 @@ function mergeNearTitles(groups) {
 
 function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/uk-regional-census-productions.js [--min-outlets=2] [--since=YYYY-MM-DD] [--out=<file>] [--plans=<prefix>] [--ingest-plans=<prefix>]');
+    console.log('Usage: node scripts/uk-regional-census-productions.js [--min-outlets=2] [--since=YYYY-MM-DD] [--card=BRO-N] [--skip-outlets=a,b] [--exclude=id,id] [--out=<file>] [--plans=<prefix>] [--ingest-plans=<prefix>]');
     return null;
   }
   const arg = (k) => (argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=').slice(1).join('=') || null;
   const since = arg('since') || '2024-01-01';
   const minOutlets = Number(arg('min-outlets') || 2);
+  // Outlets whose reviews CI cannot fetch right now (The Stage while its cookie is expired).
+  const card = arg('card') || 'BRO-6541';
+  const exclude = new Set((arg('exclude') || '').split(',').filter(Boolean));
+  const skipOutlets = new Set((arg('skip-outlets') || '').split(',').filter(Boolean));
   const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const shows = Array.isArray(data) ? data : data.shows;
   const hub = shows.filter((s) => /-uk$/.test(s.city || ''));
   const { unmatched } = matchCensusItems(loadItems(since), hub, new Map(), urlKey);
-  const groups = groupProductions(unmatched).filter((g) => g.items.length >= minOutlets);
+  const groups = groupProductions(unmatched.filter((i) => !skipOutlets.has(i.outletId))).filter((g) => g.items.length >= minOutlets);
 
   const adds = [];
   const ingests = [];
@@ -183,6 +192,14 @@ function main(argv = process.argv.slice(2)) {
     const src = g.items.find((i) => SAFE_URL.test(i.url));
     if (!src) continue;
     const r = buildAction({ title: g.title, venue: g.venue, city: g.city, hub: g.hub, date: g.first, guardianUrl: src.url, source: `${src.outletId}-review`, discoverySource: 'uk-regional-census-backfill' }, working);
+    if (r.action && (RETIRED_FOUNDINGS.has(r.action.show.id) || exclude.has(r.action.show.id))) { skips['retired founding'] = (skips['retired founding'] || 0) + 1; continue; }
+    // Same title at the same house within 14 days, or at any hub house within 180 days (a tour stop
+    // of a production a hub row already holds, e.g. Blue Beard Bath then Birmingham).
+    const day = 86400000;
+    const gap = (w) => Math.abs(Date.parse(w.openingDate || '') - Date.parse(r.action.show.openingDate || '')) / day;
+    const twin = r.action && working.find((w) => sameTitle(w.title, r.action.show.title)
+      && ((w.venue === r.action.show.venue && gap(w) <= 14) || (/-uk$/.test(w.city || '') && gap(w) <= 180)));
+    if (twin) { skips['twin of ' + twin.id] = (skips['twin of ' + twin.id] || 0) + 1; continue; }
     if (r.skip) { const why = r.skip.replace(/ as .*/, ''); skips[why] = (skips[why] || 0) + 1; continue; }
     // buildAction speaks for the Guardian backfill; this row came from the census.
     const show = r.action.show;
@@ -190,9 +207,9 @@ function main(argv = process.argv.slice(2)) {
     for (const k of ['statusSource', 'openingDateSource']) if (show[k]) show[k] = show[k].replace('guardian-review', 'census-review');
     for (const [k, v] of Object.entries(show)) if (typeof v === 'string' && /guardian/i.test(v)) console.warn(`  note: ${show.id}.${k} = ${v}`);
     working.push(show);
-    adds.push({ ...r.action, description: `BRO-6541: add ${r.action.show.id} (${g.items.length} census reviews)` });
+    adds.push({ ...r.action, description: `${card}: add ${r.action.show.id} (${g.items.length} census reviews)` });
     for (const i of g.items.filter((x) => SAFE_URL.test(x.url))) {
-      ingests.push({ type: 'run-script', script: 'ingest-review-from-url.js', args: `--show=${r.action.show.id} --url=${i.url} --outlet=${i.outletId}`, description: `BRO-6541: ingest ${i.outletId} review for ${r.action.show.id}` });
+      ingests.push({ type: 'run-script', script: 'ingest-review-from-url.js', args: `--show=${r.action.show.id} --url=${i.url} --outlet=${i.outletId}`, description: `${card}: ingest ${i.outletId} review for ${r.action.show.id}` });
     }
   }
   const byCity = {};
@@ -206,11 +223,11 @@ function main(argv = process.argv.slice(2)) {
       console.log(`plan ${p.name}: ${p.plan.plan.actions.length} actions, planId ${p.plan.planId}`);
     }
   };
-  if (arg('plans')) write(arg('plans'), 'BRO-6541: add UK hub productions found in the outlet census', adds);
-  if (arg('ingest-plans')) write(arg('ingest-plans'), 'BRO-6541: ingest census reviews for the new UK hub productions', ingests);
+  if (arg('plans')) write(arg('plans'), `${card}: add UK hub productions found in the outlet census`, adds);
+  if (arg('ingest-plans')) write(arg('ingest-plans'), `${card}: ingest census reviews for the new UK hub productions`, ingests);
   if (arg('out')) fs.writeFileSync(arg('out'), `${JSON.stringify({ adds: adds.map((a) => a.show), ingests, groups }, null, 2)}\n`);
   return { adds, ingests };
 }
 
 if (require.main === module) main();
-module.exports = { main, parseHeadline, groupProductions };
+module.exports = { main, parseHeadline, groupProductions, RETIRED_FOUNDINGS, RECEIVING_HOUSES, sameTitle };
