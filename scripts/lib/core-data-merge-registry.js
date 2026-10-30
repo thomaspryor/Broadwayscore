@@ -368,6 +368,17 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-21 (BRO-2722): grepped every .github/workflows/*.yml and scripts/*.js for the literal filename — only scripts/check-progress-stalls.js writes it, invoked only by llm-ensemble-score.yml\'s "Snapshot progress-watch state" step, gated on github.event_name == \'schedule\' (never set by a workflow_dispatch input, so its concurrency group is always the bare default, never the -{rescore_reason} suffixed variant). That workflow declares concurrency: {group: scoring-reviews[-reason], cancel-in-progress: false}, and every writer invocation lands in the unsuffixed \'scoring-reviews\' group specifically, so overlapping scheduled runs queue instead of racing.',
     note: 'liveness snapshot read by health-check.js\'s progressWatchResults() — was staged unregistered via git-add-existing.sh\'s broad `data/audit/` glob in the "Check for changes" step on every scheduled run, disqualifying that run\'s "Commit and push changes" step from the Git Data API fallback and forcing it onto the slow fetch+rebase+push path (root cause of the BRO-2722 repeat-failure alert — run 34818414035, 2026-09-14, "Commit and push changes" exhausted all 5 retry attempts under main-branch push contention with the fallback disqualified).',
   },
+  {
+    // BRO-6615: a directory pattern, one file per show-night, so the claim is
+    // per FILE: each file has exactly one writer run.
+    file: 'audit/press-night/*.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'press-night-probe-${{ inputs.show_id }}-${{ inputs.night }}',
+    verifiedBy: '2026-10-30 (BRO-6615): grepped .github/ and scripts/ for "audit/press-night" — the only writer is scripts/press-night-record.js (scripts/lib/press-night-record.js), run only by press-night-probe.yml; its "Commit checkpoint" (job early) and "Commit record" (job late, needs: early) steps are the only stagers, so the two writes to one file are sequential. Duplicate dispatches for the same show-night share concurrency group press-night-probe-<show>-<night> (cancel-in-progress: false) and queue; different show-nights write different files. press-night-audit-summary.js and health readers only READ the directory.',
+    note: 'per-show press-night probe record (BRO-5912). Unregistered, every push of it was disqualified from the Git Data API fallback: press-night-probe run 40983253026 lost both its checkpoint and record pushes 7/7 under main-branch contention (2026-10-29/30) and reached main only because a later step\'s push carried the commits.',
+  },
   // 2026-08-23 follow-up (same originating incident, run 32625283171): the
   // apiFallbackSafe fix above only isolated health-digest-snapshot.json —
   // data-health-check.yml's "Commit health check + triage data" step still

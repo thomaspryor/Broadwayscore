@@ -96,10 +96,33 @@ function findWritingWorkflows(dataPath, workflowTexts) {
   // shape check-opening-night-drift.yml adopted in BRO-3455 (2026-09-15); the
   // single-line scan then reported its drift-state.json writer as missing
   // and reddened main on this very guard.
+  if (basename.endsWith('/*.json')) return findDirPatternWriters(basename.slice(0, -'*.json'.length), workflowTexts);
   const re = new RegExp(`(?:git add|git-add-existing\\.sh)(?:[^\\n]|\\\\\\n)*\\bdata/${escapeRegExp(basename)}\\b`);
   const writers = [];
   for (const [wfFile, text] of Object.entries(workflowTexts || {})) {
     if (re.test(text) || loopStagesBasename(text, basename)) writers.push(wfFile);
+  }
+  return writers;
+}
+
+/**
+ * Writers of a `dir/*.json` registry entry (BRO-6615, audit/press-night/*.json).
+ * Such files are staged through a variable built from the directory
+ * (`F="data/audit/press-night/${SHOW_ID}-${NIGHT}.json"; git add "$F"`), so a
+ * workflow counts as a writer when a `git add` names the directory directly,
+ * or a variable assigned a value under it is later passed to `git add`.
+ */
+function findDirPatternWriters(dir, workflowTexts) {
+  const dirRe = escapeRegExp(`data/${dir}`);
+  const direct = new RegExp(`(?:git add|git-add-existing\\.sh)(?:[^\\n]|\\\\\\n)*${dirRe}`);
+  const assignRe = new RegExp(`\\b(\\w+)=["']?${dirRe}`, 'g');
+  const writers = [];
+  for (const [wfFile, text] of Object.entries(workflowTexts || {})) {
+    let hit = direct.test(text);
+    for (const m of hit ? [] : String(text).matchAll(assignRe)) {
+      if (new RegExp(`git\\s+add\\b[^\\n]*\\$\\{?${escapeRegExp(m[1])}\\}?\\b`).test(text)) { hit = true; break; }
+    }
+    if (hit) writers.push(wfFile);
   }
   return writers;
 }
