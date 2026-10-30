@@ -22,3 +22,8 @@ test('still rejects unrelated pages and accepts title-less html', () => {
   assert.equal(quickTitleCheck(page('Hamilton Reviews'), 'The Heart', q), false);
   assert.equal(quickTitleCheck('<html></html>', 'The Heart', q), true);
 });
+
+test('quickTitleCheck keeps hand-verified same-work shows (tina-2019)', () => {
+  const html = '<title>Tina - The Tina Turner Musical</title>';
+  assert.equal(quickTitleCheck(html, 'Tina', { log() {}, showId: 'tina-2019' }), true);
+});

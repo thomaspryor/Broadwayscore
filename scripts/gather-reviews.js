@@ -940,7 +940,7 @@ async function searchDTLI(show) {
     console.log(`  Searching Did They Like It (mapped: ${mappedSlug})...`);
     const result = await searchAggregator('DTLI', url);
     if (result.found && result.html && result.html.includes('review-item') &&
-        quickTitleCheck(result.html, show.title)) {
+        quickTitleCheck(result.html, show.title, { showId: show.id })) {
       console.log(`    ✓ Found via slug map: ${url}`);
       return { url, html: result.html };
     }
@@ -962,7 +962,7 @@ async function searchDTLI(show) {
         console.log(`    homepage match: ${homeUrl}`);
         const showResult = await searchAggregator('DTLI', homeUrl);
         if (showResult.found && showResult.html && showResult.html.includes('review-item') &&
-            quickTitleCheck(showResult.html, show.title)) {
+            quickTitleCheck(showResult.html, show.title, { showId: show.id })) {
           console.log(`    ✓ Found via homepage scan: ${homeUrl}`);
           return { url: homeUrl, html: showResult.html };
         }
@@ -991,7 +991,7 @@ async function searchDTLI(show) {
       console.log(`    sitemap found: ${discovery.slug} (score ${discovery.candidates[0].score})`);
       const sitemapResult = await searchAggregator('DTLI', discovery.url);
       if (sitemapResult.found && sitemapResult.html && sitemapResult.html.includes('review-item') &&
-          quickTitleCheck(sitemapResult.html, show.title)) {
+          quickTitleCheck(sitemapResult.html, show.title, { showId: show.id })) {
         console.log(`    ✓ Found via sitemap discovery: ${discovery.url}`);
         return { url: discovery.url, html: sitemapResult.html };
       }
@@ -1130,7 +1130,7 @@ async function searchDTLI(show) {
     const result = await searchAggregator('DTLI', url);
     if (result.fetchAnswered || result.found) answeredProbes++;
     if (result.found && result.html && result.html.includes('review-item') &&
-        quickTitleCheck(result.html, show.title)) {
+        quickTitleCheck(result.html, show.title, { showId: show.id })) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
@@ -1166,7 +1166,7 @@ async function searchShowScore(show) {
     } else {
       const result = await searchAggregator('ShowScore', curatedUrl);
       if (result.found && result.html && result.html.includes('score') &&
-          quickTitleCheck(result.html, show.title)) {
+          quickTitleCheck(result.html, show.title, { showId: show.id })) {
         console.log(`    ✓ Found at: ${curatedUrl}`);
         return { url: curatedUrl, html: result.html };
       }
@@ -1287,7 +1287,7 @@ async function searchShowScore(show) {
           !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>') &&
           (isOffBroadway || !result.html.includes('/off-off-broadway-shows/')) &&
           (isOffBroadway || !result.html.includes('/off-broadway-shows/')) &&
-          quickTitleCheck(result.html, show.title)) {
+          quickTitleCheck(result.html, show.title, { showId: show.id })) {
         console.log(`    ✓ Found at: ${url}`);
         return { url, html: result.html };
       }

@@ -704,3 +704,17 @@ test('lintDraft refuses "no mixed reviews" claims and critic pronouns', () => {
   const clean = lib.lintDraft(mk('Critic 0 liked it, though the review respected the ambition.'), facts);
   assert.ok(!clean.problems.some(p => /pronoun|no mixed/.test(p)));
 });
+
+test('claimProblems: a true "zero mixed" count and pronouns about actors pass (BRO-6676 review)', () => {
+  const facts = { buckets: { mixed: 0 }, bestQuotes: [{ critic: 'Jesse Green', outlet: 'New York Times' }], worstQuotes: [] };
+  const ok = (t) => lib.claimProblems({ title: 't', body: t, suggestedReply: '' }, facts);
+  assert.deepEqual(ok('6 raves, 3 positive, zero mixed, zero negative.'), []);
+  assert.deepEqual(ok('Jesse Green loved Jason Tam, calling his voice a marvel.'), []);
+  assert.equal(ok('Zero mixed reviews at all.').length, 1);
+  assert.equal(ok('Jesse Green says she was moved.').length, 1);
+});
+
+test('aggregatorGapHold: priorRun entries and duplicates do not hold (BRO-6676 review)', () => {
+  const r = { computedAt: new Date().toISOString(), missing: [{ knownOutletId: 'x', priorRun: true }, { knownOutletId: 'nyt' }, { knownOutletId: 'nyt' }] };
+  assert.deepEqual(lib.aggregatorGapHold(r).missing, ['nyt']);
+});

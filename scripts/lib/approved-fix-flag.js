@@ -8,7 +8,6 @@
  */
 
 const crypto = require('crypto');
-const { EXCERPT_FIELDS } = require('./excerpt-fields');
 
 /**
  * The content an approver judged: the review's url plus its body (fullText, or
@@ -19,13 +18,15 @@ const { EXCERPT_FIELDS } = require('./excerpt-fields');
  */
 function approvedFixBinding(record) {
   const r = record || {};
-  const body = typeof r.fullText === 'string' && r.fullText.trim()
-    ? r.fullText.trim()
-    : EXCERPT_FIELDS.map((f) => (typeof r[f] === 'string' ? r[f].trim() : '')).filter(Boolean).join('\n');
   const url = typeof r.url === 'string' ? r.url.trim() : '';
+  const text = typeof r.fullText === 'string' ? r.fullText.replace(/\s+/g, ' ').trim().toLowerCase() : '';
+  // Aggregator excerpts and metaExcerpt churn on their own (DTLI, Playbill, a
+  // refresh) without changing what the human judged, so a record with no body
+  // binds to its url alone ('excerpt-only'); a real body binds to its
+  // whitespace/case-normalized hash.
   return {
     url,
-    contentHash: crypto.createHash('sha1').update(body).digest('hex').slice(0, 16),
+    contentHash: text ? crypto.createHash('sha1').update(text).digest('hex').slice(0, 16) : 'excerpt-only',
   };
 }
 

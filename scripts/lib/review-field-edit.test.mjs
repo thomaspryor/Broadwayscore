@@ -937,3 +937,12 @@ test('hasApprovedFlag: a bound approval stops applying once the body or url chan
   assert.equal(hasApprovedFlag({ ...res.record, url: 'https://www.nytimes.com/2026/10/29/theater/other.html' }, 'wrongShow'), false, 'url changed');
   assert.equal(hasApprovedFlag({ approvedFixes: [{ field: 'wrongShow', newValue: true }], fullText: 'x' }, 'wrongShow'), true, 'legacy unbound entries keep applying');
 });
+
+test('hasApprovedFlag: excerpt churn and whitespace re-cleans keep a bound approval (BRO-4599 guard)', () => {
+  const { hasApprovedFlag } = require('./review-field-edit.js');
+  const res = applyReviewFieldEdit({ url: 'https://example.com/a', fullText: 'A bracing   new musical.\n', metaExcerpt: 'old' }, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(hasApprovedFlag({ ...res.record, metaExcerpt: 'refreshed', dtliExcerpt: 'new excerpt' }, 'wrongShow'), true, 'excerpt churn');
+  assert.equal(hasApprovedFlag({ ...res.record, fullText: 'a bracing new musical.' }, 'wrongShow'), true, 'whitespace/case re-clean');
+  const ex = applyReviewFieldEdit({ url: 'https://example.com/b', dtliExcerpt: 'x' }, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(hasApprovedFlag({ ...ex.record, playbillExcerpt: 'later excerpt' }, 'wrongShow'), true, 'later aggregator excerpt');
+});

@@ -238,7 +238,14 @@ async function main() {
   for (const c of candidates) {
     const prevDraft = drafts.drafts[c.show.id];
     const gate = lib.aggregatorGapHold(gapByShow.get(c.show.id));
-    if (gate.hold && !FORCE_SHOW) { console.log(`  ${c.show.id}: HELD, ${gate.reason}`); continue; }
+    if (gate.hold && !FORCE_SHOW) {
+      console.log(`  ${c.show.id}: HELD, ${gate.reason}`);
+      // An already-ready draft would still be emailed as postable.
+      if (prevDraft && prevDraft.status === 'ready') {
+        drafts.drafts[c.show.id] = { ...prevDraft, status: 'held-gap', heldReason: gate.reason, heldAt: new Date().toISOString() };
+      }
+      continue;
+    }
     // --show on a posted draft would pay for text nobody will use, and the
     // stored text would no longer match what went up.
     if (prevDraft && prevDraft.status === 'posted') { console.log(`  ${c.show.id}: already posted, not redrafting`); continue; }

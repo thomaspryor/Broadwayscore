@@ -459,18 +459,21 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
       }
     } catch { /* unparseable prior — drop it */ }
   }
-  const allCleared = Array.from(new Set([...priorCleared, ...cleared]));
-  if (allCleared.length === 0) return { changed: false, cleared };
-
   // BRO-6676: firstSeenAt dates the OLD document. Kept, the rebuild's
   // collected-before-previews guard compares it to the show's preview date and
   // re-flags the corrected review (Cititour: firstSeenAt 09-27 from the Heart
   // of Rock and Roll URL, previews 10-08). The corrected URL is first seen now.
-  if (existing.firstSeenAt !== undefined || merged.firstSeenAt !== undefined) {
+  // Only a real move resets it: a force:true cosmetic swap (tracking params,
+  // AMP) is the same article and keeps its date (review-file-writer.js:74-80).
+  if ((existing.firstSeenAt !== undefined || merged.firstSeenAt !== undefined)
+      && urlCanonicallyChanged(existing.url, merged.url)) {
+    if (existing.firstSeenAt !== undefined) merged.firstSeenAtPriorUrl = existing.firstSeenAt;
     merged.firstSeenAt = new Date().toISOString();
     if (!cleared.includes('firstSeenAt')) cleared.push('firstSeenAt');
-    if (!allCleared.includes('firstSeenAt')) allCleared.push('firstSeenAt');
   }
+
+  const allCleared = Array.from(new Set([...priorCleared, ...cleared]));
+  if (allCleared.length === 0) return { changed: false, cleared };
 
   if (cleared.includes('duplicateOf') || cleared.includes('duplicateTextOf')) {
     merged.duplicateClearReason = `auto-cleared at write: url changed ${existing.url} → ${merged.url}`;

@@ -282,6 +282,7 @@ function createRejectedPageLedger(ledgerPath, { maxAgeDays = 14, now = Date.now 
 }
 
 module.exports = {
+  SAME_WORK_OTHER_MARKET_SHOWS,
   readCachedArchiveIfValid,
   checkArchiveCategory,
   makeArchiveShowChecker,

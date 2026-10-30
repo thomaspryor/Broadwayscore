@@ -1099,3 +1099,15 @@ test('applyUrlChangeInvariant leaves combinedWith/firstSeenAt alone when the URL
   assert.deepEqual(merged.combinedWith, ['x-2024']);
   assert.equal(merged.firstSeenAt, '2026-09-27T00:00:00.000Z');
 });
+
+test('BRO-6676: a force:true cosmetic swap keeps firstSeenAt; a real move with no derived fields still resets it', () => {
+  const first = '2026-09-27T00:00:00.000Z';
+  const same = { url: 'https://www.nytimes.com/2026/10/29/theater/the-heart-review.html', firstSeenAt: first };
+  const cosmetic = { ...same, url: 'https://www.nytimes.com/2026/10/29/theater/the-heart-review.html?utm_source=x' };
+  applyUrlChangeInvariant(same, cosmetic, { force: true });
+  assert.equal(cosmetic.firstSeenAt, first);
+  const moved = { url: 'https://www.nytimes.com/2026/10/29/theater/other-review.html', firstSeenAt: first };
+  applyUrlChangeInvariant(same, moved);
+  assert.notEqual(moved.firstSeenAt, first);
+  assert.equal(moved.firstSeenAtPriorUrl, first);
+});
