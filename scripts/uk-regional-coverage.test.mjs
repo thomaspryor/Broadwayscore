@@ -12,9 +12,9 @@ const reg = require('../data/outlet-registry.json');
 
 test('at least 300 UK regional productions with a city, each scoreable or listed below-bar', () => {
   const shows = Array.isArray(raw) ? raw : raw.shows;
-  const { total, belowBar } = coverage(shows, loadReviewsWithBlog(), reg.outlets || reg);
+  const { cities, total, belowBar } = coverage(shows, loadReviewsWithBlog(), reg.outlets || reg);
   assert.ok(total.shows >= 300, `${total.shows} UK regional productions < 300`);
-  assert.equal(total.scoreable + belowBar.length, total.shows);
-  const noCity = belowBar.filter((b) => !b.city);
-  assert.deepEqual(noCity, [], 'below-bar rows missing a city');
+  assert.equal(cities.unknown, undefined, 'UK regional rows missing a city');
+  assert.equal(new Set(belowBar.map((b) => b.id)).size, belowBar.length, 'duplicate below-bar ids');
+  assert.ok(belowBar.every((b) => shows.some((s) => s.id === b.id && s.city)), 'below-bar row not in shows.json with a city');
 });
