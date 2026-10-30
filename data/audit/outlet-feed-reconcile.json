@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T13:58:38.121Z",
+  "generatedAt": "2026-10-30T16:58:44.185Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -19,6 +19,11 @@
       "openingDate": "2026-10-29"
     },
     {
+      "id": "medea-off-broadway-2026",
+      "title": "Medea",
+      "openingDate": "2026-10-30"
+    },
+    {
       "id": "a-few-good-men-2026",
       "title": "A Few Good Men",
       "openingDate": "2026-10-29"
@@ -27,6 +32,11 @@
       "id": "memoriam-off-west-end-2026",
       "title": "Memoriam",
       "openingDate": "2026-10-27"
+    },
+    {
+      "id": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "openingDate": "2026-10-30"
     },
     {
       "id": "i-became-we-off-broadway-2026",
@@ -62,6 +72,16 @@
       "id": "specimen-off-broadway-2026",
       "title": "Specimen",
       "openingDate": "2026-10-30"
+    },
+    {
+      "id": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "title": "A Beautiful Noise, The Neil Diamond Musical",
+      "openingDate": "2026-10-30"
+    },
+    {
+      "id": "showstopper-the-kids-show-off-west-end-2026",
+      "title": "Showstopper! The Kids Show",
+      "openingDate": "2026-10-29"
     },
     {
       "id": "the-unexpected-3rd-2026",
@@ -110,10 +130,19 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 748,
-  "matchedGaps": 4,
-  "possibleGaps": 13,
+  "itemsScanned": 745,
+  "matchedGaps": 7,
+  "possibleGaps": 12,
   "gaps": [
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "level": "matched",
+      "outletId": "off-off-online",
+      "url": "https://www.offoffonline.com/offoffonline/2026/10/23/aftermath",
+      "headline": "Aftermath",
+      "publishDate": "2026-10-30"
+    },
     {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
@@ -122,6 +151,15 @@
       "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
       "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
       "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/girls-young-vic-the-26166",
+      "headline": "Girls",
+      "publishDate": "2026-10-30"
     },
     {
       "showId": "memoriam-off-west-end-2026",
@@ -148,6 +186,15 @@
       "outletId": "thewrap",
       "url": "https://www.thewrap.com/creative-content/theater/the-heart-off-broadway-review-organ-transplant-musical/",
       "headline": "&#8216;The Heart&#8217; Off Broadway Review: The Beat Goes on in a Terrific New Musical About Organ Transplants",
+      "publishDate": "2026-10-30"
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
+      "headline": "The Moth – Finborough Theatre, London",
       "publishDate": "2026-10-30"
     },
     {
@@ -194,15 +241,6 @@
       "url": "https://theartsdesk.com/theatre/bloodsport-stratford-east-review-1536-author-pits-more-essex-girls-against-bellicose-englishmen",
       "headline": "Bloodsport, Stratford East review - the &#039;1536&#039; author pits more Essex girls against bellicose Englishmen",
       "publishDate": null
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/10/29/in-conversation-with-german-cornejo/",
-      "headline": "IN CONVERSATION WITH: German Cornejo",
-      "publishDate": "2026-10-29"
     },
     {
       "showId": "the-heart-off-broadway-2026",

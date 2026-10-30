@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-10-30T13:58:37.776Z",
+  "generatedAt": "2026-10-30T16:58:43.830Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 304,
-  "clean": 304,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 305,
+  "clean": 302,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.41 vs local 75.23 (Δ0.18)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-10-30T16:58:36.341Z"
+    },
+    {
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.79 vs local 77.17 (Δ0.38)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-30T16:58:36.341Z"
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "openingDate": "2026-10-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.5 vs local 79.75 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 25,
+      "firstDefectAt": "2026-10-30T16:58:36.341Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
