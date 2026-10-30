@@ -3110,7 +3110,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 30 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41112504176",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41113859353",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -3119,11 +3119,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41112504176)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41113859353)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41112083724)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41112504176)"
       },
       {
         "name": "Consecutive failures",
@@ -3134,7 +3134,7 @@
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-30T19:57:21.548Z"
+    "queuedAt": "2026-10-30T20:05:59.775Z"
   },
   {
     "conditionKey": "ob-venue-go-live:the-unraveling-off-broadway-2027",
