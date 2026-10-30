@@ -3783,5 +3783,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T06:43:10.776Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6584-test",
+    "title": "Landing blocked: rebase red on land/bro-6584-test",
+    "description": "land.yml did not land land/bro-6584-test: the rebase gate went red at ebe6c0f4cf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41016767965",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6584-test"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "ebe6c0f4cfa4b1c21b85799e745c1999cc021ea0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41016767965"
+      }
+    ],
+    "queuedAt": "2026-10-30T06:55:58.253Z"
   }
 ]
