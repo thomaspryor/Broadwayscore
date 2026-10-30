@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6584-b",
   "planId": "94c770cd-875f-43b2-bc37-77a3b1c98da3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T06:05:56.360Z",
   "submitter": {
     "name": null,
@@ -161,5 +161,114 @@
         "description": "BRO-6584: duplicate or misfiled review url (copy of another show or file, or index page url)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T06:21:35.805Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gutenberg-2023/wsj--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gypsy-1989/ew--kathryn-vandervalk.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gypsy-2008/ew--kathryn-vandervalk.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted gypsy-2024/ew--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hand-to-god-west-end-2016/northjerseycom--robert-feldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted leopoldstadt-west-end-2021/wsj--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted parade-1998/dailybeast--tim-teeman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted parade-1998/guardian--adrian-horton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted parade-1998/wsj--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-and-juliet-west-end-2026/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-and-juliet-west-end-2026/wsj--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted safe-house-off-broadway-2026/theater-scene--scott-bennett.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted schmigadoon-2026/wsj--john-anderson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted sting-west-end-2026/nytimes--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted sweat-2017/timeout--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-25th-annual-putnam-county-spelling-bee-2005/nytg--joe-dziemianowicz.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-king-and-i-1977/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-king-and-i-1985/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-king-and-i-1996/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-outsiders-world-premiere-regional-2023/timeout--adam-feldman.json"
+    }
+  ],
+  "executedIn": "ci"
 }
