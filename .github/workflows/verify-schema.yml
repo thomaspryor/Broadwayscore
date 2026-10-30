@@ -20,7 +20,7 @@ on:
       - 'scripts/lib/supabase-schema-expectations.js'
       - '.github/workflows/verify-schema.yml'
   schedule:
-    - cron: '37 9 * * 1' # Mondays 09:37 UTC
+    - cron: '37 9 * * *' # daily 09:37 UTC (was weekly; BRO-6666: the schedule run files the fix card)
   workflow_dispatch:
 
 permissions:
@@ -43,7 +43,25 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
-        run: node scripts/verify-supabase-schema.js
+        # 2>&1: the missing-object and apply lines go to stderr. The log feeds the card step below.
+        run: |
+          set -o pipefail
+          node scripts/verify-supabase-schema.js 2>&1 | tee verify-schema.log
+
+      # BRO-6666: the notify step below is digest-only, so a 2-day-old unapplied
+      # migration went unnoticed. Scheduled and manual runs file one START-NOW
+      # card naming the migrations and the apply command (reused while open).
+      # Never on a push run: a push fails in the normal gap between merging a
+      # migration and applying it, and a worker must not race the human apply.
+      # Advisory (continue-on-error): it cannot mask or change the run result.
+      # A failure with no migration lines (API outage, bad token) files a generic card.
+      - name: File fix card for unapplied migrations
+        if: failure() && github.event_name != 'push' && vars.SCHEMA_DRIFT_CARD_DISABLED != 'true' # kill switch: repo variable
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node scripts/file-schema-drift-card.js verify-schema.log
 
       - name: Notify on failure
         if: failure()
