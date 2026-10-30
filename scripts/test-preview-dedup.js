@@ -40,7 +40,7 @@ const tests = [
   },
 
   {
-    name: 'recent preview, 2 new reviews → skip (below threshold)',
+    name: 'recent preview, 2 new reviews → resend (BRO-6634: any change)',
     sentData: {
       shows: {
         'preview:broadway:foo-2026:2026-04-10': {
@@ -52,7 +52,7 @@ const tests = [
     broadcastKey: 'broadway:foo-2026',
     currentReviewCount: 22,
     now: new Date('2026-04-10T18:00:00Z').getTime(),
-    expected: 'skip',
+    expected: 'resend',
   },
 
   {

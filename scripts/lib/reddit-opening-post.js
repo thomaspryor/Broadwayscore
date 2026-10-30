@@ -56,12 +56,15 @@ const MAX_OB_DRAFTS_PER_RUN = 1;
 const MAX_BWAY_DRAFTS_PER_RUN = 2;
 const MAX_REFRESHES_PER_RUN = 5; // redrafts of already-emailed drafts, outside the caps above (BRO-5083)
 
-// An emailed, unposted draft whose score changed, or whose review count moved
-// by this many, gets a fresh "Updated" email (new text, new screenshots)
-// instead of leaving the stale one in the inbox (BRO-5879). Capped per draft
-// so a show with reviews still trickling in can't turn into a daily chore.
-const MATERIAL_REVIEW_DELTA = 3;
+// An emailed, unposted draft whose displayed score or review count changed at
+// all gets a fresh "Updated" email (new text, new screenshots) instead of
+// leaving the stale one in the inbox (BRO-5879; any change since BRO-6634, the
+// owner: "whenever the score or review count changes"). The first
+// MAX_UPDATE_EMAILS go out as soon as the numbers move; after that at most one
+// every CAPPED_UPDATE_GAP_HOURS, so a show with reviews trickling in still
+// ends on an email with its final numbers without a dozen in one evening.
 const MAX_UPDATE_EMAILS = 3;
+const CAPPED_UPDATE_GAP_HOURS = 6;
 
 const MIN_AUDIENCE_REVIEWS = 15; // parity with src/lib/audience-grade-utils.ts
 
@@ -275,8 +278,9 @@ function isRefreshable(d) {
 }
 
 /**
- * Emailed, unposted, inside the sender's TTL and not out of update emails:
- * the drafts worth an out-of-cap, any-age refresh. Each run re-checks them
+ * Emailed, unposted and inside the sender's TTL: the drafts worth an
+ * out-of-cap, any-age refresh (past MAX_UPDATE_EMAILS too: the sender spaces
+ * those out, updateAllowed below). Each run re-checks them
  * against today's numbers (a refresh is skipped when the text is still
  * accurate), so a draft whose score or review count moved after its first
  * email carries the new text into an "Updated" email, and the reminder
@@ -286,8 +290,19 @@ function isRefreshable(d) {
  */
 function awaitsUpdate(d, nowMs) {
   return !!d && d.status === 'ready' && !!d.emailedAt
-    && (d.updateCount || 0) < MAX_UPDATE_EMAILS
     && (nowMs - Date.parse(d.createdAt)) / 86400000 <= DRAFT_TTL_DAYS;
+}
+
+/**
+ * May an "Updated" email go out now? The first MAX_UPDATE_EMAILS: yes. After
+ * that, once CAPPED_UPDATE_GAP_HOURS have passed since the last email of any
+ * kind, so the owner still gets the final numbers (BRO-6634).
+ */
+function updateAllowed(d, nowMs) {
+  if (!d) return false;
+  if ((d.updateCount || 0) < MAX_UPDATE_EMAILS) return true;
+  const last = Math.max(...[d.emailedAt, d.reminderAt].map(x => Date.parse(x || '')).filter(Number.isFinite));
+  return Number.isFinite(last) && (nowMs - last) / 3600000 >= CAPPED_UPDATE_GAP_HOURS;
 }
 
 /**
@@ -329,14 +344,11 @@ function carryOverState(prev, entry, nowIso) {
   return entry;
 }
 
-/** The draft's numbers differ enough from its last email to send a new one. */
+/** The draft's numbers differ from its last email: any score or review-count change (BRO-6634). */
 function numbersMoved(d) {
   const was = emailedNumbers(d);
   if (![was.score, was.reviewCount, d.score, d.reviewCount].every(Number.isFinite)) return false;
-  // While reviews the pre-send check added are still being scored (BRO-5887),
-  // any count change is the news, not just a bunch.
-  const delta = d.verification && d.verification.pendingScoring ? 1 : MATERIAL_REVIEW_DELTA;
-  return d.score !== was.score || Math.abs(d.reviewCount - was.reviewCount) >= delta;
+  return d.score !== was.score || d.reviewCount !== was.reviewCount;
 }
 
 /**
@@ -1046,6 +1058,9 @@ function activeDrafts(drafts, nowMs) {
 
 module.exports = {
   keepPreviousDraft,
+  updateAllowed,
+  isRetryableDraft,
+  CAPPED_UPDATE_GAP_HOURS,
   SUBREDDIT_BY_MARKET,
   MIN_REVIEWS,
   audienceSourceNames,
@@ -1067,7 +1082,6 @@ module.exports = {
   emailedNumbers,
   numbersMoved,
   carryOverState,
-  MATERIAL_REVIEW_DELTA,
   MAX_UPDATE_EMAILS,
   buildUserPrompt,
   pickRecentExamples,

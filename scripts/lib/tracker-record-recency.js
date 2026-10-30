@@ -62,4 +62,33 @@ function recordRecencyMs(record) {
   return max;
 }
 
-module.exports = { recordRecencyMs, RECENCY_FIELDS };
+// BRO-6634: owner-notice stamps on an unsent draft. They are NOT recency
+// fields (a reminder stamped after the owner pressed Send must never outrank
+// the sentAt another writer recorded), so a merge that keeps the other copy
+// of the record would drop them, and the next run would repeat the "draft
+// updated" email or restart the reminder count. Each group travels with its
+// timestamp: the newer stamp wins whichever copy wins the record.
+const DRAFT_STAMP_GROUPS = [
+  ['draftUpdatedAt', ['draftNumbers', 'reviewCount']],
+  ['draftReminderAt', ['draftReminderCount']],
+];
+
+const stampMs = v => (typeof v === 'string' && Number.isFinite(Date.parse(v)) ? Date.parse(v) : 0);
+
+/**
+ * `winner` with any newer draft stamps from `loser` copied over, when both
+ * copies describe the same Resend draft. Returns `winner` unchanged otherwise.
+ */
+function carryDraftStamps(winner, loser) {
+  if (!winner || !loser || typeof winner !== 'object' || typeof loser !== 'object') return winner;
+  if (!winner.draftId || winner.draftId !== loser.draftId) return winner;
+  let out = winner;
+  for (const [at, fields] of DRAFT_STAMP_GROUPS) {
+    if (stampMs(loser[at]) <= stampMs(winner[at])) continue;
+    out = { ...out, [at]: loser[at] };
+    for (const f of fields) if (Object.hasOwn(loser, f)) out[f] = loser[f];
+  }
+  return out;
+}
+
+module.exports = { recordRecencyMs, RECENCY_FIELDS, carryDraftStamps };

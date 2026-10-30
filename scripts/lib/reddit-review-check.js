@@ -61,6 +61,7 @@ function compactRecord(r) {
     criticName: r.criticName || '',
     publishDate: r.publishDate || '',
     dateSource: r.dateSource || '',
+    humanReviewedEarlyPublish: r.humanReviewedEarlyPublish === true,
     url: r.url || '',
     contentTier: r.contentTier || '',
     textLen: String(r.fullText || '').length,
@@ -139,11 +140,15 @@ function censusFromAudit(audit, showId) {
  * article reviewing two shows is filed under only one of them (BRO-5924), so
  * it is "filed under another show", not "not found yet".
  */
-function explainGaps(missing, snapshot, fixedFiles = new Set(), ownerOf = null) {
+function explainGaps(missing, snapshot, fixedFiles = new Set(), ownerOf = null, facts = null) {
+  const { nonReviewPageReason } = require('./reddit-review-judge');
   const files = [...snapshot.entries()].filter(([f]) => !f.startsWith('_pending/'));
   const out = [];
   for (const m of missing) {
-    const hit = files.find(([, r]) => normUrl(r.url) && normUrl(r.url) === normUrl(m.url))
+    const urlHit = files.find(([, r]) => normUrl(r.url) && normUrl(r.url) === normUrl(m.url));
+    // A hub page, or a pre-opening feature we hold under that URL, is not a missing review (BRO-6634).
+    if (nonReviewPageReason({ url: m.url }, null) || (urlHit && nonReviewPageReason(urlHit[1], facts))) continue;
+    const hit = urlHit
       || files.find(([, r]) => m.outletId && r.outletId === m.outletId);
     const name = m.outlet || m.outletId || m.url;
     // Released or recovered by this very check: no longer a gap, it is "being scored".
@@ -194,7 +199,7 @@ function escapeRe(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
  *         'failed'  the check could not finish (reason in `error`)
  *         'skipped' report-only or switched off
  */
-function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter, census, error = null, durationMs = 0, tools = [], judge = null, previous = null, ownerOf = null }) {
+function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter, census, error = null, durationMs = 0, tools = [], judge = null, previous = null, ownerOf = null, facts = null }) {
   const base = {
     checkedAt: nowIso, mode, score: draft.score, reviewCount: draft.reviewCount, durationMs, tools,
     ...(judge ? { judge: { asked: judge.asked, applied: judge.applied.length, rejected: judge.rejected.length, ...(judge.error ? { error: String(judge.error).slice(0, 200) } : {}) } } : {}),
@@ -204,7 +209,7 @@ function buildVerification({ draft, nowIso, mode, snapshotBefore, snapshotAfter,
   if (error) return { ...base, status: 'failed', error: String(error).slice(0, 300), pendingScoring: carried, addedThisCheck: false };
   const changes = summarizeChanges(snapshotBefore, snapshotAfter);
   const fixedFiles = new Set([...changes.added, ...changes.flagCleared, ...changes.recovered].map(x => x.file));
-  const gaps = census ? explainGaps(census.missing, snapshotAfter, fixedFiles, ownerOf) : [];
+  const gaps = census ? explainGaps(census.missing, snapshotAfter, fixedFiles, ownerOf, facts) : [];
   const incomplete = !!census && census.verdict !== 'complete' && gaps.length > 0;
   const status = mode !== 'apply' ? 'skipped' : incomplete ? 'gaps' : changes.changed ? 'fixed' : 'clean';
   return {

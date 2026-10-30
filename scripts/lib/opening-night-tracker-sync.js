@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { isDeepStrictEqual } = require('util');
-const { recordRecencyMs } = require('./tracker-record-recency');
+const { recordRecencyMs, carryDraftStamps } = require('./tracker-record-recency');
 
 const SYNC_REPO = 'thomaspryor/broadway-scorecard-data';
 const SYNC_REMOTE_PATH = 'opening-night-sent.json';
@@ -50,9 +50,10 @@ function mergeTrackerEntries(remoteParsed, localParsed, opts = {}) {
   for (const [k, v] of Object.entries(localShows)) {
     const remoteRec = remoteShows[k];
     if (remoteRec && recordRecencyMs(remoteRec) > recordRecencyMs(v)) {
-      continue; // remote already has a newer observation for this key — keep it.
+      merged.shows[k] = carryDraftStamps(remoteRec, v); // remote is newer; keep it.
+      continue;
     }
-    merged.shows[k] = v;
+    merged.shows[k] = carryDraftStamps(v, remoteRec);
   }
   return merged;
 }

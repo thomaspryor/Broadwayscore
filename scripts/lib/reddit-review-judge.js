@@ -22,6 +22,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const { classifyGapCandidateUrl } = require('./non-review-url-patterns');
+const { isAnticipatoryPreviewPost } = require('./content-filters');
 
 const MAX_ITEMS = 12;
 const HELD_TEXT_CHARS = 3500;
@@ -96,6 +98,7 @@ function identityFacts(show, todayIso, otherProductions = []) {
     cast: (show.cast || []).map(c => c && c.name).filter(Boolean).slice(0, 12),
     people: [...(show.cast || []), ...(Array.isArray(show.creativeTeam) ? show.creativeTeam : [])].map(c => c && c.name).filter(Boolean),
     priorVenues,
+    category: show.category || null,
     windowFrom: first ? addDays(first, -21) : null,
     windowTo: todayIso ? addDays(todayIso, 2) : null,
   };
@@ -109,6 +112,34 @@ function inWindow(dateIso, facts) {
 }
 
 // ── what to ask about ────────────────────────────────────────────────────────
+
+/**
+ * Why a stored file is not a review of this production at all, or null
+ * (BRO-6634). Two shapes reached the reader and got "fixed" on A Few Good Men:
+ * a Times Square Chronicles "meets the press" feature dated three weeks before
+ * opening was released as a review, and a letterboxd film-reviews hub got a
+ * critic's name. Neither may be released, named or listed as a missing review.
+ *
+ *   - a hub, listing or index URL (the gap census's own filter, BRO-6588)
+ *   - dated earlier than an early-published review can be (the write path's
+ *     anticipatory-preview rule: 2 days before opening on Broadway / West End,
+ *     14 Off-Broadway, 0 for preview-heavy outlets), unless a human cleared it
+ *
+ * Text-regex dates count here although the write path skips them: refusing
+ * only leaves a file where it already was, so a doubtful date errs that way.
+ * `r` needs url, and publishDate/outletId/humanReviewedEarlyPublish for the
+ * date rule; `facts` needs openingDate and category (identityFacts).
+ */
+function nonReviewPageReason(r, facts) {
+  if (!r) return null;
+  if (r.url) {
+    const c = classifyGapCandidateUrl(r.url);
+    if (!c.ok) return c.reason || 'non-review-url';
+  }
+  if (!facts || !facts.openingDate || !r.publishDate || r.humanReviewedEarlyPublish === true) return null;
+  const v = isAnticipatoryPreviewPost(r.publishDate, facts.openingDate, r.outletId || null, { category: facts.category || undefined });
+  return v.rejected ? 'pre-opening-non-review' : null;
+}
 
 const UNKNOWN_CRITIC = c => !String(c || '').trim() || /^unknown$/i.test(String(c).trim());
 
@@ -129,6 +160,8 @@ function selectJudgeItems(records, census, facts = null) {
   for (const [file, r] of records) {
     const text = String(r.fullText || '');
     if (text.length < MIN_TEXT_CHARS) continue;
+    // A feature, interview or hub page: nothing on it is worth releasing, naming or dating (BRO-6634).
+    if (nonReviewPageReason(r, facts)) continue;
     const asks = [];
     if (HELD_FLAGS.some(f => r[f]) && missingOutlets.has(r)) asks.push('held');
     // A critic or a date on a file the site will not count (another production, a news column, an announcement)
@@ -313,6 +346,12 @@ function verifyDecision(item, decision, record, facts, siblings = []) {
   let extra = null;
   const text = item.text;
   const reject = (check, why) => rejected.push({ check, why });
+  // Second line of the BRO-6634 guard: whatever the reader says, a non-review page gets no edit.
+  const notReview = nonReviewPageReason(record || item, facts);
+  if (notReview) {
+    reject('page', `not a review of this production (${notReview})`);
+    return { edits, accepted, rejected, extra };
+  }
 
   // held: clear a wrong "another production" flag
   if (item.asks.includes('held') && decision.production) {
@@ -396,5 +435,5 @@ function readRecords(reviewTextsDir, showId, files) {
 }
 
 module.exports = {
-  MAX_ITEMS, norm, quoteInText, datesIn, printedByline, bylineCandidates, dateCandidates, identityFacts, inWindow, selectJudgeItems, buildPrompt, parseReply, verifyDecision, personShaped, readRecords,
+  MAX_ITEMS, norm, quoteInText, nonReviewPageReason, datesIn, printedByline, bylineCandidates, dateCandidates, identityFacts, inWindow, selectJudgeItems, buildPrompt, parseReply, verifyDecision, personShaped, readRecords,
 };
