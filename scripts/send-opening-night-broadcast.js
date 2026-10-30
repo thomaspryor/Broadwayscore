@@ -38,6 +38,7 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
   return applyUtm(html, { source: 'opening-night', campaign });
 }
 const { checkPreviewDedup } = require('./lib/preview-dedup');
+const { numbersFromEmailRows, isUnsentDraft } = require('./lib/broadcast-refresh');
 const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const { upsertBroadcastDraft, makeResendRequest } = require('./lib/resend-draft-upsert');
@@ -83,6 +84,11 @@ const RECREATE_DRAFT = process.argv.includes('--recreate-draft');
 // For revivals or niche shows where T1 outlets are unlikely to cover; owner manually reviews the
 // draft in Resend UI and decides whether to send.
 const FORCE_CREATE_DRAFT = process.argv.includes('--force-create-draft');
+// --refresh-unsent (BRO-6634): with --send-to, let a show whose Resend draft is
+// still unsent through the completed filter, so the owner gets a [PREVIEW]
+// with the new numbers. Never combined with a send; drafts are rebuilt only by
+// --recreate-draft (its guards confirm the old draft is unsent).
+const REFRESH_UNSENT = process.argv.includes('--refresh-unsent');
 // --subject="..." — override the generated subject line for this run. For one-off wording
 // (return engagements, transfers) without touching the shared template. Applies to both the
 // draft and the [PREVIEW] variant, and still passes the FORBIDDEN_SUBJECT_WORDS safety check.
@@ -157,6 +163,8 @@ function recordDraftCompletion(sentData, broadcastKey, showsForEmail, draftInfo)
     // draftInfo may override draftStatus: adopting a broadcast Resend already
     // shows as sent (BRO-3493) records its real status.
     draftStatus: 'draft',
+    // BRO-6634: the numbers this draft carries, so a later change rebuilds it.
+    draftNumbers: numbersFromEmailRows(showsForEmail),
     ...draftInfo,
     completed: true,
     sentAt: null,
@@ -422,6 +430,10 @@ async function main() {
       return false;
     }
     if (RECREATE_DRAFT) return true;
+    if (REFRESH_UNSENT && SEND_TO && isUnsentDraft(individualSent)) {
+      console.log(`  Refreshing ${s.title} — draft still unsent, previewing the current numbers`);
+      return true;
+    }
     // The owner deleted this show's unsent draft on purpose (BRO-2935). The
     // record says completed:false, which the fall-through below reads as
     // pending, so without this a lookback run would draft it again.
@@ -672,18 +684,20 @@ async function main() {
     // 10:09 PM ET — a second preview re-sent because its key was
     // ...:2026-04-11 instead of ...:2026-04-10).
     const currentReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
-    const dedup = checkPreviewDedup(sentData, broadcastKey, currentReviewCount);
+    // BRO-6634: per-show displayed numbers, so a 59 -> 60 move re-sends too.
+    const currentNumbers = numbersFromEmailRows(showsForEmail);
+    const dedup = checkPreviewDedup(sentData, broadcastKey, { total: currentReviewCount, shows: currentNumbers });
 
     if (dedup.action === 'skip') {
       const prev = dedup.lastPreview;
       console.log(`\nPreview already sent ${dedup.hoursSince.toFixed(1)}h ago for this show combination — skipping`);
       console.log(`  Previous preview: ${prev.sentAt} (${prev.reviewCount || 0} reviews, sent to ${prev.previewTo || 'unknown'})`);
-      console.log(`  Current: ${currentReviewCount} reviews (+${dedup.newReviews}, need +3 to re-send within 24h)`);
+      console.log(`  Current: ${currentReviewCount} reviews, same displayed score and count as that preview`);
       process.exit(0);
     }
     if (dedup.action === 'resend') {
       const prev = dedup.lastPreview;
-      console.log(`\nRe-sending preview — ${dedup.newReviews} new reviews since last preview ${dedup.hoursSince.toFixed(1)}h ago (${prev.reviewCount || 0} → ${currentReviewCount})`);
+      console.log(`\nRe-sending preview — numbers changed since last preview ${dedup.hoursSince.toFixed(1)}h ago (${prev.reviewCount || 0} → ${currentReviewCount} reviews)`);
     }
 
     console.log(`\nSending preview to ${SEND_TO}...`);
@@ -710,7 +724,7 @@ async function main() {
     // BRO-3493: the dedup above read the tracker before the lock. Re-check it
     // against what a run that held the lock before us may have written.
     refreshTrackerUnderLock(sentData);
-    const lockedDedup = checkPreviewDedup(sentData, broadcastKey, currentReviewCount);
+    const lockedDedup = checkPreviewDedup(sentData, broadcastKey, { total: currentReviewCount, shows: currentNumbers });
     if (lockedDedup.action === 'skip') {
       console.log(`\nPreview was sent by another run while we waited for the lock (${lockedDedup.hoursSince.toFixed(1)}h ago) — skipping`);
       const rel = releaseSendLock(lock);
@@ -744,7 +758,7 @@ async function main() {
       // `sentAt` — see scripts/lib/preview-dedup.js.
       const previewTimestamp = new Date().toISOString();
       const previewKey = `preview:${broadcastKey}:${previewTimestamp.slice(0, 10)}`;
-      sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: currentReviewCount };
+      sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: currentReviewCount, shows: currentNumbers };
       saveSentData(sentData);
       // Sync to origin/main so a concurrent workflow run can see the write.
       // Without this, local CLI previews are invisible to CI and cause duplicate sends
@@ -915,7 +929,7 @@ async function main() {
           await postJSON('https://api.resend.com/emails', {
             from: `${SITE_NAME} <${FROM_EMAIL}>`,
             to: [OWNER_EMAIL],
-            subject: `[Action Required] ${marketDisplay} draft ready — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+            subject: `[Action Required] ${marketDisplay} draft ${RECREATE_DRAFT ? 'updated with new numbers' : 'ready'} — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
             html: notificationHtml,
           }, { 'Authorization': `Bearer ${RESEND_API_KEY}` });
 
