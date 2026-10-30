@@ -450,7 +450,10 @@ if (require.main === module) {
     main();
   } catch (e) {
     // Fail open: log loudly, exit 0 — a validator bug must not block data pushes.
+    // --strict (push-rescue.js replay, BRO-6615): exit 2 instead, so restores
+    // are never pushed unchecked.
     console.log(`::warning::[ownership-gate] validator error (non-blocking): ${e.message}`);
+    if (process.argv.includes('--strict')) process.exitCode = 2;
   }
 }
 

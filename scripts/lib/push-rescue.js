@@ -18,17 +18,21 @@
  * runs the real ownership gate on them, pushes through push-review-texts,
  * and deletes the branch only once every restored file is on main.
  *
- * Only ADDS are replayed. A modified file in the rescued commit stays on the
- * branch for a human, and the branch is kept while it holds one (see
- * replayPlan): modifications need the local flow's three-way context.
+ * Only ADDS are replayed. Modifications and deletions need the local flow's
+ * three-way context; they are named in the logs and otherwise lost, as before
+ * (later runs redo enrichment and stub drains).
  *
  * CLI (cwd = a review-texts checkout):
  *   rescue <base> <head>       push <head> to a rescue branch when the range
  *                              adds review files; never fails the caller
- *   replay [--manifest=F] [--max-age-days=N]
- *                              restore added files from every rescue branch
+ *   replay [--manifest=F]      restore added files from every rescue branch
  *   prune --manifest=F         delete rescue branches whose restored files
- *                              are all on origin/main now
+ *                              are all on origin/main now, byte for byte
+ *
+ * Branches are never deleted on age or on doubt: one with a conflict (main
+ * or another rescue holds different content at the path), a file the
+ * ownership gate dropped, is kept and named every hour
+ * until a human resolves it. PUSH_RESCUE_DISABLE=1 turns off `rescue`.
  */
 
 const fs = require('fs');
@@ -78,20 +82,31 @@ function parseRescueRef(ref) {
 
 /**
  * Pure decision for one rescue branch.
- * @param {{adds: string[], modified: string[], onMain: Set<string>, touchedOnMain: Set<string>}} s
- *   onMain: paths present on origin/main now; touchedOnMain: paths any main
- *   commit since the rescue's base changed (e.g. a later run drained the
- *   stub). Neither is ever overwritten or resurrected.
+ * @param {{adds: string[], mainBlob: Map<string,string>,
+ *   touchedOnMain: Set<string>, rescueBlob: Map<string,string>,
+ *   claimed?: Map<string,string>}} s
+ *   mainBlob: blob sha of each path on origin/main now (absent = not there);
+ *   touchedOnMain: paths a main commit since the rescue's base changed (e.g.
+ *   a later run drained the stub); rescueBlob: blob sha on the rescue branch;
+ *   claimed: paths an earlier branch in the same replay already restored.
+ *   Nothing on main is ever overwritten or resurrected.
  */
-function replayPlan({ adds, modified = [], onMain, touchedOnMain }) {
+function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new Map() }) {
   const restore = [];
   const skipped = [];
+  const conflicts = [];
   for (const p of adds) {
-    if (onMain.has(p)) skipped.push({ path: p, why: 'already on main' });
-    else if (touchedOnMain.has(p)) skipped.push({ path: p, why: 'changed on main since the rescue (e.g. drained or moved)' });
-    else restore.push(p);
+    const ours = rescueBlob.get(p);
+    if (mainBlob.has(p)) {
+      if (mainBlob.get(p) === ours) skipped.push({ path: p, why: 'already on main' });
+      else conflicts.push({ path: p, why: 'main holds a different version' });
+    } else if (touchedOnMain.has(p)) skipped.push({ path: p, why: 'changed on main since the rescue (e.g. drained or moved)' });
+    else if (claimed.has(p)) {
+      if (claimed.get(p) === ours) skipped.push({ path: p, why: 'restored from another rescue branch' });
+      else conflicts.push({ path: p, why: 'another rescue branch holds a different version' });
+    } else restore.push(p);
   }
-  return { restore, skipped, keepForHuman: modified.length > 0 };
+  return { restore, skipped, conflicts, keepForHuman: conflicts.length > 0 };
 }
 
 function git(args, opts = {}) {
@@ -108,6 +123,7 @@ const netTimeoutMs = () => (Number(process.env.GIT_NET_TIMEOUT_SEC) || 60) * 100
 const annotate = (s) => String(s).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
 
 function cliRescue([base, head]) {
+  if (process.env.PUSH_RESCUE_DISABLE === '1') return;
   try {
     if (!base || !head) throw new Error('usage: rescue <base> <head>');
     const baseSha = gitOk(['rev-parse', '--verify', `${base}^{commit}`]).trim();
@@ -136,73 +152,112 @@ function listRescueRefs() {
   });
 }
 
+function blobAt(rev, p) {
+  const r = git(['rev-parse', '--verify', '--quiet', `${rev}:${p}`]);
+  return r.status === 0 ? r.stdout.trim() : null;
+}
+
+function replayOne({ sha, ref, info }, claimed) {
+  gitOk(['fetch', '--no-tags', '--depth=1', 'origin', sha, info.base], { timeout: netTimeoutMs() * 2 });
+  const baseTime = Number(gitOk(['show', '-s', '--format=%ct', info.base]).trim());
+  // Main's history since the rescue's base, so a path a later commit
+  // drained or moved is seen as touched instead of absent.
+  gitOk(['fetch', '--no-tags', `--shallow-since=${new Date((baseTime - 3600) * 1000).toISOString()}`, 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 3 });
+  const rows = parseNameStatusZ(gitOk(['diff', '--name-status', '-z', '--no-renames', info.base, sha]));
+  const adds = recoverableAdds(rows);
+  const modified = rows.filter((r) => !(r.status === 'A' && isRecoverablePath(r.path))).map((r) => r.path);
+  const mainBlob = new Map();
+  const rescueBlob = new Map();
+  for (const p of adds) {
+    rescueBlob.set(p, blobAt(sha, p));
+    const m = blobAt('origin/main', p);
+    if (m) mainBlob.set(p, m);
+  }
+  const since = new Date(baseTime * 1000).toISOString();
+  const touched = new Set(adds.filter((p) => !mainBlob.has(p)
+    && gitOk(['log', '-1', '--format=%H', `--since=${since}`, 'origin/main', '--', p]).trim() !== ''));
+  const plan = replayPlan({ adds, mainBlob, touchedOnMain: touched, rescueBlob, claimed });
+  for (const p of plan.restore) {
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, gitOk(['show', `${sha}:${p}`]));
+    claimed.set(p, rescueBlob.get(p));
+  }
+  console.log(`push-rescue: ${ref}: restoring ${plan.restore.length}, skipping ${plan.skipped.length}, conflicts ${plan.conflicts.length}${modified.length ? `, ${modified.length} modified/deleted path(s) not replayed` : ''}`);
+  for (const x of [...plan.skipped, ...plan.conflicts]) console.log(`  ${plan.conflicts.includes(x) ? 'CONFLICT' : 'skip'} ${x.path}: ${x.why}`);
+  return { ref, restored: plan.restore, restoredBlobs: Object.fromEntries(plan.restore.map((p) => [p, rescueBlob.get(p)])), skipped: plan.skipped, conflicts: plan.conflicts, keepForHuman: plan.keepForHuman, modified: modified.slice(0, 50) };
+}
+
 function cliReplay(args) {
   const manifestPath = (args.find((a) => a.startsWith('--manifest=')) || '').slice('--manifest='.length);
-  const maxAgeDays = Number((args.find((a) => a.startsWith('--max-age-days=')) || '--max-age-days=14').split('=')[1]);
   const refs = listRescueRefs();
-  const manifest = { refs: [] };
+  const manifest = { refs: [], failed: [] };
+  const claimed = new Map();
   if (refs.length === 0) console.log('push-rescue: no rescue branches');
-  for (const { sha, ref, info } of refs) {
-    if (!info) { console.log(`::warning::push-rescue: ignoring malformed branch ${ref}`); continue; }
-    if (Date.now() - info.at > maxAgeDays * 86400000) {
-      console.log(`::warning::push-rescue: ${ref} is older than ${maxAgeDays} days; pruning without replay`);
-      manifest.refs.push({ ref, restored: [], skipped: [], stale: true });
-      continue;
+  for (const entry of refs) {
+    if (!entry.info) { console.log(`::warning::push-rescue: ignoring malformed branch ${entry.ref}`); continue; }
+    try {
+      manifest.refs.push(replayOne(entry, claimed));
+    } catch (e) {
+      // One bad branch must not block the others; the job fails at the end.
+      manifest.failed.push(entry.ref);
+      console.log(`::error::push-rescue: could not replay ${entry.ref}: ${annotate(String(e && e.message || e).slice(0, 400))}`);
     }
-    gitOk(['fetch', '--no-tags', '--depth=1', 'origin', sha, info.base], { timeout: netTimeoutMs() * 2 });
-    const baseTime = Number(gitOk(['show', '-s', '--format=%ct', info.base]).trim());
-    // Main's history since the rescue's base, so a path a later commit
-    // drained or moved is seen as touched instead of absent.
-    gitOk(['fetch', '--no-tags', `--shallow-since=${new Date((baseTime - 3600) * 1000).toISOString()}`, 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 3 });
-    const rows = parseNameStatusZ(gitOk(['diff', '--name-status', '-z', '--no-renames', info.base, sha]));
-    const adds = recoverableAdds(rows);
-    const modified = rows.filter((r) => r.status !== 'A').map((r) => r.path);
-    const onMain = new Set(adds.filter((p) => git(['cat-file', '-e', `origin/main:${p}`]).status === 0));
-    const touched = new Set(adds.filter((p) => !onMain.has(p)
-      && gitOk(['log', '-1', '--format=%H', `--since=${baseTime}`, 'origin/main', '--', p]).trim() !== ''));
-    const plan = replayPlan({ adds, modified, onMain, touchedOnMain: touched });
-    for (const p of plan.restore) {
-      fs.mkdirSync(path.dirname(p), { recursive: true });
-      fs.writeFileSync(p, gitOk(['show', `${sha}:${p}`]));
-    }
-    console.log(`push-rescue: ${ref}: restoring ${plan.restore.length}, skipping ${plan.skipped.length}${plan.keepForHuman ? `, ${modified.length} modified/deleted path(s) left on the branch` : ''}`);
-    for (const s of plan.skipped) console.log(`  skip ${s.path}: ${s.why}`);
-    manifest.refs.push({ ref, restored: plan.restore, skipped: plan.skipped, keepForHuman: plan.keepForHuman, modified: modified.slice(0, 50) });
   }
-  // The real cross-show ownership gate, untracked-file mode: deletes any
-  // restored review whose URL another show now owns.
+  // The real cross-show ownership gate, untracked-file mode, strict: deletes
+  // any restored review whose URL another show now owns, and exits non-zero
+  // on its own crash instead of letting restores through unchecked.
   if (manifest.refs.some((r) => r.restored.length)) {
-    const gate = spawnSync(process.execPath, [path.join(__dirname, '..', 'validate-added-review-ownership.js')], { stdio: 'inherit' });
+    const gate = spawnSync(process.execPath, [path.join(__dirname, '..', 'validate-added-review-ownership.js'), '--strict'], { stdio: 'inherit' });
     if (gate.status !== 0) throw new Error(`validate-added-review-ownership.js exited ${gate.status}; refusing to push unchecked restores`);
     for (const r of manifest.refs) {
       r.dropped = r.restored.filter((p) => !fs.existsSync(p));
       r.restored = r.restored.filter((p) => fs.existsSync(p));
+      // A dropped file is kept on its branch for a human: the gate can drop
+      // both halves of a pair restored in one batch.
+      if (r.dropped.length) {
+        r.keepForHuman = true;
+        console.log(`::warning::push-rescue: ownership gate dropped ${r.dropped.length} restored file(s) from ${r.ref}: ${r.dropped.slice(0, 5).join(', ')}`);
+      }
     }
   }
   if (manifestPath) fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
   const n = manifest.refs.reduce((a, r) => a + r.restored.length, 0);
-  console.log(`push-rescue: restored ${n} file(s) from ${manifest.refs.length} branch(es)`);
-  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `restored=${n}\nbranches=${manifest.refs.length}\n`);
+  console.log(`push-rescue: restored ${n} file(s) from ${manifest.refs.length} branch(es), ${manifest.failed.length} failed`);
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `restored=${n}\nbranches=${manifest.refs.length}\nfailed=${manifest.failed.length}\n`);
 }
 
-/** Branches safe to delete: every restored file is on main, nothing left for a human. */
-function prunable(manifest, isOnMain) {
-  return (manifest.refs || []).filter((r) => r.stale || (!r.keepForHuman && r.restored.every(isOnMain)));
+/**
+ * Branches safe to delete: nothing kept for a human, and every restored file
+ * is on main with exactly the restored content.
+ * @param {(p: string) => string|null} blobOnMain
+ */
+function prunable(manifest, blobOnMain) {
+  return (manifest.refs || []).filter((r) => !r.keepForHuman
+    && r.restored.every((p) => blobOnMain(p) === (r.restoredBlobs || {})[p]));
 }
 
 function cliPrune(args) {
   const manifestPath = (args.find((a) => a.startsWith('--manifest=')) || '').slice('--manifest='.length);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   gitOk(['fetch', '--no-tags', '--depth=1', 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 2 });
-  const onMain = (p) => git(['cat-file', '-e', `origin/main:${p}`]).status === 0;
-  const ok = prunable(manifest, onMain);
+  const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {
     gitOk(['push', 'origin', '--delete', `refs/heads/${r.ref}`], { timeout: netTimeoutMs() });
-    console.log(`push-rescue: deleted ${r.ref}`);
+    console.log(`push-rescue: deleted ${r.ref}${r.modified && r.modified.length ? ` (its ${r.modified.length} modified/deleted path(s) were not replayed: ${r.modified.slice(0, 5).join(', ')})` : ''}`);
   }
-  const kept = (manifest.refs || []).filter((r) => !ok.includes(r));
-  for (const r of kept) {
-    console.log(`::warning::push-rescue: kept ${r.ref}: ${r.keepForHuman ? `it also modified/deleted ${r.modified.length} path(s), which need a human (${r.modified.slice(0, 5).join(', ')})` : 'a restored file is not on main yet; the next run retries'}`);
+  for (const r of (manifest.refs || []).filter((x) => !ok.includes(x))) {
+    const why = r.keepForHuman
+      ? [r.conflicts && r.conflicts.length ? `${r.conflicts.length} conflicting path(s) (${r.conflicts.slice(0, 3).map((c) => c.path).join(', ')})` : '',
+        r.dropped && r.dropped.length ? `${r.dropped.length} file(s) the ownership gate dropped` : ''].filter(Boolean).join('; ')
+      : 'a restored file is not on main yet; the next run retries';
+    console.log(`::warning::push-rescue: kept ${r.ref}: ${why}. Inspect: git log -1 --stat origin/${r.ref}`);
+  }
+  // A branch only a person can settle fails the run every hour (warning severity,
+  // digest repeat-failure row) instead of sitting behind a green check.
+  const human = (manifest.refs || []).filter((r) => r.keepForHuman);
+  if (human.length) {
+    console.log(`::error::push-rescue: ${human.length} rescue branch(es) need a person: ${human.map((r) => r.ref).join(', ')}`);
+    process.exitCode = 1;
   }
 }
 

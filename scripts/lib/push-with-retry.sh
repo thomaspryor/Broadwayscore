@@ -843,7 +843,7 @@ announce_unpushed_work() {
   else
     local more=""
     [ "$_UNPUSHED_COUNT" -gt 20 ] && more=" (+$((_UNPUSHED_COUNT - 20)) more)"
-    msg="$_UNPUSHED_COUNT file(s) committed by this job did not reach ${PULL_BRANCH:-main} and are lost when the runner ends (approximate list): ${_UNPUSHED_LIST//,/, }$more"
+    msg="$_UNPUSHED_COUNT file(s) committed by this job did not reach ${PULL_BRANCH:-main} and are lost when the runner ends unless a push-rescue branch is reported below (approximate list): ${_UNPUSHED_LIST//,/, }$more"
   fi
   # Workflow-command escaping: % first, then CR and LF.
   msg="${msg//'%'/%25}"; msg="${msg//$'\r'/%0D}"; msg="${msg//$'\n'/%0A}"
@@ -860,6 +860,9 @@ announce_unpushed_work() {
 rescue_unpushed_review_texts() {
   [ "${PUSH_API_REVIEW_TEXTS:-}" = "1" ] || return 0
   [ "${PUSH_RESCUE_DISABLE:-}" = "1" ] && return 0
+  # Exit 4 = a pre-push hook or the token refused the push. Rescuing would route
+  # around that refusal (the replay runs in a fresh clone with no hook).
+  [ "${rc:-0}" = "4" ] && return 0
   [ -n "${SCRIPT_ENTRY_HEAD:-}" ] && [ -n "${SCRIPT_ENTRY_BASE:-}" ] || return 0
   command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/push-rescue.js" ] || return 0
   _timeout $(( GIT_NET_TIMEOUT_SEC + 30 )) node "$SCRIPT_DIR/push-rescue.js" rescue "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" || true

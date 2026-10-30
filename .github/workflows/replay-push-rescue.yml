@@ -26,6 +26,8 @@ jobs:
     name: Replay rescued review-texts pushes
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Kill switch: repo variable PUSH_RESCUE_REPLAY_DISABLED=true (branches are kept, nothing is deleted).
+    if: vars.PUSH_RESCUE_REPLAY_DISABLED != 'true'
 
     steps:
       - name: Any rescue branches?
@@ -33,7 +35,10 @@ jobs:
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          N=$(timeout 60 git ls-remote "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 'refs/heads/push-rescue/*' | grep -c . || true)
+          # A failed ls-remote (auth, network) must fail the run, not read as "none".
+          OUT=$(timeout 60 git ls-remote "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 'refs/heads/push-rescue/*') \
+            || { echo "::error::ls-remote of broadway-review-texts failed; rescue branches were not checked"; exit 1; }
+          N=$(printf '%s\n' "$OUT" | grep -c . || true)
           echo "Rescue branches: $N"
           echo "count=$N" >> "$GITHUB_OUTPUT"
 
@@ -62,6 +67,9 @@ jobs:
         id: push
         if: steps.probe.outputs.count != '0' && steps.replay.outputs.restored != '0'
         uses: ./.github/actions/push-review-texts
+        env:
+          # A failed replay push keeps the existing branches; never mint a new one per run.
+          PUSH_RESCUE_DISABLE: '1'
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: replay ${{ steps.replay.outputs.restored }} rescued review file(s) from push-rescue branches (BRO-6615)'
@@ -70,6 +78,12 @@ jobs:
         if: steps.probe.outputs.count != '0' && steps.replay.outcome == 'success' && steps.push.outcome != 'failure'
         working-directory: data/review-texts
         run: node ../../scripts/lib/push-rescue.js prune --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
+
+      - name: Fail if a rescue branch could not be replayed
+        if: steps.probe.outputs.count != '0' && steps.replay.outputs.failed != '' && steps.replay.outputs.failed != '0'
+        run: |
+          echo "::error::${{ steps.replay.outputs.failed }} rescue branch(es) could not be replayed (see the replay step); they are kept for the next run."
+          exit 1
 
       - name: Notify on failure
         if: failure()

@@ -57,19 +57,36 @@ test('rescue ref names round-trip and reject a short base', () => {
 
 test('replayPlan never overwrites a file on main nor resurrects one main changed since', () => {
   const plan = rescue.replayPlan({
-    adds: ['s/new.json', 's/landed.json', '_pending/s/drained.json'],
-    onMain: new Set(['s/landed.json']),
+    adds: ['s/new.json', 's/landed.json', '_pending/s/drained.json', 's/clash.json'],
+    mainBlob: new Map([['s/landed.json', 'b1'], ['s/clash.json', 'main-version']]),
     touchedOnMain: new Set(['_pending/s/drained.json']),
+    rescueBlob: new Map([['s/new.json', 'n'], ['s/landed.json', 'b1'], ['_pending/s/drained.json', 'd'], ['s/clash.json', 'ours']]),
   });
   assert.deepEqual(plan.restore, ['s/new.json']);
   assert.deepEqual(plan.skipped.map((s) => s.path), ['s/landed.json', '_pending/s/drained.json']);
-  assert.equal(plan.keepForHuman, false);
-  assert.equal(rescue.replayPlan({ adds: [], modified: ['s/x.json'], onMain: new Set(), touchedOnMain: new Set() }).keepForHuman, true);
+  assert.deepEqual(plan.conflicts.map((c) => c.path), ['s/clash.json']);
+  assert.equal(plan.keepForHuman, true);
 });
 
-test('prunable keeps a branch until every restored file is on main', () => {
-  const m = { refs: [{ ref: 'a', restored: ['x'] }, { ref: 'b', restored: ['y'] }, { ref: 'c', restored: [], keepForHuman: true }, { ref: 'd', restored: [], stale: true }] };
-  assert.deepEqual(rescue.prunable(m, (p) => p === 'x').map((r) => r.ref), ['a', 'd']);
+test('replayPlan: the same file in two rescue branches is restored once; a different version is a conflict', () => {
+  const base = { mainBlob: new Map(), touchedOnMain: new Set() };
+  const same = rescue.replayPlan({ ...base, adds: ['s/a.json'], rescueBlob: new Map([['s/a.json', 'x']]), claimed: new Map([['s/a.json', 'x']]) });
+  assert.deepEqual(same.restore, []);
+  assert.equal(same.keepForHuman, false);
+  const diff = rescue.replayPlan({ ...base, adds: ['s/a.json'], rescueBlob: new Map([['s/a.json', 'y']]), claimed: new Map([['s/a.json', 'x']]) });
+  assert.equal(diff.keepForHuman, true);
+});
+
+test('prunable keeps a branch until every restored file is on main with the restored content', () => {
+  const m = { refs: [
+    { ref: 'a', restored: ['x'], restoredBlobs: { x: 'bx' } },
+    { ref: 'b', restored: ['y'], restoredBlobs: { y: 'by' } },
+    { ref: 'c', restored: [], keepForHuman: true },
+    { ref: 'd', restored: [] },
+    { ref: 'e', restored: ['z'], restoredBlobs: { z: 'ours' } },
+  ] };
+  const onMain = { x: 'bx', z: 'someone-else' };
+  assert.deepEqual(rescue.prunable(m, (p) => onMain[p] || null).map((r) => r.ref), ['a', 'd']);
 });
 
 test('END TO END: every push to main fails, the new review lands on a rescue branch, and replay restores it', () => {
