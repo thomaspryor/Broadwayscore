@@ -1714,6 +1714,21 @@ resolve_conflicts() {
   fi
 
   while IFS= read -r file; do
+    # BRO-6594: a conflicted path our outgoing commits never touched is a
+    # rename-detection artifact (git paired an unrelated, similar-looking file
+    # of ours with it, e.g. two runs that drained the same pending stub and each
+    # added a different new one). Our run has no change to make there, so the
+    # remote's version (or its absence) is correct by construction.
+    if [ "$(_crosswire side "$file")" = "remote" ]; then
+      if git cat-file -e "origin/$PULL_BRANCH:$file" 2>/dev/null; then
+        echo "  Auto-resolving (untouched by this run, rename-detection artifact; keep remote): $file"
+        git checkout "origin/$PULL_BRANCH" -- "$file" 2>/dev/null && git add -- "$file" 2>/dev/null && resolved=true
+      else
+        echo "  Auto-resolving (untouched by this run, rename-detection artifact; remote has no such file): $file"
+        git rm -q -f -- "$file" 2>/dev/null && resolved=true
+      fi
+      continue
+    fi
     # Handle modify/delete conflicts first — git checkout --ours/--theirs
     # fails when one side deleted the file (no version to checkout).
     # Common case: poller creates --unknown.json, LLM scoring renames to
@@ -1955,7 +1970,38 @@ resolve_conflicts() {
 # After rebase/merge, restore any manually-set correction fields
 # (humanReviewScore, manualContentTier, etc.) that -X theirs silently dropped.
 # These fields are ONLY set by humans, never by CI — always safe to restore.
+# BRO-6594: rename-detection cross-wiring guard (scripts/lib/rename-crosswire.js).
+# _crosswire <side PATH|repair>: runs the helper against this iteration's
+# merge-base, pre-resolution HEAD and remote tip. Prints nothing (and the
+# callers treat that as "no opinion") when the merge-base is unavailable
+# (shallow checkout) or node is missing.
+_crosswire() {
+  command -v node &>/dev/null || return 0
+  [ -n "${PRE_REBASE_SHA:-}" ] || return 0
+  local base
+  base=$(git merge-base "$PRE_REBASE_SHA" "origin/$PULL_BRANCH" 2>/dev/null) || return 0
+  [ -n "$base" ] || return 0
+  node "$SCRIPT_DIR/rename-crosswire.js" "$@" --base "$base" --ours "$PRE_REBASE_SHA" --remote "origin/$PULL_BRANCH" 2>/dev/null || true
+}
+
+# After a strategy reports success, put every one-sided path back to its own
+# side's version: git's rename guess can move our content into a path only the
+# remote touched (silently losing the remote's file) without any conflict.
+# No-op on a merge rename detection did not distort. Runs before the
+# protected-field / union reconciliation passes so those still see the result.
+undo_rename_crosswiring() {
+  local out
+  out=$(_crosswire repair)
+  [ -n "$out" ] || return 0
+  printf '%s\n' "$out" | grep -v '^REPAIRED=' || true
+  if printf '%s\n' "$out" | grep -q '^REPAIRED=[1-9]'; then
+    echo "::warning::push-with-retry: undid git rename-detection cross-wiring (BRO-6594) — see the paths above"
+    bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$PULL_BRANCH" >/dev/null 2>&1 || true
+  fi
+}
+
 restore_protected_fields() {
+  undo_rename_crosswiring
   if ! command -v node &>/dev/null; then return 0; fi
   local remote_ref="origin/$PULL_BRANCH"
   local count
