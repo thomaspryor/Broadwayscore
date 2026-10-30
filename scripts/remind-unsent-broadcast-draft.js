@@ -14,8 +14,9 @@
  * Complements check-missed-broadcasts.js, which pages for drafts 3 to 30 days
  * old (broadcast:draft-unsent:<draftId>). This covers the first day.
  *
- * RULE 17: one transactional email to OWNER_EMAIL. Never a broadcast, never
- * POST /broadcasts/{id}/send.
+ * RULE 17: one transactional email to OWNER_EMAIL, sent through the shared
+ * owner-email path (lib/discord-notify sendEmailAlert, idempotent per draft and
+ * reminder number). Never a broadcast, never POST /broadcasts/{id}/send.
  *
  * Usage:
  *   node scripts/remind-unsent-broadcast-draft.js            # send due reminders
@@ -26,35 +27,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { remindersDue, stampReminder, readShowNumbers, MAX_REMINDERS } = require('./lib/broadcast-refresh');
 
 const SENT_PATH = path.join(__dirname, '..', 'data', 'opening-night-sent.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
-const FROM = 'Broadway Scorecard <updates@broadwayscorecard.com>';
 const DRY_RUN = process.argv.includes('--dry-run');
 
 const USAGE = `remind-unsent-broadcast-draft.js: remind the owner about an unsent opening-night draft (BRO-6634).
   --dry-run   print the reminders, send and save nothing`;
-
-function postJSON(url, body, apiKey) {
-  return new Promise((resolve, reject) => {
-    const u = new URL(url);
-    const data = JSON.stringify(body);
-    const req = https.request({
-      hostname: u.hostname, port: 443, path: u.pathname, method: 'POST', timeout: 30000,
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data), Authorization: `Bearer ${apiKey}` },
-    }, res => {
-      let chunks = '';
-      res.on('data', c => { chunks += c; });
-      res.on('end', () => (res.statusCode >= 200 && res.statusCode < 300 ? resolve(chunks) : reject(new Error(`HTTP ${res.statusCode}: ${chunks.slice(0, 200)}`))));
-    });
-    req.on('timeout', () => req.destroy(new Error('timeout')));
-    req.on('error', reject);
-    req.write(data);
-    req.end();
-  });
-}
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -125,7 +105,11 @@ async function main() {
       continue;
     }
     try {
-      await postJSON('https://api.resend.com/emails', { from: FROM, to: [owner], subject, html }, apiKey);
+      const { sendEmailAlert } = require('./lib/discord-notify');
+      // severity 'error' is the policy's emailable level; subjectLabel '' keeps
+      // the subject exactly as built (no [ERROR] prefix).
+      const ok = await sendEmailAlert({ title: subject, description: '', severity: 'error', subjectLabel: '', html, idempotencyKey: `broadcast-reminder:${draftId}:${nth}` });
+      if (!ok) throw new Error('owner email not delivered');
       stampReminder(sent.shows, entry.broadcastKey, new Date().toISOString());
       // Stamp right away so a run killed later never repeats this reminder.
       fs.writeFileSync(SENT_PATH, JSON.stringify(sent, null, 2) + '\n');

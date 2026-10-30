@@ -42,9 +42,13 @@ on:
         type: choice
         options: [apply, report-only, off]
 
-# BRO-6634: concurrency is per job (below), not per workflow: with a workflow
-# group, a pending hourly run would replace a pending 01:45 run and drop that
-# day's digest snapshot.
+# BRO-6634: the hourly due-gate runs get their own group, so a pending hourly
+# run can never replace a pending daily run (GitHub keeps one pending run per
+# group) and drop that day's digest snapshot. The draft jobs also share a
+# job-level group, so an hourly and a daily drafter never overlap.
+concurrency:
+  group: reddit-engagement-digest-${{ github.event.schedule == '17 * * * *' && 'hourly' || 'daily' }}
+  cancel-in-progress: false
 
 permissions:
   contents: write

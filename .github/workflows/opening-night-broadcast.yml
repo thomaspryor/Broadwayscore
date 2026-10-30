@@ -970,14 +970,20 @@ jobs:
             for ids in "${COMBOS[@]}"; do
               [ -z "$ids" ] && continue
               echo "--- $market draft update: $ids ---"
-              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$ids" --update-unsent-draft 2>&1) || true
+              rc=0
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$ids" --update-unsent-draft 2>&1) || rc=$?
               echo "$OUTPUT"
               if echo "$OUTPUT" | grep -q "Draft updated"; then UPDATED="true"; fi
+              # One failed combo must not stop the others; the step goes red at
+              # the end so the failure is seen (later steps run on always()).
+              if [ "$rc" -ne 0 ]; then echo "::error::draft update failed for $market $ids (exit $rc)"; FAILED=1; fi
             done
           }
+          FAILED=0
           [ -n "$REFRESH_BROADWAY" ] && update_market broadway "$REFRESH_BROADWAY"
           [ -n "$REFRESH_WESTEND" ] && update_market west-end "$REFRESH_WESTEND"
           echo "draft_updated=$UPDATED" >> $GITHUB_OUTPUT
+          [ "$FAILED" -eq 0 ]
 
       # BRO-4417: the deadline override lets a draft through a QA gate, so the
       # owner must see what the gate flagged BEFORE pressing Send. Only fires when
