@@ -10,8 +10,11 @@
  *   claim|heartbeat|release --show= --night=YYYY-MM-DD --holder= [--ttl-min=30]
  *
  * claim exits 0 when this holder owns the night, 3 when another holder does, 1 on any failure.
- * sync retries 3x, then writes an `unknown` marker: per-show writers (poller, gather) treat every
- * show as leased until the next successful sync; enumerating callers (rebuild, enforce) warn and proceed.
+ * sync retries 3x, then writes an `unknown` marker carrying `tonight` (the shows whose press night is now):
+ * writers hold only those until the next successful sync, every other show writes (BRO-6648); the publish
+ * view (rebuild) warns and proceeds. `sync --page` (the poller, whose job commits the alert ledger) also
+ * raises the failure: a worker card when a show is tonight, else a digest line.
+ * enforce reverts uncommitted changes under blocked shows (known: leased; unknown: tonight's).
  */
 const path = require('path');
 const store = require('./lib/opening-night-lane/lease-store');
@@ -33,12 +36,13 @@ function main() {
         return 0;
       } catch (e) { lastErr = e; if (i < 3) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2000 * i); }
     }
-    // Could not reach the store: mark the local state unknown so per-show checks fail closed
-    // (a blip on a fresh runner must not unlock the lane's show); enumeration-based callers
-    // (rebuild, enforce) cannot name shows from it and proceed with a warning.
-    require('fs').mkdirSync(path.dirname(guard.leasesFile()), { recursive: true });
-    require('fs').writeFileSync(guard.leasesFile(), JSON.stringify({ leases: {}, unknown: true }) + '\n');
-    console.log(`::warning::opening-night lease sync failed after 3 tries; per-show writers will treat shows as leased (${String(lastErr.message).slice(0, 160)})`);
+    // Could not reach the store: a blip must not unlock the lane's show tonight, and must not
+    // silence every other show either. The marker names tonight's shows; they wait.
+    const tonight = guard.tonightShowIds();
+    store.writeAtomic(guard.leasesFile(), JSON.stringify({ leases: {}, unknown: true, tonight, at: new Date().toISOString() }) + '\n');
+    const why = String((lastErr && lastErr.message) || lastErr).slice(0, 160);
+    console.log(`::warning::opening-night lease sync failed after 3 tries; tonight's show(s) wait [${tonight.join(', ') || 'none'}], every other show writes (${why})`);
+    if (argv.includes('--page')) return raiseSyncFailure(syncFailureAlert({ tonight, why })).then(() => 0);
     return 0;
   }
   if (cmd === 'list') {
@@ -48,14 +52,11 @@ function main() {
   }
   if (cmd === 'enforce') {
     const dir = path.resolve(arg('dir') || 'data/review-texts');
-    let shows;
-    try { shows = guard.leasedShowIds(); } catch (e) {
-      console.log(`::warning::opening-night lease file unreadable, cannot enforce (${String(e.message).slice(0, 160)})`);
-      return 0;
-    }
+    const { unknown, shows } = guard.writeBlockedShowIds();
     const reverted = guard.revertLeasedChanges(dir, shows);
-    if (reverted.length) console.log(`::warning::opening-night lease: refused ${reverted.length} write(s) under leased show(s) ${shows.join(', ')}:\n${reverted.slice(0, 20).join('\n')}`);
-    else console.log(`opening-night lease: no writes to leased shows (${shows.length} leased)`);
+    const what = unknown ? `tonight's show(s) while the lease store is unknown` : 'leased show(s)';
+    if (reverted.length) console.log(`::${unknown ? 'error' : 'warning'}::opening-night lease: held back ${reverted.length} write(s) under ${what} ${shows.join(', ')} (a later run collects them again):\n${reverted.slice(0, 20).join('\n')}`);
+    else console.log(`opening-night lease: no writes to ${what} (${shows.length} blocked)`);
     return 0;
   }
   if (['claim', 'heartbeat', 'release'].includes(cmd)) {
@@ -71,4 +72,40 @@ function main() {
   return 2;
 }
 
-if (require.main === module) process.exit(main());
+/** The alert for a failed sync. Pure. A show tonight = worker card (the owner cannot fix a git outage), else digest. */
+function syncFailureAlert({ tonight, why }) {
+  const shows = tonight.join(', ');
+  if (tonight.length) {
+    return {
+      kind: 'card',
+      conditionKey: 'opening-night-lease-store-unknown-tonight',
+      title: `Opening-night lease store unreachable on ${shows}'s press night`,
+      description: `scripts/opening-night-lease.js sync could not read the opening-night-leases branch after 3 tries (${why}). ` +
+        `Old-path writers hold ${shows} until a sync succeeds; every other show writes. Check git access to the branch ` +
+        `and re-run the poller; if the lane is not running tonight, nothing collects ${shows} while this lasts.`,
+    };
+  }
+  return {
+    kind: 'digest',
+    conditionKey: 'opening-night-lease-store-unknown',
+    title: 'Opening-night lease store unreachable (no press night now)',
+    description: `scripts/opening-night-lease.js sync could not read the opening-night-leases branch after 3 tries (${why}). No show's press night is now, so every writer proceeds.`,
+  };
+}
+
+async function raiseSyncFailure(alert) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    if (alert.kind === 'card') {
+      await require('./lib/guard-escalation').escalateGuard(routeAlert, { conditionKey: alert.conditionKey, title: alert.title, description: alert.description });
+    } else {
+      await routeAlert({ conditionKey: alert.conditionKey, title: alert.title, description: alert.description, disposition: 'digest', cooldownHours: 12 });
+    }
+  } catch (e) {
+    console.log(`::warning::opening-night lease: could not raise the sync failure (${String(e.message).slice(0, 160)}); the warning above stands`);
+  }
+}
+
+module.exports = { syncFailureAlert };
+
+if (require.main === module) Promise.resolve(main()).then((code) => process.exit(code));
