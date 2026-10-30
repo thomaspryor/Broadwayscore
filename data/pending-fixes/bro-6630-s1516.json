@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6630-s1516",
   "planId": "e938fca1-3bca-4314-80e9-539caf33d21d",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-30T16:59:19.242Z",
   "submitter": {
     "name": null,
@@ -741,5 +741,134 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T18:34:32.772Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dear-evan-hansen-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hold-on-to-me-darling-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hadestown-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added john-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"shear-madness-off-broadway-2015\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added perfect-arrangement-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added eclipsed-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added her-requiem-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added invisible-thread-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added king-liz-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lazarus-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nice-fish-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added smart-people-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-royale-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-woodsman-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cloud-nine-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added incident-at-vichy-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rothschild-and-sons-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added steve-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added these-paper-bullets-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added would-you-still-love-me-if-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added henry-iv-off-broadway-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-robber-bridegroom-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cagney-off-broadway-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added love-and-money-off-broadway-2015"
+    }
+  ],
+  "executedIn": "ci"
 }
