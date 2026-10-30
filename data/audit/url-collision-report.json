@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-10-30T12:48:12.552Z",
+  "generatedAt": "2026-10-30T14:48:27.406Z",
   "summary": {
-    "total": 11,
-    "high": 6,
+    "total": 12,
+    "high": 7,
     "medium": 4,
     "low": 1
   },
   "collisions": [
+    {
+      "url": "https://www.newsday.com/entertainment/theater/all-my-sons-annette-bening-1.30097036",
+      "normalizedUrl": "https://newsday.com/entertainment/theater/all-my-sons-annette-bening-1.30097036",
+      "candidates": [
+        {
+          "showId": "all-my-sons-1987",
+          "file": "newsday--barbara-schuler.json",
+          "publishDate": null,
+          "openingDate": "1987-04-22",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "newsday"
+        },
+        {
+          "showId": "all-my-sons-2019",
+          "file": "newsday--barbara-schuler.json",
+          "publishDate": "2019-04-22T20:42:34-04:00",
+          "openingDate": "2019-04-22",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "newsday"
+        }
+      ],
+      "suggestedWinner": "all-my-sons-2019",
+      "reason": "publishDate 2019-04-22T20:42:34-04:00 is 0 days from all-my-sons-2019 opening (2019-04-22)",
+      "confidence": "high"
+    },
     {
       "url": "https://abcnews.go.com/Entertainment/wireStory/review-graceful-american-paris-pizazz-heart-30268868",
       "normalizedUrl": "https://abcnews.go.com/entertainment/wirestory/review-graceful-american-paris-pizazz-heart-30268868",
