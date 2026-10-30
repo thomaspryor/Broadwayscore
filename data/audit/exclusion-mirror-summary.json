@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-30T06:44:49.583Z",
-  "totalScanned": 70195,
-  "totalExcluded": 29761,
+  "generatedAt": "2026-10-30T06:58:52.498Z",
+  "totalScanned": 70203,
+  "totalExcluded": 29762,
   "ruleCounts": {
-    "wrongProduction": 19325,
+    "wrongProduction": 19326,
     "duplicateOf": 2172,
     "wrongShow": 1885,
     "rejectionReason": 1309,
-    "noTextOrScoreSignal": 1089,
+    "noTextOrScoreSignal": 1088,
     "unverifiableWebSearchRow": 948,
     "nonReview": 674,
     "wrongAttribution": 346,
-    "isRoundupArticle": 239,
+    "isRoundupArticle": 240,
     "blockedReviewUrl": 222,
     "bodylessAggregatorScoreUncorroborated": 214,
     "crossOutletDuplicate": 201,
@@ -43,24 +43,19 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": -38,
-    "duplicateOf": -7,
-    "wrongShow": -3,
+    "wrongProduction": 1,
     "noTextOrScoreSignal": -1,
-    "unverifiableWebSearchRow": -1,
-    "wrongAttribution": -1,
-    "listingPageUrl": -3,
-    "urlYearReroute": -1
+    "isRoundupArticle": 1
   },
-  "previousGeneratedAt": "2026-10-30T06:00:32.199Z",
+  "previousGeneratedAt": "2026-10-30T06:44:49.583Z",
   "mirror": {
     "comparedShows": 3732,
-    "comparedFiles": 69547,
-    "agreeExcluded": 30294,
-    "agreeIncluded": 38870,
+    "comparedFiles": 69553,
+    "agreeExcluded": 30298,
+    "agreeIncluded": 38871,
     "mirrorOnly": 120,
-    "rebuildOnly": 263,
-    "disagreements": 383,
+    "rebuildOnly": 264,
+    "disagreements": 384,
     "disagreementRate": 0.0055,
     "mirrorOnlyByRule": {
       "cvWrongArticleHighConfidence": 71,
@@ -79,7 +74,7 @@
       "skippedDuplicate": 27,
       "skippedScraperGarbage": 16,
       "skippedListingPage": 8,
-      "skippedSyndicated": 7,
+      "skippedSyndicated": 8,
       "skippedDateMismatch": 6,
       "skippedGarbage": 5,
       "heldPreOpeningCorroboration": 3,
@@ -91,7 +86,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 77,
-    "notComparedFiles": 648
+    "notComparedFiles": 650
   },
   "previousDisagreementRate": 0.0055
 }
