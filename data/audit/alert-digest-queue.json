@@ -3151,60 +3151,23 @@
     "queuedAt": "2026-10-30T18:27:58.050Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:billy-crystal-860-2026",
-    "title": "Review gap — \"Billy Crystal 860\" missing 6 cited review(s)",
-    "description": "Billy Crystal 860 (billy-crystal-860-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=billy-crystal-860-2026 --checkpoint --ingest-missing",
+    "conditionKey": "mezzanine:transient-failure",
+    "title": "Mezzanine Scraper Failed — Transient API Failure",
+    "description": "The Mezzanine audience data update failed mid-run (likely ECONNRESET, timeout, or server error from theaterdiary.com). The script already retried transient errors 3× with backoff. No token action required — the next scheduled run usually recovers on its own. Investigate only if 2+ consecutive failures.",
     "severity": "warning",
-    "url": null,
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41113480247",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T19:10:36.356Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:garry-starr-classic-penguins-off-west-end-2026",
-    "title": "Review gap — \"Garry Starr Classic Penguins\" missing 7 cited review(s)",
-    "description": "Garry Starr Classic Penguins (garry-starr-classic-penguins-off-west-end-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=garry-starr-classic-penguins-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T19:10:36.414Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:girls-off-west-end-2026",
-    "title": "Review gap — \"Girls\" missing 39 cited review(s)",
-    "description": "Girls (girls-off-west-end-2026): 39 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=girls-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T19:10:36.435Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
-    "title": "Review gap — \"The Imaginary Invalid\" missing 3 cited review(s)",
-    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T19:10:36.642Z"
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41113480247)"
+      }
+    ],
+    "queuedAt": "2026-10-30T19:14:49.675Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-lives-of-others-west-end-2026",
