@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T18:50:55.888Z",
+  "timestamp": "2026-10-30T19:21:39.294Z",
   "stats": {
-    "totalReviews": 71119,
-    "alreadyFlagged": 22326,
+    "totalReviews": 71359,
+    "alreadyFlagged": 22324,
     "dateGuardCatches": 230,
-    "directorMismatch": 2887,
+    "directorMismatch": 2894,
     "tvFilmSignals": 2029,
     "londonSignals": 3407,
     "offBroadwaySignals": 635,
-    "yearMismatch": 296,
-    "noPublishDate": 8138
+    "yearMismatch": 298,
+    "noPublishDate": 8215
   },
   "findings": [
     {
@@ -174,6 +174,37 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "1776-regional-2024",
+      "file": "chi-mt--barry-reszel.json",
+      "publishDate": "2024-09-03",
+      "url": "https://www.chi-mt.com/reviews/marriott-1776-aug-2024",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeffrey l. page\" from 1776-2022"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from 1776-2022"
+        }
+      ]
+    },
+    {
+      "showId": "1776-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2024-08-29",
+      "url": "https://www.chicagotribune.com/2024/08/29/review-1776-at-marriott-theatre-rediscovers-the-hope-in-the-birth-of-america/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from 1776-2022"
         }
       ]
     },
@@ -22602,6 +22633,45 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "godspell-regional-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2025-10-30",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/godspell-music-theater-works/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-regional-2025",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2025-10-28",
+      "url": "https://www.chicagotheatrereview.com/2025/10/all-for-the-best/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-regional-2025",
+      "file": "new-city-stage--mary-wisniewski.json",
+      "publishDate": "2025-10-30",
+      "url": "https://www.newcitystage.com/2025/10/30/godspell-sings-all-good-gifts-with-all-the-modern-twists/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
         }
       ]
     },
@@ -64066,6 +64136,19 @@
       ]
     },
     {
+      "showId": "the-secret-garden-regional-2024",
+      "file": "chicago-reader--catey-sullivan.json",
+      "publishDate": "2024-11-19",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/secret-garden-theo/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: the-secret-garden-royal-bath-regional-2026"
+        }
+      ]
+    },
+    {
       "showId": "the-seven-year-disappear-off-broadway-2024",
       "file": "nysr--melissa-rose-bernardo.json",
       "score": 57,
@@ -65722,6 +65805,19 @@
       ]
     },
     {
+      "showId": "this-is-our-youth-regional-2024",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": "2024-09-06",
+      "url": "https://www.buzznews.net/theatre/theatre-reviews/item/5618-outstyanding-performances-make-this-is-our-youth-a-winning-production.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2014 (2x) more than 2024 (0x). 2014 matches production: this-is-our-youth-2014"
+        }
+      ]
+    },
+    {
       "showId": "this-world-of-tomorrow-off-broadway-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 63,
@@ -66245,6 +66341,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. wolfe\" from topdog-underdog-2002"
+        }
+      ]
+    },
+    {
+      "showId": "topdog-underdog-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2024-09-26",
+      "url": "https://www.chicagotribune.com/2024/09/26/review-even-a-less-explosive-topdog-underdog-is-still-a-great-play/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kenny leon\" from topdog-underdog-regional-2026"
         }
       ]
     },
@@ -96749,6 +96858,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "islingtontribune--unknown.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://www.islingtontribune.co.uk/article/review-martin-guerre-at-old-vic-theatre",
       "findings": [
