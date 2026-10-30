@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-30T08:53:03.241Z",
+  "generated": "2026-10-30T10:06:52.822Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 43,
+  "count": 44,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -71,6 +71,13 @@
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
       "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "fences-off-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--david-woodward.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--david-woodward.json was flagged invalid after british-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
