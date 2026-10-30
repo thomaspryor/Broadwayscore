@@ -2333,6 +2333,9 @@ test('PASSIVEOFFER: offers to land/build/review block, with or without edits and
     'All done on my side.\n\nACTION NEEDED FROM YOU \u2014 say the word and I\'ll land it',
     'I haven\'t changed anything. If you want, I can remove the Chicago review and ask the pipeline to ingest King.',
     'The branch is pushed. I could land it once main settles.',
+    'Status: SAFE TO ARCHIVE.\n\nIf you want a live check after the rebuild, ping me and I\'ll look at a real show page.',
+    'Status: SAFE TO ARCHIVE.\n\nIf it breaks, ping me and I\'ll fix it.',
+    'The deploy is live and it works. Let me know and I\'ll land it.',
   ]) {
     assertPassive(runHook(noEdits, body, PO_ON), `no-edit turn: ${body.slice(0, 50)}`);
     assertPassive(runHook(closeout, body, PO_ON), `after work: ${body.slice(0, 50)}`);
@@ -2348,6 +2351,8 @@ test('PASSIVEOFFER false-positive guards: a real DECISION NEEDED block, finished
   assertAllowed(runHook(noEdits, 'You don\'t need to check out the PR; I landed it myself.', PO_ON), 'negated clause');
   assertAllowed(runHook(noEdits, 'I took a look at the PR comments, and the child was asked to review the PR.', PO_ON), 'narrative, not an offer');
   assertAllowed(runHook(noEdits, 'The visual check is pending.\n\nYou need to: tap Approve on the screenshots when you\'re ready.\n\nACTION NEEDED FROM YOU — approve the visual check', PO_ON), 'visual-approval ask');
+  assertAllowed(runHook(noEdits, 'CI will ping me and I\'ll check the run; the wake is armed in the background.', PO_ON), 'CI pinging me is narration');
+  assertAllowed(runHook(noEdits, 'The reviewer will ping me and I\'ll check the PR when it arrives; the wake is armed in the background.', PO_ON), 'a reviewer pinging me is narration, not an offer');
   assertAllowed(runHook(noEdits, 'I could not verify the deploy, so I re-ran the check and it is live now.', PO_ON), 'I could not <verb> is not an offer');
   for (const msg of [
     'Once main settled I could land it, and I did. It is live.',
