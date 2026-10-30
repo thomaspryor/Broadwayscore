@@ -245,3 +245,53 @@ test('checkPark ignores an entry with an unparseable ts instead of letting it co
   assert.equal(r.parked, true);
   assert.equal(r.failureStreak, 2);
 });
+
+// ── BRO-6632: dispatches that never started a job ───────────────────────────
+{
+  const am = require('./attempt-memory.js');
+  const H = 'h1';
+  let t = Date.parse('2026-10-01T00:00:00Z');
+  const row = (event, extra = {}) => ({ ts: new Date(t += 3600000).toISOString(), event, cardId: 'c', contentHash: H, ...extra });
+  const noStart = () => row('card-fail', { outcomeKind: 'no-start', note: 'spawn never observed within 3h of dispatch' });
+  const legacyNoStart = () => row('card-fail', { note: 'spawn never observed within 3h of dispatch (likely refused)' });
+  const fail = () => row('card-fail', { note: 'job job-stopped-short' });
+  const pass = () => row('card-pass');
+
+  test('BRO-6632: pass, no-start, no-start does not park (the BRO-5436 digest row)', () => {
+    const r = am.checkPark([pass(), noStart(), legacyNoStart()], 'c', H);
+    assert.equal(r.parked, false);
+    assert.equal(r.noStartStreak, 2);
+  });
+
+  test('BRO-6632: three no-starts in a row park as launch-refused, never as parked:', () => {
+    const r = am.checkPark([noStart(), noStart(), legacyNoStart()], 'c', H);
+    assert.equal(r.parked, true);
+    assert.equal(r.kind, 'launch-refused');
+    assert.ok(r.reason.startsWith(am.LAUNCH_REFUSED_PREFIX));
+    assert.ok(!/^parked:/.test(r.reason));
+  });
+
+  test('BRO-6632: fail, no-start, fail still parks as failed (no-starts do not break the streak)', () => {
+    const r = am.checkPark([fail(), noStart(), fail()], 'c', H);
+    assert.equal(r.parked, true);
+    assert.equal(r.kind, 'failed');
+    assert.ok(/^parked: failed 2x/.test(r.reason));
+  });
+
+  test('BRO-6632: no-starts older than a real outcome do not count toward launch-refused', () => {
+    const r = am.checkPark([noStart(), noStart(), noStart(), pass(), noStart()], 'c', H);
+    assert.equal(r.parked, false);
+    assert.equal(r.noStartStreak, 1);
+  });
+
+  test('BRO-6632: isNoStartOutcome matches every reconciler ORPHAN row and nothing else', async () => {
+    const fs = await import('node:fs');
+    for (const f of ['./digest-autofix.js', '../backlog-drain.js', '../linear-drain-parked.js']) {
+      const src = fs.readFileSync(new URL(f, import.meta.url), 'utf8');
+      assert.ok(src.includes("outcomeKind: 'no-start'"), `${f} tags its ORPHAN row`);
+      assert.ok(src.includes(am.NO_START_NOTE_PREFIX), `${f} note still uses the shared prefix`);
+    }
+    assert.equal(am.isNoStartOutcome(fail()), false);
+    assert.equal(am.isNoStartOutcome({ event: 'card-pass', outcomeKind: 'no-start' }), false);
+  });
+}

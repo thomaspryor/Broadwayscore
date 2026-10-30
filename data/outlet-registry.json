@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-30T13:44:13.167Z",
+    "lastUpdated": "2026-10-30T14:10:12.305Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5823: alias the-washington-post/theatre-s-leiter-side, register themetroland + kidsoutandabout"
+    "lastChange": "BRO-6610: coverageExpectation re-decided latimes"
   },
   "outlets": {
     "westendtheatre": {
@@ -258,8 +258,8 @@
         "abcnews.go.com"
       ],
       "coverageExpectation": "reviews",
-      "coverageExpectationDecidedAt": "2026-10-13",
-      "coverageEvidence": "S4-T4: Mark Kennedy remains AP's theatre/drama critic through 2026 (bylines on Broadway/Kennedy Center coverage in 2026). Gaps against this outlet are genuine retrieval misses, not outlet cessation. S5-T2 (card #640): re-decided via scripts/audit-standing-coverage.js --coverage-expectation — measured 4.8% overall 3-season Broadway coverage, consistent with the S4-T4 determination (selective outlet, gaps are real retrieval misses, not cessation). Not contradicted. S6-T2 (BRO-2297): re-probed after the 14-day decay window — measured 4.8% overall, unchanged from S5-T2; still consistent, decidedAt refreshed."
+      "coverageExpectationDecidedAt": "2026-10-30",
+      "coverageEvidence": "S4-T4: Mark Kennedy remains AP's theatre/drama critic through 2026 (bylines on Broadway/Kennedy Center coverage in 2026). Gaps against this outlet are genuine retrieval misses, not outlet cessation. S5-T2 (card #640): re-decided via scripts/audit-standing-coverage.js --coverage-expectation — measured 4.8% overall 3-season Broadway coverage, consistent with the S4-T4 determination (selective outlet, gaps are real retrieval misses, not cessation). Not contradicted. S6-T2 (BRO-2297): re-probed after the 14-day decay window — measured 4.8% overall, unchanged from S5-T2; still consistent, decidedAt refreshed. Re-probed 2026-10-30 after the 17-day-old decision decayed (BRO-6610 decayed after 14-day window): measured 5.7% overall 3-season Broadway coverage; claim unchanged, decidedAt refreshed."
     },
     "nypost": {
       "displayName": "New York Post",
@@ -434,8 +434,8 @@
       "region": "los-angeles",
       "accessModel": "metered",
       "coverageExpectation": "reviews",
-      "coverageExpectationDecidedAt": "2026-10-13",
-      "coverageEvidence": "S4-T4: Charles McNulty remains LA Times' chief theatre critic, actively reviewing through 2026 (e.g. Brigadoon at Pasadena Playhouse, Center Theatre Group coverage). Broadway coverage is selective (LA-based critic), so gaps are expected on many shows -- not a registry suppression, a normal low-cadence outlet. S5-T2 (card #640): re-decided via scripts/audit-standing-coverage.js --coverage-expectation — measured 15.2% overall 3-season Broadway coverage, consistent with the S4-T4 determination (LA-based critic, selective Broadway coverage). Not contradicted. S6-T2 (BRO-2297): re-probed after the 14-day decay window — measured 15.4% overall, unchanged from S5-T2; still consistent, decidedAt refreshed."
+      "coverageExpectationDecidedAt": "2026-10-30",
+      "coverageEvidence": "S4-T4: Charles McNulty remains LA Times' chief theatre critic, actively reviewing through 2026 (e.g. Brigadoon at Pasadena Playhouse, Center Theatre Group coverage). Broadway coverage is selective (LA-based critic), so gaps are expected on many shows -- not a registry suppression, a normal low-cadence outlet. S5-T2 (card #640): re-decided via scripts/audit-standing-coverage.js --coverage-expectation — measured 15.2% overall 3-season Broadway coverage, consistent with the S4-T4 determination (LA-based critic, selective Broadway coverage). Not contradicted. S6-T2 (BRO-2297): re-probed after the 14-day decay window — measured 15.4% overall, unchanged from S5-T2; still consistent, decidedAt refreshed. Re-probed 2026-10-30 after the 17-day-old decision decayed (BRO-6610 decayed after 14-day window): measured 16.2% overall 3-season Broadway coverage; claim unchanged, decidedAt refreshed."
     },
     "usatoday": {
       "displayName": "USA Today",
@@ -555,8 +555,8 @@
       ],
       "accessModel": "free",
       "coverageExpectation": "reviews",
-      "coverageExpectationDecidedAt": "2026-10-13",
-      "coverageEvidence": "S4-T4: still publishing 'The Broadway Review' franchise as of July 2026 (broadwaynews.com/author/brittani, weekly Broadway Pipeline posts through 2026-07-15). Our corpus is stale since 2025-04-28 -- a retrieval/discovery gap, not outlet cessation; accessModel already 'free' so no cookie auth needed. See scripts/lib/outlet-cadence.js red flag. S5-T2 (card #640): re-decided via scripts/audit-standing-coverage.js --coverage-expectation — measured 52.4% overall 3-season Broadway coverage. Latest-season rate is the one to watch (corpus staleness flagged separately by outlet-cadence.js S4-T1); coverage is real, not zero, so this remains a retrieval gap, not outlet cessation. Not contradicted. S6-T2 (BRO-2297): re-probed after the 14-day decay window — measured 53.8% overall, unchanged from S5-T2; still consistent, decidedAt refreshed."
+      "coverageExpectationDecidedAt": "2026-10-30",
+      "coverageEvidence": "S4-T4: still publishing 'The Broadway Review' franchise as of July 2026 (broadwaynews.com/author/brittani, weekly Broadway Pipeline posts through 2026-07-15). Our corpus is stale since 2025-04-28 -- a retrieval/discovery gap, not outlet cessation; accessModel already 'free' so no cookie auth needed. See scripts/lib/outlet-cadence.js red flag. S5-T2 (card #640): re-decided via scripts/audit-standing-coverage.js --coverage-expectation — measured 52.4% overall 3-season Broadway coverage. Latest-season rate is the one to watch (corpus staleness flagged separately by outlet-cadence.js S4-T1); coverage is real, not zero, so this remains a retrieval gap, not outlet cessation. Not contradicted. S6-T2 (BRO-2297): re-probed after the 14-day decay window — measured 53.8% overall, unchanged from S5-T2; still consistent, decidedAt refreshed. Re-probed 2026-10-30 after the 17-day-old decision decayed (BRO-6610 decayed after 14-day window): measured 54.3% overall 3-season Broadway coverage; claim unchanged, decidedAt refreshed."
     },
     "playbill": {
       "displayName": "Playbill",
@@ -778,7 +778,10 @@
         "billboard"
       ],
       "domain": "billboard.com",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "notDomainMoves": [
+        "billboard.com.br"
+      ]
     },
     "queerty": {
       "displayName": "Queerty",
@@ -3806,7 +3809,10 @@
         "santa-barbara-independent-maggie-yates"
       ],
       "domain": "independent.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "notDomainMoves": [
+        "independent.ie"
+      ]
     },
     "berkshire-eagle": {
       "displayName": "The Berkshire Eagle",
@@ -4141,7 +4147,11 @@
         "berkshire-on-stage-and-screen"
       ],
       "domain": "berkshireonstage.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "berkshireonstage.blog",
+        "berkshireonstage.wordpress.com"
+      ]
     },
     "the-movie-cricket": {
       "displayName": "The Movie Cricket",
@@ -6373,7 +6383,11 @@
         "travel-aol"
       ],
       "accessModel": "defunct",
-      "domain": "aol.com"
+      "domain": "aol.com",
+      "notDomainMoves": [
+        "aol.co.uk",
+        "aol.ca"
+      ]
     },
     "culturesonar": {
       "displayName": "CultureSonar",
@@ -6913,7 +6927,10 @@
         "nj-arts-maven"
       ],
       "accessModel": "free",
-      "domain": "njartsmaven.com"
+      "domain": "njartsmaven.com",
+      "domainAliases": [
+        "njartsmaven.substack.com"
+      ]
     },
     "suzee-behind-the-scenes": {
       "displayName": "Suzee Behind The Scenes",
@@ -7861,7 +7878,10 @@
       "domainAliases": [
         "the-independent.com"
       ],
-      "starScale": 5
+      "starScale": 5,
+      "notDomainMoves": [
+        "independent.ie"
+      ]
     },
     "i-paper": {
       "displayName": "The i",
@@ -9459,7 +9479,10 @@
       "region": "london",
       "accessModel": "free",
       "multiAuthor": true,
-      "starScale": 5
+      "starScale": 5,
+      "domainAliases": [
+        "northwestend.co.uk"
+      ]
     },
     "london-unattached": {
       "displayName": "London Unattached",
@@ -10818,7 +10841,10 @@
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-08-18T14:28:06.532Z",
       "scoreable": false,
-      "displayNameSource": "manual"
+      "displayNameSource": "manual",
+      "domainAliases": [
+        "theatreboard.co.uk"
+      ]
     },
     "visit-london": {
       "displayName": "Visit London",
@@ -12537,7 +12563,10 @@
       "domain": "artshub.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-10T06:54:18.708Z"
+      "regionInferredAt": "2026-10-10T06:54:18.708Z",
+      "notDomainMoves": [
+        "artshub.com.au"
+      ]
     },
     "maturetimes": {
       "displayName": "Maturetimes",

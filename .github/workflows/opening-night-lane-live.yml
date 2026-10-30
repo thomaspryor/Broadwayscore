@@ -261,14 +261,19 @@ jobs:
   # BRO-5201: the lane beside the regular pipeline. No lease (the poller, gather and rebuild keep the show), no publish,
   # no review-texts checkout or push. Writes only under $RUNNER_TEMP/shadow, uploaded as an artifact; the report is
   # also the step summary. Spends scraper credits (aggregator pages every 2 minutes) and one ensemble call per review.
+  # The only push is the scraper-spend ledger commit at the end (BRO-6616), so lane spend reaches main.
   shadow:
     if: inputs.mode == 'shadow'
     runs-on: ubuntu-latest
     timeout-minutes: 355
     permissions:
-      contents: read
+      contents: write  # the scraper-spend ledger commit only
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # BRO-2388 class: depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor of main for this
+          # 355-min job's final ledger commit (ledger-checkout-depth.js).
+          fetch-depth: 1000
 
       - name: Validate inputs
         env:
@@ -332,7 +337,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: lane-shadow-${{ inputs.show }}-${{ inputs.night }}
-          # The spend ledgers stay on this runner (contents: read, no commit), so they ride in the artifact.
+          # 90-day copy of the run's spend lines; the commit step below puts them on main.
           path: |
             ${{ runner.temp }}/shadow
             data/audit/scraper-spend-ledger.jsonl
@@ -340,6 +345,15 @@ jobs:
           retention-days: 90
           overwrite: true
           if-no-files-found: warn
+
+      # BRO-6616: the shadow's scraper-spend lines used to ride only the artifact, so the spend audit and the lane
+      # cap never saw them. Union-merged on push, so re-running adds nothing. Main only: a branch dispatch never pushes.
+      - name: Commit scraper-spend ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-lane-live shadow
 
       - name: Notify on failure
         if: failure() || cancelled()

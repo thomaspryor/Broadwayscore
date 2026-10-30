@@ -53,6 +53,8 @@ const REGISTRY = [
     // Phrases that mark a card's text as opening-night work (start reminder only).
     keywords: [/\bopening[- ]night\b/i, /\bpress[- ]night\b/i, /\bopening-night-lane\b/i, /\bexpress lane\b/i, /\bnight lease\b/i, /\bcollect-review-texts\b/i, /\bopening-night-poller\b/i],
     markers: DEFAULT_NOTE_MARKERS,
+    // Owner decision 2026-10-30 (BRO-6585, option A): one session owns press night.
+    rule: 'Owner rule: the coordinator session owns press night, both every review live on the site and the lane trial. Any other session reports what it finds to the coordinator and lands nothing for that show overnight without its go; a hand-added review is the coordinator\'s call and is recorded as manual.',
   },
 ];
 
@@ -197,7 +199,7 @@ function formatLandMessage(verdict) {
 
 /** Start reminder for one area. */
 function formatReminder(entry, notes) {
-  const head = `COORDINATOR: ${entry.area} work is coordinated on ${entry.card}. Read its newest comments before you start and again before you land; do not start a parallel fix of something it already assigned.`;
+  const head = `COORDINATOR: ${entry.area} work is coordinated on ${entry.card}. Read its newest comments before you start and again before you land; do not start a parallel fix of something it already assigned.${entry.rule ? `\n  ${entry.rule}` : ''}`;
   if (!notes || !notes.ok) return `${head}\n  (Could not read ${entry.card}: ${(notes && notes.error) || 'not read'}.)`;
   const note = latestNote(notes.comments, entry.markers);
   const lines = notesLines(entry.card, notes.url, note, newestFirst(notes.comments).slice(0, 3));

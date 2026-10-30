@@ -356,6 +356,21 @@ function openTourCandidates(rows, shows, options) {
   });
 }
 
+// Marks a row routed under the fix-row policy (route-tour-candidates.js), so
+// rows routed earlier as owner decisions are re-routed once.
+const TOUR_CANDIDATE_ROUTING = 'fix-row-2026-10-30';
+
+/**
+ * Does this open candidate go to the digest at all? A tour that has already
+ * ended (and is not one of two companies to choose between) does not:
+ * create-tour-entries.js keeps re-checking it and creates it once a closing is
+ * confirmed, and leaving a closed tour untracked is safe. Asking anyone about
+ * it only added noise (77 of the 90 rows in the 2026-10-30 digest). Pure.
+ */
+function shouldRouteTourCandidate(c) {
+  return !!c && !(c.ended && !c.ambiguous);
+}
+
 /**
  * Candidates in the order create-tour-entries.js decides them: parented tours
  * first, then standalone pages, those still to be classified last. A standalone
@@ -367,4 +382,4 @@ function sortForCreate(candidates) {
   return [...candidates].sort((a, b) => rank(a) - rank(b));
 }
 
-module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates, retiredTourCandidateId, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle };
+module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates, retiredTourCandidateId, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING };

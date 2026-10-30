@@ -92,3 +92,10 @@ test('a marker behind markdown emphasis or a heading still counts', () => {
   }
   assert.ok(!reg.isCoordinatorNote({ body: 'SYNC: standing down, see COORDINATION above' }));
 });
+
+test('opening-night reminder carries the one-session-owns-press-night owner rule (BRO-6585)', () => {
+  const entry = reg.REGISTRY.find((e) => e.area === 'opening-night');
+  const text = reg.formatReminder(entry, { ok: true, comments: [], url: 'https://linear.app/x' });
+  assert.match(text, /coordinator session owns press night/);
+  assert.match(text, /lands nothing for that show overnight/);
+});

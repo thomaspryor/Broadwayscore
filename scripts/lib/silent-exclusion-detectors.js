@@ -326,6 +326,14 @@ function findProbableDomainMoves(outlets, unknownHosts) {
 
       const domainSlug = normalizeHostSlug(outlet.domain);
       if (domainSlug.length >= MIN_SLUG_LENGTH && domainSlug === slug) {
+        // BRO-6632: a host judged NOT this outlet (a regional edition, an
+        // unrelated paper with the same name) is recorded on that outlet as
+        // `notDomainMoves`. Without a way to say "checked, not a move" the row
+        // could never clear, and every fix session for it paused. Checked only
+        // on a slug match, so it clears this pairing alone and a later outlet
+        // with the same slug is still compared (registry order never matters).
+        if (Array.isArray(outlet.notDomainMoves)
+            && outlet.notDomainMoves.some((h) => registrableHost(String(h).toLowerCase()) === registrableHost(host.toLowerCase()))) continue;
         results.push({
           host,
           outletId,

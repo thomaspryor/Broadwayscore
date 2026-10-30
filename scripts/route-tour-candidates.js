@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 /**
- * Turn recorded national-tour roundup candidates into owner digest suggestions
+ * Turn recorded national-tour roundup candidates into digest rows
  * (BRO-4211 Phase E). scrape-bww-reviews.js --landing-discover writes
  * data/audit/tour-roundup-candidates.json; this routes each open one through
- * routeAlert as a digest decision ("Add the <Show> national tour?"), once per
- * row (notifiedAt). Rows whose show has since gained a tour entry are dropped
- * from the file.
+ * routeAlert once per row (notifiedAt). Rows whose show has since gained a tour
+ * entry are dropped from the file.
+ *
+ * None of this is an owner decision (owner 2026-10-30: "these are all silly
+ * ones that a model can make the decision on"; 90 of 93 digest decisions were
+ * tour candidates). A row is a digest FIX row (decision:false), which
+ * digest-autofix.js hands to a worker. A tour that has already ended is not
+ * routed at all: create-tour-entries.js re-checks its evidence every day and
+ * creates it once a closing is confirmed, and an untracked closed tour is the
+ * safe default. shouldRouteTourCandidate() is the rule; its test pins it.
  *
  * Run by scrape-new-aggregators.yml's scrape-bww-landing job, whose commit step
  * stages the candidates file and the alert-router files.
@@ -15,7 +22,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { openTourCandidates, candidateParentId, candidateKey, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, candidateParentId, candidateKey, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING } = require('./lib/tour-roundup-candidate');
 const { routeAlert, resolveCondition, removeDigestLines, loadLedger } = require('./lib/owner-alert-router');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -42,8 +49,18 @@ async function main() {
   // ignores it, and a later landing run doesn't ask again. A failed send
   // leaves notifiedAt unset so the next run retries that row only.
   let sent = 0;
+  // Rows routed before 2026-10-30 went out as owner decisions. Their ledger
+  // rows are resolved below (resolveStaleTourCandidateConditions skips only
+  // routable keys); a routable one is routed again as a fix row.
+  for (const c of open) {
+    if (c.notifiedAt && c.routing !== TOUR_CANDIDATE_ROUTING && shouldRouteTourCandidate(c)) {
+      if (!dryRun) { resolveCondition(`tour-candidate:${candidateKey(c)}`, { reason: 'Re-routed as a fix row, not an owner decision' }); removeDigestLines([`tour-candidate:${candidateKey(c)}`, `digest-needs-you:${tourCandidateTitle(c)}`]); }
+      delete c.notifiedAt;
+    }
+  }
   for (const c of open) {
     if (c.notifiedAt) continue;
+    if (!shouldRouteTourCandidate(c)) continue;
     // A tour found running on Tours To You (BRO-4325) gets two weeks for
     // create-tour-entries.js to confirm it (a launch next week, a Wikipedia
     // edit) before the owner is asked.
@@ -61,12 +78,8 @@ async function main() {
         title: tourCandidateTitle(c),
         severity: 'info',
         disposition: 'digest',
-        decision: true,
-        // A page nothing could classify (BRO-4931): the owner says what it is
-        // (data/tour-page-classes.json), not whether a known show tours.
-        decisionPrompt: c.needsClassification
-          ? `Is ${c.title} a touring stage production worth tracking (not a concert, circus or dance show)?`
-          : `Add the ${c.title} national tour as a tracked tour?`,
+        // A fix row for a worker, never an owner decision (see header).
+        decision: false,
         url: c.url,
         description: `${c.needsClassification
           ? `Tours To You lists ${c.title} touring since ${c.segmentStart}, but it matches no tracked production and Wikipedia doesn't say it is a musical or play, so it wasn't added automatically. Add it to data/tour-page-classes.json as slug ${c.tourScheduleSlug} (class production with title and type, or event/aggregator to stop asking).`
@@ -78,6 +91,7 @@ async function main() {
         cooldownHours: 24 * 30,
       });
       c.notifiedAt = new Date().toISOString();
+      c.routing = TOUR_CANDIDATE_ROUTING;
       sent++;
     } catch (e) {
       console.log(`  [WARN] ${key}: ${e.message} (will retry next run)`);
@@ -86,7 +100,8 @@ async function main() {
   // Roundup-only rows (no show to suggest a tour for) wait for the Tours To You
   // pairing step; they are not suggestions here but must survive the rewrite (BRO-4931).
   const keep = rows.filter(r => (!r.broadwayShowId && !r.key) || String(r.key || '').startsWith('roundup:') || open.includes(r));
-  if (!dryRun) resolveStaleTourCandidateConditions(open.map(candidateKey), loadLedger(), { resolveCondition, removeDigestLines });
+  // An ended tour is not asked about, so its old owner-decision row closes too.
+  if (!dryRun) resolveStaleTourCandidateConditions(open.filter(shouldRouteTourCandidate).map(candidateKey), loadLedger(), { resolveCondition, removeDigestLines });
   if (!dryRun && (sent > 0 || keep.length !== rows.length)) {
     fs.writeFileSync(FILE, JSON.stringify(keep, null, 2) + '\n');
     if (keep.length !== rows.length) console.log(`Dropped ${rows.length - keep.length} candidate(s) with tracked or retired tours, or no longer eligible.`);
