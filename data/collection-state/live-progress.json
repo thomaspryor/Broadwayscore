@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-30T23:06:10.196Z",
-  "processed": 261,
-  "failed": 182,
-  "successRate": "58.9%",
+  "updatedAt": "2026-10-30T23:37:49.138Z",
+  "processed": 361,
+  "failed": 202,
+  "successRate": "64.1%",
   "tierBreakdown": {
-    "playwright": 130,
-    "amp": 6,
-    "browserbase": 4,
+    "playwright": 177,
+    "amp": 7,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 20,
-    "scrapingbee": 10,
+    "scrapingdog": 29,
+    "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 21,
-    "archive": 75
+    "archiveToday": 25,
+    "archive": 108
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -110,6 +110,17 @@
       "t": "2026-10-30T22:49:42.525Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-30T23:14:12.884Z",
+      "event": "bb-session",
+      "session": "5817edbd",
+      "url": "https://www.thetimes.co.uk/sport/football/article/aston-villa-viking-champions-l"
+    },
+    {
+      "t": "2026-10-30T23:14:13.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
