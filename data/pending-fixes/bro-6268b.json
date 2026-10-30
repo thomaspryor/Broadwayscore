@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6268b",
+  "planId": "985b4cf6-f24b-46e4-9a0c-bda48662be05",
+  "status": "pending",
+  "createdAt": "2026-10-30T23:43:26.308Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude unrelated Singapore visual-arts article attached to Art at the Old Vic (BRO-6268 leftover action; first apply refused on stale oldValue)",
+    "steps": [
+      "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+      }
+    ]
+  }
+}
