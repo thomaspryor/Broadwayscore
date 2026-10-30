@@ -22,6 +22,7 @@ const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classifica
 const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
 const { applyOwnVenueTourCarveout } = require('./tour-stop-carveout');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
+const { companiesInBuilding } = require('./nonprofit-venues');
 const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage, stripLeadingJsonBlob } = require('./content-quality');
 const { stripConsentLayerPrefix } = require('./text-cleaning');
@@ -762,7 +763,15 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
   // Pass the RAW market (not effectiveMarket): a show with no market must get
   // the legacy match-any-region lookup, not be treated as Broadway — that
   // would drop London rename context and re-open the Phantom FP class.
-  const venueContext = venue ? `\n- ${mc.venueLabel}: ${_expandVenueContext(venue, market)}` : '';
+  // Name the companies that play in this building: critics write "Manhattan
+  // Theatre Club's production" for a show filed at "New York City Center", and
+  // CV read the mismatch as a different production (BRO-6640: Brooklyn Laundry,
+  // Bella Bella).
+  const _companies = venue ? companiesInBuilding(venue) : [];
+  const companyContext = _companies.length
+    ? ` (this building houses ${_companies.map(c => `${c.org} (${c.house})`).join('; ')}; a review crediting that company is the same venue)`
+    : '';
+  const venueContext = venue ? `\n- ${mc.venueLabel}: ${_expandVenueContext(venue, market)}${companyContext}` : '';
   const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
 
   // Temporal proximity: if review published within 30 days of opening, very likely correct production
@@ -882,6 +891,10 @@ ${wrongProdList}
 ${outletLocationGuidance}
 
 - **American Airlines Theatre / Todd Haimes Theatre** is on Broadway at 227 W 42nd Street (Roundabout's venue). It is NOT in Washington DC even if the review is in the Washington Post. Do not confuse it with the name.
+
+- **Casting plausibility is never wrongProduction.** A film or TV star appearing in a small Off-Broadway or Off-West-End show is common. Do NOT flag a review because you doubt the named actor would take the role; flag only when the review itself names a different cast, venue or season than this production. (BRO-6640: Angry Alan 2025.)
+
+${effectiveMarket === 'off-broadway' ? `- **Off-Broadway includes the outer boroughs.** Brooklyn houses such as Theatre for a New Audience (Polonsky Shakespeare Center, Fort Greene), BAM and St. Ann's Warehouse are filed as Off-Broadway. A review placing the production in Brooklyn is NOT evidence of a different production when the venue above is one of them. (BRO-6640: Macbeth (An Undoing) 2024.)` : ''}
 
 - **Venue TAXONOMY is never wrongProduction.** Whether a venue "counts as" Off-Broadway / Broadway / a festival stage is a classification question, NOT evidence about which production the review is of. The Public Theater's Delacorte Theater (Free Shakespeare in the Park) and similar NYC not-for-profit / outdoor festival stages are filed here under the expected category — a review correctly describing that staging is the RIGHT production. Do NOT set wrongProduction=true, and do NOT set isValid=false, merely because a venue is "not technically Off-Broadway," is "an outdoor summer festival," or is "in Central Park." Only flag when the OPINION-bearing content evaluates a genuinely different staging (different cast/director/season).
 

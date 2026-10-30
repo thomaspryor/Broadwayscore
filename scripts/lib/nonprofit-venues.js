@@ -35,4 +35,33 @@ function nonprofitForVenue(venue) {
   return null;
 }
 
-module.exports = { NP_VENUES, venueMatches, nonprofitForVenue };
+// Fold the ways shows.json spells one building ('New York City Center – Stage I',
+// 'New York City Center/Stage II') so they compare equal word by word.
+function normBuilding(s) {
+  return String(s || '').toLowerCase().replace(/[\u2010-\u2015\-\/@]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Companies with a house in this venue's building (BRO-6640). Looser than
+ * nonprofitForVenue: a bare building name ('New York City Center') matches a
+ * house inside it ('New York City Center Stage I'), so a review that names the
+ * company ("Manhattan Theatre Club's production") can be recognised as the same
+ * building. Prompt context only; never use it to decide whose show this is.
+ * @returns {{ org: string, house: string }[]}
+ */
+function companiesInBuilding(venue) {
+  const v = normBuilding(venue);
+  if (!v) return [];
+  const out = [];
+  for (const [org, houses] of Object.entries(NP_VENUES)) {
+    const house = houses.find(h => {
+      const n = normBuilding(h);
+      // a stage inside the named building, or the house with a company suffix
+      return n === v || (n.startsWith(v + ' ') && /^stage\b/.test(n.slice(v.length + 1))) || v.startsWith(n + ' ');
+    });
+    if (house) out.push({ org, house });
+  }
+  return out;
+}
+
+module.exports = { NP_VENUES, venueMatches, nonprofitForVenue, companiesInBuilding };

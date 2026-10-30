@@ -222,3 +222,35 @@ describe('national tour verifier profile (category:tour)', () => {
     assert.ok(!bway.includes('is the NORMAL case'));
   });
 });
+
+describe('BRO-6640 venue/company + casting guardrails', () => {
+  const { buildVerificationPrompt } = require('../../scripts/lib/content-verifier.js');
+  const { companiesInBuilding } = require('../../scripts/lib/nonprofit-venues.js');
+  const base = { scrapedText: 'x'.repeat(400), showTitle: 'Brooklyn Laundry', outletName: 'TheaterMania', openingDate: '2024-03-04' };
+
+  test('every City Center spelling names MTC in the prompt, with the market real callers pass', () => {
+    for (const venue of ['New York City Center', 'New York City Center – Stage I', 'New York City Center/Stage II', 'New York City Center - Stage II']) {
+      const { prompt } = buildVerificationPrompt({ ...base, venue, market: 'special-venue' });
+      assert.match(prompt, /houses Manhattan Theatre Club \(New York City Center Stage I{1,2}\)/, venue);
+    }
+  });
+
+  test('company-qualified venue strings still resolve; unrelated venues get no company hint', () => {
+    assert.deepStrictEqual(companiesInBuilding('Vivian Beaumont Theater - Lincoln Center Theater').map(c => c.org), ['Lincoln Center Theater']);
+    assert.deepStrictEqual(companiesInBuilding('Samuel J. Friedman Theatre').map(c => c.org), ['Manhattan Theatre Club']);
+    assert.deepStrictEqual(companiesInBuilding('Broadhurst Theatre'), []);
+    assert.deepStrictEqual(companiesInBuilding('New York'), []);
+    assert.deepStrictEqual(companiesInBuilding(''), []);
+    const { prompt } = buildVerificationPrompt({ ...base, venue: 'Broadhurst Theatre', market: 'broadway' });
+    assert.ok(!prompt.includes('this building houses'));
+  });
+
+  test('casting-plausibility bullet is always present; outer-borough bullet only for off-broadway', () => {
+    const ob = buildVerificationPrompt({ ...base, venue: 'Theatre for a New Audience @ Polonsky Shakespeare Center', market: 'off-broadway' }).prompt;
+    const bw = buildVerificationPrompt({ ...base, venue: 'Broadhurst Theatre', market: 'broadway' }).prompt;
+    assert.ok(ob.includes('Casting plausibility is never wrongProduction'));
+    assert.ok(bw.includes('Casting plausibility is never wrongProduction'));
+    assert.ok(ob.includes('Off-Broadway includes the outer boroughs'));
+    assert.ok(!bw.includes('Off-Broadway includes the outer boroughs'));
+  });
+});
