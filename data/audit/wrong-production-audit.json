@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T05:18:19.088Z",
+  "timestamp": "2026-10-30T05:44:22.751Z",
   "stats": {
-    "totalReviews": 69988,
-    "alreadyFlagged": 22276,
+    "totalReviews": 70044,
+    "alreadyFlagged": 22277,
     "dateGuardCatches": 232,
     "directorMismatch": 2862,
-    "tvFilmSignals": 2009,
-    "londonSignals": 3383,
+    "tvFilmSignals": 2010,
+    "londonSignals": 3388,
     "offBroadwaySignals": 630,
     "yearMismatch": 284,
-    "noPublishDate": 8013
+    "noPublishDate": 8015
   },
   "findings": [
     {
@@ -22020,6 +22020,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glorious-hope-mill-regional-2025",
+      "file": "whatsonstage--matt-barton.json",
+      "publishDate": "2025-03-06",
+      "url": "https://www.whatsonstage.com/news/glorious-at-hope-mill-theatre-review_1667981/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -74654,6 +74667,19 @@
       ]
     },
     {
+      "showId": "antigone-tron-regional-2026",
+      "file": "theatreandtonic--madeleine.json",
+      "publishDate": "2026-09-26",
+      "url": "https://theatreandtonic.co.uk/blog/antigone-tron-theatre-glasgow-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "apologia-west-end-2017",
       "file": "artsdesk--unknown.json",
       "publishDate": null,
@@ -75027,6 +75053,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "arlington-tron-regional-2025",
+      "file": "theatreandtonic--kerry.json",
+      "publishDate": "2025-10-24",
+      "url": "https://theatreandtonic.co.uk/blog/arlington-tron-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -84383,6 +84422,19 @@
       ]
     },
     {
+      "showId": "footloose-pitlochry-festival-regional-2024",
+      "file": "theatreandtonic--kathryn.json",
+      "publishDate": "2024-06-16",
+      "url": "https://theatreandtonic.co.uk/blog/footloose-pitlochry-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022",
       "file": "artsdesk--laura-de-lisle.json",
       "score": 91,
@@ -85488,6 +85540,19 @@
       "score": null,
       "publishDate": "2019-09-26",
       "url": "https://www.theguardian.com/stage/2019/sep/26/glass-kill-bluebeard-imp-review-finding-fascination-in-bloodshot-fables",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "glorious-hope-mill-regional-2025",
+      "file": "theatreandtonic--thomas.json",
+      "publishDate": "2025-03-06",
+      "url": "https://theatreandtonic.co.uk/blog/glorious-hope-mill-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -107672,6 +107737,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-39-steps-hull-truck-regional-2026",
+      "file": "harry-theatre-life--harry-brogan.json",
+      "publishDate": "2026-10-24",
+      "url": "https://www.harrytheatrelife.co.uk/post/review-the-39-steps-hull-truck-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
