@@ -31568,13 +31568,13 @@
       "title": "Placeholder synopsis on Tosca",
       "firstSeen": "2026-10-30T00:14:57.578Z",
       "incidentOpenedAt": "2026-10-30T00:14:57.578Z",
-      "lastSeen": "2026-10-30T04:16:42.240Z",
+      "lastSeen": "2026-10-30T07:14:20.910Z",
       "lastNotifiedAt": "2026-10-30T00:14:57.578Z",
       "lastSurfacedAt": "2026-10-30T00:14:57.578Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-revival-unverified-tosca-off-broadway-2026": {
       "status": "open",
@@ -31582,13 +31582,13 @@
       "title": "Unverified revival on Tosca",
       "firstSeen": "2026-10-30T00:14:57.596Z",
       "incidentOpenedAt": "2026-10-30T00:14:57.596Z",
-      "lastSeen": "2026-10-30T04:16:42.255Z",
+      "lastSeen": "2026-10-30T07:14:20.926Z",
       "lastNotifiedAt": "2026-10-30T00:14:57.596Z",
       "lastSurfacedAt": "2026-10-30T00:14:57.596Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-6553-cost-row": {
       "status": "resolved",
@@ -31777,6 +31777,45 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:a-few-good-men-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on A Few Good Men",
+      "firstSeen": "2026-10-30T07:14:20.941Z",
+      "incidentOpenedAt": "2026-10-30T07:14:20.941Z",
+      "lastSeen": "2026-10-30T07:14:20.941Z",
+      "lastNotifiedAt": "2026-10-30T07:14:20.941Z",
+      "lastSurfacedAt": "2026-10-30T07:14:20.941Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:the-heart-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on The Heart",
+      "firstSeen": "2026-10-30T07:14:20.959Z",
+      "incidentOpenedAt": "2026-10-30T07:14:20.959Z",
+      "lastSeen": "2026-10-30T07:14:20.959Z",
+      "lastNotifiedAt": "2026-10-30T07:14:20.959Z",
+      "lastSurfacedAt": "2026-10-30T07:14:20.959Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-sla:pages-stuck:medea-off-broadway-2026": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Opening-night reviews stuck ≥60 min: medea-off-broadway-2026 (1)",
+      "firstSeen": "2026-10-30T07:14:22.431Z",
+      "incidentOpenedAt": "2026-10-30T07:14:22.431Z",
+      "lastSeen": "2026-10-30T07:14:22.431Z",
+      "lastNotifiedAt": "2026-10-30T07:14:22.431Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6593"
     }
   }
 }
