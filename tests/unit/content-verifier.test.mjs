@@ -255,4 +255,11 @@ describe('BRO-6640 venue/company + casting guardrails', () => {
     assert.ok(ob.includes('Off-Broadway includes the outer boroughs'));
     assert.ok(!bw.includes('Off-Broadway includes the outer boroughs'));
   });
+
+  test('casting bullet keeps the YEAR / PRODUCTION MATCHING cast cross-check in force (review finding)', () => {
+    const { prompt } = buildVerificationPrompt({ ...base, venue: 'Broadhurst Theatre', market: 'broadway' });
+    const bullet = prompt.split('\n').find(l => l.includes('Casting plausibility is never wrongProduction'));
+    assert.ok(bullet && bullet.includes('does NOT override the cast cross-check under YEAR / PRODUCTION MATCHING'));
+    assert.ok(prompt.includes('YEAR / PRODUCTION MATCHING'));
+  });
 });

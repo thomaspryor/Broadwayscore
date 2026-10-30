@@ -821,6 +821,8 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
   const wrongProdList = mc.wrongProdExamples.map(e => `   - ${e}`).join('\n');
 
   // BRO-6640: Macbeth (An Undoing) 2024 was flagged for being in Brooklyn.
+  // Kept as a variable, not an inline nested template: the lane-flagger scanner
+  // (tests/unit/opening-night-lane-flaggers.test.mjs) misreads nested templates in the prompt.
   const outerBoroughBullet = effectiveMarket === 'off-broadway'
     ? '- **Off-Broadway includes the outer boroughs.** Brooklyn houses such as Theatre for a New Audience (Polonsky Shakespeare Center, Fort Greene), BAM and St. Ann\'s Warehouse are filed as Off-Broadway. A review placing the production in Brooklyn is NOT by itself evidence of a different production; check that the Brooklyn venue it names matches the venue above. (BRO-6640: Macbeth (An Undoing) 2024.)'
     : '';
@@ -896,7 +898,7 @@ ${outletLocationGuidance}
 
 - **American Airlines Theatre / Todd Haimes Theatre** is on Broadway at 227 W 42nd Street (Roundabout's venue). It is NOT in Washington DC even if the review is in the Washington Post. Do not confuse it with the name.
 
-- **Casting plausibility is never wrongProduction.** A film or TV star appearing in a small Off-Broadway or Off-West-End show is common. Do NOT flag a review because you doubt the named actor would take the role; flag only when the review itself names a different cast, venue or season than this production. (BRO-6640: Angry Alan 2025.)
+- **Casting plausibility is never wrongProduction.** A film or TV star appearing in a small Off-Broadway or Off-West-End show is common. Do NOT flag a review because you doubt the named actor would take the role; flag only when the review itself names a different cast, venue or season than this production. This does NOT override the cast cross-check under YEAR / PRODUCTION MATCHING: a review whose named cast belongs to a different production is still wrongProduction. (BRO-6640: Angry Alan 2025.)
 
 ${outerBoroughBullet}
 
