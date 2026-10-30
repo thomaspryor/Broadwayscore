@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T11:23:17.811Z",
+  "timestamp": "2026-10-30T12:15:37.449Z",
   "stats": {
-    "totalReviews": 70175,
-    "alreadyFlagged": 22244,
+    "totalReviews": 70326,
+    "alreadyFlagged": 22274,
     "dateGuardCatches": 230,
-    "directorMismatch": 2869,
-    "tvFilmSignals": 2022,
-    "londonSignals": 3395,
+    "directorMismatch": 2873,
+    "tvFilmSignals": 2026,
+    "londonSignals": 3402,
     "offBroadwaySignals": 632,
-    "yearMismatch": 285,
-    "noPublishDate": 7980
+    "yearMismatch": 288,
+    "noPublishDate": 7983
   },
   "findings": [
     {
@@ -208,6 +208,7 @@
     {
       "showId": "1984-royal-bath-regional-2024",
       "file": "theatreandtonic--bryony.json",
+      "score": 79,
       "publishDate": "2024-09-26",
       "url": "https://theatreandtonic.co.uk/blog/1984-theatre-royal-bath-review",
       "findings": [
@@ -226,6 +227,7 @@
     {
       "showId": "1984-royal-bath-regional-2024",
       "file": "whatsonstage--kris-hallett.json",
+      "score": 65,
       "publishDate": "2024-09-26",
       "url": "https://www.whatsonstage.com/news/george-orwells-1984-at-theatre-royal-bath-and-on-tour-review_1634250/",
       "findings": [
@@ -1416,6 +1418,37 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024",
+      "file": "london-box-office--emmie-newitt.json",
+      "publishDate": "2024-12-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/a-christmas-carol-a-ghost-story-alexandra-palace-2025",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2024 (1x). 2026 matches production: a-christmas-carol-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024",
+      "file": "theatreandtonic--katie.json",
+      "publishDate": "2024-11-21",
+      "url": "https://theatreandtonic.co.uk/blog/a-christmas-carol-a-ghost-story-birmingham-rep-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (36x) more than 2024 (1x). 2026 matches production: a-christmas-carol-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-west-end-2018",
       "file": "city-am--adam-bloodworth.json",
       "score": 74,
@@ -2123,6 +2156,7 @@
     {
       "showId": "a-streetcar-named-desire-regional-2024",
       "file": "splash-magazines--suzanne-magnuson.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://chicago.splashmags.com/index.php/2024/03/21/the-blazing-brilliance-of-tennessee-williams-a-streetcar-named-desire-at-paramounts-copely-theatre-bold-series/#gsc.tab=0",
       "findings": [
@@ -5911,6 +5945,7 @@
     {
       "showId": "baby-regional-2024",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://www.chicagotheatrereview.com/2024/04/what-could-be-better-2/",
       "findings": [
@@ -5924,6 +5959,7 @@
     {
       "showId": "baby-regional-2024",
       "file": "chicagoonstage--karen-topham.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.chicagoonstage.com/growing-up-with-baby/",
       "findings": [
@@ -5937,6 +5973,7 @@
     {
       "showId": "baby-regional-2024",
       "file": "chicagotheaterandarts--jodie-jacobs.json",
+      "score": 87,
       "publishDate": null,
       "url": "https://chicagotheaterandarts.com/2024/04/20/16311/",
       "findings": [
@@ -5950,6 +5987,7 @@
     {
       "showId": "baby-regional-2024",
       "file": "new-city-stage--tristan-bruns.json",
+      "score": 42,
       "publishDate": null,
       "url": "https://www.newcitystage.com/2024/04/26/baby-blues-a-review-of-baby-at-citadel-theatre/",
       "findings": [
@@ -7925,6 +7963,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "gulf-coast--dave-elias.json",
+      "score": 77,
       "publishDate": "2025-03-08",
       "url": "https://www.gulfcoastnewsnow.com/article/entertainment-review-book-mormon-play/64099348",
       "findings": [
@@ -8008,7 +8047,27 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "palm-beach-daily-news--mary-damiano.json",
+      "score": 89,
+      "publishDate": "2025-03-12",
+      "url": "https://www.palmbeachdailynews.com/story/entertainment/arts/2025/03/12/book-of-mormon-playing-at-the-kravis-is-clever-original-review/82278547007/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "palm-beach-daily-news--unknown.json",
+      "score": 89,
       "publishDate": "2025-03-12",
       "url": "https://www.palmbeachdailynews.com/story/entertainment/arts/2025/03/12/book-of-mormon-playing-at-the-kravis-is-clever-original-review/82278547007/",
       "findings": [
@@ -11089,7 +11148,7 @@
     {
       "showId": "chester-bailey-off-broadway-2022",
       "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 92,
+      "score": 45,
       "publishDate": "2022-10-25",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=5SG74P",
       "findings": [
@@ -14504,6 +14563,7 @@
     {
       "showId": "death-and-the-kings-horseman-crucible-regional-2025",
       "file": "afridiziak-theatre-news--sophia-jackson.json",
+      "score": 91,
       "publishDate": "2025-02-05",
       "url": "https://www.afridiziak.com/reviews/death-and-the-kings-horseman-by-wole-soyinka-review/",
       "findings": [
@@ -14517,6 +14577,7 @@
     {
       "showId": "death-and-the-kings-horseman-crucible-regional-2025",
       "file": "fairypoweredproductions--carol-crann.json",
+      "score": 76,
       "publishDate": "2025-02-05",
       "url": "https://fairypoweredproductions.com/death-and-the-kings-horseman/",
       "findings": [
@@ -14530,6 +14591,7 @@
     {
       "showId": "death-and-the-kings-horseman-crucible-regional-2025",
       "file": "thereviewshub--the-reviews-hub-yorkshire-and-north-east.json",
+      "score": 85,
       "publishDate": "2025-02-06",
       "url": "https://www.thereviewshub.com/death-and-the-kings-horseman-crucible-theatre-sheffield/",
       "findings": [
@@ -15857,7 +15919,7 @@
     },
     {
       "showId": "deep-heat-rivalry-off-west-end-2026",
-      "file": "london-theatre-reviews--unknown.json",
+      "file": "london-theatre-reviews--james-dix.json",
       "score": 88,
       "publishDate": null,
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29091",
@@ -19519,6 +19581,7 @@
     {
       "showId": "fiddler-on-the-roof-regional-2024",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 85,
       "publishDate": null,
       "url": "https://www.chicagotheatrereview.com/2024/02/breaking-with-tradition/",
       "findings": [
@@ -19532,6 +19595,7 @@
     {
       "showId": "fiddler-on-the-roof-regional-2024",
       "file": "chicagotribune--chris-jones.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/02/05/review-drury-lane-fiddler-on-the-roof-both-timeless-and-brand-new/?clearUserState=true",
       "findings": [
@@ -19545,6 +19609,7 @@
     {
       "showId": "fiddler-on-the-roof-regional-2024",
       "file": "lifeandtimes--unknown.json",
+      "score": 92,
       "publishDate": "2024-02-04",
       "url": "https://lifeandtimes.biz/2024/02/04/with-tim-burton-like-creativity-drury-lanes-newly-reimagined-fiddler-on-the-roof-is-the-best-interpretation-to-date/",
       "findings": [
@@ -19558,6 +19623,7 @@
     {
       "showId": "fiddler-on-the-roof-regional-2024",
       "file": "wttw--hedy-weiss.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://news.wttw.com/2024/02/03/drury-lane-profound-interpretation-fiddler-roof-review",
       "findings": [
@@ -20350,6 +20416,7 @@
     {
       "showId": "follow-the-signs-tobacco-factory-regional-2024",
       "file": "bristol247--samuel-fletcher.json",
+      "score": 88,
       "publishDate": "2024-09-06",
       "url": "https://www.bristol247.com/culture/theatre/review-follow-the-signs-tobacco-factory-theatres-moving-empowering-and-revelatory-a-festival-of-storytelling/",
       "findings": [
@@ -22173,6 +22240,7 @@
     {
       "showId": "glorious-hope-mill-regional-2025",
       "file": "whatsonstage--matt-barton.json",
+      "score": 62,
       "publishDate": "2025-03-06",
       "url": "https://www.whatsonstage.com/news/glorious-at-hope-mill-theatre-review_1667981/",
       "findings": [
@@ -22674,6 +22742,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "good-people-regional-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-07-21",
+      "url": "https://thirdcoastreview.com/stages/2026/07/21/review-good-people-4-chairs-theatre",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2026 (1x). 2011 matches production: good-people-2011"
         }
       ]
     },
@@ -24218,6 +24299,7 @@
     {
       "showId": "hamilton-tour-2024",
       "file": "broadwayworld--jonathan-netek.json",
+      "score": 78,
       "publishDate": "2025-03-07",
       "url": "https://www.broadwayworld.com/houston/article/Review-HAMILTON-at-Broadway-Across-America-20250307",
       "findings": [
@@ -24245,6 +24327,7 @@
     {
       "showId": "hamilton-tour-2024",
       "file": "tampa-bay-times--lucy-marques.json",
+      "score": 89,
       "publishDate": "2026-10-23",
       "url": "https://www.tampabay.com/life-culture/arts/stage/2026/10/23/hamilton-tampa-straz-center-review/",
       "findings": [
@@ -24290,6 +24373,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-aviva-studios-regional-2025",
+      "file": "manchester-evening-news--dianne-bourne.json",
+      "publishDate": "2025-05-08",
+      "url": "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-hamlet-hail-thief-unmissable-31588332",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -29196,6 +29292,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "stageandcinema--unknown.json",
+      "score": 89,
       "publishDate": "2024-11-13",
       "url": "https://stageandcinema.com/2024/11/12/into-the-woods-kokandy/",
       "findings": [
@@ -29908,6 +30005,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "it-walks-around-the-house-at-night-chichester-festival-regional-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "publishDate": "2026-03-09",
+      "url": "https://firstnightmagazine.com/2026/03/10/review-of-it-walks-around-the-house-at-night-ghostly-show-is-drop-dead-dull/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -31289,6 +31399,7 @@
     {
       "showId": "just-one-of-those-things-and-more-the-nat-king-cole-story-regional-2023",
       "file": "around-the-town-chicago--julia-w-rath.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/cabaret/just-one-of-those-things-the-nat-king-cole-story-reviewed-by-frank-meccia/",
       "findings": [
@@ -35703,6 +35814,7 @@
     {
       "showId": "maybe-happy-ending-tour-2026",
       "file": "theonlycritic--nate-adams.json",
+      "score": 79,
       "publishDate": "2026-10-23",
       "url": "https://www.theonlycritic.com/post/maybe-happy-ending-review-a-tender-inventive-musical-that-pushes-all-the-right-buttons",
       "findings": [
@@ -39558,6 +39670,7 @@
     {
       "showId": "notes-from-the-field-regional-2024",
       "file": "broadwayworld--rachel-weinberg.json",
+      "score": 84,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/chicago/article/Review-NOTES-FROM-THE-FIELD-At-TimeLine-Theatre-Company-20240209",
       "findings": [
@@ -40482,6 +40595,7 @@
     {
       "showId": "on-golden-pond-regional-2024",
       "file": "buzznews--cj-burroughs.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5411-review-on-golden-pond-at-skokie-theatre.html",
       "findings": [
@@ -42201,6 +42315,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "boston-globe--unknown.json",
+      "score": 89,
       "publishDate": "2025-03-13",
       "url": "https://www.bostonglobe.com/2025/03/13/arts/parade-review-emerson-colonial/",
       "findings": [
@@ -42383,6 +42498,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "sleeplesscritic--unknown.json",
+      "score": 90,
       "publishDate": "2025-03-18",
       "url": "https://sleeplesscritic.com/2025/03/18/review-featuring-a-stellar-cast-a-riveting-and-indelible-parade/",
       "findings": [
@@ -43849,6 +43965,37 @@
       "score": 78,
       "publishDate": "2025-01-19",
       "url": "https://www.theguardian.com/stage/2025/jan/19/play-on-review-bristol-old-vic-talawa-belgrade-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-bristol-old-vic-regional-2025",
+      "file": "guardian--susannah-clapp.json",
+      "publishDate": "2025-01-26",
+      "url": "https://www.theguardian.com/stage/2025/jan/26/the-week-in-theatre-play-on-bristol-old-vic-a-good-house-amy-jephta-royal-court-plexus-polaire-moby-dick-barbican-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "play-on-bristol-old-vic-regional-2025",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2025-02-03",
+      "url": "https://playsinternational.org.uk/london-theatre-review-play-on-lyric-hammersmith/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47185,6 +47332,7 @@
     {
       "showId": "showstopper-the-improvised-musical-crucible-regional-2025",
       "file": "everything-theatre--joanne-thornewell.json",
+      "score": 79,
       "publishDate": "2025-06-07",
       "url": "https://everything-theatre.co.uk/2025/06/review-showstopper-the-improvised-musical-crucible-theatre-sheffield/",
       "findings": [
@@ -47337,6 +47485,7 @@
     {
       "showId": "shucked-tour-2024",
       "file": "stageandcinema--lynne-weiss.json",
+      "score": 80,
       "publishDate": "2025-04-11",
       "url": "https://stageandcinema.com/2025/04/11/shucked-national-tour/",
       "findings": [
@@ -47813,7 +47962,7 @@
     {
       "showId": "skylight-west-end-2014",
       "file": "guardian--michael-billington.json",
-      "score": 88,
+      "score": 95,
       "publishDate": "2014-06-18",
       "url": "http://www.theguardian.com/stage/2014/jun/18/skylight-review-bill-nighy-carey-mulligan-michael-billington",
       "findings": [
@@ -47940,7 +48089,7 @@
     {
       "showId": "skylight-west-end-2014",
       "file": "whatsonstage--michael-coveney.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2014-06-19",
       "url": "https://www.whatsonstage.com/news/skylight-wyndhams-theatre_34791/",
       "findings": [
@@ -48669,6 +48818,7 @@
     {
       "showId": "some-like-it-hot-tour-2024",
       "file": "masslive--mark-auerbach.json",
+      "score": 89,
       "publishDate": "2025-05-01",
       "url": "https://www.masslive.com/westfieldnews/2025/05/review-some-like-it-hot-at-the-bushnell.html",
       "findings": [
@@ -51896,6 +52046,25 @@
     },
     {
       "showId": "sunset-boulevard-2017",
+      "file": "stagezine--david-nounou.json",
+      "score": 40,
+      "publishDate": "2017-02-23",
+      "url": "http://www.stagezine.com/glenn-close-revisits-sunset-boulevard/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from sunset-boulevard-1994"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2017",
       "file": "theater-life--david-sheward.json",
       "score": 77,
       "publishDate": "February 26th, 2017",
@@ -53095,6 +53264,7 @@
     {
       "showId": "the-bands-visit-regional-2024",
       "file": "chicago-sun-times--steven-oxman.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://chicago.suntimes.com/theater/2024/02/18/in-moving-musical-the-bands-visit-strangers-from-distinct-cultures-find-harmony",
       "findings": [
@@ -53108,6 +53278,7 @@
     {
       "showId": "the-bands-visit-regional-2024",
       "file": "chicagotribune--chris-jones.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/02/20/review-lovely-the-bands-visit-gets-an-intimate-staging-at-writers-theatre/",
       "findings": [
@@ -53121,6 +53292,7 @@
     {
       "showId": "the-bands-visit-regional-2024",
       "file": "third-coast-review--unknown.json",
+      "score": 86,
       "publishDate": "2024-02-20",
       "url": "https://thirdcoastreview.com/2024/02/20/writers-theatre-the-bands-visit",
       "findings": [
@@ -53810,6 +53982,7 @@
     {
       "showId": "the-buddha-of-suburbia-royal-shakespeare-regional-2024",
       "file": "therealchrisparkle--therealchrisparkle.json",
+      "score": 95,
       "publishDate": "2024-05-01",
       "url": "https://therealchrisparkle.com/2024/05/01/review-the-buddha-of-suburbia-royal-shakespeare-company-at-the-swan-theatre-stratford-upon-avon-30th-april-2024/",
       "findings": [
@@ -63057,7 +63230,7 @@
     {
       "showId": "the-resistible-rise-of-arturo-ui-royal-shakespeare-regional-2026",
       "file": "nytimes--unknown.json",
-      "score": null,
+      "score": 83,
       "publishDate": "2026-04-22",
       "url": "https://www.nytimes.com/2026/04/22/theater/the-resistible-rise-of-arturo-ui-rsc-mark-gatiss.html",
       "findings": [
@@ -63903,6 +64076,7 @@
     {
       "showId": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
       "file": "guardian--mark-lawson.json",
+      "score": 85,
       "publishDate": "2024-08-30",
       "url": "https://www.theguardian.com/stage/article/2024/aug/30/the-spy-who-came-in-from-the-cold-review-minerva-theatre-chichester",
       "findings": [
@@ -74931,6 +75105,7 @@
     {
       "showId": "antigone-tron-regional-2026",
       "file": "theatreandtonic--madeleine.json",
+      "score": 78,
       "publishDate": "2026-09-26",
       "url": "https://theatreandtonic.co.uk/blog/antigone-tron-theatre-glasgow-review",
       "findings": [
@@ -75321,6 +75496,7 @@
     {
       "showId": "arlington-tron-regional-2025",
       "file": "theatreandtonic--kerry.json",
+      "score": 72,
       "publishDate": "2025-10-24",
       "url": "https://theatreandtonic.co.uk/blog/arlington-tron-theatre",
       "findings": [
@@ -79098,7 +79274,7 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--jeremy-malies.json",
       "score": 15,
       "publishDate": "2026-09-25",
       "url": "https://playsinternational.org.uk/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre/",
@@ -80093,6 +80269,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "consumed-sheffield-regional-2025",
+      "file": "theatreandtonic--joseph.json",
+      "publishDate": "2025-09-15",
+      "url": "https://theatreandtonic.co.uk/blog/consumed-paines-plough-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -84686,6 +84875,7 @@
     {
       "showId": "footloose-pitlochry-festival-regional-2024",
       "file": "theatreandtonic--kathryn.json",
+      "score": 86,
       "publishDate": "2024-06-16",
       "url": "https://theatreandtonic.co.uk/blog/footloose-pitlochry-festival-theatre-review",
       "findings": [
@@ -85660,7 +85850,7 @@
     },
     {
       "showId": "girls-off-west-end-2026",
-      "file": "a-youngish-perspective--unknown.json",
+      "file": "a-youngish-perspective--lucy-holz.json",
       "score": 80,
       "publishDate": "2026-10-29",
       "url": "https://ayoungishperspective.co.uk/2026/10/29/review-girls/",
@@ -85827,6 +86017,7 @@
     {
       "showId": "glorious-hope-mill-regional-2025",
       "file": "theatreandtonic--thomas.json",
+      "score": 86,
       "publishDate": "2025-03-06",
       "url": "https://theatreandtonic.co.uk/blog/glorious-hope-mill-theatre-review",
       "findings": [
@@ -86954,7 +87145,7 @@
     {
       "showId": "guess-how-much-i-love-you-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 82,
+      "score": 78,
       "publishDate": "2026-01-23",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/guess-how-much-i-love-you-review-royal-court-fpttt78rd",
       "findings": [
@@ -91945,6 +92136,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "jekyll-and-hyde-liverpool-everyman-regional-2026",
+      "file": "northernartsreview--shannaz.json",
+      "publishDate": "2026-07-06",
+      "url": "https://northernartsreview.co.uk/north-west/full-details-released-of-jekyll-and-hyde-at-liverpool-everyman-this-july/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -97067,6 +97271,7 @@
     {
       "showId": "mel-brooks-young-frankenstein-hope-mill-regional-2025",
       "file": "curtain-call-reviews--unknown.json",
+      "score": 84,
       "publishDate": null,
       "url": "https://www.curtaincallreviews.co.uk/young-frankenstein",
       "findings": [
@@ -97396,6 +97601,19 @@
       ]
     },
     {
+      "showId": "military-wives-the-musical-york-royal-regional-2025",
+      "file": "theatreandtonic--adam-ryan.json",
+      "publishDate": "2025-09-18",
+      "url": "https://theatreandtonic.co.uk/blog/military-wives-the-musical-york-theatre-royal-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "million-dollar-quartet-2010",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 79,
@@ -97546,6 +97764,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "mistero-buffo-oran-mor-regional-2025",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2025-10-03",
+      "url": "https://viewfromthegods.co.uk/2025/10/03/mistero-buffo-pleasance/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -99347,7 +99578,7 @@
     {
       "showId": "now-you-see-me-live-west-end-2026",
       "file": "jonathan-baz--unknown.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-08-03",
       "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
       "findings": [
@@ -108060,6 +108291,7 @@
     {
       "showId": "the-39-steps-hull-truck-regional-2026",
       "file": "harry-theatre-life--harry-brogan.json",
+      "score": 77,
       "publishDate": "2026-10-24",
       "url": "https://www.harrytheatrelife.co.uk/post/review-the-39-steps-hull-truck-theatre",
       "findings": [
@@ -116285,6 +116517,7 @@
     {
       "showId": "the-promise-chichester-festival-regional-2024",
       "file": "theatreandtonic--rosie.json",
+      "score": 62,
       "publishDate": "2024-07-30",
       "url": "https://theatreandtonic.co.uk/blog/the-promise-minerva-theatre-review",
       "findings": [
@@ -116292,6 +116525,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-promise-chichester-festival-regional-2024",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2024-07-30",
+      "url": "https://viewfromthegods.co.uk/2024/07/30/paul-unwin-the-promise-chichester-festival-july-29th-2024/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
