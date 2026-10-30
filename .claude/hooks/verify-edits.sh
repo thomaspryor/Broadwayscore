@@ -386,7 +386,7 @@ def _owner_must_act(text, strict=False):
             return True
     return False
 
-_NEGATION_RE = re.compile(r"\b(no|not|never|without)\b|n't\b", re.IGNORECASE)
+_NEGATION_RE = re.compile(r"\b(no|not|never|without)\b|n['\u2019]t\b", re.IGNORECASE)
 
 def _owner_ask(text):
     # The status line's own "NOT" is not a negation of what follows it.
@@ -1244,9 +1244,9 @@ def _write_verify_state(fp):
 _LOOSE_HARD_RE = re.compile(
     r"\b(?:want me to|should I|shall I|would you like(?: me)? to|do you want(?: me)? to"
     r"|(?:tell me|let me know) (?:if|whether) you(?:'d)? (?:want|like|prefer)"
-    r"|committed locally|(?:I|it|this|that|they|the \w+) (?:has|have|was|were|is|are)(?:n't| not) (?:yet )?(?:been )?(?:pushed|landed|deployed)"
-    r"|(?:could not|couldn't|was unable to|unable to) (?:confirm|verify)|verified:? partly|partly verified"
-    r"|(?:didn't|did not|couldn't|could not) (?:get )?fix\b|(?:isn't|wasn't|aren't|not yet|still not) fixed"
+    r"|committed locally|(?:I|it|this|that|they|the \w+) (?:has|have|was|were|is|are)(?:n['\u2019]t| not) (?:yet )?(?:been )?(?:pushed|landed|deployed)"
+    r"|(?:could not|couldn['\u2019]t|was unable to|unable to) (?:confirm|verify)|verified:? partly|partly verified"
+    r"|(?:didn['\u2019]t|did not|couldn['\u2019]t|could not) (?:get )?fix\b|(?:isn['\u2019]t|wasn['\u2019]t|aren['\u2019]t|not yet|still not) fixed"
     r"|left (?:it|them|this|that|those) (?:alone|unfiled|unfixed)|\bunfiled\b"
     r"|\bI(?:'ll| will) (?:re-?)?check\b|will happen naturally"
     r"|\bI (?:haven['\u2019]t|have not) (?:yet )?(?:run|seen|checked|verified|confirmed|tested|deleted)\b(?!\s+(?:any\b|anything|a single|no\b|out\b|over\b|into\b))"
@@ -1269,7 +1269,7 @@ _LOOSE_DEFER_RE = re.compile(
     r"\b(?:(?:left|leave|leaving|saved?|saving|parked?|held|kept)\b[^.\n]{0,50}\bfor later"
     r"|still (?:open|unresolved|broken|failing)|still (?:has|needs) to\b)",
     re.IGNORECASE)
-_LOOSE_NEG_RE = re.compile(r"\b(?:no|nothing|nobody|not|never|none|zero|no longer|without)\b|n't\b", re.IGNORECASE)
+_LOOSE_NEG_RE = re.compile(r"\b(?:no|nothing|nobody|not|never|none|zero|no longer|without)\b|n['\u2019]t\b", re.IGNORECASE)
 
 def _loose_end(body, backlog_ok):
     m = _LOOSE_HARD_RE.search(body)

@@ -1994,6 +1994,7 @@ test('LOOSEENDS: real loose-end closings + SAFE TO ARCHIVE → BLOCKED', skipNoR
     'One thing I haven\'t seen with my own eyes: the caption on a real live show page.',
     'I didn\'t run the repo\'s /what-else and /wrap-up finishing steps. I closed the card by hand.',
     'I left two stale branches on GitHub; deleting them is your call.',
+    'The change hasn\u2019t been pushed and I couldn\u2019t confirm the deploy.',
     'I didn\'t verify the last deploy, and I haven\u2019t seen the live page.',
     '```\n━━━ TESTED ━━━\nProduction verified: partly. I could not confirm the last commit deployed.\n━━━━━━\n```\nThe rewrite works.',
   ]) {
