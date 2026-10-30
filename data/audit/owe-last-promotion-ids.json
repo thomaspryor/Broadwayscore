@@ -1,37 +1,6 @@
 {
-  "generatedAt": "2026-10-29T20:25:02.706Z",
-  "promoted": [
-    {
-      "id": "uncle-vanya-off-west-end-2027",
-      "source": "venue-page:theatre-royal-stratford-east",
-      "sourceUrl": "https://www.stratfordeast.com/whats-on"
-    },
-    {
-      "id": "noel-cowards-sirocco-off-west-end-2026",
-      "source": "venue-page:finborough-theatre",
-      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/sirocco"
-    },
-    {
-      "id": "the-woolgatherer-off-west-end-2027",
-      "source": "venue-page:finborough-theatre",
-      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/the-woolgatherer"
-    },
-    {
-      "id": "all-our-lives-off-west-end-2027",
-      "source": "venue-page:finborough-theatre",
-      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/all-our-lives"
-    },
-    {
-      "id": "parasocial-activity-off-west-end-2027",
-      "source": "venue-page:southwark-playhouse",
-      "sourceUrl": "https://southwarkplayhouse.co.uk/"
-    },
-    {
-      "id": "for-dolores-off-west-end-2027",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    }
-  ],
+  "generatedAt": "2026-10-30T20:01:59.487Z",
+  "promoted": [],
   "rejected": [
     {
       "title": "Golden Boy",
@@ -138,6 +107,14 @@
       "reason": "already in shows.json as noises-off-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Noises Off Supporters' Night",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as noises-off-off-west-end-2027 (same house, title words contained, overlapping run (\"Noises Off\" vs \"Noises Off Supporters' Night\"))"
+    },
+    {
       "title": "Robin Hood",
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
@@ -162,6 +139,22 @@
       "reason": "already in shows.json as talking-in-tongues-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Talking In Tongues Supporters' Night",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as talking-in-tongues-off-west-end-2027 (same house, title words contained, overlapping run (\"Talking In Tongues\" vs \"Talking In Tongues Supporters' Night\"))"
+    },
+    {
+      "title": "Uncle Vanya",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as uncle-vanya-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Orlando: A Pornobiography",
       "venue": "New Diorama Theatre",
       "source": "venue-page:new-diorama-theatre",
@@ -176,6 +169,30 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as the-moth-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Noël Coward's Sirocco",
+      "venue": "Finborough Theatre",
+      "source": "venue-page:finborough-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as noel-cowards-sirocco-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "The Woolgatherer",
+      "venue": "Finborough Theatre",
+      "source": "venue-page:finborough-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-woolgatherer-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "All Our Lives",
+      "venue": "Finborough Theatre",
+      "source": "venue-page:finborough-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as all-our-lives-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "It Comes In Waves",
@@ -271,7 +288,7 @@
       "source": "venue-page:kiln-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as berlin2027-off-west-end-2026 (same house, same title words (\"Berlin_2027\" vs \"BERLIN\"))"
+      "reason": "already in shows.json as berlin-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "NINE NIGHT",
@@ -320,6 +337,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as nero-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Parasocial Activity",
+      "venue": "Southwark Playhouse",
+      "source": "venue-page:southwark-playhouse",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as parasocial-activity-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Private Jones",
@@ -802,6 +827,14 @@
       "reason": "already in shows.json as double-bill-tell-me-straight-and-aggy-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "For Dolores",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as for-dolores-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Furniture Boys",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
@@ -930,14 +963,6 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-14))"
     },
     {
-      "title": "Michael McIntyre: Brand New Material",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (taping/work-in-progress/showcase: \"Michael McIntyre: Brand New Material\")"
-    },
-    {
       "title": "Not Now Bernard",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
@@ -1034,60 +1059,12 @@
       "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
     },
     {
-      "title": "Yaf: Bimini: Dj Set",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Blue Creator Collective | SW6 - Media & Music Camp",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Careers as a Session Musician",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Circus Skills (Clowning)",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
       "title": "YAF: Circus Skills: Juggling with Myles MacDonald",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-30))"
-    },
-    {
-      "title": "YAF: Comic And Manga Illustration",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Crochet For Beginners",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
     },
     {
       "title": "YAF: Devising for Beginners with Adam Carvell",
@@ -1098,28 +1075,12 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
     },
     {
-      "title": "YAF: Fashion Printing and Textile Design with IDEA Design Hub",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
       "title": "YAF: How To Be A Theatre Producer",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
-    },
-    {
-      "title": "YAF: How To Make A Film On Your Phone",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
     },
     {
       "title": "YAF: How To Write & Publish A Novel",
@@ -1130,38 +1091,6 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-30))"
     },
     {
-      "title": "YAF: Improv with Molly-Rose Treves",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: K-Pop Fan Art",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Musical Theatre Dance (13-17)",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Musical Theatre Dance (18-25)",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
       "title": "YAF: Paint And Smoothie Sip",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
@@ -1170,60 +1099,12 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-30))"
     },
     {
-      "title": "YAF: PLAY IN 4 DAYS: Woyzeck",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Playwriting With Molly Taylor",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Product Design Studio",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Screen Acting With Hamza Jeetooa",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
       "title": "YAF: Special Effects Make-Up with Franky Lehmeier",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
-    },
-    {
-      "title": "YAF: Still Life Paint Along with Beth Rodway",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
-    },
-    {
-      "title": "YAF: Sustainable Making with Tenderfoot Theatre",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-29))"
     },
     {
       "title": "YAF: Talent Agent: Here's what you need to know...",
@@ -1354,14 +1235,6 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-22))"
     },
     {
-      "title": "Eucharist",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
-    },
-    {
       "title": "Happy Families (Rehearsed Reading)",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1408,6 +1281,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as man-hater-eater-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Mercy Mercy (Rehearsed Reading)",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2027-01-15))"
     },
     {
       "title": "Mother Ignacia",
@@ -1496,6 +1377,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as eric-and-ern-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Eurovision Your Decision",
+      "venue": "Wilton's Music Hall",
+      "source": "venue-page:wilton-s-music-hall",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "Not The Benny Hill Show",
