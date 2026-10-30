@@ -244,13 +244,13 @@ function laneHoldCheck() {
   try {
     decider = require('./lib/opening-night-lane/lane-only-markets').createDecider({ findShow: loadShow });
   } catch (e) {
-    console.log(`[express-retry-queue] lane-only markets check failed (${String(e.message).slice(0, 160)}); dispatching as usual`);
+    console.log(`::warning::[express-retry-queue] lane-only markets check failed (${String(e.message).slice(0, 160)}); dispatching as usual`);
     return () => false;
   }
   return (showId) => {
     let d;
     try { d = decider.decide(showId); } catch (e) {
-      console.log(`[express-retry-queue] ${showId}: lane-only markets check failed (${String(e.message).slice(0, 160)}); dispatching as usual`);
+      console.log(`::warning::[express-retry-queue] ${showId}: lane-only markets check failed (${String(e.message).slice(0, 160)}); dispatching as usual`);
       return false;
     }
     if (d.standDown) console.log(`::notice::[express-retry-queue] ${showId}: ${d.reason}; Express retry held until the lane releases (LANE_ONLY_MARKETS, BRO-6620)`);
