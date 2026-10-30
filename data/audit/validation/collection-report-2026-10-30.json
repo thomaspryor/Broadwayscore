@@ -1,69 +1,64 @@
 {
-  "runDate": "2026-10-30T10:00:09.914Z",
+  "runDate": "2026-10-30T10:54:40.958Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "in-the-heights-off-broadway-2026,girls-off-west-end-2026,the-lives-of-others-west-end-2026,a-few-good-men-2026,memoriam-off-west-end-2026,i-became-we-off-broadway-2026,the-heart-off-broadway-2026,the-revlon-girl-off-west-end-2026,kelly-mccaughan-catholic-guilt-off-broadway-2026,the-greatest-story-ever-off-broadway-2026",
+    "showFilter": "caesar-and-cleopatra-off-broadway-2019,london-assurance-off-broadway-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 12,
+    "processed": 3,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "29.4%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "brightdata": 2,
+    "archiveToday": 0,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 7,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 4,
-    "tier1_5Success": 2,
-    "tier1_9Attempts": 4,
-    "tier1_9Success": 3,
-    "tier2Attempts": 4,
-    "tier2Success": 2,
-    "tier3Attempts": 5,
-    "tier3Success": 4,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 8,
-    "tier4Success": 0,
-    "totalFailed": 12,
-    "scrapingBeePageCredits": 21,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 0.8,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 5,
-    "failed": 12,
+    "processed": 3,
+    "failed": 1,
     "shows": [
-      "a-few-good-men-2026",
-      "girls-off-west-end-2026",
-      "in-the-heights-off-broadway-2026",
-      "memoriam-off-west-end-2026",
-      "the-heart-off-broadway-2026",
-      "the-lives-of-others-west-end-2026",
-      "the-revlon-girl-off-west-end-2026"
+      "caesar-and-cleopatra-off-broadway-2019",
+      "london-assurance-off-broadway-2019"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -72,73 +67,38 @@
     }
   },
   "processed": [
-    "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
-    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "girls-off-west-end-2026/theatre-weekly--unknown.json",
-    "memoriam-off-west-end-2026/ground--unknown.json",
-    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+    "london-assurance-off-broadway-2019/talkinbroadway--david-hurst.json",
+    "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json",
+    "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json"
   ],
   "failed": [
-    "a-few-good-men-2026/variety--anna-tingley.json",
-    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
-    "a-few-good-men-2026/letterboxd--scott-alain.json",
-    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
-    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
-    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
-    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
-    "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
-    "girls-off-west-end-2026/letterboxd--unknown.json",
-    "girls-off-west-end-2026/londontheatre1--unknown.json",
-    "girls-off-west-end-2026/radio-times--molly-moss.json",
-    "memoriam-off-west-end-2026/thestage--dave-fargnoli.json"
+    "london-assurance-off-broadway-2019/theater-news-online--brian-scott-lipton.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
-      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "girls-off-west-end-2026/theatre-weekly--unknown.json",
-      "memoriam-off-west-end-2026/ground--unknown.json",
-      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+      "london-assurance-off-broadway-2019/talkinbroadway--david-hurst.json",
+      "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json",
+      "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json"
     ],
     "failed": [
-      "a-few-good-men-2026/variety--anna-tingley.json",
-      "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
-      "a-few-good-men-2026/letterboxd--scott-alain.json",
-      "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
-      "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
-      "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
-      "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
-      "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
-      "girls-off-west-end-2026/letterboxd--unknown.json",
-      "girls-off-west-end-2026/londontheatre1--unknown.json",
-      "girls-off-west-end-2026/radio-times--molly-moss.json",
-      "memoriam-off-west-end-2026/thestage--dave-fargnoli.json"
+      "london-assurance-off-broadway-2019/theater-news-online--brian-scott-lipton.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
-      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "girls-off-west-end-2026/theatre-weekly--unknown.json",
-      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
-      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "memoriam-off-west-end-2026/ground--unknown.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
-      "data/review-texts/girls-off-west-end-2026/londontheatre1--unknown.json",
-      "data/review-texts/memoriam-off-west-end-2026/thestage--dave-fargnoli.json"
+    "brightdata": [
+      "london-assurance-off-broadway-2019/talkinbroadway--david-hurst.json",
+      "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json"
     ],
-    "archive": []
+    "archiveToday": [],
+    "archive": [
+      "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
