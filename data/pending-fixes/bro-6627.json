@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6627",
   "planId": "3693fee7-a4a6-475f-b772-64cd0e49d8a3",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-30T20:43:50.647Z",
   "submitter": {
     "name": null,
@@ -110,5 +110,39 @@
         "description": "mothers-regional-2024: no reliable art (BRO-6627)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T20:57:42.735Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for judys-lifes-work-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for mothers-regional-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
