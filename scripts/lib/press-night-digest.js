@@ -66,9 +66,8 @@ function gradeReviews(rec, nowMs = Date.now()) {
   const firstGate = gates.find((g) => g.name === 'first-live');
   const items = sn.items || [];
   let verdict = rawVerdict;
-  if (verdict === 'FAIL' && items.some(isPaywallExcused)
-    && !items.some((i) => (i.status === 'late' || i.status === 'missing') && !isPaywallExcused(i))
-    && gates.every((g) => !g.required || g.status !== 'fail' || itemGateExcused(g, graded))) {
+  if (verdict === 'FAIL' && onlyPaywalledCauses(items, graded)
+    && gates.every((g) => !g.required || g.status !== 'fail' || ITEM_GATES.has(g.name))) {
     // The only failures were paywalled outlets: excused, so the night grades on its other gates.
     verdict = gates.some((g) => g.required && g.status === 'unknown') ? 'UNKNOWN' : 'PASS';
   }
@@ -90,13 +89,16 @@ function gradeReviews(rec, nowMs = Date.now()) {
 // domains in paywall-completeness.js HARD_PAYWALL_FLOORS, keyed by outlet id.
 const PAYWALLED_OUTLETS = new Set(['nytimes', 'newyorker', 'washpost', 'washingtonpost', 'chicagotribune', 'wsj']);
 const isPaywallExcused = (i) => PAYWALLED_OUTLETS.has(i.outletId) && (i.status === 'late' || i.status === 'missing');
-// A failing gate is excused only when paywalled reviews are its whole cause: same-night-completeness grades
-// the items checked above; coverage-2h counts census outlets, so every outlet it lists as missing must be paywalled.
-function itemGateExcused(g, rec) {
-  if (g.name === 'same-night-completeness') return true;
-  if (g.name !== 'coverage-2h') return false;
-  const missing = (rec.reference && rec.reference['2h'] && rec.reference['2h'].missing) || [];
-  return missing.length > 0 && missing.every((id) => PAYWALLED_OUTLETS.has(id));
+// The item gates (same-night-completeness, coverage-2h) fail on late or missing reviews and on census outlets
+// listed but not live (missing or suppressed). They are excused only when every one of those outlets is paywalled.
+const ITEM_GATES = new Set(['same-night-completeness', 'coverage-2h']);
+function onlyPaywalledCauses(items, rec) {
+  const ref2 = (rec.reference && rec.reference['2h']) || {};
+  const causes = [
+    ...items.filter((i) => i.status === 'late' || i.status === 'missing').map((i) => i.outletId),
+    ...(ref2.missing || []), ...(ref2.suppressedMissing || []),
+  ];
+  return causes.length > 0 && causes.every((id) => PAYWALLED_OUTLETS.has(id));
 }
 
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;

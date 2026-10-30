@@ -271,3 +271,18 @@ test('paywall rule: a coverage-2h failure from a non-paywalled census outlet is 
   assert.equal(verdictWith(['nytimes', 'theatermania', 'vulture']), 'FAIL');
   assert.notEqual(verdictWith(['nytimes', 'wsj', 'newyorker']), 'FAIL');
 });
+
+test('paywall rule: suppressed or listed-but-on-time non-paywalled census outlets still fail the night', () => {
+  const base = heartAs('nytimes', 'wsj');
+  const ref = base.reference && base.reference['2h'];
+  assert.ok(ref, 'fixture has a +2h census');
+  const withRef = (patch) => { const r = JSON.parse(JSON.stringify(base)); Object.assign(r.reference['2h'], patch); return D.gradeReviews(r, AFTER_DEADLINE).verdict; };
+  assert.equal(withRef({ suppressedMissing: ['theatermania'] }), 'FAIL');
+  assert.equal(withRef({ missing: [...(ref.missing || []), 'culturesauce'] }), 'FAIL');
+});
+
+test('paywall rule: a paywalled miss plus a stuck dropped review stays failed', () => {
+  const r = heartAs('nytimes', 'wsj');
+  r.dropped = [...(r.dropped || []), { outlet: 'NYSR', droppedAt: r.embargoAt }];
+  assert.equal(D.gradeReviews(r, AFTER_DEADLINE).verdict, 'FAIL');
+});
