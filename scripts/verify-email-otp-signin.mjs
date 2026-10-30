@@ -26,6 +26,7 @@ async function admin(path, method, body) {
     method,
     headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
     body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(30000),
   });
   const text = await res.text();
   if (!res.ok) throw new Error(`admin ${path} -> ${res.status}: ${text.slice(0, 200)}`);

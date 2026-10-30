@@ -78,6 +78,7 @@ async function api(method, body) {
     method,
     headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
     body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(30000),
   });
   const text = await res.text();
   if (!res.ok) throw new Error(`${method} config/auth -> ${res.status}: ${text.slice(0, 300)}`);

@@ -49,6 +49,7 @@ const EXCLUDED_PATHS = [
   'src/app/unsubscribe/',    // email for unsubscribe lookup
   'src/app/unfollow/',       // email for unfollow lookup
   'src/app/fantasy/',        // fantasy draft uses own /api/fantasy/draft endpoint, not Formspree
+  'src/components/auth/EmailCodeForm.tsx', // sign-in code (Supabase signInWithOtp, BRO-6575); joining the list happens on sign-in via auto-subscribe.ts
   'src/components/biz/MoneyGate.tsx', // Profitability Scorecard list is separate by design (BRO-6210); money-gate.test.mjs asserts it posts to its own Supabase RPC
 ];
 
