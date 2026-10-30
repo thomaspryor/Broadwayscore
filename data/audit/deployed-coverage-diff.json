@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-10-29T20:59:16.275Z",
+  "generatedAt": "2026-10-30T00:12:12.136Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 285,
-  "clean": 284,
-  "defective": 1,
+  "checked": 296,
+  "clean": 294,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "lanny-bristol-old-vic-regional-2026",
-      "title": "Lanny",
-      "openingDate": "2026-10-23",
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "openingDate": "2026-10-28",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 68.07 vs local 69.41 (Δ1.34)"
+          "detail": "deployed cs 83.56 vs local 83.9 (Δ0.34)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-10-29T20:59:10.187Z"
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-30T00:12:06.770Z"
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "openingDate": "2026-10-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.16 vs local 69.4 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-30T00:12:06.770Z"
     }
   ],
   "persistentDefective": 0,

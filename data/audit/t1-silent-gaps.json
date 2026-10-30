@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-29T20:58:49.402Z",
+  "generatedAt": "2026-10-30T00:11:55.584Z",
   "windowDays": 45,
-  "showsScanned": 204,
+  "showsScanned": 219,
   "gaps": [
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 99.09773833333334,
+      "fileAgeHours": 102.32198416666667,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 84.55917638888889,
+      "nonTerminalAgeHours": 87.77756027777778,
       "needsManualRecovery": false
     },
     {
@@ -40,53 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 127.61744361111111,
+      "fileAgeHours": 130.84165388888889,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 113.67106777777778,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "golden-boy-off-west-end-2026",
-      "title": "Golden Boy",
-      "openingDate": "2026-09-15",
-      "file": "daily-mail--patrick-marmion.json",
-      "outletId": "daily-mail",
-      "tier": 1,
-      "type": "rejected-unscoreable",
-      "recoverable": false,
-      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 892.2989402777778,
-      "gapSeenAt": "2026-10-29T19:30:10.626Z",
-      "nonTerminalAgeHours": 1.4774377777777778,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "dead-girls-quinceanera-regional-2026",
-      "title": "Dead Girl's Quinceanera",
-      "openingDate": "2026-10-05",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch933.html",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Fetch failed: All scraping methods failed"
-      },
-      "recoveryCount": 1,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=dead-girls-quinceanera-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch933.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-29T17:57:44.710Z",
-      "fileAgeHours": 3.0179669444444444,
-      "gapSeenAt": "2026-10-29T19:30:10.626Z",
-      "nonTerminalAgeHours": 1.4774377777777778,
+      "nonTerminalAgeHours": 116.88945166666667,
       "needsManualRecovery": false
     }
   ],

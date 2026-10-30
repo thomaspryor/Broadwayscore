@@ -3182,6 +3182,48 @@
     "queuedAt": "2026-10-29T23:43:29.474Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+    "title": "Review gap — \"A Beautiful Noise, The Neil Diamond Musical\" missing 1 cited review(s)",
+    "description": "A Beautiful Noise, The Neil Diamond Musical (a-beautiful-noise-the-neil-diamond-musical-tour-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-beautiful-noise-the-neil-diamond-musical-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T00:11:50.922Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:a-strange-loop-regional-2026",
+    "title": "Review gap — \"A Strange Loop\" missing 5 cited review(s)",
+    "description": "A Strange Loop (a-strange-loop-regional-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-strange-loop-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T00:11:50.933Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
+    "title": "Review gap — \"Medea\" missing 2 cited review(s)",
+    "description": "Medea (medea-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T00:11:51.036Z"
+  },
+  {
     "conditionKey": "land:land/bro-6546-final",
     "title": "Landing blocked: unit-tests-node red on land/bro-6546-final",
     "description": "land.yml did not land land/bro-6546-final: the unit-tests-node gate went red at 42630e4c53. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40975495699",
