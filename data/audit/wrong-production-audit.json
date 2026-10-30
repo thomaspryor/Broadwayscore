@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T23:09:02.720Z",
+  "timestamp": "2026-10-30T23:49:40.775Z",
   "stats": {
-    "totalReviews": 72365,
-    "alreadyFlagged": 22361,
+    "totalReviews": 72739,
+    "alreadyFlagged": 22363,
     "dateGuardCatches": 229,
     "directorMismatch": 2934,
-    "tvFilmSignals": 2037,
+    "tvFilmSignals": 2039,
     "londonSignals": 3407,
     "offBroadwaySignals": 645,
     "yearMismatch": 298,
-    "noPublishDate": 8864
+    "noPublishDate": 9226
   },
   "findings": [
     {
@@ -3081,6 +3081,33 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "afterglow-off-broadway-2017",
+      "file": "beauty-news-nyc--pk-greenfield.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.beautynewsnyc.com/city-pulse/theater-afterglow-gay-pride/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "file": "the-knockturnal--karen-snyder.json",
+      "publishDate": "2026-10-30",
+      "url": "https://theknockturnal.com/aftermath-debuts-at-a-r-t-new-york-mezzanine-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -18260,8 +18287,8 @@
     {
       "showId": "evening-at-the-talk-house-off-broadway-2017",
       "file": "newsday--linda-winer.json",
-      "publishDate": "2017-02-16",
-      "url": "https://www.newsday.com/entertainment/theater/evening-at-the-talk-house-review-a-grim-theater-party-indeed-o50667",
+      "publishDate": null,
+      "url": "http://www.newsday.com/entertainment/theater/evening-at-the-talk-house-review-a-grim-theater-party-indeed-1.13131136",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -118220,7 +118247,7 @@
     {
       "showId": "the-revlon-girl-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "2026-10-29",
       "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-park-theatre-review",
       "findings": [
