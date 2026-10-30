@@ -25,10 +25,16 @@ const crypto = require('crypto');
 const MAX_PAGE_BYTES = 2 * 1024 * 1024;
 const MAX_RUN_BYTES = 40 * 1024 * 1024;
 
-/** 32-byte key from LANE_RECORDING_KEY, else derived from REVIEW_TEXTS_TOKEN (a secret this repo's workflows already hold). */
+const KEY_VERSION = 1;
+const KEY_SALT = `broadwayscore/lane-recording/v${KEY_VERSION}`;
+
+/**
+ * 32-byte key via HKDF-SHA256 with a fixed, versioned salt (bump KEY_VERSION to change derivation; the manifest header
+ * records it). Source: LANE_RECORDING_KEY, else REVIEW_TEXTS_TOKEN (a different `info` label, so the two never collide).
+ */
 function keyFromEnv(env = process.env) {
-  const secret = env.LANE_RECORDING_KEY ? `key:${env.LANE_RECORDING_KEY}` : env.REVIEW_TEXTS_TOKEN ? `token:${env.REVIEW_TEXTS_TOKEN}` : null;
-  return secret ? crypto.createHash('sha256').update(`lane-recording:${secret}`).digest() : null;
+  const [secret, info] = env.LANE_RECORDING_KEY ? [env.LANE_RECORDING_KEY, 'key'] : env.REVIEW_TEXTS_TOKEN ? [env.REVIEW_TEXTS_TOKEN, 'token'] : [null, null];
+  return secret ? Buffer.from(crypto.hkdfSync('sha256', secret, KEY_SALT, `lane-recording:${info}`, 32)) : null;
 }
 
 function encrypt(key, text) {
@@ -57,10 +63,12 @@ function createFetchRecorder({ dir, key, now = Date.now, dateOf = () => null, ma
   const written = new Set();
   let t0 = null;
   let ready = false;
+  let headed = false;
 
   const append = (line) => {
     try {
       if (!ready) { fs.mkdirSync(path.join(dir, 'pages'), { recursive: true }); ready = true; }
+      if (!headed) { headed = true; fs.appendFileSync(path.join(dir, 'fetches.jsonl'), `${JSON.stringify({ header: true, keyVersion: KEY_VERSION })}\n`); }
       fs.appendFileSync(path.join(dir, 'fetches.jsonl'), `${JSON.stringify(line)}\n`);
     } catch { stats.errors++; }
   };
@@ -111,4 +119,4 @@ function createFetchRecorder({ dir, key, now = Date.now, dateOf = () => null, ma
   return { enabled, wrapFetchText, stats: () => ({ ...stats }) };
 }
 
-module.exports = { createFetchRecorder, keyFromEnv, decrypt, MAX_PAGE_BYTES, MAX_RUN_BYTES };
+module.exports = { createFetchRecorder, keyFromEnv, decrypt, KEY_VERSION, MAX_PAGE_BYTES, MAX_RUN_BYTES };

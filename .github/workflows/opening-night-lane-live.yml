@@ -328,6 +328,20 @@ jobs:
           if [ "$RC" -eq 3 ]; then echo "::notice::lane stood down (not armed, lease held elsewhere, or LANE_STANDDOWN set)"; exit 0; fi
           exit "$RC"
 
+      - name: Page recording status
+        if: always()
+        env:
+          HAS_KEY: ${{ (secrets.LANE_RECORDING_KEY != '' || secrets.REVIEW_TEXTS_TOKEN != '') && 'yes' || 'no' }}
+        run: |
+          if [ "$HAS_KEY" != "yes" ]; then
+            echo "::warning::Page recording is OFF: neither LANE_RECORDING_KEY nor REVIEW_TEXTS_TOKEN is set, so nothing was recorded."
+            echo "### Page recording is OFF (no LANE_RECORDING_KEY or REVIEW_TEXTS_TOKEN)" >> "$GITHUB_STEP_SUMMARY"
+          elif [ -f "$RUNNER_TEMP/lane-recording/fetches.jsonl" ]; then
+            echo "Page recording: $(wc -l < "$RUNNER_TEMP/lane-recording/fetches.jsonl") manifest lines, $(du -sk "$RUNNER_TEMP/lane-recording" | cut -f1) KB" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Page recording: on, nothing fetched" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Upload the lane's page recording (encrypted)
         if: always()
         continue-on-error: true # a recording is a nice-to-have, never turn the night red

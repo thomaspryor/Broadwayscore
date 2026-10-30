@@ -135,3 +135,16 @@ test('round trip: record the 2026-10-22 night through wireLaneNight, replay the 
   assert.deepEqual([...replayed.keys].sort(), [...recorded.keys].sort(), 'the replay finds exactly what the recorded night found');
   assert.ok(replayed.keys.size >= 18);
 });
+
+test('manifest starts with a key-version header; the loader ignores it; HKDF keys are stable', async () => {
+  const os = await import('node:os'); const fs = await import('node:fs'); const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rec-hdr-'));
+  const r = rec.createFetchRecorder({ dir, key: KEY });
+  await r.wrapFetchText(async () => ({ content: '<html>x</html>' }))('https://a.example/p');
+  const lines = fs.readFileSync(path.join(dir, 'fetches.jsonl'), 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  assert.deepEqual(lines[0], { header: true, keyVersion: rec.KEY_VERSION });
+  const { loadRecording } = await import('../../scripts/lib/lane-recorded-nights/recording-night.js');
+  assert.equal(loadRecording(dir, { key: KEY }).entries.length, 1);
+  assert.equal(rec.KEY_VERSION, 1);
+  assert.equal(rec.keyFromEnv({ LANE_RECORDING_KEY: 'k' }).toString('hex'), rec.keyFromEnv({ LANE_RECORDING_KEY: 'k' }).toString('hex'));
+});
