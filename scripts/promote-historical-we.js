@@ -53,7 +53,7 @@ const { venueFamily, decideWeHistoricalPromotion, WE_HISTORICAL_DISCOVERY_SOURCE
 const { buildReviewLedCandidates, findContinuingRun, reviewLedPath } = require('./lib/we-review-led-candidates');
 const { candidatesPath } = require('./discover-historical-shows-we');
 const { oltPath } = require('./build-we-olt-season');
-const { referenceCandidates } = require('./lib/we-season-reference');
+const { referenceCandidates, loadGapJustifications } = require('./lib/we-season-reference');
 const { loadPendingAddShows } = require('./lib/pending-add-shows');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
@@ -403,7 +403,7 @@ function main() {
   const queued = loadPendingAddShows().filter(s => s.category === 'west-end' && s.season !== season && !liveIds.has(s.id));
   const knownShows = [...showsData.shows, ...queued];
   const refCandidates = referenceFile
-    ? referenceCandidates({ season, reference: referenceFile.reference || [], shows: knownShows })
+    ? referenceCandidates({ season, reference: referenceFile.reference || [], shows: knownShows, justifications: loadGapJustifications(ROOT, season) })
     : [];
   // Dated listings first: a review-led row for the same production then
   // dedups against the listing row promoted ahead of it. Reference rows last:

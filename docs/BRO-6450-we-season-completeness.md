@@ -40,38 +40,52 @@ first season covered here, and its existing 2012 row was retained.
 
 ## Unmatched reference entries
 
-These are audit matches still to resolve, not approved exclusions. No entry
-was removed to improve the denominator. Production identity, dates, scope,
-retired IDs and venue validation need checking before any promotion. Adding
-shows, moving private review files and running the backfill supply recipe
-are outside this unattended worker's permitted actions.
+Update 2026-10-30: `data/audit/we-season-reference/gap-justifications.json`
+now records sourced reasons for misses, and the completeness check reads it
+(`referenceCoverage({ justifications })`, validated by
+`validateGapJustifications()` in the acceptance suite). Two kinds exist:
 
-2013-2014 needs at least two more reference matches to reach 85%; 2015-2016
-needs at least one. The other seasons meet the threshold but still have gaps.
+- same-production: the entry is an existing row under another title. It
+  counts as present only while that row exists and starts within 75 days
+  of the entry. Used for `Untold Stories (Hymn & Cocktail Sticks)` =
+  `alan-bennetts-untold-stories-west-end-2013` (same Duchess run, the two
+  plays of that bill) and `Bring Up the Bodies` = `wolf-hall-west-end-2014`
+  (RSC Aldwych repertory pairing, same company and closing date).
+- out-of-scope, category `non-professional-company` only: the National
+  Youth Theatre REP seasons at the Ambassadors (2013 Prince of Denmark,
+  Tory Boyz, Romeo and Juliet; 2014 Private Peaceful / Macbeth / Selfie;
+  2015 The Merchant of Venice / Wuthering Heights / Consensual; company
+  confirmed on each Theatricalia production page). These leave the
+  in-scope denominator and are still printed by the audit. Children's
+  shows, magic and solo comedy are deliberately NOT out of scope: the site
+  already lists `the-gruffalo-west-end-2010` and `impossible-west-end-2015`.
 
-- 2012-2013: Seussical the Musical!; Burn The Floor; Untold Stories (Hymn &
-  Cocktail Sticks); Potted Potter; Derren Brown: Infamous.
-- 2013-2014: Edward II; Prince of Denmark; Tory Boyz; Romeo and Juliet
-  (Ambassadors Theatre, September 2013); Jersey Boys (Piccadilly Theatre,
-  March 2014); Relative Values; The Silver Tassie; Bring Up the Bodies;
-  The Elephantom.
-- 2014-2015: Private Peaceful / Macbeth / Selfie; Peppa Pig's Big Splash;
-  Green Day's American Idiot; McQueen.
+| Season | Raw matched / reference | In scope | In-scope share | Meets 85% |
+| --- | --- | --- | --- | --- |
+| 2012-2013 | 52 / 56 | 56 | 93% | yes |
+| 2013-2014 | 44 / 52 | 49 | 90% | yes |
+| 2014-2015 | 42 / 46 | 45 | 93% | yes |
+| 2015-2016 | 51 / 61 | 60 | 85% | yes |
+| 2016-2017 | 48 / 52 | 52 | 92% | yes |
+
+Remaining open gaps (real productions to promote; each needs a sourced
+closing date, venue validation and supply before it can be added, and none
+was added here):
+
+- 2012-2013: Seussical the Musical!; Burn The Floor; Potted Potter;
+  Derren Brown: Infamous.
+- 2013-2014: Edward II; Jersey Boys (Piccadilly Theatre, March 2014, the
+  2008 production's transfer; no 2008 row exists); Relative Values;
+  The Silver Tassie; The Elephantom.
+- 2014-2015: Peppa Pig's Big Splash; Green Day's American Idiot; McQueen.
 - 2015-2016: People, Places and Things (Dorfman Theatre, September 2015);
-  The Rocky Horror Show; The Merchant of Venice / Wuthering Heights /
-  Consensual; All On Her Own; Derren Brown: Miracle; The Illusionists:
-  Witness The Impossible; Here We Go; Nina Conti: In Your Face; Impossible;
-  The Secret Garden.
+  The Rocky Horror Show; All On Her Own; Derren Brown: Miracle; The
+  Illusionists: Witness The Impossible; Here We Go; Nina Conti: In Your
+  Face; Impossible (July 2016 return of the 2015 run, 11 months later,
+  beyond the 183-day return window); The Secret Garden.
 - 2016-2017: Peter Pan Goes Wrong (Apollo Theatre, October 2016); Dirty
   Dancing (Phoenix Theatre, December 2016); Barber Shop Chronicles;
   Gangsta Granny.
-
-One gap needs title reconciliation rather than assuming a missing show:
-the reference's `Untold Stories (Hymn & Cocktail Sticks)` has the same
-Duchess Theatre run dates (2013-03-22 to 2013-06-15) as
-`alan-bennetts-untold-stories-west-end-2013`, titled
-`Alan Bennett's Untold Stories`. The current matcher does not equate them.
-No broad title-matching rule was added for this one potential alias.
 
 Existing rows for American Idiot (2016), People, Places & Things (2016),
 Peter Pan Goes Wrong (2015), Dirty Dancing (2013) and Jersey Boys (2021)
