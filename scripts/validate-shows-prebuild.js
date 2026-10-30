@@ -16,11 +16,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/validate-shows-prebuild.js\nPrebuild gate: fails on duplicate shows, skips + reports malformed rows (no flags).');
   process.exit(0);
 }
-const { checkForDuplicate, slugify, normalizeTitle } = require('./lib/deduplication');
-const { getMarketPool } = require('./lib/venue-classification');
-// Shared id-base rule (S5-T3) — the private regex that lived here listed only
-// west-end|off-broadway, so `-off-west-end-2026` ids kept a dangling `-off`.
-const { stripIdSuffix } = require('./lib/market-slug');
+const { findDuplicateShows, formatFinding, isTestFixture } = require('./lib/shows-duplicate-rule');
 
 const { partitionShowRows, formatSkipped } = require('./lib/show-row-guard');
 
@@ -72,63 +68,10 @@ if (skipped.length === 0) {
   }
 }
 
-// Exempt Express E2E test fixtures — they intentionally clone real titles.
-const isTestFixture = (s) => /(^|-)express-test(-|$)/.test(s.id || '');
+// The rule lives in lib/shows-duplicate-rule.js so the shows.json write guard
+// and add-show refuse the same rows this gate fails on (BRO-6578).
 const shows = allShows.filter((s) => !isTestFixture(s));
-
-const duplicates = [];
-
-// Fast O(n) duplicate detection using hash indexes.
-// Covers exact title, slug, ID-base, and normalized-title matches.
-// Fuzzy matching (Levenshtein) runs at ingestion time in discover-new-shows.js,
-// so the build gate only needs to catch exact duplicates that slipped through.
-const titleIndex = new Map();  // lowercase title → [shows]
-const slugIndex = new Map();   // slug → [shows]
-const idBaseIndex = new Map(); // id base (no year/market suffix) → [shows]
-const normIndex = new Map();   // normalized title → [shows]
-
-const addToIndex = (index, key, show) => {
-  if (!index.has(key)) index.set(key, []);
-  index.get(key).push(show);
-};
-
-for (const show of shows) {
-  const titleLower = show.title.toLowerCase().trim();
-  const slug = show.slug || slugify(show.title);
-  const idBase = stripIdSuffix(slug);
-  const norm = normalizeTitle(show.title);
-  const market = getMarketPool(show.category);
-
-  // Check each index for same-market collisions
-  for (const [key, index] of [
-    [titleLower, titleIndex],
-    [slug, slugIndex],
-    [idBase, idBaseIndex],
-    [norm.length >= 3 ? norm : null, normIndex],
-  ]) {
-    if (!key) continue;
-    const candidates = index.get(key);
-    if (candidates) {
-      const sameMarket = candidates.filter(c => getMarketPool(c.category) === market);
-      if (sameMarket.length > 0) {
-        // Use full checkForDuplicate for multi-production/cross-market logic
-        const check = checkForDuplicate(show, sameMarket);
-        if (check.isDuplicate) {
-          duplicates.push(
-            `"${show.title}" (${show.id}) duplicates "${check.existingShow.title}" (${check.existingShow.id}) — ${check.reason}`
-          );
-          break; // One duplicate finding per show is enough
-        }
-      }
-    }
-  }
-
-  // Add to all indexes
-  addToIndex(titleIndex, titleLower, show);
-  addToIndex(slugIndex, slug, show);
-  addToIndex(idBaseIndex, idBase, show);
-  if (norm.length >= 3) addToIndex(normIndex, norm, show);
-}
+const duplicates = findDuplicateShows(allShows).map(formatFinding);
 
 if (duplicates.length > 0) {
   console.error('\n\x1b[31mBUILD BLOCKED: Duplicate shows detected in shows.json\x1b[0m\n');

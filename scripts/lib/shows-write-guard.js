@@ -50,6 +50,7 @@
  * writes safely, just without merge — no worse than the pre-lock behavior.
  */
 
+const fs = require('fs');
 const path = require('path');
 const { createJsonWriteGuard, mergeArrayRecords } = require('./json-write-guard');
 const { syncStaleTheaterAddresses } = require('./venue-address-sync');
@@ -57,6 +58,7 @@ const { restoreHumanCorrectedOpeningDates } = require('./opening-date-guard');
 const { sanitizeVenueForWrite } = require('./venue-classification');
 
 const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./opening-night-completeness');
+const { newDuplicateFindings, formatFinding } = require('./shows-duplicate-rule');
 
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
@@ -72,6 +74,14 @@ function stripStaleUpcomingTags(shows) {
     if (hasStoredStaleUpcomingTag(s) && stripUpcomingTag(s)) ids.push(s.id);
   }
   return ids;
+}
+
+/** The rows currently on disk, or [] when there is no file yet. */
+function readOnDiskShows(filePath) {
+  let raw;
+  try { raw = fs.readFileSync(filePath, 'utf8'); } catch (e) { if (e.code === 'ENOENT') return []; throw e; }
+  const parsed = JSON.parse(raw);
+  return Array.isArray(parsed && parsed.shows) ? parsed.shows : [];
 }
 
 /**
@@ -92,6 +102,8 @@ function stripStaleUpcomingTags(shows) {
  */
 function createShowsWriteGuard(showsPath, options = {}) {
   const dryRun = !!(options && options.dryRun);
+  // Set per saveShows() call; save() is synchronous, so no call sees another's.
+  let allowDuplicates = false;
   const guard = createJsonWriteGuard(showsPath, {
     recordsKey: 'shows',
     shape: 'array',
@@ -118,6 +130,16 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // A person's openingDate correction outlives every writer (BRO-4911).
       const restored = restoreHumanCorrectedOpeningDates(finalData.shows);
       if (restored.length) console.log(`::warning::shows-write-guard: kept human-corrected openingDate for ${restored.map((r) => `${r.id} (${r.from} -> ${r.to})`).join(', ')}`);
+      // A row the prebuild duplicate gate would fail on never reaches disk
+      // (BRO-6578: one census stub blocked every Vercel build for 3h). Only
+      // pairs this save creates are refused; the lock is held, so the file
+      // read here is the state being replaced.
+      if (!allowDuplicates) {
+        const added = newDuplicateFindings(readOnDiskShows(guard.filePath), finalData.shows);
+        if (added.length) {
+          throw new Error(`shows-write-guard: refusing to write ${added.length} new duplicate show row(s); the prebuild gate would fail the build:\n${added.map((f) => `  - ${formatFinding(f)}`).join('\n')}\nUse the existing row instead of adding one, or pass saveShows(data, { allowDuplicates: true }) for a deliberate distinct production.`);
+        }
+      }
     },
   });
 
@@ -129,12 +151,17 @@ function createShowsWriteGuard(showsPath, options = {}) {
    * @param {object} [saveOptions]
    * @param {string} [saveOptions.reason] - Which validator/site is saving.
    *   Recorded on the dry-run ledger; never forwarded to the real write.
+   * @param {boolean} [saveOptions.allowDuplicates] - Skip the duplicate-row
+   *   refusal for this save (a deliberate distinct production). Never forwarded.
    * @param {boolean} [saveOptions.allowShrink] - Forwarded to the real write
    *   (see json-write-guard.js save()).
    */
   function saveShows(data, saveOptions = {}) {
-    const { reason, ...writeOptions } = saveOptions || {};
-    if (!dryRun) return guard.save(data, writeOptions);
+    const { reason, allowDuplicates: allowDup, ...writeOptions } = saveOptions || {};
+    if (!dryRun) {
+      allowDuplicates = !!allowDup;
+      try { return guard.save(data, writeOptions); } finally { allowDuplicates = false; }
+    }
     const showCount = data && Array.isArray(data.shows) ? data.shows.length : null;
     const entry = { reason: reason || null, showCount, at: new Date().toISOString() };
     suppressedWrites.push(entry);

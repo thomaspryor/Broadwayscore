@@ -116,7 +116,12 @@ function buildAction(row, shows) {
   if (dup) return { skip: `exists as ${dup.id}` };
   // Same guards CI applies, run here so a bad row never reaches a plan.
   const trial = applyAddShow(shows.map((s) => ({ ...s })), { type: 'add-show', show });
-  if (!trial.ok) return { skip: trial.reason };
+  if (!trial.ok) {
+    // An existing row under another id (BRO-6578: tristan-yseult vs tristan-and-yseult)
+    // is the production already: report it the same way as the id/title match above.
+    const existing = /duplicates existing "([^"]+)"/.exec(trial.reason);
+    return { skip: existing ? `exists as ${existing[1]}` : trial.reason };
+  }
   return { action: { type: 'add-show', show } };
 }
 
