@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-6630-fc",
+  "planId": "0b038223-0306-4aa8-a0c7-078584156c93",
+  "status": "pending",
+  "createdAt": "2026-10-30T18:47:31.800Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6630 fact-check: Afterglow (2017) played the Loft at the Davenport, not the main stage (BroadwayWorld show page and both checkers)",
+    "steps": [
+      "shows.json: afterglow-off-broadway-2017.venue"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "afterglow-off-broadway-2017",
+        "field": "venue",
+        "oldValue": "Davenport Theatre",
+        "newValue": "The Loft at the Davenport Theatre",
+        "description": "shows.json: afterglow-off-broadway-2017.venue"
+      }
+    ]
+  }
+}
