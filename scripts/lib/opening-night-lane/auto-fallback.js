@@ -206,7 +206,8 @@ function releaseStuckLease(state, { show, night, holder }) {
   const key = leaseKey(show, night);
   const leases = { ...((state && state.leases) || {}) };
   const entry = leases[key];
-  if (!entry) return { ok: true, released: false, state: { ...(state || {}), leases } };
+  // Gone already: the lane released it (finished, or exited) after the decision. Not stuck; the next tick decides.
+  if (!entry) return { ok: false, reason: 'lease-gone' };
   if (entry.holder !== holder) return { ok: false, reason: 'other-holder', holder: entry.holder };
   delete leases[key];
   return { ok: true, released: true, holder: entry.holder, state: { ...state, leases } };
@@ -256,14 +257,20 @@ function stuckVerdict(progress, { embargoMs, now }) {
   const fresh = (iso) => nowMs - Date.parse(iso || '') <= OBSERVATION_FRESH_MIN * MIN;
   if (!fresh(c.at)) return no('census reading stale');
   if (!Number.isFinite(p.liveCount) || !fresh(p.liveSeenAt)) return no('live count unknown');
+  // The observed release only ever delays the clock: an early review (Talkin' Broadway can run a day ahead) never
+  // starts it before the embargo.
   const seenMs = Date.parse(p.releaseSeenAt || '');
-  const releaseMs = Number.isFinite(seenMs) ? seenMs : embargoMs;
+  const releaseMs = Number.isFinite(seenMs) ? (Number.isFinite(embargoMs) ? Math.max(seenMs, embargoMs) : seenMs) : embargoMs;
   if (!Number.isFinite(releaseMs)) return no('release unknown');
   if (nowMs < releaseMs + STUCK_AFTER_RELEASE_MIN * MIN) return no(`before release + ${STUCK_AFTER_RELEASE_MIN} min`);
-  if (!c.missing.length) return no(`live site has all ${c.count} census reviews`);
+  const missing = Array.isArray(c.missing) ? c.missing : [];
+  if (!missing.length) return no(`live site has all ${c.count} census reviews`);
+  // A census outlet the live site carries under another name shows up as missing; a count at or above the census
+  // means the site is not behind.
+  if (!(p.liveCount < c.count)) return no(`live site shows ${p.liveCount} reviews, not fewer than the census's ${c.count}`);
   const flatMin = Math.floor((nowMs - Date.parse(p.liveRiseAt || '')) / MIN);
   if (!(flatMin >= STUCK_FLAT_MIN)) return no(`live count rose ${Number.isFinite(flatMin) ? `${flatMin} min ago` : 'recently'}`);
-  return { stuck: true, reason: `the live site shows ${p.liveCount} reviews, missing ${c.missing.length} of the census's ${c.count} (${c.missing.slice(0, 5).join(', ')}), and nothing new went live for ${flatMin} min` };
+  return { stuck: true, reason: `the live site shows ${p.liveCount} reviews, missing ${missing.length} of the census's ${c.count} (${missing.slice(0, 5).join(', ')}), and nothing new went live for ${flatMin} min` };
 }
 
 /** Branch holding the per-night fallback claims, apart from the lease branch: lease-store commits one file per tip. */
@@ -330,6 +337,10 @@ function runWatchdogTick(input, ports) {
     if (!r.ok && r.reason === 'other-holder') {
       log(`lease now held by ${r.holder}, not the stuck ${decision.holder}; left untouched, no fallback`);
       return { action: 'wait', reason: 'lease changed hands before release', leaseLive: true, done: false };
+    }
+    if (!r.ok && r.reason === 'lease-gone') {
+      log(`lease released by ${decision.holder} before the stuck release; no fallback, the next tick decides`);
+      return { action: 'wait', reason: 'lease released before the stuck release', done: false };
     }
     if (!r.ok) {
       // A live lease that stays keeps the old path stood down, so dispatching now would only double the writers.

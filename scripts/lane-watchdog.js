@@ -21,6 +21,7 @@
  */
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
+const path = require('path');
 const { execFileSync } = require('child_process');
 const af = require('./lib/opening-night-lane/auto-fallback');
 const { loadShows, findShow, readVarsLive, output, arg, flag } = require('./lane-auto-fallback');
@@ -65,6 +66,9 @@ function createObserver(show, night, { embargoMs }) {
         const market = show.market === 'west-end' ? 'west-end' : (show.market || 'broadway');
         const { census, note } = await buildPressNightCensus({ showId: show.id, market, show, bwwUrl: cache && cache.url, timeoutMs: FETCH_TIMEOUT_MS });
         // The probe's exclusions (BRO-6070): reviews the rebuild keeps off the site never count as missing.
+        // The lane writes tonight's review files (and their exclusion flags) after this job checked them out, so pull
+        // the show's folder first; a stale copy would count reviews the lane rightly kept off the site as missing.
+        refreshReviewTexts();
         const state = require('./lib/press-night-review-state');
         const pn = require('./lib/press-night-record');
         const files = state.readReviewFileState(show.id, show);
@@ -73,7 +77,11 @@ function createObserver(show, night, { embargoMs }) {
           : [];
         cache = { census: pn.filterCensus(census, excluded), builtAt: nowMs, url: census.bwwRoundupUrl || (cache && cache.url) || null };
         console.log(`census: ${cache.census.count} reviews (${note})${excluded.length ? `, ${excluded.length} excluded` : ''}`);
-      } catch (e) { console.log(`::warning::census build failed (${String(e.message).slice(0, 120)}); keeping the last one`); }
+      } catch (e) {
+        // Wait out the refresh interval before trying again, so a failing source is not re-fetched (and paid for) every tick.
+        cache = { ...(cache || { census: null, url: null }), builtAt: nowMs };
+        console.log(`::warning::census build failed (${String(e.message).slice(0, 120)}); keeping the last one`);
+      }
     }
     if (!prod) return { liveCount: null, census: null };
     const { decodeSlimShow } = require('./show-status');
@@ -84,6 +92,15 @@ function createObserver(show, night, { embargoMs }) {
     const v = censusVerdict(cache.census, deployedOutletIds(prod), { suppressed: CI_UNFETCHABLE_OUTLETS });
     return { liveCount, census: { count: cache.census.count, missing: v.missing.map((e) => e.outletId) } };
   };
+}
+
+/** Fast-forward the job's data/review-texts checkout (the workflow's sparse clone) to the lane's latest writes. */
+function refreshReviewTexts() {
+  const dir = path.join(__dirname, '..', 'data', 'review-texts');
+  if (!fs.existsSync(path.join(dir, '.git'))) return;
+  try {
+    execFileSync('git', ['-C', dir, 'pull', '--ff-only', '-q'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 60000 });
+  } catch (e) { console.log(`::warning::review-texts refresh failed (${String(e.message).slice(0, 120)}); using the checked-out copy`); }
 }
 
 /** Lane night run status from `gh run list`: active | success | failure | none | unknown. */

@@ -353,8 +353,8 @@ const liveLease = (now, holder = 'gha-1') => ({
 });
 
 test('stuck: a live count still rising is never stuck, even below the census long after the release', () => {
-  // One more review goes live every 20 minutes; checked at 04:45 (embargo + 105 min), last rise 04:30.
-  const p = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T04:45:00Z', (t) => Math.floor((t - at('2026-11-13T02:30:00Z')) / (20 * 60000)), fromEmbargo));
+  // One more review goes live every 30 minutes (4 of 5 by 04:45, embargo + 105 min), last rise 04:30.
+  const p = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T04:45:00Z', (t) => Math.floor((t - at('2026-11-13T02:30:00Z')) / (30 * 60000)), fromEmbargo));
   const v = af.stuckVerdict(p, { embargoMs: at('2026-11-13T03:00:00Z'), now: '2026-11-13T04:45:00Z' });
   assert.equal(v.stuck, false);
   assert.match(v.reason, /rose 15 min ago/);
@@ -422,10 +422,38 @@ test('stuck: a lease taken over by another holder before the release is left unt
   assert.equal(r.action, 'wait');
   assert.deepEqual(ports.calls, ['release']);
   assert.equal(ports.box.state.leases[KEY].holder, 'gha-2', 'the other holder keeps its lease');
-  // The pure transition, directly: only the stuck holder's lease is released; none at all is ok.
+  // The pure transition, directly: only the stuck holder's lease is released.
   const other = af.releaseStuckLease(liveLease(now, 'gha-2'), { show: SHOW.id, night: NIGHT, holder: 'gha-1' });
   assert.deepEqual(other, { ok: false, reason: 'other-holder', holder: 'gha-2' });
-  assert.equal(af.releaseStuckLease({ leases: {} }, { show: SHOW.id, night: NIGHT, holder: 'gha-1' }).released, false);
+});
+
+test('stuck: a lease the lane released before the stuck release is not a stuck night (no dispatch, no page)', () => {
+  const now = '2026-11-13T03:45:00Z';
+  const p = observe(ticks('2026-11-13T02:30:00Z', now, () => 2, fromEmbargo));
+  const ports = fakePorts({ state: liveLease(now) });
+  // The lane finishes and releases between the decision and the compare-and-swap.
+  const release = ports.release;
+  ports.release = (fn) => { ports.box.state = { leases: {} }; return release(fn); };
+  const r = af.runWatchdogTick({ show: SHOW, night: NIGHT, now, holder: 'watchdog:1', progress: p }, ports);
+  assert.equal(r.action, 'wait');
+  assert.deepEqual(ports.calls, ['release']);
+  assert.deepEqual(af.releaseStuckLease({ leases: {} }, { show: SHOW.id, night: NIGHT, holder: 'gha-1' }), { ok: false, reason: 'lease-gone' });
+});
+
+test('stuck: an early review never starts the clock before the embargo, and a live count at the census is not behind', () => {
+  const embargoMs = at('2026-11-13T03:00:00Z');
+  // The census lists a review from 02:30 (a day-early outlet): the clock still starts at the 03:00 embargo.
+  const early = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T03:40:00Z', () => 2, () => CENSUS5));
+  assert.equal(early.releaseSeenAt, iso('2026-11-13T02:30:00Z'));
+  assert.match(af.stuckVerdict(early, { embargoMs, now: '2026-11-13T03:40:00Z' }).reason, /before release \+ 45 min/);
+  assert.equal(af.stuckVerdict(observe(ticks('2026-11-13T03:40:00Z', '2026-11-13T03:45:00Z', () => 2, () => CENSUS5), early),
+    { embargoMs, now: '2026-11-13T03:45:00Z' }).stuck, true);
+  // One census outlet the site carries under another name: listed as missing, but the live count matches the census.
+  const alias = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T05:00:00Z', () => 5, () => ({ count: 5, missing: ['nytimes'] })));
+  assert.match(af.stuckVerdict(alias, { embargoMs, now: '2026-11-13T05:00:00Z' }).reason, /not fewer than the census/);
+  // A census record without a missing list (hand-edited progress) reads as nothing missing, never a crash.
+  const bare = { ...alias, liveCount: 2, census: { count: 5, at: iso('2026-11-13T05:00:00Z') } };
+  assert.equal(af.stuckVerdict(bare, { embargoMs, now: '2026-11-13T05:00:00Z' }).stuck, false);
 });
 
 test('stuck: unknown or stale readings, a complete live site, an owner hold and a late release are not stuck', () => {
@@ -470,6 +498,8 @@ test('stuck: the census never comes from the lane, and the watchdog workflow car
   // Progress carried in for a different show or night is dropped, never used to judge this one.
   assert.match(cli, /parseProgress\(arg\('progress'\), `\$\{show\.id\}\|\$\{night\}`\)/);
   assert.match(cli, /if \(p\.key === key\) return p;/);
+  // Tonight's exclusions: the census refresh pulls the lane's latest review files first.
+  assert.match(cli, /refreshReviewTexts\(\);\n\s+const state = require\('\.\/lib\/press-night-review-state'\)/);
   // The census lives outside the lane folder, so it is not part of the lane code hash.
   assert.ok(!/press-night-census|review-census|scraper/.test(read('scripts/lib/opening-night-lane/auto-fallback.js').replace(/^ \*.*$/gm, '')));
   assert.match(read('scripts/press-night-record.js'), /require\('\.\/lib\/press-night-census'\)/);
