@@ -29,6 +29,7 @@ const trust = require('./trust-model');
 const { canonicalUrl } = require('./discovery');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
+const { getHardPaywallDomain, HARD_PAYWALL_FLOORS } = require('../paywall-completeness');
 
 // The ensemble refuses selected text under 50 chars (ensemble-scorer.ts prepareScoringInput): a shorter excerpt is no fallback.
 const MIN_EXCERPT_CHARS = 50;
@@ -47,6 +48,19 @@ class LaneRetryError extends Error { constructor(msg) { super(msg); this.name = 
 class LanePermanentError extends Error { constructor(msg) { super(msg); this.name = 'LanePermanentError'; this.permanent = true; } }
 
 const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
+
+/**
+ * A not_a_review verdict on a paywall teaser: the page is a known hard-paywall host (paywall-completeness.js
+ * HARD_PAYWALL_FLOORS: NYT, WSJ, New Yorker, Washington Post, Chicago Tribune) and its text is under that host's floor
+ * for a complete review. A teaser is a headline and a paragraph, so "not a review" judges the teaser, not the review the
+ * aggregator cited (BRO-6066: the 10-29 WSJ review was lost for good to not_a_review). A full-length page judged
+ * not_a_review is still a verdict.
+ */
+function isTeaserNotAReview(rejection, url, text) {
+  if (!/^not_a_review\b/.test(String(rejection || ''))) return false;
+  const domain = getHardPaywallDomain(url);
+  return !!domain && String(text || '').trim().length < HARD_PAYWALL_FLOORS[domain];
+}
 
 /**
  * @param {object} args
@@ -70,6 +84,7 @@ function createInlineScoring({
   const maxAttempts = retryMs.length + 1;
   const fetched = new Map(); // key -> the fetch result, so a score retry never pays for the page again
   const shortLen = new Map(); // key -> length of the last under-the-floor extraction
+  const teaserVerdict = new Map(); // key -> the scorer's not_a_review on a paywall teaser, waiting for an aggregator excerpt
   // Rebuild retry state from the night's failure record (a restart must not reset attempts or reopen terminal verdicts).
   for (const f of failures.readFailures(ledgerDir, show.id, night).failures) {
     const id = `${f.stage}:${f.reviewKey}`;
@@ -102,7 +117,15 @@ function createInlineScoring({
 
   async function fetchReview(candidate) {
     const key = candidate.key || canonicalUrl(candidate.url);
-    if (fetched.has(key)) { gate('score', key); return fetched.get(key); } // a score retry: no second fetch, no second `fetched` cost
+    if (fetched.has(key)) { // a score retry: no second fetch, no second `fetched` cost
+      gate('score', key);
+      const out = fetched.get(key);
+      // A later pass can bring an aggregator that prints an excerpt the first sighting lacked (Playbill lists links only;
+      // BWW quotes each critic): keep it, a teaser verdict waits for exactly that.
+      const more = usableExcerpts(candidate.excerpts);
+      if (Object.keys(more).length) out.excerpts = { ...(out.excerpts || {}), ...more };
+      return out;
+    }
     gate('fetch', key);
     const aggregator = { ...(candidate.excerpts ? { excerpts: candidate.excerpts } : {}), ...(aggregatorFor(candidate) || {}) };
     const excerpts = usableExcerpts(aggregator.excerpts);
@@ -185,12 +208,26 @@ function createInlineScoring({
     let r;
     let fromExcerpt = false;
     try {
-      r = await scoreText(row.fullText, ctx);
+      // The teaser was judged once already: never pay the models for it again. With an excerpt now, score that; without
+      // one, wait (bounded by the retry schedule) for an aggregator that prints one.
+      if (teaserVerdict.has(key)) {
+        if (!hasExcerpts) return fail('score', key, new Error(`scorer rejected the paywall teaser (${teaserVerdict.get(key)}); waiting for an aggregator excerpt`));
+        r = { rejected: true, rejection: teaserVerdict.get(key) };
+      } else r = await scoreText(row.fullText, ctx);
+      // not_a_review on a known hard-paywall host's teaser judges the teaser. With an aggregator excerpt the excerpt is
+      // scored; without one it is retried on the backoff (not a verdict yet), since a later pass may bring the excerpt.
+      if (r && r.rejected && row.fullText && isTeaserNotAReview(r.rejection, row.url, row.fullText)) {
+        teaserVerdict.set(key, r.rejection);
+        if (!hasExcerpts) return fail('score', key, new Error(`scorer rejected the paywall teaser (${r.rejection}, ${row.fullText.length} chars); waiting for an aggregator excerpt`));
+        failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'score', reason: `scorer judged the paywall teaser (${r.rejection}); scoring the aggregator excerpt`, attempt: 1, terminal: false, at: now() });
+        r = await scoreText('', { ...ctx, contentTier: 'excerpt', excerpts });
+        fromExcerpt = true;
+      }
       // The scorer's input gate refusing the PAGE text (a paywall teaser, or a page that is mostly chrome) says nothing
       // about the review when an aggregator printed the critic's own words: score those once, excerpt-only. The 10-22
       // WSJ review was lost for good to input_validation_failed:body_too_short (BRO-6066). A wrong-show or non-review
       // verdict is the scorer's judgement of the review itself and is never retried on an excerpt.
-      if (r && r.rejected && /^input_validation_failed/.test(String(r.rejection || '')) && row.fullText && hasExcerpts) {
+      if (!fromExcerpt && r && r.rejected && /^input_validation_failed/.test(String(r.rejection || '')) && row.fullText && hasExcerpts) {
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'score', reason: `scorer refused the page text (${r.rejection}); scoring the aggregator excerpt`, attempt: 1, terminal: false, at: now() });
         r = await scoreText('', { ...ctx, contentTier: 'excerpt', excerpts });
         fromExcerpt = true;
@@ -252,4 +289,4 @@ function realFetchPorts() {
 }
 
 module.exports = {
-  DEFAULT_RETRY_MS, usableExcerpts, LaneRetryError, LanePermanentError, createInlineScoring, ensembleScoreText, realFetchPorts };
+  DEFAULT_RETRY_MS, usableExcerpts, isTeaserNotAReview, LaneRetryError, LanePermanentError, createInlineScoring, ensembleScoreText, realFetchPorts };

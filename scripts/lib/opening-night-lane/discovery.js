@@ -268,13 +268,26 @@ function citedCandidates(links, via, excerptField) {
   return links.map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via, ...(l.excerpt ? { excerpts: { [excerptField]: l.excerpt } } : {}) }));
 }
 
+/**
+ * A review roundup that cites no known outlet is a page the lane cannot read (a layout change, a card picked as the
+ * body), not a roundup without reviews: BWW's and Playbill's both parsed to one podcast or sidebar link for a whole
+ * night, silently (BRO-6066). Throwing puts it in the pass's errors, so the shadow report names it.
+ */
+function requireKnownOutletLinks(links, pageUrl, name) {
+  if (!links.some((l) => resolveOutletFromUrl(l.url))) {
+    throw new Error(`${name}: roundup ${pageUrl} parsed to ${links.length} cited link(s), none on a known outlet; page layout changed?`);
+  }
+  return links;
+}
+
 function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) {
   return {
     name: 'bww-roundup', kind: 'aggregator', phase: 'cheap',
     async discover({ show, fetchText }) {
       const roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title, { openingDate: show.openingDate, showId: show.id });
       if (!roundup) return [];
-      return citedCandidates(extractCitedLinks(await fetchText(roundup), roundup), roundup, 'bwwExcerpt');
+      const links = requireKnownOutletLinks(extractCitedLinks(bwwRoundupBody(await fetchText(roundup)), roundup), roundup, 'bww-roundup');
+      return citedCandidates(links, roundup, 'bwwExcerpt');
     },
   };
 }
@@ -412,9 +425,24 @@ function showScoreAdapter({ urlMap = {}, allShows = [] } = {}) {
  * same-host links, and each off-host one must resolve to a known outlet.
  */
 function playbillArticleBody(html) {
+  return aggregatorStoryBody(html, 'main .prose');
+}
+
+/** The blocks of a page matching `selector`, joined; the whole page when none match (bodyScope then decides as before). */
+function aggregatorStoryBody(html, selector) {
   const $ = require('cheerio').load(String(html || ''));
-  const prose = $('main .prose');
-  return prose.length ? prose.map((_, el) => $.html(el)).get().join('\n') : html;
+  const blocks = $(selector);
+  return blocks.length ? blocks.map((_, el) => $.html(el)).get().join('\n') : html;
+}
+
+/**
+ * A BWW Review Roundup's own text. The same trap as Playbill's: BWW now puts ticket-deal and podcast cards on the page as
+ * <article> elements while the roundup body is a <div class="disnep-area"> inside <main>, so bodyScope's "first <article>"
+ * read one podcast link and none of the ~20 reviews on 2026-10-29 (A Few Good Men; WSJ's BWW excerpt was lost with
+ * them, BRO-6066). The roundup body is the page's `.disnep-area` block(s); with none the whole page goes to bodyScope.
+ */
+function bwwRoundupBody(html) {
+  return aggregatorStoryBody(html, '.disnep-area');
 }
 
 /** Playbill Verdict: the category page -> this show's "Read the reviews" roundup -> the links it cites. */
@@ -430,7 +458,8 @@ function playbillVerdictAdapter() {
       // has to be dated inside opening night +/- 1 day.
       const when = extractPublishDate(html);
       if (!when || !admitLaneCandidate({ source: 'outlet-index', aggregatorCited: false, publishDate: when, night, ...(timeZone ? { timeZone } : {}) }).admit) return [];
-      return citedCandidates(extractCitedLinks(playbillArticleBody(html), hit.articleUrl), hit.articleUrl, 'playbillVerdictExcerpt');
+      const links = requireKnownOutletLinks(extractCitedLinks(playbillArticleBody(html), hit.articleUrl), hit.articleUrl, 'playbill-verdict');
+      return citedCandidates(links, hit.articleUrl, 'playbillVerdictExcerpt');
     },
   };
 }
@@ -852,7 +881,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 }
 
 module.exports = {
-  SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
+  SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
   nonReviewReason, hasReviewSignal, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
