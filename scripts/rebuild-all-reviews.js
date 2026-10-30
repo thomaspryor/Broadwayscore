@@ -3570,6 +3570,28 @@ showDirs.forEach(showId => {
           }
         } catch {}
       }
+      // Self-heal (BRO-6496): clear a URL-path flag that only the show's own title
+      // caused ("/review-london-assurance" on London Assurance), then let the
+      // URL-path guard further down re-judge the file with title masking.
+      if (data.url && data.wrongProduction && !data.wrongProductionOverride
+          && typeof data.wrongProductionNote === 'string' && data.wrongProductionNote.startsWith('URL-path cross-market:')) {
+        try {
+          const healPath = new URL(data.url).pathname.toLowerCase();
+          const healMarket = data.wrongProductionNote.includes('London indicator') ? 'uk' : 'us';
+          const healTitle = showById[showId] && showById[showId].title;
+          if (healTitle
+              && urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket })
+              && !urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket, showTitle: healTitle })) {
+            delete data.wrongProduction;
+            delete data.wrongProductionNote;
+            data.wrongProductionAutoCleared = 'rebuild: URL-path indicator was the show title';
+            data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+            if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (URL-path matched show title)');
+            try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
+            stats.autoClearedUrlPathTitleFp = (stats.autoClearedUrlPathTitleFp || 0) + 1;
+          }
+        } catch (e) { /* ignore malformed URLs */ }
+      }
       // allowEarlyDate/allowCrossMarket override wrongProduction — user explicitly approved the review.
       // EXCEPT: if there's an explicit wrongProductionReason (manual flag, audit-driven, CV-promoted)
       // OR contentVerification confirms wrongProduction with high confidence, keep the flag. Cross-market
@@ -4079,26 +4101,6 @@ showDirs.forEach(showId => {
       // (and vice versa) even from dual-market outlets. The outlet may cover both markets,
       // but a URL containing "-broadway-review" or "on-broadway" is reviewing a specific production.
       // Excludes broadwayworld.com (outlet domain, not a production indicator).
-      // Self-heal (BRO-6496): clear a URL-path flag that only the show's own title
-      // caused ("/review-london-assurance" on London Assurance), then let the
-      // guard below re-judge the file with title masking.
-      if (data.url && data.wrongProduction && !data.wrongProductionOverride
-          && typeof data.wrongProductionNote === 'string' && data.wrongProductionNote.startsWith('URL-path cross-market:')) {
-        try {
-          const healPath = new URL(data.url).pathname.toLowerCase();
-          const healMarket = data.wrongProductionNote.includes('London indicator') ? 'uk' : 'us';
-          const healTitle = showById[showId] && showById[showId].title;
-          if (healTitle
-              && urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket })
-              && !urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket, showTitle: healTitle })) {
-            delete data.wrongProduction;
-            delete data.wrongProductionNote;
-            if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (URL-path matched show title)');
-            try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
-            stats.autoClearedUrlPathTitleFp = (stats.autoClearedUrlPathTitleFp || 0) + 1;
-          }
-        } catch (e) { /* ignore malformed URLs */ }
-      }
       // [GUARD:URL-PATH-CROSS-MARKET] outer guard covers both inner sites
       if (data.url && !data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !data.allowCrossMarket && !laneOk('tourCrossMarket')) {
         try {
