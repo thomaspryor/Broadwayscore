@@ -199,6 +199,13 @@ jobs:
           git commit -m "data: auto-discover critic author-page overrides (BRO-6587)"
           bash scripts/lib/push-with-retry.sh 5 main
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: audit-critic-coverage-discover
+
       - name: Fail on skipped probes
         if: steps.discover.outputs.failed == '1'
         run: |
