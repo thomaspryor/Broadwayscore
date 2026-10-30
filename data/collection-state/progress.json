@@ -258,7 +258,10 @@
     "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
     "the-lion-king-tour-2021/ground--unknown.json",
     "the-lion-king-tour-2021/orlando-sentinel--matthew-j-palm.json",
-    "wicked-tour-2021/baltimoremediablog--nfrisone.json"
+    "wicked-tour-2021/baltimoremediablog--nfrisone.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json"
   ],
   "failed": [
     "coal-country-off-broadway-2022/theatermania--hayley-levitt.json",
@@ -372,7 +375,14 @@
     "mj-2022/broadwaynews--charles-isherwood.json",
     "mj-2022/nydailynews--karu-f-daniels.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
-    "six-2021/whatsonstage--alex-wood.json"
+    "six-2021/whatsonstage--alex-wood.json",
+    "girls-off-west-end-2026/letterboxd--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -484,7 +494,9 @@
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
       "the-outsiders-2024/stageandcinema--michael-m-landman-karny.json",
       "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
-      "the-lion-king-tour-2021/orlando-sentinel--matthew-j-palm.json"
+      "the-lion-king-tour-2021/orlando-sentinel--matthew-j-palm.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
     ],
     "amp": [
       "data/review-texts/the-heart-off-broadway-2026/variety--cynthia-littleton.json"
@@ -587,10 +599,11 @@
       "data/review-texts/king-lear-crucible-regional-2026/thestage--holly-williams.json",
       "data/review-texts/present-laughter-royal-bath-regional-2026/thestage--ben-kulvichit.json",
       "data/review-texts/a-history-of-paper-pitlochry-festival-regional-2026/thestage--fergus-morgan.json",
-      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
-      "data/review-texts/maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
-      "data/review-texts/the-outsiders-2024/hollywood-reporter--angie-han.json",
-      "data/review-texts/the-outsiders-2024/hollywood-reporter--david-rooney.json"
+      "data/review-texts/the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+      "data/review-texts/the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "waitress-2016/ap--mark-kennedy.json",
@@ -686,7 +699,7 @@
     ]
   },
   "startTime": "2026-10-29T20:08:46.882Z",
-  "lastProcessed": "wicked-tour-2021/baltimoremediablog--nfrisone.json",
+  "lastProcessed": "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
   "log": [
     {
       "t": "2026-10-29T22:20:00.411Z",
@@ -801,6 +814,18 @@
       "event": "bb-session",
       "session": "77686462",
       "url": "https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-"
+    },
+    {
+      "t": "2026-10-30T00:32:09.145Z",
+      "event": "bb-session",
+      "session": "36a19b62",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T00:33:15.048Z",
+      "event": "bb-session",
+      "session": "888de46d",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
   "recoveredAfterFailure": [
