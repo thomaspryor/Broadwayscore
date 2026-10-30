@@ -534,3 +534,100 @@ Per show (ours before the audit, right-production reviews missing, count after t
 | rock-of-ages-off-broadway-2019 | 5 | 0 | 5 | complete |
 | molly-sweeney-off-broadway-2019 | 3 | 1 | 4 | ingested (4 skipped: unregistered outlet or not a review) |
 | caesar-and-cleopatra-off-broadway-2019 | 4 | 10 | 14 | ingested |
+
+## Completeness audit of the remaining OB historical backfill (2026-10-30, BRO-6640)
+
+Scope: the 284 Off-Broadway historical shows (discoverySource ob-historical:*, or historical off-broadway) that BRO-6629 did not check. Each went through scripts/audit-show-review-gap.js (aggregators, outlet census, date-windowed SERP) with --include-closed. Candidates were kept only for the right production (currentRunOnly), an outlet we did not already hold for the show, and a slug that names the show; then ingested with dispatch-ingest-batch.js (two plans, at most 10 runs queued).
+
+Result: 209 of 284 shows had no right-production gap. 75 shows had 205 missing reviews. After ingest, 179 of the 205 landed clean, 14 were flagged on ingest (wrong production, non-review or roundup; left flagged), and 12 could not be fetched (paywall or dead link). The same ingest runs found 26 more reviews for these shows, so 205 reviews were added in all. Ours before is the reviews.json count at the start; After ingest adds the clean new review-text files.
+
+| Show | Ours before | Missing (right production) | After ingest | Note |
+|---|---|---|---|---|
+| shear-madness-off-broadway-2015 | 0 | 23 | 23 | complete |
+| a-man-of-no-importance-off-broadway-2022 | 11 | 10 | 22 | complete; 1 extra found by the ingest run |
+| the-counter-off-broadway-2024 | 11 | 9 | 20 | complete |
+| teeth-off-broadway-2024 | 7 | 8 | 11 | 1 flagged on ingest; 3 not fetched |
+| cornelia-street-off-broadway-2023 | 9 | 7 | 15 | 1 not fetched |
+| drag-the-musical-off-broadway-2024 | 10 | 7 | 16 | 1 flagged on ingest |
+| someone-spectacular-off-broadway-2024 | 9 | 7 | 15 | 1 flagged on ingest |
+| the-harder-they-come-off-broadway-2023 | 12 | 7 | 23 | complete; 4 extra found by the ingest run |
+| wet-brain-off-broadway-2023 | 9 | 7 | 18 | complete; 2 extra found by the ingest run |
+| crumbs-from-the-table-of-joy-off-broadway-2023 | 3 | 5 | 10 | complete; 2 extra found by the ingest run |
+| table-17-off-broadway-2024 | 15 | 5 | 20 | complete |
+| akhnaten-off-broadway-2019 | 0 | 4 | 4 | complete |
+| empire-the-musical-off-broadway-2024 | 10 | 4 | 14 | complete |
+| forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024 | 15 | 4 | 18 | 1 not fetched |
+| lights-out-nat-king-cole-off-broadway-2025 | 8 | 4 | 11 | 1 flagged on ingest |
+| prince-faggot-off-broadway-2025 | 13 | 4 | 15 | 2 not fetched |
+| american-moor-off-broadway-2019 | 3 | 3 | 6 | complete |
+| babe-off-broadway-2024 | 9 | 3 | 13 | complete; 1 extra found by the ingest run |
+| brooklyn-laundry-off-broadway-2024 | 18 | 3 | 20 | 1 not fetched |
+| hamlet-off-broadway-2024 | 0 | 3 | 3 | complete |
+| harmony-off-broadway-2022 | 18 | 3 | 20 | 1 not fetched |
+| irishtown-off-broadway-2025 | 8 | 3 | 11 | complete |
+| lowcountry-off-broadway-2025 | 14 | 3 | 15 | 2 not fetched |
+| the-seven-year-disappear-off-broadway-2024 | 19 | 3 | 21 | 1 not fetched |
+| the-swamp-dwellers-off-broadway-2025 | 5 | 3 | 8 | complete |
+| akhnaten-off-broadway-2022 | 0 | 2 | 2 | complete |
+| dead-outlaw-off-broadway-2024 | 17 | 2 | 19 | complete |
+| deep-history-off-broadway-2024 | 13 | 2 | 15 | complete |
+| english-off-broadway-2022 | 17 | 2 | 18 | 1 not fetched |
+| fefu-and-her-friends-off-broadway-2019 | 7 | 2 | 8 | 1 flagged on ingest |
+| good-bones-off-broadway-2024 | 20 | 2 | 20 | 2 not fetched |
+| here-we-are-off-broadway-2023 | 27 | 2 | 29 | complete |
+| meet-the-cartozians-off-broadway-2025 | 15 | 2 | 17 | complete |
+| on-beckett-off-broadway-2024 | 1 | 2 | 3 | complete |
+| the-antiquities-off-broadway-2025 | 20 | 2 | 22 | complete |
+| the-beacon-off-broadway-2024 | 13 | 2 | 15 | complete |
+| the-gardens-of-anuncia-off-broadway-2023 | 21 | 2 | 23 | complete |
+| the-other-americans-off-broadway-2025 | 23 | 2 | 27 | complete; 2 extra found by the ingest run |
+| a-simulacrum-off-broadway-2023 | 7 | 1 | 8 | complete |
+| anna-christie-off-broadway-2025 | 23 | 1 | 23 | 1 not fetched |
+| another-shot-off-broadway-2024 | 8 | 1 | 9 | complete |
+| archduke-off-broadway-2025 | 17 | 1 | 18 | complete |
+| ava-the-secret-conversations-off-broadway-2025 | 17 | 1 | 18 | complete |
+| corruption-off-broadway-2024 | 17 | 1 | 18 | complete |
+| days-of-wine-and-roses-off-broadway-2023 | 26 | 1 | 26 | 1 not fetched |
+| deep-blue-sound-off-broadway-2025 | 8 | 1 | 9 | complete |
+| des-moines-off-broadway-2022 | 7 | 1 | 8 | complete |
+| dracula-a-comedy-of-terrors-off-broadway-2023 | 17 | 1 | 18 | complete |
+| fatherland-off-broadway-2024 | 11 | 1 | 12 | complete |
+| ghost-of-john-mccain-off-broadway-2024 | 10 | 1 | 11 | complete |
+| house-of-mcqueen-off-broadway-2025 | 22 | 1 | 23 | complete |
+| kowalski-off-broadway-2025 | 16 | 1 | 17 | complete |
+| liberation-off-broadway-2025 | 19 | 1 | 19 | 1 not fetched |
+| mama-im-a-big-girl-now-off-broadway-2024 | 8 | 1 | 9 | complete |
+| nantucket-sleigh-ride-off-broadway-2019 | 16 | 1 | 17 | complete |
+| on-sugarland-off-broadway-2022 | 12 | 1 | 13 | complete |
+| out-of-time-off-broadway-2022 | 11 | 1 | 12 | complete |
+| richard-ii-off-broadway-2025 | 13 | 1 | 14 | complete |
+| scene-partners-off-broadway-2023 | 16 | 1 | 16 | 1 not fetched |
+| shhhh-off-broadway-2022 | 8 | 1 | 9 | complete |
+| six-characters-off-broadway-2024 | 9 | 1 | 10 | complete |
+| stargazers-off-broadway-2024 | 3 | 1 | 4 | complete |
+| suffs-off-broadway-2022 | 23 | 1 | 23 | 1 not fetched |
+| teeth-playwrights-horizons-off-broadway-2024 | 8 | 1 | 10 | complete; 1 extra found by the ingest run |
+| the-alchemist-off-broadway-2021 | 11 | 1 | 12 | complete |
+| the-bakers-wife-off-broadway-2025 | 20 | 1 | 21 | complete |
+| the-bedwetter-off-broadway-2022 | 18 | 1 | 19 | complete |
+| the-connector-off-broadway-2024 | 19 | 1 | 20 | complete |
+| the-doctor-off-broadway-2023 | 14 | 1 | 15 | complete |
+| the-fears-off-broadway-2023 | 13 | 1 | 13 | 1 not fetched |
+| the-jonathan-larson-project-off-broadway-2025 | 20 | 1 | 21 | complete |
+| the-price-off-broadway-2025 | 2 | 1 | 3 | complete |
+| the-underlying-chris-off-broadway-2019 | 13 | 1 | 14 | complete |
+| the-wrong-man-off-broadway-2019 | 12 | 1 | 13 | complete |
+| waiting-for-godot-off-broadway-2023 | 14 | 1 | 15 | complete |
+
+The other 209 shows: 0 right-production gaps (complete).
+
+### Miss classes
+
+| Class | Shows / items hit | Fix |
+|---|---|---|
+| Content verifier flagged right-production reviews as wrongProduction: company named instead of the building (MTC at City Center), a Brooklyn house read as "not Off-Broadway", a film star "implausible" Off-Broadway | 5 reviews (Brooklyn Laundry, Bella Bella, Macbeth (An Undoing), Angry Alan, Here We Are) | CV prompt names the resident companies of the building (nonprofit-venues.companiesInBuilding, regional namesakes skipped), an outer-borough bullet for Off-Broadway, a casting-plausibility bullet; the 5 flags cleared by approved-fix plan bro-6640 (run 41114903758) |
+| Short one-word titles absorbed a longer title's aggregator articles and reviews ("Other" took The Other Americans, "Girls", "& Juliet" took Romeo and Juliet) | 54 false gaps across 3 shows | audit-show-review-gap.js namesLongerShowTitle: reject a URL whose slug spells another tracked, longer title as an adjacent run; a 2+ word title the longer one only extends is the same work. Known limit: 32 of 31,988 held reviews of one-word titles with a subtitled duplicate entry (Tina, Spamalot, 4.48 Psychosis) would read as the longer title |
+| timeout.com gaps labelled with the wrong edition outlet (last writer wins in the domain map) | all timeout.com gap rows | resolveUrlEditionOutletId on the aggregator host |
+| Approved-fix plan set wrongProductionManualClear to a prose reason | plan bro-6640 | review-field-edit.js validator: the field must be a boolean |
+| Gap list noise dropped on vetting: podcasts, longer-title slugs, slugs with no title word, prior-production citations | 8 podcast, 14 longer-title, 12 slug-no-title | currentRunOnly plus the guards above |
+| Outlets not in the registry | 6 URLs (temptalkinbroadway, hollywoodpresscorps, culturalweekly, qctimes, a list-manage tracking link) | left out: below the census bar or not a review URL |
