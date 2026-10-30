@@ -42,3 +42,18 @@ test('withProxyAgent: URL object and explicit agent:false', () => {
   const f = withProxyAgent(['https://app.scrapingbee.com/', { agent: false }], cloud);
   assert.equal(f[1].agent, false);
 });
+
+test('install: wraps an existing https.get instead of rebuilding it on https.request', () => {
+  const https = require('https');
+  const saved = { request: https.request, get: https.get };
+  const calls = [];
+  try {
+    https.request = (...a) => { calls.push(['request', a[0]]); return { end() {} }; };
+    https.get = (...a) => { calls.push(['get', a[0]]); return { end() {} }; };
+    require('../../scripts/lib/cloud-proxy.js').install();
+    https.get('https://api.scrapingdog.com/scrape');
+    assert.deepEqual(calls, [['get', 'https://api.scrapingdog.com/scrape']]);
+  } finally {
+    https.request = saved.request; https.get = saved.get;
+  }
+});

@@ -67,8 +67,9 @@ function withProxyAgent(args, env = process.env) {
 function install() {
   if (https.request.__bro6258) return;
   const origRequest = https.request;
+  const origGet = https.get; // wrapped, not rebuilt on request: a stubbed https.get (tests) must keep working
   const request = function (...args) { return origRequest.apply(this, withProxyAgent(args)); };
-  const get = function (...args) { const r = request.apply(this, args); r.end(); return r; };
+  const get = function (...args) { return origGet.apply(this, withProxyAgent(args)); };
   request.__bro6258 = true;
   https.request = request;
   https.get = get;
