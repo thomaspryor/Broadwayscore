@@ -537,7 +537,7 @@ async function processReview(entry) {
   // Verify the quote actually appears in the review text
   if (!verifyInText(quote, data.fullText)) {
     stats.notInText++;
-    if (VERBOSE) console.log(`  NOT IN TEXT: "${quote.slice(0, 300)}..." — ${path.basename(filePath)}`);
+    if (VERBOSE) console.log(`  NOT IN TEXT: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
     return;
   }
 
