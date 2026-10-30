@@ -9,6 +9,7 @@
 
 ## 👤 User profile & session discipline
 - [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — unmarked never close; close kills claude+nohup ([[feedback_cmux_tab_close_kills_children.md]])
+- [Estimates are the product](feedback_public_sourcing_optional.md) — reasonable estimate or private tip is enough to publish; never ask owner to bless a hedged tip
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof ([[feedback_no_human_day_estimates.md]])
 - [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff" ([[feedback_user_device_context.md]])

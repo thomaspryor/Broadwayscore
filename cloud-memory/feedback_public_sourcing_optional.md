@@ -1,6 +1,6 @@
 ---
 name: Public site need not cite every source
-description: Commercial/recoupment figures can go on the public site without a public citation; every claim still needs a private, internal source record.
+description: Commercial figures and labels can go public on a reasonable estimate or a private tip, no public citation or certainty needed; record the source privately. Don't ask the owner to approve a hedged tip.
 type: feedback
 ---
 
@@ -30,3 +30,11 @@ quoted publicly. Requiring a public link threw those figures away.
   not by faking a URL.
 - Supersedes the "a quotable forum post counts" wording for `recouped: true`
   only in that the citation may be private.
+
+**Reasonable estimates are the product (owner 2026-10-30, BRO-6559, repeated to
+many sessions):** the site exists to give people information that is not out
+there otherwise. A credible tip or a sound estimate is enough to set a figure
+or label; 100% certainty is not the bar. When an insider says a show
+"probably" recouped, apply it and
+record the tip privately. Do not turn it into a DECISION NEEDED. Still never
+invent a figure, and keep labelling our own estimates as estimates.
