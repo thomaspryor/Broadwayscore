@@ -69,6 +69,8 @@ function main() {
   const candidates = imp.candidateKeys();
   const candidateSet = imp.candidateSetId(candidates);
   const work = [];
+  let red = 0;
+  let skippedSame = 0;
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'lane-import-'));
   try {
     if (flag('discover')) {
@@ -76,9 +78,26 @@ function main() {
       if (!repo) { console.error('GITHUB_REPOSITORY is required for --discover'); return 1; }
       for (const a of discoverArtifacts({ repo, lookbackDays: Number(arg('lookback-days', 30)) })) {
         const dir = path.join(tmpRoot, String(a.id));
-        fs.mkdirSync(dir, { recursive: true });
-        fs.writeFileSync(`${dir}.zip`, gh(`repos/${repo}/actions/artifacts/${a.id}/zip`, true));
-        execFileSync('unzip', ['-q', '-o', `${dir}.zip`, '-d', dir]);
+        const pn = imp.parseArtifactName(a.name);
+        let archived = null;
+        try { archived = JSON.parse(fs.readFileSync(path.join(root, pn.show, pn.night, pn.kind, 'meta.json'), 'utf8')); } catch { /* not archived yet */ }
+        let marked = null;
+        try { marked = JSON.parse(fs.readFileSync(markerFile(root, a), 'utf8')); } catch { /* none */ }
+        if (archived && String(archived.artifactId) === String(a.id)) { skippedSame++; continue; } // already imported, no download
+        if (marked && marked.candidateSet === candidateSet && String(marked.artifactId) === String(a.id)) { // still undecryptable: stay red, no download
+          console.log(`::error::${pn.show} ${pn.night} ${pn.kind}: still undecryptable with the current keys; the artifact expires and the night is lost unless an old key is added to LANE_RECORDING_OLD_KEYS.`);
+          red++;
+          continue;
+        }
+        try {
+          fs.mkdirSync(dir, { recursive: true });
+          fs.writeFileSync(`${dir}.zip`, gh(`repos/${repo}/actions/artifacts/${a.id}/zip`, true));
+          execFileSync('unzip', ['-q', '-o', `${dir}.zip`, '-d', dir]);
+        } catch (e) {
+          console.log(`::error::${pn.show} ${pn.night} ${pn.kind}: artifact ${a.id} could not be downloaded or unzipped`);
+          red++;
+          continue;
+        }
         work.push({ a, dir, p: imp.parseArtifactName(a.name), meta: { artifactId: a.id, artifactName: a.name, runId: a.workflow_run.id, headBranch: a.workflow_run.head_branch } });
       }
     } else if (arg('from')) {
@@ -86,14 +105,15 @@ function main() {
       work.push({ a: { name: `${p.kind}-${p.show}-${p.night}` }, dir: arg('from'), p, meta: { artifactId: arg('artifact-id'), runId: arg('run-id') } });
     } else { console.error('one of --discover, --from or --verify is required'); return 1; }
 
-    const counts = {};
-    let red = 0;
+    const counts = skippedSame ? { 'skipped-same': skippedSame } : {};
     let unread = 0;
+    const pre = imp.applyRetention(root);
+    if (pre.length) console.log(`retention removed ${pre.length} older nights before importing: ${pre.join(', ')}`);
     for (const w of work) {
       const marker = markerFile(root, w.a);
       let known = null;
       try { known = JSON.parse(fs.readFileSync(marker, 'utf8')); } catch { /* none */ }
-      if (known && known.candidateSet === candidateSet && String(known.artifactId) === String(w.meta.artifactId)) { counts['known-undecryptable'] = (counts['known-undecryptable'] || 0) + 1; continue; }
+      if (known && known.candidateSet === candidateSet && String(known.artifactId) === String(w.meta.artifactId)) { counts['known-undecryptable'] = (counts['known-undecryptable'] || 0) + 1; red++; continue; }
       const r = imp.importRecording({ srcDir: w.dir, root, ...w.p, candidates, meta: w.meta });
       counts[r.status] = (counts[r.status] || 0) + 1;
       const tag = `${w.p.show} ${w.p.night} ${w.p.kind}`;

@@ -100,12 +100,13 @@ jobs:
           cd "$CLONE_DIR"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          find lane-recordings -name '*.importing' -prune -exec rm -rf {} + # a crashed import never gets committed
           git add -A lane-recordings
           if git diff --cached --quiet; then
             echo "Nothing new to push"
             exit 0
           fi
-          git commit -q -m "data: lane recording import ($(git diff --cached --name-only | cut -d/ -f2-3 | sort -u | wc -l | tr -d ' ') nights)"
+          git commit -q -m "data: lane recording import ($(git diff --cached --name-only | grep -v '^lane-recordings/_' | cut -d/ -f2-3 | sort -u | wc -l | tr -d ' ') nights)"
           PUSH_API_FALLBACK_DISABLE=1 bash "$GITHUB_WORKSPACE/scripts/lib/push-with-retry.sh" 5 main
 
       - name: Notify on failure
@@ -116,7 +117,7 @@ jobs:
           description: 'The morning-after import of encrypted opening-night lane recordings into the private repo failed (no key, an undecryptable recording, a size budget, or the push). Recordings in workflow artifacts expire after 30 days, so fix this before then.'
           severity: 'warning'
           email: 'false'
-          min_consecutive_failures: '2'
+          min_consecutive_failures: '1'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}

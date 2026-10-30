@@ -247,3 +247,23 @@ test('artifact names with path characters do not parse', () => {
   assert.equal(imp.parseArtifactName('lane-shadow-Demo_Show-2026-11-08'), null);
   assert.deepEqual(imp.parseArtifactName('lane-shadow-demo-show-2026-11-08'), { kind: 'shadow', show: 'demo-show', night: '2026-11-08' });
 });
+
+test('review fixes: a show of ".." is refused, the new night is not double counted, retention enforces the total budget', async () => {
+  const a = await makeArtifact({ nested: ['rec'] });
+  const root = tmp();
+  const evil = imp.importRecording({ srcDir: a, root, ...base, show: '..', candidates: cands(), meta: meta() });
+  assert.equal(evil.status, 'error');
+  // measure the real stored size, then allow exactly that much: counting the staged copy twice would refuse it
+  const probe = imp.importRecording({ srcDir: a, root: tmp(), ...base, candidates: cands(), meta: meta(3) });
+  assert.equal(probe.status, 'imported');
+  const fit = imp.importRecording({ srcDir: a, root: tmp(), ...base, candidates: cands(), meta: meta(4), maxTotalBytes: probe.storedBytes + 2000 });
+  assert.equal(fit.status, 'imported', 'a night that fits the total budget once is imported');
+  // two shows, over a tiny total budget: the oldest night across shows goes, the newest stays
+  const r2 = tmp();
+  for (const [show, night] of [['aaa', '2026-11-01'], ['bbb', '2026-11-08']]) {
+    fs.mkdirSync(path.join(r2, show, night, 'shadow'), { recursive: true });
+    fs.writeFileSync(path.join(r2, show, night, 'shadow', 'x.bin'), Buffer.alloc(500));
+  }
+  assert.deepEqual(imp.applyRetention(r2, 8, 700), ['aaa/2026-11-01']);
+  assert.ok(fs.existsSync(path.join(r2, 'bbb', '2026-11-08')));
+});

@@ -86,6 +86,7 @@ const manifest = (dir) => fs.readFileSync(path.join(dir, 'fetches.jsonl'), 'utf8
  */
 function importRecording({ srcDir, root, show, night, kind, candidates, meta = {}, maxNightBytes = MAX_NIGHT_BYTES, maxTotalBytes = MAX_TOTAL_BYTES, now = () => new Date() }) {
   if (!KINDS.includes(kind)) return { status: 'error', detail: `unknown kind ${kind}` };
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(String(show)) || !/^\d{4}-\d{2}-\d{2}$/.test(String(night))) return { status: 'error', detail: 'show or night is not a plain id' };
   const dirs = findRecordingDirs(srcDir);
   if (!dirs.length) return { status: 'no-recording' };
   if (dirs.length > 1) return { status: 'error', detail: `${dirs.length} recordings in one artifact, expected 1` };
@@ -133,7 +134,7 @@ function importRecording({ srcDir, root, show, night, kind, candidates, meta = {
     fs.writeFileSync(path.join(tmp, 'pages', `${sha}.html.gz`), gz);
   }
   if (storedBytes > maxNightBytes) return abort({ status: 'over-budget', detail: `${storedBytes} bytes > ${maxNightBytes} per night`, storedBytes });
-  const others = dirBytes(root) - dirBytes(dest);
+  const others = dirBytes(root) - dirBytes(dest) - dirBytes(tmp); // the staged pages are already inside root
   if (others + storedBytes > maxTotalBytes) return abort({ status: 'over-budget', detail: `${others + storedBytes} bytes > ${maxTotalBytes} total`, storedBytes });
 
   fs.copyFileSync(path.join(src, 'fetches.jsonl'), path.join(tmp, 'fetches.jsonl'));
@@ -148,16 +149,27 @@ function importRecording({ srcDir, root, show, night, kind, candidates, meta = {
   return { status: 'imported', pages: stored.length, storedBytes, keyId: chosen.id, replaced: !!prior };
 }
 
-/** Keep the newest `keep` nights per show; returns the removed `show/night` names. */
-function applyRetention(root, keep = KEEP_NIGHTS) {
+/**
+ * Keep the newest `keep` nights per show, then drop the oldest nights across all shows until the archive fits
+ * `maxTotalBytes`, so the total budget cannot go permanently red as shows pile up. Returns the removed `show/night` names.
+ */
+function applyRetention(root, keep = KEEP_NIGHTS, maxTotalBytes = MAX_TOTAL_BYTES) {
   const removed = [];
   if (!fs.existsSync(root)) return removed;
-  for (const show of fs.readdirSync(root, { withFileTypes: true }).filter((e) => e.isDirectory())) {
-    const nights = fs.readdirSync(path.join(root, show.name), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort();
+  const all = [];
+  for (const show of fs.readdirSync(root, { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.startsWith('_'))) {
+    const nights = fs.readdirSync(path.join(root, show.name), { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.endsWith('.importing')).map((e) => e.name).sort();
     for (const n of nights.slice(0, Math.max(0, nights.length - keep))) {
       fs.rmSync(path.join(root, show.name, n), { recursive: true, force: true });
       removed.push(`${show.name}/${n}`);
     }
+    for (const n of nights.slice(Math.max(0, nights.length - keep))) all.push({ show: show.name, night: n });
+  }
+  all.sort((a, b) => a.night.localeCompare(b.night) || a.show.localeCompare(b.show));
+  while (all.length > 1 && dirBytes(root) > maxTotalBytes) {
+    const o = all.shift();
+    fs.rmSync(path.join(root, o.show, o.night), { recursive: true, force: true });
+    removed.push(`${o.show}/${o.night}`);
   }
   return removed;
 }
