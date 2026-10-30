@@ -19,3 +19,19 @@ for (const name of WORKFLOWS) {
     assert.ok(/alert-ledger\.json/.test(src), 'missing ledger persist');
   });
 }
+
+// Review of BRO-6397: every 'auto' alert key needs a resolve step, and the
+// token check must survive bash -e when curl fails.
+import fs2 from 'node:fs';
+import test2 from 'node:test';
+import assert2 from 'node:assert/strict';
+test2('rotate-gitlab resolves both of its alert kinds and guards curl under bash -e', () => {
+  const y = fs2.readFileSync(new URL('../.github/workflows/rotate-gitlab-token.yml', import.meta.url), 'utf8');
+  assert2.match(y, /resolve gitlab-token-expired/);
+  assert2.match(y, /resolve gitlab-token-failed/);
+  assert2.match(y, /\|\| status=\$\?/);
+});
+test2('lighthouse resolves only after a successful audit step', () => {
+  const y = fs2.readFileSync(new URL('../.github/workflows/lighthouse-post-deploy.yml', import.meta.url), 'utf8');
+  assert2.match(y, /steps\.audit\.outcome == 'success'/);
+});

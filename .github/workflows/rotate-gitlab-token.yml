@@ -19,10 +19,12 @@ jobs:
       - name: Check token expiry
         id: check
         run: |
+          # `|| status=$?`: the default shell is bash -e, so a bare $? check after a failed curl never ran
+          status=0
           RESPONSE=$(curl -sf -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
-            "https://gitlab.com/api/v4/personal_access_tokens/self")
+            "https://gitlab.com/api/v4/personal_access_tokens/self") || status=$?
 
-          if [ $? -ne 0 ]; then
+          if [ "$status" -ne 0 ]; then
             echo "::error::GitLab token is invalid or expired!"
             echo "expired=true" >> "$GITHUB_OUTPUT"
             echo "needs_rotation=false" >> "$GITHUB_OUTPUT"
@@ -122,7 +124,9 @@ jobs:
         if: steps.check.outputs.expired == 'false' && success()
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-        run: node scripts/route-workflow-alerts.js resolve gitlab-token-expired
+        run: |
+          node scripts/route-workflow-alerts.js resolve gitlab-token-expired
+          node scripts/route-workflow-alerts.js resolve gitlab-token-failed
 
       # BRO-6397: the ledger remembers which card each condition filed so a
       # repeat is silent and a clear run resolves it.

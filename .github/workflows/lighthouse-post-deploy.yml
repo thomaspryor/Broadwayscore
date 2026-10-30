@@ -110,7 +110,7 @@ jobs:
         run: node scripts/route-workflow-alerts.js route lighthouse-regression
 
       - name: Resolve alert when clean
-        if: steps.audit.outputs.has_regression != 'true' && !cancelled()
+        if: steps.audit.outcome == 'success' && steps.audit.outputs.has_regression != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/route-workflow-alerts.js resolve lighthouse-regression

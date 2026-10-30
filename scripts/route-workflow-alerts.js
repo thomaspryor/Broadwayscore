@@ -11,7 +11,7 @@
  *   opening-night-stage     auto + dispatchAtFiling (data-flow race)
  *   tony-ibdb-scraper       digest (needs a headed browser on the owner's Mac)
  *   gitlab-token-failed     auto + dispatchAtFiling (rotation step broke)
- *   gitlab-token-expired    human (a person must mint a new token)
+ *   gitlab-token-expired    human (a person must mint a new token; reaches the morning digest, not a page, since it is not in page-worthy-alerts.js)
  *
  * Usage: node scripts/route-workflow-alerts.js route|resolve <kind>
  * Env: GITHUB_RUN_ID, GITHUB_SERVER_URL, GITHUB_REPOSITORY, plus per kind
@@ -113,8 +113,12 @@ async function run({ mode, kind, env = {}, router, log = console.log, readFile }
   const conditionKey = KINDS[kind];
   if (!conditionKey) throw new Error(`unknown alert kind "${kind}"`);
   if (mode === 'resolve') {
-    const done = router.resolveCondition(conditionKey, { reason: 'clear in latest run' });
-    log(`[workflow-alerts] ${kind}: ${done ? 'resolved' : 'nothing open'}`);
+    try {
+      const done = router.resolveCondition(conditionKey, { reason: 'clear in latest run' });
+      log(`[workflow-alerts] ${kind}: ${done ? 'resolved' : 'nothing open'}`);
+    } catch (err) {
+      log(`[workflow-alerts] resolve ${kind} failed: ${err.message}`);
+    }
     return { ok: true };
   }
   const opts = buildAlert(kind, env, readFile);
