@@ -608,13 +608,29 @@ function namesLongerShowTitle(href, show, shows = null) {
   return _namesLonger(href, show, tokens, _showTitleTokens);
 }
 function _namesLonger(href, show, tokens, list) {
+  // the slug's significant words, filtered the way titles are, so stopwords
+  // between title words ("the-other-americans") do not break a run
   let segs;
-  try { segs = new URL(href).pathname.toLowerCase().split(/[\/\-_.\s]+/).filter(Boolean); } catch { return false; }
+  try { segs = titleTokens(decodeURIComponent(new URL(href).pathname)); } catch { return false; }
   const mine = new Set(tokens);
-  // in title order, so "review-and-juliet-romeo" (& Juliet) is not "Romeo and Juliet"
-  const inOrder = (want) => { let i = 0; for (const seg of segs) if (seg === want[i]) i++; return i === want.length; };
+  // adjacent and in title order: "review-and-juliet-romeo" (& Juliet) is not
+  // "Romeo and Juliet", and a "_story.html" suffix or a playwright named later
+  // in the slug cannot complete "2:22 A Ghost Story" or "Hamlet by William
+  // Shakespeare" (review-panelist, 69 own-show reviews rejected before).
+  const inOrder = (want) => {
+    for (let i = 0; i + want.length <= segs.length; i++) {
+      if (want.every((w, k) => segs[i + k] === w)) return true;
+    }
+    return false;
+  };
+  // A 2+ word title that the longer one merely extends is the same work under
+  // its subtitle ("I'm Every Woman" / "I'm Every Woman, The Chaka Khan
+  // Musical", "Just for One Day" / "... The Live Aid Musical"), not a leak. The
+  // leaks were all one-word titles ("Other", "Girls", "& Juliet").
+  const extendsMine = (o) => tokens.length >= 2 && tokens.every((t, k) => o.tokens[k] === t);
   return list.some(o => o.id !== show.id
     && o.tokens.length > tokens.length
+    && !extendsMine(o)
     && tokens.every(t => o.tokens.includes(t))
     && o.tokens.some(t => !mine.has(t))
     && inOrder(o.tokens));
