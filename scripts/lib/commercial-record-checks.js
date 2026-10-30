@@ -426,7 +426,9 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   if (show.designation === WAIT_AND_SEE && runStatus && runStatus !== 'closed') {
     out.push(`commercial.json: "${showId}" has designation "${WAIT_AND_SEE}" but the show's status is "${runStatus}" (it is for closed runs)`);
   }
-  if (show.designation === 'Squeaker') {
+  // A label a person reviewed (humanReviewedDesignation) outranks this model
+  // check: the model is an estimate, the reviewer had the source (BRO-6559).
+  if (show.designation === 'Squeaker' && show.humanReviewedDesignation !== true) {
     const exCredit = modelPctWithoutCredit(show);
     if (exCredit !== null && exCredit >= 100) {
       out.push(`commercial.json: "${showId}" is Squeaker but our model has it past 100% even without the NY tax credit (${Math.round(exCredit)}%); check the citation`);

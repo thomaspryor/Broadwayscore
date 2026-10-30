@@ -61,6 +61,11 @@ describe('validator', () => {
     assert.ok(errs({ ...ok, recouped: null }).some((e) => /recouped=null/.test(e)));
     assert.ok(errs({ ...ok, recouped: null, designationBasis: 'model-estimate' }).some((e) => /model estimate/.test(e)));
   });
+  it('Squeaker past 100% on our model without the credit warns unless a person reviewed the label', () => {
+    const rec = { ...base, designation: 'Squeaker', recouped: true, recoupedDate: '2026', recoupedSource: 'recouped with the NY State tax credit', capitalization: 8e6, modelTaxCreditCounted: 3e6, modelReturnedExCreditPct: [157, 184, 205] };
+    assert.ok(commercialRecordWarnings('x', rec).some((e) => /even without the NY tax credit/.test(e)));
+    assert.ok(!commercialRecordWarnings('x', { ...rec, humanReviewedDesignation: true }).some((e) => /even without the NY tax credit/.test(e)));
+  });
   it('Wait & See needs recouped false, a cited 50-99% estimate and a closed run', () => {
     const ok = { ...base, designation: 'Wait & See', recouped: false, analystRecoupPct: [60, 60] };
     assert.deepEqual(errs(ok).filter((e) => /Wait & See/.test(e)), []);
