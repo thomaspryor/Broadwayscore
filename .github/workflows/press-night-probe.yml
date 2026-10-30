@@ -180,6 +180,23 @@ jobs:
         if: always() && steps.guard.outputs.finalized == 'false' && steps.rt_early.outcome != 'success'
         run: rm -rf data/review-texts
 
+      # BRO-6652: who published the night. The capture below stamps publishedBy from the lane-only decision
+      # (lane-only-markets.js), so it needs the lease state as of now and the two variables. Read-only and
+      # continue-on-error: a failed read leaves the decision "old path on", which stamps the night regular.
+      - name: Lease sync for the published-by stamp (+2h)
+        if: always() && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/opening-night-lease.js sync
+
+      - name: Read lane-only variables (+2h)
+        if: always() && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        timeout-minutes: 1
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Stamp census coverage at +2h
         if: always() && steps.guard.outputs.finalized == 'false'
         env:
@@ -315,6 +332,23 @@ jobs:
           gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ART_ID}/zip" > "$DIR.zip"
           unzip -q -o "$DIR.zip" -d "$DIR"
           node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --import-lane-shadow="$DIR" --run-id="$RUN_ID"
+
+      # BRO-6652: who published the night. The capture below stamps publishedBy from the lane-only decision
+      # (lane-only-markets.js), so it needs the lease state as of now and the two variables. Read-only and
+      # continue-on-error: a failed read leaves the decision "old path on", which stamps the night regular.
+      - name: Lease sync for the published-by stamp (end)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/opening-night-lease.js sync
+
+      - name: Read lane-only variables (end)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 1
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Stamp census coverage at the end
         if: always()

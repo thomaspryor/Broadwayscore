@@ -28,6 +28,12 @@ function lastNight(nowMs) {
   return d.toISOString().slice(0, 10);
 }
 
+/** The scoreboard sentence (BRO-6652), or '' without one. */
+function scoreboardLine(b) {
+  if (!b || !b.graded) return '';
+  return `Press nights so far: ${b.passed} of ${b.graded} passed, ${b.passedOnOwn} passed on their own (no hand fixes).`;
+}
+
 // ── Morning email block ──────────────────────────────────────────────────────
 
 const defaultEsc = (x) => String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -48,10 +54,11 @@ function renderPressNightBlock(snapshot, { esc = defaultEsc, nowMs = Date.now() 
   const rows = snapshot.lines.map((l) => {
     return `<div style="margin:0 0 8px;font-size:14px;"><span style="color:${DOT[l.verdict] || DOT.UNKNOWN};">&#9679;</span> ${esc(l.line)}</div>`;
   }).join('\n');
+  const board = scoreboardLine(snapshot.scoreboard);
   return `<div style="margin:0 0 16px;">
     <p style="font-size:14px;font-weight:700;margin:0 0 8px;">Last night's openings</p>
-    ${rows}
+    ${rows}${board ? `\n    <div style="margin:0 0 8px;font-size:13px;color:#555;">${esc(board)}</div>` : ''}
   </div>`;
 }
 
-module.exports = { etTime, etDate, lastNight, renderPressNightBlock };
+module.exports = { etTime, etDate, lastNight, renderPressNightBlock, scoreboardLine };

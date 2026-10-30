@@ -175,6 +175,9 @@ function emptyRecord({ showId, night, market = null, embargoAt, embargoSource = 
     perReview: [],
     dropped: [],
     reference: {},
+    // BRO-6652: hand fixes inside the night window. Stamped from the start, so an empty list means "none",
+    // and a record without the field (older than the stamp) never counts as passed on its own.
+    manualActions: [],
   };
 }
 
@@ -429,6 +432,60 @@ function laneShadowFrom({ report = null, liveRows = [], ledgerRows = [], importe
 }
 
 /**
+ * BRO-6652: who published the night. The regular pipeline unless the lane alone published: the old path
+ * stood down for this show (lane-only-markets.js oldPathStandsDown) at a capture. Sticky: one stand-down
+ * seen makes the night a lane night. A record without the stamp (older, or the stamp could not run) is
+ * 'regular', which is what every night before the lane-only cutover was.
+ */
+function publishPath(rec) {
+  return rec && rec.publishedBy && rec.publishedBy.path === 'lane' ? 'lane' : 'regular';
+}
+
+/**
+ * Merge one lane-only decision into rec.publishedBy. `decision` is oldPathStandsDown output, or null when
+ * it could not be read (then the stamp records the error and keeps any earlier lane answer).
+ */
+function stampPublishedBy(rec, decision, { checkedAt, label = null, error = null } = {}) {
+  const check = {
+    at: checkedAt, label, standDown: decision ? !!decision.standDown : null,
+    reason: decision ? decision.reason : (error || 'decision unavailable'),
+    ...(decision && decision.holder ? { holder: decision.holder } : {}),
+  };
+  const checks = [...((rec.publishedBy && rec.publishedBy.checks) || []), check];
+  const lane = checks.find((c) => c.standDown === true);
+  rec.publishedBy = {
+    path: lane ? 'lane' : 'regular',
+    method: 'lane-only-decision',
+    ...(lane ? { holder: lane.holder || null, stoodDownSeenAt: lane.at } : {}),
+    checks,
+  };
+  return rec.publishedBy;
+}
+
+/**
+ * BRO-6652: log a hand fix made during the night (an ingest, a rescore, a manual deploy). A night with any
+ * entry never counts as passed on its own. Same outlet, time and kind = one entry.
+ */
+function addManualAction(rec, { at, outletId = null, outlet = null, kind = 'hand-fix', source = null }) {
+  if (toMs(at) == null) throw new Error('manual action: --at must be an ISO time');
+  if (!Array.isArray(rec.manualActions)) rec.manualActions = [];
+  const dup = rec.manualActions.find((m) => toMs(m.at) === toMs(at) && (m.outletId || null) === (outletId || null) && m.kind === kind);
+  if (dup) return dup;
+  const entry = { at: new Date(toMs(at)).toISOString(), outletId, outlet, kind, source };
+  rec.manualActions.push(entry);
+  rec.manualActions.sort((a, b) => toMs(a.at) - toMs(b.at));
+  return entry;
+}
+
+/** Hand fixes inside the night window ([embargo - nightStartH, embargo + 6h]). Undefined = never stamped. */
+function nightManualActions(rec, g = DEFAULT_GATES) {
+  if (!rec || !Array.isArray(rec.manualActions)) return undefined;
+  const embMs = toMs(rec.embargoAt);
+  if (embMs == null) return rec.manualActions;
+  return rec.manualActions.filter((m) => toMs(m.at) >= embMs - g.nightStartH * HOUR && toMs(m.at) <= embMs + 6 * HOUR);
+}
+
+/**
  * Census coverage AS OF a past moment, from the record's own per-review live series (plus the
  * lane shadow's site-live times). Lets a census fetched later (the roundup was not archived at +2h)
  * still answer "how much was live at +2h". The later census can only add outlets, so this is a
@@ -579,7 +636,7 @@ function sameNightCheck(rec, g) {
   const unknownB = [];
   const items = [];
   const iso = (ms) => (ms == null ? null : new Date(ms).toISOString());
-  const item = (f, seen, liveAt, status) => items.push({ outletId: f.outletId, outlet: f.outlet || null, critic: f.critic || null, seenAt: iso(seen), liveAt: iso(liveAt), status });
+  const item = (f, seen, liveAt, status) => items.push({ outletId: f.outletId, outlet: f.outlet || null, critic: f.critic || null, seenAt: iso(seen), liveAt: iso(liveAt), status, ...(f.scoredAt ? { scoredAt: f.scoredAt } : {}) });
   const ref2 = rec.reference && rec.reference['2h'];
   const censusKnown = !!(ref2 && ref2.coverage != null && ref2.status !== 'no-census-yet');
   if (censusKnown) for (const o of ref2.missing) missA.set(o, 'listed by the aggregators, not live at +2h');
@@ -823,10 +880,14 @@ function gradeNight(rec, g) {
  * assumed embargo (a shadow started late finds reviews late without the release being late). The observed
  * release is the earlier of the lane's first discovery and the first night review seen live. A legacy record
  * from an operator's explicit --embargo-at also counts as assumed (it carries no embargoSource).
- * Returns {assumedAt, observedAt, lateMin, observedFrom: 'lane-discovery'|'first-live'} or null.
+ * Returns {assumedAt, observedAt, lateMin, observedFrom: 'lane-discovery'|'first-live'|'outlet-publish'} or null.
  */
 function observedRelease(rec) {
   if (!rec || rec.embargoSource === 'override' || rec.embargoSource === 'manual') return null;
+  // BRO-6652: on a night the lane published, its first discovery is the thing being graded, so it cannot
+  // also set the release. Only an outlet's own clock-time publish date can (first live only lowers it); with
+  // none the assumed embargo stands.
+  if (publishPath(rec) === 'lane') return observedReleaseFromPublish(rec);
   const ls = rec.laneShadow;
   const embMs = toMs(rec.embargoAt);
   const discMs = ls ? toMs(ls.firstDiscoveredAt) : null;
@@ -844,8 +905,24 @@ function observedRelease(rec) {
   };
 }
 
+function observedReleaseFromPublish(rec) {
+  const embMs = toMs(rec.embargoAt);
+  const pub = firstOutletPublish(rec);
+  const pubMs = pub.precision === 'exact' ? toMs(pub.at) : null;
+  if (embMs == null || pubMs == null) return null;
+  const live = firstNightLive(rec);
+  const liveMs = live ? toMs(live.at) : null;
+  const relMs = liveMs != null && liveMs < pubMs ? liveMs : pubMs;
+  if (relMs - embMs <= LATE_RELEASE_MIN * MIN) return null;
+  return {
+    assumedAt: new Date(embMs).toISOString(), observedAt: new Date(relMs).toISOString(), lateMin: Math.round((relMs - embMs) / MIN),
+    observedFrom: relMs === pubMs ? 'outlet-publish' : 'first-live',
+  };
+}
+
 /** What the observed release time was taken from, for the CLI and audit-note wording. */
 function releaseSourceLabel(rel) {
+  if (rel.observedFrom === 'outlet-publish') return 'the first outlet publish time';
   return rel.observedFrom === 'first-live' ? 'the first night review seen live' : 'the first lane discovery';
 }
 
@@ -907,4 +984,5 @@ module.exports = {
   observedRelease, releaseSourceLabel, observedRecord, observedCoverage2h, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
   runProbe, referenceFrom, evaluateCheck, isNightReview, firstNightLive, laneShadowFrom, coverageAt,
   filterCensus, sameNightCheck, outletLiveMs,
+  publishPath, stampPublishedBy, addManualAction, nightManualActions,
 };

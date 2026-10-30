@@ -42,6 +42,14 @@ const LOOKBACK_MS = 45 * 24 * 3600 * 1000;
 
 const readJson = (p, fallback) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; } };
 
+/** Every press-night record on disk, any night (the scoreboard). */
+function loadAllRecords() {
+  const dir = path.join(REPO, 'data', 'audit', 'press-night');
+  let files = [];
+  try { files = fs.readdirSync(dir).filter((f) => /-\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort(); } catch { files = []; }
+  return files.map((f) => ({ showId: f, rec: readJson(path.join(dir, f), null) })).filter((x) => x.rec);
+}
+
 function loadInputs(night) {
   const dir = path.join(REPO, 'data', 'audit', 'press-night');
   let files = [];
@@ -59,13 +67,15 @@ function loadInputs(night) {
 }
 
 /** Snapshot shape for the renderer: the lines plus counts. Names only, no ids (the owner reads it). */
-function toSnapshot(section, firstSeen = {}) {
+function toSnapshot(section, firstSeen = {}, board = null) {
   const count = (v) => section.entries.filter((e) => e.verdict === v).length;
   return {
     generatedAt: section.generatedAt,
     night: section.night,
     counts: { total: section.entries.length, passed: count('PASS'), failed: count('FAIL'), notGraded: count('UNKNOWN') + count('PENDING') },
     lines: section.entries.map((e) => ({ verdict: e.verdict, line: e.line })),
+    // Every finished night so far (BRO-6652): passed, and passed with no hand fix.
+    ...(board ? { scoreboard: board } : {}),
     // When each current miss was first seen, read back next hour so an email miss only files a card once it
     // outlived the hourly draft refresh (D.settledMisses). Not rendered.
     missFirstSeen: firstSeen,
@@ -121,13 +131,14 @@ async function main() {
   }
   const previous = readJson(SNAPSHOT, {}) || {};
   const firstSeen = D.missFirstSeen(section, previous.missFirstSeen, new Date(nowMs).toISOString());
-  const snap = toSnapshot(section, firstSeen);
+  const snap = toSnapshot(section, firstSeen, D.scoreboard(loadAllRecords(), nowMs));
   console.log(`Last night's openings (${night}):`);
   for (const l of snap.lines) console.log(`  [${l.verdict}] ${l.line}`);
   if (!snap.lines.length) console.log('  (no press nights)');
+  console.log(`  ${D.scoreboardLine(snap.scoreboard)}`);
   // Same lines and misses as the last run: leave the file alone, so the hourly telemetry commit only
   // pushes when something changed (the night rolls over daily, well inside the 36h freshness window).
-  const same = (a) => JSON.stringify({ night: a.night, lines: a.lines, missFirstSeen: a.missFirstSeen });
+  const same = (a) => JSON.stringify({ night: a.night, lines: a.lines, missFirstSeen: a.missFirstSeen, scoreboard: a.scoreboard });
   if (!dryRun && same(previous) !== same(snap)) {
     fs.writeFileSync(SNAPSHOT, JSON.stringify(snap, null, 2) + '\n');
     console.log(`wrote ${path.relative(REPO, SNAPSHOT)}`);
@@ -158,4 +169,4 @@ if (require.main === module) {
   main().then((code) => process.exit(code)).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }
 
-module.exports = { toSnapshot, loadInputs, linearDeps };
+module.exports = { toSnapshot, loadInputs, loadAllRecords, linearDeps };

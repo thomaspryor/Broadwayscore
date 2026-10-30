@@ -19,6 +19,9 @@
  *   --rebuild-reference  recompute +2h and end coverage from the live timeline against a census
  *                        built now (backfill for a night whose census was missing).
  *   --finalize           mark the probe ended and print a summary.
+ *   --log-manual         log a hand fix made during the night (BRO-6652): --at=ISO [--outlet-id=ID]
+ *                        [--outlet=Name] [--kind=hand-fix] --source="card or comment". The night then never
+ *                        counts as passed on its own in the morning email.
  *   --list-due           print the shows (--shows=a,b) whose probe should start now, one per line
  *   --check              verdict against the plan's gates from the committed record only
  *                        (public JSON, no private fields). Exit 0 PASS, 1 FAIL or UNKNOWN.
@@ -27,6 +30,9 @@
  * Probe:  [--embargo-at=ISO] [--interval-min=5] [--until-offset-hours=6] [--base=URL]
  * Check:  [--first-live-within=30] [--coverage2h=0.8]
  * Census: [--bww-url=URL] [--no-fetch] (skip the live BWW roundup fetch)
+ * --capture-reference also stamps who published the night (publishedBy, BRO-6652) from the lane-only
+ * decision (scripts/lib/opening-night-lane/lane-only-markets.js), read-only: the synced lease file and
+ * LANE_ONLY_MARKETS / LANE_STANDDOWN with their *_READ flags, set by the workflow before this step.
  *
  * Reuses decodeSlimShow + dedupByCritic identity from verify-opening-night-live.js,
  * deployedOutletIds from lib/deployed-coverage-diff.js and the census from
@@ -173,6 +179,23 @@ function stampFileState(rec, show, census) {
   return files ? state.censusExclusions(census, files, opts) : [];
 }
 
+/**
+ * BRO-6652: stamp who published the night from the lane's own decision (read-only). Any error is recorded
+ * on the stamp and never fails the capture.
+ */
+function stampPublisher(rec, show, label) {
+  const checkedAt = new Date().toISOString();
+  try {
+    const { createDecider } = require('./lib/opening-night-lane/lane-only-markets');
+    const decision = createDecider({ findShow: (id) => (show && (show.id || show.slug) === id ? show : null) }).decide(rec.showId);
+    lib.stampPublishedBy(rec, decision, { checkedAt, label });
+  } catch (e) {
+    lib.stampPublishedBy(rec, null, { checkedAt, label, error: `decision failed: ${String(e.message || e).slice(0, 160)}` });
+  }
+  const last = rec.publishedBy.checks[rec.publishedBy.checks.length - 1];
+  console.log(`[press-night] published by: ${rec.publishedBy.path} (${label}: ${last.reason})`);
+}
+
 async function buildCensus(rec, show) {
   const { buildCensusFromArchives, unionCensus, parseBwwRoundup } = require('./lib/review-census');
   const market = rec.market || 'broadway';
@@ -313,6 +336,7 @@ async function main() {
     const label = arg('label');
     if (!['2h', 'end'].includes(label)) { console.error('[press-night] --label=2h|end required'); return 2; }
     const fetchedAt = new Date().toISOString();
+    stampPublisher(rec, loadShow(showId), label);
     let ref;
     let census = null;
     let note = '';
@@ -346,6 +370,16 @@ async function main() {
     writeRecord(file, rec);
     console.log(`[press-night] reference ${label}: ${ref.status}${ref.coverage != null ? ` coverage=${ref.coverage} (${ref.covered}/${ref.count})` : ''}${note ? `; census: ${note}` : ''}`);
     return ref.status === 'error' ? 1 : 0;
+  }
+
+  if (has('log-manual')) {
+    let entry;
+    try {
+      entry = lib.addManualAction(rec, { at: arg('at'), outletId: arg('outlet-id'), outlet: arg('outlet'), kind: arg('kind', 'hand-fix'), source: arg('source') });
+    } catch (e) { console.error(`[press-night] ${e.message}`); return 2; }
+    writeRecord(file, rec);
+    console.log(`[press-night] manual action logged: ${JSON.stringify(entry)}`);
+    return 0;
   }
 
   if (has('finalize')) {

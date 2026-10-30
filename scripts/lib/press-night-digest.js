@@ -18,7 +18,7 @@
  * its Linear calls injected and finds earlier cards by their key line, so a re-run never files twice (fileFixCards).
  */
 
-const { evaluateCheck, observedRecord, sameNightCheck, firstNightLive, DEFAULT_GATES } = require('./press-night-record');
+const { evaluateCheck, observedRecord, sameNightCheck, firstNightLive, DEFAULT_GATES, publishPath, nightManualActions } = require('./press-night-record');
 const { draftBaseline, draftChanged } = require('./broadcast-refresh');
 const { draftDeadlineAt } = require('./broadcast-deadline');
 const { SUBREDDIT_BY_MARKET, MIN_REVIEWS, emailedNumbers } = require('./reddit-opening-post');
@@ -28,7 +28,7 @@ const { getConfidenceFloors } = require('./score-confidence-gate');
 const { foldDiacritics } = require('./title-match');
 // Time helpers and the email block live in a module with no package imports: the morning-email job runs
 // without npm ci (tests/unit/morning-digest-action.test.mjs), and this file reaches the scraper.
-const { etTime, etDate, lastNight, renderPressNightBlock } = require('./press-night-digest-render');
+const { etTime, etDate, lastNight, renderPressNightBlock, scoreboardLine } = require('./press-night-digest-render');
 
 const BROADCAST_MARKETS = new Set(['broadway', 'west-end']);
 const MIN = 60000;
@@ -64,7 +64,7 @@ function gradeReviews(rec, nowMs = Date.now()) {
   const sn = sameNightCheck(graded, DEFAULT_GATES);
   const fl = firstNightLive(graded);
   const firstGate = gates.find((g) => g.name === 'first-live');
-  const items = sn.items || [];
+  const items = annotateQueued(sn.items || [], graded);
   let verdict = rawVerdict;
   if (verdict === 'FAIL' && onlyPaywalledCauses(items, graded)
     && gates.every((g) => !g.required || g.status !== 'fail' || ITEM_GATES.has(g.name))) {
@@ -79,6 +79,7 @@ function gradeReviews(rec, nowMs = Date.now()) {
   }
   return {
     verdict, finalized: true, release: rel, embargoAt: graded.embargoAt, items,
+    publishedBy: publishPath(rec), manualActions: nightManualActions(rec),
     firstLive: fl ? { at: fl.at, outlet: fl.outlet, afterMin: Math.round((Date.parse(fl.at) - Date.parse(graded.embargoAt)) / MIN), failed: !!(firstGate && firstGate.status === 'fail') } : null,
     lastCheckedAt: rec.probe.lastOkSampleAt || null, why,
   };
@@ -87,10 +88,37 @@ function gradeReviews(rec, nowMs = Date.now()) {
 // Owner decision 2026-10-30 ("Ignore NYT"): a hard-paywalled outlet passes once it is listed or queued.
 // Its full text may never come through, so it never fails a night or shows as a miss. Mirrors the
 // domains in paywall-completeness.js HARD_PAYWALL_FLOORS, keyed by outlet id.
+// BRO-6652 (card item 3b): "queued" means queued on time. The excuse holds only when the review was queued
+// (its review-text file first seen, or on a lane night the lane's 'discovered' row) by the +2h mark. A
+// paywalled outlet that was never queued is a miss like any other.
 const PAYWALLED_OUTLETS = new Set(['nytimes', 'newyorker', 'washpost', 'washingtonpost', 'chicagotribune', 'wsj']);
-const isPaywallExcused = (i) => PAYWALLED_OUTLETS.has(i.outletId) && (i.status === 'late' || i.status === 'missing');
+const QUEUE_BY_MIN = 120;
+const isPaywallExcused = (i) => !!i.paywallExcused;
+
+/** When the pipeline queued this outlet's review: its file's first-seen time, else the lane's discovery on a lane night. */
+function queuedAtFor(outletId, item, rec) {
+  if (item && item.seenAt) return item.seenAt;
+  const files = (rec.fileState && rec.fileState.files) || [];
+  const seen = files.filter((f) => f.outletId === outletId && f.includable && f.firstSeenAt).map((f) => f.firstSeenAt).sort()[0];
+  if (seen) return seen;
+  const lane = publishPath(rec) === 'lane' && rec.laneShadow && rec.laneShadow.discoveredByOutlet;
+  return (lane && lane[outletId]) || null;
+}
+
+const queuedOnTime = (at, rec) => Date.parse(at || '') <= Date.parse(rec.embargoAt) + QUEUE_BY_MIN * MIN;
+
+/** Items with queuedAt, and paywallExcused for a late or missing paywalled review queued on time. Pure. */
+function annotateQueued(items, rec) {
+  return items.map((i) => {
+    const queuedAt = queuedAtFor(i.outletId, i, rec);
+    const paywallExcused = PAYWALLED_OUTLETS.has(i.outletId) && (i.status === 'late' || i.status === 'missing') && queuedOnTime(queuedAt, rec);
+    return { ...i, queuedAt, ...(paywallExcused ? { paywallExcused } : {}) };
+  });
+}
+
 // The item gates (same-night-completeness, coverage-2h) fail on late or missing reviews and on census outlets
-// listed but not live (missing or suppressed). They are excused only when every one of those outlets is paywalled.
+// listed but not live (missing or suppressed). They are excused only when every one of those outlets is
+// paywalled and was queued on time.
 const ITEM_GATES = new Set(['same-night-completeness', 'coverage-2h']);
 function onlyPaywalledCauses(items, rec) {
   const ref2 = (rec.reference && rec.reference['2h']) || {};
@@ -98,7 +126,9 @@ function onlyPaywalledCauses(items, rec) {
     ...items.filter((i) => i.status === 'late' || i.status === 'missing').map((i) => i.outletId),
     ...(ref2.missing || []), ...(ref2.suppressedMissing || []),
   ];
-  return causes.length > 0 && causes.every((id) => PAYWALLED_OUTLETS.has(id));
+  const excused = (id) => PAYWALLED_OUTLETS.has(id)
+    && queuedOnTime(queuedAtFor(id, items.find((i) => i.outletId === id && i.queuedAt), rec), rec);
+  return causes.length > 0 && causes.every(excused);
 }
 
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
@@ -213,6 +243,11 @@ function buildShowLine({ title, reviews, emails = [] }) {
   }
   const parts = [];
   const misses = [];
+  // BRO-6652: say which path published the night, and any hand fix (it keeps the night off "on their own").
+  const lead = [reviews.publishedBy === 'lane' ? 'published by the new lane' : 'published by the regular pipeline'];
+  for (const m of reviews.manualActions || []) {
+    lead.push(`${m.outlet || (m.outletId ? outletName({ outletId: m.outletId }) : 'a review')} fixed by hand at ${etTime(m.at)}`);
+  }
   const items = reviews.items.filter((i) => !isPaywallExcused(i));
   const by = etTime(new Date(Date.parse(reviews.embargoAt) + 2 * 3600000).toISOString());
   const byMs = Date.parse(reviews.embargoAt) + 2 * 3600000;
@@ -226,6 +261,14 @@ function buildShowLine({ title, reviews, emails = [] }) {
     parts.push(`reviews came out at ${etTime(reviews.release.observedAt)}, not the expected ${etTime(reviews.release.assumedAt)}, so they were timed from ${etTime(reviews.release.observedAt)}`);
   }
   const name = (i) => (i.critic && items.filter((x) => x.outletId === i.outletId).length > 1 ? `${outletName(i)} (${i.critic})` : outletName(i));
+  // An excused paywalled review in two parts: listed on time, then when its text was scored (late after +2h).
+  for (const i of reviews.items.filter(isPaywallExcused)) {
+    // Older records carry no scoredAt: the review going live (the site lists scored reviews only) stands in.
+    const at = i.scoredAt || i.liveAt;
+    const text = at ? `text scored at ${etTime(at)}${Date.parse(at) > byMs ? ' (late)' : ''}`
+      : `text not scored${reviews.lastCheckedAt ? ` by ${etTime(reviews.lastCheckedAt)}` : ' yet'}`;
+    parts.push(`${outletName(i)} listed on time, ${text}`);
+  }
   for (const i of items) {
     if (i.status === 'late') {
       parts.push(`${name(i)} went live at ${etTime(i.liveAt)} (late)`);
@@ -254,7 +297,7 @@ function buildShowLine({ title, reviews, emails = [] }) {
   const em = emailParts(emails);
   parts.push(...em.parts);
   misses.push(...em.misses);
-  const body = `${title}: ${parts.join('; ') || 'no reviews held to the night'}`;
+  const body = `${title}: ${[...lead, ...(parts.length ? parts : ['no reviews held to the night'])].join('; ')}`;
   if (misses.length) return { verdict: 'FAIL', line: `${body}. Failed.`, misses };
   if (reviews.verdict === 'UNKNOWN') {
     return { verdict: 'UNKNOWN', line: parts.length ? `${body}. Not graded: ${reviews.why}.` : `${title}: not graded, ${reviews.why}.`, misses };
@@ -286,6 +329,26 @@ function buildSection({ night, records, shows, sentShows = {}, redditDrafts = {}
   const rank = { FAIL: 0, UNKNOWN: 1, PENDING: 2, PASS: 3 };
   entries.sort((a, b) => rank[a.verdict] - rank[b.verdict] || a.title.localeCompare(b.title));
   return { generatedAt: new Date(nowMs).toISOString(), night, entries };
+}
+
+/**
+ * BRO-6652: every finished press-night record's reviews grade, counted. "Passed on their own" is a pass
+ * with no hand fix in the night window; a record older than the manualActions stamp never counts (nobody
+ * logged its fixes), so the count only ever undersells.
+ * @param {{showId, rec}[]} records  all records, any night
+ * @returns {{graded:number, passed:number, passedOnOwn:number}}
+ */
+function scoreboard(records, nowMs = Date.now()) {
+  const out = { graded: 0, passed: 0, passedOnOwn: 0 };
+  for (const { rec } of records) {
+    const r = gradeReviews(rec, nowMs);
+    if (!r.finalized || r.verdict === 'UNKNOWN' || r.verdict === 'PENDING') continue;
+    out.graded += 1;
+    if (r.verdict !== 'PASS') continue;
+    out.passed += 1;
+    if (Array.isArray(r.manualActions) && !r.manualActions.length) out.passedOnOwn += 1;
+  }
+  return out;
 }
 
 // ── Fix cards ────────────────────────────────────────────────────────────────
@@ -421,8 +484,8 @@ async function fileFixCards({ section, lookupCards, createCard, commentCard }) {
 }
 
 module.exports = {
-  etTime, etDate, lastNight, gradeReviews, gradeEmails, buildShowLine, buildSection,
+  etTime, etDate, lastNight, gradeReviews, gradeEmails, buildShowLine, buildSection, scoreboard,
   EMAIL_MISS_GRACE_MIN, missFirstSeen, settledMisses,
   KEY_LINE_PREFIX, MISS_LINE_PREFIX, MAX_NEW_CARDS_PER_RUN, slug, cardKeyOf, listedMisses,
-  cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock, PAYWALLED_OUTLETS,
+  cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock, scoreboardLine, PAYWALLED_OUTLETS,
 };

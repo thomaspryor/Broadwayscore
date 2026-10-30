@@ -56,6 +56,8 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
       outlet: d.outlet || d.outletId || null,
       critic: d.criticName || null,
       firstSeenAt: d.firstSeenAt || null,
+      // BRO-6652: when the text was scored (a paywalled review can be listed long before its text arrives).
+      scoredAt: (d.llmMetadata && d.llmMetadata.scoredAt) || null,
       publishDate: d.publishDate || null,
       includable: reason === null,
       reason: reason || null,
