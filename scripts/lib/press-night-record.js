@@ -615,6 +615,16 @@ function sameNightCheck(rec, g) {
     const liveAt = byOutlet.get(o);
     items.push({ outletId: o, outlet: named ? named.outlet : null, critic: null, seenAt: null, liveAt: iso(liveAt), status: liveAt == null ? 'missing' : 'late' });
   }
+  // Night reviews live by +2h that no file row covers (no first-seen time in the snapshot, or seen before the
+  // window): on time, and they belong in "N of M live".
+  for (const p of rec.perReview) {
+    if (!isNightReview(p, rec.night)) continue;
+    const o = outletIdOf(p.outlet); const ms = toMs(p.firstLiveAt);
+    if (!o || ms == null || ms > t2) continue;
+    const ck = critKey(p.critic);
+    if (items.some((x) => x.outletId === o && (!x.critic || critKey(x.critic) === ck || ck === 'unknown' || !ck))) continue;
+    items.push({ outletId: o, outlet: p.outlet, critic: p.critic || null, seenAt: null, liveAt: iso(ms), status: 'ontime' });
+  }
   const staleSnapshot = toMs(fsnap.capturedAt) != null && toMs(fsnap.capturedAt) < winEnd + g.lateLiveWithinMin * MIN;
   const list = (m) => [...m].map(([o, why]) => `${o} (${why})`).join('; ');
   const parts = [];
