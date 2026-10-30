@@ -4098,5 +4098,36 @@
       }
     ],
     "queuedAt": "2026-10-30T14:48:58.944Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6635-pause-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6635-pause-guard",
+    "description": "land.yml did not land land/bro-6635-pause-guard: the unit-tests-node gate went red at 392971f2cc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41072520382",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6635-pause-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "392971f2cc91eecd1c8d343e28cb9f8e95443199"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41072520382"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:56:01.865Z"
   }
 ]
