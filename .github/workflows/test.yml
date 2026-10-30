@@ -6,6 +6,8 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      # BRO-6639: orchestrator-pause-read.test.mjs shape-checks pause-variable token use.
+      - '.github/workflows/opening-night-orchestrator.yml'
       # Project agent definitions and the commands that name them are covered by
       # tests/unit/claude-agent-models.test.mjs (spend review 2026-10-01).
       - '.claude/agents/**'

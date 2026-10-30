@@ -561,6 +561,10 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-6639: GITHUB_TOKEN has no `variables` scope (403). Pause reads/deletes use this PAT.
+          VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # Job-start snapshot of the pause; the fallback when the live read fails (never "unset").
+          PAUSED_SNAPSHOT: ${{ vars.ORCHESTRATOR_PAUSED }}
           SKIP_SERP: ${{ steps.budget.outputs.skip_serp }}
           INPUT_BWW_ROUNDUP_URL: ${{ inputs.bww_roundup_url }}
         run: |
@@ -596,7 +600,12 @@ jobs:
           # APPENDS to stdout, leaving PAUSED with the error body. That made the next case match
           # `*)` (Orchestrator PAUSED — value=<404 JSON>) and silently skip every iteration after
           # Express cleared the variable. Capturing exit code outside resets PAUSED="" on failure.
-          PAUSED=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null) || PAUSED=""
+          # BRO-6639: read-actions-variable.sh exits 0 (value, or empty on HTTP 404) or 3 (read
+          # FAILED = unknown). Unknown falls back to the job-start vars snapshot, never to "unset".
+          PAUSED=$(GH_TOKEN="$VARS_TOKEN" bash scripts/lib/read-actions-variable.sh ORCHESTRATOR_PAUSED) || {
+            echo "::warning::ORCHESTRATOR_PAUSED live read failed; using job-start snapshot (${PAUSED_SNAPSHOT:-<unset>})"
+            PAUSED="$PAUSED_SNAPSHOT"
+          }
           if [ -n "$PAUSED" ]; then
             DECISION=$(PAUSED_VALUE="$PAUSED" node -e "
               const raw = process.env.PAUSED_VALUE || '';
@@ -618,7 +627,7 @@ jobs:
               EXPIRED*)
                 AGE=$(echo "$DECISION" | cut -d'|' -f2)
                 echo "::warning::ORCHESTRATOR_PAUSED=express lease expired ($AGE, >90min). Auto-clearing and proceeding."
-                gh variable delete ORCHESTRATOR_PAUSED 2>/dev/null \
+                GH_TOKEN="$VARS_TOKEN" gh variable delete ORCHESTRATOR_PAUSED 2>/dev/null \
                   && echo "Stale lease cleared." \
                   || echo "::warning::Could not clear stale ORCHESTRATOR_PAUSED — continuing anyway"
                 ;;
