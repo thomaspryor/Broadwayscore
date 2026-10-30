@@ -67,7 +67,7 @@ function buildReminder(entry, titles, numbers, nth) {
     const line = n ? `${n.score != null ? `${n.score}/100` : 'no score yet'}, ${n.reviewCount} reviews` : 'numbers unavailable';
     return `<tr><td style="padding:4px 12px 4px 0;color:#666">${esc(titles[id] || id)}</td><td><strong>${esc(line)}</strong></td></tr>`;
   }).join('');
-  const subject = `[Reminder] ${market} opening-night email not sent yet — ${names.join(', ')}`;
+  const subject = `[Reminder] ${market} opening-night email not sent yet: ${names.join(', ')}`;
   const html = `
 <p>The opening-night email for <strong>${esc(names.join(', '))}</strong> is still a draft in Resend (made ${Math.round(entry.hoursSince)} hours ago). Subscribers have not received it.</p>
 <table style="margin:16px 0;border-collapse:collapse;">${rows}</table>
@@ -112,8 +112,12 @@ async function main() {
         continue;
       }
     }
+    // Quote what the draft shows (stamped on create/update), so the reminder
+    // never names numbers the linked draft does not carry. Older drafts have
+    // no stamp: fall back to the live numbers.
+    const stamped = entry.record.draftNumbers || {};
     const numbers = {};
-    for (const id of entry.ids) numbers[id] = readShowNumbers(id);
+    for (const id of entry.ids) numbers[id] = stamped[id] || readShowNumbers(id);
     const nth = (entry.record.draftReminderCount || 0) + 1;
     const { subject, html } = buildReminder(entry, titles, numbers, nth);
     if (DRY_RUN) {
