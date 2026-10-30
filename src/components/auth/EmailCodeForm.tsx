@@ -8,7 +8,7 @@ export const EMAIL_CODE_LENGTH = 6;
 export type EmailAuthResult = { error?: string } | void;
 
 interface EmailCodeFormProps {
-  /** Emails a sign-in code (and link) to the address. */
+  /** Emails a sign-in code to the address. */
   onSendCode: (email: string) => Promise<EmailAuthResult>;
   /** Signs in with the code from that email. */
   onVerifyCode: (email: string, code: string) => Promise<EmailAuthResult>;
@@ -21,9 +21,8 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * Email sign-in with a one-time code (BRO-6575): no password. Step one asks
- * for the address, step two for the 6-digit code from the email. The same
- * email has a link that signs in whichever browser opens it, for people who
- * would rather tap than type.
+ * for the address, step two for the 6-digit code from the email. The email
+ * carries no link (supabase/templates/sign-in-code.html says why).
  */
 export default function EmailCodeForm({ onSendCode, onVerifyCode, onBack, disabled = false }: EmailCodeFormProps) {
   const [step, setStep] = useState<'email' | 'code'>('email');
