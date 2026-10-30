@@ -119,7 +119,10 @@
     "million-dollar-quartet-off-west-end-2026/jonathan-baz--jonathan-baz.json",
     "pre-existing-condition-off-broadway-2026/seatplan--unknown.json",
     "maybe-happy-ending-tour-2026/theatermania--zachary-stewart.json",
-    "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json"
+    "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json",
+    "girls-off-west-end-2026/letterboxd--unknown.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
   ],
   "failed": [
     "london-assurance-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
@@ -161,7 +164,6 @@
     "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
     "girls-off-west-end-2026/londontheatre1--unknown.json",
-    "memoriam-off-west-end-2026/ground--unknown.json",
     "memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
     "lanny-bristol-old-vic-regional-2026/thestage--neil-norman.json",
     "phyl-off-broadway-2026/phusionpassenger--unknown.json",
@@ -195,7 +197,13 @@
     "la-boheme-off-broadway-2026/parterre-box--unknown.json",
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
     "tristan-and-yseult-royal-bath-regional-2026/thestage--holly-omahony.json",
-    "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json"
+    "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
+    "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -260,10 +268,14 @@
       "million-dollar-quartet-off-west-end-2026/london-theatre-reviews--unknown.json",
       "million-dollar-quartet-off-west-end-2026/jonathan-baz--jonathan-baz.json",
       "maybe-happy-ending-tour-2026/theatermania--zachary-stewart.json",
-      "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json"
+      "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json",
+      "girls-off-west-end-2026/letterboxd--unknown.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "sunset-boulevard-2017/musical-theatre-review--ron-cohen.json",
@@ -278,7 +290,8 @@
       "rent-west-end-2026/ground--unknown.json",
       "hay-fever-west-end-2026/littlelondonwhispers--little-london-whispers.json",
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "memoriam-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "white-rose-the-musical-off-broadway-2024/cititour--brian-scott-lipton.json",
@@ -310,7 +323,11 @@
       "data/review-texts/fences-off-west-end-2026/number9reviews--sue-hayward.json",
       "data/review-texts/mystic-pizza-tour-2026/talkinbroadway--arthur-dorman.json",
       "data/review-texts/tristan-and-yseult-royal-bath-regional-2026/thestage--holly-omahony.json",
-      "data/review-texts/golden-boy-off-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json"
     ],
     "archive": [
       "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json",
@@ -346,6 +363,28 @@
     ]
   },
   "startTime": "2026-10-30T10:50:32.329Z",
-  "lastProcessed": "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json",
-  "log": []
+  "lastProcessed": "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
+  "log": [
+    {
+      "t": "2026-10-30T12:12:00.043Z",
+      "event": "bb-session",
+      "session": "55ea87bc",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T12:13:05.425Z",
+      "event": "bb-session",
+      "session": "9287bb7f",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-30T12:13:42.775Z",
+      "event": "bb-session",
+      "session": "f7dd1c62",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "memoriam-off-west-end-2026/ground--unknown.json"
+  ]
 }
