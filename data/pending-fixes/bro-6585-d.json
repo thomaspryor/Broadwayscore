@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-6585-d",
+  "planId": "b0357cf5-43b1-4d24-966c-2d656fff59d0",
+  "status": "pending",
+  "createdAt": "2026-10-30T13:57:30.727Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "A Few Good Men 2026: delete two non-review files the Reddit pre-send review_check re-armed on Oct 30: times-square-chronicles (t2conline 2026-10-07 pre-opening press-meet feature, wrongProduction cleared) and letterboxd--scott-alain (letterboxd film-reviews hub page given a critic name)",
+    "steps": [
+      "delete times-square-chronicles--genevieve-rafter-keddy.json",
+      "delete letterboxd--scott-alain.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json",
+        "description": "pre-opening press-meet feature (2026-10-07), not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-few-good-men-2026/letterboxd--scott-alain.json",
+        "description": "letterboxd /film/a-few-good-men/reviews/page/5/ hub (1992 film), not a review"
+      }
+    ]
+  }
+}
