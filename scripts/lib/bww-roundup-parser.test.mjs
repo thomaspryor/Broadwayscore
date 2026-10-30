@@ -114,3 +114,10 @@ test('leading-initial bylines still parse (J. Kelly Nestruck regression)', () =>
   assert.equal(parsed[0].criticName, 'J. Kelly Nestruck');
   assert.equal(parsed[0].outletRaw, 'The Globe and Mail');
 });
+
+test('BRO-6585: a grade letter glued to the next byline is not part of the name', () => {
+  const body = 'still poses almost four full decades after its original staging. Grade: BCaitlin Hornik, The Independent: In some ways, A Few Good Men is a classic tale.';
+  const names = parseArticleBodyReviews(body).map(p => p.criticName);
+  assert.ok(!names.includes('BCaitlin Hornik'), JSON.stringify(names));
+  assert.ok(names.includes('Caitlin Hornik'), JSON.stringify(names));
+});

@@ -21,7 +21,12 @@ const { foldDiacritics } = require('./url-slug');
 // Latin-1 accented letters are allowed so "José Solís" / "Zoë Wanamaker" parse;
 // an ASCII-only class dropped the whole entry and merged its quote into the
 // previous critic's excerpt (BRO-733).
-const NAME_WORD = "[A-ZÀ-ÖØ-Þ][a-zA-ZÀ-ÖØ-öø-ÿ'’\\-]+";
+// The lookahead refuses a capital glued onto the next capitalized word: BWW
+// ran EW's "Grade: B" into "Caitlin Hornik, The Independent:", and "BCaitlin
+// Hornik" became a second Independent critic that double-counted (BRO-6585).
+// "McDonald"/"LaChanze" are unaffected (their 2nd letter is lowercase); a 2nd
+// letter "I" is allowed because BWW often mistypes l as I ("MIchael Dale").
+const NAME_WORD = "[A-ZÀ-ÖØ-Þ](?![A-HJ-ZÀ-ÖØ-Þ][a-zà-öø-ÿ])[a-zA-ZÀ-ÖØ-öø-ÿ'’\\-]+";
 // Single space between leading initial and first name. The lookbehind sits
 // INSIDE the optional group so it only constrains the leading-initial branch:
 // when no leading initial is present (the common case), the rest of the
