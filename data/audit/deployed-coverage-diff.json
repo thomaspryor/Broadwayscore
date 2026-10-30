@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-10-30T03:53:38.873Z",
+  "generatedAt": "2026-10-30T06:43:32.022Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 302,
-  "clean": 301,
-  "defective": 1,
+  "checked": 304,
+  "clean": 302,
+  "defective": 2,
   "byType": {
-    "unreachable": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "tristan-yseult-royal-bath-regional-2026",
-      "title": "Tristan & Yseult",
-      "openingDate": "2026-09-18",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "openingDate": "2026-10-29",
       "ok": false,
       "defects": [
         {
-          "type": "unreachable",
-          "detail": "HTTP 404"
+          "type": "score-drift",
+          "detail": "deployed cs 58.31 vs local 58.06 (Δ0.25)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 1,
-      "deployedCount": null,
-      "firstDefectAt": "2026-10-30T03:53:33.867Z"
+      "localCount": 21,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-10-30T06:43:26.788Z"
+    },
+    {
+      "showId": "these-are-our-neighbours-citizens-regional-2026",
+      "title": "These Are Our Neighbours",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 60.58 vs local 60 (Δ0.58)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-10-30T06:43:26.788Z"
     }
   ],
   "persistentDefective": 0,
