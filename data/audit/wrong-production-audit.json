@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T19:21:39.294Z",
+  "timestamp": "2026-10-30T19:37:54.050Z",
   "stats": {
-    "totalReviews": 71359,
-    "alreadyFlagged": 22324,
+    "totalReviews": 71511,
+    "alreadyFlagged": 22326,
     "dateGuardCatches": 230,
-    "directorMismatch": 2894,
-    "tvFilmSignals": 2029,
-    "londonSignals": 3407,
+    "directorMismatch": 2895,
+    "tvFilmSignals": 2031,
+    "londonSignals": 3408,
     "offBroadwaySignals": 635,
     "yearMismatch": 298,
-    "noPublishDate": 8215
+    "noPublishDate": 8257
   },
   "findings": [
     {
@@ -20785,6 +20785,19 @@
       ]
     },
     {
+      "showId": "fun-home-regional-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2025-01-21",
+      "url": "https://www.chicagotribune.com/2025/01/21/review-the-musical-fun-home-holds-cartoonist-alison-bechdels-memories-up-to-the-light/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from fun-home-2015"
+        }
+      ]
+    },
+    {
       "showId": "funny-girl-2022",
       "file": "cititour--unknown.json",
       "score": null,
@@ -27110,6 +27123,19 @@
       "score": 76,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/hyprov-improv-hypnosis",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "i-and-you-regional-2025",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2025-02-24",
+      "url": "https://www.chicagotheatrereview.com/2025/02/i-sing-the-body-electric/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -58202,6 +58228,20 @@
       ]
     },
     {
+      "showId": "the-heart-off-broadway-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://1minutecritic.com/the-heart-musical-roundabout-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
       "showId": "the-heidi-chronicles-2015",
       "file": "nbcny--robert-kahn.json",
       "score": 72,
@@ -64138,6 +64178,7 @@
     {
       "showId": "the-secret-garden-regional-2024",
       "file": "chicago-reader--catey-sullivan.json",
+      "score": 77,
       "publishDate": "2024-11-19",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/secret-garden-theo/",
       "findings": [
@@ -65807,6 +65848,7 @@
     {
       "showId": "this-is-our-youth-regional-2024",
       "file": "buzznews--bill-esler.json",
+      "score": 89,
       "publishDate": "2024-09-06",
       "url": "https://www.buzznews.net/theatre/theatre-reviews/item/5618-outstyanding-performances-make-this-is-our-youth-a-winning-production.html",
       "findings": [
@@ -114815,6 +114857,20 @@
       "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-09-30",
       "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-robert-ickes-the-lives-of-others-ahead-of-west-end-premiere/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "whatsonstage--tom-millward.json",
+      "score": null,
+      "publishDate": "2026-10-30",
+      "url": "https://www.whatsonstage.com/news/keira-knightley-luke-thompson-and-stephen-dillane-on-surveillance-and-kindness-in-uncertain-times-the-lives-of-others-opens-in-the-west-end_1736276/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
