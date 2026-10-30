@@ -22,7 +22,7 @@ run-name: 'Opening-night lane ${{ inputs.mode }} ${{ inputs.show }} ${{ inputs.n
 # reads). Nothing uses fetch-depth 0.
 #
 # Advisory first (CLAUDE.md §19): only the ledger-commit steps are continue-on-error, so a failed run shows as failed (this is the lane's first live
-# proof) and the notify-failure step reports it; ledger commits run only on main so a branch dispatch never pushes to main. No cron and no push trigger: smoke and night are manual dispatches; shadow is also dispatched by press-night-probe.yml on Broadway press nights (BRO-6074).
+# proof) and the notify-failure step reports it; ledger commits run only on main so a branch dispatch never pushes to main. No cron and no push trigger: smoke is a manual dispatch; night is dispatched by the orchestrator's "Start lane night + watchdog" step on opening day, only when LANE_ONLY_MARKETS covers the show (BRO-6621, see the night-wait job); shadow is also dispatched by press-night-probe.yml on Broadway press nights (BRO-6074).
 
 on:
   workflow_dispatch:
@@ -132,8 +132,90 @@ jobs:
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
-  night:
+  # BRO-6621: the orchestrator dispatches mode=night on opening day, often hours before the embargo. This job sleeps until
+  # lane start (embargo - 30 min, defaultEmbargoAt so a BRO-6614 reviewEmbargoAt override counts). A wait longer than
+  # one job may run sleeps 330 minutes and re-dispatches this workflow with the same inputs; the next hop queues in the
+  # per-show concurrency group above, so every job stays under GitHub's 360-minute cap and two shows on one night never
+  # wait on each other. After the sleep it re-reads LANE_ONLY_MARKETS and LANE_STANDDOWN (hold-check), so a hold set
+  # during the day keeps the lane off. More than an hour past the embargo it does not start the lane and fails, and the
+  # lane watchdog (opening-night-lane-watchdog.yml) dispatches the old path. planNightWait in
+  # scripts/lib/opening-night-lane/auto-fallback.js.
+  night-wait:
     if: inputs.mode == 'night'
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    permissions:
+      contents: read
+      actions: write  # gh workflow run (the next hop)
+    outputs:
+      go: ${{ steps.wait.outputs.go }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Validate inputs
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+        run: |
+          printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show must be a show id"; exit 1; }
+          printf '%s' "$NIGHT" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "::error::night needs night=YYYY-MM-DD"; exit 1; }
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Checkout core data (root JSON only)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Wait for lane start
+        id: wait
+        timeout-minutes: 340
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          GH_TOKEN: ${{ github.token }}
+          # GITHUB_TOKEN cannot read repo variables (BRO-6639).
+          VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          read -r ACTION SLEEP_MIN <<< "$(node scripts/lane-auto-fallback.js night-wait "--show=${SHOW}" "--night=${NIGHT}")"
+          echo "night-wait: ${ACTION} ${SLEEP_MIN} min"
+          case "$ACTION" in
+            go) ;;
+            sleep-go) sleep $((SLEEP_MIN * 60)) ;;
+            sleep-chain)
+              sleep $((SLEEP_MIN * 60))
+              gh workflow run opening-night-lane-live.yml -f mode=night -f show="$SHOW" -f night="$NIGHT"
+              echo "Chained the next hop; this hop does not start the lane."
+              echo "go=false" >> "$GITHUB_OUTPUT"
+              exit 0 ;;
+            late) echo "::error::more than 1h past the embargo; the lane does not start (the watchdog dispatches the old path)"; exit 1 ;;
+            *) echo "::error::embargo unknown for ${SHOW} ${NIGHT}"; exit 1 ;;
+          esac
+          # Exit 3 = held (shadow hold or stand-down): skip quietly. Any other failure is a bug: fail the job.
+          HOLD=0
+          node scripts/lane-auto-fallback.js hold-check "--show=${SHOW}" || HOLD=$?
+          case "$HOLD" in
+            0) echo "go=true" >> "$GITHUB_OUTPUT" ;;
+            3) echo "go=false" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::hold-check failed (exit ${HOLD})"; exit 1 ;;
+          esac
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane did not start'
+          description: 'BRO-6621. The lane night run could not wait for or start the lane (embargo unknown, or dispatched more than an hour past the embargo). The lane watchdog dispatches the old path, which also runs on its crons.'
+          severity: 'warning'
+          email: 'false'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+  night:
+    needs: night-wait
+    if: inputs.mode == 'night' && needs.night-wait.outputs.go == 'true'
     runs-on: ubuntu-latest
     # A job-level block replaces the workflow-level one, so contents stays listed. actions: write lets the lane publish
     # dispatch vercel-deploy.yml (source=lane-press-night) instead of waiting for the 5-minute cron (BRO-6649). Smoke and

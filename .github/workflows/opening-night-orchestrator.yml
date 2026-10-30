@@ -399,6 +399,59 @@ jobs:
             echo "::warning::Failed to dispatch aggregator-url-watcher loop"
           fi
 
+      - name: Start lane night + watchdog
+        # BRO-6621 (plan v2 step 6): the opening-night lane's night run and its watchdog, each its own dispatched run.
+        # Neither is a cron and the watchdog is not a job of the lane run. Any one of today's orchestrator ticks starts
+        # them, inside [embargo - 20h, embargo + 1h]; the lane run then sleeps to embargo - 30 min itself. Placed BEFORE
+        # the polling loop for the same reason as the steps above (an Express takeover cancels this run mid-loop).
+        # SHADOW HOLD: nothing starts unless LANE_ONLY_MARKETS was read and names the show's market (planNightStart in
+        # scripts/lib/opening-night-lane/auto-fallback.js). Unset, unreadable or a typo starts nothing and the night stays
+        # shadow-only (press-night-probe.yml). Also skipped: LANE_STANDDOWN covers the show, the lane is not armed, or a
+        # lane night or watchdog run for the show-night already exists from the last day (once per night, so a fallback
+        # is never followed by a fresh lane). Warn-only; a failed run list starts nothing.
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN cannot read repo variables (BRO-6639).
+          VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          SHOWS: ${{ steps.find.outputs.shows }}
+        run: |
+          for NAME in LANE_ONLY_MARKETS LANE_STANDDOWN; do
+            if VALUE=$(GH_TOKEN="$VARS_TOKEN" timeout 25 bash scripts/lib/read-actions-variable.sh "$NAME"); then READ=ok; else READ=unknown; VALUE=""; fi
+            export "$NAME=$(printf '%s' "$VALUE" | tr -d '\r\n')" "${NAME}_READ=$READ"
+          done
+          if [ "$LANE_ONLY_MARKETS_READ" != "ok" ] || [ -z "$LANE_ONLY_MARKETS" ]; then
+            echo "LANE_ONLY_MARKETS unset or unreadable: shadow hold, no lane night run."
+            exit 0
+          fi
+          ARMED=0
+          node scripts/opening-night-lane-rehearse.js --arm-check && ARMED=1
+          SEEN="$RUNNER_TEMP/lane-runs-seen.txt"
+          SINCE=$(date -u -d '26 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          if ! { gh run list --workflow=opening-night-lane-live.yml --limit 100 --json displayTitle,createdAt --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle" \
+               && gh run list --workflow=opening-night-lane-watchdog.yml --limit 100 --json displayTitle,createdAt --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle"; } > "$SEEN.tmp"; then
+            echo "::warning::could not list lane runs; no lane night run started this tick"
+            exit 0
+          fi
+          mv "$SEEN.tmp" "$SEEN"
+          if ! DUE=$(node scripts/lane-auto-fallback.js start-plan --shows="$SHOWS" --armed="$ARMED" --seen-file="$SEEN"); then
+            echo "::warning::lane start-plan failed; no lane night run started this tick"
+            exit 0
+          fi
+          # MODE watchdog-only: the lane run started on an earlier tick but its watchdog dispatch failed.
+          while read -r SHOW NIGHT MODE; do
+            [ -z "$SHOW" ] && continue
+            if [ "$MODE" != "watchdog-only" ]; then
+              echo "Starting lane night run + watchdog: $SHOW $NIGHT"
+              gh workflow run opening-night-lane-live.yml -f mode=night -f show="$SHOW" -f night="$NIGHT" \
+                || { echo "::warning::Failed to dispatch the lane night run for $SHOW $NIGHT"; continue; }
+            else
+              echo "Starting the missing lane watchdog: $SHOW $NIGHT"
+            fi
+            gh workflow run opening-night-lane-watchdog.yml -f show="$SHOW" -f night="$NIGHT" \
+              || echo "::warning::Failed to dispatch the lane watchdog for $SHOW $NIGHT"
+          done <<< "$DUE"
+
       - name: Check API budget
         id: budget
         if: steps.find.outputs.has_shows == 'true'

@@ -147,7 +147,10 @@ test('night job: a job-level permissions block keeps contents: write beside acti
   assert.match(night, /permissions:\n\s+contents: write\n\s+actions: write/);
   assert.match(night, /OPENING_NIGHT_LANE_DEPLOY_DISPATCH: '1'/);
   assert.match(night, /GH_TOKEN: \$\{\{ github\.token \}\}/);
-  assert.doesNotMatch(y.slice(0, y.indexOf('\n  night:')) + y.slice(y.indexOf('\n  shadow:')), /actions: write/);
+  // BRO-6621: night-wait re-dispatches itself (gh workflow run), so it holds actions: write with read-only contents.
+  const nightWait = y.slice(y.indexOf('\n  night-wait:'), y.indexOf('\n  night:'));
+  assert.match(nightWait, /permissions:\n\s+contents: read\n\s+actions: write/);
+  assert.doesNotMatch(y.slice(0, y.indexOf('\n  night-wait:')) + y.slice(y.indexOf('\n  shadow:')), /actions: write/);
 });
 
 const real = require('../../scripts/lib/opening-night-lane/real-ports.js');
