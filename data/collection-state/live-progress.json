@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-10-30T23:48:12.770Z",
-  "processed": 395,
-  "failed": 218,
-  "successRate": "64.4%",
+  "updatedAt": "2026-10-31T00:04:00.538Z",
+  "processed": 402,
+  "failed": 224,
+  "successRate": "64.2%",
   "tierBreakdown": {
-    "playwright": 192,
+    "playwright": 195,
     "amp": 7,
     "browserbase": 5,
     "directCookies": 0,
     "scrapingdog": 29,
-    "scrapingbee": 16,
+    "scrapingbee": 17,
     "brightdata": 0,
-    "archiveToday": 25,
-    "archive": 114
+    "archiveToday": 31,
+    "archive": 116
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-30T19:52:59.573Z",
-      "event": "bb-session",
-      "session": "9ee67e74",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
-    },
     {
       "t": "2026-10-30T19:53:00.439Z",
       "event": "bb-cookie-inject",
@@ -121,6 +115,18 @@
       "t": "2026-10-30T23:14:13.745Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-10-30T23:55:27.411Z",
+      "event": "bb-session",
+      "session": "0574809a",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T23:56:33.606Z",
+      "event": "bb-session",
+      "session": "9928bf17",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
