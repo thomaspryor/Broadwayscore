@@ -18,6 +18,10 @@ fail=0
 # is portable to any environment, not just one hand-patched CI step.
 # Reproduce the old failure with: GITHUB_ACTIONS=true bash "$0"
 
+# BRO-6592: same reasoning for NODE_TEST_CONTEXT (set when a node --test file
+# drives this suite); case 9 covers that skip explicitly.
+unset NODE_TEST_CONTEXT
+
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
@@ -26,6 +30,9 @@ mkdir -p "$FAKE_REPO/scripts/lib" "$FAKE_REPO/data/audit"
 cp "$SCRIPT_DIR/disk-floor-check.sh" "$FAKE_REPO/scripts/lib/disk-floor-check.sh"
 
 GC_MARKER="$TMP/gc-ran"
+# BRO-6592 cooldown stamp. FAKE_REPO is not a git repo, so the stamp falls back
+# to data/audit/. Cases that expect a GC clear it first.
+STAMP="$FAKE_REPO/data/audit/disk-preflight-gc.stamp"
 cat > "$FAKE_REPO/scripts/gc-merged-worktrees.sh" <<EOF
 #!/usr/bin/env bash
 echo ran >> "$GC_MARKER"
@@ -49,7 +56,7 @@ EOF
 
 # Case 1: below floor (3GB free < 5GB default floor) → GC runs.
 BINDIR=$(fake_bin $((3 * 1024 * 1024)))
-rm -f "$GC_MARKER"
+rm -f "$GC_MARKER" "$STAMP"
 ( PATH="$BINDIR:$PATH"; unset GITHUB_ACTIONS; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
 if [ -f "$GC_MARKER" ]; then
   echo "PASS[1]: below-floor free space triggers emergency GC"
@@ -79,7 +86,7 @@ fi
 
 # Case 4: custom floor via DISK_PREFLIGHT_FLOOR_GB.
 BINDIR=$(fake_bin $((8 * 1024 * 1024)))
-rm -f "$GC_MARKER"
+rm -f "$GC_MARKER" "$STAMP"
 ( PATH="$BINDIR:$PATH"; unset GITHUB_ACTIONS; cd "$FAKE_REPO"; export DISK_PREFLIGHT_FLOOR_GB=10; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
 if [ -f "$GC_MARKER" ]; then
   echo "PASS[4]: custom DISK_PREFLIGHT_FLOOR_GB=10 triggers GC at 8GB free"
@@ -118,6 +125,58 @@ if grep -q "SURVIVED" <<<"$OUT"; then
   echo "PASS[5]: caller survives a failing df under set -euo pipefail (fail-open holds)"
 else
   echo "FAIL[5]: caller was killed by a failing df under set -e — fail-open is broken. Output: $OUT"; fail=1
+fi
+
+# Case 6 (BRO-6592): a second below-floor call inside the cooldown must NOT
+# re-run the GC. On the Mac Studio a full pass takes ~220s and frees 0KB when
+# nothing is merged+clean; without the cooldown every push repeated it, and a
+# 20s-deadline push-with-retry caller took 240s.
+run_low() {  # run_low <cooldown|""> — one below-floor ensure_disk_floor call
+  ( PATH="$(fake_bin $((3 * 1024 * 1024))):$PATH"; unset GITHUB_ACTIONS; cd "$FAKE_REPO"
+    if [ -n "$1" ]; then export DISK_PREFLIGHT_GC_COOLDOWN_SEC="$1"; else unset DISK_PREFLIGHT_GC_COOLDOWN_SEC; fi
+    source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) 2>&1
+}
+rm -f "$GC_MARKER" "$STAMP"
+run_low "" >/dev/null
+OUT6=$(run_low "")
+runs=$(wc -l < "$GC_MARKER" 2>/dev/null | tr -d ' ')
+if [ "${runs:-0}" = "1" ] && grep -q "cooldown" <<<"$OUT6"; then
+  echo "PASS[6]: second below-floor call inside the cooldown skips the GC"
+else
+  echo "FAIL[6]: expected exactly 1 GC run and a cooldown notice, got runs=${runs:-0}. Output: $OUT6"; fail=1
+fi
+
+# Case 7: an expired stamp (older than the cooldown) runs the GC again.
+rm -f "$GC_MARKER"
+echo $(( $(date +%s) - 3600 )) > "$STAMP"
+run_low "1800" >/dev/null
+if [ -f "$GC_MARKER" ]; then
+  echo "PASS[7]: stamp older than the cooldown lets the GC run again"
+else
+  echo "FAIL[7]: an expired cooldown stamp still suppressed the GC"; fail=1
+fi
+
+# Case 8: DISK_PREFLIGHT_GC_COOLDOWN_SEC=0 disables the cooldown; a corrupt
+# stamp fails open (GC runs).
+rm -f "$GC_MARKER"
+run_low "0" >/dev/null
+echo garbage > "$STAMP"
+run_low "" >/dev/null
+runs=$(wc -l < "$GC_MARKER" 2>/dev/null | tr -d ' ')
+if [ "${runs:-0}" = "2" ]; then
+  echo "PASS[8]: cooldown 0 always runs, corrupt stamp fails open"
+else
+  echo "FAIL[8]: expected 2 GC runs (cooldown=0, then corrupt stamp), got ${runs:-0}"; fail=1
+fi
+
+# Case 9 (BRO-6592): inside a node --test process the preflight is skipped, so
+# a test driving push-with-retry.sh never runs the real host's worktree GC.
+rm -f "$GC_MARKER" "$STAMP"
+( PATH="$(fake_bin $((3 * 1024 * 1024))):$PATH"; unset GITHUB_ACTIONS; export NODE_TEST_CONTEXT=child-v8; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
+if [ -f "$GC_MARKER" ]; then
+  echo "FAIL[9]: NODE_TEST_CONTEXT did not skip the preflight GC"; fail=1
+else
+  echo "PASS[9]: NODE_TEST_CONTEXT (node --test child) skips the preflight GC"
 fi
 
 if [ "$fail" -ne 0 ]; then

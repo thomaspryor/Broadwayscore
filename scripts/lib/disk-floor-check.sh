@@ -12,10 +12,17 @@
 # Usage: source this file, then call `ensure_disk_floor` once before the
 # first network git op.
 #   DISK_PREFLIGHT_FLOOR_GB=5   # override the trigger threshold (default 5GB)
+#   DISK_PREFLIGHT_GC_COOLDOWN_SEC=1800  # min gap between preflight GCs (0 = always)
 
 ensure_disk_floor() {
   # CI runners don't accumulate local worktree/.next sprawl — nothing to GC.
   [ -n "${GITHUB_ACTIONS:-}" ] && return 0
+  # BRO-6592: never from inside a `node --test` run (node sets NODE_TEST_CONTEXT
+  # in each test-file process; spawned bash inherits it). A test driving
+  # push-with-retry.sh against a tmp fixture must not run the real host's
+  # worktree GC (~220s, and it removes real worktrees). Standalone bash suites
+  # opt out with DISK_PREFLIGHT_FLOOR_GB=0 (push-with-retry-test-isolation.test.mjs).
+  [ -n "${NODE_TEST_CONTEXT:-}" ] && return 0
 
   local floor_gb="${DISK_PREFLIGHT_FLOOR_GB:-5}"
   local self_dir repo_root gc_script free_gb
@@ -43,6 +50,28 @@ ensure_disk_floor() {
     # The script's own lock now covers every invocation path (cron, this
     # preflight, manual runs) from one place, so this just calls it and
     # trusts it to no-op (SKIP-RUN, exit 0) if another run is in flight.
+    # BRO-6592: cooldown. A full GC pass scans every worktree (~220s on the
+    # Mac Studio with ~100 of them) and, when nothing is merged+clean, frees
+    # 0KB, leaving the disk still under the floor. Without a cooldown EVERY
+    # push-with-retry.sh / merge call then repeated that 220s scan before its
+    # own deadline clock even started (push-with-retry.sh resets SECONDS after
+    # the mutex), so a 20s-deadline caller ran 240s. The stamp sits in the git
+    # common dir so all worktrees of one repo share it; any error fails open
+    # (runs the GC, i.e. the old behaviour).
+    local cooldown="${DISK_PREFLIGHT_GC_COOLDOWN_SEC:-1800}" stamp_dir stamp now last
+    stamp_dir=$(git -C "$repo_root" rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || true
+    [ -d "$stamp_dir" ] || stamp_dir="$repo_root/data/audit"
+    stamp="$stamp_dir/disk-preflight-gc.stamp"
+    now=$(date +%s 2>/dev/null) || true
+    last=$(cat "$stamp" 2>/dev/null) || true
+    case "$cooldown$now$last" in
+      *[!0-9]*|'') ;;
+      *) if [ -n "$last" ] && [ "$cooldown" -gt 0 ] && [ $((now - last)) -lt "$cooldown" ] && [ $((now - last)) -ge 0 ]; then
+           echo "⚠️  disk preflight: ${free_gb}GB free < ${floor_gb}GB floor — emergency GC already ran $((now - last))s ago (cooldown ${cooldown}s), skipping" >&2
+           return 0
+         fi ;;
+    esac
+    [ -n "$now" ] && { echo "$now" > "$stamp"; } 2>/dev/null || true
     echo "⚠️  disk preflight: ${free_gb}GB free < ${floor_gb}GB floor — running emergency worktree GC before git op" >&2
     bash "$gc_script" >>"$repo_root/data/audit/worktree-gc.log" 2>&1 || true
     free_gb=$(df -Pk "$repo_root" 2>/dev/null | awk 'NR==2 {print int($4/1024/1024)}') || true

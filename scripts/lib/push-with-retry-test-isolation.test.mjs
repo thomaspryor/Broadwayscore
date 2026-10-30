@@ -21,3 +21,13 @@ test('every push-with-retry bash suite defaults PUSH_FAILURE_LOG away from data/
   });
   assert.deepEqual(missing, [], `add: export PUSH_FAILURE_LOG="\${PUSH_FAILURE_LOG:-/dev/null}" near the top of ${missing.join(', ')}`);
 });
+
+// BRO-6592: push-with-retry.sh runs ensure_disk_floor first, which on a host
+// under 5GB free runs the real worktree GC (~220s on the Mac Studio, outside
+// the deadline clock). The early-fallback-budget hang case asserts <60s and
+// failed at 240s. Every bash suite must turn the preflight off at file scope.
+test('every push-with-retry bash suite disables the host disk preflight', () => {
+  const suites = fs.readdirSync(LIB).filter((f) => /^push-with-retry.*\.test\.sh$/.test(f));
+  const missing = suites.filter((f) => !/^export DISK_PREFLIGHT_FLOOR_GB=0$/m.test(fs.readFileSync(path.join(LIB, f), 'utf8')));
+  assert.deepEqual(missing, [], `add: export DISK_PREFLIGHT_FLOOR_GB=0 near the top of ${missing.join(', ')}`);
+});

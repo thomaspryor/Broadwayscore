@@ -32,6 +32,9 @@ set -uo pipefail
 # (push-with-retry.sh logs failures there in CI). The script only appends
 # (>>), so /dev/null is safe; cases that read the log set their own path.
 export PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-/dev/null}"
+# BRO-6592: keep the host disk preflight (a ~220s worktree GC when the Mac is
+# under 5GB free) out of timing-sensitive cases.
+export DISK_PREFLIGHT_FLOOR_GB=0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RECORD_SCRIPT="$SCRIPT_DIR/../record-push-retry-failure.js"
