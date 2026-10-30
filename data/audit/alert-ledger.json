@@ -28503,7 +28503,7 @@
       "linearIdentifier": "BRO-6389"
     },
     "time-bomb-tests:unit:tests/unit/pre-push-visual-gate.test.mjs::a hung Linear request times out and the actual hook still blocks": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/pre-push-visual-gate.test.mjs — a hung Linear request times out and the actual hook still blocks",
       "firstSeen": "2026-10-26T20:29:05.567Z",
@@ -28513,7 +28513,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6390"
+      "linearIdentifier": "BRO-6390",
+      "resolvedAt": "2026-10-30T01:03:31.959Z",
+      "resolveReason": "BRO-6390: aligned fixture lease mtimes with their reader clocks; all 13 pre-push-visual-gate tests pass under +45 days, including the real hook timeout."
     },
     "review-gap:opening-window:the-unexpected-3rd-2026": {
       "status": "open",

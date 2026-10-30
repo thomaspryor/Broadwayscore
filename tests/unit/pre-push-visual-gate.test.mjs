@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
+import { realNowMs } from '../helpers/clock-shift.mjs';
 
 const require = createRequire(import.meta.url);
 const { notifyBlockedApproval, issueFromContext, findCrops, main } = require('../../scripts/lib/linear-attach-approval.js');
@@ -177,14 +178,17 @@ test('concurrent uploads skip and expired locks recover after a killed process',
   const fx = fixture(t);
   const events = [];
   const client = fakeClient(events);
+  const lock = join(fx.dir, '.linear-approval.lock');
   let release;
   client.getIssue = () => new Promise((resolveIssue) => { release = () => resolveIssue({ id: 'BRO-419' }); });
   const first = notifyBlockedApproval(fx, { client, logger });
+  // The in-process reader uses the audit's clock; filesystem mtimes do not.
+  const acquired = new Date();
+  utimesSync(lock, acquired, acquired);
   assert.equal((await notifyBlockedApproval(fx, { client, logger })).reason, 'upload already in progress');
   release();
   await first;
   rmSync(join(fx.dir, '.linear-approval.json'));
-  const lock = join(fx.dir, '.linear-approval.lock');
   writeFileSync(lock, '');
   const expired = new Date(Date.now() - 100_000);
   utimesSync(lock, expired, expired);
@@ -196,7 +200,8 @@ test('parallel processes reclaim an expired lease without duplicate uploads', as
   const { env, events } = installClient(fx);
   const lock = join(fx.dir, '.linear-approval.lock');
   writeFileSync(lock, '');
-  const expired = new Date(Date.now() - 100_000);
+  // Spawned CLI readers do not inherit the audit's --import clock preload.
+  const expired = new Date(realNowMs() - 100_000);
   utimesSync(lock, expired, expired);
   await Promise.all(Array.from({ length: 8 }, () => new Promise((resolveChild, reject) => {
     const child = spawn(process.execPath, [join(root, 'scripts/lib/linear-attach-approval.js'), `--branch=${fx.branch}`, `--repo=${fx.repo}`, `--dir=${fx.dir}`], { env, stdio: ['ignore', 'ignore', 'pipe'] });
