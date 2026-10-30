@@ -25,7 +25,7 @@ const lease = require('./lease');
 
 const DEFAULT_BRANCH = 'opening-night-leases';
 const DEFAULT_FILE = 'data/opening-night/leases.json';
-const GIT_TIMEOUT_MS = 60000;
+const GIT_TIMEOUT_MS = 20000; // the branch is one small file; a sync must fit the callers' 2-minute steps
 
 /** Write `text` to `file` via tmp + rename so a concurrent reader never parses half a file. */
 function writeAtomic(file, text) {

@@ -7,9 +7,10 @@
  *  - No file = no lane has ever been armed = nothing leased.
  *  - Known state: a show is blocked while someone else holds a live lease on it.
  *  - Unknown state (the marker `sync` writes after it cannot reach the store, or a file that cannot be
- *    read or parsed), BRO-6648: only TONIGHT's shows wait (press night window, the same window
- *    lane-only-markets uses); every other show writes. The marker carries the `tonight` list `sync`
- *    computed; an unparsable file computes it from shows.json here. Unreadable shows.json = nothing tonight.
+ *    read or parsed), BRO-6648: only TONIGHT's shows wait; every other show writes. Tonight = now is inside
+ *    [embargo - 3h, embargo + 9h] of the show's openingDate (the lane can start 3h late and run ~6h, so the
+ *    writer window outlasts lane-only-markets' publish window). Computed here with the caller's `now`, plus
+ *    the `tonight` list the marker carries from `sync`. Unreadable shows.json = only the marker's list.
  *  - OPENING_NIGHT_LANE_HOLDER lets the lane's own writes through.
  *
  * Writers ask writeBlockedShowIds / leaseSkipReason / partitionLeased (one policy). leasedShowIds is the
@@ -25,13 +26,20 @@ const DEFAULT_SHOWS_FILE = path.join(__dirname, '../../../data/shows.json');
 const leasesFile = (env = process.env) => env.OPENING_NIGHT_LEASES_FILE || DEFAULT_LEASES_FILE;
 const showsFile = (env = process.env) => env.OPENING_NIGHT_SHOWS_FILE || DEFAULT_SHOWS_FILE;
 
-/** Show ids whose press night (openingDate) window contains `now`. Unreadable shows.json = []. */
+const WRITER_WINDOW_BEFORE_MIN = 180;
+const WRITER_WINDOW_AFTER_MIN = 540;
+
+/** Show ids whose press night (openingDate) writer window contains `now`. Unreadable shows.json = []. */
 function tonightShowIds({ now, file } = {}) {
   let shows;
   try { const d = JSON.parse(fs.readFileSync(file || showsFile(), 'utf8')); shows = Array.isArray(d) ? d : d.shows || []; } catch { return []; }
-  const { inPressNightWindow } = require('./lane-only-markets'); // lazy: lane-only-markets requires this file
+  const { embargoForNight } = require('./lane-only-markets'); // lazy: lane-only-markets requires this file
   const nowMs = now === undefined ? Date.now() : new Date(now).getTime();
-  return shows.filter((s) => s && s.id && s.openingDate && inPressNightWindow(s, s.openingDate, nowMs)).map((s) => s.id);
+  const inWindow = (s) => {
+    const at = Date.parse(embargoForNight(s, s.openingDate) || '');
+    return Number.isFinite(at) && nowMs >= at - WRITER_WINDOW_BEFORE_MIN * 60000 && nowMs <= at + WRITER_WINDOW_AFTER_MIN * 60000;
+  };
+  return shows.filter((s) => s && s.id && s.openingDate && inWindow(s)).map((s) => s.id);
 }
 
 /** The local lease view: {unknown:false, state} or {unknown:true, tonight:[ids]|null} (null = not computed). */
@@ -52,7 +60,10 @@ function readUnknownMarker(f) {
 
 const tonightMemo = new Map();
 function tonightFor(view, now, env) {
-  if (view.tonight) return view.tonight;
+  const computed = tonightNow(now, env);
+  return view.tonight ? [...new Set([...view.tonight, ...computed])] : computed;
+}
+function tonightNow(now, env) {
   const key = `${showsFile(env)}@${Math.floor((now === undefined ? Date.now() : new Date(now).getTime()) / 60000)}`;
   if (!tonightMemo.has(key)) tonightMemo.set(key, tonightShowIds({ now, file: showsFile(env) }));
   return tonightMemo.get(key);
@@ -142,6 +153,6 @@ function revertLeasedChanges(repoDir, shows) {
 const describe = (l) => `${l.show} leased to ${l.holder}${l.expiresAt ? ` until ${l.expiresAt}` : ''}${l.unknown ? ' (lease store unknown and its press night is tonight, so it waits)' : ''}`;
 
 module.exports = {
-  readUnknownMarker, DEFAULT_LEASES_FILE, DEFAULT_SHOWS_FILE, leasesFile, showsFile, tonightShowIds, readView,
+  WRITER_WINDOW_BEFORE_MIN, WRITER_WINDOW_AFTER_MIN, readUnknownMarker, DEFAULT_LEASES_FILE, DEFAULT_SHOWS_FILE, leasesFile, showsFile, tonightShowIds, readView,
   writeBlockedShowIds, leaseSkipReason, partitionLeased, leasedShowIds, revertLeasedChanges, describe,
 };
