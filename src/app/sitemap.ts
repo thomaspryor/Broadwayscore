@@ -21,6 +21,7 @@ import { getAllVideoCreatorSlugs } from '@/lib/data-video-critics';
 import { getAllActorProfiles } from '@/lib/data-actors';
 import { isThinActor } from '@/lib/actor-indexability';
 import { isShowIndexable, isThinCriticPage } from '@/lib/seo-indexability';
+import { displaysCriticScore } from '@/lib/critic-score-display';
 import { isThinCreative } from '@/lib/creative-indexability';
 import { getAllUnifiedCreativeProfiles, ALL_CREATIVE_CATEGORIES, CREATIVE_CATEGORY_CONFIG } from '@/lib/data-creative';
 import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
@@ -79,8 +80,8 @@ function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
   const operaSlugs = new Set(getOperaShows().map(s => s.slug));
   return getAllShowSlugs()
     .filter(slug => !operaSlugs.has(slug))
-    // Same predicate as the page's robots tag: tour rule + thin rule (BRO-5969)
-    .filter(slug => { const s = getShowBySlug(slug); return !s || isShowIndexable(s, slug); })
+    // Require hasEnoughReviews via the shared display gate, plus page indexability.
+    .filter(slug => { const s = getShowBySlug(slug); return s && displaysCriticScore(s) && isShowIndexable(s, slug); })
     .map((slug) => {
       const show = getShowBySlug(slug);
       const isOpen = show?.status === 'open';
@@ -97,7 +98,7 @@ function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
 function buildOperaShard(ctx: DateContext): MetadataRoute.Sitemap {
   const operaShows = getOperaShows();
   const showPages = operaShows
-    .filter(s => s.status !== 'upcoming')
+    .filter(s => s.status !== 'upcoming' && displaysCriticScore(s))
     .map((show) => {
       const isOpen = show.status === 'open';
       return {

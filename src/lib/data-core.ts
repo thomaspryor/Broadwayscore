@@ -1409,7 +1409,7 @@ function topUpRelated(curated: ComputedShow[], show: ComputedShow, limit: number
   return [...curated, ...extra].slice(0, limit);
 }
 
-function getCity(show: { category?: string; venue?: string; localOnly?: boolean; discoverySource?: string }): string {
+export function getCity(show: { category?: string; venue?: string; localOnly?: boolean; discoverySource?: string }): string {
   // Local-only shows (BRO-6518) relate only to each other, never to tryouts or NYC/London.
   if (isLocalOnlyShow(show)) return 'local';
   const cat = show.category || 'broadway';
@@ -1419,9 +1419,10 @@ function getCity(show: { category?: string; venue?: string; localOnly?: boolean;
   // of the site (Beyond London shelf, BRO-5103), so they relate to London shows
   // and never to US tryouts.
   if (isUkRegionalShow(show)) return 'london';
-  // 'regional' (non-NYC US tryouts) intentionally returns its own bucket ('regional'),
-  // so related-shows only pull other regional shows — never NYC/London productions.
-  return cat;
+  // US tryouts and tours keep their own recommendation pools. Unrecognized
+  // categories share NYC so a new category cannot strand a show without peers.
+  if (cat === 'regional' || cat === 'tour') return cat;
+  return 'nyc';
 }
 
 export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow[] {
