@@ -3413,5 +3413,36 @@
       }
     ],
     "queuedAt": "2026-10-30T21:09:30.188Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6621-lane-watchdog",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6621-lane-watchdog",
+    "description": "land.yml did not land land/bro-6621-lane-watchdog: the unit-tests-node gate went red at 78ab64939d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41127418689",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6621-lane-watchdog"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "78ab64939d30a13cd4bf882d47ecd3ccd188f61c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41127418689"
+      }
+    ],
+    "queuedAt": "2026-10-30T21:17:03.064Z"
   }
 ]
