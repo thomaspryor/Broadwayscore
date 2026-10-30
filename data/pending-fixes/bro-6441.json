@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6441",
+  "planId": "63d98daa-2c34-4a6b-8d7c-ba4409f0b131",
+  "status": "pending",
+  "createdAt": "2026-10-30T15:06:48.428Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude the Washington Post feature from critic-review recovery; retain its record and cited editorial reason.",
+    "steps": [
+      "lincoln-in-the-bardo-off-broadway-2026/washpost--philip-kennicott.json: isNonReviewReason",
+      "lincoln-in-the-bardo-off-broadway-2026/washpost--philip-kennicott.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "lincoln-in-the-bardo-off-broadway-2026/washpost--philip-kennicott.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BRO-6441. Full publisher article read on 2026-10-30. Reported feature centered on a cemetery interview with George Saunders and Missy Mazzoli about adapting the novel into opera. The deck and body describe the creative process; musical analysis accompanies the interview, rather than a staged-performance review. The production matches this record, so wrongShow/wrongProduction are inappropriate. Source: https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+        "description": "lincoln-in-the-bardo-off-broadway-2026/washpost--philip-kennicott.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lincoln-in-the-bardo-off-broadway-2026/washpost--philip-kennicott.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "lincoln-in-the-bardo-off-broadway-2026/washpost--philip-kennicott.json: isNonReview"
+      }
+    ]
+  }
+}
