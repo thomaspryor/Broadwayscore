@@ -36,6 +36,7 @@ on:
       - 'scripts/read-theater-newsletters.js'
       # BRO-6620: tests/unit/lane-only-markets.test.mjs runs these and pins the workflow wiring.
       - 'scripts/lane-only-markets.js'
+      - 'scripts/lane-stood-down-page.js'
       - 'scripts/express-retry-queue.js'
       - '.github/workflows/opening-night-poller.yml'
       - '.github/workflows/opening-night-express-retry-check.yml'
