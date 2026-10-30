@@ -1227,6 +1227,8 @@ on:
       - 'scripts/lib/push-with-retry.hook-rejection.test.sh'
       # BRO-3668: dirty-worktree autostash.
       - 'scripts/lib/push-with-retry.autostash.test.sh'
+      # BRO-6594: git rename detection pairing unrelated pending stubs.
+      - 'scripts/lib/push-with-retry.rename-pairing.test.sh'
       # BRO-2951: bash unit test for the github.com remote-slug and
       # checkout-extraheader parsers. Covered by the scripts/lib/** push glob
       # above for TRIGGERING, but .test.sh files are each run by their own
@@ -5236,6 +5238,14 @@ jobs:
         # upstream + a recoverable snapshot ref, PUSH_AUTOSTASH=0 kill switch.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.autostash.test.sh
+
+      - name: Run push-with-retry rename-pairing test (bash integration)
+        # BRO-6594. Two concurrent poller runs drain the same pending stub and
+        # each add a different one; git's rename detection pairs the unrelated
+        # stubs and wrote ours into the remote's path (silent review loss) or
+        # left an unresolvable rename/rename (run 41013824281 lost 29 files).
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.rename-pairing.test.sh
 
       - name: Run push-with-retry content-drop test (bash integration)
         # Asserts the task #619 P0 fix: a push could report success with a
