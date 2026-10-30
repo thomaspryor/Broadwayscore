@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T04:08:08.293Z",
+  "generatedAt": "2026-10-30T04:49:38.333Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1149,7 +1149,7 @@
       "title": "The Lives of Others",
       "market": "west-end",
       "category": "west-end",
-      "type": "musical",
+      "type": "play",
       "openingDate": "2026-10-29",
       "status": "open",
       "slug": "the-lives-of-others-west-end",
@@ -1320,27 +1320,23 @@
       "status": "open",
       "slug": "a-few-good-men",
       "thumbnail": "/images/shows/a-few-good-men-2026/thumbnail.webp",
-      "siteScore": 59.92,
-      "liveScore": 60,
-      "scoreDrift": 0.0799999999999983,
+      "siteScore": 58.32,
+      "liveScore": 58,
+      "scoreDrift": -0.3200000000000003,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
-      "t1": 1,
-      "t2": 4,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 5,
-      "negative": 0,
+      "total": 20,
+      "t1": 6,
+      "t2": 12,
+      "t3": 2,
+      "positive": 4,
+      "mixed": 10,
+      "negative": 6,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "5/12 total",
-          "T1:1/3",
-          "hi-conf:3/8"
-        ],
-        "highConfidence": 3,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1350,17 +1346,9 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -1374,19 +1362,11 @@
           "isDualMarket": false
         },
         {
-          "name": "The Wall Street Journal",
-          "isDualMarket": false
-        },
-        {
           "name": "The Washington Post",
           "isDualMarket": false
         },
         {
           "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
           "isDualMarket": false
         },
         {
@@ -1396,10 +1376,6 @@
         {
           "name": "Newsday",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -1412,14 +1388,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
@@ -1428,19 +1396,7 @@
           "isDualMarket": false
         },
         {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
           "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -1453,18 +1409,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
           "isDualMarket": false
         },
         {
@@ -1620,10 +1564,6 @@
           "isDualMarket": false
         },
         {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
           "name": "The i",
           "isDualMarket": false
         },
@@ -1700,6 +1640,18 @@
           "m": 5,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-30T04:49:38.333Z",
+          "rc": 20,
+          "s": 58.32,
+          "t1": 6,
+          "t2": 12,
+          "t3": 2,
+          "p": 4,
+          "m": 10,
+          "n": 6,
+          "bc": "waiting"
         }
       ]
     },
@@ -1713,23 +1665,23 @@
       "status": "open",
       "slug": "the-heart-off-broadway",
       "thumbnail": "/images/shows/the-heart-off-broadway-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 73,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 74.71,
+      "liveScore": 75,
+      "scoreDrift": 0.29000000000000625,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 3,
       "t1": 0,
       "t2": 1,
-      "t3": 1,
-      "positive": 1,
+      "t3": 2,
+      "positive": 2,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/12 total",
+          "3/12 total",
           "T1:0/3",
           "T2:1/3",
           "hi-conf:2/8"
@@ -2091,6 +2043,18 @@
           "t2": 1,
           "t3": 1,
           "p": 1,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-30T04:49:38.333Z",
+          "rc": 3,
+          "s": 74.71,
+          "t1": 0,
+          "t2": 1,
+          "t3": 2,
+          "p": 2,
           "m": 0,
           "n": 1,
           "bc": "waiting"

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T04:07:54.054Z",
+  "timestamp": "2026-10-30T04:49:26.725Z",
   "stats": {
-    "totalReviews": 69944,
-    "alreadyFlagged": 22301,
+    "totalReviews": 69981,
+    "alreadyFlagged": 22300,
     "dateGuardCatches": 233,
     "directorMismatch": 2861,
-    "tvFilmSignals": 2006,
+    "tvFilmSignals": 2007,
     "londonSignals": 3382,
     "offBroadwaySignals": 630,
     "yearMismatch": 283,
-    "noPublishDate": 8009
+    "noPublishDate": 8019
   },
   "findings": [
     {
@@ -17050,6 +17050,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "eclipse-chichester-festival-regional-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/eclipse-chichester-festival-theatre-review-listening-whats-not-said",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
