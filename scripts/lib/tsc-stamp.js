@@ -63,6 +63,18 @@
 //   PATH (actionlint) and no GH_TOKEN in the Land step (audit-workflow-hygiene
 //   calls the API only with a token). Kill switch: LAND_TSC_STAMP_DISABLED=1
 //   blanks the stamp file, which turns off both stamps.
+//
+// HOOK PRE-WARM (BRO-6519)
+//   The FIRST push under the mutex still paid the whole tail. The checks job
+//   now runs the real pre-push hook on the rebased tip (outside the mutex),
+//   `hook-seed-export` prints "<hookKey>:<dataDigest>" when that run recorded
+//   the key, and the Land job's `hook-seed` appends `hook:<key>` when its own
+//   core data hashes the same (decideSeed, as for tsc). The pushed file list in
+//   the key is the branch diff in both jobs (main..rebased tip), and the tip
+//   message survives the rebase. The checks job has actionlint on PATH and the
+//   Land step does not, so the pre-warm is the stricter run. The hook stamp's
+//   dirty-tree check ignores the paths the key leaves out (hookDirtyLines).
+//   Kill switch: the same LAND_TSC_STAMP_DISABLED=1.
 
 const fs = require('fs');
 const crypto = require('crypto');
@@ -106,6 +118,38 @@ function decideHook({ stampLines, ...rest }) {
   const d = decide({ ...rest, stampLines: lines });
   if (d.skip) return { skip: true, reason: `audits + workflow lints already passed on this tree (${rest.key.slice(0, 12)})` };
   return d.reason.startsWith('no matching stamp') ? { skip: false, reason: 'no matching hook stamp (tail not yet run on this tree)' } : d;
+}
+
+/**
+ * Pure: the `git status --porcelain` lines that make a tree too dirty for the
+ * hook stamp. Paths the hook key leaves out (HOOK_TREE_SKIP_RE: no audit or
+ * lint reads them) do not count, so the checks job's gold-lists prep residue
+ * (data/gold-lists-computed.json) does not block the pre-warm (BRO-6519).
+ */
+function hookDirtyLines(porcelain) {
+  return String(porcelain || '').split('\n').filter((l) => {
+    if (!l.trim()) return false;
+    // A rename counts when either name is outside the skipped paths.
+    return l.slice(3).split(' -> ').some((p) => !HOOK_TREE_SKIP_RE.test(p.replace(/^"|"$/g, '')));
+  });
+}
+
+/**
+ * checks-job side of the hook pre-warm (BRO-6519). Pure: { seed, reason }.
+ * The pre-warm ran the real pre-push hook on the rebased tip with a fresh
+ * stamp file; export "<hookKey>:<dataDigest>" only when that run recorded the
+ * key recomputed here, on exactly the rebased sha, with core data unchanged
+ * since before it ran (the audits may read it; the Land job's decideSeed then
+ * requires its own core data to hash the same).
+ */
+function decideHookSeedExport({ rebased, headOid, key, stampLines, digest, preDigest }) {
+  const no = (reason) => ({ seed: '', reason });
+  if (!SHA40.test(String(rebased || '')) || headOid !== rebased) return no('HEAD is not the rebased sha');
+  if (!HASH64.test(String(key || ''))) return no('no usable hook key');
+  if (!(stampLines || []).includes(`hook:${key}`)) return no('the pre-warm did not record this tree (hook red or skipped)');
+  if (!HASH64.test(String(digest || '')) || !HASH64.test(String(preDigest || ''))) return no('no usable core-data digest');
+  if (preDigest !== digest) return no('core data changed during the pre-warm');
+  return { seed: `${key}:${digest}`, reason: `hook tail passed on rebased ${rebased.slice(0, 10)}` };
 }
 
 /** Nested data JSON paths named anywhere under src/ (a superset of what tsc imports). */
@@ -200,8 +244,11 @@ function main(argv) {
   try {
     const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     const file = env.LAND_TSC_STAMP_FILE || '';
-    const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim();
-    if (dirty && ['check', 'record', 'hook-check', 'hook-record'].includes(cmd)) { console.error('tsc-stamp: run checks (dirty tracked tree)'); return cmd.endsWith('check') ? 1 : 0; }
+    const porcelain = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' });
+    const dirty = porcelain.trim();
+    if (dirty && ['check', 'record'].includes(cmd)) { console.error('tsc-stamp: run checks (dirty tracked tree)'); return cmd === 'check' ? 1 : 0; }
+    const hookDirty = hookDirtyLines(porcelain).length > 0; // untrimmed: each line's 3-char status prefix
+    if (hookDirty && ['hook-check', 'hook-record', 'hook-seed-export'].includes(cmd)) { console.error('tsc-stamp: run hook checks (dirty tracked tree)'); return cmd === 'hook-check' ? 1 : 0; }
     const liveHookKey = () => hookKey({
       lsTree: execFileSync('git', ['ls-tree', '-r', 'HEAD'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 }),
       changedFiles: fs.readFileSync(0, 'utf8'),
@@ -219,6 +266,21 @@ function main(argv) {
       if (env.GITHUB_ACTIONS !== 'true' || !file) return 0;
       const key = liveHookKey();
       if (key) fs.appendFileSync(file, `hook:${key}\n`);
+      return 0;
+    }
+    if (cmd === 'hook-seed-export') {
+      let preD = '';
+      try { preD = fs.readFileSync(a.pre || '', 'utf8').trim(); } catch { /* decide reports it */ }
+      const d = decideHookSeedExport({ rebased: a.rebased, headOid: head, key: liveHookKey(), stampLines: readStamp(file), digest: dataDigest(), preDigest: preD });
+      console.error(`tsc-stamp: hook ${d.seed ? 'seed exported' : 'no seed'} (${d.reason})`);
+      if (d.seed) console.log(d.seed);
+      return 0;
+    }
+    if (cmd === 'hook-seed') {
+      if (!a.seed) { console.error('tsc-stamp: hook not seeded (checks job exported none)'); return 0; }
+      const d = decideSeed({ env, seed: a.seed, digest: dataDigest() });
+      console.error(`tsc-stamp: hook ${d.key ? 'seeded' : 'not seeded'} (${d.reason})`);
+      if (d.key) fs.appendFileSync(file, `hook:${d.key}\n`);
       return 0;
     }
     if (cmd === 'digest-pre') {
@@ -263,10 +325,10 @@ function main(argv) {
     console.error(`tsc-stamp: run tsc (fail-open: ${e.message})`);
     return cmd === 'check' || cmd === 'hook-check' ? 1 : 0;
   }
-  console.error('usage: tsc-stamp.js check|record|hook-check|hook-record|digest-pre|seed-export|seed [--pushed-oid=X --spec-count=N --remote-ref=R]');
+  console.error('usage: tsc-stamp.js check|record|hook-check|hook-record|hook-seed-export|hook-seed|digest-pre|seed-export|seed [--pushed-oid=X --spec-count=N --remote-ref=R]');
   return 2;
 }
 
 if (require.main === module) process.exit(main(process.argv.slice(2)));
 
-module.exports = { TSC_INERT_RESIDUE, HOOK_TREE_SKIP_RE, decide, decideHook, hookKey, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };
+module.exports = { TSC_INERT_RESIDUE, HOOK_TREE_SKIP_RE, decide, decideHook, hookKey, hookDirtyLines, decideHookSeedExport, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };

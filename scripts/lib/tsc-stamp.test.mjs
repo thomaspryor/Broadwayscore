@@ -250,3 +250,86 @@ test('CLI: hook-record then hook-check skips; tsc check stays separate; other fi
   assert.equal(run('hook-check').status, 1, 'dirty tree -> run');
   fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
+
+// ── BRO-6519: pre-warm the hook tail in the checks job, seed it in the Land job ──
+const { hookDirtyLines, decideHookSeedExport } = require('./tsc-stamp.js');
+
+test('hookDirtyLines: data/ and public/data|images residue is not dirt for the hook stamp; code, renames out of it are', () => {
+  assert.deepEqual(hookDirtyLines(' M data/gold-lists-computed.json\n M public/data/x.json\n'), []);
+  assert.deepEqual(hookDirtyLines(' M src/a.ts\n'), [' M src/a.ts']);
+  assert.deepEqual(hookDirtyLines('R  data/a.json -> scripts/a.js\n'), ['R  data/a.json -> scripts/a.js']);
+  assert.deepEqual(hookDirtyLines('R  scripts/a.js -> data/a.json\n'), ['R  scripts/a.js -> data/a.json']);
+  assert.deepEqual(hookDirtyLines(' M .cron-health-exempt.txt\n'), [' M .cron-health-exempt.txt'], 'root allowlists are in the key, so they are dirt');
+  assert.deepEqual(hookDirtyLines(''), []);
+});
+
+test('decideHookSeedExport: seeds only a recorded key on the rebased sha with unchanged core data', () => {
+  const base = { rebased: R, headOid: R, key: K, stampLines: [`hook:${K}`], digest: D, preDigest: D };
+  assert.equal(decideHookSeedExport(base).seed, `${K}:${D}`);
+  for (const [name, patch] of [
+    ['HEAD moved', { headOid: H }],
+    ['no rebased sha', { rebased: '' }],
+    ['tsc line only', { stampLines: [K] }],
+    ['nothing recorded', { stampLines: [] }],
+    ['no key', { key: '' }],
+    ['data moved', { preDigest: 'f'.repeat(64) }],
+    ['no pre digest', { preDigest: '' }],
+  ]) assert.equal(decideHookSeedExport({ ...base, ...patch }).seed, '', name);
+});
+
+test('CLI hook pre-warm end to end: checks-job record -> export -> Land-job seed skips the FIRST hook-check; residue tolerated; drifted data does not seed', () => {
+  const r = mkRepo({});
+  const base = r.commit({ 'src/a.ts': 'x\n', '.gitignore': 'data/core.json\n', 'data/gold-lists-computed.json': '{}\n' });
+  const head = r.commit({ 'src/a.ts': 'y\n', 'scripts/b.js': 'z\n' });
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-prewarm-'));
+  const core = path.join(r.d, 'data', 'core.json'); // gitignored core data, as the jobs clone it
+  fs.writeFileSync(core, '{"v":1}\n');
+  const files = r.g('diff', '--name-only', `${base}..${head}`);
+  const cli = (args, stamp, input = files) => spawnSync('node', [SCRIPT, ...args], { cwd: r.d, input, encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: 'true', LAND_TSC_STAMP_FILE: stamp } });
+  const pre = path.join(tmp, 'pre');
+  const warm = path.join(tmp, 'warm');
+  cli(['digest-pre', `--out=${pre}`], warm);
+  // The gauntlet's gold-lists prep leaves this tracked file dirty in the checks job.
+  fs.writeFileSync(path.join(r.d, 'data', 'gold-lists-computed.json'), '{"x":1}\n');
+  assert.equal(cli(['hook-seed-export', `--rebased=${head}`, `--pre=${pre}`], warm).stdout.trim(), '', 'nothing recorded yet -> no seed');
+  assert.equal(cli(['hook-record'], warm).status, 0);
+  assert.match(fs.readFileSync(warm, 'utf8'), /^hook:[0-9a-f]{64}\n$/, 'recorded despite data/ residue');
+  const seed = cli(['hook-seed-export', `--rebased=${head}`, `--pre=${pre}`], warm).stdout.trim();
+  assert.match(seed, /^[0-9a-f]{64}:[0-9a-f]{64}$/);
+  assert.equal(cli(['hook-seed-export', `--rebased=${base}`, `--pre=${pre}`], warm).stdout.trim(), '', 'not the rebased sha -> no seed');
+  // Land job: fresh stamp file, the push range is the same branch diff.
+  const land = path.join(tmp, 'land');
+  const push = ['hook-check', `--pushed-oid=${head}`, '--spec-count=1', '--remote-ref=refs/heads/main'];
+  assert.equal(cli(push, land).status, 1, 'unseeded: the tail runs');
+  cli(['hook-seed', `--seed=${seed}`], land);
+  assert.match(fs.readFileSync(land, 'utf8'), /^hook:[0-9a-f]{64}\n$/);
+  assert.equal(cli(push, land).status, 0, 'seeded: the FIRST push skips the tail');
+  assert.equal(cli(['check', `--pushed-oid=${head}`, '--spec-count=1', '--remote-ref=refs/heads/main'], land).status, 1, 'a hook seed never skips tsc');
+  assert.equal(cli(push, land, 'src/a.ts\n').status, 1, 'a different pushed file list still runs');
+  // Land job cloned different core data -> not seeded.
+  fs.writeFileSync(core, '{"v":2}\n');
+  const land2 = path.join(tmp, 'land2');
+  cli(['hook-seed', `--seed=${seed}`], land2);
+  assert.equal(fs.existsSync(land2), false, 'drifted core data: no hook seed');
+  // core data moved during the pre-warm -> no export
+  assert.equal(cli(['hook-seed-export', `--rebased=${head}`, `--pre=${pre}`], warm).stdout.trim(), '');
+  // a dirty code file in the checks job -> no export
+  fs.writeFileSync(core, '{"v":1}\n');
+  fs.writeFileSync(path.join(r.d, 'scripts', 'b.js'), 'dirty\n');
+  assert.equal(cli(['hook-seed-export', `--rebased=${head}`, `--pre=${pre}`], warm).stdout.trim(), '');
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
+
+test('land.yml wires the hook pre-warm: checks job runs the real hook + exports, Land job seeds before landing', () => {
+  const y = fs.readFileSync(path.resolve(import.meta.dirname, '../../.github/workflows/land.yml'), 'utf8');
+  assert.match(y, /hook_seed: \$\{\{ steps\.hookseed\.outputs\.seed \}\}/);
+  const warm = y.slice(y.indexOf('id: hookseed'), y.indexOf('echo "seed=$SEED"', y.indexOf('id: hookseed')));
+  assert.match(warm, /bash scripts\/hooks\/pre-push/, 'runs the real hook, not a copy of its tail');
+  assert.match(warm, /hook-seed-export --rebased="\$REBASED"/);
+  assert.match(warm, /git diff --name-only "\$BASE\.\.\$REBASED"/, 'the same file list the Land push range gives');
+  assert.doesNotMatch(warm, /GH_TOKEN/, 'no token: the Land step has none either (audit-workflow-hygiene calls the API only with one)');
+  assert.match(warm, /continue-on-error: true/);
+  const seedAt = y.indexOf('tsc-stamp.js hook-seed --seed=');
+  assert.ok(seedAt > 0 && seedAt < y.indexOf('- name: Land the branch'), 'seeded before the Land step');
+});

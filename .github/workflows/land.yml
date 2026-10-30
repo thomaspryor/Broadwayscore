@@ -160,6 +160,7 @@ jobs:
       new_failures: ${{ steps.delta.outputs.new_failures }}
       pre_existing: ${{ steps.delta.outputs.pre_existing }}
       tsc_seed: ${{ steps.tscseed.outputs.seed }}
+      hook_seed: ${{ steps.hookseed.outputs.seed }}
       receipt: ${{ steps.receipt.outputs.receipt }}
     steps:
       - name: Checkout the land branch
@@ -680,6 +681,41 @@ jobs:
             --pre="$RUNNER_TEMP/tsc-data-digest-pre" --tree-status="$RUNNER_TEMP/land-gauntlet/branch/tsc-tree-status") || SEED=""
           echo "seed=$SEED" >> "$GITHUB_OUTPUT"
 
+      # BRO-6519: pre-warm the rest of the pre-push tail (push audits + workflow
+      # lints, ~50s on CI) HERE, outside the landing mutex, so the FIRST push
+      # under the lock skips it too, not just the BRO-6508 retry. Runs the real
+      # scripts/hooks/pre-push on the rebased tip as if pushing it onto BASE,
+      # with its own fresh stamp file (pre-filled with the tsc seed so tsc is
+      # not re-run). hook-seed-export prints "<hookKey>:<dataDigest>" only when
+      # that run recorded the key; the Land job seeds it only when its own core
+      # data hashes the same. No GH_TOKEN here, as in the Land step. A red hook
+      # just means no seed and the real push re-runs it. Advisory: continue-on-
+      # error. Kill switch: repo variable LAND_TSC_STAMP_DISABLED=1.
+      - name: Pre-warm the pre-push hook tail for the Land job
+        id: hookseed
+        if: success() && steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_TSC_STAMP_DISABLED != '1'
+        continue-on-error: true
+        env:
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          TSC_SEED: ${{ steps.tscseed.outputs.seed }}
+        run: |
+          SEED=""
+          export LAND_TSC_STAMP_FILE="$RUNNER_TEMP/land-hook-prewarm-stamp"
+          rm -f "$LAND_TSC_STAMP_FILE"
+          [ -n "$TSC_SEED" ] && echo "${TSC_SEED%%:*}" > "$LAND_TSC_STAMP_FILE"
+          if [ "$(git rev-parse HEAD)" = "$REBASED" ] && [ -n "$BASE" ]; then
+            node scripts/lib/tsc-stamp.js digest-pre --out="$RUNNER_TEMP/hook-data-digest-pre"
+            if echo "refs/heads/main $REBASED refs/heads/main $BASE" | bash scripts/hooks/pre-push > "$RUNNER_TEMP/hook-prewarm.log" 2>&1; then
+              SEED=$(git diff --name-only "$BASE..$REBASED" | node scripts/lib/tsc-stamp.js hook-seed-export --rebased="$REBASED" --pre="$RUNNER_TEMP/hook-data-digest-pre") || SEED=""
+            else
+              echo "pre-warm hook red (the real push re-runs it):"; tail -20 "$RUNNER_TEMP/hook-prewarm.log" || true
+            fi
+          else
+            echo "HEAD is not the rebased tip, no pre-warm"
+          fi
+          echo "seed=$SEED" >> "$GITHUB_OUTPUT"
+
       # ── Next landing's base: this branch's result, published under its tree ──
       # When this lands as a fast-forward, main BECOMES the rebased tip, and the
       # next land/** run's base key is the code-tree hash of that tip. Nobody
@@ -903,6 +939,17 @@ jobs:
           TSC_SEED: ${{ needs.checks.outputs.tsc_seed }}
           LAND_TSC_STAMP_FILE: ${{ vars.LAND_TSC_STAMP_DISABLED != '1' && format('{0}/land-tsc-stamp', runner.temp) || '' }}
         run: node scripts/lib/tsc-stamp.js seed --seed="$TSC_SEED"
+
+      # BRO-6519: same for the hook tail pre-warmed in the checks job (the
+      # "Pre-warm the pre-push hook tail" step there): appends hook:<key> only
+      # when this job's core data hashes like the checks job's.
+      - name: Seed the hook-tail stamp from the checks job
+        if: vars.LAND_TSC_STAMP_DISABLED != '1' && needs.checks.outputs.hook_seed != ''
+        continue-on-error: true
+        env:
+          HOOK_SEED: ${{ needs.checks.outputs.hook_seed }}
+          LAND_TSC_STAMP_FILE: ${{ vars.LAND_TSC_STAMP_DISABLED != '1' && format('{0}/land-tsc-stamp', runner.temp) || '' }}
+        run: node scripts/lib/tsc-stamp.js hook-seed --seed="$HOOK_SEED" < /dev/null
 
       - name: Land the branch
         id: land
