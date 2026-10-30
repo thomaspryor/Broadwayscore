@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T00:02:30.531Z",
+  "timestamp": "2026-10-30T00:18:11.415Z",
   "stats": {
-    "totalReviews": 69420,
+    "totalReviews": 69502,
     "alreadyFlagged": 22262,
     "dateGuardCatches": 233,
-    "directorMismatch": 2846,
-    "tvFilmSignals": 1988,
+    "directorMismatch": 2848,
+    "tvFilmSignals": 1990,
     "londonSignals": 3378,
     "offBroadwaySignals": 624,
     "yearMismatch": 279,
-    "noPublishDate": 8035
+    "noPublishDate": 8092
   },
   "findings": [
     {
@@ -40333,6 +40333,19 @@
       ]
     },
     {
+      "showId": "once-pitlochry-festival-regional-2026",
+      "file": "whatsonstage--simon-thompson.json",
+      "publishDate": "2026-05-29",
+      "url": "https://www.whatsonstage.com/news/once-musical-at-pitlochry-festival-theatre-review_1722698/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from once-2012"
+        }
+      ]
+    },
+    {
       "showId": "once-upon-a-mattress-1996",
       "file": "hollywood-reporter--caitlin-huston.json",
       "score": null,
@@ -45238,6 +45251,19 @@
       ]
     },
     {
+      "showId": "richard-iii-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": null,
+      "url": "https://www.chicagotribune.com/2024/02/11/review-katy-sullivan-roars-as-richard-iii-at-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "richard-iii-west-end-2014",
       "file": "variety--david-benedict.json",
       "score": 89,
@@ -48224,6 +48250,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "sondheim-tribute-revue-regional-2024-the-fred-anzevino-theatre",
+      "file": "broadwayworld--zac-thriffiley.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-SONDHEIM-TRIBUTE-REVUE-at-Theo-Ubique-20240321",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -67429,6 +67468,19 @@
       "file": "theweek--irenie-forshaw-the-week-uk.json",
       "publishDate": "2024-09-26",
       "url": "https://theweek.com/culture-life/theatre/war-horse-revival-retains-the-power-of-the-epic-original",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tom morris\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-lowry-regional-2024",
+      "file": "west-end-best-friend--jess-dalloway.json",
+      "publishDate": "2024-09-23",
+      "url": "https://www.westendbestfriend.co.uk/news/review-war-horse-the-lowry-tour",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
