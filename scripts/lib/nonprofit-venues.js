@@ -51,7 +51,9 @@ function normBuilding(s) {
  */
 function companiesInBuilding(venue) {
   const v = normBuilding(venue);
-  if (!v) return [];
+  // a comma means a city/state suffix: a regional house, not the NYC company
+  // ("Signature Theatre (The MAX), Arlington, VA").
+  if (!v || v.includes(',')) return [];
   const out = [];
   for (const [org, houses] of Object.entries(NP_VENUES)) {
     const house = houses.find(h => {

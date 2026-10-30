@@ -205,6 +205,10 @@ const FIELD_VALUE_CHECKS = {
     ? null : 'isNonReview may only be set true after isNonReviewReason starts "manual (not a review)" (a plan flag is a human decision; otherwise a fresh CV demotes it)'),
   showNotMentioned: (v, record) => (v === false && typeof record.showNotMentionedManualClear === 'string' && record.showNotMentionedManualClear.trim()
     ? null : 'showNotMentioned may only be cleared (false), after showNotMentionedManualClear records the check'),
+  // BRO-6640: every reader tests `=== true`; a prose value (the reason) left
+  // the clear inert and let the rebuild re-promote the flag.
+  wrongProductionManualClear: (v) => (typeof v === 'boolean'
+    ? null : 'wrongProductionManualClear must be true or false (put the reason in the action description)'),
   crossOutletClearReason: (v) => (typeof v === 'string' && v.trim().length > 0
     ? null : 'crossOutletClearReason must be a non-empty string'),
   showId: (v, record, ctx = {}) => (typeof v === 'string' && v && ctx.folder && v === ctx.folder
