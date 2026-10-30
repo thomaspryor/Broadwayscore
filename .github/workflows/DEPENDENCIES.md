@@ -365,6 +365,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GOOGLE_INDEXING_KEY` | 2 cross-repo writers (of 7 workflows using it): `opening-night-broadcast.yml`, `update-show-status.yml` |
 | `GUARDIAN_API_KEY` | 11 cross-repo writers (of 13 workflows using it) |
 | `HTML_HANDOFF_PRIVATE_KEY` | 1 cross-repo writers (of 2 workflows using it): `execute-approved-fix.yml` |
+| `LANE_RECORDING_KEY` | 1 cross-repo writers (of 1 workflows using it): `opening-night-lane-live.yml` |
 | `LINEAR_API_KEY` | 30 cross-repo writers (of 84 workflows using it) |
 | `MEZZANINE_APP_ID` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
