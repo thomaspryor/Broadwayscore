@@ -1,10 +1,22 @@
 {
-  "updatedAt": "2026-10-29T09:33:21.712Z",
-  "scanned": 3312,
-  "showsWithViolations": 34,
-  "totalViolations": 34,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-30T09:06:53.645Z",
+  "scanned": 3831,
+  "showsWithViolations": 45,
+  "totalViolations": 45,
+  "newSinceLastRun": 11,
+  "newViolationKeys": [
+    "king-lear-royal-exchange-regional-2026",
+    "tristan-and-yseult-royal-bath-regional-2026",
+    "a-midsummer-nights-dream-chichester-festival-regional-2026",
+    "1984-citizens-regional-2026",
+    "east-is-east-octagon-regional-2026",
+    "twelfth-night-crucible-regional-2026",
+    "the-penelopiad-york-royal-regional-2026",
+    "dial-m-for-murder-regional-2026",
+    "antigone-tron-regional-2026",
+    "little-shop-of-horrors-hope-mill-regional-2026",
+    "death-of-a-salesman-liverpool-everyman-regional-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "two-strangers-bway-2025",
@@ -39,7 +51,18 @@
     "school-pictures-off-broadway-2026",
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
     "dirty-dancing-west-end-2027",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+    "king-lear-royal-exchange-regional-2026",
+    "tristan-and-yseult-royal-bath-regional-2026",
+    "a-midsummer-nights-dream-chichester-festival-regional-2026",
+    "1984-citizens-regional-2026",
+    "east-is-east-octagon-regional-2026",
+    "twelfth-night-crucible-regional-2026",
+    "the-penelopiad-york-royal-regional-2026",
+    "dial-m-for-murder-regional-2026",
+    "antigone-tron-regional-2026",
+    "little-shop-of-horrors-hope-mill-regional-2026",
+    "death-of-a-salesman-liverpool-everyman-regional-2026"
   ],
   "hits": [
     {
@@ -344,6 +367,105 @@
       "title": "The Prime of Miss Jean Brodie",
       "openingDate": "2026-10-11",
       "message": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "king-lear-royal-exchange-regional-2026",
+      "title": "King Lear",
+      "openingDate": "2026-10-10",
+      "message": "king-lear-royal-exchange-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "title": "Tristan & Yseult",
+      "openingDate": "2026-09-19",
+      "message": "tristan-and-yseult-royal-bath-regional-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-chichester-festival-regional-2026",
+      "title": "A Midsummer Night's Dream",
+      "openingDate": "2026-09-27",
+      "message": "a-midsummer-nights-dream-chichester-festival-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "1984-citizens-regional-2026",
+      "title": "1984",
+      "openingDate": "2026-09-06",
+      "message": "1984-citizens-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "east-is-east-octagon-regional-2026",
+      "title": "East Is East",
+      "openingDate": "2026-09-09",
+      "message": "east-is-east-octagon-regional-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "twelfth-night-crucible-regional-2026",
+      "title": "Twelfth Night",
+      "openingDate": "2026-10-18",
+      "message": "twelfth-night-crucible-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-penelopiad-york-royal-regional-2026",
+      "title": "The Penelopiad",
+      "openingDate": "2026-10-17",
+      "message": "the-penelopiad-york-royal-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "dial-m-for-murder-regional-2026",
+      "title": "Dial M For Murder",
+      "openingDate": "2026-10-04",
+      "message": "dial-m-for-murder-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "antigone-tron-regional-2026",
+      "title": "Antigone",
+      "openingDate": "2026-10-01",
+      "message": "antigone-tron-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-hope-mill-regional-2026",
+      "title": "Little Shop of Horrors",
+      "openingDate": "2026-10-08",
+      "message": "little-shop-of-horrors-hope-mill-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+      "title": "Death of a Salesman",
+      "openingDate": "2026-09-27",
+      "message": "death-of-a-salesman-liverpool-everyman-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

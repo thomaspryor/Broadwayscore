@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-29T09:33:18.508Z",
-  "scanned": 3312,
+  "updatedAt": "2026-10-30T09:06:49.975Z",
+  "scanned": 3831,
   "showsWithViolations": 14,
-  "totalViolations": 39,
+  "totalViolations": 38,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "violationKeys": [
@@ -25,7 +25,6 @@
     "proof-2026::the-globe-and-mail--kelly-nestruck.json",
     "proof-2026::wsj--charles-isherwood.json",
     "becky-shaw-2026::nysr--david-finkle.json",
-    "becky-shaw-2026::nytimes--elisabeth-vincentelli.json",
     "home-2024::northjerseycom--robert-feldberg.json",
     "wit-2012::hollywood-reporter--david-rooney.json",
     "wit-2012::nytimes--ben-brantley.json",
@@ -183,19 +182,13 @@
       "showId": "becky-shaw-2026",
       "title": "Becky Shaw",
       "openingDate": "2026-04-06",
-      "message": "[SHIPPED] nysr--david-finkle.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320\n[excluded] nytimes--elisabeth-vincentelli.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320",
+      "message": "[SHIPPED] nysr--david-finkle.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320",
       "violations": [
         {
           "filename": "nysr--david-finkle.json",
           "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320",
           "url": "https://nystagereview.com/2026/04/06/becky-shaw-a-brilliant-dissection-of-love-and-family-dysfunction/",
           "shipped": true
-        },
-        {
-          "filename": "nytimes--elisabeth-vincentelli.json",
-          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320",
-          "url": "https://www.nytimes.com/2026/03/20/theater/monte-cristo-review-norm-lewis-sierra-boggess.html",
-          "shipped": false
         }
       ]
     },
@@ -290,7 +283,7 @@
     {
       "showId": "an-ark-off-broadway-2026",
       "title": "An Ark",
-      "openingDate": "2026-01-09",
+      "openingDate": "2026-01-21",
       "message": "[SHIPPED] ap--mark-kennedy.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-ANGELS-IN-AMERICA-20101028\n[excluded] newsday--linda-winer.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-ANGELS-IN-AMERICA-20101028",
       "violations": [
         {

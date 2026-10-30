@@ -1,19 +1,20 @@
 {
-  "updatedAt": "2026-10-29T09:30:48.976Z",
-  "scanned": 3312,
-  "showsWithViolations": 120,
-  "totalViolations": 150,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-10-30T09:04:12.666Z",
+  "scanned": 3831,
+  "showsWithViolations": 121,
+  "totalViolations": 151,
+  "newSinceLastRun": 2,
   "handled": {
-    "temporal-override-low-confidence": 836,
+    "temporal-override-low-confidence": 856,
     "not-shipped": 55,
-    "duplicate-not-shipped": 57,
+    "duplicate-not-shipped": 55,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 13,
-    "prior-run-or-tour-leg": 46
+    "prior-run-or-tour-leg": 45
   },
   "newViolationKeys": [
-    "blithe-spirit-west-end-2014::hampstead-highgate-express--emily-govan.json"
+    "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
+    "oppenheimer-west-end-2015::standard--fiona-mountford.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -164,7 +165,8 @@
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
     "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
-    "blithe-spirit-west-end-2014::hampstead-highgate-express--emily-govan.json",
+    "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
+    "oppenheimer-west-end-2015::standard--fiona-mountford.json",
     "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json"
   ],
   "hits": [
@@ -2989,22 +2991,43 @@
       ]
     },
     {
-      "showId": "blithe-spirit-west-end-2014",
-      "title": "Blithe Spirit",
-      "openingDate": "2014-03-01",
-      "message": "hampstead-highgate-express/Emily Govan (hampstead-highgate-express--emily-govan.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 40d of opening, likely correct production] This is a genuine theater review with critical asses — https://www.hamhigh.co.uk/things-to-do/21376945.theatre-review-blithe-spirit-gielgud-theatre/",
+      "showId": "sunny-afternoon-west-end-2014",
+      "title": "Sunny Afternoon",
+      "openingDate": "2014-10-28",
+      "message": "standard/Fiona Mountford (standard--fiona-mountford.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 259d of opening, likely correct production] This is a review of the Hampstead Theatre productio — https://www.standard.co.uk/culture/theatre/sunny-afternoon-harold-pinter-theatre-theatre-review-the-perfect-showcase-for-the-kinks-back-catalogue-of-unrivalled-riches-9824654.html",
       "violations": [
         {
-          "filename": "hampstead-highgate-express--emily-govan.json",
-          "url": "https://www.hamhigh.co.uk/things-to-do/21376945.theatre-review-blithe-spirit-gielgud-theatre/",
-          "outletId": "hampstead-highgate-express",
-          "criticName": "Emily Govan",
+          "filename": "standard--fiona-mountford.json",
+          "url": "https://www.standard.co.uk/culture/theatre/sunny-afternoon-harold-pinter-theatre-theatre-review-the-perfect-showcase-for-the-kinks-back-catalogue-of-unrivalled-riches-9824654.html",
+          "outletId": "standard",
+          "criticName": "Fiona Mountford",
           "matchedBy": "url",
           "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 40d of opening, likely correct production] This is a genuine theater review with critical asses",
+          "cvReasoning": "[OVERRIDE: review within 259d of opening, likely correct production] This is a review of the Hampstead Theatre productio",
           "cvIssues": [
-            "Review describes a Broadway production (Angela Lansbury's 2009 Tony award-winning revival), not the West End production",
-            "Opening sentence explicitly states 'Angela Lansbury first performed in Noel Coward's Blithe Spirit five years ago on Broadway' and 'reprises her 2009 Tony award-winning role' — this establishes the review is of the Broadway run"
+            "Review evaluates the Hampstead Theatre production (April premiere), not the West End production",
+            "Text states 'this show, which premiered at Hampstead Theatre in April, has now arrived to be A Well Respected Man in the West End' — the critic is reviewing the Hampstead staging and discussing the West End arrival as a future event, not evaluating a performance the critic attended at Harold Pinter Theatre"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "oppenheimer-west-end-2015",
+      "title": "Oppenheimer",
+      "openingDate": "2015-03-31",
+      "message": "standard/Fiona Mountford (standard--fiona-mountford.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 56d of opening, likely correct production] Although the review is well-written and evaluative,  — https://www.standard.co.uk/culture/theatre/oppenheimer-vaudeville-theatre-theatre-review-10148557.html",
+      "violations": [
+        {
+          "filename": "standard--fiona-mountford.json",
+          "url": "https://www.standard.co.uk/culture/theatre/oppenheimer-vaudeville-theatre-theatre-review-10148557.html",
+          "outletId": "standard",
+          "criticName": "Fiona Mountford",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 56d of opening, likely correct production] Although the review is well-written and evaluative, ",
+          "cvIssues": [
+            "Review evaluates the RSC Stratford production, not the West End run at Vaudeville Theatre",
+            "Opening line references 'After a much-praised run at Stratford, the RSC's best piece of new writing in years settles triumphantly into its London berth' — critic is reviewing the post-Stratford run"
           ]
         }
       ]
