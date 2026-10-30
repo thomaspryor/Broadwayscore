@@ -97,6 +97,12 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   // (duplicateTextOf) — both are old-URL-derived. duplicateClearReason is set
   // alongside so the push-restore exception breadcrumb machinery honors it.
   'duplicateOf', 'duplicateReason', 'duplicateTextOf',
+  // Show-linkage written for the OLD article (BRO-6676, The Heart / Cititour
+  // 2026-10-30): a file created from a Heart of Rock and Roll URL kept
+  // combinedWith ['heart-of-rock-and-roll-2024'] and playbillVerdictUrl after
+  // its url was corrected, so the combinedWith exclusions kept hiding the
+  // corrected review. Re-derived by the aggregators from the new URL.
+  'combinedWith', 'playbillVerdictUrl',
 ]));
 
 // wrongProductionNote prefixes preserved across URL changes. The MANUAL
@@ -455,6 +461,16 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   }
   const allCleared = Array.from(new Set([...priorCleared, ...cleared]));
   if (allCleared.length === 0) return { changed: false, cleared };
+
+  // BRO-6676: firstSeenAt dates the OLD document. Kept, the rebuild's
+  // collected-before-previews guard compares it to the show's preview date and
+  // re-flags the corrected review (Cititour: firstSeenAt 09-27 from the Heart
+  // of Rock and Roll URL, previews 10-08). The corrected URL is first seen now.
+  if (existing.firstSeenAt !== undefined || merged.firstSeenAt !== undefined) {
+    merged.firstSeenAt = new Date().toISOString();
+    if (!cleared.includes('firstSeenAt')) cleared.push('firstSeenAt');
+    if (!allCleared.includes('firstSeenAt')) allCleared.push('firstSeenAt');
+  }
 
   if (cleared.includes('duplicateOf') || cleared.includes('duplicateTextOf')) {
     merged.duplicateClearReason = `auto-cleared at write: url changed ${existing.url} → ${merged.url}`;

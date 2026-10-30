@@ -1070,3 +1070,32 @@ test('BRO-5794: a real URL change clears the old page\'s metaExcerpt and its rec
     assert.equal(merged[f], undefined, `${f} cleared`);
   }
 });
+
+// BRO-6676: The Heart / Cititour. A URL correction must also drop show-linkage
+// fields and reset firstSeenAt, or the combinedWith exclusion and the
+// collected-before-previews guard keep hiding the corrected review.
+test('applyUrlChangeInvariant drops combinedWith + playbillVerdictUrl and resets firstSeenAt on a real URL change', () => {
+  const existing = {
+    url: 'https://cititour.com/Heart-of-Rock-and-Roll/1301',
+    combinedWith: ['heart-of-rock-and-roll-2024'],
+    playbillVerdictUrl: 'https://playbill.com/old-verdict',
+    firstSeenAt: '2026-09-27T00:00:00.000Z',
+    wrongShow: true,
+  };
+  const merged = { ...existing, url: 'https://cititour.com/The-Heart/1405' };
+  const res = quiet(() => applyUrlChangeInvariant(existing, merged, { fileLabel: 'bro-6676' }));
+  assert.equal(res.changed, true);
+  assert.equal(merged.combinedWith, undefined);
+  assert.equal(merged.playbillVerdictUrl, undefined);
+  assert.ok(merged.firstSeenAt > '2026-10-29', 'firstSeenAt reset to correction time');
+  assert.ok(merged._urlChangedClear.cleared.includes('combinedWith'));
+  assert.ok(merged._urlChangedClear.cleared.includes('firstSeenAt'));
+});
+
+test('applyUrlChangeInvariant leaves combinedWith/firstSeenAt alone when the URL is canonically unchanged', () => {
+  const existing = { url: 'https://cititour.com/The-Heart/1405', combinedWith: ['x-2024'], firstSeenAt: '2026-09-27T00:00:00.000Z' };
+  const merged = { ...existing, url: 'https://cititour.com/The-Heart/1405?utm_source=a' };
+  quiet(() => applyUrlChangeInvariant(existing, merged, { fileLabel: 'noop' }));
+  assert.deepEqual(merged.combinedWith, ['x-2024']);
+  assert.equal(merged.firstSeenAt, '2026-09-27T00:00:00.000Z');
+});
