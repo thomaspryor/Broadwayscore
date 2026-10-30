@@ -2,29 +2,78 @@
   "processed": [
     "london-assurance-off-broadway-2019/talkinbroadway--david-hurst.json",
     "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json",
-    "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json"
+    "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
+    "girls-off-west-end-2026/letterboxd--unknown.json",
+    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "girls-off-west-end-2026/theatre-weekly--unknown.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
+    "garry-starr-classic-penguins-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+    "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+    "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+    "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
-    "london-assurance-off-broadway-2019/theater-news-online--brian-scott-lipton.json"
+    "london-assurance-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+    "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+    "girls-off-west-end-2026/londontheatre1--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
+      "girls-off-west-end-2026/letterboxd--unknown.json",
+      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "girls-off-west-end-2026/theatre-weekly--unknown.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
+      "garry-starr-classic-penguins-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
+    ],
     "brightdata": [
       "london-assurance-off-broadway-2019/talkinbroadway--david-hurst.json",
       "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+      "data/review-texts/girls-off-west-end-2026/londontheatre1--unknown.json",
+      "data/review-texts/memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json"
+    ],
     "archive": [
       "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json"
     ]
   },
   "startTime": "2026-10-30T10:50:32.329Z",
-  "lastProcessed": "caesar-and-cleopatra-off-broadway-2019/wsj--terry-teachout.json",
-  "log": []
+  "lastProcessed": "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json",
+  "log": [
+    {
+      "t": "2026-10-30T11:05:26.252Z",
+      "event": "bb-session",
+      "session": "7e18c5c0",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T11:06:55.855Z",
+      "event": "bb-session",
+      "session": "11f68f4a",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    }
+  ]
 }
