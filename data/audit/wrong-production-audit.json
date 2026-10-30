@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T03:27:53.545Z",
+  "timestamp": "2026-10-30T03:51:47.002Z",
   "stats": {
-    "totalReviews": 69915,
-    "alreadyFlagged": 22295,
+    "totalReviews": 69918,
+    "alreadyFlagged": 22300,
     "dateGuardCatches": 233,
-    "directorMismatch": 2862,
-    "tvFilmSignals": 2006,
+    "directorMismatch": 2861,
+    "tvFilmSignals": 2005,
     "londonSignals": 3382,
     "offBroadwaySignals": 630,
-    "yearMismatch": 282,
-    "noPublishDate": 7998
+    "yearMismatch": 283,
+    "noPublishDate": 7996
   },
   "findings": [
     {
@@ -7821,19 +7821,6 @@
       "file": "gulf-coast--dave-elias.json",
       "publishDate": "2025-03-08",
       "url": "https://www.gulfcoastnewsnow.com/article/entertainment-review-book-mormon-play/64099348",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
-        }
-      ]
-    },
-    {
-      "showId": "book-of-mormon-tour-2022",
-      "file": "gulf-coast--gulf-coast-news.json",
-      "publishDate": "2025-03-07",
-      "url": "https://www.gulfcoastnewsnow.com/article/entertainment-book-mormon-fort-myers/64087463",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24011,19 +23998,6 @@
     },
     {
       "showId": "hamilton-tour-2024",
-      "file": "broadwayworld--erinmarie-reiter.json",
-      "publishDate": "2025-05-15",
-      "url": "https://www.broadwayworld.com/san-diego/article/Review-HAMILTON-at-Broadway-San-Diego-20250515",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-tour-2024",
       "file": "broadwayworld--jarrod-michael.json",
       "score": 82,
       "publishDate": "2026-02-05",
@@ -24060,6 +24034,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-tour-2024",
+      "file": "tampa-bay-times--lucy-marques.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.tampabay.com/life-culture/arts/stage/2026/10/23/hamilton-tampa-straz-center-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2024 (0x). 2015 matches production: hamilton-2015"
         }
       ]
     },
@@ -40847,7 +40834,7 @@
     {
       "showId": "only-yesterday-off-broadway-2019",
       "file": "theater-pizzazz--samuel-l-leiter.json",
-      "score": null,
+      "score": 39,
       "publishDate": "2019-09-12",
       "url": "https://www.theaterpizzazz.com/only-yesterday-let-it-be/",
       "findings": [
@@ -81924,7 +81911,7 @@
     {
       "showId": "dr-rides-american-beach-house-off-broadway-2019",
       "file": "theater-scene--victor-gluck.json",
-      "score": null,
+      "score": 59,
       "publishDate": "2019-11-07",
       "url": "http://www.theaterscene.net/plays/offbway-plays/dr-rides-american-beach-house/victor-gluck/",
       "findings": [
@@ -81938,7 +81925,7 @@
     {
       "showId": "dr-rides-american-beach-house-off-broadway-2019",
       "file": "vulture--helen-shaw.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2019-11-06",
       "url": "https://www.vulture.com/2019/11/theater-review-dr-rides-american-beach-house-now-serving.html",
       "findings": [
@@ -94664,7 +94651,7 @@
     {
       "showId": "make-believe-off-broadway-2019",
       "file": "theater-scene--victor-gluck.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2019-09-10",
       "url": "http://www.theaterscene.net/plays/offbway-plays/make-believe/victor-gluck/",
       "findings": [
@@ -103679,7 +103666,7 @@
     {
       "showId": "runboyrun-and-in-old-age-off-broadway-2019",
       "file": "vulture--sara-holdren.json",
-      "score": null,
+      "score": 42,
       "publishDate": "2019-09-23",
       "url": "https://www.vulture.com/2019/09/theater-reviews-runboyrun-in-old-age-and-sunday.html",
       "findings": [
