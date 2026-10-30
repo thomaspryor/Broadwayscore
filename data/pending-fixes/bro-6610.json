@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6610",
   "planId": "8801f5cc-ce8b-4c54-a3d4-bbcbe2592e90",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T12:57:07.249Z",
   "submitter": {
     "name": null,
@@ -33,5 +33,27 @@
         "description": "Refresh decayed coverageExpectation re-probe for latimes"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T14:10:12.352Z",
+  "results": [
+    {
+      "action": "coverage-expectation-redecide",
+      "ok": true,
+      "changed": true,
+      "msg": "ap: coverageExpectationDecidedAt 2026-10-13 -> 2026-10-30 (measured 5.7%)"
+    },
+    {
+      "action": "coverage-expectation-redecide",
+      "ok": true,
+      "changed": true,
+      "msg": "broadwaynews: coverageExpectationDecidedAt 2026-10-13 -> 2026-10-30 (measured 54.3%)"
+    },
+    {
+      "action": "coverage-expectation-redecide",
+      "ok": true,
+      "changed": true,
+      "msg": "latimes: coverageExpectationDecidedAt 2026-10-13 -> 2026-10-30 (measured 16.2%)"
+    }
+  ],
+  "executedIn": "ci"
 }
