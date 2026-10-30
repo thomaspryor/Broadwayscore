@@ -509,6 +509,12 @@ async function main() {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       const reasons = gate.reasons;
       console.log(`  ⚠️  ${show.title}: gate failed (${reasons.join(', ')}) — bypassed by --force-create-draft. Draft will be created for manual review.`);
+    } else if (UPDATE_UNSENT) {
+      // BRO-6634: the draft already exists (a deadline draft may have been
+      // forced past this gate), so newer numbers are always better than the
+      // ones it shows. The workflow's own readiness gate still applies.
+      readyShows.push({ show, stats, t1Count, t2Count, t3Count });
+      console.log(`  ⚠️  ${show.title}: gate failed (${gate.reasons.join(', ')}); updating the existing draft's numbers anyway.`);
     } else {
       const reasons = gate.reasons;
       console.log(`  ⏳ ${show.title}: Not ready — ${reasons.join(', ')} (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);

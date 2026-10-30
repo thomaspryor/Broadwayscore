@@ -635,3 +635,19 @@ test('reddit-opening-posts-due gate flags exactly the shows the draft job would 
   assert.deepEqual(dueShows({ shows, slims: more, drafts: { drafts: { [show.id]: accurate } }, today: '2026-09-29' }), [show.id], 'two more reviews landed on the page: due');
   assert.deepEqual(due({ ...accurate, status: 'posted' }), [], 'already posted: never due');
 });
+
+// BRO-6634: the hourly gate in reddit-engagement-digest.yml runs the drafter
+// only when a show is due. A 59 to 60 move must make the emailed draft due.
+test('reddit-opening-posts-due: a moved score makes an emailed draft due, an accurate one does not', () => {
+  const { dueShows } = require('../reddit-opening-posts-due.js');
+  const today = '2026-09-29';
+  const make = cs => new Map([[show.id, slim({ cs })]]);
+  const f59 = lib.buildFacts(show, slim({ cs: 59.4 }), []);
+  const draft = { ...lib.templateDraft(f59), subreddit: f59.subreddit, status: 'ready', source: 'template',
+    createdAt: '2026-09-28T12:00:00Z', emailedAt: '2026-09-28T12:05:00Z' };
+  const drafts = { drafts: { [show.id]: draft } };
+  const seenLookup = lib.makeSeenLookup({ shows: [] }, { sinceYear: 2025 });
+  assert.deepEqual(dueShows({ shows: [show], slims: make(59.4), drafts: { drafts: {} }, today, seenLookup }), [show.id], 'new opening is due');
+  assert.deepEqual(dueShows({ shows: [show], slims: make(59.4), drafts, today, seenLookup }), [], 'accurate draft is not due');
+  assert.deepEqual(dueShows({ shows: [show], slims: make(60.1), drafts, today, seenLookup }), [show.id], '59 to 60 is due');
+});

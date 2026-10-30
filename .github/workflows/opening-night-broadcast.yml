@@ -282,6 +282,8 @@ jobs:
       - name: Check already broadcast
         if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && steps.readiness_gate.outputs.blocked != 'true'
         id: check
+        env:
+          INPUT_SEND_TO: ${{ inputs.send_to }}
         run: |
           # Read opening-night-sent.json if it exists, filter out completed shows.
           # SHOWS = only shows that passed the readiness gate (per-show filter) —
@@ -296,15 +298,13 @@ jobs:
             try { sent = JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows || {}; } catch {}
 
             const shows = '$SHOWS'.split(',');
-            // When create_draft (or its old alias send_to_all) is true OR this is the scheduled
-            // 12:30 UTC daily run, skip the preview dedup check. In both cases an
-            // earlier preview may have already gone out (5 AM auto-dispatch after
-            // scoring), and we still want to create the owner-review draft.
-            // Only the 12:30 daily cron has approval semantics; the hourly
-            // redundancy cron (BRO-4417) is preview-only unless a show is past
-            // its draft deadline (handled per show below).
-            const createDraft = '${{ inputs.create_draft || inputs.send_to_all }}' === 'true'
-              || ('${{ github.event_name }}' === 'schedule' && '${{ github.event.schedule }}' === '30 12 * * *');
+            // BRO-6634 (owner 2026-10-30, no approval step): every trigger that
+            // reaches this point creates the Resend draft; the owner sends it from
+            // Resend. Only a send_to dispatch stays a one-address preview, so the
+            // 24h preview dedup applies to that alone. A draft that already exists
+            // is 'completed' below and is kept current by the update step instead.
+            const createDraft = !process.env.INPUT_SEND_TO;
+            const explicitDraft = '${{ inputs.create_draft || inputs.send_to_all }}' === 'true';
 
             // BRO-4417: shows past their draft deadline (10am ET the day after
             // opening) skip preview dedup, and the batch is narrowed to them so
@@ -336,8 +336,8 @@ jobs:
               // Skip shows with 0 scored reviews — the broadcast script will exit early anyway,
               // and without this guard the failed attempt triggers gather → rebuild → score →
               // broadcast again (infinite feedback loop). Re-evaluated each scoring run.
-              // Exception: approval dispatch always proceeds regardless of review count.
-              if (!createDraft) {
+              // Exception: an explicit create_draft dispatch always proceeds.
+              if (!explicitDraft) {
                 const scoredCount = allReviews.filter(r => r.showId === id && r.assignedScore != null).length;
                 if (scoredCount === 0) {
                   process.stderr.write('Skipping ' + id + ' — 0 scored reviews, not ready\n');
@@ -362,8 +362,33 @@ jobs:
               process.stderr.write('Deadline mode: drafting only ' + overdue.join(',') + ' this run; ' + pending.filter(id => !deadlineIds.has(id)).join(',') + ' wait for a normal run\n');
             }
             fs.writeFileSync('/tmp/deadline_shows', overdue.join(','));
+
+            // BRO-6634: unsent drafts whose displayed numbers (rounded score,
+            // review count) moved since the draft was built. One line per combo
+            // so a combo draft is updated as a whole.
+            const refreshLines = { broadway: [], 'west-end': [] };
+            try {
+              const { draftsNeedingRefresh, readShowNumbers } = require('./scripts/lib/broadcast-refresh');
+              for (const r of draftsNeedingRefresh(sent, readShowNumbers, shows)) {
+                (refreshLines[r.market] || (refreshLines[r.market] = [])).push(r.ids.join(','));
+                process.stderr.write('Draft ' + r.broadcastKey + ' numbers moved: ' + JSON.stringify(r.was) + ' -> ' + JSON.stringify(r.now) + '\n');
+              }
+            } catch (err) {
+              process.stderr.write('::warning::draft refresh check failed (' + err.message + ')\n');
+            }
+            fs.writeFileSync('/tmp/refresh_broadway', refreshLines.broadway.join(';'));
+            fs.writeFileSync('/tmp/refresh_westend', (refreshLines['west-end'] || []).join(';'));
+            fs.writeFileSync('/tmp/refresh_shows', [...new Set([...refreshLines.broadway, ...(refreshLines['west-end'] || [])].join(',').split(',').filter(Boolean))].join(','));
             if (batch.length > 0) console.log(batch.join(','));
           ")
+          {
+            echo "refresh_broadway=$(cat /tmp/refresh_broadway 2>/dev/null || true)"
+            echo "refresh_westend=$(cat /tmp/refresh_westend 2>/dev/null || true)"
+            echo "refresh_shows=$(cat /tmp/refresh_shows 2>/dev/null || true)"
+          } >> $GITHUB_OUTPUT
+          # Shows the QA gates, consensus and mobile data cover: new drafts + updates.
+          GATE_SHOWS=$(printf '%s,%s' "$PENDING" "$(cat /tmp/refresh_shows 2>/dev/null || true)" | tr ',' '\n' | grep -v '^$' | sort -u | paste -sd, -)
+          echo "gate_shows=$GATE_SHOWS" >> $GITHUB_OUTPUT
           DEADLINE_SHOWS=$(cat /tmp/deadline_shows 2>/dev/null || true)
           echo "deadline_shows=$DEADLINE_SHOWS" >> $GITHUB_OUTPUT
 
@@ -400,7 +425,7 @@ jobs:
 
       - name: Checklist gate — block send if QA errors (unless FORCE_BROADCAST=true)
         id: checklist_gate
-        if: steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.gate_shows != ''
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -432,7 +457,7 @@ jobs:
               BREACHED_SHOWS+=("$1")
             fi
           }
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.gate_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             # --out: remediation logs go to stdout, so a merged redirect makes
             # the JSON unparseable and the catch below reads ERRORS=0 — passing
@@ -498,7 +523,7 @@ jobs:
       - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
         id: drift_gate
         # BRO-2816: skip once the checklist gate already blocked and alerted (one alert per run).
-        if: steps.check.outputs.pending_shows != '' && steps.checklist_gate.outputs.blocked != 'true'
+        if: steps.check.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -529,7 +554,7 @@ jobs:
               BREACHED_SHOWS+=("$1")
             fi
           }
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.gate_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             # Capture exit code WITHOUT a pipe (memory: pipe-masks-exit-code).
             # --strict exits 2 on breach; everything else is exit 0/1.
@@ -573,7 +598,7 @@ jobs:
       - name: Orphan-unscored gate — self-heal requeue, alert only after exhausted attempts
         id: orphan_gate
         # BRO-2816: skip on a checklist/drift block so a blocked night does not dispatch paid rescores.
-        if: steps.check.outputs.pending_shows != '' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
+        if: steps.check.outputs.gate_shows != '' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -604,7 +629,7 @@ jobs:
           # requeue script still runs, so a rescore is dispatched either way.
           DEADLINE_SHOWS=",${{ steps.check.outputs.deadline_shows }},"
           OVERRIDDEN_SHOWS=()
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.gate_shows }}"
           for SHOW in "${SHOWS[@]}"; do
             PRIOR_BLOCKED=$BLOCKED
             RESULT=$(node scripts/dispatch-orphan-rescore-requeue.js --show="$SHOW")
@@ -710,7 +735,7 @@ jobs:
         # 90s-transport-hang wall a reviewed /second-opinion rejected trying
         # to fix via deadline/retry sizing. Left as-is.
         id: commit_orphan_state_early
-        if: steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.gate_shows != ''
         continue-on-error: true
         env:
           PUSH_DEADLINE_SEC: '240'
@@ -748,7 +773,7 @@ jobs:
         # is ~60s + up to 2 more capped API attempts — do not treat the freed
         # budget as spendable elsewhere.
         id: commit_alert_ledger_early
-        if: steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.gate_shows != ''
         continue-on-error: true
         env:
           PUSH_DEADLINE_SEC: '60'
@@ -779,7 +804,7 @@ jobs:
         # this echoes it into the run log and the job summary so an operator
         # grepping a green run can still see the BRO-2373 wall was hit.
         # Cannot fail (plain echoes), so it cannot re-introduce the cascade.
-        if: always() && steps.check.outputs.pending_shows != ''
+        if: always() && steps.check.outputs.gate_shows != ''
         run: |
           ORPHAN='${{ steps.commit_orphan_state_early.outcome }}'
           LEDGER='${{ steps.commit_alert_ledger_early.outcome }}'
@@ -810,10 +835,10 @@ jobs:
         run: node scripts/sync-followers.js
 
       - name: Generate consensus
-        if: steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.gate_shows != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          PENDING: ${{ steps.check.outputs.pending_shows }}
+          PENDING: ${{ steps.check.outputs.gate_shows }}
         run: |
           # One call for the whole list (--shows=a,b, BRO-4595): one shows.json
           # load and one consensus-file write instead of one per show.
@@ -821,7 +846,7 @@ jobs:
           node scripts/generate-critic-consensus.js --shows="$PENDING" || true
 
       - name: Generate mobile data (pre-computed scores for email)
-        if: steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.gate_shows != ''
         run: bash scripts/generate-mobile-artifacts.sh
 
       - name: Create broadcast draft (owner sends manually from Resend)
@@ -840,44 +865,32 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           INPUT_SEND_TO: ${{ inputs.send_to }}
         run: |
-          # Modes:
+          # Modes (BRO-6634, owner 2026-10-30: no approval step, the owner sends from Resend):
           #   - send_to=<email>: transactional preview to that address only (no draft)
-          #   - create_draft=true (alias send_to_all) OR scheduled run: preview to owner AND create Resend draft (never a subscriber send)
-          #   - default (workflow_run auto-retry / update-show-status dispatch): preview to owner only
+          #   - every other trigger: create the Resend draft (never a subscriber send).
+          #     If the script's own gate holds the draft back, the owner gets a
+          #     preview instead (the script dedups previews unless the numbers moved).
           LOOKBACK=${{ inputs.lookback_days || 2 }}
-          SEND_TO_FLAG=""
-          CREATE_DRAFT="false"
+          OWNER_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
+          CREATE_DRAFT="true"
           DRAFT_FLAGS=""
+          PREVIEW_FLAG="$OWNER_FLAG"
 
           if [ -n "${INPUT_SEND_TO}" ]; then
-            SEND_TO_FLAG="--send-to=${INPUT_SEND_TO}"
-            echo "** PREVIEW MODE — sending test email to ${INPUT_SEND_TO} only **"
-          elif [ "${{ inputs.create_draft }}" = "true" ] || [ "${{ inputs.send_to_all }}" = "true" ] || [ "${{ github.event.schedule }}" = "30 12 * * *" ]; then
-            # Approval dispatch or scheduled 12:30 UTC run: preview to owner + Resend draft
-            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
-            CREATE_DRAFT="true"
-            echo "** APPROVAL MODE — sending preview to owner AND creating Resend draft **"
-          elif [ -n "${{ steps.check.outputs.deadline_shows }}" ]; then
-            # BRO-4417: every pending show is past its draft deadline (the check
-            # step narrowed the batch), so any run type creates the draft now.
-            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
-            CREATE_DRAFT="true"
-            echo "** DEADLINE MODE — draft deadline passed for ${{ steps.check.outputs.deadline_shows }}: preview to owner AND creating Resend draft **"
+            CREATE_DRAFT="false"
+            PREVIEW_FLAG="--send-to=${INPUT_SEND_TO}"
+            echo "** PREVIEW MODE: sending test email to ${INPUT_SEND_TO} only **"
           else
-            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
-            echo "** PREVIEW MODE — sending preview to owner for approval **"
+            echo "** DRAFT MODE: creating the Resend draft; the owner sends it from Resend **"
           fi
 
-          # Past-deadline shows (the check step narrowed the batch to them) get a
-          # forced draft in EVERY draft mode, approval included: the workflow
-          # readiness gate (15+ reviews + aggregator) already passed, and the
-          # script's stricter T1/T2/high-confidence gate must not silently leave
-          # a past-deadline show with no draft. The approval branch above runs
-          # first, so this was skipped for create_draft dispatches and the 12:30
-          # cron until the BRO-5261 retro-review. The owner still reviews the
-          # draft (and the page lists what the gates flagged). Draft-only.
+          # BRO-4417: past-deadline shows (the check step narrowed the batch to
+          # them) get a forced draft: the workflow readiness gate already passed,
+          # and the script's stricter T1/T2/high-confidence gate must not leave a
+          # past-deadline show with no draft. Draft-only.
           if [ "$CREATE_DRAFT" = "true" ] && [ -n "${{ steps.check.outputs.deadline_shows }}" ]; then
             DRAFT_FLAGS="--force-create-draft"
+            echo "Draft deadline passed for ${{ steps.check.outputs.deadline_shows }}: forcing the draft"
           fi
 
           SENT="false"
@@ -885,12 +898,6 @@ jobs:
           run_market() {
             local market="$1"
             local shows="$2"
-            echo "--- $market preview ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $SEND_TO_FLAG 2>&1) || true
-            echo "$OUTPUT"
-            if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
-              SENT="true"
-            fi
             if [ "$CREATE_DRAFT" = "true" ]; then
               echo "--- $market draft ---"
               OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" ${DRAFT_FLAGS:-} 2>&1) || true
@@ -898,7 +905,16 @@ jobs:
               if echo "$OUTPUT" | grep -q "Draft ready\|Draft created"; then
                 SENT="true"
                 DRAFTED="true"
+                return
               fi
+              echo "--- $market: no draft this run, preview to owner instead ---"
+            else
+              echo "--- $market preview ---"
+            fi
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $PREVIEW_FLAG 2>&1) || true
+            echo "$OUTPUT"
+            if echo "$OUTPUT" | grep -q "Preview sent to"; then
+              SENT="true"
             fi
           }
 
@@ -921,6 +937,42 @@ jobs:
 
           echo "broadcast_sent=$SENT" >> $GITHUB_OUTPUT
           echo "draft_created=${DRAFTED:-false}" >> $GITHUB_OUTPUT
+
+      # BRO-6634 (owner 2026-10-30): when the score or review count shown in an
+      # unsent draft changes, the draft is updated in place (PATCH, live GET must
+      # say draft) and the owner gets one email saying it changed. No approval
+      # step and never /send: the owner sends from Resend. The script exits 0
+      # without touching anything when the draft already shows these numbers.
+      - name: Update unsent drafts with new numbers
+        id: update_drafts
+        if: steps.check.outputs.refresh_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_WE_AUDIENCE_ID: ${{ secrets.RESEND_WE_AUDIENCE_ID }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # scripts/lib/send-lock.js needs it (same as the draft step).
+          GH_TOKEN: ${{ github.token }}
+          REFRESH_BROADWAY: ${{ steps.check.outputs.refresh_broadway }}
+          REFRESH_WESTEND: ${{ steps.check.outputs.refresh_westend }}
+        run: |
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          UPDATED="false"
+          update_market() {
+            local market="$1"
+            local combos="$2"
+            IFS=';' read -ra COMBOS <<< "$combos"
+            for ids in "${COMBOS[@]}"; do
+              [ -z "$ids" ] && continue
+              echo "--- $market draft update: $ids ---"
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$ids" --update-unsent-draft 2>&1) || true
+              echo "$OUTPUT"
+              if echo "$OUTPUT" | grep -q "Draft updated"; then UPDATED="true"; fi
+            done
+          }
+          [ -n "$REFRESH_BROADWAY" ] && update_market broadway "$REFRESH_BROADWAY"
+          [ -n "$REFRESH_WESTEND" ] && update_market west-end "$REFRESH_WESTEND"
+          echo "draft_updated=$UPDATED" >> $GITHUB_OUTPUT
 
       # BRO-4417: the deadline override lets a draft through a QA gate, so the
       # owner must see what the gate flagged BEFORE pressing Send. Only fires when
@@ -1440,6 +1492,17 @@ jobs:
       # minus orphan-rescore-requeue-state.json (moved to its own step
       # above) — the config that already worked standalone, still handling
       # alert-ledger.json's real multi-writer contention.
+      # BRO-6634: "a reminder so I don't forget to send the broadcast". One
+      # owner email per unsent draft every 6h (max 3), only while a live Resend
+      # GET still says draft. Stamps the tracker, which Commit data persists.
+      - name: Remind owner about unsent drafts
+        if: always() && steps.find.outputs.has_shows == 'true' && env.BROADCAST_HOLD_ACTIVE != 'true'
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/remind-unsent-broadcast-draft.js
+
       - name: Commit data
         if: always() && steps.find.outputs.has_shows == 'true'
         env:

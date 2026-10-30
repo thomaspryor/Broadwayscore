@@ -113,6 +113,17 @@ function draftBaseline(sentShows, entry) {
   return out;
 }
 
+// True when the draft shows different numbers from `now`. With no baseline
+// (a draft made before BRO-6634 whose previews carry no per-show numbers, e.g.
+// A Few Good Men's), fall back to the review count the record was stamped
+// with: a count move is a change; the score at draft time is unknown.
+function draftChanged(was, now, record) {
+  if (was) return numbersDiffer(was, now);
+  if (!Number.isFinite(record && record.reviewCount)) return false;
+  const total = Object.values(now).reduce((a, n) => a + (n && Number.isFinite(n.reviewCount) ? n.reviewCount : 0), 0);
+  return total !== record.reviewCount;
+}
+
 /**
  * Unsent drafts whose numbers moved, so the workflow updates them.
  * @param {object} sentShows      opening-night-sent.json `shows`
@@ -126,7 +137,6 @@ function draftsNeedingRefresh(sentShows, readNumbers, onlyIds = null) {
   for (const e of unsentDraftRecords(sentShows)) {
     if (allow && !e.ids.every(id => allow.has(id))) continue;
     const was = draftBaseline(sentShows, e);
-    if (!was) continue;
     const now = {};
     let complete = true;
     for (const id of e.ids) {
@@ -134,7 +144,7 @@ function draftsNeedingRefresh(sentShows, readNumbers, onlyIds = null) {
       if (!n || n.reviewCount == null) { complete = false; break; }
       now[id] = n;
     }
-    if (!complete || !numbersDiffer(was, now)) continue;
+    if (!complete || !draftChanged(was, now, e.record)) continue;
     out.push({ broadcastKey: e.broadcastKey, market: e.market, ids: e.ids, was, now });
   }
   return out;
@@ -150,7 +160,7 @@ function unsentDraftUpdatePlan(sentShows, broadcastKey, nowNumbers) {
   if (!isUnsentDraft(record)) return { action: 'skip', reason: `no unsent draft is recorded for ${broadcastKey}` };
   const ids = broadcastKey.slice(broadcastKey.indexOf(':') + 1).split('+').filter(Boolean);
   const was = draftBaseline(sentShows, { ids, record });
-  if (was && !numbersDiffer(was, nowNumbers)) return { action: 'skip', reason: 'the draft already shows these numbers' };
+  if (!draftChanged(was, nowNumbers, record)) return { action: 'skip', reason: 'the draft already shows these numbers' };
   return { action: 'update', record, was };
 }
 
@@ -201,6 +211,6 @@ module.exports = {
   REMINDER_GAP_HOURS, MAX_REMINDERS,
   displayScore, numbersFromEmailRows, readShowNumbers, numbersDiffer,
   previewKeyIds, latestPreviewForShow, isUnsentDraft, unsentDraftRecords,
-  draftBaseline, draftsNeedingRefresh, remindersDue, stampReminder,
+  draftBaseline, draftChanged, draftsNeedingRefresh, remindersDue, stampReminder,
   unsentDraftUpdatePlan, stampDraftUpdate,
 };

@@ -21,9 +21,11 @@ const lib = require('./lib/reddit-opening-post');
 const ROOT = path.resolve(__dirname, '..');
 const loadJSON = (p, fb = null) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fb; } };
 
-function dueShows({ shows, slims, drafts, today }) {
+// seenLookup must match draft-reddit-opening-posts.js, or a show the draft
+// script skips (already seen on r/Broadway) would read as due every hour.
+function dueShows({ shows, slims, drafts, today, seenLookup }) {
   const peers = lib.buildPeers(shows, slims);
-  return lib.selectCandidates({ shows, slims, drafts, peersByMarket: peers, today }).map(c => c.show.id);
+  return lib.selectCandidates({ shows, slims, drafts, peersByMarket: peers, today, seenLookup }).map(c => c.show.id);
 }
 
 function main() {
@@ -39,10 +41,17 @@ function main() {
     if (j) slims.set(s.id, j);
   }
   const drafts = loadJSON(path.join(ROOT, 'data', 'audit', 'reddit-post-drafts.json'), null) || { drafts: {} };
-  const ids = dueShows({ shows, slims, drafts, today });
+  const seenLookup = lib.makeSeenLookup(loadJSON(path.join(ROOT, 'data', 'shows-seen.json'), { shows: [] }), { sinceYear: Number(today.slice(0, 4)) - 1 });
+  const ids = dueShows({ shows, slims, drafts, today, seenLookup });
+  // An email the last run held back (the 6h update cap, the 20h reminder)
+  // also makes the run due, so the capped final numbers still arrive.
+  const { dueEmails } = require('./lib/reddit-post-email');
+  const emails = dueEmails(drafts, Date.now()).map(e => `${e.draft.showId || '?'} (${e.kind})`);
   console.log(ids.length ? `Reddit drafts due: ${ids.join(', ')}` : 'No Reddit draft due');
+  console.log(emails.length ? `Reddit emails due: ${emails.join(', ')}` : 'No Reddit email due');
+  const due = ids.length > 0 || emails.length > 0;
   if (process.env.GITHUB_OUTPUT) {
-    fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${ids.length > 0}\nshows=${ids.join(',')}\n`);
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nshows=${ids.join(',')}\n`);
   }
 }
 
