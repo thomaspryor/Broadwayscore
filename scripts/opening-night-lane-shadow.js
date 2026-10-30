@@ -48,13 +48,14 @@ async function main() {
   const discovery = require('./lib/opening-night-lane/discovery');
   const inline = require('./lib/opening-night-lane/inline-score');
   const publish = require('./lib/opening-night-lane/publish');
-  const { fetchPage } = require('./lib/scraper');
+  // Talkin' Broadway through one Browserbase session, shared by discovery and review fetch, as in the driver (BRO-6073).
+  const laneFetch = require('./lib/opening-night-lane/browserbase-fetch').createLaneFetch({ env });
   const { EnsembleReviewScorer } = require('./llm-scoring/ensemble-scorer.ts');
   // Three models, like production (llm-ensemble-score.yml leaves OPENROUTER_API_KEY out: "Kimi disabled"). With the key
   // the scorer adds Kimi, whose 300 s OpenRouter timeouts and retries cost ~15 minutes per review in the first CI run.
   const scorer = new EnsembleReviewScorer(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY);
-  const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts(), scoreText: inline.ensembleScoreText(scorer) });
-  const fetchText = discovery.fetchTextFrom(fetchPage);
+  const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts({ fetchPage: laneFetch.fetchPage }), scoreText: inline.ensembleScoreText(scorer) });
+  const fetchText = discovery.fetchTextFrom(laneFetch.fetchPage);
   const ss = require('./lib/show-score-discover');
   const showScoreGuards = { urlMap: ss.loadShowScoreUrlMap(repoDir), allShows: Array.isArray(shows) ? shows : shows.shows || [] };
   const serpSearch = async (query) => {
@@ -80,7 +81,12 @@ async function main() {
   }, 2 * 60 * 1000);
   // A cancelled or timed-out step gets SIGTERM before the kill: leave the report as it stands.
   for (const sig of ['SIGTERM', 'SIGINT']) {
-    process.once(sig, () => { try { endedAt = Date.now(); writeReport(); console.error(`shadow: ${sig}, report written`); } finally { process.exit(143); } });
+    process.once(sig, () => {
+      try { endedAt = Date.now(); writeReport(); console.error(`shadow: ${sig}, report written`); } finally {
+        // Release the Browserbase session rather than leave it billing to its timeout; never wait more than 3 s on it.
+        require('./lib/with-timeout').withTimeout(laneFetch.close(), 3000, { resolveWith: null }).catch(() => {}).finally(() => process.exit(143));
+      }
+    });
   }
   console.log(`shadow: ${showId} ${night}, window ${windowMin} min, live site ${liveBase}; no lease, no publish`);
   try {
@@ -110,6 +116,7 @@ async function main() {
     });
   } finally {
     clearInterval(timer);
+    await laneFetch.close();
     await live.poll();
     endedAt = Date.now();
     const md = writeReport();

@@ -38,7 +38,7 @@ const urls = process.argv.slice(2).filter(a => a.startsWith('--url=')).map(a => 
 const sampleArg = process.argv.slice(2).find(a => a.startsWith('--sample-links='));
 const sampleLinks = sampleArg ? parseInt(sampleArg.slice(15), 10) || 0 : 0;
 
-const CHALLENGE = /just a moment|checking your browser|cf-chl|attention required|enable javascript and cookies/i;
+const { CHALLENGE } = require('./lib/browser-read-page');
 const REVIEW_LINK = /\/page\/(ob|world|bwaybway|westend|regional)\//i;
 
 async function main() {

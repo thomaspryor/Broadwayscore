@@ -3,7 +3,8 @@
 // shapes that cost the four (BWW's roundup body behind ticket-deal and podcast <article> cards, Playbill's bare link list
 // with no excerpts, WSJ's paywall teaser judged not_a_review, The Independent's /features/ review path, New York Theater
 // reachable only through its own feed or the BWW roundup, every Talkin' Broadway index failing). Links and structure
-// only; the quotes are placeholders, no article text is copied.
+// only; the quotes are placeholders, no article text is copied. BRO-6073 adds the lane's Browserbase route: Talkin'
+// Broadway answers only through it (as from CI, where Bright Data and ScrapingBee meet its Cloudflare challenge).
 // The real runLaneNight, discovery adapters and inline scoring run; the network and the models are injected.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -17,6 +18,7 @@ const d = require('../../scripts/lib/opening-night-lane/discovery.js');
 const inline = require('../../scripts/lib/opening-night-lane/inline-score.js');
 const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 const shadow = require('../../scripts/lib/opening-night-lane-shadow.js');
+const bb = require('../../scripts/lib/opening-night-lane/browserbase-fetch.js');
 const { ALL_FEEDS } = require('../../scripts/lib/rss-discovery.js');
 
 const SHOW = { id: 'a-few-good-men-2026', title: 'A Few Good Men', openingDate: '2026-10-29', category: 'broadway' };
@@ -48,7 +50,7 @@ const SITE = {
   wsj: ['https://www.wsj.com/articles/a-few-good-men-review-aaron-sorkins-marines-come-back-to-broadway-b2a4cbca', 'Charles Isherwood'],
   independent: ['https://www.the-independent.com/arts-entertainment/theatre-dance/features/a-few-good-men-broadway-review-bradley-whitford-tom-blyth-b3075938.html', 'Caitlin Hornik'],
   nytheater: ['https://newyorktheater.me/2026/10/29/a-few-good-men-broadway-review/', 'Jonathan Mandell'],
-  talkinbroadway: ['https://www.talkinbroadway.com/page/world/AFewGoodMen.html', 'Howard Miller'], // BRO-6073, not this card
+  talkinbroadway: ['https://www.talkinbroadway.com/page/world/AFewGoodMen.html', 'Howard Miller'], // only through Browserbase (BRO-6073)
 };
 const U = Object.fromEntries(Object.entries(SITE).map(([k, [u]]) => [k, u]));
 const CRITIC = new Map(Object.values(SITE).map(([u, c]) => [d.canonicalUrl(u), c]));
@@ -107,6 +109,28 @@ function nightFetch({ bwwFromPass = 3, feeds = true, bwwLayout = bwwPage } = {})
 const TEASER = 'A Few Good Men review: Aaron Sorkin\'s Marines come back to Broadway. Subscribe to continue reading. '.repeat(13);
 const FULL = 'The revival plays the courtroom drama straight, and the performances carry it through the second act. '.repeat(30);
 
+// Talkin' Broadway's named page as a browser reads it once the challenge clears; its other names are not filed (404).
+const TB_PAGE = `<html><head><title>Talkin' Broadway Review: A Few Good Men</title></head><body><h1>A Few Good Men</h1>
+  <p>Theatre Review by Howard Miller - October 29, 2026</p><p>${FULL}</p></body></html>`;
+
+/** A Browserbase double: one fake browser whose pages serve Talkin' Broadway; every URL it reads is recorded. */
+function fakeBrowserbase() {
+  const reads = [];
+  let sessions = 0;
+  const browser = { isConnected: () => true, on: () => {}, close: async () => {}, contexts: () => [{ newPage: async () => ({ close: async () => {} }) }] };
+  const fetcher = bb.createBrowserbaseFetcher({
+    env: { BROWSERBASE_API_KEY: 'k', BROWSERBASE_PROJECT_ID: 'p' },
+    createSession: async () => { sessions++; return { id: `s${sessions}`, connectUrl: 'wss://fake' }; },
+    connect: async () => browser,
+    readPage: async (_page, url) => {
+      reads.push(url);
+      const hit = d.canonicalUrl(url) === d.canonicalUrl(U.talkinbroadway);
+      return { status: hit ? 200 : 404, finalUrl: url, html: hit ? TB_PAGE : '<html><body>Not Found</body></html>', challenge: false };
+    },
+  });
+  return { fetcher, reads, sessions: () => sessions };
+}
+
 function adapters() {
   // The shadow's list (scripts/opening-night-lane-shadow.js), feeds omitted as there: the lane's default feed list.
   return [
@@ -121,9 +145,22 @@ async function replay(opts = {}) {
   let clock = T0;
   const now = () => clock;
   const scorerCalls = [];
+  // The lane's two fetch paths behind its routed fetchPage, as driver.js and the shadow wire them: Talkin' Broadway only
+  // answers through Browserbase; without it (opts.noBrowserbase) its every fetch fails, as on the night.
+  const night = nightFetch(opts);
+  const plainDiscovery = async (url) => {
+    if (/talkinbroadway\.com/.test(url)) throw new Error(`Cloudflare challenge ${url}`);
+    return { content: await night(url) };
+  };
+  const plainReview = async (url) => {
+    if (/talkinbroadway\.com/.test(url)) throw new Error(`Cloudflare challenge ${url}`);
+    return { content: /wsj\.com/.test(url) ? TEASER : FULL };
+  };
+  const browserbase = opts.noBrowserbase ? null : fakeBrowserbase();
+  const routed = (fetchPage) => bb.laneFetchPage({ fetchPage, browserbase: browserbase && browserbase.fetcher });
   const scoring = inline.createInlineScoring({
     show: SHOW, night: NIGHT, ledgerDir: path.join(dir, 'ledger'), now,
-    fetchPage: async (url) => ({ content: /wsj\.com/.test(url) ? TEASER : FULL }), extractArticle: (html) => html,
+    fetchPage: routed(plainReview), extractArticle: (html) => html,
     extractMeta: (_html, url) => ({ criticName: CRITIC.get(d.canonicalUrl(url)) || null, publishDate: NIGHT }),
     // The models: WSJ's teaser is not a review; the excerpt and every full review score.
     scoreText: async (text, ctx) => {
@@ -135,21 +172,32 @@ async function replay(opts = {}) {
   try {
     const res = await runLaneNight({
       show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir: path.join(dir, 'ledger'), dryRun: true,
-      maxPasses: opts.passes || 8, startedAt: T0, adapters: adapters(), fetchText: nightFetch(opts),
+      maxPasses: opts.passes || 8, startedAt: T0, adapters: adapters(), fetchText: d.fetchTextFrom(routed(plainDiscovery)),
       fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
       publishPorts: shadow.createShadowPublishPorts({ onRows: () => {}, now }), now, wait: async (ms) => { clock += ms; },
     });
-    return { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir };
+    return { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir, browserbase };
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 const has = (r, k) => r.scored.has(d.canonicalUrl(U[k]));
 
-test('replay of 2026-10-29: the lane scores 21 of the 22 published reviews; only Talkin\' Broadway (BRO-6073) is out of reach', async () => {
+test('replay of 2026-10-29: the lane scores all 22 published reviews, Talkin\' Broadway through Browserbase (BRO-6073)', async () => {
   const r = await replay();
   const missed = Object.keys(SITE).filter((k) => !has(r, k));
-  assert.deepEqual(missed, ['talkinbroadway'], `missed ${missed.join(', ')}; failed ${JSON.stringify(r.failed)}; errors ${JSON.stringify(r.errors.filter((e) => e.adapter !== 'talkin-broadway'))}`);
-  assert.equal(r.scored.size, 21);
+  assert.deepEqual(missed, [], `missed ${missed.join(', ')}; failed ${JSON.stringify(r.failed)}; errors ${JSON.stringify(r.errors)}`);
+  assert.equal(r.scored.size, 22);
   assert.deepEqual(r.failed, [], 'nothing failed for good');
+  // Every Browserbase read was Talkin' Broadway, discovery and review fetch alike, in one session.
+  assert.ok(r.browserbase.reads.length > 0 && r.browserbase.reads.every((u) => /talkinbroadway\.com/.test(u)), r.browserbase.reads.join(', '));
+  assert.ok(r.browserbase.reads.filter((u) => d.canonicalUrl(u) === d.canonicalUrl(U.talkinbroadway)).length >= 2, 'probed, then fetched for scoring');
+  assert.equal(r.browserbase.sessions(), 1);
+});
+
+test('without Browserbase (no keys, kill switch, allowance used) the lane scores 21: Talkin\' Broadway is the only miss', async () => {
+  const r = await replay({ noBrowserbase: true });
+  const missed = Object.keys(SITE).filter((k) => !has(r, k));
+  assert.deepEqual(missed, ['talkinbroadway']);
+  assert.equal(r.scored.size, 21);
 });
 
 test('WSJ: the paywall teaser judged not_a_review waits for BWW\'s excerpt (Playbill prints none) and is scored from it once', async () => {

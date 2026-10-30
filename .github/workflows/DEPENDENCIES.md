@@ -335,8 +335,8 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `BRIGHTDATA_SERP_ZONE` | 1 cross-repo writers (of 2 workflows using it): `commercial-rss-poll.yml` |
 | `BRIGHTDATA_TOKEN` | 75 cross-repo writers (of 102 workflows using it) |
 | `BRIGHTDATA_ZONE` | 69 cross-repo writers (of 94 workflows using it) |
-| `BROWSERBASE_API_KEY` | 16 cross-repo writers (of 20 workflows using it) |
-| `BROWSERBASE_PROJECT_ID` | 16 cross-repo writers (of 20 workflows using it) |
+| `BROWSERBASE_API_KEY` | 17 cross-repo writers (of 21 workflows using it) |
+| `BROWSERBASE_PROJECT_ID` | 17 cross-repo writers (of 21 workflows using it) |
 | `COOKIES_BUNDLE_1` | 18 cross-repo writers (of 20 workflows using it) |
 | `COOKIES_BUNDLE_10` | 18 cross-repo writers (of 20 workflows using it) |
 | `COOKIES_BUNDLE_11` | 16 cross-repo writers (of 18 workflows using it) |

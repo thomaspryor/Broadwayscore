@@ -240,6 +240,8 @@ function tier1BoostForCaller(host, { exempt = false, ...opts } = {}) {
 const CALLER_ALLOWANCES = Object.freeze({
   'probe-talkinbroadway-browserbase.js': Object.freeze({ sessionsPerDay: 3, until: '2026-11-19T00:00:00Z' }),
   'collect-talkinbroadway-index.js': Object.freeze({ sessionsPerDay: 8, until: '2026-11-19T00:00:00Z' }),
+  // The opening-night lane reads TB through one session at a time, rotated hourly: a 5 h night is ~6 (BRO-6073).
+  'opening-night-lane': Object.freeze({ sessionsPerDay: 8, until: '2026-11-19T00:00:00Z' }),
 });
 
 /** Sessions/day this caller may spend from its allowance (0 if unlisted, expired or disabled). */

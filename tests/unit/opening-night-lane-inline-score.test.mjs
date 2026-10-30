@@ -506,3 +506,144 @@ test('a review scored from a truncated partial copy is queued for re-collection'
     assert.ok(rows.some((x) => x.contentTier === 'truncated'));
   } finally { s.cleanup(); }
 });
+
+// ---- BRO-6073: Talkin' Broadway through Browserbase (browserbase-fetch.js) ----
+const bbf = require('../../scripts/lib/opening-night-lane/browserbase-fetch.js');
+const TB_URL = 'https://www.talkinbroadway.com/page/world/AFewGoodMen.html';
+const KEYS = { BROWSERBASE_API_KEY: 'k', BROWSERBASE_PROJECT_ID: 'p' };
+
+/** A fake Browserbase: counts sessions, pages open and closed; `read` decides what each page shows. */
+function fakeBB({ env = KEYS, createSession, read, now, ...opts } = {}) {
+  const st = { sessions: 0, open: 0, closed: 0, browsersClosed: 0, reads: [] };
+  const mkBrowser = () => {
+    let connected = true;
+    return {
+      isConnected: () => connected, on: () => {}, close: async () => { connected = false; st.browsersClosed++; },
+      contexts: () => [{ newPage: async () => { st.open++; return { close: async () => { st.closed++; } }; } }],
+    };
+  };
+  const fetcher = bbf.createBrowserbaseFetcher({
+    env, now,
+    createSession: createSession || (async () => { st.sessions++; await new Promise((r) => setTimeout(r, 5)); return { id: `s${st.sessions}`, connectUrl: 'wss://x' }; }),
+    connect: async () => mkBrowser(),
+    readPage: async (_p, url) => { st.reads.push(url); return read ? read(url) : { status: 200, finalUrl: url, html: '<html>tb</html>', challenge: false }; },
+    ...opts,
+  });
+  return { fetcher, st };
+}
+const refusal = (message) => Object.assign(new Error(message), { bbNoSession: true });
+
+test('BRO-6073: a talkinbroadway.com review URL routes through Browserbase; nytimes.com and look-alike hosts do not', async () => {
+  assert.equal(bbf.routesThroughBrowserbase(TB_URL), true);
+  assert.equal(bbf.routesThroughBrowserbase('https://talkinbroadway.com/page/ob/index.html'), true);
+  assert.equal(bbf.routesThroughBrowserbase('https://www.nytimes.com/2026/10/29/theater/a-few-good-men-review.html'), false);
+  assert.equal(bbf.routesThroughBrowserbase('https://nottalkinbroadway.com/x'), false);
+  assert.equal(bbf.routesThroughBrowserbase('not a url'), false);
+  const { fetcher, st } = fakeBB();
+  const plain = [];
+  const fetchPage = bbf.laneFetchPage({ fetchPage: async (u) => { plain.push(u); return { content: 'plain' }; }, browserbase: fetcher });
+  assert.deepEqual(await fetchPage(TB_URL), { content: '<html>tb</html>', finalUrl: null, status: 200, via: 'browserbase' });
+  assert.deepEqual(await fetchPage('https://www.nytimes.com/x'), { content: 'plain' });
+  assert.deepEqual(st.reads, [TB_URL]);
+  assert.deepEqual(plain, ['https://www.nytimes.com/x']);
+});
+
+test('BRO-6073: one session, created once for concurrent fetches and reused; every page is closed', async () => {
+  const { fetcher, st } = fakeBB();
+  await Promise.all([1, 2, 3, 4].map((i) => fetcher.fetch(`${TB_URL}?${i}`)));
+  await fetcher.fetch(TB_URL);
+  assert.equal(st.sessions, 1);
+  assert.equal(st.open, 5);
+  await new Promise((r) => setImmediate(r));
+  assert.equal(st.closed, 5);
+  await fetcher.close();
+  assert.equal(st.browsersClosed, 1);
+});
+
+test('BRO-6073: a 404 is an error with its status and a challenge a 403, never a paid fallback; a short or 403-reported loaded page is content', async () => {
+  const { fetcher } = fakeBB({ read: (url) => (/missing/.test(url)
+    ? { status: 404, finalUrl: url, html: '<html>Not Found</html>', challenge: false }
+    : /solved/.test(url) ? { status: 403, finalUrl: url, html: '<html>review</html>', challenge: false }
+      : { status: 403, finalUrl: url, html: '<title>Just a moment...</title>', challenge: true }) });
+  let plainCalls = 0;
+  const fetchPage = bbf.laneFetchPage({ fetchPage: async () => { plainCalls++; return { content: 'plain' }; }, browserbase: fetcher });
+  await assert.rejects(fetchPage('https://www.talkinbroadway.com/missing.html'), (e) => e.status === 404 && /not found/.test(e.message));
+  await assert.rejects(fetchPage(TB_URL), (e) => e.status === 403 && /\b403\b.*Cloudflare challenge/.test(e.message));
+  // After the challenge is solved page.goto still reports its 403; the content is the page.
+  assert.equal((await fetchPage('https://www.talkinbroadway.com/solved.html')).content, '<html>review</html>');
+  assert.equal(plainCalls, 0, 'never a paid fallback for a page the browser did load');
+});
+
+test('BRO-6073: a session whose browser never connects is released, and the route pauses', async () => {
+  const released = [];
+  const { fetcher } = fakeBB({ cooldownMs: 1000, connect: async () => { throw new Error('ws closed'); }, releaseSession: async (id) => { released.push(id); } });
+  await assert.rejects(fetcher.fetch(TB_URL), (e) => e.bbUnavailable && /connect failed/.test(e.message));
+  assert.deepEqual(released, ['s1']);
+  assert.equal(fetcher.available(), false);
+});
+
+test('BRO-6073: close() while a session is still being created waits for it and closes it; nothing opens after close', async () => {
+  const { fetcher, st } = fakeBB();
+  const inflight = fetcher.fetch(TB_URL).catch(() => {});
+  await fetcher.close();
+  await inflight;
+  await new Promise((r) => setImmediate(r));
+  assert.equal(st.sessions, 1);
+  assert.equal(st.browsersClosed, 1, 'the session created during close() is closed');
+  await assert.rejects(fetcher.fetch(TB_URL), (e) => e.bbUnavailable);
+  assert.equal(st.sessions, 1, 'no session after close');
+});
+
+test('BRO-6073: no keys, kill switch, allowance used or denied host turn the route off for the run; routed hosts go to fetchPage', async () => {
+  const noKeys = fakeBB({ env: {} });
+  assert.equal(noKeys.fetcher.available(), false);
+  for (const msg of ['Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)', 'Browserbase caller allowance used (8/8)', 'Browserbase host denied (talkinbroadway.com)', 'createBbSession: BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set']) {
+    let calls = 0;
+    const { fetcher } = fakeBB({ createSession: async () => { calls++; throw refusal(msg); } });
+    const fetchPage = bbf.laneFetchPage({ fetchPage: async () => ({ content: 'plain' }), browserbase: fetcher });
+    assert.deepEqual(await fetchPage(TB_URL), { content: 'plain' }, msg);
+    assert.deepEqual(await fetchPage(TB_URL), { content: 'plain' }, msg);
+    assert.equal(calls, 1, `${msg}: asked once, then off`);
+    assert.equal(fetcher.available(), false);
+  }
+});
+
+test('BRO-6073: a reserve or day-cap refusal, or a failed create, pauses the route for the cooldown, then tries again', async () => {
+  let t = 0;
+  let calls = 0;
+  const { fetcher } = fakeBB({ now: () => t, cooldownMs: 1000, createSession: async () => { calls++; if (calls === 1) throw refusal(calls % 2 ? 'Browserbase caller allowance used (count unknown)' : 'recovery reserve held'); if (calls === 2) throw new Error('500 from Browserbase'); return { id: 'ok', connectUrl: 'wss://x' }; } });
+  const fetchPage = bbf.laneFetchPage({ fetchPage: async () => ({ content: 'plain' }), browserbase: fetcher });
+  assert.equal((await fetchPage(TB_URL)).content, 'plain');
+  assert.equal(fetcher.available(), false);
+  assert.equal((await fetchPage(TB_URL)).content, 'plain');
+  assert.equal(calls, 1, 'paused: not asked again inside the cooldown');
+  t = 1000;
+  assert.equal((await fetchPage(TB_URL)).content, 'plain');
+  assert.equal(calls, 2);
+  t = 2000;
+  assert.equal((await fetchPage(TB_URL)).via, 'browserbase');
+  assert.equal(calls, 3);
+});
+
+test('BRO-6073: sessions rotate before their timeout, at most maxSessions a run', async () => {
+  let t = 0;
+  const { fetcher, st } = fakeBB({ now: () => t, maxSessions: 2, sessionTimeoutSec: 600 });
+  await fetcher.fetch(TB_URL);
+  t = 299 * 1000;
+  await fetcher.fetch(TB_URL);
+  assert.equal(st.sessions, 1, 'reused while more than 5 min of its timeout is left');
+  t = 301 * 1000;
+  await fetcher.fetch(TB_URL);
+  assert.equal(st.sessions, 2, 'replaced 5 min before its timeout');
+  assert.equal(st.browsersClosed, 1, 'the replaced session is closed');
+  t = 700 * 1000;
+  await assert.rejects(fetcher.fetch(TB_URL), (e) => e.bbUnavailable && /run cap of 2/.test(e.message));
+  assert.equal(fetcher.available(), false);
+});
+
+test('BRO-6073: a fetch that hangs is abandoned at its deadline and its page closed', async () => {
+  const { fetcher, st } = fakeBB({ fetchTimeoutMs: 30, read: () => new Promise(() => {}) });
+  await assert.rejects(fetcher.fetch(TB_URL), /timed out after 30ms/);
+  await new Promise((r) => setImmediate(r));
+  assert.equal(st.closed, 1);
+});

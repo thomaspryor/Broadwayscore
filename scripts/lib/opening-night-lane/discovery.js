@@ -597,6 +597,9 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
 // the page's "Theatre Review by ... - Month D, YYYY" byline (extractPublishDate), never from the filename.
 const TB_REVIEW_PATH = /^\/page\/(?:ob|bwaybway|westend)\/\d{2}_\d{2}_\d{2}[a-z]?\.html?$/i;
 const TB_DIRECT_PROBE_EVERY_MS = 15 * 60 * 1000;
+// TB is read through Browserbase (BRO-6073): navigation plus the Cloudflare challenge wait runs past 45 s; still under
+// the 90 s pass deadline, which caps it either way.
+const TB_FETCH_TIMEOUT_MS = 75000;
 /**
  * Broadway reviews are also filed as named pages ("/page/world/TheImaginaryInvalid.html") that no index lists on the night,
  * which is how the regular pipeline found The Imaginary Invalid (BRO-6066). Those names are built by tb-direct-url and
@@ -606,7 +609,7 @@ const TB_DIRECT_PROBE_EVERY_MS = 15 * 60 * 1000;
  */
 function talkinBroadwayAdapter({
   indexUrls = ['https://www.talkinbroadway.com/page/ob/index.html', 'https://www.talkinbroadway.com/page/bwaybway/index.html'],
-  directProbeEveryMs = TB_DIRECT_PROBE_EVERY_MS, now = Date.now, fetchTimeoutMs = 45000,
+  directProbeEveryMs = TB_DIRECT_PROBE_EVERY_MS, now = Date.now, fetchTimeoutMs = TB_FETCH_TIMEOUT_MS,
 } = {}) {
   let lastProbeAt = -Infinity;
   let found = null; // the verified named page, once one is found

@@ -36,6 +36,7 @@ const {
   BASE, extractReviewLinks, isReviewHref, normalizeTbUrl, titleFromPageTitle, planCollection, heldKey,
   pickCriticForShow, pageTitleMatchesShow, bylineDate, reviewDateFitsShow, resolveAgainst, holdsReview,
 } = require('./lib/talkinbroadway-index');
+const { readBrowserPage } = require('./lib/browser-read-page');
 
 const USAGE = 'Usage: node scripts/collect-talkinbroadway-index.js [--dry-run] [--window-days=N] [--max-pages=N] [--data-dir=PATH]';
 const args = process.argv.slice(2);
@@ -52,7 +53,6 @@ const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
 // the "past reviews" pages list every review as "<title> - M/D/YY". A review shows on the
 // past page once it is no longer the newest.
 const LIST_PAGES = [`${BASE}/page/world/past.html`, `${BASE}/page/ob/past.html`];
-const CHALLENGE = /just a moment|checking your browser|cf-chl|attention required|enable javascript and cookies/i;
 
 /** showIds that already hold a usable talkinbroadway review. */
 function loadHeldKeys() {
@@ -74,27 +74,13 @@ function loadHeldKeys() {
 }
 
 async function readPage(page, url) {
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-  for (let i = 0; i < 6; i++) {
-    const title = await page.title();
-    const body = await page.evaluate(() => (document.body && document.body.innerText) || '');
-    if (!CHALLENGE.test(title) && !CHALLENGE.test(body.slice(0, 400)) && body.length > 200) break;
-    await page.waitForTimeout(2500);
-  }
-  const title = await page.title();
-  const text = await page.evaluate(() => (document.body && document.body.innerText) || '');
-  if (CHALLENGE.test(title) || CHALLENGE.test(text.slice(0, 400)) || text.length < 500) {
+  const r = await readBrowserPage(page, url);
+  if (r.challenge || r.text.length < 500) {
     throw new Error(`challenge or empty page at ${url}`);
   }
-  const rawAnchors = await page.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map((a) => ({ href: a.getAttribute('href'), text: (a.textContent || '').trim().slice(0, 120) })));
   // List pages use relative hrefs ("Bug.html"); resolve them against the page they came from.
-  const anchors = rawAnchors.map((a) => ({ href: resolveAgainst(url, a.href), text: a.text })).filter((a) => a.href);
-  const canonical = await page.evaluate(() => {
-    const el = document.querySelector('link[rel="canonical"]') || document.querySelector('meta[property="og:url"]');
-    return el ? (el.getAttribute('href') || el.getAttribute('content')) : null;
-  });
-  const html = await page.content();
-  return { title, text, anchors, html, canonical };
+  const anchors = r.anchors.map((a) => ({ href: resolveAgainst(url, a.href), text: a.text })).filter((a) => a.href);
+  return { title: r.title, text: r.text, anchors, html: r.html, canonical: r.canonical };
 }
 
 async function main() {

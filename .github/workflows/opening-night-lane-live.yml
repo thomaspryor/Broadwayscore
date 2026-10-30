@@ -207,6 +207,10 @@ jobs:
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
+          # Talkin' Broadway is Cloudflare-walled: only a Browserbase session reads it (BRO-6073).
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           # No OPENROUTER_API_KEY: it adds Kimi to the ensemble, which production scoring leaves out
           # (llm-ensemble-score.yml) and which took ~15 minutes per review in the first shadow run (BRO-5201).
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -335,6 +339,10 @@ jobs:
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
+          # Talkin' Broadway is Cloudflare-walled: only a Browserbase session reads it (BRO-6073).
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
         run: npx tsx scripts/opening-night-lane-shadow.js "--show=${SHOW}" "--night=${NIGHT}" "--window-min=${WINDOW}" "--out=${RUNNER_TEMP}/shadow"
 
       - name: Upload shadow report and ledger

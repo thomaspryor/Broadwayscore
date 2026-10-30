@@ -195,10 +195,11 @@ function buildRealLaneDeps({
       const discovery = require('./discovery');
       const inline = require('./inline-score');
       const { createRealPublishPorts } = require('./real-ports');
-      const { fetchPage } = require('../scraper');
+      // One routed fetch for discovery and review fetch alike: Talkin' Broadway through one Browserbase session (BRO-6073).
+      const laneFetch = require('./browserbase-fetch').createLaneFetch({ env });
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
-      const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts(), scoreText: inline.ensembleScoreText(scorer) });
-      const fetchText = discovery.fetchTextFrom(fetchPage);
+      const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts({ fetchPage: laneFetch.fetchPage }), scoreText: inline.ensembleScoreText(scorer) });
+      const fetchText = discovery.fetchTextFrom(laneFetch.fetchPage);
       return runLaneNight({
         show, night, openingDate, timeZone, ledgerDir, fetchText, shouldStop, abandonPending,
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
@@ -222,7 +223,7 @@ function buildRealLaneDeps({
         onDiskUrls: onDiskUrlsFor(path.join(repoDir, 'data', 'reviews.json'), show.id),
         onDiskRows: onDiskRowsFor(path.join(repoDir, 'data', 'reviews.json'), show.id),
         now: Date.now, wait: (ms) => new Promise((r) => setTimeout(r, ms)),
-      });
+      }).finally(() => laneFetch.close());
     },
   };
 }

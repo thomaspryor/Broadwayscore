@@ -278,9 +278,12 @@ function ensembleScoreText(scorer) {
   };
 }
 
-/** The real fetch and extract ports; lazy, so tests and cloud sessions never load a scraper. */
-function realFetchPorts() {
-  const { fetchPage } = require('../scraper');
+/**
+ * The real fetch and extract ports; lazy, so tests and cloud sessions never load a scraper. Pass the lane's routed
+ * fetchPage (browserbase-fetch.js createLaneFetch) so review fetches share discovery's Browserbase session (BRO-6073);
+ * without one it is the plain scraper.
+ */
+function realFetchPorts({ fetchPage = require('../scraper').fetchPage } = {}) {
   const { extractArticleText, extractPublishDate } = require('../article-extractor');
   const { extractByline } = require('../byline-extraction');
   return {
