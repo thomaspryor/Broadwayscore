@@ -15,9 +15,8 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
   actions: read
-  issues: write
 
 jobs:
   lighthouse:
@@ -103,20 +102,36 @@ jobs:
             echo -e "$BODY" > /tmp/lighthouse-body.md
           fi
 
-      - name: Create issue on regression
+      - name: Route alert on regression
         if: steps.audit.outputs.has_regression == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LIGHTHOUSE_BODY_FILE: /tmp/lighthouse-body.md
+        run: node scripts/route-workflow-alerts.js route lighthouse-regression
+
+      - name: Resolve alert when clean
+        if: steps.audit.outputs.has_regression != 'true' && !cancelled()
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/route-workflow-alerts.js resolve lighthouse-regression
+
+      # BRO-6397: the ledger remembers which card each condition filed so a
+      # repeat is silent and a clear run resolves it.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
-          # Close previous lighthouse issues
-          gh issue list --repo thomaspryor/Broadwayscore --label lighthouse --state open --json number -q '.[].number' | while read num; do
-            gh issue close "$num" --repo thomaspryor/Broadwayscore 2>/dev/null || true
-          done
-          # Create new issue
-          gh issue create --repo thomaspryor/Broadwayscore \
-            --title "Lighthouse regression detected — $(date +%Y-%m-%d)" \
-            --body-file /tmp/lighthouse-body.md \
-            --label lighthouse,automated
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist lighthouse-post-deploy alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
 
       - name: Notify on failure
         if: failure()

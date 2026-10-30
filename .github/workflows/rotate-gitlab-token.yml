@@ -6,15 +6,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   actions: read
-  issues: write
 
 jobs:
   rotate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
       - name: Check token expiry
         id: check
         run: |
@@ -105,46 +106,41 @@ jobs:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_REPO: ${{ github.repository }}
 
-      - name: Create issue on ANY failure
+      - name: Route alert on ANY failure
         if: failure()
-        run: |
-          gh issue create \
-            --title "GitLab mirror token rotation failed" \
-            --body "The automatic GitLab token rotation workflow failed.
-
-          **What this means:** The GitLab mirror may stop working when the current token expires.
-
-          **Check the logs:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-          **Manual fix:**
-          1. Go to https://gitlab.com/-/user_settings/personal_access_tokens
-          2. Create a new token with \`api\` scope, 1 year expiry
-          3. Save it as the repository secret GITLAB_MIRROR_TOKEN (Settings, Secrets and variables, Actions)
-
-          **If the rotation succeeded but secret update failed**, the old token is now dead.
-          You MUST create a new token manually — the old one cannot be recovered." \
-            --label "bug"
         env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/route-workflow-alerts.js route gitlab-token-failed
 
-      - name: Create issue if token already expired
+      - name: Route alert if token already expired
         if: steps.check.outputs.expired == 'true'
-        run: |
-          gh issue create \
-            --title "GitLab mirror token has expired" \
-            --body "The GitLab mirror token (\`GITLAB_MIRROR_TOKEN\`) has expired or is invalid. Automatic rotation cannot help — the token is already dead.
-
-          **Manual fix needed:**
-          1. Go to https://gitlab.com/-/user_settings/personal_access_tokens
-          2. Create a new token with \`api\` scope, 1 year expiry
-          3. Save it as the repository secret GITLAB_MIRROR_TOKEN (Settings, Secrets and variables, Actions)
-
-          The GitLab mirror is **NOT syncing** until this is fixed." \
-            --label "bug"
         env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/route-workflow-alerts.js route gitlab-token-expired
+
+      - name: Resolve alerts when token healthy
+        if: steps.check.outputs.expired == 'false' && success()
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/route-workflow-alerts.js resolve gitlab-token-expired
+
+      # BRO-6397: the ledger remembers which card each condition filed so a
+      # repeat is silent and a clear run resolves it.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist rotate-gitlab-token alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
 
       - name: Notify on failure
         if: failure()
@@ -162,13 +158,13 @@ jobs:
         run: |
           if [ "${{ steps.check.outputs.expired }}" = "true" ]; then
             echo "## Token Expired" >> "$GITHUB_STEP_SUMMARY"
-            echo "GitLab token is expired. GitHub issue created with manual fix instructions." >> "$GITHUB_STEP_SUMMARY"
+            echo "GitLab token is expired. Owner alert routed with manual fix instructions." >> "$GITHUB_STEP_SUMMARY"
           elif [ "${{ steps.check.outputs.needs_rotation }}" = "true" ] && [ "${{ steps.update.outcome }}" = "success" ]; then
             echo "## Token Rotated Successfully" >> "$GITHUB_STEP_SUMMARY"
             echo "New token expires: ${{ steps.verify.outputs.new_expires }}" >> "$GITHUB_STEP_SUMMARY"
           elif [ "${{ steps.check.outputs.needs_rotation }}" = "true" ]; then
             echo "## Rotation Failed" >> "$GITHUB_STEP_SUMMARY"
-            echo "GitHub issue created. Check logs for details." >> "$GITHUB_STEP_SUMMARY"
+            echo "Alert routed. Check logs for details." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "## No Rotation Needed" >> "$GITHUB_STEP_SUMMARY"
             echo "Token still valid for ${{ steps.check.outputs.days_left }} days." >> "$GITHUB_STEP_SUMMARY"

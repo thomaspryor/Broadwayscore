@@ -27,7 +27,6 @@ concurrency:
 permissions:
   contents: write
   actions: read
-  issues: write
 
 jobs:
   update-awards:
@@ -127,40 +126,30 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update Tony Awards data (private repo sync)'
 
-      - name: Create IBDB scraper reminder issue
+      - name: Route IBDB scraper reminder
         if: steps.changes.outputs.has_changes == 'true' && github.event_name == 'workflow_dispatch'
-        run: |
-          YEAR="${INPUT_YEAR}"
-          if [ -z "$YEAR" ]; then
-            YEAR="$(date +%Y)"
-          fi
-          gh issue create \
-            --title "Run Tony nominations IBDB scraper for ${YEAR}" \
-            --body "$(cat <<'ISSUE_EOF'
-          ## Tony Awards data updated
-
-          The Wikipedia Tony Awards scraper has committed new data to \`awards.json\`.
-          The IBDB person-level nominations scraper needs to run locally to pick up new shows.
-
-          ### Steps
-
-          1. Pull latest: \`git pull\`
-          2. Run the scraper for missing shows only:
-             \`\`\`
-             node scripts/scrape-tony-nominees.js --missing
-             \`\`\`
-          3. Verify: \`node scripts/verify-tony-data.js\`
-          4. Commit and push the updated \`data/tony-nominations.json\`
-
-          **Why local?** IBDB is behind Cloudflare and requires a headed Playwright browser.
-          The \`--missing\` flag only processes shows where \`awards.json\` expects nominations
-          but \`tony-nominations.json\` has 0 person-level entries.
-          ISSUE_EOF
-          )" \
-            --label "data"
         env:
-          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           INPUT_YEAR: ${{ inputs.year }}
+        run: node scripts/route-workflow-alerts.js route tony-ibdb-scraper
+
+      # BRO-6397: the ledger remembers which card each condition filed so a
+      # repeat is silent and a clear run resolves it.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist update-tony-awards alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
 
       - name: Notify on failure
         if: failure()

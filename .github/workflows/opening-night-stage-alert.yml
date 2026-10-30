@@ -1,9 +1,9 @@
-# hygiene-notify-ok: files a GitHub issue on failure (own notification mechanism, no additional discord/email needed)
+# hygiene-notify-ok: files a routeAlert worker card on failure (own notification mechanism, no additional discord/email needed)
 name: Opening Night Stage Alert
 
 # 6 of 8 recent Broadway openings had ZERO "scored" stage-latency entries on
 # opening day (bucket D, data-flow race). This workflow runs the morning after
-# an opening window and files a GitHub issue if that signature reappears.
+# an opening window and files a routeAlert worker card if that signature reappears.
 #
 # Timing: 13:00 UTC = 9 AM ET = covers both last-night ET openings (which
 # stage-log at ~02-05 UTC the next morning) and early West End morning reviews.
@@ -14,9 +14,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   actions: write
-  issues: write
 
 jobs:
   check:
@@ -43,36 +42,32 @@ jobs:
         id: check
         run: node scripts/check-opening-night-scored.js
 
-      - name: File GitHub issue on failure
+      - name: Route alert on failure
         if: failure() && steps.check.outcome == 'failure'
         env:
-          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/route-workflow-alerts.js route opening-night-stage
+
+      - name: Resolve alert when clean
+        if: steps.check.outcome == 'success'
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/route-workflow-alerts.js resolve opening-night-stage
+
+      # BRO-6397: the ledger remembers which card each condition filed so a
+      # repeat is silent and a clear run resolves it.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
-          TITLE="Opening-night stage-latency alert: scored entries missing"
-          # Dedup: skip if an open issue with this title already exists — the
-          # same show can sit in the 48h window across multiple daily runs
-          # and we don't want to spam the tracker.
-          EXISTING=$(gh issue list --label opening-night --state open --json title,number \
-            --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
-          if [ -n "$EXISTING" ]; then
-            echo "Issue #$EXISTING already open for this alert — adding comment instead"
-            gh issue comment "$EXISTING" --body "Stage-alert fired again at $(date -u +%FT%TZ). Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist opening-night-stage-alert alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
           fi
-          BODY=$(cat <<'EOF'
-          The `opening-night-stage-alert` workflow detected shows that opened in the
-          last 48h but have no `scored` entry in `data/audit/stage-latency.jsonl`.
-
-          This is the same failure signature as 6 of 8 recent Broadway opening
-          failures (bucket D, data-flow race). Broadcasts likely fired against
-          stale data.
-
-          See the workflow run logs for the specific show IDs.
-
-          Fix options:
-          - Re-dispatch `opening-night-orchestrator.yml` with the affected show_id
-          - Check `rebuild-reviews.yml` completed and emitted stage entries
-          - Manually run `node scripts/rebuild-all-reviews.js` locally and push
-          EOF
-          )
-          gh issue create --title "$TITLE" --body "$BODY" --label bug,opening-night
