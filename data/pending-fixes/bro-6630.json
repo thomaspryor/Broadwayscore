@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-6630",
-  "planId": "68b072c3-7fd1-4415-acc8-c407b666f539",
+  "planId": "79d935ac-97d6-47bb-b7d8-3be3bd1d85d1",
   "status": "pending",
-  "createdAt": "2026-10-30T15:51:49.692Z",
+  "createdAt": "2026-10-30T16:23:31.554Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6630 season 2017-18: add 25 Off-Broadway shows (2017-06..2018-05) found by the outlet-first census (2+ T1/T2 outlets). Dates from a Playbill production page, or two sources agreeing: BroadwayWorld show page with closing matched by TheaterMania or Broadway.com, opening corroborated by the second source and within -3..+7 days of the first write-up, venues agreeing",
+    "summary": "BRO-6630 season 2017-18: add 28 Off-Broadway shows (opening 2017-06..2018-05) found by the outlet-first census (2+ T1/T2 outlets). Dates from a Playbill production page, or two sources agreeing: BroadwayWorld show page with closing matched by TheaterMania or Broadway.com, opening corroborated by the second source and within -3..+7 days of the first write-up, venues agreeing (part 1 of 2)",
     "steps": [
       "add-show",
       "add-show",
@@ -207,6 +207,35 @@
             "https://www.theatermania.com/news/jesus-hopped-the-a-train_82856/",
             "https://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
             "https://www.theaterscene.net/plays/offbway-plays/jesus-hopped-train/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "julius-caesar-off-broadway-2017",
+          "title": "Julius Caesar",
+          "slug": "julius-caesar-off-broadway-2017",
+          "venue": "Delacorte Theater",
+          "previewsStartDate": "2017-05-23",
+          "openingDate": "2017-06-12",
+          "closingDate": "2017-06-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Julius-Caesar-331908.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/julius-caesar_318346/",
+            "https://theaterlife.com/julius-caesar/",
+            "https://www.newyorktheatreguide.com/reviews/julius-caesar",
+            "https://www.theatermania.com/news/julius-caesar_83377/",
+            "https://variety.com/2018/legit/reviews/julius-caesar-review-bridge-theatre-1202687269/"
           ]
         }
       },
@@ -412,9 +441,9 @@
       {
         "type": "add-show",
         "show": {
-          "id": "people-places-things-off-broadway-2017",
+          "id": "people-places-and-things-off-broadway-2017",
           "title": "People, Places & Things",
-          "slug": "people-places-things-off-broadway-2017",
+          "slug": "people-places-and-things-off-broadway-2017",
           "venue": "St. Ann's Warehouse",
           "previewsStartDate": null,
           "openingDate": "2017-10-19",
@@ -706,33 +735,6 @@
             "https://www.broadway.com/shows/mlimas-tale/",
             "https://www.theatermania.com/news/mlimas-tale-navigates-the-illicit-ivory-trade_84813/",
             "https://www.theaterscene.net/plays/offbway-plays/mlimas-tale/joel-benjamin/"
-          ]
-        }
-      },
-      {
-        "type": "add-show",
-        "show": {
-          "id": "money-talks-off-broadway-2017",
-          "title": "Money Talks",
-          "slug": "money-talks-off-broadway-2017",
-          "venue": "Davenport Theatre",
-          "previewsStartDate": "2017-07-10",
-          "openingDate": "2017-07-23",
-          "closingDate": "2017-09-03",
-          "status": "closed",
-          "category": "off-broadway",
-          "market": "broadway",
-          "type": "musical",
-          "tags": [],
-          "discoverySource": "ob-historical:census",
-          "discoveredAt": "2026-10-30T00:00:00.000Z",
-          "openingDateSource": "two-source:bww+theatermania",
-          "closingDateSource": "two-source:bww+theatermania",
-          "evidenceUrls": [
-            "https://www.broadwayworld.com/shows/Money-Talks-332227.html",
-            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/money-talks_320182/",
-            "https://www.theaterscene.net/musicals/offbway/money-talks-the-musical/archive/",
-            "https://www.newyorktheatreguide.com/reviews/money-talks"
           ]
         }
       }

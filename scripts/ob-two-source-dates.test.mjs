@@ -78,7 +78,7 @@ test('refuses venues that name different houses', () => {
 });
 
 test('refuses a run starting outside the window, a short run, and a missing TM row', () => {
-  assert.match(decideTwoSource({ ...base, fromIso: '2019-11-01', bww, tm, firstReview: '2019-10-22' }).reason, /outside/);
+  assert.match(decideTwoSource({ ...base, fromIso: '2019-11-01', bww, tm, firstReview: '2019-10-22' }).reason, /before 2019-11-01/);
   const short = { ...bww, closing: '2019-10-10' };
   assert.match(decideTwoSource({ ...base, bww: short, tm: { ...tm, closingDate: '2019-10-10' }, firstReview: '2019-10-22' }).reason, /shorter than 14 days|outside|days from/);
   assert.match(decideTwoSource({ ...base, bww, tm: null, firstReview: '2019-10-22' }).reason, /no TheaterMania or Broadway.com listing/);
@@ -107,4 +107,22 @@ test('refuses a run that previews in the window but opens after it', () => {
 test('show ids follow house style: apostrophes dropped, not hyphenated', () => {
   assert.equal(broadwayComSlug("A Midsummer Night's Dream"), 'a-midsummer-nights-dream');
   assert.equal(broadwayComSlug("Mary Shelley's Frankenstein"), 'mary-shelleys-frankenstein');
+});
+
+test('venues sharing only a street or complex word do not agree', () => {
+  assert.equal(venuesAgree('Minetta Lane Theatre', 'Cherry Lane Theatre'), false);
+  assert.equal(venuesAgree('The Lion Theatre at Theatre Row', 'The Acorn Theatre at Theatre Row'), false);
+  assert.equal(venuesAgree('59E59 Theater A', '59E59 Theater B'), false);
+});
+
+test('parseLongDate takes "Mar." and rejects truncations and impossible days', () => {
+  assert.equal(parseLongDate('Mar. 1, 2018'), '2018-03-01');
+  assert.equal(parseLongDate('Augu 1, 2018'), null);
+  assert.equal(parseLongDate('Feb 30, 2018'), null);
+});
+
+test('a run previewing before the window but opening in it is accepted', () => {
+  const b = { ...bww, previews: '2019-05-20', opening: '2019-06-05', closing: '2019-07-20' };
+  const t = { ...tm, previewsStartDate: '2019-05-20', openingDate: '2019-06-05', closingDate: '2019-07-20' };
+  assert.equal(decideTwoSource({ ...base, bww: b, tm: t, firstReview: '2019-06-05' }).ok, true);
 });

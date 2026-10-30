@@ -50,12 +50,14 @@ function arg(name) {
 
 /** "October 22, 2019" → "2019-10-22"; null when it does not parse. */
 function parseLongDate(s) {
-  const m = String(s || '').trim().match(/^([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})$/);
-  // Full names (BroadwayWorld) or abbreviations such as "Mar" / "Sept" (Broadway.com).
+  const m = String(s || '').trim().match(/^([A-Za-z]+)\.?\s+(\d{1,2}),\s*(\d{4})$/);
+  // Full names (BroadwayWorld) or abbreviations such as "Mar", "Mar." or "Sept" (Broadway.com).
   const word = m && m[1].toLowerCase();
-  const month = word && word.length >= 3 && Object.keys(MONTHS).find((k) => k.startsWith(word.replace(/\.$/, '')));
+  const month = word && Object.keys(MONTHS).find((k) => k === word || k.slice(0, 3) === word || (k === 'september' && word === 'sept'));
   if (!month) return null;
-  return `${m[3]}-${String(MONTHS[month]).padStart(2, '0')}-${m[2].padStart(2, '0')}`;
+  const iso = `${m[3]}-${String(MONTHS[month]).padStart(2, '0')}-${m[2].padStart(2, '0')}`;
+  const d = new Date(`${iso}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === iso ? iso : null;
 }
 
 const decodeEntities = (s) => String(s || '').replace(/&#x27;|&#39;|&#039;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"');
@@ -133,8 +135,9 @@ function decideTwoSource({ bww, tm, firstReview, fromIso, toIso, todayIso, venue
   }
   if (!bww.venue || !tm.venue || !venuesMatch(bww.venue, tm.venue)) return { ok: false, reason: `venues disagree (BWW "${bww.venue || '-'}", TM "${tm.venue || '-'}")` };
   const start = bww.previews && bww.previews < bww.opening ? bww.previews : bww.opening;
-  if (start < fromIso || start > toIso) return { ok: false, reason: `run starts ${start}, outside ${fromIso}..${toIso}` };
-  // Seasons are counted by opening night, so a run previewing late in the window but opening after it belongs to the next season.
+  // Seasons are counted by opening night: a run previewing before the window but opening in it belongs here,
+  // and one previewing late in the window but opening after it belongs to the next season.
+  if (bww.opening < fromIso) return { ok: false, reason: `opens ${bww.opening}, before ${fromIso}` };
   if (bww.opening > toIso) return { ok: false, reason: `opens ${bww.opening}, after ${toIso}` };
   if (daysBetween(start, bww.closing) < 14) return { ok: false, reason: 'run shorter than 14 days' };
   if (daysBetween(bww.closing, todayIso) <= 90) return { ok: false, reason: 'closed 90 days ago or less' };
@@ -142,7 +145,9 @@ function decideTwoSource({ bww, tm, firstReview, fromIso, toIso, todayIso, venue
 }
 
 // Words every venue name shares; what is left names the house (or its company).
-const VENUE_STOP = new Set(['the', 'theater', 'theatre', 'theaters', 'theatres', 'stage', 'stages', 'at', 'new', 'york', 'nyc', 'company', 'center', 'centre', 'space', 'studio', 'upstairs', 'downstairs', 'off', 'broadway', 'playhouse', 'hall', 'room', 'arts', 'and', 'of', 'i', 'ii', 'iii', '1', '2', '3']);
+const VENUE_STOP = new Set(['the', 'theater', 'theatre', 'theaters', 'theatres', 'stage', 'stages', 'at', 'new', 'york', 'nyc', 'company', 'center', 'centre', 'space', 'studio', 'upstairs', 'downstairs', 'off', 'broadway', 'playhouse', 'hall', 'room', 'arts', 'and', 'of', 'i', 'ii', 'iii', '1', '2', '3',
+  // Street and complex words shared by different houses (Minetta Lane / Cherry Lane, Lion / Acorn at Theatre Row).
+  'lane', 'row', 'street', 'st', 'square', 'east', 'west', '59e59', 'a', 'b', 'c']);
 const venueTokens = (v) => new Set(String(v || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z0-9]+/).filter((w) => w && !VENUE_STOP.has(w)));
 
 /**
@@ -154,7 +159,12 @@ function venuesAgree(a, b) {
   if (!a || !b) return false;
   const { venuesMatch } = require('./lib/deduplication');
   const { canonicalVenue } = require('./lib/title-match');
-  if (venuesMatch(a, b) || canonicalVenue(a) === canonicalVenue(b)) return true;
+  // Different rooms of one complex (59E59 Theater A vs B, Stage I vs II) are different houses.
+  const room = (v) => { const m = String(v).trim().match(/\b(?:theat(?:er|re)|stage)\s+([a-c]|i{1,3}|[1-3])$/i); return m ? m[1].toLowerCase().replace(/^iii$/, '3').replace(/^ii$/, '2').replace(/^i$/, '1') : null; };
+  if (room(a) && room(b) && room(a) !== room(b)) return false;
+  const ca = canonicalVenue(a);
+  // canonicalVenue can collapse to a stopword ("The Lion Theatre at Theatre Row" -> "the"); that is no match.
+  if (venuesMatch(a, b) || (ca && !VENUE_STOP.has(ca) && ca === canonicalVenue(b))) return true;
   const tb = venueTokens(b);
   return [...venueTokens(a)].some((w) => tb.has(w));
 }
