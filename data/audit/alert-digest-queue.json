@@ -3429,5 +3429,36 @@
       }
     ],
     "queuedAt": "2026-10-30T02:16:47.789Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-2485",
+    "title": "Landing blocked: next build red on land/codex-bro-2485",
+    "description": "land.yml did not land land/codex-bro-2485: the next build gate went red at a845e91253. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-2485 @ a845e91253 (origin/land/codex-bro-2485) → origin/main @ b7d6794ef5 [land] attempt 1/3: rebased onto b7d6794ef5, 4 file(s) changed — running checks [land] verified-base: main moved 47c0335e82 → b7d6794ef5 across 205 file(s), substantive — re-checking on the merged tree (+6 test file(s) changed on main since the verified base); small re-check: no file changed on both sid Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40991137133",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-2485"
+      },
+      {
+        "name": "gate",
+        "value": "next build"
+      },
+      {
+        "name": "tip",
+        "value": "a845e91253bb67086843187783e0317192e11e45"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40991137133"
+      }
+    ],
+    "queuedAt": "2026-10-30T02:39:49.550Z"
   }
 ]
