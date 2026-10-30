@@ -143,3 +143,13 @@ test('auto-filer: an email-only miss files at P2', async () => {
   assert.equal(created[0].priority, 2);
   assert.equal(created[0].title, 'P2: Opening night miss: S (2026-10-29)');
 });
+
+test('email block: renders last night only, escapes the line, quiet when there were no openings', () => {
+  const snap = { night: '2026-10-29', lines: [{ verdict: 'FAIL', line: 'A <b>Show</b>: 1 of 2 reviews live by 1:02am. Failed.' }, { verdict: 'PASS', line: 'B: 2 of 2 reviews live by 1:02am, passed.' }] };
+  const html = D.renderPressNightBlock(snap, { nowMs: MORNING });
+  assert.match(html, /Last night's openings/);
+  assert.match(html, /A &lt;b&gt;Show&lt;\/b&gt;: 1 of 2 reviews live by 1:02am\. Failed\./);
+  assert.match(html, /Each failed opening has a fix card/);
+  assert.equal(D.renderPressNightBlock(snap, { nowMs: Date.parse('2026-11-01T11:30:00Z') }), ''); // an older night
+  assert.equal(D.renderPressNightBlock({ night: '2026-10-29', lines: [] }, { nowMs: MORNING }), '');
+});

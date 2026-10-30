@@ -276,9 +276,10 @@ function cardNotes(entry, misses) {
  * @param {object} p.ledger        mutated in place
  * @param {function} p.createCard  ({title, notes, priority}) -> Promise<identifier>
  * @param {function} p.commentCard (identifier, text) -> Promise<void>
+ * @param {function} [p.onFiled]  called after each ledger change (the caller checkpoints the ledger)
  * @returns {Promise<{filed:string[], commented:string[], skipped:string[], errors:string[]}>}
  */
-async function fileFixCards({ section, ledger, createCard, commentCard, nowIso = new Date().toISOString() }) {
+async function fileFixCards({ section, ledger, createCard, commentCard, onFiled = () => {}, nowIso = new Date().toISOString() }) {
   ledger.cards = ledger.cards || {};
   const res = { filed: [], commented: [], skipped: [], errors: [] };
   for (const entry of section.entries) {
@@ -291,6 +292,7 @@ async function fileFixCards({ section, ledger, createCard, commentCard, nowIso =
         const identifier = await createCard({ title: cardTitle(entry, priority), notes: cardNotes(entry, entry.misses), priority });
         ledger.cards[key] = { identifier, misses: entry.misses.map((m) => m.key), filedAt: nowIso };
         res.filed.push(key);
+        onFiled();
         continue;
       }
       const fresh = entry.misses.filter((m) => !prior.misses.includes(m.key));
@@ -299,6 +301,7 @@ async function fileFixCards({ section, ledger, createCard, commentCard, nowIso =
       prior.misses = prior.misses.concat(fresh.map((m) => m.key));
       prior.commentedAt = nowIso;
       res.commented.push(key);
+      onFiled();
     } catch (e) {
       res.errors.push(`${key}: ${e.message}`);
     }
@@ -306,7 +309,32 @@ async function fileFixCards({ section, ledger, createCard, commentCard, nowIso =
   return res;
 }
 
+// ── Morning email block ──────────────────────────────────────────────────────
+
+const defaultEsc = (x) => String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const MARK = { PASS: ['#15803d', 'Passed'], FAIL: ['#b91c1c', 'Failed'], UNKNOWN: ['#777', 'Not graded'], PENDING: ['#777', 'Not graded yet'] };
+
+/**
+ * "Last night's openings" for send-morning-digest.js, from the press-night-digest snapshot. Renders nothing on
+ * a night with no openings, or when the snapshot is about an older night than the email's last night.
+ */
+function renderPressNightBlock(snapshot, { esc = defaultEsc, nowMs = Date.now() } = {}) {
+  if (!snapshot || !Array.isArray(snapshot.lines) || !snapshot.lines.length) return '';
+  if (snapshot.night !== lastNight(nowMs)) return '';
+  const rows = snapshot.lines.map((l) => {
+    const [color, label] = MARK[l.verdict] || MARK.UNKNOWN;
+    return `<div style="margin:0 0 8px;font-size:14px;"><span style="color:${color};font-weight:700;">${esc(label)}</span> ${esc(l.line)}</div>`;
+  }).join('\n');
+  const failed = snapshot.lines.filter((l) => l.verdict === 'FAIL').length;
+  const note = failed ? `<p style="font-size:12px;color:#666;margin:0 0 8px;">Each failed opening has a fix card, already started.</p>` : '';
+  return `<div style="margin:0 0 16px;">
+    <p style="font-size:14px;font-weight:700;margin:0 0 8px;">Last night's openings</p>
+    ${rows}
+    ${note}
+  </div>`;
+}
+
 module.exports = {
   etTime, etDate, lastNight, gradeReviews, gradeEmails, buildShowLine, buildSection,
-  cardTitle, cardNotes, fileFixCards, outletName,
+  cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock,
 };

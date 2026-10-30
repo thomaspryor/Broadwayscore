@@ -76,6 +76,7 @@ const {
 } = require('./lib/autonomous-email-render.js');
 const { localLoopDeadMessage } = require('./lib/digest-loop-health.js');
 const { renderNewShowTypesBlock } = require('./lib/new-show-types.js');
+const { renderPressNightBlock } = require('./lib/press-night-digest.js');
 const { fetchPipelineIssues } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
@@ -630,6 +631,13 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true }) : '',
   ].filter(Boolean).join('\n');
   head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
+  // Last night's openings (BRO-6645): one grade per press night, reviews live
+  // and opening-night emails ready. Nights with no openings render nothing.
+  try {
+    head.push(renderPressNightBlock(sections.pressNight, { esc, nowMs: now.getTime() }));
+  } catch (err) {
+    console.error(`[digest] WARN press-night block failed: ${String(err.message).slice(0, 120)}`);
+  }
   // New tour / pre-Broadway / UK regional shows with suggested Reddit posts
   // (BRO-6542). Quiet days render nothing; a stale snapshot is flagged by the
   // freshness banner like every other digest snapshot.
