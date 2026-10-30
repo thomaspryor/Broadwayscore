@@ -769,7 +769,7 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
   // Bella Bella).
   const _companies = venue ? companiesInBuilding(venue) : [];
   const companyContext = _companies.length
-    ? ` (this building houses ${_companies.map(c => `${c.org} (${c.house})`).join('; ')}; a review crediting that company is the same venue)`
+    ? ` (this building houses ${_companies.map(c => `${c.org} (${c.house})`).join('; ')}; crediting that company instead of naming the building is NOT by itself evidence of a different venue; still check the title, cast and dates)`
     : '';
   const venueContext = venue ? `\n- ${mc.venueLabel}: ${_expandVenueContext(venue, market)}${companyContext}` : '';
   const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
@@ -894,7 +894,7 @@ ${outletLocationGuidance}
 
 - **Casting plausibility is never wrongProduction.** A film or TV star appearing in a small Off-Broadway or Off-West-End show is common. Do NOT flag a review because you doubt the named actor would take the role; flag only when the review itself names a different cast, venue or season than this production. (BRO-6640: Angry Alan 2025.)
 
-${effectiveMarket === 'off-broadway' ? `- **Off-Broadway includes the outer boroughs.** Brooklyn houses such as Theatre for a New Audience (Polonsky Shakespeare Center, Fort Greene), BAM and St. Ann's Warehouse are filed as Off-Broadway. A review placing the production in Brooklyn is NOT evidence of a different production when the venue above is one of them. (BRO-6640: Macbeth (An Undoing) 2024.)` : ''}
+${effectiveMarket === 'off-broadway' ? `- **Off-Broadway includes the outer boroughs.** Brooklyn houses such as Theatre for a New Audience (Polonsky Shakespeare Center, Fort Greene), BAM and St. Ann's Warehouse are filed as Off-Broadway. A review placing the production in Brooklyn is NOT by itself evidence of a different production; check that the Brooklyn venue it names matches the venue above. (BRO-6640: Macbeth (An Undoing) 2024.)` : ''}
 
 - **Venue TAXONOMY is never wrongProduction.** Whether a venue "counts as" Off-Broadway / Broadway / a festival stage is a classification question, NOT evidence about which production the review is of. The Public Theater's Delacorte Theater (Free Shakespeare in the Park) and similar NYC not-for-profit / outdoor festival stages are filed here under the expected category — a review correctly describing that staging is the RIGHT production. Do NOT set wrongProduction=true, and do NOT set isValid=false, merely because a venue is "not technically Off-Broadway," is "an outdoor summer festival," or is "in Central Park." Only flag when the OPINION-bearing content evaluates a genuinely different staging (different cast/director/season).
 

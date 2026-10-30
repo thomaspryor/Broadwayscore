@@ -241,6 +241,8 @@ describe('BRO-6640 venue/company + casting guardrails', () => {
     assert.deepStrictEqual(companiesInBuilding('Broadhurst Theatre'), []);
     assert.deepStrictEqual(companiesInBuilding('New York'), []);
     assert.deepStrictEqual(companiesInBuilding(''), []);
+    // regional namesake must not inherit the NYC company (ship-check finding)
+    assert.deepStrictEqual(companiesInBuilding('Signature Theatre (The MAX), Arlington, VA'), []);
     const { prompt } = buildVerificationPrompt({ ...base, venue: 'Broadhurst Theatre', market: 'broadway' });
     assert.ok(!prompt.includes('this building houses'));
   });
