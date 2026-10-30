@@ -75,7 +75,10 @@ function readUnknownMarker(f) {
  */
 const unknownMemo = new Map();
 function unknownHolds(view, now, env) {
-  const laneOnly = view.laneOnly || laneOnlyMarkets().envInputs(env).onlyMarkets;
+  // A marker that read the variable wins; an unread one (or none) defers to this job's env, which may have read it
+  // since (read-lane-only-vars), so a failed read at sync time never masks a later good one.
+  const fromEnv = laneOnlyMarkets().envInputs(env).onlyMarkets;
+  const laneOnly = view.laneOnly && view.laneOnly.ok ? view.laneOnly : fromEnv.ok ? fromEnv : view.laneOnly || fromEnv;
   const key = `${showsFile(env)}@${Math.floor((now === undefined ? Date.now() : new Date(now).getTime()) / 60000)}|${JSON.stringify(view.tonight)}|${JSON.stringify(laneOnly)}`;
   if (!unknownMemo.has(key)) {
     const shows = readShows(showsFile(env)) || [];
@@ -102,7 +105,7 @@ function warnUnknownOnce({ tonight, held, laneOnly }) {
  */
 function writeBlockedShowIds({ file, now, env = process.env } = {}) {
   const view = readView(file || leasesFile(env));
-  if (view.unknown) { const u = unknownHolds(view, now, env); warnUnknownOnce(u); return { unknown: true, shows: u.held, tonight: u.tonight }; }
+  if (view.unknown) { const u = unknownHolds(view, now, env); warnUnknownOnce(u); return { unknown: true, shows: u.held, tonight: u.tonight, laneOnly: u.laneOnly }; }
   const ignoreHolder = env.OPENING_NIGHT_LANE_HOLDER || undefined;
   const shows = new Set(Object.keys(view.state.leases).map((k) => k.split('|')[0]));
   return { unknown: false, shows: [...shows].filter((s) => lease.activeLeaseFor(view.state, s, { now, ignoreHolder })) };

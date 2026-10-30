@@ -219,6 +219,8 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
 
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
@@ -330,6 +332,8 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
       - name: Checkout aggregator-archive (private repo)
         uses: ./.github/actions/checkout-aggregator-archive
         with:
@@ -643,6 +647,8 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
       - name: Checkout aggregator-archive (private repo)
         uses: ./.github/actions/checkout-aggregator-archive
         with:
@@ -759,6 +765,8 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
       - name: Setup Node
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
@@ -918,6 +926,8 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
 
       - name: Auto-trigger text collection if needed
         env:

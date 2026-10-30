@@ -14,7 +14,7 @@ const guard = require('./lib/opening-night-lane/lease-guard');
 const CONDITION_KEY = 'opening-night-lease-store-unknown-tonight';
 
 /** The alert for the current lease view, or null. Pure. */
-function leaseStoreAlert({ unknown, shows, tonight }) {
+function leaseStoreAlert({ unknown, shows, tonight, laneOnly }) {
   const night = tonight || shows || [];
   if (!unknown || !night.length) return null;
   const list = night.join(', ');
@@ -24,7 +24,7 @@ function leaseStoreAlert({ unknown, shows, tonight }) {
     title: `Opening-night lease store unreachable on ${list}'s press night`,
     description: `scripts/opening-night-lease.js sync could not read the opening-night-leases branch. ` +
       (held ? `Old-path writers hold ${held} (LANE_ONLY_MARKETS covers it) until a sync succeeds; if the lane is not running ` +
-        `tonight, nothing collects ${held} while this lasts. ` : `LANE_ONLY_MARKETS covers none of them, so the old path keeps writing and publishing ${list}. `) +
+        `tonight, nothing collects ${held} while this lasts. ` : `${laneOnly && !laneOnly.ok ? 'LANE_ONLY_MARKETS could not be read either' : 'LANE_ONLY_MARKETS covers none of them'}, so the old path keeps writing and publishing ${list}. `) +
       `Check git access to the branch and re-run the poller.`,
   };
 }

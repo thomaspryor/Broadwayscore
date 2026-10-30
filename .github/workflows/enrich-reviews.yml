@@ -109,6 +109,8 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
 
       - uses: ./.github/actions/setup-node
 

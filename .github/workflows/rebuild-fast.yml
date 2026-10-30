@@ -86,6 +86,8 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
 
       # Stale-checkout race guard (same class as rebuild-reviews.yml — see
       # scripts/lib/rebuild-staleness-guard.js + scripts/check-rebuild-staleness.js

@@ -10,6 +10,10 @@ inputs:
     description: Lets a failed sync on a press night file its worker card (with page 'true')
     required: false
     default: ''
+  token:
+    description: "REVIEW_TEXTS_TOKEN (variables:read). Only used when sync fails, to read LANE_ONLY_MARKETS into the unknown marker so a show the lane can be primary for still waits (BRO-6672). Empty = unread = every show writes."
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -19,6 +23,7 @@ runs:
       env:
         LEASE_SYNC_PAGE: ${{ inputs.page }}
         LINEAR_API_KEY: ${{ inputs.linear-api-key }}
+        REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
       run: |
         if ! node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync; then
           # A crash before sync wrote its marker would leave no file, which reads as "nothing leased".

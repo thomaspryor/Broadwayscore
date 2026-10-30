@@ -66,6 +66,8 @@ jobs:
         continue-on-error: true
         timeout-minutes: 2
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
 
       - name: Read lane-only variables (BRO-6620)
         continue-on-error: true

@@ -81,6 +81,8 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Opening-night lease sync (BRO-6648)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
 
       - name: Quick exit if no opening tonight
         id: gate

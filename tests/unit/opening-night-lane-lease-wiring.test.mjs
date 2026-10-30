@@ -144,7 +144,9 @@ test('unknown + LANE_ONLY_MARKETS unset, empty, a typo or unread: tonight\'s sho
     };
     for (const [why, f] of Object.entries(cases)) {
       assert.equal(guard.leaseSkipReason(SHOW, { file: f, env, now }), null, why);
-      assert.deepEqual(guard.writeBlockedShowIds({ file: f, env, now }), { unknown: true, shows: [], tonight: [SHOW] }, why);
+      const { laneOnly, ...b } = guard.writeBlockedShowIds({ file: f, env, now });
+      assert.deepEqual(b, { unknown: true, shows: [], tonight: [SHOW] }, why);
+      assert.ok(laneOnly && typeof laneOnly.ok === 'boolean', `${why}: the read is passed on to the alert`);
     }
     const bad = path.join(dir, 'bad.json'); fs.writeFileSync(bad, '{not json');
     assert.equal(guard.leaseSkipReason(SHOW, { file: bad, env, now }), null, 'corrupt file, variable unread: writes');
@@ -165,7 +167,7 @@ test('unknown + LANE_ONLY_MARKETS covers the show: tonight waits, every other sh
     assert.match(guard.describe(held), /LANE_ONLY_MARKETS covers it/);
     assert.equal(guard.leaseSkipReason(LATER_SHOW.id, { file: f, env, now }), null, 'another show writes');
     assert.deepEqual(guard.partitionLeased([SHOW, LATER_SHOW.id], { file: f, env, now }).kept, [LATER_SHOW.id]);
-    assert.deepEqual(guard.writeBlockedShowIds({ file: f, env, now }), { unknown: true, shows: [SHOW], tonight: [SHOW] });
+    assert.deepEqual(guard.writeBlockedShowIds({ file: f, env, now }), { unknown: true, shows: [SHOW], tonight: [SHOW], laneOnly: COVERS });
     assert.deepEqual(guard.revertableShowIds({ file: f, env, now }).revert, [], 'unknown never reverts');
     assert.equal(guard.leaseSkipReason(SHOW, { file: marker(dir, 'wE.json', { laneOnly: { ok: true, value: 'west-end' } }), env, now }), null,
       'variable names another market: writes');
@@ -173,6 +175,11 @@ test('unknown + LANE_ONLY_MARKETS covers the show: tonight waits, every other sh
     // No read in the marker: this process's job env decides (read-lane-only-vars).
     const legacy = marker(dir, 'legacy.json', {});
     assert.equal(guard.leaseSkipReason(SHOW, { file: legacy, env: { ...env, LANE_ONLY_MARKETS_READ: 'ok', LANE_ONLY_MARKETS: 'broadway' }, now }).unknown, true);
+    // The sync step could not read it (no token there), but this job's env read it later: the env read wins.
+    assert.equal(guard.leaseSkipReason(SHOW, { file: marker(dir, 'unread.json', { laneOnly: { ok: false, value: '' } }),
+      env: { ...env, LANE_ONLY_MARKETS_READ: 'ok', LANE_ONLY_MARKETS: 'broadway' }, now }).unknown, true, 'unread marker + env covers: waits');
+    assert.equal(guard.leaseSkipReason(SHOW, { file: f, env: { ...env, LANE_ONLY_MARKETS_READ: 'ok', LANE_ONLY_MARKETS: '' }, now }).unknown, true,
+      'a marker that read it wins over the env');
     const bad = path.join(dir, 'bad.json'); fs.writeFileSync(bad, '{not json');
     assert.equal(guard.leaseSkipReason(SHOW, { file: bad, env: { ...env, LANE_ONLY_MARKETS_READ: 'ok', LANE_ONLY_MARKETS: 'broadway' }, now }).unknown, true,
       'corrupt file + env covers: waits');
@@ -210,6 +217,9 @@ test('sync failure: marker records tonight and the variable read atomically, exi
     const shadow = leaseStoreAlert({ unknown: true, shows: [], tonight: [SHOW] });
     assert.ok(shadow, 'a press night pages even when nothing is held');
     assert.match(shadow.description, /old path keeps writing and publishing/);
+    assert.match(shadow.description, /covers none of them/);
+    assert.match(leaseStoreAlert({ unknown: true, shows: [], tonight: [SHOW], laneOnly: { ok: false, value: '' } }).description,
+      /could not be read either/, 'unread is not reported as "covers none"');
     assert.equal(leaseStoreAlert({ unknown: true, shows: [], tonight: [] }), null, 'nothing tonight: warning only, no ledger write');
     assert.equal(leaseStoreAlert({ unknown: false, shows: [SHOW] }), null, 'known state: no alert');
     const src = fs.readFileSync(path.join(ROOT, 'scripts/opening-night-lease.js'), 'utf8');
@@ -375,6 +385,22 @@ test('structural: every competing workflow syncs leases after each review-texts 
   }
 });
 
+test('structural: every lease sync step passes REVIEW_TEXTS_TOKEN, so a failed sync can read LANE_ONLY_MARKETS (BRO-6672)', () => {
+  const dir = path.join(ROOT, '.github/workflows');
+  let n = 0;
+  for (const f of fs.readdirSync(dir).filter((x) => /\.ya?ml$/.test(x))) {
+    const L = fs.readFileSync(path.join(dir, f), 'utf8').split('\n');
+    L.forEach((line, i) => {
+      if (!/uses: \.\/\.github\/actions\/opening-night-lease-sync\s*$/.test(line)) return;
+      n++;
+      const block = [];
+      for (let j = i + 1; j < L.length && (L[j].trim() === '' || L[j].search(/\S/) >= line.search(/\S/)) && !/^\s*- /.test(L[j]); j++) block.push(L[j]);
+      assert.match(block.join('\n'), /token: \$\{\{ secrets\.REVIEW_TEXTS_TOKEN \}\}/, `${f}:${i + 1} lease sync without token`);
+    });
+  }
+  assert.ok(n >= 20, `found only ${n} lease sync steps (pattern is stale)`);
+});
+
 test('structural: the watcher and the orchestrator sync leases after the core-data checkout (BRO-6648 S1-T1, S1-T5)', () => {
   for (const w of ['aggregator-url-watcher', 'opening-night-orchestrator']) {
     const y = read(`.github/workflows/${w}.yml`);
@@ -407,6 +433,7 @@ test('structural: push-review-texts enforces the lease before staging, and the s
   assert.ok(a.indexOf('opening-night-lease.js" sync') > 0 && a.indexOf('opening-night-lease.js" sync') < enforceAt, 'push action must re-sync before enforce');
   assert.match(a, /enforce --dir="\$GITHUB_WORKSPACE\/data\/review-texts"/);
   assert.match(read('.github/actions/opening-night-lease-sync/action.yml'), /opening-night-lease\.js" sync/);
+  assert.match(read('.github/actions/opening-night-lease-sync/action.yml'), /REVIEW_TEXTS_TOKEN: \$\{\{ inputs\.token \}\}/, 'sync action must hand its token to the CLI');
   assert.match(read('.gitignore'), /^data\/opening-night\/leases\.json$/m);
 });
 

@@ -182,6 +182,7 @@ jobs:
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
         with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
           page: 'true' # BRO-6648: this job commits the alert ledger + digest queue, so the failed-sync alert is raised here only
           linear-api-key: ${{ secrets.LINEAR_API_KEY }}
 
