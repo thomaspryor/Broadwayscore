@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T06:00:50.280Z",
+  "timestamp": "2026-10-30T06:45:07.432Z",
   "stats": {
-    "totalReviews": 70084,
-    "alreadyFlagged": 22285,
-    "dateGuardCatches": 232,
+    "totalReviews": 70024,
+    "alreadyFlagged": 22243,
+    "dateGuardCatches": 231,
     "directorMismatch": 2865,
     "tvFilmSignals": 2013,
     "londonSignals": 3389,
     "offBroadwaySignals": 630,
     "yearMismatch": 284,
-    "noPublishDate": 8014
+    "noPublishDate": 8009
   },
   "findings": [
     {
@@ -15338,19 +15338,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2012 (2x) more than 2026 (1x). 2012 matches production: death-of-a-salesman-2012"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2026",
-      "file": "wsj--charles-isherwood.json",
-      "publishDate": "2022-10-09",
-      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1244d before show (2022-10-09 vs 2026-03-06)"
         }
       ]
     },
