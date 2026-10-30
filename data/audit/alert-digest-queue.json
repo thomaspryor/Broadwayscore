@@ -3300,20 +3300,6 @@
     "queuedAt": "2026-10-30T01:07:42.512Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-30.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T01:55:08.107Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-6536-mvu8pyj3",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6536-mvu8pyj3",
     "description": "land.yml did not land land/job/linear-BRO-6536-mvu8pyj3: the unit-tests-node gate went red at 8eba8ee115. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40984086667",
@@ -3460,6 +3446,34 @@
       }
     ],
     "queuedAt": "2026-10-30T02:39:49.550Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-show-ids",
+    "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json — escalated after 15 notifications",
+    "description": "Filed BRO-6576 for owner triage after 15 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"orphan-show-ids\" (node scripts/audit-orphan-show-ids.js) has been drifting. Latest output:\n\nFound 1 orphan show ID(s):\n\nSlim show files (1) — not in shows.json:\n  public/data/shows/east-is-east-citizens-regional-2026.json\n\nRun with --fix to delete orphan slim files. audience-buzz/show-score require manual rename.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6576",
+    "fields": [],
+    "queuedAt": "2026-10-30T03:18:04.407Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-30.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T03:18:04.434Z"
   },
   {
     "conditionKey": "pending-unrecoverable:ilford-boy-west-end-2026",
