@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6585",
+  "planId": "935331fe-5a27-48a8-8f77-6bd1daf02f85",
+  "status": "pending",
+  "createdAt": "2026-10-30T04:48:00.506Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "A Few Good Men 2026: fill publishDate for Cititour (page dateline 10/29/2026) and TheWrap (datePublished 2026-10-30T03:00Z = 2026-10-29 ET)",
+    "steps": [
+      "a-few-good-men-2026/cititour--brian-scott-lipton.json: publishDate",
+      "a-few-good-men-2026/thewrap--robert-hofler.json: publishDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-few-good-men-2026/cititour--brian-scott-lipton.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-29",
+        "description": "a-few-good-men-2026/cititour--brian-scott-lipton.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-few-good-men-2026/thewrap--robert-hofler.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-29",
+        "description": "a-few-good-men-2026/thewrap--robert-hofler.json: publishDate"
+      }
+    ]
+  }
+}
