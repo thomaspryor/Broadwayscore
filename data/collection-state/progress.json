@@ -362,7 +362,17 @@
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
-    "chicago-1996/nydailynews--howard-kissel.json"
+    "chicago-1996/nydailynews--howard-kissel.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -535,7 +545,11 @@
       "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
       "data/review-texts/hamilton-2015/nyt-theater--jonathan-mandell.json",
       "data/review-texts/book-of-mormon-2011/vulture--jesse-green.json",
-      "data/review-texts/book-of-mormon-2011/northjerseycom--robert-feldberg.json"
+      "data/review-texts/book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
     ],
     "archive": [
       "caesar-and-cleopatra-off-broadway-2019/nytimes--laura-collins-hughes.json",
@@ -605,8 +619,20 @@
     ]
   },
   "startTime": "2026-10-30T10:50:32.329Z",
-  "lastProcessed": "chicago-1996/theater-pizzazz--sandi-durell.json",
-  "log": [],
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-30T14:11:08.244Z",
+      "event": "bb-session",
+      "session": "6555e5e0",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T14:11:08.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ],
   "recoveredAfterFailure": [
     "operation-mincemeat-2025/deadline--greg-evans.json"
   ]
