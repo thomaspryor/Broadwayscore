@@ -4100,6 +4100,37 @@
     "queuedAt": "2026-10-30T14:48:58.944Z"
   },
   {
+    "conditionKey": "land:land/bro-6633-tour-data",
+    "title": "Landing blocked: rebase red on land/bro-6633-tour-data",
+    "description": "land.yml did not land land/bro-6633-tour-data: the rebase gate went red at 32c462086d. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6633-tour-data @ 32c462086d (origin/land/bro-6633-tour-data) → origin/main @ 2652145dd4 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 2652145dd4: Rebasing (1/1) error: could not apply 32c462086d8... data: close 90 tour-candidate owner decisions (BRO-6633) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", th Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41075964369",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6633-tour-data"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "32c462086d8b3964b08e62cfbd0b793e3e523d8c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41075964369"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:59:18.138Z"
+  },
+  {
     "conditionKey": "land:land/bro-6635-pause-guard",
     "title": "Landing blocked: unit-tests-node red on land/bro-6635-pause-guard",
     "description": "land.yml did not land land/bro-6635-pause-guard: the unit-tests-node gate went red at 392971f2cc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41072520382",
