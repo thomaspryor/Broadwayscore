@@ -3,7 +3,7 @@
  * account-metrics.js — builds the /admin/accounts payload and raises the
  * accounts alerts (BRO-4615). Run by .github/workflows/account-metrics.yml.
  *
- *   node scripts/account-metrics.js --out=account-metrics [--no-alerts] [--simulate=signin-stalled]
+ *   node scripts/account-metrics.js --out=account-metrics [--no-alerts] [--simulate=signin-stalled|email-code-flood]
  *
  * Reads (never writes) Supabase with the service role key: the auth users
  * list plus user_id columns of reviews / watchlist / lists. Only counts and
@@ -21,6 +21,8 @@
  * --simulate=signin-stalled: dry run of the sign-in alert. Replaces the
  *   24-hour health numbers with "4 sign-ins started on 3 devices, none
  *   finished", prints the alert that would be sent, and sends nothing.
+ * --simulate=email-code-flood: the same for the email sign-in bot alert
+ *   (BRO-6644): 38 unused sign-in codes in 24 hours.
  *
  * Env: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
  *      POSTHOG_PERSONAL_API_KEY; for alerts RESEND_API_KEY, OWNER_EMAIL.
@@ -169,8 +171,9 @@ async function main() {
   let accounts = null;
   let ph = {};
   if (SIMULATE) {
-    if (SIMULATE !== 'signin-stalled') throw new Error(`unknown --simulate=${SIMULATE}`);
-    ph = { health: [{ started: 4, started_devices: 3, completed: 0, failed: 1 }] };
+    if (SIMULATE === 'signin-stalled') ph = { health: [{ started: 4, started_devices: 3, completed: 0, failed: 1 }] };
+    else if (SIMULATE === 'email-code-flood') accounts = { emailCodes: { requested24h: 41, unfinished24h: 38, unfinished3h: 30, requested7d: 45, unfinished7d: 39, unfinishedTotal: 40 } };
+    else throw new Error(`unknown --simulate=${SIMULATE}`);
   } else {
     try {
       accounts = await collectAccounts();
@@ -181,6 +184,9 @@ async function main() {
   }
 
   const alerts = m.evaluateAlerts(ph.health ? ph.health[0] : null);
+  // Bot flood on email sign-in codes (BRO-6644): read from the account list, so it runs even when PostHog fails.
+  const emailAlert = m.evaluateEmailCodeAlert(accounts && accounts.emailCodes);
+  if (emailAlert) alerts.push(emailAlert);
   const firing = alerts.filter((a) => a.firing);
   if (SIMULATE) {
     console.log(`SIMULATION (${SIMULATE}): nothing is sent.`);
@@ -219,7 +225,7 @@ async function main() {
 
 if (require.main === module) {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/account-metrics.js --out=account-metrics [--no-alerts] [--simulate=signin-stalled]');
+    console.log('Usage: node scripts/account-metrics.js --out=account-metrics [--no-alerts] [--simulate=signin-stalled|email-code-flood]');
     process.exit(0);
   }
   main().then((code) => process.exit(code), (e) => {

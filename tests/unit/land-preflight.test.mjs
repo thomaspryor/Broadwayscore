@@ -563,6 +563,8 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   write(d, 'scripts/generate-workflow-dependencies.js', '\n');
   write(d, 'scripts/audit-push-retry-budgets.js', '\n');
   write(d, 'tests/unit/audit-push-retry-budgets-residual.test.mjs', '\n');
+  // BRO-5120: every listed check's file exists in the fixture, so the batch runs all of them
+  for (const c of WORKFLOW_CHECKS) write(d, c.file || c.args[0], '\n');
   write(d, '.github/workflows/a.yml', 'name: a\n');
   sh(d, 'git add -A && git commit -qm wf && git checkout -qb feat');
   const calls = [];

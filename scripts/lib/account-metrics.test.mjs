@@ -226,7 +226,7 @@ test('summarizeAccounts counts real people only and reports what it left out', (
   ], { ownerEmail: 'janedoe@gmail.com' });
   const a = m.summarizeAccounts(users, { ratings: [{ user_id: 'p' }, { user_id: 'o' }], watchlist: [], lists: [] }, NOW);
   assert.equal(a.total, 1);
-  assert.deepEqual(a.excluded, { yours: 1, test: 1, prelaunch: 0 });
+  assert.deepEqual(a.excluded, { unfinishedEmailCode: 0, yours: 1, test: 1, prelaunch: 0 });
   assert.equal(a.withRating, 1);
   assert.equal(a.people.length, 1);
   assert.deepEqual(Object.keys(a.people[0]).sort(), ['joined', 'lastSignIn', 'provider', 'saved']);
@@ -319,6 +319,52 @@ test('accounts made before the public launch are counted as pre-launch, not peop
   assert.deepEqual(users.map((u) => u.kind), ['prelaunch', 'person', 'test']);
   const a = m.summarizeAccounts(users, { ratings: [{ user_id: 'old' }], watchlist: [], lists: [] }, Date.parse('2026-10-08T00:00:00Z'));
   assert.equal(a.total, 1);
-  assert.deepEqual(a.excluded, { yours: 0, test: 1, prelaunch: 1 });
+  assert.deepEqual(a.excluded, { unfinishedEmailCode: 0, yours: 0, test: 1, prelaunch: 1 });
   assert.equal(a.withRating, 0, "a pre-launch account's rating is not a real person's");
+});
+
+// BRO-6644: email sign-in codes requested and never used (bot flood signal).
+// GoTrue stamps last_sign_in_at milliseconds after creating a code-request user
+// (prod probe 2026-10-30: 27 ms); typing the code moves it minutes later.
+const CODES_NOW = Date.parse('2026-11-05T23:00:00Z');
+const at = (h, ms = 0) => new Date(CODES_NOW - h * 3600000 + ms).toISOString();
+const unused = (id, h) => ({ id, kind: 'person', provider: 'email', createdAt: at(h), lastSignInAt: at(h, 27) });
+
+test('isUnusedEmailCode: stamped at creation = unused; signed in later = real; pre-launch password accounts never count', () => {
+  assert.equal(m.isUnusedEmailCode(unused('a', 1)), true);
+  assert.equal(m.isUnusedEmailCode({ provider: 'email', createdAt: at(2), lastSignInAt: at(2, 180000) }), false, 'typed the code 3 minutes later');
+  assert.equal(m.isUnusedEmailCode({ provider: 'email', createdAt: at(2), lastSignInAt: null }), true);
+  assert.equal(m.isUnusedEmailCode({ provider: 'email', createdAt: '2026-10-20T10:00:00Z', lastSignInAt: null }), false, 'before email codes launched');
+  assert.equal(m.isUnusedEmailCode({ provider: 'google', createdAt: at(1), lastSignInAt: at(1, 27) }), false);
+});
+
+test('summarizeEmailCodes counts unused codes by window, real people only', () => {
+  const users = [
+    unused('a', 1),
+    unused('b', 5),
+    { id: 'c', kind: 'person', provider: 'email', createdAt: at(2), lastSignInAt: at(2, 120000) },
+    unused('d', 50),
+    { id: 'e', kind: 'person', provider: 'google', createdAt: at(1), lastSignInAt: at(1, 27) },
+    { ...unused('f', 1), kind: 'test' },
+  ];
+  assert.deepEqual(m.summarizeEmailCodes(users, CODES_NOW), { requested24h: 3, unfinished24h: 2, unfinished3h: 1, requested7d: 4, unfinished7d: 3, unfinishedTotal: 3 });
+});
+
+test('unused email codes are not counted as accounts', () => {
+  const users = [unused('a', 1), { id: 'c', kind: 'person', provider: 'email', createdAt: at(2), lastSignInAt: at(2, 90000) }];
+  const s = m.summarizeAccounts(users, { ratings: [], watchlist: [], lists: [] }, CODES_NOW);
+  assert.equal(s.total, 1);
+  assert.equal(s.excluded.unfinishedEmailCode, 1);
+  assert.equal(s.emailCodes.unfinished24h, 1);
+});
+
+test('evaluateEmailCodeAlert fires at the threshold, clears well below it, and needs the account list', () => {
+  const with_ = (n) => m.evaluateEmailCodeAlert({ requested24h: n, unfinished24h: n, unfinished3h: 0, unfinishedTotal: n });
+  assert.equal(with_(m.THRESHOLDS.unfinishedEmailCodes - 1).firing, false);
+  assert.equal(with_(m.THRESHOLDS.unfinishedEmailCodes).firing, true);
+  assert.equal(with_(m.THRESHOLDS.unfinishedEmailCodes).key, 'ugc:email-code-flood');
+  assert.equal(with_(m.THRESHOLDS.unfinishedEmailCodes - 1).resolvable, false, 'no flapping just under the trigger');
+  assert.equal(with_(m.THRESHOLDS.unfinishedEmailCodesClear - 1).resolvable, true);
+  assert.doesNotMatch(with_(30).description, /BRO-\d/, 'no card ids in owner copy');
+  assert.equal(m.evaluateEmailCodeAlert(null), null, 'no account list, no verdict either way');
 });

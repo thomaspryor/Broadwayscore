@@ -1,31 +1,32 @@
 {
-  "updatedAt": "2026-10-30T16:28:49.059Z",
-  "processed": 11,
-  "failed": 2,
-  "successRate": "84.6%",
+  "updatedAt": "2026-10-30T17:30:16.989Z",
+  "processed": 73,
+  "failed": 50,
+  "successRate": "59.3%",
   "tierBreakdown": {
-    "playwright": 2,
-    "amp": 2,
-    "browserbase": 2,
+    "playwright": 44,
+    "amp": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 3,
+    "scrapingdog": 6,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 4
+    "archiveToday": 15,
+    "archive": 16
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-30T16:27:32.434Z",
+      "t": "2026-10-30T17:22:51.871Z",
       "event": "bb-session",
-      "session": "4282e27e",
-      "url": "https://www.wsj.com/arts-culture/fine-art/george-lucass-museum-confuses-illustra"
+      "session": "695150c6",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     },
     {
-      "t": "2026-10-30T16:27:32.999Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "t": "2026-10-30T17:23:58.860Z",
+      "event": "bb-session",
+      "session": "aaeb45bd",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
