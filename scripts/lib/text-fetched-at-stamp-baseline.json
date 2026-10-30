@@ -1,14 +1,26 @@
 [
+  {"file":"scripts/classify-non-reviews.js","reason":"false positive: { fullText } goes into an in-memory classifier candidate list, not a review file"},
   {"file":"scripts/clean-ocr-extract.js","reason":"re-extracts an existing OCR body; not a new fetch, kept until reviewed"},
+  {"file":"scripts/cleanup-dedup-comprehensive.js","reason":"copies another record's stored fullText (merge/dedup) without carrying its textFetchedAt; carry it, then delete this row"},
+  {"file":"scripts/cleanup-duplicate-reviews.js","reason":"copies another record's stored fullText (merge/dedup) without carrying its textFetchedAt; carry it, then delete this row"},
+  {"file":"scripts/consolidate-duplicate-reviews.js","reason":"copies another record's stored fullText (merge/dedup) without carrying its textFetchedAt; carry it, then delete this row"},
+  {"file":"scripts/discover-outlet-reviews-serp.js","reason":"copies a pre-fetched record's fullText into the new review without its textFetchedAt"},
   {"file":"scripts/extract-full-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
   {"file":"scripts/fetch-bww-roundups.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
   {"file":"scripts/fetch-from-wayback.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
   {"file":"scripts/fetch-review-texts.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
   {"file":"scripts/fix-broken-json.js","reason":"one-off repair that rewrote one hard-coded record"},
+  {"file":"scripts/fix-url-outlet-mismatches.js","reason":"copies another record's stored fullText (merge/dedup) without carrying its textFetchedAt; carry it, then delete this row"},
+  {"file":"scripts/lib/review-file-writer.js","reason":"shared writer: createOrMergeReviewFile replaces the stored body from fields.fullText without stamping textFetchedAt (open gap; callers that stamp pass it in fields)"},
   {"file":"scripts/lib/review-write-guard.js","reason":"false positive: CLEAR_BREADCRUMBS maps fullText to a freshness-gate function built by makeFreshnessGate"},
+  {"file":"scripts/merge-slug-directories.js","reason":"copies another record's stored fullText (merge/dedup) without carrying its textFetchedAt; carry it, then delete this row"},
+  {"file":"scripts/rebuild-all-reviews.js","reason":"fullText: k.fullText copies are derived in-memory review objects for reviews.json and dedup; not new bodies"},
+  {"file":"scripts/reclean-truncated.js","reason":"re-cleans a copied record's stored body; not a new fetch"},
   {"file":"scripts/recover-login-page-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/recover-unknown-bylines.js","reason":"copies another record's stored fullText (merge/dedup) without carrying its textFetchedAt; carry it, then delete this row"},
   {"file":"scripts/scrape-bww-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
   {"file":"scripts/scrape-nysr-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
   {"file":"scripts/scrape-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
-  {"file":"scripts/scrape-wp-theater-blogs.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"}
+  {"file":"scripts/scrape-wp-theater-blogs.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/verify-existing-reviews.js","reason":"restores data.garbageFullText (a stored body) into fullText; not a new fetch"}
 ]

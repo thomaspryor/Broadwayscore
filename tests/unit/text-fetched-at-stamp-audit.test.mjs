@@ -63,9 +63,27 @@ describe('analyzeStampCoverage on synthetic writers', () => {
       data.fullText = cleaned;
       data.fullText = data.wrongFullText;
       data.fullText = data.fullText.trim();
-      merged.fullText = other.fullText || null;
       safeWriteReview(fp, data);
     `), false);
+  });
+  test('a body copied from a freshly fetched record is a new body', () => {
+    assert.equal(offender(`const scraped = await fetchReview(u); data.fullText = scraped.fullText; safeWriteReview(fp, data);`), true);
+    assert.equal(offender(`const r = await fetchPage(u); review.fullText = r.fullText || null; safeWriteReview(fp, review);`), true);
+    assert.equal(offender(`merged.fullText = other.fullText || null; safeWriteReview(fp, merged);`), true);
+  });
+  test('a local reassigned to a fetch is no longer a stored body', () => {
+    assert.equal(offender(`let text = data.fullText; text = await fetchPage(u); data.fullText = text; safeWriteReview(fp, data);`), true);
+    assert.equal(offender(`let text = data.fullText; text = text.trim(); data.fullText = text; safeWriteReview(fp, data);`), false);
+  });
+  test('a self-reassigned holder does not hide another record\'s body', () => {
+    assert.equal(offender(`let fields = await scrape(u); fields = { ...fields, url }; existing.fullText = fields.fullText; safeWriteReview(fp, existing);`), true);
+  });
+  test('a spread record re-cleaning its own body is not a new body', () => {
+    assert.equal(offender(`safeWriteReview(fp, { ...data, fullText: data.fullText.trim() });`), false);
+  });
+  test('a shorthand textFetchedAt bound to null is not a stamp', () => {
+    assert.equal(offender(`const textFetchedAt = null; data.fullText = body; safeWriteReview(fp, { ...data, textFetchedAt });`), true);
+    assert.equal(offender(`const textFetchedAt = new Date().toISOString(); data.fullText = body; safeWriteReview(fp, { ...data, textFetchedAt });`), false);
   });
   test('clearing fullText, classifier inputs and function-valued keys are not writes', () => {
     assert.equal(offender(`

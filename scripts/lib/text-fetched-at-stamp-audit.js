@@ -10,13 +10,19 @@
  *   1. writes review-texts files (a raw fs write findRawReviewWrites sees, or
  *      a call to one of the guarded review writers), and
  *   2. sets fullText to a new value (`x.fullText = v`, `{ fullText: v }`,
- *      `{ fullText }`) that is not null/empty and does not derive from an
- *      already stored body (`data.fullText`, `wrongFullText`, or a local
- *      bound to one, e.g. `cleaned = clean(data.fullText)`), and outside an
+ *      `{ fullText }`) that is not null/empty and does not derive from the
+ *      SAME record's stored body (`x.fullText` / any `wrongFullText`, or a
+ *      local whose every assignment derives from one, e.g.
+ *      `cleaned = clean(x.fullText)`; `x.fullText = other.fullText` from a
+ *      freshly fetched record still counts), and outside an
  *      object passed straight to a helper call (a classifier input or a
  *      field builder, which stamps itself, e.g. buildManualReviewFields), and
  *   3. never writes a textFetchedAt key with a non-null value and never calls
  *      a shared helper that stamps one (STAMPING_HELPERS).
+ * Limit: the stamp check is per FILE. One textFetchedAt write anywhere in a
+ * script clears every fullText write in it, even one on another code path, so
+ * a script that stamps in one branch and not another passes. Narrow it to the
+ * write site if that ever proves to hide a real gap.
  * AST based (TypeScript parser, as review-write-safety.js): comments and
  * strings never count. Existing offenders live in the JSON baseline (advisory
  * rollout, CLAUDE.md section 19); a new offender fails the unit test.
@@ -94,22 +100,55 @@ function analyzeStampCoverage(source, file = 'writer.js') {
     }
     ts.forEachChild(n, collect);
   })(tree);
-  // True when the value reads an already stored body: any `*.fullText` /
-  // `*.wrongFullText` access, or a local (up to 3 hops) bound to one.
-  function derivesFromStoredText(expr, depth = 0, seen = new Set()) {
+  // True when the value reads the target record's own stored body: a
+  // `<target>.fullText` access or any `*.wrongFullText`, or a local whose
+  // EVERY assignment derives (a reassigned `text = await fetchPage(u)` breaks
+  // it). `target` is the record's source text (`data` for `data.fullText =`,
+  // the spread for `{ ...data, fullText }`); null means only wrongFullText.
+  function derivesFromStoredText(expr, target, seen = new Set()) {
     let hit = false;
     (function walk(c) {
       if (hit) return;
       const name = accessName(c);
-      if (name && /fulltext$/i.test(name)) { hit = true; return; }
-      if (ts.isIdentifier(c) && depth < 3 && bindings.has(c.text) && !seen.has(c.text)
+      if (name && /^wrongfulltext$/i.test(name)) { hit = true; return; }
+      if (name === 'fullText') {
+        // Another record's body (scraped.fullText) is a new body here; never
+        // look through it at the record's own bindings.
+        if (target && unwrap(c.expression).getText(tree) === target) hit = true;
+        return;
+      }
+      if (ts.isIdentifier(c) && bindings.has(c.text)
           && !(c.parent && ts.isPropertyAccessExpression(c.parent) && c.parent.name === c)) {
-        seen.add(c.text);
-        if (bindings.get(c.text).some(v => derivesFromStoredText(v, depth + 1, seen))) { hit = true; return; }
+        // A cycle (text = text.trim()) inherits the verdict of the other
+        // bindings, which every() below still requires to derive.
+        if (seen.has(c.text)) { hit = true; return; }
+        const next = new Set(seen).add(c.text);
+        const bound = bindings.get(c.text);
+        // Every assignment derives, and at least one does so without leaning
+        // on the cycle (a purely self-referential local proves nothing).
+        if (bound.every(v => derivesFromStoredText(v, target, next))
+            && bound.some(v => !referencesName(v, c.text) && derivesFromStoredText(v, target, next))) { hit = true; return; }
       }
       ts.forEachChild(c, walk);
     })(expr);
     return hit;
+  }
+  function referencesName(expr, name) {
+    let found = false;
+    (function walk(c) {
+      if (found) return;
+      if (ts.isIdentifier(c) && c.text === name) { found = true; return; }
+      ts.forEachChild(c, walk);
+    })(expr);
+    return found;
+  }
+  function literalTarget(objectLiteral) {
+    const spreads = objectLiteral.properties.filter(p => ts.isSpreadAssignment(p));
+    return spreads.length === 1 ? unwrap(spreads[0].expression).getText(tree) : null;
+  }
+  function boundOnlyToEmpty(id) {
+    const bound = bindings.get(id.text);
+    return !!bound && bound.every(b => isEmptyValue(b));
   }
   // `{ fullText: someCheck }` maps the field to a function (e.g. a guard's
   // breadcrumb table), not a body.
@@ -135,24 +174,25 @@ function analyzeStampCoverage(source, file = 'writer.js') {
   function visit(n) {
     if (ts.isBinaryExpression(n) && n.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
       const key = accessName(n.left);
-      if (key === 'fullText' && !isEmptyValue(n.right) && !derivesFromStoredText(n.right)) {
+      const target = key === 'fullText' ? unwrap(n.left.expression).getText(tree) : null;
+      if (key === 'fullText' && !isEmptyValue(n.right) && !derivesFromStoredText(n.right, target)) {
         fullTextWrites.push({ line: line(n), code: n.getText(tree).split('\n')[0].slice(0, 120) });
       }
       if (key === 'textFetchedAt' && !isEmptyValue(n.right)) stamps.push(line(n));
     }
     if (ts.isPropertyAssignment(n)) {
       const key = propName(tree, n.name);
-      if (key === 'fullText' && !isEmptyValue(n.initializer) && !derivesFromStoredText(n.initializer)
+      if (key === 'fullText' && !isEmptyValue(n.initializer) && !derivesFromStoredText(n.initializer, literalTarget(n.parent))
           && !isFunctionValue(n.initializer) && !inHelperArgument(n.parent)) {
         fullTextWrites.push({ line: line(n), code: n.getText(tree).split('\n')[0].slice(0, 120) });
       }
       if (key === 'textFetchedAt' && !isEmptyValue(n.initializer)) stamps.push(line(n));
     }
     if (ts.isShorthandPropertyAssignment(n)) {
-      if (n.name.text === 'fullText' && !derivesFromStoredText(n.name) && !inHelperArgument(n.parent)) {
+      if (n.name.text === 'fullText' && !derivesFromStoredText(n.name, literalTarget(n.parent)) && !inHelperArgument(n.parent)) {
         fullTextWrites.push({ line: line(n), code: 'fullText' });
       }
-      if (n.name.text === 'textFetchedAt') stamps.push(line(n));
+      if (n.name.text === 'textFetchedAt' && !boundOnlyToEmpty(n.name)) stamps.push(line(n));
     }
     if (ts.isCallExpression(n)) {
       const callee = ts.isIdentifier(n.expression) ? n.expression.text : accessName(n.expression);
