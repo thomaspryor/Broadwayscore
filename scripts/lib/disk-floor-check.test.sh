@@ -21,6 +21,9 @@ fail=0
 # BRO-6592: same reasoning for NODE_TEST_CONTEXT (set when a node --test file
 # drives this suite); case 9 covers that skip explicitly.
 unset NODE_TEST_CONTEXT
+# Cases 1-9 exercise the synchronous path (GC finished when ensure_disk_floor
+# returns). Everything under 100GB counts as critical here; cases 10-11 reset it.
+export DISK_PREFLIGHT_CRITICAL_GB=100
 
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
@@ -35,6 +38,7 @@ GC_MARKER="$TMP/gc-ran"
 STAMP="$FAKE_REPO/data/audit/disk-preflight-gc.stamp"
 cat > "$FAKE_REPO/scripts/gc-merged-worktrees.sh" <<EOF
 #!/usr/bin/env bash
+sleep "\${FAKE_GC_SLEEP:-0}"
 echo ran >> "$GC_MARKER"
 EOF
 chmod +x "$FAKE_REPO/scripts/gc-merged-worktrees.sh"
@@ -131,15 +135,23 @@ fi
 # re-run the GC. On the Mac Studio a full pass takes ~220s and frees 0KB when
 # nothing is merged+clean; without the cooldown every push repeated it, and a
 # 20s-deadline push-with-retry caller took 240s.
+# run_low uses the real (non-critical, background) path, so callers wait for
+# the GC with wait_runs before asserting.
+wait_runs() {  # wait_runs <n> — up to 5s for GC_MARKER to reach n lines AND the stamp
+  for _ in $(seq 1 50); do
+    [ "$({ cat "$GC_MARKER" 2>/dev/null || true; } | wc -l | tr -d ' ')" -ge "$1" ] 2>/dev/null && [ -f "$STAMP" ] && sleep 0.2 && return 0
+    sleep 0.1
+  done
+}
 run_low() {  # run_low <cooldown|""> — one below-floor ensure_disk_floor call
-  ( PATH="$(fake_bin $((3 * 1024 * 1024))):$PATH"; unset GITHUB_ACTIONS; cd "$FAKE_REPO"
+  ( PATH="$(fake_bin $((3 * 1024 * 1024))):$PATH"; unset GITHUB_ACTIONS; export DISK_PREFLIGHT_CRITICAL_GB=1; cd "$FAKE_REPO"
     if [ -n "$1" ]; then export DISK_PREFLIGHT_GC_COOLDOWN_SEC="$1"; else unset DISK_PREFLIGHT_GC_COOLDOWN_SEC; fi
     source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) 2>&1
 }
 rm -f "$GC_MARKER" "$STAMP"
-run_low "" >/dev/null
-OUT6=$(run_low "")
-runs=$(wc -l < "$GC_MARKER" 2>/dev/null | tr -d ' ')
+run_low "" >/dev/null; wait_runs 1
+OUT6=$(run_low ""); sleep 0.5
+runs=$({ cat "$GC_MARKER" 2>/dev/null || true; } | wc -l | tr -d ' ')
 if [ "${runs:-0}" = "1" ] && grep -q "cooldown" <<<"$OUT6"; then
   echo "PASS[6]: second below-floor call inside the cooldown skips the GC"
 else
@@ -149,7 +161,7 @@ fi
 # Case 7: an expired stamp (older than the cooldown) runs the GC again.
 rm -f "$GC_MARKER"
 echo $(( $(date +%s) - 3600 )) > "$STAMP"
-run_low "1800" >/dev/null
+run_low "1800" >/dev/null; wait_runs 1
 if [ -f "$GC_MARKER" ]; then
   echo "PASS[7]: stamp older than the cooldown lets the GC run again"
 else
@@ -159,10 +171,10 @@ fi
 # Case 8: DISK_PREFLIGHT_GC_COOLDOWN_SEC=0 disables the cooldown; a corrupt
 # stamp fails open (GC runs).
 rm -f "$GC_MARKER"
-run_low "0" >/dev/null
+run_low "0" >/dev/null; wait_runs 1
 echo garbage > "$STAMP"
-run_low "" >/dev/null
-runs=$(wc -l < "$GC_MARKER" 2>/dev/null | tr -d ' ')
+run_low "" >/dev/null; wait_runs 2
+runs=$({ cat "$GC_MARKER" 2>/dev/null || true; } | wc -l | tr -d ' ')
 if [ "${runs:-0}" = "2" ]; then
   echo "PASS[8]: cooldown 0 always runs, corrupt stamp fails open"
 else
@@ -177,6 +189,43 @@ if [ -f "$GC_MARKER" ]; then
   echo "FAIL[9]: NODE_TEST_CONTEXT did not skip the preflight GC"; fail=1
 else
   echo "PASS[9]: NODE_TEST_CONTEXT (node --test child) skips the preflight GC"
+fi
+
+# Case 10 (BRO-6592): above the critical threshold the GC runs in the
+# background. A slow (4s) GC must not hold up the caller, even when the
+# caller's output is captured with $(...), the shape that ran 240s before.
+rm -f "$GC_MARKER" "$STAMP"
+s10=$SECONDS
+OUT10=$( PATH="$(fake_bin $((3 * 1024 * 1024))):$PATH"; unset GITHUB_ACTIONS; export DISK_PREFLIGHT_CRITICAL_GB=1 FAKE_GC_SLEEP=4; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor 2>&1 )
+e10=$(( SECONDS - s10 ))
+early=$([ -f "$GC_MARKER" ] && echo yes || echo no)
+for _ in $(seq 1 30); do [ -f "$STAMP" ] && break; sleep 0.5; done
+if [ "$e10" -le 2 ] && [ "$early" = no ] && [ -f "$GC_MARKER" ] && [ -f "$STAMP" ] && grep -q "background" <<<"$OUT10"; then
+  echo "PASS[10]: non-critical GC runs in the background (caller returned in ${e10}s, GC + stamp landed after)"
+else
+  echo "FAIL[10]: elapsed=${e10}s early_marker=$early marker=$([ -f "$GC_MARKER" ] && echo y) stamp=$([ -f "$STAMP" ] && echo y). Output: $OUT10"; fail=1
+fi
+
+# Case 11: below the critical threshold the cooldown is ignored (the task #968
+# "117MB free" case must always get a synchronous GC).
+rm -f "$GC_MARKER"; date +%s > "$STAMP"
+( PATH="$(fake_bin $((200 * 1024))):$PATH"; unset GITHUB_ACTIONS; export DISK_PREFLIGHT_CRITICAL_GB=1; cd "$FAKE_REPO"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor ) >/dev/null 2>&1
+if [ -f "$GC_MARKER" ]; then
+  echo "PASS[11]: critical free space runs the GC synchronously despite a fresh cooldown stamp"
+else
+  echo "FAIL[11]: a fresh stamp suppressed the GC at 0GB free"; fail=1
+fi
+
+# Case 12: a leading-zero stamp ("08") and cooldown ("0900") must not be read
+# as octal and kill a set -euo pipefail caller (review finding, BRO-6592).
+echo 08 > "$STAMP"
+OUT12=$( PATH="$(fake_bin $((3 * 1024 * 1024))):$PATH" bash -c '
+  set -euo pipefail; unset GITHUB_ACTIONS; export DISK_PREFLIGHT_GC_COOLDOWN_SEC=0900
+  cd "'"$FAKE_REPO"'"; source "scripts/lib/disk-floor-check.sh"; ensure_disk_floor; echo SURVIVED' 2>&1 )
+if grep -q SURVIVED <<<"$OUT12"; then
+  echo "PASS[12]: leading-zero stamp/cooldown does not abort a set -e caller"
+else
+  echo "FAIL[12]: caller died on a leading-zero stamp. Output: $OUT12"; fail=1
 fi
 
 if [ "$fail" -ne 0 ]; then
