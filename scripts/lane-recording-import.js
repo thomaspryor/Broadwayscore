@@ -17,6 +17,12 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const imp = require('./lib/lane-recorded-nights/recording-import');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log(fs.readFileSync(__filename, 'utf8').split('/**')[1].split('*/')[0].replace(/^ \* ?/gm, '').trim());
+  process.exit(0);
+}
 
 /** Accepts both `--name=value` and `--name value`. */
 const arg = (n, d = null) => {
