@@ -52,17 +52,27 @@ function createShadowPublishPorts({ onRows, now = Date.now } = {}) {
  */
 function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
   const scores = new Map();
-  const record = (row, score) => {
+  // The text the score came from (its length and tier), so a lane/site score gap can be traced to a truncated or excerpt
+  // copy on either side without re-fetching (BRO-6066: the 10-29 shadow could not say what the lane had scored).
+  const record = (row, score, textInfo = {}) => {
     const key = canonicalUrl(row && row.url);
     if (!key || score == null || scores.has(key)) return;
-    const e = { key, score, outletId: row.outletId || null, outlet: row.outlet || null, critic: row.criticName || null, at: now() };
+    const e = {
+      key, score, outletId: row.outletId || null, outlet: row.outlet || null, critic: row.criticName || null, at: now(),
+      textChars: textInfo.chars != null ? textInfo.chars : String((row && row.fullText) || '').length,
+      contentTier: textInfo.tier || (row && row.contentTier) || null,
+    };
     scores.set(key, e);
     appendJsonl(logFile, e);
   };
   return {
     wrapScore: (scoreReview) => async (row, fetched) => {
       const out = await scoreReview(row, fetched);
-      record(row, out && typeof out === 'object' ? out.score : out);
+      const extra = (out && typeof out === 'object' && out.extra) || {};
+      record(row, out && typeof out === 'object' ? out.score : out, {
+        chars: typeof extra.fullText === 'string' ? extra.fullText.length : undefined,
+        tier: extra.contentTier || (fetched && fetched.contentTier) || 'complete',
+      });
       return out;
     },
     onRow: (row) => record(row, row && row.assignedScore),
@@ -120,7 +130,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
     lane.set(s.reviewKey, { key: s.reviewKey, url: s.reviewKey, discoveredAt: toMs(s.firstAt.discovered), scoredAt: toMs(s.firstAt.scored) });
   }
   const laneEntry = (key) => { if (!lane.has(key)) lane.set(key, { key, url: key }); return lane.get(key); };
-  for (const s of scores) Object.assign(laneEntry(s.key), { laneScore: s.score, outletId: s.outletId, outlet: s.outlet, critic: s.critic, scoredAt: laneEntry(s.key).scoredAt ?? s.at });
+  for (const s of scores) Object.assign(laneEntry(s.key), { laneScore: s.score, outletId: s.outletId, outlet: s.outlet, critic: s.critic, scoredAt: laneEntry(s.key).scoredAt ?? s.at, laneTextChars: s.textChars ?? null, laneContentTier: s.contentTier ?? null });
   for (const { row, at } of rows) {
     const k = canonicalUrl(row.url); if (!k) continue;
     const e = laneEntry(k);
@@ -152,6 +162,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
       url: (e && e.url) || (l && (l.url || l.key)), outlet: (e && (e.outlet || e.outletId)) || (l && l.outlet) || null, critic: (e && e.critic) || null,
       laneDiscoveredAt: iso(e && e.discoveredAt), laneScoredAt: iso(scoredAt), siteLiveAt: iso(liveAt),
       laneScore: e && e.laneScore != null ? e.laneScore : null, siteScore: l && l.score != null ? l.score : null,
+      laneTextChars: e && e.laneTextChars != null ? e.laneTextChars : null, laneContentTier: (e && e.laneContentTier) || null,
       scoredLeadMin: scoredAt != null && liveAt != null ? minutesBetween(scoredAt, liveAt) : null,
       // Already on the site at the first poll: the regular pipeline had it before the shadow started.
       liveAtStart: liveAt != null && t0 != null && liveAt <= t0,

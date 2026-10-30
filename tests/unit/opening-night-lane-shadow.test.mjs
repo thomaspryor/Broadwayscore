@@ -150,3 +150,14 @@ test('shadow code is outside the lane arm hash, so it cannot disarm the producti
   const files = rehearsal.laneCodeFiles().map((f) => path.basename(f));
   assert.ok(!files.includes('opening-night-lane-shadow.js'));
 });
+
+test('BRO-6066: each lane score records the length and tier of the text it was scored from', async () => {
+  const rec = shadow.createScoreRecorder({ now: () => T0 });
+  const full = rec.wrapScore(async () => 70);
+  await full({ url: 'https://www.nytimes.com/2026/10/22/theater/a-review.html', fullText: TEXT, outletId: 'nytimes' }, { contentTier: 'truncated' });
+  const excerpt = rec.wrapScore(async () => ({ score: 45, extra: { fullText: '', contentTier: 'excerpt' } }));
+  await excerpt({ url: 'https://www.wsj.com/articles/a-review-ab12', fullText: 'teaser '.repeat(200), outletId: 'wsj' }, {});
+  const [a, b] = rec.snapshot();
+  assert.deepEqual([a.textChars, a.contentTier], [TEXT.length, 'truncated']);
+  assert.deepEqual([b.textChars, b.contentTier], [0, 'excerpt'], 'an excerpt score kept no page text');
+});
