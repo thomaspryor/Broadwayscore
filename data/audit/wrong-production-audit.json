@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T18:07:32.790Z",
+  "timestamp": "2026-10-30T18:33:57.679Z",
   "stats": {
-    "totalReviews": 70676,
-    "alreadyFlagged": 22317,
+    "totalReviews": 70967,
+    "alreadyFlagged": 22326,
     "dateGuardCatches": 230,
-    "directorMismatch": 2884,
-    "tvFilmSignals": 2027,
+    "directorMismatch": 2887,
+    "tvFilmSignals": 2029,
     "londonSignals": 3405,
-    "offBroadwaySignals": 634,
-    "yearMismatch": 289,
-    "noPublishDate": 8048
+    "offBroadwaySignals": 635,
+    "yearMismatch": 291,
+    "noPublishDate": 8091
   },
   "findings": [
     {
@@ -6830,6 +6830,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "beautiful-the-carole-king-musical-regional-2024",
+      "file": "splash-magazines--suzanne-magnuson.json",
+      "publishDate": "2024-05-06",
+      "url": "https://chicago.splashmags.com/index.php/2024/05/beautiful-the-carole-king-musical-a-journey-of-music-and-self-discovery-at-the-paramount-theatre/#gsc.tab=0",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"series finale\""
         }
       ]
     },
@@ -20560,6 +20573,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
+      "showId": "fool-for-love-regional-2025",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": "2025-02-12",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-FOOL-FOR-LOVE-at-Steppenwolf-Theatre-Company-20250212",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -44647,6 +44673,19 @@
       ]
     },
     {
+      "showId": "prayer-for-the-french-republic-regional-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2025-04-24",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/prayer-for-the-french-republic-northlight-theatre-theater-wit/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from prayer-for-the-french-republic-2024"
+        }
+      ]
+    },
+    {
       "showId": "present-laughter-2010",
       "file": "nytimes--ben-brantley.json",
       "score": 84,
@@ -54783,6 +54822,50 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gary griffin\" from the-color-purple-2005"
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-regional-2025",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2025-07-02",
+      "url": "https://www.chicagotheatrereview.com/2025/07/too-beautiful-for-words/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2005 (2x) more than 2025 (0x). 2005 matches production: the-color-purple-2005"
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-regional-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2025-07-01",
+      "url": "https://www.chicagotribune.com/2025/07/01/review-color-purple-goodman-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gary griffin\" from the-color-purple-2005"
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-regional-2025",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2025-07-02",
+      "url": "https://thirdcoastreview.com/stages/2025/07/02/review-goodman-theatre-the-color-purple",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2025 (1x). 2015 matches production: the-color-purple-2015"
         }
       ]
     },
@@ -74548,6 +74631,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "an-educated-guess-regional-2024",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2024-05-11",
+      "url": "https://www.letsplaytheatricalreview.com/blog/an-educated-guess",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
