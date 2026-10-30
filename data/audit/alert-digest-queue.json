@@ -2982,37 +2982,6 @@
     "queuedAt": "2026-10-30T17:23:13.804Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41098813923",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41098813923)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41095108553)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-30T18:25:47.032Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-6645-mvv7jeb6",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6645-mvv7jeb6",
     "description": "land.yml did not land land/job/linear-BRO-6645-mvv7jeb6: the unit-tests-node gate went red at 52bfbbb571. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41100118139",
@@ -3149,6 +3118,37 @@
       }
     ],
     "queuedAt": "2026-10-30T18:27:58.050Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it — escalated after 192 notifications",
+    "description": "Filed BRO-6656 for owner triage after 192 repeats with no tracker.\n\nmain test.yml is STILL red after 30 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41107604979",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6656",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41107604979)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41106466418)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "30"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-30T19:45:11.913Z"
   },
   {
     "conditionKey": "ob-venue-go-live:the-unraveling-off-broadway-2027",
