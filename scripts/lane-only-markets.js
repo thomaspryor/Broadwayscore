@@ -12,6 +12,7 @@
  * --markers-dir= and --now= exist for tests. Reads LANE_ONLY_MARKETS(+_READ=ok) and LANE_STANDDOWN(+_READ=ok) from the environment. Any error prints a
  * warning and leaves the old path on (exit 0, suppress=false): a gate that cannot decide never silences a night.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const lom = require('./lib/opening-night-lane/lane-only-markets');
