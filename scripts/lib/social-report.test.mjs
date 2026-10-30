@@ -281,3 +281,9 @@ test('compare posts do not skew posting-time advice', () => {
   const rows = Array.from({ length: 12 }, (_, i) => ({ lane: 'brief', service: 'x', sentAt: new Date(Date.UTC(2026, 8, 1 + i * 3, 15)).toISOString(), visits: 1, interactions: 1 }));
   assert.match(postingTimeAdvice(rows, Date.UTC(2026, 9, 27))[0], /starts once there are 4 weeks/);
 });
+
+test('suggestedReply ends with an open question on every lane (BRO-6417 voice)', () => {
+  for (const r of [{ lane: 'video' }, { lane: 'score', slug: 'x', title: 'X', reviewCount: 9 }, { lane: 'other' }]) {
+    assert.match(suggestedReply(r), /\?$/, `${r.lane} reply lost its question`);
+  }
+});

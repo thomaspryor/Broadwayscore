@@ -951,7 +951,7 @@ function templateDraft(facts) {
     body: stripDashes(lines.join('\n\n')),
     why: 'Template fallback: plain roundup with the score, breakdown and critic consensus.',
     expectedPushback: 'Someone may say numbers can\'t capture theater.',
-    suggestedReply: 'Totally fair, the number is just a quick way to see where critics landed. The reviews themselves are the fun part.',
+    suggestedReply: 'Totally fair, the number is just a quick way to see where critics landed. Which review do you think got it most right?',
     personalLines: facts.ownerStance === 'not-seen'
       ? ["I haven't seen it yet, and now I really want to.", 'Still undecided on going to this one.']
       : [],

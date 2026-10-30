@@ -226,12 +226,12 @@ function weeklyTakeaway(rows) {
  * adapts after reading the comment, never something posted automatically.
  */
 function suggestedReply(r) {
-  if (r.lane === 'video') return 'Thanks for watching! Every show we cover has its full review breakdown on broadwayscorecard.com.';
+  if (r.lane === 'video') return 'Thanks for watching! Every show we cover has its full review breakdown on broadwayscorecard.com. Which show do you think the critics got most wrong this season?';
   if (r.lane === 'score' && r.slug) {
     const n = r.reviewCount ? `all ${r.reviewCount} critic reviews` : 'every critic review';
-    return `Thanks! You can read ${n} for ${r.title} here: broadwayscorecard.com/show/${r.slug}`;
+    return `Thanks! You can read ${n} for ${r.title} here: broadwayscorecard.com/show/${r.slug} What did you see in it that the critics missed, or caught?`;
   }
-  return 'Thanks for the comment! What did you think of it?';
+  return 'Thanks for the comment! What did you make of it, and why?';
 }
 
 function groupStats(rows, keyFn) {
