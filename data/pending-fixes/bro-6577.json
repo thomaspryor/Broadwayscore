@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-6577",
+  "planId": "cd3fd4fd-2a94-4676-a216-c6231d84e2d3",
+  "status": "pending",
+  "createdAt": "2026-10-30T03:26:10.533Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6577: retire duplicate Tristan & Yseult (Bath) row that blocks every deploy",
+    "steps": [
+      "Move The Stage review off the duplicate Bath row (the kept row has no The Stage file) so the retire below can run.",
+      "retire-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tristan-yseult-royal-bath-regional-2026/thestage--holly-omahony.json",
+        "destPath": "tristan-and-yseult-royal-bath-regional-2026/thestage--holly-omahony.json",
+        "description": "Move The Stage review off the duplicate Bath row (the kept row has no The Stage file) so the retire below can run."
+      },
+      {
+        "type": "retire-show",
+        "id": "tristan-yseult-royal-bath-regional-2026",
+        "expectTitle": "Tristan & Yseult",
+        "duplicateOf": "tristan-and-yseult-royal-bath-regional-2026",
+        "reason": "Duplicate of tristan-and-yseult-royal-bath-regional-2026 (Theatre Royal Bath, Kneehigh, same run; census backfill and guardian backfill both minted it). prebuild duplicate-title gate has blocked every Vercel deploy since 2026-10-30 00:47 UTC."
+      }
+    ]
+  }
+}
