@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-6584-d",
+  "planId": "fcf36ab5-3582-49a1-83e1-07c020858ce5",
+  "status": "pending",
+  "createdAt": "2026-10-30T07:31:38.977Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6584: remove renamed copy of the 2021 Schmigadoon WSJ review",
+    "steps": [
+      "BRO-6584: 2021 Apple TV Schmigadoon review, invalid tier; the earlier delete of wsj--unknown.json was undone by a byline rename in the Guardian fetch job"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "schmigadoon-2026/wsj--john-anderson.json",
+        "description": "BRO-6584: 2021 Apple TV Schmigadoon review, invalid tier; the earlier delete of wsj--unknown.json was undone by a byline rename in the Guardian fetch job"
+      }
+    ]
+  }
+}
