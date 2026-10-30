@@ -160,3 +160,12 @@ test('email block: graded lines first, quiet nights folded into one line, nothin
   assert.equal(L.renderPressNightGradesBlock({ items: [] }), '');
   assert.equal(L.renderPressNightGradesBlock(null), '');
 });
+
+test('scoreboard over every record graded through Oct 29: exact sentence, shown above the lines', () => {
+  const recs = fs.readdirSync(DIR).filter((f) => /-2026-10-(2[2-9])\.json$/.test(f)).map(load);
+  const b = L.scoreboard(recs);
+  assert.equal(b.line, 'Openings that passed on their own: 0 of 15 graded so far (6 failed, 9 could not be graded).');
+  const html = L.renderPressNightGradesBlock({ scoreboard: b, items: [grade(afgmShow, AFGM)] });
+  assert.ok(html.indexOf('Openings that passed on their own') < html.indexOf('A Few Good Men:'));
+  assert.match(L.renderPressNightGradesBlock({ scoreboard: b, items: [] }), /0 of 15 graded so far/);
+});

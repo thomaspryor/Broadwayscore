@@ -261,6 +261,26 @@ function gradeShow({ show, rec, numbersNow, readNumbers = () => null, sentShows,
   };
 }
 
+/**
+ * The running scoreboard above the per-night lines: every press-night record ever graded, by its verdict (the
+ * observed-release verdict when the record has one, like the lines). Records carry no "fixed by hand that night"
+ * field, so a PASS is counted as passing on its own.
+ * @param {object[]} records  press-night records
+ */
+function scoreboard(records) {
+  const n = { PASS: 0, FAIL: 0, UNKNOWN: 0 };
+  for (const rec of records) {
+    const full = evaluateCheck(rec);
+    const v = (full.release ? full.release.observed : full).verdict;
+    n[v in n ? v : 'UNKNOWN']++;
+  }
+  const total = n.PASS + n.FAIL + n.UNKNOWN;
+  return {
+    ...n, total,
+    line: `Openings that passed on their own: ${n.PASS} of ${total} graded so far (${n.FAIL} failed, ${n.UNKNOWN} could not be graded).`,
+  };
+}
+
 // ---- auto-filed fix cards -------------------------------------------------------------------------------
 
 function emptyLedger() {
@@ -348,16 +368,19 @@ async function applyFiling(actions, ledger, { fileCard, commentCard, save = () =
  * Lines are plain text; `esc` escapes them for HTML.
  */
 function renderPressNightGradesBlock(snapshot, { esc = (x) => String(x) } = {}) {
-  if (!snapshot || !Array.isArray(snapshot.items) || !snapshot.items.length) return '';
+  const items = (snapshot && Array.isArray(snapshot.items)) ? snapshot.items : [];
+  const board = snapshot && snapshot.scoreboard && snapshot.scoreboard.line;
+  if (!items.length && !board) return '';
   const color = { PASS: '#1a7f37', FAIL: '#b42318' };
-  const quiet = snapshot.items.filter((it) => it.quiet);
-  const graded = snapshot.items.filter((it) => !it.quiet);
+  const quiet = items.filter((it) => it.quiet);
+  const graded = items.filter((it) => !it.quiet);
   const quietLine = quiet.length
     ? `<p style="font-size:13px;color:#666;margin:0 0 8px;padding-left:11px;">No reviews came out overnight for ${esc(joinAnd(quiet.map((it) => it.title)))}, so there was nothing to grade.</p>`
     : '';
   const rows = graded.map((it) => `<p style="font-size:14px;margin:0 0 8px;${color[it.verdict] ? `border-left:3px solid ${color[it.verdict]};padding-left:8px;` : 'padding-left:11px;'}">${esc(it.line)}</p>`).join('\n');
   return `<div style="margin:0 0 16px;">
     <p style="font-size:14px;font-weight:700;margin:0 0 8px;">Last night's openings</p>
+    ${board ? `<p style="font-size:14px;margin:0 0 8px;">${esc(board)}</p>` : ''}
     ${rows}
     ${quietLine}
   </div>`;
@@ -365,5 +388,5 @@ function renderPressNightGradesBlock(snapshot, { esc = (x) => String(x) } = {}) 
 
 module.exports = {
   WINDOW_H, EMAIL_GRACE_H, FILE_FROM, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
-  findBroadcastRecord, gradeOpenings, gradeShow, emptyLedger, planFiling, applyFiling, renderPressNightGradesBlock,
+  findBroadcastRecord, gradeOpenings, gradeShow, emptyLedger, planFiling, applyFiling, renderPressNightGradesBlock, scoreboard,
 };

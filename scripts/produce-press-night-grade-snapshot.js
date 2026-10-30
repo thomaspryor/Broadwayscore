@@ -81,13 +81,18 @@ async function main(argv = process.argv.slice(2)) {
     nowMs,
     outletName,
   });
+  let recordFiles = [];
+  try { recordFiles = fs.readdirSync(RECORDS_DIR).filter((f) => f.endsWith('.json')); } catch { /* no records yet */ }
+  const board = lib.scoreboard(recordFiles.map((f) => readJson(path.join(RECORDS_DIR, f))).filter(Boolean));
   const snapshot = {
     generatedAt: new Date(nowMs).toISOString(),
+    scoreboard: board,
     items: entries.map(({ showId, night, title, verdict, line, emails, quiet, misses }) => ({ showId, night, title, verdict, line, emails, quiet, missKeys: misses.map((m) => m.key) })),
   };
 
   const ledger = readJson(LEDGER_FILE) || lib.emptyLedger();
   const actions = lib.planFiling(entries, ledger);
+  console.log(board.line);
   for (const e of entries) console.log(`${e.verdict.padEnd(7)} ${e.line}`);
   if (!entries.length) console.log('No opening nights in the last 48 hours.');
   for (const a of actions) console.log(`${dryRun || !file ? 'WOULD ' : ''}${a.type === 'create' ? `file P${a.priority} "${a.title}"` : `comment on ${a.card}`} (${a.missKeys.join(', ')})`);
