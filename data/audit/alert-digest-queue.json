@@ -88,7 +88,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41029521751",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41031339137",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -97,11 +97,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41029521751)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41031339137)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41027996196)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41029521751)"
       },
       {
         "name": "Consecutive failures",
@@ -112,7 +112,7 @@
         "value": "E2E Tests"
       }
     ],
-    "queuedAt": "2026-10-30T09:20:23.413Z"
+    "queuedAt": "2026-10-30T09:35:24.372Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-6603-mvupk47q",
