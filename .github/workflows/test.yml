@@ -63,6 +63,8 @@ on:
       - 'scripts/outlet-census.js'
       # BRO-6391: scripts/lib/cost-report-alerts.test.mjs requires it (routeLines, renderActionHtml).
       - 'scripts/route-cost-report-alerts.js'
+      - 'scripts/route-workflow-alerts.js'
+      - 'scripts/route-workflow-alerts.test.js'
       # BRO-5542: scripts/lib/owner-copy-no-claude.test.mjs requires it (fix-card text check).
       - 'scripts/file-ugc-fix-card.js'
       # BRO-6377: scripts/lib/social-report.test.mjs requires ../social-autopost/run.js

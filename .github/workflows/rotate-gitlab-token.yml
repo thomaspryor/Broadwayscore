@@ -57,12 +57,13 @@ jobs:
         if: steps.check.outputs.needs_rotation == 'true'
         run: |
           # Rotate the token — GitLab returns a new token and invalidates the old one
+          status=0
           RESPONSE=$(curl -sf -X POST \
             -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
             "https://gitlab.com/api/v4/personal_access_tokens/self/rotate" \
-            -d "expires_at=$(date -d '+1 year' +%Y-%m-%d)")
+            -d "expires_at=$(date -d '+1 year' +%Y-%m-%d)") || status=$?
 
-          if [ $? -ne 0 ]; then
+          if [ "$status" -ne 0 ]; then
             echo "::error::Failed to rotate GitLab token"
             exit 1
           fi
@@ -86,10 +87,11 @@ jobs:
         if: steps.rotate.outcome == 'success'
         run: |
           NEW_TOKEN=$(cat /tmp/new-gitlab-token.txt)
+          status=0
           RESPONSE=$(curl -sf -H "PRIVATE-TOKEN: $NEW_TOKEN" \
-            "https://gitlab.com/api/v4/personal_access_tokens/self")
+            "https://gitlab.com/api/v4/personal_access_tokens/self") || status=$?
 
-          if [ $? -ne 0 ]; then
+          if [ "$status" -ne 0 ]; then
             echo "::error::New token failed verification — rotation may have produced an invalid token"
             exit 1
           fi
