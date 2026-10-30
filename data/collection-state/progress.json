@@ -1,26 +1,45 @@
 {
-  "processed": [],
+  "processed": [
+    "a-few-good-men-2026/nytimes--alexis-soloski.json",
+    "a-few-good-men-2026/nydailynews--chris-jones.json"
+  ],
   "failed": [
     "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
     "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
-    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
-    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json"
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "a-few-good-men-2026/letterboxd--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "a-few-good-men-2026/nydailynews--chris-jones.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "a-few-good-men-2026/nytimes--alexis-soloski.json"
+    ],
     "archiveToday": [
       "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-10-30T05:21:37.145Z",
-  "lastProcessed": "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
-  "log": []
+  "lastProcessed": "a-few-good-men-2026/letterboxd--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-30T06:18:49.932Z",
+      "event": "bb-session",
+      "session": "33dee5c3",
+      "url": "https://www.nytimes.com/2026/10/29/theater/few-good-men-review-whitford-blyth-so"
+    },
+    {
+      "t": "2026-10-30T06:18:50.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
