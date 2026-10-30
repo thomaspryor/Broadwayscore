@@ -105,4 +105,12 @@ it('namesLongerShowTitle: a short title rejects slugs naming a longer tracked ti
   assert.equal(namesLongerShowTitle('https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor/', juliet[0], juliet), true);
   // the longer show keeps its own reviews
   assert.equal(namesLongerShowTitle('https://www.vulture.com/article/the-other-americans-leguizamo-review.html', shows[1], shows), false);
+  // the longer title must be adjacent in the slug: boilerplate or a playwright
+  // named later does not complete it (review-panelist, BRO-6640)
+  const ghost = [{ id: 'ghost-2012', title: 'Ghost The Musical' }, { id: '2-22-2024', title: '2:22 A Ghost Story' }];
+  assert.equal(namesLongerShowTitle('https://www.washingtonpost.com/entertainment/theater_dance/ghost-the-musical-review/2012/04/23/gIQA_story.html', ghost[0], ghost), false);
+  const woman = [{ id: 'iew-2026', title: "I'm Every Woman" }, { id: 'iew-ck-2026', title: "I'm Every Woman, The Chaka Khan Musical" }];
+  assert.equal(namesLongerShowTitle('https://www.timeout.com/london/theatre/im-every-woman-the-chaka-khan-musical-review', woman[0], woman), false);
+  const hamlet = [{ id: 'hamlet-nt-2025', title: 'Hamlet' }, { id: 'hamlet-by-ws-2019', title: 'Hamlet by William Shakespeare' }];
+  assert.equal(namesLongerShowTitle('https://www.example.com/hamlet-review-national-theatre-hiran-abeysekera-william-shakespeare', hamlet[0], hamlet), false);
 });
