@@ -670,3 +670,37 @@ test('reddit-opening-posts-due: capped updates and LLM retries wait for the 6h g
   assert.deepEqual(r('2026-09-29T11:00:00Z'), [], 'LLM failed 1h ago: wait');
   assert.deepEqual(r('2026-09-29T16:30:00Z'), [show.id], 'LLM failed 6.5h ago: retry');
 });
+
+// BRO-6676: The Heart's "ready to post" email went out with gaps and false claims.
+test('aggregatorGapHold holds on a fresh audit that lists missing aggregator outlets, ignores SERP-census and stale ones', () => {
+  const now = Date.parse('2026-10-31T00:00:00Z');
+  const fresh = '2026-10-30T20:00:00Z';
+  const held = lib.aggregatorGapHold({ computedAt: fresh, missing: [{ url: 'https://nytimes.com/x', knownOutletId: 'nytimes' }] }, now, {});
+  assert.equal(held.hold, true);
+  assert.deepEqual(held.missing, ['nytimes']);
+  assert.equal(lib.aggregatorGapHold({ computedAt: fresh, missing: [{ url: 'u', serpCensus: true }] }, now, {}).hold, false);
+  assert.equal(lib.aggregatorGapHold({ computedAt: '2026-10-20T00:00:00Z', missing: [{ url: 'u' }] }, now, {}).hold, false);
+  assert.equal(lib.aggregatorGapHold(undefined, now, {}).hold, false);
+  assert.equal(lib.aggregatorGapHold({ computedAt: fresh, missing: [{ url: 'u' }] }, now, { REDDIT_GAP_GATE: 'off' }).hold, false);
+});
+
+test('namedCast never names a wrong subset of a long, unordered cast', () => {
+  const heart = ['Heidi Blickenstaff', 'Lincoln Clauss', 'Nick T. Daly', 'Drew Gehling', 'Bre Jackson', 'Joaquina Kalukango', 'Max McKenna', 'Wren Rivera', 'Jason Tam'].map(name => ({ name }));
+  assert.deepEqual(lib.namedCast({ cast: heart }), []);
+  assert.deepEqual(lib.namedCast({ cast: heart.slice(0, 3) }), ['Heidi Blickenstaff', 'Lincoln Clauss', 'Nick T. Daly']);
+  assert.deepEqual(lib.namedCast({ cast: heart, castBilling: ['Joaquina Kalukango', 'Heidi Blickenstaff', 'Drew Gehling', 'Jason Tam', 'Bre Jackson'] }),
+    ['Joaquina Kalukango', 'Heidi Blickenstaff', 'Drew Gehling', 'Jason Tam']);
+});
+
+test('lintDraft refuses "no mixed reviews" claims and critic pronouns', () => {
+  const facts = lib.buildFacts(show, slim({ buckets: ['Rave', 'Positive'] }), []);
+  const mk = body => ({ title: `Reviews are in for Trainspotting. ${facts.score}/100`, body: `${body}\n\n${facts.url}`, why: 'w', expectedPushback: 'p', suggestedReply: 'ok', personalLines: [] });
+  for (const bad of ['Not a single mixed review in the bunch.', 'Nobody in the middle on this one.', 'Zero mixed reactions.']) {
+    const r = lib.lintDraft(mk(bad), facts);
+    assert.ok(r.problems.some(p => /no mixed reviews/.test(p)), bad);
+  }
+  const pron = lib.lintDraft(mk('Critic 0 liked it, though he still respected the ambition.'), facts);
+  assert.ok(pron.problems.some(p => /pronoun for a critic/.test(p)));
+  const clean = lib.lintDraft(mk('Critic 0 liked it, though the review respected the ambition.'), facts);
+  assert.ok(!clean.problems.some(p => /pronoun|no mixed/.test(p)));
+});

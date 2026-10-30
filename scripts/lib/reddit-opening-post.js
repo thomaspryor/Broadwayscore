@@ -183,6 +183,47 @@ function buildPeers(shows, slims) {
 /**
  * The verified fact sheet. Returns null when the slim file has no score.
  */
+/**
+ * Cast names safe to put in a post. shows.json stores cast in no billing order
+ * (The Heart's is alphabetical by surname), so slice(0, 4) dropped the
+ * first-billed leads Joaquina Kalukango and Jason Tam (BRO-6676). A short cast
+ * is listed whole; a long one is listed only when the source carries a billing
+ * order (`castBilling`, ordered names); otherwise nobody is named rather than
+ * a wrong four.
+ */
+const MAX_NAMED_CAST = 6;
+function namedCast(show) {
+  const nm = c => (typeof c === 'string' ? c : c && c.name);
+  const billed = (show.castBilling || []).map(nm).filter(Boolean);
+  if (billed.length) return billed.slice(0, 4);
+  const all = (show.cast || []).map(nm).filter(Boolean);
+  return all.length <= MAX_NAMED_CAST ? all : [];
+}
+
+// ── Aggregator completeness gate (BRO-6676) ──────────────────────────────────
+
+const GAP_AUDIT_MAX_AGE_HOURS = 36;
+
+/**
+ * Hold a "ready to post" draft while a fresh gap audit (data/audit/
+ * show-review-gap.json result for the show) still lists outlet reviews that a
+ * known aggregator roundup (BWW, Playbill Verdict, NYC Theatre) cites and we
+ * don't display. The Heart went out with 8 reviews and no NYT (BRO-6670).
+ * No audit entry, or a stale one, does not hold (the gate can't see anything);
+ * REDDIT_GAP_GATE=off is the kill switch.
+ * @returns {{hold: boolean, missing: string[], reason: string}}
+ */
+function aggregatorGapHold(result, nowMs = Date.now(), env = process.env) {
+  if (env.REDDIT_GAP_GATE === 'off') return { hold: false, missing: [], reason: 'gate disabled' };
+  if (!result || !Array.isArray(result.missing)) return { hold: false, missing: [], reason: 'no gap audit for this show' };
+  const at = Date.parse(result.computedAt || '');
+  if (!at || nowMs - at > GAP_AUDIT_MAX_AGE_HOURS * 3600000) return { hold: false, missing: [], reason: 'gap audit is stale' };
+  const missing = result.missing.filter(m => m && !m.serpCensus).map(m => m.knownOutletId || m.host || m.url);
+  return missing.length
+    ? { hold: true, missing, reason: `aggregator roundups list ${missing.length} outlet review(s) we don't display: ${missing.join(', ')}` }
+    : { hold: false, missing: [], reason: 'aggregator roundups fully covered' };
+}
+
 function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
   if (!slim || typeof slim.cs !== 'number') return null;
   const market = marketOf(show);
@@ -229,7 +270,7 @@ function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
     openingDate: show.openingDate,
     type: show.type || null,
     isRevival: show.isRevival === true,
-    cast: (show.cast || []).slice(0, 4).map(c => (typeof c === 'string' ? c : c && c.name)).filter(Boolean),
+    cast: namedCast(show),
     score,
     reviewCount,
     buckets,
@@ -622,6 +663,9 @@ HARD RULES:
   explain how the site calculates or ranks anything beyond this, which is
   true: the Critic Score is a weighted average of the published critic
   reviews, and the rank compares critic scores of shows currently running.
+- Never claim there are no mixed reviews, nobody in the middle, or similar. The
+  buckets are a rough sort, not what critics said. Describe what they wrote.
+- Never use he/she/his/her for a critic. Use their name or "the review".
 - No em dashes (—) or en dashes (–) anywhere. Use commas, periods, parentheses.
 - No "It's not X, it's Y", no "Not just X, but Y", no "The verdict? ..." style
   fragments, no "delve", "tapestry", "landscape", "robust", "Moreover".
@@ -836,6 +880,30 @@ function allowedNumbers(facts) {
  * in place; anything that would put a wrong fact or AI tell in front of
  * Reddit is a problem and the caller falls back to the template draft.
  */
+// "Not a single mixed review" came from an empty bucket, not from the verdicts:
+// Vulture's "great advantage and disappointment" 67 and a 3/5 Culture Sauce were
+// both bucketed away from "mixed" (BRO-6670 #6). Bucket counts are never grounds
+// to claim what the critics did or didn't say.
+const NO_MIXED_CLAIM = /\b(?:no|zero|not\s+a\s+single|not\s+one|without\s+a\s+single|0)\s+(?:\w+\s+){0,2}mixed\b|\bnobody\s+in\s+the\s+middle\b|\bno\s+one\s+in\s+the\s+middle\b|\bno\s+middle\s+ground\b|\bnothing\s+in\s+between\b/i;
+// Critic pronouns are never inferred: a name or "the review" instead.
+const PRONOUN = /\b(he|she|him|his|hers?)\b/i;
+
+function claimProblems(draft, facts) {
+  const out = [];
+  const people = [facts.bestQuotes, facts.worstQuotes, [facts.loneDissenter]].flat().filter(Boolean)
+    .flatMap(c => [c.critic, c.outlet]).filter(Boolean).map(n => String(n).toLowerCase());
+  for (const [where, text] of [['title', draft.title], ['body', draft.body], ['suggestedReply', draft.suggestedReply]]) {
+    if (NO_MIXED_CLAIM.test(text.replace(/https?:\/\/\S+/g, ''))) out.push(`${where} claims there are no mixed reviews; describe what critics wrote instead`);
+    for (const sent of text.split(/(?<=[.!?])\s+/)) {
+      if (PRONOUN.test(sent) && people.some(n => sent.toLowerCase().includes(n))) {
+        out.push(`${where} uses a pronoun for a critic ("${sent.slice(0, 50)}"); use their name or "the review"`);
+        break;
+      }
+    }
+  }
+  return out;
+}
+
 function lintDraft(raw, facts) {
   const problems = [];
   const draft = {
@@ -875,6 +943,7 @@ function lintDraft(raw, facts) {
   if (/\brank(ing|ings|ed)?\b[^.]*\b(consider|factor|weigh|include)/i.test(draft.suggestedReply)) {
     problems.push('suggestedReply explains the ranking method (not supported by facts)');
   }
+  problems.push(...claimProblems(draft, facts));
   const words = draft.body.split(/\s+/).filter(Boolean).length;
   if (words > 260) problems.push(`body too long (${words} words)`);
 
@@ -1057,6 +1126,9 @@ function activeDrafts(drafts, nowMs) {
 }
 
 module.exports = {
+  aggregatorGapHold,
+  namedCast,
+  claimProblems,
   keepPreviousDraft,
   updateAllowed,
   isRetryableDraft,

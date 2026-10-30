@@ -231,8 +231,14 @@ async function main() {
     }
   }
 
+  // BRO-6676: hold a first draft while a known aggregator roundup lists outlets we don't display.
+  const gapAudit = loadJSON(path.join(ROOT, 'data', 'audit', 'show-review-gap.json'), { results: [] });
+  const gapByShow = new Map((gapAudit.results || []).map(r => [r.showId, r]));
+
   for (const c of candidates) {
     const prevDraft = drafts.drafts[c.show.id];
+    const gate = lib.aggregatorGapHold(gapByShow.get(c.show.id));
+    if (gate.hold && !FORCE_SHOW) { console.log(`  ${c.show.id}: HELD, ${gate.reason}`); continue; }
     // --show on a posted draft would pay for text nobody will use, and the
     // stored text would no longer match what went up.
     if (prevDraft && prevDraft.status === 'posted') { console.log(`  ${c.show.id}: already posted, not redrafting`); continue; }
