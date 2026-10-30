@@ -20,7 +20,7 @@ runs:
         LEASE_SYNC_PAGE: ${{ inputs.page }}
         LINEAR_API_KEY: ${{ inputs.linear-api-key }}
       run: |
-        node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync
+        node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || echo "::warning::opening-night lease sync crashed (exit $?); writers read whatever lease file is on disk"
         if [ "$LEASE_SYNC_PAGE" = "true" ]; then
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease-alert.js"
         fi
