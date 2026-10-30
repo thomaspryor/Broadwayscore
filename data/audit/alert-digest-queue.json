@@ -208,20 +208,6 @@
     "queuedAt": "2026-10-29T12:25:49.979Z"
   },
   {
-    "conditionKey": "corpus-drift:show-score-urls",
-    "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
-    "description": "check-corpus-drift.js audit \"show-score-urls\" (node scripts/audit-show-score-urls.js --strict) has been drifting. Latest output:\n\n    Show: Who’s Afraid of Virginia Woolf? @ Soho Place (open, opens 2026-09-30)\n    Page venue: @sohoplace\n    Review dates: 0 dates found\n    ! Page venue \"@sohoplace\" != show venue \"Soho Place\"\n\nSUSPICIOUS — no archive to verify (35):\n  no-mans-land-2013 (closed, James Earl Jones Theatre): No archive to verify, multi-production show (2 productions)\n  of-mice-and-men-2014 (closed, Longacre Theatre): No archive to verify, multi-production show (2 productions)\n  annie-2012 (closed, Palace Theatre): No archive to verify, multi-production show (3 productions)\n  cat-on-a-hot-tin-roof-2013 (closed, Richard Rodgers Theatre): No archive to verify, multi-production show (6 productions)\n  a-streetcar-named-desire-2012 (closed, Broadhurst Theatre): No archive to verify, multi-production show (5 productions)\n  hamlet-2009 (closed, Broadhurst Theatre): No archive to verify, multi-production show (3 productions)\n  les-miserables-2014 (closed, Imperial Theatre): No archive to verify, multi-production show (3 productions)\n  cyrano-de-bergerac-2012 (closed, Todd Haimes Theatre): No archive to verify, multi-production show (3 productions)\n  jekyll-and-hyde-2013 (closed, Marquis Theatre): No archive to verify, multi-production show (2 productions)\n  godspell-2011 (closed, Circle in the Square Theatre): No archive to verify, multi-production show (2 productions)\n  ... and 25 more (use --verbose)\n\nANOTHER PRODUCTION'S PAGE (5):\n  machinal-2014: https://www.show-score.com/broadway-shows/machinal\n    7/7 page dates (earliest 2024-04-19) come over 365 days after this production closed 2014-03-02: another production's page [archived page dates]\n  betrayal-2013: https://www.show-score.com/broadway-shows/betrayal\n    35/35 page dates (earliest 2019-03-13) come over 365 days after this production closed 2014-01-05: another production's page [archived page dates]\n  the-choir-of-man-off-west-end-2026: https://www.show-score.com/uk/london/west-end-shows/choir-of-man-west-end\n    wrong-production page: 5/5 page dates (latest 2023-10-14) predate this production's start 2026-03-14 by over 60 days: another production's page [extractor rejection]\n  fish-off-broadway-2026: https://www.show-score.com/off-broadway-shows/fish-signature-theatre-company\n    wrong-production page: 5/5 page dates (latest 2024-04-12) predate this production's start 2026-09-26 by over 60 days: another production's page [extractor rejection]\n  elektra-off-broadway-2026: https://www.show-score.com/off-broadway-shows/elektra-theatre-for-a-new-audience\n    wrong-production page: 5/5 page dates (latest 2022-04-13) predate this production's start 2026-11-10 by over 60 days: another production's page [extractor rejection]\n\nRemove with: node scripts/purge-wrong-production-show-score.js --apply\n\nSummary:\n  Duplicate URLs:       0\n  Confirmed wrong:      6\n  Suspicious (no arch): 35\n  Other production:     5\n  OK:                   750\n  No archive:           107\n  Total checked:        900",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T12:20:58.555Z"
-  },
-  {
     "conditionKey": "corpus-drift:aggregator-archive-integrity",
     "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff) (still open — BRO-4795)",
     "description": "Still firing after 34 notifications since it was filed. Tracked at BRO-4795.\n\ncheck-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 6888 files\n  Skipped (no show in shows.json): 261\n  Bad: 1\n\n❌ NEW bad archives (1):\n   - show-score/well-see-off-broadway-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
@@ -3960,5 +3946,33 @@
       }
     ],
     "queuedAt": "2026-10-30T13:14:47.022Z"
+  },
+  {
+    "conditionKey": "corpus-drift:show-score-urls",
+    "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
+    "description": "check-corpus-drift.js audit \"show-score-urls\" (node scripts/audit-show-score-urls.js --strict) has been drifting. Latest output:\n\n    Review dates: 0 dates found\n    ! Page venue \"@sohoplace\" != show venue \"Soho Place\"\n\nSUSPICIOUS — no archive to verify (35):\n  no-mans-land-2013 (closed, James Earl Jones Theatre): No archive to verify, multi-production show (2 productions)\n  of-mice-and-men-2014 (closed, Longacre Theatre): No archive to verify, multi-production show (2 productions)\n  annie-2012 (closed, Palace Theatre): No archive to verify, multi-production show (3 productions)\n  cat-on-a-hot-tin-roof-2013 (closed, Richard Rodgers Theatre): No archive to verify, multi-production show (6 productions)\n  a-streetcar-named-desire-2012 (closed, Broadhurst Theatre): No archive to verify, multi-production show (5 productions)\n  hamlet-2009 (closed, Broadhurst Theatre): No archive to verify, multi-production show (3 productions)\n  les-miserables-2014 (closed, Imperial Theatre): No archive to verify, multi-production show (3 productions)\n  cyrano-de-bergerac-2012 (closed, Todd Haimes Theatre): No archive to verify, multi-production show (3 productions)\n  jekyll-and-hyde-2013 (closed, Marquis Theatre): No archive to verify, multi-production show (2 productions)\n  godspell-2011 (closed, Circle in the Square Theatre): No archive to verify, multi-production show (2 productions)\n  ... and 25 more (use --verbose)\n\nANOTHER PRODUCTION'S PAGE (6):\n  machinal-2014: https://www.show-score.com/broadway-shows/machinal\n    7/7 page dates (earliest 2024-04-19) come over 365 days after this production closed 2014-03-02: another production's page [archived page dates]\n  betrayal-2013: https://www.show-score.com/broadway-shows/betrayal\n    35/35 page dates (earliest 2019-03-13) come over 365 days after this production closed 2014-01-05: another production's page [archived page dates]\n  the-boy-at-the-back-of-the-class-off-west-end-2026: https://www.show-score.com/uk/london/west-end-shows/the-boy-at-the-back-of-the-class\n    wrong-production page: 7/7 page dates (latest 2024-02-13) predate this production's start 2026-04-07 by over 60 days: another production's page [extractor rejection]\n  the-choir-of-man-off-west-end-2026: https://www.show-score.com/uk/london/west-end-shows/choir-of-man-west-end\n    wrong-production page: 5/5 page dates (latest 2023-10-14) predate this production's start 2026-03-14 by over 60 days: another production's page [extractor rejection]\n  fish-off-broadway-2026: https://www.show-score.com/off-broadway-shows/fish-signature-theatre-company\n    wrong-production page: 5/5 page dates (latest 2024-04-12) predate this production's start 2026-09-26 by over 60 days: another production's page [extractor rejection]\n  elektra-off-broadway-2026: https://www.show-score.com/off-broadway-shows/elektra-theatre-for-a-new-audience\n    wrong-production page: 5/5 page dates (latest 2022-04-13) predate this production's start 2026-11-10 by over 60 days: another production's page [extractor rejection]\n\nRemove with: node scripts/purge-wrong-production-show-score.js --apply\n\nSummary:\n  Duplicate URLs:       0\n  Confirmed wrong:      6\n  Suspicious (no arch): 35\n  Other production:     6\n  OK:                   752\n  No archive:           111\n  Total checked:        906",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T14:00:16.765Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-30.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T14:00:17.627Z"
   }
 ]
