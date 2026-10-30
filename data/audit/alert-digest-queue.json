@@ -82,5 +82,36 @@
     "tracked": "BRO-5526",
     "fields": [],
     "queuedAt": "2026-10-30T08:43:47.641Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6603-mvupk47q",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6603-mvupk47q",
+    "description": "land.yml did not land land/job/linear-BRO-6603-mvupk47q: the rebase gate went red at f7dda3c204. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6603-mvupk47q @ f7dda3c204 (origin/land/job/linear-BRO-6603-mvupk47q) → origin/main @ dc7df65c7d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ dc7df65c7d: Rebasing (1/1) error: could not apply f7dda3c2040... test: BRO-6603 key Chaka Khan venue guard on stable slug (id was reclassified to off-west-end) hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41027190355",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6603-mvupk47q"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "f7dda3c20400403594d41a1a9d27e51b0c943bbc"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41027190355"
+      }
+    ],
+    "queuedAt": "2026-10-30T08:57:38.200Z"
   }
 ]
