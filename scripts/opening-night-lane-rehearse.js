@@ -6,16 +6,20 @@
  * if the lane may arm.
  *
  *   node scripts/opening-night-lane-rehearse.js --rehearse [--fixture synthetic] [--out data/audit/lane-rehearsal.json]
+ *   node scripts/opening-night-lane-rehearse.js --rehearse --fixture recorded [--archive data/aggregator-archive] [--out data/audit/lane-rehearsal-recorded.json]
  *   node scripts/opening-night-lane-rehearse.js --arm-check [--record data/audit/lane-rehearsal-recorded.json] [--max-age-days 8]
  *
- * The arm check reads the RECORDED rehearsal's record (BRO-6619): a synthetic pass, the only kind --rehearse writes
- * today, never arms a real publish. Until a fixture from a real opening exists, --arm-check exits 3.
+ * The arm check reads the RECORDED rehearsal's record (BRO-6619): a synthetic pass never arms a real publish.
+ * `--fixture recorded` (BRO-5201) replays real opening nights (scripts/lib/lane-recorded-nights) through the production
+ * wiring and checks them against the archived aggregator pages. With no archive it prints SKIPPED, writes nothing and
+ * exits 78: a skip is never a pass, and the previous record (if any) ages out on its own.
  */
 const path = require('path');
 const rehearsal = require('./lib/opening-night-lane/rehearsal');
 const { buildSyntheticFixture } = require('./lib/opening-night-lane/rehearsal-fixture');
 
 const REPO = path.join(__dirname, '..');
+const EXIT_SKIPPED = 78;
 const DEFAULT_RECORD = rehearsal.rehearsalRecordFile(REPO, 'synthetic');
 const ARM_RECORD = rehearsal.rehearsalRecordFile(REPO, 'recorded');
 const arg = (name, dflt) => { const i = process.argv.indexOf(name); return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : dflt; };
@@ -28,7 +32,9 @@ async function main() {
     process.exit(decision.arm ? 0 : 3);
   }
   if (process.argv.includes('--rehearse')) {
-    if (arg('--fixture', 'synthetic') !== 'synthetic') { console.error('only the synthetic fixture exists until a real opening is recorded (BRO-4787 follow-up)'); process.exit(2); }
+    const fixture = arg('--fixture', 'synthetic');
+    if (fixture === 'recorded') return rehearseRecorded();
+    if (fixture !== 'synthetic') { console.error(`unknown fixture ${fixture}: synthetic or recorded`); process.exit(2); }
     const out = arg('--out', DEFAULT_RECORD);
     const laneHash = rehearsal.laneCodeHash();
     let result;
@@ -47,4 +53,26 @@ async function main() {
   console.error('usage: opening-night-lane-rehearse.js --rehearse | --arm-check');
   process.exit(2);
 }
+async function rehearseRecorded() {
+  const { runRecordedRehearsal } = require('./lib/lane-recorded-nights');
+  const out = arg('--out', ARM_RECORD);
+  const archiveDir = path.resolve(arg('--archive', path.join(REPO, 'data', 'aggregator-archive')));
+  const laneHash = rehearsal.laneCodeHash();
+  let result;
+  try {
+    result = await runRecordedRehearsal({ archiveDir });
+  } catch (e) {
+    rehearsal.recordRehearsal(out, { pass: false }, { kind: 'recorded', laneHash, error: e && e.message });
+    console.error(e && e.stack || e);
+    process.exit(2);
+  }
+  if (result.skipped) {
+    console.error(`SKIPPED: recorded rehearsal did not run (${result.reason}). Nothing was recorded; this is not a pass.`);
+    process.exit(EXIT_SKIPPED);
+  }
+  const rec = rehearsal.recordRehearsal(out, result, { kind: 'recorded', laneHash });
+  console.log(JSON.stringify({ pass: rec.pass, checked: rec.checked, failures: rec.failures, nights: result.nights }));
+  process.exit(result.pass ? 0 : 1);
+}
+
 main().catch((e) => { console.error(e && e.stack || e); process.exit(2); });
