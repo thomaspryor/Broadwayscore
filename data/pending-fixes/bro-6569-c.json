@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-6569-c",
+  "planId": "f5d2ddb8-a759-41ac-a07d-d13286026bdc",
+  "status": "pending",
+  "createdAt": "2026-10-30T04:05:08.120Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6569: resolve London review urls held by two files or two different-title shows (auto-pinned duplicates, wrong-production copies, wrong urls, non-review pages) (part 3 of 3)",
+    "steps": [
+      "BRO-6569: text is the King and I review (headline words \"bombast\" and \"subtlety\" in the text); stored url was Cavendish's Exit the King review held on exit-the-king-west-end-2018.",
+      "BRO-6569: Standard id b1277876 dates this to April 2026 and the text says Pike is reprising the role: it is the Wyndham's transfer review, not the 2025 NT one.",
+      "BRO-6569: same evidence: the review is of this Wyndham's run."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-king-and-i-west-end-2018/telegraph--dominic-cavendish.json",
+        "field": "url",
+        "oldValue": "https://www.telegraph.co.uk/theatre/what-to-see/exit-king-review-national-theatre-rhys-ifans-drives-chilling/",
+        "newValue": "https://www.telegraph.co.uk/theatre/what-to-see/king-london-palladium-review-provocative-blend-bombast-subtlety/",
+        "description": "BRO-6569: text is the King and I review (headline words \"bombast\" and \"subtlety\" in the text); stored url was Cavendish's Exit the King review held on exit-the-king-west-end-2018."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2026/standard--nick-curtis.json",
+        "field": "publishDate",
+        "oldValue": "July 24th, 2025",
+        "newValue": "2026-04-08",
+        "description": "BRO-6569: Standard id b1277876 dates this to April 2026 and the text says Pike is reprising the role: it is the Wyndham's transfer review, not the 2025 NT one."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6569: same evidence: the review is of this Wyndham's run."
+      }
+    ]
+  }
+}

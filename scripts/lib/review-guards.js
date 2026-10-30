@@ -4433,9 +4433,10 @@ function isUnverifiableWebSearchRow(data, opts) {
  * sees an edit.
  * @param {object} data review-text record
  * @param {object} show shows.json entry the file is filed under
+ * @param {{titleOf?: Map<string,string>}} [opts] co-member titles by id (default: data/shows.json)
  * @returns {boolean}
  */
-function isCombinedReviewOfOtherMemberOnly(data, show) {
+function isCombinedReviewOfOtherMemberOnly(data, show, opts = {}) {
   if (!data || data.isCombinedReview !== true || !Array.isArray(data.combinedWith) || data.combinedWith.length === 0) return false;
   if (!data.url || !show || !show.title) return false;
   if (data.humanReviewScore >= 1 || data.wrongShowManualClear === true) return false;
@@ -4466,13 +4467,42 @@ function isCombinedReviewOfOtherMemberOnly(data, show) {
     if (b.length < 3 || (own && (own.includes(b) || b.includes(own)))) return false;
     return hay.includes(`-${b}-`);
   });
-  if (!namesMember) return false;
   const text = [data.fullText, ...require('./excerpt-fields').getExcerpts(data)]
     .filter((v) => typeof v === 'string' && v.trim()).join(' ');
-  if (!text) return true;
   const titles = require('./show-title-variants');
   const names = parts.length > 1 ? [show.title, ...parts] : [show.title];
-  return !names.some((t) => titles.textMentionsTitle(text, t) || titles.textMentionsShortTitle(text, t, 1));
+  const namesOwn = (t) => !!(titles.textMentionsTitle(t, names[0]) || names.some((n) => titles.textMentionsTitle(t, n) || titles.textMentionsShortTitle(t, n, 1)));
+  if (namesMember) return !text || !namesOwn(text);
+  // BRO-6569: an opaque url (ft.com/content/<uuid>) names no show, so the text
+  // decides alone: a body that names a co-member by its full title and never
+  // this show is the co-member's review. magic-mike-live-west-end-2021 held
+  // the FT Tempest review (excerpt and url) and mass-west-end-2026 the FT John
+  // Proctor Is the Villain stub, both live under the wrong show. Titles come
+  // from shows.json (the 4-char variant minimum keeps one-word ids out).
+  // Only a paired review (up to 3 co-members: a shared index url spans
+  // hundreds), and only when this show's own title is detectable at all:
+  // "End" and "Red" are below the variant minimum, so their own reviews
+  // would read as never naming them.
+  // Opaque means the path carries no word at all (an id): a worded roundup
+  // url naming no member is left to the url rule.
+  const PATH_WORDS = new Set(['content', 'article', 'articles', 'news', 'review', 'reviews', 'stage', 'theatre', 'theater', 'culture', 'arts', 'html', 'edition', 'showbiz']);
+  const opaque = hay.split('-').every((w) => !/^[a-z]{4,}$/.test(w) || PATH_WORDS.has(w));
+  if (!opaque || data.combinedWith.length > 3 || text.length < 150 || namesOwn(text)) return false;
+  if (!titles.buildShowTitleVariants(show.title).some((v) => v.length >= 4)
+    && !names.some((n) => titles.textMentionsShortTitle(n, n, 1))) return false;
+  let titleOf = opts.titleOf || isCombinedReviewOfOtherMemberOnly._titleOf;
+  if (!titleOf) {
+    titleOf = new Map();
+    try {
+      const raw = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+      for (const s of (Array.isArray(raw) ? raw : raw.shows) || []) titleOf.set(s.id, s.title);
+    } catch { /* no shows.json: the url rule above still applies */ }
+    isCombinedReviewOfOtherMemberOnly._titleOf = titleOf;
+  }
+  return data.combinedWith.some((id) => {
+    const t = titleOf.get(id);
+    return !!t && slugify(t) !== own && !!titles.textMentionsTitle(text, t);
+  });
 }
 
 /**

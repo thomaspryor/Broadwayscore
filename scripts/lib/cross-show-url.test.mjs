@@ -193,3 +193,21 @@ test('single-word titles match whole path words only (full slug and base title)'
   const r = dcheck('dancers-life-2025', 'https://example.com/reviews/ballroom-review', '1978-12-15');
   assert.equal(r && r.matchedShowId, 'ballroom-1978');
 });
+
+// BRO-6569: The Telegraph's Exit the King url drops the inner "the".
+test('flags an inner-connector-dropped slug (exit-king) filed under The King and I', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'the-king-and-i-west-end-2018', title: 'The King and I' },
+    { id: 'exit-the-king-west-end-2018', title: 'Exit the King' },
+    { id: 'bullets-over-broadway-2014', title: 'Bullets Over Broadway' },
+    { id: 'guys-and-dolls-west-end-2016', title: 'Guys and Dolls' },
+  ]);
+  const url = 'https://www.telegraph.co.uk/theatre/what-to-see/exit-king-review-national-theatre-rhys-ifans-drives-chilling/';
+  assert.equal(detectCrossShowUrlMismatch('the-king-and-i-west-end-2018', url, { index: idx })?.matchedShowId, 'exit-the-king-west-end-2018');
+  assert.equal(detectCrossShowUrlMismatch('exit-the-king-west-end-2018', url, { index: idx }), null);
+  assert.equal(detectCrossShowUrlMismatch('the-king-and-i-west-end-2018',
+    'https://www.telegraph.co.uk/theatre/what-to-see/king-london-palladium-review-provocative-blend-bombast-subtlety/', { index: idx }), null);
+  // An own word ("bullets") vouches even when another title's joined slug ("guys-dolls") is in the url.
+  assert.equal(detectCrossShowUrlMismatch('bullets-over-broadway-2014',
+    'https://www.thewrap.com/bullets-broadway-theater-review-woody-allen-takes-another-shot-gangland-guys-dolls/', { index: idx }), null);
+});

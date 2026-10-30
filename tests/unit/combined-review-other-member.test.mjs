@@ -81,3 +81,34 @@ test('a joint review whose url names a distinctive word of this title is kept (B
   };
   assert.equal(isCombinedReviewOfOtherMemberOnly(d, show), false);
 });
+
+// BRO-6569: an opaque url (FT /content/<uuid>) names no show, so the text decides.
+const MIKE = { id: 'magic-mike-live-west-end-2021', title: 'Magic Mike Live', category: 'west-end' };
+const titleOf = new Map([['the-tempest-west-end-2024', 'The Tempest'], ['lend-me-a-tenor-2010', 'Lend Me a Tenor']]);
+const ftTempest = () => ({
+  showId: MIKE.id, outletId: 'financialtimes', criticName: 'Sarah Hemming',
+  url: 'https://www.ft.com/content/00e3e54e-ba2f-4413-9c52-fbe1da1c81d4', fullText: '',
+  dtliExcerpt: 'Sigourney Weaver stars in a bleakly spectacular The Tempest. Production at the Theatre Royal, Drury Lane is visually striking but lacks emotional depth, and the staging of the storm is a dazzling opening.',
+  isCombinedReview: true, combinedWith: ['the-tempest-west-end-2024'],
+});
+
+test('opaque url: text naming only the co-member is excluded (FT Tempest on Magic Mike Live)', () => {
+  assert.equal(isCombinedReviewOfOtherMemberOnly(ftTempest(), MIKE, { titleOf }), true);
+});
+
+test('opaque url: text naming this show too is kept', () => {
+  const d = { ...ftTempest(), dtliExcerpt: ftTempest().dtliExcerpt + ' Next door, Magic Mike Live keeps the hen parties happy all night long.' };
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, MIKE, { titleOf }), false);
+});
+
+test('opaque url: a title below the variant minimum ("Red") cannot be read as unnamed', () => {
+  const RED = { id: 'red-2010', title: 'Red' };
+  const d = { ...ftTempest(), showId: 'red-2010', combinedWith: ['lend-me-a-tenor-2010'],
+    dtliExcerpt: 'Lend Me a Tenor is a farce of slamming doors; the Rothko play next door is a study of a painter at war with his own success, and both are worth seeing this season.' };
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, RED, { titleOf }), false);
+});
+
+test('opaque url: a shared index url (more than 3 co-members) is not judged by text', () => {
+  const d = { ...ftTempest(), combinedWith: ['the-tempest-west-end-2024', 'a', 'b', 'c'] };
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, MIKE, { titleOf }), false);
+});
