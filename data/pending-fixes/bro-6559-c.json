@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6559-c",
   "planId": "e65b69c2-2d69-4130-ba1d-d902931e01a7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T03:48:43.105Z",
   "submitter": {
     "name": null,
@@ -69,5 +69,34 @@
         "description": "death-of-a-salesman: notes (owner decision 2026-10-30, BRO-6559: Squeaker on a private industry tip)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T04:10:36.952Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    }
+  ],
+  "executedIn": "ci"
 }
