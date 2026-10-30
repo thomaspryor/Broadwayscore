@@ -231,6 +231,25 @@ jobs:
           if [ "$RC" -eq 3 ]; then echo "::notice::lane stood down (not armed, lease held elsewhere, or LANE_STANDDOWN set)"; exit 0; fi
           exit "$RC"
 
+      # BRO-6620: an explicit stood-down marker for LANE_ONLY_MARKETS. The old path (Express retry dispatch, poller
+      # rebuild/deploy) reads data/opening-night/lane-stood-down/<show>__<night>.json, never this job's conclusion, and
+      # comes back on when the marker's holder is the live lease's holder. Main only and continue-on-error: a failed write or
+      # push leaves the lease release (every exit path releases) to bring the old path back.
+      - name: Record lane stood down (BRO-6620)
+        if: always() && steps.lane.outputs.exit == '3' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+        run: |
+          node scripts/lane-only-markets.js mark "--show=${SHOW}" "--night=${NIGHT}" "--holder=${OPENING_NIGHT_LANE_HOLDER}" "--run-id=${GITHUB_RUN_ID}" \
+            || { echo "::warning::could not write the lane stood-down marker"; exit 0; }
+          git add data/opening-night/lane-stood-down/
+          if git diff --cached --quiet; then echo "Marker unchanged"; exit 0; fi
+          git commit -m "data: opening-night lane stood down for ${SHOW} (${NIGHT}) [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
       # Scored reviews are written to data/review-texts/<show>/ before publish, so persist them whatever the lane did.
       - name: Push scored reviews to review-texts
         id: push

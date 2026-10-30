@@ -7,7 +7,7 @@
  *   decide --show=ID       print one decision as JSON
  *   mark --show= --night= --holder= [--run-id=]   lane-live: record the lane's exit 3
  *
- * Reads LANE_ONLY_MARKETS(+_READ=ok) and LANE_STANDDOWN(+_READ=ok) from the environment. Any error prints a
+ * --markers-dir= and --now= exist for tests. Reads LANE_ONLY_MARKETS(+_READ=ok) and LANE_STANDDOWN(+_READ=ok) from the environment. Any error prints a
  * warning and leaves the old path on (exit 0, suppress=false): a gate that cannot decide never silences a night.
  */
 const fs = require('fs');
@@ -33,13 +33,13 @@ function summary(line) {
 
 function main() {
   if (cmd === 'mark') {
-    const file = lom.writeMarker({ show: arg('show'), night: arg('night'), holder: arg('holder'), runId: arg('run-id') });
+    const file = lom.writeMarker({ show: arg('show'), night: arg('night'), holder: arg('holder'), runId: arg('run-id'), dir: arg('markers-dir') || undefined });
     console.log(`lane-only markets: recorded the lane's exit 3 in ${path.relative(process.cwd(), file)}`);
     return 0;
   }
   if (cmd === 'gate' || cmd === 'decide') {
     let decider;
-    try { decider = lom.createDecider({ findShow: findShowFactory() }); } catch (e) {
+    try { decider = lom.createDecider({ findShow: findShowFactory(), markersDir: arg('markers-dir') || undefined, now: arg('now') || undefined }); } catch (e) {
       console.log(`::warning::lane-only markets: cannot decide (${String(e.message).slice(0, 160)}); old path stays on`);
       output('suppress', 'false');
       return 0;
