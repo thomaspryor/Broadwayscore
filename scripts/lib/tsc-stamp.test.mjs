@@ -318,7 +318,7 @@ test('CLI hook pre-warm end to end: checks-job record -> export -> Land-job seed
   fs.writeFileSync(path.join(r.d, 'scripts', 'b.js'), 'dirty\n');
   assert.equal(cli(['hook-seed-export', `--rebased=${head}`, `--pre=${pre}`], warm).stdout.trim(), '');
   fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
-  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('land.yml wires the hook pre-warm: checks job runs the real hook + exports, Land job seeds before landing', () => {
