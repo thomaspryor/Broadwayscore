@@ -551,12 +551,21 @@ function titleTokens(title) {
   // where the fragment count collapses to 1-2 tokens and the `tokens.length<=2`
   // branch then demands a 100% match: "La Bohème" → ["boh"], "Jenůfa" → ["jen"].
   // Same fold as title-normalization.js:29 / show-matching.js:1078.
-  return (title || '').toLowerCase()
+  const words = (title || '').toLowerCase()
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9 ]+/g, ' ')
     .split(/\s+/)
-    .filter(t => t.length >= 3 && !STOPWORDS.has(t));
+    .filter(Boolean);
+  const significant = words.filter(t => t.length >= 3 && !STOPWORDS.has(t));
+  if (significant.length) return significant;
+  // BRO-6629: a title made only of short or stopword tokens ("44", "Oz",
+  // "The Play") used to yield [], and urlMatchesShow accepts EVERY link on an
+  // empty token set, so a BWW/Playbill roundup sidebar for another show (the
+  // Merrily URLs on "44") was booked as a missing review. Fall back to the
+  // numeric / 2-char words, then to every word, so a token set exists.
+  const short = words.filter(t => /^\d+$/.test(t) || (t.length >= 2 && !STOPWORDS.has(t)));
+  return short.length ? short : words;
 }
 
 function urlMatchesShow(href, tokens) {
@@ -990,18 +999,23 @@ async function auditShow(show, opts = {}) {
   // blocked rather than silently treated as current-run.
   const ssPriorRunUrls = new Map(); // url -> priorRunSource
   try {
-    const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
+    const { showScoreUrlForShow, fetchAllShowScoreCriticTiles } = require('./lib/show-score-discover');
+    const { isShowScoreTileDateOutOfRun } = require('./lib/gap-ingest-policy');
     const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap(), opts.allShows || getAllShowsForShowScore());
     if (ssUrl) {
       const fetchHtml = async (u) => {
         const r = await fetchPage(u, { timeout: 45000 });
         return (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
       };
-      for (const u of await fetchAllShowScoreReviewUrls(ssUrl, fetchHtml)) {
+      for (const tile of await fetchAllShowScoreCriticTiles(ssUrl, fetchHtml)) {
+        const u = tile.url;
         if (!isReviewUrl(u)) continue;
         const norm = normalizeReviewUrl(u);
         aggUrls.add(norm);
         if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.set(norm, 'show-score-url-year');
+        // BRO-6629: the tile's own review date. Show Score keeps one page per
+        // title, and a prior run's year-less URLs passed the URL-year check.
+        else if (isShowScoreTileDateOutOfRun(tile.date, show)) ssPriorRunUrls.set(norm, 'show-score-tile-date');
         else {
           const sig = otherProductionUrlSignal(norm, show);
           if (sig) ssPriorRunUrls.set(norm, `show-score-${sig.signal}`);

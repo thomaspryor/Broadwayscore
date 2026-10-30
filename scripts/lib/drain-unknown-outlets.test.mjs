@@ -56,7 +56,10 @@ test('url is paired to the show it is about; ambiguous or unmatched urls are ski
 test('wrong-production pairings are refused (wildcard title, predates opening, US outlet on West End)', () => {
   const mk = (title, extra = {}) => ({ outlets: [{ host: 'spokesman.com', occurrences: 2, shows: ['s1'], sampleUrls: ['https://www.spokesman.com/stories/2019/jul/11/mj-review/'] }], _s: { s1: { title, ...extra } } });
   const run = f => planDrain(f, f._s);
-  assert.equal(run(mk('MJ The Musical')).skipped[0].reason, 'unpaired-show'); // zero title tokens
+  assert.equal(run(mk('The Musical')).skipped[0].reason, 'unpaired-show'); // zero title tokens
+  // BRO-6629: a short title keeps its token ("MJ" matches whole words only), so the
+  // pairing stands and the opening date refuses the 2019 notice.
+  assert.equal(run(mk('MJ The Musical', { openingDate: '2022-02-01' })).skipped[0].reason, 'predates-production');
   assert.equal(productionMismatch('https://x.com/2019/01/rent-review', { openingDate: '2026-10-08' }), 'predates-production');
   assert.equal(productionMismatch('https://x.com/2026/12/rent-review', { openingDate: '2026-10-08' }), null);
   assert.equal(productionMismatch('https://x.com/2026/12/rent-review', { openingDate: '2026-10-08', market: 'west-end' }), 'non-uk-outlet-for-west-end');

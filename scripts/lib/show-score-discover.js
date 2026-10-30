@@ -235,6 +235,75 @@ function extractReadMoreUrls(html) {
 }
 
 /**
+ * Parse each critic tile on a Show Score page (or a pagination JSON's html):
+ * [{ url, date, previousProduction, outlet }]. `date` is the tile's own review
+ * date as YYYY-MM-DD ("January 28th, 2019"), or null. `previousProduction` is
+ * Show Score's own "For a previous production" label (BRO-6629). Show Score
+ * keeps one page per title, so the page for a 2024 revival also lists the 2019
+ * and 2016 runs' notices; many of those URLs carry no year (curtainup.com/
+ * veryhungrycaterpillarshow.html, offoffonline.com/?p=20946), so the tile date
+ * is the only reliable production signal.
+ */
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
+  'august', 'september', 'october', 'november', 'december'];
+function parseShowScoreTileDate(text) {
+  const m = String(text || '').match(/([A-Za-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+((?:19|20)\d{2})/);
+  if (!m) return null;
+  const mi = MONTHS.indexOf(m[1].toLowerCase());
+  if (mi < 0) return null;
+  const d = parseInt(m[2], 10);
+  if (d < 1 || d > 31) return null;
+  return `${m[3]}-${String(mi + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+function extractShowScoreCriticTiles(html) {
+  if (!html || typeof html !== 'string') return [];
+  const parts = html.split(/class=["']review-tile-v2 -critic["']/).slice(1);
+  const out = [];
+  const seen = new Set();
+  for (const part of parts) {
+    const m = part.match(/href=["'](https?:\/\/[^"']+)["'][^>]*>\s*Read more/i);
+    if (!m) continue;
+    // Some tiles wrap the outlet link in a Google redirect copied from a doc
+    // (google.com/url?q=<review>&amp;sa=D...). Unwrap it so the host and URL
+    // are the outlet's, not google.com.
+    let url = require('./scraper').unwrapRedirectUrl(m[1].replace(/&amp;/g, '&')).split('#')[0];
+    try { if (SS_HOSTS.test(new URL(url).hostname)) continue; } catch { continue; }
+    if (seen.has(url)) continue;
+    seen.add(url);
+    const dateM = part.match(/review-tile-v2__date["'][^>]*>([^<]*)</);
+    const alt = part.match(/<img[^>]*\balt=["']([^"']*)["']/);
+    out.push({
+      url,
+      date: dateM ? parseShowScoreTileDate(dateM[1]) : null,
+      previousProduction: /For a previous production/i.test(part.split(/review-tile-v2__body/)[0] || ''),
+      outlet: alt ? alt[1].trim() : null,
+    });
+  }
+  return out;
+}
+
+/**
+ * Why a Show Score page we landed on (after redirects) is the wrong section
+ * for this show, or null when it is acceptable (BRO-6629).
+ *
+ * Show Score files some real off-Broadway runs under /off-off-broadway-shows/
+ * (Caesar and Cleopatra at the Gingold, Covenant at Roundabout Underground,
+ * What Became of Us at Atlantic Stage 2): /off-broadway-shows/<slug> 301s
+ * there. gather-reviews rejected every off-off landing, so those shows never
+ * got their Show Score critic list. An off-Broadway show may land in either
+ * off-Broadway section; the page-title and production-date gates downstream
+ * still check it is the right production. A Broadway show keeps rejecting
+ * both (the /broadway-shows/redwood -> off-off redirect case).
+ */
+function showScoreLandingBlockReason(finalUrl, { isOffBroadway = false } = {}) {
+  const u = String(finalUrl || '');
+  if (isOffBroadway) return null;
+  if (u.includes('/off-off-broadway-shows/')) return 'off-off-broadway-redirect';
+  if (u.includes('/off-broadway-shows/')) return 'off-broadway-redirect';
+  return null;
+}
+
+/**
  * Fallback extractor (JSON-LD `url` + anchors) for the initial page when no
  * "Read more" tiles are present. Previously grabbed EVERY href/JSON-LD url on
  * the page — that harvested the page's own asset shell (cloudfront fonts,
@@ -296,14 +365,28 @@ function showScorePaginationPages(totalCount, perPage = 8) {
  * @returns {Promise<string[]>} de-duplicated outlet review URLs (show-page-vouched)
  */
 async function fetchAllShowScoreReviewUrls(pageUrl, fetchHtml) {
-  const all = new Set();
+  return (await fetchAllShowScoreCriticTiles(pageUrl, fetchHtml)).map((t) => t.url);
+}
+
+/**
+ * Same walk as fetchAllShowScoreReviewUrls, returning tiles
+ * ({ url, date, previousProduction, outlet }; see extractShowScoreCriticTiles).
+ * A URL found only by the permissive fallback extractor gets date null.
+ */
+async function fetchAllShowScoreCriticTiles(pageUrl, fetchHtml) {
+  const all = new Map();
   let html = '';
   try { html = await fetchHtml(pageUrl); } catch { return []; }
   if (!html) return [];
   // Initial page: prefer "Read more" tiles; fall back to permissive extraction.
-  let initial = extractReadMoreUrls(html);
-  if (initial.length === 0) initial = extractShowScoreReviewUrls(html);
-  initial.forEach(u => all.add(u));
+  let initial = extractShowScoreCriticTiles(html);
+  if (initial.length === 0) {
+    initial = extractReadMoreUrls(html).map((url) => ({ url, date: null, previousProduction: false, outlet: null }));
+  }
+  if (initial.length === 0) {
+    initial = extractShowScoreReviewUrls(html).map((url) => ({ url, date: null, previousProduction: false, outlet: null }));
+  }
+  initial.forEach((t) => all.set(t.url, t));
 
   const { nextPagePath, totalCount } = parseShowScorePagination(html);
   if (nextPagePath) {
@@ -315,11 +398,15 @@ async function fetchAllShowScoreReviewUrls(pageUrl, fetchHtml) {
       try { tileHtml = JSON.parse(body).html || ''; } catch { /* not JSON — use as-is */ }
       if (!tileHtml || tileHtml.length < 10) break;
       const before = all.size;
-      extractReadMoreUrls(tileHtml).forEach(u => all.add(u));
+      let tiles = extractShowScoreCriticTiles(tileHtml);
+      if (tiles.length === 0) {
+        tiles = extractReadMoreUrls(tileHtml).map((url) => ({ url, date: null, previousProduction: false, outlet: null }));
+      }
+      tiles.forEach((t) => { if (!all.has(t.url)) all.set(t.url, t); });
       if (all.size === before) break; // no new URLs → stop
     }
   }
-  return [...all];
+  return [...all.values()];
 }
 
 /**
@@ -391,6 +478,7 @@ function showScoreSlugGuessBlockReason(show, url, urlMap, allShows, year) {
 }
 
 module.exports = {
+  showScoreLandingBlockReason,
   showScorePosterFromHtml,
   showScoreUrlForShow,
   constructShowScoreUrl,
@@ -404,4 +492,7 @@ module.exports = {
   parseShowScorePagination,
   showScorePaginationPages,
   fetchAllShowScoreReviewUrls,
+  fetchAllShowScoreCriticTiles,
+  extractShowScoreCriticTiles,
+  parseShowScoreTileDate,
 };

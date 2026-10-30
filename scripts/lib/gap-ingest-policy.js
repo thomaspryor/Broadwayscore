@@ -122,11 +122,40 @@ function isUrlYearOutOfWindow(url, show) {
  * exactly as isUrlYearOutOfWindow does.
  * @param {string|null} url  the outlet review URL Show Score linked to
  * @param {object} show shows.json record
- * @returns {'show-score-url-year'|null}
+ * @param {{date?: string|null}} [opts] the Show Score tile's own review date
+ * @returns {'show-score-url-year'|'show-score-tile-date'|null}
  */
-function showScoreUrlBlockReason(url, show) {
-  if (!url || typeof url !== 'string') return null;
-  return isUrlYearOutOfWindow(url, show) ? 'show-score-url-year' : null;
+function showScoreUrlBlockReason(url, show, { date = null } = {}) {
+  if (url && typeof url === 'string' && isUrlYearOutOfWindow(url, show)) return 'show-score-url-year';
+  return isShowScoreTileDateOutOfRun(date, show) ? 'show-score-tile-date' : null;
+}
+
+// BRO-6629: Show Score's critic tile carries the review's own date. Many prior-
+// production URLs have no year in them (curtainup.com/veryhungrycaterpillarshow.html,
+// offoffonline.com/?p=20946), so the URL-year gate let a 2016 run's notices through
+// as "missing" for a 2023 production. A dated tile more than TILE_EARLY_DAYS before
+// this production's first preview/opening, or TILE_LATE_DAYS after its closing,
+// reviews another production. Undated tiles, undated shows and a date inside a
+// declared prior run fail open, the same as isUrlYearOutOfWindow.
+const TILE_EARLY_DAYS = 60;
+const TILE_LATE_DAYS = 180;
+const DAY_MS = 864e5;
+function isShowScoreTileDateOutOfRun(date, show) {
+  const t = date ? Date.parse(date) : NaN;
+  if (!Number.isFinite(t) || !show) return false;
+  const starts = [show.previewsStartDate, show.openingDate].map((d) => (d ? Date.parse(d) : NaN)).filter(Number.isFinite);
+  if (!starts.length) return false;
+  for (const run of Array.isArray(show.priorRuns) ? show.priorRuns : []) {
+    // A run marked inheritReviews:false is a separate production; its dates do not clear a tile.
+    if (!run || run.inheritReviews === false) continue;
+    const o = run.openingDate ? Date.parse(run.openingDate) : NaN;
+    if (!Number.isFinite(o)) continue;
+    const c = run.closingDate ? Date.parse(run.closingDate) : NaN;
+    if (t >= o - TILE_EARLY_DAYS * DAY_MS && t <= (Number.isFinite(c) ? c : o) + TILE_LATE_DAYS * DAY_MS) return false;
+  }
+  if (t < Math.min(...starts) - TILE_EARLY_DAYS * DAY_MS) return true;
+  const close = show.closingDate ? Date.parse(show.closingDate) : NaN;
+  return show.status === 'closed' && Number.isFinite(close) && t > close + TILE_LATE_DAYS * DAY_MS;
 }
 
 /**
@@ -137,11 +166,11 @@ function showScoreUrlBlockReason(url, show) {
  *   Show Score link when the review's url may already have been nulled.
  * @returns {{kept: object[], blocked: Array<{review: object, reason: string}>}}
  */
-function partitionShowScoreReviews(reviews, show, { urlOf = (r) => r && r.url } = {}) {
+function partitionShowScoreReviews(reviews, show, { urlOf = (r) => r && r.url, dateOf = (r) => r && (r.publishDate || r.date) } = {}) {
   const kept = [];
   const blocked = [];
   for (const review of reviews || []) {
-    const reason = showScoreUrlBlockReason(urlOf(review), show);
+    const reason = showScoreUrlBlockReason(urlOf(review), show, { date: dateOf(review) });
     if (reason) blocked.push({ review, reason });
     else kept.push(review);
   }
@@ -322,4 +351,4 @@ function isRoundupSelfCitation(row) {
   return SELF_VERDICT_ROUNDUPS.has(src) && normalizeOutlet(row.outletId || row.outletName || '') === src;
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation };
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation };

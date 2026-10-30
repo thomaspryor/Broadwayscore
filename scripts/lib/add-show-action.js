@@ -182,4 +182,15 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   return { ok: true, msg: `shows.json: added ${show.id}${from ? ` (priorRuns link on ${from.id})` : ''}${prior ? ` (priorRuns -> ${prior.id})` : ''}` };
 }
 
-module.exports = { applyAddShow, newRowDuplicate };
+// BRO-6629: an add-show entry is never gathered on its own (ten census-added Off-Broadway
+// shows sat with only their census reviews). execute-approved-fix.yml dispatches
+// gather-reviews for the ids this returns: rows whose opening date has passed (a stale
+// 'previews' status included), so a show that is still announced does not spend ~130
+// outlet searches before any review exists.
+function gatherableAddedShowIds(addedShows, today = new Date().toISOString().slice(0, 10)) {
+  return (addedShows || [])
+    .filter(s => s && s.id && ['open', 'closed', 'previews'].includes(s.status) && s.openingDate && String(s.openingDate).slice(0, 10) <= today)
+    .map(s => s.id);
+}
+
+module.exports = { applyAddShow, newRowDuplicate, gatherableAddedShowIds };

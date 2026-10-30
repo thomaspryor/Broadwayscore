@@ -53,7 +53,7 @@ const { planStatusAction, planRunOrigin, alreadyAppliedResult } = require('./lib
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { applyAddShow } = require('./lib/add-show-action.js');
+const { applyAddShow, gatherableAddedShowIds } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { isReviewTextFile } = require('./lib/review-text-sidecars.js');
 const { applyOutletRegistryFlag } = require('./lib/outlet-registry-flag-action.js');
@@ -725,6 +725,7 @@ async function main() {
   // 3. Execute each action
   const results = [];
   const applied = [];
+  const addedShows = []; // BRO-6629: rows add-show wrote, for the gather dispatch step
   const failed = [];
   const ingestedHandoffs = new Set(); // BRO-5886: only these lose their ciphertext
 
@@ -745,6 +746,9 @@ async function main() {
         break;
       case 'add-show':
         result = executeAddShow(action);
+        // A rerun after a deferred gather finds the row already added; collect it again so
+        // the rerun dispatches the gather the first run could not.
+        if (result.ok || /already exists/.test(result.reason || '')) addedShows.push(action.show);
         break;
       case 'retire-show':
         result = executeRetireShow(action);
@@ -856,6 +860,7 @@ async function main() {
   console.log(`\nPlan executed: ${applied.length} applied, ${failed.length} failed`);
   output('result', applied.length > 0 ? 'fixed' : 'no-changes');
   output('failed', String(failed.length));
+  output('gather_show_ids', gatherableAddedShowIds(addedShows).join(','));
 
   // Persisted plans are PII-redacted (submitter.email is null by construction,
   // see generate-remediation-plan.js), so the reader's contact details and

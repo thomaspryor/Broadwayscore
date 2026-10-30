@@ -383,3 +383,8 @@ Friend, britishtheatre.com) is mostly real coverage we never ingested;
 British Theatre Guide's undated slug headlines also leave 383 ambiguous rows.
 Catalog gaps are grouped in `catalog-gaps.json`; most have no venue in the
 headline, so "unknown venue" is the largest Off-West End group.
+
+Shows the census adds through an `add-show` plan are now gathered when the plan is applied
+(BRO-6629): `execute-approved-fix.yml` dispatches `gather-reviews.yml` through
+`capped-workflow-dispatch.js` for added rows that have opened. Before this, the 25 shows in
+`bro-6481-3` kept only their census reviews. Collection, scoring and the rebuild ride the usual crons.

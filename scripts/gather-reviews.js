@@ -103,7 +103,7 @@ const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { partitionShowScoreReviews } = require('./lib/gap-ingest-policy');
-const { showScoreSlugGuessBlockReason } = require('./lib/show-score-discover');
+const { showScoreSlugGuessBlockReason, showScoreLandingBlockReason } = require('./lib/show-score-discover');
 const { withSpendShow } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -1288,11 +1288,12 @@ async function searchShowScore(show) {
       const result = await searchAggregator('ShowScore', url);
 
       // Check that we got actual show content, not the homepage, and not a wrong show
-      // For off-broadway shows, accept /off-broadway-shows/ but still reject /off-off-broadway-shows/
+      // Broadway shows reject off-Broadway pages; off-Broadway shows accept
+      // either off-Broadway section (BRO-6629, see showScoreLandingBlockReason).
       if (result.found && result.html &&
           result.html.includes('score') &&
           !result.html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>') &&
-          !result.html.includes('/off-off-broadway-shows/') &&
+          (isOffBroadway || !result.html.includes('/off-off-broadway-shows/')) &&
           (isOffBroadway || !result.html.includes('/off-broadway-shows/')) &&
           quickTitleCheck(result.html, show.title)) {
         console.log(`    ✓ Found at: ${url}`);
@@ -1324,13 +1325,12 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
 
     // Check if we got redirected to a different type of show
     const finalUrl = page.url();
-    // Always reject off-off-broadway
-    if (finalUrl.includes('/off-off-broadway-shows/')) {
-      await browser.close();
-      return null;
-    }
-    // For Broadway shows, reject off-broadway redirects
-    if (!isOffBroadway && finalUrl.includes('/off-broadway-shows/')) {
+    // A Broadway show must not land in either off-Broadway section; an
+    // off-Broadway show may land in /off-off-broadway-shows/, where Show Score
+    // files some real OB runs (BRO-6629, showScoreLandingBlockReason).
+    const landingBlock = showScoreLandingBlockReason(finalUrl, { isOffBroadway });
+    if (landingBlock) {
+      console.log(`    Skip: ${url} landed on ${finalUrl} (${landingBlock})`);
       await browser.close();
       return null;
     }

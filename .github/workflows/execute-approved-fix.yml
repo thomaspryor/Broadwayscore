@@ -24,6 +24,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write  # BRO-6629: gather-reviews dispatch for added shows
 
 # Per-issue group, matching auto-fix-feedback-bug.yml's key exactly (BRO-3500
 # what-else follow-up) — see that file's comment for why a shared group was
@@ -206,6 +207,32 @@ jobs:
 
             bash scripts/lib/push-with-retry.sh
           fi
+
+      # BRO-6629: an add-show plan never gathered its shows (ten census-added Off-Broadway
+      # shows kept only their census reviews). Runs after every push, so gather sees the
+      # rows. Shows older than the hourly gap audit's 3-year window have no other retry,
+      # so a full queue fails this step loudly instead of only warning. Spend is tagged per
+      # show by gather-reviews.js (spend-purpose.js gatherPurposeForShow).
+      - name: Gather reviews for added shows
+        if: always() && steps.exec.outputs.result == 'fixed' && steps.push_gate.outputs.ok == 'true' && steps.exec.outputs.gather_show_ids != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_CAP_DISABLED: ${{ vars.WORKFLOW_CAP_DISABLED }}
+          SHOWS: ${{ steps.exec.outputs.gather_show_ids }}
+        run: |
+          N=$(printf '%s' "$SHOWS" | tr ',' '\n' | grep -c .)
+          JOBS=$(( N < 10 ? N : 10 ))
+          set +e
+          node scripts/capped-workflow-dispatch.js --workflow=gather-reviews.yml \
+            -f shows="$SHOWS" -f parallel_jobs="$JOBS" -f max_tier=3
+          RC=$?
+          set -e
+          if [ "$RC" = "3" ]; then
+            echo "::error::gather-reviews stayed at its in-flight cap; rerun this workflow to gather: $SHOWS"
+            exit 1
+          fi
+          exit "$RC"
 
       - name: Fail when private pushes did not land
         if: always() && steps.push_gate.outputs.ok == 'false'

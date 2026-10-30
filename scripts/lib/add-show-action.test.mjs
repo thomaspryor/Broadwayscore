@@ -188,3 +188,33 @@ test('accepts a metro-slug city and refuses a free-text one', () => {
   assert.equal(shows[0].city, 'manchester-uk');
   assert.equal(applyAddShow([], { show: { ...base(), city: 'Manchester, UK' } }).ok, false);
 });
+
+// BRO-6629: add-show plans never gathered their shows; execute-approved-fix.yml now
+// dispatches gather-reviews for the ids gatherableAddedShowIds returns.
+test('BRO-6629: gatherableAddedShowIds keeps rows past their opening date', async () => {
+  const { gatherableAddedShowIds } = await import('./add-show-action.js').then(m => m.default || m);
+  const rows = [
+    { id: 'staff-meal-off-broadway-2024', status: 'closed', openingDate: '2024-05-08' },
+    { id: 'now-running-off-broadway-2026', status: 'open', openingDate: '2026-10-01' },
+    { id: 'future-off-broadway-2027', status: 'announced', openingDate: '2027-03-01' },
+    { id: 'previews-off-broadway-2026', status: 'previews', openingDate: '2026-11-05' },
+    { id: 'stale-previews-off-broadway-2026', status: 'previews', openingDate: '2026-10-20' },
+    { id: 'open-no-date-2026', status: 'open', openingDate: null },
+    { id: 'open-future-date-2026', status: 'open', openingDate: '2026-12-01' },
+    null,
+  ];
+  assert.deepEqual(gatherableAddedShowIds(rows, '2026-10-30'), ['staff-meal-off-broadway-2024', 'now-running-off-broadway-2026', 'stale-previews-off-broadway-2026']);
+  assert.deepEqual(gatherableAddedShowIds(undefined), []);
+});
+
+test('BRO-6629: execute-approved-fix wires added shows to a capped gather dispatch', async () => {
+  const fs = await import('node:fs');
+  const wf = fs.readFileSync(new URL('../../.github/workflows/execute-approved-fix.yml', import.meta.url), 'utf8');
+  const js = fs.readFileSync(new URL('../execute-approved-fix.js', import.meta.url), 'utf8');
+  assert.match(js, /output\('gather_show_ids', gatherableAddedShowIds\(addedShows\)/);
+  assert.match(js, /if \(result\.ok \|\| \/already exists\/\.test\(result\.reason \|\| ''\)\) addedShows\.push\(action\.show\)/);
+  assert.match(wf, /rerun this workflow to gather/);
+  assert.match(wf, /steps\.exec\.outputs\.gather_show_ids != ''/);
+  assert.match(wf, /capped-workflow-dispatch\.js --workflow=gather-reviews\.yml/);
+  assert.match(wf, /actions: write/);
+});

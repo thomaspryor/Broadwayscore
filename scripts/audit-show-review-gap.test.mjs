@@ -1163,3 +1163,13 @@ test('BRO-5732: a prior-census URL is not re-judged on a bare URL; multilingual 
     assert.deepEqual(offenders, ['ingest-review-from-url.js']);
   });
 }
+
+test('BRO-6629: short or numeric titles keep a token set, so roundup sidebars for other shows are refused', () => {
+  const { titleTokens: tt, urlMatchesShow: ums } = require('./audit-show-review-gap.js');
+  assert.deepStrictEqual(tt('44'), ['44']);
+  assert.deepStrictEqual(tt('Oz'), ['oz']);
+  assert.ok(tt('The Play').length > 0);
+  assert.deepStrictEqual(tt('Staff Meal'), ['staff', 'meal'], 'normal titles are unchanged');
+  assert.equal(ums('https://www.broadwayworld.com/off-broadway/article/Review-MERRILY-WE-ROLL-ALONG-20231010', tt('44')), false);
+  assert.equal(ums('https://www.theatermania.com/news/44-the-musical-review_1234', tt('44')), true);
+});

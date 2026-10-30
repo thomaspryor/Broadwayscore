@@ -455,3 +455,82 @@ What it changed:
 - **An award does not guarantee reviews.** A Lortel Outstanding Play nominee yielded 2 reviews, below the OB display bar of 3. So the Award signal alone cannot promote a show. Promote when press coverage is also found, or accept that some award shows stay unscored. The audit's 70 percent target needs a measured denominator from the full season.
 - **Title matching is too loose.** A title lookup against shows.json "found" Ghosts, Vanya, Orlando and Home, which are different productions. Dedup in the promotion step compares venue and year, as the plan says.
 - **Mechanics.** The cloud session has no scraper keys, so Playbill validation runs through `cloud-run-script.js` against a candidates file that must be on main. Core data changes go in as `add-show` fix plans, which refuse existing ids and placeholder venues. So `promote-historical-ob.js` becomes a generator that writes those plans (and `retire-show` plans for revert). A land takes 20 to 35 minutes when the queue is busy, so each cohort is batched into few lands. Never `git reset --soft` onto a moved `origin/main` in a worktree: it silently reverts other sessions' commits (it clobbered `we-historical-tr-probe.json` once, since restored).
+
+## Completeness audit of thin NYT-reviewed shows (2026-10-30, BRO-6629)
+
+The 54 backfilled Off-Broadway shows with an NYT review and 6 or fewer reviews were each checked
+against Show Score (all `paginate_critic_reviews` pages, tiles dated against the run), Playbill
+Verdict, the BWW roundup, DTLI, NYC Theatre, the outlet-census manifests and a SERP check. 19 of
+the 54 were missing reviews of the right production; 84 vetted URLs went in through
+`scripts/dispatch-ingest-batch.js`. "Missing" counts only the right production and registered
+outlets. `nyt-theater` is New York Theater (Jonathan Mandell), not the New York Times.
+
+Classes of miss, each fixed with tests:
+
+| Class | What went wrong | Fix |
+|---|---|---|
+| A | Show Score lists tiles from earlier productions on the same page (Gatz 2019, The Effect 2016) | Tile dates parsed and gated against the run (`isShowScoreTileDateOutOfRun`, gap audit + gather) |
+| B | Short or numeric titles ("44") produced no title tokens, so every review URL failed the match | `titleTokens` fallback in `audit-show-review-gap.js` |
+| C | Show Score page belongs to another production | Already caught by the year gate; these shows were checked on the other aggregators |
+| D | Shows added by `add-show` plans (25 in `bro-6481-3`) were never gathered | `execute-approved-fix.yml` dispatches a capped gather for opened shows it added |
+| E | An Off-Broadway show whose Show Score page redirects to `/off-off-broadway-shows/` was rejected as the wrong page | `showScoreLandingBlockReason(url, {isOffBroadway})` accepts it for OB shows |
+| F | Some tile links are wrapped as `google.com/url?q=` and were dropped | Tile hrefs are unwrapped before outlet matching |
+
+Per show (ours before the audit, right-production reviews missing, count after the ingest):
+
+| Show | Ours before | Missing (right production) | After ingest | Note |
+|---|---|---|---|---|
+| school-pictures-off-broadway-2023 | 5 | 0 | 5 | 2 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| mindplay-off-broadway-2025 | 5 | 0 | 5 | 2 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| watch-me-walk-off-broadway-2026 | 4 | 0 | 4 | complete |
+| art-of-leaving-off-broadway-2025 | 5 | 0 | 5 | 2 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| sulfur-bottom-off-broadway-2025 | 5 | 0 | 5 | complete |
+| dilaria-off-broadway-2025 | 5 | 0 | 5 | complete |
+| this-much-i-know-off-broadway-2025 | 4 | 0 | 4 | Show Score page is another production; checked other aggregators |
+| bear-grease-off-broadway-2025 | 4 | 0 | 4 | no Show Score page; other aggregators checked |
+| 44-off-broadway-2025 | 3 | 0 | 3 | Show Score page is another production; checked other aggregators |
+| burnout-paradise-off-broadway-2024 | 4 | 1 | 5 | ingested |
+| gatz-off-broadway-2024 | 5 | 1 | 6 | ingested (1 skipped: unregistered outlet or not a review) |
+| the-witness-room-off-broadway-2024 | 5 | 0 | 5 | complete |
+| from-here-off-broadway-2024 | 5 | 0 | 5 | Show Score page is another production; checked other aggregators |
+| bowl-ep-off-broadway-2025 | 5 | 5 | 10 | ingested |
+| im-assuming-you-know-david-greenspan-off-broadway-2025 | 5 | 0 | 5 | complete |
+| the-black-wolfe-tone-off-broadway-2025 | 4 | 0 | 4 | 1 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| safe-house-off-broadway-2025 | 5 | 2 | 7 | ingested (1 skipped: unregistered outlet or not a review) |
+| all-the-worlds-a-stage-off-broadway-2025 | 5 | 0 | 5 | no Show Score page; other aggregators checked |
+| how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025 | 5 | 0 | 5 | complete |
+| last-call-off-broadway-2025 | 4 | 0 | 4 | Show Score page is another production; checked other aggregators |
+| henry-iv-off-broadway-2025 | 5 | 0 | 5 | Show Score page is another production; checked other aggregators |
+| grandiloquent-off-broadway-2025 | 5 | 0 | 5 | 1 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| a-good-day-to-me-not-to-you-off-broadway-2023 | 5 | 0 | 5 | no Show Score page; other aggregators checked |
+| amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023 | 5 | 0 | 5 | no Show Score page; other aggregators checked |
+| bite-me-off-broadway-2023 | 5 | 0 | 5 | 1 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| covenant-off-broadway-2023 | 5 | 0 | 5 | 1 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| cat-kid-comic-club-the-musical-off-broadway-2023 | 2 | 0 | 2 | no Show Score page; other aggregators checked |
+| scarlett-dreams-off-broadway-2024 | 5 | 0 | 5 | 1 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| what-became-of-us-off-broadway-2024 | 5 | 2 | 7 | ingested |
+| grenfell-in-the-words-of-survivors-off-broadway-2024 | 2 | 0 | 2 | Show Score page is another production; checked other aggregators |
+| the-effect-off-broadway-2024 | 4 | 0 | 4 | Show Score page is another production; checked other aggregators |
+| five-the-parody-musical-off-broadway-2024 | 5 | 0 | 5 | complete |
+| hamlet-greenwich-house-off-broadway-2024 | 5 | 0 | 5 | Show Score page is another production; checked other aggregators |
+| illinoise-off-broadway-2024 | 5 | 3 | 8 | ingested (3 skipped: unregistered outlet or not a review) |
+| the-white-chip-off-broadway-2024 | 5 | 0 | 5 | complete |
+| circle-jerk-off-broadway-2022 | 4 | 0 | 4 | complete |
+| evanston-salt-costs-climbing-off-broadway-2022 | 5 | 0 | 5 | no Show Score page; other aggregators checked |
+| your-own-personal-exegesis-off-broadway-2022 | 5 | 0 | 5 | 1 candidate(s) rejected on vetting (prior production or already held under another URL) |
+| the-good-john-proctor-off-broadway-2023 | 5 | 0 | 5 | complete |
+| the-very-hungry-caterpillar-show-off-broadway-2023 | 2 | 0 | 2 | Show Score page is another production; checked other aggregators |
+| coal-country-off-broadway-2022 | 5 | 1 | 6 | ingested (2 skipped: unregistered outlet or not a review) |
+| in-the-amazon-warehouse-parking-lot-off-broadway-2024 | 5 | 3 | 8 | ingested (3 skipped: unregistered outlet or not a review) |
+| staff-meal-off-broadway-2024 | 5 | 8 | 13 | ingested (1 skipped: unregistered outlet or not a review) |
+| shadow-land-off-broadway-2023 | 4 | 8 | 12 | ingested |
+| dark-disabled-stories-off-broadway-2023 | 5 | 6 | 11 | ingested |
+| wedding-band-off-broadway-2022 | 5 | 5 | 10 | ingested |
+| baldwin-and-buckley-at-cambridge-off-broadway-2022 | 5 | 6 | 11 | ingested |
+| this-beautiful-future-off-broadway-2022 | 5 | 4 | 9 | ingested (2 skipped: unregistered outlet or not a review) |
+| snow-in-midsummer-off-broadway-2022 | 4 | 5 | 9 | ingested (1 skipped: unregistered outlet or not a review) |
+| the-coast-starlight-off-broadway-2023 | 5 | 9 | 14 | ingested (1 skipped: unregistered outlet or not a review) |
+| where-we-belong-off-broadway-2022 | 5 | 4 | 9 | ingested |
+| rock-of-ages-off-broadway-2019 | 5 | 0 | 5 | complete |
+| molly-sweeney-off-broadway-2019 | 3 | 1 | 4 | ingested (4 skipped: unregistered outlet or not a review) |
+| caesar-and-cleopatra-off-broadway-2019 | 4 | 10 | 14 | ingested |
