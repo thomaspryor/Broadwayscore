@@ -757,20 +757,6 @@
     "queuedAt": "2026-10-29T16:21:29.177Z"
   },
   {
-    "conditionKey": "bd-circuit-breaker-web_unlocker2",
-    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1788/1750 reqs)",
-    "description": "Zone web_unlocker2 billed 1788 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n20 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (940), opening-night-poller.js (615), collect-review-texts.js (357).",
-    "severity": "critical",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T17:16:18.909Z"
-  },
-  {
     "conditionKey": "land:land/bro-6504-r2",
     "title": "Landing blocked: unit-tests-node red on land/bro-6504-r2",
     "description": "land.yml did not land land/bro-6504-r2: the unit-tests-node gate went red at 00b4701a37. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40895495776",
@@ -4067,5 +4053,19 @@
       }
     ],
     "queuedAt": "2026-10-30T14:29:53.498Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2021/1750 reqs)",
+    "description": "Zone web_unlocker2 billed 2021 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n23 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (801), gather-reviews.js (643), collect-review-texts.js (464).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T14:38:41.392Z"
   }
 ]
