@@ -670,15 +670,7 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
  * Extracts <title> from raw HTML and checks show title words appear.
  * Returns true if page appears to be about the right show (or can't validate).
  */
-function quickTitleCheck(html, showTitle) {
-  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  if (!titleMatch) return true; // No title tag = can't validate, accept
-  const result = titleWordsMatchWithConfidence(showTitle, titleMatch[1]);
-  if (!result.matched) {
-    console.log(`    [TITLE MISMATCH] Page title "${titleMatch[1].trim().slice(0, 80)}" doesn't match "${showTitle}" (${result.matchCount}/${result.threshold} words)`);
-  }
-  return result.matched;
-}
+const { quickTitleCheck } = require('./lib/quick-title-check');
 
 /**
  * Search aggregator for show reviews using simple HTTP
