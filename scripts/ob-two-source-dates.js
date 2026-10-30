@@ -269,16 +269,18 @@ async function main() {
       try {
         const bc = parseBroadwayComPage((await fetchPage(bcUrl, { purpose: 'historical-backfill' })).content);
         if (bc.title && titleKey(bc.title) === titleKey(c.title) && bc.closing) {
-          tm = { venue: bc.venue, previewsStartDate: bc.previews, openingDate: bc.opening, closingDate: bc.closing, link: bcUrl, slug: c.title.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''), genre: null };
+          tm = { venue: bc.venue, previewsStartDate: bc.previews, openingDate: bc.opening, closingDate: bc.closing, link: bcUrl, genre: null };
           second = 'broadway.com';
         }
       } catch { /* no Broadway.com page: stays refused below */ }
     }
+    // c.openingDate is the census row's earliest critic write-up date (ob-census-candidates.js), not a listed opening.
     const v = bwwUrl ? decideTwoSource({ bww, tm, firstReview: c.openingDate, fromIso, toIso, todayIso }) : { ok: false, reason: 'no BroadwayWorld show page found' };
     tag(v.ok ? 'two-source' : 'refused');
     if (!v.ok) { console.log(`  - ${c.title}: ${v.reason}${bwwUrl ? ` (${bwwUrl})` : ''}`); continue; }
     const year = v.dates.openingDate.slice(0, 4);
-    const slug = `${tm.slug}-off-broadway-${year}`;
+    // House id style drops apostrophes (the-devils-disciple-…), unlike TheaterMania's own slugs (mlima-s-tale).
+    const slug = `${broadwayComSlug(c.title)}-off-broadway-${year}`;
     if (ids.has(slug)) { console.log(`  - ${c.title}: id ${slug} already exists`); tag('id-exists'); continue; }
     // Broadway.com carries no genre: those default to play and are listed for a hand check.
     const entry = { id: slug, slug, title: c.title, venue: tm.venue, ...v.dates, type: tm.genre === 'Musicals' ? 'musical' : 'play', isRevival: null };

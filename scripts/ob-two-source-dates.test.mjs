@@ -103,3 +103,8 @@ test('refuses a run that previews in the window but opens after it', () => {
   const t = { ...tm, previewsStartDate: '2020-05-25', openingDate: '2020-06-10', closingDate: '2020-07-20' };
   assert.match(decideTwoSource({ ...base, bww: b, tm: t, firstReview: '2020-06-10' }).reason, /opens 2020-06-10, after/);
 });
+
+test('show ids follow house style: apostrophes dropped, not hyphenated', () => {
+  assert.equal(broadwayComSlug("A Midsummer Night's Dream"), 'a-midsummer-nights-dream');
+  assert.equal(broadwayComSlug("Mary Shelley's Frankenstein"), 'mary-shelleys-frankenstein');
+});
