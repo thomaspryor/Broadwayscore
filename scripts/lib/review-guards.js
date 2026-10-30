@@ -4471,7 +4471,7 @@ function isCombinedReviewOfOtherMemberOnly(data, show, opts = {}) {
     .filter((v) => typeof v === 'string' && v.trim()).join(' ');
   const titles = require('./show-title-variants');
   const names = parts.length > 1 ? [show.title, ...parts] : [show.title];
-  const namesOwn = (t) => !!(titles.textMentionsTitle(t, names[0]) || names.some((n) => titles.textMentionsTitle(t, n) || titles.textMentionsShortTitle(t, n, 1)));
+  const namesOwn = (t) => names.some((n) => titles.textMentionsTitle(t, n) || titles.textMentionsShortTitle(t, n, 1));
   if (namesMember) return !text || !namesOwn(text);
   // BRO-6569: an opaque url (ft.com/content/<uuid>) names no show, so the text
   // decides alone: a body that names a co-member by its full title and never
