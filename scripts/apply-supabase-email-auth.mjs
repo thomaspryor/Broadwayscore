@@ -93,7 +93,9 @@ async function main() {
   const patch = buildEmailAuthPatch({ template, resendKey: process.env.RESEND_API_KEY || 'unset' });
   const live = await api('GET');
   const changed = diffPatch(patch, live);
-  if (!changed.length) { console.log('Supabase email sign-in settings are current.'); return; }
+  console.log(`Supabase project ${process.env.SUPABASE_PROJECT_REF}`);
+  // --apply still resends smtp_pass when nothing else differs: a rotated key is invisible on read.
+  if (!changed.length && !apply) { console.log('Supabase email sign-in settings are current.'); return; }
   for (const k of changed) {
     const show = (v) => (SECRET_KEYS.has(k) ? (v ? '<set>' : '<unset>') : JSON.stringify(String(v ?? '')).slice(0, 80));
     console.log(`${k}: ${show(live[k])} -> ${show(patch[k])}`);
