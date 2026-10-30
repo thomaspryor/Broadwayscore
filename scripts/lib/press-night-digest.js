@@ -68,7 +68,7 @@ function gradeReviews(rec, nowMs = Date.now()) {
   let verdict = rawVerdict;
   if (verdict === 'FAIL' && items.some(isPaywallExcused)
     && !items.some((i) => (i.status === 'late' || i.status === 'missing') && !isPaywallExcused(i))
-    && gates.every((g) => !g.required || g.status !== 'fail' || ITEM_GATES.has(g.name))) {
+    && gates.every((g) => !g.required || g.status !== 'fail' || itemGateExcused(g, graded))) {
     // The only failures were paywalled outlets: excused, so the night grades on its other gates.
     verdict = gates.some((g) => g.required && g.status === 'unknown') ? 'UNKNOWN' : 'PASS';
   }
@@ -90,8 +90,14 @@ function gradeReviews(rec, nowMs = Date.now()) {
 // domains in paywall-completeness.js HARD_PAYWALL_FLOORS, keyed by outlet id.
 const PAYWALLED_OUTLETS = new Set(['nytimes', 'newyorker', 'washpost', 'washingtonpost', 'chicagotribune', 'wsj']);
 const isPaywallExcused = (i) => PAYWALLED_OUTLETS.has(i.outletId) && (i.status === 'late' || i.status === 'missing');
-// Gates that fail only because a listed review was late or missing.
-const ITEM_GATES = new Set(['same-night-completeness', 'coverage-2h']);
+// A failing gate is excused only when paywalled reviews are its whole cause: same-night-completeness grades
+// the items checked above; coverage-2h counts census outlets, so every outlet it lists as missing must be paywalled.
+function itemGateExcused(g, rec) {
+  if (g.name === 'same-night-completeness') return true;
+  if (g.name !== 'coverage-2h') return false;
+  const missing = (rec.reference && rec.reference['2h'] && rec.reference['2h'].missing) || [];
+  return missing.length > 0 && missing.every((id) => PAYWALLED_OUTLETS.has(id));
+}
 
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 

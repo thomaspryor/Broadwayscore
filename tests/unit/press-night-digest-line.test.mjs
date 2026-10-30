@@ -259,3 +259,15 @@ test('paywall rule: a non-paywalled miss on the same night still fails and is st
 test('paywall rule: the outlet list covers every hard-paywall domain', () => {
   for (const id of ['nytimes', 'newyorker', 'washpost', 'chicagotribune', 'wsj']) assert.ok(D.PAYWALLED_OUTLETS.has(id), id);
 });
+
+test('paywall rule: a coverage-2h failure from a non-paywalled census outlet is not excused', () => {
+  const rec = heartAs('nytimes', 'wsj');
+  const verdictWith = (missing) => {
+    const r = JSON.parse(JSON.stringify(rec));
+    r.reference = r.reference || {};
+    r.reference['2h'] = { asOf: new Date(Date.parse(r.embargoAt) + 2 * 3600000).toISOString(), status: 'ok', count: 4, covered: 4 - missing.length, coverage: (4 - missing.length) / 4, missing, source: ['test'] };
+    return D.gradeReviews(r, AFTER_DEADLINE).verdict;
+  };
+  assert.equal(verdictWith(['nytimes', 'theatermania', 'vulture']), 'FAIL');
+  assert.notEqual(verdictWith(['nytimes', 'wsj', 'newyorker']), 'FAIL');
+});
