@@ -4050,5 +4050,36 @@
       }
     ],
     "queuedAt": "2026-10-30T14:27:46.080Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6575-email-otp",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6575-email-otp",
+    "description": "land.yml did not land land/bro-6575-email-otp: the unit-tests-node gate went red at 161aeeb754. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41068212069",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6575-email-otp"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "161aeeb75401d72d567ec883ead7ccccb5f336e3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41068212069"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:29:53.498Z"
   }
 ]
