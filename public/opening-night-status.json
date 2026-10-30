@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T05:44:40.858Z",
+  "generatedAt": "2026-10-30T06:01:08.044Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -389,27 +389,27 @@
       "slug": "specimen-off-broadway",
       "thumbnail": "/images/shows/specimen-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 81,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 0,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
-      "positive": 1,
+      "t3": 0,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "0/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:1/8"
+          "hi-conf:0/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1320,18 +1320,18 @@
       "status": "open",
       "slug": "a-few-good-men",
       "thumbnail": "/images/shows/a-few-good-men-2026/thumbnail.webp",
-      "siteScore": 57.5,
+      "siteScore": 58.06,
       "liveScore": 58,
-      "scoreDrift": 0.5,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
-      "t1": 6,
+      "total": 22,
+      "t1": 7,
       "t2": 13,
       "t3": 2,
       "positive": 4,
-      "mixed": 10,
+      "mixed": 11,
       "negative": 7,
       "readiness": {
         "ready": true,
@@ -1658,6 +1658,18 @@
           "t3": 2,
           "p": 4,
           "m": 10,
+          "n": 7,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-30T06:01:08.044Z",
+          "rc": 22,
+          "s": 58.06,
+          "t1": 7,
+          "t2": 13,
+          "t3": 2,
+          "p": 4,
+          "m": 11,
           "n": 7,
           "bc": "waiting"
         }

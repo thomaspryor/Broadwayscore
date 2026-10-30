@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T05:44:22.751Z",
+  "timestamp": "2026-10-30T06:00:50.280Z",
   "stats": {
-    "totalReviews": 70044,
-    "alreadyFlagged": 22277,
+    "totalReviews": 70084,
+    "alreadyFlagged": 22285,
     "dateGuardCatches": 232,
-    "directorMismatch": 2862,
-    "tvFilmSignals": 2010,
-    "londonSignals": 3388,
+    "directorMismatch": 2865,
+    "tvFilmSignals": 2013,
+    "londonSignals": 3389,
     "offBroadwaySignals": 630,
     "yearMismatch": 284,
-    "noPublishDate": 8015
+    "noPublishDate": 8014
   },
   "findings": [
     {
@@ -14413,6 +14413,45 @@
       ]
     },
     {
+      "showId": "death-and-the-kings-horseman-crucible-regional-2025",
+      "file": "afridiziak-theatre-news--sophia-jackson.json",
+      "publishDate": "2025-02-05",
+      "url": "https://www.afridiziak.com/reviews/death-and-the-kings-horseman-by-wole-soyinka-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"wole soyinka\" from death-and-the-kings-horseman-1987"
+        }
+      ]
+    },
+    {
+      "showId": "death-and-the-kings-horseman-crucible-regional-2025",
+      "file": "fairypoweredproductions--carol-crann.json",
+      "publishDate": "2025-02-05",
+      "url": "https://fairypoweredproductions.com/death-and-the-kings-horseman/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"wole soyinka\" from death-and-the-kings-horseman-1987"
+        }
+      ]
+    },
+    {
+      "showId": "death-and-the-kings-horseman-crucible-regional-2025",
+      "file": "thereviewshub--the-reviews-hub-yorkshire-and-north-east.json",
+      "publishDate": "2025-02-06",
+      "url": "https://www.thereviewshub.com/death-and-the-kings-horseman-crucible-theatre-sheffield/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"wole soyinka\" from death-and-the-kings-horseman-1987"
+        }
+      ]
+    },
+    {
       "showId": "death-becomes-her-tour-2026",
       "file": "cleveland-jewish-news--sheri-gross.json",
       "score": 90,
@@ -20210,6 +20249,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2017 (2x) more than 2019 (0x). 2017 matches production: follies-west-end-2017"
+        }
+      ]
+    },
+    {
+      "showId": "follow-the-signs-tobacco-factory-regional-2024",
+      "file": "bristol247--samuel-fletcher.json",
+      "publishDate": "2024-09-06",
+      "url": "https://www.bristol247.com/culture/theatre/review-follow-the-signs-tobacco-factory-theatres-moving-empowering-and-revelatory-a-festival-of-storytelling/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -46781,6 +46833,19 @@
       ]
     },
     {
+      "showId": "shaun-the-sheeps-circus-show-aviva-studios-regional-2025",
+      "file": "guardian--lyndsey-winship.json",
+      "publishDate": "2025-12-15",
+      "url": "https://www.theguardian.com/stage/2025/dec/15/greek-epic-shaun-the-sheep-circus-trapeze-mossy-bottom",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "she-loves-me-2016",
       "file": "nypost--johnny-oleksinski.json",
       "score": 89,
@@ -63696,6 +63761,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
+      "file": "guardian--mark-lawson.json",
+      "publishDate": "2024-08-30",
+      "url": "https://www.theguardian.com/stage/article/2024/aug/30/the-spy-who-came-in-from-the-cold-review-minerva-theatre-chichester",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -96785,6 +96863,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mel-brooks-young-frankenstein-hope-mill-regional-2025",
+      "file": "curtain-call-reviews--unknown.json",
+      "publishDate": null,
+      "url": "https://www.curtaincallreviews.co.uk/young-frankenstein",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
