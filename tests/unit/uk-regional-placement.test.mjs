@@ -7,6 +7,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { isUkRegionalShow } from '../../src/lib/market-utils';
+import { isLocalOnlyShow } from '../../src/lib/local-market';
 import { getRegionalShows, getUkRegionalShows, getAllShows } from '../../src/lib/data-core';
 import { BROWSE_PAGES } from '../../src/config/browse-pages';
 import { getBrowseList, getAllBrowseSlugs } from '../../src/lib/data-core';
@@ -26,7 +27,8 @@ test('isUkRegionalShow: only regional shows at a listed UK house', () => {
 test('the Pre-Broadway list and the UK list split every regional show exactly once', () => {
   const tryouts = getRegionalShows();
   const uk = getUkRegionalShows();
-  const allRegional = getAllShows().filter((s) => s.category === 'regional');
+  // Local-only shows (BRO-6518) are on neither list by design; every other regional show is on exactly one.
+  const allRegional = getAllShows().filter((s) => s.category === 'regional' && !isLocalOnlyShow(s));
   assert.equal(tryouts.length + uk.length, allRegional.length);
   const ids = new Set(tryouts.map((s) => s.id));
   for (const s of uk) assert.equal(ids.has(s.id), false, `${s.id} is on both lists`);
