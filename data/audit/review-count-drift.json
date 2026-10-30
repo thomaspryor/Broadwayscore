@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-29T16:19:23.800Z",
+  "generatedAt": "2026-10-30T15:36:33.476Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-29T16:14:44.590Z",
-    "reviewsJsonAgeHours": 0.1,
+    "reviewsJsonLastUpdated": "2026-10-30T15:27:07.713Z",
+    "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
     "showsScanned": 24,
-    "allShowsScanned": 3377,
-    "filesScanned": 67283,
+    "allShowsScanned": 3843,
+    "filesScanned": 70393,
     "showsOverThreshold": 0,
-    "newOffenders": 1,
+    "newOffenders": 0,
     "blindShows": 25,
     "orphanReviews": 4
   },
@@ -18,19 +18,7 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [
-    {
-      "showDir": "seussical-the-musical-west-end-2013",
-      "suppressed": 1,
-      "actual": 0,
-      "files": [
-        "everything-theatre--everything-theatre.json"
-      ],
-      "newFiles": [
-        "everything-theatre--everything-theatre.json"
-      ]
-    }
-  ],
+  "newOffenders": [],
   "staleBaseline": [
     {
       "showDir": "china-doll-2015",
@@ -51,7 +39,7 @@
   "orphanReviews": [
     {
       "showId": "pride-bridge-theatre-off-west-end-2026",
-      "count": 24
+      "count": 23
     },
     {
       "showId": "the-apple-boys-regional-2025",
@@ -68,33 +56,25 @@
   ],
   "perShow": [
     {
+      "showDir": "a-few-good-men-2026",
+      "actual": 23,
+      "scanned": 36,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "aftermath-art-new-york-off-broadway-2026",
-      "actual": 8,
-      "scanned": 11,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "cirque-berserk-west-end-2026",
-      "actual": 1,
-      "scanned": 6,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "garry-starr-classic-penguins-off-west-end-2026",
-      "actual": 14,
-      "scanned": 30,
+      "actual": 9,
+      "scanned": 13,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "girls-off-west-end-2026",
-      "actual": 10,
-      "scanned": 36,
+      "actual": 14,
+      "scanned": 37,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -110,47 +90,31 @@
     {
       "showDir": "i-became-we-off-broadway-2026",
       "actual": 7,
-      "scanned": 10,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "memoriam-off-west-end-2026",
-      "actual": 17,
-      "scanned": 26,
+      "actual": 24,
+      "scanned": 33,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "seussical-the-musical-west-end-2013",
-      "actual": 0,
-      "scanned": 1,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "everything-theatre--everything-theatre.json",
-          "outletId": "everything-theatre",
-          "criticName": "Everything Theatre",
-          "publishDate": "2013-12-09",
-          "url": "https://everything-theatre.co.uk/2013/12/seussical-musical-arts-theatre-review/"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "specimen-off-broadway-2026",
+      "showDir": "showstopper-the-kids-show-off-west-end-2026",
       "actual": 1,
-      "scanned": 4,
+      "scanned": 3,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "the-kick-inside-off-broadway-2026",
+      "showDir": "the-heart-off-broadway-2026",
       "actual": 3,
-      "scanned": 5,
+      "scanned": 33,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -158,15 +122,23 @@
     {
       "showDir": "the-lives-of-others-west-end-2026",
       "actual": 1,
-      "scanned": 11,
+      "scanned": 14,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-moth-off-west-end-2026",
+      "actual": 1,
+      "scanned": 7,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-revlon-girl-off-west-end-2026",
-      "actual": 5,
-      "scanned": 6,
+      "actual": 13,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
