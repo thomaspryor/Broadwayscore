@@ -343,7 +343,10 @@
     "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
     "the-dog-show-come-sit-stay-off-broadway-2026/nyt-theater--unknown.json",
     "the-dog-show-come-sit-stay-off-broadway-2026/picture-this-post--unknown.json",
-    "a-history-of-paper-pitlochry-festival-regional-2026/west-end-best-friend--lorna-murray.json"
+    "a-history-of-paper-pitlochry-festival-regional-2026/west-end-best-friend--lorna-murray.json",
+    "a-few-good-men-2026/talkinbroadway--unknown.json",
+    "the-heart-off-broadway-2026/nysr--michael-sommers.json",
+    "jest-to-impress-off-broadway-2026/sohoplayhouse--unknown.json"
   ],
   "failed": [
     "coal-country-off-broadway-2022/theatermania--hayley-levitt.json",
@@ -519,7 +522,18 @@
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1792572995489.json",
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1792158495936.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/lyceum--unknown.json",
-    "the-wiz-tour-2026/channel3000--samantha-calderon.json"
+    "the-wiz-tour-2026/channel3000--samantha-calderon.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "a-few-good-men-2026/letterboxd--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -676,7 +690,9 @@
       "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
       "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
       "the-dog-show-come-sit-stay-off-broadway-2026/nyt-theater--unknown.json",
-      "a-history-of-paper-pitlochry-festival-regional-2026/west-end-best-friend--lorna-murray.json"
+      "a-history-of-paper-pitlochry-festival-regional-2026/west-end-best-friend--lorna-murray.json",
+      "the-heart-off-broadway-2026/nysr--michael-sommers.json",
+      "jest-to-impress-off-broadway-2026/sohoplayhouse--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-heart-off-broadway-2026/variety--cynthia-littleton.json"
@@ -705,7 +721,8 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json",
       "data/review-texts/magic-chichester-festival-regional-2026/deadline--greg-evans.json",
       "data/review-texts/hello-dolly-2017/washpost--peter-marks.json",
-      "hello-dolly-2017/washpost--peter-marks.json"
+      "hello-dolly-2017/washpost--peter-marks.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -749,7 +766,8 @@
     "brightdata": [
       "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
       "the-great-gatsby-2024/forbes--shivani-vora.json",
-      "hamilton-2015/variety--anna-tingley.json"
+      "hamilton-2015/variety--anna-tingley.json",
+      "a-few-good-men-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/burn-this-2019/nyt-theater--jonathan-mandell.json",
@@ -800,7 +818,11 @@
       "data/review-texts/de-profundis-off-west-end-2026/uktw--unknown.json",
       "data/review-texts/motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
       "data/review-texts/the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/lyceum--unknown.json",
-      "data/review-texts/the-wiz-tour-2026/channel3000--samantha-calderon.json"
+      "data/review-texts/the-wiz-tour-2026/channel3000--samantha-calderon.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
     ],
     "archive": [
       "waitress-2016/ap--mark-kennedy.json",
@@ -918,7 +940,7 @@
     ]
   },
   "startTime": "2026-10-29T20:08:46.882Z",
-  "lastProcessed": "six-tour-2022/orlando-sentinel--matthew-j-palm.json",
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
   "log": [
     {
       "t": "2026-10-29T22:20:00.411Z",
@@ -1067,6 +1089,34 @@
       "t": "2026-10-30T01:19:53.029Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-30T01:41:17.219Z",
+      "event": "bb-session",
+      "session": "2d3d61d5",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T01:41:17.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-30T01:43:33.325Z",
+      "event": "bb-session",
+      "session": "324293ec",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-30T01:46:41.550Z",
+      "event": "bb-session",
+      "session": "0cc362a8",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-30T01:46:41.875Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
