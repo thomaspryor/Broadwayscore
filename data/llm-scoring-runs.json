@@ -1,23 +1,5 @@
 [
   {
-    "startedAt": "2026-10-29T03:24:08.246Z",
-    "completedAt": "2026-10-29T03:24:08.258Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "40810685847",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-29T03:43:29.184Z",
     "completedAt": "2026-10-29T03:43:45.130Z",
     "totalReviews": 13,
@@ -2132941,40 +2132923,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-30T03:14:00.845Z",
-    "completedAt": "2026-10-30T03:14:00.856Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
+    "startedAt": "2026-10-30T03:29:05.934Z",
+    "completedAt": "2026-10-30T03:30:41.750Z",
+    "totalReviews": 301,
+    "processed": 18,
+    "skipped": 280,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
+      "input": 120482,
+      "output": 6091,
+      "cacheRead": 76140,
+      "cacheWrite": 3807,
+      "total": 308156
     },
-    "costUsd": 0,
-    "runId": "40995627878",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-30T03:14:42.523Z",
-    "completedAt": "2026-10-30T03:17:52.346Z",
-    "totalReviews": 46,
-    "processed": 36,
-    "skipped": 8,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 222015,
-      "output": 11520,
-      "cacheRead": 132955,
-      "cacheWrite": 11278,
-      "total": 563262
-    },
-    "costUsd": 0.8813017000000001,
-    "runId": "40994672161",
+    "costUsd": 0.46801075000000003,
+    "runId": "40995876076",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2135120,6 +2135083,16 @@
           "flat": 0,
           "down": 1,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "a-taste-of-honey-royal-exchange-regional-2024",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -2138911,6 +2138884,16 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 63%, theirs: 100%)"
+      },
+      {
+        "showId": "blue-beard-royal-bath-regional-2024",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
       },
       {
         "showId": "blue-mist-off-west-end-2026",
@@ -2145098,6 +2145081,16 @@
           "flat": 0,
           "down": 1,
           "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "frankenstein-leeds-regional-2024",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2154813,6 +2154806,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "nanny-bristol-old-vic-regional-2024",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 1,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "nantucket-sleigh-ride-off-broadway-2019",
         "ourDistribution": {
           "up": 9,
@@ -2159758,6 +2159761,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "shed-exploded-view-royal-exchange-regional-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 1,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "sherlock-holmes-west-end-2026",
         "ourDistribution": {
           "up": 19,
@@ -2164244,6 +2164257,16 @@
           "flat": 2,
           "down": 1,
           "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-gap-hope-mill-regional-2024",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 1,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2172172,6 +2172195,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "wish-you-werent-here-sheffield-regional-2024",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 1,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "wishful-drinking-2009",
         "ourDistribution": {
           "up": 6,
@@ -2172616,21 +2172649,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-30T03:22:51.875Z",
-    "completedAt": "2026-10-30T03:23:06.267Z",
-    "totalReviews": 6,
-    "processed": 6,
+    "startedAt": "2026-10-30T03:35:39.243Z",
+    "completedAt": "2026-10-30T03:35:39.255Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 15692,
-      "output": 1267,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 16959
+      "total": 0
     },
-    "costUsd": 0.0434118,
-    "runId": "40994672161",
+    "costUsd": 0,
+    "runId": "40995876076",
     "source": "comparative-rescore",
     "errorDetails": []
   }
