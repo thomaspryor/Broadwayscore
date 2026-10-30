@@ -13,8 +13,9 @@
  * JSON regeneration (a projection of reviews.json, which skips the generator's per-critic dedupe), and all LATENCY,
  * which is modelled (DEFAULT_LATENCY), so a time-to-live here is a budget check on assumptions, not a measurement.
  *
- * The arm gate: the lane arms for a real opening only if the last rehearsal passed and is recent. Otherwise it does
- * not arm and the old pipeline runs unchanged (design doc section 6).
+ * The arm gate: the lane arms for a real opening only if the last rehearsal on a RECORDED fixture passed, is recent and
+ * ran this lane code (BRO-6619: a synthetic pass never arms). Otherwise it does not arm and the old pipeline runs
+ * unchanged (design doc section 6).
  */
 const fs = require('fs');
 const os = require('os');
@@ -43,10 +44,21 @@ function buildAdapters(fixture) {
   return [discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.rssAdapter({ feeds }), discovery.sectionIndexAdapter({ outlets })];
 }
 
+// BRO-6619: lane code that lives outside this folder, repo-relative. The night entry and the live workflow are hashed as
+// files, not walked: the entry requires the alert router (~44 Linear/notify files, see driver.js buildRealLaneDeps).
+// The scorer is hashed with the scripts/llm-scoring .ts files it imports (prompts, config, the per-model scorers); its
+// scripts/lib .js requires are left out, as the rehearsal stubs the scorer and an edit there would only churn the
+// record (BRO-6276). The shadow entry stays out on purpose (opening-night-lane-shadow.js header). The Browserbase
+// route (browserbase-fetch.js, BRO-6073) is in this folder, so the folder walk already covers it.
+const LANE_EXTRA_FILES = ['scripts/opening-night-lane.js', 'scripts/opening-night-lane-rehearse.js', '.github/workflows/opening-night-lane-live.yml'];
+const LANE_SCORER_ROOT = 'scripts/llm-scoring/ensemble-scorer.ts';
+
 /**
  * The lane's code: every .js file in its folder plus everything they require, transitively, through relative paths
- * (merge-reviews-json, review-normalization, the feed parsers...). A change to ANY of them changes the hash, so the
- * record only arms the code that passed it. Walking the require graph keeps this honest as the lane grows new deps.
+ * (merge-reviews-json, review-normalization, the feed parsers...), plus LANE_EXTRA_FILES and the scorer's .ts graph.
+ * A change to ANY of them changes the hash, so the record only arms the code that passed it. Walking the require graph
+ * keeps this honest as the lane grows new deps. Extras missing from the tree are skipped (a temp-dir lane has none);
+ * the real tree is pinned to include all of them (tests/unit/lane-arm-decision.test.mjs).
  */
 function laneCodeFiles(dir = __dirname) {
   const seen = new Set();
@@ -60,7 +72,19 @@ function laneCodeFiles(dir = __dirname) {
       if (hit && hit.endsWith('.js')) walk(hit);
     }
   };
+  const walkTs = (file) => {
+    if (seen.has(file) || !fs.existsSync(file)) return;
+    seen.add(file);
+    for (const m of fs.readFileSync(file, 'utf8').matchAll(/\bfrom\s+['"](\.\/[^'"]+)['"]/g)) {
+      const base = path.resolve(path.dirname(file), m[1]);
+      const hit = [base, `${base}.ts`].find((f) => f.endsWith('.ts') && fs.existsSync(f) && fs.statSync(f).isFile());
+      if (hit) walkTs(hit);
+    }
+  };
   for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.js'))) walk(path.join(dir, f));
+  const root = path.resolve(dir, '..', '..', '..');
+  for (const rel of LANE_EXTRA_FILES) { const f = path.join(root, rel); if (fs.existsSync(f)) seen.add(f); }
+  walkTs(path.join(root, LANE_SCORER_ROOT));
   return [...seen].sort();
 }
 
@@ -201,15 +225,32 @@ function readRehearsalRecord(file) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; }
 }
 
+// BRO-6619: only a rehearsal on a fixture recorded from a real opening can arm a real publish. The synthetic fixture
+// keeps running weekly as the lane's health check, but its shapes are invented, so it never arms. Allowlist, not
+// "anything but synthetic": a missing or misspelt kind fails closed. The kind is whatever the record's author wrote,
+// so it carries the same trust as `pass` (only the rehearse CLI writes it; the file lives on main).
+const ARMING_REHEARSAL_KINDS = new Set(['recorded']);
+
 /**
- * Whether the lane may arm for a real opening. No record, a failed record, an unreadable date or a record older than
- * maxAgeMs all mean "do not arm": the old pipeline runs unchanged. Pure.
+ * Where the record of a rehearsal kind lives. One file per kind, so the weekly synthetic run never overwrites the
+ * recorded record the arm gate reads. The synthetic one keeps its historical name.
+ */
+function rehearsalRecordFile(repoDir, kind = 'synthetic') {
+  if (!/^[a-z][a-z0-9-]*$/.test(String(kind))) throw new Error(`rehearsal: bad record kind ${kind}`);
+  return path.join(repoDir, 'data', 'audit', kind === 'synthetic' ? 'lane-rehearsal.json' : `lane-rehearsal-${kind}.json`);
+}
+
+/**
+ * Whether the lane may arm for a real opening. No record, a failed record, a rehearsal not on a recorded fixture, an
+ * unreadable date, a record older than maxAgeMs or one from other lane code all mean "do not arm": the old pipeline
+ * runs unchanged. Pure.
  * @returns {{arm: boolean, reason: string}}
  */
 function armDecision(record, { now = Date.now(), maxAgeMs = DEFAULT_ARM_MAX_AGE_MS, laneHash } = {}) {
   if (!record || typeof record !== 'object') return { arm: false, reason: 'no-rehearsal-record' };
   if (record.pass !== true) return { arm: false, reason: 'last-rehearsal-failed' };
   if (!(Number.isFinite(record.checked) && record.checked > 0)) return { arm: false, reason: 'rehearsal-checked-nothing' };
+  if (!ARMING_REHEARSAL_KINDS.has(record.kind)) return { arm: false, reason: 'no-recorded-rehearsal' };
   if (!(Number.isFinite(maxAgeMs) && maxAgeMs > 0)) return { arm: false, reason: 'bad-max-age' }; // fail closed: NaN would make every record fresh
   const at = Date.parse(record.at);
   if (!Number.isFinite(at)) return { arm: false, reason: 'rehearsal-date-unreadable' };
@@ -220,4 +261,4 @@ function armDecision(record, { now = Date.now(), maxAgeMs = DEFAULT_ARM_MAX_AGE_
   return { arm: true, reason: 'last-rehearsal-passed' };
 }
 
-module.exports = { DEFAULT_ARM_MAX_AGE_MS, DEFAULT_LATENCY, laneCodeFiles, laneCodeHash, runRehearsal, recordRehearsal, readRehearsalRecord, shouldRewriteRehearsalRecord, REHEARSAL_REFRESH_MS, armDecision, buildAdapters };
+module.exports = { ARMING_REHEARSAL_KINDS, LANE_EXTRA_FILES, LANE_SCORER_ROOT, rehearsalRecordFile, DEFAULT_ARM_MAX_AGE_MS, DEFAULT_LATENCY, laneCodeFiles, laneCodeHash, runRehearsal, recordRehearsal, readRehearsalRecord, shouldRewriteRehearsalRecord, REHEARSAL_REFRESH_MS, armDecision, buildAdapters };

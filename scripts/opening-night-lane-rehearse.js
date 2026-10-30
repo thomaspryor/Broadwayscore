@@ -5,19 +5,24 @@
  * verdict record, and exit 0 on pass / 1 on fail. `--arm-check` reads that record and exits 0 only if the lane may arm.
  *
  *   node scripts/opening-night-lane-rehearse.js --rehearse [--fixture synthetic] [--out data/audit/lane-rehearsal.json]
- *   node scripts/opening-night-lane-rehearse.js --arm-check [--record data/audit/lane-rehearsal.json] [--max-age-days 8]
+ *   node scripts/opening-night-lane-rehearse.js --arm-check [--record data/audit/lane-rehearsal-recorded.json] [--max-age-days 8]
+ *
+ * The arm check reads the RECORDED rehearsal's record (BRO-6619): a synthetic pass, the only kind --rehearse writes
+ * today, never arms a real publish. Until a fixture from a real opening exists, --arm-check exits 3.
  */
 const path = require('path');
 const rehearsal = require('./lib/opening-night-lane/rehearsal');
 const { buildSyntheticFixture } = require('./lib/opening-night-lane/rehearsal-fixture');
 
-const DEFAULT_RECORD = path.join(__dirname, '..', 'data', 'audit', 'lane-rehearsal.json');
+const REPO = path.join(__dirname, '..');
+const DEFAULT_RECORD = rehearsal.rehearsalRecordFile(REPO, 'synthetic');
+const ARM_RECORD = rehearsal.rehearsalRecordFile(REPO, 'recorded');
 const arg = (name, dflt) => { const i = process.argv.indexOf(name); return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : dflt; };
 
 async function main() {
   if (process.argv.includes('--arm-check')) {
     const days = Number(arg('--max-age-days', '8'));
-    const decision = rehearsal.armDecision(rehearsal.readRehearsalRecord(arg('--record', DEFAULT_RECORD)), { maxAgeMs: days * 24 * 60 * 60 * 1000, laneHash: rehearsal.laneCodeHash() });
+    const decision = rehearsal.armDecision(rehearsal.readRehearsalRecord(arg('--record', ARM_RECORD)), { maxAgeMs: days * 24 * 60 * 60 * 1000, laneHash: rehearsal.laneCodeHash() });
     console.log(JSON.stringify(decision));
     process.exit(decision.arm ? 0 : 3);
   }

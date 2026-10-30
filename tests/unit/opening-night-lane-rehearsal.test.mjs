@@ -125,7 +125,7 @@ test('runRehearsal refuses a malformed fixture', async () => {
 
 test('armDecision: only a recent, passing rehearsal arms the lane', () => {
   const now = Date.parse('2026-10-14T12:00:00Z');
-  const rec = (over = {}) => ({ at: '2026-10-12T12:00:00Z', pass: true, checked: 35, laneHash: 'abc', ...over });
+  const rec = (over = {}) => ({ at: '2026-10-12T12:00:00Z', pass: true, checked: 35, laneHash: 'abc', kind: 'recorded', ...over });
   assert.deepEqual(rh.armDecision(rec(), { now }), { arm: true, reason: 'last-rehearsal-passed' });
   assert.equal(rh.armDecision(null, { now }).reason, 'no-rehearsal-record');
   assert.equal(rh.armDecision('x', { now }).reason, 'no-rehearsal-record');
@@ -198,16 +198,20 @@ test('recordRehearsal / readRehearsalRecord round trip; a missing or corrupt rec
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
-test('CLI: --rehearse writes a passing record and --arm-check arms on it; tampering or a missing record refuses', () => {
+test('CLI: --rehearse writes a passing synthetic record that does not arm; a recorded one arms; tampering or a missing record refuses', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4787-'));
   try {
     const out = path.join(dir, 'lane-rehearsal.json');
     const stdout = execFileSync('node', [CLI, '--rehearse', '--out', out], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
     assert.equal(JSON.parse(stdout.trim().split('\n').pop()).pass, true);
+    const synthetic = spawnSync('node', [CLI, '--arm-check', '--record', out], { encoding: 'utf8' });
+    assert.equal(synthetic.status, 3, 'BRO-6619: a synthetic pass never arms a real publish');
+    assert.equal(JSON.parse(synthetic.stdout).reason, 'no-recorded-rehearsal');
+    const rec = { ...JSON.parse(fs.readFileSync(out, 'utf8')), kind: 'recorded' };
+    fs.writeFileSync(out, JSON.stringify(rec));
     const armed = spawnSync('node', [CLI, '--arm-check', '--record', out], { encoding: 'utf8' });
     assert.equal(armed.status, 0);
     assert.equal(JSON.parse(armed.stdout).arm, true);
-    const rec = JSON.parse(fs.readFileSync(out, 'utf8'));
     fs.writeFileSync(out, JSON.stringify({ ...rec, pass: false }));
     assert.equal(spawnSync('node', [CLI, '--arm-check', '--record', out], { encoding: 'utf8' }).status, 3);
     assert.equal(spawnSync('node', [CLI, '--arm-check', '--record', path.join(dir, 'nope.json')], { encoding: 'utf8' }).status, 3);
