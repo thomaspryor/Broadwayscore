@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T22:44:48.738Z",
+  "timestamp": "2026-10-30T23:09:02.720Z",
   "stats": {
-    "totalReviews": 72335,
-    "alreadyFlagged": 22357,
+    "totalReviews": 72365,
+    "alreadyFlagged": 22361,
     "dateGuardCatches": 229,
-    "directorMismatch": 2935,
-    "tvFilmSignals": 2036,
-    "londonSignals": 3408,
-    "offBroadwaySignals": 646,
-    "yearMismatch": 299,
-    "noPublishDate": 8842
+    "directorMismatch": 2934,
+    "tvFilmSignals": 2037,
+    "londonSignals": 3407,
+    "offBroadwaySignals": 645,
+    "yearMismatch": 298,
+    "noPublishDate": 8864
   },
   "findings": [
     {
@@ -9341,6 +9341,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 1\""
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-2014",
+      "file": "newsday--linda-winer.json",
+      "publishDate": "2014-04-24T20:11:28-04:00",
+      "url": "http://www.newsday.com/entertainment/theater/cabaret-review-alan-cumming-is-still-dangerous-1.7804391",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -24804,24 +24817,6 @@
       ]
     },
     {
-      "showId": "hamilton-tour-2024",
-      "file": "variety--anna-tingley.json",
-      "publishDate": "2026-10-29",
-      "url": "https://variety.com/2026/shopping/news/hamilton-deluxe-vinyl-box-set-buy-online-1236934117/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2015 (2x) more than 2024 (0x). 2015 matches production: hamilton-2015"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
       "showId": "hamilton-west-end-2021",
       "file": "daily-mail--robert-gore-langton.json",
       "score": 93,
@@ -37293,6 +37288,7 @@
     {
       "showId": "middlemarch-rsc-regional-2026",
       "file": "sunday-telegraph--dominic-cavendish.json",
+      "score": 74,
       "publishDate": "2026-10-29",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/rsc-middlemarch-review/",
       "findings": [
@@ -41192,24 +41188,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-tour-2026",
-      "file": "variety--unknown.json",
-      "publishDate": "2026-10-22",
-      "url": "https://variety.com/2026/theater/global/jane-krakowski-reprise-oh-mary-london-west-end-1236919607/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
