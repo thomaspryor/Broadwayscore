@@ -8,6 +8,12 @@
  * --git-depth=N  commits per file to walk for the fullText change (default 15;
  *                0 skips git and uses only the record's own timestamps)
  *
+ * A shallow review-texts clone (execute-approved-fix.yml checks out depth 1)
+ * would date every file at the clone commit (BRO-5652). With git-depth > 0 the
+ * script first fetches the full history (`git fetch --unshallow`) and stops
+ * without writing if it cannot; creationReached also never trusts a shallow
+ * boundary. Holding folders (_superseded-misattributed, _pending) are skipped.
+ *
  * Usage:
  *   node scripts/backfill-text-fetched-at.js [--apply] [--git-depth=N] [--show=ID]
  */
@@ -17,7 +23,7 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const {
-  needsTextFetchedAtBackfill, chooseTextFetchedAt, fullTextChangedAtFromVersions, backfillFields,
+  needsTextFetchedAtBackfill, chooseTextFetchedAt, fullTextChangedAtFromVersions, creationReached, backfillFields,
 } = require('./lib/text-fetched-at-backfill');
 
 const USAGE = `backfill-text-fetched-at.js: stamp textFetchedAt on truncated-text-scored review files that lack it.
@@ -33,7 +39,23 @@ function git(cwd, args) {
   return execFileSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] });
 }
 
-function gitFullTextChangedAt(repo, rel, currentText, depth) {
+function isShallow(repo) {
+  try { return git(repo, ['rev-parse', '--is-shallow-repository']).trim() === 'true'; } catch { return false; }
+}
+
+// Full history or nothing: returns true when the repo is (now) complete.
+function ensureFullHistory(repo) {
+  if (!isShallow(repo)) return true;
+  console.log('review-texts is a shallow clone; fetching full history (git fetch --unshallow)...');
+  try {
+    execFileSync('git', ['fetch', '--unshallow', '--quiet'], { cwd: repo, stdio: ['ignore', 'inherit', 'inherit'], timeout: 240000 });
+  } catch (e) {
+    console.error(`git fetch --unshallow failed: ${e.message}`);
+  }
+  return !isShallow(repo);
+}
+
+function gitFullTextChangedAt(repo, rel, currentText, depth, shallow) {
   if (depth <= 0) return null;
   let log;
   try { log = git(repo, ['log', `-n${depth}`, '--format=%H %cI', '--', rel]).trim(); } catch { return null; }
@@ -46,10 +68,11 @@ function gitFullTextChangedAt(repo, rel, currentText, depth) {
     versions.push({ at: c.at, fullText });
     if (fullText !== currentText) break;
   }
-  let reachedCreation = false;
-  if (commits.length < depth && versions.length === commits.length) {
-    try { reachedCreation = !!git(repo, ['log', '--diff-filter=A', '-n1', '--format=%H', '--', rel]).trim(); } catch { /* shallow */ }
+  let addedCommitFound = false;
+  if (!shallow && commits.length < depth && versions.length === commits.length) {
+    try { addedCommitFound = !!git(repo, ['log', '--diff-filter=A', '-n1', '--format=%H', '--', rel]).trim(); } catch { /* no history */ }
   }
+  const reachedCreation = creationReached({ commitCount: commits.length, depth, versionsRead: versions.length, addedCommitFound, shallow });
   return fullTextChangedAtFromVersions(currentText, versions, { reachedCreation });
 }
 
@@ -61,7 +84,14 @@ function main() {
   const depth = depthArg ? parseInt(depthArg.split('=')[1], 10) : 15;
   const showArg = args.find((a) => a.startsWith('--show='));
   const repo = fs.realpathSync(REVIEW_DIR);
-  const dirs = showArg ? [showArg.split('=')[1]] : listShowDirs(REVIEW_DIR);
+  if (depth > 0 && apply && !ensureFullHistory(repo)) {
+    console.error('Refusing to --apply: review-texts history is shallow, so git dates would be clone dates. Rerun with full history or --git-depth=0.');
+    process.exitCode = 1;
+    return;
+  }
+  const shallow = depth > 0 && isShallow(repo);
+  if (shallow) console.log('note: shallow history (dry run); git dates are not trusted, record timestamps are used instead');
+  const dirs = showArg ? [showArg.split('=')[1]].filter((d) => !d.startsWith('_')) : listShowDirs(REVIEW_DIR, { skipHolding: true });
   const counts = { candidates: 0, written: 0, undetermined: 0 };
   const bySource = {};
   for (const dir of dirs) {
@@ -74,7 +104,7 @@ function main() {
       try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
       if (!needsTextFetchedAtBackfill(data)) continue;
       counts.candidates++;
-      const fullTextChangedAt = gitFullTextChangedAt(repo, `${dir}/${file}`, data.fullText, depth);
+      const fullTextChangedAt = gitFullTextChangedAt(repo, `${dir}/${file}`, data.fullText, depth, shallow);
       const choice = chooseTextFetchedAt(data, { fullTextChangedAt });
       if (!choice) { counts.undetermined++; console.log(`undetermined ${dir}/${file}`); continue; }
       bySource[choice.source] = (bySource[choice.source] || 0) + 1;

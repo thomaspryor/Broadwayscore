@@ -66,9 +66,21 @@ function fullTextChangedAtFromVersions(currentText, versions, opts = {}) {
   return opts.reachedCreation ? changedAt : null;
 }
 
+/**
+ * Did the file walk really reach the commit that created the file? Only when
+ * the walk saw fewer commits than it asked for, read every one of them, and
+ * git found an adding commit. In a shallow clone that "adding" commit is the
+ * graft at the clone boundary (a depth-1 CI checkout makes every file look
+ * created at the clone commit), so a shallow repo never counts (BRO-5652).
+ */
+function creationReached({ commitCount, depth, versionsRead, addedCommitFound, shallow }) {
+  if (shallow) return false;
+  return commitCount < depth && versionsRead === commitCount && !!addedCommitFound;
+}
+
 /** Fields to write for a chosen value. */
 function backfillFields(choice) {
   return { textFetchedAt: choice.value, textFetchedAtBackfill: choice.source };
 }
 
-module.exports = { needsTextFetchedAtBackfill, chooseTextFetchedAt, fullTextChangedAtFromVersions, backfillFields, FALLBACK_FIELDS };
+module.exports = { needsTextFetchedAtBackfill, chooseTextFetchedAt, fullTextChangedAtFromVersions, creationReached, backfillFields, FALLBACK_FIELDS };

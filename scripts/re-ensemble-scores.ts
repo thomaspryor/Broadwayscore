@@ -23,6 +23,7 @@ import * as path from 'path';
 import { ensembleScoreFromArray, applyTailStretch } from './llm-scoring/ensemble';
 import type { ModelScore, Bucket, EnsembleResult } from './llm-scoring/types';
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { isBandAnchored } = require('./lib/band-anchored');
 const { isEnabled: isTailStretchEnabled } = require('./lib/monotone-stretch');
 
@@ -31,6 +32,20 @@ const { isEnabled: isTailStretchEnabled } = require('./lib/monotone-stretch');
 // ========================================
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+/**
+ * Review files to re-ensemble, as [showDir, file] pairs. Skips `_` holding
+ * folders (_superseded-misattributed, _pending: moved-aside records that must
+ * not get fresh scores, BRO-5652) and `_` sidecar files (_blocklist.json).
+ */
+export function listReensembleFiles(reviewTextsDir: string, showFilter?: string | null): Array<[string, string]> {
+  const out: Array<[string, string]> = [];
+  for (const showDir of listShowDirs(reviewTextsDir, { skipHolding: true })) {
+    if (showFilter && showDir !== showFilter) continue;
+    for (const file of fs.readdirSync(path.join(reviewTextsDir, showDir)).filter(isReviewTextFile)) out.push([showDir, file]);
+  }
+  return out;
+}
+
 /**
  * Resume checkpoint, one per mode: a tail-stretch run's processed list must never
  * make a later flag-off (rollback) run skip those same files, or vice versa.
@@ -240,11 +255,8 @@ async function main() {
     }
   }
 
-  // Walk show directories
-  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter((d: string) => {
-    if (showFilter && d !== showFilter) return false;
-    return true;
-  });
+  // Walk show directories (holding folders and sidecars excluded)
+  const reviewFiles = listReensembleFiles(REVIEW_TEXTS_DIR, showFilter);
 
   let totalFiles = 0;
   let skipped = 0;
@@ -258,71 +270,67 @@ async function main() {
   const cappedDetails: Array<{ file: string; oldScore: number; newScore: number; delta: number }> = [];
   const newProcessedFiles: string[] = [];
 
-  for (const showDir of showDirs) {
+  for (const [showDir, file] of reviewFiles) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
-    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+    const filePath = path.join(showPath, file);
+    const relPath = path.join(showDir, file);
+    totalFiles++;
 
-    for (const file of files) {
-      const filePath = path.join(showPath, file);
-      const relPath = path.join(showDir, file);
-      totalFiles++;
+    // Skip if already processed (resume mode)
+    if (processedFiles.has(relPath)) {
+      skipped++;
+      continue;
+    }
 
-      // Skip if already processed (resume mode)
-      if (processedFiles.has(relPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      const plan = planReensemble(data, { tailStretch, maxDelta });
+      if (plan.action === 'skip') {
         skipped++;
+        if (plan.reason === 'combine drift') drift++;
         continue;
       }
 
-      try {
-        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const oldLlmScore = data.llmScore.score;
+      const result = plan.result;
+      const newScore = result.score;
 
-        const plan = planReensemble(data, { tailStretch, maxDelta });
-        if (plan.action === 'skip') {
-          skipped++;
-          if (plan.reason === 'combine drift') drift++;
-          continue;
+      if (plan.action === 'unchanged') {
+        unchanged++;
+      } else if (plan.action === 'restamp') {
+        // Score already right; only the tailStretch stamp is stale/missing.
+        restamped++;
+        if (!dryRun) {
+          applyStamp(data, result);
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
         }
+      } else if (plan.action === 'capped') {
+        // Safety cap: skip extreme changes (likely broken old defaults)
+        capped++;
+        cappedDetails.push({ file: relPath, oldScore: oldLlmScore, newScore, delta: newScore - oldLlmScore });
+      } else {
+        changed++;
+        const oldBucket = data.llmScore.bucket || 'unknown';
+        changeDetails.push({ file: relPath, oldScore: oldLlmScore, newScore, oldBucket, newBucket: result.bucket });
 
-        const oldLlmScore = data.llmScore.score;
-        const result = plan.result;
-        const newScore = result.score;
-
-        if (plan.action === 'unchanged') {
-          unchanged++;
-        } else if (plan.action === 'restamp') {
-          // Score already right; only the tailStretch stamp is stale/missing.
-          restamped++;
-          if (!dryRun) {
-            applyStamp(data, result);
-            fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-          }
-        } else if (plan.action === 'capped') {
-          // Safety cap: skip extreme changes (likely broken old defaults)
-          capped++;
-          cappedDetails.push({ file: relPath, oldScore: oldLlmScore, newScore, delta: newScore - oldLlmScore });
-        } else {
-          changed++;
-          const oldBucket = data.llmScore.bucket || 'unknown';
-          changeDetails.push({ file: relPath, oldScore: oldLlmScore, newScore, oldBucket, newBucket: result.bucket });
-
-          if (!dryRun) {
-            applyReensemble(data, result);
-            fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-          }
+        if (!dryRun) {
+          applyReensemble(data, result);
+          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
         }
-
-        newProcessedFiles.push(relPath);
-
-        // Checkpoint
-        if (!dryRun && newProcessedFiles.length % CHECKPOINT_INTERVAL === 0) {
-          const allProcessed = Array.from(processedFiles).concat(newProcessedFiles);
-          fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ processedFiles: allProcessed, timestamp: new Date().toISOString() }));
-          console.log(`  Checkpoint: ${allProcessed.length} files processed, ${changed} changed`);
-        }
-      } catch (err: any) {
-        errors++;
-        if (errors <= 5) console.error(`Error processing ${relPath}: ${err.message}`);
       }
+
+      newProcessedFiles.push(relPath);
+
+      // Checkpoint
+      if (!dryRun && newProcessedFiles.length % CHECKPOINT_INTERVAL === 0) {
+        const allProcessed = Array.from(processedFiles).concat(newProcessedFiles);
+        fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ processedFiles: allProcessed, timestamp: new Date().toISOString() }));
+        console.log(`  Checkpoint: ${allProcessed.length} files processed, ${changed} changed`);
+      }
+    } catch (err: any) {
+      errors++;
+      if (errors <= 5) console.error(`Error processing ${relPath}: ${err.message}`);
     }
   }
 

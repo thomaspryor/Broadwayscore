@@ -1,0 +1,14 @@
+[
+  {"file":"scripts/clean-ocr-extract.js","reason":"re-extracts an existing OCR body; not a new fetch, kept until reviewed"},
+  {"file":"scripts/extract-full-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/fetch-bww-roundups.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/fetch-from-wayback.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/fetch-review-texts.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/fix-broken-json.js","reason":"one-off repair that rewrote one hard-coded record"},
+  {"file":"scripts/lib/review-write-guard.js","reason":"false positive: CLEAR_BREADCRUMBS maps fullText to a freshness-gate function built by makeFreshnessGate"},
+  {"file":"scripts/recover-login-page-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/scrape-bww-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/scrape-nysr-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/scrape-reviews.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"},
+  {"file":"scripts/scrape-wp-theater-blogs.js","reason":"pre-BRO-5652 writer that sets fullText without textFetchedAt; stamp it, then delete this row"}
+]
