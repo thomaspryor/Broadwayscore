@@ -169,9 +169,9 @@ export default function OutletDetailClient({ outlet }: { outlet: OutletProfile }
         {/* Ranks */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">
           <span>{ordinalSuffix(outlet.volumeRank)} most prolific outlet</span>
-          <span className="text-fg-muted">·</span>
+          <span aria-hidden="true" className="text-white/25">·</span>
           <span>{ordinalSuffix(outlet.generosityRank)} most generous scorer</span>
-          <span className="text-fg-muted">·</span>
+          <span aria-hidden="true" className="text-white/25">·</span>
           <span>{outlet.criticCount} different critic{outlet.criticCount !== 1 ? 's' : ''}</span>
         </div>
       </div>

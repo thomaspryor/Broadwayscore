@@ -69,7 +69,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
     <p className={`text-[12px] sm:text-[13px] text-gray-400 mt-1 leading-snug whitespace-nowrap overflow-x-auto scrollbar-hide ${className}`}>
       Ranks {fragments.map((f, i) => (
         <React.Fragment key={i}>
-          {i > 0 ? <span className="text-fg-muted"> · </span> : null}
+          {i > 0 ? <span aria-hidden="true" className="text-white/25"> · </span> : null}
           {f}
         </React.Fragment>
       ))}

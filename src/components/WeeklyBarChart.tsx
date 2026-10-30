@@ -76,7 +76,7 @@ export default function WeeklyBarChart({ points, mode, width = DEFAULT_W, height
       {ticks.map((t) => (
         <g key={t}>
           {!(mode === 'multiple' && t === 1) && <line x1={LEFT} x2={W - RIGHT} y1={y(t)} y2={y(t)} className="stroke-white/10" />}
-          <text x={LEFT - 5} y={y(t) + 4} textAnchor="end" fontSize="12" className="fill-gray-500">{tickText(t)}</text>
+          <text x={LEFT - 5} y={y(t) + 4} textAnchor="end" fontSize="12" className="fill-fg-muted">{tickText(t)}</text>
         </g>
       ))}
       {values.map((v, i) => {
@@ -98,7 +98,7 @@ export default function WeeklyBarChart({ points, mode, width = DEFAULT_W, height
       )}
       {marketLine && <polyline points={marketLine} fill="none" className="stroke-accent-cream" strokeWidth={2} strokeLinejoin="round" />}
       {months.map((m) => (
-        <text key={m.i} x={x(m.i)} y={H - 5} fontSize="12" className="fill-gray-500">{m.text}</text>
+        <text key={m.i} x={x(m.i)} y={H - 5} fontSize="12" className="fill-fg-muted">{m.text}</text>
       ))}
     </svg>
   );

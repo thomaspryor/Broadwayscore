@@ -47,7 +47,7 @@ export function FooterAccountLink() {
   if (!featureFlags.userAccounts || loading) return null;
   return (
     <>
-      <span className="text-fg-muted hidden sm:inline">|</span>
+      <span aria-hidden="true" className="text-white/25 hidden sm:inline">|</span>
       {isAuthenticated ? (
         <Link href="/my-shows" className="hover:text-white transition-colors">{ACCOUNT_PROMO_COPY.linkSignedIn}</Link>
       ) : (

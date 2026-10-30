@@ -544,7 +544,7 @@ function SinglePasteForm({
           'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
           readyToSubmit && !submitting
             ? 'bg-brand text-black hover:bg-brand/90'
-            : 'bg-white/5 text-fg-muted cursor-not-allowed',
+            : 'bg-white/5 text-fg-muted opacity-60 cursor-not-allowed',
         ].join(' ')}
       >
         {buttonLabel}
@@ -986,7 +986,7 @@ function BatchPasteForm({
               'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
               readyToSubmit && !submitting
                 ? 'bg-brand text-black hover:bg-brand/90'
-                : 'bg-white/5 text-fg-muted cursor-not-allowed',
+                : 'bg-white/5 text-fg-muted opacity-60 cursor-not-allowed',
             ].join(' ')}
           >
             {submitting

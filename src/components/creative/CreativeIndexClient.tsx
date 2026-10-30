@@ -254,7 +254,7 @@ export default function CreativeIndexClient({
           ))}
           {showObcFilter && (
             <>
-              <span className="text-fg-muted mx-1">|</span>
+              <span aria-hidden="true" className="text-white/25 mx-1">|</span>
               <button
                 onClick={() => { setObcOnly(!obcOnly); setVisibleCount(100); }}
                 className={`px-2.5 py-1 text-xs font-medium rounded-md border transition-colors ${

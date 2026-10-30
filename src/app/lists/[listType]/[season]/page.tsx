@@ -157,7 +157,7 @@ export default async function GoldListSeasonPage(props: { params: Promise<{ list
           >
             All-Time
           </Link>
-          <span className="text-fg-muted">|</span>
+          <span aria-hidden="true" className="text-white/25">|</span>
           <SeasonSelect listType={listType} seasons={allSeasons} currentSeason={season} />
         </div>
 

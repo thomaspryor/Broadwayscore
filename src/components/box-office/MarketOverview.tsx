@@ -72,7 +72,7 @@ function SeasonChart({ c, week }: { c: MarketPage['seasonChart']; week: string }
         {ticks.map((t) => (
           <g key={t}>
             <line x1={LEFT} x2={W - RIGHT} y1={y(t)} y2={y(t)} className="stroke-white/10" />
-            <text x={LEFT - 5} y={y(t) + 4} textAnchor="end" fontSize="12" className="fill-gray-500">${t / 1_000_000}M</text>
+            <text x={LEFT - 5} y={y(t) + 4} textAnchor="end" fontSize="12" className="fill-fg-muted">${t / 1_000_000}M</text>
           </g>
         ))}
         {band && <polygon points={band} className="fill-white/10" />}
@@ -80,7 +80,7 @@ function SeasonChart({ c, week }: { c: MarketPage['seasonChart']; week: string }
         <polyline points={line(c.thisSeason)} fill="none" className="stroke-brand" strokeWidth={2.5} strokeLinejoin="round" />
         {nowGross != null && <circle cx={x(lastThis)} cy={y(nowGross)} r={4} className="fill-brand" />}
         {months.map((m) => (
-          <text key={m.text} x={x(m.i)} y={H - 6} fontSize="12" textAnchor="middle" className="fill-gray-500">{m.text}</text>
+          <text key={m.text} x={x(m.i)} y={H - 6} fontSize="12" textAnchor="middle" className="fill-fg-muted">{m.text}</text>
         ))}
       </svg>
       </div>

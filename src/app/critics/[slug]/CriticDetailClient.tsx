@@ -235,7 +235,7 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
         {/* Ranks */}
         <div className="flex flex-wrap gap-3 text-sm text-gray-400">
           <span>{ordinalSuffix(critic.volumeRank)} most prolific critic</span>
-          <span className="text-fg-muted">·</span>
+          <span aria-hidden="true" className="text-white/25">·</span>
           <span>{ordinalSuffix(critic.generosityRank)} most generous scorer</span>
           {marketFilter !== 'all' && (
             <span className="text-fg-muted">· ranks across all reviews</span>

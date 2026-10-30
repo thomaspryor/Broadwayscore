@@ -209,7 +209,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
                         {formatTime(day.m)}
                       </TicketLink>
                     ) : <span className="text-white">{formatTime(day.m)}</span>)}
-                    {day.m && day.e && <span className="text-fg-muted mx-1.5">&middot;</span>}
+                    {day.m && day.e && <span aria-hidden="true" className="text-white/25 mx-1.5">&middot;</span>}
                     {day.e && (hasTicketLink ? (
                       <TicketLink
                         showName={showName ?? ''}

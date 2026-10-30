@@ -565,7 +565,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <div className="text-center mb-4 text-[11px] text-amber-400/60 font-semibold">
               Beat a critic: chance to win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
             </div>
-            <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-fg-muted cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + shortTitle(selectedTitle) + ' \u2192' : 'Lock In Pick'}</button>
+            <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-fg-muted opacity-60 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + shortTitle(selectedTitle) + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-fg-muted">Not sure? Go with your gut!</p>
             <p className="text-center mt-1 text-xs"><Link href="/tony-awards/predictions" className="text-amber-400 hover:text-amber-300 transition-colors">Check our Predictions &rarr;</Link></p>
           </div>

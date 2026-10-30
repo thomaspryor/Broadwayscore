@@ -82,7 +82,7 @@ export default function GuidesIndexPage() {
                 <span>{guide.showCount} {guide.showCount === 1 ? 'show' : 'shows'}</span>
                 {guide.topShow && (
                   <>
-                    <span className="text-fg-muted">|</span>
+                    <span aria-hidden="true" className="text-white/25">|</span>
                     <span>
                       Top pick: {guide.topShow}
                       {guide.topScore !== null && (

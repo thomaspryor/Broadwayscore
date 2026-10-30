@@ -20,15 +20,15 @@ export default function FooterBranding({ totalReviews }: { totalReviews: number 
         <SocialIcons />
         <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-sm text-gray-400">
           <Link href="/about" className="hover:text-white transition-colors">About</Link>
-          <span className="text-fg-muted hidden sm:inline">|</span>
+          <span aria-hidden="true" className="text-white/25 hidden sm:inline">|</span>
           <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
-          <span className="text-fg-muted hidden sm:inline">|</span>
+          <span aria-hidden="true" className="text-white/25 hidden sm:inline">|</span>
           <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Buy Me a Coffee</a>
           {/* Account, not another email button: the email box sits right above (BRO-4946). */}
           <FooterAccountLink />
-          <span className="text-fg-muted hidden sm:inline">|</span>
+          <span aria-hidden="true" className="text-white/25 hidden sm:inline">|</span>
           <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-          <span className="text-fg-muted hidden sm:inline">|</span>
+          <span aria-hidden="true" className="text-white/25 hidden sm:inline">|</span>
           <span>Every show. Every review. One score.</span>
         </div>
         <p className="text-xs text-fg-muted mt-1">

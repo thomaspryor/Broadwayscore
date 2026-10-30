@@ -138,7 +138,7 @@ export default async function GoldListAllTimePage(props: { params: Promise<{ lis
           <span className="flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white border border-transparent">
             All-Time
           </span>
-          <span className="text-fg-muted">|</span>
+          <span aria-hidden="true" className="text-white/25">|</span>
           <SeasonSelect listType={listType} seasons={allSeasons} currentSeason="" />
         </div>
 

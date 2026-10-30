@@ -63,7 +63,7 @@ export default function NewMusicalsChart({ cohort }: { cohort: MarketPage['cohor
           {ticks.map((t) => (
             <g key={t}>
               <line x1={LEFT} x2={W - RIGHT} y1={y(t)} y2={y(t)} className="stroke-white/10" />
-              <text x={LEFT - 5} y={y(t) + 4} textAnchor="end" fontSize="12" className="fill-gray-500">${t}</text>
+              <text x={LEFT - 5} y={y(t) + 4} textAnchor="end" fontSize="12" className="fill-fg-muted">${t}</text>
             </g>
           ))}
           {band && <polygon points={band} className="fill-white/10" />}
@@ -75,7 +75,7 @@ export default function NewMusicalsChart({ cohort }: { cohort: MarketPage['cohor
             <path key={l.title} d={path(l.series)} fill="none" className={CURRENT_TONES[i % CURRENT_TONES.length]} strokeWidth={2.5} strokeLinejoin="round" />
           ))}
           {weekTicks.map((w) => (
-            <text key={w} x={x(w - 1)} y={H - 6} fontSize="12" textAnchor="middle" className="fill-gray-500">wk {w}</text>
+            <text key={w} x={x(w - 1)} y={H - 6} fontSize="12" textAnchor="middle" className="fill-fg-muted">wk {w}</text>
           ))}
         </svg>
         </div>

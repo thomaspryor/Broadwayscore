@@ -78,9 +78,9 @@ export default function VisualFixturePage() {
               {/* Meta line — inline text wrapping (the bug this catches) */}
               <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
                 <span className="text-gray-300">Golden Theatre</span>
-                <span className="whitespace-nowrap"> <span className="text-fg-muted">&middot;</span> 2h 45m (incl. intermission)</span>
-                <span> <span className="text-fg-muted">&middot;</span> <span className="text-amber-400">Closes Dec 15, 2024</span></span>
-                <span> <span className="text-fg-muted">&middot;</span> Opened Apr 25, 2024</span>
+                <span className="whitespace-nowrap"> <span aria-hidden="true" className="text-white/25">&middot;</span> 2h 45m (incl. intermission)</span>
+                <span> <span aria-hidden="true" className="text-white/25">&middot;</span> <span className="text-amber-400">Closes Dec 15, 2024</span></span>
+                <span> <span aria-hidden="true" className="text-white/25">&middot;</span> Opened Apr 25, 2024</span>
               </p>
 
               {/* Score section */}

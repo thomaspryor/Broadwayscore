@@ -574,7 +574,7 @@ export default function ShowPageBelowFold({
           <span className="text-fg-muted">Compare: </span>
           {comparisons.slice(0, 6).map((comp, i) => (
             <span key={comp.slug}>
-              {i > 0 && <span className="text-fg-muted"> · </span>}
+              {i > 0 && <span aria-hidden="true" className="text-white/25"> · </span>}
               <Link href={`/compare/${comp.slug}`} className="text-gray-400 hover:text-white transition-colors">
                 vs {comp.otherSlug.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
               </Link>

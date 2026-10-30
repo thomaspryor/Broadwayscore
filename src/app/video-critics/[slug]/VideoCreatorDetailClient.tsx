@@ -115,7 +115,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
             <p className="text-gray-400 text-sm flex items-center flex-wrap gap-x-1.5 gap-y-1">
               {/* publishedAt can be "NA" (undated YouTube), which formats to '' */}
               {formatDate(review.publishedAt) && <span className="whitespace-nowrap">{formatDate(review.publishedAt)}</span>}
-              {formatDate(review.publishedAt) && <span className="text-fg-muted">·</span>}
+              {formatDate(review.publishedAt) && <span aria-hidden="true" className="text-white/25">·</span>}
               <a
                 href={review.videoUrl}
                 target="_blank"
@@ -218,7 +218,7 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
               </a>
               {creator.subscribers && (
                 <>
-                  <span className="text-fg-muted">·</span>
+                  <span aria-hidden="true" className="text-white/25">·</span>
                   <span className="text-fg-muted">{creator.subscribers} followers</span>
                 </>
               )}
@@ -240,7 +240,7 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
         {creator.volumeRank > 0 && creator.generosityRank > 0 && (
           <div className="flex flex-wrap gap-3 text-sm text-gray-400">
             <span>{ordinalSuffix(creator.volumeRank)} most prolific video critic</span>
-            <span className="text-fg-muted">·</span>
+            <span aria-hidden="true" className="text-white/25">·</span>
             <span>{ordinalSuffix(creator.generosityRank)} most generous scorer</span>
           </div>
         )}

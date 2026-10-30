@@ -222,7 +222,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
 
 function slotClass(selected: boolean, disabled: boolean): string {
   const base = 'flex flex-col items-center justify-center h-16 rounded-xl ring-1 ring-inset transition-colors';
-  if (disabled) return `${base} ring-white/5 text-fg-muted cursor-not-allowed`;
+  if (disabled) return `${base} ring-white/5 text-fg-muted opacity-60 cursor-not-allowed`;
   return selected
     ? `${base} bg-brand/10 ring-brand text-brand`
     : `${base} bg-white/[0.06] ring-white/10 text-white hover:bg-white/10`;

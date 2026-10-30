@@ -308,7 +308,7 @@ function LockRow({ lock }: { lock: LockRecord }) {
               >
                 confirm unlock
               </button>
-              <span className="text-fg-muted">·</span>
+              <span aria-hidden="true" className="text-white/25">·</span>
               <button
                 onClick={() => setUnlockOpen(false)}
                 disabled={actionState.type === 'submitting'}

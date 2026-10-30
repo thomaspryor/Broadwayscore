@@ -271,7 +271,7 @@ export default function ActorDetailClient({
             <span>{[musicalCount > 0 && `${musicalCount} musical${musicalCount !== 1 ? 's' : ''}`, playCount > 0 && `${playCount} play${playCount !== 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span>
           )}
           {showStats && rank <= 200 && (
-            <><span className="text-fg-muted">·</span><span>{ordinalSuffix(rank)} most prolific</span></>
+            <><span aria-hidden="true" className="text-white/25">·</span><span>{ordinalSuffix(rank)} most prolific</span></>
           )}
         </div>
       </div>

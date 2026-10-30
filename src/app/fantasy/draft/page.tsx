@@ -493,7 +493,7 @@ function FantasyDraftInner() {
           className={`w-full py-3.5 rounded-lg font-semibold text-lg transition-all ${
             canSubmit
               ? 'bg-brand text-white hover:bg-brand-hover active:scale-[0.98]'
-              : 'bg-surface-overlay text-fg-muted cursor-not-allowed'
+              : 'bg-surface-overlay text-fg-muted opacity-60 cursor-not-allowed'
           }`}
         >
           {submitting ? 'Submitting...' : practice ? `Save Practice Team ($${totalSpent})` : `Lock In My Picks ($${totalSpent})`}

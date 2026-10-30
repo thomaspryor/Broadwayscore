@@ -758,7 +758,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   <Link href={`/theater/${slugify(foldVenueName(show.venue))}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 )}
                 {show.runtime && (
-                  <span className="whitespace-nowrap"> <span className="text-fg-muted">·</span> {show.runtime}</span>
+                  <span className="whitespace-nowrap"> <span aria-hidden="true" className="text-white/25">·</span> {show.runtime}</span>
                 )}
                 {/* Date-line segments come from the shared show-date-line
                     module (src/lib/show-date-line.ts) — the single source
@@ -770,13 +770,13 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   const durationText = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
                   const segments = getShowDateLineSegments(show, durationText);
                   return segments.map((seg, i) => (
-                    <span key={i}> <span className="text-fg-muted">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
+                    <span key={i}> <span aria-hidden="true" className="text-white/25">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
                   ));
                 })()}
                 {isTour && !show.openingDate && (() => {
                   // Only while the tour's own dates are unknown; the date line covers it otherwise.
                   const years = getTourReviewYears(show.criticScore?.reviews);
-                  return years ? <span> <span className="text-fg-muted">·</span> reviewed {years}</span> : null;
+                  return years ? <span> <span aria-hidden="true" className="text-white/25">·</span> reviewed {years}</span> : null;
                 })()}
               </p>
 

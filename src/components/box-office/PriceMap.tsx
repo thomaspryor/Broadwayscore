@@ -122,13 +122,13 @@ function Chart({ dots, frame: f, phone, groups, active, setActive }: ChartProps)
       {ax.capTicks.map((c) => (
         <g key={`c${c}`}>
           <line x1={x(c)} x2={x(c)} y1={f.top} y2={f.h - f.bottom} className="stroke-white/5" />
-          <text x={x(c)} y={f.h - (phone ? 8 : 10)} fontSize={tickFont} textAnchor="middle" className={phone ? 'fill-gray-400' : 'fill-gray-500'}>{phone ? `${c}%` : `${c}% full`}</text>
+          <text x={x(c)} y={f.h - (phone ? 8 : 10)} fontSize={tickFont} textAnchor="middle" className={phone ? 'fill-gray-400' : 'fill-fg-muted'}>{phone ? `${c}%` : `${c}% full`}</text>
         </g>
       ))}
       {ax.atpTicks.map((a) => (
         <g key={`a${a}`}>
           <line x1={f.left} x2={f.w - f.right} y1={y(a)} y2={y(a)} className="stroke-white/5" />
-          <text x={f.left - (phone ? 4 : 5)} y={y(a) + 4} fontSize={tickFont} textAnchor="end" className={phone ? 'fill-gray-400' : 'fill-gray-500'}>${a}</text>
+          <text x={f.left - (phone ? 4 : 5)} y={y(a) + 4} fontSize={tickFont} textAnchor="end" className={phone ? 'fill-gray-400' : 'fill-fg-muted'}>${a}</text>
         </g>
       ))}
       {phone && medianAtp != null && (
