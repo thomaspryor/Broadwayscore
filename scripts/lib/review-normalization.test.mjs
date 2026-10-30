@@ -150,3 +150,10 @@ test('splitOutletForLabel: critic moves only a label with no edition signal', ()
   assert.equal(splitOutletForLabel('daily-mail', 'Daily Mail', 'Quentin Crisp'), 'daily-mail');
   assert.equal(splitOutletForLabel('daily-mail', 'Daily Mail', ''), 'daily-mail');
 });
+
+test('BWW headline fragment starting with "Is" is junk, not a missing outlet (BRO-6645 Oct 29 The Heart)', () => {
+  assert.equal(isJunkOutlet('Is Something Of A Miracle'), true);
+  assert.equal(isJunkOutlet('Is A Triumph'), true);
+  assert.equal(isJunkOutlet('Theater Pizzazz'), false);
+  assert.equal(isJunkOutlet('Island Packet'), false);
+});

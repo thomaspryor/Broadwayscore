@@ -2306,7 +2306,7 @@ function isJunkOutlet(outletName) {
   // real registered aggregator outlet 'london-box-office'.)
   if (/^(buy|get)-tickets\b|tickets-directly|^box-office$/.test(slug)) return true;
   // Starts with conjunctions/verbs that indicate a sentence fragment
-  if (/^(but-|and-(?!juliet)|is-a-|is-not-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
+  if (/^(but-|and-(?!juliet)|is-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
   // Contains verb phrases never found in outlet names
   if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun|speeding-along|seen-on-broadway|rose-to-fame|debacle-of|candid-about|exactly-what|dear-evan-hansen)/.test(slug)) return true;
   // Contains year numbers (19XX/20XX) but not date-formatted — sentence fragments
