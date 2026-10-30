@@ -172,7 +172,7 @@ async function main() {
   let ph = {};
   if (SIMULATE) {
     if (SIMULATE === 'signin-stalled') ph = { health: [{ started: 4, started_devices: 3, completed: 0, failed: 1 }] };
-    else if (SIMULATE === 'email-code-flood') accounts = { emailCodes: { requested24h: 41, unfinished24h: 38, unfinished3h: 30, unfinishedTotal: 40 } };
+    else if (SIMULATE === 'email-code-flood') accounts = { emailCodes: { requested24h: 41, unfinished24h: 38, unfinished3h: 30, requested7d: 45, unfinished7d: 39, unfinishedTotal: 40 } };
     else throw new Error(`unknown --simulate=${SIMULATE}`);
   } else {
     try {
@@ -225,7 +225,7 @@ async function main() {
 
 if (require.main === module) {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/account-metrics.js --out=account-metrics [--no-alerts] [--simulate=signin-stalled]');
+    console.log('Usage: node scripts/account-metrics.js --out=account-metrics [--no-alerts] [--simulate=signin-stalled|email-code-flood]');
     process.exit(0);
   }
   main().then((code) => process.exit(code), (e) => {
