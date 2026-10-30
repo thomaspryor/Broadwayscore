@@ -32713,7 +32713,7 @@
       "linearIdentifier": null
     },
     "cookie-health:t1-auth-expired:nytimes": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "nytimes auth cookies are EXPIRED: T1 reviews will score on paywall-truncated text",
       "firstSeen": "2026-10-30T19:09:51.499Z",
@@ -32724,7 +32724,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6655",
-      "silentRefires": 1
+      "resolvedAt": "2026-10-30T19:36:57.720Z",
+      "resolveReason": "auth cookies healthy again"
     },
     "mezzanine:transient-failure": {
       "status": "open",
