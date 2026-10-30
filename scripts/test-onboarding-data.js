@@ -32,13 +32,23 @@ const chi = cities.filter(c => /^Chicago\b/.test(c.name));
 assert(chi.length === 1 && chi[0].tag === 'Local shows + tours', 'exactly one Chicago, tagged Local shows + tours');
 assert(cities.filter(c => c.kind === 'tour').every(c => c.tag), 'tour cities carry a tag');
 
-const { hits } = read('public/data/onboarding-hits.json');
-for (const city of ['nyc', 'london']) {
+const { hits, fallback, minCityHits } = read('public/data/onboarding-hits.json');
+for (const city of Object.keys(hits)) {
   const rows = hits[city] || [];
-  assert(rows.length >= 10, `${city}: at least 10 hits (${rows.length})`);
+  const home = city === 'nyc' || city === 'london';
+  assert(rows.length >= (home ? 10 : minCityHits), `${city}: enough hits (${rows.length}, min ${home ? 10 : minCityHits})`);
   assert(rows.every(r => ids.has(r.showId) && r.poster && r.productions.length >= 1), `${city}: every hit maps to a real show with a poster and a production`);
   assert(rows.every((r, i) => i === 0 || rows[i - 1].days >= r.days), `${city}: sorted by days played`);
 }
+
+// Every city either has its own list or names the home list it falls back to (BRO-6647); no city is left without one.
+const own = new Set(Object.keys(hits));
+const lacking = cities.filter(c => c.kind !== 'home' && (c.kind === 'uk-regional' || /^Chicago\b/.test(c.name)));
+assert(lacking.every(c => own.has(c.id) || (fallback[c.id] && hits[fallback[c.id]])), 'Chicago and every UK regional city has its own list or a valid fallback');
+assert(Object.keys(fallback).every(id => !own.has(id) && cities.some(c => c.id === id)), 'fallback only names cities without their own list');
+const chiId = chi[0].id;
+assert(own.has(chiId) || fallback[chiId] === 'nyc', 'Chicago has its own list or falls back to nyc');
+assert(typeof minCityHits === 'number' && minCityHits >= 3, 'threshold recorded in the file');
 
 if (failed) process.exit(1);
 console.log('onboarding data OK');

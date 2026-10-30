@@ -17,7 +17,7 @@ const TOP = 16;
 const DAY = 86400000;
 
 type Show = {
-  id: string; t: string; ty?: string; st: string; cat?: string; od?: string; cd?: string;
+  id: string; t: string; v?: string; ty?: string; st: string; cat?: string; od?: string; cd?: string;
   cs?: number; img?: { po?: string; th?: string };
 };
 const shows: Show[] = JSON.parse(fs.readFileSync(path.join(OUT_DIR, 'mobile-shows.json'), 'utf8')).shows;
@@ -30,6 +30,8 @@ const DARK_START = new Date('2020-03-12').getTime();
 const DARK_END = new Date('2021-09-14').getTime();
 const daysInWindow = (s: Show) => {
   if (!s.od) return 0;
+  // Closed with no closing date: the run length is unknown, so it earns no days (never counted to today).
+  if (s.st === 'closed' && !s.cd) return 0;
   const start = Math.max(new Date(s.od).getTime(), windowStart.getTime());
   const end = Math.min(s.cd ? new Date(s.cd).getTime() : today.getTime(), today.getTime());
   if (end <= start) return 0;
@@ -68,7 +70,7 @@ function hitsFor(match: (s: Show) => boolean) {
   return rows.filter(r => r.days > 0).sort((a, b) => b.days - a.days || (b.score ?? 0) - (a.score ?? 0)).slice(0, TOP);
 }
 
-const ukRegional: { match: string; city: string }[] = JSON.parse(
+const ukRegional: { match: string; city: string; aliases?: string[] }[] = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'data', 'uk-regional-venues.json'), 'utf8'),
 );
 
@@ -81,11 +83,21 @@ const hits: Record<string, any[]> = {
   london: hitsFor(s => s.cat === 'west-end'),
 };
 
+// A city gets its own hit list only with this many distinct titles that played in the window and have
+// art; below it the app falls back to the home market's list (listed in `fallback`). Never padded.
+const MIN_CITY_HITS = 5;
+const fallback: Record<string, string> = {};
+
 const seenUk = new Set<string>();
 for (const v of ukRegional) {
   if (seenUk.has(v.city)) continue;
   seenUk.add(v.city);
-  cities.push({ id: `uk-${norm(v.city).replace(/ /g, '-')}`, name: v.city, kind: 'uk-regional', market: 'london' });
+  const id = `uk-${norm(v.city).replace(/ /g, '-')}`;
+  cities.push({ id, name: v.city, kind: 'uk-regional', market: 'london' });
+  // Venues of this city (a city can have several rows in uk-regional-venues.json).
+  const keys = ukRegional.filter(r => r.city === v.city).flatMap(r => [r.match, ...(r.aliases || [])]).map(k => k.toLowerCase());
+  const own = hitsFor(s => s.cat !== 'broadway' && !!s.v && keys.some(k => s.v!.toLowerCase().includes(k)));
+  if (own.length >= MIN_CITY_HITS) hits[id] = own; else fallback[id] = 'london';
 }
 for (const c of getTourCities().values()) {
   cities.push({
@@ -98,9 +110,27 @@ for (const c of getTourCities().values()) {
 if (!cities.some(c => /^Chicago\b/.test(c.name))) {
   cities.push({ id: 'chicago', name: 'Chicago', kind: 'tour', market: 'chicago', tag: 'Local shows + tours' });
 }
+const chicago = cities.find(c => /^Chicago\b/.test(c.name))!;
+{
+  // Local Chicago productions (venue "..., Chicago, IL"); tour stops stay out, their venue text lists many cities.
+  const own = hitsFor(s => s.cat === 'regional' && /,\s*Chicago,\s*IL\s*$/i.test(s.v || ''));
+  if (own.length >= MIN_CITY_HITS) hits[chicago.id] = own; else fallback[chicago.id] = 'nyc';
+}
 
 const stamp = today.toISOString().slice(0, 10);
-fs.writeFileSync(path.join(OUT_DIR, 'onboarding-cities.json'), JSON.stringify({ generated: stamp, cities }) + '\n');
-fs.writeFileSync(path.join(OUT_DIR, 'onboarding-hits.json'), JSON.stringify({ generated: stamp, windowYears: YEARS, hits }) + '\n');
+// Rewrite a file only when its content changed, ignoring the `generated` date. Open runs grow a day
+// each day, so hits change daily; this only avoids a pure date-stamp rewrite of identical data.
+const writeIfChanged = (name: string, body: Record<string, unknown>) => {
+  const file = path.join(OUT_DIR, name);
+  const strip = (o: any) => JSON.stringify({ ...o, generated: undefined });
+  try {
+    if (strip(JSON.parse(fs.readFileSync(file, 'utf8'))) === strip(body)) return console.log(`${name}: unchanged`);
+  } catch { /* missing or unreadable: write it */ }
+  fs.writeFileSync(file, JSON.stringify({ generated: stamp, ...body }) + '\n');
+  console.log(`${name}: written`);
+};
+writeIfChanged('onboarding-cities.json', { cities });
+writeIfChanged('onboarding-hits.json', { windowYears: YEARS, minCityHits: MIN_CITY_HITS, hits, fallback });
 for (const [k, v] of Object.entries(hits)) console.log(k, v.length, v.slice(0, 5).map(h => `${h.title}(${h.days}d)`).join(', '));
-console.log('cities', cities.length);
+console.log('cities', cities.length, 'own lists', Object.keys(hits).length, 'fallback', Object.keys(fallback).length);
+console.log('fallback', Object.entries(fallback).map(([k, v]) => `${k}->${v}`).join(' '));

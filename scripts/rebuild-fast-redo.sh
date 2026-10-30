@@ -6,7 +6,7 @@
 #
 # Redoes only the side-effect-free, local steps that produce what the commit
 # stages:
-#   rebuild-all-reviews.js -> generate-mobile-artifacts.sh -> BRO-3127 staleness
+#   rebuild-all-reviews.js -> generate-mobile-artifacts.sh -> generate-onboarding-data.ts -> BRO-3127 staleness
 #   revert -> audit-score-public-since.js
 # then:
 #   * data/audit/: discards whatever the regen wrote there and REPLAYS the lost
@@ -72,6 +72,11 @@ else
   [ "${REBUILD_FORCE_WRITE:-false}" = "true" ] && FORCE_FLAG=(--force-write)
   node "$SCRIPT_DIR/rebuild-all-reviews.js" ${FORCE_FLAG[@]+"${FORCE_FLAG[@]}"}
   bash "$SCRIPT_DIR/generate-mobile-artifacts.sh"
+  # BRO-6647: onboarding data, fail-open like the first pass (a bad check keeps main's copy).
+  if ! { npx tsx "$SCRIPT_DIR/generate-onboarding-data.ts" && node "$SCRIPT_DIR/test-onboarding-data.js"; }; then
+    echo "::warning::onboarding data generation/check failed during redo (fail-open)"
+    git checkout -- public/data/onboarding-cities.json public/data/onboarding-hits.json 2>/dev/null || true
+  fi
   bash "$SCRIPT_DIR/lib/revert-staleness-flagged-shows.sh"
   node "$SCRIPT_DIR/audit-score-public-since.js" || echo "::warning::audit-score-public-since.js failed during redo (fail-open, same as the first pass)"
 fi
