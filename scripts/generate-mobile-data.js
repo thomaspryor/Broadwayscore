@@ -26,6 +26,11 @@ const { isLocalOnlyShow } = require('./lib/local-market');
 const { isUpcomingTag } = require('./lib/opening-night-completeness');
 const { versionedImagePath } = require('./lib/versioned-image-path');
 
+// Quiz-onboarding genres (BRO-6579): tracked sidecar written by scripts/tag-genres.js.
+// Lives outside mobile-shows.json because that file is regenerated every run.
+const GENRE_TAGS_PATH = path.join(__dirname, '..', 'src', 'config', 'genre-tags.json');
+const genreTags = fs.existsSync(GENRE_TAGS_PATH) ? JSON.parse(fs.readFileSync(GENRE_TAGS_PATH, 'utf8')) : {};
+
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
 
@@ -228,6 +233,7 @@ const mobileShows = visibleShows.map(show => {
   const tags = (show.tags || []).filter(t => !isUpcomingTag(t));
   if (nytPickShowIds.has(show.id)) tags.push('nyt-pick');
   if (tags.length > 0) entry.tg = tags;
+  if (genreTags[show.id]?.length > 0) entry.gn = genreTags[show.id];
   if (show.synopsis) entry.syn = show.synopsis;
   if (show.ageRecommendation) entry.ar = show.ageRecommendation;
   if (show.isRevival || show.tags?.includes('revival')) entry.rv = true;
