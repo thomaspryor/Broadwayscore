@@ -106,6 +106,8 @@ jobs:
         if: steps.audit.outputs.has_regression == 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           LIGHTHOUSE_BODY_FILE: /tmp/lighthouse-body.md
         run: node scripts/route-workflow-alerts.js route lighthouse-regression
 
@@ -113,6 +115,8 @@ jobs:
         if: steps.audit.outcome == 'success' && steps.audit.outputs.has_regression != 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/route-workflow-alerts.js resolve lighthouse-regression
 
       # BRO-6397: the ledger remembers which card each condition filed so a

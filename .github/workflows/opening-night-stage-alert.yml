@@ -46,12 +46,16 @@ jobs:
         if: failure() && steps.check.outcome == 'failure'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/route-workflow-alerts.js route opening-night-stage
 
       - name: Resolve alert when clean
         if: steps.check.outcome == 'success'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/route-workflow-alerts.js resolve opening-night-stage
 
       # BRO-6397: the ledger remembers which card each condition filed so a

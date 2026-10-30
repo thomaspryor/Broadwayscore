@@ -130,6 +130,8 @@ jobs:
         if: steps.changes.outputs.has_changes == 'true' && github.event_name == 'workflow_dispatch'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           INPUT_YEAR: ${{ inputs.year }}
         run: node scripts/route-workflow-alerts.js route tony-ibdb-scraper
 

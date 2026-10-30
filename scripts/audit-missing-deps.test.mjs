@@ -174,7 +174,7 @@ test('real workflow cases: optional entities, optional sharp, lazy browser fallb
     const result = auditWorkflow(raw, { root, cache });
     assert.deepEqual(result.findings, [], name);
     assert.deepEqual(result.errors, [], name);
-    if (name === 'opening-night-stage-alert') assert.deepEqual(result.scripts.map(x => x.script), ['scripts/check-opening-night-scored.js']);
+    if (name === 'opening-night-stage-alert') assert.deepEqual([...new Set(result.scripts.map(x => x.script))].sort(), ['scripts/check-opening-night-scored.js', 'scripts/route-workflow-alerts.js']); // route-workflow-alerts.js: BRO-6397
   }
 });
 

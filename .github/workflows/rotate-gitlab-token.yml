@@ -114,18 +114,24 @@ jobs:
         if: failure()
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/route-workflow-alerts.js route gitlab-token-failed
 
       - name: Route alert if token already expired
         if: steps.check.outputs.expired == 'true'
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/route-workflow-alerts.js route gitlab-token-expired
 
       - name: Resolve alerts when token healthy
         if: steps.check.outputs.expired == 'false' && success()
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           node scripts/route-workflow-alerts.js resolve gitlab-token-expired
           node scripts/route-workflow-alerts.js resolve gitlab-token-failed
