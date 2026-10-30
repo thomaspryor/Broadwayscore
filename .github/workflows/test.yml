@@ -6328,13 +6328,13 @@ jobs:
         # Catches slug, threshold, display, and copy issues for WE/OB markets
 
       # BRO-6541: UK regional coverage per city (rows eligible for /browse/beyond-london, which
-      # lists only the scoreable ones, and that scoreable share). Floor: today's 189 rows and a
-      # share under today's 25%, since new rows land with one review before more arrive; the
-      # 450 / 60% target lives on the card.
+      # lists only the scoreable ones, and that scoreable share). Floor (BRO-6571): 300 rows and 60%
+      # scoreable, just under today's 308 rows / 63%; new rows land with one review before more
+      # arrive, so a dip warns without failing. The 450-row target lives on the card.
       - name: UK regional coverage (advisory)
         if: always()
         continue-on-error: true
-        run: node scripts/uk-regional-coverage.js --min-shows=189 --min-share=0.15
+        run: node scripts/uk-regional-coverage.js --min-shows=300 --min-share=0.6
 
       - name: Validate archive productions
         run: node scripts/validate-archive-productions.js
