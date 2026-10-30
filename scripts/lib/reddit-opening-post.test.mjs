@@ -651,3 +651,22 @@ test('reddit-opening-posts-due: a moved score makes an emailed draft due, an acc
   assert.deepEqual(dueShows({ shows: [show], slims: make(59.4), drafts, today, seenLookup }), [], 'accurate draft is not due');
   assert.deepEqual(dueShows({ shows: [show], slims: make(60.1), drafts, today, seenLookup }), [show.id], '59 to 60 is due');
 });
+
+// BRO-6634: the hourly gate skips drafter runs that cannot reach the owner.
+test('reddit-opening-posts-due: capped updates and LLM retries wait for the 6h gap', () => {
+  const { dueShows } = require('../reddit-opening-posts-due.js');
+  const today = '2026-09-29';
+  const make = cs => new Map([[show.id, slim({ cs })]]);
+  const f59 = lib.buildFacts(show, slim({ cs: 59.4 }), []);
+  const seenLookup = lib.makeSeenLookup({ shows: [] }, { sinceYear: 2025 });
+  const capped = { ...lib.templateDraft(f59), subreddit: f59.subreddit, status: 'ready', source: 'template',
+    createdAt: '2026-09-28T12:00:00Z', emailedAt: '2026-09-29T10:00:00Z', updateCount: 9 };
+  const at = iso => dueShows({ shows: [show], slims: make(60.1), drafts: { drafts: { [show.id]: capped } }, today, seenLookup, nowMs: Date.parse(iso) });
+  assert.equal(lib.updateAllowed(capped, Date.parse('2026-09-29T11:00:00Z')), false, 'fixture is past the update cap');
+  assert.deepEqual(at('2026-09-29T11:00:00Z'), [], 'capped, 1h since the last email: no hourly drafter run');
+  assert.deepEqual(at('2026-09-29T16:30:00Z'), [show.id], 'capped, 6.5h later: due');
+  const retry = { ...capped, emailedAt: undefined, updateCount: undefined, createdAt: '2026-09-29T10:00:00Z', lintProblems: ['llm error: 529'] };
+  const r = iso => dueShows({ shows: [show], slims: make(59.4), drafts: { drafts: { [show.id]: retry } }, today, seenLookup, nowMs: Date.parse(iso) });
+  assert.deepEqual(r('2026-09-29T11:00:00Z'), [], 'LLM failed 1h ago: wait');
+  assert.deepEqual(r('2026-09-29T16:30:00Z'), [show.id], 'LLM failed 6.5h ago: retry');
+});

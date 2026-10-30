@@ -23,9 +23,30 @@ const loadJSON = (p, fb = null) => { try { return JSON.parse(fs.readFileSync(p, 
 
 // seenLookup must match draft-reddit-opening-posts.js, or a show the draft
 // script skips (already seen on r/Broadway) would read as due every hour.
-function dueShows({ shows, slims, drafts, today, seenLookup }) {
+// Hourly cost guard: the drafter's own rules re-select a draft every run
+// while its last LLM call failed, and redraft an emailed one whose numbers
+// moved even when the send would be held by the update cap. Neither is worth
+// an hourly LLM + Playwright run: a failed draft retries once per
+// RETRY_GAP_HOURS, a capped one only once the cap would let the email out.
+// The daily run (no gate) keeps the drafter's own behavior.
+const RETRY_GAP_HOURS = 6;
+
+function worthAnHourlyRun(prev, nowMs) {
+  if (!prev) return true;
+  if (lib.isRetryableDraft(prev)) {
+    const at = Date.parse(prev.createdAt || '');
+    return !Number.isFinite(at) || (nowMs - at) / 3600000 >= RETRY_GAP_HOURS;
+  }
+  if (prev.emailedAt) return lib.updateAllowed(prev, nowMs);
+  return true;
+}
+
+function dueShows({ shows, slims, drafts, today, seenLookup, nowMs = Date.now() }) {
   const peers = lib.buildPeers(shows, slims);
-  return lib.selectCandidates({ shows, slims, drafts, peersByMarket: peers, today, seenLookup }).map(c => c.show.id);
+  const prevs = (drafts && drafts.drafts) || {};
+  return lib.selectCandidates({ shows, slims, drafts, peersByMarket: peers, today, seenLookup })
+    .filter(c => worthAnHourlyRun(prevs[c.show.id], nowMs))
+    .map(c => c.show.id);
 }
 
 function main() {

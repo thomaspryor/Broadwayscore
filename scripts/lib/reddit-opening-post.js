@@ -1059,6 +1059,7 @@ function activeDrafts(drafts, nowMs) {
 module.exports = {
   keepPreviousDraft,
   updateAllowed,
+  isRetryableDraft,
   CAPPED_UPDATE_GAP_HOURS,
   SUBREDDIT_BY_MARKET,
   MIN_REVIEWS,
