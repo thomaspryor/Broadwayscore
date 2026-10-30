@@ -471,15 +471,8 @@
     "the-great-gatsby-tour-2026/theatermania--linda-buchwald.json",
     "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
     "hamilton-tour-2024/broadwayworld--erinmarie-reiter.json",
-    "hamilton-tour-2024/tampa-bay-times--lucy-marques.json",
-    "book-of-mormon-tour-2022/gulf-coast--dave-elias.json",
-    "book-of-mormon-tour-2022/gulf-coast--gulf-coast-news.json",
-    "the-lion-king-tour-2021/laughingplace--tricia-kennedy.json",
-    "the-lion-king-tour-2021/salt-lake-city-weekly--scott-renshaw.json",
-    "the-lion-king-tour-2021/yahoo--tamal-kundu.json",
-    "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/mommypoppins--unknown.json",
-    "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/patch--sabrina-blandon.json",
-    "atlantis-chichester-festival-regional-2026/artsdesk--unknown.json"
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
   ],
   "failed": [
     "coal-country-off-broadway-2022/theatermania--hayley-levitt.json",
@@ -695,8 +688,13 @@
     "antigone-tron-regional-2026/thestage--fergus-morgan.json",
     "la-boheme-off-broadway-2026/rottentomatoes--unknown.json",
     "tristan-yseult-royal-bath-regional-2026/thestage--holly-omahony.json",
-    "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
-    "atlantis-chichester-festival-regional-2026/thestage--dave-fargnoli.json"
+    "girls-off-west-end-2026/letterboxd--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -915,12 +913,7 @@
       "no-mans-land-west-end-2016/letterboxd--daydream-of-hell.json",
       "the-great-gatsby-tour-2026/theatermania--linda-buchwald.json",
       "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
-      "hamilton-tour-2024/tampa-bay-times--lucy-marques.json",
-      "book-of-mormon-tour-2022/gulf-coast--dave-elias.json",
-      "book-of-mormon-tour-2022/gulf-coast--gulf-coast-news.json",
-      "the-lion-king-tour-2021/yahoo--tamal-kundu.json",
-      "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/patch--sabrina-blandon.json",
-      "atlantis-chichester-festival-regional-2026/artsdesk--unknown.json"
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-heart-off-broadway-2026/variety--cynthia-littleton.json"
@@ -983,7 +976,7 @@
       "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/mommypoppins--unknown.json"
+      "memoriam-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "a-bright-room-called-day-off-broadway-2019/broadwayworld--michael-dale.json",
@@ -1080,7 +1073,10 @@
       "data/review-texts/the-39-steps-hull-truck-regional-2026/thestage--matt-barton.json",
       "data/review-texts/antigone-tron-regional-2026/thestage--fergus-morgan.json",
       "data/review-texts/tristan-yseult-royal-bath-regional-2026/thestage--holly-omahony.json",
-      "data/review-texts/atlantis-chichester-festival-regional-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json"
     ],
     "archive": [
       "waitress-2016/ap--mark-kennedy.json",
@@ -1236,7 +1232,7 @@
     ]
   },
   "startTime": "2026-10-29T20:08:46.882Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+  "lastProcessed": "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
   "log": [
     {
       "t": "2026-10-29T22:20:00.411Z",
@@ -1385,6 +1381,35 @@
       "t": "2026-10-30T01:19:53.029Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-30T02:57:45.514Z",
+      "event": "bb-session",
+      "session": "2946f3b8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-30T02:59:38.235Z",
+      "event": "bb-session",
+      "session": "54f9dac6",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-30T02:59:38.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-30T03:52:47.696Z",
+      "event": "bb-session",
+      "session": "d3fd5941",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T03:53:54.164Z",
+      "event": "bb-session",
+      "session": "f91f2ff4",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
   "recoveredAfterFailure": [
