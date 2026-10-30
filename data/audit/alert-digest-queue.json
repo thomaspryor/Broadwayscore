@@ -84,37 +84,6 @@
     "queuedAt": "2026-10-30T08:43:47.641Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41031339137",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41031339137)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41029521751)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "E2E Tests"
-      }
-    ],
-    "queuedAt": "2026-10-30T09:35:24.372Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-6603-mvupk47q",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-6603-mvupk47q",
     "description": "land.yml did not land land/job/linear-BRO-6603-mvupk47q: the rebase gate went red at f7dda3c204. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6603-mvupk47q @ f7dda3c204 (origin/land/job/linear-BRO-6603-mvupk47q) → origin/main @ dc7df65c7d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ dc7df65c7d: Rebasing (1/1) error: could not apply f7dda3c2040... test: BRO-6603 key Chaka Khan venue guard on stable slug (id was reclassified to off-west-end) hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41027190355",
@@ -3943,5 +3912,36 @@
       }
     ],
     "queuedAt": "2026-10-30T12:02:33.931Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41054896178",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41054896178)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41043311311)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests, E2E Tests"
+      }
+    ],
+    "queuedAt": "2026-10-30T12:48:55.137Z"
   }
 ]
