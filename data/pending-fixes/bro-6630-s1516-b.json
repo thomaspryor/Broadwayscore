@@ -1,0 +1,158 @@
+{
+  "issueNumber": "bro-6630-s1516-b",
+  "planId": "59dc12e0-a084-4501-a3db-23050705f4a0",
+  "status": "pending",
+  "createdAt": "2026-10-30T16:59:19.242Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6630 season 2015-16: add 30 Off-Broadway shows (opening 2015-07..2016-05) found by the outlet-first census (2+ T1/T2 outlets). No Playbill production page qualified this season; all dates are two-source (BWW plus TheaterMania or Broadway.com agree on venue, opening, closing). Transfers keep separate entries per market (BRO-6254): dear-evan-hansen, eclipsed, nice-fish. (part 2 of 2)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "peer-gynt-off-broadway-2016",
+          "title": "Peer Gynt",
+          "slug": "peer-gynt-off-broadway-2016",
+          "venue": "Classic Stage Company",
+          "previewsStartDate": "2016-05-11",
+          "openingDate": "2016-05-25",
+          "closingDate": "2016-06-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Peer-Gynt-331555.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/peer-gynt_311915/",
+            "https://www.theatermania.com/news/peer-gynt_77198/",
+            "https://www.theaterscene.net/plays/peer-gynt/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sojourners-off-broadway-2016",
+          "title": "Sojourners",
+          "slug": "sojourners-off-broadway-2016",
+          "venue": "Peter Jay Sharp Theater at Playwrights Horizons",
+          "previewsStartDate": "2016-01-21",
+          "openingDate": "2016-01-28",
+          "closingDate": "2016-02-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Sojourners-331497.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sojourners_312634/",
+            "https://www.theatermania.com/news/sojourners_75764/",
+            "https://www.theaterscene.net/plays/sojourners/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "straight-off-broadway-2016",
+          "title": "Straight",
+          "slug": "straight-off-broadway-2016",
+          "venue": "Acorn Theatre",
+          "previewsStartDate": "2016-02-09",
+          "openingDate": "2016-02-29",
+          "closingDate": "2016-05-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Straight-331492.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/straight_312793/",
+            "https://www.theatermania.com/news/straight_76143/",
+            "https://www.theaterscene.net/plays/straight/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-body-of-an-american-off-broadway-2016",
+          "title": "The Body of an American",
+          "slug": "the-body-of-an-american-off-broadway-2016",
+          "venue": "Cherry Lane Theatre",
+          "previewsStartDate": "2016-02-10",
+          "openingDate": "2016-02-23",
+          "closingDate": "2016-03-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Body-of-an-American-331499.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-body-of-an-american_312799/",
+            "https://www.theatermania.com/news/the-body-of-an-american_76067/",
+            "https://www.theaterscene.net/plays/the-body-of-an-american/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "turn-me-loose-off-broadway-2016",
+          "title": "Turn Me Loose",
+          "slug": "turn-me-loose-off-broadway-2016",
+          "venue": "Westside Theatre",
+          "previewsStartDate": "2016-05-03",
+          "openingDate": "2016-05-19",
+          "closingDate": "2016-07-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Turn-Me-Loose-331530.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/turn-me-loose_314409/",
+            "https://www.theatermania.com/news/turn-me-loose_77135/",
+            "https://www.theaterscene.net/plays/turn-me-loose/archive/"
+          ]
+        }
+      }
+    ]
+  }
+}

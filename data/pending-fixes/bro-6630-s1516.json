@@ -1,0 +1,745 @@
+{
+  "issueNumber": "bro-6630-s1516",
+  "planId": "e938fca1-3bca-4314-80e9-539caf33d21d",
+  "status": "pending",
+  "createdAt": "2026-10-30T16:59:19.242Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6630 season 2015-16: add 30 Off-Broadway shows (opening 2015-07..2016-05) found by the outlet-first census (2+ T1/T2 outlets). No Playbill production page qualified this season; all dates are two-source (BWW plus TheaterMania or Broadway.com agree on venue, opening, closing). Transfers keep separate entries per market (BRO-6254): dear-evan-hansen, eclipsed, nice-fish. (part 1 of 2)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dear-evan-hansen-off-broadway-2016",
+          "title": "Dear Evan Hansen",
+          "slug": "dear-evan-hansen-off-broadway-2016",
+          "venue": "Second Stage Theater",
+          "previewsStartDate": "2016-03-26",
+          "openingDate": "2016-05-01",
+          "closingDate": "2016-05-29",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Dear-Evan-Hansen-331381.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/dear-evan-hansen_313259/",
+            "https://www.theatermania.com/news/dear-evan-hansen_76917/",
+            "https://variety.com/2016/legit/reviews/dear-evan-hansen-review-off-broadway-1201764280/",
+            "https://www.vulture.com/2016/05/theater-review-dear-evan-hansen.html",
+            "https://newyorktheater.me/2016/05/06/dear-evan-hansen-review-pics-song/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hold-on-to-me-darling-off-broadway-2016",
+          "title": "Hold On to Me Darling",
+          "slug": "hold-on-to-me-darling-off-broadway-2016",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2016-02-24",
+          "openingDate": "2016-03-14",
+          "closingDate": "2016-04-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Hold-On-to-Me-Darling-331514.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/hold-on-to-me-darling_310770/",
+            "https://www.theatermania.com/news/hold-on-to-me-darling_76306/",
+            "https://variety.com/2016/legit/reviews/hold-on-to-me-darling-review-1201729265/",
+            "https://www.vulture.com/2016/03/theater-review-hold-on-to-me-darling.html",
+            "https://www.theaterscene.net/plays/hold-on-to-me-darling/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hadestown-off-broadway-2016",
+          "title": "Hadestown",
+          "slug": "hadestown-off-broadway-2016",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2016-05-06",
+          "openingDate": "2016-05-23",
+          "closingDate": "2016-07-31",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Hadestown-331598.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/hadestown_313512/",
+            "https://newyorktheater.me/2016/05/23/hadestown-review/",
+            "https://www.theatermania.com/news/hadestown_77163/",
+            "https://variety.com/2016/legit/reviews/hadestown-review-1201782036/",
+            "https://theaterlife.com/hadestown/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "john-off-broadway-2015",
+          "title": "John",
+          "slug": "john-off-broadway-2015",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2015-07-22",
+          "openingDate": "2015-08-11",
+          "closingDate": "2015-09-06",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/John-331321.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/john_308376/",
+            "https://www.theatermania.com/news/john_73825/",
+            "https://variety.com/2015/legit/reviews/john-review-play-annie-baker-1201567821/",
+            "https://theaterlife.com/john/",
+            "https://www.theaterscene.net/plays/john/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "shear-madness-off-broadway-2015",
+          "title": "Shear Madness",
+          "slug": "shear-madness-off-broadway-2015",
+          "venue": "Davenport Theatre",
+          "previewsStartDate": "2015-10-22",
+          "openingDate": "2015-11-11",
+          "closingDate": "2017-04-23",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Shear-Madness-331399.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/shear-madness_311178/",
+            "https://www.theatermania.com/news/shear-madness_74939/",
+            "https://variety.com/2015/legit/reviews/shear-madness-review-new-york-1201638325/",
+            "https://www.theaterscene.net/plays/shear-madness/archive/",
+            "https://theaterlife.com/shear-madness-2/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "perfect-arrangement-off-broadway-2015",
+          "title": "Perfect Arrangement",
+          "slug": "perfect-arrangement-off-broadway-2015",
+          "venue": "Duke on 42nd Street",
+          "previewsStartDate": "2015-09-29",
+          "openingDate": "2015-10-15",
+          "closingDate": "2015-11-06",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Perfect-Arrangement-331401.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/perfect-arrangement_310904/",
+            "https://newyorktheater.me/2015/10/15/perfect-arrangement-review-comedy-about-gay-persecution-in-the-1950s/",
+            "https://www.theatermania.com/news/perfect-arrangement_74561/",
+            "https://theaterlife.com/perfect-arrangement-12/",
+            "https://www.theaterscene.net/plays/perfect-arrangement/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "eclipsed-off-broadway-2015",
+          "title": "Eclipsed",
+          "slug": "eclipsed-off-broadway-2015",
+          "venue": "Public Theater",
+          "previewsStartDate": "2015-09-29",
+          "openingDate": "2015-10-14",
+          "closingDate": "2015-11-29",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Eclipsed-331352.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/eclipsed_310414/",
+            "https://www.theatermania.com/news/eclipsed_74569/",
+            "https://variety.com/2015/legit/reviews/eclipsed-review-lupita-nyongo-danai-gurira-1201617655/",
+            "https://www.theaterscene.net/plays/eclipsed/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "her-requiem-off-broadway-2016",
+          "title": "Her Requiem",
+          "slug": "her-requiem-off-broadway-2016",
+          "venue": "Claire Tow Theater",
+          "previewsStartDate": "2016-02-06",
+          "openingDate": "2016-02-22",
+          "closingDate": "2016-03-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Her-Requiem-331481.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/her-requiem_311300/",
+            "https://www.theatermania.com/news/her-requiem_76052/",
+            "https://newyorktheater.me/2016/02/23/her-requiem-review-a-father-obsesses-over-a-teenagers-musical-talent/",
+            "https://variety.com/2016/legit/reviews/her-requiem-review-play-1201711764/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "invisible-thread-off-broadway-2015",
+          "title": "Invisible Thread",
+          "slug": "invisible-thread-off-broadway-2015",
+          "venue": "Second Stage Theater",
+          "previewsStartDate": "2015-10-31",
+          "openingDate": "2015-12-02",
+          "closingDate": "2015-12-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Invisible-Thread-331422.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/invisible-thread_310995/",
+            "https://www.theatermania.com/news/invisible-thread_75160/",
+            "https://variety.com/2015/legit/reviews/invisible-thread-review-musical-1201651771/",
+            "https://newyorktheater.me/2015/12/03/invisible-thread-the-un-book-of-mormon-review-pics-videos/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "king-liz-off-broadway-2015",
+          "title": "King Liz",
+          "slug": "king-liz-off-broadway-2015",
+          "venue": "McGinn/Cazale Theatre",
+          "previewsStartDate": "2015-07-13",
+          "openingDate": "2015-07-27",
+          "closingDate": "2015-08-15",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/King-Liz-331323.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/king-liz_307736/",
+            "https://newyorktheater.me/2015/07/27/king-liz-review-like-jerry-maguire-but-black-and-female/",
+            "https://www.theatermania.com/news/king-liz_73653/",
+            "https://variety.com/2015/legit/reviews/king-liz-review-1201549525/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lazarus-off-broadway-2015",
+          "title": "Lazarus",
+          "slug": "lazarus-off-broadway-2015",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2015-11-18",
+          "openingDate": "2015-12-07",
+          "closingDate": "2016-01-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Lazarus-331340.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/lazarus_309533/",
+            "https://www.theatermania.com/news/lazarus_75219/",
+            "https://variety.com/2015/legit/reviews/lazarus-review-michael-c-hall-david-bowie-1201655445/",
+            "https://www.theaterscene.net/musicals/lazarus/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nice-fish-off-broadway-2016",
+          "title": "Nice Fish",
+          "slug": "nice-fish-off-broadway-2016",
+          "venue": "St. Ann's Warehouse",
+          "previewsStartDate": "2016-02-14",
+          "openingDate": "2016-02-21",
+          "closingDate": "2016-03-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Nice-Fish-331500.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/nice-fish_310943/",
+            "https://variety.com/2016/legit/reviews/nice-fish-review-mark-rylance-1201711495/",
+            "https://www.theatermania.com/news/nice-fish_76042/",
+            "https://www.theaterscene.net/plays/offbway-plays/nice-fish/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "smart-people-off-broadway-2016",
+          "title": "Smart People",
+          "slug": "smart-people-off-broadway-2016",
+          "venue": "Second Stage Theater",
+          "previewsStartDate": "2016-01-27",
+          "openingDate": "2016-02-11",
+          "closingDate": "2016-03-06",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Smart-People-331469.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/smart-people_311919/",
+            "https://www.theatermania.com/news/smart-people_75944/",
+            "https://variety.com/2016/legit/reviews/smart-people-review-joshua-jackson-1201702655/",
+            "https://www.theaterscene.net/plays/smart-people/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-royale-off-broadway-2016",
+          "title": "The Royale",
+          "slug": "the-royale-off-broadway-2016",
+          "venue": "Mitzi E. Newhouse Theater",
+          "previewsStartDate": "2016-02-11",
+          "openingDate": "2016-03-07",
+          "closingDate": "2016-05-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Royale-331477.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-royale_311299/",
+            "https://www.theatermania.com/news/the-royale_76228/",
+            "https://variety.com/2016/legit/reviews/the-royale-review-play-1201724270/",
+            "https://www.theaterscene.net/plays/the-royale/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-woodsman-off-broadway-2016",
+          "title": "The Woodsman",
+          "slug": "the-woodsman-off-broadway-2016",
+          "venue": "New World Stages",
+          "previewsStartDate": "2016-01-27",
+          "openingDate": "2016-02-08",
+          "closingDate": "2016-05-29",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Woodsman-331449.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-woodsman_312664/",
+            "https://newyorktheater.me/2016/02/08/the-woodsman-review-how-the-tin-man-of-oz-lost-his-heart/",
+            "https://variety.com/2016/legit/reviews/the-woodsman-review-play-1201700228/",
+            "https://www.theaterscene.net/multimedia/the-woodsman/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cloud-nine-off-broadway-2015",
+          "title": "Cloud Nine",
+          "slug": "cloud-nine-off-broadway-2015",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2015-09-16",
+          "openingDate": "2015-10-05",
+          "closingDate": "2015-11-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Cloud-Nine-331359.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/cloud-nine_310440/",
+            "https://www.theatermania.com/news/cloud-nine_74466/",
+            "https://newyorktheater.me/2015/10/16/cloud-nine-review-sex-identity-and-discomfort-in-three-eras/",
+            "https://www.theaterscene.net/plays/cloud-nine/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "incident-at-vichy-off-broadway-2015",
+          "title": "Incident at Vichy",
+          "slug": "incident-at-vichy-off-broadway-2015",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2015-10-27",
+          "openingDate": "2015-11-15",
+          "closingDate": "2015-12-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Incident-at-Vichy-331486.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/incident-at-vichy_308380/",
+            "https://www.theatermania.com/news/incident-at-vichy_74963/",
+            "https://newyorktheater.me/2015/11/16/arthur-millers-incident-at-vichy-review-pics-video/",
+            "https://www.theaterscene.net/plays/incident-at-vichy/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "rothschild-and-sons-off-broadway-2015",
+          "title": "Rothschild & Sons",
+          "slug": "rothschild-and-sons-off-broadway-2015",
+          "venue": "York Theatre Company",
+          "previewsStartDate": "2015-10-06",
+          "openingDate": "2015-10-18",
+          "closingDate": "2015-11-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Rothschild-Sons-331370.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/rothschild-sons_309431/",
+            "https://www.theatermania.com/news/rothschild-sons_74606/",
+            "https://theaterlife.com/rothschild-sons/",
+            "https://www.theaterscene.net/musicals/rothschild-and-sons/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "steve-off-broadway-2015",
+          "title": "Steve",
+          "slug": "steve-off-broadway-2015",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2015-11-03",
+          "openingDate": "2015-11-18",
+          "closingDate": "2016-01-03",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Steve-331439.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/steve_311450/",
+            "https://www.theatermania.com/news/steve_75018/",
+            "https://newyorktheater.me/2015/11/19/steve-review-cynthia-nixon-directs-gay-middle-aged-comedy/",
+            "https://www.theaterscene.net/plays/steve/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "these-paper-bullets-off-broadway-2015",
+          "title": "These Paper Bullets",
+          "slug": "these-paper-bullets-off-broadway-2015",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2015-11-20",
+          "openingDate": "2015-12-15",
+          "closingDate": "2016-01-10",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/These-Paper-Bullets-331421.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/these-paper-bullets_311224/",
+            "https://www.theatermania.com/news/these-paper-bullets_75306/",
+            "https://www.theaterscene.net/musicals/these-paper-bullets/joel-benjamin/",
+            "https://theaterlife.com/these-paper-bullets-12/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "would-you-still-love-me-if-off-broadway-2015",
+          "title": "Would You Still Love Me If…",
+          "slug": "would-you-still-love-me-if-off-broadway-2015",
+          "venue": "New World Stages",
+          "previewsStartDate": "2015-09-26",
+          "openingDate": "2015-10-10",
+          "closingDate": "2015-10-26",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Would-You-Still-Love-Me-if...-331395.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/would-you-still-love-me-if_311042/",
+            "https://newyorktheater.me/2015/10/10/would-you-still-love-me-if-directed-by-kathleen-turner-review-pics/",
+            "https://www.theatermania.com/news/would-you-still-love-me-if_74531/",
+            "https://www.theaterscene.net/plays/would-you-still-love-me-if/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "henry-iv-off-broadway-2015",
+          "title": "Henry IV",
+          "slug": "henry-iv-off-broadway-2015",
+          "venue": "St. Ann's Warehouse",
+          "previewsStartDate": null,
+          "openingDate": "2015-11-06",
+          "closingDate": "2015-12-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Henry-IV-331488.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/henry-iv_310940/",
+            "https://www.vulture.com/2015/11/theater-review-women-in-prison-in-henry-iv.html",
+            "https://www.theatermania.com/news/henry-iv_75000/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-robber-bridegroom-off-broadway-2016",
+          "title": "The Robber Bridegroom",
+          "slug": "the-robber-bridegroom-off-broadway-2016",
+          "venue": "Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre",
+          "previewsStartDate": "2016-02-18",
+          "openingDate": "2016-03-13",
+          "closingDate": "2016-05-29",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Robber-Bridegroom-331420.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-robber-bridegroom_311908/",
+            "https://www.theatermania.com/news/the-robber-bridegroom_76295/",
+            "https://variety.com/2016/legit/reviews/the-robber-bridegroom-review-1201727746/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cagney-off-broadway-2016",
+          "title": "Cagney",
+          "slug": "cagney-off-broadway-2016",
+          "venue": "Westside Theatre",
+          "previewsStartDate": "2016-03-16",
+          "openingDate": "2016-04-03",
+          "closingDate": "2017-05-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Cagney-331503.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/cagney_313399/",
+            "https://www.theatermania.com/news/cagney_73062/",
+            "https://www.theaterscene.net/musicals/cagney-2016/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "love-and-money-off-broadway-2015",
+          "title": "Love and Money",
+          "slug": "love-and-money-off-broadway-2015",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2015-08-15",
+          "openingDate": "2015-08-24",
+          "closingDate": "2015-10-04",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Love-Money-331325.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/love-and-money_308382/",
+            "https://www.theatermania.com/news/love-and-money_73979/",
+            "https://www.theaterscene.net/plays/love-and-money/joel-benjamin/"
+          ]
+        }
+      }
+    ]
+  }
+}
