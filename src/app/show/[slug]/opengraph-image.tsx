@@ -95,7 +95,7 @@ export default async function OGImage({ params: pendingParams }: { params: Promi
           background: '#0f0f14',
         }}
       >
-        {/* Full-bleed show image */}
+        {/* Keep poster titles visible; only hero photos fill the card. */}
         {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
         <img
           src={imageUrl}
@@ -104,7 +104,7 @@ export default async function OGImage({ params: pendingParams }: { params: Promi
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: show.images?.hero ? 'cover' : 'contain',
           }}
         />
 
