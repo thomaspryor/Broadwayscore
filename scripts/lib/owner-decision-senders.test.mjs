@@ -16,16 +16,19 @@ const require = createRequire(import.meta.url);
 const { shouldRouteTourCandidate } = require('./tour-roundup-candidate.js');
 
 const SCRIPTS = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+const WORKFLOWS = path.join(SCRIPTS, '..', '.github', 'workflows');
 
 const OWNER_CALL_SENDERS = {
   'check-linear-cap.js': 'money: the Linear plan limit is a paid-plan choice',
   'check-provider-spend.js': 'money: raise a provider budget or cut spend',
   'codex-trust-ladder.js': 'trust: how much unreviewed work an outside model may land',
+  '.github/workflows/update-mezzanine.yml': 'access: only the owner can renew the Mezzanine login',
 };
 
-// A literal decision:true or a computed one (decision: !!x, decision: flag).
-// decision:false and the router's own plumbing are not senders.
-const DECISION_RE = /\bdecision:\s*(?!false\b|null\b|undefined\b)(true\b|!)/;
+// decision: true or decision: !!x on a code line, not a comment. (A bare
+// variable, decision: flag, is not caught: too many unrelated "decision:"
+// strings, e.g. log lines, match it.)
+const DECISION_RE = /^(?!\s*(?:\/\/|\*|#)).*\bdecision:\s*(?:true\b|!)/m;
 const PLUMBING = new Set(['lib/owner-alert-router.js', 'lib/digest-autofix.js', 'lib/autonomous-email-render.js']);
 
 function sources(dir, rel = '') {
@@ -40,11 +43,14 @@ function sources(dir, rel = '') {
 }
 
 test('only the allowlisted senders ask the owner for a decision', () => {
-  const found = sources(SCRIPTS).filter(rel => {
-    if (PLUMBING.has(rel)) return false;
-    const src = fs.readFileSync(path.join(SCRIPTS, rel), 'utf8');
+  const files = [
+    ...sources(SCRIPTS).filter(rel => !PLUMBING.has(rel)).map(rel => [rel, path.join(SCRIPTS, rel)]),
+    ...fs.readdirSync(WORKFLOWS).filter(f => /\.ya?ml$/.test(f)).map(f => [`.github/workflows/${f}`, path.join(WORKFLOWS, f)]),
+  ];
+  const found = files.filter(([, abs]) => {
+    const src = fs.readFileSync(abs, 'utf8');
     return /routeAlert|queueDigestLine/.test(src) && DECISION_RE.test(src);
-  });
+  }).map(([rel]) => rel);
   const unexpected = found.filter(f => !OWNER_CALL_SENDERS[f]);
   assert.deepStrictEqual(unexpected, [], `These set decision:true but are not owner calls. Route them as fix rows (decision:false) so a worker settles them, or add them to OWNER_CALL_SENDERS with the money/irreversible/taste call they ask: ${unexpected.join(', ')}`);
   for (const f of Object.keys(OWNER_CALL_SENDERS)) assert.ok(found.includes(f), `${f} no longer asks a decision; drop it from OWNER_CALL_SENDERS`);
@@ -53,6 +59,7 @@ test('only the allowlisted senders ask the owner for a decision', () => {
 test('route-tour-candidates never asks the owner', () => {
   const src = fs.readFileSync(path.join(SCRIPTS, 'route-tour-candidates.js'), 'utf8');
   assert.match(src, /decision:\s*false/);
+  assert.match(src, /disposition:\s*'auto'/, 'a one-shot digest row never reaches a worker (72h persistence gate)');
   assert.doesNotMatch(src, /decisionPrompt/);
 });
 

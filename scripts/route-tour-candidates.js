@@ -8,8 +8,7 @@
  *
  * None of this is an owner decision (owner 2026-10-30: "these are all silly
  * ones that a model can make the decision on"; 90 of 93 digest decisions were
- * tour candidates). A row is a digest FIX row (decision:false), which
- * digest-autofix.js hands to a worker. A tour that has already ended is not
+ * tour candidates). A row files a worker card (disposition 'auto'). A tour that has already ended is not
  * routed at all: create-tour-entries.js re-checks its evidence every day and
  * creates it once a closing is confirmed, and an untracked closed tour is the
  * safe default. shouldRouteTourCandidate() is the rule; its test pins it.
@@ -22,7 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { openTourCandidates, candidateParentId, candidateKey, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, candidateParentId, candidateKey, candidateBaseKey, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING } = require('./lib/tour-roundup-candidate');
 const { routeAlert, resolveCondition, removeDigestLines, loadLedger } = require('./lib/owner-alert-router');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -45,16 +44,16 @@ async function main() {
   const shows = Array.isArray(raw) ? raw : raw.shows;
   if (!dryRun) resolveRetiredTourCandidates(rows, shows, { resolveCondition, removeDigestLines });
   const open = openTourCandidates(rows, shows);
-  // Each candidate is suggested ONCE (notifiedAt); the owner answers it or
-  // ignores it, and a later landing run doesn't ask again. A failed send
+  // Each candidate is sent ONCE (notifiedAt), as one worker card; a later
+  // landing run doesn't send it again. A failed send
   // leaves notifiedAt unset so the next run retries that row only.
   let sent = 0;
   // Rows routed before 2026-10-30 went out as owner decisions. Their ledger
   // rows are resolved below (resolveStaleTourCandidateConditions skips only
-  // routable keys); a routable one is routed again as a fix row.
+  // routable keys); a routable one is routed again as a worker card.
   for (const c of open) {
     if (c.notifiedAt && c.routing !== TOUR_CANDIDATE_ROUTING && shouldRouteTourCandidate(c)) {
-      if (!dryRun) { resolveCondition(`tour-candidate:${candidateKey(c)}`, { reason: 'Re-routed as a fix row, not an owner decision' }); removeDigestLines([`tour-candidate:${candidateKey(c)}`, `digest-needs-you:${tourCandidateTitle(c)}`]); }
+      if (!dryRun) { for (const k of new Set([candidateKey(c), candidateBaseKey(c)])) resolveCondition(`tour-candidate:${k}`, { reason: 'Re-routed to a worker card, not an owner decision' }); removeDigestLines([`tour-candidate:${candidateKey(c)}`, `digest-needs-you:${tourCandidateTitle(c)}`]); }
       delete c.notifiedAt;
     }
   }
@@ -77,8 +76,11 @@ async function main() {
         conditionKey: `tour-candidate:${key}`,
         title: tourCandidateTitle(c),
         severity: 'info',
-        disposition: 'digest',
-        // A fix row for a worker, never an owner decision (see header).
+        // A worker card at once, never an owner decision (see header). Not a
+        // digest fix row: this is sent once (notifiedAt), and digest-autofix
+        // only files a row seen for 72h, so it would never reach a worker.
+        disposition: 'auto',
+        cardAction: 'Investigate',
         decision: false,
         url: c.url,
         description: `${c.needsClassification
