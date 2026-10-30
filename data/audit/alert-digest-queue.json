@@ -3696,5 +3696,36 @@
       }
     ],
     "queuedAt": "2026-10-30T05:09:55.423Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6571-birmingham-liverpool",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6571-birmingham-liverpool",
+    "description": "land.yml did not land land/bro-6571-birmingham-liverpool: the unit-tests-node gate went red at 597a9d845b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41008010904",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6571-birmingham-liverpool"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "597a9d845b52243ac2417fd6bab49e9e46d4081b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41008010904"
+      }
+    ],
+    "queuedAt": "2026-10-30T05:46:26.816Z"
   }
 ]
