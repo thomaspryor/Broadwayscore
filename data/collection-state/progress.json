@@ -1,21 +1,75 @@
 {
-  "processed": [],
+  "processed": [
+    "the-heart-off-broadway-2026/theatrely--juan-a-ramirez.json",
+    "the-heart-off-broadway-2026/boothhistory--unknown.json"
+  ],
   "failed": [
-    "medea-off-broadway-2026/express-uk--neil-norman.json"
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "the-heart-off-broadway-2026/thewrap--robert-hofler.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-heart-off-broadway-2026/boothhistory--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
+    ],
+    "scrapingbee": [
+      "the-heart-off-broadway-2026/theatrely--juan-a-ramirez.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-heart-off-broadway-2026/thewrap--robert-hofler.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-10-30T19:05:17.532Z",
-  "lastProcessed": "medea-off-broadway-2026/express-uk--neil-norman.json",
-  "log": []
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-30T19:27:09.469Z",
+      "event": "bb-session",
+      "session": "8db65233",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-30T19:27:10.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T19:29:00.758Z",
+      "event": "bb-session",
+      "session": "4f5aaa31",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T19:29:01.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
