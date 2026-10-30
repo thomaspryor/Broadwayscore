@@ -58,7 +58,8 @@ test('sets a verdict flag when the old value matches, and stamps provenance', ()
   const res = applyReviewFieldEdit(rec, { field: 'wrongAttribution', oldValue: null, newValue: true }, stamp);
   assert.equal(res.ok, true);
   assert.equal(res.record.wrongAttribution, true);
-  assert.deepEqual(res.record.approvedFixes, [{ fixId: 'bro-4202', field: 'wrongAttribution', at: stamp.at, newValue: true }]);
+  const { approvedFixBinding } = require('./approved-fix-flag.js');
+  assert.deepEqual(res.record.approvedFixes, [{ fixId: 'bro-4202', field: 'wrongAttribution', at: stamp.at, newValue: true, boundTo: approvedFixBinding(res.record) }]);
   assert.equal(rec.wrongAttribution, undefined, 'input record is not mutated');
 });
 
@@ -923,4 +924,16 @@ test('approved url edit repairs an auto-pinned url another critic holds', (t) =>
   const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
   assert.equal(after.url, RIGHT);
   assert.equal(after.urlVerifiedAuto, undefined);
+});
+
+// BRO-6676: a human-approved negative flag binds to the url + body it judged.
+test('hasApprovedFlag: a bound approval stops applying once the body or url changes (The Heart / bro-4953)', () => {
+  const { hasApprovedFlag } = require('./review-field-edit.js');
+  const placeholder = { url: 'https://www.nytimes.com/2026/10/29/theater/the-heart-review.html', nycTheatreExcerpt: "'The Heart of Rock and Roll' is not going to be the subject of think pieces" };
+  const res = applyReviewFieldEdit(placeholder, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(res.ok, true);
+  assert.equal(hasApprovedFlag(res.record, 'wrongShow'), true, 'still binds to the content it judged');
+  assert.equal(hasApprovedFlag({ ...res.record, fullText: 'A bracing new musical pulses with life. '.repeat(40) }, 'wrongShow'), false, 'real body arrived');
+  assert.equal(hasApprovedFlag({ ...res.record, url: 'https://www.nytimes.com/2026/10/29/theater/other.html' }, 'wrongShow'), false, 'url changed');
+  assert.equal(hasApprovedFlag({ approvedFixes: [{ field: 'wrongShow', newValue: true }], fullText: 'x' }, 'wrongShow'), true, 'legacy unbound entries keep applying');
 });

@@ -483,7 +483,11 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     sideEffectKeys = [...new Set([...sideEffectKeys, ...unexpectedChanges(beforeRescore, next, field)])].sort();
   }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
-  next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
+  const stampEntry = { fixId: stamp.fixId, field, at: stamp.at, newValue };
+  // A verdict that sets a flag binds to the url + body it was made on (BRO-6676).
+  // Hashed on `next` so the edit's own retractions are part of the judged state.
+  if (newValue === true) stampEntry.boundTo = require('./approved-fix-flag').approvedFixBinding(next);
+  next.approvedFixes = [...prior, stampEntry];
   if ((field === 'wrongShow' || field === 'wrongProduction') && newValue === false) {
     const retiered = retierAfterFlagClear(next);
     if (retiered.length) sideEffectKeys = [...new Set([...sideEffectKeys, ...retiered])].sort();
