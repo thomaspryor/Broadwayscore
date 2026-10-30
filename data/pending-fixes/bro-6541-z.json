@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-z",
   "planId": "d20d1113-fc0c-4892-b3aa-9cac9af16c51",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T01:50:30.871Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "reason": "BRO-6541: founded from one census item dated 2026; the Theatre Weekly review page is dated 2024-02-26, so the row date is wrong and its one ingest was refused. No reviews held."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T01:59:07.011Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-watsons-chichester-festival-regional-2025 (\"The Watsons\" @ Chichester Festival Theatre, Chichester)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired east-is-east-citizens-regional-2026 (\"East Is East\" @ Citizens Theatre, Glasgow)"
+    }
+  ],
+  "executedIn": "ci"
 }
