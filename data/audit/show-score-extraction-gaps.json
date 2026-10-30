@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-29T16:20:40.624Z",
+    "generatedAt": "2026-10-30T10:30:41.371Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 370,
+  "totalGaps": 371,
   "errorSeverity": 261,
-  "warningSeverity": 109,
+  "warningSeverity": 110,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -150,6 +150,15 @@
       "gap": 13,
       "ratio": 0.38,
       "severity": "error"
+    },
+    {
+      "showId": "american-moor-off-broadway-2019",
+      "category": "off-broadway",
+      "expected": 2,
+      "extracted": 1,
+      "gap": 1,
+      "ratio": 0.5,
+      "severity": "warning"
     },
     {
       "showId": "american-psycho-2016",
