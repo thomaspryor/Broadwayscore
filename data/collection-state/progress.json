@@ -1,22 +1,94 @@
 {
-  "processed": [],
+  "processed": [
+    "heroes-of-the-fourth-turning-off-broadway-2019/nyt-theater--jonathan-mandell.json",
+    "white-noise-off-broadway-2019/thewrap--robert-hofler.json",
+    "heroes-of-the-fourth-turning-off-broadway-2019/nytimes--jesse-green.json",
+    "heroes-of-the-fourth-turning-off-broadway-2019/theatermania--zachary-stewart.json",
+    "heroes-of-the-fourth-turning-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+    "heroes-of-the-fourth-turning-off-broadway-2019/broadwayworld--michael-dale.json",
+    "heroes-of-the-fourth-turning-off-broadway-2019/frontmezzjunkies--steven-ross.json",
+    "heroes-of-the-fourth-turning-off-broadway-2019/nysr--michael-sommers.json",
+    "heroes-of-the-fourth-turning-off-broadway-2019/theater-pizzazz--brian-scott-lipton.json",
+    "white-noise-off-broadway-2019/hollywood-reporter--frank-scheck.json",
+    "white-noise-off-broadway-2019/nytimes--ben-brantley.json",
+    "white-noise-off-broadway-2019/variety--marilyn-stasio.json",
+    "white-noise-off-broadway-2019/vulture--sara-holdren.json",
+    "white-noise-off-broadway-2019/guardian--alexis-soloski.json",
+    "white-noise-off-broadway-2019/theatermania--zachary-stewart.json",
+    "white-noise-off-broadway-2019/adriandimanlig--adrian-dimanlig.json",
+    "white-noise-off-broadway-2019/amny--matt-windman.json",
+    "white-noise-off-broadway-2019/broadwayworld--michael-dale.json",
+    "white-noise-off-broadway-2019/dailybeast--tim-teeman.json",
+    "white-noise-off-broadway-2019/front-row-center--kathleen-campion.json",
+    "white-noise-off-broadway-2019/frontmezzjunkies--steven-ross.json",
+    "white-noise-off-broadway-2019/njcom--patrick-maley.json",
+    "white-noise-off-broadway-2019/nysr--david-finkle.json",
+    "white-noise-off-broadway-2019/nysr--melissa-rose-bernardo.json",
+    "white-noise-off-broadway-2019/philadelphia-inquirer--toby-zinman.json",
+    "white-noise-off-broadway-2019/theater-scene--david-kaufman.json",
+    "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json"
+  ],
   "failed": [
-    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
-    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json"
+    "white-noise-off-broadway-2019/nyt-theater--jonathan-mandell.json",
+    "white-noise-off-broadway-2019/bobs-theater-blog--robert-sholiton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "heroes-of-the-fourth-turning-off-broadway-2019/nyt-theater--jonathan-mandell.json",
+      "heroes-of-the-fourth-turning-off-broadway-2019/theatermania--zachary-stewart.json",
+      "heroes-of-the-fourth-turning-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+      "heroes-of-the-fourth-turning-off-broadway-2019/frontmezzjunkies--steven-ross.json",
+      "heroes-of-the-fourth-turning-off-broadway-2019/nysr--michael-sommers.json",
+      "white-noise-off-broadway-2019/theatermania--zachary-stewart.json",
+      "white-noise-off-broadway-2019/adriandimanlig--adrian-dimanlig.json",
+      "white-noise-off-broadway-2019/front-row-center--kathleen-campion.json",
+      "white-noise-off-broadway-2019/frontmezzjunkies--steven-ross.json",
+      "white-noise-off-broadway-2019/nysr--david-finkle.json",
+      "white-noise-off-broadway-2019/nysr--melissa-rose-bernardo.json",
+      "white-noise-off-broadway-2019/theater-scene--david-kaufman.json",
+      "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "white-noise-off-broadway-2019/dailybeast--tim-teeman.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "brightdata": [
+      "white-noise-off-broadway-2019/variety--marilyn-stasio.json",
+      "white-noise-off-broadway-2019/vulture--sara-holdren.json",
+      "white-noise-off-broadway-2019/philadelphia-inquirer--toby-zinman.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/white-noise-off-broadway-2019/nyt-theater--jonathan-mandell.json"
+    ],
+    "archive": [
+      "white-noise-off-broadway-2019/thewrap--robert-hofler.json",
+      "heroes-of-the-fourth-turning-off-broadway-2019/nytimes--jesse-green.json",
+      "heroes-of-the-fourth-turning-off-broadway-2019/broadwayworld--michael-dale.json",
+      "heroes-of-the-fourth-turning-off-broadway-2019/theater-pizzazz--brian-scott-lipton.json",
+      "white-noise-off-broadway-2019/hollywood-reporter--frank-scheck.json",
+      "white-noise-off-broadway-2019/nytimes--ben-brantley.json",
+      "white-noise-off-broadway-2019/amny--matt-windman.json",
+      "white-noise-off-broadway-2019/broadwayworld--michael-dale.json",
+      "white-noise-off-broadway-2019/njcom--patrick-maley.json"
+    ]
   },
-  "startTime": "2026-10-30T06:23:55.343Z",
-  "lastProcessed": "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
-  "log": []
+  "startTime": "2026-10-30T06:34:22.653Z",
+  "lastProcessed": "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json",
+  "log": [
+    {
+      "t": "2026-10-30T06:37:30.482Z",
+      "event": "bb-session",
+      "session": "e7ed8110",
+      "url": "https://www.nytimes.com/2019/03/20/theater/white-noise-review.html"
+    },
+    {
+      "t": "2026-10-30T06:37:31.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

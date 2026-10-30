@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-10-30T06:24:06.117Z",
-  "processed": 0,
+  "updatedAt": "2026-10-30T06:41:55.265Z",
+  "processed": 27,
   "failed": 2,
-  "successRate": "0%",
+  "successRate": "93.1%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 13,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "brightdata": 3,
+    "archiveToday": 1,
+    "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-10-30T06:37:30.482Z",
+      "event": "bb-session",
+      "session": "e7ed8110",
+      "url": "https://www.nytimes.com/2019/03/20/theater/white-noise-review.html"
+    },
+    {
+      "t": "2026-10-30T06:37:31.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
