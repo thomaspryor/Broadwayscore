@@ -3,13 +3,20 @@
 // page shapes that broke discovery (Playbill's sidebar <article> cards ahead of the roundup body, `/news/` review slugs,
 // a Talkin' Broadway review filed under a named page no index lists, a Google News wrapper that only redirects in a
 // browser, slow Talkin' Broadway indexes). Links and structure only; no article text is copied.
-// The adapter list is the shadow's (scripts/opening-night-lane-shadow.js), run over several virtual passes.
+// BRO-5201: the night runs through the production wiring (driver.wireLaneNight: laneAdapters, inline scoring, the real
+// publish path, the review-file writer) against an empty review-texts dir, over several virtual passes. Only the page
+// fetch, the scorer and the push are injected.
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const d = require('../../scripts/lib/opening-night-lane/discovery.js');
+const driver = require('../../scripts/lib/opening-night-lane/driver.js');
+const shadow = require('../../scripts/lib/opening-night-lane-shadow.js');
 
 const SHOW = { id: 'the-imaginary-invalid-2026', title: 'The Imaginary Invalid', openingDate: '2026-10-22', category: 'broadway' };
 const NIGHT = '2026-10-22';
@@ -95,53 +102,72 @@ pages['https://news.google.com/rss/search?' + new URLSearchParams({ q: `"${SHOW.
 const wrapperTarget = new Map(gnItems.map(([, , u], i) => [GN(i), u]));
 const consentWall = '<html><body><form action="https://consent.google.com/save">Before you continue</form></body></html>';
 
+// Every review page the night's sources cite; the lane fetches each once it is admitted. Body text is filler.
+const REVIEW_PAGES = new Set([...Object.values(EXPECTED), ...gnItems.map(([, , u]) => u), 'https://cititour.com/NYC_Broadway/The-Imaginary-Invalid/1404']
+  .map((u) => d.canonicalUrl(u)));
+const FULL = 'The revival leans on its physical comedy and the second act drags under the weight of the doctors. '.repeat(30);
+
+/** The night's pages as the lane's fetchPage sees them. `calls` records discovery reads only (review fetches pass no opts marker). */
 function replayFetch({ slowTbIndexMs = 0 } = {}) {
   const calls = [];
-  const fetchText = async (url, opts = {}) => {
-    calls.push(url);
-    if (wrapperTarget.has(url)) {
-      if (!opts.withFinalUrl) return consentWall;
-      return { content: consentWall, finalUrl: wrapperTarget.get(url) };
-    }
+  const reviewFetches = [];
+  const fetchPage = async (url) => {
+    if (wrapperTarget.has(url)) { calls.push(url); return { content: consentWall, finalUrl: wrapperTarget.get(url) }; }
     if (/talkinbroadway\.com\/page\/(ob|bwaybway)\/index\.html$/.test(url) && slowTbIndexMs) await new Promise((r) => setTimeout(r, slowTbIndexMs));
-    if (url in pages) return pages[url];
+    if (url in pages) { calls.push(url); return { content: pages[url] }; }
+    if (REVIEW_PAGES.has(d.canonicalUrl(url))) { reviewFetches.push(url); return { content: FULL }; }
+    calls.push(url);
     throw new Error(`404 ${url}`);
   };
-  return { fetchText, calls };
+  return { fetchPage, calls, reviewFetches };
 }
 
-function shadowAdapters(clock) {
-  // Same list and order as scripts/opening-night-lane-shadow.js.
-  return [
-    d.bwwRoundupAdapter(), d.dtliAdapter(), d.showScoreAdapter({ urlMap: {}, allShows: [SHOW] }), d.playbillVerdictAdapter(),
-    d.talkinBroadwayAdapter({ now: clock }), d.googleNewsAdapter(),
-    d.rssAdapter({ feeds: [] }), d.sectionIndexAdapter({ outlets: [] }), d.serpAdapter({ search: async () => [] }),
-  ];
-}
+/** Publish ports that keep nothing: the merge runs, the push and the deploy do not, and the lease is held. */
+const replayPublishPorts = (now) => ({
+  ...shadow.createShadowPublishPorts({ onRows: () => {}, now }), pushData: async () => ({ pushed: false }), isLeased: async () => true,
+});
 
 async function replayNight({ passes = 4, everyMin = 2, fetchOpts } = {}) {
-  let t = T0;
-  const clock = () => t;
-  const adapters = shadowAdapters(clock);
-  const memo = { rejected: {} };
-  const seen = new Set();
-  const admitted = [];
-  const errors = [];
-  const { fetchText, calls } = replayFetch(fetchOpts);
-  for (let i = 0; i < passes; i++, t += everyMin * MIN) {
-    const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: t, startedAt: T0, adapters, fetchText, memo, seen, timeZone: 'America/New_York' });
-    for (const x of r.admitted) { seen.add(x.key); admitted.push(x); }
-    errors.push(...r.errors);
-  }
-  return { admitted, errors, calls, keys: new Set(admitted.map((x) => x.key)) };
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5201-ii-'));
+  let clock = T0;
+  const now = () => clock;
+  const { fetchPage, calls, reviewFetches } = replayFetch(fetchOpts);
+  const reviewTextsDir = path.join(dir, 'review-texts');
+  fs.mkdirSync(reviewTextsDir);
+  try {
+    const runNight = driver.wireLaneNight({
+      show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir: path.join(dir, 'ledger'),
+      // No outlet feeds this night (the shadow ran with none) and no Browserbase: Talkin' Broadway answered directly.
+      adaptersConfig: { feeds: [] },
+      laneFetch: { fetchPage, close: async () => {} },
+      fetchPorts: {
+        extractArticle: (html) => html,
+        // A distinct critic per page, so no row reads as another's syndicated copy.
+        extractMeta: (_html, url) => ({ criticName: `Critic ${d.canonicalUrl(url).length}`, publishDate: NIGHT }),
+      },
+      scoreText: async (text) => ({ score: text ? 60 : 45, extra: {} }),
+      publishPorts: replayPublishPorts(now), now, wait: async (ms) => { clock += ms; },
+      reviewTextsDir, onDiskUrls: [], onDiskRows: [], showScoreGuards: { urlMap: {}, allShows: [SHOW] }, search: async () => [], decodeImpl: null,
+      tuning: { maxPasses: passes, passIntervalMs: everyMin * MIN, startedAt: T0 },
+    });
+    const res = await runNight();
+    // Discovered = scored, plus anything the runner set aside (a syndicated copy) or gave up on.
+    const keys = new Set([...res.admitted.map((x) => x.key), ...res.skipped.map((x) => x.key), ...res.failed.map((x) => x.key)]);
+    return { ...res, keys, calls, reviewFetches, reviewFiles: fs.readdirSync(reviewTextsDir) };
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
 test('replay of 2026-10-22: the lane discovers at least 18 of the 19 published reviews', async () => {
-  const { keys, errors } = await replayNight();
+  const r = await replayNight();
+  const { keys, errors } = r;
   const found = Object.entries(EXPECTED).filter(([, u]) => keys.has(d.canonicalUrl(u))).map(([k]) => k);
   const missed = Object.keys(EXPECTED).filter((k) => !found.includes(k));
   assert.ok(found.length >= 18, `found ${found.length}/19; missed ${missed.join(', ')}; errors ${JSON.stringify(errors)}`);
   assert.deepEqual(missed, ['singleticket'], 'only the pre-opening Substack post is out of reach');
+  // The production path ran (not a dry run): every review was scored, published and written into the empty review-texts dir.
+  assert.deepEqual(r.failed, [], 'nothing failed for good');
+  assert.ok(r.published.length > 0, 'at least one publish batch'); assert.deepEqual(r.unpublished, [], 'nothing scored was left unpublished');
+  assert.ok(r.reviewFiles.length > 0, 'the lane wrote its review files');
 });
 
 test('replay: each of the seven outlets the shadow missed comes from the source that fixes it', async () => {
@@ -170,6 +196,7 @@ test('replay: Vulture is unwrapped in the first pass although eight smaller outl
 test('replay: slow Talkin\' Broadway indexes do not cost the named-page review, and the probe is throttled', async () => {
   const { keys, calls } = await replayNight({ passes: 4, everyMin: 2, fetchOpts: { slowTbIndexMs: 30 } });
   assert.ok(keys.has(d.canonicalUrl(E.talkinbroadway)));
-  // Found in the first pass and cached, so the four candidate names are probed once, not once per pass.
-  assert.equal(calls.filter((u) => u.includes('/page/world/TheImaginaryInvalid')).length, 3, 'two misses, then the hit; never again');
+  // Found in the first pass and cached, so the four candidate names are probed once, not once per pass: two misses, then
+  // the hit (3 reads), plus the one read the lane makes to score the review.
+  assert.equal(calls.filter((u) => u.includes('/page/world/TheImaginaryInvalid')).length, 4, 'two misses, the hit, the scoring fetch; never again');
 });

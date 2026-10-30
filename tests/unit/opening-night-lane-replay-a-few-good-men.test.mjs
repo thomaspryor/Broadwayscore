@@ -5,7 +5,9 @@
 // reachable only through its own feed or the BWW roundup, every Talkin' Broadway index failing). Links and structure
 // only; the quotes are placeholders, no article text is copied. BRO-6073 adds the lane's Browserbase route: Talkin'
 // Broadway answers only through it (as from CI, where Bright Data and ScrapingBee meet its Cloudflare challenge).
-// The real runLaneNight, discovery adapters and inline scoring run; the network and the models are injected.
+// The real runLaneNight, discovery adapters and inline scoring run; the network and the models are injected. BRO-5201: the
+// replay goes through driver.wireLaneNight, the production wiring (adapters from laneAdapters, one routed fetchPage for
+// discovery and review fetch, a real publish with no-op push), against an empty review-texts dir.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -16,7 +18,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const d = require('../../scripts/lib/opening-night-lane/discovery.js');
 const inline = require('../../scripts/lib/opening-night-lane/inline-score.js');
-const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+const driver = require('../../scripts/lib/opening-night-lane/driver.js');
 const shadow = require('../../scripts/lib/opening-night-lane-shadow.js');
 const bb = require('../../scripts/lib/opening-night-lane/browserbase-fetch.js');
 const { ALL_FEEDS } = require('../../scripts/lib/rss-discovery.js');
@@ -131,52 +133,50 @@ function fakeBrowserbase() {
   return { fetcher, reads, sessions: () => sessions };
 }
 
-function adapters() {
-  // The shadow's list (scripts/opening-night-lane-shadow.js), feeds omitted as there: the lane's default feed list.
-  return [
-    d.bwwRoundupAdapter(), d.dtliAdapter(), d.showScoreAdapter({ urlMap: {}, allShows: [SHOW] }), d.playbillVerdictAdapter(),
-    d.talkinBroadwayAdapter({ now: () => T0 }), d.googleNewsAdapter(), d.rssAdapter({ feeds: undefined }),
-    d.sectionIndexAdapter({ outlets: [] }), d.serpAdapter({ search: async () => [] }),
-  ];
+/** The lane's fetchPage on the night: the review pages (WSJ's teaser, every other outlet in full) and the discovery pages. */
+function nightPages(opts) {
+  const night = nightFetch(opts);
+  return async (url) => {
+    if (/talkinbroadway\.com/.test(url)) throw new Error(`Cloudflare challenge ${url}`);
+    if (CRITIC.has(d.canonicalUrl(url))) return { content: /wsj\.com/.test(url) ? TEASER : FULL };
+    return { content: await night(url) };
+  };
 }
+
+/** Publish ports that keep nothing: the merge runs, the push and the deploy do not, and the lease is held. */
+const replayPublishPorts = (now) => ({
+  ...shadow.createShadowPublishPorts({ onRows: () => {}, now }), pushData: async () => ({ pushed: false }), isLeased: async () => true,
+});
 
 async function replay(opts = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6066-afgm-'));
   let clock = T0;
   const now = () => clock;
   const scorerCalls = [];
-  // The lane's two fetch paths behind its routed fetchPage, as driver.js and the shadow wire them: Talkin' Broadway only
-  // answers through Browserbase; without it (opts.noBrowserbase) its every fetch fails, as on the night.
-  const night = nightFetch(opts);
-  const plainDiscovery = async (url) => {
-    if (/talkinbroadway\.com/.test(url)) throw new Error(`Cloudflare challenge ${url}`);
-    return { content: await night(url) };
-  };
-  const plainReview = async (url) => {
-    if (/talkinbroadway\.com/.test(url)) throw new Error(`Cloudflare challenge ${url}`);
-    return { content: /wsj\.com/.test(url) ? TEASER : FULL };
-  };
+  // Talkin' Broadway only answers through Browserbase; without it (opts.noBrowserbase) its every fetch fails, as on the night.
   const browserbase = opts.noBrowserbase ? null : fakeBrowserbase();
-  const routed = (fetchPage) => bb.laneFetchPage({ fetchPage, browserbase: browserbase && browserbase.fetcher });
-  const scoring = inline.createInlineScoring({
-    show: SHOW, night: NIGHT, ledgerDir: path.join(dir, 'ledger'), now,
-    fetchPage: routed(plainReview), extractArticle: (html) => html,
-    extractMeta: (_html, url) => ({ criticName: CRITIC.get(d.canonicalUrl(url)) || null, publishDate: NIGHT }),
-    // The models: WSJ's teaser is not a review; the excerpt and every full review score.
-    scoreText: async (text, ctx) => {
-      scorerCalls.push({ url: ctx.url, tier: ctx.contentTier, chars: text.length });
-      if (/wsj\.com/.test(ctx.url) && text) return { rejected: true, rejection: 'not_a_review' };
-      return { score: text ? 60 : 45, extra: {} };
-    },
-  });
+  const laneFetch = { fetchPage: bb.laneFetchPage({ fetchPage: nightPages(opts), browserbase: browserbase && browserbase.fetcher }), close: async () => {} };
+  const reviewTextsDir = path.join(dir, 'review-texts');
+  fs.mkdirSync(reviewTextsDir);
   try {
-    const res = await runLaneNight({
-      show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir: path.join(dir, 'ledger'), dryRun: true,
-      maxPasses: opts.passes || 8, startedAt: T0, adapters: adapters(), fetchText: d.fetchTextFrom(routed(plainDiscovery)),
-      fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
-      publishPorts: shadow.createShadowPublishPorts({ onRows: () => {}, now }), now, wait: async (ms) => { clock += ms; },
+    const runNight = driver.wireLaneNight({
+      show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir: path.join(dir, 'ledger'), adaptersConfig: {},
+      laneFetch, fetchPorts: {
+        extractArticle: (html) => html,
+        extractMeta: (_html, url) => ({ criticName: CRITIC.get(d.canonicalUrl(url)) || null, publishDate: NIGHT }),
+      },
+      // The models: WSJ's teaser is not a review; the excerpt and every full review score.
+      scoreText: async (text, ctx) => {
+        scorerCalls.push({ url: ctx.url, tier: ctx.contentTier, chars: text.length });
+        if (/wsj\.com/.test(ctx.url) && text) return { rejected: true, rejection: 'not_a_review' };
+        return { score: text ? 60 : 45, extra: {} };
+      },
+      publishPorts: replayPublishPorts(now), now, wait: async (ms) => { clock += ms; },
+      reviewTextsDir, onDiskUrls: [], onDiskRows: [], showScoreGuards: { urlMap: {}, allShows: [SHOW] }, search: async () => [], decodeImpl: null,
+      tuning: { maxPasses: opts.passes || 8, startedAt: T0 },
     });
-    return { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir, browserbase };
+    const res = await runNight();
+    return { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir, browserbase, reviewFiles: fs.readdirSync(reviewTextsDir) };
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 const has = (r, k) => r.scored.has(d.canonicalUrl(U[k]));
@@ -191,6 +191,9 @@ test('replay of 2026-10-29: the lane scores all 22 published reviews, Talkin\' B
   assert.ok(r.browserbase.reads.length > 0 && r.browserbase.reads.every((u) => /talkinbroadway\.com/.test(u)), r.browserbase.reads.join(', '));
   assert.ok(r.browserbase.reads.filter((u) => d.canonicalUrl(u) === d.canonicalUrl(U.talkinbroadway)).length >= 2, 'probed, then fetched for scoring');
   assert.equal(r.browserbase.sessions(), 1);
+  // The production publish path ran (not a dry run): every score was published (in batches) and written to the review-texts dir.
+  assert.ok(r.published.length > 0, 'at least one publish batch'); assert.deepEqual(r.unpublished, [], 'nothing scored was left unpublished');
+  assert.ok(r.reviewFiles.length > 0, 'the lane wrote its review files into the empty review-texts dir');
 });
 
 test('without Browserbase (no keys, kill switch, allowance used) the lane scores 21: Talkin\' Broadway is the only miss', async () => {
