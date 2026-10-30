@@ -119,8 +119,7 @@ function buildAction(row, shows) {
   if (!trial.ok) {
     // An existing row under another id (BRO-6578: tristan-yseult vs tristan-and-yseult)
     // is the production already: report it the same way as the id/title match above.
-    const existing = /duplicates existing "([^"]+)"/.exec(trial.reason);
-    return { skip: existing ? `exists as ${existing[1]}` : trial.reason };
+    return { skip: trial.duplicateOf ? `exists as ${trial.duplicateOf}` : trial.reason };
   }
   return { action: { type: 'add-show', show } };
 }

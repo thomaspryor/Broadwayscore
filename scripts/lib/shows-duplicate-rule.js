@@ -100,23 +100,29 @@ const pairKey = (f) => [f.show.id, f.existing.id].sort().join('\u0000');
 
 /**
  * Findings in `after` that `before` did not have. A pair counts as old when
- * `before` had it, or when `before` paired the same partner with a row that is
- * gone from `after` (an id rename inside a known pair is not a new duplicate).
- * @param {Object[]} before - rows as they were (e.g. on disk)
+ * `before` had it, or when one side is a row `before` did not have and its
+ * partner's old pair-mate is gone from `after` (an id rename inside a known
+ * pair). Two rows that were both on disk and not paired are always new.
+ * @param {Object[]|function(): Object[]} before - rows as they were (e.g. on
+ *   disk); a function is only called when `after` has findings at all
  * @param {Object[]} after - rows about to be written
  */
 function newDuplicateFindings(before, after) {
   const found = findDuplicateShows(after);
   if (!found.length) return [];
+  if (typeof before === 'function') before = before();
   const old = findDuplicateShows(before);
   const oldKeys = new Set(old.map(pairKey));
   const afterIds = new Set((after || []).map((s) => s && s.id));
+  const beforeIds = new Set((before || []).map((s) => s && s.id));
   const goneFrom = new Map(); // partner id -> true when its old pair-mate left
   for (const f of old) {
     if (!afterIds.has(f.show.id)) goneFrom.set(f.existing.id, true);
     if (!afterIds.has(f.existing.id)) goneFrom.set(f.show.id, true);
   }
-  return found.filter((f) => !oldKeys.has(pairKey(f)) && !goneFrom.has(f.show.id) && !goneFrom.has(f.existing.id));
+  const renamed = (f) => (!beforeIds.has(f.show.id) && goneFrom.has(f.existing.id))
+    || (!beforeIds.has(f.existing.id) && goneFrom.has(f.show.id));
+  return found.filter((f) => !oldKeys.has(pairKey(f)) && !renamed(f));
 }
 
 module.exports = { findDuplicateShows, newDuplicateFindings, formatFinding, isTestFixture, rowsSharingKey };

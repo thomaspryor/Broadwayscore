@@ -136,7 +136,7 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   // other row is a related but separate run, so those ids are exempt too.
   const declared = [].concat(action.distinctFrom || [], action.priorRunOf || [], action.crossLinkFrom || []);
   const dup = newRowDuplicate(shows, show, declared);
-  if (dup) return { ok: false, reason: `add-show: "${show.id}" duplicates existing "${dup.other}" (${dup.reason}); if it is a genuinely distinct production list "${dup.other}" in the action's distinctFrom` };
+  if (dup) return { ok: false, duplicateOf: dup.other, reason: `add-show: "${show.id}" duplicates existing "${dup.other}" (${dup.reason}); if it is a genuinely distinct production list "${dup.other}" in the action's distinctFrom` };
 
   let from = null;
   if (action.crossLinkFrom) {
@@ -158,6 +158,12 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   }
 
   const added = { ...show, venue: venueTbd ? null : sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' };
+  // Persist the declared distinction on the row: the prebuild gate (and the
+  // shows.json write guard) read show.distinctFrom, not the action (BRO-6578).
+  if (Array.isArray(action.distinctFrom) && action.distinctFrom.length) {
+    const have = Array.isArray(show.distinctFrom) ? show.distinctFrom : [];
+    added.distinctFrom = [...new Set([...have, ...action.distinctFrom])];
+  }
   if (prior) {
     const run = { id: prior.id, venue: sanitizeVenueForWrite(prior.venue), openingDate: prior.openingDate || null };
     if (prior.closingDate) run.closingDate = prior.closingDate;

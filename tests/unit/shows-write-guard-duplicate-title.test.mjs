@@ -92,6 +92,25 @@ describe('saveShows refuses an added duplicate title+venue row', () => {
     assert.throws(() => guard.saveShows(data), /new duplicate/);
   });
 
+  test('deleting one row of an old pair does not let a third row retitle into it', () => {
+    seed([existing, dupe, distinct]);
+    const guard = createShowsWriteGuard(showsPath);
+    const data = guard.loadShows();
+    data.shows = data.shows.filter((s) => s.id !== dupe.id);
+    data.shows.find((s) => s.id === distinct.id).title = 'Tristan & Yseult';
+    assert.throws(() => guard.saveShows(data), /new duplicate/);
+  });
+
+  test('SHOWS_DUP_GUARD_DISABLED=true turns the refusal off', () => {
+    seed([existing]);
+    const guard = createShowsWriteGuard(showsPath);
+    const data = guard.loadShows();
+    data.shows.push({ ...dupe });
+    process.env.SHOWS_DUP_GUARD_DISABLED = 'true';
+    try { guard.saveShows(data); } finally { delete process.env.SHOWS_DUP_GUARD_DISABLED; }
+    assert.equal(onDiskIds().length, 2);
+  });
+
   test('allowDuplicates lets a deliberate save through', () => {
     seed([existing]);
     const guard = createShowsWriteGuard(showsPath);
@@ -143,13 +162,22 @@ describe('add-show and the regional planners find the existing row', () => {
   test('applyAddShow refuses the duplicate and accepts the distinct row', () => {
     const refused = addShow(dupe);
     assert.equal(refused.ok, false);
+    assert.equal(refused.duplicateOf, existing.id);
     assert.match(refused.reason, /duplicates existing "tristan-and-yseult-royal-bath-regional-2026"/);
     assert.equal(addShow(distinct).ok, true, addShow(distinct).reason);
   });
 
-  test('distinctFrom still lets a declared separate production through', () => {
+  test('distinctFrom lets a declared separate production through, and the save', () => {
     const r = addShow(dupe, { distinctFrom: [existing.id] });
     assert.equal(r.ok, true, r.reason);
+    // The declaration lands on the row, so saveShows and the prebuild accept it.
+    seed([existing]);
+    const guard = createShowsWriteGuard(showsPath);
+    const data = guard.loadShows();
+    assert.equal(applyAddShow(data.shows, { type: 'add-show', show: { ...dupe, discoverySource: 'x' }, distinctFrom: [existing.id] }).ok, true);
+    guard.saveShows(data);
+    assert.deepEqual(onDiskIds(), [existing.id, dupe.id]);
+    assert.deepEqual(findDuplicateShows(JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows), []);
   });
 
   test('buildAction (Guardian and census backfills) skips with "exists as" the existing id', () => {

@@ -134,10 +134,11 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // (BRO-6578: one census stub blocked every Vercel build for 3h). Only
       // pairs this save creates are refused; the lock is held, so the file
       // read here is the state being replaced.
-      if (!allowDuplicates) {
-        const added = newDuplicateFindings(readOnDiskShows(guard.filePath), finalData.shows);
+      // Kill switch for a misfire: SHOWS_DUP_GUARD_DISABLED=true (the prebuild gate still runs).
+      if (!allowDuplicates && process.env.SHOWS_DUP_GUARD_DISABLED !== 'true') {
+        const added = newDuplicateFindings(() => readOnDiskShows(guard.filePath), finalData.shows);
         if (added.length) {
-          throw new Error(`shows-write-guard: refusing to write ${added.length} new duplicate show row(s); the prebuild gate would fail the build:\n${added.map((f) => `  - ${formatFinding(f)}`).join('\n')}\nUse the existing row instead of adding one, or pass saveShows(data, { allowDuplicates: true }) for a deliberate distinct production.`);
+          throw new Error(`shows-write-guard: refusing to write ${added.length} new duplicate show row(s); the prebuild gate would fail the build:\n${added.map((f) => `  - ${formatFinding(f)}`).join('\n')}\nUse the existing row instead of adding one; for a genuinely distinct production list the other id in the row's distinctFrom.`);
         }
       }
     },
