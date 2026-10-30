@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-30T00:38:59.471Z",
-  "windowDays": 1095,
-  "targets": 1274,
-  "auditedThisRun": 29,
-  "carriedForward": 1018,
+  "generatedAt": "2026-10-30T03:50:05.247Z",
+  "windowDays": 21,
+  "targets": 23,
+  "auditedThisRun": 12,
+  "carriedForward": 1047,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 524,
-    "missingCurrentRun": 991,
+    "withGap": 536,
+    "missingCurrentRun": 1047,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 756,
-    "totalRecoverable": 25,
-    "totalRecovered": 28,
+    "totalFlaggedMisses": 763,
+    "totalRecoverable": 31,
+    "totalRecovered": 29,
     "humanExcluded": 5,
-    "automatedExcluded": 525,
-    "automatedExcludedListed": 429,
-    "priorProductionCitations": 5732
+    "automatedExcluded": 533,
+    "automatedExcludedListed": 436,
+    "priorProductionCitations": 5747
   },
   "results": [
     {
@@ -3202,6 +3202,277 @@
         "candidateCount": 16
       },
       "computedAt": "2026-10-28T15:05:14.854Z"
+    },
+    {
+      "showId": "a-bright-room-called-day-off-broadway-2019",
+      "title": "A Bright Room Called Day",
+      "openingDate": "2019-11-19",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/11/25/theater/a-bright-room-called-day-review.html",
+        "https://www.timeout.com/newyork/theater/a-bright-room-called-day",
+        "https://www.vulture.com/2019/11/reviews-fefu-and-her-friends-and-a-bright-room-called-day.html",
+        "https://www.wsj.com/articles/a-bright-room-called-day-review-blaming-the-president-11575396999",
+        "https://www.hollywoodreporter.com/review/a-bright-room-called-day-theater-review-1257931",
+        "https://www.theatermania.com/off-broadway/reviews/a-bright-room-called-day-public-theater_90219.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-NWSGDM",
+        "https://www.talkinbroadway.com/page/ob/11_25_19.html",
+        "http://nystagereview.com/2019/11/25/a-bright-room-called-day-the-fascist-and-the-furious/",
+        "http://nystagereview.com/2019/11/25/a-bright-room-called-day-a-call-to-action-refreshed/",
+        "http://www.curtainup.com/brightroomkushner.html",
+        "https://thefrontrowcenter.com/2019/11/a-bright-room-called-day/",
+        "https://www.theatrereviews.com/off-broadway-review-a-bright-room-called-day-at-the-publics-anspacher-theater/",
+        "https://newyorktheater.me/2019/11/25/a-bright-room-called-day-review-tony-kushner-on-nazism-reagan-and-trump/"
+      ],
+      "dirFiles": 13,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [
+        {
+          "url": "https://www.wsj.com/articles/a-bright-room-called-day-review-blaming-the-president-11575396999",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-NWSGDM",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/11_25_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://www.curtainup.com/brightroomkushner.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.wsj.com/articles/a-bright-room-called-day-review-blaming-the-president-11575396999",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-NWSGDM",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/11_25_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.curtainup.com/brightroomkushner.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-NWSGDM"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/11_25_19.html"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/brightroomkushner.html"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/a-bright-room-called-day-review-blaming-the-president-11575396999"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/11/25/theater/a-bright-room-called-day-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/a-bright-room-called-day",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.vulture.com/2019/11/reviews-fefu-and-her-friends-and-a-bright-room-called-day.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/a-bright-room-called-day-theater-review-1257931",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/a-bright-room-called-day-public-theater_90219.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/11/25/a-bright-room-called-day-the-fascist-and-the-furious/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/11/25/a-bright-room-called-day-a-call-to-action-refreshed/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2019/11/a-bright-room-called-day/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-a-bright-room-called-day-at-the-publics-anspacher-theater/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/11/25/a-bright-room-called-day-review-tony-kushner-on-nazism-reagan-and-trump/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/a-bright-room-called-day-review-blaming-the-president-11575396999",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-NWSGDM",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/11_25_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/brightroomkushner.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 9,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
       "showId": "a-case-for-the-existence-of-god-off-broadway-2022",
@@ -11253,6 +11524,101 @@
         "candidateCount": 6
       },
       "computedAt": "2026-10-12T08:45:07.198Z"
+    },
+    {
+      "showId": "american-moor-off-broadway-2019",
+      "title": "American Moor",
+      "openingDate": "2019-09-08",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.curtainup.com/americanmoor15.html"
+      ],
+      "dirFiles": 3,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "http://www.curtainup.com/americanmoor15.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "write-path-blocked": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.curtainup.com/americanmoor15.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/americanmoor15.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.curtainup.com/americanmoor15.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
       "showId": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023",
@@ -29673,6 +30039,309 @@
       "automatedExcludedListed": 0
     },
     {
+      "showId": "bella-bella-off-broadway-2019",
+      "title": "Bella Bella",
+      "openingDate": "2019-10-22",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/10/22/theater/harvey-fierstein-bella-bella-review.html",
+        "https://www.timeout.com/newyork/theater/bella-bella",
+        "https://deadline.com/2019/10/bella-abzug-harvey-fierstein-off-broadway-mtc-1202765806/",
+        "https://variety.com/2019/legit/reviews/bella-bella-review-harvey-fierstein-bella-abzug-1203370256/",
+        "https://www.hollywoodreporter.com/review/bella-bella-theater-review-1249438",
+        "https://www.theatermania.com/off-broadway/reviews/bella-bella_90023.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=X2HGLB",
+        "http://nystagereview.com/2019/10/22/bella-bella-hats-off-to-harvey-fiersteins-abzug-homage/",
+        "http://nystagereview.com/2019/10/22/bella-bella-tribute-to-a-champion-of-feminism-and-more/",
+        "http://www.theaternewsonline.com/NYTheaterReviews/OVERCOMINGADVERSITY.cfm",
+        "http://www.theaterscene.net/plays/solo-plays/bella-bella/joseph-pisano/",
+        "http://www.curtainup.com/bellabella19.html",
+        "http://www.theasy.com/Reviews/2019/B/bellabella.php",
+        "https://www.theatrereviews.com/off-broadway-review-bella-bella-at-manhattan-theatre-clubs-new-york-city-center-stage-i/",
+        "https://newyorktheater.me/2019/11/06/bella-bella-review-harvey-fierstein-as-rep-bella-abzug/",
+        "https://slleiter.blogspot.com/2019/11/106-2019-2020-review-bella-bella-seen.html"
+      ],
+      "dirFiles": 15,
+      "dirClean": 14,
+      "inReviewsJson": 14,
+      "missing": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=X2HGLB",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "http://www.theaternewsonline.com/NYTheaterReviews/OVERCOMINGADVERSITY.cfm",
+          "host": "theaternewsonline.com",
+          "knownOutletId": "theater-news-online"
+        },
+        {
+          "url": "http://www.curtainup.com/bellabella19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2019/B/bellabella.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/bella-bella",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/bella-bella"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Manhattan Theatre Club (Off Broadway)",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=X2HGLB",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "bella-bella-off-broadway-2019: http://www.lightingandsoundamerica.com/news/story.asp?ID=X2HGLB has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "http://www.theaternewsonline.com/NYTheaterReviews/OVERCOMINGADVERSITY.cfm",
+          "host": "theaternewsonline.com",
+          "outletId": "theater-news-online",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theaternewsonline.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch returned no usable HTML (got 224 chars)"
+        },
+        {
+          "url": "http://www.curtainup.com/bellabella19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2019/B/bellabella.php",
+          "host": "theasy.com",
+          "outletId": "theatre-is-easy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=X2HGLB"
+          },
+          {
+            "outletId": "theater-news-online",
+            "outlet": "theater-news-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaternewsonline.com/NYTheaterReviews/OVERCOMINGADVERSITY.cfm"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/bellabella19.html"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2019/B/bellabella.php"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/10/22/theater/harvey-fierstein-bella-bella-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://deadline.com/2019/10/bella-abzug-harvey-fierstein-off-broadway-mtc-1202765806/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/bella-bella-review-harvey-fierstein-bella-abzug-1203370256/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/bella-bella-theater-review-1249438",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/bella-bella_90023.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/22/bella-bella-hats-off-to-harvey-fiersteins-abzug-homage/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/22/bella-bella-tribute-to-a-champion-of-feminism-and-more/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/solo-plays/bella-bella/joseph-pisano/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-bella-bella-at-manhattan-theatre-clubs-new-york-city-center-stage-i/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/11/06/bella-bella-review-harvey-fierstein-as-rep-bella-abzug/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/11/106-2019-2020-review-bella-bella-seen.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=X2HGLB",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaternewsonline.com/NYTheaterReviews/OVERCOMINGADVERSITY.cfm",
+            "outletId": "theater-news-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/bellabella19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2019/B/bellabella.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 14
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
+    },
+    {
       "showId": "benevolent-off-broadway-2026",
       "title": "Benevolent",
       "openingDate": "2026-08-14",
@@ -35451,6 +36120,296 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T08:23:28.238Z"
+    },
+    {
+      "showId": "broadway-bounty-hunter-off-broadway-2019",
+      "title": "Broadway Bounty Hunter",
+      "openingDate": "2019-07-23",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/07/23/theater/broadway-bounty-hunter-review.html",
+        "https://variety.com/2019/legit/reviews/broadway-bounty-hunter-review-musical-1203275822/",
+        "https://www.hollywoodreporter.com/review/broadway-bounty-hunter-theater-review-1226057",
+        "https://www.amny.com/entertainment/broadway-bounty-hunter-review-1.34198522",
+        "https://www.theatermania.com/off-broadway/reviews/broadway-bounty-hunter-joe-iconis-annie-golden_89357.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-62I0HB",
+        "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-annie-golden-nails-it/",
+        "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-exploiting-a-darling-character-in-pursuit-of-laughs/",
+        "http://www.theaterscene.net/musicals/offbway/broadway-bounty-hunter/victor-gluck/",
+        "http://www.curtainup.com/bountyhunter19.html",
+        "https://www.theaterpizzazz.com/broadway-bounty-hunter/",
+        "http://frontmezzjunkies.com/2019/08/09/broadway-bounty-hunter/",
+        "https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/",
+        "https://thebroadwayblog.com/broadway-bounty-hunter-review/"
+      ],
+      "dirFiles": 12,
+      "dirClean": 11,
+      "inReviewsJson": 10,
+      "missing": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/broadway-bounty-hunter-theater-review-1226057",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-62I0HB",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "http://www.curtainup.com/bountyhunter19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": true,
+          "recoverableFile": "nyt-theater--jonathan-mandell.json",
+          "recoverableOutletId": "nyt-theater",
+          "recoverableCritic": "Jonathan Mandell",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/8-broadway-bounty-hunter/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/broadway-bounty-hunter-theater-review-1226057",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-62I0HB",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.curtainup.com/bountyhunter19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "[url-changed] nyt-theater: cleared old-URL-derived fields (contentTier, contentTierReason, incompleteReason, incompleteDetail) — url https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/8-broadway-bounty-hunter/ → https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/\n[review-write-guard] blocked url flip-flop on nyt-theater--jonathan-mandell.json: https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-gol",
+          "recoveryCount": 1
+        },
+        {
+          "url": "https://thebroadwayblog.com/broadway-bounty-hunter-review/",
+          "host": "thebroadwayblog.com",
+          "file": "broadway-blog--matthew-wexler.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thebroadwayblog.com): Scrapingdog HTTP 400: {\"message\":\"The site could not be reached securely: the certificate is issued for a different hostname for \\\"thebroadwayblog.com\\\". This is a problem with the target site's SSL certificate, not with t\nFetch failed: fallbackFromLabel: unknown skipReason \"sb-host-cooldown\"",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/broadway-bounty-hunter-theater-review-1226057"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-62I0HB"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/bountyhunter19.html"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/07/23/theater/broadway-bounty-hunter-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/broadway-bounty-hunter-review-musical-1203275822/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/broadway-bounty-hunter-review-1.34198522",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/broadway-bounty-hunter-joe-iconis-annie-golden_89357.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-annie-golden-nails-it/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-exploiting-a-darling-character-in-pursuit-of-laughs/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/offbway/broadway-bounty-hunter/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theaterpizzazz.com/broadway-bounty-hunter/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://frontmezzjunkies.com/2019/08/09/broadway-bounty-hunter/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://thebroadwayblog.com/broadway-bounty-hunter-review/",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/broadway-bounty-hunter-theater-review-1226057",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-62I0HB",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/bountyhunter19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/07/23/broadway-bounty-hunter-review-and-pics-of-joe-iconis-musical-starring-annie-golden/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 9,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
       "showId": "bronco-billy-the-musical-west-end-2024",
@@ -73475,6 +74434,170 @@
       "computedAt": "2026-08-14T11:44:15.360Z"
     },
     {
+      "showId": "fefu-and-her-friends-off-broadway-2019",
+      "title": "Fefu and Her Friends",
+      "openingDate": "2019-11-24",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.theaterscene.net/plays/offbway-plays/fefu-and-her-friends/victor-gluck/",
+        "http://www.theasy.com/Reviews/2019/U/unsexmeherethetragedyofmacbeth.php",
+        "https://www.nytimes.com/2019/11/24/theater/review-the-many-unusual-stages-of-fefu-and-her-friends.html",
+        "https://www.timeout.com/newyork/theater/fefu-and-her-friends-1",
+        "https://www.vulture.com/2019/11/reviews-fefu-and-her-friends-and-a-bright-room-called-day.html",
+        "https://www.theatermania.com/off-broadway/reviews/fefu-and-her-friends-maria-irene-fornes_90215.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-P0NNH2",
+        "http://nystagereview.com/2019/11/24/fefu-and-her-friends-ahead-of-its-time/",
+        "https://newyorktheater.me/2019/11/24/fefu-and-her-friends-review-maria-irene-fornes-prized-play-produced-at-last/"
+      ],
+      "dirFiles": 8,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [
+        {
+          "url": "http://www.theasy.com/Reviews/2019/U/unsexmeherethetragedyofmacbeth.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-P0NNH2",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.theasy.com/Reviews/2019/U/unsexmeherethetragedyofmacbeth.php",
+          "host": "theasy.com",
+          "outletId": "theatre-is-easy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-P0NNH2",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2019/U/unsexmeherethetragedyofmacbeth.php"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-P0NNH2"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/fefu-and-her-friends/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/11/24/theater/review-the-many-unusual-stages-of-fefu-and-her-friends.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/fefu-and-her-friends-1",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.vulture.com/2019/11/reviews-fefu-and-her-friends-and-a-bright-room-called-day.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/fefu-and-her-friends-maria-irene-fornes_90215.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/11/24/fefu-and-her-friends-ahead-of-its-time/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/11/24/fefu-and-her-friends-review-maria-irene-fornes-prized-play-produced-at-last/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2019/U/unsexmeherethetragedyofmacbeth.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-P0NNH2",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 7,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
+    },
+    {
       "showId": "fences-off-west-end-2026",
       "title": "Fences",
       "openingDate": "2026-10-09",
@@ -102076,6 +103199,519 @@
         "candidateCount": 22
       },
       "computedAt": "2026-10-27T23:59:53.509Z"
+    },
+    {
+      "showId": "heroes-of-the-fourth-turning-off-broadway-2019",
+      "title": "Heroes of the Fourth Turning",
+      "openingDate": "2019-10-07",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-HEROES-OF-THE-FOURTH-TURNING-20191008"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
+        "https://www.vulture.com/2019/10/review-of-will-arberys-heroes-of-the-fourth-turning.html",
+        "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
+        "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
+        "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
+        "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
+        "https://www.talkinbroadway.com/page/ob/10_07_19.html",
+        "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
+        "http://www.curtainup.com/heroesof4thturning19.html",
+        "http://www.theasy.com/Reviews/2019/H/heroesofthefourthturning.php",
+        "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
+        "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
+        "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
+        "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
+        "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html"
+      ],
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker"
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "http://www.curtainup.com/heroesof4thturning19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2019/H/heroesofthefourthturning.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies"
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited"
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html",
+          "host": "slleiter.blogspot.com",
+          "knownOutletId": "theatres-leiter-side"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": true,
+          "recoverableFile": "nyt-theater--jonathan-mandell.json",
+          "recoverableOutletId": "nyt-theater",
+          "recoverableCritic": "Jonathan Mandell",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/heroes-of-the-fourth-turningwritten-by-will-arberydirected-by-danya-taymor-5/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 291,
+        "byReason": {
+          "aggregator-internal-nav": 215,
+          "not-http-url": 54,
+          "aggregator-section-root": 5,
+          "non-review-host": 15,
+          "roundup-page": 2
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
+          "host": "thewrap.com",
+          "outletId": "thewrap",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
+          "host": "newyorker.com",
+          "outletId": "newyorker",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway"
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "http://www.curtainup.com/heroesof4thturning19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2019/H/heroesofthefourthturning.php",
+          "host": "theasy.com",
+          "outletId": "theatre-is-easy"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
+          "host": "theaterpizzazz.com",
+          "outletId": "theater-pizzazz"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
+          "host": "frontmezzjunkies.com",
+          "outletId": "frontmezzjunkies"
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
+          "host": "theatrereviews.com",
+          "outletId": "theatre-reviews-limited"
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html",
+          "host": "slleiter.blogspot.com",
+          "outletId": "theatres-leiter-side"
+        }
+      ],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/heroesof4thturning19.html"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2019/H/heroesofthefourthturning.php"
+          },
+          {
+            "outletId": "theater-pizzazz",
+            "outlet": "theater-pizzazz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/"
+          },
+          {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/"
+          },
+          {
+            "outletId": "theatres-leiter-side",
+            "outlet": "theatres-leiter-side",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "newyorker",
+            "outlet": "newyorker",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.vulture.com/2019/10/review-of-will-arberys-heroes-of-the-fourth-turning.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
+            "outletId": "newyorker",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/heroesof4thturning19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2019/H/heroesofthefourthturning.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
+            "outletId": "theater-pizzazz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
+            "outletId": "frontmezzjunkies",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
+            "outletId": "theatre-reviews-limited",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html",
+            "outletId": "theatres-leiter-side",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 1,
+        "candidateCount": 16
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
       "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
@@ -133195,6 +134831,414 @@
       "computedAt": "2026-10-29T00:05:40.575Z"
     },
     {
+      "showId": "long-lost-off-broadway-2019",
+      "title": "Long Lost",
+      "openingDate": "2019-06-04",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/06/04/theater/review-long-lost-donald-margulies.html",
+        "https://www.timeout.com/newyork/theater/long-lost",
+        "https://variety.com/2019/legit/reviews/long-lost-review-donald-margulies-alex-wolff-kelly-aucoin-lee-tergesen-1203233527/",
+        "https://www.hollywoodreporter.com/review/long-lost-theater-1215571",
+        "https://www.theatermania.com/off-broadway/reviews/long-lost-review_88940.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=MY5R2F",
+        "http://nystagereview.com/2019/06/04/long-lost-donald-margulies-prodigal-returns-lobbing-grenades/",
+        "http://nystagereview.com/2019/06/04/long-lost-blah-blah-black-sheep/",
+        "http://www.theaternewsonline.com/NYTheaterReviews/SPILLEDSECRETS.cfm",
+        "http://www.theaterscene.net/plays/offbway-plays/long-lost/victor-gluck/",
+        "http://www.curtainup.com/longlost19.html",
+        "https://www.theaterpizzazz.com/long-lost/",
+        "https://thefrontrowcenter.com/2019/06/long-lost/",
+        "http://exeuntnyc.com/reviews/review-long-lost-new-york-city-center-stage-i/",
+        "https://cititour.com/NYC_Broadway/Long-Lost/962",
+        "https://slleiter.blogspot.com/2019/06/24-2019-2020-review-long-lost-seen-june.html",
+        "https://www.thewrap.com/lost-long-theater-review-donald-margulies-lee-tergesen-alex-wolff-kelly-aucoin-annie-parisse/",
+        "https://www.culturalweekly.com/making-missing-connections-frankie-johnny-long-lost-happy-talk/",
+        "https://diandrareviewsitall.com/theater-review-long-lost/",
+        "https://www.offscriptdandwyer.com/single-post/2019/06/05/LONG-LOST-%E2%80%93-Manhattan-Theatre-Club",
+        "https://www.edgemedianetwork.com/entertainment/theatre//277503",
+        "https://gotham-playgoer.blogspot.com/2019/06/long-lost.html"
+      ],
+      "dirFiles": 19,
+      "dirClean": 17,
+      "inReviewsJson": 17,
+      "missing": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/long-lost-theater-1215571",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=MY5R2F",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "http://www.theaternewsonline.com/NYTheaterReviews/SPILLEDSECRETS.cfm",
+          "host": "theaternewsonline.com",
+          "knownOutletId": "theater-news-online"
+        },
+        {
+          "url": "http://www.curtainup.com/longlost19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "https://www.culturalweekly.com/making-missing-connections-frankie-johnny-long-lost-happy-talk/",
+          "host": "culturalweekly.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.edgemedianetwork.com/entertainment/theatre//277503",
+          "host": "edgemedianetwork.com",
+          "knownOutletId": "edge-boston"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaylover.org",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://thefrontrowcenter.com/2019/06/long-lost/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": true,
+          "recoverableFile": "front-row-center--david-walters.json",
+          "recoverableOutletId": "front-row-center",
+          "recoverableCritic": "David Walters",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--david-walters.json",
+              "flag": "nonReview",
+              "urlInDir": "https://thefrontrowcenter.com/2019/06/long-lost/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "non-review-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/long-lost-theater-1215571",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=MY5R2F",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.theaternewsonline.com/NYTheaterReviews/SPILLEDSECRETS.cfm",
+          "host": "theaternewsonline.com",
+          "outletId": "theater-news-online",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theaternewsonline.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=theaternewsonline.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetc"
+        },
+        {
+          "url": "http://www.curtainup.com/longlost19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "https://www.culturalweekly.com/making-missing-connections-frankie-johnny-long-lost-happy-talk/",
+          "host": "culturalweekly.com",
+          "outletId": "culturalweekly",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.edgemedianetwork.com/entertainment/theatre//277503",
+          "host": "edgemedianetwork.com",
+          "outletId": "edge-boston"
+        }
+      ],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://thefrontrowcenter.com/2019/06/long-lost/",
+          "host": "thefrontrowcenter.com",
+          "file": "front-row-center--david-walters.json"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/long-lost-theater-1215571"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=MY5R2F"
+          },
+          {
+            "outletId": "theater-news-online",
+            "outlet": "theater-news-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaternewsonline.com/NYTheaterReviews/SPILLEDSECRETS.cfm"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/longlost19.html"
+          },
+          {
+            "outletId": "culturalweekly.com",
+            "outlet": "culturalweekly.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.culturalweekly.com/making-missing-connections-frankie-johnny-long-lost-happy-talk/"
+          },
+          {
+            "outletId": "edge-boston",
+            "outlet": "edge-boston",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.edgemedianetwork.com/entertainment/theatre//277503"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2019/06/long-lost/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/06/04/theater/review-long-lost-donald-margulies.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/long-lost",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/long-lost-review-donald-margulies-alex-wolff-kelly-aucoin-lee-tergesen-1203233527/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/long-lost-review_88940.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/06/04/long-lost-donald-margulies-prodigal-returns-lobbing-grenades/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/06/04/long-lost-blah-blah-black-sheep/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/long-lost/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theaterpizzazz.com/long-lost/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://exeuntnyc.com/reviews/review-long-lost-new-york-city-center-stage-i/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Long-Lost/962",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/06/24-2019-2020-review-long-lost-seen-june.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.thewrap.com/lost-long-theater-review-donald-margulies-lee-tergesen-alex-wolff-kelly-aucoin-annie-parisse/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://diandrareviewsitall.com/theater-review-long-lost/",
+            "outletId": "diandrareviewsitall.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.offscriptdandwyer.com/single-post/2019/06/05/LONG-LOST-%E2%80%93-Manhattan-Theatre-Club",
+            "outletId": "offscriptdandwyer.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2019/06/long-lost.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/long-lost-theater-1215571",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=MY5R2F",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaternewsonline.com/NYTheaterReviews/SPILLEDSECRETS.cfm",
+            "outletId": "theater-news-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/longlost19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.culturalweekly.com/making-missing-connections-frankie-johnny-long-lost-happy-talk/",
+            "outletId": "culturalweekly.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.edgemedianetwork.com/entertainment/theatre//277503",
+            "outletId": "edge-boston",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2019/06/long-lost/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 14,
+        "candidateCount": 21
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
+    },
+    {
       "showId": "los-soles-truncos-off-broadway-2025",
       "title": "Los Soles Truncos",
       "openingDate": "2025-02-20",
@@ -162227,6 +164271,453 @@
       "computedAt": "2026-10-17T14:24:41.672Z"
     },
     {
+      "showId": "nantucket-sleigh-ride-off-broadway-2019",
+      "title": "Nantucket Sleigh Ride",
+      "openingDate": "2019-03-18",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/03/18/theater/nantucket-sleigh-ride-review.html",
+        "https://www.wsj.com/articles/nantucket-sleigh-ride-review-youthful-zest-leavened-with-experience-11553019879",
+        "https://variety.com/2019/legit/reviews/nantucket-sleigh-ride-review-john-guare-1203166021/",
+        "https://www.hollywoodreporter.com/review/nantucket-sleigh-ride-theater-review-1195440",
+        "https://www.theatermania.com/off-broadway/reviews/nantucket-sleigh-ride-starring-john-larroquette_88152.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=BECFDT",
+        "https://www.talkinbroadway.com/page/ob/03_18_19.html",
+        "http://nystagereview.com/2019/03/18/nantucket-sleigh-ride-a-trip-to-john-guares-magic-realism-kingdom/",
+        "http://theaternewsonline.com/NYTheaterReviews/WHALEOFATALE.cfm",
+        "http://www.theaterscene.net/plays/offbway-plays/nantucket-sleigh-ride/victor-gluck/",
+        "http://www.curtainup.com/nantucketsleighride19.html",
+        "https://theaterpizzazz.com/nantucket-sleigh-ride/",
+        "https://thefrontrowcenter.com/2019/03/nantucket-sleigh-ride/",
+        "http://exeuntnyc.com/reviews/review-nantucket-sleigh-ride-mitzi-e-newhouse-theatre/",
+        "https://www.theatrereviews.com/off-broadway-review-nantucket-sleigh-ride-in-the-mitzi-e-newhouse-theater-at-lincoln-center-theater/",
+        "https://newyorktheater.me/2019/03/23/nantucket-sleigh-ride-review-strangling-disney-and-other-imagined-memories-by-john-guare/",
+        "https://slleiter.blogspot.com/2019/03/190-2018-2019-review-nantucket-sleigh.html",
+        "https://www.thewrap.com/nantucket-sleight-ride-theater-review-john-guare-takes-a-big-dip-off-the-island/",
+        "https://t2conline.com/nantucket-sleigh-ride-an-acid-trip-well-played/",
+        "https://www.thedailybeast.com/watch-out-john-guares-nantucket-sleigh-ride-will-drag-you-into-deep-water",
+        "https://www.stageleft.nyc/blog/2019/3/24/review-john-guares-bizarre-and-aptly-named-nantucket-sleigh-ride",
+        "https://www.newsday.com/entertainment/theater/nantucket-sleigh-ride-1.28557030",
+        "https://thirdcoastreview.com/2019/03/24/new-york-review-john-guares-nantucket-sleigh-ride-takes-his-audience-on-a-screwball-trip-at-lincoln-center/",
+        "https://gotham-playgoer.blogspot.com/2019/03/nantucket-sleigh-ride.html"
+      ],
+      "dirFiles": 18,
+      "dirClean": 16,
+      "inReviewsJson": 16,
+      "missing": [
+        {
+          "url": "https://www.wsj.com/articles/nantucket-sleigh-ride-review-youthful-zest-leavened-with-experience-11553019879",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/nantucket-sleigh-ride-theater-review-1195440",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=BECFDT",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/03_18_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://theaternewsonline.com/NYTheaterReviews/WHALEOFATALE.cfm",
+          "host": "theaternewsonline.com",
+          "knownOutletId": "theater-news-online"
+        },
+        {
+          "url": "http://www.curtainup.com/nantucketsleighride19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2019/03/190-2018-2019-review-nantucket-sleigh.html",
+          "host": "slleiter.blogspot.com",
+          "knownOutletId": "theatres-leiter-side"
+        },
+        {
+          "url": "https://www.thewrap.com/nantucket-sleight-ride-theater-review-john-guare-takes-a-big-dip-off-the-island/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://gotham-playgoer.blogspot.com/2019/03/nantucket-sleigh-ride.html",
+          "host": "gotham-playgoer.blogspot.com",
+          "knownOutletId": "bobs-theater-blog",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bobs-theater-blog--robert-sholiton.json",
+              "flag": "nonReview",
+              "urlInDir": "https://gotham-playgoer.blogspot.com/2019/03/nantucket-sleigh-ride.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.wsj.com/articles/nantucket-sleigh-ride-review-youthful-zest-leavened-with-experience-11553019879",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/nantucket-sleigh-ride-theater-review-1195440",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=BECFDT",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/03_18_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://theaternewsonline.com/NYTheaterReviews/WHALEOFATALE.cfm",
+          "host": "theaternewsonline.com",
+          "outletId": "theater-news-online",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theaternewsonline.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=theaternewsonline.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetc"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.curtainup.com/nantucketsleighride19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup"
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2019/03/190-2018-2019-review-nantucket-sleigh.html",
+          "host": "slleiter.blogspot.com",
+          "outletId": "theatres-leiter-side"
+        },
+        {
+          "url": "https://www.thewrap.com/nantucket-sleight-ride-theater-review-john-guare-takes-a-big-dip-off-the-island/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/nantucket-sleigh-ride-theater-review-1195440"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=BECFDT"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/03_18_19.html"
+          },
+          {
+            "outletId": "theater-news-online",
+            "outlet": "theater-news-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theaternewsonline.com/NYTheaterReviews/WHALEOFATALE.cfm"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/nantucketsleighride19.html"
+          },
+          {
+            "outletId": "theatres-leiter-side",
+            "outlet": "theatres-leiter-side",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://slleiter.blogspot.com/2019/03/190-2018-2019-review-nantucket-sleigh.html"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/nantucket-sleight-ride-theater-review-john-guare-takes-a-big-dip-off-the-island/"
+          },
+          {
+            "outletId": "bobs-theater-blog",
+            "outlet": "bobs-theater-blog",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://gotham-playgoer.blogspot.com/2019/03/nantucket-sleigh-ride.html"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/nantucket-sleigh-ride-review-youthful-zest-leavened-with-experience-11553019879"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/03/18/theater/nantucket-sleigh-ride-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/nantucket-sleigh-ride-review-john-guare-1203166021/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/nantucket-sleigh-ride-starring-john-larroquette_88152.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/03/18/nantucket-sleigh-ride-a-trip-to-john-guares-magic-realism-kingdom/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/nantucket-sleigh-ride/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/nantucket-sleigh-ride/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2019/03/nantucket-sleigh-ride/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://exeuntnyc.com/reviews/review-nantucket-sleigh-ride-mitzi-e-newhouse-theatre/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-nantucket-sleigh-ride-in-the-mitzi-e-newhouse-theater-at-lincoln-center-theater/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/03/23/nantucket-sleigh-ride-review-strangling-disney-and-other-imagined-memories-by-john-guare/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://t2conline.com/nantucket-sleigh-ride-an-acid-trip-well-played/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/watch-out-john-guares-nantucket-sleigh-ride-will-drag-you-into-deep-water",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.stageleft.nyc/blog/2019/3/24/review-john-guares-bizarre-and-aptly-named-nantucket-sleigh-ride",
+            "outletId": "stageleft.nyc",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/theater/nantucket-sleigh-ride-1.28557030",
+            "outletId": "newsday.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://thirdcoastreview.com/2019/03/24/new-york-review-john-guares-nantucket-sleigh-ride-takes-his-audience-on-a-screwball-trip-at-lincoln-center/",
+            "outletId": "thirdcoastreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/nantucket-sleigh-ride-review-youthful-zest-leavened-with-experience-11553019879",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/nantucket-sleigh-ride-theater-review-1195440",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=BECFDT",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/03_18_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://theaternewsonline.com/NYTheaterReviews/WHALEOFATALE.cfm",
+            "outletId": "theater-news-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/nantucketsleighride19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/03/190-2018-2019-review-nantucket-sleigh.html",
+            "outletId": "theatres-leiter-side",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.thewrap.com/nantucket-sleight-ride-theater-review-john-guare-takes-a-big-dip-off-the-island/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2019/03/nantucket-sleigh-ride.html",
+            "outletId": "bobs-theater-blog",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 15,
+        "candidateCount": 24
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
+    },
+    {
       "showId": "nero-off-west-end-2026",
       "title": "Nero",
       "openingDate": null,
@@ -190484,6 +192975,162 @@
       "computedAt": "2026-08-20T10:24:01.870Z"
     },
     {
+      "showId": "rock-of-ages-off-broadway-2019",
+      "title": "Rock of Ages",
+      "openingDate": "2019-06-19",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/07/04/theater/rock-of-ages-review.html",
+        "https://www.theatermania.com/off-broadway/reviews/rock-of-ages-still-rocks_89228.html",
+        "http://nystagereview.com/2019/07/05/rock-of-ages-i-hate-myself-for-loving-you/",
+        "https://slleiter.blogspot.com/2019/07/40-2019-2020-review-rock-of-ages-seen.html",
+        "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html",
+        "http://nymag.com/arts/theater/reviews/55960/",
+        "https://variety.com/2009/film/awards/rock-of-ages-4-1200474597/",
+        "https://ew.com/article/2009/04/07/rock-ages-2/"
+      ],
+      "dirFiles": 7,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "http://nymag.com/arts/theater/reviews/55960/",
+          "host": "nymag.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "https://variety.com/2009/film/awards/rock-of-ages-4-1200474597/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://ew.com/article/2009/04/07/rock-ages-2/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "newsday.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://variety.com/2009/film/awards/rock-of-ages-4-1200474597/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/article/2009/04/07/rock-ages-2/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://nymag.com/arts/theater/reviews/55960/",
+          "host": "nymag.com",
+          "outletId": "vulture",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nymag.com/arts/theater/reviews/55960/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/07/04/theater/rock-of-ages-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/rock-of-ages-still-rocks_89228.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/07/05/rock-of-ages-i-hate-myself-for-loving-you/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/07/40-2019-2020-review-rock-of-ages-seen.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nymag.com/arts/theater/reviews/55960/",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 4,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
+    },
+    {
       "showId": "roller-rink-at-electric-summer-off-west-end-2026",
       "title": "Roller Rink At Electric Summer",
       "openingDate": null,
@@ -200302,6 +202949,368 @@
       "computedAt": "2026-09-23T21:00:37.163Z"
     },
     {
+      "showId": "sing-street-off-broadway-2019",
+      "title": "Sing Street",
+      "openingDate": "2019-12-16",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-critics-think-of-new-musical-sing-street",
+        "https://www.broadwayworld.com/article/Review-Roundup-SING-STREET-Opens-At-New-York-Theatre-Workshop-See-What-The-Critics-Are-Saying-20191216",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-on-SING-STREET-at-The-Huntington-20220909"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2019/dec/16/sing-street-review-new-york-theatre-workshop",
+        "https://www.hollywoodreporter.com/review/sing-street-theater-review-1263004",
+        "https://www.vulture.com/2019/12/review-of-sing-street-at-new-york-theatre-workshop.html",
+        "http://nystagereview.com/2019/12/16/sing-street-were-with-the-band/",
+        "http://nystagereview.com/2019/12/16/sing-street-the-magic-of-once-is-not-replicated-alas/",
+        "https://www.nytimes.com/2019/12/16/theater/sing-street-review-off-broadway.html",
+        "https://observer.com/2019/12/sing-street-musical-review-john-carney-80s-movie-loses-its-edge/",
+        "https://www.bostonglobe.com/2022/09/08/arts/rollicking-drive-down-sing-street-huntington/",
+        "https://www.theatrely.com/post/sing-street-review",
+        "https://nystagereview.com/2022/09/14/from-boston-sing-street-soars/",
+        "https://variety.com/2019/legit/reviews/sing-street-review-musical-1203445813/",
+        "https://www.theatermania.com/off-broadway/reviews/sing-street_90315.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=93X6PW",
+        "https://www.talkinbroadway.com/page/ob/12_16_19.html",
+        "http://www.theaterscene.net/musicals/offbway/sing-street/joel-benjamin/",
+        "http://www.curtainup.com/singstreet19.html",
+        "https://www.theaterpizzazz.com/sing-street-high-school-band-on-the-run/",
+        "https://thefrontrowcenter.com/2019/12/sing-street/",
+        "https://www.theatrereviews.com/off-broadway-review-sing-street-at-new-york-theatre-workshop/",
+        "https://newyorktheater.me/2019/12/20/sing-street-review-teenage-irish-rockers-not-the-movie/"
+      ],
+      "dirFiles": 18,
+      "dirClean": 16,
+      "inReviewsJson": 16,
+      "missing": [
+        {
+          "url": "https://www.bostonglobe.com/2022/09/08/arts/rollicking-drive-down-sing-street-huntington/",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/sing-street-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=93X6PW",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/12_16_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://www.curtainup.com/singstreet19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://thefrontrowcenter.com/2019/12/sing-street/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": true,
+          "recoverableFile": "front-row-center--stanford-friedman.json",
+          "recoverableOutletId": "front-row-center",
+          "recoverableCritic": "Stanford Friedman",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--stanford-friedman.json",
+              "flag": "nonReview",
+              "urlInDir": "https://thefrontrowcenter.com/2019/12/sing-street/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 726,
+        "byReason": {
+          "aggregator-internal-nav": 498,
+          "not-http-url": 97,
+          "production-database-listing": 20,
+          "aggregator-section-root": 12,
+          "non-review-host": 51,
+          "roundup-page": 48
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-on-SING-STREET-at-The-Huntington-20220909",
+          "publishDate": "2022-09-09"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.bostonglobe.com/2022/09/08/arts/rollicking-drive-down-sing-street-huntington/",
+          "host": "bostonglobe.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/sing-street-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=93X6PW",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "sing-street-off-broadway-2019: http://www.lightingandsoundamerica.com/news/story.asp?ID=93X6PW has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/12_16_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.curtainup.com/singstreet19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://thefrontrowcenter.com/2019/12/sing-street/",
+          "host": "thefrontrowcenter.com",
+          "file": "front-row-center--stanford-friedman.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=93X6PW"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/12_16_19.html"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/singstreet19.html"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2019/12/sing-street/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2019/dec/16/sing-street-review-new-york-theatre-workshop",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/sing-street-theater-review-1263004",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.vulture.com/2019/12/review-of-sing-street-at-new-york-theatre-workshop.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/12/16/sing-street-were-with-the-band/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/12/16/sing-street-the-magic-of-once-is-not-replicated-alas/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/12/16/theater/sing-street-review-off-broadway.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://observer.com/2019/12/sing-street-musical-review-john-carney-80s-movie-loses-its-edge/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://nystagereview.com/2022/09/14/from-boston-sing-street-soars/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/sing-street-review-musical-1203445813/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/sing-street_90315.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/offbway/sing-street/joel-benjamin/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theaterpizzazz.com/sing-street-high-school-band-on-the-run/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-sing-street-at-new-york-theatre-workshop/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/12/20/sing-street-review-teenage-irish-rockers-not-the-movie/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=93X6PW",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/12_16_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/singstreet19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2019/12/sing-street/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 12,
+        "candidateCount": 16
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
+    },
+    {
       "showId": "singfeld-a-musical-about-nothing-off-broadway-2023",
       "title": "Singfeld! A Musical About Nothing",
       "openingDate": "2023-05-01",
@@ -204811,6 +207820,657 @@
       },
       "computedAt": "2026-09-26T20:27:22.812Z",
       "automatedExcludedListed": 0
+    },
+    {
+      "showId": "soft-power-off-broadway-2019",
+      "title": "Soft Power",
+      "openingDate": "2019-10-15",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-soft-power-at-the-public-theater",
+        "https://playbill.com/article/read-reviews-for-new-jeanine-tesori-david-henry-hwang-collaboration-soft-power",
+        "https://playbill.com/article/read-reviews-for-the-san-francisco-debut-of-soft-power",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-SOFT-POWER-at-the-Public-20191016",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Jeanine-Tesori-and-David-Henry-Hwangs-SOFT-POWER-20180517",
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-Of-SOFT-POWER-in-San-Francisco-20180625"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.hollywoodreporter.com/review/soft-power-theater-1247634",
+        "https://nypost.com/2019/10/15/soft-power-review-a-head-scratcher-with-a-twerking-hillary-clinton/",
+        "http://nystagereview.com/2019/10/15/soft-power-hillary-get-your-gun/",
+        "http://nystagereview.com/2019/10/15/soft-power-shall-we-dance-and-sing-through-our-cultural-differences/",
+        "https://www.newyorktheatreguide.com/reviews/review-of-soft-power-at-the-public-theater",
+        "https://www.nytimes.com/2019/10/15/theater/soft-power-review.html",
+        "https://observer.com/2019/10/soft-power-chinese-american-struggle-musical-david-henry-hwang-jeanine-tesori-review/",
+        "https://www.timeout.com/newyork/theater/soft-power",
+        "https://variety.com/2019/legit/reviews/soft-power-review-musical-public-theater-1203369974/",
+        "https://www.vulture.com/2019/10/theater-review-soft-power-at-the-public-theater.html",
+        "https://www.washingtonpost.com/entertainment/theater_dance/ever-wondered-how-china-sees-america-soft-power-offers-amusing-ideas/2019/10/15/ec49595a-eeaf-11e9-89eb-ec56cd414732_story.html",
+        "https://www.thewrap.com/soft-power-theater-review-hillary-clinton-chinese-lover-david-henry-hwang-tesori/",
+        "http://ew.com/theater/2018/05/17/soft-power-theater-review/",
+        "https://www.hollywoodreporter.com/review/soft-power-theater-1112954",
+        "http://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html",
+        "http://www.mercurynews.com/2018/06/23/review-soft-power-is-a-bold-new-style-of-theater-at-sfs-curran-theater/",
+        "http://www.sfchronicle.com/performance/article/Curran-s-Soft-Power-by-David-Henry-Hwang-13017764.php",
+        "http://www.sfexaminer.com/east-meets-west-hilariously-soft-power/",
+        "http://www.starkinsider.com/2018/06/soft-power-curran-theatre-san-francisco-review.html",
+        "https://variety.com/2018/legit/news/conrad-ricamora-soft-power-htgawm-1202828388/",
+        "https://www.sfchronicle.com/performance/article/Curran-s-Soft-Power-by-David-Henry-Hwang-13017764.php",
+        "https://www.mercurynews.com/2018/06/23/review-soft-power-is-a-bold-new-style-of-theater-at-sfs-curran-theater/",
+        "https://www.wsj.com/articles/soft-power-review-singing-chinas-praises-11571943520",
+        "https://www.theatermania.com/off-broadway/reviews/soft-power-china-hillary-clinton-david-henry-hwang_89975.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=B4NA31",
+        "https://www.talkinbroadway.com/page/ob/10_15_19.html",
+        "http://www.curtainup.com/softpowerny19.html",
+        "https://www.theatrereviews.com/off-broadway-review-soft-power-at-the-publics-newman-theater/",
+        "https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/",
+        "http://slleiter.blogspot.com/2019/11/109-2019-2020-review-soft-power-seen.html",
+        "https://www.offoffonline.com/offoffonline/2019/10/23/soft-power",
+        "https://ew.com/theater/2018/05/17/soft-power-theater-review/",
+        "https://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html",
+        "https://www.theatermania.com/los-angeles-theater/reviews/soft-power-ahmanson-theatre_85345.html"
+      ],
+      "dirFiles": 21,
+      "dirClean": 15,
+      "inReviewsJson": 15,
+      "missing": [
+        {
+          "url": "https://observer.com/2019/10/soft-power-chinese-american-struggle-musical-david-henry-hwang-jeanine-tesori-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer"
+        },
+        {
+          "url": "https://www.thewrap.com/soft-power-theater-review-hillary-clinton-chinese-lover-david-henry-hwang-tesori/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "http://ew.com/theater/2018/05/17/soft-power-theater-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.mercurynews.com/2018/06/23/review-soft-power-is-a-bold-new-style-of-theater-at-sfs-curran-theater/",
+          "host": "mercurynews.com",
+          "knownOutletId": "san-jose-mercury-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.sfchronicle.com/performance/article/Curran-s-Soft-Power-by-David-Henry-Hwang-13017764.php",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.sfexaminer.com/east-meets-west-hilariously-soft-power/",
+          "host": "sfexaminer.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.starkinsider.com/2018/06/soft-power-curran-theatre-san-francisco-review.html",
+          "host": "starkinsider.com",
+          "knownOutletId": "stark-insider",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.sfchronicle.com/performance/article/Curran-s-Soft-Power-by-David-Henry-Hwang-13017764.php",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.mercurynews.com/2018/06/23/review-soft-power-is-a-bold-new-style-of-theater-at-sfs-curran-theater/",
+          "host": "mercurynews.com",
+          "knownOutletId": "san-jose-mercury-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/soft-power-review-singing-chinas-praises-11571943520",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=B4NA31",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/10_15_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://www.curtainup.com/softpowerny19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "https://ew.com/theater/2018/05/17/soft-power-theater-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--charles-mcnulty.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": true,
+          "recoverableFile": "nyt-theater--jonathan-mandell.json",
+          "recoverableOutletId": "nyt-theater",
+          "recoverableCritic": "Jonathan Mandell",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/soft-power-6/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--charles-mcnulty.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://www.theatermania.com/los-angeles-theater/reviews/soft-power-ahmanson-theatre_85345.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--jonas-schwartz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/los-angeles-theater/reviews/soft-power-ahmanson-theatre_85345.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2018-05-25",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1300,
+        "byReason": {
+          "aggregator-internal-nav": 844,
+          "not-http-url": 232,
+          "production-database-listing": 42,
+          "aggregator-section-root": 24,
+          "non-review-host": 105,
+          "roundup-page": 53
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-new-jeanine-tesori-david-henry-hwang-collaboration-soft-power",
+          "publishDate": "2018-05-18"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-the-san-francisco-debut-of-soft-power",
+          "publishDate": "2018-06-25"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Jeanine-Tesori-and-David-Henry-Hwangs-SOFT-POWER-20180517",
+          "publishDate": "2018-05-17"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-Of-SOFT-POWER-in-San-Francisco-20180625",
+          "publishDate": "2018-06-25"
+        }
+      ],
+      "automatedExcludedListed": 2,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://ew.com/theater/2018/05/17/soft-power-theater-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.mercurynews.com/2018/06/23/review-soft-power-is-a-bold-new-style-of-theater-at-sfs-curran-theater/",
+          "host": "mercurynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.sfchronicle.com/performance/article/Curran-s-Soft-Power-by-David-Henry-Hwang-13017764.php",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.sfexaminer.com/east-meets-west-hilariously-soft-power/",
+          "host": "sfexaminer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.starkinsider.com/2018/06/soft-power-curran-theatre-san-francisco-review.html",
+          "host": "starkinsider.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.sfchronicle.com/performance/article/Curran-s-Soft-Power-by-David-Henry-Hwang-13017764.php",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.mercurynews.com/2018/06/23/review-soft-power-is-a-bold-new-style-of-theater-at-sfs-curran-theater/",
+          "host": "mercurynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/theater/2018/05/17/soft-power-theater-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://observer.com/2019/10/soft-power-chinese-american-struggle-musical-david-henry-hwang-jeanine-tesori-review/",
+          "host": "observer.com",
+          "outletId": "observer",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.thewrap.com/soft-power-theater-review-hillary-clinton-chinese-lover-david-henry-hwang-tesori/",
+          "host": "thewrap.com",
+          "outletId": "thewrap",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.wsj.com/articles/soft-power-review-singing-chinas-praises-11571943520",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=B4NA31",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "soft-power-off-broadway-2019: http://www.lightingandsoundamerica.com/news/story.asp?ID=B4NA31 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/10_15_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.curtainup.com/softpowerny19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup"
+        }
+      ],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "observer",
+            "outlet": "observer",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://observer.com/2019/10/soft-power-chinese-american-struggle-musical-david-henry-hwang-jeanine-tesori-review/"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/soft-power-theater-review-hillary-clinton-chinese-lover-david-henry-hwang-tesori/"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=B4NA31"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/10_15_19.html"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/softpowerny19.html"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/"
+          },
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/soft-power-review-singing-chinas-praises-11571943520"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.hollywoodreporter.com/review/soft-power-theater-1247634",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://nypost.com/2019/10/15/soft-power-review-a-head-scratcher-with-a-twerking-hillary-clinton/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/15/soft-power-hillary-get-your-gun/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/15/soft-power-shall-we-dance-and-sing-through-our-cultural-differences/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/review-of-soft-power-at-the-public-theater",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/10/15/theater/soft-power-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/soft-power",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/soft-power-review-musical-public-theater-1203369974/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.vulture.com/2019/10/theater-review-soft-power-at-the-public-theater.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.washingtonpost.com/entertainment/theater_dance/ever-wondered-how-china-sees-america-soft-power-offers-amusing-ideas/2019/10/15/ec49595a-eeaf-11e9-89eb-ec56cd414732_story.html",
+            "outletId": "washingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/soft-power-theater-1112954",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2018/legit/news/conrad-ricamora-soft-power-htgawm-1202828388/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/soft-power-china-hillary-clinton-david-henry-hwang_89975.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-soft-power-at-the-publics-newman-theater/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://slleiter.blogspot.com/2019/11/109-2019-2020-review-soft-power-seen.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2019/10/23/soft-power",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://observer.com/2019/10/soft-power-chinese-american-struggle-musical-david-henry-hwang-jeanine-tesori-review/",
+            "outletId": "observer",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.thewrap.com/soft-power-theater-review-hillary-clinton-chinese-lover-david-henry-hwang-tesori/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/soft-power-review-singing-chinas-praises-11571943520",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=B4NA31",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/10_15_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/softpowerny19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.latimes.com/entertainment/arts/la-et-cm-soft-power-review-20180518-story.html",
+            "outletId": "latimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 13,
+        "candidateCount": 21
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
       "showId": "some-woman-west-end-2026",
@@ -267756,6 +271416,326 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-26T21:04:47.417Z"
+    },
+    {
+      "showId": "the-wrong-man-off-broadway-2019",
+      "title": "The Wrong Man",
+      "openingDate": "2019-10-07",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/10/09/theater/the-wrong-man-musical-review.html",
+        "https://www.timeout.com/newyork/theater/the-wrong-man-review-ross-golan-joshua-henry-thomas-kail-musical",
+        "https://www.vulture.com/2019/10/theater-review-ross-golans-the-wrong-man-with-josh-henry.html",
+        "https://variety.com/2019/legit/reviews/the-wrong-man-review-musical-ross-golan-1203364892/",
+        "https://www.hollywoodreporter.com/review/wrong-man-theater-review-1246238",
+        "https://www.theatermania.com/off-broadway/news/the-wrong-man_89923.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=4SQ0IL",
+        "https://www.talkinbroadway.com/page/ob/10_09_19.html",
+        "http://nystagereview.com/2019/10/07/the-wrong-man-how-wrong-a-wrong-man-can-go-in-song-and-dance/",
+        "http://nystagereview.com/2019/10/07/the-wrong-man-joshua-henry-shows-conviction-as-man-wrongly-accused/",
+        "http://www.theaterscene.net/musicals/offbway/the-wrong-man/sheila-kogan/",
+        "http://www.curtainup.com/wrongman19.html",
+        "https://frontmezzjunkies.com/2019/10/22/mcc-the-wrong-man/",
+        "https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/",
+        "https://cititour.com/NYC_Broadway/The-Wrong-Man/987",
+        "https://slleiter.blogspot.com/2019/10/97-2019-2020-review-wrong-man-seen.html"
+      ],
+      "dirFiles": 14,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/wrong-man-theater-review-1246238",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=4SQ0IL",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/10_09_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://www.curtainup.com/wrongman19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": true,
+          "recoverableFile": "nyt-theater--jonathan-mandell.json",
+          "recoverableOutletId": "nyt-theater",
+          "recoverableCritic": "Jonathan Mandell",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/the-wrong-man-4-joshua-henry/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/wrong-man-theater-review-1246238",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=4SQ0IL",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/10_09_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.curtainup.com/wrongman19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "[url-changed] nyt-theater: cleared old-URL-derived fields (contentTier, contentTierReason, incompleteReason, incompleteDetail) — url https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/the-wrong-man-4-joshua-henry/ → https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/\n[review-write-guard] blocked url flip-flop on nyt-theater--jonathan-mandell.json: https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/the-wrong-man-4-joshua-henry/ <-> htt",
+          "recoveryCount": 1
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/wrong-man-theater-review-1246238"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=4SQ0IL"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/10_09_19.html"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/wrongman19.html"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/10/09/theater/the-wrong-man-musical-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-wrong-man-review-ross-golan-joshua-henry-thomas-kail-musical",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.vulture.com/2019/10/theater-review-ross-golans-the-wrong-man-with-josh-henry.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/the-wrong-man-review-musical-ross-golan-1203364892/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/news/the-wrong-man_89923.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/07/the-wrong-man-how-wrong-a-wrong-man-can-go-in-song-and-dance/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/07/the-wrong-man-joshua-henry-shows-conviction-as-man-wrongly-accused/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/offbway/the-wrong-man/sheila-kogan/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2019/10/22/mcc-the-wrong-man/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/The-Wrong-Man/987",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/10/97-2019-2020-review-wrong-man-seen.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/wrong-man-theater-review-1246238",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=4SQ0IL",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/10_09_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://www.curtainup.com/wrongman19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/10/09/the-wrong-man-review-hamilton-like-in-form-anti-hamilton-in-content/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 15
+      },
+      "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T00:39:32.588Z",
+  "generatedAt": "2026-10-30T03:53:39.257Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -94,6 +94,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "plays-international",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -106,10 +110,64 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 777,
-  "matchedGaps": 8,
+  "itemsScanned": 774,
+  "matchedGaps": 12,
   "possibleGaps": 13,
   "gaps": [
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/a-few-good-men-broadway-revival-review/",
+      "headline": "Bradley Whitford unleashes the line you came to hear in ‘A Few Good Men’",
+      "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/a-few-good-men-2026-bradley-whitford-broadway-review/",
+      "headline": "&#8216;A Few Good Men&#8217; remains a crackerjack courtroom drama (Broadway review)",
+      "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/10/29/entertainment/a-few-good-men-review-aaron-sorkins-mediocre-courtroom-drama-is-back-on-broadway/",
+      "headline": "&#8216;A Few Good Men&#8217; review: Aaron Sorkin&#8217;s mediocre courtroom drama is back on Broadway",
+      "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "chicagotribune",
+      "url": "https://www.chicagotribune.com/2026/10/29/review-few-good-men-broadway/",
+      "headline": "Review: Potent &#8216;A Few Good Men&#8217; on Broadway needs a lawyer we can believe in",
+      "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "nytimes",
+      "url": "https://www.nytimes.com/2026/10/29/theater/few-good-men-review-whitford-blyth-sorkin.html",
+      "headline": "Review: ‘A Few Good Men,’ With Bradley Whitford and Tom Blyth, Gives Up the Fight",
+      "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "thewrap",
+      "url": "https://www.thewrap.com/creative-content/theater/a-few-good-men-broadway-review-aaron-sorkin/",
+      "headline": "&#8216;A Few Good Men&#8217; Broadway Review: Aaron Sorkin Drama Is Guilty of Being a Creaky Old Play",
+      "publishDate": "2026-10-29"
+    },
     {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
@@ -150,15 +208,6 @@
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/the-heart-musical-off-broadway-review/",
-      "headline": "‘The Heart’ sets a transplant to an EDM-lite beat but never gets under the skin (Off Broadway review)",
-      "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
       "outletId": "frontmezzjunkies",
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
@@ -168,19 +217,19 @@
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "matched",
-      "outletId": "nysr",
-      "url": "https://nystagereview.com/2026/10/29/the-heart-a-bold-new-musical-chronicles-a-life-or-death-story/",
-      "headline": "The Heart: A Bold New Musical Chronicles a Life-or-Death Story",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/the-heart-pumping-life-into-a-medical-musical/",
+      "headline": "“THE HEART”: PUMPING LIFE INTO A MEDICAL MUSICAL",
       "publishDate": "2026-10-29"
     },
     {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
-      "outletId": "nytimes",
-      "url": "https://www.nytimes.com/2026/10/29/theater/the-heart-review-organ-transplant.html",
-      "headline": "‘The Heart’ Review: A Bracing New Musical Pulses With Life",
-      "publishDate": "2026-10-29"
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "possible",
+      "outletId": "nytg",
+      "url": "https://newyorktheatreguide.com/reviews/a-few-good-men-broadway-review-tom-blyth-bradley-whitford",
+      "headline": "&#x27;A Few Good Men&#x27; Broadway review — Aaron Sorkin&#x27;s military drama returns to the stand",
+      "publishDate": null
     },
     {
       "showId": "aftermath-art-new-york-off-broadway-2026",
@@ -280,15 +329,6 @@
       "url": "https://stageandcinema.com/2026/10/28/assimilation-word-for-word-z-below-san-francisco-review/",
       "headline": "Theater Review: ASSIMILATION (Word for Word / San Francisco)",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-the-heart-an-electronic-musical-about-an-organ-transplant_1858325/",
-      "headline": "Review: The Heart, an Electronic Musical About an Organ Transplant",
-      "publishDate": null
     },
     {
       "showId": "the-heart-off-broadway-2026",

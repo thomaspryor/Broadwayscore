@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-10-29T19:32:39.003Z",
+  "generatedAt": "2026-10-30T03:53:14.710Z",
   "phase": "done",
   "days": 21,
-  "shows": 83,
+  "shows": 77,
   "sources": {
     "theatermania": {
-      "queries": 47,
+      "queries": 43,
       "listed": 18,
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 36,
+      "queries": 34,
       "listed": 9,
       "errors": 0
     },
     "nysr": {
-      "queries": 47,
+      "queries": 43,
       "listed": 14,
       "errors": 0
     },
     "newyorktheater": {
-      "queries": 47,
+      "queries": 43,
       "listed": 7,
       "errors": 0
     },
@@ -30,13 +30,29 @@
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 36,
+      "queries": 34,
       "listed": 47,
       "errors": 0
     }
   },
   "listingTruncated": false,
   "listed": 96,
-  "ingested": [],
+  "ingested": [
+    {
+      "showId": "a-few-good-men-2026",
+      "url": "https://www.theatermania.com/news/review-a-few-good-men-introduces-us-to-aaron-sorkin-before-he-was-a-brand_1858458/",
+      "ok": true
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "url": "https://nystagereview.com/2026/10/29/a-few-good-men-built-to-last/",
+      "ok": true
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "url": "https://nystagereview.com/2026/10/29/a-few-good-men-could-use-more-ooh-rah/",
+      "ok": true
+    }
+  ],
   "missing": []
 }

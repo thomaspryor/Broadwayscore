@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-10-30T00:39:32.212Z",
+  "generatedAt": "2026-10-30T03:53:38.873Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 296,
-  "clean": 296,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 302,
+  "clean": 301,
+  "defective": 1,
+  "byType": {
+    "unreachable": 1
+  },
+  "shows": [
+    {
+      "showId": "tristan-yseult-royal-bath-regional-2026",
+      "title": "Tristan & Yseult",
+      "openingDate": "2026-09-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 1,
+      "deployedCount": null,
+      "firstDefectAt": "2026-10-30T03:53:33.867Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
