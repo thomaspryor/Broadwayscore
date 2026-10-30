@@ -63,6 +63,44 @@ function feedFacts(feedShow) {
   };
 }
 
+/** Which threshold modes these facts satisfy. MIRRORS the app's modesSatisfied (lib/alerts/review-modes.ts); keep in step. */
+function qualFlags(facts) {
+  const flags = [];
+  if (facts.criticLabel === 'Critical Gold') flags.push('critical-gold');
+  if (facts.criticScore !== '' && Number(facts.criticScore) >= 75) flags.push('recommended-75');
+  if (facts.audienceGrade === 'A' || facts.audienceGrade === 'A+') flags.push('audience-a');
+  if (facts.showType === 'musical') flags.push('new-musical');
+  return flags;
+}
+
+/**
+ * Shows that were pushed once and have since qualified for a threshold mode they did not
+ * satisfy at push time (BRO-6662: the audience grade or a displayable score lands after the
+ * critics). `pushfacts:<id>` is written by the dispatch with every mode the feed satisfied at push time
+ * (and after each recheck); a show without it (pushed before this existed) is never rechecked, since
+ * nobody can tell who already got it. Only the improvement triggers a dispatch, so a score
+ * drifting 87 -> 88 costs nothing.
+ * @param {{shows: Array<object>, sent: Record<string, object>, feedById: Map<string, object>, now?: number}} input
+ */
+function recheckCandidates({ shows, sent, feedById, now = Date.now() }) {
+  const out = [];
+  for (const s of shows) {
+    if (!sent || !sent[`push:${s.id}`]) continue;
+    const base = sent[`pushfacts:${s.id}`];
+    if (!base || !Array.isArray(base.quals)) continue;
+    const [candidate] = pushCandidates({ readyIds: [s.id], shows, sent: {}, now });
+    if (!candidate) continue;
+    const entry = feedById.get(s.id);
+    if (!entry) continue;
+    const facts = feedFacts(entry);
+    const quals = qualFlags(facts);
+    const gained = quals.filter(q => !base.quals.includes(q));
+    if (gained.length === 0) continue;
+    out.push({ ...candidate, facts, prior: base.quals.join(','), quals: [...new Set([...base.quals, ...quals])], gained });
+  }
+  return out;
+}
+
 /** The committed/built feed is trusted for facts only when it was built this recently (a retry can read an old committed file). */
 const FEED_MAX_AGE_MS = 3 * 60 * 60 * 1000;
 function feedIsFresh(ts, now = Date.now()) {
@@ -86,4 +124,4 @@ function runOutcome(run) {
   return run.conclusion === 'success' ? 'sent' : 'failed';
 }
 
-module.exports = { pushCandidates, feedFacts, feedIsFresh, findDispatchedRun, runOutcome, runNameFor, MAX_AGE_DAYS };
+module.exports = { recheckCandidates, qualFlags, pushCandidates, feedFacts, feedIsFresh, findDispatchedRun, runOutcome, runNameFor, MAX_AGE_DAYS };

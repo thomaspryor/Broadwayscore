@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { pushCandidates, feedFacts, feedIsFresh, findDispatchedRun, runOutcome, runNameFor } = require('./reviews-in-push.js');
+const { recheckCandidates, qualFlags, pushCandidates, feedFacts, feedIsFresh, findDispatchedRun, runOutcome, runNameFor } = require('./reviews-in-push.js');
 
 const NOW = Date.parse('2026-10-26T15:00:00Z');
 const shows = [
@@ -86,4 +86,46 @@ test('feedIsFresh: only a feed built in the last 3h is trusted for facts', () =>
   assert.equal(feedIsFresh('2026-10-30T08:00:00Z', now), false);
   assert.equal(feedIsFresh(undefined, now), false);
   assert.equal(feedIsFresh('garbage', now), false);
+});
+
+// BRO-6662: a show pushed once that later qualifies for a threshold mode it missed.
+const entry = (o = {}) => ({ id: 'a-2026', ty: 'musical', cr: { s: 82, l: 'Recommended', q: 1 }, ag: { g: 'B+' }, ...o });
+const feedOf = (e) => new Map([[e.id, e]]);
+const pushed = (quals) => ({ 'push:a-2026': { sentAt: 'x' }, 'pushfacts:a-2026': { sentAt: 'x', quals } });
+const base = (e, quals) => ({ shows, sent: pushed(quals), feedById: feedOf(e), now: NOW });
+
+test('qualFlags: the four modes, gated like the app (score only when shown)', () => {
+  assert.deepEqual(qualFlags(feedFacts(entry())), ['recommended-75', 'new-musical']);
+  assert.deepEqual(qualFlags(feedFacts(entry({ cr: { s: 90, l: 'Critical Gold', q: 0 } }))), ['new-musical']);
+  assert.deepEqual(qualFlags(feedFacts(entry({ cr: { s: 90, l: 'Critical Gold', q: 1 }, ag: { g: 'A+' } }))),
+    ['critical-gold', 'recommended-75', 'audience-a', 'new-musical']);
+});
+
+test('recheck: audience grade lands after the push -> one recheck carrying the modes already covered', () => {
+  const r = recheckCandidates(base(entry({ ag: { g: 'A' } }), ['recommended-75', 'new-musical']));
+  assert.equal(r.length, 1);
+  assert.equal(r[0].id, 'a-2026');
+  assert.deepEqual(r[0].gained, ['audience-a']);
+  assert.equal(r[0].prior, 'recommended-75,new-musical');
+  assert.deepEqual(r[0].quals, ['recommended-75', 'new-musical', 'audience-a']);
+});
+
+test('recheck: nothing gained (score drift, same modes, regression) -> no dispatch', () => {
+  assert.deepEqual(recheckCandidates(base(entry({ cr: { s: 88, l: 'Recommended', q: 1 } }), ['recommended-75', 'new-musical'])), []);
+  assert.deepEqual(recheckCandidates(base(entry({ cr: { s: 60, l: 'Mixed', q: 1 } }), ['recommended-75', 'new-musical'])), []);
+});
+
+test('recheck: score qualifies late (first feed had cr.q=0)', () => {
+  const r = recheckCandidates(base(entry({ cr: { s: 91, l: 'Critical Gold', q: 1 } }), ['new-musical']));
+  assert.deepEqual(r[0].gained, ['critical-gold', 'recommended-75']);
+});
+
+test('recheck: no baseline (pushed before this existed), no marker, old, or off-market show -> never', () => {
+  const e = entry({ ag: { g: 'A' } });
+  assert.deepEqual(recheckCandidates({ shows, sent: { 'push:a-2026': { sentAt: 'x' } }, feedById: feedOf(e), now: NOW }), []);
+  assert.deepEqual(recheckCandidates({ shows, sent: { 'pushfacts:a-2026': { quals: [] } }, feedById: feedOf(e), now: NOW }), []);
+  assert.deepEqual(recheckCandidates({ ...base(e, []), now: NOW + 10 * 86_400_000 }), []);
+  const d = entry({ id: 'd-2026', ag: { g: 'A' } });
+  assert.deepEqual(recheckCandidates({ shows, sent: { 'push:d-2026': {}, 'pushfacts:d-2026': { quals: [] } }, feedById: feedOf(d), now: NOW }), []);
+  assert.deepEqual(recheckCandidates({ ...base(e, []), feedById: new Map() }), []);
 });

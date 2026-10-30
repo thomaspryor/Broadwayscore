@@ -61,7 +61,7 @@ function numbersDiffer(was, now) {
 }
 
 const isPreviewKey = k => k.startsWith('preview:');
-const isRecordKey = k => !isPreviewKey(k) && !k.startsWith('push:') && !k.startsWith('overdue-alert:');
+const isRecordKey = k => !isPreviewKey(k) && !k.startsWith('push:') && !k.startsWith('pushfacts:') && !k.startsWith('overdue-alert:');
 
 // preview:<market>:<id+id>:<YYYY-MM-DD> → [id, id]
 function previewKeyIds(key) {
