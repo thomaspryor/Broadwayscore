@@ -1,0 +1,123 @@
+name: Lane recording import
+
+# BRO-6663. The opening-night lane records the pages it reads, encrypted, into workflow artifacts that expire in 30 days
+# (lane-recording-<show>-<night>) and 90 days (lane-shadow-<show>-<night>), with a key that can be derived from a
+# rotating token. This job decrypts the recent ones each morning and keeps plaintext copies in the PRIVATE repo
+# (thomaspryor/broadway-review-texts, lane-recordings/<show>/<night>/<kind>/), where the recorded-night loader
+# (scripts/lib/lane-recorded-nights/recording-night.js) replays them with no key. Imported nights are an advisory
+# replay check here; they do not feed the arming rehearsal (lane-rehearsal-recorded.yml), which is unchanged.
+#
+# The pages are copyrighted and this repo is public: plaintext goes only to the private clone under RUNNER_TEMP, is
+# never uploaded as an artifact, and is never printed. The step output carries show, night and counts only.
+# With no REVIEW_TEXTS_TOKEN the job fails loudly (red), it never passes quietly.
+# hygiene-push-perm-ok: the push goes to the private repo with REVIEW_TEXTS_TOKEN in the clone's remote URL, never the workflow token
+# Lookback is the shorter retention (30 days), so a few days of outage lose nothing that is still downloadable.
+
+on:
+  schedule:
+    - cron: '47 11 * * *'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'How many days back to import artifacts from'
+        required: false
+        default: '30'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lane-recording-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY }}
+      LANE_RECORDING_OLD_KEYS: ${{ secrets.LANE_RECORDING_OLD_KEYS }}
+      REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      CLONE_DIR: ${{ runner.temp }}/lane-recordings-checkout
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Check token
+        run: |
+          if [ -z "$REVIEW_TEXTS_TOKEN" ]; then
+            echo "::error::SKIPPED: REVIEW_TEXTS_TOKEN is not set, so the private repo cannot be written. No recordings were imported; this is not a pass."
+            exit 1
+          fi
+          if [ -z "$LANE_RECORDING_KEY" ]; then
+            echo "::notice::LANE_RECORDING_KEY is not set; recordings are read with the key derived from REVIEW_TEXTS_TOKEN (and LANE_RECORDING_OLD_KEYS, if any)."
+          fi
+
+      # Its own sparse clone of lane-recordings only, so the aggregator-archive checkouts (about 40 workflows) never carry these pages.
+      - name: Clone private repo (lane-recordings only)
+        run: |
+          . scripts/lib/git-net-timeout.sh
+          for ATTEMPT in 1 2 3; do
+            rm -rf "$CLONE_DIR"
+            if git_net 120 clone --depth 1 --filter=blob:none --sparse --branch main \
+                 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" "$CLONE_DIR" 2>/dev/null \
+               && git_net 120 -C "$CLONE_DIR" sparse-checkout set lane-recordings 2>/dev/null; then
+              mkdir -p "$CLONE_DIR/lane-recordings"
+              echo "Cloned the private repo (attempt $ATTEMPT)"
+              exit 0
+            fi
+            sleep $((ATTEMPT * 10))
+          done
+          echo "::error::could not clone the private repo after 3 attempts"
+          exit 1
+
+      - name: Import recent recordings
+        env:
+          INPUT_LOOKBACK: ${{ inputs.lookback_days || '30' }}
+        run: |
+          case "$INPUT_LOOKBACK" in ''|*[!0-9]*) echo "::error::lookback_days must be a whole number"; exit 1;; esac
+          node scripts/lane-recording-import.js --archive "$CLONE_DIR/lane-recordings" --discover \
+            --lookback-days="$INPUT_LOOKBACK"
+
+      - name: Replay check on every archived night (advisory)
+        if: always()
+        continue-on-error: true
+        run: node scripts/lane-recording-import.js --archive "$CLONE_DIR/lane-recordings" --verify
+
+      # Counts only in the commit message. PUSH_API_FALLBACK_DISABLE keeps a failed git push from falling back to REST
+      # blob uploads on the shared REVIEW_TEXTS_TOKEN quota. push-with-retry.sh is called by absolute path because the
+      # working directory is the private clone.
+      - name: Push to the private repo
+        if: always()
+        run: |
+          cd "$CLONE_DIR"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          find lane-recordings -name '*.importing' -prune -exec rm -rf {} + # a crashed import never gets committed
+          git add -A lane-recordings
+          if git diff --cached --quiet; then
+            echo "Nothing new to push"
+            exit 0
+          fi
+          git commit -q -m "data: lane recording import ($(git diff --cached --name-only | grep -v '^lane-recordings/_' | cut -d/ -f2-3 | sort -u | wc -l | tr -d ' ') nights)"
+          PUSH_API_FALLBACK_DISABLE=1 bash "$GITHUB_WORKSPACE/scripts/lib/push-with-retry.sh" 5 main
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Lane recording import failed'
+          description: 'The morning-after import of encrypted opening-night lane recordings into the private repo failed (no key, an undecryptable recording, a size budget, or the push). Recordings in workflow artifacts expire after 30 days, so fix this before then.'
+          severity: 'warning'
+          email: 'false'
+          min_consecutive_failures: '1'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
