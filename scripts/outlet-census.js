@@ -96,9 +96,20 @@ async function enumerateWpJson(src, since) {
     const q = new URLSearchParams({ per_page: '100', page: String(page), after: `${since}T00:00:00`, orderby: 'date', order: 'desc', _fields: 'link,date,title,excerpt' });
     if (src.categories) q.set('categories', src.categories.join(','));
     for (const [k, v] of Object.entries(src.params || {})) q.set(k, String(v)); // custom taxonomies, e.g. PMC's vertical
-    const { status, body } = await get(`${src.apiBase}?${q}`);
+    // A dropped connection or a 429/5xx is retried twice (theater-life failed once on CI,
+    // BRO-6514); a page that still fails ends the walk and marks the enumeration incomplete.
+    let status = 0;
+    let body = '';
+    let err = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt) await new Promise((r) => setTimeout(r, 2000 * attempt));
+      try { ({ status, body } = await get(`${src.apiBase}?${q}`)); err = null; } catch (e) { err = e; status = 0; }
+      if (!census.isTransientFetch(status, err)) break;
+    }
+    // Unreachable from the first page: fail the outlet as before rather than write an empty report.
+    if (err && page === 1) throw err;
     if (status === 400 && page > 1) break; // past the last page
-    if (status !== 200) { notes.push(`page ${page}: HTTP ${status}`); break; }
+    if (status !== 200) { notes.push(`page ${page}: ${err ? `fetch failed (${err.message})` : `HTTP ${status}`}`); break; }
     const posts = JSON.parse(body);
     if (!Array.isArray(posts) || posts.length === 0) break;
     for (const p of posts) {

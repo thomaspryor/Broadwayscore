@@ -86,7 +86,9 @@ const SOURCES = {
   'pages-on-stages': wp('https://public-api.wordpress.com/wp/v2/sites/pagesonstages.com/posts', { sourceSaysReview: true }), // a reviews-only blog,
   frontmezzjunkies: wp('https://public-api.wordpress.com/wp/v2/sites/frontmezzjunkies.com/posts', { categories: [42035, 42036], sourceSaysReview: true }), // broadway, off broadway,
   'off-off-online': { kind: 'sitemap', url: 'https://www.offoffonline.com/sitemap.xml', urlFilter: /offoffonline\.com\/offoffonline\/20\d\d\/\d{1,2}\/\d{1,2}\/[^/]+$/, needsMeta: true, sourceSaysReview: true },
-  slantmagazine: { kind: 'sitemap', url: 'https://www.slantmagazine.com/sitemap_index.xml', childFilter: (c) => /post-sitemap/.test(c), urlFilter: /slantmagazine\.com\/theater\/[^/]+\/?$/, needsMeta: true },
+  // Sitemaps, wp-json, feeds and section pages all return HTTP 403 to the census client
+  // (probed 2026-10-30, BRO-6514), so Slant is enumerated through Google like the others.
+  slantmagazine: serp(['site:slantmagazine.com/theater review'], /slantmagazine\.com\/theater\/[^/]+\/?$/),
   // UK paper: only slugs naming a New York house or Broadway can be NYC reviews.
   thestage: { kind: 'sitemap', url: 'https://www.thestage.co.uk/SiteMap_TheStage_index.xml', childFilter: (c) => /Reviews/i.test(c), urlFilter: /thestage\.co\.uk\/reviews\/[^/]*(?:broadway|new-york|nyc|manhattan|brooklyn)/, headlineFromSlug: true, sourceSaysReview: true, requireNycSignal: true },
   'the-interested-bystander': { kind: 'sitemap', url: 'https://www.interestedbystander.com/sitemap.xml', urlFilter: /interestedbystander\.com\/20\d\d\/\d\d\/[^/]*(?:theater|theatre|broadway|musical|play)[^/]*\.html$/, needsMeta: true, sourceSaysReview: true },

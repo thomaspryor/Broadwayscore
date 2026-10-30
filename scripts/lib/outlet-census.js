@@ -530,8 +530,12 @@ function bucketItem(item, ctx) {
       const titleOf = (id) => normTitle((byId.get(id) || {}).title);
       const sameTitle = inIds.some((id) => nycHeld.some((h) => titleOf(h) && titleOf(h) === titleOf(id)));
       const named = nycHeld.some((h) => titleWordsAppear(byId.get(h), `${item.headline || ''} ${slugOf(item.url)}`));
-      out.bucket = !sameTitle && named ? 'held' : 'misfile';
-      if (out.bucket === 'held') out.matchVia = 'held-title-words';
+      // A transfer row may carry its declared prior run's reviews (production continuity,
+      // the cross-market guard's priorRuns exemption): Teeth at New World Stages holding a
+      // Playwrights Horizons review is filed by design, not misfiled (BRO-6514).
+      const viaPriorRun = nycHeld.some((h) => ((byId.get(h) || {}).priorRuns || []).some((run) => run && inIds.includes(run.id)));
+      out.bucket = viaPriorRun || (!sameTitle && named) ? 'held' : 'misfile';
+      if (out.bucket === 'held') out.matchVia = viaPriorRun ? 'held-prior-run' : 'held-title-words';
     }
     else out.bucket = 'held-unmatched';
     return out;
@@ -684,7 +688,13 @@ function serpItemDate(result, window) {
  * a sitemap child that failed), so the recall it yields covers only part of the outlet's output.
  */
 function isIncompleteEnumeration(notes) {
-  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap/.test(String(n)));
+  // "page 3: HTTP 503" / "page 3: fetch failed": a wp-json walk that stopped mid-listing (BRO-6514).
+  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|^page \d+: (?:HTTP|fetch failed)/.test(String(n)));
+}
+
+/** Worth retrying: a thrown fetch (timeout, reset), 429, or a 5xx. A 4xx is an answer. */
+function isTransientFetch(status, err) {
+  return !!err || status === 429 || status >= 500;
 }
 
 /** "Review: 'Giant' ... - The New York Times" -> without the trailing site name. */
@@ -772,6 +782,7 @@ module.exports = {
   cleanSerpTitle,
   commonTitleSuffixes,
   isIncompleteEnumeration,
+  isTransientFetch,
   urlKey,
   titleWordsAppear,
   buildCorpusIndex,

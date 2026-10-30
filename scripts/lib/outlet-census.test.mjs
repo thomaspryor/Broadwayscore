@@ -98,6 +98,15 @@ test('BRO-6514: Teeth venue runs are distinct productions and wrong-run holdings
     assert.deepEqual(r.matchedIds, [expected]);
   }
   assert.equal(census.bucketItem(tm({ headline: 'Teeth review', publishDate: '2024-10-31', url }), ctxFor([{ showId: first.id, url }], [first, transfer])).bucket, 'misfile');
+  // The other direction is filed by design: the transfer declares the first run in priorRuns,
+  // so a March review held only under the transfer is held (real reviews.json rows, BRO-6514).
+  const nyt = 'https://www.nytimes.com/2024/03/19/theater/teeth-review-michael-r-jackson.html';
+  const viaPrior = census.bucketItem(tm({ headline: "Review: 'Teeth' Bites", publishDate: '2024-03-19', url: nyt }), ctxFor([{ showId: transfer.id, url: nyt }], [first, transfer]));
+  assert.equal(viaPrior.bucket, 'held');
+  assert.equal(viaPrior.matchVia, 'held-prior-run');
+  // A same-title show with no priorRuns link is still a misfile (Illinoise test below).
+  const unlinked = { ...transfer, priorRuns: [] };
+  assert.equal(census.bucketItem(tm({ headline: "Review: 'Teeth' Bites", publishDate: '2024-03-19', url: nyt }), ctxFor([{ showId: unlinked.id, url: nyt }], [first, unlinked])).bucket, 'misfile');
 });
 
 test('a held URL under the matched show is held (www/query/trailing slash ignored)', () => {
@@ -345,6 +354,24 @@ test('an enumeration cut short by the SERP budget, a missing provider or a faile
   assert.equal(census.isIncompleteEnumeration(['page cap 3 hit in 4 quarter-queries (more results not read)']), true);
   assert.equal(census.isIncompleteEnumeration(['46 SERP calls']), false);
   assert.equal(census.isIncompleteEnumeration(undefined), false);
+});
+
+test('BRO-6514: a wp-json walk that stopped on a failed page is incomplete; only transient failures retry', () => {
+  assert.equal(census.isIncompleteEnumeration(['page 3: HTTP 503']), true);
+  assert.equal(census.isIncompleteEnumeration(['page 1: fetch failed (fetch failed)']), true);
+  assert.equal(census.isIncompleteEnumeration(['2026: no URLs (blocked or empty; see log)']), false);
+  assert.equal(census.isTransientFetch(0, new Error('ECONNRESET')), true);
+  assert.equal(census.isTransientFetch(429), true);
+  assert.equal(census.isTransientFetch(502), true);
+  for (const s of [200, 400, 403, 404]) assert.equal(census.isTransientFetch(s), false, String(s));
+});
+
+test('BRO-6514: Slant Magazine (403 to every direct fetch) is enumerated through SERP', () => {
+  const { SOURCES } = require('./outlet-census-sources.js');
+  const s = SOURCES.slantmagazine;
+  assert.equal(s.kind, 'serp');
+  assert.equal(s.urlFilter.test('https://www.slantmagazine.com/theater/review-oh-mary-cole-escola/'), true);
+  assert.equal(s.urlFilter.test('https://www.slantmagazine.com/film/review-x/'), false);
 });
 
 test('an archival film review naming an old year is not a gap; a show titled with a year still is (Vulture, BRO-6485)', () => {
