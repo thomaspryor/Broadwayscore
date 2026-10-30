@@ -1983,6 +1983,10 @@ on:
       # scripts/opening-night-checklist.test.mjs runs in the tests/unit-test-
       # manifest.txt batch; these source entries make a solo edit trigger it.
       - 'scripts/opening-night-checklist.js'
+      # BRO-6619: lane entries tested by tests/unit/lane-arm-decision.test.mjs (it reads and hashes them).
+      - 'scripts/opening-night-lane.js'
+      - 'scripts/opening-night-lane-rehearse.js'
+      - 'scripts/opening-night-lane-shadow.js'
       - 'scripts/lib/opening-night-checks/**'
       # The Critics' Take floor, shared by generate-critic-consensus.js and
       # critics-take-present.check.js (#389). Editing either side without the
