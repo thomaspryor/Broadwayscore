@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-30T03:14:18.759Z",
+    "generatedAt": "2026-10-30T03:54:34.259Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 3,
     "exemptCount": 20,
-    "coveredCount": 44,
-    "highChurnTracked": 67
+    "coveredCount": 46,
+    "highChurnTracked": 69
   },
   "flagged": [
     {
@@ -30,31 +30,31 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 1390
+      "churn": 1403
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 757
+      "churn": 760
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 256
+      "churn": 257
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 254
+      "churn": 255
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 254
+      "churn": 255
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 251
+      "churn": 253
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 203
+      "churn": 205
     },
     {
       "path": "public/opening-night-status.json",
@@ -77,15 +77,15 @@
       "churn": 46
     },
     {
-      "path": "public/data/shows/i-became-we-off-broadway-2026.json",
+      "path": "data/outlet-registry.json",
       "churn": 37
     },
     {
-      "path": "data/outlet-registry.json",
+      "path": "public/data/shows/billy-crystal-860-2026.json",
       "churn": 36
     },
     {
-      "path": "public/data/shows/billy-crystal-860-2026.json",
+      "path": "public/data/shows/i-became-we-off-broadway-2026.json",
       "churn": 36
     },
     {
@@ -98,7 +98,7 @@
     },
     {
       "path": "public/data/shows/other-desert-cities-2026.json",
-      "churn": 33
+      "churn": 32
     },
     {
       "path": "public/data/shows/the-curious-case-of-benjamin-button-off-broadway-2026.json",
@@ -112,82 +112,82 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 2088,
+      "churn": 2096,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 1189,
+      "churn": 1191,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 777,
+      "churn": 781,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 498,
+      "churn": 502,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 481,
+      "churn": 485,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 481,
+      "churn": 485,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 481,
+      "churn": 485,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 481,
+      "churn": 485,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 399,
+      "churn": 402,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 311,
+      "churn": 312,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 262,
+      "churn": 265,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 254,
+      "churn": 255,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 240,
+      "churn": 241,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 236,
+      "churn": 237,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 144,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/score-public-since.json",
-      "churn": 136,
+      "churn": 138,
       "mergeAttr": "ours"
     },
     {
@@ -227,7 +227,7 @@
     },
     {
       "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 117,
+      "churn": 118,
       "mergeAttr": "union"
     },
     {
@@ -237,17 +237,17 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 78,
+      "churn": 77,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 76,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 76,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
@@ -257,21 +257,16 @@
     },
     {
       "path": "data/audit/orphan-unscored-a-few-good-men-2026.json",
+      "churn": 51,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/url-mismatch-suspects.json",
       "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/memoriam-off-west-end-2026.json",
-      "churn": 49,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/girls-off-west-end-2026.json",
-      "churn": 48,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-mismatch-suspects.json",
       "churn": 48,
       "mergeAttr": "ours"
     },
@@ -281,53 +276,68 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/ceilidh-the-musical-off-west-end-2026.json",
-      "churn": 42,
+      "path": "data/audit/poller-backoff/girls-off-west-end-2026.json",
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/i-became-we-off-broadway-2026.json",
+      "path": "data/audit/poller-backoff/ceilidh-the-musical-off-west-end-2026.json",
       "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 39,
+      "churn": 40,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/i-became-we-off-broadway-2026.json",
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/hospital-hour-off-broadway-2026.json",
-      "churn": 34,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-morbs-off-broadway-2026.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026.json",
       "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/bww-roundup-miss-ledger.jsonl",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/poller-backoff/rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026.json",
+      "churn": 32,
+      "mergeAttr": "ours"
     },
     {
       "path": "data/audit/validation/collection-report-2026-10-28.json",
       "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/in-the-heights-off-broadway-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/the-revlon-girl-off-west-end-2026.json",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
