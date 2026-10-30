@@ -1173,7 +1173,7 @@ test('BRO-6519: jsonFileParses reads the merged ledger from disk', () => {
   assert.equal(jsonFileParses(good), true);
   assert.equal(jsonFileParses(bad), false);
   assert.equal(jsonFileParses(path.join(dir, 'missing.json')), false);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-6519: makeVerifiedBaseChecks checks the MERGED alert ledger in cwd before calling a both-sides edit small', () => {
@@ -1199,6 +1199,6 @@ test('BRO-6519: makeVerifiedBaseChecks checks the MERGED alert ledger in cwd bef
     fs.writeFileSync(ledger, '{"cond":{"notifyCount":2},}\n');
     assert.equal(scope().mode, 'full', 'merged ledger no longer parses -> full');
   } finally {
-    fs.rmSync(wt, { recursive: true, force: true });
+    fs.rmSync(wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
