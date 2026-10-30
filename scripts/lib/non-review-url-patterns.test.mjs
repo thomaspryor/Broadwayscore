@@ -612,3 +612,9 @@ test('namedNonReviewReason: cast-album reviews are not production reviews (BRO-6
 test('namedNonReviewReason: Musical Theatre Review cd-review slugs are album reviews (BRO-6580)', () => {
   assert.equal(namedNonReviewReason('https://musicaltheatrereview.com/cd-review-the-prince-of-egypt-original-london-cast/'), 'cast-album-review');
 });
+
+test('listingPageUrlReason: Talkin\' Broadway index page is a listing, a numbered review page is not (BRO-6584)', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  assert.equal(listingPageUrlReason('https://www.talkinbroadway.com/page/world/index.html'), 'review-index-page');
+  assert.equal(listingPageUrlReason('https://www.talkinbroadway.com/page/world/860.html'), null);
+});
