@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6561-b",
   "planId": "68180108-6beb-484f-a2ef-de7595a5410c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T03:56:22.811Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: the-lives-of-others-west-end-2026.type"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T04:05:25.769Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-lives-of-others-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
