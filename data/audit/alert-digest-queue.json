@@ -3946,5 +3946,126 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T13:52:03.692Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-30.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T14:00:17.627Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6585-one-session",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6585-one-session",
+    "description": "land.yml did not land land/bro-6585-one-session: the unit-tests-node gate went red at 0a68f6a300. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41066958468",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6585-one-session"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0a68f6a3002539fc03f62681502655fe397a2fa2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41066958468"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:11:14.582Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-heart-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-heart-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-heart-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T14:14:15.089Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-6474",
+    "title": "Landing blocked: rebase red on land/codex-bro-6474",
+    "description": "land.yml did not land land/codex-bro-6474: the rebase gate went red at 4265acaad8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-6474 @ 4265acaad8 (origin/land/codex-bro-6474) → origin/main @ 0165bd79f1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 0165bd79f1: Rebasing (1/1) error: could not apply 4265acaad8d... fix(BRO-6474): validate-data --strict red: art-west-end-2016 artshub Singapore arts-hub article hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41068871169",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-6474"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "4265acaad8d93dfbcee8f7c91fb361b3c0d6e97b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41068871169"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:27:46.080Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6575-email-otp",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6575-email-otp",
+    "description": "land.yml did not land land/bro-6575-email-otp: the unit-tests-node gate went red at 161aeeb754. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41068212069",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6575-email-otp"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "161aeeb75401d72d567ec883ead7ccccb5f336e3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41068212069"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:29:53.498Z"
   }
 ]

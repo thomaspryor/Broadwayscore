@@ -1,31 +1,38 @@
 {
-  "updatedAt": "2026-10-30T14:32:08.490Z",
-  "processed": 298,
-  "failed": 173,
-  "successRate": "63.3%",
+  "updatedAt": "2026-10-30T14:35:33.228Z",
+  "processed": 189,
+  "failed": 128,
+  "successRate": "59.6%",
   "tierBreakdown": {
-    "playwright": 141,
+    "playwright": 86,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 24,
-    "scrapingbee": 16,
+    "scrapingdog": 15,
+    "scrapingbee": 11,
     "brightdata": 4,
-    "archiveToday": 36,
-    "archive": 90
+    "archiveToday": 33,
+    "archive": 57
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-30T14:11:08.244Z",
+      "t": "2026-10-30T14:28:38.292Z",
       "event": "bb-session",
-      "session": "6555e5e0",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "cd087098",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     },
     {
-      "t": "2026-10-30T14:11:08.575Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "t": "2026-10-30T14:29:40.683Z",
+      "event": "bb-session",
+      "session": "158d8bb8",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-30T14:30:19.030Z",
+      "event": "bb-session",
+      "session": "b475c095",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
