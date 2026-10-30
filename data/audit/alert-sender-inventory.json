@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-29T20:06:48.909Z",
+  "generatedAt": "2026-10-30T19:49:40.120Z",
   "counts": {
-    "router": 208,
+    "router": 215,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -9,21 +9,21 @@
   "senders": [
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 744,
+      "line": 747,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 796,
+      "line": 799,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 845,
+      "line": 848,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -51,14 +51,14 @@
     },
     {
       "file": ".github/workflows/opening-night-broadcast.yml",
-      "line": 974,
+      "line": 1037,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/opening-night-broadcast.yml",
-      "line": 1225,
+      "line": 1288,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -100,21 +100,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4400,
+      "line": 4417,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4409,
+      "line": 4426,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6512,
+      "line": 6546,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -149,7 +149,7 @@
     },
     {
       "file": ".github/workflows/update-show-status.yml",
-      "line": 2043,
+      "line": 2045,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -163,7 +163,7 @@
     },
     {
       "file": "scripts/account-metrics.js",
-      "line": 150,
+      "line": 152,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -296,70 +296,70 @@
     },
     {
       "file": "scripts/audit-outlet-ground-truth.js",
-      "line": 298,
+      "line": 300,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2736,
+      "line": 2807,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2761,
+      "line": 2832,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2784,
+      "line": 2855,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3023,
+      "line": 3094,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3151,
+      "line": 3222,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3245,
+      "line": 3316,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/audit-t1-silent-gaps.js",
-      "line": 740,
+      "line": 742,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/audit-t1-silent-gaps.js",
-      "line": 801,
+      "line": 803,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/audit-t1-silent-gaps.js",
-      "line": 877,
+      "line": 880,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -884,14 +884,14 @@
     },
     {
       "file": "scripts/express-retry-queue.js",
-      "line": 322,
+      "line": 348,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/express-retry-queue.js",
-      "line": 329,
+      "line": 355,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -905,28 +905,28 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2770,
+      "line": 2771,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2938,
+      "line": 2939,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5747,
+      "line": 5661,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5781,
+      "line": 5695,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -1051,8 +1051,29 @@
       "disposition": "unknown"
     },
     {
+      "file": "scripts/lib/cookie-expiry-alert.js",
+      "line": 45,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/lib/cookie-expiry-alert.js",
+      "line": 79,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/lib/cookie-expiry-alert.js",
+      "line": 87,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
       "file": "scripts/lib/core-data-merge-registry.js",
-      "line": 1900,
+      "line": 1927,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -1080,10 +1101,17 @@
     },
     {
       "file": "scripts/lib/opening-night-lane/driver.js",
-      "line": 140,
+      "line": 189,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
+    },
+    {
+      "file": "scripts/lib/opening-night-lane/real-ports.js",
+      "line": 107,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
     },
     {
       "file": "scripts/lib/opening-night-remediation.js",
@@ -1360,21 +1388,42 @@
     },
     {
       "file": "scripts/route-tour-candidates.js",
-      "line": 59,
+      "line": 75,
       "kind": "routeAlert",
       "classification": "router",
-      "disposition": "digest"
+      "disposition": "auto"
+    },
+    {
+      "file": "scripts/route-workflow-alerts.js",
+      "line": 45,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/route-workflow-alerts.js",
+      "line": 126,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/route-workflow-alerts.js",
+      "line": 130,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
     },
     {
       "file": "scripts/send-opening-night-broadcast.js",
-      "line": 932,
+      "line": 972,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/send-opening-night-broadcast.js",
-      "line": 961,
+      "line": 1001,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -1430,7 +1479,7 @@
     },
     {
       "file": "scripts/validate-shows-prebuild.js",
-      "line": 60,
+      "line": 56,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
