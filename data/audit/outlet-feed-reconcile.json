@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T16:58:44.185Z",
+  "generatedAt": "2026-10-30T19:11:09.627Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,7 +103,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -124,23 +124,19 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 745,
+  "itemsScanned": 778,
   "matchedGaps": 7,
-  "possibleGaps": 12,
+  "possibleGaps": 14,
   "gaps": [
     {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
       "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/23/aftermath",
-      "headline": "Aftermath",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/10/30/review-revlon-girls/",
+      "headline": "REVIEW: Revlon Girls",
       "publishDate": "2026-10-30"
     },
     {
@@ -151,15 +147,6 @@
       "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
       "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/girls-young-vic-the-26166",
-      "headline": "Girls",
-      "publishDate": "2026-10-30"
     },
     {
       "showId": "memoriam-off-west-end-2026",
@@ -183,18 +170,27 @@
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "matched",
-      "outletId": "thewrap",
-      "url": "https://www.thewrap.com/creative-content/theater/the-heart-off-broadway-review-organ-transplant-musical/",
-      "headline": "&#8216;The Heart&#8217; Off Broadway Review: The Beat Goes on in a Terrific New Musical About Organ Transplants",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/10/29/the-heart-musical-roundabou-review/",
+      "headline": "Off-Broadway Review: THE HEART (Roundabout / Laura Pels Theatre)",
+      "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "matched",
+      "outletId": "off-off-online",
+      "url": "https://www.offoffonline.com/offoffonline/2026/10/22/the-heart",
+      "headline": "The Heart",
       "publishDate": "2026-10-30"
     },
     {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
       "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
-      "headline": "The Moth – Finborough Theatre, London",
+      "outletId": "thewrap",
+      "url": "https://www.thewrap.com/creative-content/theater/the-heart-off-broadway-review-organ-transplant-musical/",
+      "headline": "&#8216;The Heart&#8217; Off Broadway Review: The Beat Goes on in a Terrific New Musical About Organ Transplants",
       "publishDate": "2026-10-30"
     },
     {
@@ -304,6 +300,24 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-birmingham-royal-ballets-swan-lake-sadlers-wells",
       "headline": "Review: Birmingham Royal Ballet’s SWAN LAKE, Sadler’s Wells",
       "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "possible",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
+      "headline": "Review of &#8216;The Moth&#8217;: &#8220;Dusty play doesn&#8217;t emerge from its cocoon&#8221;",
+      "publishDate": "2026-10-30"
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "possible",
+      "outletId": "viewfromthegods",
+      "url": "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-moth-finborough-theatre",
+      "headline": "&#8220;The Moth&#8221; Finborough Theatre",
+      "publishDate": "2026-10-30"
     }
   ]
 }
