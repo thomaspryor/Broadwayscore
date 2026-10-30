@@ -15,16 +15,10 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { CAPS } = require('./workflow-queue-cap.js');
+const { CAPS, WORKFLOW_DISPLAY_NAMES: NAMES } = require('./workflow-queue-cap.js');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 const esc = (x) => x.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&');
-// `gh workflow run "<name>"` dispatches by display name; map it back to the file.
-const NAMES = {
-  'LLM Ensemble Score Reviews': 'llm-ensemble-score.yml',
-  'Gather Review Data': 'gather-reviews.yml',
-  'Ingest Review URLs': 'ingest-urls.yml',
-};
 const alt = [...Object.keys(CAPS), ...Object.keys(NAMES)].map(esc).join('|');
 // gh CLI (file or display name), the shell retry helper, the REST path,
 // execFile arg arrays, dispatchWorkflow({ workflow: ... }) / remediation

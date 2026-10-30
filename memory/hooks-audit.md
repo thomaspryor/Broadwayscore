@@ -7,7 +7,7 @@ Rule used: a hook is kept only if it blocks an irreversible or costly action *be
 ## Inventory (where hooks live)
 
 - User level: `~/.claude/hooks/*.sh` (44 scripts; the counts in this bullet and in the User-level table are NOT verifiable from this repo, `~/.claude` is a separate private repo) wired in `~/.claude/settings.json` (41 registrations across PreToolUse, PostToolUse, SessionStart, Stop, ConfigChange, FileChanged, Notification, UserPromptSubmit). Library code in `~/.claude/hooks/lib/`, tests in `~/.claude/hooks/tests/`.
-- Project level: `.claude/hooks/*.sh` (20 scripts) wired in `.claude/settings.json`. Most are cloud-only copies that self-skip when the user-level master exists.
+- Project level: `.claude/hooks/*.sh` (21 scripts) wired in `.claude/settings.json`. Most are cloud-only copies that self-skip when the user-level master exists.
 - Git hooks: `scripts/hooks/{pre-commit,commit-msg,pre-push}` via `core.hooksPath=scripts/hooks`.
 - Codex: `.codex/hooks.json` points every event at `scripts/codex/hook-adapter.js`, which runs the Claude hooks above (see the Codex section).
 - Not hooks, so not in the tables: `.claude/hooks/lib/strip-git-commit-noise.js` (helper for block-resend-broadcasts.sh), `scripts/setup-git-hooks.sh` (installs the git hooks), `~/.claude/hooks/lib/` and `~/.claude/hooks/tests/`.
@@ -78,6 +78,7 @@ These run on cloud sessions, where `~/.claude/hooks/` does not exist. Copies tha
 | infra-post-write-audit.sh | PostToolUse Bash | KEEP | Cloud copy of the master backstop. |
 | github-main-guard.sh | PreToolUse GitHub MCP | KEEP | GitHub MCP writes server-side and bypasses every git hook; sole guard on main. |
 | land-cancel-guard.sh | PreToolUse Bash, GitHub MCP actions_run_trigger | KEEP | A session cancelling another session's Land run strands that land for an hour (BRO-6276); the mutex parks runs with the workflow token, so only a pre-execution block stops it. Cloud-only in effect (keys on CLAUDE_CODE_REMOTE_SESSION_ID). |
+| bulk-dispatch-loop-guard.sh | PreToolUse Bash | KEEP | ADVISORY (BRO-6536): warns when a session loops bare dispatches of a capped bulk workflow; 2026-10-29 session loops queued 359 ingest-urls runs and starved land.yml. Ledger hits (`--report`) decide a later flip to blocking. Repo-only, no user-level master. |
 | block-prompting-remote-tools.sh | PreToolUse remote MCP | KEEP | Those tools prompt the owner's phone in every mode. |
 | enterworktree-guard.sh | PreToolUse EnterWorktree | KEEP | Same-name resume of a locked/dirty worktree caused a real cross-session clobber (2026-07-26). |
 | check-skill-redaction.sh | PreToolUse Bash | KEEP | Repo is public; blocks pushes that reintroduce a redacted sensitive string. |
@@ -111,7 +112,7 @@ A DELETE decision is taken, but the hook keeps running until its step in the mig
 
 ## Totals
 
-- Kept: 28 user-level rows (27 hooks plus the git-pre-push-hook-tests.sh test helper; unverifiable from the repo) + 18 project (mostly cloud copies of user-level masters) + 3 git.
+- Kept: 28 user-level rows (27 hooks plus the git-pre-push-hook-tests.sh test helper; unverifiable from the repo) + 19 project (mostly cloud copies of user-level masters) + 3 git.
 - Deleted: 15 user-level scripts (commit-check, script-edit-check, design-system-lint, whitespace-nowrap-lint, design-system-mockup-check, gh-zombie-reap, config-change-notify, watched-file-changed, context-budget-nudge, session-stop, and the five notion-* hooks) plus 2 project scripts (notion-create-block, whitespace-nowrap-lint).
 - The named handful of *gates* that remain, by purpose: worktree, push/merge review, visual, email, infra review, API-poll, cmux safety, model spend, memory races, and the three Stop gates (exit-status, finish-line, verify-edits) plus Linear.
 

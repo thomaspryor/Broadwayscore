@@ -2346,6 +2346,9 @@ on:
       # github-main-guard.sh); driven for real by the test below.
       - 'scripts/lib/mcp-push-visual-gate.sh'
       - '.claude/hooks/block-resend-broadcasts.sh'
+      # BRO-6536: advisory bulk-dispatch loop hook; driven for real by
+      # scripts/lib/bulk-dispatch-loop-guard.test.mjs (rides 'scripts/lib/**').
+      - '.claude/hooks/bulk-dispatch-loop-guard.sh'
       - '.claude/hooks/lib/strip-git-commit-noise.js'
       # BRO-5221: hooks/commands for cloud sessions that start in /home/user;
       # driven for real by scripts/tests/install-home-claude-config.test.mjs.

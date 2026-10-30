@@ -6,7 +6,9 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { resolveCommandRepo } from './command-repo.mjs';
 
-const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'command-repo-'));
+// realpath: on macOS os.tmpdir() can be /tmp, a symlink to /private/tmp, and git
+// reports the resolved path, so a symlinked scratch never matches (BRO-6536 land).
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'command-repo-')));
 test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 const own = path.join(scratch, 'own');
 const other = path.join(scratch, 'other');

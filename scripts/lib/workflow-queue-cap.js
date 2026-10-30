@@ -36,6 +36,14 @@ const CAPS = Object.freeze({
   'gather-reviews.yml': 2,
 });
 
+// `gh workflow run "<name>"` dispatches by display name (each file's `name:`);
+// maps it back to the file. Shared by the coverage test and the session hook.
+const WORKFLOW_DISPLAY_NAMES = Object.freeze({
+  'LLM Ensemble Score Reviews': 'llm-ensemble-score.yml',
+  'Gather Review Data': 'gather-reviews.yml',
+  'Ingest Review URLs': 'ingest-urls.yml',
+});
+
 // rebuild-in-flight counts in_progress, queued and pending (concurrency-held).
 const STATUSES = ['in_progress', 'queued', 'pending'];
 
@@ -75,4 +83,4 @@ function checkCap({ workflow, priority = false, repo, api, env = process.env, lo
   return { ...decideCap({ workflow, active, cap, priority, disabled }), active, cap };
 }
 
-module.exports = { CAPS, decideCap, countInFlight, checkCap };
+module.exports = { CAPS, WORKFLOW_DISPLAY_NAMES, decideCap, countInFlight, checkCap };
