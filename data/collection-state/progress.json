@@ -18,7 +18,23 @@
     "girls-off-west-end-2026/letterboxd--unknown.json",
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "girls-off-west-end-2026/radio-times--molly-moss.json",
-    "memoriam-off-west-end-2026/thestage--dave-fargnoli.json"
+    "memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "a-few-good-men-2026/letterboxd--scott-alain.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -30,12 +46,13 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
-      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
     ],
     "directCookies": [],
     "scrapingdog": [
-      "memoriam-off-west-end-2026/ground--unknown.json"
+      "memoriam-off-west-end-2026/ground--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
@@ -46,8 +63,8 @@
     ],
     "archive": []
   },
-  "startTime": "2026-10-30T09:49:28.491Z",
-  "lastProcessed": "memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
+  "startTime": "2026-10-30T08:04:36.278Z",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-10-30T09:52:07.803Z",
@@ -77,6 +94,39 @@
       "event": "bb-session",
       "session": "2213ef5b",
       "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-10-30T09:53:53.789Z",
+      "event": "bb-session",
+      "session": "83376d20",
+      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
+    },
+    {
+      "t": "2026-10-30T09:53:54.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-30T09:58:51.996Z",
+      "event": "bb-session",
+      "session": "2a097f3f",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-30T09:58:52.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T10:00:58.354Z",
+      "event": "bb-session",
+      "session": "b63bbbc7",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T10:00:58.689Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
