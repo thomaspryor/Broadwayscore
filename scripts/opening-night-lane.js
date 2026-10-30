@@ -40,6 +40,15 @@ async function main() {
     routeAlert: require('./lib/owner-alert-router').routeAlert,
     ScorerClass: require('./llm-scoring/ensemble-scorer.ts').EnsembleReviewScorer,
   });
+  // BRO-6618: in the night workflow the lease outlives this process. The driver's `finally` calls deps.release, so swap in a
+  // renewal (a fresh 30-minute TTL for the push) and let the workflow release it after push-review-texts succeeds.
+  if (process.env.OPENING_NIGHT_LANE_RELEASE_BY_WORKFLOW === '1') {
+    const renew = deps.heartbeat;
+    deps.release = async () => {
+      const r = await renew();
+      console.log(r && r.ok ? 'opening-night lane: lease kept for the workflow to release after the review-texts push' : `opening-night lane: final lease renewal failed (${(r && r.reason) || 'unknown'}); the lease expires by TTL`);
+    };
+  }
   const out = await driver.runProductionLane({ show, night, holder, deps });
   console.log(JSON.stringify({ show: showId, night, holder, exit: out.exit, reason: out.reason, passes: out.result && out.result.passes }));
   return out.exit;
