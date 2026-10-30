@@ -86,3 +86,13 @@ test('refuses on stub inputs', () => {
   const reg = registry();
   assert.match(applyCoverageExpectationRedecide(reg, act('full'), { shows: [], reviews: [], nowMs: NOW }).reason, /stub/);
 });
+
+test('refuses below the coverage floor and replaces its own previous note instead of stacking', () => {
+  const reg = registry({ none0: { tier: 2, coverageExpectation: 'reviews', coverageExpectationDecidedAt: '2026-10-01' } });
+  assert.match(applyCoverageExpectationRedecide(reg, act('none0'), ctx()).reason, /below 2%|no-evidence/);
+  applyCoverageExpectationRedecide(reg, act('full'), ctx());
+  reg.outlets.full.coverageExpectationDecidedAt = '2026-10-01';
+  applyCoverageExpectationRedecide(reg, act('full'), { ...ctx(), nowMs: NOW + 5 * DAY });
+  assert.equal((reg.outlets.full.coverageEvidence.match(/Re-probed/g) || []).length, 1);
+  assert.match(reg.outlets.full.coverageEvidence, /^old\./);
+});

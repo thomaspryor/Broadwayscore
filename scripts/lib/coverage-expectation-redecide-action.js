@@ -26,6 +26,9 @@ const { MIN_PLAUSIBLE_SHOWS } = require('./live-show-ids');
 
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const MIN_PLAUSIBLE_REVIEWS = 1000;
+// A "reviews" claim measuring below this is not a selective outlet, it is a likely cessation: a human decides.
+const MIN_REVIEWS_CLAIM_RATE = 0.02;
+const AUTO_NOTE_RE = /\s?Re-probed \d{4}-\d{2}-\d{2} after .*? decidedAt refreshed\./g;
 
 function applyCoverageExpectationRedecide(registry, action, { shows, reviews, nowMs = Date.now() }) {
   const { outletId, reason } = action || {};
@@ -47,11 +50,14 @@ function applyCoverageExpectationRedecide(registry, action, { shows, reviews, no
   if (row.status === 'active') return { ok: true, changed: false, msg: `${outletId}: coverageExpectation already active (decided ${row.decidedAt})` };
   if (row.status !== 'decayed') return { ok: false, reason: `${tag}: status is ${row.status}, not decayed; needs a human re-decision` };
 
+  if (row.overall < MIN_REVIEWS_CLAIM_RATE) return { ok: false, reason: `${tag}: measured ${(row.overall * 100).toFixed(1)}% is below ${MIN_REVIEWS_CLAIM_RATE * 100}%, a "reviews" claim needs a human re-decision` };
   const day = new Date(nowMs).toISOString().slice(0, 10);
   const pct = (row.overall * 100).toFixed(1);
-  const note = `Re-probed ${day} after the ${Math.round(row.ageDays)}-day-old decision decayed (${String(reason).trim().slice(0, 120)}): measured ${pct}% overall 3-season Broadway coverage; claim unchanged, decidedAt refreshed.`;
+  const note = `Re-probed ${day} after the ${row.ageDays == null ? 'missing' : Math.floor(row.ageDays) + '-day-old'} decision decayed (${String(reason).trim().slice(0, 120)}): measured ${pct}% overall 3-season Broadway coverage; claim unchanged, decidedAt refreshed.`;
   entry.coverageExpectationDecidedAt = day;
-  entry.coverageEvidence = entry.coverageEvidence ? `${entry.coverageEvidence} ${note}` : note;
+  // Replace the previous auto note so the evidence does not grow every 14 days.
+  const base = String(entry.coverageEvidence || '').replace(AUTO_NOTE_RE, '').trim();
+  entry.coverageEvidence = base ? `${base} ${note}` : note;
   registry._meta = { ...(registry._meta || {}), lastUpdated: new Date(nowMs).toISOString(), lastChange: `BRO-6610: coverageExpectation re-decided ${outletId}` };
   return { ok: true, changed: true, msg: `${outletId}: coverageExpectationDecidedAt ${row.decidedAt} -> ${day} (measured ${pct}%)` };
 }
