@@ -3651,5 +3651,36 @@
       }
     ],
     "queuedAt": "2026-10-30T04:36:31.183Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6585-press-night-guards",
+    "title": "Landing blocked: unit-tests-e2e red on land/bro-6585-press-night-guards",
+    "description": "land.yml did not land land/bro-6585-press-night-guards: the unit-tests-e2e gate went red at fe51486885. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41004707396",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6585-press-night-guards"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-e2e"
+      },
+      {
+        "name": "tip",
+        "value": "fe51486885e6413ffab3782cbefa15fb9680b89d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41004707396"
+      }
+    ],
+    "queuedAt": "2026-10-30T05:09:55.423Z"
   }
 ]
