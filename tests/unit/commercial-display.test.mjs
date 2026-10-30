@@ -14,7 +14,7 @@
  * neutral recoupment wording and source-gated confidence (P0-8); the Return
  * column only shows a reported, cited multiple (P0-1); one break-even (P1-3).
  */
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
@@ -631,4 +631,76 @@ test('BRO-6555: estimated return range for closed win labels', () => {
   assert.equal(r({ ...win, modelInvestorMultiple: [0.71, 0.95, 1.09] }), null, 'model middle under 1x contradicts the win');
   assert.equal(r({ ...win, modelInvestorMultiple: [0, 2.98, 9.1] }), null, 'too wide to mean anything');
   assert.equal(r({ ...win, investorMultiple: 2.4, sources: [tradeSource] }), null, 'a cited multiple wins');
+});
+
+// BRO-6564: exercise the real card with the same public projection as show pages.
+const require = createRequire(import.meta.url);
+const React = require('react');
+const previousReact = globalThis.React;
+globalThis.React = React;
+after(() => {
+  if (previousReact === undefined) delete globalThis.React;
+  else globalThis.React = previousReact;
+});
+const { renderToStaticMarkup } = require('react-dom/server');
+const BizBuzzCard = require('../../src/components/BizBuzzCard.tsx').default;
+
+const winner = {
+  designation: 'Easy Winner',
+  capitalization: 10_000_000,
+  weeklyRunningCost: null,
+  recouped: true,
+  recoupedDate: null,
+  recoupedWeeks: null,
+  modelInvestorMultiple: [1.3, 1.4, 1.5],
+  modelDataQuality: 'medium',
+};
+
+function render(commercial = winner, showStatus = 'closed') {
+  return renderToStaticMarkup(React.createElement(BizBuzzCard, {
+    commercial: toPublicShowCommercial(commercial),
+    showTitle: 'Test production',
+    showStatus,
+  }));
+}
+
+test('BRO-6564: closed winner return survives public projection and renders under the label', () => {
+  const html = render();
+  assert.match(html, /data-testid="estimated-return"/);
+  assert.match(html, /Est\. 1\.3–1\.5x returned/);
+  assert.match(html, /Our model/);
+  assert.match(html, /source · filings, press \+ our model/);
+  assert.ok(html.indexOf('Easy Winner') < html.indexOf('data-testid="estimated-return"'));
+});
+
+test('model-only wins use the same return wording and disclose assumed costs', () => {
+  const html = render({ ...winner, recouped: null, modelInvestorMultiple: [0.95, 1.15, 1.3], modelDataQuality: 'low' });
+  assert.match(html, /Est\. 1\.0–1\.3x returned/);
+  assert.match(html, /Our model · running cost assumed/);
+});
+
+test('running shows never render the estimated final return', () => {
+  for (const status of ['open', 'previews', 'upcoming', undefined]) {
+    const html = status === undefined
+      ? renderToStaticMarkup(React.createElement(BizBuzzCard, { commercial: toPublicShowCommercial(winner), showTitle: 'Test production' }))
+      : render(winner, status);
+    assert.doesNotMatch(html, /data-testid="estimated-return"/);
+  }
+});
+
+test('reported returns take precedence over modeled winner returns', () => {
+  const html = render({ ...winner, recouped: null, reportedReturn: { lo: 120, hi: 120, outlet: 'Variety', asOf: '2026-10-01' } });
+  assert.match(html, /data-testid="reported-return"/);
+  assert.match(html, /Variety/);
+  assert.doesNotMatch(html, /data-testid="estimated-return"/);
+  assert.doesNotMatch(render({ ...winner, investorMultiple: 1.4, sources: [{ type: 'trade', url: 'https://variety.com/article', date: '2026-10-01' }] }), /data-testid="estimated-return"/);
+});
+
+test('loss labels and missing, contradictory or overly wide model returns stay hidden', () => {
+  for (const patch of [
+    { designation: 'Flop', recouped: false },
+    { modelInvestorMultiple: undefined },
+    { modelInvestorMultiple: [0.5, 0.7, 0.9] },
+    { modelInvestorMultiple: [1, 2, 5] },
+  ]) assert.doesNotMatch(render({ ...winner, ...patch }), /data-testid="estimated-return"/);
 });
