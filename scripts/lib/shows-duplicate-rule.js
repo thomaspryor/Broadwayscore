@@ -22,6 +22,27 @@ const { partitionShowRows } = require('./show-row-guard');
 // Express E2E test fixtures intentionally clone real titles.
 const isTestFixture = (s) => /(^|-)express-test(-|$)/.test(s.id || '');
 
+/** The four index keys a row is matched on; `norm` is null under 3 chars. */
+function duplicateKeys(show) {
+  const slug = show.slug || slugify(show.title);
+  const norm = normalizeTitle(show.title);
+  return { titleLower: show.title.toLowerCase().trim(), slug, idBase: stripIdSuffix(slug), norm: norm.length >= 3 ? norm : null };
+}
+
+/**
+ * Rows that share an index key with `show` (well-formed rows only). The rule
+ * only pairs rows that share a key, so findDuplicateShows([...near, show])
+ * finds for `show` exactly what the full catalog would, at a fraction of the cost.
+ */
+function rowsSharingKey(rows, show) {
+  if (!partitionShowRows([show]).valid.length) return [];
+  const k = duplicateKeys(show);
+  return partitionShowRows(rows || []).valid.filter((r) => {
+    const rk = duplicateKeys(r);
+    return rk.titleLower === k.titleLower || rk.slug === k.slug || rk.idBase === k.idBase || (k.norm && rk.norm === k.norm);
+  });
+}
+
 /**
  * @param {Object[]} rows - shows.json rows, in file order.
  * @returns {{show: Object, existing: Object, reason: string}[]} one finding per
@@ -41,17 +62,14 @@ function findDuplicateShows(rows) {
   };
 
   for (const show of shows) {
-    const titleLower = show.title.toLowerCase().trim();
-    const slug = show.slug || slugify(show.title);
-    const idBase = stripIdSuffix(slug);
-    const norm = normalizeTitle(show.title);
+    const { titleLower, slug, idBase, norm } = duplicateKeys(show);
     const market = getMarketPool(show.category);
 
     for (const [key, index] of [
       [titleLower, titleIndex],
       [slug, slugIndex],
       [idBase, idBaseIndex],
-      [norm.length >= 3 ? norm : null, normIndex],
+      [norm, normIndex],
     ]) {
       if (!key) continue;
       const candidates = index.get(key);
@@ -68,7 +86,7 @@ function findDuplicateShows(rows) {
     addToIndex(titleIndex, titleLower, show);
     addToIndex(slugIndex, slug, show);
     addToIndex(idBaseIndex, idBase, show);
-    if (norm.length >= 3) addToIndex(normIndex, norm, show);
+    if (norm) addToIndex(normIndex, norm, show);
   }
   return findings;
 }
@@ -101,4 +119,4 @@ function newDuplicateFindings(before, after) {
   return found.filter((f) => !oldKeys.has(pairKey(f)) && !goneFrom.has(f.show.id) && !goneFrom.has(f.existing.id));
 }
 
-module.exports = { findDuplicateShows, newDuplicateFindings, formatFinding, isTestFixture };
+module.exports = { findDuplicateShows, newDuplicateFindings, formatFinding, isTestFixture, rowsSharingKey };

@@ -80,7 +80,7 @@ function marketShapeProblem(shows, show) {
 }
 
 const { findTitleFragmentDupes, findSharedTicketIdentityDupes } = require('./show-duplicate-detection');
-const { findDuplicateShows } = require('./shows-duplicate-rule');
+const { findDuplicateShows, rowsSharingKey } = require('./shows-duplicate-rule');
 
 const titleWords = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3);
 
@@ -100,7 +100,7 @@ function newRowDuplicate(shows, show, distinctFrom, { ticketOnly = false } = {})
   // The prebuild gate's rule (BRO-6578): the fragment detector skips an
   // identical title at the same venue, which the build then fails on. Declared
   // ids leave the pool first so they cannot mask an undeclared match.
-  const rule = findDuplicateShows([...shows.filter(s => !ok.has(s.id) && s.id !== show.id), { ...show }]);
+  const rule = findDuplicateShows([...rowsSharingKey(shows.filter(s => !ok.has(s.id) && s.id !== show.id), show), { ...show }]);
   const f = rule.find(x => x.show.id === show.id);
   if (f) return { other: f.existing.id, reason: f.reason };
   return null;
