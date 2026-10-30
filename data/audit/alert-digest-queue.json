@@ -3460,5 +3460,19 @@
       }
     ],
     "queuedAt": "2026-10-30T02:39:49.550Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:ilford-boy-west-end-2026",
+    "title": "1 review(s) for ilford-boy-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- donmarwarehousecom--6017ba6b.json (donmarwarehousecom): fetch failed: fallbackFromLabel: unknown skipReason \"sb-host-cooldown\" https://donmarwarhouse.com",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T02:49:13.989Z"
   }
 ]
