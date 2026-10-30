@@ -46,6 +46,16 @@ export interface HubSections<T> {
   archive: T[];
 }
 
+/**
+ * Shows a city hub may list: every regional production, local-only ones included
+ * (Chicago's own theatre, BRO-6518), minus UK flagship houses, which belong to
+ * the West End side. getRegionalShows() withholds local-only shows because the
+ * homepage and Pre-Broadway shelf must not carry them; the hub is where they live.
+ */
+export function hubCandidates<T extends { category?: string }>(shows: T[], isUkRegional: (s: T) => boolean): T[] {
+  return shows.filter(s => s.category === 'regional' && !isUkRegional(s));
+}
+
 export function sectionHubShows<T extends HubShowLike>(shows: T[], metro: string, today: string): HubSections<T> {
   const mine = shows.filter(s => s.city === metro);
   const out: HubSections<T> = { now: [], soon: [], closedRecent: [], archive: [] };
