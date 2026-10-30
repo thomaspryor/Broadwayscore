@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 
+// BRO-5592: `vercel build` has no platform deployment ID before --prebuilt
+// uploads. Next writes this custom ID into its routes manifest, which Vercel
+// carries into the deployment so ?dpl= pins assets to the matching build.
+// A fresh 32-character ID also distinguishes rebuilds of the same commit.
+const deploymentId = process.env.NEXT_DEPLOYMENT_ID || process.env.VERCEL_DEPLOYMENT_ID ||
+  (process.env.VERCEL === '1' ? require('node:crypto').randomBytes(16).toString('hex') : undefined);
+
 // BRO-6197: prepare versions before next dev/build compiles any site data.
 // The manifest also ships to ISR functions, where public/ is not on disk.
 require('./scripts/lib/site-image-versions').writeSiteImageVersions();
@@ -15,6 +22,7 @@ const heldBoxOfficeBuild = builtFeatures.includes('boxOfficeV2');
 
 const nextConfig = {
   reactStrictMode: true,
+  deploymentId,
   env: { HELD_BOX_OFFICE_BUILD: heldBoxOfficeBuild ? 'true' : 'false' },
   trailingSlash: false,
   // Type checking and ESLint run separately in test.yml.
