@@ -165,6 +165,9 @@ const STRUCTURAL_PATH_WORDS = new Set([
   'p', 'id', 'view', 'node', 'index', 'amp', 'www', 'html', 'htm', 'php',
   // londontheatrereviews.co.uk/post.cfm?p=<id>: an id-only query URL (BRO-5438)
   'post', 'cfm',
+  // talkinbroadway.com/page/ob/02_24_26b.html: date-only review pages, the
+  // path never carries a title (BRO-6524)
+  'page',
 ]);
 
 /**

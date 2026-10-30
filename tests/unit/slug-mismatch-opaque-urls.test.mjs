@@ -119,3 +119,13 @@ describe('outlet /reviews/<id> redirect URLs (BRO-5693)', () => {
     assert.strictEqual(opaque('https://www.thestage.co.uk/reviews/2019/9-to-5-review'), false);
   });
 });
+
+describe('Talkin\' Broadway date-only pages (BRO-6524)', () => {
+  it('/page/ob/<mm_dd_yy>.html carries no title words', () => {
+    assert.strictEqual(opaque('https://www.talkinbroadway.com/page/ob/02_24_26b.html'), true);
+    assert.strictEqual(opaque('https://www.talkinbroadway.com/page/ob/05_02_22.html'), true);
+  });
+  it('a /page/ URL with a real slug is still checked', () => {
+    assert.strictEqual(opaque('https://example.com/page/other-show-review'), false);
+  });
+});
