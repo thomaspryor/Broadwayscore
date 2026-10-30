@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6571-i-b",
   "planId": "37ecff1a-6195-47b8-9c4d-4d8f64e5ad85",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T05:19:08.698Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "description": "BRO-6571: ingest west-end-best-friend review for sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T07:09:07.831Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
