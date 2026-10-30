@@ -712,3 +712,6 @@ data/audit/outlet-census/.cache/
 # Notion board froze 2026-08-20); nothing reads it and CI no longer commits it.
 # The live Linear twin, data/audit/card-verifiability-linear.json, stays tracked.
 /data/audit/card-verifiability.json
+
+# Plaintext lane recordings (copyrighted pages, BRO-6663): live only in the private repo, never tracked here
+data/lane-recordings/
