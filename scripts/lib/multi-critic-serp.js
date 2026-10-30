@@ -10,6 +10,7 @@
 const MULTI_CRITIC_SERP_OUTLETS = new Set([
   'nytimes',
   'vulture',
+  'nysr', // Canonical registry ID; nystagereview remains the legacy config ID.
   'nystagereview',
   'theatrely',
 ]);
@@ -17,7 +18,7 @@ const MULTI_CRITIC_SERP_OUTLETS = new Set([
 /**
  * Should SERP discovery issue one query per critic for this outlet?
  * @param {string} outletIdLower - outlet id in lowercase
- * @param {string[]} criticsArray - the outlet's critics list (from critic-outlets.json)
+ * @param {string[]} criticsArray - the outlet's critics list from the registry or legacy config
  * @returns {boolean}
  */
 const { foldDiacritics } = require('./title-match');
@@ -49,7 +50,7 @@ function normalizeCriticForCoverage(name) {
  * blanket-skipping SERP on `foundOutletIds` means the remaining critics are
  * never discovered. Call this to compute the critics still worth querying.
  *
- * @param {string[]} criticList - outlet.critics from critic-outlets.json
+ * @param {string[]} criticList - outlet.critics from the registry or legacy config
  * @param {Array<{criticName?: string}>} foundReviewsForOutlet - reviews where outletId matches
  * @returns {string[]} critics from criticList with no coverage yet
  */

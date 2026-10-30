@@ -24,6 +24,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const ROOT = join(import.meta.dirname, '..', '..');
+const { normalizeOutlet } = require(join(ROOT, 'scripts/lib/review-normalization.js'));
 
 const {
   MULTI_CRITIC_SERP_OUTLETS,
@@ -34,7 +35,7 @@ const {
 } = require(join(ROOT, 'scripts/lib/multi-critic-serp.js'));
 
 test('allowlist contains NYT, Vulture, NYSR, Theatrely', () => {
-  for (const id of ['nytimes', 'vulture', 'nystagereview', 'theatrely']) {
+  for (const id of ['nytimes', 'vulture', 'nysr', 'nystagereview', 'theatrely']) {
     assert.ok(
       MULTI_CRITIC_SERP_OUTLETS.has(id),
       `expected '${id}' in MULTI_CRITIC_SERP_OUTLETS`
@@ -45,6 +46,7 @@ test('allowlist contains NYT, Vulture, NYSR, Theatrely', () => {
 test('shouldQueryPerCritic: allowlisted outlet with 2+ critics → true', () => {
   assert.strictEqual(shouldQueryPerCritic('nytimes', ['A', 'B']), true);
   assert.strictEqual(shouldQueryPerCritic('vulture', ['A', 'B', 'C']), true);
+  assert.strictEqual(shouldQueryPerCritic('nysr', ['A', 'B']), true);
   assert.strictEqual(shouldQueryPerCritic('nystagereview', ['A', 'B', 'C', 'D', 'E', 'F']), true);
   assert.strictEqual(shouldQueryPerCritic('theatrely', ['A', 'B']), true);
 });
@@ -84,10 +86,10 @@ test('every allowlist id matches a real outlet id in critic-outlets.json', () =>
     ...(config.tier2 || []),
     ...(config.tier3 || []),
   ];
-  const knownIds = new Set(allOutlets.map(o => (o.id || '').toLowerCase()));
+  const knownIds = new Set(allOutlets.map(o => normalizeOutlet(o.id)));
   for (const id of MULTI_CRITIC_SERP_OUTLETS) {
     assert.ok(
-      knownIds.has(id),
+      knownIds.has(normalizeOutlet(id)),
       `allowlist id '${id}' not found in critic-outlets.json — rename? remove from allowlist or fix the id`
     );
   }
@@ -106,7 +108,7 @@ test('every allowlist outlet actually has >1 critic today', () => {
     ...(config.tier3 || []),
   ];
   for (const id of MULTI_CRITIC_SERP_OUTLETS) {
-    const outlet = allOutlets.find(o => (o.id || '').toLowerCase() === id);
+    const outlet = allOutlets.find(o => normalizeOutlet(o.id) === normalizeOutlet(id));
     assert.ok(outlet, `allowlist id '${id}' missing from critic-outlets.json`);
     const critics = Array.isArray(outlet.critics) ? outlet.critics : [];
     assert.ok(
