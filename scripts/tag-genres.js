@@ -49,6 +49,7 @@ ${batch.map(s => `${s.id} | ${s.t} | ${s.ty || ''} | ${(s.syn || '').slice(0, 28
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
     body: JSON.stringify({ model: 'gpt-5.4-mini', response_format: { type: 'json_object' }, messages: [{ role: 'user', content: prompt }] }),
   });
+  if (!res.ok) throw new Error(`OpenAI HTTP ${res.status}`);
   const j = await res.json();
   if (j.error) throw new Error(j.error.message);
   return JSON.parse(j.choices[0].message.content);
@@ -75,7 +76,8 @@ async function main() {
     const batch = todo.slice(i, i + 25);
     const got = await llm(batch);
     for (const s of batch) {
-      const fromLlm = (got[s.id] || []).filter(g => GENRES.includes(g));
+      if (!Array.isArray(got[s.id])) continue; // omitted or malformed: leave untagged so a rerun retries it
+      const fromLlm = got[s.id].filter(g => GENRES.includes(g));
       existing[s.id] = [...new Set([...ruleGenres(s), ...fromLlm])].slice(0, 3);
     }
     fs.mkdirSync(path.dirname(OUT), { recursive: true });

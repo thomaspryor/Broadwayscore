@@ -24,28 +24,39 @@ const shows: Show[] = JSON.parse(fs.readFileSync(path.join(OUT_DIR, 'mobile-show
 const today = new Date();
 const windowStart = new Date(today.getTime() - YEARS * 365.25 * DAY);
 
-const norm = (t: string) => t.toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
+const norm = (t: string) => t.toLowerCase().replace(/[:\-–]\s*(both|one|two)\s+parts?$/, '').replace(/\s+(both|one|two)\s+parts?$/, '').replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
+// Broadway was dark 2020-03-12 to 2021-09-14: those days are not days played.
+const DARK_START = new Date('2020-03-12').getTime();
+const DARK_END = new Date('2021-09-14').getTime();
 const daysInWindow = (s: Show) => {
   if (!s.od) return 0;
   const start = Math.max(new Date(s.od).getTime(), windowStart.getTime());
   const end = Math.min(s.cd ? new Date(s.cd).getTime() : today.getTime(), today.getTime());
-  return Math.max(0, Math.round((end - start) / DAY));
+  if (end <= start) return 0;
+  let ms = end - start;
+  if (s.cat === undefined || s.cat === 'broadway') {
+    ms -= Math.max(0, Math.min(end, DARK_END) - Math.max(start, DARK_START));
+  }
+  return Math.max(0, Math.round(ms / DAY));
 };
 
 function hitsFor(match: (s: Show) => boolean) {
   const byTitle = new Map<string, Show[]>();
   for (const s of shows) {
-    if (!match(s) || !s.od || !s.img?.po) continue;
+    if (!match(s) || !s.od) continue;
     const k = norm(s.t);
     byTitle.set(k, [...(byTitle.get(k) || []), s]);
   }
   const rows = [...byTitle.values()].map(prods => {
     const days = prods.reduce((n, p) => n + daysInWindow(p), 0);
+    // Newest production with art is the current one; poster comes from any production that has it.
     const lead = [...prods].sort((a, b) => daysInWindow(b) - daysInWindow(a))[0];
+    const art = [...prods].sort((a, b) => (a.od! < b.od! ? 1 : -1)).find(p => p.img?.po || p.img?.th);
+    if (!art) return null;
     return {
       title: lead.t,
       showId: lead.id,
-      poster: lead.img!.po,
+      poster: art.img!.po || art.img!.th,
       days,
       score: lead.cs ?? null,
       productions: prods
@@ -53,7 +64,7 @@ function hitsFor(match: (s: Show) => boolean) {
         .sort((a, b) => (a.od! < b.od! ? -1 : 1))
         .map(p => ({ showId: p.id, opened: p.od, closed: p.cd ?? null })),
     };
-  });
+  }).filter((r): r is NonNullable<typeof r> => r !== null);
   return rows.filter(r => r.days > 0).sort((a, b) => b.days - a.days || (b.score ?? 0) - (a.score ?? 0)).slice(0, TOP);
 }
 
@@ -79,12 +90,12 @@ for (const v of ukRegional) {
 for (const c of getTourCities().values()) {
   cities.push({
     id: `tour-${c.slug}`, name: c.city, kind: 'tour', market: 'nyc',
-    tag: c.city === 'Chicago' ? 'Local shows + tours' : 'Touring city',
+    tag: /^Chicago\b/.test(c.city) ? 'Local shows + tours' : 'Touring city',
   });
 }
 
 // Chicago is a first-class app market (local shows + tours), not just a tour stop.
-if (!cities.some(c => c.name === 'Chicago')) {
+if (!cities.some(c => /^Chicago\b/.test(c.name))) {
   cities.push({ id: 'chicago', name: 'Chicago', kind: 'tour', market: 'chicago', tag: 'Local shows + tours' });
 }
 

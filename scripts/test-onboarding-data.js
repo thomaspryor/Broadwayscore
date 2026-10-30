@@ -28,7 +28,8 @@ assert(empty / entries.length < 0.1, `<10% of tagged shows have no genre (${empt
 const { cities } = read('public/data/onboarding-cities.json');
 assert(cities.some(c => c.id === 'nyc') && cities.some(c => c.id === 'london'), 'nyc and london present');
 assert(new Set(cities.map(c => c.id)).size === cities.length, 'city ids are unique');
-assert(cities.some(c => c.name === 'Chicago' && c.tag === 'Local shows + tours'), 'Chicago tagged Local shows + tours');
+const chi = cities.filter(c => /^Chicago\b/.test(c.name));
+assert(chi.length === 1 && chi[0].tag === 'Local shows + tours', 'exactly one Chicago, tagged Local shows + tours');
 assert(cities.filter(c => c.kind === 'tour').every(c => c.tag), 'tour cities carry a tag');
 
 const { hits } = read('public/data/onboarding-hits.json');
