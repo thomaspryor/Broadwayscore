@@ -65,10 +65,20 @@ function verifyAuthorPage(result, candidate) {
   return true;
 }
 
-async function discoverAuthorPages(critics, overrides, fetchPage) {
+// One probe's worst case is a full fetchPage() fallback chain (~2.5 min), so
+// don't start one with less than 3 min of budget left (BRO-6587).
+const MIN_REMAINING_MS_TO_START = 3 * 60 * 1000;
+
+async function discoverAuthorPages(critics, overrides, fetchPage, budget = null) {
   const updated = structuredClone(overrides);
   const results = [];
   for (const candidate of discoveryCandidates(critics, overrides)) {
+    // Out of budget: leave the rest for the next run instead of being killed
+    // mid-probe and losing the verified additions made so far.
+    if (budget && !budget.canStartItem(MIN_REMAINING_MS_TO_START)) {
+      results.push({ ...candidate, status: 'deferred', reason: 'run budget exhausted' });
+      continue;
+    }
     try {
       const page = await fetchPage(candidate.url, { timeout: 30000 });
       if (!verifyAuthorPage(page, candidate)) {

@@ -18,6 +18,8 @@
  *   --dry-run           print selected critics + counts and exit (no scraping)
  *   --discover-author-pages  one-off NYT/New Yorker/Vulture discovery; append
  *                       verified slugs only, without running the coverage audit
+ *   --time-budget-min=N  with --discover-author-pages: stop probing before N
+ *                       minutes (unprobed critics are left for the next run)
  */
 const fs = require('fs');
 const path = require('path');
@@ -33,6 +35,7 @@ const { buildCadenceReport } = require(path.join(__dirname, 'lib/outlet-cadence.
 const { updateHeartbeatState } = require(path.join(__dirname, 'lib/outlet-heartbeat-state.js'));
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 const { selectActiveCritics, discoveryCandidates, discoverAuthorPages } = require('./lib/critic-author-page-discovery');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
@@ -272,12 +275,14 @@ async function runOutletHeartbeat() {
     const outPath = path.join(REPO_ROOT, 'data/critic-author-pages.json');
     const original = JSON.parse(fs.readFileSync(outPath, 'utf8'));
     const { fetchPage, cleanup } = require('./lib/scraper');
-    const { overrides, results } = await discoverAuthorPages(critics, original, fetchPage)
+    const budget = createRunBudget(parseTimeBudgetMin(args));
+    const { overrides, results } = await discoverAuthorPages(critics, original, fetchPage, budget)
       .finally(() => cleanup());
     const added = results.filter(r => r.status === 'added').length;
     if (added) fs.writeFileSync(outPath, JSON.stringify(overrides, null, 2) + '\n');
     for (const r of results) console.log(`${r.slug} (${r.key}): ${r.status}${r.reason ? ` (${r.reason})` : ''}`);
-    console.log(`Author-page discovery: ${added} added, ${results.length - added} skipped`);
+    const deferred = results.filter(r => r.status === 'deferred').length;
+    console.log(`Author-page discovery: ${added} added, ${results.length - added - deferred} skipped, ${deferred} deferred (run budget)`);
     // A failed probe must remain visible to one-off callers, even with partial success.
     if (results.some(r => r.status === 'skipped')) process.exitCode = 1;
     return;

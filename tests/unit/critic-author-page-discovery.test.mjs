@@ -110,6 +110,21 @@ test('skips failed/unverified probes and continues to other critics', async () =
   assert.deepEqual(result.results.map(r => r.status), ['skipped', 'skipped', 'added']);
 });
 
+test('defers remaining probes once the run budget cannot fit another (BRO-6587)', async () => {
+  const createRunBudget = require('../../scripts/lib/run-budget').createRunBudget;
+  let clock = 0;
+  const budget = createRunBudget(5, () => clock);
+  const calls = [];
+  const result = await discoverAuthorPages(active, {}, async url => {
+    calls.push(url);
+    clock += 3 * 60 * 1000; // each probe uses 3 of the 5 minutes
+    return pageFor(candidates.find(c => c.url === url));
+  }, budget);
+  assert.equal(calls.length, 1);
+  assert.deepEqual(result.results.map(r => r.status), ['added', 'deferred', 'deferred']);
+  assert.equal(Object.keys(result.overrides).length, 1);
+});
+
 test('curated Jesse Green Vulture backfill preserves the prior NYT and BWW slugs', () => {
   assert.equal(pages['jesse-green'].vulture, 'jesse-green');
   assert.equal(pages['jesse-green'].nyt, 'jesse-green');
