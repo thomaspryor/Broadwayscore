@@ -3558,5 +3558,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T03:50:06.066Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6580-roundup-cast-album-leaks",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6580-roundup-cast-album-leaks",
+    "description": "land.yml did not land land/bro-6580-roundup-cast-album-leaks: the unit-tests-node gate went red at bce21e3e28. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41000854444",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6580-roundup-cast-album-leaks"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "bce21e3e28db5034de683256728b72fddbcb0fef"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41000854444"
+      }
+    ],
+    "queuedAt": "2026-10-30T04:27:24.117Z"
   }
 ]
