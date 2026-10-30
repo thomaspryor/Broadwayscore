@@ -7,6 +7,7 @@ import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import {
   getRecoupmentDisplayMode,
   getReportedReturnLine,
+  getEstimatedReturnRange,
   getModelHoldLabel,
   meetsModelQualityFloor,
   getBreakEven,
@@ -35,6 +36,7 @@ import { returnSnapshotLabel } from '../../scripts/lib/commercial-return-snapsho
 import { ourRecoupRangePct } from '../../scripts/lib/our-recoup-estimate';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
+import EstimatedReturnLine from './biz/EstimatedReturnLine';
 import MoneyGate from './biz/MoneyGate';
 import dynamic from 'next/dynamic';
 import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
@@ -189,6 +191,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   // A model the display guard held back says why instead of vanishing (BRO-4989).
   const holdLabel = displayMode === 'none' ? getModelHoldLabel({ ...commercial, status: showStatus }) : null;
   const reportedReturnLine = getReportedReturnLine({ ...commercial, status: showStatus });
+  const estimatedReturnRange = !reportedReturnLine ? getEstimatedReturnRange(commercial, showStatus) : null;
   const estimateRange = displayMode === 'analyst' && !reportedReturnLine ? getDisplayableEstimateRange({ ...commercial, status: showStatus }) : null;
   const analystRange = estimateRange?.range ?? null;
   const showModelBar = displayMode === 'model' && !reportedReturnLine;
@@ -246,7 +249,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           Profitability Scorecard
         </h2>
         <span className="text-[10px] tracking-[0.06em] text-fg-muted italic shrink-0">
-          {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? (commercial.analystRecoupPct ? 'source · filings, press, analyst estimate + our model' : 'source · filings, press + our model') : analystRange ? (commercial.analystRecoupPct ? 'source · filings, press + analyst estimate' : 'source · filings, press + our estimate') : 'source · filings + press'}
+          {showModelBar || estimatedReturnRange ? 'source · filings, press + our model' : estimateRange?.withModel ? (commercial.analystRecoupPct ? 'source · filings, press, analyst estimate + our model' : 'source · filings, press + our model') : analystRange ? (commercial.analystRecoupPct ? 'source · filings, press + analyst estimate' : 'source · filings, press + our estimate') : 'source · filings + press'}
         </span>
       </header>
       <p className="text-[11px] font-medium tracking-[0.06em] text-fg-muted italic m-0 mb-3">
@@ -316,6 +319,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               {reportedReturnLine}
             </p>
           )}
+          <EstimatedReturnLine range={estimatedReturnRange} modelDataQuality={commercial.modelDataQuality} />
           {/* A loss label describes the show as it closed; tours and licensing can still pay it back (BRO-5645). */}
           {lossCanChange && (
             <p className="text-xs text-fg-muted mt-1 leading-[1.4]" data-testid="loss-can-change">

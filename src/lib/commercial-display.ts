@@ -473,6 +473,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     notes: publicNotesText(commercial) ?? undefined,
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
+    modelInvestorMultiple: commercial.modelInvestorMultiple,
     nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
     // A nonprofit run that became a commercial run (BRO-5508): the card's producer line names the switch.
     ...(conversionOf(commercial) ? { commercialConversion: conversionOf(commercial) } : {}),
