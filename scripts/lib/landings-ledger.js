@@ -91,6 +91,18 @@ function findLanding(rows, { sha = null, tip = null } = {}) {
   return (rows || []).find(r => (sha && r.sha === sha) || (tip && r.tip === tip)) || null;
 }
 
+// BRO-6638: the main sha a land/ branch tip became. land.yml rebases, so the
+// tip is never an ancestor of main; checking it read as "the landing was
+// lost". The newest row wins when one tip landed twice (re-dispatch), as in
+// merge-worktree-to-main.sh's `tail -1` lookup. Null when no row names it
+// (train riders get none, and the row rides a commit after the fast-forward).
+function landedShaForTip(rows, tip) {
+  if (!tip) return null;
+  let sha = null;
+  for (const r of rows || []) if (r && r.tip === tip && r.sha) sha = r.sha;
+  return sha;
+}
+
 /**
  * The detector's verdict for one push to main.
  *
@@ -171,6 +183,7 @@ module.exports = {
   readLandings,
   appendLanding,
   findLanding,
+  landedShaForTip,
   classifyDirectPush,
   conditionKeyFor,
   buildDirectPushAlert,
