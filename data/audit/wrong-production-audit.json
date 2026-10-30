@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T04:49:26.725Z",
+  "timestamp": "2026-10-30T05:02:56.695Z",
   "stats": {
-    "totalReviews": 69981,
-    "alreadyFlagged": 22300,
+    "totalReviews": 70003,
+    "alreadyFlagged": 22303,
     "dateGuardCatches": 233,
     "directorMismatch": 2861,
-    "tvFilmSignals": 2007,
+    "tvFilmSignals": 2008,
     "londonSignals": 3382,
     "offBroadwaySignals": 630,
     "yearMismatch": 283,
-    "noPublishDate": 8019
+    "noPublishDate": 8020
   },
   "findings": [
     {
@@ -49569,6 +49569,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from starlight-express-1987"
+        }
+      ]
+    },
+    {
+      "showId": "starter-for-ten-bristol-old-vic-regional-2024",
+      "file": "bristol247--toby-morse.json",
+      "publishDate": "2024-03-08",
+      "url": "https://www.bristol247.com/culture/theatre/review-starter-for-ten-bristol-old-vic-the-cast-create-a-magically-fun-evening-in-the-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
