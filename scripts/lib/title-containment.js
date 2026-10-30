@@ -29,6 +29,12 @@
 const fs = require('fs');
 const path = require('path');
 
+// Inputs are normalized, space-separated titles. Empty titles provide no evidence.
+function containsAsWords(haystack, needle) {
+  if (!needle || !needle.trim()) return false;
+  return (' ' + haystack + ' ').includes(' ' + needle + ' ');
+}
+
 /** Light normaliser: lowercase, curly quotes folded, whitespace collapsed. */
 function basicNorm(s) {
   return String(s || '')
@@ -246,6 +252,7 @@ function categoriesOfCoreTitle(coreKey, options = {}) {
 }
 
 module.exports = {
+  containsAsWords,
   basicNorm,
   categoriesOfCoreTitle,
   phraseNorm,

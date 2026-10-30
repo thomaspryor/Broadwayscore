@@ -16,6 +16,7 @@
  */
 const { normalizeVenueName, getMarketPool } = require('./venue-classification');
 const { foldDiacritics } = require('./title-match');
+const { containsAsWords } = require('./title-containment');
 const { VENUE_ALIASES } = require('./title-match');
 // Top-level, not lazy (review catch): text-cleaning.js has no imports of its
 // own, so there is no direct or transitive cycle back to this module.
@@ -246,6 +247,18 @@ function slugify(title) {
     .replace(/-+/g, '-');
 }
 
+// Multi-word possessives are ambiguous: "Midsummer Night's" is title content,
+// while "Thornton Wilder's" is an author credit. Only strip known credits.
+// Single-token prefixes retain their existing normalization behavior.
+const AUTHOR_PREFIXES = new Set([
+  'agatha christie', 'alan bennett', 'andre heller', 'andrew lloyd webber',
+  'anne washburn', 'august wilson', 'bob fosse', 'dolly parton', 'gore vidal',
+  'irving berlin', 'jackie mason', 'james joyce', 'jim henson', 'jimmy buffet',
+  'julia sweeney', 'maltby and shire', 'matthew bourne', 'monty python',
+  'neil simon', 'noel coward', 'roald dahl', 'stephane wrembel',
+  'stephen sondheim', 'thornton wilder',
+]);
+
 /**
  * Normalize a title for comparison - strips subtitles, articles, punctuation
  * to catch variations like "All Out: Comedy About Ambition" vs "All Out".
@@ -308,7 +321,10 @@ function normalizeTitleUncached(title) {
     // e.g. "Disney's", "Thornton Wilder's", "Andrew Lloyd Webber's", "Bob Fosse's".
     // Curly + ASCII apostrophe both accepted. The trailing article (the/a/an)
     // is also stripped so "Thornton Wilder's The Emporium" → "emporium".
-    .replace(/^(?:[a-z][a-z0-9.\-]*\s+){0,2}[a-z][a-z0-9.\-]*['’]s\s+(?:the\s+|a\s+|an\s+)?/i, '')
+    // Keep unknown multi-word possessives, including "Midsummer Night's" and
+    // "No Man's", so exact-title/subtitle checks cannot collapse them to Dream/Land.
+    .replace(/^((?:[a-z][a-z0-9.\-]*\s+){0,2}[a-z][a-z0-9.\-]*)['’]s\s+(?:the\s+|a\s+|an\s+)?/i,
+      (match, prefix) => !/\s/.test(prefix) || AUTHOR_PREFIXES.has(prefix.replace(/\s+/g, ' ')) ? '' : match)
     // Re-strip leading article (in case the possessive removal exposed one)
     .replace(/^(the|a|an)\s+/i, '')
     // "/" is a word separator, not punctuation to drop — see slugify()'s
@@ -316,7 +332,7 @@ function normalizeTitleUncached(title) {
     // below, which would otherwise concatenate the words on either side.
     .replace(/\//g, ' ')
     // Clean up punctuation and extra spaces
-    .replace(/[!?'":\-–—,\.+]/g, '')
+    .replace(/[!?'’":\-–—,\.+]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -387,16 +403,10 @@ const knownDuplicateGroupsFor = memoizeByString((title) => {
       if (v === title) return true;
       // Match title.includes(v) only if variant appears as a whole word/prefix
       // Prevents "six" matching "sixteen wounded" while keeping "six" matching "six the musical"
-      if (title.includes(v)) {
-        const idx = title.indexOf(v);
-        const afterChar = title[idx + v.length];
-        // Variant must be at start or preceded by space, and followed by space/end
-        const atWordBoundary = (idx === 0 || title[idx - 1] === ' ') && (!afterChar || afterChar === ' ');
-        if (atWordBoundary) return true;
-      }
+      if (containsAsWords(title, v)) return true;
       // Only match v.includes(title) if title is at least 80% of variant length
       // Prevents "ann" matching "annie", "doubt" matching "doubtfire" etc.
-      if (v.includes(title) && title.length >= v.length * 0.8) return true;
+      if (containsAsWords(v, title) && title.length >= v.length * 0.8) return true;
       return false;
     });
     if (matches) groups.push(key);
@@ -848,15 +858,6 @@ function titleSegmentKeysUncached(title) {
 }
 
 /**
- * True when `needle` appears in `haystack` as whole words (normalized titles
- * are space-separated words). "phantom of the opera" is in "the phantom of
- * the opera"; "dream" is not in "dreamgirls" (BRO-4315).
- */
-function containsAsWords(haystack, needle) {
-  return (' ' + haystack + ' ').includes(' ' + needle + ' ');
-}
-
-/**
  * True when both titles are the SAME set of two-or-more segments joined by
  * " / ", " & " or " and ", in any order (BRO-4204 S5-T2). The Charing Cross
  * double bill lived under two ids because one listing led with "The Human
@@ -1122,9 +1123,9 @@ function checkForDuplicate(newShow, existingShows) {
       const shorter = Math.min(existingTitleNormalized.length, newTitleNormalized.length);
       const longer = Math.max(existingTitleNormalized.length, newTitleNormalized.length);
       if (shorter / longer >= 0.5) {
-        // Whole-word containment only (BRO-4315): normalizeTitle strips a
-        // possessive prefix, so "A Midsummer Night's Dream" becomes "dream",
-        // which a raw substring test matched inside "dreamgirls".
+        // Whole-word containment only (BRO-4315): a raw substring test matched
+        // "dream" inside "dreamgirls" when the old possessive rule shortened
+        // "A Midsummer Night's Dream" to "dream".
         if (containsAsWords(newTitleNormalized, existingTitleNormalized) ||
             containsAsWords(existingTitleNormalized, newTitleNormalized)) {
           if (isMultiProduction(newShow, existing)) continue;

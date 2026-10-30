@@ -21,6 +21,7 @@ const MIN_CONTENT_BYTES = 800; // TB 404 pages are <500 bytes; real reviews are 
 
 const { foldDiacritics } = require('./title-match');
 const { shortTitleCandidate } = require('./title-normalization');
+const { containsAsWords } = require('./title-containment');
 
 // Same floor used by verifyTbPage's short-title fallback below — short titles under this
 // length (e.g. "Oh, Mary!" → "Oh") are too generic to build a reliable URL slug from.
@@ -152,10 +153,9 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   // Short-title fallback for comma-subtitled shows: TB page titles carry the short title only
   // ("Beaches" not "Beaches, A New Musical"). Beaches 2026-04-22 opening night.
   //
-  // Guard: normalized short title must be ≥4 chars. Without this, "Oh, Mary!" → short "Oh"
-  // → normalizeText="oh" → normPage.includes("oh") matches "Wholesome", "Mother", "though",
-  // etc. 2-char substrings are too short to be a reliable title match. Affects
-  // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
+  // Guard: normalized short title must be ≥4 chars. "Oh, Mary!" must not fall back
+  // to the generic word "Oh". Whole-word matching below also rejects substrings
+  // such as "oh" inside "Wholesome".
   // 4 chars is safe for known cases: "Beaches" (7), "Grey" (4 — would work if subtitled).
   const titleVariants = [showTitle];
   // Same two short forms buildTbCandidateUrls() tries: the main title before a ';' or ':'
@@ -169,7 +169,7 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   }
   const titleMatched = titleVariants.some(variant => {
     const normVariant = normalizeText(variant);
-    return normVariant && normPage.includes(normVariant);
+    return containsAsWords(normPage, normVariant);
   });
   if (!titleMatched) {
     return { ok: false, reason: `title mismatch (page="${pageTitle.slice(0, 80)}", show="${showTitle}")` };
@@ -265,7 +265,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
         const indexShowTitle = quotedMatch ? quotedMatch[1].trim() : '';
         const normIndex = normalizeText(indexShowTitle);
         const normShow = normalizeText(show.title);
-        const titleMatches = normIndex && normShow && (normIndex === normShow || normIndex.includes(normShow) || normShow.includes(normIndex));
+        const titleMatches = containsAsWords(normIndex, normShow) || containsAsWords(normShow, normIndex);
         if (titleMatches) {
           // Run the same byline/date verification we run on the candidate URLs.
           const v = verifyTbPage(page.content, {
