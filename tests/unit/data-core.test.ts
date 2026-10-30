@@ -57,6 +57,7 @@ import {
   getOffBroadwayComplexBySlug,
   type ComputedShow,
 } from '../../src/lib/data-core';
+import { isCategoryEnabled } from '../../src/lib/markets';
 
 // ===========================================
 // slugify — pure string transformation
@@ -959,7 +960,8 @@ describe('getOtherProductions', () => {
     // Find a show that likely has cross-market productions (e.g., a well-known musical)
     const allShows = getAllShows();
     const titleCounts = new Map<string, ComputedShow[]>();
-    for (const s of allShows) {
+    // Flag-off categories (regional while its flag is off) are hidden by getOtherProductions.
+    for (const s of allShows.filter(x => isCategoryEnabled(x.category))) {
       const norm = s.title.toLowerCase().replace(/[^\w\s']/g, '').trim();
       const group = titleCounts.get(norm) || [];
       group.push(s);
@@ -979,19 +981,21 @@ describe('getOtherProductions', () => {
     if (testShow) {
       const others = getOtherProductions(testShow);
       assert.ok(others.length > 0, `Expected other productions for ${testShow.title}`);
+      // Same-market revivals are other productions too ("across markets/years").
+      const showMarket = testShow.category || 'broadway';
       for (const other of others) {
         assert.notStrictEqual(other.id, testShow.id);
-        const otherMarket = other.category || 'broadway';
-        const showMarket = testShow.category || 'broadway';
-        assert.notStrictEqual(otherMarket, showMarket, 'Other productions should be from different markets');
       }
+      assert.ok(others.some(o => (o.category || 'broadway') !== showMarket),
+        `Expected a production of ${testShow.title} from another market`);
     }
   });
 
   test('results are sorted by market order then opening date', () => {
     const allShows = getAllShows();
     const titleCounts = new Map<string, ComputedShow[]>();
-    for (const s of allShows) {
+    // Flag-off categories (regional while its flag is off) are hidden by getOtherProductions.
+    for (const s of allShows.filter(x => isCategoryEnabled(x.category))) {
       const norm = s.title.toLowerCase().replace(/[^\w\s']/g, '').trim();
       const group = titleCounts.get(norm) || [];
       group.push(s);
