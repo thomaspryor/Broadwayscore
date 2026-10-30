@@ -1249,8 +1249,8 @@ _LOOSE_HARD_RE = re.compile(
     r"|(?:didn['\u2019]t|did not|couldn['\u2019]t|could not) (?:get )?fix\b|(?:isn['\u2019]t|wasn['\u2019]t|aren['\u2019]t|not yet|still not) fixed"
     r"|left (?:it|them|this|that|those) (?:alone|unfiled|unfixed)|\bunfiled\b"
     r"|\bI(?:'ll| will) (?:re-?)?check\b|will happen naturally"
-    r"|\bI (?:haven['\u2019]t|have not) (?:yet )?(?:run|seen|checked|verified|confirmed|tested|deleted)\b(?!\s+(?:any\b|anything|a single|no\b|out\b|over\b|into\b))"
-    r"|\bI (?:didn['\u2019]t|did not) (?:yet )?(?:run|see|check|verify|confirm|test|delete)\b(?!\s+(?:any\b|anything|a single|no\b|out\b|over\b|into\b)))",
+    r"|\bI (?:haven['\u2019]t|have not) (?:yet )?(?:run|seen|checked|verified|confirmed|tested|deleted)\b(?!\s+(?:any\b|anything|a single|no\b|out\b|over\b|into\b|errors?\b|issues?\b|problems?\b|failures?\b|regressions?\b|an? (?:problem|regression|failure|error|issue)\b))"
+    r"|\bI (?:didn['\u2019]t|did not) (?:yet )?(?:run|see|check|verify|confirm|test|delete)\b(?!\s+(?:any\b|anything|a single|no\b|out\b|over\b|into\b|errors?\b|issues?\b|problems?\b|failures?\b|regressions?\b|an? (?:problem|regression|failure|error|issue)\b)))",
     re.IGNORECASE)
 # Phrases that a negation earlier in the same sentence turns into a finished
 # statement ("Nothing here needs an owner decision", "No longer waiting on
@@ -1327,14 +1327,14 @@ def _passive_offer(body):
     """First offer in the body that is not negated earlier in its clause
     ("you don't need to check out the PR"). Quoted and backticked spans are
     dropped first, so citing a phrase is safe (as OWNERMERGE does)."""
-    body = re.sub(r'"[^"\n]*"|\u201c[^\u201d\n]*\u201d|\u2018[^\u2019\n]*\u2019'
+    body = re.sub(r'"[^"\n]*"|\u201c[^\u201d\n]*\u201d|\u2018[^\u2019\n]*\u2019|`[^`\n]+`'
                   r"|(?<!\w)'[^'\n]{1,60}'(?!\w)", '', body)
     for m in _PASSIVE_RE.finditer(body):
         clause = re.split(r'[.;:!?,\n\u2014\u2013]', body[max(0, m.start() - 40):m.start()])[-1]
         if _PASSIVE_NEG_RE.search(clause):
             continue
         if re.match(r'(?:ping|message|ask|tell) me|let me know|reach out', m.group(0), re.I) and re.search(
-                r'\b(?:CI|reviewers?|bots?|they|the wake)\s+(?:(?:will|would|may|might)\s+)?$', clause, re.I):
+                r'\b(?:(?:CI|reviewers?|bots?|they|the wake)\s+(?:(?:will|would|may|might)\s+)?|(?:it|monitor|land(?:\.yml)?|yml|(?:child |worker )?sessions?|runs?|jobs?|workflows?)\s+(?:will|would|may|might)\s+)$', clause, re.I):
             continue  # a third party or a wake pinging me is narration, not an offer to the owner
         if m.group(0).lower().startswith('i could'):
             sent_before = re.split(r'[.!?\n]', body[max(0, m.start() - 80):m.start()])[-1]

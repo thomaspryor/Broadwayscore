@@ -1994,6 +1994,7 @@ test('LOOSEENDS: real loose-end closings + SAFE TO ARCHIVE → BLOCKED', skipNoR
     'One thing I haven\'t seen with my own eyes: the caption on a real live show page.',
     'I didn\'t run the repo\'s /what-else and /wrap-up finishing steps. I closed the card by hand.',
     'I left two stale branches on GitHub; deleting them is your call.',
+    'I didn\u2019t test on mobile.',
     'The change hasn\u2019t been pushed and I couldn\u2019t confirm the deploy.',
     'I didn\'t verify the last deploy, and I haven\u2019t seen the live page.',
     '```\n━━━ TESTED ━━━\nProduction verified: partly. I could not confirm the last commit deployed.\n━━━━━━\n```\nThe rewrite works.',
@@ -2023,6 +2024,7 @@ test('LOOSEENDS false-positive guards: ordinary finished closings', skipNoRepoHo
     'Saved the report; the old rows were fixed and verified on main.\n\nSAFE TO ARCHIVE',
     'The card rechecks real poller runs on 10/22 by itself.\n\nSAFE TO ARCHIVE',
     'I haven\'t seen any errors in the logs and I didn\'t run into issues. Nothing here is your call.\n\nSAFE TO ARCHIVE',
+    'I didn\'t see errors in the logs, and I didn\'t see a regression.\n\nSAFE TO ARCHIVE',
   ]) {
     assertAllowed(runHook(t, msg, LE_ON), msg.slice(0, 60));
   }
@@ -2357,6 +2359,8 @@ test('PASSIVEOFFER false-positive guards: a real DECISION NEEDED block, finished
   assertAllowed(runHook(noEdits, 'You don\'t need to check out the PR; I landed it myself.', PO_ON), 'negated clause');
   assertAllowed(runHook(noEdits, 'I took a look at the PR comments, and the child was asked to review the PR.', PO_ON), 'narrative, not an offer');
   assertAllowed(runHook(noEdits, 'The visual check is pending.\n\nYou need to: tap Approve on the screenshots when you\'re ready.\n\nACTION NEEDED FROM YOU — approve the visual check', PO_ON), 'visual-approval ask');
+  assertAllowed(runHook(noEdits, 'The Monitor will ping me when it exits, and I\'ll verify the deploy; land.yml will ping me and I\'ll check the run.', PO_ON), 'a monitor or land run pinging me is narration');
+  assertAllowed(runHook(noEdits, 'The note `ping me and I\'ll look` is quoted from the old rule.', PO_ON), 'a backticked phrase is a citation');
   assertAllowed(runHook(noEdits, 'CI will ping me and I\'ll check the run; the wake is armed in the background.', PO_ON), 'CI pinging me is narration');
   assertAllowed(runHook(noEdits, 'The reviewer will ping me and I\'ll check the PR when it arrives; the wake is armed in the background.', PO_ON), 'a reviewer pinging me is narration, not an offer');
   assertAllowed(runHook(noEdits, 'I could not verify the deploy, so I re-ran the check and it is live now.', PO_ON), 'I could not <verb> is not an offer');
