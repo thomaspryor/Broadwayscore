@@ -95,7 +95,22 @@ function buildAction(row, shows) {
   // the builder only sees a "musical" in the title itself.
   const known = shows.filter((s) => norm(s.title) === t && s.type).map((s) => s.type);
   if (known.length) show.type = known.sort((a, b) => known.filter((x) => x === b).length - known.filter((x) => x === a).length)[0];
-  const dup = shows.find((s) => s.id === id || (s.city === info.slug && norm(s.title) === t && String(s.openingDate || '').slice(0, 4) === year));
+  // "Tristan + Yseult" in a census headline must find "Tristan & Yseult" (BRO-6578), and a
+  // review dated across New Year must find the run it reviews. Same house only: Manchester has
+  // "Jungle Book" at Aviva Studios and "The Jungle Book" at the Octagon in one year.
+  const loose = (s) => norm(s).replace(/\b(?:and|the)\b/g, ' ').replace(/\s+/g, ' ').trim();
+  const lt = loose(title);
+  const reviewed = Date.parse(row.date);
+  // The run the review covers opened up to ~6 months before it (a revival a year on is new).
+  const sameRun = (s) => {
+    const d = Date.parse(s.openingDate || s.previewsStartDate || '');
+    return Number.isNaN(d) || Number.isNaN(reviewed)
+      ? String(s.id).endsWith(`-${year}`)
+      : d >= reviewed - 200 * 86400000 && d <= reviewed + 45 * 86400000;
+  };
+  const dup = shows.find((s) => s.id === id
+    || (s.city === info.slug && norm(s.title) === t && String(s.openingDate || '').slice(0, 4) === year)
+    || (lt && s.venue === venue && loose(s.title) === lt && sameRun(s)));
   if (dup) return { skip: `exists as ${dup.id}` };
   // Same guards CI applies, run here so a bad row never reaches a plan.
   const trial = applyAddShow(shows.map((s) => ({ ...s })), { type: 'add-show', show });

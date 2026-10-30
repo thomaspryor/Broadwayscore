@@ -53,3 +53,17 @@ test('Observer roundups are skipped and a standfirst title falls back to the URL
   assert.equal(headlineFallback('Stranger things turn an English village upside down in Max Porter’s rural noir Lanny', url), 'Lanny');
   assert.equal(headlineFallback('The Complete Works of William Shakespeare (Abridged)', url), 'The Complete Works of William Shakespeare (Abridged)');
 });
+
+test('skips a production whose title differs only by and/& or opens in the previous year (BRO-6578)', () => {
+  const bath = (over) => row({ title: 'Tristan Yseult', venue: 'Theatre Royal Bath', hub: 'south-west', date: '2026-10-02', ...over });
+  const existing = [{ id: 'tristan-and-yseult-royal-bath-regional-2026', title: 'Tristan & Yseult', city: 'bath-uk', venue: 'Theatre Royal Bath, Bath', openingDate: '2026-09-19' }];
+  assert.match(buildAction(bath(), existing).skip, /exists as tristan-and-yseult/);
+  const lear = [{ id: 'king-lear-crucible-regional-2025', title: 'The King Lear', city: 'sheffield-uk', venue: 'Crucible Theatre, Sheffield', openingDate: '2025-12-20' }];
+  assert.match(buildAction(row({ date: '2026-01-08' }), lear).skip, /exists/);
+  // Another house in the same city is a different production.
+  const octagon = [{ id: 'king-lear-octagon-regional-2025', title: 'The King Lear', city: 'sheffield-uk', venue: 'Lyceum Theatre, Sheffield', openingDate: '2025-12-20' }];
+  assert.ok(buildAction(row({ date: '2026-01-08' }), octagon).action);
+  // A revival two years on is a new production.
+  const old = [{ id: 'king-lear-crucible-regional-2024', title: 'King Lear', city: 'sheffield-uk', openingDate: '2024-03-01' }];
+  assert.ok(buildAction(row(), old).action);
+});
