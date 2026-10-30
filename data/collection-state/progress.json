@@ -49,15 +49,17 @@
       "white-noise-off-broadway-2019/theater-scene--david-kaufman.json",
       "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/white-noise-off-broadway-2019/variety--marilyn-stasio.json",
+      "white-noise-off-broadway-2019/variety--marilyn-stasio.json"
+    ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
+    "scrapingdog": [],
+    "scrapingbee": [
       "white-noise-off-broadway-2019/dailybeast--tim-teeman.json"
     ],
-    "scrapingbee": [],
     "brightdata": [
-      "white-noise-off-broadway-2019/variety--marilyn-stasio.json",
       "white-noise-off-broadway-2019/vulture--sara-holdren.json",
       "white-noise-off-broadway-2019/philadelphia-inquirer--toby-zinman.json"
     ],
@@ -76,19 +78,7 @@
       "white-noise-off-broadway-2019/njcom--patrick-maley.json"
     ]
   },
-  "startTime": "2026-10-30T06:34:22.653Z",
+  "startTime": "2026-10-30T06:36:24.415Z",
   "lastProcessed": "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json",
-  "log": [
-    {
-      "t": "2026-10-30T06:37:30.482Z",
-      "event": "bb-session",
-      "session": "e7ed8110",
-      "url": "https://www.nytimes.com/2019/03/20/theater/white-noise-review.html"
-    },
-    {
-      "t": "2026-10-30T06:37:31.126Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "log": []
 }
