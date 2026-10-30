@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-10-30T06:43:49.793Z",
+  "runDate": "2026-10-30T06:47:11.266Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
     "showFilter": "white-noise-off-broadway-2019,heroes-of-the-fourth-turning-off-broadway-2019",
     "aggressive": false,
@@ -18,12 +18,12 @@
   },
   "tierBreakdown": {
     "playwright": 13,
-    "amp": 0,
+    "amp": 2,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
-    "brightdata": 3,
+    "scrapingdog": 0,
+    "scrapingbee": 1,
+    "brightdata": 2,
     "archiveToday": 1,
     "archive": 9
   },
@@ -31,24 +31,24 @@
     "tier1Attempts": 15,
     "tier1Success": 14,
     "ampAttempts": 1,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 1,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 0,
     "tier2Attempts": 4,
-    "tier2Success": 2,
-    "tier3Attempts": 5,
-    "tier3Success": 4,
+    "tier2Success": 1,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 2,
     "tier4Success": 1,
     "totalFailed": 2,
-    "scrapingBeePageCredits": 12,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -150,15 +150,17 @@
       "white-noise-off-broadway-2019/theater-scene--david-kaufman.json",
       "white-noise-off-broadway-2019/theatres-leiter-side--samuel-l-leiter.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/white-noise-off-broadway-2019/variety--marilyn-stasio.json",
+      "white-noise-off-broadway-2019/variety--marilyn-stasio.json"
+    ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
+    "scrapingdog": [],
+    "scrapingbee": [
       "white-noise-off-broadway-2019/dailybeast--tim-teeman.json"
     ],
-    "scrapingbee": [],
     "brightdata": [
-      "white-noise-off-broadway-2019/variety--marilyn-stasio.json",
       "white-noise-off-broadway-2019/vulture--sara-holdren.json",
       "white-noise-off-broadway-2019/philadelphia-inquirer--toby-zinman.json"
     ],
