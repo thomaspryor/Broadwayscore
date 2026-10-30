@@ -385,9 +385,9 @@ test('passed on their own: AFGM 10-29 (TheWrap hand-ingested 12:42am) never coun
   const clean = afgmOnTime(); clean.manualActions = [];
   const legacy = afgmOnTime(); delete legacy.manualActions;
   assert.deepEqual(D.scoreboard([{ rec: clean }, { rec: legacy }], AFTER_DEADLINE), { graded: 2, passed: 2, passedOnOwn: 1 });
-  // A fix logged outside the night window does not count against it.
-  const outside = afgmOnTime(); outside.manualActions = [{ at: '2026-10-31T12:00:00Z', outletId: 'thewrap', kind: 'hand-fix' }];
-  assert.deepEqual(D.scoreboard([{ rec: outside }], AFTER_DEADLINE).passedOnOwn, 1);
+  // Any logged hand fix rules the night out, even one after the +6h window.
+  const late = afgmOnTime(); late.manualActions = [{ at: '2026-10-31T12:00:00Z', outletId: 'thewrap', kind: 'hand-fix' }];
+  assert.deepEqual(D.scoreboard([{ rec: late }], AFTER_DEADLINE).passedOnOwn, 0);
   // The email names the hand fix and the scoreboard line.
   assert.match(lineFor(pass, AFGM_SHOW).line, /TheWrap fixed by hand at 12:42am/);
   const html = D.renderPressNightBlock({ night: '2026-10-29', lines: [{ verdict: 'PASS', line: 'x' }], scoreboard: { graded: 5, passed: 2, passedOnOwn: 1 } }, { nowMs: MORNING });

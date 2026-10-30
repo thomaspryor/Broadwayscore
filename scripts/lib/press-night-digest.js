@@ -346,7 +346,9 @@ function scoreboard(records, nowMs = Date.now()) {
     out.graded += 1;
     if (r.verdict !== 'PASS') continue;
     out.passed += 1;
-    if (Array.isArray(r.manualActions) && !r.manualActions.length) out.passedOnOwn += 1;
+    // Any logged hand fix rules the night out, inside the night window or not (the card: "excludes any night
+    // with manualActions"). A record never stamped (no array) never counts as on its own.
+    if (Array.isArray(rec.manualActions) && !rec.manualActions.length) out.passedOnOwn += 1;
   }
   return out;
 }
