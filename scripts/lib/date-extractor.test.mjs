@@ -38,8 +38,8 @@ for (const year of [2026, 2027, 2028, 2035]) {
   for (const { name, url, result } of urlCases) {
     test(`URL ${name}: ${year} clock accepts through next year only`, t => {
       setClock(t, year);
-      // 2026 is a deliberately excluded show-title year in these URL patterns.
-      if (year !== 2026) assert.deepEqual(extractDateFromUrl(url(year)), result(year));
+      // 2026 is a title year only for the bare-year pattern (BRO-6585).
+      if (year !== 2026 || name !== 'year only') assert.deepEqual(extractDateFromUrl(url(year)), result(year));
       assert.deepEqual(extractDateFromUrl(url(year + 1)), result(year + 1));
       assert.equal(extractDateFromUrl(url(year + 2)), null);
     });

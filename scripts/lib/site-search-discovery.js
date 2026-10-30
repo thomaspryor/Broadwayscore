@@ -271,7 +271,9 @@ const SITE_SEARCH_ENDPOINTS = {
     name: 'The Hollywood Reporter',
     url: 'https://www.hollywoodreporter.com/?s={TITLE}+review',
     domain: 'hollywoodreporter.com',
-    linkPattern: /href="(https:\/\/www\.hollywoodreporter\.com\/[^"]*review[^"]*)"/gi,
+    // Not /movies/: a film-section hit (the 1992 A Few Good Men film) was taken
+    // as the 2026 Broadway review (BRO-6585). /tv/ holds a real 2012 review.
+    linkPattern: /href="(https:\/\/www\.hollywoodreporter\.com\/(?!movies\/)[^"]*review[^"]*)"/gi,
     requiresJs: true,
   },
   'deadline': {

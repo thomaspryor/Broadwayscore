@@ -9,10 +9,8 @@ const require = createRequire(import.meta.url);
 const { extractDateFromUrl } = require('./rebuild-helpers.js');
 
 test('WordPress-style /YYYY/MM/DD/', () => {
-  // 2026 is in rebuild-helpers.js's TITLE_YEARS blocklist (a show title looks
-  // like a year), so use 2025 here to exercise the pattern itself.
-  const r = extractDateFromUrl('https://loureviews.blog/2025/07/14/some-show-review/');
-  assert.equal(r.date, '2025-07-14');
+  const r = extractDateFromUrl('https://loureviews.blog/2026/07/14/some-show-review/');
+  assert.equal(r.date, '2026-07-14');
   assert.equal(r.source, 'url-ymd');
 });
 

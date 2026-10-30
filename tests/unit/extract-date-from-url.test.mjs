@@ -7,8 +7,9 @@
  *  - Guardian /YYYY/mon/DD/ and /YYYY/MM/DD/ prior-season URLs resolve, so a
  *    mis-linked prior-production review (e.g. 2017 Playhouse Glengarry) gets a
  *    date and the Date guard can flag it even AFTER the show opens.
- *  - The current season year (2026) is a TITLE_YEAR and is NOT treated as a date,
- *    so genuine current reviews are not given a spurious URL date.
+ *  - A full /2026/MM/DD/ URL date IS a date (BRO-6585): treating 2026 as a title
+ *    year left every 2026 WordPress-style review undated. 2026 stays a title
+ *    year only for the bare-year pattern.
  *  - Venue-only / dateless URLs stay null.
  *  - Bare year alone is never returned as a date (.date) — only as yearOnly,
  *    which the guards intentionally ignore (July-1 imprecision = Class B FPs).
@@ -52,9 +53,9 @@ describe('extractDateFromUrl — date guard inputs', () => {
     assert.equal(r?.date, '2024-10-10');
   });
 
-  test('current-season year 2026 is a TITLE_YEAR — not returned as a .date', () => {
+  test('a full /2026/MM/DD/ URL resolves to its date (BRO-6585)', () => {
     const r = extractDateFromUrl('https://culturesauce.com/2026/04/25/joe-turners-review/');
-    assert.ok(!r || !r.date, 'should not produce a date for a /2026/ URL');
+    assert.equal(r?.date, '2026-04-25');
   });
 
   test('venue-only / dateless URL returns null or no .date', () => {

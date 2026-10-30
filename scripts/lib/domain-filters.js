@@ -500,8 +500,13 @@ function isBlockedReviewUrl(url, opts) {
     // Feature articles and interviews — not reviews
     // Matches exact path segments: /features/, /feature/, /interviews/, /interview/
     // Does NOT match /featured-review/ or /review-features-xyz/ (substring matches)
+    // A /features/ section whose slug says "review" is a review: The Independent
+    // files its Broadway reviews under /theatre-dance/features/ (A Few Good Men
+    // 2026, Every Brilliant Thing 2026 were dropped, BRO-6585). Interviews stay blocked.
     const pathParts = lowerPath.split('/').filter(Boolean);
-    if (pathParts.some(p => p === 'features' || p === 'feature' || p === 'interviews' || p === 'interview')) return true;
+    const featureReviewExempt = pathSaysReview && !/round-?up/.test(lowerPath);
+    if (pathParts.some(p => p === 'interviews' || p === 'interview')) return true;
+    if (!featureReviewExempt && pathParts.some(p => p === 'features' || p === 'feature')) return true;
     // The Stage publishes reviews only under /reviews/ and /long-reviews/.
     // Its /news/, /opinion/ (incl. its "--review-round-up" compilations),
     // /promoted-content/ and /review-round-ups/ pages carry sidebar star

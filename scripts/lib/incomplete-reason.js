@@ -72,7 +72,9 @@ function classifyIncompleteReason(review, failedFetchEntry) {
   if (tier === 'complete' && failedFetchEntry?.failureReason !== 'url_content_mismatch') return null;
 
   const hasUrl = !!review.url;
-  const hasFetchHistory = !!(review.fetchMethod || review.textFetchedAt);
+  // A failed fetch never sets fetchMethod/textFetchedAt but does stamp a retry
+  // time; without it a just-failed file read as "never scraped" (BRO-6585).
+  const hasFetchHistory = !!(review.fetchMethod || review.textFetchedAt || review.fetchRetryAfter || review.fetchPrePubFailures);
   const fullText = review.fullText || '';
   const failureReason = failedFetchEntry ? effectiveFailureReason(failedFetchEntry) : undefined;
 
