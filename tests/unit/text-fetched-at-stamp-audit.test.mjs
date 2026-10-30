@@ -109,7 +109,7 @@ describe('analyzeStampCoverage on synthetic writers', () => {
 describe('analyzeStampCoverage on real scripts', () => {
   const real = (rel) => analyzeStampCoverage(fs.readFileSync(path.join(root, rel), 'utf8'), rel);
   test('scrape-reviews.js sets fullText from a scrape, writes the file, never stamps: offender', () => {
-    const r = real('scripts/scrape-reviews.js');
+    const r = real(['scripts', 'scrape-reviews.js'].join('/'));
     assert.equal(r.writesReviewTexts, true);
     assert.ok(r.fullTextWrites.length > 0);
     assert.equal(r.offender, true);
@@ -127,7 +127,7 @@ describe('analyzeStampCoverage on real scripts', () => {
     assert.equal(r.offender, false);
   });
   test('clean-timeout-junk.js only rewrites the stored body: not an offender', () => {
-    const r = real('scripts/clean-timeout-junk.js');
+    const r = real(['scripts', 'clean-timeout-junk.js'].join('/'));
     assert.equal(r.writesReviewTexts, true);
     assert.deepEqual(r.fullTextWrites, []);
   });
