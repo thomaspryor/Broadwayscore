@@ -282,12 +282,12 @@ async function _fetchReviewsPageAnchorsViaScraperUncached() {
   // rather than a cacheable empty answer.
   const articleLinkCount = (html.match(/href="[^"]*\/article\//gi) || []).length;
   if (articleLinkCount < MIN_ARTICLE_LINKS_FOR_REAL_LISTING) return null;
-  const re = /href="(https:\/\/www\.broadwayworld\.com\/article\/[^"]*Review-Roundup[^"]*)"/gi;
+  const re = /href="(https:\/\/www\.broadwayworld\.com\/(?:(?:london|off-broadway|westend)\/)?article\/[^"]*Review-Roundup[^"]*)"/gi;
   const found = new Set();
   let m;
   while ((m = re.exec(html)) !== null) found.add(m[1]);
   // Relative hrefs (BWW mixes both forms across templates).
-  const reRel = /href="(\/article\/Review-Roundup-[^"]+)"/gi;
+  const reRel = /href="(\/(?:(?:london|off-broadway|westend)\/)?article\/Review-Roundup-[^"]+)"/gi;
   while ((m = reRel.exec(html)) !== null) found.add('https://www.broadwayworld.com' + m[1]);
   return [...found];
 }

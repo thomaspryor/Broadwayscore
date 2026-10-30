@@ -33,11 +33,11 @@ function extractRoundupAnchors(html) {
   const found = new Set();
   const patterns = [
     // Absolute URLs: https://www.broadwayworld.com/[london/]article/Review-Roundup-...
-    /(?:href|data-href|data-url)=["'](https?:\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
+    /(?:href|data-href|data-url)=["'](https?:\/\/(?:www\.)?broadwayworld\.com\/(?:(?:london|off-broadway|westend)\/)?article\/Review-Roundup[^"']*)["']/gi,
     // Protocol-relative: //www.broadwayworld.com/article/Review-Roundup-...
-    /(?:href|data-href|data-url)=["'](\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
+    /(?:href|data-href|data-url)=["'](\/\/(?:www\.)?broadwayworld\.com\/(?:(?:london|off-broadway|westend)\/)?article\/Review-Roundup[^"']*)["']/gi,
     // Root-relative: /article/Review-Roundup-... or /london/article/Review-Roundup-...
-    /(?:href|data-href|data-url)=["'](\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
+    /(?:href|data-href|data-url)=["'](\/(?:(?:london|off-broadway|westend)\/)?article\/Review-Roundup[^"']*)["']/gi,
   ];
   for (const p of patterns) {
     let m;
