@@ -14,7 +14,12 @@
     "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json",
     "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
     "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
-    "the-lives-of-others-west-end-2026/britishtheatrecom--unknown.json"
+    "the-lives-of-others-west-end-2026/britishtheatrecom--unknown.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--zain-russell.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
   ],
   "failed": [
     "medea-off-broadway-2026/express-uk--neil-norman.json",
@@ -30,7 +35,6 @@
     "girls-off-west-end-2026/letterboxd--unknown.json",
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "girls-off-west-end-2026/radio-times--molly-moss.json",
-    "memoriam-off-west-end-2026/ground--unknown.json",
     "memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
     "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
@@ -45,7 +49,8 @@
     "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
     "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
-    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -62,14 +67,19 @@
       "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json",
       "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
       "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
-      "the-lives-of-others-west-end-2026/britishtheatrecom--unknown.json"
+      "the-lives-of-others-west-end-2026/britishtheatrecom--unknown.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--zain-russell.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
     ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "memoriam-off-west-end-2026/ground--unknown.json"
+    ],
     "scrapingbee": [
       "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
     ],
@@ -85,15 +95,17 @@
       "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
       "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
       "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
-      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+      "data/review-texts/the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "medea-off-broadway-2026/thewrap--thom-geier.json",
-      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json"
     ]
   },
   "startTime": "2026-10-30T08:04:36.278Z",
-  "lastProcessed": "the-lives-of-others-west-end-2026/britishtheatrecom--unknown.json",
+  "lastProcessed": "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
   "log": [
     {
       "t": "2026-10-30T08:13:43.556Z",
@@ -117,6 +129,38 @@
       "t": "2026-10-30T08:27:36.605Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-30T09:47:07.251Z",
+      "event": "bb-session",
+      "session": "1bab242c",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T09:48:14.035Z",
+      "event": "bb-session",
+      "session": "ee3dbe88",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-30T09:48:50.978Z",
+      "event": "bb-session",
+      "session": "0ceb96a2",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-10-30T09:53:53.789Z",
+      "event": "bb-session",
+      "session": "83376d20",
+      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
+    },
+    {
+      "t": "2026-10-30T09:53:54.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
+  ],
+  "recoveredAfterFailure": [
+    "memoriam-off-west-end-2026/ground--unknown.json"
   ]
 }

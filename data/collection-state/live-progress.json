@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-30T09:18:49.380Z",
-  "processed": 15,
-  "failed": 18,
-  "successRate": "45.5%",
+  "updatedAt": "2026-10-30T09:54:32.884Z",
+  "processed": 20,
+  "failed": 29,
+  "successRate": "40.8%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 16,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 11,
-    "archive": 2
+    "archiveToday": 12,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-30T08:13:43.556Z",
@@ -38,6 +38,35 @@
       "t": "2026-10-30T08:27:36.605Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-30T09:47:07.251Z",
+      "event": "bb-session",
+      "session": "1bab242c",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T09:48:14.035Z",
+      "event": "bb-session",
+      "session": "ee3dbe88",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-30T09:48:50.978Z",
+      "event": "bb-session",
+      "session": "0ceb96a2",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-10-30T09:53:53.789Z",
+      "event": "bb-session",
+      "session": "83376d20",
+      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
+    },
+    {
+      "t": "2026-10-30T09:53:54.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
