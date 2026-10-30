@@ -7,7 +7,8 @@
  * aggregator thumb), a syndicated critic on two outlets, and decoys that must NOT be published (an interview, an
  * extension story, an unregistered blog, a review dated the wrong week). Review text is generated filler; nothing here
  * is copyrighted. A recorded fixture from a real opening (Paranormal Activity, Aug 25) replaces this once someone with
- * live-page and review-texts access records it; the rehearsal runner takes either, so nothing else changes.
+ * live-page and review-texts access records it. Only a pass on that recorded fixture arms a real night (BRO-6619);
+ * --rehearse runs this synthetic one as a health check and writes data/audit/lane-rehearsal.json, which never arms.
  *
  * Deterministic: no randomness, no clock.
  */

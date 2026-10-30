@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const rh = require('../../scripts/lib/opening-night-lane/rehearsal.js');
@@ -48,7 +49,13 @@ test('the recorded record has its own file, so the weekly synthetic run cannot o
 
 test('the night entry and the arm-check CLI read the recorded record', () => {
   assert.match(fs.readFileSync(path.join(ROOT, 'scripts', 'opening-night-lane.js'), 'utf8'), /rehearsalRecordFile\(repoDir, 'recorded'\)/);
-  assert.match(fs.readFileSync(path.join(ROOT, 'scripts', 'opening-night-lane-rehearse.js'), 'utf8'), /readRehearsalRecord\(arg\('--record', ARM_RECORD\)\)/);
+  // Behaviour: with no --record the CLI must not read the committed synthetic record (which would say
+  // no-recorded-rehearsal); it reads the recorded file, which no real opening has produced yet.
+  assert.ok(fs.existsSync(rh.rehearsalRecordFile(ROOT, 'synthetic')), 'the synthetic record is committed');
+  if (fs.existsSync(rh.rehearsalRecordFile(ROOT, 'recorded'))) return; // a real recorded rehearsal exists: nothing to prove here
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'opening-night-lane-rehearse.js'), '--arm-check'], { encoding: 'utf8' });
+  assert.equal(r.status, 3);
+  assert.equal(JSON.parse(r.stdout.trim()).reason, 'no-rehearsal-record');
 });
 
 test('a no-recorded-rehearsal refusal does not tell the owner to rerun the synthetic rehearsal', async () => {
@@ -65,7 +72,7 @@ test('a no-recorded-rehearsal refusal does not tell the owner to rerun the synth
 
 test('the real lane hash covers the scorer, its llm-scoring imports, both entries, the live workflow and the Browserbase route', () => {
   const files = rh.laneCodeFiles().map((f) => path.relative(ROOT, f));
-  for (const f of [...rh.LANE_EXTRA_FILES, rh.LANE_SCORER_ROOT, 'scripts/llm-scoring/config.ts', 'scripts/llm-scoring/ensemble.ts', 'scripts/lib/opening-night-lane/browserbase-fetch.js']) {
+  for (const f of [...rh.LANE_EXTRA_FILES, rh.LANE_SCORER_ROOT, 'scripts/llm-scoring/config.ts', 'scripts/llm-scoring/ensemble.ts', 'scripts/lib/models.js', 'scripts/lib/opening-night-lane/browserbase-fetch.js']) {
     assert.ok(files.includes(f), `${f} must be in the lane hash`);
   }
   for (const f of ['scripts/opening-night-lane-shadow.js', 'scripts/lib/opening-night-lane-shadow.js', 'scripts/lib/owner-alert-router.js']) {
@@ -84,7 +91,7 @@ test('changing ensemble-scorer.ts, a prompt it imports, the entry script or the 
     }
     const lane = path.join(tmp, 'scripts', 'lib', 'opening-night-lane');
     assert.equal(rh.laneCodeHash(lane), rh.laneCodeHash(), 'the mirror hashes like the real tree');
-    for (const rel of [rh.LANE_SCORER_ROOT, 'scripts/llm-scoring/config.ts', 'scripts/opening-night-lane.js', '.github/workflows/opening-night-lane-live.yml', 'scripts/lib/opening-night-lane/browserbase-fetch.js']) {
+    for (const rel of [rh.LANE_SCORER_ROOT, 'scripts/llm-scoring/config.ts', 'scripts/opening-night-lane.js', '.github/workflows/opening-night-lane-live.yml', 'scripts/lib/models.js', 'scripts/lib/opening-night-lane/browserbase-fetch.js']) {
       const before = rh.laneCodeHash(lane);
       fs.appendFileSync(path.join(tmp, rel), '\n// edit\n');
       assert.notEqual(rh.laneCodeHash(lane), before, `editing ${rel} must change the lane hash`);

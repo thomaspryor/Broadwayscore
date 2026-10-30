@@ -2,7 +2,8 @@
 'use strict';
 /**
  * `lane --rehearse` (BRO-4787): replay a fixture through the opening-night lane's full path in dry-run, write the
- * verdict record, and exit 0 on pass / 1 on fail. `--arm-check` reads that record and exits 0 only if the lane may arm.
+ * verdict record, and exit 0 on pass / 1 on fail. `--arm-check` reads the recorded rehearsal's record and exits 0 only
+ * if the lane may arm.
  *
  *   node scripts/opening-night-lane-rehearse.js --rehearse [--fixture synthetic] [--out data/audit/lane-rehearsal.json]
  *   node scripts/opening-night-lane-rehearse.js --arm-check [--record data/audit/lane-rehearsal-recorded.json] [--max-age-days 8]

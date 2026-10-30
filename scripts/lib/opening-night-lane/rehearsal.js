@@ -48,9 +48,9 @@ function buildAdapters(fixture) {
 // files, not walked: the entry requires the alert router (~44 Linear/notify files, see driver.js buildRealLaneDeps).
 // The scorer is hashed with the scripts/llm-scoring .ts files it imports (prompts, config, the per-model scorers); its
 // scripts/lib .js requires are left out, as the rehearsal stubs the scorer and an edit there would only churn the
-// record (BRO-6276). The shadow entry stays out on purpose (opening-night-lane-shadow.js header). The Browserbase
+// record (BRO-6276), except scripts/lib/models.js: it names the models the night scores with, and a swap must disarm. The shadow entry stays out on purpose (opening-night-lane-shadow.js header). The Browserbase
 // route (browserbase-fetch.js, BRO-6073) is in this folder, so the folder walk already covers it.
-const LANE_EXTRA_FILES = ['scripts/opening-night-lane.js', 'scripts/opening-night-lane-rehearse.js', '.github/workflows/opening-night-lane-live.yml'];
+const LANE_EXTRA_FILES = ['scripts/opening-night-lane.js', 'scripts/opening-night-lane-rehearse.js', '.github/workflows/opening-night-lane-live.yml', 'scripts/lib/models.js'];
 const LANE_SCORER_ROOT = 'scripts/llm-scoring/ensemble-scorer.ts';
 
 /**

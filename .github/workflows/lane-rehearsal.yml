@@ -76,7 +76,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening-night lane rehearsal failed'
-          description: 'The lane rehearsal failed or crashed, so the opening-night lane will NOT arm for the next opening and the old pipeline runs unchanged. Read data/audit/lane-rehearsal.json for the failing reviews (BRO-4787).'
+          description: 'The synthetic lane rehearsal (the weekly health check) failed or crashed, so the lane code has a regression; fix it before a recorded rehearsal can arm the lane. The old pipeline runs unchanged either way. Read data/audit/lane-rehearsal.json for the failing reviews (BRO-4787).'
           severity: 'warning'
           email: 'false'
           min_consecutive_failures: '2'
