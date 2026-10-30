@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T16:09:51.058Z",
+  "timestamp": "2026-10-30T16:50:22.044Z",
   "stats": {
-    "totalReviews": 70433,
-    "alreadyFlagged": 22285,
+    "totalReviews": 70466,
+    "alreadyFlagged": 22304,
     "dateGuardCatches": 230,
     "directorMismatch": 2874,
-    "tvFilmSignals": 2025,
+    "tvFilmSignals": 2026,
     "londonSignals": 3402,
     "offBroadwaySignals": 634,
     "yearMismatch": 288,
-    "noPublishDate": 8019
+    "noPublishDate": 7994
   },
   "findings": [
     {
@@ -57806,6 +57806,20 @@
       ]
     },
     {
+      "showId": "the-heart-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 87,
+      "publishDate": "2026-10-29",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TYX5PU",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
       "showId": "the-heidi-chronicles-2015",
       "file": "nbcny--robert-kahn.json",
       "score": 72,
@@ -67516,7 +67530,7 @@
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 61,
       "publishDate": "2025-02-14",
-      "url": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-UNICORN-Garrick-Theatre-20250214",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",

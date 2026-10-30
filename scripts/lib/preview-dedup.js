@@ -24,7 +24,11 @@
  *   { action: 'skip', lastPreview, hoursSince, newReviews }  — recent preview, insufficient new reviews
  *   { action: 'resend', lastPreview, hoursSince, newReviews }— recent preview, 3+ new reviews
  */
-function checkPreviewDedup(sentData, broadcastKey, currentReviewCount, now = Date.now()) {
+function checkPreviewDedup(sentData, broadcastKey, current, now = Date.now()) {
+  // BRO-6634: `current` is { total, shows: {id: {score, reviewCount}} } (the
+  // displayed numbers), or a bare review-count total from older callers.
+  const currentReviewCount = typeof current === 'number' ? current : (current && current.total) || 0;
+  const currentShows = current && typeof current === 'object' ? current.shows : null;
   const shows = (sentData && sentData.shows) || {};
   const previewKeyPrefix = `preview:${broadcastKey}:`;
 
@@ -53,7 +57,14 @@ function checkPreviewDedup(sentData, broadcastKey, currentReviewCount, now = Dat
   const previousReviewCount = lastPreview.reviewCount || 0;
   const newReviews = currentReviewCount - previousReviewCount;
 
-  if (newReviews < 3) {
+  // BRO-6634 (owner 2026-10-30): any change to a displayed number re-sends
+  // within the window: the rounded score (59 -> 60) or the review count. The
+  // old +3-reviews threshold left the owner holding stale numbers. A legacy
+  // entry without per-show numbers compares the review-count total.
+  const changed = currentShows && lastPreview.shows
+    ? numbersDiffer(lastPreview.shows, currentShows)
+    : newReviews !== 0;
+  if (!changed) {
     return { action: 'skip', lastPreview, hoursSince, newReviews };
   }
 
@@ -78,19 +89,36 @@ function checkPreviewDedup(sentData, broadcastKey, currentReviewCount, now = Dat
  * @param {string} showId   - Show ID to check (matched as a substring of any preview key).
  * @param {number} windowMs - Rolling window in ms. Default 24h.
  * @param {number} now      - Clock override for tests.
+ * @param {object} [current] - {score, reviewCount} displayed now (BRO-6634); a recent preview
+ *                             with different numbers does not block.
  * @returns {boolean} true if a recent preview exists and the show should be skipped.
  */
-function hasRecentPreviewForShow(sentData, showId, windowMs = 24 * 3_600_000, now = Date.now()) {
+function hasRecentPreviewForShow(sentData, showId, windowMs = 24 * 3_600_000, now = Date.now(), current = null) {
   const shows = (sentData && sentData.shows) || sentData || {};
+  let latest = null;
+  let latestKey = null;
   for (const [key, value] of Object.entries(shows)) {
     if (!key.startsWith('preview:')) continue;
-    if (!key.includes(showId)) continue;
+    // Exact id match (BRO-6634): a substring test let "foo" match "foo-bar".
+    if (!previewKeyIds(key).includes(showId)) continue;
     const sentAt = value && value.sentAt;
     if (!sentAt) continue;
     const ageMs = now - new Date(sentAt).getTime();
-    if (ageMs >= 0 && ageMs < windowMs) return true;
+    if (ageMs >= 0 && ageMs < windowMs && (!latest || sentAt > latest.sentAt)) { latest = value; latestKey = key; }
   }
-  return false;
+  if (!latest) return false;
+  // BRO-6634: with the show's current displayed numbers, a recent preview only
+  // blocks when it carried the same numbers. Previews recorded before per-show
+  // numbers existed fall back to the review count (single-show entries) or block.
+  if (current) {
+    const was = latest.shows && latest.shows[showId];
+    if (was) return was.score === current.score && was.reviewCount === current.reviewCount;
+    if (!latest.shows && previewKeyIds(latestKey).length === 1
+      && Number.isFinite(latest.reviewCount) && Number.isFinite(current.reviewCount)) {
+      return latest.reviewCount === current.reviewCount;
+    }
+  }
+  return true;
 }
 
 /**
@@ -115,5 +143,7 @@ function hasRecentOverdueAlert(sentData, showId, windowMs = 24 * 3_600_000, now 
   const ageMs = now - new Date(sentAt).getTime();
   return ageMs >= 0 && ageMs < windowMs;
 }
+
+const { numbersDiffer, previewKeyIds } = require('./broadcast-refresh');
 
 module.exports = { checkPreviewDedup, hasRecentPreviewForShow, hasRecentOverdueAlert };

@@ -16,6 +16,12 @@ on:
     # now 02:00). GitHub's schedule lag here is 5-8h, so 06:00 landed after
     # the 11:30 UTC morning digest (2026-10-06: snapshot written 12:25 UTC).
     - cron: '45 1 * * *'
+    # BRO-6634: opening-night cadence for the Reddit draft. Hourly, the cheap
+    # `due` job asks the draft script's own rule whether any show needs a draft
+    # or redraft (a displayed-score or review-count move counts, 59->60
+    # included); only then does draft-opening-posts run, and its email step
+    # sends the update. The digest job stays daily.
+    - cron: '41 * * * *'
 
   workflow_dispatch:
     inputs:
@@ -30,14 +36,18 @@ on:
         default: ''
         type: string
       review_check:
-        description: 'Pre-send review check (BRO-5887) before any draft email: apply = run the show-scoped recovery tools and write review-texts; report-only = census only, nothing written; off = skip. Scheduled runs use apply. A dry_run forces report-only.'
+        description: 'Pre-send review check (BRO-5887) before any draft email: apply = run the show-scoped recovery tools and write review-texts; report-only = census only, nothing written; off = skip. The daily run uses apply, the hourly run report-only. A dry_run forces report-only.'
         required: false
         default: 'apply'
         type: choice
         options: [apply, report-only, off]
 
+# BRO-6634: the hourly due-gate runs get their own group, so a pending hourly
+# run can never replace a pending daily run (GitHub keeps one pending run per
+# group) and drop that day's digest snapshot. The draft jobs also share a
+# job-level group, so an hourly and a daily drafter never overlap.
 concurrency:
-  group: reddit-engagement-digest
+  group: reddit-engagement-digest-${{ github.event.schedule == '41 * * * *' && 'hourly' || 'daily' }}
   cancel-in-progress: false
 
 permissions:
@@ -48,8 +58,11 @@ jobs:
   digest:
     # A resend dispatch is about a few named drafts only; running the digest
     # too would write a snapshot the 06:00 run overwrites unread (see above).
-    if: ${{ github.event_name == 'schedule' || inputs.resend_shows == '' }}
+    if: ${{ github.event.schedule == '45 1 * * *' || (github.event_name == 'workflow_dispatch' && inputs.resend_shows == '') }}
     runs-on: ubuntu-latest
+    concurrency:
+      group: reddit-engagement-digest
+      cancel-in-progress: false
     # Was 10 — the fallback chain (Reddit OAuth dormant, Bright Data refuses
     # reddit.com, unauthenticated JSON hard-403s) pushes nearly every call
     # through Scrapingdog's tier-escalation retries or 429 backoff, and
@@ -153,8 +166,39 @@ jobs:
   # Reddit link (scripts/send-reddit-post-email.js). Its own job so a slow
   # draft can't eat the engagement digest's time budget above, and a digest
   # timeout can't drop the drafts.
-  draft-opening-posts:
+  # BRO-6634: hourly gate. No LLM, no network, no writes: runs the draft
+  # script's own candidate rule (selectCandidates) over the current data.
+  due:
+    if: ${{ github.event.schedule == '41 * * * *' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      due: ${{ steps.due.outputs.due }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Check whether a Reddit draft is due
+        id: due
+        run: node scripts/reddit-opening-posts-due.js
+
+  draft-opening-posts:
+    needs: due
+    # Daily run and dispatches always; the hourly run only when a draft is due.
+    if: ${{ !cancelled() && (github.event.schedule != '41 * * * *' || needs.due.outputs.due == 'true') }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: reddit-opening-posts
+      cancel-in-progress: false
     # Was 10. BRO-4597 added Playwright setup (worst case ~8 min, see
     # setup-playwright) and a 4-minute screenshot budget in the email step
     # (90s per show on a resend, so 5 shows need ~8).
@@ -250,7 +294,9 @@ jobs:
           SERP_CENSUS_NAIVE_PAGES: ${{ vars.SERP_CENSUS_NAIVE_PAGES || '' }}
           SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          REVIEW_CHECK_MODE: ${{ inputs.dry_run == true && 'report-only' || inputs.review_check || 'apply' }}
+          # Hourly runs report only (BRO-6634): an apply there would push review-texts
+          # and start a rebuild every hour during an opening.
+          REVIEW_CHECK_MODE: ${{ (inputs.dry_run == true || github.event.schedule == '41 * * * *') && 'report-only' || inputs.review_check || 'apply' }}
           RESEND_SHOWS: ${{ inputs.resend_shows }}
         run: |
           ARGS="--mode=$REVIEW_CHECK_MODE"

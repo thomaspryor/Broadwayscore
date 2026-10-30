@@ -10,9 +10,10 @@
  *
  * Per draft:
  *   - status 'ready' and never emailed   → "Reddit post ready: <show> ..." email
- *   - emailed, still not posted, score changed or review count moved by 3+
+ *   - emailed, still not posted, displayed score or review count changed at all
  *     since that email (the drafter redrafts it first) → "Updated Reddit post"
- *     with fresh text and screenshots, up to 3 times (BRO-5879)
+ *     with fresh text and screenshots; after 3 updates, at most one per 6h so
+ *     the final numbers still arrive (BRO-5879, BRO-6634)
  *   - emailed 20h+ ago, still not posted, numbers steady → one "Still ready" reminder
  *   - posted, stale (past DRAFT_TTL_DAYS) → nothing
  * Sends stamp emailedAt / reminderAt on the draft so nothing sends twice; the

@@ -299,3 +299,189 @@ test('filterShowsWithConsensus: coalesced batch — drops only the show missing 
   assert.deepEqual(calls.exitCodes, [], 'a ready show in the batch must still send even if another show is not ready');
   assert.ok(calls.errors.some(msg => msg.includes('Other Show')), 'expected the dropped show to be named');
 });
+
+// ---------------------------------------------------------------------------
+// BRO-6634: every change to the displayed score or the review count reaches
+// the owner (new [PREVIEW], rebuilt draft), and an unsent draft gets reminders.
+// ---------------------------------------------------------------------------
+const refresh = require('./lib/broadcast-refresh.js');
+const { checkPreviewDedup, hasRecentPreviewForShow } = require('./lib/preview-dedup.js');
+const { buildReminder } = require('./remind-unsent-broadcast-draft.js');
+
+const H = 3_600_000;
+const T0 = Date.parse('2026-10-30T02:00:00Z');
+const AFGM = 'a-few-good-men-2026';
+const n = (score, reviewCount) => ({ score, reviewCount });
+
+function previewEntry(at, shows) {
+  return { sentAt: new Date(at).toISOString(), reviewCount: Object.values(shows).reduce((a, s) => a + s.reviewCount, 0), shows };
+}
+
+test('BRO-6634 numbersFromEmailRows rounds the score the way the email shows it', () => {
+  assert.deepEqual(refresh.numbersFromEmailRows([{ showId: AFGM, score: 59.6, reviewCount: 21 }]), { [AFGM]: n(60, 21) });
+  assert.deepEqual(refresh.numbersFromEmailRows([{ showId: AFGM, score: null, reviewCount: 3 }]), { [AFGM]: n(null, 3) });
+});
+
+test('BRO-6634 preview dedup: a 59 to 60 move resends, unchanged numbers skip', () => {
+  const key = `broadway:${AFGM}`;
+  const sent = { shows: { [`preview:${key}:2026-10-30`]: previewEntry(T0, { [AFGM]: n(59, 21) }) } };
+  const later = T0 + 2 * H;
+  assert.equal(checkPreviewDedup(sent, key, { total: 21, shows: { [AFGM]: n(60, 21) } }, later).action, 'resend');
+  assert.equal(checkPreviewDedup(sent, key, { total: 22, shows: { [AFGM]: n(59, 22) } }, later).action, 'resend');
+  assert.equal(checkPreviewDedup(sent, key, { total: 21, shows: { [AFGM]: n(59, 21) } }, later).action, 'skip');
+});
+
+test('BRO-6634 hasRecentPreviewForShow lets changed numbers through and blocks unchanged ones', () => {
+  const sent = { shows: { [`preview:broadway:${AFGM}:2026-10-30`]: previewEntry(T0, { [AFGM]: n(59, 21) }) } };
+  const later = T0 + H;
+  assert.equal(hasRecentPreviewForShow(sent, AFGM, 24 * H, later, n(59, 21)), true);
+  assert.equal(hasRecentPreviewForShow(sent, AFGM, 24 * H, later, n(60, 21)), false);
+  assert.equal(hasRecentPreviewForShow(sent, AFGM, 24 * H, later, n(59, 22)), false);
+  // No numbers passed: old behaviour, any recent preview blocks.
+  assert.equal(hasRecentPreviewForShow(sent, AFGM, 24 * H, later), true);
+  // Exact id match: a show whose id is a prefix of another is not covered.
+  assert.equal(hasRecentPreviewForShow(sent, 'a-few-good-men', 24 * H, later, n(59, 21)), false);
+});
+
+function unsentDraft(extra = {}) {
+  return {
+    completed: true, draftId: 'draft_afgm', draftStatus: 'draft', sentAt: null,
+    draftCreatedAt: new Date(T0).toISOString(), draftNumbers: { [AFGM]: n(59, 21) }, ...extra,
+  };
+}
+function trackerWith(record) {
+  const key = `broadway:${AFGM}`;
+  return { [key]: record, [AFGM]: { ...record, broadcastKey: key } };
+}
+
+test('BRO-6634 draftsNeedingRefresh: rebuild only when the draft numbers moved', () => {
+  const shows = trackerWith(unsentDraft());
+  assert.deepEqual(refresh.draftsNeedingRefresh(shows, () => n(59, 21)), []);
+  const moved = refresh.draftsNeedingRefresh(shows, () => n(60, 21));
+  assert.equal(moved.length, 1);
+  assert.equal(moved[0].broadcastKey, `broadway:${AFGM}`);
+  assert.deepEqual(moved[0].ids, [AFGM]);
+  assert.deepEqual(moved[0].now, { [AFGM]: n(60, 21) });
+  // Sent, discarded or no longer a draft: never rebuilt.
+  for (const extra of [{ sentAt: '2026-10-30T05:00:00Z' }, { discardedAt: '2026-10-30T05:00:00Z' }, { draftStatus: 'sent' }]) {
+    assert.deepEqual(refresh.draftsNeedingRefresh(trackerWith(unsentDraft(extra)), () => n(60, 21)), []);
+  }
+  // Outside the ready set: left alone.
+  assert.deepEqual(refresh.draftsNeedingRefresh(shows, () => n(60, 21), ['other-show']), []);
+  // Missing live numbers: left alone rather than rebuilt with blanks.
+  assert.deepEqual(refresh.draftsNeedingRefresh(shows, () => null), []);
+});
+
+test('BRO-6634 draftsNeedingRefresh: a pre-BRO-6634 draft falls back to its last preview', () => {
+  const rec = unsentDraft();
+  delete rec.draftNumbers;
+  const shows = { ...trackerWith(rec), [`preview:broadway:${AFGM}:2026-10-30`]: previewEntry(T0, { [AFGM]: n(59, 21) }) };
+  assert.deepEqual(refresh.draftsNeedingRefresh(shows, () => n(59, 21)), []);
+  assert.equal(refresh.draftsNeedingRefresh(shows, () => n(60, 22)).length, 1);
+});
+
+test('BRO-6634 remindersDue: every 6h while unsent, at most 3', () => {
+  let shows = trackerWith(unsentDraft());
+  assert.equal(refresh.remindersDue(shows, T0 + 5 * H).length, 0);
+  assert.equal(refresh.remindersDue(shows, T0 + 6 * H).length, 1);
+  refresh.stampReminder(shows, `broadway:${AFGM}`, new Date(T0 + 6 * H).toISOString());
+  assert.equal(shows[AFGM].draftReminderCount, 1, 'mirror stamped too');
+  assert.equal(refresh.remindersDue(shows, T0 + 11 * H).length, 0);
+  assert.equal(refresh.remindersDue(shows, T0 + 12 * H).length, 1);
+  refresh.stampReminder(shows, `broadway:${AFGM}`, new Date(T0 + 12 * H).toISOString());
+  refresh.stampReminder(shows, `broadway:${AFGM}`, new Date(T0 + 18 * H).toISOString());
+  assert.equal(shows[`broadway:${AFGM}`].draftReminderCount, 3);
+  assert.equal(refresh.remindersDue(shows, T0 + 48 * H).length, 0, 'capped at 3');
+  // Sent draft: no reminder.
+  shows = trackerWith(unsentDraft({ sentAt: '2026-10-30T03:00:00Z' }));
+  assert.equal(refresh.remindersDue(shows, T0 + 7 * H).length, 0);
+});
+
+test('BRO-6634 buildReminder links the draft and shows the current numbers', () => {
+  const [entry] = refresh.remindersDue(trackerWith(unsentDraft()), T0 + 7 * H);
+  const { subject, html } = buildReminder(entry, { [AFGM]: 'A Few Good Men' }, { [AFGM]: n(60, 22) }, 1);
+  assert.match(subject, /^\[Reminder\] Broadway .*A Few Good Men/);
+  assert.match(html, /resend\.com\/broadcasts\/draft_afgm/);
+  assert.match(html, /60\/100, 22 reviews/);
+  assert.doesNotMatch(html, /\/send/);
+});
+
+test('BRO-6634 recordDraftCompletion stamps the numbers the draft carries', () => {
+  withFakeOrigin(() => {
+    const sentData = { shows: {} };
+    recordDraftCompletion(sentData, `broadway:${AFGM}`, [{ showId: AFGM, score: 59.4, reviewCount: 21 }], {
+      draftId: 'draft_n', draftUrl: 'https://resend.com/broadcasts/draft_n', method: 'resend-draft', reviewCount: 21,
+    });
+    assert.deepEqual(sentData.shows[`broadway:${AFGM}`].draftNumbers, { [AFGM]: n(59, 21) });
+    assert.deepEqual(sentData.shows[AFGM].draftNumbers, { [AFGM]: n(59, 21) });
+  });
+});
+
+test('BRO-6634 unsentDraftUpdatePlan: update only an unsent draft whose numbers moved', () => {
+  const key = `broadway:${AFGM}`;
+  const shows = trackerWith(unsentDraft());
+  const plan = refresh.unsentDraftUpdatePlan(shows, key, { [AFGM]: n(60, 21) });
+  assert.equal(plan.action, 'update');
+  assert.deepEqual(plan.was, { [AFGM]: n(59, 21) });
+  assert.equal(plan.record.draftId, 'draft_afgm');
+  assert.equal(refresh.unsentDraftUpdatePlan(shows, key, { [AFGM]: n(59, 21) }).action, 'skip', 'unchanged numbers');
+  assert.equal(refresh.unsentDraftUpdatePlan(shows, 'broadway:other', { other: n(60, 21) }).action, 'skip', 'no draft recorded');
+  for (const extra of [{ sentAt: '2026-10-30T05:00:00Z' }, { discardedAt: '2026-10-30T05:00:00Z' }, { draftStatus: 'sent' }]) {
+    assert.equal(refresh.unsentDraftUpdatePlan(trackerWith(unsentDraft(extra)), key, { [AFGM]: n(60, 21) }).action, 'skip');
+  }
+});
+
+test('BRO-6634 stampDraftUpdate keeps the reminder clock and stamps record + mirror', () => {
+  const key = `broadway:${AFGM}`;
+  const shows = trackerWith(unsentDraft({ draftReminderCount: 1, draftReminderAt: '2026-10-30T08:00:00Z' }));
+  shows['other-show'] = { completed: true, draftId: 'draft_other', broadcastKey: 'broadway:other-show' };
+  refresh.stampDraftUpdate(shows, key, { [AFGM]: n(60, 22) }, '2026-10-30T09:00:00Z', 22);
+  for (const k of [key, AFGM]) {
+    assert.deepEqual(shows[k].draftNumbers, { [AFGM]: n(60, 22) });
+    assert.equal(shows[k].draftUpdatedAt, '2026-10-30T09:00:00Z');
+    assert.equal(shows[k].reviewCount, 22);
+    assert.equal(shows[k].draftCreatedAt, new Date(T0).toISOString(), 'reminder clock kept');
+    assert.equal(shows[k].draftReminderCount, 1);
+  }
+  assert.equal(shows['other-show'].draftNumbers, undefined, 'other drafts untouched');
+  // The stamped numbers now match, so a second run is a no-op.
+  assert.equal(refresh.unsentDraftUpdatePlan(shows, key, { [AFGM]: n(60, 22) }).action, 'skip');
+});
+
+test('BRO-6634 owner draft notice shows old and new numbers and never asks for approval', () => {
+  const html = mod.ownerDraftNoticeHtml({
+    showsForEmail: [{ showId: AFGM, showTitle: 'A Few Good Men', score: 60.2, reviewCount: 22 }],
+    marketDisplay: 'Broadway', subject: 'Reviews are in', draftUrl: 'https://resend.com/broadcasts/draft_afgm',
+    intro: 'The draft was updated with new numbers.', was: { [AFGM]: n(59, 21) },
+  });
+  assert.match(html, /59\/100, 21 reviews → 60\/100, 22 reviews/);
+  assert.match(html, /resend\.com\/broadcasts\/draft_afgm/);
+  assert.doesNotMatch(html, /approv|\/send\b/i);
+});
+
+test('BRO-6634 a legacy draft with no stored numbers refreshes on a review-count move', () => {
+  const key = `broadway:${AFGM}`;
+  const rec = unsentDraft({ reviewCount: 23 });
+  delete rec.draftNumbers;
+  const shows = trackerWith(rec);
+  assert.deepEqual(refresh.draftsNeedingRefresh(shows, () => n(60, 23)), []);
+  assert.equal(refresh.draftsNeedingRefresh(shows, () => n(60, 24)).length, 1);
+  assert.equal(refresh.unsentDraftUpdatePlan(shows, key, { [AFGM]: n(60, 23) }).action, 'skip');
+  const plan = refresh.unsentDraftUpdatePlan(shows, key, { [AFGM]: n(60, 24) });
+  assert.equal(plan.action, 'update');
+  assert.equal(plan.was, null);
+  // No count on the record either: nothing to compare, left alone.
+  delete rec.reviewCount;
+  assert.deepEqual(refresh.draftsNeedingRefresh(trackerWith(rec), () => n(60, 24)), []);
+});
+
+test('BRO-6634 remindersDue: an update email restarts the gap; age text uses draft age', () => {
+  const H = 3_600_000;
+  const T0 = Date.parse('2026-10-30T00:00:00Z');
+  const rec = { completed: true, draftId: 'd1', draftStatus: 'draft', sentAt: null, draftCreatedAt: new Date(T0).toISOString(), draftUpdatedAt: new Date(T0 + 5 * H).toISOString() };
+  const shows = { 'broadway:x': rec };
+  assert.equal(refresh.remindersDue(shows, T0 + 7 * H).length, 0, 'updated 2h ago: no reminder yet');
+  const [e] = refresh.remindersDue(shows, T0 + 11 * H);
+  assert.ok(e);
+  assert.equal(Math.round(e.draftAgeHours), 11);
+});

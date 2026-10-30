@@ -14,7 +14,9 @@
  * re-push/force-push "recovery."
  *
  * checkLanded() refuses to return that false negative. If the repo is
- * shallow it first tries to restore full history (`git fetch --unshallow`);
+ * shallow and the commit is reachable anyway it reports LANDED at once (a
+ * shallow boundary hides ancestry, never invents it; BRO-6638). Otherwise it
+ * tries to restore full history (`git fetch --unshallow`);
  * if that fails it reports UNKNOWN — never NOT_LANDED — so callers can
  * escalate to a remote-side check (git ls-remote / GitHub compare API)
  * instead of assuming the work was reverted.
@@ -56,7 +58,7 @@
  * Callers and what UNKNOWN means to each (verified 2026-09-14 — none of them
  * force-pushes, re-pushes or "recovers" on it):
  *   scripts/hooks/pre-push:82           exit!=1 -> non_ff=0, push proceeds
- *   scripts/check-prod-deploy.js:160    warns, exits 2 ("could not tell")
+ *   scripts/check-prod-deploy.js:160    warns, exits 2 ("could not tell"); in-window commits read LANDED first
  *   scripts/lib/review-gate.mjs:449     caches shallow, ancestry "can't confirm"
  *   scripts/merge-worktree-to-main.sh   rc=2 -> retry, then die loudly
  *   scripts/gc-merged-worktrees.sh:457  rc=2 -> falls through to `git cherry`
@@ -181,6 +183,14 @@ function isAncestor(sha, ref, cwd) {
 function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = process.cwd(), log = () => {} } = {}) {
   if (!sha) throw new Error('checkLanded requires sha');
   const targetRef = ref || `${remote}/${branch}`;
+
+  // BRO-6638: a shallow graph can only hide ancestry, never invent it, so a
+  // positive ancestry check is a real LANDED without unshallowing. Cloud
+  // clones cannot unshallow, and check-prod-deploy read every live commit as
+  // "could not tell" there. Checked first so the doomed fetch is skipped.
+  if (isShallowRepo(cwd) && isAncestor(sha, targetRef, cwd) === true) {
+    return { verdict: 'LANDED', landed: true, shallow: true, reason: null };
+  }
 
   const { shallow, skipped } = ensureFullHistory({ cwd, remote, log });
   if (shallow) {

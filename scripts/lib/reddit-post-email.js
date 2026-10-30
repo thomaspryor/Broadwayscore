@@ -7,7 +7,7 @@
 'use strict';
 
 const { TOKENS, esc } = require('./email-components');
-const { activeDrafts, numbersMoved, MAX_UPDATE_EMAILS } = require('./reddit-opening-post');
+const { activeDrafts, numbersMoved, updateAllowed } = require('./reddit-opening-post');
 
 const REMIND_AFTER_HOURS = 20;
 
@@ -29,7 +29,7 @@ function dueEmails(drafts, nowMs) {
   for (const d of activeDrafts(drafts, nowMs)) {
     if (!isComplete(d)) continue;
     if (!d.emailedAt) out.push({ draft: d, kind: 'new' });
-    else if (canUpdate && (d.updateCount || 0) < MAX_UPDATE_EMAILS && numbersMoved(d)) out.push({ draft: d, kind: 'update' });
+    else if (canUpdate && numbersMoved(d) && updateAllowed(d, nowMs)) out.push({ draft: d, kind: 'update' });
     else if (!d.reminderAt && (nowMs - Date.parse(d.emailedAt)) / 3600000 >= REMIND_AFTER_HOURS) out.push({ draft: d, kind: 'reminder' });
   }
   return out;
