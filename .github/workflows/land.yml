@@ -327,7 +327,8 @@ jobs:
         # the lane until lane-rehearsal-recorded re-passes. Advisory (CLAUDE.md §19): continue-on-error, the script
         # always exits 0 and prints status=clear|flagged|overridden|unknown. Override: a LANE-FREEZE-BYPASS: <reason,
         # 15+ chars> line in a commit message; kill switch: repo variable LANE_FREEZE_DISABLED=1. Needs core data
-        # (shows.json), so it sits after "Checkout core data". Blocking is S5-T3, after a clean week.
+        # (shows.json), so it sits after "Checkout core data". Blocking is S5-T3, after a clean week; before it blocks,
+        # read the checker from $BASE with git show (as the receipt step notes), or a branch can weaken its own check.
         continue-on-error: true
         env:
           TIP: ${{ steps.rebase.outputs.tip }}

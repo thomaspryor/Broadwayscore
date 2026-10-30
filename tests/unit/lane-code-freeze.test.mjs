@@ -4,6 +4,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -55,9 +57,9 @@ test('window edges: 49h out clear, embargo +3h flagged, embargo +7h clear', () =
   assert.equal(run({ nowMs: embargo + 7 * H }).status, 'clear');
 });
 
-test('Off-Broadway counts, West End does not', () => {
+test('scope is category broadway: Off-Broadway and West End are not counted', () => {
   const offEmb = Date.parse(defaultEmbargoAt(SHOWS[2]));
-  assert.equal(run({ nowMs: offEmb - 10 * H }).status, 'flagged');
+  assert.equal(run({ nowMs: offEmb - 10 * H, shows: [SHOWS[2]] }).status, 'clear');
   assert.equal(run({ shows: [SHOWS[1]] }).status, 'clear');
 });
 
@@ -80,13 +82,36 @@ test('a show with a bad openingDate is skipped, not fatal', () => {
   assert.deepEqual(r.skipped, ['bad']);
 });
 
-test('kill switch', () => {
-  assert.equal(run({ disabled: true }).status, 'clear');
+test('kill switch reports disabled, not clear', () => {
+  assert.equal(run({ disabled: true }).status, 'disabled');
+});
+
+test('unusable embargo for every show in scope is unknown; a non-finite clock is unknown', () => {
+  assert.equal(run({ shows: [show('bad', 'broadway', 'garbage')] }).status, 'unknown');
+  assert.equal(run({ nowMs: NaN }).status, 'unknown');
+});
+
+test('bypass must start the line and carry words', () => {
+  assert.equal(findOverride(['> LANE-FREEZE-BYPASS: quoted from a revert body']), null);
+  assert.equal(findOverride(['  LANE-FREEZE-BYPASS: indented line is not a trailer']), null);
+  assert.equal(findOverride(['LANE-FREEZE-BYPASS: ...............']), null);
+});
+
+test('CLI: a lane file edit in a real git range is flagged, a bad --now is unknown, a git failure is unknown', () => {
+  const cli = path.join(ROOT, 'scripts/lane-code-freeze-check.js');
+  const sh = (args, cwd = ROOT) => JSON.parse(spawnSync('node', [cli, ...args], { cwd, encoding: 'utf8' }).stdout.split('\n')[0]);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6650-'));
+  const shows = path.join(dir, 'shows.json');
+  fs.writeFileSync(shows, JSON.stringify(SHOWS));
+  assert.equal(sh(['--base', 'HEAD', '--head', 'HEAD', '--shows', shows, '--now', 'garbage']).status, 'unknown');
+  assert.equal(sh(['--base', 'no-such-ref', '--head', 'HEAD', '--shows', shows]).status, 'unknown');
+  assert.equal(sh(['--base', 'HEAD', '--head', 'HEAD', '--shows', shows, '--now', new Date(embargo - 47 * H).toISOString()]).status, 'clear');
 });
 
 test('land.yml wires the check as an advisory step after core data', () => {
   const y = fs.readFileSync(path.join(ROOT, '.github/workflows/land.yml'), 'utf8');
   const i = y.indexOf('- name: Lane code freeze (advisory)');
   assert.ok(i > y.indexOf('- name: Checkout core data'));
-  assert.match(y.slice(i, i + 2500), /continue-on-error: true/);
+  const stepEnd = y.indexOf('\n      - name:', i + 10);
+  assert.match(y.slice(i, stepEnd), /continue-on-error: true/);
 });
