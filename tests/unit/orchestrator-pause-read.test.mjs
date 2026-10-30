@@ -84,7 +84,7 @@ describe('workflow shape: pause/standdown variable reads use REVIEW_TEXTS_TOKEN'
     });
   }
   test('found reads to check (guards against a broken regex)', () => {
-    assert.ok(reads >= 5, `expected >=4 reads, found ${reads}`);
+    assert.ok(reads >= 5, `expected >=5 reads, found ${reads}`);
   });
   test('polling loop falls back to the job-start snapshot on a failed read', () => {
     const wf = fs.readFileSync(path.join(WF_DIR, 'opening-night-orchestrator.yml'), 'utf8');
