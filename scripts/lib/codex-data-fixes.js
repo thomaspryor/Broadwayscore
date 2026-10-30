@@ -32,7 +32,7 @@ const reconcileSkips = ({ deferred, onlyDeferred, canDispatch }) => (deferred ? 
 
 // Executor-allowlisted field edits only. Not allowed: run-script, add-show, retire-show, review-file-op,
 // add-commercial-entry, ingest-html-handoff (owner or Claude judgment, or they move whole files/rows).
-const CODEX_PLAN_ACTIONS = new Set(['data-edit', 'review-field-edit', 'drop-orphan-key', 'retitle-show', 'outlet-registry-flag']);
+const CODEX_PLAN_ACTIONS = new Set(['data-edit', 'review-field-edit', 'drop-orphan-key', 'retitle-show', 'outlet-registry-flag', 'coverage-expectation-redecide']);
 
 /** Plan file names (no dir) for a card: bro-6175.json, bro-6175-b.json. Case-insensitive on the id. */
 function cardPlanFiles(names, cardId) {

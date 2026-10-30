@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-6610",
+  "planId": "8801f5cc-ce8b-4c54-a3d4-bbcbe2592e90",
+  "status": "pending",
+  "createdAt": "2026-10-30T12:57:07.249Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6610: refresh the decayed coverageExpectation (reviews) claims for ap, broadwaynews, latimes. The action re-measures at execute time and refuses unless each is still decayed and has evidence.",
+    "steps": [
+      "Stamp coverageExpectationDecidedAt with today and append the measured rate to coverageEvidence for each outlet in data/outlet-registry.json."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "coverage-expectation-redecide",
+        "outletId": "ap",
+        "reason": "BRO-6610 decayed after 14-day window",
+        "description": "Refresh decayed coverageExpectation re-probe for ap"
+      },
+      {
+        "type": "coverage-expectation-redecide",
+        "outletId": "broadwaynews",
+        "reason": "BRO-6610 decayed after 14-day window",
+        "description": "Refresh decayed coverageExpectation re-probe for broadwaynews"
+      },
+      {
+        "type": "coverage-expectation-redecide",
+        "outletId": "latimes",
+        "reason": "BRO-6610 decayed after 14-day window",
+        "description": "Refresh decayed coverageExpectation re-probe for latimes"
+      }
+    ]
+  }
+}
