@@ -567,6 +567,33 @@ function extractNubNewsBody(html) {
   return null;
 }
 
+/**
+ * Toledo Blade (PG Evoke CMS): the story body is not in the page markup but in
+ * the pgStoryZeroJSON script as a JSON string field ("body": "<div ...>"), often
+ * pasted from Word (OutlineElement/TextRun spans). Parse that string, keep <p> text.
+ * BRO-6573: Lillian King's Bodyguard review saved as an empty stub without this.
+ */
+function extractToledoBladeBody(html) {
+  const src = String(html || '');
+  const start = src.search(/"body"\s*:\s*"/);
+  if (start < 0) return null;
+  const open = src.indexOf('"', src.indexOf(':', start)) ;
+  let i = open + 1;
+  let esc = false;
+  for (; i < src.length; i++) {
+    const c = src[i];
+    if (esc) { esc = false; continue; }
+    if (c === '\\') { esc = true; continue; }
+    if (c === '"') break;
+  }
+  let body;
+  try { body = JSON.parse(src.slice(open, i + 1)); } catch { return null; }
+  const paras = [...String(body).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map((p) => stripHtml(p[1]).replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  return paras.length ? paras.join('\n\n') : null;
+}
+
 function extractRadioTimesBody(html) {
   const inner = extractBalancedDivByClass(html, 'post__content');
   if (!inner) return null;
@@ -615,6 +642,8 @@ const PATTERNS = [
   // Radio Times: the body nests ratings, ads and image divs. Balanced matching
   // keeps every paragraph and excludes the pension/sidebar and disclosure copy.
   ['radiotimes.com', extractRadioTimesBody, 300],
+  // Toledo Blade: body lives in the pgStoryZeroJSON script, see extractToledoBladeBody (BRO-6573).
+  ['toledoblade.com', extractToledoBladeBody, 300],
   // Nub News: id-anchored body, see extractNubNewsBody (BRO-5219).
   ['nub.news', extractNubNewsBody, 300],
   // Telegraph — never had an extractor pattern (task #720 added it to WE
@@ -1228,4 +1257,4 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody };
+module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody };
