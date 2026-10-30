@@ -201,6 +201,11 @@ test('auto-filer: an email-only miss files at P2; a Linear failure is reported, 
   assert.equal(L.created.length, 1);
 });
 
+test('card slugs: Linear-safe and diacritics folded, so a critic name cannot break the dedupe', () => {
+  assert.equal(D.slug('review:le-monde:Hélène *O_Brien* | x'), 'review-le-monde-helene-o-brien-x');
+  assert.equal(D.cardKeyOf('text\npress-night-card-key: a-b-2026-2026-10-30\\\nmore'), 'a-b-2026-2026-10-30');
+});
+
 test('auto-filer grace: an email miss files only after it outlived one hourly draft refresh', () => {
   const entry = { showId: 's', night: '2026-10-29', title: 'S', line: 'S: ...', misses: [
     { key: 'email:reddit', kind: 'email', text: 'no Reddit draft emailed' },

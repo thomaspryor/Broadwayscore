@@ -76,7 +76,7 @@ const {
 } = require('./lib/autonomous-email-render.js');
 const { localLoopDeadMessage } = require('./lib/digest-loop-health.js');
 const { renderNewShowTypesBlock } = require('./lib/new-show-types.js');
-const { renderPressNightBlock } = require('./lib/press-night-digest.js');
+const { renderPressNightBlock } = require('./lib/press-night-digest-render.js');
 const { fetchPipelineIssues } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');

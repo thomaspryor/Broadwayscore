@@ -105,5 +105,11 @@
     "step": "Guard - stranded zero-review rows (advisory)",
     "script": "scripts/find-zero-review-catchup-gaps.js",
     "reason": "Read-only re-run of the selector (BRO-4290): it only loads data/audit/zero-review-catchup-attempts.json via loadAttempts and writes nothing to data/audit; a nonzero exit means stranded rows were found, not a lost write. The attempts file is written by the separate Record step, which is not continue-on-error."
+  },
+  {
+    "workflow": "opening-night-checklist.yml",
+    "step": "Press-night morning grade (BRO-6645)",
+    "script": "scripts/produce-press-night-digest-snapshot.js",
+    "reason": "Advisory by design (CLAUDE.md rule 19): a lost write leaves yesterday's snapshot, which the morning email shows as 'not checked yet' (renderPressNightBlock night check) and digest-snapshots.js flags past 36h, so a failure is visible without failing the checklist job."
   }
 ]
