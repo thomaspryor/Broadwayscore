@@ -39,6 +39,7 @@ const cheerio = require('cheerio');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { inferPressNightFromReviews } = require('./lib/infer-press-night-from-reviews');
+const { crossCheckOpeningDate, mergePressNightChanges, westEndOpeningSource } = require('./lib/press-night-cross-check');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const {
@@ -440,7 +441,10 @@ function mergeSources(tmEntries, pbEntries) {
       title: entry.title,
       firstPreview: entry.firstPreview,
       opening: entry.opening,
-      source: 'theatremonkey'
+      source: 'theatremonkey',
+      // Keep the original listing: a later Playbill fallback is not an
+      // independent press-night confirmation just because source is "both".
+      pressNightEvidence: { source: 'theatremonkey', opening: entry.opening, firstPreview: entry.firstPreview },
     });
   }
 
@@ -680,6 +684,7 @@ async function main() {
   // Phase 4: Match to shows.json and compute changes
   const changes = [];
   const discrepancies = [];
+  const pressNightCheckedShowIds = new Set();
   let auditWritten = false;
   const writeAudit = () => {
     if (auditWritten) return;
@@ -707,15 +712,31 @@ async function main() {
     const showChanges = [];
     const showDiscrepancies = [];
 
+    // Check already-populated dates too, using the listing fetched above.
+    // Do this before the preview < opening check: cold opens are legitimate.
+    const pressCheck = crossCheckOpeningDate(show, entry.pressNightEvidence);
+    if (pressCheck) {
+      pressNightCheckedShowIds.add(show.id);
+      if (!pressCheck.changes.length) {
+        discrepancies.push({ show: show.title, slug: show.slug, id: show.id, discrepancies: [{
+          field: 'openingDate', current: show.openingDate,
+          external: entry.pressNightEvidence?.opening || null,
+          source: 'theatremonkey', reason: pressCheck.reason,
+        }] });
+      }
+      console.log(`  PRESS-NIGHT ${show.id}: ${pressCheck.status} (${pressCheck.reason})`);
+    }
+
     // Data integrity: preview must be before opening
-    if (entry.firstPreview && entry.opening && entry.firstPreview >= entry.opening) {
+    if (entry.firstPreview && entry.opening &&
+        (entry.firstPreview > entry.opening || (entry.firstPreview === entry.opening && !pressCheck?.changes.length))) {
       console.warn(`  SKIP ${show.title}: preview ${entry.firstPreview} >= opening ${entry.opening} (bad data)`);
       continue;
     }
 
     // Determine the openingDateSource value for this entry
-    // "both" (TM + Playbill agree) → use "theatremonkey" (the primary source)
-    const entryDateSource = entry.source === 'both' ? 'theatremonkey' : entry.source;
+    // A TM preview plus a Playbill opening is still a Playbill opening.
+    const entryDateSource = westEndOpeningSource(entry);
 
     // TodayTix mismatch: existing openingDate matches new preview date
     // Also catches shows with unconfirmed sources where we now have a real press night
@@ -784,8 +805,9 @@ async function main() {
       }
     }
 
-    if (showChanges.length > 0 && isCandidate) {
-      changes.push({ show: show.title, slug: show.slug, id: show.id, changes: showChanges });
+    const checkedChanges = mergePressNightChanges(show, isCandidate ? showChanges : [], pressCheck);
+    if (checkedChanges.length > 0) {
+      changes.push({ show: show.title, slug: show.slug, id: show.id, changes: checkedChanges });
     }
     if (showDiscrepancies.length > 0) {
       discrepancies.push({ show: show.title, slug: show.slug, id: show.id, discrepancies: showDiscrepancies });
@@ -802,7 +824,7 @@ async function main() {
     console.log('--- PHASE 4: INFER FROM REVIEW DATES ---');
     const reviewsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'reviews.json'), 'utf8'));
     const allReviews = reviewsData.reviews || [];
-    const skipShowIds = new Set(changes.map(c => c.id));
+    const skipShowIds = new Set([...changes.map(c => c.id), ...pressNightCheckedShowIds]);
     const inferences = inferPressNightFromReviews({
       candidateShows,
       reviews: allReviews,

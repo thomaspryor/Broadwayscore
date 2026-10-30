@@ -208,6 +208,7 @@ const PROTECTED_FIELDS = [
   'wrongProductionOverrideReason',
   'wrongProductionOverrideSetAt',
   'wrongProductionOverrideSetBy',
+  'wrongProductionClearedNote',
   'wrongShowOverride',
   'wrongShowOverrideReason',
   'wrongShowOverrideAt',
@@ -1081,6 +1082,9 @@ const CLEAR_BREADCRUMBS = {
   wrongProductionOverrideReason: _clearBreadcrumbRetracted('wrongProductionOverrideReason'),
   wrongProductionOverrideSetAt: _clearBreadcrumbRetracted('wrongProductionOverrideSetAt'),
   wrongProductionOverrideSetBy: _clearBreadcrumbRetracted('wrongProductionOverrideSetBy'),
+  // BRO-4998: retractScriptWrongProductionClear removes this marker too.
+  // Without this entry merge mode resurrects it and refuses the fix plan.
+  wrongProductionClearedNote: _clearBreadcrumbRetracted('wrongProductionClearedNote'),
   // BRO-4599: retractScriptWrongShowClear deletes these; without entries the guard restores them.
   wrongShowOverride: _clearBreadcrumbRetracted('wrongShowOverride'),
   wrongShowOverrideReason: _clearBreadcrumbRetracted('wrongShowOverrideReason'),

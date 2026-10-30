@@ -80,6 +80,7 @@ const showsWriteGuard = require('./lib/shows-write-guard');
 const { fetchPage } = require('./lib/scraper');
 const { matchTitleToShow, titleWordsMatch } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
+const { crossCheckOpeningDate, mergePressNightChanges } = require('./lib/press-night-cross-check');
 const { validateChangeStability } = require('./lib/change-stability-guard');
 const { serpQuery } = require('./lib/url-discovery');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -1115,9 +1116,28 @@ async function main() {
       continue;
     }
     const isCandidate = candidateShows.some(s => s.id === show.id);
+    const changesBeforeCheck = changes.length;
+
+    // A second Playbill page cannot corroborate a Playbill/review-derived
+    // opening. Use the original Lortel listing, including when the merge
+    // preferred Playbill's conflicting date. No extra per-show fetches.
+    const pressCheck = crossCheckOpeningDate(show, entry.raw?.lortel && {
+      ...entry.raw.lortel, source: 'lortel',
+    });
+    if (pressCheck) {
+      if (!pressCheck.changes.length) {
+        auditEntries.push({ showId: show.id, title: show.title,
+          confidence: pressCheck.status, sources: entry.sources,
+          currentOpening: show.openingDate, currentSource: show.openingDateSource,
+          proposedOpening: entry.raw?.lortel?.opening || null,
+          reason: pressCheck.reason, raw: entry.raw,
+        });
+      }
+      console.log(`  PRESS-NIGHT ${show.id}: ${pressCheck.status} (${pressCheck.reason})`);
+    }
 
     // Data integrity: see isPreviewStrictlyAfterOpening above (BRO-1108).
-    if (isPreviewStrictlyAfterOpening(entry)) {
+    if (isPreviewStrictlyAfterOpening(entry) && !pressCheck?.changes.length) {
       console.warn(`  SKIP ${show.title}: preview ${entry.firstPreview} > opening ${entry.opening} (bad data)`);
       continue;
     }
@@ -1201,7 +1221,7 @@ async function main() {
     // be correct) from being silently overwritten by a single-source error.
     const nullFill = isNullOpeningFill(show, entry);
 
-    if (!sameDateFix && !sameDateConfirmed && !nullFill && entry.confidence !== 'high' && !force) {
+    if (!sameDateFix && !sameDateConfirmed && !nullFill && entry.confidence !== 'high' && !force && !pressCheck?.changes.length) {
       // Pick the most informative reason for audit operators. Magnitude veto
       // is the most actionable signal — it usually means a wrong-production
       // match. Otherwise fall back to the generic single-source label.
@@ -1265,6 +1285,11 @@ async function main() {
         showChanges.push({ field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource });
         changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
       }
+    }
+    const proposed = changes.length > changesBeforeCheck ? changes.pop().changes : [];
+    const checkedChanges = mergePressNightChanges(show, proposed, pressCheck);
+    if (checkedChanges.length) {
+      changes.push({ id: show.id, title: show.title, slug: show.slug, changes: checkedChanges });
     }
   }
 

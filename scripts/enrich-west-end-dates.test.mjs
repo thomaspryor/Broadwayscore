@@ -240,6 +240,7 @@ test('mergeSources — matching titles from both sources merge to "both" and fil
   assert.equal(merged[0].source, 'both');
   assert.equal(merged[0].firstPreview, '2026-05-20');
   assert.equal(merged[0].opening, '2026-05-28');
+  assert.equal(merged[0].pressNightEvidence.opening, null, 'Playbill fallback must not become TM evidence');
 });
 
 test('mergeSources — existing TM value is not overwritten when both sources report it', () => {
