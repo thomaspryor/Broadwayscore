@@ -69,6 +69,30 @@ test('classifyHealthCheck: exact internal names in a visitor category', () => {
   assert.equal(classifyHealthCheck('Data: live show with zero critic reviews on site'), 'visitors');
 });
 
+test('BRO-3178: failed job and step suffixes keep internal workflows internal', () => {
+  for (const workflow of INTERNAL_WORKFLOWS) {
+    const name = `Workflow repeat-failure: ${workflow} / test / Run tests`;
+    assert.equal(classifyHealthCheck(name), 'internal', name);
+    assert.equal(classifyHealthCheck({ name }), 'internal', name);
+  }
+});
+
+test('BRO-3178: step details cannot demote visitor or unknown workflows', () => {
+  for (const workflow of ['Deploy to Vercel', 'Collect Review Texts', 'Unknown Workflow']) {
+    const name = `Workflow repeat-failure: ${workflow} / Test Suite / Run tests`;
+    assert.equal(classifyHealthCheck({ name }), 'visitors', name);
+  }
+  assert.equal(classifyHealthCheck('Workflow repeat-failure: Test Suite Extra / test / Run tests'), 'visitors');
+  assert.equal(classifyHealthCheck('Cron failed: Test Suite / test / Run tests'), 'visitors');
+});
+
+test('BRO-3178: suffixed repeat-failure rows reach the internal digest bucket', () => {
+  const row = { name: 'Workflow repeat-failure: Test Suite / test / Run tests', message: '3 failures' };
+  const split = splitHealthByAudience({ errors: [row] });
+  assert.deepEqual(split.internal.errors, [row]);
+  assert.deepEqual(split.visitors.errors, []);
+});
+
 test('classifyHealthCheck accepts a row object', () => {
   assert.equal(classifyHealthCheck({ name: 'Main: red streak', message: 'x' }), 'internal');
   assert.equal(classifyHealthCheck({ message: 'nameless' }), 'visitors');

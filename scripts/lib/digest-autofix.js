@@ -146,14 +146,19 @@ const ROW_FAMILY_PREFIXES = [
   /^Workflow repeat-failure:\s*/i,
 ];
 
-// Strips ONE matching family prefix, leaving the rest as the display form.
+// Strips ONE matching family prefix and repeat-failure job/step details.
+// Card identity stays per workflow; the original row retains step details.
 // Returns the name unchanged when no prefix matches — the common case, byte-
 // identical to today's behavior for the vast majority of rows.
 function familyDisplayName(name) {
   const s = String(name || '').trim();
   for (const re of ROW_FAMILY_PREFIXES) {
     const stripped = s.replace(re, '');
-    if (stripped !== s) return stripped.trim();
+    if (stripped !== s) {
+      return (/^Workflow repeat-failure:/i.test(s)
+        ? stripped.replace(/ \/ .+ \/ .+$/, '')
+        : stripped).trim();
+    }
   }
   return s;
 }

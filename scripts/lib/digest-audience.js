@@ -86,7 +86,14 @@ function classifyHealthCheck(row) {
   const name = String((row && typeof row === 'object' ? row.name : row) || '').trim();
   if (!name) return 'visitors';
   const wf = WORKFLOW_ROW_RE.exec(name);
-  if (wf) return INTERNAL_WORKFLOWS.has(wf[1].trim()) ? 'internal' : 'visitors';
+  if (wf) {
+    // BRO-3178 adds " / job / step" to repeat-failure names. Audience is
+    // still determined by the workflow, including for stored string rows.
+    const workflow = name.startsWith('Workflow repeat-failure:')
+      ? wf[1].replace(/ \/ .+ \/ .+$/, '').trim()
+      : wf[1].trim();
+    return INTERNAL_WORKFLOWS.has(workflow) ? 'internal' : 'visitors';
+  }
   if (INTERNAL_CHECK_NAMES.has(name)) return 'internal';
   // Unmeasurable-here variants ("Dispatch health: dead-launch rate
   // (unmeasurable here)") share the category, so the category test covers them.

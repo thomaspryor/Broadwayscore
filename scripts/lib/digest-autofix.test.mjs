@@ -251,6 +251,37 @@ test('matchOpenTask: cross-prefix family match — a task filed under one prefix
   assert.equal(matchOpenTask(tasks, 'Workflow repeat-failure: Test Suite')?.id, 9);
 });
 
+test('BRO-3178: step-specific failures share the cron card and keep their detail', () => {
+  const names = [
+    'Cron failed: Deploy to Vercel',
+    'Workflow repeat-failure: Deploy to Vercel / deploy / Setup Playwright',
+    'Workflow repeat-failure: Deploy to Vercel / deploy / Deploy to Production',
+  ];
+  const health = { errors: names.map(name => ({ name, message: `${name} failed twice` })) };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan.length, 3);
+  for (const [i, row] of plan.entries()) {
+    assert.equal(familyDisplayName(names[i]), 'Deploy to Vercel');
+    assert.equal(rowFamilyKey(names[i]), rowFamilyKey(names[0]));
+    assert.equal(row.title, 'BSC Daily: Deploy to Vercel');
+    assert.equal(row.name, names[i]);
+    assert.equal(row.message, health.errors[i].message);
+    assert.ok(buildCardNotes(row).includes(health.errors[i].message));
+  }
+  for (const subject of ['BSC Daily: Deploy to Vercel', `BSC Daily: ${names[1]}`]) {
+    const tasks = [{ id: 9, status: 'pending', subject }];
+    for (const name of names) assert.equal(matchOpenTask(tasks, name)?.id, 9, name);
+  }
+  assert.notEqual(rowFamilyKey(names[1]), rowFamilyKey('Cron failed: Collect Review Texts'));
+  assert.equal(familyDisplayName('SEO: page / job / step'), 'SEO: page / job / step');
+  assert.equal(familyDisplayName('Cron failed: Workflow / Variant'), 'Workflow / Variant');
+});
+
+test('BRO-3178: step-specific CI failures are not visitor-facing START-NOW rows', () => {
+  assert.equal(isVisitorFacingRow({ fromHealth: true, name: 'Workflow repeat-failure: Test Suite / test / Run tests' }), false);
+  assert.equal(isVisitorFacingRow({ fromHealth: true, name: 'Workflow repeat-failure: Deploy to Vercel / deploy / Setup Playwright' }), true);
+});
+
 // ── BRO-3427: "<condition> on <show>" rows fold onto ONE plan row per condition ──
 
 test('splitOnShowSuffix: every REAL "<condition> on <show>" title template in opening-night-checks/ has a condition phrase without " on " (regression guard — ship-check finding, 2026-09-15)', () => {
