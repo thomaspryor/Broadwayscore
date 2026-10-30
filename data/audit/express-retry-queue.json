@@ -1,14 +1,6 @@
 {
   "entries": [
     {
-      "showId": "hospital-hour-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-26T15:21:20.834Z",
-      "dueAt": "2026-10-27T03:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-27T04:52:54.544Z"
-    },
-    {
       "showId": "slanted-floors-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-10-27T14:54:00.569Z",
@@ -108,14 +100,16 @@
       "market": "broadway",
       "queuedAt": "2026-10-29T17:29:56.780Z",
       "dueAt": "2026-10-30T03:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-30T05:36:16.839Z"
     },
     {
       "showId": "the-heart-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-10-29T17:35:52.957Z",
       "dueAt": "2026-10-30T03:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-30T05:36:16.839Z"
     },
     {
       "showId": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
@@ -129,13 +123,51 @@
       "market": "broadway",
       "queuedAt": "2026-10-29T17:25:33.579Z",
       "dueAt": "2026-10-30T03:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-30T05:36:16.839Z"
     },
     {
       "showId": "a-few-good-men-2026",
       "market": "broadway",
       "queuedAt": "2026-10-29T17:29:04.286Z",
       "dueAt": "2026-10-30T03:15:00.000Z",
+      "attempted": true,
+      "attemptedAt": "2026-10-30T05:36:16.839Z"
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "a-few-good-men-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-30T05:36:16.839Z",
+      "dueAt": "2026-10-30T06:36:16.839Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "a-few-good-men-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-30T05:36:16.839Z",
+      "dueAt": "2026-10-30T08:36:16.839Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "a-few-good-men-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-30T05:36:16.839Z",
+      "dueAt": "2026-10-30T17:36:16.839Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "nytimes"
+      ],
       "attempted": false
     }
   ]
