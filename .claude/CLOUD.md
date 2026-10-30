@@ -123,12 +123,11 @@ The environment has PostHog, Sentry and Supabase keys (read+write): `POSTHOG_PER
 
 ## Phone or Mac?
 
-The owner works from the iPhone/iPad most of the time. Before saying something needs "the Mac" or "your computer":
+The owner is mostly on iPhone/iPad. Before saying something needs "the Mac":
 
 - **Phone browser is enough** (give a direct link, never say Mac): GitHub settings (secrets, token scopes), ScrapingBee, Bright Data, Vercel and Supabase dashboards, Gmail filters (desktop-site mode), claude.ai/code environment settings, Routines.
 - **Cloud can do it**: committed scripts with production keys (`cloud-run-script.js`), any workflow dispatch, private data edits (`execute-approved-fix.yml`), starting work in its own session (`create_session`).
-- **Really the Mac**: outlet cookie renewal (The Stage, WSJ), the Mac's checkout and launchd jobs, cmux, WhatsApp/iMessage/Apple Reminders. Batch these into one short list.
-- **Only the owner's hands can do it** (a setting with no API such as App Store Connect privacy answers, a cookie renewal, an identity check like AdSense): first try `list_computer_folders` / `request_computer_folder` (Remote Control). If that is not available, email it as a task, never a chat ending (BRO-6654): on the work card (P1, not `--mac-only`, no PARKED line naming the Mac, with its usual safe VERIFY) add `DECISION NEEDED: <the task in plain words>`, a `Why this is your call:` line saying why Claude cannot do it, and `Owner step 1:`, `Owner step 2:` ... lines, one plain action each with the exact URL and the exact setting. No Option lines. Then `linear-session.js report --status=paused` and end the session. The 20-minute email job sends "Task for you" with Done / could-not buttons; Done moves the card to the front of the cloud worker queue for 48 h.
+- **Really the Mac**: outlet cookie renewal (The Stage, WSJ), the Mac's checkout and launchd jobs, cmux, WhatsApp/iMessage/Apple Reminders. One list. Owner's hands only: task email (`docs/owner-email-guidelines.md`, BRO-6654).
 
 ## Key gaps cloud has vs local
 
@@ -141,7 +140,7 @@ The owner works from the iPhone/iPad most of the time. Before saying something n
 
 ## When in doubt
 
-Do what you can from cloud first (sections above). Work a Mac session can do alone: `--dispatch --mac-only "<why>"` (`linear-brain.js --help`). Else say so in a line, keep going. Never ask the owner to switch to a local session or to make a technical choice they can't evaluate.
+Do what you can from cloud first (sections above). Work a Mac session can do alone: `--dispatch --mac-only "<why>"` (`linear-brain.js --help`). Else say so in a line, keep going. Never ask the owner to switch to a local session or make a technical choice.
 
 ## Starting a worker session (BRO-5040)
 

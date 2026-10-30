@@ -19,9 +19,15 @@ otherwise. They are guidelines; nothing blocks a send. BRO-6285.
      only, the owner cannot tell which one you mean, and nothing reads a reply to the email itself.
    - A child session sends its question to its parent session instead.
 
-   - A step only the owner's hands can do (no API, needs their login or identity) goes out the same way as a
-     task: `Owner step 1:` lines on the card instead of options, and the email offers Done. Rules in
-     `.claude/CLOUD.md` ("Only the owner's hands can do it"). BRO-6654.
+   - A step only the owner's hands can do (a setting with no API such as App Store Connect privacy
+     answers, a cookie renewal, an identity check like AdSense) goes out as a TASK, never as a chat
+     ending (BRO-6654). First try Remote Control (`list_computer_folders`, `request_computer_folder`).
+     If that is not available: on the work card (P1, not `--mac-only`, no PARKED line naming the Mac,
+     with its usual safe VERIFY) add `DECISION NEEDED: <the task in plain words>`, a
+     `Why this is your call:` line saying why Claude cannot do it, and `Owner step 1:`,
+     `Owner step 2:` ... lines, one plain action each with the exact URL and setting. No Option lines.
+     Then `linear-session.js report --status=paused` and end. The email says "Task for you" with
+     Done / could-not buttons; a Done tap sends the card to the front of the cloud worker queue for 48 h.
 
 3. **One ask per email.** If a status email mentions a decision, give one plain-words
    recommendation and say what happens if the owner does nothing, then point at the card.
