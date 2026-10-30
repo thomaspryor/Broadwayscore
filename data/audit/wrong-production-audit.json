@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T03:51:47.002Z",
+  "timestamp": "2026-10-30T04:07:54.054Z",
   "stats": {
-    "totalReviews": 69918,
-    "alreadyFlagged": 22300,
+    "totalReviews": 69944,
+    "alreadyFlagged": 22301,
     "dateGuardCatches": 233,
     "directorMismatch": 2861,
-    "tvFilmSignals": 2005,
+    "tvFilmSignals": 2006,
     "londonSignals": 3382,
     "offBroadwaySignals": 630,
     "yearMismatch": 283,
-    "noPublishDate": 7996
+    "noPublishDate": 8009
   },
   "findings": [
     {
@@ -69875,6 +69875,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"nikolai foster\" from white-christmas-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "white-noise-off-broadway-2019",
+      "file": "exeunt-magazine--read-more-articles-by-loren-noveck.json",
+      "publishDate": "2019-03-20",
+      "url": "https://exeuntnyc.com/reviews/review-white-noise-public-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
         }
       ]
     },
