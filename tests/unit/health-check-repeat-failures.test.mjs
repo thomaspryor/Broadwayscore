@@ -20,6 +20,59 @@ test('repeatFailureResults: clean window yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: false, repeatFailures: [] }), []);
 });
 
+test('BRO-3178: synthetic check names and messages identify the failed job and step', () => {
+  const repeatFailures = summarizeRepeatFailures([
+    { name: 'Deploy to Vercel', conclusion: 'failure', failureSteps: [{ job: 'deploy', step: 'Setup Playwright' }] },
+    { name: 'Deploy to Vercel', conclusion: 'failure', failureSteps: [{ job: 'deploy', step: 'Setup Playwright' }] },
+    { name: 'Deploy to Vercel', conclusion: 'failure', failureSteps: [{ job: 'deploy', step: 'Deploy to Production' }] },
+  ]);
+  const results = repeatFailureResults({ repeatFailures });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].name, 'Workflow repeat-failure: Deploy to Vercel / deploy / Setup Playwright');
+  assert.match(results[0].message, /Setup Playwright failed 2 times/);
+  assert.doesNotMatch(results[0].message, /Deploy to Production/);
+});
+
+test('BRO-3178: unavailable step details are explicit in the alert', () => {
+  const results = repeatFailureResults({ repeatFailures: [{ name: 'Deploy', count: 2, detailsUnavailable: true }] });
+  assert.match(results[0].message, /failed-step details unavailable/);
+});
+
+test('BRO-3178: getWorkflowRunSummary fetches step details before grouping', async t => {
+  const healthPath = require.resolve('../../scripts/health-check.js');
+  const groupingPath = require.resolve('../../scripts/lib/workflow-repeat-failures.js');
+  const savedModules = [require.cache[healthPath], require.cache[groupingPath]];
+  const savedToken = process.env.GH_TOKEN;
+  t.after(() => {
+    [require.cache[healthPath], require.cache[groupingPath]] = savedModules;
+    if (savedToken === undefined) delete process.env.GH_TOKEN;
+    else process.env.GH_TOKEN = savedToken;
+  });
+  process.env.GH_TOKEN = 'test-only';
+  const cache = require('../../scripts/lib/gh-api-cache.js');
+  t.mock.method(cache, 'cachedFetch', async (_key, fn) => fn());
+  t.mock.method(cache, 'hasLowHeadroom', () => false);
+  const urls = [];
+  t.mock.method(require('../../scripts/lib/gh-api-client.js'), 'fetchGitHubJSON', async url => {
+    urls.push(url);
+    if (url.includes('/actions/runs?')) return { workflow_runs: [1, 2, 3].map(id => ({
+      id, name: 'Deploy to Vercel', status: 'completed', conclusion: 'failure',
+      created_at: `2026-10-29T00:0${id}:00Z`, html_url: `https://example.com/${id}`,
+    })) };
+    const step = url.includes('/runs/3/') ? 'Setup Playwright' : 'Deploy to Production';
+    return { total_count: 1, jobs: [{ name: 'deploy', conclusion: 'failure', steps: [{ name: step, conclusion: 'failure' }] }] };
+  });
+  delete require.cache[healthPath];
+  delete require.cache[groupingPath];
+  const summary = await require(healthPath).getWorkflowRunSummary();
+  assert.equal(summary.skipped, false);
+  assert.equal(summary.failed, 3);
+  assert.equal(summary.repeatFailures.length, 1);
+  assert.equal(summary.repeatFailures[0].step, 'Deploy to Production');
+  assert.equal(summary.repeatFailures[0].count, 2);
+  assert.equal(urls.length, 4, 'one run-list request plus one jobs request per failed run');
+});
+
 test('repeatFailureResults: count>=3 is error, exactly 2 is warn', () => {
   const results = repeatFailureResults({
     skipped: false,

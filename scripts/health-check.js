@@ -54,6 +54,7 @@ const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
+const { summarizeRepeatFailures, enrichRepeatFailureSteps, repeatFailureLabel, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS } = require('./lib/workflow-repeat-failures.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isBroadwayCategory } = require('./lib/venue-classification');
@@ -4002,52 +4003,6 @@ function checkAPICredits() {
   return results;
 }
 
-// Pure (no I/O): group completed runs into repeat-failure entries (>=2 reds
-// in the window), annotated selfHealed, minus gate workflows that are only
-// refusing input. @param {object[]} completed - GitHub workflow_run objects
-function summarizeRepeatFailures(completed) {
-  // Group by workflow name to surface repeat offenders. A workflow failing
-  // 4+ consecutive runs gets drowned in the top-5 "latest failures" list
-  // (scheduled update-lottery-rush.yml did exactly this 2026-04-10→14).
-  // repeatFailures holds workflows with >=2 failures in the window; they're
-  // rendered in their own section of the digest so the pattern is visible.
-  const byWorkflow = new Map();
-  for (const run of completed.filter(r => r.conclusion === 'failure')) {
-    const entry = byWorkflow.get(run.name) || { name: run.name, count: 0, latestUrl: null, latestAt: null };
-    entry.count += 1;
-    if (!entry.latestAt || run.created_at > entry.latestAt) {
-      entry.latestAt = run.created_at;
-      entry.latestUrl = run.html_url;
-    }
-    byWorkflow.set(run.name, entry);
-  }
-  const repeatFailures = Array.from(byWorkflow.values())
-    .filter(entry => entry.count >= 2)
-    .sort((a, b) => b.count - a.count);
-
-  // Self-heal annotation: a repeat-failure whose streak has demonstrably
-  // ENDED (2+ consecutive green completed runs since the last failure) has
-  // likely already been fixed — the trailing-24h window just hasn't aged the
-  // failures out yet. The Aug 1 Test Suite streak ended 05:10 UTC but the
-  // digest fired a "likely broken" Fix-this card ~6.5h later, burning a
-  // session on an already-resolved condition. Deliberately NOT a bare
-  // latest-run-green check: a flapping workflow (11/19 failures, 2026-06-13)
-  // has a green latest run most mornings, and last-successful-run heuristics
-  // are the exact blindness repeatFailureResults was built to fix
-  // (second-opinion review, 2026-08-01).
-  for (const entry of repeatFailures) {
-    const conclusions = completed
-      .filter(r => r.name === entry.name)
-      .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
-      .map(r => r.conclusion);
-    entry.selfHealed = isRepeatFailureSelfHealed(conclusions);
-    entry.gateRefusalsOnly = GATE_WORKFLOWS.has(entry.name) && !isGateWorkflowBroken(conclusions);
-  }
-  // BRO-5174: a gate workflow's red run is the gate refusing a branch
-  // (already alerted per branch), not the workflow breaking.
-  return repeatFailures.filter(entry => !entry.gateRefusalsOnly);
-}
-
 // --- Category K: Workflow Runs (last 24h summary via GitHub API) ---
 
 async function getWorkflowRunSummary() {
@@ -4057,7 +4012,7 @@ async function getWorkflowRunSummary() {
 
   // Rate-limit headroom check FIRST (the /rate_limit endpoint itself is free
   // — see scripts/lib/gh-api-cache.js). This call alone can spend up to 3
-  // pages of quota; when the shared fleet-wide budget is already critically
+  // run-list pages plus capped job-detail calls; when the shared budget is
   // low, skip it gracefully instead of contributing to the exhaustion.
   if (hasLowHeadroom()) {
     return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true, skipReason: 'low rate-limit headroom' };
@@ -4112,7 +4067,8 @@ async function getWorkflowRunSummary() {
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
 
-    const repeatFailures = summarizeRepeatFailures(completed);
+    const detailed = await enrichRepeatFailureSteps(completed, { token });
+    const repeatFailures = summarizeRepeatFailures(detailed);
 
     return {
       total: completed.length,
@@ -4131,54 +4087,6 @@ async function getWorkflowRunSummary() {
     console.error(`[Workflows] API error: ${err.message}`);
     return { total: 0, failed: 0, succeeded: 0, failedRuns: [], repeatFailures: [], skipped: true, error: err.message };
   }
-}
-
-// Promote repeat workflow failures into first-class check results so they flow
-// through the same subject-line / escalation / auto-triage machinery as every
-// other check, instead of sitting passively in a digest body section (the very
-// failure mode that let main test.yml fail 11/19 push runs over 2026-06-13→15
-// without bumping the digest off "All clear"). One result per offending
-// workflow: 'error' at 3+ failures (clearly broken), 'warn' at exactly 2 (could
-// still be a flaky double). Returns [] when there's nothing to surface — clean
-// window, or summary skipped (no GH token / API error). Pure (no IO) — unit-
-// tested in tests/unit/health-check-repeat-failures.test.mjs.
-// Pure (no I/O): a repeat-failure streak counts as self-healed only when the
-// 2+ most recent completed runs are ALL green — i.e. the streak provably
-// ended. A single trailing green (flappy workflow) is not enough.
-// @param {string[]} conclusionsNewestFirst - run conclusions, newest first
-function isRepeatFailureSelfHealed(conclusionsNewestFirst) {
-  if (!Array.isArray(conclusionsNewestFirst) || conclusionsNewestFirst.length < 2) return false;
-  let leadingGreens = 0;
-  for (const c of conclusionsNewestFirst) {
-    if (c !== 'success') break;
-    leadingGreens++;
-  }
-  return leadingGreens >= 2;
-}
-
-// Gate workflows: a red run means the gate REFUSED its input (Land: the
-// branch broke a test or would not rebase), and that refusal is already
-// alerted per branch (scripts/land-alert.js, conditionKey land:<branch>).
-// Counting those reds as "Workflow repeat-failure: Land" filed BRO-5174 for
-// a day of 6 correct refusals among ~22 landings. The gate itself is broken
-// only when it stops landing anything: no green run in the window, or
-// GATE_BROKEN_STREAK+ reds in a row at the head (interleaved refusals in
-// practice run at most 2 deep). Cancelled/skipped runs are neutral, so
-// Land's own queue-park cancels cannot reset a crash streak. A crash that hits
-// only some branches is still routed: land-retry-cancelled.yml escalates every
-// red land/** ref to its card hourly (scripts/lib/land-stranded-refs.js).
-const GATE_WORKFLOWS = new Set(['Land']);
-const GATE_BROKEN_STREAK = 4;
-// Pure (no I/O). @param {string[]} conclusionsNewestFirst - completed runs, newest first
-function isGateWorkflowBroken(conclusionsNewestFirst) {
-  const cs = Array.isArray(conclusionsNewestFirst) ? conclusionsNewestFirst : [];
-  if (!cs.includes('success')) return true;
-  let leadingFailures = 0;
-  for (const c of cs) {
-    if (c === 'success') break;
-    if (c === 'failure') leadingFailures++;
-  }
-  return leadingFailures >= GATE_BROKEN_STREAK;
 }
 
 // A self-healed repeat-failure streak (result.selfHealed, set from
@@ -4224,12 +4132,13 @@ function repeatFailureResults(workflowSummary) {
   if (!workflowSummary || workflowSummary.skipped) return [];
   const repeats = workflowSummary.repeatFailures || [];
   return repeats.map(r => ({
-    name: `Workflow repeat-failure: ${r.name}`,
+    name: `Workflow repeat-failure: ${repeatFailureLabel(r)}`,
     // A provably-ended streak (2+ consecutive trailing greens) downgrades to
     // warn so an already-self-healed condition doesn't drive ACTION NEEDED
     // subjects or invite a Fix-this tap on a resolved streak.
     status: r.selfHealed ? 'warn' : (r.count >= 3 ? 'error' : 'warn'),
-    message: `${r.name} failed ${r.count} times in the last 24h`
+    message: `${repeatFailureLabel(r)} failed ${r.count} times in the last 24h`
+      + (r.detailsUnavailable ? '; failed-step details unavailable, this count may combine different causes' : '')
       + (r.selfHealed
         ? ' — 2+ consecutive green runs since; likely self-healed, failures will age out of the window.'
         : ' — likely broken, not transient.'),
@@ -5926,10 +5835,10 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       ? `
         <h3 style="color:#e74c3c;margin:24px 0 8px;">⚠️ Repeat Workflow Failures (24h)</h3>
         <p style="color:#ccc;margin:4px 0;">
-          These workflows failed 2+ times in the last 24 hours. Entries without a self-healed note are likely broken, not transient.
+          These workflow/job/step groups failed 2+ times in the last 24 hours. Entries without a self-healed note are likely broken, not transient.
         </p>
         <ul style="padding-left:20px;margin:4px 0;">
-          ${repeats.map(r => `<li style="color:${r.selfHealed ? '#f1c40f' : '#e74c3c'};margin-bottom:4px;"><strong>${r.name}</strong> — ${r.count} failures${r.selfHealed ? ' — likely self-healed (2+ green runs since)' : ''} — <a href="${r.latestUrl}" style="color:${r.selfHealed ? '#f1c40f' : '#e74c3c'};">latest run</a></li>`).join('')}
+          ${repeats.map(r => `<li style="color:${r.selfHealed ? '#f1c40f' : '#e74c3c'};margin-bottom:4px;"><strong>${escapeHtml(repeatFailureLabel(r))}</strong>: ${r.count} failures${r.detailsUnavailable ? ' (failed-step details unavailable; causes may differ)' : ''}${r.selfHealed ? '; likely self-healed (2+ green runs since)' : ''}; <a href="${r.latestUrl}" style="color:${r.selfHealed ? '#f1c40f' : '#e74c3c'};">latest run</a></li>`).join('')}
         </ul>
       `
       : '';
