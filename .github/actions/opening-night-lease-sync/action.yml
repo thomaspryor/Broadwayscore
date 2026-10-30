@@ -1,9 +1,27 @@
 name: Opening-night lease sync
 description: Fetch the shared opening-night night-lease state (BRO-4786) so scripts skip leased shows and push-review-texts refuses writes to them
 
+inputs:
+  page:
+    description: "'true' raises a failed sync through the owner alert router (BRO-6648). Only a job that commits data/audit/alert-ledger.json and the digest queue may set it."
+    required: false
+    default: 'false'
+  linear-api-key:
+    description: Lets a failed sync on a press night file its worker card (with page 'true')
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
     - name: Sync opening-night leases
       shell: bash
-      run: node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync
+      env:
+        LEASE_SYNC_PAGE: ${{ inputs.page }}
+        LINEAR_API_KEY: ${{ inputs.linear-api-key }}
+      run: |
+        if [ "$LEASE_SYNC_PAGE" = "true" ]; then
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync --page
+        else
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync
+        fi

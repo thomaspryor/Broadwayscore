@@ -214,7 +214,9 @@ test('lease file: acquire, heartbeat, release round trip through the file', () =
     assert.equal(refused.ok, false);
     assert.equal(refused.reason, 'state-unreadable', 'a corrupt file is never read as "no leases": that would wipe every other show\'s live lease');
     assert.equal(fs.readFileSync(file, 'utf8'), '{not json', 'and nothing is written over it');
-    assert.equal(lease.isShowLeased(file, L.show, { now: NOW + 4000 }).unreadable, true, 'writers that cannot read the file treat the show as leased');
+    const unread = lease.isShowLeased(file, L.show, { now: NOW + 4000 });
+    assert.equal(unread.unreadable, true, 'the pure layer never reads an unreadable file as "free"');
+    assert.equal(unread.unknown, true, 'it reports unknown; lease-guard applies the writer policy (only tonight waits, BRO-6648)');
     fs.rmSync(file);
     assert.equal(lease.acquireLease(file, { ...L, holder: 'mac', now: NOW + 5000 }).reason, 'acquired', 'a MISSING file is the only empty state');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }

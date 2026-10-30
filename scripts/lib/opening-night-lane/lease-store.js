@@ -25,11 +25,20 @@ const lease = require('./lease');
 
 const DEFAULT_BRANCH = 'opening-night-leases';
 const DEFAULT_FILE = 'data/opening-night/leases.json';
+const GIT_TIMEOUT_MS = 60000;
+
+/** Write `text` to `file` via tmp + rename so a concurrent reader never parses half a file. */
+function writeAtomic(file, text) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
+  fs.writeFileSync(tmp, text);
+  fs.renameSync(tmp, file);
+}
 
 function git(repoDir, args, { env, input, allowFail } = {}) {
   try {
     return execFileSync('git', args, {
-      cwd: repoDir, encoding: 'utf8', input, stdio: ['pipe', 'pipe', 'pipe'],
+      cwd: repoDir, encoding: 'utf8', input, stdio: ['pipe', 'pipe', 'pipe'], timeout: GIT_TIMEOUT_MS, // a hung git must fail, not stall the job
       env: { ...process.env, GIT_TERMINAL_PROMPT: '0', ...(env || {}) },
     }).trim();
   } catch (e) {
@@ -115,9 +124,8 @@ const release = (opts, args) => casTransition(opts, (s) => lease.release(s, args
 /** Write the remote state to the local file the skip guard reads. Branch missing = empty file. Throws if the remote cannot be read. */
 function syncLocalFile(opts, localFile) {
   const { state } = readRemote(opts);
-  fs.mkdirSync(path.dirname(localFile), { recursive: true });
-  fs.writeFileSync(localFile, JSON.stringify(state, null, 2) + '\n');
+  writeAtomic(localFile, JSON.stringify(state, null, 2) + '\n');
   return state;
 }
 
-module.exports = { DEFAULT_BRANCH, DEFAULT_FILE, readRemote, commitState, casTransition, claim, heartbeat, release, syncLocalFile };
+module.exports = { DEFAULT_BRANCH, DEFAULT_FILE, writeAtomic, readRemote, commitState, casTransition, claim, heartbeat, release, syncLocalFile };

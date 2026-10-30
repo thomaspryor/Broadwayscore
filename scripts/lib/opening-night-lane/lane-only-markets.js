@@ -5,8 +5,8 @@
  * (scripts/express-retry-queue.js dispatch-due) and the poller's rebuild + deploy (opening-night-poller.yml
  * `lane_only` step). Manual Express runs, the 08:00 UTC day-after Express fire and day-after sweeps are untouched.
  *
- * Fail toward publishing. lease-guard.js answers "may I WRITE this show?" and treats an unknown lease as leased
- * (wait). This module answers "may the old path PUBLISH?" and treats every unknown as yes. The old path stands down
+ * Fail toward publishing. lease-guard.js answers "may I WRITE this show?" and under an unknown lease holds only
+ * tonight's shows (BRO-6648; every other show writes). This module answers "may the old path PUBLISH?" and treats every unknown as yes. The old path stands down
  * only on positive evidence that a lane holds the night right now:
  *   1. LANE_ONLY_MARKETS was read (read-actions-variable.sh exit 0; a failed read keeps the old path on);
  *   2. it names the show's market or category, matched like LANE_STANDDOWN ("broadway" covers Off-Broadway, whose

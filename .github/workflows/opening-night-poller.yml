@@ -181,6 +181,9 @@ jobs:
 
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
+        with:
+          page: 'true' # BRO-6648: this job commits the alert ledger + digest queue, so the failed-sync alert is raised here only
+          linear-api-key: ${{ secrets.LINEAR_API_KEY }}
 
       - name: Find shows to poll
         id: find
