@@ -833,7 +833,7 @@ test('BRO-5915: reading PRs (gh api GET …/pulls, …/pulls/N/comments) is not 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-for (const ask of ['Please merge PR #42 when you get a chance.', "You'll need to merge both PRs.", 'You need to merge #42 and #43.']) {
+for (const ask of ['Please merge PR #42 when you get a chance.', "You'll need to merge both PRs.", 'You need to merge #42 and #43.', 'Merge #1170 first, then data#3.', 'All green. Merge the draft PRs when ready.']) {
   test(`BRO-5915 OWNERMERGE imperative ask blocks: ${ask}`, skipNoRepoHook, () => {
     const dir = makeTmpDir('ownermerge-imperative');
     const r = runHook(writeTranscript(dir, [GH_PR_CREATE]), `${ask}\n\nKEEP OPEN — CI still running on PR #42.`);
@@ -842,6 +842,12 @@ for (const ask of ['Please merge PR #42 when you get a chance.', "You'll need to
     fs.rmSync(dir, { recursive: true, force: true });
   });
 }
+
+test('OWNERMERGE false-positive guard: own-action and rule-description "merge" wording is allowed', skipNoRepoHook, () => {
+  for (const msg of ["Merge main into the branch first, then I pushed land/x.", "I merged #42 myself via land. The owner never needs to merge #43.", "Don't merge #42, it already landed."]) {
+    assertAllowed(runOnPr('ownermerge-own', `${msg}\n\nKEEP OPEN — CI still running on PR #42.`), msg);
+  }
+});
 
 test('BRO-5915 OWNERMERGE false-positive guard: "need to merge conflicts" is not a merge ask', skipNoRepoHook, () => {
   const r = runOnPr('ownermerge-conflicts', "Rebased; you'll need to merge conflicts only if main moves again.\n\nKEEP OPEN — CI still running on PR #42.");

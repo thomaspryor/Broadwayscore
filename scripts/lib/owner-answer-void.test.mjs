@@ -65,6 +65,8 @@ test('void is refused on a card with no visual ask (bad-choice) and by the CLI r
 test('resolveDecision still refuses approving a visual ask, and allows void', () => {
   const issue = { identifier: 'BRO-7', title: 't', description: block(), labels: { nodes: [] } };
   assert.match(resolveDecision(issue, 'a').error, /visual change/);
+  // BRO-6546: the refusal must send the session to land the held change itself, never to the owner's tap.
+  assert.match(resolveDecision(issue, 'a').error, /said yes\/Approved in THIS chat[\s\S]*Never tell the owner to tap/);
   assert.equal(resolveDecision(issue, 'void').choiceKey, 'void');
 });
 

@@ -141,6 +141,8 @@ function classifyStatus(description, comments) {
     if (has(MARK.void)) return 'void';
     return 'approved';
   }
+  // A void closes the ask even when no Approve was ever tapped (the owner said yes in chat and the session shipped it).
+  if (has(MARK.void)) return 'void';
   if (/ANSWERED by the owner/.test(description || '')) return 'rejected';
   return 'waiting';
 }
