@@ -503,3 +503,26 @@ test('exact-title path is for national-tour roundup slugs only (ship-check BRO-4
   // A national-tour roundup slug still matches (production context breaks the tie).
   assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-SIX-Launches-North-American-Tour-20260101', shows).via, 'slug-exact-title');
 });
+
+// BRO-6596: "Shakespeare's R & J" reduced to [shakespeares] and out-scored
+// Bedlam's Othello on a slug that says "shakespeares-othello". Standalone
+// letters in a short title are now required tokens. Inline shows, so this
+// holds whatever shows.json contains.
+test('single-letter title words are required tokens for short titles (BRO-6596)', () => {
+  const mini = [
+    { id: 'bedlams-othello-off-broadway-2026', slug: 'bedlams-othello', title: "Bedlam's Othello", status: 'closed' },
+    { id: 'shakespeares-r-and-j-regional-2024', slug: 'shakespeares-r-and-j-regional-2024', title: "Shakespeare's R & J", status: 'closed' },
+    { id: 'avenue-q-2003', slug: 'avenue-q-2003', title: 'Avenue Q', status: 'closed' },
+    { id: 'the-weddings-off-west-end-2027', slug: 'the-weddings', title: 'The Wedding(s)', status: 'upcoming' },
+    { id: 'hms-pinafore-1976', slug: 'hms-pinafore-1976', title: 'H.M.S. Pinafore', status: 'closed' },
+  ];
+  const id = s => { const r = matchSlugToShow(s, mini); return r ? r.show.id : null; };
+  assert.equal(id('what-are-the-reviews-for-bedlams-4-person-version-of-shakespeares-othello'), 'bedlams-othello-off-broadway-2026');
+  assert.equal(id('what-are-the-reviews-for-shakespeares-r-and-j'), 'shakespeares-r-and-j-regional-2024');
+  assert.equal(id('read-the-reviews-for-avenue-q'), 'avenue-q-2003');
+  assert.equal(id('read-the-reviews-for-the-avenue-revival'), null);
+  // Letters inside a word or an initialism are not standalone.
+  const { _showDistinctiveTokens } = require('./show-matching.js');
+  assert.deepEqual(_showDistinctiveTokens(mini[3]), ['wedding']);
+  assert.deepEqual(_showDistinctiveTokens(mini[4]), ['pinafore']);
+});

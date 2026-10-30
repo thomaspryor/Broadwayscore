@@ -1499,16 +1499,35 @@ function _showDistinctiveTokens(show) {
   // Unauthorized Musical Parody" → "Heated Rivalry". "Holiday Inn, The
   // New Irving Berlin Musical" → "Holiday Inn". Aggregator slugs almost
   // always use the primary title.
-  const primary = String(titleRaw).split(/[,:]/)[0];
-  let tokens = [...new Set(_tokenizeTitleText(primary))];
+  let source = String(titleRaw).split(/[,:]/)[0];
+  let tokens = [...new Set(_tokenizeTitleText(source))];
   // Fall back to FULL title when the comma/colon split was too aggressive
   // — e.g. "Well, I'll Let You Go" pre-comma yields [well] which is too
   // weak. Use the full title's tokens in that case.
   if (tokens.length === 1 && tokens[0].length < 5) {
     const full = [...new Set(_tokenizeTitleText(String(titleRaw)))];
-    if (full.length > tokens.length) tokens = full;
+    if (full.length > tokens.length) { tokens = full; source = String(titleRaw); }
+  }
+  // Standalone single letters ("R & J", "Avenue Q", "The King and I") are
+  // required tokens when the title has one or two long words, the same rule
+  // _missingShortTitleToken applies to page titles. Without them "Shakespeare's
+  // R & J" reduced to [shakespeares] and took a Bedlam Othello slug that said
+  // "shakespeares-othello" (BRO-6596). Only whole words count, so "Wedding(s)",
+  // "F*ck" and initialisms like "H.M.S." keep their old tokens.
+  if (tokens.filter(t => t.length > 2).length <= 2) {
+    for (const w of _standaloneTitleLetters(source)) {
+      if (!tokens.includes(w)) tokens.push(w);
+    }
   }
   return tokens;
+}
+
+function _standaloneTitleLetters(text) {
+  return String(text).toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .split(/\s+/)
+    .map(w => w.replace(/^['\u2018\u2019"]+|['\u2018\u2019".]+$/g, ''))
+    .filter(w => /^[a-z]$/.test(w) && !_SLUG_STOPWORDS.has(w));
 }
 
 function _tokenAppearsInSlug(token, cleanedSlug) {
