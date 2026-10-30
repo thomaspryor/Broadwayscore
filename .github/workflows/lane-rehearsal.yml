@@ -71,6 +71,16 @@ jobs:
           git commit -m "audit: lane rehearsal verdict [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main
 
+      # The rehearsal reaches fetchPage through buildRealLaneDeps (the fixture's fetch is injected, so this normally
+      # stays empty); the ledger is committed so any spend that does happen is never silently dropped.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: lane-rehearsal
+          push-retry-args: '5 main'
+
       - name: Notify on failure
         if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
