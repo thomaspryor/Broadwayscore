@@ -3253,5 +3253,33 @@
       }
     ],
     "queuedAt": "2026-10-30T00:03:12.224Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-tosca-off-broadway-2026",
+    "title": "Placeholder synopsis on Tosca",
+    "description": "synopsis for tosca-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T00:14:57.579Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-tosca-off-broadway-2026",
+    "title": "Unverified revival on Tosca",
+    "description": "tosca-off-broadway-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T00:14:57.597Z"
   }
 ]
