@@ -33,40 +33,51 @@ test('every send_to_all read is paired with create_draft, and vice versa, by OR'
   const reads = (name) => SRC.split('\n').filter((l) => new RegExp(`\\$\\{\\{[^}]*inputs\\.${name}\\b`).test(l));
   const old = reads('send_to_all');
   const cur = reads('create_draft');
-  assert.ok(old.length >= 2, `expected the dedup-skip and draft-mode reads, found ${old.length}`);
+  assert.ok(old.length >= 1, `expected the explicit-draft read, found ${old.length}`);
   assert.deepEqual(cur, old, 'create_draft and send_to_all must be read on the same lines');
-  // Either one GitHub expression `inputs.create_draft || inputs.send_to_all`, or two
-  // bash tests joined by `] || [`. An && would make the alias (or the new name) inert.
-  const joined = /inputs\.create_draft \|\| inputs\.send_to_all|inputs\.create_draft \}\}" = "true" \] \|\| \[ "\$\{\{ inputs\.send_to_all/;
-  for (const l of old) assert.match(l, joined, `create_draft/send_to_all not joined by OR: ${l.trim()}`);
+  // One GitHub expression `inputs.create_draft || inputs.send_to_all`. An && would
+  // make the alias (or the new name) inert.
+  for (const l of old) assert.match(l, /inputs\.create_draft \|\| inputs\.send_to_all/, `create_draft/send_to_all not joined by OR: ${l.trim()}`);
 });
 
-test('a default dispatch creates no draft outside deadline mode (workflow_run / update-show-status rely on it)', () => {
-  // The draft branch must be gated on an input or the 12:30 cron, never unconditional.
-  const m = SRC.match(/elif \[ "\$\{\{ inputs\.create_draft \}\}" = "true" \][^\n]*\n[\s\S]*?CREATE_DRAFT="true"/);
-  assert.ok(m, 'draft branch not found');
-  // The initialiser is false, and the final else (preview mode) never flips it.
-  const init = SRC.indexOf('CREATE_DRAFT="false"');
-  assert.ok(init !== -1 && init < SRC.indexOf(m[0]), 'CREATE_DRAFT must start false before the branches');
-  const elseIdx = SRC.indexOf('\n          else\n', SRC.indexOf(m[0]));
-  const fiIdx = SRC.indexOf('\n          fi\n', elseIdx);
-  assert.ok(elseIdx !== -1 && fiIdx > elseIdx, 'final else branch not found');
-  const elseBranch = SRC.slice(elseIdx, fiIdx);
-  assert.match(elseBranch, /PREVIEW MODE/);
-  assert.doesNotMatch(elseBranch, /CREATE_DRAFT="true"/);
+// BRO-6634 (owner 2026-10-30): no approval step. Every trigger except a send_to
+// test creates the Resend draft; the owner reviews and sends it from Resend.
+const broadcastStep = () => {
+  const m = SRC.match(/\n      - name: Create broadcast draft[\s\S]*?\n      - name:/);
+  assert.ok(m, 'broadcast step not found');
+  return m[0];
+};
+
+test('every trigger except a send_to test creates the draft', () => {
+  const step = broadcastStep();
+  assert.match(step, /CREATE_DRAFT="true"\n/, 'CREATE_DRAFT must default to true');
+  assert.equal(step.split('CREATE_DRAFT="false"').length - 1, 1, 'only the send_to branch may turn the draft off');
+  assert.match(step, /if \[ -n "\$\{INPUT_SEND_TO\}" \]; then\n\s*CREATE_DRAFT="false"/);
+  assert.doesNotMatch(step.replace(/no approval/gi, ''), /approval/i, 'no approval framing: the owner sends from Resend');
 });
 
-test('past-deadline shows get --force-create-draft in every draft mode, approval included', () => {
-  // BRO-5261 retro-review: the approval branch (create_draft / 12:30 cron) runs before
-  // the deadline branch, so the force flag set only inside the deadline branch was
-  // skipped there. One rule after the mode chain now covers both.
-  const rule = SRC.match(/if \[ "\$CREATE_DRAFT" = "true" \] && \[ -n "\$\{\{ steps\.check\.outputs\.deadline_shows \}\}" \]; then\n\s*DRAFT_FLAGS="--force-create-draft"/);
-  assert.ok(rule, 'post-chain force rule not found');
-  const chainEnd = SRC.indexOf('** PREVIEW MODE — sending preview to owner for approval **');
-  assert.ok(chainEnd !== -1 && SRC.indexOf(rule[0]) > chainEnd, 'force rule must follow the whole mode chain');
-  assert.equal(SRC.split('DRAFT_FLAGS="--force-create-draft"').length - 1, 1, 'exactly one place may set the force flag');
-  // The flag only ever reaches the draft call, never the preview send.
-  for (const l of SRC.split('\n').filter((x) => x.includes('send-opening-night-broadcast.js'))) {
-    if (l.includes('DRAFT_FLAGS')) assert.doesNotMatch(l, /SEND_TO_FLAG/, `force flag on a preview call: ${l.trim()}`);
+test('the draft and the preview never reach a broadcast send', () => {
+  const step = broadcastStep();
+  assert.doesNotMatch(step, /broadcasts\/[^\s]*\/send|--send-to-all/);
+  for (const l of step.split('\n').filter((x) => x.includes('send-opening-night-broadcast.js'))) {
+    // The draft call carries no --send-to; the preview call carries only a --send-to.
+    if (l.includes('DRAFT_FLAGS')) assert.doesNotMatch(l, /PREVIEW_FLAG|OWNER_FLAG|--send-to/, `draft call with a send flag: ${l.trim()}`);
+    else assert.match(l, /\$PREVIEW_FLAG/, `preview call without a --send-to: ${l.trim()}`);
   }
+});
+
+test('past-deadline shows get --force-create-draft, on the draft call only', () => {
+  const rule = SRC.match(/if \[ "\$CREATE_DRAFT" = "true" \] && \[ -n "\$\{\{ steps\.check\.outputs\.deadline_shows \}\}" \]; then\n\s*DRAFT_FLAGS="--force-create-draft"/);
+  assert.ok(rule, 'force rule not found');
+  assert.ok(SRC.indexOf(rule[0]) > SRC.indexOf('** DRAFT MODE'), 'force rule must follow the mode branch');
+  assert.equal(SRC.split('DRAFT_FLAGS="--force-create-draft"').length - 1, 1, 'exactly one place may set the force flag');
+});
+
+test('a number change updates the unsent draft in place and the reminder step exists', () => {
+  assert.match(SRC, /id: update_drafts[\s\S]*?--update-unsent-draft/);
+  assert.match(SRC, /node scripts\/remind-unsent-broadcast-draft\.js/);
+  const update = SRC.indexOf('id: update_drafts');
+  const remind = SRC.indexOf('remind-unsent-broadcast-draft.js');
+  const commit = SRC.indexOf('- name: Commit data');
+  assert.ok(update !== -1 && remind > update && (commit === -1 || commit > remind), 'reminder must run after the update step and before Commit data');
 });

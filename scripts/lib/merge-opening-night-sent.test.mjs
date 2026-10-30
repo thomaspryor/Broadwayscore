@@ -86,3 +86,28 @@ test('mergeOpeningNightSent: a fresh no-op reconciler poll (lastReconciledAt onl
   const { merged } = mergeOpeningNightSent(ours, remote);
   assert.equal(merged.shows['cats-2026'].draftStatus, 'sent');
 });
+
+// BRO-6634: a reconcile push from an older checkout must not drop the
+// owner-notice stamps, or the next run repeats the "draft updated" email
+// and restarts the reminder count.
+test('mergeOpeningNightSent: keeps newer draft update/reminder stamps whichever copy wins', () => {
+  const base = { completed: true, draftId: 'd1', draftStatus: 'draft', sentAt: null, draftCreatedAt: '2026-10-30T14:00:00Z', reviewCount: 22 };
+  const stamped = { ...base, draftNumbers: { x: { score: 60, reviewCount: 23 } }, draftUpdatedAt: '2026-10-30T16:00:00Z', reviewCount: 23, draftReminderAt: '2026-10-30T20:00:00Z', draftReminderCount: 1 };
+  const reconciled = { ...base, lastReconciledAt: '2026-10-30T21:00:00Z' };
+  // Reconcile is the pushing side (ours), our stamps are on origin (remote).
+  const a = mergeOpeningNightSent({ shows: { k: reconciled } }, { shows: { k: stamped } }).merged.shows.k;
+  assert.equal(a.draftUpdatedAt, stamped.draftUpdatedAt);
+  assert.deepEqual(a.draftNumbers, stamped.draftNumbers);
+  assert.equal(a.reviewCount, 23);
+  assert.equal(a.draftReminderCount, 1);
+  assert.equal(a.lastReconciledAt, reconciled.lastReconciledAt, 'winner keeps its own fields');
+  // A sent record from another writer still wins, stamps or not.
+  const sent = { ...base, draftStatus: 'sent', sentAt: '2026-10-30T22:00:00Z' };
+  const b = mergeOpeningNightSent({ shows: { k: stamped } }, { shows: { k: sent } }).merged.shows.k;
+  assert.equal(b.draftStatus, 'sent');
+  // Different draft (recreated): stamps from the old draft are not carried.
+  const other = { ...base, draftId: 'd2', draftCreatedAt: '2026-10-30T23:00:00Z' };
+  const c = mergeOpeningNightSent({ shows: { k: stamped } }, { shows: { k: other } }).merged.shows.k;
+  assert.equal(c.draftId, 'd2');
+  assert.equal(c.draftUpdatedAt, undefined);
+});

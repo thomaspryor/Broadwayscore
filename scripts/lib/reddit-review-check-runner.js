@@ -89,6 +89,7 @@ async function runShowCheck({ draft, mode, deps, nowIso, startedMs = Date.now() 
   const verification = lib.buildVerification({
     draft, nowIso, mode, snapshotBefore: before, snapshotAfter: after, census, error, tools, judge, previous: draft.verification, durationMs: Date.now() - startedMs,
     ownerOf: deps.ownerOf ? url => deps.ownerOf(url, showId) : null,
+    facts: deps.facts ? deps.facts(showId) : null,
   });
   // What gets pushed is whatever the tools left in the working tree (unreported metadata, _pending files and all),
   // not just what the owner-facing summary names; a failed check can still have written good files.
@@ -199,6 +200,14 @@ function realDeps({ root = ROOT, reviewTexts = REVIEW_TEXTS, auditPath = AUDIT_P
     hasGit,
     allowedShows: [],
     snapshot: id => lib.snapshotShow(reviewTexts, id),
+    // The show's opening date and category, so pre-opening features drop out of "still not counted" (BRO-6634).
+    facts(showId) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8'));
+        const show = (Array.isArray(d) ? d : d.shows).find(x => x.id === showId);
+        return show ? judgeLib.identityFacts(show, new Date().toISOString().slice(0, 10)) : null;
+      } catch { return null; }
+    },
     runTool(tool, showId) {
       const started = Date.now();
       const r = spawnSync(process.execPath, tool.argv(showId), {

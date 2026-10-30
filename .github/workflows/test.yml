@@ -1535,6 +1535,7 @@ on:
       - 'scripts/generate-mobile-show-details.js'
       - 'scripts/compute-gold-lists.js'
       - 'scripts/send-opening-digest.js'
+      - 'scripts/reddit-opening-posts-due.js' # BRO-6634: dep of scripts/lib/reddit-opening-post.test.mjs
       # BRO-2408: related-shows generator + its guard test (scores must come
       # via loadReviewsWithBlog). Test is in tests/unit-test-manifest.txt;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).

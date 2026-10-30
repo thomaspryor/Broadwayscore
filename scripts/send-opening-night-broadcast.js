@@ -38,9 +38,10 @@ function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
   return applyUtm(html, { source: 'opening-night', campaign });
 }
 const { checkPreviewDedup } = require('./lib/preview-dedup');
+const { numbersFromEmailRows, isUnsentDraft, unsentDraftUpdatePlan, stampDraftUpdate } = require('./lib/broadcast-refresh');
 const { getShowConsensusText } = require('./lib/critic-consensus-lookup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
-const { upsertBroadcastDraft, makeResendRequest } = require('./lib/resend-draft-upsert');
+const { upsertBroadcastDraft, makeResendRequest, RESEND_BROADCASTS_URL } = require('./lib/resend-draft-upsert');
 const { draftLockRecheckBlockReason } = require('./lib/broadcast-lock-recheck');
 const {
   syncTrackerToOrigin: syncTrackerToOriginShared,
@@ -83,6 +84,14 @@ const RECREATE_DRAFT = process.argv.includes('--recreate-draft');
 // For revivals or niche shows where T1 outlets are unlikely to cover; owner manually reviews the
 // draft in Resend UI and decides whether to send.
 const FORCE_CREATE_DRAFT = process.argv.includes('--force-create-draft');
+// --update-unsent-draft (BRO-6634): for shows whose Resend draft is still
+// unsent, PATCH that same draft in place with the current numbers and email
+// the owner that it changed. Skips (exit 0) when the draft already shows these
+// numbers, when no unsent draft is recorded, or when a live Resend GET does not
+// say `draft`. The draft keeps its id and link; nothing is deleted. Never
+// calls /send, never combined with --send-to/--recreate-draft/--force-create-draft
+// (the confidence gate still applies, so a not-ready show leaves the draft alone).
+const UPDATE_UNSENT = process.argv.includes('--update-unsent-draft');
 // --subject="..." — override the generated subject line for this run. For one-off wording
 // (return engagements, transfers) without touching the shared template. Applies to both the
 // draft and the [PREVIEW] variant, and still passes the FORBIDDEN_SUBJECT_WORDS safety check.
@@ -157,6 +166,8 @@ function recordDraftCompletion(sentData, broadcastKey, showsForEmail, draftInfo)
     // draftInfo may override draftStatus: adopting a broadcast Resend already
     // shows as sent (BRO-3493) records its real status.
     draftStatus: 'draft',
+    // BRO-6634: the numbers this draft carries, so a later change rebuilds it.
+    draftNumbers: numbersFromEmailRows(showsForEmail),
     ...draftInfo,
     completed: true,
     sentAt: null,
@@ -338,6 +349,11 @@ async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
+  if (UPDATE_UNSENT && (SEND_TO || RECREATE_DRAFT || FORCE_CREATE_DRAFT)) {
+    console.error('--update-unsent-draft cannot be combined with --send-to, --recreate-draft or --force-create-draft');
+    process.exit(1);
+  }
+
   if (!RESEND_API_KEY && !DRY_RUN) {
     console.log('Missing RESEND_API_KEY — skipping draft creation');
     process.exit(0);
@@ -411,6 +427,11 @@ async function main() {
   const pendingShows = recentlyOpened.filter(s => {
     const showId = s.id || s.slug;
     const individualSent = sentData.shows[showId];
+    if (UPDATE_UNSENT) {
+      if (!sentOnSiblingRecord(sentData.shows, showId) && isUnsentDraft(individualSent)) return true;
+      console.log(`  Skipping ${s.title} — no unsent draft to update`);
+      return false;
+    }
     if (!individualSent) return true;
     // A send observed on ANY record of this show's draft (its market: key or a
     // multi-show combo) is final, even if this per-show mirror is stale or was
@@ -488,6 +509,12 @@ async function main() {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       const reasons = gate.reasons;
       console.log(`  ⚠️  ${show.title}: gate failed (${reasons.join(', ')}) — bypassed by --force-create-draft. Draft will be created for manual review.`);
+    } else if (UPDATE_UNSENT) {
+      // BRO-6634: the draft already exists (a deadline draft may have been
+      // forced past this gate), so newer numbers are always better than the
+      // ones it shows. The workflow's own readiness gate still applies.
+      readyShows.push({ show, stats, t1Count, t2Count, t3Count });
+      console.log(`  ⚠️  ${show.title}: gate failed (${gate.reasons.join(', ')}); updating the existing draft's numbers anyway.`);
     } else {
       const reasons = gate.reasons;
       console.log(`  ⏳ ${show.title}: Not ready — ${reasons.join(', ')} (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
@@ -648,7 +675,20 @@ async function main() {
     }
   }
 
-  if (previousSent?.completed && !SEND_TO && !RECREATE_DRAFT) {
+  let updatePlan = null;
+  if (UPDATE_UNSENT) {
+    updatePlan = unsentDraftUpdatePlan(sentData.shows, broadcastKey, numbersFromEmailRows(showsForEmail));
+    if (updatePlan.action === 'skip') {
+      console.log(`\nNo draft update: ${updatePlan.reason}`);
+      process.exit(0);
+    }
+    if (DRY_RUN) {
+      console.log(`\n[DRY RUN] Would update draft ${updatePlan.record.draftId} in place: ${JSON.stringify(updatePlan.was)} -> ${JSON.stringify(numbersFromEmailRows(showsForEmail))}`);
+      process.exit(0);
+    }
+  }
+
+  if (previousSent?.completed && !SEND_TO && !RECREATE_DRAFT && !UPDATE_UNSENT) {
     console.log('Broadcast already completed for this show combination — nothing to do');
     process.exit(0);
   }
@@ -672,18 +712,20 @@ async function main() {
     // 10:09 PM ET — a second preview re-sent because its key was
     // ...:2026-04-11 instead of ...:2026-04-10).
     const currentReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
-    const dedup = checkPreviewDedup(sentData, broadcastKey, currentReviewCount);
+    // BRO-6634: per-show displayed numbers, so a 59 -> 60 move re-sends too.
+    const currentNumbers = numbersFromEmailRows(showsForEmail);
+    const dedup = checkPreviewDedup(sentData, broadcastKey, { total: currentReviewCount, shows: currentNumbers });
 
     if (dedup.action === 'skip') {
       const prev = dedup.lastPreview;
       console.log(`\nPreview already sent ${dedup.hoursSince.toFixed(1)}h ago for this show combination — skipping`);
       console.log(`  Previous preview: ${prev.sentAt} (${prev.reviewCount || 0} reviews, sent to ${prev.previewTo || 'unknown'})`);
-      console.log(`  Current: ${currentReviewCount} reviews (+${dedup.newReviews}, need +3 to re-send within 24h)`);
+      console.log(`  Current: ${currentReviewCount} reviews, same displayed score and count as that preview`);
       process.exit(0);
     }
     if (dedup.action === 'resend') {
       const prev = dedup.lastPreview;
-      console.log(`\nRe-sending preview — ${dedup.newReviews} new reviews since last preview ${dedup.hoursSince.toFixed(1)}h ago (${prev.reviewCount || 0} → ${currentReviewCount})`);
+      console.log(`\nRe-sending preview — numbers changed since last preview ${dedup.hoursSince.toFixed(1)}h ago (${prev.reviewCount || 0} → ${currentReviewCount} reviews)`);
     }
 
     console.log(`\nSending preview to ${SEND_TO}...`);
@@ -710,7 +752,7 @@ async function main() {
     // BRO-3493: the dedup above read the tracker before the lock. Re-check it
     // against what a run that held the lock before us may have written.
     refreshTrackerUnderLock(sentData);
-    const lockedDedup = checkPreviewDedup(sentData, broadcastKey, currentReviewCount);
+    const lockedDedup = checkPreviewDedup(sentData, broadcastKey, { total: currentReviewCount, shows: currentNumbers });
     if (lockedDedup.action === 'skip') {
       console.log(`\nPreview was sent by another run while we waited for the lock (${lockedDedup.hoursSince.toFixed(1)}h ago) — skipping`);
       const rel = releaseSendLock(lock);
@@ -744,7 +786,7 @@ async function main() {
       // `sentAt` — see scripts/lib/preview-dedup.js.
       const previewTimestamp = new Date().toISOString();
       const previewKey = `preview:${broadcastKey}:${previewTimestamp.slice(0, 10)}`;
-      sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: currentReviewCount };
+      sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: currentReviewCount, shows: currentNumbers };
       saveSentData(sentData);
       // Sync to origin/main so a concurrent workflow run can see the write.
       // Without this, local CLI previews are invisible to CI and cause duplicate sends
@@ -806,6 +848,11 @@ async function main() {
     // BRO-3493 gap 2: pendingShows was filtered before the lock. Re-check
     // against the tracker as it stands now that we hold it.
     refreshTrackerUnderLock(sentData);
+
+    if (UPDATE_UNSENT) {
+      await updateUnsentDraftInPlace({ sentData, broadcastKey, showsForEmail, subject, html, audienceId, lock });
+      return;
+    }
     const lockBlock = draftLockRecheckBlockReason(
       sentData.shows, showsForEmail.map(s => s.showId), { recreate: RECREATE_DRAFT });
     if (lockBlock) {
@@ -902,20 +949,13 @@ async function main() {
       if (OWNER_EMAIL && RESEND_API_KEY) {
         const marketDisplay = isLondonMarket(MARKET) ? 'West End' : 'Broadway';
         const notificationHtml = `
-<p>An opening night email draft is ready for your review in Resend.</p>
-<table style="margin:16px 0;border-collapse:collapse;">
-  <tr><td style="padding:4px 12px 4px 0;color:#666">Show(s)</td><td><strong>${showsForEmail.map(s => s.showTitle).join(', ')}</strong></td></tr>
-  <tr><td style="padding:4px 12px 4px 0;color:#666">Market</td><td><strong>${marketDisplay}</strong></td></tr>
-  <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${subject}</td></tr>
-</table>
-<p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Resend →</a></p>
-<p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}</p>`;
+${ownerDraftNoticeHtml({ showsForEmail, marketDisplay, subject, draftUrl, intro: 'The opening-night email is in Resend as a draft. Nothing has gone to subscribers; send it from Resend when you are ready.' })}`;
 
         try {
           await postJSON('https://api.resend.com/emails', {
             from: `${SITE_NAME} <${FROM_EMAIL}>`,
             to: [OWNER_EMAIL],
-            subject: `[Action Required] ${marketDisplay} draft ready — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+            subject: `${marketDisplay} opening-night draft ${RECREATE_DRAFT ? 'rebuilt' : 'ready'} in Resend: ${showsForEmail.map(s => s.showTitle).join(', ')}`,
             html: notificationHtml,
           }, { 'Authorization': `Bearer ${RESEND_API_KEY}` });
 
@@ -974,8 +1014,97 @@ async function main() {
   // immediately after the send succeeds — see the BRO-886 comment there.
 }
 
+const escHtml = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const numbersText = n => (n ? `${n.score != null ? `${n.score}/100` : 'no score yet'}, ${n.reviewCount} reviews` : 'unknown');
+
+/**
+ * Owner notice body for a new or updated draft (BRO-6634): one row per show
+ * with the numbers the draft carries, and the old numbers when `was` is given.
+ */
+function ownerDraftNoticeHtml({ showsForEmail, marketDisplay, subject, draftUrl, intro, was = null }) {
+  const now = numbersFromEmailRows(showsForEmail);
+  const rows = showsForEmail.map(s => {
+    const line = was ? `${numbersText(was[s.showId])} → ${numbersText(now[s.showId])}` : numbersText(now[s.showId]);
+    return `  <tr><td style="padding:4px 12px 4px 0;color:#666">${escHtml(s.showTitle)}</td><td><strong>${escHtml(line)}</strong></td></tr>`;
+  }).join('\n');
+  return `
+<p>${escHtml(intro)}</p>
+<table style="margin:16px 0;border-collapse:collapse;">
+${rows}
+  <tr><td style="padding:4px 12px 4px 0;color:#666">Market</td><td><strong>${escHtml(marketDisplay)}</strong></td></tr>
+  <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${escHtml(subject)}</td></tr>
+</table>
+<p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Open the draft in Resend →</a></p>
+<p style="color:#888;font-size:12px;margin-top:16px;">The draft was rebuilt from the latest data, so any edits you made to it in Resend were replaced. Direct link: ${draftUrl}</p>`;
+}
+
+/**
+ * --update-unsent-draft (BRO-6634), called holding the send lock. Re-checks
+ * the plan on the tracker as it stands now, confirms with a live GET that the
+ * draft is still `draft`, PATCHes it in place, stamps the new numbers and
+ * emails the owner. Never deletes, never calls /send.
+ */
+async function updateUnsentDraftInPlace({ sentData, broadcastKey, showsForEmail, subject, html, audienceId, lock }) {
+  const done = (code, msg) => {
+    if (msg) console.log(msg);
+    const rel = releaseSendLock(lock);
+    if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
+    process.exit(code);
+  };
+  const nowNumbers = numbersFromEmailRows(showsForEmail);
+  const plan = unsentDraftUpdatePlan(sentData.shows, broadcastKey, nowNumbers);
+  if (plan.action === 'skip') done(0, `\nNo draft update: ${plan.reason}`);
+  const draftId = plan.record.draftId;
+  const { getBroadcastWithRetry } = require('./reconcile-broadcast-state');
+  const live = await getBroadcastWithRetry(draftId);
+  const status = live && live.ok && live.data ? String(live.data.status || '').toLowerCase() : null;
+  if (status !== 'draft') {
+    // Sent, scheduled, cancelled, deleted or unreadable: never touch it.
+    // reconcile-broadcast-state.js owns that record.
+    done(0, `\nNo draft update: live Resend status of ${draftId} is ${status || `unknown (${live && (live.error || live.statusCode)})`}, not draft`);
+  }
+  try {
+    await makeResendRequest(process.env.RESEND_API_KEY)('PATCH', `${RESEND_BROADCASTS_URL}/${draftId}`, {
+      audience_id: audienceId,
+      from: `${SITE_NAME} <${FROM_EMAIL}>`,
+      reply_to: REPLY_TO,
+      subject,
+      html,
+      name: buildBroadcastName(SITE_NAME, showsForEmail),
+    });
+  } catch (err) {
+    console.error(`ERROR updating Resend draft ${draftId}: ${err.message}`);
+    const rel = releaseSendLock(lock);
+    if (!rel.released) console.error(`  (lock release note: ${rel.reason})`);
+    process.exit(1);
+  }
+  stampDraftUpdate(sentData.shows, broadcastKey, nowNumbers, new Date().toISOString(),
+    showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0));
+  saveSentData(sentData);
+  syncTrackerToOrigin(sentData);
+  const draftUrl = `https://resend.com/broadcasts/${draftId}`;
+  console.log(`  Draft updated in place: ${draftUrl}`);
+  const OWNER_EMAIL = process.env.OWNER_EMAIL;
+  if (OWNER_EMAIL) {
+    const marketDisplay = isLondonMarket(MARKET) ? 'West End' : 'Broadway';
+    try {
+      await postJSON('https://api.resend.com/emails', {
+        from: `${SITE_NAME} <${FROM_EMAIL}>`,
+        to: [OWNER_EMAIL],
+        subject: `${marketDisplay} opening-night draft updated with new numbers: ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+        html: ownerDraftNoticeHtml({ showsForEmail, marketDisplay, subject, draftUrl, was: plan.was,
+          intro: 'The numbers changed, so the opening-night draft in Resend now shows the new ones. Nothing has gone to subscribers; send it from Resend when you are ready.' }),
+      }, { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}` });
+      console.log(`  Owner notified at ${OWNER_EMAIL.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
+    } catch (notifyErr) {
+      console.error(`  WARNING: owner notification failed: ${notifyErr.message} (draft ${draftId} was still updated)`);
+    }
+  }
+  done(0, `\nDraft updated — log into Resend to send: ${draftUrl}`);
+}
+
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, refreshTrackerUnderLock, OPENING_NIGHT_IGNORE_STATUSES, findRecentlyOpenedShows, buildBroadcastName, broadcastNotBefore, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
+module.exports = { ownerDraftNoticeHtml, syncTrackerToOrigin, mergeTrackerEntries, refreshTrackerUnderLock, OPENING_NIGHT_IGNORE_STATUSES, findRecentlyOpenedShows, buildBroadcastName, broadcastNotBefore, RESEND_NAME_MAX, SYNC_REPO, SYNC_REMOTE_PATH, recordDraftCompletion, SENT_PATH, findShowsMissingConsensus, filterShowsWithConsensus };
 
 if (require.main === module) {
   main().catch(err => {
