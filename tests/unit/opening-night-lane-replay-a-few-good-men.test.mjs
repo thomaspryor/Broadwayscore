@@ -22,11 +22,14 @@ const driver = require('../../scripts/lib/opening-night-lane/driver.js');
 const shadow = require('../../scripts/lib/opening-night-lane-shadow.js');
 const bb = require('../../scripts/lib/opening-night-lane/browserbase-fetch.js');
 const { ALL_FEEDS } = require('../../scripts/lib/rss-discovery.js');
+const grade = require('../../scripts/lib/lane-replay-grade.js');
+const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization.js');
 
 const SHOW = { id: 'a-few-good-men-2026', title: 'A Few Good Men', openingDate: '2026-10-29', category: 'broadway' };
 const NIGHT = '2026-10-29';
 const T0 = Date.parse('2026-10-30T03:00:00Z'); // the first reviews were cited from 03:02Z
 const MIN = 60000;
+const EMBARGO = '2026-10-30T02:00:00Z'; // Broadway default embargo, 10pm ET on opening night
 
 // The 22 reviews on the live site after the night (shadow-report.json), with the critic each file carries.
 const SITE = {
@@ -158,9 +161,12 @@ async function replay(opts = {}) {
   const laneFetch = { fetchPage: bb.laneFetchPage({ fetchPage: nightPages(opts), browserbase: browserbase && browserbase.fetcher }), close: async () => {} };
   const reviewTextsDir = path.join(dir, 'review-texts');
   fs.mkdirSync(reviewTextsDir);
+  // With opts.site, a modelled live site stands behind the publish ports so the night can be graded like a real one.
+  const site = opts.site ? grade.createReplaySitePorts({ now }) : null;
+  const ledgerDir = path.join(dir, 'ledger');
   try {
     const runNight = driver.wireLaneNight({
-      show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir: path.join(dir, 'ledger'), adaptersConfig: {},
+      show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir, adaptersConfig: {},
       laneFetch, fetchPorts: {
         extractArticle: (html) => html,
         extractMeta: (_html, url) => ({ criticName: CRITIC.get(d.canonicalUrl(url)) || null, publishDate: NIGHT }),
@@ -171,12 +177,20 @@ async function replay(opts = {}) {
         if (/wsj\.com/.test(ctx.url) && text) return { rejected: true, rejection: 'not_a_review' };
         return { score: text ? 60 : 45, extra: {} };
       },
-      publishPorts: replayPublishPorts(now), now, wait: async (ms) => { clock += ms; },
+      publishPorts: site || replayPublishPorts(now), now, wait: async (ms) => { clock += ms; },
       reviewTextsDir, onDiskUrls: [], onDiskRows: [], showScoreGuards: { urlMap: {}, allShows: [SHOW] }, search: async () => [], decodeImpl: null,
       tuning: { maxPasses: opts.passes || 8, startedAt: T0 },
     });
     const res = await runNight();
-    return { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir, browserbase, reviewFiles: fs.readdirSync(reviewTextsDir) };
+    let graded = null;
+    if (site) {
+      // The census is what the night's aggregators listed (Playbill's and BWW's roundups); graded at embargo +4h.
+      const censusOutletIds = [...new Set([...PLAYBILL_CITES, ...BWW_CITES])].map((k) => resolveOutletFromUrl(U[k])?.outletId).filter(Boolean);
+      const closedAt = Math.max(Date.parse(EMBARGO) + 4 * 60 * MIN, clock);
+      const rec = grade.replayToPressNightRecord({ show: SHOW, night: NIGHT, live: site.live(), ledgerDir, reviewTextsDir, censusOutletIds, startedAt: T0, closedAt });
+      graded = grade.gradeReplay(rec, res);
+    }
+    return { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir, browserbase, graded, live: site ? site.live() : [], reviewFiles: fs.readdirSync(reviewTextsDir) };
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 const has = (r, k) => r.scored.has(d.canonicalUrl(U[k]));
@@ -316,4 +330,12 @@ test('a card <article> nested inside the BWW story body does not stand in for th
   const nested = bwwPage.replace('<div class="disnep-area">', `<div class="disnep-area"><article class="ad">${a(U.vulture, 'Promoted')}</article>`);
   const links = d.storyCitedLinks(nested, BWW_RR, '.disnep-area');
   assert.equal(links.length, 20);
+});
+
+test('replay graded like a press night: same-night completeness PASS (S4-T6)', async () => {
+  const r = await replay({ site: true });
+  assert.ok(r.live.length >= 21, `live rows ${r.live.length}`);
+  const g = r.graded;
+  assert.equal(g.sameNight.status, 'pass', `same-night: ${g.sameNight.detail}; gates ${JSON.stringify(g.gates.map((x) => [x.name, x.status, x.detail]))}`);
+  assert.deepEqual(g.runProblems, []);
 });

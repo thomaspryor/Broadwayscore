@@ -17,11 +17,14 @@ const require = createRequire(import.meta.url);
 const d = require('../../scripts/lib/opening-night-lane/discovery.js');
 const driver = require('../../scripts/lib/opening-night-lane/driver.js');
 const shadow = require('../../scripts/lib/opening-night-lane-shadow.js');
+const grade = require('../../scripts/lib/lane-replay-grade.js');
+const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization.js');
 
 const SHOW = { id: 'the-imaginary-invalid-2026', title: 'The Imaginary Invalid', openingDate: '2026-10-22', category: 'broadway' };
 const NIGHT = '2026-10-22';
 const T0 = Date.parse('2026-10-22T23:00:00Z'); // shadow start, 7pm ET
 const MIN = 60000;
+const grade_EMBARGO = '2026-10-23T02:00:00Z'; // Broadway default embargo, 10pm ET on opening night
 
 // The 19 reviews on the live site after the night (shadow-report.json). singleticket was published 2026-10-05, before
 // opening, so no opening-night source cites it; the bar is the other 18.
@@ -127,16 +130,19 @@ const replayPublishPorts = (now) => ({
   ...shadow.createShadowPublishPorts({ onRows: () => {}, now }), pushData: async () => ({ pushed: false }), isLeased: async () => true,
 });
 
-async function replayNight({ passes = 4, everyMin = 2, fetchOpts } = {}) {
+async function replayNight({ passes = 4, everyMin = 2, fetchOpts, site: useSite = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5201-ii-'));
   let clock = T0;
   const now = () => clock;
   const { fetchPage, calls, reviewFetches } = replayFetch(fetchOpts);
   const reviewTextsDir = path.join(dir, 'review-texts');
   fs.mkdirSync(reviewTextsDir);
+  // With `site`, a modelled live site stands behind the publish ports so the night can be graded like a real one.
+  const site = useSite ? grade.createReplaySitePorts({ now }) : null;
+  const ledgerDir = path.join(dir, 'ledger');
   try {
     const runNight = driver.wireLaneNight({
-      show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir: path.join(dir, 'ledger'),
+      show: SHOW, night: NIGHT, openingDate: NIGHT, timeZone: 'America/New_York', ledgerDir,
       // No outlet feeds this night (the shadow ran with none) and no Browserbase: Talkin' Broadway answered directly.
       adaptersConfig: { feeds: [] },
       laneFetch: { fetchPage, close: async () => {} },
@@ -146,14 +152,23 @@ async function replayNight({ passes = 4, everyMin = 2, fetchOpts } = {}) {
         extractMeta: (_html, url) => ({ criticName: `Critic ${d.canonicalUrl(url).length}`, publishDate: NIGHT }),
       },
       scoreText: async (text) => ({ score: text ? 60 : 45, extra: {} }),
-      publishPorts: replayPublishPorts(now), now, wait: async (ms) => { clock += ms; },
+      publishPorts: site || replayPublishPorts(now), now, wait: async (ms) => { clock += ms; },
       reviewTextsDir, onDiskUrls: [], onDiskRows: [], showScoreGuards: { urlMap: {}, allShows: [SHOW] }, search: async () => [], decodeImpl: null,
       tuning: { maxPasses: passes, passIntervalMs: everyMin * MIN, startedAt: T0 },
     });
     const res = await runNight();
     // Discovered = scored, plus anything the runner set aside (a syndicated copy) or gave up on.
     const keys = new Set([...res.admitted.map((x) => x.key), ...res.skipped.map((x) => x.key), ...res.failed.map((x) => x.key)]);
-    return { ...res, keys, calls, reviewFetches, reviewFiles: fs.readdirSync(reviewTextsDir) };
+    let graded = null;
+    if (site) {
+      // Graded at +4h after the embargo (the gate needs a capture at least 3h30m after it), from the files on disk now.
+      const closedAt = Date.parse(grade_EMBARGO) + 4 * 60 * MIN;
+      // The census is what the night's aggregators listed: every expected review but the pre-opening Substack post.
+      const censusOutletIds = Object.entries(EXPECTED).filter(([k]) => k !== 'singleticket').map(([, u]) => resolveOutletFromUrl(u)?.outletId).filter(Boolean);
+      const rec = grade.replayToPressNightRecord({ show: SHOW, night: NIGHT, live: site.live(), ledgerDir, reviewTextsDir, censusOutletIds, startedAt: T0, closedAt: Math.max(closedAt, clock) });
+      graded = grade.gradeReplay(rec, res);
+    }
+    return { ...res, keys, calls, reviewFetches, graded, live: site ? site.live() : [], reviewFiles: fs.readdirSync(reviewTextsDir) };
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
@@ -199,4 +214,12 @@ test('replay: slow Talkin\' Broadway indexes do not cost the named-page review, 
   // Found in the first pass and cached, so the four candidate names are probed once, not once per pass: two misses, then
   // the hit (3 reads), plus the one read the lane makes to score the review.
   assert.equal(calls.filter((u) => u.includes('/page/world/TheImaginaryInvalid')).length, 4, 'two misses, the hit, the scoring fetch; never again');
+});
+
+test('replay graded like a press night: same-night completeness PASS (S4-T6)', async () => {
+  const r = await replayNight({ site: true });
+  assert.ok(r.live.length >= 18, `live rows ${r.live.length}`);
+  const g = r.graded;
+  assert.equal(g.sameNight.status, 'pass', `same-night: ${g.sameNight.detail}; gates ${JSON.stringify(g.gates.map((x) => [x.name, x.status, x.detail]))}`);
+  assert.deepEqual(g.runProblems, []);
 });
