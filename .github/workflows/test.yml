@@ -1998,6 +1998,8 @@ on:
       # BRO-6648: the lease CLI and its alert script, exercised by tests/unit/opening-night-lane-lease-wiring.test.mjs
       - 'scripts/opening-night-lease.js'
       - 'scripts/opening-night-lease-alert.js'
+      # BRO-6648: the aggregator watcher's lease guard, exercised by tests/unit/lease-guard-writers.test.mjs
+      - 'scripts/watch-aggregator-urls.js'
       - 'scripts/lib/opening-night-checks/**'
       # The Critics' Take floor, shared by generate-critic-consensus.js and
       # critics-take-present.check.js (#389). Editing either side without the
