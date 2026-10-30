@@ -1890176,21 +1890176,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-30T16:59:21.673Z",
-    "completedAt": "2026-10-30T16:59:31.203Z",
-    "totalReviews": 5,
+    "startedAt": "2026-10-30T17:00:45.203Z",
+    "completedAt": "2026-10-30T17:00:55.554Z",
+    "totalReviews": 9,
     "processed": 2,
-    "skipped": 3,
+    "skipped": 7,
     "errors": 0,
     "tokensUsed": {
-      "input": 9992,
-      "output": 638,
-      "cacheRead": 3807,
-      "cacheWrite": 3807,
-      "total": 27215
+      "input": 11086,
+      "output": 612,
+      "cacheRead": 7614,
+      "cacheWrite": 0,
+      "total": 28895
     },
-    "costUsd": 0.05280145000000001,
-    "runId": "41093776872",
+    "costUsd": 0.0426755,
+    "runId": "41093820474",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1911825,16 +1911825,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "monty-pythons-spamalot-west-end-2012",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 0,
-          "down": 0,
-          "total": 2
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "mood-music-west-end-2018",
         "ourDistribution": {
           "up": 8,
@@ -1913918,10 +1913908,10 @@
       {
         "showId": "once-west-end-2013",
         "ourDistribution": {
-          "up": 3,
+          "up": 5,
           "flat": 0,
           "down": 0,
-          "total": 3
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -1930818,8 +1930808,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-30T17:04:28.747Z",
-    "completedAt": "2026-10-30T17:04:28.749Z",
+    "startedAt": "2026-10-30T17:05:53.285Z",
+    "completedAt": "2026-10-30T17:05:53.287Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1930832,7 +1930822,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41093776872",
+    "runId": "41093820474",
     "source": "comparative-rescore",
     "errorDetails": []
   }
