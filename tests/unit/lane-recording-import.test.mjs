@@ -218,3 +218,32 @@ test('discoverArtifacts: newest non-expired main artifact per lane name inside t
   assert.deepEqual(got.map((a) => a.id), [5]);
   assert.equal(calls, 2, 'stopped after the page that crossed the cutoff');
 });
+
+test('hardening: a manifest sha that is not 64 hex chars, or a symlinked page, is never read', async () => {
+  // malformed sha in the manifest (would be a path component)
+  const a = await makeArtifact({ nested: ['rec'] });
+  const mf = path.join(a, 'rec', 'fetches.jsonl');
+  fs.appendFileSync(mf, `${JSON.stringify({ t: 1, url: 'https://evil.example', status: 'ok', sha: '../../etc/passwd', bytes: 1 })}\n`);
+  const root = tmp();
+  const bad = imp.importRecording({ srcDir: a, root, ...base, candidates: cands(), meta: meta() });
+  assert.equal(bad.status, 'error');
+  assert.match(bad.detail, /malformed sha/);
+  assert.deepEqual(fs.readdirSync(root), []);
+  // a page that is a symlink counts as not stored, so its body is never followed
+  const b = await makeArtifact({ nested: ['rec'] });
+  const pages = path.join(b, 'rec', 'pages');
+  const [first] = fs.readdirSync(pages);
+  const outside = path.join(tmp(), 'outside.enc');
+  fs.copyFileSync(path.join(pages, first), outside);
+  fs.rmSync(path.join(pages, first));
+  fs.symlinkSync(outside, path.join(pages, first));
+  const r = imp.importRecording({ srcDir: b, root, ...base, candidates: cands(), meta: meta(2) });
+  assert.equal(r.status, 'imported');
+  assert.equal(r.pages, 1, 'the symlinked page was dropped, the plain one kept');
+});
+
+test('artifact names with path characters do not parse', () => {
+  assert.equal(imp.parseArtifactName('lane-recording-../x-2026-11-08'), null);
+  assert.equal(imp.parseArtifactName('lane-shadow-Demo_Show-2026-11-08'), null);
+  assert.deepEqual(imp.parseArtifactName('lane-shadow-demo-show-2026-11-08'), { kind: 'shadow', show: 'demo-show', night: '2026-11-08' });
+});

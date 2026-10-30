@@ -48,7 +48,7 @@ const candidateSetId = (cands) => sha256(cands.map((c) => c.key.toString('hex'))
 
 /** `lane-recording-<show>-<night>` / `lane-shadow-<show>-<night>` -> {kind, show, night}, else null. */
 function parseArtifactName(name) {
-  const m = /^lane-(recording|shadow)-(.+)-(\d{4}-\d{2}-\d{2})$/.exec(String(name || ''));
+  const m = /^lane-(recording|shadow)-([a-z0-9][a-z0-9-]*)-(\d{4}-\d{2}-\d{2})$/.exec(String(name || ''));
   return m ? { kind: m[1], show: m[2], night: m[3] } : null;
 }
 
@@ -93,8 +93,11 @@ function importRecording({ srcDir, root, show, night, kind, candidates, meta = {
   let entries;
   try { entries = manifest(src); } catch { return { status: 'error', detail: 'fetches.jsonl is not valid JSON lines' }; }
 
+  // the manifest comes from an artifact: a sha is a path component, so only 64 hex chars count, and a symlinked page is never followed
+  if (entries.some((e) => e.sha && !/^[0-9a-f]{64}$/.test(String(e.sha)))) return { status: 'error', detail: 'fetches.jsonl has a malformed sha' };
   const shas = [...new Set(entries.filter((e) => e.sha).map((e) => e.sha))];
-  const stored = shas.filter((s) => fs.existsSync(path.join(src, 'pages', `${s}.enc`)));
+  const isPlainFile = (f) => { try { return fs.lstatSync(f).isFile(); } catch { return false; } };
+  const stored = shas.filter((s) => isPlainFile(path.join(src, 'pages', `${s}.enc`)));
   const droppedBodies = shas.length - stored.length;
 
   let chosen = null;
