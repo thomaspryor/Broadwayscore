@@ -324,11 +324,11 @@ function mainLandingsRows() {
 // io is injectable for tests.
 async function reportLandedSha(tip, { budgetMs = 150_000, io = {} } = {}) {
   if (!tip) return null;
-  const { fetch = fetchMain, rows = mainLandingsRows, wait = sleep, now = Date.now } = io;
+  const { pull = fetchMain, rows = mainLandingsRows, wait = sleep, now = Date.now } = io;
   const endMs = now() + budgetMs;
   for (;;) {
     try {
-      if (!fetch()) break;
+      if (!pull()) break;
       const sha = landedShaForTip(rows(), tip);
       if (sha) {
         console.log(`${stamp()} ON MAIN AS: ${sha} (${COMMIT_URL}${sha}). land.yml rebases, so branch tip ${tip.slice(0, 9)} never becomes an ancestor of main; check ${sha.slice(0, 9)}.`);

@@ -362,7 +362,7 @@ function fakeIo({ rowsSeq, fetchOk = true }) {
   return {
     waits,
     io: {
-      fetch: () => fetchOk,
+      pull: () => fetchOk,
       rows: () => { const r = rowsSeq[Math.min(n, rowsSeq.length - 1)]; n += 1; if (r instanceof Error) throw r; return r; },
       wait: async (ms) => { waits.push(ms); t += ms; },
       now: () => t,
