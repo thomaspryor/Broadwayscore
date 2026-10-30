@@ -18,8 +18,8 @@
  * 75+ / audience-A device can miss a show that qualifies later. The first push records
  * `pushfacts:<id>` (every mode the feed satisfied); every later run compares
  * the current feed against it and, for a show that gained a mode, dispatches the app with
- * recheck=true so only devices NEWLY qualified get it (app: devices reached only by a mode outside the prior list,
- * once per mode in push_log). 'all', saved and earlier matches are never pushed twice.
+ * recheck=true. The baseline here is only a trigger hint: the app's push_log (a first-push
+ * sentinel plus one row per covered mode) decides who gets what, once per mode. 'all', saved and earlier matches are never pushed twice.
  *
  * Usage: node scripts/dispatch-reviews-in-push.js [--ready=id1,id2] [--budget-sec=180] [--dry-run] [--no-recheck]
  * Env: GH_TOKEN (a token that can dispatch in the app repo)
@@ -116,7 +116,8 @@ async function main() {
 
   const feedById = readFeedById();
   const pushBase = (id) => {
-    if (!feedById) return null; // unknown facts at push time: no baseline, never rechecked
+    // Unknown facts at push time: an empty baseline, so the first recheck looks (the app's push_log decides who gets what).
+    if (!feedById) return { quals: [] };
     const f = feedFacts(feedById.get(id));
     return { quals: qualFlags(f) };
   };
@@ -164,7 +165,7 @@ async function recheck(shows, deadline, dryRun) {
     const dispatchArgs = ['workflow', 'run', WORKFLOW, '--repo', APP_REPO,
       '-f', 'type=reviews-in', '-f', `show_id=${show.id}`, '-f', `show=${show.slug}`,
       '-f', `title=${show.title}`, '-f', `category=${show.category}`,
-      '-f', 'recheck=true', '-f', `recheck_prior=${show.prior || 'none'}`, '-f', 'facts=dispatch',
+      '-f', 'recheck=true', '-f', 'facts=dispatch',
       '-f', `critic_score=${f.criticScore}`, '-f', `critic_label=${f.criticLabel}`,
       '-f', `audience_grade=${f.audienceGrade}`, '-f', `show_type=${f.showType}`];
     if (dryRun) { console.log(`[dry run] would dispatch recheck ${runNameFor(show.id)}`); continue; }

@@ -96,7 +96,7 @@ function recheckCandidates({ shows, sent, feedById, now = Date.now() }) {
     const quals = qualFlags(facts);
     const gained = quals.filter(q => !base.quals.includes(q));
     if (gained.length === 0) continue;
-    out.push({ ...candidate, facts, prior: base.quals.join(','), quals: [...new Set([...base.quals, ...quals])], gained });
+    out.push({ ...candidate, facts, quals: [...new Set([...base.quals, ...quals])], gained });
   }
   return out;
 }

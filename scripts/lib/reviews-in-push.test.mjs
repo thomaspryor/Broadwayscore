@@ -101,12 +101,11 @@ test('qualFlags: the four modes, gated like the app (score only when shown)', ()
     ['critical-gold', 'recommended-75', 'audience-a', 'new-musical']);
 });
 
-test('recheck: audience grade lands after the push -> one recheck carrying the modes already covered', () => {
+test('recheck: audience grade lands after the push -> one recheck', () => {
   const r = recheckCandidates(base(entry({ ag: { g: 'A' } }), ['recommended-75', 'new-musical']));
   assert.equal(r.length, 1);
   assert.equal(r[0].id, 'a-2026');
   assert.deepEqual(r[0].gained, ['audience-a']);
-  assert.equal(r[0].prior, 'recommended-75,new-musical');
   assert.deepEqual(r[0].quals, ['recommended-75', 'new-musical', 'audience-a']);
 });
 
