@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T12:31:40.682Z",
+  "timestamp": "2026-10-30T13:02:51.872Z",
   "stats": {
-    "totalReviews": 70326,
-    "alreadyFlagged": 22275,
+    "totalReviews": 70325,
+    "alreadyFlagged": 22276,
     "dateGuardCatches": 230,
     "directorMismatch": 2873,
-    "tvFilmSignals": 2026,
-    "londonSignals": 3402,
+    "tvFilmSignals": 2025,
+    "londonSignals": 3401,
     "offBroadwaySignals": 632,
     "yearMismatch": 288,
-    "noPublishDate": 7983
+    "noPublishDate": 7984
   },
   "findings": [
     {
@@ -16496,6 +16496,19 @@
     },
     {
       "showId": "dirty-dancing-tour-2026",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "publishDate": "2026-10-06",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-coming-broadway-1236722969/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
       "file": "minneapolis-star-tribune--rohan-preston.json",
       "score": 81,
       "publishDate": "2026-08-22",
@@ -24379,6 +24392,7 @@
     {
       "showId": "hamlet-hail-to-the-thief-aviva-studios-regional-2025",
       "file": "manchester-evening-news--dianne-bourne.json",
+      "score": 91,
       "publishDate": "2025-05-08",
       "url": "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-hamlet-hail-thief-unmissable-31588332",
       "findings": [
@@ -30005,19 +30019,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "it-walks-around-the-house-at-night-chichester-festival-regional-2026",
-      "file": "firstnightmagazine--unknown.json",
-      "publishDate": "2026-03-09",
-      "url": "https://firstnightmagazine.com/2026/03/10/review-of-it-walks-around-the-house-at-night-ghostly-show-is-drop-dead-dull/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -43976,6 +43977,7 @@
     {
       "showId": "play-on-bristol-old-vic-regional-2025",
       "file": "guardian--susannah-clapp.json",
+      "score": 84,
       "publishDate": "2025-01-26",
       "url": "https://www.theguardian.com/stage/2025/jan/26/the-week-in-theatre-play-on-bristol-old-vic-a-good-house-amy-jephta-royal-court-plexus-polaire-moby-dick-barbican-review",
       "findings": [
@@ -43988,19 +43990,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "play-on-bristol-old-vic-regional-2025",
-      "file": "plays-international--unknown.json",
-      "publishDate": "2025-02-03",
-      "url": "https://playsinternational.org.uk/london-theatre-review-play-on-lyric-hammersmith/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
         }
       ]
     },
@@ -85909,19 +85898,6 @@
       "score": 61,
       "publishDate": "2026-10-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "file": "the-recs--unknown.json",
-      "publishDate": "2026-10-28",
-      "url": "https://therecs.co.uk/girls-young-vic/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
