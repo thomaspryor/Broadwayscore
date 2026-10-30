@@ -4019,5 +4019,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T14:14:15.089Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-6474",
+    "title": "Landing blocked: rebase red on land/codex-bro-6474",
+    "description": "land.yml did not land land/codex-bro-6474: the rebase gate went red at 4265acaad8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-6474 @ 4265acaad8 (origin/land/codex-bro-6474) → origin/main @ 0165bd79f1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 0165bd79f1: Rebasing (1/1) error: could not apply 4265acaad8d... fix(BRO-6474): validate-data --strict red: art-west-end-2016 artshub Singapore arts-hub article hint: Resolve all conflicts manually, mark them as resolved with hint: \"git Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41068871169",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-6474"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "4265acaad8d93dfbcee8f7c91fb361b3c0d6e97b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41068871169"
+      }
+    ],
+    "queuedAt": "2026-10-30T14:27:46.080Z"
   }
 ]
