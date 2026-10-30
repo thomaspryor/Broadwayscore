@@ -9,6 +9,8 @@ name: Audit Critic Coverage
 on:
   schedule:
     - cron: '0 9 * * 1'  # Mondays 09:00 UTC
+    # BRO-6587: daily author-page discovery only (discover-author-pages job).
+    - cron: '30 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -20,6 +22,7 @@ concurrency:
 
 jobs:
   audit:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 9 * * 1'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -148,4 +151,64 @@ jobs:
         with:
           title: 'Audit Critic Coverage Failed'
           severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # BRO-6587 (3rd recurrence after BRO-5792, BRO-5817): a newly-active T1/T2
+  # critic without a data/critic-author-pages.json entry turns main's test.yml
+  # red ("real active target-outlet critics have author-page overrides") until
+  # someone runs --discover-author-pages by hand. Run it daily instead. With
+  # nothing missing it fetches nothing. Only verified slugs are written.
+  discover-author-pages:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '30 3 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Discover missing author-page overrides
+        id: discover
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        # Exit 1 = some probe skipped (fetch error or unverified page). Keep
+        # going so verified additions still commit; fail the job afterwards.
+        run: node scripts/audit-critic-coverage.js --discover-author-pages || echo "failed=1" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push author-page overrides
+        run: |
+          if git diff --quiet -- data/critic-author-pages.json; then
+            echo "No author-page overrides added"
+            exit 0
+          fi
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/critic-author-pages.json
+          git commit -m "data: auto-discover critic author-page overrides (BRO-6587)"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Fail on skipped probes
+        if: steps.discover.outputs.failed == '1'
+        run: |
+          echo "::error::Author-page discovery skipped a critic. Add the slug to data/critic-author-pages.json by hand (see log above)."
+          exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Critic author-page discovery failed'
+          severity: 'info'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -52,7 +52,7 @@ monitor-scheduled-email-count.yml
 # digest via health-check.js; a stale run means at-worst 1-day-late candidates.
 # [digest] stale-run coverage: scripts/lib/health-digest-crons.js (24h).
 audit-reverse-discovery.yml
-audit-critic-coverage.yml  # weekly internal audit; a stale week delays coverage findings only
+audit-critic-coverage.yml  # weekly internal audit + daily author-page discovery (BRO-6587); a stale run delays coverage findings/overrides only (test.yml catches the gap)
 audit-cross-production-weekly.yml  # weekly internal audit; a stale week delays contamination findings only
 audit-cross-production.yml  # weekly internal audit; a stale week delays contamination findings only
 audit-review-quality.yml  # weekly internal QA report (BRO-3492 triage); a stale week delays quality findings, no user-facing data
