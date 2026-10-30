@@ -3198,6 +3198,37 @@
     "queuedAt": "2026-10-30T19:10:36.677Z"
   },
   {
+    "conditionKey": "land:land/bro-6620-page",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6620-page",
+    "description": "land.yml did not land land/bro-6620-page: the unit-tests-node gate went red at 998fa32dd3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41112823089",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6620-page"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "998fa32dd3a9dd071ac68154b44b933e92444c7a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41112823089"
+      }
+    ],
+    "queuedAt": "2026-10-30T19:32:38.428Z"
+  },
+  {
     "conditionKey": "opening-night-placeholder-synopsis-middlemarch-rsc-regional-2026",
     "title": "Placeholder synopsis on Middlemarch",
     "description": "synopsis for middlemarch-rsc-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
