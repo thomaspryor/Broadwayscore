@@ -3548,5 +3548,36 @@
       }
     ],
     "queuedAt": "2026-10-30T22:17:30.142Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6663-lane-recording-import-v2",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6663-lane-recording-import-v2",
+    "description": "land.yml did not land land/bro-6663-lane-recording-import-v2: the scripts-lib-tests gate went red at 87412082d9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41135661999",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6663-lane-recording-import-v2"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "87412082d984890e51f798150e2a4c1840b56947"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41135661999"
+      }
+    ],
+    "queuedAt": "2026-10-30T22:31:55.696Z"
   }
 ]
