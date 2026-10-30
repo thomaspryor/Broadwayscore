@@ -69,8 +69,10 @@ function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
     wrapScore: (scoreReview) => async (row, fetched) => {
       const out = await scoreReview(row, fetched);
       const extra = (out && typeof out === 'object' && out.extra) || {};
+      // An excerpt score's text is the excerpts the scorer read, not the page text it dropped.
+      const excerptChars = Object.values((fetched && fetched.excerpts) || {}).reduce((n, t) => n + String(t || '').length, 0);
       record(row, out && typeof out === 'object' ? out.score : out, {
-        chars: typeof extra.fullText === 'string' ? extra.fullText.length : undefined,
+        chars: extra.contentTier === 'excerpt' ? excerptChars : (typeof extra.fullText === 'string' ? extra.fullText.length : undefined),
         tier: extra.contentTier || (fetched && fetched.contentTier) || 'complete',
       });
       return out;

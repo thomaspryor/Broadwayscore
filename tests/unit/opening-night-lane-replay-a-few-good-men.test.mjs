@@ -162,7 +162,7 @@ test('WSJ: the paywall teaser judged not_a_review waits for BWW\'s excerpt (Play
 });
 
 test('WSJ with no aggregator excerpt all night is still a failure for good, not a score from the teaser', async () => {
-  const r = await replay({ bwwFromPass: 99, passes: 8 });
+  const r = await replay({ bwwFromPass: 99, passes: 14 }); // five tries on the 30 s, 2, 5, 10 min backoff: about 18 minutes
   assert.ok(!has(r, 'wsj'));
   const f = r.failed.find((x) => x.key.includes('wsj.com'));
   assert.ok(f, JSON.stringify(r.failed));
@@ -215,4 +215,54 @@ test('BWW roundup: the cited reviews are read from the story body, not the deal 
   const cardsOnly = bwwPage.replace(/<div class="disnep-area">[\s\S]*?<\/div>/, '');
   const fetchText = nightFetch({ bwwFromPass: 1, bwwLayout: cardsOnly });
   await assert.rejects(d.bwwRoundupAdapter().discover({ show: SHOW, fetchText }), /no review on a known outlet/);
+});
+
+// Ship-check findings (2026-10-30 review panel).
+function wsjScoring({ page, url = U.wsj, now }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6066-teaser-'));
+  const calls = [];
+  const sc = inline.createInlineScoring({
+    show: SHOW, night: NIGHT, ledgerDir: dir, now,
+    fetchPage: async () => ({ content: page }), extractArticle: (html) => html, extractMeta: () => ({ criticName: 'Charles Isherwood' }),
+    scoreText: async (text, ctx) => { calls.push(ctx.contentTier); return text ? { rejected: true, rejection: 'not_a_review' } : { score: 45, extra: {} }; },
+  });
+  return { sc, calls, dir, url };
+}
+const EXCERPT = { bwwExcerpt: `Charles Isherwood, ${quote('wsj')}` };
+
+test('a teaser wait counts one attempt per try, and an excerpt seen while the score is backing off is kept', async () => {
+  let t = T0;
+  const { sc, calls, dir, url } = wsjScoring({ page: TEASER, now: () => t });
+  try {
+    const row = () => ({ url, fullText: TEASER, showId: SHOW.id });
+    const got = await sc.fetchReview({ url });
+    await assert.rejects(sc.scoreReview(row(), got), (e) => e.name === 'LaneRetryError' && /attempt 1\/5/.test(e.message));
+    const recs = fs.readFileSync(path.join(dir, fs.readdirSync(dir).find((f) => f.includes('failures'))), 'utf8').trim().split('\n');
+    assert.equal(recs.length, 1, 'one failure record per try, not two');
+    // Five seconds later (inside the 30 s backoff) BWW cites it with a quote: the fetch is cached, the score still waits...
+    t += 5000;
+    await assert.rejects(sc.fetchReview({ url, excerpts: EXCERPT }), (e) => e.name === 'LaneRetryError');
+    // ...and the next try, with no aggregator re-citing it, still has the quote.
+    t += 60000;
+    const again = await sc.fetchReview({ url });
+    const res = await sc.scoreReview(row(), again);
+    assert.equal(res.score, 45);
+    assert.deepEqual(calls, ['complete', 'excerpt'], 'the teaser went to the models once');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('not_a_review stays a verdict for a full-length paywall page and for a short page whose URL is not a review', async () => {
+  for (const [page, url] of [[FULL.slice(0, 2600), U.wsj], [TEASER, 'https://www.wsj.com/articles/aaron-sorkin-on-bringing-a-few-good-men-back-b2a4cbcb']]) {
+    const { sc, dir } = wsjScoring({ page, url, now: () => T0 });
+    try {
+      const got = await sc.fetchReview({ url, excerpts: EXCERPT });
+      await assert.rejects(sc.scoreReview({ url, fullText: page, showId: SHOW.id }, got), (e) => e.permanent === true && /not_a_review/.test(e.message), url);
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  }
+});
+
+test('a card <article> nested inside the BWW story body does not stand in for the roundup', () => {
+  const nested = bwwPage.replace('<div class="disnep-area">', `<div class="disnep-area"><article class="ad">${a(U.vulture, 'Promoted')}</article>`);
+  const links = d.storyCitedLinks(nested, BWW_RR, '.disnep-area');
+  assert.equal(links.length, 20);
 });

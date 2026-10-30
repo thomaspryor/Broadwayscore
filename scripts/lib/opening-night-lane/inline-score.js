@@ -26,7 +26,7 @@
 // nothing in this file writes a venue to a data file.
 const failures = require('./lane-failures');
 const trust = require('./trust-model');
-const { canonicalUrl } = require('./discovery');
+const { canonicalUrl, hasReviewSignal } = require('./discovery');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
 const { getHardPaywallDomain, HARD_PAYWALL_FLOORS } = require('../paywall-completeness');
@@ -58,6 +58,9 @@ const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '
  */
 function isTeaserNotAReview(rejection, url, text) {
   if (!/^not_a_review\b/.test(String(rejection || ''))) return false;
+  // The URL must itself say review (WSJ "/articles/<show>-review-..."): a short feature or news piece on the same host,
+  // under the floor because it is short, keeps its verdict (ship-check).
+  if (!hasReviewSignal(url, '')) return false;
   const domain = getHardPaywallDomain(url);
   return !!domain && String(text || '').trim().length < HARD_PAYWALL_FLOORS[domain];
 }
@@ -118,12 +121,13 @@ function createInlineScoring({
   async function fetchReview(candidate) {
     const key = candidate.key || canonicalUrl(candidate.url);
     if (fetched.has(key)) { // a score retry: no second fetch, no second `fetched` cost
-      gate('score', key);
       const out = fetched.get(key);
       // A later pass can bring an aggregator that prints an excerpt the first sighting lacked (Playbill lists links only;
-      // BWW quotes each critic): keep it, a teaser verdict waits for exactly that.
+      // BWW quotes each critic): keep it, a teaser verdict waits for exactly that. Kept BEFORE the backoff gate: the
+      // candidate exists only for this pass, so an excerpt seen while the score is backing off would otherwise be lost.
       const more = usableExcerpts(candidate.excerpts);
       if (Object.keys(more).length) out.excerpts = { ...(out.excerpts || {}), ...more };
+      gate('score', key);
       return out;
     }
     gate('fetch', key);
@@ -232,7 +236,11 @@ function createInlineScoring({
         r = await scoreText('', { ...ctx, contentTier: 'excerpt', excerpts });
         fromExcerpt = true;
       }
-    } catch (e) { return fail('score', key, e); }
+    } catch (e) {
+      // A retry or verdict already recorded above (the teaser wait) must not be counted a second time (ship-check).
+      if (e instanceof LaneRetryError || e instanceof LanePermanentError) throw e;
+      return fail('score', key, e);
+    }
     // The scorer judging it not a review of this show is a verdict, not a glitch: record it and stop retrying.
     if (r && r.rejected) return fail('score', key, new Error(`scorer rejected the review: ${r.rejection || 'unspecified'}`), true);
     if (!r || r.allModelsFailed || !Number.isFinite(r.score)) return fail('score', key, new Error('scorer returned no score'));

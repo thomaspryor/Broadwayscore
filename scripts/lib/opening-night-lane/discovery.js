@@ -209,11 +209,13 @@ function citedExcerpts(scopedHtml, pageUrl) {
  * host list or redirect wrappers, no bare homepages. Returned canonical, in order, without duplicates, each with the
  * excerpt the page prints beside it (or null).
  */
-function extractCitedLinks(html, pageUrl, { excludeHosts = [] } = {}) {
+function extractCitedLinks(html, pageUrl, { excludeHosts = [], preScoped = false } = {}) {
   const pageHost = hostOf(pageUrl);
   const seen = new Set();
   const out = [];
-  const scoped = bodyScope(html);
+  // `preScoped`: `html` is already the story body (aggregatorStoryBody). Running bodyScope on it again would let a card
+  // <article> nested inside the story stand in for the whole roundup (ship-check).
+  const scoped = preScoped ? stripChrome(html) : bodyScope(html);
   let excerpts = new Map();
   try { excerpts = citedExcerpts(scoped, pageUrl); } catch { /* an excerpt is a bonus; the links still count */ }
   for (const a of extractAnchors(scoped, pageUrl)) {
@@ -287,7 +289,7 @@ function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) 
     async discover({ show, fetchText }) {
       const roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title, { openingDate: show.openingDate, showId: show.id });
       if (!roundup) return [];
-      const links = requireKnownOutletLinks(extractCitedLinks(bwwRoundupBody(await fetchText(roundup)), roundup), roundup, 'bww-roundup');
+      const links = requireKnownOutletLinks(storyCitedLinks(await fetchText(roundup), roundup, BWW_STORY), roundup, 'bww-roundup');
       return citedCandidates(links, roundup, 'bwwExcerpt');
     },
   };
@@ -362,9 +364,13 @@ function rssAdapter({ feeds } = {}) {
       const all = feeds || defaultLaneFeeds(show);
       const start = all.length > MAX_SOURCES_PER_ADAPTER ? (turn++ * MAX_SOURCES_PER_ADAPTER) % all.length : 0;
       const batch = [...all, ...all].slice(start, start + Math.min(all.length, MAX_SOURCES_PER_ADAPTER));
-      for (const feed of batch) {
+      // Side by side: one after another, twelve slow feeds could use up the pass deadline and starve the date checks that
+      // run after the adapters (ship-check). A dead feed never hides the others.
+      const bodies = await Promise.allSettled(batch.map((feed) => fetchText(feed.url)));
+      for (const [i, feed] of batch.entries()) {
+        if (bodies[i].status !== 'fulfilled') continue;
         let items;
-        try { items = parseFeedEntries(await fetchText(feed.url)); } catch { continue; } // one dead feed never hides the others
+        try { items = parseFeedEntries(bodies[i].value); } catch { continue; }
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
@@ -425,15 +431,22 @@ function showScoreAdapter({ urlMap = {}, allShows = [] } = {}) {
  * whole page goes to bodyScope as before. The block can hold more links than one card did; extractCitedLinks still drops
  * same-host links, and each off-host one must resolve to a known outlet.
  */
+const PLAYBILL_STORY = 'main .prose';
 function playbillArticleBody(html) {
-  return aggregatorStoryBody(html, 'main .prose');
+  return aggregatorStoryBody(html, PLAYBILL_STORY) || html;
 }
 
-/** The blocks of a page matching `selector`, joined; the whole page when none match (bodyScope then decides as before). */
+/** The blocks of a page matching `selector`, joined, or null when none match. */
 function aggregatorStoryBody(html, selector) {
   const $ = require('cheerio').load(String(html || ''));
   const blocks = $(selector);
-  return blocks.length ? blocks.map((_, el) => $.html(el)).get().join('\n') : html;
+  return blocks.length ? blocks.map((_, el) => $.html(el)).get().join('\n') : null;
+}
+
+/** An aggregator page's cited links: from its story body when `selector` finds it, else from bodyScope as before. */
+function storyCitedLinks(html, pageUrl, selector) {
+  const story = aggregatorStoryBody(html, selector);
+  return story ? extractCitedLinks(story, pageUrl, { preScoped: true }) : extractCitedLinks(html, pageUrl);
 }
 
 /**
@@ -442,8 +455,9 @@ function aggregatorStoryBody(html, selector) {
  * read one podcast link and none of the ~20 reviews on 2026-10-29 (A Few Good Men; WSJ's BWW excerpt was lost with
  * them, BRO-6066). The roundup body is the page's `.disnep-area` block(s); with none the whole page goes to bodyScope.
  */
+const BWW_STORY = '.disnep-area';
 function bwwRoundupBody(html) {
-  return aggregatorStoryBody(html, '.disnep-area');
+  return aggregatorStoryBody(html, BWW_STORY) || html;
 }
 
 /** Playbill Verdict: the category page -> this show's "Read the reviews" roundup -> the links it cites. */
@@ -459,7 +473,7 @@ function playbillVerdictAdapter() {
       // has to be dated inside opening night +/- 1 day.
       const when = extractPublishDate(html);
       if (!when || !admitLaneCandidate({ source: 'outlet-index', aggregatorCited: false, publishDate: when, night, ...(timeZone ? { timeZone } : {}) }).admit) return [];
-      const links = requireKnownOutletLinks(extractCitedLinks(playbillArticleBody(html), hit.articleUrl), hit.articleUrl, 'playbill-verdict');
+      const links = requireKnownOutletLinks(storyCitedLinks(html, hit.articleUrl, PLAYBILL_STORY), hit.articleUrl, 'playbill-verdict');
       return citedCandidates(links, hit.articleUrl, 'playbillVerdictExcerpt');
     },
   };
@@ -882,7 +896,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 }
 
 module.exports = {
-  SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
+  SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
   nonReviewReason, hasReviewSignal, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,

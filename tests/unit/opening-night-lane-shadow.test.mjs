@@ -156,8 +156,9 @@ test('BRO-6066: each lane score records the length and tier of the text it was s
   const full = rec.wrapScore(async () => 70);
   await full({ url: 'https://www.nytimes.com/2026/10/22/theater/a-review.html', fullText: TEXT, outletId: 'nytimes' }, { contentTier: 'truncated' });
   const excerpt = rec.wrapScore(async () => ({ score: 45, extra: { fullText: '', contentTier: 'excerpt' } }));
-  await excerpt({ url: 'https://www.wsj.com/articles/a-review-ab12', fullText: 'teaser '.repeat(200), outletId: 'wsj' }, {});
+  const quote = 'Charles Isherwood, a placeholder quote the aggregator printed beside the link.';
+  await excerpt({ url: 'https://www.wsj.com/articles/a-review-ab12', fullText: 'teaser '.repeat(200), outletId: 'wsj' }, { excerpts: { bwwExcerpt: quote } });
   const [a, b] = rec.snapshot();
   assert.deepEqual([a.textChars, a.contentTier], [TEXT.length, 'truncated']);
-  assert.deepEqual([b.textChars, b.contentTier], [0, 'excerpt'], 'an excerpt score kept no page text');
+  assert.deepEqual([b.textChars, b.contentTier], [quote.length, 'excerpt'], 'an excerpt score records the excerpt it read, not the teaser');
 });
