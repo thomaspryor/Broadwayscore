@@ -1,0 +1,172 @@
+name: Opening-night lane watchdog
+run-name: 'Opening-night lane watchdog ${{ inputs.show }} ${{ inputs.night }}'
+
+# BRO-6621 (plan v2 step 6). Watches one show-night's opening-night lane and falls back to the old path once if it dies.
+# Started by the orchestrator's "Start lane night + watchdog" step next to the lane night run, as its own run: never a
+# cron (GitHub delays crons by hours) and never a job inside the lane run (a dead lane run must not take its watchdog
+# with it). One job checks the lease every 5 minutes for up to 260 minutes, then re-dispatches itself with the same
+# inputs while the night's window is open (lane start + 270 min + the 30-min lease TTL).
+#
+# Decision: decideWatchdog in scripts/lib/opening-night-lane/auto-fallback.js. When the lane has been dead for the
+# lease TTL (its lease expired, or its run never claimed one), it releases the dead lease FIRST (compare-and-swap that
+# refuses a live lease), claims the night on the opening-night-lane-fallbacks branch (compare-and-swap, so two
+# watchdogs for one night dispatch once), then dispatches opening-night-orchestrator.yml for the show once, then stops.
+# A re-check never dispatches twice: the job ends after the dispatch, the next hop gets fallback_done=true, and any
+# other watchdog finds the claim marked dispatched. Paging per BRO-4603: a
+# digest row (routeAlert) and a red run. "Notify on failure" is severity warning, so nothing pages the phone.
+# LANE_STANDDOWN or an emptied LANE_ONLY_MARKETS hands the night to the old path the same way, without a page.
+#
+# dry_run=true reads the real lease and run list but releases, dispatches and pages nothing (post-land proof on a past
+# night). Advisory first (CLAUDE.md §19): this adds no CI gate. Nothing starts it while LANE_ONLY_MARKETS is unset.
+#
+# hygiene-run-budget-ok: one bounded loop per hop (260 min, 5-minute ticks; kept short for push-retry job-timeout headroom) inside a 345-minute job; the chain ends at
+# the night's window end (decideWatchdog returns stop), so it is bounded per show-night, not by run-budget.js.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Show id (as in shows.json)'
+        required: true
+        type: string
+      night:
+        description: 'Opening night, YYYY-MM-DD'
+        required: true
+        type: string
+      since:
+        description: 'Chain only: when the first hop started (ISO UTC). Empty = now.'
+        required: false
+        type: string
+        default: ''
+      fallback_done:
+        description: 'Chain only: the old path was already dispatched for this night'
+        required: false
+        type: boolean
+        default: false
+      lease_seen:
+        description: 'Chain only: an earlier hop saw the lane hold a live lease'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Read the real lease and run list, but release, dispatch and page nothing'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write  # lease release (opening-night-leases), fallback claim (opening-night-lane-fallbacks), alert ledger
+
+concurrency:
+  group: opening-night-lane-watchdog-${{ inputs.show }}-${{ inputs.night }}
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    permissions:
+      contents: write
+      actions: write  # gh run list (lane night run status) and gh workflow run (orchestrator, next hop)
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # BRO-2388: depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor of main for the ledger commit.
+          fetch-depth: 1000
+
+      - name: Validate inputs
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          SINCE: ${{ inputs.since }}
+        run: |
+          printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show must be a show id"; exit 1; }
+          printf '%s' "$NIGHT" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "::error::night needs YYYY-MM-DD"; exit 1; }
+          if [ -n "$SINCE" ]; then date -u -d "$SINCE" +%s >/dev/null || { echo "::error::since must be ISO UTC"; exit 1; }; fi
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data (root JSON only)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Read lane-only variables
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Watch the lane
+        id: wd
+        timeout-minutes: 270
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          SINCE: ${{ inputs.since }}
+          FALLBACK_DONE: ${{ inputs.fallback_done }}
+          LEASE_SEEN: ${{ inputs.lease_seen }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          GH_TOKEN: ${{ github.token }}
+          # GITHUB_TOKEN cannot read repo variables (BRO-6639); each tick re-reads both switches with this token.
+          VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          [ -n "$SINCE" ] || SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "since=${SINCE}" >> "$GITHUB_OUTPUT"
+          ARGS=("--show=${SHOW}" "--night=${NIGHT}" "--since=${SINCE}" "--budget-min=260")
+          [ "$FALLBACK_DONE" = "true" ] && ARGS+=("--fallback-done")
+          [ "$LEASE_SEEN" = "true" ] && ARGS+=("--lease-seen")
+          [ "$DRY_RUN" = "true" ] && ARGS+=("--dry-run")
+          node scripts/lane-watchdog.js "${ARGS[@]}"
+
+      # The 260-minute loop ran out before the window closed: the next hop waits in this run's concurrency group.
+      - name: Chain the next hop
+        if: steps.wd.outputs.result == 'chain'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          SINCE: ${{ steps.wd.outputs.since }}
+          FALLBACK_DONE: ${{ steps.wd.outputs.fallback_done }}
+          LEASE_SEEN: ${{ steps.wd.outputs.lease_seen }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          gh workflow run opening-night-lane-watchdog.yml -f show="$SHOW" -f night="$NIGHT" -f since="$SINCE" \
+            -f fallback_done="${FALLBACK_DONE:-false}" -f lease_seen="${LEASE_SEEN:-false}" -f dry_run="$DRY_RUN"
+
+      # BRO-4603: the digest row is queued; this red run is the other half of the page.
+      - name: Fail the run after a paged fallback
+        if: steps.wd.outputs.result == 'fallback-paged'
+        run: |
+          echo "::error::the lane died and the old path was dispatched; see the Watch the lane step"
+          exit 1
+
+      # routeAlert's ledger and digest queue live on this runner's disk; commit them or cooldown/dedup resets.
+      - name: Commit alert ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No alert state to commit"; exit 0; fi
+          git commit -m "audit: opening-night lane watchdog alert ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane watchdog: the lane died or the watchdog failed'
+          description: 'BRO-6621. Either the lane died and the watchdog dispatched the old path (opening-night-orchestrator.yml for the show) once, with a digest row, or the watchdog itself failed. The old path still runs on its crons. Read the "Watch the lane" step.'
+          severity: 'warning'
+          email: 'false'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
