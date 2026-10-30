@@ -371,6 +371,26 @@ jobs:
             timeout -k 10 480 bash scripts/lib/push-with-retry.sh 5 main
           fi
 
+      # BRO-6645: "Last night's openings" for the owner's 7:30am ET email.
+      # One plain-English line per show whose press night was last night (New
+      # York date): reviews live on time (data/audit/press-night/ records the
+      # probe commits) and the opening-night emails ready (Resend draft current
+      # with the live numbers, Reddit draft emailed). Writes
+      # data/audit/press-night-digest-snapshot.json (staged by the telemetry
+      # commit below; digest-snapshots.js key pressNight). Every miss on a
+      # finished record files one START-NOW fix card per show-night (P1 review,
+      # P2 email draft); the card's press-night-card-key line is the dedupe, so
+      # no ledger and no extra push. Advisory: never fails the job. Bounded by
+      # an outer timeout so a hung Linear call cannot eat the push budget.
+      # Kill switch for filing: repo variable PRESS_NIGHT_FIX_CARDS_DISABLED=true.
+      - name: Press-night morning grade (BRO-6645)
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          PRESS_NIGHT_FIX_CARDS_DISABLED: ${{ vars.PRESS_NIGHT_FIX_CARDS_DISABLED }}
+        run: timeout -k 10 180 node scripts/produce-press-night-digest-snapshot.js --file-cards || echo "::warning::press-night morning grade failed"
+
       - name: Commit shared audit telemetry
         # W2.1 (task #1073): must run even when an earlier step now fails hard
         # (checklist crash, or SLA dispatch no longer has continue-on-error) —
@@ -427,6 +447,9 @@ jobs:
           # makes a rebase refuse pre-flight and forces the clobber-prone merge
           # path in push-with-retry.sh. Also multi-writer, same as the two above.
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          # press-night-digest-snapshot.json (BRO-6645): single writer (the step
+          # above), regenerated every hour, so a lost push self-heals next tick.
+          git add data/audit/press-night-digest-snapshot.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No shared audit telemetry changes to commit"
           else
