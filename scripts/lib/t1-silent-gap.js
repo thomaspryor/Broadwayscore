@@ -523,7 +523,7 @@ function dedupeGapCards(gaps) {
 // health-check reports these on their own FYI row instead of the dispatched one.
 const MANUAL_RECOVERY_FILE_DAYS = 7;
 const MANUAL_RECOVERY_GAP_HOURS = 24;
-function needsManualRecovery(entry, now = new Date()) {
+function hasNoAutomatedPath(entry) {
   if (!entry || typeof entry !== 'object') return false;
   const noAutomatedPath = entry.type === 'unscored'
     ? entry.dispatchable === false
@@ -534,6 +534,11 @@ function needsManualRecovery(entry, now = new Date()) {
   // state all week. The budget, not the flag, says whether a try is left.
   if (typeof entry.url === 'string' && isForumThreadUrl(entry.url)
       && (entry.forumLinkRecoveryCount || 0) < FORUM_RECOVERY_CAP + FORUM_RECOVERY_SLOW_TRIES) return false;
+  return true;
+}
+
+function needsManualRecovery(entry, now = new Date()) {
+  if (!hasNoAutomatedPath(entry)) return false;
   const fileAt = Date.parse(entry.firstSeen || '');
   const gapAt = Date.parse(entry.gapSeenAt || '');
   if (Number.isNaN(fileAt) || Number.isNaN(gapAt)) return false;
@@ -582,6 +587,7 @@ function staleOpenGapKeys(ledger, { dirExists, fileExists }) {
 }
 
 module.exports = {
+  hasNoAutomatedPath,
   manualRecoveryDigestLine,
   MANUAL_RECOVERY_CONDITION_KEY,
   needsManualRecovery,

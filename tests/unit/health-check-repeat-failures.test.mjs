@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+const { hasNoAutomatedPath } = require('../../scripts/lib/t1-silent-gap.js');
 const { silentGapBacklogResults, bwwRoundupMissBacklogResults, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
@@ -554,7 +555,7 @@ test('silentGapBacklogResults: real audit report shape', async t => {
   // Clock two days after the report: every gap is past the in-flight window.
   const rows = silentGapBacklogResults(report, new Date(Date.parse(report.generatedAt) + 86400000 * 2));
   // BRO-6082: needsManualRecovery gaps are the audit's FYI digest line, not a warn row.
-  assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true) ? 1 : 0);
+  assert.equal(rows.length, report.gaps.some(g => g.needsManualRecovery !== true && !hasNoAutomatedPath(g)) ? 1 : 0);
   if (rows.length) assert.match(rows[0].message, /Oldest:/);
 });
 
@@ -566,6 +567,19 @@ test('silentGapBacklogResults: needsManualRecovery gaps never produce a row', ()
   assert.deepEqual(silentGapBacklogResults({ gaps: [manual] }, now), []);
   const [row] = silentGapBacklogResults({ gaps: [manual, auto] }, now);
   assert.match(row.message, /^1 discovered review\(s\).*Oldest: a /);
+});
+
+// BRO-6632: an abandoned, undispatchable fetch is not a silent gap to page on yet.
+test('silentGapBacklogResults: gaps with no automated path left never produce a row before the manual clock', () => {
+  const now = new Date('2026-10-13T02:00:00Z');
+  const base = { showId: 'p', tier: 1, outletId: 'nyt', firstSeen: '2026-10-10T00:00:00Z', gapSeenAt: '2026-10-11T00:00:00Z' };
+  const paywalled = { ...base, type: 'paywalled', recoverable: false };
+  const undispatchable = { ...base, type: 'unscored', dispatchable: false };
+  const forumTryLeft = { ...base, type: 'stub', recoverable: false, url: 'https://www.reddit.com/r/Broadway/comments/abc/x/', forumLinkRecoveryCount: 0 };
+  assert.deepEqual(silentGapBacklogResults({ gaps: [paywalled, undispatchable] }, now), []);
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...paywalled, recoverable: true }] }, now).length, 1);
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...undispatchable, dispatchable: true }] }, now).length, 1);
+  assert.equal(hasNoAutomatedPath(forumTryLeft), false);
 });
 
 // BRO-5166: a review discovered minutes ago is in flight, not silent.
