@@ -376,6 +376,10 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   const attachmentParent = input && input.url ? require('./non-review-url-patterns').wordpressAttachmentParentUrl(input.url) : null;
   if (attachmentParent) input = { ...input, url: attachmentParent };
   const fields = input.fields || {};
+  // A top-level input.publishDate drives the guards below but was never written:
+  // only fields are spread into the file, so every ingest-urls review landed
+  // undated (NY Sun on A Few Good Men, BRO-6585). Persist it like fields.publishDate.
+  if (input.publishDate && !fields.publishDate) fields.publishDate = input.publishDate;
   // BRO-4807: a lane review (provenance + productionVerified:"aggregator") is already production-verified by an
   // aggregator, so the corpus guards below stand down for it, and only for it. laneBypasses is the single predicate.
   const laneHolds = (guard) => {

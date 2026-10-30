@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6585-c",
+  "planId": "d1ef7958-d92f-4c74-81be-e1d111b2eb13",
+  "status": "pending",
+  "createdAt": "2026-10-30T12:57:26.372Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "A Few Good Men 2026: NY Sun (Elysa Gardner) publishDate from page JSON-LD datePublished 2026-10-30T03:01Z = 2026-10-29 ET; ingest-urls dropped it (writer ignored top-level publishDate)",
+    "steps": [
+      "a-few-good-men-2026/new-york-sun--elysa-gardner.json: publishDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-few-good-men-2026/new-york-sun--elysa-gardner.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-29",
+        "description": "a-few-good-men-2026/new-york-sun--elysa-gardner.json: publishDate"
+      }
+    ]
+  }
+}
