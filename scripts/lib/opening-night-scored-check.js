@@ -57,13 +57,20 @@ function scoredShowIds(latencyLines, cutoffMs) {
 
 // BRO-6653: the 'scored' stage row is telemetry, committed by a late always() step that a
 // cancelled or timed-out poller run never reaches (Showstopper! The Kids Show: review
-// scored llm-v6/93 and live in reviews.json, no row). A show whose published reviews carry an
-// LLM score was scored, so the missing row is not the stalled-scorer failure this alert is for.
-function llmScoredShowIds(reviewsData) {
+// scored llm-v6/93 and live in reviews.json, no row). A show with an LLM-scored review
+// published on/after its opening day was scored, so the missing row is not the stalled-scorer
+// failure this alert is for. Preview-period reviews do not count (a stalled opening-night
+// scorer must not be muted by an older score). Sources like human-review or
+// originalScore-* are not LLM evidence, so those shows still alert.
+const LLM_SCORE_SOURCE = /^(llm|anchored|adjudicated)/;
+
+function llmScoredShowIds(reviewsData, openingShows) {
   const list = Array.isArray(reviewsData) ? reviewsData : (reviewsData && reviewsData.reviews) || [];
+  const opening = new Map((openingShows || []).map((s) => [s.id, s.openingDate]));
   const set = new Set();
   for (const r of list) {
-    if (r && r.showId && /^(llm|anchored)/.test(r.scoreSource || '')) set.add(r.showId);
+    if (!r || !opening.has(r.showId) || !LLM_SCORE_SOURCE.test(r.scoreSource || '')) continue;
+    if (r.publishDate && r.publishDate >= opening.get(r.showId)) set.add(r.showId);
   }
   return set;
 }

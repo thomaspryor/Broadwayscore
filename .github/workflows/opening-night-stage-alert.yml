@@ -33,10 +33,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           path: .private-data
 
-      - name: Wire shows.json into data/
+      - name: Wire shows.json and reviews.json into data/
+        # BRO-6653: reviews.json lets the check see reviews that were scored even when their
+        # 'scored' stage-latency row was lost to a cancelled poller run.
         run: |
           mkdir -p data
           cp -f .private-data/shows.json data/shows.json
+          cp -f .private-data/reviews.json data/reviews.json
 
       - name: Check scored-stage coverage
         id: check

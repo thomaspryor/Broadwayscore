@@ -45,7 +45,9 @@ const latencyLines = fs.existsSync(LATENCY_FILE)
 const scoredSet = scoredShowIds(latencyLines, cutoffMs);
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
 if (fs.existsSync(REVIEWS_FILE)) {
-  for (const id of llmScoredShowIds(JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8')))) scoredSet.add(id);
+  for (const id of llmScoredShowIds(JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8')), openingShows)) scoredSet.add(id);
+} else {
+  console.warn(`WARN: ${REVIEWS_FILE} missing; cannot cross-check lost 'scored' rows against reviews.json`);
 }
 
 const missing = findOverdueMissingScored(openingShows, scoredSet, reviewedShowIds(latencyLines), today);

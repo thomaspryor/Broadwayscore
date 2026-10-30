@@ -90,13 +90,18 @@ test('BRO-5975: findOverdueMissingScored skips same-day openings and shows with 
   assert.deepEqual(missing, ['yday-reviewed-unscored', 'yday-stalled']);
 });
 
-test('llmScoredShowIds counts shows with LLM-scored reviews even when the stage row is lost (BRO-6653)', async () => {
+test('llmScoredShowIds counts opening-day LLM-scored reviews when the stage row is lost (BRO-6653)', () => {
   const { llmScoredShowIds } = require('./opening-night-scored-check.js');
+  const shows = ['lost-row', 'anchored', 'adj', 'thumb-only', 'preview-only', 'unscored']
+    .map((id) => ({ id, openingDate: '2026-10-29' }));
   const set = llmScoredShowIds({ reviews: [
-    { showId: 'lost-row', scoreSource: 'llm-v6' },
-    { showId: 'anchored', scoreSource: 'anchored-v6' },
-    { showId: 'thumb-only', scoreSource: 'thumb' },
-    { showId: 'unscored' },
-  ] });
-  assert.deepEqual([...set].sort(), ['anchored', 'lost-row']);
+    { showId: 'lost-row', scoreSource: 'llm-v6', publishDate: '2026-10-29' },
+    { showId: 'anchored', scoreSource: 'anchored-v6', publishDate: '2026-10-30' },
+    { showId: 'adj', scoreSource: 'adjudicated', publishDate: '2026-10-29' },
+    { showId: 'thumb-only', scoreSource: 'thumb', publishDate: '2026-10-29' },
+    { showId: 'preview-only', scoreSource: 'llm-v6', publishDate: '2026-10-20' },
+    { showId: 'unscored', publishDate: '2026-10-29' },
+    { showId: 'not-opening', scoreSource: 'llm-v6', publishDate: '2026-10-29' },
+  ] }, shows);
+  assert.deepEqual([...set].sort(), ['adj', 'anchored', 'lost-row']);
 });
