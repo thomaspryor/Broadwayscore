@@ -1007,6 +1007,18 @@ function validateDates(shows) {
   }
 }
 
+// BRO-6614: a per-show reviewEmbargoAt moves the press-night probe and lane shadow start. An invalid one is
+// ignored at runtime (press-night-record.embargoInfo falls back to the market hour); flag it here. Advisory.
+function validateReviewEmbargoAt(shows) {
+  const lib = require('./lib/press-night-record');
+  for (const s of shows) {
+    const problem = lib.embargoOverrideProblem(s);
+    if (problem) warn(`${s.id}: ${problem}; it is ignored and the market default embargo is used`);
+    const reach = lib.embargoOverrideReachWarning(s);
+    if (reach) warn(`${s.id}: ${reach}`);
+  }
+}
+
 /**
  * Coverage Verdict S4 rails: every declared show.tourLegs entry must carry a
  * corroborationUrl (no leg from memory) and must not overlap a declared
@@ -5531,6 +5543,7 @@ function runValidation() {
   validateIdYearDrift(shows);
   validateCastRolePlaceholders(shows);
   validateTourLegs(shows);
+  validateReviewEmbargoAt(shows);
   validateSlugs(shows);
   validateImageUrls(shows);
   validateImageFiles(shows);

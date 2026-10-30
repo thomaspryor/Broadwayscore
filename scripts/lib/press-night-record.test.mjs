@@ -625,3 +625,155 @@ test('BRO-6079 review fixes: text publishDate never counts as the night; deferra
   const ref = lib.coverageAt(r2, c2, Date.parse(at(120)), { deferLateSeen: true });
   assert.deepEqual(ref.missing, ['vulture']); // first seen past +3h: graded by neither rule, so stays missing
 });
+
+// BRO-6614: per-show embargo override, start guard, dual grading when the release came late.
+const { MARKET_TZ, utcFromZoned } = require('./opening-night-windows.js');
+const marketHour = (s) => (MARKET_TZ[s.category] && lib.EMBARGO_HOUR_LOCAL[s.category] != null && s.openingDate
+  ? utcFromZoned(s.openingDate, lib.EMBARGO_HOUR_LOCAL[s.category], 0, MARKET_TZ[s.category]).toISOString() : null);
+
+test('reviewEmbargoAt: a valid override wins and is normalized to ISO UTC', () => {
+  const show = { id: 'afgm', category: 'broadway', openingDate: '2026-10-29' };
+  assert.equal(lib.defaultEmbargoAt(show), '2026-10-30T02:00:00.000Z');
+  assert.equal(lib.defaultEmbargoAt({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), '2026-10-30T03:00:00.000Z');
+  assert.equal(lib.defaultEmbargoAt({ ...show, reviewEmbargoAt: '2026-10-29T23:00:00-04:00' }), '2026-10-30T03:00:00.000Z');
+  assert.deepEqual(lib.embargoInfo({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), { at: '2026-10-30T03:00:00.000Z', source: 'override', problem: null });
+  // West End matinee-ish press release at 17:00 UK is still the opening night
+  assert.equal(lib.defaultEmbargoAt({ id: 'w', category: 'west-end', openingDate: '2026-11-03', reviewEmbargoAt: '2026-11-03T17:00:00Z' }), '2026-11-03T17:00:00.000Z');
+});
+
+test('reviewEmbargoAt absent: identical to the market-hour formula for every show (and across DST edges)', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const file = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'shows.json');
+  let shows = [];
+  if (fs.existsSync(file)) { const d = JSON.parse(fs.readFileSync(file, 'utf8')); shows = (d.shows || d).filter((s) => s && s.reviewEmbargoAt == null); }
+  const fixed = ['2026-03-07', '2026-03-08', '2026-03-29', '2026-10-25', '2026-10-31', '2026-11-01', '2026-12-31']
+    .flatMap((d) => ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'tour', undefined].map((category) => ({ id: `${category}-${d}`, category, openingDate: d })));
+  for (const s of [...fixed, ...shows, { id: 'no-date', category: 'broadway' }]) {
+    assert.equal(lib.defaultEmbargoAt(s), marketHour(s), s.id);
+  }
+});
+
+test('reviewEmbargoAt: a typo cannot move the night (wrong day, no offset, junk) and is ignored with a reason', () => {
+  const show = { id: 'afgm', category: 'broadway', openingDate: '2026-10-29' };
+  for (const bad of ['2026-10-31T03:00:00Z', '2026-10-29T03:00:00Z', '2026-10-30T03:00:00', '23:00', 1730257200000, '2026-13-30T03:00:00Z', '2026-10-29T25:00:00Z']) {
+    const s = { ...show, reviewEmbargoAt: bad };
+    assert.ok(lib.embargoOverrideProblem(s), `accepted ${bad}`);
+    assert.equal(lib.defaultEmbargoAt(s), '2026-10-30T02:00:00.000Z', `${bad} moved the embargo`);
+  }
+  assert.equal(lib.embargoOverrideProblem(show), null);
+  assert.equal(lib.embargoOverrideProblem({ ...show, reviewEmbargoAt: '2026-10-30T07:59:00Z' }), null); // 03:59 ET next day
+  assert.ok(lib.embargoOverrideProblem({ ...show, reviewEmbargoAt: '2026-10-30T08:00:00Z' })); // 04:00 ET is the next day
+  assert.ok(lib.embargoOverrideProblem({ id: 't', category: 'tour', openingDate: '2026-10-29', reviewEmbargoAt: '2026-10-30T02:00:00Z' }));
+  // Date.parse rolls an impossible date into the night (Feb 29 2026 -> Mar 1); it must still be rejected.
+  const mar = { id: 'm', category: 'broadway', openingDate: '2026-03-01' };
+  assert.match(lib.embargoOverrideProblem({ ...mar, reviewEmbargoAt: '2026-02-29T23:00:00-05:00' }) || '', /does not parse/);
+  assert.match(lib.embargoOverrideProblem({ ...mar, reviewEmbargoAt: '2026-02-30T03:00:00Z' }) || '', /does not parse/);
+  assert.equal(lib.embargoOverrideProblem({ ...mar, reviewEmbargoAt: '2026-03-01T23:00:00-05:00' }), null);
+});
+
+test('reviewEmbargoAt: valid but outside the orchestrator crons\' reach warns (dispatch by hand)', () => {
+  const show = { id: 'afgm', category: 'broadway', openingDate: '2026-10-29' };
+  assert.equal(lib.embargoOverrideReachWarning({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), null);
+  assert.equal(lib.embargoOverrideReachWarning({ ...show, reviewEmbargoAt: '2026-10-29T23:00:00Z' }), null); // 19:00 ET, -180 min
+  assert.match(lib.embargoOverrideReachWarning({ ...show, reviewEmbargoAt: '2026-10-29T20:00:00Z' }), /by hand/); // 16:00 ET
+  assert.match(lib.embargoOverrideReachWarning({ ...show, reviewEmbargoAt: '2026-10-30T05:30:00Z' }), /by hand/); // 01:30 ET
+  assert.equal(lib.embargoOverrideReachWarning({ ...show, reviewEmbargoAt: 'junk' }), null); // the problem, not the reach, reports it
+});
+
+test('start guard: probeDue opens its window from the override, and a start past the lead is still due (at once)', () => {
+  const show = { id: 'x', category: 'broadway', openingDate: '2026-10-29', reviewEmbargoAt: '2026-10-30T03:00:00Z' };
+  const emb = Date.parse('2026-10-30T03:00:00Z');
+  assert.equal(lib.probeDue(show, emb - 151 * 60000), null);
+  assert.equal(lib.probeDue(show, emb - 150 * 60000).embargoAt, '2026-10-30T03:00:00.000Z');
+  // 00:45Z: inside the override's window, and before the market default's -2.5h would have opened? no: default opens 23:30Z
+  assert.ok(lib.probeDue(show, Date.parse('2026-10-30T00:45:00Z')));
+  // 05:30Z: the default's window (to 05:00Z) is closed, the override's (to 06:00Z) is open
+  assert.equal(lib.probeDue({ ...show, reviewEmbargoAt: undefined }, Date.parse('2026-10-30T05:30:00Z')), null);
+  assert.ok(lib.probeDue(show, Date.parse('2026-10-30T05:30:00Z')));
+  // an earlier override (19:00 ET): the 01:00Z cron is past embargo - PROBE_LEAD_MIN, still due so the probe starts at once
+  const early = { ...show, reviewEmbargoAt: '2026-10-29T23:00:00Z' };
+  const due = lib.probeDue(early, Date.parse('2026-10-30T01:00:00Z'));
+  assert.equal(due.embargoAt, '2026-10-29T23:00:00.000Z');
+  assert.ok(Date.parse('2026-10-30T01:00:00Z') > Date.parse(due.embargoAt) - lib.PROBE_LEAD_MIN * 60000);
+});
+
+test('classifyEmbargo: override, market default or manual, by comparison with the passed time', () => {
+  const show = { id: 'x', category: 'broadway', openingDate: '2026-10-29' };
+  assert.equal(lib.classifyEmbargo(show, '2026-10-30T02:00:00Z'), 'market-default');
+  assert.equal(lib.classifyEmbargo(show, '2026-10-30T03:00:00Z'), 'manual');
+  const o = { ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' };
+  assert.equal(lib.classifyEmbargo(o, '2026-10-30T03:00:00.000Z'), 'override');
+  // the override added after dispatch: the record's default time is still recognized as assumed
+  assert.equal(lib.classifyEmbargo(o, '2026-10-30T02:00:00Z'), 'market-default');
+  const fr = lib.emptyRecord({ showId: 'x', night: '2026-10-29', embargoAt: '2026-10-30T02:00:00Z', embargoSource: 'market-default' });
+  assert.equal(fr.embargoSource, 'market-default');
+  assert.equal('embargoSource' in lib.emptyRecord({ showId: 'x', night: '2026-10-29', embargoAt: 'x' }), false);
+});
+
+const afgm = () => {
+  const fs = require('fs');
+  const path = require('path');
+  const file = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'press-night', 'a-few-good-men-2026-2026-10-29.json');
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+};
+
+test('re-grading A Few Good Men 2026-10-29 reports the assumed 02:00Z and the observed 03:02Z verdicts', () => {
+  const r = lib.evaluateCheck(afgm());
+  const g = Object.fromEntries(r.gates.map((x) => [x.name, x]));
+  assert.equal(r.verdict, 'FAIL'); // unchanged: the verdict uses the assumed embargo
+  assert.match(g['coverage-2h'].detail, /^1\/14 /);
+  assert.ok(r.release, 'no observed-release grade');
+  assert.equal(r.release.assumedAt, '2026-10-30T02:00:00.000Z');
+  assert.equal(r.release.observedAt, '2026-10-30T03:02:18.463Z');
+  assert.equal(r.release.lateMin, 62);
+  assert.equal(r.release.verdictUses, 'assumed');
+  const o = Object.fromEntries(r.release.observed.gates.map((x) => [x.name, x]));
+  assert.match(o['first-live'].detail, /33-38 min after/);
+  assert.equal(o['first-live'].status, 'fail');
+  assert.equal(o['coverage-2h'].status, 'pass');
+  assert.match(o['coverage-2h'].detail, /^13\/14 .*re-derived from the \+2h census as of 2026-10-30T04:00.*missing: thewrap$/);
+  assert.equal(o['same-night-completeness'].status, 'fail');
+  assert.match(o['same-night-completeness'].detail, /thewrap/);
+  assert.doesNotMatch(o['same-night-completeness'].detail, /nytimes/);
+  assert.equal(r.release.observed.verdict, 'FAIL');
+});
+
+test('observed-release grade: none for an override or manual embargo, an on-time night, or a shadow started late', () => {
+  assert.equal(lib.evaluateCheck({ ...afgm(), embargoSource: 'override' }).release, undefined);
+  assert.equal(lib.evaluateCheck({ ...afgm(), embargoSource: 'manual' }).release, undefined);
+  const rec = afgm();
+  assert.equal(lib.evaluateCheck({ ...rec, laneShadow: { ...rec.laneShadow, firstDiscoveredAt: '2026-10-30T02:29:00Z' } }).release, undefined);
+  assert.equal(lib.evaluateCheck({ ...rec, laneShadow: { ...rec.laneShadow, startedAt: '2026-10-30T02:10:00Z' } }).release, undefined);
+  assert.ok(lib.evaluateCheck({ ...rec, embargoSource: 'market-default' }).release);
+});
+
+test('observed-release grade prefers the capture\'s 2h-observed reference, and is unknown on an open drop', () => {
+  const rec = afgm();
+  const stored = { status: 'complete', source: ['dtli'], count: 14, covered: 14, coverage: 1, missing: [], asOf: '2026-10-30T05:02:18.463Z', method: 'timeline', fetchedAt: '2026-10-30T08:00:23.651Z' };
+  rec.reference['2h-observed'] = stored;
+  const o = Object.fromEntries(lib.evaluateCheck(rec).release.observed.gates.map((x) => [x.name, x]));
+  assert.match(o['coverage-2h'].detail, /^14\/14 /);
+  const dropped = afgm();
+  dropped.dropped = [{ key: 'x', outlet: 'Vulture', droppedAt: '2026-10-30T04:50:00Z', restoredAt: null }];
+  assert.equal(lib.observedCoverage2h(dropped, Date.parse('2026-10-30T03:02:18.463Z')), null);
+});
+
+test('observed release: a review seen live before the lane\'s first discovery bounds the release (a late lane is not a late release)', () => {
+  const rec = afgm();
+  const firstLive = lib.firstNightLive(rec).at; // the probe saw Time Out live at 03:40Z
+  const lateLane = { ...rec, laneShadow: { ...rec.laneShadow, firstDiscoveredAt: '2026-10-30T04:30:00Z' } };
+  const r = lib.evaluateCheck(lateLane);
+  assert.equal(r.release.observedAt, firstLive);
+  assert.ok(Date.parse(r.release.observedAt) < Date.parse('2026-10-30T04:30:00Z'));
+  // The probe and the lane both saw nothing until well after the embargo, so the late release still stands.
+  assert.equal(lib.evaluateCheck(rec).release.observedAt, '2026-10-30T03:02:18.463Z');
+});
+
+test('observed release with no assumed +2h census keeps the no-census reason in the observed grade', () => {
+  const rec = afgm();
+  rec.reference['2h'] = { status: 'no-census-yet', coverage: null };
+  const o = Object.fromEntries(lib.evaluateCheck(rec).release.observed.gates.map((x) => [x.name, x]));
+  assert.equal(o['coverage-2h'].status, 'unknown');
+  assert.match(o['coverage-2h'].detail, /no-census-yet/);
+});

@@ -110,6 +110,9 @@ jobs:
             echo "::error::Dispatched more than 2.5h before the embargo (wait ${WAIT}s); the orchestrator should not do this."
             exit 1
           fi
+          # BRO-6614 start guard: started after embargo - 30 min (a reviewEmbargoAt earlier than the orchestrator's
+          # crons reach, or a late cron). Say so and start at once; the record flags reviews already live as baseline.
+          if [ "$WAIT" -lt 0 ]; then echo "::warning::Started $(( -WAIT / 60 )) min after embargo - 30 min ($EMBARGO_AT); probing at once, early reviews may be missed"; fi
           if [ "$WAIT" -gt 0 ]; then sleep "$WAIT"; fi
 
       - name: Start lane shadow
@@ -254,6 +257,9 @@ jobs:
           WAIT=$((START - $(date -u +%s)))
           echo "Wait: ${WAIT}s"
           if [ "$WAIT" -gt 8100 ]; then echo "::error::Started more than 2.5h before the embargo."; exit 1; fi
+          # BRO-6614 start guard: started after embargo - 30 min (a reviewEmbargoAt earlier than the orchestrator's
+          # crons reach, or a late cron). Say so and start at once; the record flags reviews already live as baseline.
+          if [ "$WAIT" -lt 0 ]; then echo "::warning::Started $(( -WAIT / 60 )) min after embargo - 30 min ($EMBARGO_AT); probing at once, early reviews may be missed"; fi
           if [ "$WAIT" -gt 0 ]; then sleep "$WAIT"; fi
 
       - name: Probe to embargo +6h
