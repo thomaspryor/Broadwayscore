@@ -3579,5 +3579,36 @@
       }
     ],
     "queuedAt": "2026-10-30T22:31:55.696Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6663-lane-recording-import-v3",
+    "title": "Landing blocked: rebase red on land/bro-6663-lane-recording-import-v3",
+    "description": "land.yml did not land land/bro-6663-lane-recording-import-v3: the rebase gate went red at 5dcd74d181. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41139358109",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6663-lane-recording-import-v3"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5dcd74d181ed4ce1f30dadadd46d9b441aabd489"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41139358109"
+      }
+    ],
+    "queuedAt": "2026-10-30T22:39:53.794Z"
   }
 ]
