@@ -44,6 +44,8 @@ function replayFetchFrom(recording, { now, startMs, fallback = null }) {
     if (!seen || !seen.length) return miss(url, opts);
     const e = seen[seen.length - 1];
     if (e.status === 'error') throw Object.assign(new Error(e.error || `error ${url}`), e.httpStatus ? { status: e.httpStatus } : {});
+    // The date-check entry holds only a date. With a fallback, the real page answers instead, so the scorer (same url) never reads a stub.
+    if (e.kind === 'date-check' && fallback) return fallback(url, opts);
     if (e.kind === 'date-check') return { content: e.publishDate ? `<html><head><meta property="article:published_time" content="${e.publishDate}"></head></html>` : '<html></html>' };
     const content = recording.page(e.sha);
     if (content === null) {

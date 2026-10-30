@@ -235,7 +235,8 @@ jobs:
           LANE_STANDDOWN_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           # BRO-6651: encrypted copies of the aggregator/index pages each pass read (the repo is public, so the key is required;
           # without it nothing is recorded). Replayed by scripts/lib/lane-recorded-nights/recording-night.js.
-          LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY || secrets.REVIEW_TEXTS_TOKEN }}
+          LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           LANE_RECORD_DIR: ${{ runner.temp }}/lane-recording
         run: |
           RC=0
@@ -247,6 +248,7 @@ jobs:
 
       - name: Upload the lane's page recording (encrypted)
         if: always()
+        continue-on-error: true # a recording is a nice-to-have, never turn the night red
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: lane-recording-${{ inputs.show }}-${{ inputs.night }}
@@ -424,7 +426,8 @@ jobs:
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           # BRO-6651: encrypted page recording lands in $RUNNER_TEMP/shadow/recording, uploaded with the report below.
-          LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY || secrets.REVIEW_TEXTS_TOKEN }}
+          LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: npx tsx scripts/opening-night-lane-shadow.js "--show=${SHOW}" "--night=${NIGHT}" "--window-min=${WINDOW}" "--out=${RUNNER_TEMP}/shadow"
 
       - name: Upload shadow report and ledger

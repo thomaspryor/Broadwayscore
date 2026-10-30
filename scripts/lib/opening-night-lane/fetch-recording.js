@@ -3,7 +3,8 @@
  * Records the aggregator and index pages a lane pass reads, so a real night can be replayed with its real timing
  * (BRO-6651, plan v2 Step 8; loader: lane-recorded-nights/recording-night.js).
  *
- * Wraps the lane's DISCOVERY fetchText only. Review articles fetched for scoring never pass through here.
+ * Wraps the lane's DISCOVERY fetchText only. Inline review fetches for scoring never pass through here, but a discovery step that
+ * opens an article itself (the Google News unwrap) does, and that body is recorded (encrypted) like any other page.
  *
  * The repo is public, so a workflow artifact is not private and the pages are copyrighted: every page body is
  * AES-256-GCM encrypted before it touches disk, and with no key the recorder is off (fail closed, never plaintext).
@@ -89,7 +90,7 @@ function createFetchRecorder({ dir, key, now = Date.now, dateOf = () => null, ma
       const start = now();
       if (t0 === null) t0 = start;
       const dateCheck = !!opts && opts.recordAs === 'date-check';
-      const line = { t: start - t0, at: new Date(start).toISOString(), url, ...(dateCheck ? { kind: 'date-check' } : {}) };
+      const line = { t: start - t0, at: Number.isFinite(start) ? new Date(start).toISOString() : null, url, ...(dateCheck ? { kind: 'date-check' } : {}) };
       stats.fetches++;
       try {
         const res = await fetchText(url, opts);
