@@ -1310,6 +1310,8 @@ _PASSIVE_RE = re.compile(
     r"|(?:shall|should) I(?: " + _PASSIVE_VERB + r"\b|\s*\?)"
     r"|if you(?:['\u2019]d)? (?:want|like),? (?:I|we)(?:['\u2019]ll| will| can| could) "
     r"|\bI could (?:also )?" + _PASSIVE_VERB + r"\b"
+    r"|\b(?:ping|message|ask|tell) me\b[^.!?\n]{0,80}(?:\band|,) I(?:['\u2019]ll| will) (?:look|check|run|take|handle|do|fix|verify|pick|review|dig|get|sort)\b"
+    r"|\b(?:let me know|reach out)\b[^.!?\n]{0,40}(?:\band|,) I(?:['\u2019]ll| will) (?:look|check|run|take|handle|do|fix|verify|pick|review|dig|get|sort|land|merge)\b"
     r"|(?:check out|(?:take|have) a look at) (?:the|this|my) (?:PR|pull request)\b(?!\s+(?:branch|checks?|comments?|diff|description|number)))",
     re.IGNORECASE)
 _PASSIVE_NEG_RE = re.compile(r"\b(?:no|not|never|without|nobody)\b|n['\u2019]t\b", re.IGNORECASE)
@@ -1328,6 +1330,9 @@ def _passive_offer(body):
         clause = re.split(r'[.;:!?,\n\u2014\u2013]', body[max(0, m.start() - 40):m.start()])[-1]
         if _PASSIVE_NEG_RE.search(clause):
             continue
+        if re.match(r'(?:ping|message|ask|tell) me|let me know|reach out', m.group(0), re.I) and re.search(
+                r'\b(?:CI|reviewers?|bots?|they|the wake)\s+(?:(?:will|would|may|might)\s+)?$', clause, re.I):
+            continue  # a third party or a wake pinging me is narration, not an offer to the owner
         if m.group(0).lower().startswith('i could'):
             sent_before = re.split(r'[.!?\n]', body[max(0, m.start() - 80):m.start()])[-1]
             sent_after = re.split(r'[.!?\n]', body[m.end():m.end() + 120])[0]

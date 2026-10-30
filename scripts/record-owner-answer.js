@@ -13,7 +13,7 @@
  * record-owner-answer.yml, which runs this script with --execute in CI.
  * --check stops after the card check. Cards carrying a VISUAL-APPROVAL line are
  * refused unless --choice void (the change shipped another way, e.g. a VISUAL-OK
- * commit): approving a visual change ships it, so that stays with the owner's own tap. Exit 0 recorded (or already answered), 1 refused or
+ * commit): approving a visual change ships it. The owner's tap on the email approves it; so does their plain yes in the chat, in which case the session lands the held change itself and then voids the ask. Exit 0 recorded (or already answered), 1 refused or
  * failed, 2 bad usage.
  */
 'use strict';
