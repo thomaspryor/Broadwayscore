@@ -208,6 +208,8 @@ function decisionRef(secret, id, hash) {
   return crypto.createHmac('sha256', secret).update(`${DOMAIN}ref:${id}:${hash}`).digest('hex').slice(0, 16);
 }
 const answerMarker = (ref) => `Decision ref ODA${ref}`;
+// Any answer ref line, for readers without the signing secret (cloud-worker-pick).
+const ANSWER_REF_RE = /^Decision ref ODA[0-9a-f]{16,}\s*$/m;
 const emailMarker = (ref) => `Decision email ref ODE${ref}`;
 function bodyHasMarker(body, marker) { return unescapeMarkdown(body).includes(marker); }
 
@@ -416,7 +418,7 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, a
 // An approved change stays where it is: the lander ships it, so no worker should pick the card up.
 function todoStateId(issue, approved, visual) {
   const stateName = String((issue.state && issue.state.name) || '');
-  if (approved || !(/^(backlog|triage|paused)$/i.test(stateName) || (visual && !/^(todo|done|canceled|cancelled)$/i.test(stateName)))) return null;
+  if (approved || !(/^(backlog|triage)$/i.test(stateName) || (visual && !/^(todo|done|canceled|cancelled)$/i.test(stateName)))) return null;
   const todo = commentNodes({ nodes: issue.team && issue.team.states && issue.team.states.nodes }).find((s) => /^todo$/i.test(s.name));
   return todo ? todo.id : null;
 }
@@ -455,7 +457,9 @@ function settlePatch({ issue, hash, approved, visual, replay }) {
   });
   const remaining = rewritten.some((l) => MARKER_RE.test(l.replace(/`[^`]*`/g, '')));
   const settled = rewritten.join('\n') !== lines.join('\n') && !remaining;
-  const fixed = settled && !approved ? unparkOwnerHolds(rewritten) : rewritten;
+  const unparked = settled && !approved ? unparkOwnerHolds(rewritten) : rewritten;
+  // BRO-6654: an answered task's steps are retired, so a later question on the card is not shown them.
+  const fixed = settled ? unparked.map((l) => l.replace(/\bOwner step(\s+\d{1,2})/i, 'Done owner step$1')) : unparked;
   if (fixed.join('\n') !== lines.join('\n')) input.description = fixed.join('\n');
   const labels = (issue.labels && issue.labels.nodes) || [];
   if ((!replay || !remaining) && labels.some((l) => l.name === AWAITING_OWNER_LABEL)) {
@@ -639,7 +643,7 @@ module.exports = {
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
   parseDecisionBlock, answerChoices, STEP_RE, TASK_CHOICES,
   VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
-  signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
+  signToken, verifyToken, decisionRef, answerMarker, ANSWER_REF_RE, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
   VOID_LABEL, ANSWERED_LINE, loadDecision, recordAnswer, reconcileAnswered, updateIssue, markerComments, unparkOwnerHolds,
 };

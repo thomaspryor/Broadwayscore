@@ -79,7 +79,7 @@ export async function GET(req: NextRequest) {
   const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(open.question)}</p>${steps}<p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
 
   if (choice === 'own') {
-    return page('Your decision', `${head}${form(`<input type="hidden" name="choice" value="own"><textarea name="text" maxlength="${MAX_ANSWER_CHARS}" required placeholder="Type your answer here" aria-label="Your answer"></textarea><button type="submit">Send my answer</button>`)}`);
+    return page(task ? 'Your task' : 'Your decision', `${head}${form(`<input type="hidden" name="choice" value="own"><textarea name="text" maxlength="${MAX_ANSWER_CHARS}" required placeholder="Type your answer here" aria-label="Your answer"></textarea><button type="submit">Send my answer</button>`)}`);
   }
   const picked = open.choices.find((c: { key: string }) => c.key === choice);
   if (picked) {
@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
   // No (or unknown) option: show them all, GET links only.
   const base = `/api/owner-decision?t=${encodeURIComponent(g.token)}`;
   const buttons = open.choices.map((c: { key: string; label: string }) => `<a class="btn" href="${base}&o=${encodeURIComponent(c.key)}">${esc(c.label)}</a>`).join('');
-  return page('Your decision', `${head}${buttons}<a class="btn alt" href="${base}&o=own">Reply in my own words</a>`);
+  return page(task ? 'Your task' : 'Your decision', `${head}${buttons}<a class="btn alt" href="${base}&o=own">Reply in my own words</a>`);
 }
 
 export async function POST(req: NextRequest) {
