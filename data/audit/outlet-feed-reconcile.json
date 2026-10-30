@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T22:27:14.956Z",
+  "generatedAt": "2026-10-30T23:31:57.001Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,8 +103,20 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -127,9 +139,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 785,
-  "matchedGaps": 11,
-  "possibleGaps": 14,
+  "itemsScanned": 666,
+  "matchedGaps": 8,
+  "possibleGaps": 13,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -148,15 +160,6 @@
       "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
       "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "level": "matched",
-      "outletId": "vulture",
-      "url": "https://www.vulture.com/article/theater-review-in-the-heights-musical-encores-city-center-miranda-hudes.html",
-      "headline": null,
-      "publishDate": "2026-10-30"
     },
     {
       "showId": "memoriam-off-west-end-2026",
@@ -198,15 +201,6 @@
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/29/the-heart-musical-roundabou-review/",
-      "headline": "Off-Broadway Review: THE HEART (Roundabout / Laura Pels Theatre)",
-      "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/10/22/the-heart",
       "headline": "The Heart",
@@ -219,15 +213,6 @@
       "outletId": "british-theatre",
       "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
       "headline": "The Revlon Girl",
-      "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "level": "matched",
-      "outletId": "harry-theatre-life",
-      "url": "https://www.harrytheatrelife.co.uk/post/review-the-revlon-girl-park-theatre-london",
-      "headline": "REVIEW | The Revlon Girl, Park Theatre - London",
       "publishDate": "2026-10-30"
     },
     {
@@ -319,15 +304,6 @@
       "url": "https://stageandcinema.com/2026/10/28/assimilation-word-for-word-z-below-san-francisco-review/",
       "headline": "Theater Review: ASSIMILATION (Word for Word / San Francisco)",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
-      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
-      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-heart-off-broadway-2026",
