@@ -8,7 +8,7 @@ run-name: 'Opening-night lane ${{ inputs.mode }} ${{ inputs.show }} ${{ inputs.n
 #               `opening-night-poller.js --lane-live-smoke`. Writes nothing to any repo. Pays for one fetch and one
 #               two-model scoring call. Run this first; it is the lane's first live proof.
 #   mode=night  The production lane for one show's opening night (scripts/opening-night-lane.js): arm check against
-#               data/audit/lane-rehearsal.json, night lease on the opening-night-leases branch, discovery -> fetch ->
+#               data/audit/lane-rehearsal-recorded.json (only a 'recorded' rehearsal arms; synthetic runs never do, BRO-6619), night lease on the opening-night-leases branch, discovery -> fetch ->
 #               score -> publish (reviews.json compare-and-swap pushed to core data by real-ports.js). Each scored
 #               review is written to data/review-texts/<show>/ before publish and pushed to the private review-texts
 #               repo by push-review-texts, so the normal rebuild keeps it.
@@ -135,6 +135,12 @@ jobs:
   night:
     if: inputs.mode == 'night'
     runs-on: ubuntu-latest
+    # A job-level block replaces the workflow-level one, so contents stays listed. actions: write lets the lane publish
+    # dispatch vercel-deploy.yml (source=lane-press-night) instead of waiting for the 5-minute cron (BRO-6649). Smoke and
+    # shadow do not get it.
+    permissions:
+      contents: write
+      actions: write
     # GitHub-hosted jobs stop at 360 minutes. The lane step is capped below that so the persist and commit steps
     # after it always get to run. The lane keeps its lease past its own exit (BRO-6618): "Release night lease" frees it
     # only after the review-texts push succeeded, so a failed push leaves the lease to expire by TTL (30 minutes) and
@@ -188,6 +194,9 @@ jobs:
           OPENING_NIGHT_LANE_RELEASE_BY_WORKFLOW: '1'
           # The driver's window must end before the step cap, or every night is killed mid-run (BRO-4835 review).
           OPENING_NIGHT_LANE_WINDOW_MIN: '270'
+          # BRO-6649: each publish batch dispatches the deploy itself (deploy-port.js); gh needs a token for it.
+          OPENING_NIGHT_LANE_DEPLOY_DISPATCH: '1'
+          GH_TOKEN: ${{ github.token }}
           SHOW: ${{ inputs.show }}
           NIGHT: ${{ inputs.night }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}

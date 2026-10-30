@@ -17,9 +17,11 @@
  *                  line conflict in a 19 MB file, which is why that helper is not used here. It refuses to run if
  *                  coreDir has foreign uncommitted changes or unpushed commits, since the reset would discard them.
  *   regenShow      regenerates public/data/shows/{id}.json and reports any landed URL that is not in it.
- *   deploy         nothing to do: prebuild regenerates every show JSON from core data at build time, and the deploy
- *                  gate's data-changed path (should-deploy-gate.js) ships a core-data push on the next 5-minute cron.
- *                  Committing the show JSON to main would never reach the site and would race rebuild-fast's commits.
+ *   deploy         prebuild regenerates every show JSON from core data at build time. With
+ *                  OPENING_NIGHT_LANE_DEPLOY_DISPATCH=1 (set by the night workflow) the publish dispatches vercel-deploy.yml
+ *                  with source=lane-press-night, once per open dispatch (deploy-port.js); otherwise the core-data push waits
+ *                  for the deploy gate's data-changed path on the 5-minute cron. Committing the show JSON to main would never
+ *                  reach the site and would race rebuild-fast's commits.
  *   fetchLiveShow  the live site, cache-busted; publishLaneReviews' poll is the deploy verification.
  *   isLeased       read from the shared lease store, not the local leases.json (only `sync` writes that, so it is a
  *                  stale snapshot inside the lane), and only true when the live lease is held by this lane's holder.
@@ -30,6 +32,7 @@ const { execFileSync } = require('child_process');
 const publish = require('./publish');
 const leaseStore = require('./lease-store');
 const { canonicalUrl } = require('./discovery');
+const deployPort = require('./deploy-port');
 
 const DEFAULT_BASE_URL = 'https://broadwayscorecard.com';
 const BOT_IDENTITY = ['-c', 'user.name=opening-night-lane', '-c', 'user.email=opening-night-lane@users.noreply.github.com'];
@@ -39,7 +42,7 @@ const redact = (text) => String(text || '').replace(/\/\/[^@\s/]+@/g, '//***@').
 
 function createRealPublishPorts({
   show, repoDir, coreDir, holder, baseUrl = DEFAULT_BASE_URL, remote = 'origin', branch = 'main', attempts = 5,
-  now, exec = execFileSync, regen, readLeases = leaseStore.readRemote, fetchImpl,
+  now, exec = execFileSync, regen, readLeases = leaseStore.readRemote, fetchImpl, night, dispatchDeploy, page, env = process.env,
   sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
 } = {}) {
   for (const [k, v] of Object.entries({ show, repoDir, coreDir, holder })) if (!v) throw new Error(`real-ports: ${k} is required`);
@@ -97,6 +100,14 @@ function createRealPublishPorts({
     return { ok: false, stderr: redact(lastErr) };
   }
 
+  // Dispatch is opt-in so unit tests and local runs never start a deploy; the night workflow turns it on.
+  const dispatcher = dispatchDeploy || (env.OPENING_NIGHT_LANE_DEPLOY_DISPATCH === '1' ? deployPort.ghDispatcher({ sleep }) : null);
+  // The path is built at run time on purpose: laneCodeFiles() follows literal require()s into the arm hash, and an alert
+  // router edit must not disarm the lane (driver.test.mjs).
+  const pageAlert = page || ((o) => require(['..', 'owner-alert-router'].join('/')).routeAlert({ severity: 'critical', disposition: 'human', cooldownHours: 12, ...o }));
+  const deployer = dispatcher ? deployPort.createDeployPort({ show, night, dispatch: dispatcher, page: pageAlert, now }) : null;
+  const liveFetch = publish.fetchLiveShowFrom(baseUrl, fetchImpl ? { fetchImpl } : {});
+
   return {
     async updateReviews(fn) {
       const out = await sitePort.updateReviews(fn);
@@ -119,8 +130,20 @@ function createRealPublishPorts({
       const present = new Set((doc.rv || []).map((x) => canonicalUrl(x && x.u)).filter(Boolean));
       return { missing: landedUrls.filter((u) => !present.has(canonicalUrl(u))) };
     },
-    async deploy() { return { shippedBy: 'core-data push (deploy gate data-changed path)' }; },
-    fetchLiveShow: publish.fetchLiveShowFrom(baseUrl, fetchImpl ? { fetchImpl } : {}),
+    async deploy(args) { return deployer ? deployer.deploy(args) : { shippedBy: 'core-data push (deploy gate data-changed path)' }; },
+    async fetchLiveShow(s) {
+      const doc = await liveFetch(s);
+      if (deployer) await deployer.observe(doc);
+      return doc;
+    },
+    async pageLiveTimeout({ show: s, night: n, missing, ms }) {
+      await pageAlert({
+        disposition: 'human',
+        conditionKey: `lane-live-timeout:${s}:${n || night || 'night'}`,
+        title: `Lane publish for ${s} not live after ${Math.round(ms / 60000)} min`,
+        description: `${missing.length} review(s) pushed to core data are still missing from the live show JSON. The lane keeps its lease and re-queues them with the next batch.`,
+      });
+    },
   };
 }
 

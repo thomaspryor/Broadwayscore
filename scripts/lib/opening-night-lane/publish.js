@@ -134,7 +134,7 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
     landed.delete(r.row); dropped.push(r.key);
   }
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'rebuilt');
-  await ports.deploy(); // real ports: the core-data push is what ships (the deploy gate's data-changed path); see real-ports.js
+  await ports.deploy({ show, night, expectedUrls: rows.filter((r) => landed.has(r.row)).map((r) => r.row.url) }); // real ports dispatch the press-night deploy without blocking; see deploy-port.js
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'deployed');
 
   // Only rows that actually landed are awaited: a row the merge kept out (a manual correction won) will never show up.
@@ -150,7 +150,12 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
       log(key, 'verified-live'); verified.push(key); pending.delete(url);
     }
     if (!pending.size) break;
-    if (now() - t0 >= timeoutMs) { timedOut = true; break; }
+    if (now() - t0 >= timeoutMs) {
+      timedOut = true;
+      // The lease stays held (the workflow releases it) and lane-runner re-queues the missing rows; a human hears about it.
+      if (typeof ports.pageLiveTimeout === 'function') { try { await ports.pageLiveTimeout({ show, night, missing: [...pending.keys()], ms: now() - t0 }); } catch { /* paging must not fail the batch */ } }
+      break;
+    }
     await sleep(pollMs);
   }
   return { merge: { added: merge.added, replaced: merge.replaced, kept: merge.kept }, verified, missing: [...pending.values()], dropped, timedOut, ms: now() - t0 };

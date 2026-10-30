@@ -44,6 +44,7 @@
 // prefixes because the real conditionKey carries a per-night/per-show
 // suffix (date or show-window key).
 const PAGE_WORTHY_PREFIXES = [
+  'lane-live-timeout:', // opening-night lane (real-ports.js, BRO-6649): a publish pushed to core data is still not on the live site after 20 minutes on a press night
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
   'on-monitor-auth-starved-sustained-', // opening-night-monitor-launch.js: Mac too starved to start ANY pass for 3 ticks (~1h) in an opening window (BRO-4141; single blips go to digest as on-monitor-auth-starved-)
@@ -342,6 +343,7 @@ const OWNER_ACTIONS = {
   // Kept as emails by the owner (option A, 2026-10-16).
   [FINAL_REPORT_ENTRY]: 'Read tonight\'s opening-night result for this show.',
   'broadcast:overdue:': 'Send the opening-night email; it is overdue.',
+  'lane-live-timeout:': 'Check that the show page has its new reviews; if not, tell the coordinator session so it can run the old publish path.',
   'broadcast:never-sent:': 'Send the opening-night email; it never went out.',
   // BRO-5477: files a worker card first and emails only when that automatic
   // fix failed or never started.
