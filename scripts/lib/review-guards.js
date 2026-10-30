@@ -3958,6 +3958,14 @@ function recordFetchAttempt(show, review, failureEntry) {
     };
   }
 
+  // Press night (first 48h after opening, BRO-6585): one failed fetch put
+  // TheWrap's A Few Good Men review on a 6h wait, past the whole night. Retry
+  // hourly and never abandon inside the window; normal tiers resume after it.
+  const openedMs = new Date(show && show.openingDate).getTime();
+  if (lifecycle === 'openWindow' && now - openedMs <= PRESS_NIGHT_WINDOW_MS) {
+    return { fetchRetryAfter: new Date(now + PRESS_NIGHT_FETCH_COOLDOWN_MS).toISOString() };
+  }
+
   const count = Math.max(0, _counter(failureEntry.failureCount) - prePub);
   if (count >= max) {
     return { fetchDiscoveryAbandoned: true };
@@ -3965,6 +3973,9 @@ function recordFetchAttempt(show, review, failureEntry) {
 
   return { fetchRetryAfter: new Date(now + cooldown).toISOString() };
 }
+
+const PRESS_NIGHT_WINDOW_MS = 2 * DAY_MS;
+const PRESS_NIGHT_FETCH_COOLDOWN_MS = 3600 * 1000;
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Tier 2 stale wrongProduction recovery (BRO-53)

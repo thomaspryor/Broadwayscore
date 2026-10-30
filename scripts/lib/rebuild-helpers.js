@@ -1433,7 +1433,9 @@ function extractDateFromUrl(url) {
 
   // Pattern 1: /YYYY/MM/DD/ (WordPress-style, most reliable)
   const slashMatch = pathOnly.match(/\/(\d{4})\/(\d{1,2})\/(\d{1,2})\//);
-  if (slashMatch && !TITLE_YEARS.has(slashMatch[1])) {
+  // A full /YYYY/MM/DD/ is a date even when YYYY is a title year: the TITLE_YEARS
+  // guard here dropped every /2026/MM/DD/ URL date (BRO-6585). It stays on the bare-year pattern.
+  if (slashMatch) {
     const result = validateCalendarDate(parseInt(slashMatch[1]), parseInt(slashMatch[2]), parseInt(slashMatch[3]));
     if (result) return { date: result, source: 'url-ymd' };
   }
@@ -1457,7 +1459,7 @@ function extractDateFromUrl(url) {
 
   // Pattern 4: YYYY-MM-DD in path (Bloomberg, LA Times)
   const dashMatch = pathOnly.match(/(\d{4})-(\d{2})-(\d{2})/);
-  if (dashMatch && !TITLE_YEARS.has(dashMatch[1])) {
+  if (dashMatch && (!TITLE_YEARS.has(dashMatch[1]) || parseInt(dashMatch[1]) >= 2000)) {
     const y = parseInt(dashMatch[1]), m = parseInt(dashMatch[2]), d = parseInt(dashMatch[3]);
     // Reject if it doesn't look like a date (e.g., 1776-10-17 is a title year pattern)
     if (y >= 2000 && y <= maxPlausibleYear({ atLeast: 2027 })) {
