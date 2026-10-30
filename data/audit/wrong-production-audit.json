@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T03:00:24.849Z",
+  "timestamp": "2026-10-30T03:27:53.545Z",
   "stats": {
-    "totalReviews": 69912,
-    "alreadyFlagged": 22292,
+    "totalReviews": 69915,
+    "alreadyFlagged": 22295,
     "dateGuardCatches": 233,
-    "directorMismatch": 2859,
-    "tvFilmSignals": 2007,
-    "londonSignals": 3380,
+    "directorMismatch": 2862,
+    "tvFilmSignals": 2006,
+    "londonSignals": 3382,
     "offBroadwaySignals": 630,
     "yearMismatch": 282,
-    "noPublishDate": 8076
+    "noPublishDate": 7998
   },
   "findings": [
     {
@@ -2307,6 +2307,19 @@
       "file": "chicagocultureauthority--frank-sennett.json",
       "publishDate": null,
       "url": "https://chicagocultureauthority.com/2023/09/20/shattered-globes-stripped-down-a-view-from-the-bridge-packs-a-savage-punch-at-theater-wit/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-regional-2023",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2023-09-14",
+      "url": "https://thirdcoastreview.com/2023/09/14/stages-review-shattered-globe-a-view-from-the-bridge/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -7039,7 +7052,7 @@
     {
       "showId": "bella-bella-off-broadway-2019",
       "file": "variety--marilyn-stasio.json",
-      "score": null,
+      "score": 70,
       "publishDate": "2019-10-22",
       "url": "https://variety.com/2019/legit/reviews/bella-bella-review-harvey-fierstein-bella-abzug-1203370256/",
       "findings": [
@@ -8391,7 +8404,7 @@
     {
       "showId": "broadway-bounty-hunter-off-broadway-2019",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2019-08-09",
       "url": "http://frontmezzjunkies.com/2019/08/09/broadway-bounty-hunter/",
       "findings": [
@@ -8405,7 +8418,7 @@
     {
       "showId": "broadway-bounty-hunter-off-broadway-2019",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2019-07-23",
       "url": "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-annie-golden-nails-it/",
       "findings": [
@@ -8419,7 +8432,7 @@
     {
       "showId": "broadway-bounty-hunter-off-broadway-2019",
       "file": "nysr--michael-sommers.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2019-07-23",
       "url": "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-exploiting-a-darling-character-in-pursuit-of-laughs/",
       "findings": [
@@ -19355,6 +19368,19 @@
       "file": "chicagotribune--chris-jones.json",
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/02/05/review-drury-lane-fiddler-on-the-roof-both-timeless-and-brand-new/?clearUserState=true",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-regional-2024",
+      "file": "lifeandtimes--unknown.json",
+      "publishDate": "2024-02-04",
+      "url": "https://lifeandtimes.biz/2024/02/04/with-tim-burton-like-creativity-drury-lanes-newly-reimagined-fiddler-on-the-roof-is-the-best-interpretation-to-date/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45676,6 +45702,19 @@
     },
     {
       "showId": "ring-of-fire-the-music-of-johnny-cash-regional-2023",
+      "file": "lifeandtimes--unknown.json",
+      "publishDate": "2023-09-30",
+      "url": "https://lifeandtimes.biz/2023/09/30/blazing-ring-of-fire-puts-the-iconic-man-in-black-center-stage-at-drury-lane/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard maltby, jr\" from ring-of-fire-2006"
+        }
+      ]
+    },
+    {
+      "showId": "ring-of-fire-the-music-of-johnny-cash-regional-2023",
       "file": "splash-magazines--susan-lillis.json",
       "publishDate": null,
       "url": "https://chicago.splashmags.com/index.php/2023/09/09/drury-lane-theatre-presents-ring-of-fire-the-music-of-johnny-cash-through-october-22/#gsc.tab=0",
@@ -47230,7 +47269,7 @@
     {
       "showId": "sing-street-off-broadway-2019",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 71,
       "publishDate": "2019-12-16",
       "url": "https://culturesauce.com/off-broadway-review-john-carneys-sing-street/",
       "findings": [
@@ -52536,6 +52575,24 @@
       ]
     },
     {
+      "showId": "the-addams-family-the-musical-regional-2023",
+      "file": "daily-herald--unknown.json",
+      "publishDate": "2023-09-20",
+      "url": "https://www.dailyherald.com/entlife/20230920/metropolis-funny-spirited-addams-family-revival-among-its-best",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phelim mcdermott\" from the-addams-family-2010"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julian crouch\" from the-addams-family-2010"
+        }
+      ]
+    },
+    {
       "showId": "the-adding-machine-off-broadway-2026",
       "file": "frontmezzjunkies--unknown.json",
       "score": 81,
@@ -53032,47 +53089,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "the-bodyguard-tour-2026",
-      "file": "around-the-town-chicago--julia-w-rath.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thea sharrock\" from the-bodyguard-west-end-2012"
-        }
-      ]
-    },
-    {
-      "showId": "the-bodyguard-tour-2026",
-      "file": "around-the-town-chicago--unknown.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thea sharrock\" from the-bodyguard-west-end-2012"
-        }
-      ]
-    },
-    {
-      "showId": "the-bodyguard-tour-2026",
-      "file": "broadwayworld--yuliya-pokhylko.json",
-      "publishDate": "2026-10-24",
-      "url": "https://www.broadwayworld.com/rhode-island/article/Review-THE-BODYGUARD-at-Providence-Performing-Arts-Center-20261024",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -98751,6 +98767,20 @@
       ]
     },
     {
+      "showId": "no-mans-land-west-end-2016",
+      "file": "express-uk--neil-norman.json",
+      "score": null,
+      "publishDate": "2016-09-23",
+      "url": "https://www.express.co.uk/entertainment/theatre/713333/Review-No-Mans-Land-Wyndham-Theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
       "showId": "noises-off-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 82,
@@ -104584,7 +104614,7 @@
     {
       "showId": "sing-street-off-broadway-2019",
       "file": "vulture--helen-shaw.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2019-12-16",
       "url": "https://www.vulture.com/2019/12/review-of-sing-street-at-new-york-theatre-workshop.html",
       "findings": [
@@ -117618,6 +117648,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-writer-regional-2023",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2023-08-15",
+      "url": "https://thirdcoastreview.com/2023/08/15/stages-review-steep-theatre-the-writer/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
