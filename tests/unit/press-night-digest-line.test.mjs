@@ -202,3 +202,35 @@ test('a filed card carries a safe VERIFY a worker can arm, failing until the reg
   assert.equal(v.cmd, 'node --test tests/unit/press-night-miss-x-2026-10-30.test.mjs');
   assert.ok(!fs.existsSync(v.cmd.split(' ').pop()));
 });
+
+// Owner decision 2026-10-30 ("Ignore NYT"): a hard-paywalled outlet that is late or missing never fails a night
+// or shows as a miss. Built from the real The Heart record by renaming its two missed outlets.
+const HEART_RAW = JSON.stringify(HEART);
+const heartWith = (pairs) => JSON.parse(pairs.reduce((s, [from, to]) => s.replaceAll(from, to), HEART_RAW));
+
+test('paywall rule: a night whose only misses are paywalled outlets does not fail and names nobody', () => {
+  const rec = heartWith([['is-something-of-a-miracle', 'nytimes'], ['theater-pizzazz', 'wsj'], ['Theater Pizzazz', 'The Wall Street Journal']]);
+  const g = L.reviewGrade(rec, { outletName });
+  assert.notEqual(g.verdict, 'FAIL');
+  assert.equal(g.verdict, 'UNKNOWN'); // first-live is unmeasured on this record, so not a PASS either
+  assert.deepEqual(g.misses, []);
+  assert.match(g.text, /^4 of 4 reviews live by 12:00am/);
+  assert.doesNotMatch(g.text, /New York Times|Wall Street Journal|Nytimes|Wsj/);
+  assert.equal(L.scoreboard([rec]).FAIL, 0); // the scoreboard counts the same verdict as the line
+});
+
+test('paywall rule: a paywalled miss beside a real miss still fails, naming only the real one', () => {
+  const rec = heartWith([['theater-pizzazz', 'nytimes'], ['Theater Pizzazz', 'The New York Times']]);
+  const g = L.reviewGrade(rec, { outletName });
+  assert.equal(g.verdict, 'FAIL');
+  assert.equal(g.text, '3 of 4 reviews live by 12:00am; Is Something Of A Miracle still not live when the check ended at 3:55am');
+  assert.deepEqual(g.misses.map((m) => m.key), ['review:is-something-of-a-miracle']);
+});
+
+test('paywall rule: the coverage fallback excuses a paywalled outlet missing from the +2h list', () => {
+  const rec = heartWith([['is-something-of-a-miracle', 'nytimes'], ['theater-pizzazz', 'newyorker']]);
+  delete rec.fileState; // no review-file snapshot: grade from the aggregator list instead
+  const g = L.reviewGrade(rec, { outletName });
+  assert.notEqual(g.verdict, 'FAIL');
+  assert.deepEqual(g.misses, []);
+});

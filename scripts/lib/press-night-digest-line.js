@@ -29,6 +29,10 @@ const EMAIL_MARKETS = new Set(['broadway', 'west-end']);
 const LEDGER_VERSION = 1;
 // First press night the filer files cards for (BRO-6645 landed 2026-10-30).
 const FILE_FROM = '2026-10-30';
+// Hard-paywalled outlets (the HARD_PAYWALL_FLOORS sites in paywall-completeness.js). Owner decision 2026-10-30
+// ("Ignore NYT"): one of these passes once it is listed or queued, and a late or missing one never fails a night
+// or shows as a miss in the morning line, because its full text can wait on a login the pipeline may not have.
+const PAYWALLED_OUTLETS = new Set(['nytimes', 'newyorker', 'washingtonpost', 'washpost', 'chicagotribune', 'wsj']);
 
 const ET = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true });
 /** 2026-10-30T05:24:12Z -> "1:24am" (Eastern). */
@@ -83,11 +87,20 @@ function reviewGrade(rec, { outletName = humanizeId, gates = {} } = {}) {
   const sn = gateOf(result, 'same-night-completeness');
   const facts = sn && sn.facts;
   const nameOf = (m) => (m.outlet && m.outlet !== m.outletId ? m.outlet : outletName(m.outletId));
+  // Outlet gates that failed only on paywalled outlets (see PAYWALLED_OUTLETS).
+  const excused = new Set();
+  const cov = gateOf(result, 'coverage-2h');
+  const ref2 = rec.reference && rec.reference['2h'];
+  const ref2Missing = (ref2 && ref2.missing) || [];
+  const ref2Counted = ref2Missing.filter((id) => !PAYWALLED_OUTLETS.has(id));
+  if (cov && cov.status === 'fail' && ref2Missing.length && !ref2Counted.length) excused.add(cov.name);
   if (facts && facts.outlets.length) {
-    const lateOrMissing = facts.misses.filter((m) => m.phase === '2h');
+    const counted = facts.misses.filter((m) => !PAYWALLED_OUTLETS.has(m.outletId));
+    if (sn.status === 'fail' && facts.misses.length && !counted.length) excused.add(sn.name);
+    const lateOrMissing = counted.filter((m) => m.phase === '2h');
     const live = facts.outlets.length - lateOrMissing.length;
     parts.push(`${live} of ${facts.outlets.length} reviews live by ${etClock(facts.deadlineAt)}`);
-    const said = facts.misses.map((m) => {
+    const said = counted.map((m) => {
       const name = nameOf(m);
       const text = m.liveAt
         ? `${name} went live at ${etClock(m.liveAt)} (late)`
@@ -98,11 +111,10 @@ function reviewGrade(rec, { outletName = humanizeId, gates = {} } = {}) {
     if (said.length) parts.push(said.join(', '));
   } else {
     // No review-file snapshot: fall back to the aggregator list at +2h.
-    const cov = gateOf(result, 'coverage-2h');
-    const ref2 = rec.reference && rec.reference['2h'];
     if (cov && cov.status !== 'unknown' && ref2 && ref2.count) {
-      parts.push(`${ref2.covered} of ${ref2.count} listed reviews live 2 hours after release`);
-      for (const id of ref2.missing || []) {
+      const covered = ref2.covered + ref2Missing.length - ref2Counted.length;
+      parts.push(`${covered} of ${ref2.count} listed reviews live 2 hours after release`);
+      for (const id of ref2Counted) {
         const text = `${outletName(id)} not live by then`;
         misses.push({ key: `review:${id}`, text });
         parts.push(text);
@@ -125,15 +137,20 @@ function reviewGrade(rec, { outletName = humanizeId, gates = {} } = {}) {
     misses.push({ key: 'review:dropped', text });
     parts.push(text);
   }
-  if (result.verdict === 'FAIL' && !misses.length) {
+  let verdict = result.verdict;
+  if (verdict === 'FAIL' && excused.size) {
+    const required = result.gates.filter((g) => g.required && !excused.has(g.name));
+    if (!required.some((g) => g.status === 'fail')) verdict = required.some((g) => g.status === 'unknown') ? 'UNKNOWN' : 'PASS';
+  }
+  if (verdict === 'FAIL' && !misses.length) {
     // A required gate failed without a structured miss: never print a FAIL with no reason.
     const failed = result.gates.filter((g) => g.required && g.status === 'fail').map((g) => g.name);
     const text = `the overnight check failed (${failed.join(', ')})`;
     misses.push({ key: `review:${failed.join('+')}`, text });
     parts.push(text);
   }
-  if (result.verdict === 'UNKNOWN') parts.push('not every check could be measured');
-  return { verdict: result.verdict, text: parts.join('; '), misses };
+  if (verdict === 'UNKNOWN') parts.push('not every check could be measured');
+  return { verdict, text: parts.join('; '), misses };
 }
 
 /**
@@ -291,8 +308,8 @@ function gradeShow({ show, rec, numbersNow, readNumbers = () => null, sentShows,
 function scoreboard(records) {
   const n = { PASS: 0, FAIL: 0, UNKNOWN: 0 };
   for (const rec of records) {
-    const full = evaluateCheck(rec);
-    const v = (full.release ? full.release.observed : full).verdict;
+    // Same verdict as the per-night line, paywalled-outlet rule included.
+    const v = reviewGrade(rec).verdict;
     n[v in n ? v : 'UNKNOWN']++;
   }
   const total = n.PASS + n.FAIL + n.UNKNOWN;
@@ -411,6 +428,6 @@ function renderPressNightGradesBlock(snapshot, { esc = (x) => String(x) } = {}) 
 }
 
 module.exports = {
-  WINDOW_H, EMAIL_GRACE_H, NO_RECORD_GRACE_H, FILE_FROM, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
+  WINDOW_H, EMAIL_GRACE_H, PAYWALLED_OUTLETS, NO_RECORD_GRACE_H, FILE_FROM, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
   findBroadcastRecord, gradeOpenings, gradeShow, emptyLedger, planFiling, applyFiling, renderPressNightGradesBlock, scoreboard,
 };
