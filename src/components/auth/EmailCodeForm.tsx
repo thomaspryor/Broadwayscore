@@ -139,7 +139,8 @@ export default function EmailCodeForm({ onSendCode, onVerifyCode, onBack, disabl
         inputMode="numeric"
         autoComplete="one-time-code"
         pattern="[0-9]*"
-        maxLength={EMAIL_CODE_LENGTH}
+        // Room for pasted "123 456": the browser cuts at maxLength before onChange cleans it.
+        maxLength={EMAIL_CODE_LENGTH * 2}
         placeholder={'0'.repeat(EMAIL_CODE_LENGTH)}
         value={code}
         onChange={(e) => {

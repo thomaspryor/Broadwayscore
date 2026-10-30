@@ -12,6 +12,11 @@
  *   node scripts/apply-supabase-email-auth.mjs            # dry run: prints the diff
  *   node scripts/apply-supabase-email-auth.mjs --apply    # PATCHes the project
  *
+ * --apply first prints the live values it is about to replace (ROLLBACK-JSON,
+ * secrets left out) so a bad change can be PATCHed back by hand, and always
+ * resends smtp_pass: Supabase masks it on read, so a rotated Resend key would
+ * otherwise never reach it.
+ *
  * Env: SUPABASE_ACCESS_TOKEN, SUPABASE_PROJECT_REF, RESEND_API_KEY (--apply only).
  * Exit: 0 applied or already current, 1 failed, 2 dry run found changes.
  */
@@ -34,7 +39,9 @@ export function buildEmailAuthPatch({ template, resendKey }) {
     external_email_enabled: true,
     // Codes, not passwords: 6 digits are what people expect to type.
     mailer_otp_length: 6,
-    mailer_otp_exp: 3600,
+    // 15 minutes: with GoTrue's per-IP verify limit (pinned below) a 6-digit
+    // code cannot be guessed inside its lifetime. The template says 15 minutes.
+    mailer_otp_exp: 900,
     smtp_host: 'smtp.resend.com',
     smtp_port: '465',
     smtp_user: 'resend',
@@ -42,9 +49,13 @@ export function buildEmailAuthPatch({ template, resendKey }) {
     smtp_admin_email: 'noreply@broadwayscorecard.com',
     smtp_sender_name: 'Broadway Scorecard',
     // Per address: one email a minute (GoTrue default). Project-wide: an hour's
-    // cap well above any sign-up burst after an opening-night email.
+    // cap above any sign-up burst after an opening-night email, still low
+    // enough to bound a flood. Per IP (pinned, GoTrue defaults): 30 code
+    // requests and 30 verify attempts per 5 minutes.
     smtp_max_frequency: 60,
-    rate_limit_email_sent: 200,
+    rate_limit_email_sent: 500,
+    rate_limit_otp: 30,
+    rate_limit_verify: 30,
     // New addresses get "Confirm signup", known ones "Magic link"; both carry the code.
     mailer_subjects_magic_link: SUBJECT,
     mailer_subjects_confirmation: SUBJECT,
@@ -88,7 +99,10 @@ async function main() {
     console.log(`${k}: ${show(live[k])} -> ${show(patch[k])}`);
   }
   if (!apply) { console.log('\nDry run. Re-run with --apply to write these.'); process.exit(2); }
-  await api('PATCH', Object.fromEntries(changed.map((k) => [k, patch[k]])));
+  const rollback = Object.fromEntries(changed.filter((k) => !SECRET_KEYS.has(k)).map((k) => [k, live[k] ?? null]));
+  console.log(`\nROLLBACK-JSON ${JSON.stringify(rollback)}`);
+  const keys = [...new Set([...changed, ...SECRET_KEYS])];
+  await api('PATCH', Object.fromEntries(keys.map((k) => [k, patch[k]])));
   const after = diffPatch(patch, await api('GET'));
   if (after.length) { console.error(`still different after PATCH: ${after.join(', ')}`); process.exit(1); }
   console.log(`\nApplied ${changed.length} setting(s); live config now matches.`);

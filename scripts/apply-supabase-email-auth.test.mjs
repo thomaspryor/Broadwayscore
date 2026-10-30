@@ -15,6 +15,12 @@ test('committed template builds a patch with the code and no link', () => {
   assert.equal(p.smtp_host, 'smtp.resend.com');
 });
 
+test('code lifetime matches the email copy', () => {
+  const p = buildEmailAuthPatch({ template, resendKey: 're_x' });
+  assert.equal(p.mailer_otp_exp, 900);
+  assert.match(template, /15 minutes/);
+});
+
 test('a template with a sign-in link is refused', () => {
   assert.throws(() => buildEmailAuthPatch({ template: '{{ .Token }} <a href="{{ .ConfirmationURL }}">x</a>', resendKey: 'k' }), /link/);
 });

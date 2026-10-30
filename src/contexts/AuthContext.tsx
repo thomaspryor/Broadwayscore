@@ -349,8 +349,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     markSignInStarted('email', source);
     const { error } = await client.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
     if (error) {
-      markSignInFailed('email', source, error.message);
-      // 429s are the per-address once-a-minute limit, not a fault.
+      // A too-soon resend (429) is not a failed sign-in: keep the pending
+      // marker so the code already sent still counts when typed.
+      if (error.status !== 429) markSignInFailed('email', source, error.message);
       if (error.status !== 429) reportUgcError('auth.email_send_code', { message: error.message, code: error.code || 'otp_send', status: error.status });
       return { error: emailAuthErrorMessage(error) };
     }
