@@ -540,7 +540,8 @@
     "the-psychic-york-royal-regional-2026/guardian--mark-fisher.json",
     "the-psychic-york-royal-regional-2026/fairypoweredproductions--fairypoweredproductions.json",
     "the-receptionist-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "magic-chichester-festival-regional-2026/broadwayworld--richard-sasanow.json"
+    "magic-chichester-festival-regional-2026/broadwayworld--richard-sasanow.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
   ],
   "failed": [
     "coal-country-off-broadway-2022/theatermania--hayley-levitt.json",
@@ -804,7 +805,17 @@
     "magic-chichester-festival-regional-2026/thewrap--robert-hofler.json",
     "magic-chichester-festival-regional-2026/chicagotribune--chris-jones.json",
     "magic-chichester-festival-regional-2026/thestage--dave-fargnoli.json",
-    "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json"
+    "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "girls-off-west-end-2026/letterboxd--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+    "surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1055,7 +1066,8 @@
       "eclipse-chichester-festival-regional-2026/artsdesk--unknown.json",
       "end-of-the-rainbow-west-end-2026/north-west-end--zain-russell.json",
       "bank-of-dave-the-musical-lowry-regional-2026/thereviewshub--helen-jones.json",
-      "magic-chichester-festival-regional-2026/chicagotribune--chris-jones.json"
+      "magic-chichester-festival-regional-2026/chicagotribune--chris-jones.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-heart-off-broadway-2026/variety--cynthia-littleton.json"
@@ -1084,7 +1096,8 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json",
       "data/review-texts/magic-chichester-festival-regional-2026/deadline--greg-evans.json",
       "data/review-texts/hello-dolly-2017/washpost--peter-marks.json",
-      "hello-dolly-2017/washpost--peter-marks.json"
+      "hello-dolly-2017/washpost--peter-marks.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1238,7 +1251,13 @@
       "data/review-texts/malory-towers-royal-bath-regional-2026/thestage--holly-omahony.json",
       "data/review-texts/sweat-citizens-regional-2026/thestage--fergus-morgan.json",
       "data/review-texts/magic-chichester-festival-regional-2026/thewrap--robert-hofler.json",
-      "data/review-texts/magic-chichester-festival-regional-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/magic-chichester-festival-regional-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+      "data/review-texts/surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "data/review-texts/murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
     ],
     "archive": [
       "waitress-2016/ap--mark-kennedy.json",
@@ -1410,7 +1429,7 @@
     ]
   },
   "startTime": "2026-10-29T20:08:46.882Z",
-  "lastProcessed": "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+  "lastProcessed": "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-10-29T22:20:00.411Z",
@@ -1559,6 +1578,18 @@
       "t": "2026-10-30T01:19:53.029Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-30T04:54:11.360Z",
+      "event": "bb-session",
+      "session": "d21fa4af",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-30T04:55:17.896Z",
+      "event": "bb-session",
+      "session": "c6780053",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
   "recoveredAfterFailure": [
