@@ -15,6 +15,12 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/tag-genres.js [--dry] [--all] [--limit=N]  (see header comment)');
+  process.exit(0);
+}
 
 const GENRES = ['comedy', 'drama', 'thriller', 'romance', 'classic-musical', 'jukebox', 'family', 'concert', 'opera', 'dance'];
 const OUT = path.join(__dirname, '..', 'src', 'config', 'genre-tags.json');
@@ -47,6 +53,7 @@ ${batch.map(s => `${s.id} | ${s.t} | ${s.ty || ''} | ${(s.syn || '').slice(0, 28
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
+    signal: AbortSignal.timeout(60000),
     body: JSON.stringify({ model: 'gpt-5.4-mini', response_format: { type: 'json_object' }, messages: [{ role: 'user', content: prompt }] }),
   });
   if (!res.ok) throw new Error(`OpenAI HTTP ${res.status}`);
