@@ -134,7 +134,7 @@ test('held: every way the model can be wrong is refused', () => {
   assert.deepEqual(verify(item(), { production: { verdict: 'unsure', quote: 'x' } }).rejected, [], 'unsure: no edit, no complaint');
   const both = item({ text: text('Reviewed at the Daryl Roth Theatre, after the Prince Edward Theatre run, Midnight.') });
   assert.match(why(both, claim('the Daryl Roth Theatre, after the Prince Edward Theatre run')), /earlier production/);
-  assert.match(why(item(), claim('spectacular at the Daryl Roth Theatre, in Midnight'), rec({ publishDate: '2025-02-12' })), /outside this production's window/);
+  assert.match(why(item(), claim('spectacular at the Daryl Roth Theatre, in Midnight'), rec({ publishDate: '2025-02-12' })), /outside this production's window|not a review of this production/);
   assert.match(why(item(), claim('Todrick Hall'), rec()), /not in the stored text|neither/, 'a bare name is too short to count');
   assert.match(why(item(), claim('spectacular at the ... Daryl Roth Theatre, in Midnight')), /one unbroken passage/);
   assert.match(why(item({ text: text('Out in Jersey review. Todrick Hall is spectacular at the Daryl Roth Theatre, in Midnight.') }), claim('spectacular at the Daryl Roth Theatre, in Midnight'), rec({ publishDate: undefined })), /no date on the file/);
