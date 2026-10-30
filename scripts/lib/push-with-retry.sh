@@ -1994,7 +1994,7 @@ undo_rename_crosswiring() {
   out=$(_crosswire repair)
   [ -n "$out" ] || return 0
   printf '%s\n' "$out" | grep -v '^REPAIRED=' || true
-  if printf '%s\n' "$out" | grep -q '^REPAIRED=[1-9]'; then
+  if grep -q '^REPAIRED=[1-9]' <<<"$out"; then
     echo "::warning::push-with-retry: undid git rename-detection cross-wiring (BRO-6594) — see the paths above"
     bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$PULL_BRANCH" >/dev/null 2>&1 || true
   fi
