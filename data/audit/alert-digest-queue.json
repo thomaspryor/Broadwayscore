@@ -222,20 +222,6 @@
     "queuedAt": "2026-10-29T12:20:58.912Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
-    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 8.65 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T12:25:46.534Z"
-  },
-  {
     "conditionKey": "land:land/bro-6489-full-run",
     "title": "Landing blocked: unit-tests-node red on land/bro-6489-full-run",
     "description": "land.yml did not land land/bro-6489-full-run: the unit-tests-node gate went red at 4ac62a8e38. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40847186724",
@@ -3974,5 +3960,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T14:00:17.627Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
+    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 9.15 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T14:05:55.495Z"
   }
 ]
