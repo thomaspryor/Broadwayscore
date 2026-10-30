@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T15:50:21.973Z",
+  "timestamp": "2026-10-30T16:09:51.058Z",
   "stats": {
-    "totalReviews": 70432,
-    "alreadyFlagged": 22278,
+    "totalReviews": 70433,
+    "alreadyFlagged": 22285,
     "dateGuardCatches": 230,
-    "directorMismatch": 2875,
+    "directorMismatch": 2874,
     "tvFilmSignals": 2025,
     "londonSignals": 3402,
-    "offBroadwaySignals": 633,
+    "offBroadwaySignals": 634,
     "yearMismatch": 288,
-    "noPublishDate": 8023
+    "noPublishDate": 8019
   },
   "findings": [
     {
@@ -20442,7 +20442,7 @@
     },
     {
       "showId": "fool-for-love-2015",
-      "file": "ew--joe-mc.json",
+      "file": "ew--joe-mcgovern.json",
       "score": 44,
       "publishDate": "October 8th, 2015",
       "url": "https://www.ew.com/article/2015/10/08/fool-love-ew-stage-review",
@@ -68361,19 +68361,6 @@
     },
     {
       "showId": "war-horse-lowry-regional-2024",
-      "file": "strandmagazine--georgia-gibson.json",
-      "publishDate": "2024-10-03",
-      "url": "https://www.strandmagazine.co.uk/single-post/awe-inspiring-puppetry-for-a-deeply-human-story-reviewing-war-horse-galloping-across-the-uk-on-t",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tom morris\" from war-horse-2011"
-        }
-      ]
-    },
-    {
-      "showId": "war-horse-lowry-regional-2024",
       "file": "theweek--irenie-forshaw-the-week-uk.json",
       "score": 88,
       "publishDate": "2024-09-26",
@@ -82165,6 +82152,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "des-moines-off-broadway-2022",
+      "file": "vulture--jackson-mchenry.json",
+      "score": null,
+      "publishDate": "2022-12-16",
+      "url": "https://www.vulture.com/2022/12/theater-reviews-the-far-country-and-des-moines.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
