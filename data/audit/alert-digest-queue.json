@@ -3596,5 +3596,36 @@
       }
     ],
     "queuedAt": "2026-10-30T22:39:53.794Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6669-stuck-fallback",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6669-stuck-fallback",
+    "description": "land.yml did not land land/bro-6669-stuck-fallback: the unit-tests-node gate went red at fab9e4abb8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41139511801",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6669-stuck-fallback"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fab9e4abb89dd6658668aa696251d8ed597a3745"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41139511801"
+      }
+    ],
+    "queuedAt": "2026-10-30T23:01:22.304Z"
   }
 ]
