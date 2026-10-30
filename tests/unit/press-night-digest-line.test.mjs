@@ -72,15 +72,18 @@ test('emails ready the second morning: draft current and Reddit emailed with cur
   assert.equal(rv.verdict, 'PASS');
 });
 
-test('stale draft fails the night: both drafts say 23 reviews, the site says 24', () => {
+test('stale draft fails the night: the email draft says 23 reviews, the Reddit draft says score 59, the site says 60 from 24', () => {
   const e = grade(afgmShow, AFGM, {
     nowMs: MORNING2,
     sentShows: draftRecord({ draftNumbers: { 'a-few-good-men-2026': { score: 60, reviewCount: 23 } } }),
-    redditDrafts: reddit(60, 23),
+    redditDrafts: reddit(59, 23),
   });
   assert.equal(e.line, `${REVIEW_LINE}; the opening-night email draft is out of date (it says score 60, 23 reviews, the site says score 60, 24 reviews), `
-    + 'the Reddit draft is out of date (it says score 60, 23 reviews, the site says score 60, 24 reviews). Failed.');
+    + 'the Reddit draft is out of date (it says score 59, 23 reviews, the site says score 60, 24 reviews). Failed.');
   assert.deepEqual(e.misses.filter((m) => m.key.startsWith('email:')).map((m) => m.key), ['email:broadcast-stale', 'email:reddit-stale']);
+  // Same score, one review behind: the Reddit draft is fine.
+  const em = L.emailGrade({ show: afgmShow, sentShows: draftRecord({}), redditDrafts: reddit(60, 23), numbersNow: NUM, nowMs: MORNING2 });
+  assert.equal(em.status, 'ok');
 });
 
 test('missing draft past the deadline is a miss; an unreadable tracker is unknown, never "no draft"', () => {
@@ -118,7 +121,8 @@ test('auto-filer: files once per show-night, nothing on re-run, a new miss is on
   assert.equal(a1.length, 1);
   assert.equal(a1[0].priority, 1);
   assert.match(a1[0].notes, /press-night-grade-key: a-few-good-men-2026:2026-11-08/);
-  assert.match(a1[0].notes, /VERIFY: node scripts\/press-night-record\.js/);
+  assert.match(a1[0].notes, /## Acceptance criteria/);
+  assert.doesNotMatch(a1[0].notes, /VERIFY: node scripts\/press-night-record/);
   const { ledger } = await L.applyFiling(a1, L.emptyLedger(), deps);
   assert.equal(filed.length, 1);
 

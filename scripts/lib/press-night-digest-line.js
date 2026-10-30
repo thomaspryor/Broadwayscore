@@ -182,8 +182,9 @@ function emailGrade({ show, sentShows = null, redditDrafts = {}, numbersNow = nu
     if (!d || !d.emailedAt) {
       misses.push({ key: 'email:reddit-missing', text: 'the Reddit draft was not emailed' });
     } else {
+      // The score is the post's headline; a one-review drift with the same score is not worth a card.
       const was = emailedNumbers(d);
-      if (numbersNow && (was.score !== numbersNow.score || was.reviewCount !== numbersNow.reviewCount)) {
+      if (numbersNow && numbersNow.score != null && was.score !== numbersNow.score) {
         misses.push({ key: 'email:reddit-stale', text: `the Reddit draft is out of date (it says ${fmt(was)}, the site says ${fmt(numbersNow)})` });
       } else ok.push('Reddit draft emailed');
     }
@@ -323,8 +324,9 @@ function planFiling(entries, ledger, { fileFrom = FILE_FROM } = {}) {
           `press-night-grade-key: ${key}`,
           '',
           '## Acceptance criteria',
-          `- The cause of each miss is fixed in code, with a test.`,
-          `- VERIFY: node scripts/press-night-record.js --show=${e.showId} --night=${e.night} --check`,
+          '- The cause of each miss is fixed in code, with a regression test that fails before the fix.',
+          '- Add that test\'s `node --test <file>` command to this card as its VERIFY: line (this night\'s own',
+          '  record cannot change, so re-grading it can never pass).',
         ].join('\n'),
       });
     } else {

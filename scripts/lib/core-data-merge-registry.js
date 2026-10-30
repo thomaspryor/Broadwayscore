@@ -1239,6 +1239,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-10-29 (BRO-6542): morning-digest snapshot of new tour, pre-Broadway and UK regional shows. 1 writer (daily-digest.yml runs scripts/produce-new-show-types-snapshot.js), group daily-digest (cancel-in-progress: false).',
   },
   {
+    file: 'audit/press-night-grade-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'press-night-grade',
+    verifiedBy: '2026-10-30 (BRO-6645): morning-email grade per opening night. 1 writer (press-night-grade.yml runs scripts/produce-press-night-grade-snapshot.js), group press-night-grade (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/press-night-grade-filed.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'press-night-grade',
+    verifiedBy: '2026-10-30 (BRO-6645): ledger of fix cards filed per show-night (keeps the filer to one card each); only the producer writes it, so run it locally with --dry-run only. 1 writer (press-night-grade.yml), group press-night-grade (cancel-in-progress: false).',
+  },
+  {
     file: 'audit/new-show-types-seen.json',
     surface: 'public-repo',
     status: 'single-writer',

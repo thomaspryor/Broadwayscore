@@ -1,0 +1,82 @@
+name: Press Night Grade
+
+# BRO-6645. Grades each opening night of the last 48h in one plain-English line (reviews live, email drafts
+# ready) for the owner's morning email ("Last night's openings"), and files one fix card per show-night with a
+# miss (P1 review, P2 email draft). The sole writer of data/audit/press-night-grade-snapshot.json and its card
+# ledger data/audit/press-night-grade-filed.json: one workflow, one concurrency group, a fresh checkout every run,
+# so two runs can never both file a card for the same night.
+#
+# Runs when each Press Night Probe run finishes (its record is committed by then), and every 3 hours so the
+# email drafts (due 14:00 UTC the day after opening) are graded before the next morning's email (11:30 UTC).
+# Advisory: a failed run files nothing and the morning email flags the stale snapshot.
+
+on:
+  workflow_run:
+    workflows: ['Press Night Probe']
+    types: [completed]
+  schedule:
+    - cron: '23 */3 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  # concurrency-queue-ok: every run grades the whole 48h window from a fresh checkout, so an evicted pending run
+  # loses nothing the next one does not redo.
+  group: press-night-grade
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    # Core-data checkout up to ~7.5 min when GitHub hangs, plus up to two 90s card calls per night, plus the push.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Grade openings and file fix cards
+        id: grade
+        # lint-allow-swallow: advisory first (BRO-2123); the warn step below reports a failure, and the commit
+        # step still lands the ledger rows of the cards that were filed before it.
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/produce-press-night-grade-snapshot.js --file
+
+      - name: Warn when grading failed
+        if: always() && steps.grade.outcome == 'failure'
+        run: echo "::warning::press-night grade did not finish; the morning email shows the last snapshot until the next run succeeds."
+
+      - name: Commit snapshot and card ledger
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
+        run: |
+          git add data/audit/press-night-grade-snapshot.json data/audit/press-night-grade-filed.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No grade changes"
+          else
+            git commit -m "data: press night grades for the morning email [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure() || steps.grade.outcome == 'failure'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Press night grade failed'
+          description: 'The opening-night grades for the morning email did not update, so the email shows the last snapshot (flagged stale after 36h) and no fix cards were filed this run.'
+          severity: 'warning'
