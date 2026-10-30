@@ -72,7 +72,7 @@ test('an ordinary decision email is unchanged', () => {
 
 // ── the worker picks the card back up ──────────────────────────────────────
 const doneComment = (msAgo, choice = 'Done, I did it') => ({
-  body: link.buildAnswerComment({ choiceLabel: choice, text: '', ref: 'abc', now: new Date(NOW - msAgo) }),
+  body: link.buildAnswerComment({ choiceLabel: choice, text: '', ref: '0123456789abcdef', now: new Date(NOW - msAgo) }),
   createdAt: at(msAgo),
 });
 const pausedReport = (msAgo) => ({ body: '**Session report (paused)**\n\nWaiting on the owner to change the App Store privacy setting.', createdAt: at(msAgo) });
@@ -103,4 +103,34 @@ test('"I could not do it", an old tap, or a later human comment does not fast-tr
 test('a machine receipt after the tap does not hide it', () => {
   const receipt = { body: 'Dispatched to a cloud worker', createdAt: at(1 * MIN) };
   assert.equal(pick.isOwnerTaskResume(card([doneComment(5 * MIN), receipt]), NOW), true);
+});
+
+test('an escaped body still counts; a comment without the answer ref does not', () => {
+  const d = doneComment(5 * MIN);
+  const escaped = { ...d, body: d.body.replace('(', '\\(').replace(')', '\\)') };
+  assert.equal(pick.isOwnerTaskResume(card([escaped]), NOW), true);
+  const forged = { ...d, body: d.body.replace(/\nDecision ref ODA[0-9a-f]+/, '') };
+  assert.equal(pick.isOwnerTaskResume(card([forged]), NOW), false);
+});
+
+test('answering a task retires its steps and leaves a Paused card where it is', async () => {
+  const writes = [];
+  const comments = [];
+  const issue = { id: 'uuid', identifier: 'BRO-900', title: 'App privacy', url: 'https://linear.app/x', description: TASK,
+    state: { name: 'Paused', type: 'backlog' }, labels: { nodes: [] }, team: { states: { nodes: [{ id: 'todo', name: 'Todo' }] } }, comments: { nodes: comments } };
+  const graphql = async (q, v) => {
+    if (/commentCreate/.test(q)) { const c = { id: `c${comments.length}`, body: v.input.body, createdAt: new Date(NOW).toISOString() }; comments.push(c); return { commentCreate: { success: true, comment: c } }; }
+    if (/issueUpdate/.test(q)) { writes.push(v.input); return { issueUpdate: { success: true } }; }
+    if (/commentDelete/.test(q)) return { commentDelete: { success: true } };
+    return { issue: { ...issue, comments: { nodes: comments } } };
+  };
+  const hash = link.questionHash('Turn off tracking in the App Store privacy answers');
+  const r = await link.recordAnswer({ graphql, id: 'BRO-900', hash, secret: SECRET, choiceKey: 'done', text: '' });
+  assert.equal(r.status, 'recorded');
+  assert.equal(r.moved, false);
+  const desc = writes[0].description;
+  assert.doesNotMatch(desc, /^Owner step/m);
+  assert.match(desc, /^Done owner step 1:/m);
+  assert.equal(link.parseDecisionBlock(desc).steps.length, 0);
+  assert.equal(pick.isOwnerTaskResume({ comments: { nodes: comments } }, NOW + 20 * MIN), true);
 });
