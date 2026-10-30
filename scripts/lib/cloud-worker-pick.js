@@ -134,6 +134,22 @@ function isStartNow(issue, nowMs) {
   const age = nowMs - Date.parse(issue.createdAt);
   return Number.isFinite(age) && age >= START_NOW_MIN_AGE_MS && age < START_NOW_MAX_AGE_MS;
 }
+// BRO-6654: the owner tapped Done on a Mac-only task emailed from this card
+// (src/lib/owner-decision-link.js buildAnswerComment, TASK_CHOICES). The work
+// was only waiting on that, so the card skips the idle wait and the pause
+// cooldown and goes to the front, like START-NOW, while the tap is the newest
+// human comment and under 48 h old. The comment's createdAt is set by Linear,
+// so no card text can fake the window.
+const OWNER_TASK_DONE_RE = /^\*\*Owner decision\*\* \(answered by the owner\b[^\n]*\n\s*\nChose: Done, I did it\s*(?:\n|$)/;
+const OWNER_TASK_RESUME_MS = 48 * HOUR_MS;
+function isOwnerTaskResume(issue, nowMs) {
+  const nodes = (issue && issue.comments && Array.isArray(issue.comments.nodes)) ? issue.comments.nodes : [];
+  const newest = nodes.filter((c) => c && Number.isFinite(Date.parse(c.createdAt)) && !isMachineComment(c.body))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
+  if (!newest || !OWNER_TASK_DONE_RE.test(String(newest.body || ''))) return false;
+  const age = nowMs - Date.parse(newest.createdAt);
+  return age >= 0 && age < OWNER_TASK_RESUME_MS;
+}
 const PRIORITIES = new Set([1, 2]);
 // Linear priority 3 = Medium = P2: the fallback tier (see WHY THESE RULES).
 const P2_PRIORITY = 3;
@@ -375,7 +391,7 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   const CR = codex && require('./codex-runner.js');
   // A carried fix round or a retry note (BRO-6260) is the newest comment, which makes the card look recently touched.
   const carry = codex && (CR.parseSwfCarry(issue.comments && issue.comments.nodes, nowMs) || CR.parseCodexRetry(issue.comments && issue.comments.nodes));
-  if (nowMs - updatedMs < IDLE_MS && (fallback || !isStartNow(issue, nowMs)) && !carry) return 'recent-activity';
+  if (nowMs - updatedMs < IDLE_MS && (fallback || !(isStartNow(issue, nowMs) || isOwnerTaskResume(issue, nowMs))) && !carry) return 'recent-activity';
   return null;
 }
 
@@ -485,7 +501,7 @@ function pickCloudCard(issues, { nowMs, codex = false }) {
   // Within a priority, the old machine-filed backlog goes after cards a person
   // filed or a session parked, so ~280 stale autofix cards can't starve them.
   const machineTier = (iss) => (iss.state && iss.state.type === 'unstarted') || !isStaleAutomationParked(iss, nowMs) ? 0 : 1;
-  const startTier = (iss) => (isStartNow(iss, nowMs) ? 0 : 1);
+  const startTier = (iss) => (isStartNow(iss, nowMs) || isOwnerTaskResume(iss, nowMs) ? 0 : 1);
   eligible.sort((a, b) => (startTier(a) - startTier(b)) || (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
     || (issueNumber(a.identifier) - issueNumber(b.identifier)));
   // START-NOW doesn't apply to P2 and P3: Todo and paused cards oldest first, then
@@ -701,6 +717,8 @@ function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = fa
   if (cloudLane && !answered && ageMs < LANE_UNWORKABLE_MAX_MS && laneUnworkableReason(report.body)) return 'lane-unworkable';
   const pauses = sorted.filter((c) => parseSessionReportStatus(c.body) === 'paused').length;
   if (!answered && pauses >= MAX_PAUSES) return 'paused-repeatedly';
+  // The owner did the Mac task the pause was waiting on (BRO-6654): no cooldown.
+  if (answered && isOwnerTaskResume({ comments: { nodes: sorted } }, nowMs)) return null;
   const cooldownMs = PRIORITIES.has(Number(priority)) ? RECENT_PAUSE_URGENT_MS : RECENT_PAUSE_MS;
   return ageMs < cooldownMs ? 'recently-paused' : null;
 }
@@ -801,7 +819,7 @@ module.exports = {
   leaveCodexCards,
   isMachineComment, laneUnworkableReason, LANE_UNWORKABLE_MAX_MS,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
-  AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, isOwnerTaskResume, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, noDispatchHold, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, namesOwnerHold, FALLBACK_PARK_DENY_RE,
 };

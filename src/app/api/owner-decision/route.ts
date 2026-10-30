@@ -73,7 +73,10 @@ export async function GET(req: NextRequest) {
   const open = l as Extract<Loaded, { status: 'open' }>;
   const choice = req.nextUrl.searchParams.get('o') || '';
   const form = (inner: string) => `<form method="POST" action="/api/owner-decision"><input type="hidden" name="t" value="${esc(g.token)}">${CONFIRM_FIELD_HTML}${inner}</form>`;
-  const head = `<h1>Your decision</h1><p class="q">${esc(open.question)}</p><p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
+  // BRO-6654: a task card (Owner step lines) shows its steps, so the Done page reads on its own.
+  const task = (open.block as { task?: boolean; steps?: string[] }).task === true;
+  const steps = task ? `<ol>${((open.block as { steps?: string[] }).steps || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ol>` : '';
+  const head = `<h1>${task ? 'Your task' : 'Your decision'}</h1><p class="q">${esc(open.question)}</p>${steps}<p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
 
   if (choice === 'own') {
     return page('Your decision', `${head}${form(`<input type="hidden" name="choice" value="own"><textarea name="text" maxlength="${MAX_ANSWER_CHARS}" required placeholder="Type your answer here" aria-label="Your answer"></textarea><button type="submit">Send my answer</button>`)}`);
