@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6569",
   "planId": "0731d4bf-c9df-498d-8562-6d6c670719cc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T04:05:08.120Z",
   "submitter": {
     "name": null,
@@ -189,5 +189,134 @@
         "description": "BRO-6569: second copy of a url another file holds with the same review (standard--nick-curtis.json)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T05:00:23.784Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted abigails-party-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted an-oak-tree-off-west-end-2026/thestage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cats-west-end-2026/london-box-office--daniel-perks.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cats-west-end-2026/london-box-office--phil-willmott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cinderella-west-end-2026/london-box-office--josephine-balfour-oatts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cinderella-west-end-2026/london-box-office--marian-pashley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cinderella-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-west-end-2026/london-box-office--phil-willmott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted wicked-west-end-2021/independent--alice-saville.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted girls-off-west-end-2026/london-box-office--david-scotland.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted girls-off-west-end-2026/london-box-office--justin-murray.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted golden-boy-off-west-end-2026/whatsonstage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted inter-alia-west-end-2026/standard--rosamund-pike.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted inter-alia-west-end-2026/standard--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted les-miserables-west-end-2021/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mary-poppins-2006/guardian--michael-billington.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted medea-2002/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted medea-off-broadway-2026/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted my-neighbour-totoro-west-end-2025/standard--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
