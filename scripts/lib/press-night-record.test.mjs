@@ -765,6 +765,9 @@ test('observed release: a review seen live before the lane\'s first discovery bo
   const lateLane = { ...rec, laneShadow: { ...rec.laneShadow, firstDiscoveredAt: '2026-10-30T04:30:00Z' } };
   const r = lib.evaluateCheck(lateLane);
   assert.equal(r.release.observedAt, firstLive);
+  assert.equal(r.release.observedFrom, 'first-live');
+  assert.equal(lib.releaseSourceLabel(r.release), 'the first night review seen live');
+  assert.equal(lib.evaluateCheck(rec).release.observedFrom, 'lane-discovery');
   assert.ok(Date.parse(r.release.observedAt) < Date.parse('2026-10-30T04:30:00Z'));
   // The probe and the lane both saw nothing until well after the embargo, so the late release still stands.
   assert.equal(lib.evaluateCheck(rec).release.observedAt, '2026-10-30T03:02:18.463Z');

@@ -793,7 +793,7 @@ function gradeNight(rec, g) {
  * assumed embargo (a shadow started late finds reviews late without the release being late). The observed
  * release is the earlier of the lane's first discovery and the first night review seen live. A legacy record
  * from an operator's explicit --embargo-at also counts as assumed (it carries no embargoSource).
- * Returns {assumedAt, observedAt, lateMin} or null.
+ * Returns {assumedAt, observedAt, lateMin, observedFrom: 'lane-discovery'|'first-live'} or null.
  */
 function observedRelease(rec) {
   if (!rec || rec.embargoSource === 'override' || rec.embargoSource === 'manual') return null;
@@ -808,7 +808,15 @@ function observedRelease(rec) {
   const liveMs = live ? toMs(live.at) : null;
   const relMs = liveMs != null && liveMs < discMs ? liveMs : discMs;
   if (relMs - embMs <= LATE_RELEASE_MIN * MIN) return null;
-  return { assumedAt: new Date(embMs).toISOString(), observedAt: new Date(relMs).toISOString(), lateMin: Math.round((relMs - embMs) / MIN) };
+  return {
+    assumedAt: new Date(embMs).toISOString(), observedAt: new Date(relMs).toISOString(), lateMin: Math.round((relMs - embMs) / MIN),
+    observedFrom: relMs === discMs ? 'lane-discovery' : 'first-live',
+  };
+}
+
+/** What the observed release time was taken from, for the CLI and audit-note wording. */
+function releaseSourceLabel(rel) {
+  return rel.observedFrom === 'first-live' ? 'the first night review seen live' : 'the first lane discovery';
 }
 
 /**
@@ -866,7 +874,7 @@ function observedCoverage2h(rec, obsMs) {
 module.exports = {
   SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL, PROBE_LEAD_MIN, LATE_RELEASE_MIN,
   defaultEmbargoAt, marketEmbargoAt, embargoInfo, embargoOverrideProblem, embargoOverrideReachWarning, classifyEmbargo,
-  observedRelease, observedRecord, observedCoverage2h, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
+  observedRelease, releaseSourceLabel, observedRecord, observedCoverage2h, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
   runProbe, referenceFrom, evaluateCheck, isNightReview, firstNightLive, laneShadowFrom, coverageAt,
   filterCensus, sameNightCheck, outletLiveMs,
 };
