@@ -645,3 +645,9 @@ test('BRO-6588: real opening-night and early-but-legit reviews are accepted', ()
   const prior = { ...AFGM, priorRuns: [{ openingDate: '2026-09-01', closingDate: '2026-09-30' }] };
   assert.equal(preOpeningNonReviewReason('https://www.nytimes.com/2026/09/15/theater/x.html', { publishDate: '2026-09-15', outletId: 'nytimes', show: prior }), null, 'prior run');
 });
+
+test('listingPageUrlReason: Talkin\' Broadway index page is a listing, a numbered review page is not (BRO-6584)', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  assert.equal(listingPageUrlReason('https://www.talkinbroadway.com/page/world/index.html'), 'review-index-page');
+  assert.equal(listingPageUrlReason('https://www.talkinbroadway.com/page/world/860.html'), null);
+});
