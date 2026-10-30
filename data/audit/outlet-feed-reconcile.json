@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T19:11:09.627Z",
+  "generatedAt": "2026-10-30T22:27:14.956Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -87,6 +87,11 @@
       "id": "the-unexpected-3rd-2026",
       "title": "The Unexpected 3rd",
       "openingDate": "2026-10-26"
+    },
+    {
+      "id": "middlemarch-rsc-regional-2026",
+      "title": "Middlemarch",
+      "openingDate": "2026-10-29"
     }
   ],
   "skipped": [
@@ -97,10 +102,6 @@
   ],
   "feedsChecked": 73,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -126,8 +127,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 778,
-  "matchedGaps": 7,
+  "itemsScanned": 785,
+  "matchedGaps": 11,
   "possibleGaps": 14,
   "gaps": [
     {
@@ -149,6 +150,15 @@
       "publishDate": "2026-10-28"
     },
     {
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "level": "matched",
+      "outletId": "vulture",
+      "url": "https://www.vulture.com/article/theater-review-in-the-heights-musical-encores-city-center-miranda-hudes.html",
+      "headline": null,
+      "publishDate": "2026-10-30"
+    },
+    {
       "showId": "memoriam-off-west-end-2026",
       "title": "Memoriam",
       "level": "matched",
@@ -156,6 +166,24 @@
       "url": "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
       "headline": "Review: Memoriam &#8211; Southwark Playhouse Borough, London",
       "publishDate": "2026-10-27"
+    },
+    {
+      "showId": "middlemarch-rsc-regional-2026",
+      "title": "Middlemarch",
+      "level": "matched",
+      "outletId": "theatrecat",
+      "url": "https://theatrecat.com/2026/10/29/middlemarch-swan-stratford-upon-avon/",
+      "headline": "MIDDLEMARCH         Swan, Stratford upon Avon",
+      "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "middlemarch-rsc-regional-2026",
+      "title": "Middlemarch",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-middlemarch-parts-1-2-rsc",
+      "headline": "Review: MIDDLEMARCH PARTS 1 & 2, RSC",
+      "publishDate": "2026-10-29"
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -185,12 +213,21 @@
       "publishDate": "2026-10-30"
     },
     {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
       "level": "matched",
-      "outletId": "thewrap",
-      "url": "https://www.thewrap.com/creative-content/theater/the-heart-off-broadway-review-organ-transplant-musical/",
-      "headline": "&#8216;The Heart&#8217; Off Broadway Review: The Beat Goes on in a Terrific New Musical About Organ Transplants",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
+      "headline": "The Revlon Girl",
+      "publishDate": "2026-10-30"
+    },
+    {
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "level": "matched",
+      "outletId": "harry-theatre-life",
+      "url": "https://www.harrytheatrelife.co.uk/post/review-the-revlon-girl-park-theatre-london",
+      "headline": "REVIEW | The Revlon Girl, Park Theatre - London",
       "publishDate": "2026-10-30"
     },
     {

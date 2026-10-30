@@ -1,13 +1,87 @@
 {
-  "generatedAt": "2026-10-30T19:11:09.244Z",
+  "generatedAt": "2026-10-30T22:27:14.285Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 305,
-  "clean": 305,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 306,
+  "clean": 302,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4,
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "ill-be-seeing-you-pitlochry-festival-regional-2026",
+      "title": "I'll Be Seeing You",
+      "openingDate": "2026-09-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: guardian"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 81.4)"
+        }
+      ],
+      "missingFromProd": [
+        "guardian"
+      ],
+      "localCount": 3,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-10-30T22:27:10.099Z"
+    },
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.85 vs local 74.73 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-10-30T22:27:10.099Z"
+    },
+    {
+      "showId": "twelfth-night-crucible-regional-2026",
+      "title": "Twelfth Night",
+      "openingDate": "2026-10-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.96 vs local 77.74 (Δ0.78)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-30T22:27:10.099Z"
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "title": "STORIES – The Tap Dance Sensation",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.52 vs local 75.8 (Δ0.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-30T22:27:10.099Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
