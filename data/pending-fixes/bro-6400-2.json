@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6400-2",
   "planId": "ce8eb9b2-8e68-4ac7-a7fa-5aa45f6f9f7b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T05:06:18.287Z",
   "submitter": {
     "name": null,
@@ -194,5 +194,99 @@
         "description": "shows.json: frozen-west-end-2021.transferOf"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T09:05:42.265Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for beetlejuice-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for beetlejuice-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for john-proctor-is-the-villain-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for moulin-rouge-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for moulin-rouge-the-musical-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for come-from-away-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for come-from-away-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for oh-mary-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for oh-mary-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for stereophonic-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for stereophonic-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for oklahoma-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for oklahoma-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for to-kill-a-mockingbird-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for to-kill-a-mockingbird-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferredTo updated for frozen-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: transferOf updated for frozen-west-end-2021"
+    }
+  ],
+  "executedIn": "ci"
 }
