@@ -3904,7 +3904,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41058537101",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41059613198",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -3913,11 +3913,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41058537101)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41059613198)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41057530945)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41058537101)"
       },
       {
         "name": "Consecutive failures",
@@ -3928,7 +3928,7 @@
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-30T13:18:25.155Z"
+    "queuedAt": "2026-10-30T13:20:50.323Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-6615-mvuxhkr3",
