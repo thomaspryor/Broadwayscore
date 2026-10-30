@@ -2,15 +2,15 @@
   "version": 1,
   "showId": "the-heart-off-broadway-2026",
   "openingDate": "2026-10-29",
-  "detectedAt": "2026-10-30T19:37:35.564Z",
+  "detectedAt": "2026-10-30T19:47:46.955Z",
   "windowDays": 7,
   "orphans": [
     {
-      "file": "boothhistory--unknown.json",
-      "outletId": "boothhistory",
-      "criticName": "Unknown",
-      "url": "https://www.boothhistory.com/shows/the-heart/news",
-      "fullTextLen": 2767,
+      "file": "one-minute-critic--matthew-wexler.json",
+      "outletId": "one-minute-critic",
+      "criticName": "Matthew Wexler",
+      "url": "https://1minutecritic.com/the-heart-musical-roundabout-review/",
+      "fullTextLen": 3215,
       "dispatchActionable": true,
       "skipReason": null,
       "rescoreBlockedReason": null,
@@ -19,7 +19,41 @@
       "originalScore": null,
       "originalScoreNormalized": null,
       "llmScore": null,
-      "contentTier": "truncated",
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "theatrely--juan-a-ramirez.json",
+      "outletId": "theatrely",
+      "criticName": "Juan A. Ramirez",
+      "url": "https://www.theatrely.com/post/the-heart-an-icy-musical-dnr-review",
+      "fullTextLen": 4466,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "thewrap--unknown.json",
+      "outletId": "thewrap",
+      "criticName": "Unknown",
+      "url": "https://www.thewrap.com/creative-content/movies/heart-of-the-beast-review-brad-pitt-david-ayer/",
+      "fullTextLen": 6132,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
       "eligibilityReason": null
     },
     {
@@ -61,6 +95,6 @@
   "dispatchableOrphanCount": 3,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-30T19:37:35.564Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
