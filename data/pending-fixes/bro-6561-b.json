@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-6561-b",
+  "planId": "68180108-6beb-484f-a2ef-de7595a5410c",
+  "status": "pending",
+  "createdAt": "2026-10-30T03:56:22.811Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6561: The Lives of Others (West End 2026) is a play, not a musical. TodayTix lists it under Plays; the poster credits an adaptation by Robert Icke and the cast is three actors. The stored Musicals category was captured while TodayTix's listing was still a cloned High School Musical template.",
+    "steps": [
+      "shows.json: the-lives-of-others-west-end-2026.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lives-of-others-west-end-2026",
+        "field": "type",
+        "oldValue": "musical",
+        "newValue": "play",
+        "description": "shows.json: the-lives-of-others-west-end-2026.type"
+      }
+    ]
+  }
+}
