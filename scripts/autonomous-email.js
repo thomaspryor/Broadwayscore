@@ -310,8 +310,7 @@ async function main() {
     const evd = ev.evidence || {};
     let why = null;
     try { why = extractWhy(notionBrain(['get', row.id]).notes); } catch { /* keep null */ }
-    // Never sign action links for a branch we have no ledger evidence for —
-    // an approve tap must always refer to a branch the executor pushed.
+    // Skip rows with no ledger evidence for a branch the executor pushed.
     if (!evd.branch) { missingEvidence++; continue; }
     const branch = evd.branch;
     const newItem = {
