@@ -91,7 +91,7 @@ function oldPathStandsDown({ onlyMarkets, standdown, show, leaseState, markers, 
   return { standDown: true, reason: `lane ${l.holder} holds ${show.id} ${l.night}`, night: l.night, holder: l.holder };
 }
 
-/** Read every marker file. Missing dir = {} (no markers); any unreadable file = null (treated as "lane stood down"). */
+/** Read every marker file. Missing dir = {} (no markers); any unreadable file = null, which keeps the old path on. */
 function readMarkers(dir = DEFAULT_MARKERS_DIR) {
   let names;
   try { names = fs.readdirSync(dir); } catch (e) { return e && e.code === 'ENOENT' ? {} : null; }
