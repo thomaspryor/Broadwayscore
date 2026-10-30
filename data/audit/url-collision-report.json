@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-30T02:39:39.443Z",
+  "generatedAt": "2026-10-30T04:38:40.638Z",
   "summary": {
-    "total": 9,
-    "high": 5,
-    "medium": 3,
+    "total": 11,
+    "high": 6,
+    "medium": 4,
     "low": 1
   },
   "collisions": [
@@ -143,6 +143,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://www.timeout.com/london/theatre/hadestown-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/hadestown-review",
+      "candidates": [
+        {
+          "showId": "hadestown-west-end-2018",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2018-11-14",
+          "openingDate": "2018-11-13",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "hadestown-west-end-2024",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2025-04-14",
+          "openingDate": "2024-02-22",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "hadestown-west-end-2018",
+      "reason": "publishDate 2018-11-14 is 1 days from hadestown-west-end-2018 opening (2018-11-13); next closest is 417 days from hadestown-west-end-2024",
+      "confidence": "high"
+    },
+    {
       "url": "https://www.ft.com/content/123b9505-14d8-45b1-88ec-d3fb845f71b2?syn-25a6b1a6=1",
       "normalizedUrl": "https://ft.com/content/123b9505-14d8-45b1-88ec-d3fb845f71b2",
       "candidates": [
@@ -249,6 +276,33 @@
       "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
       "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/translations-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/translations-review",
+      "candidates": [
+        {
+          "showId": "translations-west-end-2018",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2018-05-31",
+          "openingDate": "2018-05-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "translations-west-end-2019",
+          "file": "timeout-london--tom-wicker.json",
+          "publishDate": "2019-10-21",
+          "openingDate": "2019-10-21",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "translations-west-end-2019",
+      "reason": "publishDate 2019-10-21 is 0 days from translations-west-end-2019 but also 1 days from translations-west-end-2018",
+      "confidence": "medium"
     }
   ]
 }
