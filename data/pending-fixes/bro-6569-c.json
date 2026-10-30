@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6569-c",
   "planId": "f5d2ddb8-a759-41ac-a07d-d13286026bdc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T04:05:08.120Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "BRO-6569: same evidence: the review is of this Wyndham's run."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T05:09:02.693Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-king-and-i-west-end-2018/telegraph--dominic-cavendish.json url: \"https://www.telegraph.co.uk/theatre/what-to-see/exit-king-review-national-theatre-rhys-ifans-drives-chilling/\" -> \"https://www.telegraph.co.uk/theatre/what-to-see/king-london-palladium-review-provocative-blend-bombast-subtlety/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2026/standard--nick-curtis.json publishDate: \"July 24th, 2025\" -> \"2026-04-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2026/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
