@@ -147,6 +147,12 @@ For each card:
    Otherwise `node scripts/linear-session.js report --issue=<id> --status=paused --summary="<what is left and why>"`
    (with `RECHECK-AFTER: YYYY-MM-DD` and a safe recheck command when the
    result is only observable later).
+   A pause is for a real block only: an owner decision (DECISION NEEDED:),
+   a missing key or access, Mac-only hands or files, a dated wait on a named
+   event, or the budget. If the next step is doable here ("next worker: add
+   the aliases", "next session: dispatch the runs"), do it now instead of
+   pausing. `linear-session.js report` flags such hand-offs (BRO-6635,
+   advisory now, refused later). Never pause through `linear-brain.js update`.
 7. Then remove that card's worktree (`git worktree remove --force <path>`,
    never a .claude/worktrees/codex-runner* one). Each is about 1.3 GB and
    the Codex slots share the same disk: on 2026-10-15 a full disk crashed 17

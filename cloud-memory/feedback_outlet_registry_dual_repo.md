@@ -1,8 +1,11 @@
 ---
-name: outlet-registry.json must be updated in both public and private repos
-description: CI uses private repo's outlet-registry.json — changes to public repo alone don't take effect in CI
+name: outlet-registry.json is public-owned (superseded dual-repo rule)
+description: SUPERSEDED by BRO-1084 - outlet-registry.json is tracked in the public repo and editable from cloud; the old copy-to-private-repo rule no longer applies
 type: feedback
 ---
+
+**Superseded (BRO-1084, re-checked 2026-10-30 for BRO-6635):** outlet-registry.json is public-owned now. It is tracked in this repo, `checkout-core-data` skips it, and `push-core-data` syncs it to the public repo. Edit and land it here only, cloud sessions included; do not copy it to the private repo. The rest of this note is history.
+
 
 outlet-registry.json exists in both the public Broadwayscore repo AND the private broadway-scorecard-data repo. CI's checkout-core-data action copies from the private repo, overwriting the public version.
 
