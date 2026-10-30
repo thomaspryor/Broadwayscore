@@ -46,7 +46,10 @@ function replayFetchFrom(recording, { now, startMs, fallback = null }) {
     if (e.status === 'error') throw Object.assign(new Error(e.error || `error ${url}`), e.httpStatus ? { status: e.httpStatus } : {});
     if (e.kind === 'date-check') return { content: e.publishDate ? `<html><head><meta property="article:published_time" content="${e.publishDate}"></head></html>` : '<html></html>' };
     const content = recording.page(e.sha);
-    if (content === null) return miss(url, opts); // body dropped (oversize / capped / write failed)
+    if (content === null) {
+      // Body dropped (oversize / capped / write failed): say so, a quiet 404 would read as a page that never existed.
+      throw new Error(`recording incomplete for ${url}: body not stored${e.note ? ` (${e.note})` : ''}`);
+    }
     return { content, ...(e.finalUrl ? { finalUrl: e.finalUrl } : {}) };
   };
 }
