@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6400-3",
   "planId": "a9f8a3ba-c5f9-4136-847a-e7a78830fd28",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-30T05:17:36.684Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T09:10:15.636Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
 }
