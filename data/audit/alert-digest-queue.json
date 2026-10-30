@@ -3853,5 +3853,33 @@
       }
     ],
     "queuedAt": "2026-10-30T10:27:34.131Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-lives-of-others-west-end-2026",
+    "title": "Auto-remediation gave up on the-lives-of-others-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-lives-of-others-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T10:59:59.926Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:tosca-off-broadway-2026",
+    "title": "Auto-remediation gave up on tosca-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"tosca-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-30T10:59:59.965Z"
   }
 ]

@@ -31654,13 +31654,13 @@
       "title": "Placeholder synopsis on Tosca",
       "firstSeen": "2026-10-30T00:14:57.578Z",
       "incidentOpenedAt": "2026-10-30T00:14:57.578Z",
-      "lastSeen": "2026-10-30T07:14:20.910Z",
+      "lastSeen": "2026-10-30T11:00:00.014Z",
       "lastNotifiedAt": "2026-10-30T00:14:57.578Z",
       "lastSurfacedAt": "2026-10-30T00:14:57.578Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-revival-unverified-tosca-off-broadway-2026": {
       "status": "open",
@@ -31668,13 +31668,13 @@
       "title": "Unverified revival on Tosca",
       "firstSeen": "2026-10-30T00:14:57.596Z",
       "incidentOpenedAt": "2026-10-30T00:14:57.596Z",
-      "lastSeen": "2026-10-30T07:14:20.926Z",
+      "lastSeen": "2026-10-30T11:00:00.067Z",
       "lastNotifiedAt": "2026-10-30T00:14:57.596Z",
       "lastSurfacedAt": "2026-10-30T00:14:57.596Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-6553-cost-row": {
       "status": "resolved",
@@ -31898,12 +31898,13 @@
       "title": "Shipped review missing publishDate on A Few Good Men",
       "firstSeen": "2026-10-30T07:14:20.941Z",
       "incidentOpenedAt": "2026-10-30T07:14:20.941Z",
-      "lastSeen": "2026-10-30T07:14:20.941Z",
+      "lastSeen": "2026-10-30T11:00:00.083Z",
       "lastNotifiedAt": "2026-10-30T07:14:20.941Z",
       "lastSurfacedAt": "2026-10-30T07:14:20.941Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:the-heart-off-broadway-2026": {
       "status": "open",
@@ -31911,12 +31912,13 @@
       "title": "Shipped review missing publishDate on The Heart",
       "firstSeen": "2026-10-30T07:14:20.959Z",
       "incidentOpenedAt": "2026-10-30T07:14:20.959Z",
-      "lastSeen": "2026-10-30T07:14:20.959Z",
+      "lastSeen": "2026-10-30T11:00:01.289Z",
       "lastNotifiedAt": "2026-10-30T07:14:20.959Z",
       "lastSurfacedAt": "2026-10-30T07:14:20.959Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-sla:pages-stuck:medea-off-broadway-2026": {
       "status": "open",
@@ -31924,12 +31926,13 @@
       "title": "Opening-night reviews stuck ≥60 min: medea-off-broadway-2026 (1)",
       "firstSeen": "2026-10-30T07:14:22.431Z",
       "incidentOpenedAt": "2026-10-30T07:14:22.431Z",
-      "lastSeen": "2026-10-30T07:14:22.431Z",
+      "lastSeen": "2026-10-30T11:00:04.067Z",
       "lastNotifiedAt": "2026-10-30T07:14:22.431Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6593"
+      "linearIdentifier": "BRO-6593",
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:ae3e74cd": {
       "status": "resolved",
@@ -32115,6 +32118,32 @@
       "lastSeen": "2026-10-30T10:27:34.130Z",
       "lastNotifiedAt": "2026-10-30T10:27:34.130Z",
       "lastSurfacedAt": "2026-10-30T10:27:34.130Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-t1-missing:the-lives-of-others-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on the-lives-of-others-west-end-2026",
+      "firstSeen": "2026-10-30T10:59:59.925Z",
+      "incidentOpenedAt": "2026-10-30T10:59:59.925Z",
+      "lastSeen": "2026-10-30T10:59:59.925Z",
+      "lastNotifiedAt": "2026-10-30T10:59:59.925Z",
+      "lastSurfacedAt": "2026-10-30T10:59:59.925Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-empty-cast:tosca-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on tosca-off-broadway-2026",
+      "firstSeen": "2026-10-30T10:59:59.963Z",
+      "incidentOpenedAt": "2026-10-30T10:59:59.963Z",
+      "lastSeen": "2026-10-30T10:59:59.963Z",
+      "lastNotifiedAt": "2026-10-30T10:59:59.963Z",
+      "lastSurfacedAt": "2026-10-30T10:59:59.963Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
