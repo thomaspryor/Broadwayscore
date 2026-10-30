@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-6541-z",
+  "planId": "d20d1113-fc0c-4892-b3aa-9cac9af16c51",
+  "status": "pending",
+  "createdAt": "2026-10-30T01:50:30.871Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: retire two census rows founded on misdated items",
+    "steps": [
+      "retire-show",
+      "retire-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "the-watsons-chichester-festival-regional-2025",
+        "expectTitle": "The Watsons",
+        "reason": "BRO-6541: founded from one census item The Stage dated 2025-04-15; the review page is dated 2018-11-09 (the Minerva premiere, ingest refused date_implausible). No 2025 production; no reviews held."
+      },
+      {
+        "type": "retire-show",
+        "id": "east-is-east-citizens-regional-2026",
+        "expectTitle": "East Is East",
+        "reason": "BRO-6541: founded from one census item dated 2026; the Theatre Weekly review page is dated 2024-02-26, so the row date is wrong and its one ingest was refused. No reviews held."
+      }
+    ]
+  }
+}
