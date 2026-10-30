@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T07:14:46.949Z",
+  "timestamp": "2026-10-30T07:56:24.587Z",
   "stats": {
-    "totalReviews": 70031,
-    "alreadyFlagged": 22243,
-    "dateGuardCatches": 231,
-    "directorMismatch": 2865,
-    "tvFilmSignals": 2016,
-    "londonSignals": 3390,
+    "totalReviews": 70089,
+    "alreadyFlagged": 22246,
+    "dateGuardCatches": 230,
+    "directorMismatch": 2868,
+    "tvFilmSignals": 2022,
+    "londonSignals": 3394,
     "offBroadwaySignals": 631,
     "yearMismatch": 285,
-    "noPublishDate": 7993
+    "noPublishDate": 8001
   },
   "findings": [
     {
@@ -6980,6 +6980,76 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "becoming-nancy-birmingham-rep-regional-2024",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "publishDate": "2024-10-16",
+      "url": "https://www.allthatdazzles.co.uk/post/review-becoming-nancy-birmingham-rep",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "becoming-nancy-birmingham-rep-regional-2024",
+      "file": "allthingstheatre--elliot-and-tom.json",
+      "publishDate": "2024-10-16",
+      "url": "https://allthingstheatre.uk/regional/review-becoming-nancy-the-rep-birmingham/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "becoming-nancy-birmingham-rep-regional-2024",
+      "file": "beyondthecurtain--unknown.json",
+      "publishDate": null,
+      "url": "https://www.beyondthecurtain.co.uk/2024/10/5-reasons-to-see-becoming-nancy.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "becoming-nancy-birmingham-rep-regional-2024",
+      "file": "west-end-best-friend--jenny-ell.json",
+      "publishDate": "2024-10-16",
+      "url": "https://www.westendbestfriend.co.uk/news/review-becoming-nancy-birmingham-rep",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "becoming-nancy-birmingham-rep-regional-2024",
+      "file": "whatsonstage--diane-parkes.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/becoming-nancy-musical-at-birmingham-rep-review_1640863/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -15338,6 +15408,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2012 (2x) more than 2026 (1x). 2012 matches production: death-of-a-salesman-2012"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+      "file": "whatsonstage--matt-barton.json",
+      "publishDate": "2026-09-25",
+      "url": "https://www.whatsonstage.com/news/death-of-a-salesman-at-liverpool-everyman-review_1732637/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         }
       ]
     },
@@ -47075,6 +47163,19 @@
       ]
     },
     {
+      "showId": "showstopper-the-improvised-musical-crucible-regional-2025",
+      "file": "everything-theatre--joanne-thornewell.json",
+      "publishDate": "2025-06-07",
+      "url": "https://everything-theatre.co.uk/2025/06/review-showstopper-the-improvised-musical-crucible-theatre-sheffield/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam meggido\" from showstopper-the-improvised-musical-west-end-2023"
+        }
+      ]
+    },
+    {
       "showId": "shrek-the-musical-west-end-2011",
       "file": "guardian--michael-billington.json",
       "publishDate": "2011-06-14",
@@ -52477,6 +52578,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "tell-me-how-it-ends-liverpool-everyman-regional-2024",
+      "file": "whatsonstage--matt-barton.json",
+      "publishDate": "2024-06-14",
+      "url": "https://www.whatsonstage.com/news/tell-me-how-it-ends-at-liverpool-everyman-review_1605492/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -70032,7 +70146,7 @@
     {
       "showId": "white-noise-off-broadway-2019",
       "file": "amny--matt-windman.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2019-03-20",
       "url": "https://www.amny.com/entertainment/white-noise-review-1.28737100",
       "findings": [
@@ -70051,7 +70165,7 @@
     {
       "showId": "white-noise-off-broadway-2019",
       "file": "dailybeast--tim-teeman.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2019-03-20",
       "url": "http://www.thedailybeast.com/this-is-what-the-white-noise-of-racism-and-privilege-really-sounds-like",
       "findings": [
@@ -70065,6 +70179,7 @@
     {
       "showId": "white-noise-off-broadway-2019",
       "file": "exeunt-magazine--read-more-articles-by-loren-noveck.json",
+      "score": 79,
       "publishDate": "2019-03-20",
       "url": "https://exeuntnyc.com/reviews/review-white-noise-public-theater/",
       "findings": [
@@ -70078,7 +70193,7 @@
     {
       "showId": "white-noise-off-broadway-2019",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2019-04-25",
       "url": "http://frontmezzjunkies.com/2019/04/25/white-noise-at-high-volume/",
       "findings": [
@@ -75192,20 +75307,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "art-west-end-2016",
-      "file": "artshub--gina-fairley.json",
-      "score": 0,
-      "publishDate": "2016-01-29",
-      "url": "https://www.artshub.co.uk/news/opinions-analysis/where-does-australia-fit-in-singapores-regional-art-hub-250382-1279755/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 326d before show (2016-01-29 vs 2016-12-20)"
         }
       ]
     },
@@ -81611,6 +81712,19 @@
       "score": 92,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/american-dreams-reviewed-death-of-a-salesman-and-1776",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+      "file": "theatreandtonic--seana.json",
+      "publishDate": "2026-09-28",
+      "url": "https://theatreandtonic.co.uk/blog/death-of-a-salesman-at-liverpool-everyman-theatrenbspreview",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -104640,6 +104754,19 @@
       ]
     },
     {
+      "showId": "sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025",
+      "file": "theatreandtonic--roby.json",
+      "publishDate": "2025-11-23",
+      "url": "https://theatreandtonic.co.uk/blog/sherlock-holmes-and-the-12-days-of-christmas-at-birmingham-rep-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "shifters-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 57,
@@ -107387,6 +107514,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 121d before show (November 3, 2016 vs 2017-03-04)"
+        }
+      ]
+    },
+    {
+      "showId": "sweeney-todd-birmingham-rep-regional-2026",
+      "file": "whatsonstage--alison-brinkworth.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/sweeney-todd-with-ramin-karimloo-and-meow-meow-at-birmingham-rep-review_1727408/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
