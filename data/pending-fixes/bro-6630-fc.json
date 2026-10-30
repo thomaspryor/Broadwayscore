@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6630-fc",
   "planId": "0b038223-0306-4aa8-a0c7-078584156c93",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T18:47:31.800Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: afterglow-off-broadway-2017.venue"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T19:01:12.682Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for afterglow-off-broadway-2017"
+    }
+  ],
+  "executedIn": "ci"
 }
