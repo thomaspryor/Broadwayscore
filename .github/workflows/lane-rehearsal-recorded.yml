@@ -23,6 +23,11 @@ on:
       - 'scripts/opening-night-lane-rehearse.js'
       - 'scripts/llm-scoring/**'
       - 'scripts/opening-night-lane.js'
+      # BRO-6650: scrapers the lane hash reaches by require() from outside scripts/lib (rehearsal.js laneCodeFiles).
+      # tests/unit/lane-code-freeze.test.mjs fails when a hashed file is not matched by these paths.
+      - 'scripts/extract-dtli-reviews.js'
+      - 'scripts/scrape-london-box-office-roundups.js'
+      - 'scripts/scrape-theatre-reviews.js'
       - '.github/workflows/opening-night-lane-live.yml'
       - '.github/workflows/lane-rehearsal-recorded.yml'
   workflow_dispatch: {}

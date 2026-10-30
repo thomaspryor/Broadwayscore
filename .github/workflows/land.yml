@@ -319,6 +319,24 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Lane code freeze (advisory)
+        id: lanefreeze
+        if: steps.plan.outputs.skip_gauntlet != 'true'
+        # BRO-6650 (plan v2 S5-T2): a land that changes a file in the opening-night lane code hash inside 48h
+        # before a Broadway/Off-Broadway press night (to +6h after the embargo) changes the arm hash and disarms
+        # the lane until lane-rehearsal-recorded re-passes. Advisory (CLAUDE.md §19): continue-on-error, the script
+        # always exits 0 and prints status=clear|flagged|overridden|unknown. Override: a LANE-FREEZE-BYPASS: <reason,
+        # 15+ chars> line in a commit message; kill switch: repo variable LANE_FREEZE_DISABLED=1. Needs core data
+        # (shows.json), so it sits after "Checkout core data". Blocking is S5-T3, after a clean week.
+        continue-on-error: true
+        env:
+          TIP: ${{ steps.rebase.outputs.tip }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          LANE_FREEZE_DISABLED: ${{ vars.LANE_FREEZE_DISABLED }}
+        run: |
+          [ -f scripts/lane-code-freeze-check.js ] || { echo "freeze check not on this tree yet; skipping"; exit 0; }
+          node scripts/lane-code-freeze-check.js --base "$BASE" --head "$TIP" --github
+
       - name: Generate gitignored manifests
         if: steps.plan.outputs.skip_gauntlet != 'true'
         id: manifests
