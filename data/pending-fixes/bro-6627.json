@@ -1,0 +1,114 @@
+{
+  "issueNumber": "bro-6627",
+  "planId": "3693fee7-a4a6-475f-b772-64cd0e49d8a3",
+  "status": "pending",
+  "createdAt": "2026-10-30T20:43:50.647Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6627: three unrelated regional shows share a byte-identical generic comedy mask stock photo. Null the images and mark noReliableArt; files removed in the same land so the orphan auto-fix cannot re-attach them.",
+    "steps": [
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024: null generic stock mask image shared by 3 shows (BRO-6627)",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024: no reliable art (BRO-6627)",
+      "judys-lifes-work-regional-2024: null generic stock mask image shared by 3 shows (BRO-6627)",
+      "judys-lifes-work-regional-2024: no reliable art (BRO-6627)",
+      "mothers-regional-2024: null generic stock mask image shared by 3 shows (BRO-6627)",
+      "mothers-regional-2024: no reliable art (BRO-6627)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024/poster.webp",
+          "thumbnail": "/images/shows/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024/thumbnail.webp",
+          "hero": "/images/shows/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024: null generic stock mask image shared by 3 shows (BRO-6627)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "held image is a generic comedy/tragedy mask stock photo shared byte-identical by three unrelated shows (BRO-6627)",
+          "key": "for colored girls who have considered suicide/when the rainbow is enuf|noyes cultural art center, evanston, il|2024-07-23"
+        },
+        "description": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024: no reliable art (BRO-6627)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "judys-lifes-work-regional-2024",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/judys-lifes-work-regional-2024/poster.webp",
+          "thumbnail": "/images/shows/judys-lifes-work-regional-2024/thumbnail.webp",
+          "hero": "/images/shows/judys-lifes-work-regional-2024/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "judys-lifes-work-regional-2024: null generic stock mask image shared by 3 shows (BRO-6627)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "judys-lifes-work-regional-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "held image is a generic comedy/tragedy mask stock photo shared byte-identical by three unrelated shows (BRO-6627)",
+          "key": "judy's life's work|definition theatre, chicago, il|2024-02-08"
+        },
+        "description": "judys-lifes-work-regional-2024: no reliable art (BRO-6627)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mothers-regional-2024",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/mothers-regional-2024/poster.webp",
+          "thumbnail": "/images/shows/mothers-regional-2024/thumbnail.webp",
+          "hero": "/images/shows/mothers-regional-2024/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "mothers-regional-2024: null generic stock mask image shared by 3 shows (BRO-6627)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mothers-regional-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-30",
+          "reason": "held image is a generic comedy/tragedy mask stock photo shared byte-identical by three unrelated shows (BRO-6627)",
+          "key": "mothers|filament theatre, chicago, il|2024-02-07"
+        },
+        "description": "mothers-regional-2024: no reliable art (BRO-6627)"
+      }
+    ]
+  }
+}
