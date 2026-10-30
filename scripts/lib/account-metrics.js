@@ -159,7 +159,7 @@ const ALERT_KEYS = {
 
 // Email-code sign-in went live on this day (BRO-6575). Older email accounts
 // are password accounts and never count as unused codes.
-const EMAIL_CODES_LAUNCH_DAY = '2026-10-30';
+const EMAIL_CODES_LAUNCH_MS = Date.parse('2026-10-30T00:00:00Z');
 // GoTrue (mailer_autoconfirm on) stamps last_sign_in_at a few milliseconds
 // after it creates the user for a code request, before anyone types the code
 // (probed on prod 2026-10-30: 27 ms). Typing the code moves it minutes later.
@@ -168,25 +168,27 @@ const UNUSED_CODE_GAP_MS = 10000;
 /** An email address that asked for a code and never typed it in. */
 function isUnusedEmailCode(u) {
   if (!u || u.provider !== 'email' || !u.createdAt) return false;
-  if (String(u.createdAt).slice(0, 10) < EMAIL_CODES_LAUNCH_DAY) return false;
   const c = Date.parse(u.createdAt);
+  if (!Number.isFinite(c) || c < EMAIL_CODES_LAUNCH_MS) return false;
   const s = u.lastSignInAt ? Date.parse(u.lastSignInAt) : NaN;
   return !Number.isFinite(s) || Math.abs(s - c) < UNUSED_CODE_GAP_MS;
 }
 
 /**
  * Email-code sign-in health from the slim users list (BRO-6644): how many new
- * email addresses asked for a code and never used it. Real people only.
+ * email addresses asked for a code and never used it. Counts disposable-inbox
+ * addresses too (kind 'test', e.g. mailinator.com): bots use them. Only the
+ * owner's own accounts are left out (CI accounts never reach slimUsers' output).
  */
 function summarizeEmailCodes(allUsers, now = Date.now()) {
   let requested24h = 0, unfinished24h = 0, unfinished3h = 0, unfinished7d = 0, requested7d = 0, unfinishedTotal = 0;
   for (const u of allUsers || []) {
-    if ((u.kind && u.kind !== 'person') || u.provider !== 'email') continue;
+    if (u.kind === 'owner' || u.provider !== 'email') continue;
     const unfinished = isUnusedEmailCode(u);
     if (unfinished) unfinishedTotal++;
     const c = u.createdAt ? Date.parse(u.createdAt) : NaN;
     if (!Number.isFinite(c)) continue;
-    if (String(u.createdAt).slice(0, 10) < EMAIL_CODES_LAUNCH_DAY) continue;
+    if (!Number.isFinite(c) || c < EMAIL_CODES_LAUNCH_MS) continue;
     if (now - c < DAY) {
       requested24h++;
       if (unfinished) unfinished24h++;
