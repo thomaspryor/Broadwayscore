@@ -39,8 +39,7 @@ function main() {
     }
     // Could not reach the store: a blip must not unlock the lane's show tonight, and must not
     // silence every other show either. The marker names tonight's shows; they wait.
-    const tonight = guard.tonightShowIds();
-    store.writeAtomic(guard.leasesFile(), JSON.stringify({ leases: {}, unknown: true, tonight, at: new Date().toISOString() }) + '\n');
+    const tonight = guard.markUnknown();
     const why = String((lastErr && lastErr.message) || lastErr).slice(0, 160);
     console.log(`::warning::opening-night lease sync failed after 3 tries; tonight's show(s) wait [${tonight.join(', ') || 'none'}], every other show writes (${why})`);
     return 0;

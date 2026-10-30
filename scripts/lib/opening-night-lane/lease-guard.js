@@ -112,12 +112,24 @@ function partitionLeased(showIds, opts = {}) {
 
 /**
  * Writer entry points call this once on the show ids they are about to write (BRO-6648 S1-T1..T5).
- * Returns the ids that may be written and prints one line per held-back show. `label` names the writer.
+ * Returns the ids that may be written and prints one line per held-back show to stderr. `label` names the writer.
  */
 function writableShowIds(showIds, { label = 'writer', ...opts } = {}) {
   const { kept, skipped } = partitionLeased(showIds, opts);
-  for (const { lease: l } of skipped) console.log(`[${label}] skip ${describe(l)}`);
+  // stderr: callers such as watch-aggregator-urls --list-active print show ids on stdout for a workflow to read
+  for (const { lease: l } of skipped) console.error(`[${label}] skip ${describe(l)}`);
   return kept;
+}
+
+/** Write the unknown marker (store unreachable): writers then hold only tonight's shows. */
+function markUnknown({ file, now, env = process.env } = {}) {
+  const f = file || leasesFile(env);
+  const tonight = tonightShowIds({ now, file: showsFile(env) });
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  const tmp = `${f}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify({ leases: {}, unknown: true, tonight, at: new Date(now === undefined ? Date.now() : now).toISOString() }) + '\n');
+  fs.renameSync(tmp, f);
+  return tonight;
 }
 
 /** PUBLISH view: every show id with a live lease (all nights). Unknown names none (old path publishes). Unreadable file throws. */
@@ -164,5 +176,5 @@ const describe = (l) => `${l.show} leased to ${l.holder}${l.expiresAt ? ` until 
 
 module.exports = {
   WRITER_WINDOW_BEFORE_MIN, WRITER_WINDOW_AFTER_MIN, readUnknownMarker, DEFAULT_LEASES_FILE, DEFAULT_SHOWS_FILE, leasesFile, showsFile, tonightShowIds, readView,
-  writeBlockedShowIds, leaseSkipReason, partitionLeased, writableShowIds, leasedShowIds, revertLeasedChanges, describe,
+  writeBlockedShowIds, leaseSkipReason, partitionLeased, writableShowIds, markUnknown, leasedShowIds, revertLeasedChanges, describe,
 };

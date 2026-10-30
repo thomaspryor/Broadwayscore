@@ -83,13 +83,38 @@ test('scrape-theatre-reviews: a held show keeps its rows as refused, so coverage
 });
 
 test('watch-aggregator-urls loop: lease state is re-fetched at most every 5 minutes, and a failed fetch is survivable', () => {
-  let calls = 0;
+  let calls = 0, marked = 0;
   const run = () => { calls++; };
+  const markUnknown = () => { marked++; };
   const t0 = Date.now() + 10 * 60000;
-  assert.equal(refreshLeases({ now: t0, run }), true);
-  assert.equal(refreshLeases({ now: t0 + 60000, run }), false);
-  assert.equal(refreshLeases({ now: t0 + 6 * 60000, run: () => { calls++; throw new Error('git down'); } }), true);
+  assert.equal(refreshLeases({ now: t0, run, markUnknown }), true);
+  assert.equal(refreshLeases({ now: t0 + 60000, run, markUnknown }), false);
+  assert.equal(marked, 0);
+  assert.equal(refreshLeases({ now: t0 + 6 * 60000, run: () => { calls++; throw new Error('killed'); }, markUnknown }), true);
   assert.equal(calls, 2);
+  assert.equal(marked, 1, 'a failed re-sync falls back to the unknown marker, not a stale known state');
+});
+
+test('markUnknown writes the marker the guard reads: tonight waits, another show writes', () => {
+  const f = path.join(dir, 'leases-marked.json');
+  const tonight = guard.markUnknown({ file: f, now: NOW, env: { OPENING_NIGHT_SHOWS_FILE: showsFile } });
+  assert.deepEqual(tonight, [TONIGHT.id]);
+  assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).unknown, true);
+  assert.deepEqual(guard.writableShowIds([TONIGHT.id, LATER.id], { file: f, now: NOW, env: { OPENING_NIGHT_SHOWS_FILE: showsFile } }), [LATER.id]);
+});
+
+test('skip lines go to stderr: --list-active stdout (read by the orchestrator) stays empty when every show is held', () => {
+  const out = [];
+  const orig = console.log;
+  console.log = (...a) => out.push(a.join(' '));
+  try { assert.deepEqual(withLeases('leased', (opts) => writableOpenings([TONIGHT], opts)), []); } finally { console.log = orig; }
+  assert.deepEqual(out, []);
+});
+
+test('sync action: a crashed sync writes the unknown marker instead of leaving no file', () => {
+  const a = fs.readFileSync(path.join(ROOT, '.github/actions/opening-night-lease-sync/action.yml'), 'utf8');
+  assert.match(a, /if ! node "\$GITHUB_WORKSPACE\/scripts\/opening-night-lease\.js" sync; then/);
+  assert.match(a, /markUnknown\(\)/);
 });
 
 // Entry points whose filter runs inside main() (or a TS module): the call to the shared guard is checked in source.
@@ -97,13 +122,16 @@ const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 test('source: the remaining writer entry points filter through the shared guard before writing', () => {
   const idx = read('scripts/llm-scoring/index.ts');
   assert.match(idx, /require\('\.\.\/lib\/opening-night-lane\/lease-guard'\)/);
-  assert.match(idx, /const allFiles = dropLeasedFiles\(getAllReviewFiles\(/, 'llm-scoring drops leased shows from the batch');
+  assert.match(idx, /const allFiles = dropLeasedFiles\(everyFile\)/, 'llm-scoring drops leased shows from the batch');
+  assert.match(idx, /for \(const f of everyFile\)/, 'global counts still cover every file');
   assert.match(read('scripts/recollect-for-scores.js'), /const showDirs = writableShowIds\(listShowDirs\(REVIEW_DIR\)/);
   const disc = read('scripts/discover-opening-night-reviews.js');
   assert.ok(disc.indexOf("writableShowIds([showId], { label: 'discover' })") > disc.indexOf('const showId = show.id || show.slug;'), 'discover returns before any work on a held show');
   const lbo = read('scripts/scrape-london-box-office-roundups.js');
   assert.ok(lbo.indexOf("label: 'lbo'") > 0 && lbo.indexOf("label: 'lbo'") < lbo.indexOf('// Process each matched roundup'), 'LBO filters both lists before processing');
-  assert.match(read('scripts/collect-review-texts.js'), /const kept = dropLeasedReviews\(reviews\)/);
+  const col = read('scripts/collect-review-texts.js');
+  const dropAt = col.indexOf('const kept = dropLeasedReviews(reviews)');
+  assert.ok(dropAt > 0 && dropAt < col.indexOf('promoteAgedStubs(reviews)', col.indexOf('reviews.sort((a, b) => compareReviewPriority')), 'collect drops held reviews before the reserved slices and caps');
   const watch = read('scripts/watch-aggregator-urls.js');
   assert.match(watch, /for \(const show of writableOpenings\(openings\)\)/, 'each watcher pass re-reads the guard');
   assert.match(watch, /writableOpenings\(openings\)\.map\(s => s\.id\)\.join/, '--list-active (the orchestrator dispatch list) leaves held shows out');

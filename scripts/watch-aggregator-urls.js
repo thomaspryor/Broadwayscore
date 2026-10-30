@@ -330,10 +330,14 @@ function writableOpenings(openings, opts) {
 // Loop mode runs for hours: re-fetch the shared lease state (at most every 5 min) so a lease the lane
 // claims after the job started is seen. A failed sync leaves the unknown marker (tonight's shows wait).
 let leasesSyncedAt = Date.now(); // the workflow step synced just before this job started
-function refreshLeases({ now = Date.now(), run = () => require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'opening-night-lease.js'), 'sync'], { stdio: 'inherit', timeout: 90000 }) } = {}) {
+function refreshLeases({ now = Date.now(), markUnknown = () => leaseGuard.markUnknown(), run = () => require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'opening-night-lease.js'), 'sync'], { stdio: 'inherit', timeout: 90000 }) } = {}) {
   if (now - leasesSyncedAt < 5 * 60000) return false;
   leasesSyncedAt = now;
-  try { run(); } catch (e) { console.log(`[watch] lease re-sync failed (${String(e.message || e).slice(0, 120)}); using the lease file on disk`); }
+  try { run(); } catch (e) {
+    // sync writes the unknown marker itself when it gives up; a killed or crashed child may not have.
+    console.log(`[watch] lease re-sync failed (${String(e.message || e).slice(0, 120)}); tonight's show(s) wait until the next sync`);
+    try { markUnknown(); } catch (e2) { console.log(`[watch] could not write the unknown lease marker: ${e2.message}`); }
+  }
   return true;
 }
 

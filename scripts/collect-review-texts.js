@@ -6748,6 +6748,13 @@ function findReviewsToProcess() {
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
   reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
+  // BRO-6648 S1-T2: the opening-night lane writes the shows it holds. Drop them before the reserved
+  // slices and per-run caps below, so a held review never takes a slot.
+  {
+    const kept = dropLeasedReviews(reviews);
+    reviews.length = 0;
+    reviews.push(...kept);
+  }
   // BRO-6123: closed-show stubs with a URL and zero attempts ranked behind the
   // whole open-show backlog and never reached the cut. Reserve a capped slice.
   // Applied BEFORE the salvage and needsRefetch promotions so those stay ahead.
@@ -6792,12 +6799,6 @@ function findReviewsToProcess() {
     reviews.push(...kept);
   }
 
-  // BRO-6648 S1-T2: the opening-night lane writes the shows it holds; drop them before the max limit.
-  {
-    const kept = dropLeasedReviews(reviews);
-    reviews.length = 0;
-    reviews.push(...kept);
-  }
 
   // Log sort stats
   const neverAttempted = reviews.filter(r => r.fetchAttempts === 0).length;

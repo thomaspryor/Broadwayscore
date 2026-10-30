@@ -1088,9 +1088,11 @@ async function main(): Promise<void> {
   // Support comma-separated show IDs: --show=foo,bar,baz
   const showIds = options.showId?.includes(',') ? options.showId.split(',').map(s => s.trim()).filter(Boolean) : undefined;
   // BRO-6648 S1-T3: shows the opening-night lane holds are the lane's to score; drop them from this run.
-  const allFiles = dropLeasedFiles(getAllReviewFiles(showIds ? undefined : options.showId, showIds));
+  const everyFile = getAllReviewFiles(showIds ? undefined : options.showId, showIds);
+  const allFiles = dropLeasedFiles(everyFile);
 
   if (allFiles.length === 0) {
+    if (everyFile.length) { console.log('Every requested show is held by the opening-night lane; nothing to score this run.'); return; }
     console.log('No review files found.');
     if (options.showId) {
       console.log(`Check if show directory exists: ${path.join(REVIEW_TEXTS_DIR, options.showId)}`);
@@ -2554,7 +2556,7 @@ async function main(): Promise<void> {
   // Compute global counts across ALL review files (not just this batch)
   // This is the authoritative count that gets committed to the public repo.
   const globalCounts = { totalReviewFiles: 0, totalScored: 0, totalUnscored: 0, totalSkipped: 0 };
-  for (const f of allFiles) {
+  for (const f of everyFile) { // every file, including shows the lane holds this run
     globalCounts.totalReviewFiles++;
     const d = f.data as any;
     if (d.wrongShow || d.wrongProduction || d.contentTier === 'invalid') {
