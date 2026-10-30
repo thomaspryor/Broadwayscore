@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-p-e",
   "planId": "57ef1143-4467-4492-a396-ae96b499d53e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T20:55:20.929Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,19 @@
         "description": "BRO-6541: add cock-53two-regional-2024 (skipped-venue Guardian review)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T00:57:55.075Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added doubt-ustinov-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cock-53two-regional-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
