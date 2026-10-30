@@ -112,7 +112,9 @@ jobs:
     # 125->145 (BRO-5426): fast_path rebuild 5->15 and readiness rebuild 5->10
     # took other steps to 6660s; (6660+600)/0.85 = 8541s, so 145min = 8700s
     # (~17% margin). Real runs still finish in ~50-70 min.
-    timeout-minutes: 145
+    # 145->150 (BRO-6620): the lane-only gate adds a lease re-sync (2 min), a
+    # variable read (1 min) and the gate (2 min); (7260+240+60)/0.85 = 8894s.
+    timeout-minutes: 150
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -1035,6 +1037,7 @@ jobs:
       - name: Read lane-only variables (BRO-6620)
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         continue-on-error: true
+        timeout-minutes: 1
         uses: ./.github/actions/read-lane-only-vars
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -1046,7 +1049,8 @@ jobs:
         timeout-minutes: 2
         env:
           ACTION_SHOWS: ${{ steps.poll.outputs.action_shows }}
-        run: node scripts/lane-only-markets.js gate "--shows=${ACTION_SHOWS}"
+        # --changed-dir: shows the no-byline drain wrote but the poll loop skipped also need their rebuild.
+        run: node scripts/lane-only-markets.js gate "--shows=${ACTION_SHOWS}" --changed-dir=data/review-texts
 
       # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
       # files pushed by other jobs since this job's checkout (never files

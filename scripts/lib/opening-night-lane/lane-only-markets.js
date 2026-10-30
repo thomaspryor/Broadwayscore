@@ -70,7 +70,7 @@ const markerKey = (show, night) => `${show}__${night}`;
  * Decide for one show. Pure.
  * @param {{onlyMarkets:{ok:boolean,value?:string}, standdown:{ok:boolean,value?:string}, show:object,
  *          leaseState:object|null, markers:Object<string,{holder:string}>|null, now?:Date|number|string}} input
- *   leaseState null or `{unknown:true}` = unknown. markers null = unreadable.
+ *   leaseState null or `{unknown:true}` = unknown. markers null = unreadable; a marker `{unreadable:true}` = ON.
  * @returns {{standDown:boolean, reason:string, night?:string, holder?:string}}
  */
 function oldPathStandsDown({ onlyMarkets, standdown, show, leaseState, markers, now }) {
@@ -85,19 +85,23 @@ function oldPathStandsDown({ onlyMarkets, standdown, show, leaseState, markers, 
   if (!inPressNightWindow(show, l.night, nowMs)) return on(`outside the ${l.night} press-night window`);
   if (markers === null || markers === undefined) return on('stood-down markers unreadable');
   const m = markers[markerKey(show.id, l.night)];
+  if (m && m.unreadable) return on('stood-down marker unreadable');
   if (m && m.holder === l.holder) return on(`lane ${l.holder} stood down (exit 3)`);
   if (!standdown || !standdown.ok) return on('LANE_STANDDOWN unreadable');
   if (standsDown(standdown.value, show)) return on('LANE_STANDDOWN covers the show');
   return { standDown: true, reason: `lane ${l.holder} holds ${show.id} ${l.night}`, night: l.night, holder: l.holder };
 }
 
-/** Read every marker file. Missing dir = {} (no markers); any unreadable file = null, which keeps the old path on. */
+/**
+ * Read every marker file. Missing dir = {} (no markers); an unreadable dir = null and an unreadable file =
+ * {unreadable:true} under its key, both of which keep the old path on (the dir for every show, a file for its show).
+ */
 function readMarkers(dir = DEFAULT_MARKERS_DIR) {
   let names;
   try { names = fs.readdirSync(dir); } catch (e) { return e && e.code === 'ENOENT' ? {} : null; }
   const out = {};
   for (const n of names.filter((x) => x.endsWith('.json'))) {
-    try { out[n.slice(0, -5)] = JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8')); } catch { return null; }
+    try { out[n.slice(0, -5)] = JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8')); } catch { out[n.slice(0, -5)] = { unreadable: true }; }
   }
   return out;
 }
@@ -130,6 +134,24 @@ function pollerSuppress(showIds, decide) {
 }
 
 /**
+ * Show ids with uncommitted changes, from `git status --porcelain` run inside data/review-texts (paths are
+ * `<show>/<file>`). The poller gate adds these to its action shows: a show whose files changed this run (the
+ * no-byline drain writes shows the poll loop later skips) must still get its rebuild unless it too stands down. Pure.
+ */
+function changedShowIds(porcelain) {
+  const ids = new Set();
+  for (const line of String(porcelain || '').split('\n')) {
+    if (line.length < 4) continue;
+    let p = line.slice(3);
+    if (p.includes(' -> ')) p = p.split(' -> ').pop();
+    p = p.replace(/^"|"$/g, '');
+    const top = p.split('/')[0];
+    if (top && top !== '.' && !top.startsWith('.')) ids.add(top);
+  }
+  return [...ids];
+}
+
+/**
  * Variable inputs from the environment a workflow step sets after read-actions-variable.sh:
  * LANE_ONLY_MARKETS + LANE_ONLY_MARKETS_READ=ok, LANE_STANDDOWN + LANE_STANDDOWN_READ=ok. Anything but "ok" = unread.
  */
@@ -156,5 +178,5 @@ module.exports = {
   envInputs, createDecider,
   VARIABLE, WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN, DEFAULT_MARKERS_DIR,
   parseOnlyMarkets, liveLeaseFor, embargoForNight, inPressNightWindow, markerKey,
-  oldPathStandsDown, readMarkers, writeMarker, readLeaseState, pollerSuppress,
+  oldPathStandsDown, readMarkers, writeMarker, readLeaseState, pollerSuppress, changedShowIds,
 };

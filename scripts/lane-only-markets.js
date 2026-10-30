@@ -3,7 +3,9 @@
 /**
  * LANE_ONLY_MARKETS CLI (BRO-6620). Decision rules: scripts/lib/opening-night-lane/lane-only-markets.js.
  *
- *   gate --shows=a,b       poller: writes suppress=true|false to GITHUB_OUTPUT (true only when every show stands down)
+ *   gate --shows=a,b [--changed-dir=data/review-texts]
+ *                          poller: writes suppress=true|false to GITHUB_OUTPUT (true only when every show stands down).
+ *                          --changed-dir adds every show with uncommitted files there; an unreadable dir = suppress=false.
  *   decide --show=ID       print one decision as JSON
  *   mark --show= --night= --holder= [--run-id=]   lane-live: record the lane's exit 3
  *
@@ -47,6 +49,17 @@ function main() {
     if (decider.unknownTokens.length) console.log(`::warning::${lom.VARIABLE} has entries that are not a market or category (${decider.unknownTokens.join(', ')}); they match nothing, so the old path stays on for them`);
     if (cmd === 'decide') { console.log(JSON.stringify({ show: arg('show'), ...decider.decide(arg('show')) })); return 0; }
     const ids = String(arg('shows') || '').split(',').map((s) => s.trim()).filter(Boolean);
+    if (arg('changed-dir')) {
+      let porcelain;
+      try {
+        porcelain = require('child_process').execFileSync('git', ['-C', arg('changed-dir'), 'status', '--porcelain', '--untracked-files=all', '--', '.'], { encoding: 'utf8', timeout: 30000, stdio: ['ignore', 'pipe', 'pipe'] });
+      } catch (e) {
+        console.log(`::warning::lane-only markets: cannot list changed shows in ${arg('changed-dir')} (${String(e.message).slice(0, 120)}); old path stays on`);
+        output('suppress', 'false');
+        return 0;
+      }
+      for (const id of lom.changedShowIds(porcelain)) if (!ids.includes(id)) ids.push(id);
+    }
     const r = lom.pollerSuppress(ids, decider.decide);
     for (const d of r.decisions) console.log(`lane-only markets: ${d.id}: ${d.standDown ? 'old path stands down' : 'old path on'} (${d.reason})`);
     output('suppress', r.suppress ? 'true' : 'false');

@@ -34,6 +34,13 @@ on:
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
       - 'scripts/read-theater-newsletters.js'
+      # BRO-6620: tests/unit/lane-only-markets.test.mjs runs these and pins the workflow wiring.
+      - 'scripts/lane-only-markets.js'
+      - 'scripts/express-retry-queue.js'
+      - '.github/workflows/opening-night-poller.yml'
+      - '.github/workflows/opening-night-express-retry-check.yml'
+      - '.github/workflows/opening-night-lane-live.yml'
+      - '.github/actions/read-lane-only-vars/**'
       # scripts/tests/** — same glob fix for scripts/tests/ (BRO-5309). A new
       # scripts/tests/*.test.mjs with no literal entry below failed
       # scripts/lib/test-yml-manifest-paths.test.mjs at land time (land run
