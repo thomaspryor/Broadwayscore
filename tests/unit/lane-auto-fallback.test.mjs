@@ -332,3 +332,148 @@ test('orchestrator starter: gated on LANE_ONLY_MARKETS, dispatches the night run
   assert.equal(af.nightRunTitle('s', 'n'), 'Opening-night lane night s n');
   assert.match(read('.github/workflows/opening-night-lane-live.yml'), /run-name: 'Opening-night lane \$\{\{ inputs\.mode \}\} \$\{\{ inputs\.show \}\} \$\{\{ inputs\.night \}\}'/);
 });
+
+// ---- BRO-6669: stuck-but-alive (the lane holds a live lease but publishes nothing) ----
+
+const at = (s) => Date.parse(s);
+/** Fold observations [{at, live, census}] into a progress record, the way scripts/lane-watchdog.js does each tick. */
+const observe = (obs, start = {}) => obs.reduce((p, o) => af.updateProgress(p, { liveCount: o.live, census: o.census }, o.at), start);
+/** Ticks every 5 min from `from` to `to` (inclusive), each with live count `live(t)` and census `census(t)`. */
+const ticks = (from, to, live, census) => {
+  const out = [];
+  for (let t = at(from); t <= at(to); t += 5 * 60000) out.push({ at: new Date(t).toISOString(), live: live(t), census: census(t) });
+  return out;
+};
+const CENSUS5 = { count: 5, missing: ['nytimes', 'vulture', 'variety'] };
+const fromEmbargo = (t) => (t >= at('2026-11-13T03:00:00Z') ? CENSUS5 : null);
+/** A lease the lane is still heartbeating: its last heartbeat 2 minutes before `now`. */
+const liveLease = (now, holder = 'gha-1') => ({
+  leases: { [KEY]: { holder, acquiredAt: iso('2026-11-13T02:30:00Z'), heartbeatAt: new Date(at(now) - 2 * 60000).toISOString(),
+    expiresAt: new Date(at(now) + 28 * 60000).toISOString() } },
+});
+
+test('stuck: a live count still rising is never stuck, even below the census long after the release', () => {
+  // One more review goes live every 20 minutes; checked at 04:45 (embargo + 105 min), last rise 04:30.
+  const p = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T04:45:00Z', (t) => Math.floor((t - at('2026-11-13T02:30:00Z')) / (20 * 60000)), fromEmbargo));
+  const v = af.stuckVerdict(p, { embargoMs: at('2026-11-13T03:00:00Z'), now: '2026-11-13T04:45:00Z' });
+  assert.equal(v.stuck, false);
+  assert.match(v.reason, /rose 15 min ago/);
+  const d = tick({ now: '2026-11-13T04:45:00Z', leaseState: liveLease('2026-11-13T04:45:00Z'), progress: p });
+  assert.equal(d.action, 'wait');
+});
+
+test('stuck: flat count below the census at release + 45 min = release that lease, then exactly one dispatch and the page', () => {
+  const now = '2026-11-13T03:45:00Z';
+  const p = observe(ticks('2026-11-13T02:30:00Z', now, () => 2, fromEmbargo));
+  // One minute earlier is still inside the 45-minute grace.
+  assert.equal(af.stuckVerdict(observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T03:44:00Z', () => 2, fromEmbargo)),
+    { embargoMs: at('2026-11-13T03:00:00Z'), now: '2026-11-13T03:44:00Z' }).stuck, false);
+  const d = tick({ now, leaseState: liveLease(now), progress: p });
+  assert.equal(d.action, 'fallback');
+  assert.equal(d.releaseStuck, true);
+  assert.equal(d.holder, 'gha-1');
+  assert.equal(d.kind, 'stuck-but-alive');
+  assert.equal(d.digest, true);
+  assert.match(d.reason, /^stuck-but-alive: lane gha-1 holds the lease but the live site shows 2 reviews, missing 3 of the census's 5/);
+  const ports = fakePorts({ state: liveLease(now) });
+  const r = af.runWatchdogTick({ show: SHOW, night: NIGHT, now, holder: 'watchdog:1', progress: p }, ports);
+  assert.deepEqual(ports.calls, ['release', 'claim', 'dispatch', 'mark', 'page']);
+  assert.equal(r.dispatched, true);
+  assert.equal(r.done, true);
+  assert.equal(ports.box.state.leases[KEY], undefined, 'the stuck lease is gone, so the old path is no longer stood down');
+});
+
+test('stuck: re-check after the stuck fallback makes no second dispatch (this chain or another watchdog)', () => {
+  const now = '2026-11-13T03:45:00Z';
+  const p = observe(ticks('2026-11-13T02:30:00Z', now, () => 2, fromEmbargo));
+  const claims = { box: { state: { leases: {} } } };
+  const ports = fakePorts({ state: liveLease(now), claims });
+  assert.equal(af.runWatchdogTick({ show: SHOW, night: NIGHT, now, holder: 'watchdog:1', progress: p }, ports).dispatched, true);
+  for (const later of ['2026-11-13T03:50:00Z', '2026-11-13T05:00:00Z']) {
+    assert.equal(af.runWatchdogTick({ show: SHOW, night: NIGHT, now: later, fallbackDone: true, progress: p }, ports).action, 'stop');
+  }
+  // A second watchdog for the night that still sees the stuck lease: its release is a no-op, its claim is refused.
+  const other = fakePorts({ state: liveLease('2026-11-13T03:50:00Z'), claims });
+  const p2 = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T03:50:00Z', () => 2, fromEmbargo));
+  const r2 = af.runWatchdogTick({ show: SHOW, night: NIGHT, now: '2026-11-13T03:50:00Z', holder: 'watchdog:2', progress: p2 }, other);
+  assert.equal(r2.action, 'stop');
+  assert.deepEqual([...ports.calls, ...other.calls].filter((c) => c === 'dispatch'), ['dispatch']);
+});
+
+test('stuck: no census = never stuck, however flat the live count', () => {
+  const now = '2026-11-13T06:00:00Z';
+  const p = observe(ticks('2026-11-13T02:30:00Z', now, () => 2, () => null));
+  assert.deepEqual(af.stuckVerdict(p, { embargoMs: at('2026-11-13T03:00:00Z'), now }), { stuck: false, reason: 'no census yet' });
+  const empty = observe(ticks('2026-11-13T02:30:00Z', now, () => 2, () => ({ count: 0, missing: [] })));
+  assert.equal(af.stuckVerdict(empty, { embargoMs: at('2026-11-13T03:00:00Z'), now }).stuck, false);
+  const ports = fakePorts({ state: liveLease(now) });
+  assert.equal(af.runWatchdogTick({ show: SHOW, night: NIGHT, now, progress: p }, ports).action, 'wait');
+  assert.deepEqual(ports.calls, []);
+});
+
+test('stuck: a lease taken over by another holder before the release is left untouched and nothing dispatches', () => {
+  const now = '2026-11-13T03:45:00Z';
+  const p = observe(ticks('2026-11-13T02:30:00Z', now, () => 2, fromEmbargo));
+  const ports = fakePorts({ state: liveLease(now) });
+  // Between the decision and the compare-and-swap, another lane run takes the night.
+  const release = ports.release;
+  ports.release = (fn) => { ports.box.state = liveLease(now, 'gha-2'); return release(fn); };
+  const r = af.runWatchdogTick({ show: SHOW, night: NIGHT, now, holder: 'watchdog:1', progress: p }, ports);
+  assert.equal(r.action, 'wait');
+  assert.deepEqual(ports.calls, ['release']);
+  assert.equal(ports.box.state.leases[KEY].holder, 'gha-2', 'the other holder keeps its lease');
+  // The pure transition, directly: only the stuck holder's lease is released; none at all is ok.
+  const other = af.releaseStuckLease(liveLease(now, 'gha-2'), { show: SHOW.id, night: NIGHT, holder: 'gha-1' });
+  assert.deepEqual(other, { ok: false, reason: 'other-holder', holder: 'gha-2' });
+  assert.equal(af.releaseStuckLease({ leases: {} }, { show: SHOW.id, night: NIGHT, holder: 'gha-1' }).released, false);
+});
+
+test('stuck: unknown or stale readings, a complete live site, an owner hold and a late release are not stuck', () => {
+  const embargoMs = at('2026-11-13T03:00:00Z');
+  // The live site has not been read for 15 minutes (every fetch failed since 04:00).
+  const stale = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T04:15:00Z', (t) => (t <= at('2026-11-13T04:00:00Z') ? 2 : null), fromEmbargo));
+  assert.match(af.stuckVerdict(stale, { embargoMs, now: '2026-11-13T04:15:00Z' }).reason, /live count unknown/);
+  // Everything the census lists is live.
+  const full = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T04:15:00Z', () => 5, (t) => (t >= embargoMs ? { count: 5, missing: [] } : null)));
+  assert.equal(af.stuckVerdict(full, { embargoMs, now: '2026-11-13T04:15:00Z' }).stuck, false);
+  // The reviews came out late: the census first listed one at 04:00, so the clock starts there, not at the embargo.
+  const late = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T04:40:00Z', () => 0, (t) => (t >= at('2026-11-13T04:00:00Z') ? CENSUS5 : null)));
+  assert.equal(late.releaseSeenAt, iso('2026-11-13T04:00:00Z'));
+  assert.equal(af.stuckVerdict(late, { embargoMs, now: '2026-11-13T04:40:00Z' }).stuck, false);
+  assert.equal(af.stuckVerdict(observe(ticks('2026-11-13T04:40:00Z', '2026-11-13T04:45:00Z', () => 0, () => CENSUS5), late),
+    { embargoMs, now: '2026-11-13T04:45:00Z' }).stuck, true);
+  // LANE_STANDDOWN covers the show: the lane's own stand-down path hands the night back, not this check.
+  const p = observe(ticks('2026-11-13T02:30:00Z', '2026-11-13T03:45:00Z', () => 2, fromEmbargo));
+  const d = tick({ now: '2026-11-13T03:45:00Z', leaseState: liveLease('2026-11-13T03:45:00Z'), progress: p, standdown: { ok: true, value: 'broadway' } });
+  assert.equal(d.action, 'wait');
+});
+
+test('stuck: updateProgress keeps the last reading on a failed fetch and only a higher count is a rise', () => {
+  let p = af.updateProgress(null, { liveCount: 3, census: null }, '2026-11-13T03:00:00Z');
+  assert.deepEqual(p, { liveCount: 3, liveSeenAt: iso('2026-11-13T03:00:00Z'), liveRiseAt: iso('2026-11-13T03:00:00Z') });
+  p = af.updateProgress(p, { liveCount: null, census: null }, '2026-11-13T03:05:00Z');
+  assert.equal(p.liveSeenAt, iso('2026-11-13T03:00:00Z'));
+  p = af.updateProgress(p, { liveCount: 2, census: null }, '2026-11-13T03:10:00Z');
+  assert.equal(p.liveRiseAt, iso('2026-11-13T03:00:00Z'), 'a drop is not progress');
+  p = af.updateProgress(p, { liveCount: 4, census: { count: 6, missing: ['a', 'b'] } }, '2026-11-13T03:15:00Z');
+  assert.equal(p.liveRiseAt, iso('2026-11-13T03:15:00Z'));
+  assert.deepEqual(p.census, { count: 6, missing: ['a', 'b'], at: iso('2026-11-13T03:15:00Z') });
+  // Survives the JSON round trip the watchdog chain makes between hops.
+  assert.deepEqual(JSON.parse(JSON.stringify(p)), p);
+});
+
+test('stuck: the census never comes from the lane, and the watchdog workflow carries progress between hops', () => {
+  const cli = read('scripts/lane-watchdog.js');
+  assert.match(cli, /require\('\.\/lib\/press-night-census'\)/);
+  assert.match(cli, /CI_UNFETCHABLE_OUTLETS/);
+  assert.match(cli, /censusExclusions/);
+  // The census lives outside the lane folder, so it is not part of the lane code hash.
+  assert.ok(!/press-night-census|review-census|scraper/.test(read('scripts/lib/opening-night-lane/auto-fallback.js').replace(/^ \*.*$/gm, '')));
+  assert.match(read('scripts/press-night-record.js'), /require\('\.\/lib\/press-night-census'\)/);
+  const y = read('.github/workflows/opening-night-lane-watchdog.yml');
+  assert.match(y, /\n      progress:\n/);
+  assert.match(y, /-f progress=/);
+  assert.match(y, /PROGRESS: \$\{\{ steps\.wd\.outputs\.progress \}\}/);
+  assert.match(y, /uses: \.\/\.github\/actions\/checkout-aggregator-archive/);
+  assert.match(y, /uses: \.\/\.github\/actions\/checkout-review-texts/);
+});

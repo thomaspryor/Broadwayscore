@@ -197,35 +197,11 @@ function stampPublisher(rec, show, label) {
 }
 
 async function buildCensus(rec, show) {
-  const { buildCensusFromArchives, unionCensus, parseBwwRoundup } = require('./lib/review-census');
-  const market = rec.market || 'broadway';
-  const archive = buildCensusFromArchives(rec.showId, { market, show: show || undefined });
-  const nyc = ['broadway', 'off-broadway', 'nyc'].includes(market);
-  if (!nyc || has('no-fetch') || archive.sourcesPresent.includes('bww-roundup') || !show) return { census: archive, note: 'archive only' };
-  let url = arg('bww-url') || (rec.laneShadow && rec.laneShadow.bwwRoundupUrl) || null;
-  try {
-    if (!url) {
-      const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
-      const found = await discoverBwwRoundupUrl(show);
-      url = found && found.url;
-    }
-    if (!url) return { census: archive, note: 'no BWW roundup found' };
-    const { fetchPage } = require('./lib/scraper');
-    const page = await fetchPage(url);
-    const html = page && page.content;
-    if (!html) return { census: archive, note: `BWW roundup fetch empty: ${url}` };
-    const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
-    const v = verifyAggregatorUrl({ url, html, show, openingDate: show.openingDate });
-    if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') return { census: archive, note: `BWW roundup rejected (${v.rejectReason}): ${url}` };
-    const rows = parseBwwRoundup(html, rec.showId);
-    if (!rows.length) return { census: archive, note: `BWW roundup parsed 0 reviews: ${url}` };
-    const merged = unionCensus([{ source: 'archive', reviews: archive.entries }, { source: 'bww-roundup-live', reviews: rows }]);
-    merged.sourcesPresent = [...archive.sourcesPresent, 'bww-roundup-live'];
-    merged.bwwRoundupUrl = url;
-    return { census: merged, note: `archive + live BWW roundup (${rows.length} rows): ${url}` };
-  } catch (e) {
-    return { census: archive, note: `BWW roundup fetch failed: ${String(e.message || e).slice(0, 160)}` };
-  }
+  const { buildPressNightCensus } = require('./lib/press-night-census');
+  return buildPressNightCensus({
+    showId: rec.showId, market: rec.market || 'broadway', show, noFetch: has('no-fetch'),
+    bwwUrl: arg('bww-url') || (rec.laneShadow && rec.laneShadow.bwwRoundupUrl) || null,
+  });
 }
 
 function hasCoverage(ref) { return !!(ref && ref.coverage != null); }

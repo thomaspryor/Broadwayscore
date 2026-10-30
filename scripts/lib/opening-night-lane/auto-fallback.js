@@ -16,6 +16,13 @@
  *             been dead for the lease TTL it releases the dead lease FIRST (releaseDeadLease, a compare-and-swap that
  *             refuses a live lease), then dispatches the old path (opening-night-orchestrator.yml for the show) once,
  *             then stops. Paging per BRO-4603: a digest row and a red run, never a phone page.
+ *   Stuck     BRO-6669: a lane that keeps its lease alive but publishes nothing. From 45 min after the release (the
+ *             embargo, or the first time the census lists any review, whichever the watchdog saw), the night is stuck
+ *             when the lane holds a live lease, the live site lacks reviews the census lists, and the live count has
+ *             not risen for 30 min (stuckVerdict). The watchdog then releases that holder's lease (releaseStuckLease)
+ *             and falls back exactly like a dead lane: same claim, one dispatch, same digest page. The census comes
+ *             from the aggregators (scripts/lib/press-night-census.js), never from the lane's own ledger; no census
+ *             yet, or a live count still rising, is never stuck.
  *
  * Pure decision functions plus runWatchdogTick with injected ports; scripts/lane-auto-fallback.js (starter, night-wait) and scripts/lane-watchdog.js are the CLIs.
  */
@@ -30,6 +37,9 @@ const START_BEFORE_MIN = 20 * 60;   // starter window opens 20h before the embar
 const START_AFTER_MIN = 60;         // and closes 1h after it; later than that the old path keeps the night
 const WAIT_JOB_BUDGET_MIN = 330;    // longest sleep in one night-wait / watchdog job (job cap 350, GitHub 360)
 const TICK_MIN = 5;
+const STUCK_AFTER_RELEASE_MIN = 45; // BRO-6669: no stuck verdict before release + 45 min
+const STUCK_FLAT_MIN = 30;          // and only after the live count has been flat this long
+const OBSERVATION_FRESH_MIN = 10;   // a live/census reading older than this is not evidence
 
 const nightRunTitle = (show, night) => `Opening-night lane night ${show} ${night}`;
 const watchdogRunTitle = (show, night) => `Opening-night lane watchdog ${show} ${night}`;
@@ -107,14 +117,17 @@ function planNightWait({ show, night, now }) {
  *   sinceMs: when the first watchdog hop started (a run that never appears is judged from then).
  *   leaseSeen: this watchdog (any hop) saw a live lease for the night. A lane run that ended green without ever
  *   holding one never ran the lane (a sleep-chain hop, a late start, a hold-check refusal), so it is not a stop.
- * @returns {{action:'wait'|'stop'|'fallback', reason:string, release?:boolean, digest?:boolean}}
- *   fallback: release the dead lease when `release`, then dispatch the old path once; `digest` = page (digest row + red run).
+ *   progress: the watchdog's own observations of the live site and the census (updateProgress), for the stuck check.
+ * @returns {{action:'wait'|'stop'|'fallback', reason:string, release?:boolean, digest?:boolean, releaseStuck?:boolean,
+ *            holder?:string, kind?:string}}
+ *   fallback: release the dead lease when `release` (or `holder`'s live lease when `releaseStuck`), then dispatch the
+ *   old path once; `digest` = page (digest row + red run).
  */
-function decideWatchdog({ show, night, now, leaseState, laneRun, sinceMs, fallbackDone, leaseSeen, onlyMarkets, standdown }) {
+function decideWatchdog({ show, night, now, leaseState, laneRun, sinceMs, fallbackDone, leaseSeen, onlyMarkets, standdown, progress }) {
   const nowMs = toMs(now);
   const wait = (reason) => ({ action: 'wait', reason });
   const stop = (reason) => ({ action: 'stop', reason });
-  const fallback = (reason, { release = false, digest = true } = {}) => ({ action: 'fallback', reason, release, digest });
+  const fallback = (reason, { release = false, digest = true, ...extra } = {}) => ({ action: 'fallback', reason, release, digest, ...extra });
   if (fallbackDone) return stop('old path already dispatched for this night');
   const t = show && show.id && nightTimes(show, night);
   if (!t) return fallback('embargo unknown', { digest: true });
@@ -127,7 +140,12 @@ function decideWatchdog({ show, night, now, leaseState, laneRun, sinceMs, fallba
   const entry = known ? (leaseState.leases || {})[leaseKey(show.id, night)] : null;
   if (known && entry) {
     const live = liveLeaseFor({ leases: { [leaseKey(show.id, night)]: entry } }, show.id, nowMs);
-    if (live) return { ...wait(`lane ${live.holder} holds the lease`), leaseLive: true };
+    if (live) {
+      // BRO-6669: alive but not publishing. An owner hold is left to the lane's own stand-down path.
+      const s = holdReason({ show, onlyMarkets, standdown }) ? null : stuckVerdict(progress, { embargoMs: t.embargoMs, now: nowMs });
+      if (s && s.stuck) return fallback(`stuck-but-alive: lane ${live.holder} holds the lease but ${s.reason}`, { releaseStuck: true, holder: live.holder, kind: 'stuck-but-alive', leaseLive: true });
+      return { ...wait(`lane ${live.holder} holds the lease${s ? ` (${s.reason})` : ''}`), leaseLive: true };
+    }
     // Expired: no heartbeat for the whole TTL, so the lane died holding it.
     const hold = holdReason({ show, onlyMarkets, standdown });
     return fallback(`lease of ${entry.holder} expired at ${entry.expiresAt} (no heartbeat for ${LEASE_TTL_MIN} min)`,
@@ -179,6 +197,75 @@ function releaseDeadLease(state, { show, night, now }) {
   return { ok: true, released: true, holder: entry.holder, state: { ...state, leases } };
 }
 
+/**
+ * BRO-6669: lease transition that releases a live but stuck lease, only while `holder` still holds it. A lease taken
+ * over by another holder since the watchdog looked is refused (never touched). No lease = the lane already let go (ok,
+ * idempotent). Pure.
+ */
+function releaseStuckLease(state, { show, night, holder }) {
+  const key = leaseKey(show, night);
+  const leases = { ...((state && state.leases) || {}) };
+  const entry = leases[key];
+  if (!entry) return { ok: true, released: false, state: { ...(state || {}), leases } };
+  if (entry.holder !== holder) return { ok: false, reason: 'other-holder', holder: entry.holder };
+  delete leases[key];
+  return { ok: true, released: true, holder: entry.holder, state: { ...state, leases } };
+}
+
+/**
+ * BRO-6669: fold one observation into the watchdog's progress record. Pure.
+ * @param {object|null} prev  the record so far ({} or null to start)
+ * @param {{liveCount?:number|null, census?:{count:number, missing:string[]}|null}} obs  liveCount: reviews on the live
+ *   site (null = the fetch failed: keeps the old reading, which then goes stale). census: the census as judged against
+ *   the live site this tick (missing = census outlets not live, unfetchable ones already left out); null = none yet.
+ * @returns {{liveCount?:number, liveSeenAt?:string, liveRiseAt?:string, census?:{count:number, missing:string[], at:string},
+ *            releaseSeenAt?:string}}
+ *   liveRiseAt: the first reading or the last time the count went up. releaseSeenAt: the first census listing any review.
+ */
+function updateProgress(prev, obs, now) {
+  const at = new Date(toMs(now)).toISOString();
+  const p = { ...(prev || {}) };
+  const o = obs || {};
+  if (Number.isFinite(o.liveCount)) {
+    if (!Number.isFinite(p.liveCount) || o.liveCount > p.liveCount) p.liveRiseAt = at;
+    p.liveCount = o.liveCount;
+    p.liveSeenAt = at;
+  }
+  if (o.census && Number.isFinite(o.census.count)) {
+    p.census = { count: o.census.count, missing: [...(o.census.missing || [])], at };
+    if (o.census.count > 0 && !p.releaseSeenAt) p.releaseSeenAt = at;
+  }
+  return p;
+}
+
+/**
+ * BRO-6669: is a lane that holds a live lease stuck? Stuck only when all of these hold:
+ *   now >= release + 45 min (release = the first census listing a review, else the embargo);
+ *   a census exists and lists reviews, judged against the live site within the last 10 min;
+ *   the live site lacks at least one census review;
+ *   the live count, read within the last 10 min, has not risen for 30 min.
+ * Anything unknown is not stuck. Pure.
+ * @returns {{stuck:boolean, reason:string}}
+ */
+function stuckVerdict(progress, { embargoMs, now }) {
+  const nowMs = toMs(now);
+  const no = (reason) => ({ stuck: false, reason });
+  const p = progress || {};
+  const c = p.census;
+  if (!c || !(c.count > 0)) return no('no census yet');
+  const fresh = (iso) => nowMs - Date.parse(iso || '') <= OBSERVATION_FRESH_MIN * MIN;
+  if (!fresh(c.at)) return no('census reading stale');
+  if (!Number.isFinite(p.liveCount) || !fresh(p.liveSeenAt)) return no('live count unknown');
+  const seenMs = Date.parse(p.releaseSeenAt || '');
+  const releaseMs = Number.isFinite(seenMs) ? seenMs : embargoMs;
+  if (!Number.isFinite(releaseMs)) return no('release unknown');
+  if (nowMs < releaseMs + STUCK_AFTER_RELEASE_MIN * MIN) return no(`before release + ${STUCK_AFTER_RELEASE_MIN} min`);
+  if (!c.missing.length) return no(`live site has all ${c.count} census reviews`);
+  const flatMin = Math.floor((nowMs - Date.parse(p.liveRiseAt || '')) / MIN);
+  if (!(flatMin >= STUCK_FLAT_MIN)) return no(`live count rose ${Number.isFinite(flatMin) ? `${flatMin} min ago` : 'recently'}`);
+  return { stuck: true, reason: `the live site shows ${p.liveCount} reviews, missing ${c.missing.length} of the census's ${c.count} (${c.missing.slice(0, 5).join(', ')}), and nothing new went live for ${flatMin} min` };
+}
+
 /** Branch holding the per-night fallback claims, apart from the lease branch: lease-store commits one file per tip. */
 const FALLBACK_BRANCH = 'opening-night-lane-fallbacks';
 /** A claim keeps its night for 3 days (lease-store sweeps expired entries); one not marked dispatched is retaken after 10 min. */
@@ -218,7 +305,8 @@ function markFallbackDispatched(state, { show, night, holder, now }) {
 const CLAIM_FAILURES_BEFORE_DISPATCH = 3;
 
 /**
- * One watchdog tick with injected ports. Order on fallback: release (when the lease expired) -> claim the night ->
+ * One watchdog tick with injected ports. Order on fallback: release (the expired lease, or the stuck holder's live
+ * lease, BRO-6669) -> claim the night ->
  * dispatch -> mark dispatched -> page. A refused release (the lane heartbeated in between) waits instead. A failed
  * release still goes on: an expired lease is already invisible to every reader (lane-only-markets liveLeaseFor,
  * lease-guard), so it cannot hold the old path off. A claim already dispatched by another watchdog stops without a
@@ -237,7 +325,19 @@ function runWatchdogTick(input, ports) {
   log(`watchdog ${input.show && input.show.id} ${input.night}: ${decision.action} (${decision.reason})`);
   if (decision.action !== 'fallback') return { ...decision, done: decision.action === 'stop' };
   const args = { show: input.show.id, night: input.night, now: input.now };
-  if (decision.release) {
+  if (decision.releaseStuck) {
+    const r = ports.release((s) => releaseStuckLease(s, { ...args, holder: decision.holder }));
+    if (!r.ok && r.reason === 'other-holder') {
+      log(`lease now held by ${r.holder}, not the stuck ${decision.holder}; left untouched, no fallback`);
+      return { action: 'wait', reason: 'lease changed hands before release', leaseLive: true, done: false };
+    }
+    if (!r.ok) {
+      // A live lease that stays keeps the old path stood down, so dispatching now would only double the writers.
+      log(`stuck lease release failed (${r.reason}); retrying next tick`);
+      return { action: 'wait', reason: 'stuck lease not released', leaseLive: true, done: false };
+    }
+    log(`released stuck lease (${r.released ? r.holder : 'already gone'})`);
+  } else if (decision.release) {
     const r = ports.release((s) => releaseDeadLease(s, args));
     if (!r.ok && r.reason === 'lease-live') {
       log('lease is live again (the lane heartbeated); no fallback');
@@ -280,6 +380,7 @@ function runWatchdogTick(input, ports) {
 module.exports = {
   LEASE_TTL_MIN, LANE_LEAD_MIN, LANE_WINDOW_MIN, START_BEFORE_MIN, START_AFTER_MIN, WAIT_JOB_BUDGET_MIN, TICK_MIN,
   nightRunTitle, watchdogRunTitle, nightTimes, laneOnlyCovers, planNightStart, planNightWait, decideWatchdog,
-  releaseDeadLease, runWatchdogTick, FALLBACK_BRANCH, CLAIM_TTL_MIN, CLAIM_STALE_MIN, CLAIM_FAILURES_BEFORE_DISPATCH,
+  releaseDeadLease, runWatchdogTick, FALLBACK_BRANCH,
+  STUCK_AFTER_RELEASE_MIN, STUCK_FLAT_MIN, OBSERVATION_FRESH_MIN, releaseStuckLease, updateProgress, stuckVerdict, CLAIM_TTL_MIN, CLAIM_STALE_MIN, CLAIM_FAILURES_BEFORE_DISPATCH,
   claimFallback, markFallbackDispatched,
 };
