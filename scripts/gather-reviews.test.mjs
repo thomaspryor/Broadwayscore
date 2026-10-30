@@ -10,18 +10,18 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
-import { quickDateCheck, verifyProduction, getShowData } from './lib/production-verifier.js';
+import { quickDateCheck, verifyProduction } from './lib/production-verifier.js';
 
 const require = createRequire(import.meta.url);
 const { extractBWWRoundupReviews } = require('./gather-reviews.js');
 
 const SHOW_ID = 'the-boy-at-the-back-of-the-class-west-end-2026';
+// Snapshot the BRO-749 run rather than looking it up in the private catalog.
+// The live show has since been reclassified as off-west-end; unit tests must
+// keep exercising these historical dates even without data/shows.json.
+const OPENING_DATE = '2026-04-07';
 
 test('quickDateCheck rejects the real Rose Theatre Kingston (Feb 2024) reviews for the QEH run', () => {
-  const show = getShowData(SHOW_ID);
-  assert.ok(show, `expected ${SHOW_ID} to exist in data/shows.json`);
-  assert.equal(show.openingDate, '2026-04-07');
-
   // Actual publishDate strings from the 7 wrongProduction-flagged review-text
   // files in the private review-texts repo (all Feb 2024 Rose Theatre Kingston).
   const wrongProductionDates = [
@@ -32,24 +32,21 @@ test('quickDateCheck rejects the real Rose Theatre Kingston (Feb 2024) reviews f
   ];
   for (const publishDate of wrongProductionDates) {
     assert.equal(
-      quickDateCheck(SHOW_ID, null, publishDate, show.openingDate),
+      quickDateCheck(SHOW_ID, null, publishDate, OPENING_DATE),
       false,
-      `expected ${publishDate} to be rejected as more than 30 days before opening (${show.openingDate})`
+      `expected ${publishDate} to be rejected as more than 30 days before opening (${OPENING_DATE})`
     );
   }
 });
 
 test('quickDateCheck accepts a review published during the actual QEH run window', () => {
-  const show = getShowData(SHOW_ID);
-  assert.ok(show);
-
   // The genuine QEH Southbank review (londonwithatoddler.com, BRO-749 manual
   // ingest) was published on opening day of the run itself.
-  assert.equal(quickDateCheck(SHOW_ID, null, '2026-04-07', show.openingDate), true);
+  assert.equal(quickDateCheck(SHOW_ID, null, '2026-04-07', OPENING_DATE), true);
 
   // A review published shortly after the run closed (Apr 12) should still
   // pass — reviewers often publish a few days after attending.
-  assert.equal(quickDateCheck(SHOW_ID, null, '2026-04-17', show.openingDate), true);
+  assert.equal(quickDateCheck(SHOW_ID, null, '2026-04-17', OPENING_DATE), true);
 });
 
 test('verifyProduction flags a London venue mention in a US-market show without transfer context', () => {
