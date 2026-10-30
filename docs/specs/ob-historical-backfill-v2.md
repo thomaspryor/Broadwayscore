@@ -39,6 +39,24 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 - **Audits:** `isObHistoricalRow` (scripts/lib/ob-historical-cohort.js) selects these rows for `audit-review-crossmodel.js` and `fact-check-sample.js`. The 'historical' tag is not used: on the site it is a theme (BRO-6200 tracks the existing collision).
 - **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each. Done: all three plus cohort 4 (2021-06..2022-05, BRO-6470, which also covers January to May 2022). Mid-2021 is the floor the owner set.
 
+## Pre-COVID trial results (2026-10-30, BRO-6496): June 2018 to March 2020
+
+The owner approved a trial of this window with a $25 cap and set June 2018 as the floor; going earlier needs a new owner decision. The window ends at the 2020-03-12 shutdown, and shows whose run was cut by it were skipped.
+
+Process: outlet-first candidates (TheaterMania listings plus BroadwayWorld and Broadway.com coverage), then the same add-show plans, gather, collect, score, `audit-aggregator-gap.yml` and `rebuild-fast.yml`. Playbill is the problem for this era: 89 of 97 candidates had no Playbill production page, so the v3 Playbill date gate would have kept about 3 shows. The owner chose (2026-10-29) to let pre-2020 rows take dates from two agreeing non-Playbill sources. The rule used: BroadwayWorld plus TheaterMania or Broadway.com, closing dates within a day of each other, opening within minus 3 to plus 30 days of the earliest dated critic write-up, and the venue corroborated by both. BroadwayWorld itself was wrong three times in the sample (Long Lost venue, Fefu and Her Friends closing, Caesar and Cleopatra opening), which is why one source is not enough. 23 shows added (3 with Playbill dates, 20 two-source), all `discoverySource: ob-historical:*`: 4 in 2018-19 (This Ain't No Disco, The Other Josh Cohen, Nantucket Sleigh Ride, White Noise) and 19 in 2019-20.
+
+Review-count distribution (core-data `reviews.json` after rebuild, 2026-10-30 11:18 UTC):
+
+| Reviews | 0 | 1-2 | 3-4 | 5-9 | 10+ | 3+ | Total reviews |
+|---|---|---|---|---|---|---|---|
+| Final | 0 | 0 | 3 | 6 | 14 | 23 (100 percent) | 256 |
+
+- Cost: about $15.8 against the $25 cap. Scraping $5.88 (Scrapingdog $5.65, an upper bound at the pay-as-you-go rate) on ledger rows tagged with the 23 show ids, LLM scoring about $6.5 across the score runs, the fact-check $1.35, and local candidate research under about $2 (SERP calls not in the ledger).
+- Fact-check: `fact-check-historical-sample.js` on 15 two-source shows. 2 of 15 (13 percent) had a date error. Caesar and Cleopatra's opening equalled its first preview (BroadwayWorld's date, which the minus 3 to plus 30 day window let through), and This Ain't No Disco's first preview was a day off. Both fixed by plan `bro-6496-3`. The other flags were venue-name variants and one checker misread of a preview as the opening (Sing Street), not data errors. Prevention for any later pre-2020 run: require a second source for the opening as well as the closing, and reject opening equal to first preview unless a second source agrees.
+- Shard time budget: gathers ran 3 to 4 shows a shard, and the 35-minute budget deferred White Noise and Heroes of the Fourth Turning, both well covered, so they first showed 0 and 2. They were re-gathered alone. This repeats the cohort 3 lesson: 1 show per shard for historical backfill.
+- Still low: American Moor and Molly Sweeney (3 each, small runs with thin coverage) and Caesar and Cleopatra (4). No show is at 0 or 1-2.
+- London-title URL guard bug: the rebuild flagged every write-up of London Assurance (Irish Rep, 2019) as a London production because its URL path contained "london-". `urlPathOppositeMarketIndicator` in `scripts/lib/cross-market-guard.js` now masks the show's own title slug before matching (the mirror case covers West End titles containing "broadway"), and the rebuild self-heals files whose only URL-path match was the title. London Assurance went from 0 to 5 write-ups. A corpus scan of 55,658 files found only those 7 files affected.
+
 ## Cohort 4 results (2026-10-29, BRO-6470): June 2021 to May 2022
 
 This is the last cohort. The owner set mid-2021 as the floor, so no older season is planned.
