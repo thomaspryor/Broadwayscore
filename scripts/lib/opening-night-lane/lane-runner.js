@@ -47,13 +47,15 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   missingOutlets? (T1/T2 outlet ids still missing, or a function of {seen} returning them, so captured outlets stop being searched; gates the SERP phase),
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, onDiskRows? ([{criticName, outletId}] of this show already in reviews.json), now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
- *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
+ *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs,
+ *   shouldStop?() (stop discovering and scoring), abandonPending?() (LANE_STANDDOWN: publish nothing new, only let in-flight batches finish;
+ *   queued rows are already in review-texts, so the regular pipeline publishes them)
  * @returns {Promise<{passes, admitted, published, errors, failed, skipped, unpublished}>}
  */
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, missingOutlets = [],
+  startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [],
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
@@ -91,7 +93,7 @@ async function runLaneNight({
     }
   };
   const maybePublish = async () => {
-    if (!pending.length) return;
+    if (!pending.length || abandonPending()) return;
     if (forkClock) {
       if (busyUntil.filter((e) => e > now()).length >= maxInflight) return; // every slot is still busy on its own timeline
       const clock = forkClock(now());
@@ -169,17 +171,19 @@ async function runLaneNight({
   }
 
   // Window over: flush what is queued and let the in-flight batch finish, so nothing scored is left unpublished.
+  // A stand-down skips the queue and only waits for in-flight batches, so the lease is released quickly.
   if (forkClock) {
     let guard = 0;
-    while (pending.length && guard++ < 20) {
+    while (pending.length && !abandonPending() && guard++ < 20) {
       const clock = forkClock(now());
       await publishBatch(pending.splice(0), clock);
       busyUntil.push(clock.now());
     }
   } else {
     let guard = 0;
-    while ((inflight.size || pending.length) && guard++ < 40) {
-      if (pending.length && inflight.size < maxInflight) await maybePublish();
+    const publishable = () => pending.length > 0 && !abandonPending();
+    while ((inflight.size || publishable()) && guard++ < 40) {
+      if (publishable() && inflight.size < maxInflight) await maybePublish();
       else await Promise.race(inflight);
     }
   }
