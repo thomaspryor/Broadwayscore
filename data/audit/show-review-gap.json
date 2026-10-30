@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-30T06:43:10.293Z",
-  "windowDays": 1095,
-  "targets": 1369,
-  "auditedThisRun": 21,
-  "carriedForward": 1040,
+  "generatedAt": "2026-10-30T08:33:49.733Z",
+  "windowDays": 21,
+  "targets": 4,
+  "auditedThisRun": 4,
+  "carriedForward": 1060,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 538,
-    "missingCurrentRun": 1042,
+    "withGap": 541,
+    "missingCurrentRun": 1056,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 766,
-    "totalRecoverable": 32,
+    "totalFlaggedMisses": 771,
+    "totalRecoverable": 31,
     "totalRecovered": 29,
     "humanExcluded": 5,
-    "automatedExcluded": 538,
-    "automatedExcludedListed": 439,
+    "automatedExcluded": 543,
+    "automatedExcludedListed": 444,
     "priorProductionCitations": 5720
   },
   "results": [
@@ -41329,6 +41329,430 @@
         "candidateCount": 13
       },
       "computedAt": "2026-10-23T19:44:18.016Z"
+    },
+    {
+      "showId": "caesar-and-cleopatra-off-broadway-2019",
+      "title": "Caesar and Cleopatra",
+      "openingDate": "2019-09-24",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/10/03/theater/review-caesar-cleopatra.html",
+        "https://www.timeout.com/newyork/theater/caesar-and-cleopatra",
+        "https://www.wsj.com/articles/caesar-and-cleopatra-review-kitten-into-queen-11569530078",
+        "https://www.theatermania.com/off-broadway/reviews/bernard-shaw-caesar-cleopatra-gingold-theatrical_89839.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=WHDB5A",
+        "http://nystagereview.com/2019/09/25/caesar-and-cleopatra-shaw-redux-with-reverent-irreverence/",
+        "http://www.theaterscene.net/plays/offbway-plays/caesar-and-cleopatra/victor-gluck/",
+        "http://www.curtainup.com/caesar19.html",
+        "http://www.theasy.com/Reviews/2019/C/caesarandcleopatra.php",
+        "https://frontmezzjunkies.com/2019/09/27/gingold-caesar-cleopatra/",
+        "https://www.theatrereviews.com/off-broadway-review-gingold-theatrical-groups-new-production-of-bernard-shaws-caesar-cleopatra/",
+        "https://thebroadwayblog.com/caesar-and-cleopatra-gingold-theatrical-group/",
+        "https://www.offoffonline.com/offoffonline/2019/9/21/caesar-and-cleopatra"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2019/10/03/theater/review-caesar-cleopatra.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/caesar-and-cleopatra",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.wsj.com/articles/caesar-and-cleopatra-review-kitten-into-queen-11569530078",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/bernard-shaw-caesar-cleopatra-gingold-theatrical_89839.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=WHDB5A",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "http://nystagereview.com/2019/09/25/caesar-and-cleopatra-shaw-redux-with-reverent-irreverence/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/caesar-and-cleopatra/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "http://www.curtainup.com/caesar19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2019/C/caesarandcleopatra.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2019/09/27/gingold-caesar-cleopatra/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies"
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-gingold-theatrical-groups-new-production-of-bernard-shaws-caesar-cleopatra/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited"
+        },
+        {
+          "url": "https://thebroadwayblog.com/caesar-and-cleopatra-gingold-theatrical-group/",
+          "host": "thebroadwayblog.com",
+          "knownOutletId": "broadway-blog"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2019/9/21/caesar-and-cleopatra",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.nytimes.com/2019/10/03/theater/review-caesar-cleopatra.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/caesar-and-cleopatra",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.wsj.com/articles/caesar-and-cleopatra-review-kitten-into-queen-11569530078",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/bernard-shaw-caesar-cleopatra-gingold-theatrical_89839.html",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=WHDB5A",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://nystagereview.com/2019/09/25/caesar-and-cleopatra-shaw-redux-with-reverent-irreverence/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/caesar-and-cleopatra/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene"
+        },
+        {
+          "url": "http://www.curtainup.com/caesar19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2019/C/caesarandcleopatra.php",
+          "host": "theasy.com",
+          "outletId": "theatre-is-easy"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2019/09/27/gingold-caesar-cleopatra/",
+          "host": "frontmezzjunkies.com",
+          "outletId": "frontmezzjunkies"
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-gingold-theatrical-groups-new-production-of-bernard-shaws-caesar-cleopatra/",
+          "host": "theatrereviews.com",
+          "outletId": "theatre-reviews-limited"
+        },
+        {
+          "url": "https://thebroadwayblog.com/caesar-and-cleopatra-gingold-theatrical-group/",
+          "host": "thebroadwayblog.com",
+          "outletId": "broadway-blog"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2019/9/21/caesar-and-cleopatra",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2019/10/03/theater/review-caesar-cleopatra.html"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/caesar-and-cleopatra"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/off-broadway/reviews/bernard-shaw-caesar-cleopatra-gingold-theatrical_89839.html"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=WHDB5A"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nystagereview.com/2019/09/25/caesar-and-cleopatra-shaw-redux-with-reverent-irreverence/"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/plays/offbway-plays/caesar-and-cleopatra/victor-gluck/"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/caesar19.html"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2019/C/caesarandcleopatra.php"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/2019/09/27/gingold-caesar-cleopatra/"
+          },
+          {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviews.com/off-broadway-review-gingold-theatrical-groups-new-production-of-bernard-shaws-caesar-cleopatra/"
+          },
+          {
+            "outletId": "broadway-blog",
+            "outlet": "broadway-blog",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thebroadwayblog.com/caesar-and-cleopatra-gingold-theatrical-group/"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2019/9/21/caesar-and-cleopatra"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/caesar-and-cleopatra-review-kitten-into-queen-11569530078"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/10/03/theater/review-caesar-cleopatra.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/caesar-and-cleopatra",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/caesar-and-cleopatra-review-kitten-into-queen-11569530078",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/bernard-shaw-caesar-cleopatra-gingold-theatrical_89839.html",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=WHDB5A",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/09/25/caesar-and-cleopatra-shaw-redux-with-reverent-irreverence/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/caesar-and-cleopatra/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.curtainup.com/caesar19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2019/C/caesarandcleopatra.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2019/09/27/gingold-caesar-cleopatra/",
+            "outletId": "frontmezzjunkies",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-gingold-theatrical-groups-new-production-of-bernard-shaws-caesar-cleopatra/",
+            "outletId": "theatre-reviews-limited",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://thebroadwayblog.com/caesar-and-cleopatra-gingold-theatrical-group/",
+            "outletId": "broadway-blog",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2019/9/21/caesar-and-cleopatra",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-10-30T08:33:49.733Z"
     },
     {
       "showId": "call-me-izzy-2025",
@@ -103388,14 +103812,11 @@
       "openingDate": "2019-10-07",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-HEROES-OF-THE-FOURTH-TURNING-20191008"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
-        "https://www.vulture.com/2019/10/review-of-will-arberys-heroes-of-the-fourth-turning.html",
-        "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
         "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
+        "https://www.vulture.com/2019/10/review-of-will-arberys-heroes-of-the-fourth-turning.html",
         "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
         "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
@@ -103407,37 +103828,13 @@
         "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
         "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
         "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
-        "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html"
+        "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html",
+        "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/"
       ],
-      "dirFiles": 3,
-      "dirClean": 2,
-      "inReviewsJson": 0,
+      "dirFiles": 13,
+      "dirClean": 13,
+      "inReviewsJson": 13,
       "missing": [
-        {
-          "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
-          "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker"
-        },
-        {
-          "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
           "host": "lightingandsoundamerica.com",
@@ -103447,11 +103844,6 @@
           "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html",
           "host": "talkinbroadway.com",
           "knownOutletId": "talkinbroadway"
-        },
-        {
-          "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
         },
         {
           "url": "http://www.curtainup.com/heroesof4thturning19.html",
@@ -103464,21 +103856,6 @@
           "knownOutletId": "theatre-is-easy"
         },
         {
-          "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz"
-        },
-        {
-          "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
-          "host": "frontmezzjunkies.com",
-          "knownOutletId": "frontmezzjunkies"
-        },
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited"
-        },
-        {
           "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html",
           "host": "slleiter.blogspot.com",
           "knownOutletId": "theatres-leiter-side"
@@ -103486,34 +103863,15 @@
       ],
       "dirOnly": [
         {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
           "host": "exeuntnyc.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": true,
-          "recoverableFile": "nyt-theater--jonathan-mandell.json",
-          "recoverableOutletId": "nyt-theater",
-          "recoverableCritic": "Jonathan Mandell",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/heroes-of-the-fourth-turningwritten-by-will-arberydirected-by-danya-taymor-5/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -103521,23 +103879,19 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 291,
+        "count": 1,
         "byReason": {
-          "aggregator-internal-nav": 215,
-          "not-http-url": 54,
-          "aggregator-section-root": 5,
-          "non-review-host": 15,
-          "roundup-page": 2
+          "aggregator-internal-nav": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -103550,54 +103904,9 @@
           "reason": null
         },
         {
-          "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
-          "host": "thewrap.com",
-          "outletId": "thewrap",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
-          "host": "newyorker.com",
-          "outletId": "newyorker",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -103607,95 +103916,58 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PZ44SA",
-          "host": "lightingandsoundamerica.com",
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html",
-          "host": "talkinbroadway.com",
-          "outletId": "talkinbroadway"
-        },
-        {
-          "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
-          "host": "nystagereview.com",
-          "outletId": "nysr"
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
         },
         {
           "url": "http://www.curtainup.com/heroesof4thturning19.html",
           "host": "curtainup.com",
-          "outletId": "curtainup"
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
           "url": "http://www.theasy.com/Reviews/2019/H/heroesofthefourthturning.php",
           "host": "theasy.com",
-          "outletId": "theatre-is-easy"
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
-          "host": "theaterpizzazz.com",
-          "outletId": "theater-pizzazz"
-        },
-        {
-          "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
-          "host": "frontmezzjunkies.com",
-          "outletId": "frontmezzjunkies"
-        },
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
-          "host": "theatrereviews.com",
-          "outletId": "theatre-reviews-limited"
+          "outletId": "theatre-is-easy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
           "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html",
           "host": "slleiter.blogspot.com",
-          "outletId": "theatres-leiter-side"
+          "outletId": "theatres-leiter-side",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
-        {
-          "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
-          "host": "newyorktheater.me",
-          "file": "nyt-theater--jonathan-mandell.json"
-        }
-      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html"
-          },
-          {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html"
-          },
           {
             "outletId": "lighting-and-sound-america",
             "outlet": "lighting-and-sound-america",
@@ -103709,13 +103981,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/"
           },
           {
             "outletId": "curtainup",
@@ -103732,51 +103997,27 @@
             "url": "http://www.theasy.com/Reviews/2019/H/heroesofthefourthturning.php"
           },
           {
-            "outletId": "theater-pizzazz",
-            "outlet": "theater-pizzazz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/"
-          },
-          {
-            "outletId": "frontmezzjunkies",
-            "outlet": "frontmezzjunkies",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/"
-          },
-          {
-            "outletId": "theatre-reviews-limited",
-            "outlet": "theatre-reviews-limited",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/"
-          },
-          {
             "outletId": "theatres-leiter-side",
             "outlet": "theatres-leiter-side",
             "critic": "Unknown",
             "stars": null,
             "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
           },
           {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/"
-          }
-        ],
-        "suppressedMissing": [
-          {
-            "outletId": "newyorker",
-            "outlet": "newyorker",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era"
-          }
-        ],
-        "candidates": [
+            "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
           {
             "url": "https://www.vulture.com/2019/10/review-of-will-arberys-heroes-of-the-fourth-turning.html",
             "outletId": "vulture.com",
@@ -103784,38 +104025,51 @@
             "firstSeenAt": "2026-10-30T03:50:05.247Z"
           },
           {
-            "url": "https://www.nytimes.com/2019/10/07/theater/heroes-of-the-fourth-turning-review.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
-            "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
-            "outletId": "thewrap",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/heroes-of-the-fourth-turning",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
             "url": "https://www.newyorker.com/magazine/2019/10/21/a-play-about-the-nuances-of-conservatism-in-the-trump-era",
-            "outletId": "newyorker",
-            "state": "SUPPRESSED",
-            "reason": "ci-unfetchable",
+            "outletId": "newyorker.com",
+            "state": "live",
             "firstSeenAt": "2026-10-30T03:50:05.247Z"
           },
           {
             "url": "https://www.theatermania.com/off-broadway/reviews/heroes-of-the-fourth-turning-and-the-conservative-_89919.html",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T03:50:05.247Z"
+          },
+          {
+            "url": "https://www.thewrap.com/heroes-of-the-fourth-turning-theater-review-its-donald-trump-v-pat-buchanan/",
+            "outletId": "thewrap.com",
+            "state": "live",
             "firstSeenAt": "2026-10-30T03:50:05.247Z"
           },
           {
@@ -103828,13 +104082,6 @@
           {
             "url": "https://www.talkinbroadway.com/page/ob/10_07_19.html",
             "outletId": "talkinbroadway",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
-            "url": "http://nystagereview.com/2019/10/07/heroes-of-the-fourth-turning-millennials-argue-about-our-civil-wars/",
-            "outletId": "nysr",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T03:50:05.247Z"
@@ -103854,46 +104101,18 @@
             "firstSeenAt": "2026-10-30T03:50:05.247Z"
           },
           {
-            "url": "https://www.theaterpizzazz.com/heroes-of-the-fourth-turning/",
-            "outletId": "theater-pizzazz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
-            "url": "https://frontmezzjunkies.com/2019/10/09/atc-sunday-and-ph-heroes-of-the-fourth-turning/",
-            "outletId": "frontmezzjunkies",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/off-broadway-review-heroes-of-the-fourth-turning-at-playwrights-horizons-mainstage-theater/",
-            "outletId": "theatre-reviews-limited",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
             "url": "https://slleiter.blogspot.com/2019/10/88-2019-2020-review-heroes-of-fourth.html",
             "outletId": "theatres-leiter-side",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T03:50:05.247Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2019/10/07/heroes-of-the-fourth-turning-review-conservatives-have-problems-too/",
-            "outletId": "nyt-theater",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T03:50:05.247Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
+        "liveCount": 11,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-30T03:50:05.247Z"
+      "computedAt": "2026-10-30T08:33:49.733Z"
     },
     {
       "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
@@ -134874,6 +135093,421 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "london-assurance-off-broadway-2019",
+      "title": "London Assurance",
+      "openingDate": "2019-12-15",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Irish-Reps-LONDON-ASSURANCE-What-Did-the-Critics-Think-20191216"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2019/12/15/theater/review-london-assurance-minds-its-manners.html",
+        "http://nystagereview.com/2019/12/15/london-assurance-high-jinks-among-the-high-born/",
+        "https://www.timeout.com/newyork/theater/london-assurance",
+        "https://www.theatermania.com/off-broadway/reviews/london-assurance-victorian-comedy-boucicault_90309.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-1KIHHN",
+        "https://www.talkinbroadway.com/page/ob/12_15_19.html",
+        "http://www.theaternewsonline.com/NYTheaterReviews/PRECISELYABSURD.cfm",
+        "http://www.theaterscene.net/plays/offbway-plays/london-assurance/victor-gluck/",
+        "https://thefrontrowcenter.com/2019/12/london-assurance/",
+        "https://slleiter.blogspot.com/2019/12/an-assured-production-ts-pleasure-to.html"
+      ],
+      "dirFiles": 7,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-1KIHHN",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/12_15_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://www.theaternewsonline.com/NYTheaterReviews/PRECISELYABSURD.cfm",
+          "host": "theaternewsonline.com",
+          "knownOutletId": "theater-news-online"
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2019/12/an-assured-production-ts-pleasure-to.html",
+          "host": "slleiter.blogspot.com",
+          "knownOutletId": "theatres-leiter-side"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2019/12/15/theater/review-london-assurance-minds-its-manners.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--alexis-soloski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2019/12/15/theater/review-london-assurance-minds-its-manners.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/12/15/london-assurance-high-jinks-among-the-high-born/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nystagereview.com/2019/12/15/london-assurance-high-jinks-among-the-high-born/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/london-assurance",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/london-assurance"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/london-assurance-victorian-comedy-boucicault_90309.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/off-broadway/reviews/london-assurance-victorian-comedy-boucicault_90309.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/london-assurance/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--victor-gluck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theaterscene.net/plays/offbway-plays/london-assurance/victor-gluck/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2019/12/london-assurance/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--kathleen-campion.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://thefrontrowcenter.com/2019/12/london-assurance/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 299,
+        "byReason": {
+          "not-http-url": 56,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 224,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 6,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-1KIHHN",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/12_15_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.theaternewsonline.com/NYTheaterReviews/PRECISELYABSURD.cfm",
+          "host": "theaternewsonline.com",
+          "outletId": "theater-news-online",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theaternewsonline.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch returned no usable HTML (got 114 chars)"
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2019/12/an-assured-production-ts-pleasure-to.html",
+          "host": "slleiter.blogspot.com",
+          "outletId": "theatres-leiter-side",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-1KIHHN"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/12_15_19.html"
+          },
+          {
+            "outletId": "theater-news-online",
+            "outlet": "theater-news-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaternewsonline.com/NYTheaterReviews/PRECISELYABSURD.cfm"
+          },
+          {
+            "outletId": "theatres-leiter-side",
+            "outlet": "theatres-leiter-side",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://slleiter.blogspot.com/2019/12/an-assured-production-ts-pleasure-to.html"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2019/12/15/theater/review-london-assurance-minds-its-manners.html"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nystagereview.com/2019/12/15/london-assurance-high-jinks-among-the-high-born/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/london-assurance"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/off-broadway/reviews/london-assurance-victorian-comedy-boucicault_90309.html"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/plays/offbway-plays/london-assurance/victor-gluck/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2019/12/london-assurance/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-1KIHHN",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/12_15_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.theaternewsonline.com/NYTheaterReviews/PRECISELYABSURD.cfm",
+            "outletId": "theater-news-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/12/an-assured-production-ts-pleasure-to.html",
+            "outletId": "theatres-leiter-side",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/12/15/theater/review-london-assurance-minds-its-manners.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/12/15/london-assurance-high-jinks-among-the-high-born/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/london-assurance",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/london-assurance-victorian-comedy-boucicault_90309.html",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/london-assurance/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2019/12/london-assurance/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 10
+      },
+      "computedAt": "2026-10-30T08:33:49.733Z"
     },
     {
       "showId": "lone-star-off-broadway-2023",
@@ -290631,6 +291265,454 @@
         "lastAt": "2026-10-18T10:12:15.957Z"
       },
       "automatedExcludedListed": 0
+    },
+    {
+      "showId": "white-noise-off-broadway-2019",
+      "title": "White Noise",
+      "openingDate": "2019-03-20",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-of-WHITE-NOISE-Starring-Daveed-Diggs-at-the-Public-Theater-20190321"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2019/03/20/theater/white-noise-review.html",
+        "http://www.amny.com/entertainment/white-noise-review-1.28737100",
+        "http://www.thedailybeast.com/this-is-what-the-white-noise-of-racism-and-privilege-really-sounds-like",
+        "https://www.theguardian.com/stage/2019/mar/20/white-noise-review-public-theater-new-york-suzan-lori-parks",
+        "http://www.hollywoodreporter.com/review/white-noise-theater-review-1195908",
+        "http://www.vulture.com/2019/03/theater-suzan-lori-parkss-white-noise-is-sneakily-radical.html",
+        "http://www.thewrap.com/white-noise-theater-review-daveed-diggs-suzan-lori-parks/",
+        "http://dctheatrescene.com/2019/03/20/white-noise-review-daveed-diggs-as-voluntary-slave-in-suzan-lori-parks-illuminating-new-play/",
+        "http://nystagereview.com/2019/03/20/white-noise-suzan-lori-parks-bold-and-brilliant-new-drama/",
+        "http://nystagereview.com/2019/03/20/white-noise-suzan-lori-parks-offers-a-brilliant-approach-to-racism/",
+        "https://www.nytimes.com/2019/03/20/theater/white-noise-review.html",
+        "https://www.vulture.com/2019/03/theater-suzan-lori-parkss-white-noise-is-sneakily-radical.html",
+        "https://variety.com/2019/legit/reviews/white-noise-review-daveed-diggs-suzan-lori-parks-play-1203168757/",
+        "https://www.hollywoodreporter.com/review/white-noise-theater-review-1195908",
+        "https://www.amny.com/entertainment/white-noise-review-1.28737100",
+        "https://www.theatermania.com/off-broadway/reviews/suzan-lori-parks-white-noise-black-anxiety_88182.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=POQ0UQ",
+        "https://www.talkinbroadway.com/page/ob/03_20_19.html",
+        "http://www.theaterscene.net/plays/offbway-plays/white-noise/david-kaufman/",
+        "http://www.curtainup.com/whitenoisepublic19.html",
+        "https://thefrontrowcenter.com/2019/03/white-noise/",
+        "http://frontmezzjunkies.com/2019/04/25/white-noise-at-high-volume/",
+        "http://exeuntnyc.com/reviews/review-white-noise-public-theater/",
+        "https://slleiter.blogspot.com/2019/04/205-2018-2019-review-white-noise-seen.html",
+        "https://dctheatrescene.com/2019/03/20/white-noise-review-daveed-diggs-as-voluntary-slave-in-suzan-lori-parks-illuminating-new-play/",
+        "https://www.thewrap.com/white-noise-theater-review-daveed-diggs-suzan-lori-parks/",
+        "https://broadwayandme.blogspot.com/2019/03/white-noises-makes-sadly-familiar-sounds.html",
+        "https://www.ft.com/content/f8cf646e-4bce-11e9-bde6-79eaea5acb64",
+        "https://scribicide.com/2019/04/08/not-silence-but-the-sound-of-silence/",
+        "http://www.adriandimanlig.com/the-hangover-report-suzan-lori-parks-white-noise-ambitious-and-provocative-as-expected/",
+        "https://www.philly.com/arts/theater/daveed-diggs-suzan-lori-parks-white-noise-public-theater-20190325.html",
+        "https://gotham-playgoer.blogspot.com/2019/03/white-noise.html",
+        "https://www.nj.com/entertainment/2019/03/white-noise-doles-poignant-metaphors-on-the-power-racism-in-america-review.html"
+      ],
+      "dirFiles": 23,
+      "dirClean": 22,
+      "inReviewsJson": 20,
+      "missing": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=POQ0UQ",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/03_20_19.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://www.curtainup.com/whitenoisepublic19.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup"
+        },
+        {
+          "url": "https://broadwayandme.blogspot.com/2019/03/white-noises-makes-sadly-familiar-sounds.html",
+          "host": "broadwayandme.blogspot.com",
+          "knownOutletId": "broadway-and-me"
+        },
+        {
+          "url": "https://www.ft.com/content/f8cf646e-4bce-11e9-bde6-79eaea5acb64",
+          "host": "ft.com",
+          "knownOutletId": "financialtimes"
+        },
+        {
+          "url": "https://scribicide.com/2019/04/08/not-silence-but-the-sound-of-silence/",
+          "host": "scribicide.com",
+          "knownOutletId": "scribicide"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 296,
+        "byReason": {
+          "not-http-url": 59,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 215,
+          "aggregator-section-root": 5,
+          "roundup-page": 2
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=POQ0UQ",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/03_20_19.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.curtainup.com/whitenoisepublic19.html",
+          "host": "curtainup.com",
+          "outletId": "curtainup",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "https://broadwayandme.blogspot.com/2019/03/white-noises-makes-sadly-familiar-sounds.html",
+          "host": "broadwayandme.blogspot.com",
+          "outletId": "broadway-and-me",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.ft.com/content/f8cf646e-4bce-11e9-bde6-79eaea5acb64",
+          "host": "ft.com",
+          "outletId": "financialtimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://scribicide.com/2019/04/08/not-silence-but-the-sound-of-silence/",
+          "host": "scribicide.com",
+          "outletId": "scribicide"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=POQ0UQ"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/03_20_19.html"
+          },
+          {
+            "outletId": "curtainup",
+            "outlet": "curtainup",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.curtainup.com/whitenoisepublic19.html"
+          },
+          {
+            "outletId": "broadway-and-me",
+            "outlet": "broadway-and-me",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwayandme.blogspot.com/2019/03/white-noises-makes-sadly-familiar-sounds.html"
+          },
+          {
+            "outletId": "financialtimes",
+            "outlet": "financialtimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ft.com/content/f8cf646e-4bce-11e9-bde6-79eaea5acb64"
+          },
+          {
+            "outletId": "scribicide",
+            "outlet": "scribicide",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://scribicide.com/2019/04/08/not-silence-but-the-sound-of-silence/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2019/03/20/theater/white-noise-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.amny.com/entertainment/white-noise-review-1.28737100",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.thedailybeast.com/this-is-what-the-white-noise-of-racism-and-privilege-really-sounds-like",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2019/mar/20/white-noise-review-public-theater-new-york-suzan-lori-parks",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/white-noise-theater-review-1195908",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.vulture.com/2019/03/theater-suzan-lori-parkss-white-noise-is-sneakily-radical.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.thewrap.com/white-noise-theater-review-daveed-diggs-suzan-lori-parks/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://dctheatrescene.com/2019/03/20/white-noise-review-daveed-diggs-as-voluntary-slave-in-suzan-lori-parks-illuminating-new-play/",
+            "outletId": "dctheatrescene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/03/20/white-noise-suzan-lori-parks-bold-and-brilliant-new-drama/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://nystagereview.com/2019/03/20/white-noise-suzan-lori-parks-offers-a-brilliant-approach-to-racism/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2019/03/20/theater/white-noise-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.vulture.com/2019/03/theater-suzan-lori-parkss-white-noise-is-sneakily-radical.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://variety.com/2019/legit/reviews/white-noise-review-daveed-diggs-suzan-lori-parks-play-1203168757/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/white-noise-theater-review-1195908",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/white-noise-review-1.28737100",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/suzan-lori-parks-white-noise-black-anxiety_88182.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/white-noise/david-kaufman/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2019/03/white-noise/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://frontmezzjunkies.com/2019/04/25/white-noise-at-high-volume/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://exeuntnyc.com/reviews/review-white-noise-public-theater/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2019/04/205-2018-2019-review-white-noise-seen.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://dctheatrescene.com/2019/03/20/white-noise-review-daveed-diggs-as-voluntary-slave-in-suzan-lori-parks-illuminating-new-play/",
+            "outletId": "dctheatrescene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.thewrap.com/white-noise-theater-review-daveed-diggs-suzan-lori-parks/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.adriandimanlig.com/the-hangover-report-suzan-lori-parks-white-noise-ambitious-and-provocative-as-expected/",
+            "outletId": "adriandimanlig.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.philly.com/arts/theater/daveed-diggs-suzan-lori-parks-white-noise-public-theater-20190325.html",
+            "outletId": "philly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2019/03/white-noise.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.nj.com/entertainment/2019/03/white-noise-doles-poignant-metaphors-on-the-power-racism-in-america-review.html",
+            "outletId": "nj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=POQ0UQ",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/03_20_19.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "http://www.curtainup.com/whitenoisepublic19.html",
+            "outletId": "curtainup",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://broadwayandme.blogspot.com/2019/03/white-noises-makes-sadly-familiar-sounds.html",
+            "outletId": "broadway-and-me",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://www.ft.com/content/f8cf646e-4bce-11e9-bde6-79eaea5acb64",
+            "outletId": "financialtimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          },
+          {
+            "url": "https://scribicide.com/2019/04/08/not-silence-but-the-sound-of-silence/",
+            "outletId": "scribicide",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T08:33:49.733Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 20,
+        "candidateCount": 26
+      },
+      "computedAt": "2026-10-30T08:33:49.733Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
