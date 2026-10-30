@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "error",
-  "lastChecked": "2026-10-29T09:01:58.621Z",
+  "lastChecked": "2026-10-30T08:41:09.870Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "error",
-      "message": "132 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x102, Ingest Review URLs x13, Press Night Probe x4, Opening Night Express x3, Opening Night Poller x3, Rebuild Reviews (Fast) x2, Recover WE Major Outlet Reviews x2, Recover Explicit Ratings x1, Collect Review Texts x1, Rebuild Reviews Data x1]. Most recent reason: api-fallback-exhausted(race-or-other,early-fallback). 679 committed file(s) discarded across 130 run(s). 776 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+      "message": "311 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x200, Ingest Review URLs x58, Press Night Probe x14, Opening Night Express x14, Opening Night Poller x6, Rebuild Reviews (Fast) x4, Test Suite x4, Collect Review Texts x3, Rebuild Reviews Data x2, Recover WE Major Outlet Reviews x2, Audit Aggregator Review Gap x2, Recover Explicit Ratings x1, Land x1]. Most recent reason: retries-exhausted. 1684 committed file(s) discarded across 309 run(s). 875 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     }
   ]
 }

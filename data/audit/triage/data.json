@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-10-29T09:01:58.618Z",
+  "lastChecked": "2026-10-30T08:41:09.867Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -69,32 +69,32 @@
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "3 Linear card(s) carry an acceptance check that cannot tell done from not done (3 can never fail, 0 can never pass). First: BRO-6035 land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing"
+      "message": "7 Linear card(s) carry an acceptance check that cannot tell done from not done (7 can never fail, 0 can never pass). First: BRO-6530 Renew The Stage login cookie on the Mac Studio (CI cookie expired 2026-10-29)"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "10 of 470 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6474 validate-data --strict red: art-west-end-2016 artshub Singapore arts-hub article attached as a review"
+      "message": "8 of 441 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6521 Opening-night audit 2026-10-29"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-28"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-29"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "66 review(s) with no usable text, 57 rejected although verified as a review, 28 never scored, 30 with a blocked URL (0 published on the site), across 461 current shows"
+      "message": "63 review(s) with no usable text, 62 rejected although verified as a review, 22 never scored, 31 with a blocked URL (0 published on the site), across 468 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "24 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 33176 checked"
+      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (1 more already queued for rescore), of 34799 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "10 early publish date(s) awaiting recheck (limit 40); 125 already attempted and not yet confirmed"
+      "message": "28 early publish date(s) awaiting recheck (limit 40); 125 already attempted and not yet confirmed"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -108,13 +108,18 @@
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "status": "pass",
-      "message": "No aggregator-reviewed show is missing from the catalogue"
+      "status": "warn",
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Middlemarch\" (guardian-review — missing 0d)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
       "message": "2 discovered review(s) not reaching the composite score (2 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored)"
+    },
+    {
+      "name": "Data: BWW roundup discovery misses near opening",
+      "status": "warn",
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: a-few-good-men-2026 (6 misses, last 2026-10-30T06:40:31.934Z)."
     }
   ]
 }

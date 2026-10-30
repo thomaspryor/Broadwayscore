@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-10-29T09:01:58.620Z",
+  "lastChecked": "2026-10-30T08:41:09.869Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,7 +19,7 @@
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
@@ -33,63 +33,63 @@
     },
     {
       "name": "Cron: Opening Night Broadcast",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success (newest run cancelled — superseded, not a failure)"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "13h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "8h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "8h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "17h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "22h ago, success"
+      "message": "21h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "11h ago, success (newest run failure — superseded, not a failure)"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "15h ago, ran (cancelled; liveness-only check)"
+      "message": "15h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
@@ -99,12 +99,12 @@
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "2 of 133 exempt scheduled workflow(s) stopped starting: discover-regional-serp-reviews.yml (last start 395h ago, limit 192h); scrape-bww-reviews.yml (last start 257h ago, limit 192h)."
+      "message": "6 of 133 exempt scheduled workflow(s) stopped starting: audit-critic-coverage.yml (last start 89h ago, limit 48h); check-push-ledger.yml (no scheduled start in last 5 runs, limit 24h); detect-revivals-ibdb.yml (last start 209h ago, limit 192h); discover-regional-serp-reviews.yml (last start 418h ago, limit 192h); scrape-bww-reviews.yml (last start 280h ago, limit 192h); scrape-new-aggregators.yml (last start 61h ago, limit 48h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "7 of 136 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (5+ in a row, last 2026-10-28); clear-wrong-show-blockers.yml (5+ in a row, last 2026-10-22); detect-revivals-ibdb.yml (4+ in a row, last 2026-10-21); scoring-audit.yml (5+ in a row, last 2026-10-01); scrape-thestage-roundups.yml (5+ in a row, last 2026-10-27); scrape-wp-blogs.yml (3+ in a row, last 2026-10-25); update-precursor-awards.yml (5+ in a row, last 2026-10-26)."
+      "message": "6 of 136 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (5+ in a row, last 2026-10-29); detect-revivals-ibdb.yml (4+ in a row, last 2026-10-21); scoring-audit.yml (5+ in a row, last 2026-10-01); scrape-thestage-roundups.yml (5+ in a row, last 2026-10-27); scrape-wp-blogs.yml (3+ in a row, last 2026-10-25); update-precursor-awards.yml (5+ in a row, last 2026-10-26)."
     }
   ]
 }

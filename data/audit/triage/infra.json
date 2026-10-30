@@ -1,7 +1,7 @@
 {
   "system": "infra",
   "status": "pass",
-  "lastChecked": "2026-10-29T09:01:58.623Z",
+  "lastChecked": "2026-10-30T08:41:09.871Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Infra: notion-schedule-coupling audit",
       "status": "pass",
-      "message": "No live schedules coupled to the frozen Notion mirror (1d ago) — GitHub workflow schedules only; Mac launchd agents not scanned on this host"
+      "message": "No live schedules coupled to the frozen Notion mirror (23h ago) — GitHub workflow schedules only; Mac launchd agents not scanned on this host"
     }
   ]
 }

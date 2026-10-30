@@ -1,25 +1,50 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-10-28T08:30:25.613Z",
+  "lastChecked": "2026-10-30T08:41:09.871Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "name": "Workflow repeat-failure: Test Suite / Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.)",
       "status": "error",
-      "message": "Deploy to Vercel failed 18 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite / Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite / Data Validation / Run autoclear-vs-ensemble corpus test (needs review-texts)",
+      "status": "error",
+      "message": "Test Suite / Data Validation / Run autoclear-vs-ensemble corpus test (needs review-texts) failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite / Data Validation / Audit review contamination",
+      "status": "error",
+      "message": "Test Suite / Data Validation / Audit review contamination failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite / E2E Tests / Run unit tests",
+      "status": "error",
+      "message": "Test Suite / E2E Tests / Run unit tests failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite / Test Summary / Check results",
+      "status": "error",
+      "message": "Test Suite / Test Summary / Check results failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Performance Budget / Bundle Size Check / Build and check bundle sizes",
+      "status": "error",
+      "message": "Check Performance Budget / Bundle Size Check / Build and check bundle sizes failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite / Unit Tests / Run unit tests (no-data-dependency)",
+      "status": "error",
+      "message": "Test Suite / Unit Tests / Run unit tests (no-data-dependency) failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "status": "error",
-      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Check Performance Budget",
       "status": "warn",
-      "message": "Check Performance Budget failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 2 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
     }
   ]
 }

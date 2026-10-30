@@ -1,7 +1,7 @@
 {
   "system": "main",
   "status": "error",
-  "lastChecked": "2026-10-29T09:01:58.620Z",
+  "lastChecked": "2026-10-30T08:41:09.869Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Main: red streak",
       "status": "error",
-      "message": "main's Test Suite has had no confirmed-green run in 6.5h (10 failing runs) — first red commit e24eb7716, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 6.1h (no green run found in the runs checked — actual gap may be longer) (28 failing runs) — first red commit 46c31f9c5, job \"Unit Tests, E2E Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 45% (green 247 / red 302, 549 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 71%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 44.8% (green 250 / red 308, 558 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 44.5%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Main: mid-setup cancels",
