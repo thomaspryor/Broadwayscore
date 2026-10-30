@@ -610,7 +610,6 @@ async function processReview(entry) {
       return;
     }
     current.llmPullQuote = quote;
-    delete current.llmPullQuoteContextCheckedAt;
     // safeWriteReview quarantines date-implausible / cross-market-contaminated
     // writes (returns wrote:false) instead of writing — count those as errors,
     // not successes, so the run summary reflects what actually landed.
