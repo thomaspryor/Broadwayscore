@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-moth-off-west-end-2026",
+  "night": "2026-10-30",
+  "market": "off-west-end",
+  "embargoAt": "2026-10-30T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-10-30T22:10:11.389Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 10,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-30T22:55:13.883Z",
+    "lastOkSampleAt": "2026-10-30T22:55:13.883Z"
+  },
+  "firstLiveAt": "2026-10-30T22:10:11.389Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-10-30T22:10:11.389Z",
+  "liveCount": 3,
+  "liveCountAt": {
+    "1h": null,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-30T22:10:11.389Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-10-30",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "the reviews hub|fiona paterson",
+      "outlet": "The Reviews Hub",
+      "critic": "Fiona Paterson",
+      "tier": 2,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-30T22:10:11.389Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "london box office|stuart king",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "tier": 2,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-30T22:10:11.389Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "pink prince theatre|neill kovacic-clarke",
+      "outlet": "Pink Prince Theatre",
+      "critic": "Neill Kovacic-Clarke",
+      "tier": 4,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-30T22:10:11.389Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-10-30T23:00:26.323Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-10-30T23:00:26.373Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-10-30T23:00:27.047Z",
+    "files": [
+      {
+        "file": "afridiziak-theatre-news--basil-g-lumsden.json",
+        "outletId": "afridiziak-theatre-news",
+        "outlet": "Afridiziak Theatre News",
+        "critic": "Basil G. Lumsden",
+        "firstSeenAt": "2026-10-27T17:09:49.610Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "andyjordanproductions--unknown.json",
+        "outletId": "andyjordanproductions",
+        "outlet": "andyjordanproductions",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-28T07:53:43.881Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "broadway-baby--unknown.json",
+        "outletId": "broadway-baby",
+        "outlet": "Broadway Baby",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-27T17:09:38.505Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "jewishnews--poppy-shulman.json",
+        "outletId": "jewishnews",
+        "outlet": "Jewishnews",
+        "critic": "Poppy Shulman",
+        "firstSeenAt": "2026-10-28T21:32:38.843Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-28",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--stuart-king.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Stuart King",
+        "firstSeenAt": "2026-10-30T00:32:49.280Z",
+        "scoredAt": "2026-10-30T00:47:50.094Z",
+        "publishDate": "2026-10-30",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "pinkprincetheatre--neill-kovacic-clarke.json",
+        "outletId": "pinkprincetheatre",
+        "outlet": "Pink Prince Theatre",
+        "critic": "Neill Kovacic-Clarke",
+        "firstSeenAt": "2026-10-30T15:59:49.611Z",
+        "scoredAt": "2026-10-30T16:17:07.718Z",
+        "publishDate": "2026-10-30",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "readaboutstuff--dan-english.json",
+        "outletId": "readaboutstuff",
+        "outlet": "readaboutstuff",
+        "critic": "Dan English",
+        "firstSeenAt": "2026-10-27T17:09:25.075Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-25",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatre-weekly--unknown.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Staff Writer",
+        "firstSeenAt": "2026-10-27T17:09:44.321Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-23",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--fiona-paterson.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Fiona Paterson",
+        "firstSeenAt": "2026-10-30T16:52:48.530Z",
+        "scoredAt": "2026-10-30T17:42:20.546Z",
+        "publishDate": "2026-10-30",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
