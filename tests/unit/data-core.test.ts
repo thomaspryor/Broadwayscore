@@ -1013,7 +1013,8 @@ describe('getOtherProductions', () => {
 
     if (testShow) {
       const others = getOtherProductions(testShow);
-      const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-broadway': 2 };
+      // Same order as getOtherProductions (src/lib/data-core.ts): regional trails Broadway, tours last.
+      const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3, regional: 4, tour: 5 };
       for (let i = 0; i < others.length - 1; i++) {
         const catA = marketOrder[(others[i].category || 'broadway')] ?? 3;
         const catB = marketOrder[(others[i + 1].category || 'broadway')] ?? 3;
@@ -1026,6 +1027,22 @@ describe('getOtherProductions', () => {
           assert.ok(catA <= catB, `Markets should be in order: broadway, west-end, off-broadway`);
         }
       }
+    }
+  });
+
+  test('never returns a production from a flag-off category', () => {
+    // The two tests above group candidates the way getOtherProductions does, so they cannot see
+    // the flag gate itself. Check it directly on every title that has a flag-off production.
+    const normalize = (t: string) => t.toLowerCase().replace(/[^\w\s']/g, '').trim();
+    const allShows = getAllShows();
+    const hiddenTitles = new Set(allShows.filter(s => !isCategoryEnabled(s.category)).map(s => normalize(s.title)));
+    let checked = 0;
+    for (const show of allShows) {
+      if (!hiddenTitles.has(normalize(show.title)) || !isCategoryEnabled(show.category)) continue;
+      for (const other of getOtherProductions(show)) {
+        assert.ok(isCategoryEnabled(other.category), `${show.id} lists ${other.id} from flag-off category ${other.category}`);
+      }
+      if (++checked >= 50) break;
     }
   });
 });
