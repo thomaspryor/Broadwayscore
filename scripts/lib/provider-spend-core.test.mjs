@@ -408,3 +408,67 @@ test('BRO-3023: records without readAt keep the legacy calendar-day behaviour', 
   const legacy = computeDayRecord({ ...okReadings, prev: prevRecord });
   assert.equal(legacy.providers.scrapingbee.readAt, undefined);
 });
+
+// BRO-6646: prepaid packs alarm on exhaustion pace, not on one busy day.
+{
+  const TH = { browserbaseDailyUsd: 4, brightdataDailyUsd: 6, scrapingbeeDailyCredits: 35000, scrapingdogDailyCredits: 100000 };
+  const okOthers = { browserbase: { status: 'ok', cost: 0.8, sessions: 1, minutes: 1 }, brightdata: { status: 'ok', cost: 4, serpReqs: 1, unlockerReqs: 1 } };
+  const rec = (day, sb, sd) => ({ day, providers: { ...okOthers, scrapingbee: { status: 'ok', ...sb }, scrapingdog: { status: 'ok', ...sd } } });
+  const sbFine = { dayCredits: 20000, cycleUsed: 500000, cap: 1000000, renewalDate: '2026-11-04', readAt: '2026-10-30T08:43:00Z' };
+
+  test('ScrapingDog backfill days (2026-10-27..29 ledger) do not breach: the pack has 2.2M left', () => {
+    const hist = [['2026-10-23', 73728], ['2026-10-24', 189274], ['2026-10-25', 14980], ['2026-10-26', 129750], ['2026-10-27', 205072], ['2026-10-28', 186988]]
+      .map(([d, c]) => rec(d, sbFine, { dayCredits: c, cycleUsed: 2000000, cap: 4577555 }));
+    const today = rec('2026-10-29', sbFine, { dayCredits: 152554, cycleUsed: 2342694, cap: 4577555, renewalDate: '2026-11-01', readAt: '2026-10-30T08:43:00Z' });
+    assert.deepStrictEqual(budgetBreaches(today, TH, hist).overspend, []);
+    // Without the pace inputs the old 100K line still applies.
+    const legacy = rec('2026-10-29', sbFine, { dayCredits: 152554, cycleUsed: 2342694, cap: 4577555 });
+    assert.match(budgetBreaches(legacy, TH, hist).overspend.join(), /scrapingdog 152554 credits > 100000/);
+  });
+
+  test('ScrapingBee run-out (2026-09-29..10-01 ledger) breaches on pace', () => {
+    const hist = [['2026-09-29', 41581], ['2026-09-30', 39824]].map(([d, c]) => rec(d, { dayCredits: c, cycleUsed: 800000, cap: 1000000 }, { dayCredits: 1, cycleUsed: 1, cap: 10 }));
+    const today = rec('2026-10-01', { dayCredits: 80595, cycleUsed: 903990, cap: 1000000, renewalDate: '2026-10-05', readAt: '2026-10-02T08:00:00Z' }, { dayCredits: 1, cycleUsed: 1, cap: 10 });
+    assert.match(budgetBreaches(today, TH, hist).overspend.join(), /scrapingbee on pace to run out before renewal/);
+  });
+
+  test('one spike under a quiet 7-day average does not breach', () => {
+    const hist = ['2026-10-03', '2026-10-04', '2026-10-05', '2026-10-06', '2026-10-07', '2026-10-08']
+      .map((d) => rec(d, { dayCredits: 15000, cycleUsed: 100000, cap: 1000000 }, { dayCredits: 1, cycleUsed: 1, cap: 10 }));
+    const today = rec('2026-10-09', { dayCredits: 60000, cycleUsed: 200000, cap: 1000000, renewalDate: '2026-11-04', readAt: '2026-10-10T08:00:00Z' }, { dayCredits: 1, cycleUsed: 1, cap: 10 });
+    assert.deepStrictEqual(budgetBreaches(today, TH, hist).overspend, []);
+  });
+
+  test('an empty pack breaches even on a zero-credit day', () => {
+    const today = rec('2026-10-04', { dayCredits: 0, cycleUsed: 1000000, cap: 1000000, renewalDate: '2026-10-05' }, { dayCredits: 1, cycleUsed: 1, cap: 10 });
+    assert.match(budgetBreaches(today, TH, []).overspend.join(), /scrapingbee pack exhausted/);
+  });
+
+  test('an expired or far-off renewal falls back to the daily line', () => {
+    for (const renewalDate of ['2026-10-01', '2027-06-01', null]) {
+      const today = rec('2026-10-09', { dayCredits: 60000, cycleUsed: 200000, cap: 1000000, renewalDate, readAt: '2026-10-10T08:00:00Z' }, { dayCredits: 1, cycleUsed: 1, cap: 10 });
+      assert.match(budgetBreaches(today, TH, []).overspend.join(), /scrapingbee 60000 credits > 35000/);
+    }
+  });
+
+  test('Bright Data: one busy day under a normal week does not breach; a sustained rise does', () => {
+    const sd = { dayCredits: 1, cycleUsed: 1, cap: 10 };
+    const week = (cost) => ['2026-10-22', '2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27'].map((d) => ({ ...rec(d, sbFine, sd), providers: { ...rec(d, sbFine, sd).providers, brightdata: { status: 'ok', cost, serpReqs: 1, unlockerReqs: 1 } } }));
+    const today = { ...rec('2026-10-28', sbFine, sd), providers: { ...rec('2026-10-28', sbFine, sd).providers, brightdata: { status: 'ok', cost: 7.64, serpReqs: 2046, unlockerReqs: 3047 } } };
+    assert.deepStrictEqual(budgetBreaches(today, TH, week(4.1)).overspend, []);
+    assert.match(budgetBreaches(today, TH, week(6.5)).overspend.join(), /brightdata averaging \$6\.66\/day over 7 days > \$6/);
+  });
+
+  test('the pace average stops at a cycle reset', () => {
+    const old = ['2026-10-01', '2026-10-02', '2026-10-03'].map((d) => rec(d, { dayCredits: 80000, cycleUsed: 990000, cap: 1000000 }, { dayCredits: 1, cycleUsed: 1, cap: 10 }));
+    const fresh = rec('2026-10-04', { dayCredits: 20000, cycleUsed: 20000, cap: 1000000, renewalDate: '2026-11-04', readAt: '2026-10-05T08:00:00Z' }, { dayCredits: 1, cycleUsed: 1, cap: 10 });
+    assert.deepStrictEqual(budgetBreaches(fresh, TH, old).overspend, []);
+  });
+
+  test('ScrapingDog renewal is counted from the read date', () => {
+    const r = computeDayRecord({ day: '2026-10-29', bb: null, bd: null, sb: null, sd: { cycleUsed: 10, limit: 100, daysToRenewal: 3 }, prev: null, readAt: '2026-10-30T08:43:00Z' });
+    assert.equal(r.providers.scrapingdog.renewalDate, '2026-11-02');
+    const expired = computeDayRecord({ day: '2026-10-29', bb: null, bd: null, sb: null, sd: { cycleUsed: 10, limit: 100, daysToRenewal: -2 }, prev: null, readAt: '2026-10-30T08:43:00Z' });
+    assert.equal(expired.providers.scrapingdog.renewalDate, null);
+  });
+}

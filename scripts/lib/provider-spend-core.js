@@ -113,6 +113,15 @@ function computeDayRecord({ day, bb, bd, sb, sd, prev, readAt = null }) {
 
   rec.providers.scrapingbee = cycleDelta(sb, prevAdjacent?.providers?.scrapingbee, readAt);
   rec.providers.scrapingdog = cycleDelta(sd, prevAdjacent?.providers?.scrapingdog, readAt);
+  // BRO-6646: when each prepaid pack renews, for the exhaustion-pace check.
+  // ScrapingBee gives a date; ScrapingDog gives days left (`validity`) as of
+  // the reading, so it is counted from the read date, not the record's day.
+  const readDay = (readAt || `${day}T00:00:00Z`).slice(0, 10);
+  if (sb && sb.renewalDate && rec.providers.scrapingbee.status !== 'unknown') rec.providers.scrapingbee.renewalDate = sb.renewalDate;
+  if (sd && typeof sd.daysToRenewal === 'number' && rec.providers.scrapingdog.status !== 'unknown') {
+    rec.providers.scrapingdog.renewalDate = sd.daysToRenewal < 0 ? null
+      : new Date(Date.parse(`${readDay}T00:00:00Z`) + sd.daysToRenewal * DAY_MS).toISOString().slice(0, 10);
+  }
   return rec;
 }
 
@@ -160,7 +169,7 @@ function cycleDelta(reading, prevEntry, readAt = null) {
  * not "X overspent".
  * @returns {{overspend: string[], unmeasured: string[]}}
  */
-function budgetBreaches(record, thresholds) {
+function budgetBreaches(record, thresholds, history = []) {
   const overspend = [];
   const unmeasured = [];
   const p = record.providers || {};
@@ -172,8 +181,12 @@ function budgetBreaches(record, thresholds) {
   } else unmeasured.push('browserbase');
 
   if (p.brightdata?.status === 'ok') {
-    if (thresholds.brightdataDailyUsd != null && p.brightdata.cost > thresholds.brightdataDailyUsd) {
-      overspend.push(`brightdata $${p.brightdata.cost} > $${thresholds.brightdataDailyUsd} (${p.brightdata.serpReqs} serp + ${p.brightdata.unlockerReqs} unlocker reqs)`);
+    // BRO-6646: the 7-day average against the daily line, so one busy day
+    // (a backfill, an opening night) is not an owner alarm; a sustained rise is.
+    const costs = [p.brightdata.cost, ...windowDays(record, history).map((r) => r.providers?.brightdata?.cost).filter((n) => typeof n === 'number')];
+    const avg = +(costs.reduce((a, b) => a + b, 0) / costs.length).toFixed(2);
+    if (thresholds.brightdataDailyUsd != null && avg > thresholds.brightdataDailyUsd) {
+      overspend.push(`brightdata averaging $${avg}/day over ${costs.length} days > $${thresholds.brightdataDailyUsd} (today $${p.brightdata.cost}: ${p.brightdata.serpReqs} serp + ${p.brightdata.unlockerReqs} unlocker reqs)`);
     }
   } else unmeasured.push('brightdata');
 
@@ -181,11 +194,70 @@ function budgetBreaches(record, thresholds) {
     const entry = p[key];
     if (!entry || entry.status === 'unknown') { unmeasured.push(key); continue; }
     if (entry.status === 'baseline') continue; // measured; delta arrives tomorrow
+    const pace = packPaceBreach(key, entry, record, history);
+    if (pace !== undefined) { if (pace) overspend.push(pace); continue; }
     if (thresholds[thKey] != null && entry.dayCredits > thresholds[thKey]) {
       overspend.push(`${key} ${entry.dayCredits} credits > ${thresholds[thKey]}`);
     }
   }
   return { overspend, unmeasured };
+}
+
+// A renewal further out than this is not a monthly cycle (e.g. an expiry date
+// on rolled-over credits), so the pace check would be meaningless.
+const MAX_PACE_RENEWAL_DAYS = 40;
+
+// Whole days from `day` to `renewalDate` (both YYYY-MM-DD), or null when either
+// is missing or the date has passed (an expired pack is not "renews today").
+// Same rule as scrapingbee-caps.js daysToRenewal, which this module cannot
+// require (scrapingdog-caps.js requires this file).
+function daysToRenewal(renewalDate, day) {
+  if (typeof renewalDate !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(renewalDate)) return null;
+  const d = Math.round((Date.parse(`${renewalDate.slice(0, 10)}T00:00:00Z`) - Date.parse(`${day}T00:00:00Z`)) / DAY_MS);
+  return Number.isFinite(d) && d >= 0 ? d : null;
+}
+const PACE_WINDOW_DAYS = 7;
+
+/** History records in the PACE_WINDOW_DAYS before `record` (excluding it), day-ascending. */
+function windowDays(record, history = []) {
+  const from = Date.parse(`${record.day}T00:00:00Z`) - (PACE_WINDOW_DAYS - 1) * DAY_MS;
+  return (history || []).filter((r) => r && r.day < record.day && Date.parse(`${r.day}T00:00:00Z`) >= from)
+    .sort((a, b) => a.day.localeCompare(b.day));
+}
+
+/**
+ * BRO-6646: ScrapingBee and ScrapingDog are prepaid credit packs. A busy day
+ * (a historical backfill) costs nothing extra; running the pack dry before it
+ * renews does. So the alarm is "at the last 7 days' average, the credits left
+ * run out before renewal", or "the pack is already empty". Owner, 2026-10-30:
+ * the daily-credit line "has just been telling me that the whole time".
+ * Returns a breach string, null (pace is fine), or undefined when the pace
+ * cannot be judged (no cap or renewal date), so the caller falls back to the
+ * daily threshold. Pure.
+ */
+function packPaceBreach(key, entry, record, history = []) {
+  const cap = entry.cap;
+  if (typeof cap !== 'number' || cap <= 0 || typeof entry.cycleUsed !== 'number') return undefined;
+  if (entry.cycleUsed >= cap) return `${key} pack exhausted (${entry.cycleUsed} of ${cap} credits used)`;
+  const readDay = String(entry.readAt || `${record.day}T00:00:00Z`).slice(0, 10);
+  const daysLeft = daysToRenewal(entry.renewalDate, readDay);
+  if (daysLeft == null || daysLeft > MAX_PACE_RENEWAL_DAYS) return undefined;
+  // This cycle's days only: walking back, stop at a counter reset (an earlier
+  // day with more credits used than now), or the old cycle's burn would count.
+  const credits = [entry.dayCredits];
+  let used = entry.cycleUsed;
+  for (const r of windowDays(record, history).reverse()) {
+    const e = r.providers?.[key];
+    if (!e || typeof e.cycleUsed !== 'number' || e.cycleUsed > used) break;
+    used = e.cycleUsed;
+    if (typeof e.dayCredits === 'number') credits.push(e.dayCredits);
+  }
+  const avg = credits.reduce((a, b) => a + b, 0) / credits.length;
+  const left = cap - entry.cycleUsed;
+  const need = Math.round(avg * Math.max(1, daysLeft));
+  return need > left
+    ? `${key} on pace to run out before renewal: ~${Math.round(avg)} credits/day (${credits.length}-day average) x ${Math.max(1, daysLeft)} days to ${entry.renewalDate} = ${need} > ${left} left`
+    : null;
 }
 
 /**
@@ -200,7 +272,7 @@ function computeStreak(records, thresholds) {
   let streak = 0;
   for (let i = records.length - 1; i >= 0; i--) {
     if (i < records.length - 1 && !isNextUtcDay(records[i].day, records[i + 1].day)) break;
-    const { overspend, unmeasured } = budgetBreaches(records[i], thresholds);
+    const { overspend, unmeasured } = budgetBreaches(records[i], thresholds, records.slice(0, i));
     const hasBaseline = Object.values(records[i].providers || {}).some((e) => e?.status === 'baseline');
     if (overspend.length || unmeasured.length) break;
     if (hasBaseline) break;
