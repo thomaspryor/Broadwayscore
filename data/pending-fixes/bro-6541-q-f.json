@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-q-f",
   "planId": "2ba1d13c-1ff1-45cc-b539-db123f7fa099",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T20:55:20.932Z",
   "submitter": {
     "name": null,
@@ -63,5 +63,44 @@
         "description": "BRO-6541: ingest guardian review for cock-53two-regional-2024"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T01:45:59.832Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
