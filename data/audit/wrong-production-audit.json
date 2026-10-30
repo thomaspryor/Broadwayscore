@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T15:06:15.709Z",
+  "timestamp": "2026-10-30T15:50:21.973Z",
   "stats": {
-    "totalReviews": 70425,
-    "alreadyFlagged": 22276,
+    "totalReviews": 70432,
+    "alreadyFlagged": 22278,
     "dateGuardCatches": 230,
-    "directorMismatch": 2874,
+    "directorMismatch": 2875,
     "tvFilmSignals": 2025,
-    "londonSignals": 3401,
+    "londonSignals": 3402,
     "offBroadwaySignals": 633,
     "yearMismatch": 288,
-    "noPublishDate": 8043
+    "noPublishDate": 8023
   },
   "findings": [
     {
@@ -21173,6 +21173,7 @@
     {
       "showId": "gatz-off-broadway-2024",
       "file": "this-week-in-new-york--unknown.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://twi-ny.com/2024/11/10/hanging-on-every-word-the-great-gatsby-from-start-to-finish/",
       "findings": [
@@ -63605,6 +63606,19 @@
     },
     {
       "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2014-10-31",
+      "url": "https://www.londonboxoffice.co.uk/news/post/scottsboro-boys-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
       "file": "musical-theatre-review--unknown.json",
       "score": 77,
       "publishDate": "2014-10-21",
@@ -78037,6 +78051,7 @@
     {
       "showId": "bowl-ep-off-broadway-2025",
       "file": "the-interested-bystander--unknown.json",
+      "score": 62,
       "publishDate": null,
       "url": "https://www.interestedbystander.com/2025/06/reviews-off-broadway-provides-enjoyable.html",
       "findings": [
@@ -85553,6 +85568,11 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 98d before show (2026-07-16 vs 2026-10-22)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -96362,7 +96382,7 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
-      "file": "londontheatredirect--steve-mills.json",
+      "file": "londontheatredirect--paul-lewis.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/musical/martin-guerre-tickets?srsltid=AU7gw4WVzbtbXp9TL94RyxsFIGKt5DdfBYwx9DlI3UZ93KzuEc_8bxaK",
       "findings": [
