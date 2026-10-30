@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T02:44:27.963Z",
+  "timestamp": "2026-10-30T03:00:24.849Z",
   "stats": {
-    "totalReviews": 69911,
-    "alreadyFlagged": 22291,
+    "totalReviews": 69912,
+    "alreadyFlagged": 22292,
     "dateGuardCatches": 233,
-    "directorMismatch": 2857,
-    "tvFilmSignals": 2005,
+    "directorMismatch": 2859,
+    "tvFilmSignals": 2007,
     "londonSignals": 3380,
-    "offBroadwaySignals": 626,
+    "offBroadwaySignals": 630,
     "yearMismatch": 282,
-    "noPublishDate": 8134
+    "noPublishDate": 8076
   },
   "findings": [
     {
@@ -13951,6 +13951,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "talkinbroadway--james-wilson.json",
+      "score": 85,
+      "publishDate": "March 10th, 2024",
+      "url": "https://www.talkinbroadway.com/page/ob/03_10_24.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -28957,6 +28976,19 @@
       ]
     },
     {
+      "showId": "into-the-woods-regional-2024",
+      "file": "stageandcinema--unknown.json",
+      "publishDate": "2024-11-13",
+      "url": "https://stageandcinema.com/2024/11/12/into-the-woods-kokandy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 93,
@@ -40783,6 +40815,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "only-yesterday-off-broadway-2019",
+      "file": "theater-pizzazz--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2019-09-12",
+      "url": "https://www.theaterpizzazz.com/only-yesterday-let-it-be/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -52765,6 +52811,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"david cromer\" from the-bands-visit-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-bands-visit-regional-2024",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2024-02-20",
+      "url": "https://thirdcoastreview.com/2024/02/20/writers-theatre-the-bands-visit",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -81834,6 +81893,34 @@
     },
     {
       "showId": "dr-rides-american-beach-house-off-broadway-2019",
+      "file": "off-off-online--joe-belfatti.json",
+      "score": null,
+      "publishDate": "2019-11-19",
+      "url": "https://www.offoffonline.com/offoffonline/2019/11/10/dr-rides-american-beach-house",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "dr-rides-american-beach-house-off-broadway-2019",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": "2019-11-07",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/dr-rides-american-beach-house/victor-gluck/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "dr-rides-american-beach-house-off-broadway-2019",
       "file": "vulture--helen-shaw.json",
       "score": null,
       "publishDate": "2019-11-06",
@@ -94555,6 +94642,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "make-believe-off-broadway-2019",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": "2019-09-10",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/make-believe/victor-gluck/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
