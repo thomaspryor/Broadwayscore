@@ -3291,6 +3291,37 @@
     "queuedAt": "2026-10-30T20:50:34.259Z"
   },
   {
+    "conditionKey": "land:land/bro-6038-audit-wiring",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6038-audit-wiring",
+    "description": "land.yml did not land land/bro-6038-audit-wiring: the unit-tests-node gate went red at e4e2261f5f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41125098433",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6038-audit-wiring"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e4e2261f5f6414f5e9d300bb106430234692eda7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41125098433"
+      }
+    ],
+    "queuedAt": "2026-10-30T21:06:10.205Z"
+  },
+  {
     "conditionKey": "land:land/bro-6650-freeze",
     "title": "Landing blocked: unit-tests-node red on land/bro-6650-freeze",
     "description": "land.yml did not land land/bro-6650-freeze: the unit-tests-node gate went red at 47c73c0d72. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41124831687",
