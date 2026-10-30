@@ -8,7 +8,7 @@
  * site would display its critic score: computeCriticScore over its scored reviews, then
  * hasEnoughReviews (scripts/lib/min-reviews.js), the same gate as the show page badge.
  *
- *   node scripts/uk-regional-coverage.js [--json] [--min-share=0.6] [--min-shows=450]
+ *   node scripts/uk-regional-coverage.js [--json] [--min-share=0.6] [--min-shows=450] [--report=<file>]
  * Exit 1 when a --min-* target is missed (test.yml runs it advisory), else 0.
  */
 const path = require('path');
@@ -29,6 +29,7 @@ function coverage(shows, reviews, outletRegistry) {
     byShow.get(r.showId).push(r);
   }
   const cities = {};
+  const belowBar = [];
   for (const s of shows) {
     if (s.category !== 'regional' || !isUkRegionalVenue(s.venue) || isLocalOnlyShow(s)) continue;
     const c = (cities[s.city || 'unknown'] ||= { shows: 0, reviews: 0, scoreable: 0 });
@@ -37,21 +38,25 @@ function coverage(shows, reviews, outletRegistry) {
     c.reviews += revs.length;
     const res = revs.length ? computeCriticScore(revs, outletRegistry, s.category, s.type) : null;
     if (res && hasEnoughReviews(res.rc, s.category, res.t1 + res.t2)) c.scoreable += 1;
+    else belowBar.push({ id: s.id, city: s.city || null, reviews: revs.length });
   }
   const total = Object.values(cities).reduce((a, c) => ({ shows: a.shows + c.shows, reviews: a.reviews + c.reviews, scoreable: a.scoreable + c.scoreable }), { shows: 0, reviews: 0, scoreable: 0 });
-  return { cities, total };
+  return { cities, total, belowBar };
 }
 
 function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/uk-regional-coverage.js [--json] [--min-share=0.6] [--min-shows=450]');
+    console.log('Usage: node scripts/uk-regional-coverage.js [--json] [--min-share=0.6] [--min-shows=450] [--report=<file>]');
     return 0;
   }
   const arg = (k) => (argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=')[1];
   const raw = require(path.join(DATA, 'shows.json'));
   const reg = require(path.join(DATA, 'outlet-registry.json'));
-  const { cities, total } = coverage(Array.isArray(raw) ? raw : raw.shows, loadReviewsWithBlog(), reg.outlets || reg);
+  const { cities, total, belowBar } = coverage(Array.isArray(raw) ? raw : raw.shows, loadReviewsWithBlog(), reg.outlets || reg);
   const share = total.shows ? total.scoreable / total.shows : 0;
+  if (arg('report')) {
+    require('fs').writeFileSync(arg('report'), JSON.stringify({ generated: new Date().toISOString().slice(0, 10), total, share, belowBar }, null, 2) + '\n');
+  }
   if (argv.includes('--json')) console.log(JSON.stringify({ cities, total, share }, null, 2));
   else {
     for (const [city, c] of Object.entries(cities).sort((a, b) => b[1].shows - a[1].shows)) {
