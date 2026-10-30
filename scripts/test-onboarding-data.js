@@ -39,6 +39,7 @@ for (const city of Object.keys(hits)) {
   assert(rows.length >= (home ? 10 : minCityHits), `${city}: enough hits (${rows.length}, min ${home ? 10 : minCityHits})`);
   assert(rows.every(r => ids.has(r.showId) && r.poster && r.productions.length >= 1), `${city}: every hit maps to a real show with a poster and a production`);
   assert(rows.every((r, i) => i === 0 || rows[i - 1].days >= r.days), `${city}: sorted by days played`);
+  if (!home) assert(rows.every(r => r.productions.every(p => p.closed)), `${city}: regional runs all have a closing date (no stale open rows counted to today)`);
 }
 
 // Every city either has its own list or names the home list it falls back to (BRO-6647); no city is left without one.

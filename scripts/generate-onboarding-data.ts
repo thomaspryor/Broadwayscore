@@ -32,6 +32,9 @@ const daysInWindow = (s: Show) => {
   if (!s.od) return 0;
   // Closed with no closing date: the run length is unknown, so it earns no days (never counted to today).
   if (s.st === 'closed' && !s.cd) return 0;
+  // Regional rows are often left 'open' with no closing date long after a short run; counting those to
+  // today measures stale data, not run length. A regional run counts only with both dates.
+  if (s.cat === 'regional' && !s.cd) return 0;
   const start = Math.max(new Date(s.od).getTime(), windowStart.getTime());
   const end = Math.min(s.cd ? new Date(s.cd).getTime() : today.getTime(), today.getTime());
   if (end <= start) return 0;
@@ -96,7 +99,7 @@ for (const v of ukRegional) {
   cities.push({ id, name: v.city, kind: 'uk-regional', market: 'london' });
   // Venues of this city (a city can have several rows in uk-regional-venues.json).
   const keys = ukRegional.filter(r => r.city === v.city).flatMap(r => [r.match, ...(r.aliases || [])]).map(k => k.toLowerCase());
-  const own = hitsFor(s => s.cat !== 'broadway' && !!s.v && keys.some(k => s.v!.toLowerCase().includes(k)));
+  const own = hitsFor(s => s.cat === 'regional' && !!s.v && keys.some(k => s.v!.toLowerCase().includes(k)));
   if (own.length >= MIN_CITY_HITS) hits[id] = own; else fallback[id] = 'london';
 }
 for (const c of getTourCities().values()) {
