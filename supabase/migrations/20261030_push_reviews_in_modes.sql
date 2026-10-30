@@ -22,10 +22,10 @@
 -- value), so old calls keep working unchanged. NULL keeps, an empty array
 -- clears.
 --
--- Re-runnable. ROLLBACK (sender and app reverted first):
+-- Re-runnable (the first apply missed updated_at; re-applying fixes it). ROLLBACK (sender and app reverted first):
 --   DROP FUNCTION IF EXISTS public.set_push_prefs(text, text, boolean, boolean, boolean, text, boolean, text[]);
 --   ALTER TABLE public.push_tokens DROP COLUMN IF EXISTS reviews_in_modes;
---   then re-run the set_push_prefs block of 20261026_push_alert_prefs.sql.
+--   then re-run the set_push_prefs block of 20261026c_push_token_link_rpcs.sql.
 
 ALTER TABLE public.push_tokens ADD COLUMN IF NOT EXISTS reviews_in_modes TEXT[] NOT NULL DEFAULT '{}';
 
@@ -79,7 +79,9 @@ BEGIN
          rate = COALESCE(p_rate, rate),
          market = COALESCE(p_market, market),
          local_reminders = COALESCE(p_local_reminders, local_reminders),
-         prefs_updated_at = now()
+         prefs_updated_at = now(),
+         -- 20261026c: a prefs write keeps the device fresh for the sender's staleness filter.
+         updated_at = now()
    WHERE token = p_token;
 END;
 $$;
