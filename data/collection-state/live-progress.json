@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-30T02:37:33.577Z",
-  "processed": 463,
-  "failed": 200,
-  "successRate": "69.8%",
+  "updatedAt": "2026-10-30T03:00:28.322Z",
+  "processed": 399,
+  "failed": 198,
+  "successRate": "66.8%",
   "tierBreakdown": {
-    "playwright": 210,
-    "amp": 1,
-    "browserbase": 24,
+    "playwright": 181,
+    "amp": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 30,
-    "scrapingbee": 16,
-    "brightdata": 3,
-    "archiveToday": 62,
-    "archive": 146
+    "scrapingdog": 28,
+    "scrapingbee": 5,
+    "brightdata": 17,
+    "archiveToday": 61,
+    "archive": 40
   },
   "browserbaseSessions": 4,
   "recentActivity": [
@@ -122,13 +122,47 @@
     {
       "t": "2026-10-30T01:19:52.554Z",
       "event": "bb-session",
-      "session": "eb75d53e",
-      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+      "session": "618f1a9b",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     },
     {
-      "t": "2026-10-30T01:19:53.029Z",
+      "t": "2026-10-30T02:53:42.225Z",
+      "event": "bb-session",
+      "session": "b700532f",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-30T02:53:42.937Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T02:55:19.801Z",
+      "event": "bb-session",
+      "session": "52dc272a",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T02:55:20.516Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-30T02:57:45.514Z",
+      "event": "bb-session",
+      "session": "2946f3b8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-30T02:59:38.235Z",
+      "event": "bb-session",
+      "session": "54f9dac6",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-30T02:59:38.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
