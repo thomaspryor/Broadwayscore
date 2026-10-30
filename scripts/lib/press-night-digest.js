@@ -99,7 +99,10 @@ const isPaywallExcused = (i) => !!i.paywallExcused;
 function queuedAtFor(outletId, item, rec) {
   if (item && item.seenAt) return item.seenAt;
   const files = (rec.fileState && rec.fileState.files) || [];
-  const seen = files.filter((f) => f.outletId === outletId && f.includable && f.firstSeenAt).map((f) => f.firstSeenAt).sort()[0];
+  // Only a file first seen this night counts (a preview-period file of the same outlet does not).
+  const fromMs = Date.parse(rec.embargoAt) - DEFAULT_GATES.nightStartH * 3600 * 1000;
+  const seen = files.filter((f) => f.outletId === outletId && f.includable && f.firstSeenAt && !(Date.parse(f.firstSeenAt) < fromMs))
+    .map((f) => f.firstSeenAt).sort()[0];
   if (seen) return seen;
   const lane = publishPath(rec) === 'lane' && rec.laneShadow && rec.laneShadow.discoveredByOutlet;
   return (lane && lane[outletId]) || null;
@@ -244,7 +247,7 @@ function buildShowLine({ title, reviews, emails = [] }) {
   const parts = [];
   const misses = [];
   // BRO-6652: say which path published the night, and any hand fix (it keeps the night off "on their own").
-  const lead = [reviews.publishedBy === 'lane' ? 'published by the new lane' : 'published by the regular pipeline'];
+  const lead = [{ lane: 'published by the new lane', unknown: 'could not tell who published' }[reviews.publishedBy] || 'published by the regular pipeline'];
   for (const m of reviews.manualActions || []) {
     lead.push(`${m.outlet || (m.outletId ? outletName({ outletId: m.outletId }) : 'a review')} fixed by hand at ${etTime(m.at)}`);
   }
@@ -341,7 +344,9 @@ function buildSection({ night, records, shows, sentShows = {}, redditDrafts = {}
 function scoreboard(records, nowMs = Date.now()) {
   const out = { graded: 0, passed: 0, passedOnOwn: 0 };
   for (const { rec } of records) {
-    const r = gradeReviews(rec, nowMs);
+    let r;
+    // One malformed past record must not break the morning snapshot.
+    try { r = gradeReviews(rec, nowMs); } catch { continue; }
     if (!r.finalized || r.verdict === 'UNKNOWN' || r.verdict === 'PENDING') continue;
     out.graded += 1;
     if (r.verdict !== 'PASS') continue;

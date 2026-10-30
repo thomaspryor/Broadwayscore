@@ -323,6 +323,28 @@ test('path wording: a regular night and a lane night each name who published', (
   assert.deepEqual([R.publishPath(rec), rec.publishedBy.holder, rec.publishedBy.checks.length], ['lane', 'x', 3]);
 });
 
+test('who published: an unread or out-of-window answer is unknown, never regular, and keeps the lane release rule', () => {
+  const stamp = (rec, standDown, reason, label) => R.stampPublishedBy(rec, standDown == null ? null : { standDown, reason }, { checkedAt: 'x', label, error: standDown == null ? reason : null });
+  // Failed reads at +2h, then the end capture (always outside the lane window): nobody could tell.
+  const unk = AFGM();
+  stamp(unk, false, 'lease state unknown', '2h');
+  stamp(unk, null, 'decision failed: boom', 'end');
+  stamp(unk, false, 'outside the 2026-10-29 press-night window', 'end');
+  assert.equal(R.publishPath(unk), 'unknown');
+  // The end capture's "no live lane lease" proves nothing (the lane may have released it).
+  const endOnly = AFGM();
+  stamp(endOnly, false, 'no live lane lease', 'end');
+  assert.equal(R.publishPath(endOnly), 'unknown');
+  // Answers that prove the old path published.
+  for (const reason of ['market not lane-only', 'lane gha-9 stood down (exit 3)', 'LANE_STANDDOWN covers the show']) {
+    const r = AFGM(); stamp(r, false, reason, 'end'); assert.equal(R.publishPath(r), 'regular', reason);
+  }
+  // Unknown night: the lane's own discovery does not set the release, and the email says nobody could tell.
+  assert.equal(R.observedRelease(unk), null);
+  const live = { 'a-few-good-men-2026': { score: 60, reviewCount: 23 } };
+  assert.match(lineFor(unk, AFGM_SHOW, { sentShows: sentWithDraft(), redditDrafts: redditEmailed(60, 23), live }).line, /^A Few Good Men: could not tell who published; /);
+});
+
 test('lane night: a lane that discovered late keeps the assumed embargo (its own discovery is not the release)', () => {
   // Shadow night: the lane's 11:02pm discovery moves the release (BRO-6614).
   assert.equal(D.gradeReviews(AFGM(), AFTER_DEADLINE).release.observedFrom, 'lane-discovery');
@@ -357,6 +379,10 @@ test('paywall 3b: queued on time with the text missing is excused; the same outl
   const lateQ = heartAs('nytimes', 'wsj');
   lateQ.fileState.files.find((f) => f.outletId === 'wsj').firstSeenAt = '2026-10-30T04:30:00.000Z';
   assert.equal(D.gradeReviews(lateQ, AFTER_DEADLINE).verdict, 'FAIL');
+  // A file of that outlet first seen before the night (a preview-period review) is not this night's queue.
+  const oldQ = heartAs('nytimes', 'wsj');
+  oldQ.fileState.files.find((f) => f.outletId === 'wsj').firstSeenAt = '2026-10-01T12:00:00.000Z';
+  assert.equal(D.gradeReviews(oldQ, AFTER_DEADLINE).verdict, 'FAIL');
   // On a lane night the lane's discovery counts as queued; on a shadow night it does not.
   const laneQ = heartAs('nytimes', 'wsj', { neverQueued: true });
   laneQ.laneShadow = { ...(laneQ.laneShadow || {}), discoveredByOutlet: { wsj: '2026-10-30T02:20:00.000Z' } };
@@ -385,6 +411,8 @@ test('passed on their own: AFGM 10-29 (TheWrap hand-ingested 12:42am) never coun
   const clean = afgmOnTime(); clean.manualActions = [];
   const legacy = afgmOnTime(); delete legacy.manualActions;
   assert.deepEqual(D.scoreboard([{ rec: clean }, { rec: legacy }], AFTER_DEADLINE), { graded: 2, passed: 2, passedOnOwn: 1 });
+  // A malformed past record is skipped, it does not break the morning snapshot.
+  assert.deepEqual(D.scoreboard([{ rec: { embargoAt: 5, probe: { endedAt: 'x' }, perReview: 7 } }, { rec: clean }], AFTER_DEADLINE).graded, 1);
   // Any logged hand fix rules the night out, even one after the +6h window.
   const late = afgmOnTime(); late.manualActions = [{ at: '2026-10-31T12:00:00Z', outletId: 'thewrap', kind: 'hand-fix' }];
   assert.deepEqual(D.scoreboard([{ rec: late }], AFTER_DEADLINE).passedOnOwn, 0);

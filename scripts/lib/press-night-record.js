@@ -438,7 +438,18 @@ function laneShadowFrom({ report = null, liveRows = [], ledgerRows = [], importe
  * 'regular', which is what every night before the lane-only cutover was.
  */
 function publishPath(rec) {
-  return rec && rec.publishedBy && rec.publishedBy.path === 'lane' ? 'lane' : 'regular';
+  const p = rec && rec.publishedBy && rec.publishedBy.path;
+  return p === 'lane' || p === 'unknown' ? p : 'regular';
+}
+
+// A lane-only answer that proves the old path published: the market is not lane-only, the lane stood down,
+// or (inside the night, so not the end capture, which always falls outside the lane's +6h window) the lane
+// held no lease. Every other "keep the old path" answer is an unread input or out of window: unknown.
+function provesRegular(c) {
+  if (c.standDown !== false) return false;
+  const r = String(c.reason || '');
+  if (/^market not lane-only$|^lane .* stood down \(exit 3\)$|^LANE_STANDDOWN covers the show$/.test(r)) return true;
+  return r === 'no live lane lease' && c.label !== 'end';
 }
 
 /**
@@ -454,7 +465,7 @@ function stampPublishedBy(rec, decision, { checkedAt, label = null, error = null
   const checks = [...((rec.publishedBy && rec.publishedBy.checks) || []), check];
   const lane = checks.find((c) => c.standDown === true);
   rec.publishedBy = {
-    path: lane ? 'lane' : 'regular',
+    path: lane ? 'lane' : checks.some(provesRegular) ? 'regular' : 'unknown',
     method: 'lane-only-decision',
     ...(lane ? { holder: lane.holder || null, stoodDownSeenAt: lane.at } : {}),
     checks,
@@ -888,7 +899,8 @@ function observedRelease(rec) {
   // BRO-6652: on a night the lane published, its first discovery is the thing being graded, so it cannot
   // also set the release. Only an outlet's own clock-time publish date can (first live only lowers it); with
   // none the assumed embargo stands.
-  if (publishPath(rec) === 'lane') return observedReleaseFromPublish(rec);
+  // A night nobody could tell gets the same rule: the lane may have been the one publishing.
+  if (publishPath(rec) !== 'regular') return observedReleaseFromPublish(rec);
   const ls = rec.laneShadow;
   const embMs = toMs(rec.embargoAt);
   const discMs = ls ? toMs(ls.firstDiscoveredAt) : null;
