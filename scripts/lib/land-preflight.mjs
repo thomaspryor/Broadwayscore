@@ -482,6 +482,20 @@ export const WORKFLOW_CHECKS = [
   // the job-timeout-margin gate (~1s locally). `file` is what must exist in the tree to run it.
   { name: 'audit-push-retry-budgets.js --fail-on-job-timeout', cmd: 'node', args: ['scripts/audit-push-retry-budgets.js', '--fail-on-job-timeout'], fix: 'raise the timeout-minutes of the job it names' },
   { name: 'audit-push-retry-budgets-residual.test.mjs', cmd: 'node', args: ['--test', 'tests/unit/audit-push-retry-budgets-residual.test.mjs'], file: 'tests/unit/audit-push-retry-budgets-residual.test.mjs', fix: 'see the failing assertion; usually raise the job timeout-minutes (node scripts/audit-push-retry-budgets.js lists call sites)' },
+  // BRO-5120: the rest of test.yml's lint-workflows audit list that reads only
+  // workflow files and scripts (each ran 0.1-5s on main), so a miss is caught
+  // here, not in a ~35 min land cycle.
+  { name: 'audit-workflow-concurrency.js', cmd: 'node', args: ['scripts/audit-workflow-concurrency.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-workflow-secret-gaps.js', cmd: 'node', args: ['scripts/audit-workflow-secret-gaps.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-run-budget-coverage.js', cmd: 'node', args: ['scripts/audit-run-budget-coverage.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-run-budget-slack.js', cmd: 'node', args: ['scripts/audit-run-budget-slack.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-errexit-unguarded-substitution.js', cmd: 'node', args: ['scripts/audit-errexit-unguarded-substitution.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-same-job-breadcrumb-coverage.js', cmd: 'node', args: ['scripts/audit-same-job-breadcrumb-coverage.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-delete-without-breadcrumb.js', cmd: 'node', args: ['scripts/audit-delete-without-breadcrumb.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-alert-reachability.js', cmd: 'node', args: ['scripts/audit-alert-reachability.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-push-core-data-audit-gap.js', cmd: 'node', args: ['scripts/audit-push-core-data-audit-gap.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-blanket-sweep-audit-writes.js', cmd: 'node', args: ['scripts/audit-blanket-sweep-audit-writes.js'], fix: 'fix the lines it prints' },
+  { name: 'audit-test-yml-manifest-paths.js', cmd: 'node', args: ['scripts/audit-test-yml-manifest-paths.js'], fix: 'fix the lines it prints' },
 ];
 /** Nearest node_modules at or above dir (a worktree under .claude/worktrees has none of its own). */
 function findNodeModules(dir) {
