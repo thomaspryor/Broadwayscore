@@ -246,6 +246,36 @@ function cardTitle(entry, priority) {
   return `P${priority}: Opening night miss: ${entry.title} (${entry.night})`;
 }
 
+// The Resend draft refresher and the Reddit drafter both run hourly at :41, so a score or review count that
+// moves just after them reads "out of date" (or "no Reddit draft") for up to an hour before they catch up.
+// An email miss only files a card once it has been seen for longer than one full cycle plus slack.
+const EMAIL_MISS_GRACE_MIN = 75;
+
+/**
+ * When each current miss was first seen, carried from the previous run's snapshot.
+ * @returns {Object<string,string>} "show|night|missKey" -> ISO time, current misses only
+ */
+function missFirstSeen(section, previous = {}, nowIso) {
+  const out = {};
+  for (const e of section.entries) {
+    for (const m of e.misses) {
+      const k = `${e.showId}|${e.night}|${m.key}`;
+      out[k] = (previous && previous[k]) || nowIso;
+    }
+  }
+  return out;
+}
+
+/** The section with email misses younger than the grace dropped (review misses come from finished records). */
+function settledMisses(section, firstSeen, nowMs, graceMin = EMAIL_MISS_GRACE_MIN) {
+  const settled = (e, m) => {
+    if (m.kind !== 'email') return true;
+    const at = Date.parse(firstSeen[`${e.showId}|${e.night}|${m.key}`]);
+    return Number.isFinite(at) && nowMs - at >= graceMin * 60000;
+  };
+  return { ...section, entries: section.entries.map((e) => ({ ...e, misses: e.misses.filter((m) => settled(e, m)) })) };
+}
+
 const KEY_LINE_PREFIX = 'press-night-card-key: ';
 const MISS_LINE_PREFIX = 'press-night-miss: ';
 
@@ -353,6 +383,7 @@ function renderPressNightBlock(snapshot, { esc = defaultEsc, nowMs = Date.now() 
 
 module.exports = {
   etTime, etDate, lastNight, gradeReviews, gradeEmails, buildShowLine, buildSection,
+  EMAIL_MISS_GRACE_MIN, missFirstSeen, settledMisses,
   KEY_LINE_PREFIX, MISS_LINE_PREFIX, cardKeyOf, listedMisses,
   cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock,
 };

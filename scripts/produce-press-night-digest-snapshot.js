@@ -57,13 +57,16 @@ function loadInputs(night) {
 }
 
 /** Snapshot shape for the renderer: the lines plus counts. Names only, no ids (the owner reads it). */
-function toSnapshot(section) {
+function toSnapshot(section, firstSeen = {}) {
   const count = (v) => section.entries.filter((e) => e.verdict === v).length;
   return {
     generatedAt: section.generatedAt,
     night: section.night,
     counts: { total: section.entries.length, passed: count('PASS'), failed: count('FAIL'), notGraded: count('UNKNOWN') + count('PENDING') },
     lines: section.entries.map((e) => ({ verdict: e.verdict, line: e.line })),
+    // When each current miss was first seen, read back next hour so an email miss only files a card once it
+    // outlived the hourly draft refresh (D.settledMisses). Not rendered.
+    missFirstSeen: firstSeen,
   };
 }
 
@@ -104,7 +107,9 @@ async function main() {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(night)) { console.error('--night must be YYYY-MM-DD'); return 2; }
 
   const section = D.buildSection({ night, nowMs, ...loadInputs(night) });
-  const snap = toSnapshot(section);
+  const previous = readJson(SNAPSHOT, {}) || {};
+  const firstSeen = D.missFirstSeen(section, previous.missFirstSeen, new Date(nowMs).toISOString());
+  const snap = toSnapshot(section, firstSeen);
   console.log(`Last night's openings (${night}):`);
   for (const l of snap.lines) console.log(`  [${l.verdict}] ${l.line}`);
   if (!snap.lines.length) console.log('  (no press nights)');
@@ -117,7 +122,8 @@ async function main() {
   if (process.env.PRESS_NIGHT_FIX_CARDS_DISABLED === 'true') { console.log('fix cards: disabled (PRESS_NIGHT_FIX_CARDS_DISABLED=true)'); return 0; }
   if (night < FIRST_FILING_NIGHT) { console.log(`fix cards: none for ${night}, filing starts with the ${FIRST_FILING_NIGHT} night`); return 0; }
   // Only finished records file cards: a probe still sampling can still turn a miss into a pass.
-  const graded = { ...section, entries: section.entries.filter((e) => e.verdict !== 'PENDING') };
+  // An email miss younger than one draft-refresh cycle is left for the next run (D.settledMisses).
+  const graded = D.settledMisses({ ...section, entries: section.entries.filter((e) => e.verdict !== 'PENDING') }, firstSeen, nowMs);
   const deps = linearDeps(nowMs);
   if (dryRun) {
     const would = await D.fileFixCards({ section: graded, lookupCard: deps.lookupCard,

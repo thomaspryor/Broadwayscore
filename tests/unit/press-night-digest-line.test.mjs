@@ -171,6 +171,24 @@ test('auto-filer: an email-only miss files at P2; a Linear failure is reported, 
   assert.equal(L.created.length, 1);
 });
 
+test('auto-filer grace: an email miss files only after it outlived one hourly draft refresh', () => {
+  const entry = { showId: 's', night: '2026-10-29', title: 'S', line: 'S: ...', misses: [
+    { key: 'email:reddit', kind: 'email', text: 'no Reddit draft emailed' },
+    { key: 'review:first-live', kind: 'review', text: 'late first review' },
+  ] };
+  const section = { entries: [entry] };
+  const t0 = Date.parse('2026-10-30T16:17:00Z');
+  const seen1 = D.missFirstSeen(section, {}, new Date(t0).toISOString());
+  assert.deepEqual(D.settledMisses(section, seen1, t0).entries[0].misses.map((m) => m.key), ['review:first-live']);
+  // Next hour: carried forward, still inside the grace; the hour after, settled.
+  const seen2 = D.missFirstSeen(section, seen1, '2026-10-30T17:17:00Z');
+  assert.equal(seen2['s|2026-10-29|email:reddit'], '2026-10-30T16:17:00.000Z');
+  assert.equal(D.settledMisses(section, seen2, t0 + 60 * 60000).entries[0].misses.length, 1);
+  assert.equal(D.settledMisses(section, seen2, t0 + 120 * 60000).entries[0].misses.length, 2);
+  // A miss that cleared drops out of the carried map, so a later recurrence starts its own grace.
+  assert.deepEqual(Object.keys(D.missFirstSeen({ entries: [{ ...entry, misses: [entry.misses[1]] }] }, seen2, 'x')), ['s|2026-10-29|review:first-live']);
+});
+
 test('email block: renders last night only, escapes the line, quiet when there were no openings', () => {
   const snap = { night: '2026-10-29', lines: [{ verdict: 'FAIL', line: 'A <b>Show</b>: 1 of 2 reviews live by 1:02am. Failed.' }, { verdict: 'PASS', line: 'B: 2 of 2 reviews live by 1:02am, passed.' }] };
   const html = D.renderPressNightBlock(snap, { nowMs: MORNING });
