@@ -1,0 +1,122 @@
+name: Opening-night lane recorded rehearsal
+
+# BRO-5201 (plan v2 Step 4). Replays real opening nights (scripts/lib/lane-recorded-nights) through the production lane
+# wiring, offline, grades each like a press night, and checks the fixtures against the aggregator pages archived on the
+# night (private aggregator-archive repo). Its record, data/audit/lane-rehearsal-recorded.json, is the one the arm gate
+# reads (opening-night-lane-rehearse.js --arm-check): it arms only on a recent pass under the current lane code hash.
+#
+# The archive needs REVIEW_TEXTS_TOKEN. With no token, or no archive, the rehearsal skips LOUDLY (a warning, exit 78
+# from the script) and writes nothing: a skip is never a pass, so the previous record ages out and the lane disarms.
+# The synthetic health check (lane-rehearsal.yml) stays secret-free and separate.
+#
+# Schedule: Mondays 06:25 UTC (the record is good for 8 days), and on any push to main changing the lane code, so the
+# record follows the lane hash instead of disarming the lane until Monday.
+
+on:
+  schedule:
+    - cron: '25 6 * * 1'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/lib/**'
+      - 'scripts/opening-night-lane-rehearse.js'
+      - 'scripts/llm-scoring/**'
+      - 'scripts/opening-night-lane.js'
+      - '.github/workflows/opening-night-lane-live.yml'
+      - '.github/workflows/lane-rehearsal-recorded.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lane-rehearsal-recorded
+  cancel-in-progress: false
+
+jobs:
+  rehearse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Check archive token
+        id: token
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          if [ -z "$REVIEW_TEXTS_TOKEN" ]; then
+            echo "::warning::SKIPPED: REVIEW_TEXTS_TOKEN is not set, so the aggregator archive cannot be checked out. The recorded rehearsal did not run and nothing was recorded; this is not a pass."
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout aggregator-archive (private repo)
+        if: steps.token.outputs.present == 'true'
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Exit 78 is the script's loud skip (no archive page for a night): a warning, no record, never a pass.
+      - name: Rehearse recorded nights
+        id: rehearse
+        if: steps.token.outputs.present == 'true'
+        run: |
+          set +e
+          node scripts/opening-night-lane-rehearse.js --rehearse --fixture recorded
+          code=$?
+          set -e
+          if [ "$code" -eq 78 ]; then
+            echo "::warning::SKIPPED: the recorded rehearsal found no archived aggregator page for a night. Nothing was recorded; this is not a pass."
+            exit 0
+          fi
+          exit "$code"
+
+      # Only the verdict record. The archive and review texts are private and are never staged here.
+      - name: Commit verdict record
+        if: always() && steps.token.outputs.present == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ ! -f data/audit/lane-rehearsal-recorded.json ]; then
+            echo "No record written"
+            exit 0
+          fi
+          git add data/audit/lane-rehearsal-recorded.json
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "audit: lane recorded rehearsal verdict [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: lane-rehearsal-recorded
+          push-retry-args: '5 main'
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane recorded rehearsal failed'
+          description: 'A real recorded night no longer replays cleanly through the lane code (or the fixture no longer matches the archived aggregator pages), so the lane stays disarmed and the old pipeline runs unchanged. Read data/audit/lane-rehearsal-recorded.json for the failures (BRO-5201).'
+          severity: 'warning'
+          email: 'false'
+          min_consecutive_failures: '2'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
