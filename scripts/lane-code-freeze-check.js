@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 'use strict';
-// BRO-6650: advisory pre-press-night lane code freeze check (land.yml). Always exits 0; prints status=... and, with
-// --github, a ::warning and a GITHUB_OUTPUT line. See scripts/lib/lane-code-freeze.js.
-//   node scripts/lane-code-freeze-check.js --base <ref> --head <ref> [--now ISO] [--shows data/shows.json] [--github]
+/**
+ * BRO-6650: advisory pre-press-night lane code freeze check (land.yml). Always exits 0; prints status=... and, with
+ * --github, a ::warning and a GITHUB_OUTPUT line. See scripts/lib/lane-code-freeze.js.
+ *   node scripts/lane-code-freeze-check.js --base <ref> --head <ref> [--now ISO] [--shows data/shows.json] [--github]
+ */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');

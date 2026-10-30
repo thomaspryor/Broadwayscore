@@ -254,6 +254,8 @@ on:
       - 'scripts/test-fixtures/stub-fetch-resend.cjs'
       # BRO-5325: multi-show column section copier; its colocated CLI test runs on fixtures.
       - 'scripts/copy-multishow-section.js'
+      # BRO-6650: lane code freeze CLI (land.yml advisory step), spawned by tests/unit/lane-code-freeze.test.mjs.
+      - 'scripts/lane-code-freeze-check.js'
       # BRO-6532: bulk-dispatch cap CLI, required by scripts/lib/workflow-queue-cap.test.mjs.
       - 'scripts/capped-workflow-dispatch.js'
       # BRO-3375: same gap shape — a top-level scripts/ file outside the
