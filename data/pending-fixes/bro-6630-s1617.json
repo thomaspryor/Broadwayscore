@@ -1,0 +1,755 @@
+{
+  "issueNumber": "bro-6630-s1617",
+  "planId": "aebb9d3d-6bef-4933-aedd-3919a24390ba",
+  "status": "pending",
+  "createdAt": "2026-10-30T16:39:57.389Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6630 season 2016-17: add 43 Off-Broadway shows (opening 2016-06..2017-05) found by the outlet-first census (2+ T1/T2 outlets). Dates from a Playbill production page, or two sources agreeing: BroadwayWorld show page with closing matched by TheaterMania or Broadway.com, opening corroborated by the second source and within -3..+7 days of the first write-up, venues agreeing. Broadway transfers (Oslo, Sweat, The Band's Visit) get their own Off-Broadway entries per BRO-6254. (part 1 of 2)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sweet-charity-off-broadway-2016",
+          "title": "Sweet Charity",
+          "slug": "sweet-charity-off-broadway-2016",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2016-11-02",
+          "openingDate": "2016-11-20",
+          "closingDate": "2017-01-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Sweet-Charity-331632.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sweet-charity_316243/",
+            "https://newyorktheater.me/2016/11/20/sweet-charity-with-sutton-foster-review-pics-video/",
+            "https://www.theatermania.com/news/sweet-charity_79169/",
+            "https://variety.com/2016/legit/reviews/sweet-charity-review-sutton-foster-1201923296/",
+            "https://www.vulture.com/2016/11/theater-review-can-sweet-charity-still-work.html"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-bands-visit-off-broadway-2016",
+          "title": "The Band's Visit",
+          "slug": "the-bands-visit-off-broadway-2016",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2016-11-11",
+          "openingDate": "2016-12-08",
+          "closingDate": "2017-01-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Bands-Visit-331638.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-bands-visit_316131/",
+            "https://www.theatermania.com/news/the-bands-visit_79356/",
+            "https://variety.com/2016/legit/reviews/the-bands-visit-review-musical-tony-shalhoub-1201938052/",
+            "https://newyorktheater.me/2016/12/11/the-bands-visit-review-egyptian-police-in-the-israeli-desert-making-music/",
+            "https://theaterlife.com/the-bands-visit-12-2/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "othello-off-broadway-2016",
+          "title": "Othello",
+          "slug": "othello-off-broadway-2016",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2016-11-22",
+          "openingDate": "2016-12-12",
+          "closingDate": "2017-01-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Othello-331425.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/othello_316459/",
+            "https://www.hollywoodreporter.com/lifestyle/arts/othello-review-3-955418/",
+            "https://variety.com/2016/legit/reviews/othello-review-daniel-craig-david-oyelowo-1201939890/",
+            "https://theaterlife.com/othello/",
+            "https://www.theatermania.com/news/othello_82146/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "building-the-wall-off-broadway-2017",
+          "title": "Building the Wall",
+          "slug": "building-the-wall-off-broadway-2017",
+          "venue": "New World Stages Stage 1",
+          "previewsStartDate": "2017-05-11",
+          "openingDate": "2017-05-20",
+          "closingDate": "2017-07-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/building-the-wall-off-broadway-new-world-stages-stage-1-2017",
+            "https://newyorktheater.me/2017/05/24/building-the-wall-review-where-trump-will-lead-us/",
+            "https://www.theatermania.com/news/building-the-wall_81201/",
+            "https://variety.com/2017/legit/reviews/building-the-wall-review-play-1202443064/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "everybody-off-broadway-2017",
+          "title": "Everybody",
+          "slug": "everybody-off-broadway-2017",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2017-01-31",
+          "openingDate": "2017-02-21",
+          "closingDate": "2017-03-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Everybody-331790.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/everybody_314403/",
+            "https://www.theatermania.com/news/everybody_80081/",
+            "https://variety.com/2017/legit/reviews/everybody-review-play-branden-jacobs-jenkins-1201992736/",
+            "https://newyorktheater.me/2017/02/23/everybody-review-morality-meets-mortality-600-years-later/",
+            "https://www.theaterscene.net/plays/everybody/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "if-i-forget-off-broadway-2017",
+          "title": "If I Forget",
+          "slug": "if-i-forget-off-broadway-2017",
+          "venue": "Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre",
+          "previewsStartDate": "2017-02-02",
+          "openingDate": "2017-02-22",
+          "closingDate": "2017-04-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/If-I-Forget-331642.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/if-i-forget_312788/",
+            "https://variety.com/2017/legit/reviews/if-i-forget-review-play-steven-levenson-1201992740/",
+            "https://www.theatermania.com/news/if-i-forget_80132/",
+            "https://theaterlife.com/if-i-forget/",
+            "https://www.theaterscene.net/plays/offbway-plays/if-i-forget/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "man-from-nebraska-off-broadway-2017",
+          "title": "Man From Nebraska",
+          "slug": "man-from-nebraska-off-broadway-2017",
+          "venue": "Second Stage Theater",
+          "previewsStartDate": "2017-01-26",
+          "openingDate": "2017-02-15",
+          "closingDate": "2017-03-26",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Man-from-Nebraska-331752.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/man-from-nebraska_317303/",
+            "https://newyorktheater.me/2017/02/15/man-from-nebraska-reviews-pics/",
+            "https://www.theatermania.com/news/man-from-nebraska_80041/",
+            "https://variety.com/2017/legit/reviews/man-from-nebraska-review-play-1201990161/",
+            "https://www.theaterscene.net/plays/man-from-nebraska/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "marie-and-rosetta-off-broadway-2016",
+          "title": "Marie and Rosetta",
+          "slug": "marie-and-rosetta-off-broadway-2016",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2016-08-24",
+          "openingDate": "2016-09-14",
+          "closingDate": "2016-10-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Marie-and-Rosetta-331643.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/marie-and-rosetta_315548/",
+            "https://newyorktheater.me/2016/09/14/marie-and-rosetta-review-rock-n-roll-pioneer-sister-rosetta-tharpe/",
+            "https://www.theatermania.com/news/marie-and-rosetta_78433/",
+            "https://variety.com/2016/legit/reviews/marie-and-rosetta-review-1201861008/",
+            "https://www.theaterscene.net/musicals/marie-and-rosetta/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "oslo-off-broadway-2016",
+          "title": "Oslo",
+          "slug": "oslo-off-broadway-2016",
+          "venue": "Mitzi E. Newhouse Theater",
+          "previewsStartDate": "2016-06-16",
+          "openingDate": "2016-07-11",
+          "closingDate": "2016-08-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Oslo-331517.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/oslo_313368/",
+            "https://www.theatermania.com/news/oslo_77711/",
+            "https://newyorktheater.me/2016/07/16/oslo-review-the-secret-story-of-middle-east-peace/",
+            "https://variety.com/2017/legit/reviews/oslo-review-broadway-play-1202029965/",
+            "https://www.theaterscene.net/plays/broadway-plays/oslo-2/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-babylon-line-off-broadway-2016",
+          "title": "The Babylon Line",
+          "slug": "the-babylon-line-off-broadway-2016",
+          "venue": "Mitzi E. Newhouse Theater",
+          "previewsStartDate": "2016-11-09",
+          "openingDate": "2016-12-04",
+          "closingDate": "2017-01-21",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-babylon-line-mitzi-e-newhouse-theater-2016-2017",
+            "https://www.theatermania.com/news/the-babylon-line_79325/",
+            "https://variety.com/2016/legit/reviews/the-babylon-line-review-play-josh-radnor-1201935267/",
+            "https://www.theaterscene.net/plays/the-babylon-line/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "aubergine-off-broadway-2016",
+          "title": "Aubergine",
+          "slug": "aubergine-off-broadway-2016",
+          "venue": "Playwrights Horizons",
+          "previewsStartDate": "2016-08-19",
+          "openingDate": "2016-09-12",
+          "closingDate": "2016-10-02",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Aubergine-331619.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/aubergine_315495/",
+            "https://www.theatermania.com/news/aubergine_78394/",
+            "https://variety.com/2016/legit/reviews/aubergine-review-play-julia-cho-1201858433/",
+            "https://www.theaterscene.net/plays/aubergine/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fade-off-broadway-2017",
+          "title": "Fade",
+          "slug": "fade-off-broadway-2017",
+          "venue": "Cherry Lane Theatre",
+          "previewsStartDate": "2017-01-25",
+          "openingDate": "2017-02-08",
+          "closingDate": "2017-03-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Fade-331880.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/fade_317837/",
+            "https://www.theatermania.com/news/fade_79938/",
+            "https://variety.com/2017/legit/reviews/fade-review-play-tanya-saracho-1201980218/",
+            "https://theaterlife.com/fade/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "how-to-transcend-a-happy-marriage-off-broadway-2017",
+          "title": "How to Transcend a Happy Marriage",
+          "slug": "how-to-transcend-a-happy-marriage-off-broadway-2017",
+          "venue": "Mitzi E. Newhouse Theater",
+          "previewsStartDate": "2017-02-23",
+          "openingDate": "2017-03-20",
+          "closingDate": "2017-05-07",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/How-to-Transcend-a-Happy-Marriage-331793.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/how-to-transcend-a-happy-marriage_316866/",
+            "https://www.theatermania.com/news/how-to-transcend-a-happy-marriage_80432/",
+            "https://variety.com/2017/legit/reviews/how-to-transcend-a-happy-marriage-review-1202012930/",
+            "https://www.theaterscene.net/plays/offbway-plays/how-to-transcend/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "pacific-overtures-off-broadway-2017",
+          "title": "Pacific Overtures",
+          "slug": "pacific-overtures-off-broadway-2017",
+          "venue": "Classic Stage Company",
+          "previewsStartDate": "2017-04-06",
+          "openingDate": "2017-05-04",
+          "closingDate": "2017-06-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Pacific-Overtures-331637.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/pacific-overtures_315685/",
+            "https://www.theatermania.com/news/pacific-overtures_80968/",
+            "https://variety.com/2017/legit/reviews/pacific-overtures-review-george-takei-1202409370/",
+            "https://www.theaterscene.net/musicals/offbway/pacific-overtures-2/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "plenty-off-broadway-2016",
+          "title": "Plenty",
+          "slug": "plenty-off-broadway-2016",
+          "venue": "Public Theater",
+          "previewsStartDate": "2016-10-04",
+          "openingDate": "2016-10-20",
+          "closingDate": "2016-12-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Plenty-331507.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/plenty_314894/",
+            "https://variety.com/2016/legit/reviews/plenty-review-rachel-weisz-1201894337/",
+            "https://www.theatermania.com/news/plenty_78851/",
+            "https://www.theaterscene.net/plays/plenty/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sweat-off-broadway-2016",
+          "title": "Sweat",
+          "slug": "sweat-off-broadway-2016",
+          "venue": "Public Theater",
+          "previewsStartDate": "2016-10-18",
+          "openingDate": "2016-11-03",
+          "closingDate": "2016-12-04",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Sweat-331711.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sweat_314895/",
+            "https://variety.com/2016/legit/reviews/sweat-review-lynn-nottage-1201907656/",
+            "https://www.theatermania.com/news/sweat_80501/",
+            "https://www.theaterscene.net/plays/broadway-plays/sweat-2/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-light-years-off-broadway-2017",
+          "title": "The Light Years",
+          "slug": "the-light-years-off-broadway-2017",
+          "venue": "Playwrights Horizons",
+          "previewsStartDate": "2017-02-17",
+          "openingDate": "2017-03-13",
+          "closingDate": "2017-04-02",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Light-Years-331888.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-light-years_316893/",
+            "https://www.theatermania.com/news/the-light-years_80351/",
+            "https://variety.com/2017/legit/reviews/the-light-years-review-debate-society-1202007629/",
+            "https://www.theaterscene.net/plays/offbway-plays/the-light-years/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-whirligig-off-broadway-2017",
+          "title": "The Whirligig",
+          "slug": "the-whirligig-off-broadway-2017",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2017-05-04",
+          "openingDate": "2017-05-21",
+          "closingDate": "2017-06-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Whirligig-331898.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-whirligig_317683/",
+            "https://www.theatermania.com/news/the-whirligig_81166/",
+            "https://variety.com/2017/legit/reviews/the-whirligig-review-play-zosia-mamet-1202439497/",
+            "https://www.theaterscene.net/plays/offbway-plays/the-whirligig/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "tiny-beautiful-things-off-broadway-2016",
+          "title": "Tiny Beautiful Things",
+          "slug": "tiny-beautiful-things-off-broadway-2016",
+          "venue": "Public Theater",
+          "previewsStartDate": "2016-11-15",
+          "openingDate": "2016-12-07",
+          "closingDate": "2016-12-31",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Tiny-Beautiful-Things-331826.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/tiny-beautiful-things_314903/",
+            "https://newyorktheater.me/2016/12/07/tiny-beautiful-things-review-nia-vardalos-dramatizes-dear-sugar-advice-columns/",
+            "https://www.theatermania.com/news/tiny-beautiful-things_79355/",
+            "https://variety.com/2016/legit/reviews/tiny-beautiful-things-review-1201937303/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "vietgone-off-broadway-2016",
+          "title": "Vietgone",
+          "slug": "vietgone-off-broadway-2016",
+          "venue": "New York City Center – Stage I",
+          "previewsStartDate": "2016-10-04",
+          "openingDate": "2016-10-25",
+          "closingDate": "2016-12-04",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Vietgone-331616.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/vietgone_312434/",
+            "https://www.theatermania.com/news/vietgone_78914/",
+            "https://variety.com/2016/legit/reviews/vietgone-review-play-1201898775/",
+            "https://www.theaterscene.net/plays/vietgone/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "master-harold-and-the-boys-off-broadway-2016",
+          "title": "\"Master Harold\" … and the Boys",
+          "slug": "master-harold-and-the-boys-off-broadway-2016",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2016-10-18",
+          "openingDate": "2016-11-07",
+          "closingDate": "2016-12-11",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Master-Harold...-and-the-Boys-331622.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/master-harold-and-the-boys_314402/",
+            "https://www.theatermania.com/news/master-haroldand-the-boys_79051/",
+            "https://newyorktheater.me/2016/11/10/master-harold-and-the-boys-review-pics-video/",
+            "https://www.theaterscene.net/plays/master-harold-boys/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ernest-shackleton-loves-me-off-broadway-2017",
+          "title": "Ernest Shackleton Loves Me",
+          "slug": "ernest-shackleton-loves-me-off-broadway-2017",
+          "venue": "Tony Kiser Theatre",
+          "previewsStartDate": "2017-04-14",
+          "openingDate": "2017-05-07",
+          "closingDate": "2017-06-11",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Ernest-Shackleton-Loves-Me-331977.html",
+            "https://www.broadway.com/shows/ernest-shackleton-loves-me/",
+            "https://www.theatermania.com/news/ernest-shackleton-loves-me_81029/",
+            "https://www.theaterscene.net/musicals/offbway/ernest-shackleton-loves/victor-gluck/",
+            "https://newyorktheater.me/2017/06/05/ernest-shackleton-loves-me-review-an-antarctic-explorer-in-a-brooklyn-refrigerator/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "evening-at-the-talk-house-off-broadway-2017",
+          "title": "Evening at the Talk House",
+          "slug": "evening-at-the-talk-house-off-broadway-2017",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2017-01-31",
+          "openingDate": "2017-02-16",
+          "closingDate": "2017-03-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Evening-at-the-Talk-House-331881.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/evening-at-the-talk-house_317681/",
+            "https://www.theatermania.com/news/evening-at-the-talk-house_80060/",
+            "https://theaterlife.com/evening-at-the-talk-house/",
+            "https://www.theaterscene.net/plays/evening-talk-house/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "finians-rainbow-off-broadway-2016",
+          "title": "Finian's Rainbow",
+          "slug": "finians-rainbow-off-broadway-2016",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2016-10-26",
+          "openingDate": "2016-11-06",
+          "closingDate": "2017-01-29",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Finians-Rainbow-331684.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/finians-rainbow_316363/",
+            "https://www.theatermania.com/news/finians-rainbow_79039/",
+            "https://newyorktheater.me/2016/11/07/finians-rainbow-review-political-leprechauns-updated/",
+            "https://www.theaterscene.net/musicals/finians-rainbow/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "god-of-vengeance-off-broadway-2016",
+          "title": "God of Vengeance",
+          "slug": "god-of-vengeance-off-broadway-2016",
+          "venue": "La MaMa Experimental Theatre Club",
+          "previewsStartDate": "2016-12-22",
+          "openingDate": "2016-12-25",
+          "closingDate": "2017-01-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/God-of-Vengeance-331696.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/god-of-vengeance_317435/",
+            "https://newyorktheater.me/2016/12/25/god-of-vengeance-review-broadways-first-lesbian-kiss-this-time-in-yiddish/",
+            "https://www.theaterscene.net/plays/god-of-vengeance/victor-gluck/",
+            "https://www.theatermania.com/news/god-of-vengeance_79542/"
+          ]
+        }
+      }
+    ]
+  }
+}
