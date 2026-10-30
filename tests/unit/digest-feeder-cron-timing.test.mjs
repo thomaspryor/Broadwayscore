@@ -29,6 +29,14 @@ const FEEDERS = [
   'reddit-engagement-digest.yml',
 ];
 
+// Crons that start no digest feeder, so the hour cap does not apply. Each one's
+// workflow must gate its digest-feeding job to the daily cron (checked below).
+// BRO-6634: reddit-engagement-digest.yml's hourly cron only runs the
+// opening-night post drafter; the digest job stays on '45 1 * * *'.
+const NON_FEEDER_CRONS = {
+  'reddit-engagement-digest.yml': { crons: ['41 * * * *'], feederGate: "github.event.schedule == '45 1 * * *'" },
+};
+
 function scheduledCrons(file) {
   const text = fs.readFileSync(path.join(REPO_ROOT, '.github', 'workflows', file), 'utf8');
   return [...text.matchAll(/^\s*-\s*cron:\s*['"]([^'"]+)['"]/gm)].map((m) => m[1]);
@@ -38,7 +46,13 @@ for (const file of FEEDERS) {
   test(`${file} is scheduled early enough to land before the 11:30 UTC digest`, () => {
     const crons = scheduledCrons(file);
     assert.ok(crons.length > 0, `${file} has no schedule cron`);
+    const skip = NON_FEEDER_CRONS[file];
+    if (skip) {
+      const text = fs.readFileSync(path.join(REPO_ROOT, '.github', 'workflows', file), 'utf8');
+      assert.ok(text.includes(skip.feederGate), `${file}: the digest job must stay gated on "${skip.feederGate}"`);
+    }
     for (const expr of crons) {
+      if (skip && skip.crons.includes(expr)) continue;
       const hour = expr.trim().split(/\s+/)[1];
       assert.match(hour, /^\d+$/, `${file}: cron '${expr}' hour field is not a single hour`);
       assert.ok(
