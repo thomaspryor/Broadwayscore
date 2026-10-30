@@ -260,10 +260,10 @@ jobs:
           git commit -m "data: opening-night lane stood down for ${SHOW} (${NIGHT}) [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main
 
-      # Plan v2 step 2 (BRO-6620): inside [embargo - 3h, embargo + 6h] a lane exit 3 is a failure. Page through the
-      # alert router (its ledger is committed below); outside the window it stays a notice. The lease release below and
-      # the marker above bring the old path back. A failed page fails this step, so the job's failure notice fires.
-      # held-by-other (the second armed starter, the lane's reason output) stays a notice.
+      # Plan v2 step 2 (BRO-6620): inside [embargo - 3h, embargo + 6h] a lane exit 3 is a failure. The step queues a
+      # digest row (alert ledger committed below) and exits 1, so "Notify on failure" pages tonight. Outside the window,
+      # held-by-other (the second armed starter) and LANE_STANDDOWN (the owner's switch) stay a notice. The lease release
+      # below (always(), keyed on the push) and the marker above bring the old path back.
       - name: Page if the lane stood down inside the press window (BRO-6620)
         if: always() && steps.lane.outputs.exit == '3' && github.ref == 'refs/heads/main'
         timeout-minutes: 5

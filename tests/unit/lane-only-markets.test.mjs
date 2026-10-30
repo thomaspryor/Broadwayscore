@@ -370,14 +370,16 @@ test('standDownPage: exit 3 pages inside [embargo - 3h, embargo + 6h], a notice 
   const r = (laneReason) => lom.standDownPage({ show: BWAY, night: '2026-11-05', now: '2026-11-06T03:00:00Z', laneReason }).page;
   assert.equal(r('held-by-other'), false, 'the second armed starter is not a page');
   assert.equal(r('not-armed:no-recorded-rehearsal'), true);
-  assert.equal(r('stood-down:broadway'), true);
+  assert.equal(r('stood-down:broadway'), false, 'LANE_STANDDOWN is the owner\'s switch');
+  assert.equal(r('stood-down-mid-run:broadway'), false);
   assert.equal(r(''), true, 'an unknown reason pages');
+  assert.equal(lom.standDownPage({ show: BWAY, night: '2026-11-05', now: 'junk' }).page, true, 'a bad time pages');
 });
 
-test('CLI stood-down: pages (dry run) inside the window, a notice outside, never a page outside', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
+test('CLI stood-down: fails the step (dry run) inside the window, a notice outside and for held-by-other / LANE_STANDDOWN', { skip: !realBway && 'no Broadway show in data (core data absent?)' }, () => {
   const run = (now) => spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, `--now=${now}`, '--dry-run'], { cwd: repo, encoding: 'utf8' });
   const inside = run('2026-11-06T03:30:00Z');
-  assert.equal(inside.status, 0, inside.stdout + inside.stderr);
+  assert.equal(inside.status, 1, 'inside the window the step fails so Notify on failure pages: ' + inside.stdout + inside.stderr);
   assert.match(inside.stdout, /::error::opening-night lane stood down/);
   assert.match(inside.stdout, /page=dry-run/);
   const outside = run('2026-11-05T12:00:00Z');
@@ -388,6 +390,12 @@ test('CLI stood-down: pages (dry run) inside the window, a notice outside, never
   assert.equal(second.status, 0);
   assert.match(second.stdout, /::notice::.*another run holds the lease.*no page/);
   assert.doesNotMatch(second.stdout, /page=/);
+  const owner = spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=stood-down:broadway', '--dry-run'], { cwd: repo, encoding: 'utf8' });
+  assert.equal(owner.status, 0);
+  assert.match(owner.stdout, /LANE_STANDDOWN.*no page/);
+  const unarmed = spawnSync(process.execPath, ['scripts/lane-only-markets.js', 'stood-down', `--show=${realBway.id}`, `--night=${night}`, '--now=2026-11-06T03:30:00Z', '--reason=not-armed:no-recorded-rehearsal'], { cwd: repo, encoding: 'utf8' });
+  assert.equal(unarmed.status, 1, 'not-armed fails the step without calling routeAlert');
+  assert.match(unarmed.stdout, /page=driver-digest/);
 });
 
 test('lane-live pages on exit 3 after the marker, on main, with the run URL, and does not swallow a failed page', () => {
