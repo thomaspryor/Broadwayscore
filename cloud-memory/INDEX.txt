@@ -387,7 +387,7 @@ feedback_protected_fields_every_write.md | feedback | Every write path must chec
 feedback_protected_fields_three_way_sync.md | feedback | review-write-guard.js, push-review-texts/action.yml, and restore-protected-fields.js each carry a duplicate field list — drift silently drops overrides on rebase
 feedback_pseudonymous_bylines.md | feedback | Bloggers who publish under initials/pseudonyms get inconsistent names invented by scrapers; "multi-author" audit flag is the wrong fix
 feedback_public_reachability_needs_external_vantage.md | feedback | A curl from the host never proves a URL is publicly reachable — split-horizon DNS resolves it internally; use dig @8.8.8.8 plus curl --resolve and a third-party fetcher
-feedback_public_sourcing_optional.md | feedback | Commercial/recoupment figures can go on the public site without a public citation; every claim still needs a private, internal source record.
+feedback_public_sourcing_optional.md | feedback | Commercial figures and labels can go public on a reasonable estimate or a private tip, no public citation or certainty needed; record the source privately. Don't ask the owner to approve a hedged tip.
 feedback_pull_rebase_drops_merge_commits.md | feedback | git pull --rebase silently drops merge commits, losing worktree work from a push
 feedback_pullquote_verdict_alignment.md | feedback [archived] | LLM must receive verdict direction; reject hedge openers on score ≥70.
 feedback_push_retry_timeout_math_undercounts.md | feedback | When tuning job timeout-minutes / PUSH_DEADLINE_SEC for a push-with-retry.sh caller, its own summary comments undercount the real worst case — verify against the actual chained-fetch code
