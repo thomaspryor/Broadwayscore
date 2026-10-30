@@ -21227,13 +21227,13 @@
       "title": "1 review(s) for the-ask-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-19T02:20:52.234Z",
       "incidentOpenedAt": "2026-10-19T02:20:52.234Z",
-      "lastSeen": "2026-10-30T07:59:20.717Z",
+      "lastSeen": "2026-10-30T09:36:37.599Z",
       "lastNotifiedAt": "2026-10-30T05:07:33.020Z",
       "lastSurfacedAt": "2026-10-30T05:07:33.020Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/worktree-week-voice-count-and-lede": {
       "status": "resolved",
@@ -31967,7 +31967,7 @@
       "resolveReason": "job-green"
     },
     "pending-unrecoverable:medea-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for medea-off-broadway-2026 stuck in _pending with no text and no byline",
@@ -31978,7 +31978,9 @@
       "lastSurfacedAt": "2026-10-30T07:21:57.996Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-30T09:35:26.029Z",
+      "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "health-check:Workflow repeat-failure: Test Suite / Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.)": {
       "status": "open",
