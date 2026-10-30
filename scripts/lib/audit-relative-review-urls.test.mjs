@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { classifyRelativeUrl } = require('./lib/relative-review-url.js');
+const { classifyRelativeUrl } = require('./relative-review-url.js');
 const { scan, main } = require('./audit-relative-review-urls.js');
 
 test('classifier: absolute and empty urls are fine', () => {
