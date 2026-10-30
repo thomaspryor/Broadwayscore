@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T05:02:56.695Z",
+  "timestamp": "2026-10-30T05:18:19.088Z",
   "stats": {
-    "totalReviews": 70003,
-    "alreadyFlagged": 22303,
-    "dateGuardCatches": 233,
-    "directorMismatch": 2861,
-    "tvFilmSignals": 2008,
-    "londonSignals": 3382,
+    "totalReviews": 69988,
+    "alreadyFlagged": 22276,
+    "dateGuardCatches": 232,
+    "directorMismatch": 2862,
+    "tvFilmSignals": 2009,
+    "londonSignals": 3383,
     "offBroadwaySignals": 630,
-    "yearMismatch": 283,
-    "noPublishDate": 8020
+    "yearMismatch": 284,
+    "noPublishDate": 8013
   },
   "findings": [
     {
@@ -202,6 +202,37 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "1984-royal-bath-regional-2024",
+      "file": "theatreandtonic--bryony.json",
+      "publishDate": "2024-09-26",
+      "url": "https://theatreandtonic.co.uk/blog/1984-theatre-royal-bath-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (36x) more than 2024 (2x). 2026 matches production: 1984-citizens-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "1984-royal-bath-regional-2024",
+      "file": "whatsonstage--kris-hallett.json",
+      "publishDate": "2024-09-26",
+      "url": "https://www.whatsonstage.com/news/george-orwells-1984-at-theatre-royal-bath-and-on-tour-review_1634250/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from 1984-2017"
         }
       ]
     },
@@ -38728,18 +38759,6 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "thestage--unknown.json",
-      "score": 94,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "timeout-london--unknown.json",
       "publishDate": "2022-10-16",
       "url": "https://www.timeout.com/london/theatre/we-made-a-different-cat-bus-a-day-for-five-days-inside-the-rscs-my-neighbour-totoro",
@@ -53571,6 +53590,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "the-buddha-of-suburbia-royal-shakespeare-regional-2024",
+      "file": "therealchrisparkle--therealchrisparkle.json",
+      "publishDate": "2024-05-01",
+      "url": "https://therealchrisparkle.com/2024/05/01/review-the-buddha-of-suburbia-royal-shakespeare-company-at-the-swan-theatre-stratford-upon-avon-30th-april-2024/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -97962,20 +97994,6 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "standard--unknown.json",
-      "score": 61,
-      "publishDate": null,
-      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
       "score": 72,
       "publishDate": "2025-11-01",
@@ -102085,19 +102103,6 @@
       "score": 94,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-pride-dorfman-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "pride-west-end-2026",
-      "file": "broadwayworld--jay-irwin.json",
-      "publishDate": "2026-08-25",
-      "url": "https://www.broadwayworld.com/westend/article/PRIDE-Musical-to-Transfer-to-The-Bridge-Theatre-20260825",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -115853,6 +115858,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-promise-chichester-festival-regional-2024",
+      "file": "guardian--paul-unwin.json",
+      "publishDate": "2024-07-23",
+      "url": "https://www.theguardian.com/stage/article/2024/jul/23/the-promise-play-labour-1945-landslide-nhs",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-promise-chichester-festival-regional-2024",
+      "file": "theatreandtonic--rosie.json",
+      "publishDate": "2024-07-30",
+      "url": "https://theatreandtonic.co.uk/blog/the-promise-minerva-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
