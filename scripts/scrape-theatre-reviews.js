@@ -25,6 +25,7 @@
  *         Creates review files in data/review-texts/{show-id}/
  */
 
+const { writableShowIds } = require('./lib/opening-night-lane/lease-guard');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -410,7 +411,9 @@ function parseReviewParagraph($, $p, text, stars) {
 /**
  * Create or update review files from extracted reviews
  */
-function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
+function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR, leaseOpts = {}) {
+  // BRO-6648 S1-T4: a show the opening-night lane holds is the lane's to write.
+  if (!writableShowIds([showId], { label: 'theatre-reviews', ...leaseOpts }).length) return { created: 0, updated: 0, skipped: reviews.length, leased: true, outcomes: reviews.map(r => ({ action: 'skipped', outlet: r.outlet, critic: r.critic || null, reason: 'opening-night lane holds this show' })) };
   let created = 0, updated = 0, skipped = 0;
   const outcomes = [];
 

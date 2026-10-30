@@ -204,6 +204,8 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Opening-night lease sync (BRO-6648)
+        uses: ./.github/actions/opening-night-lease-sync
 
       - name: Discover reviews via SERP (scheduled days, heavy ticks only)
         if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'

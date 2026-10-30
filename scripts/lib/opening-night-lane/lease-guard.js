@@ -110,6 +110,16 @@ function partitionLeased(showIds, opts = {}) {
   return { kept, skipped };
 }
 
+/**
+ * Writer entry points call this once on the show ids they are about to write (BRO-6648 S1-T1..T5).
+ * Returns the ids that may be written and prints one line per held-back show. `label` names the writer.
+ */
+function writableShowIds(showIds, { label = 'writer', ...opts } = {}) {
+  const { kept, skipped } = partitionLeased(showIds, opts);
+  for (const { lease: l } of skipped) console.log(`[${label}] skip ${describe(l)}`);
+  return kept;
+}
+
 /** PUBLISH view: every show id with a live lease (all nights). Unknown names none (old path publishes). Unreadable file throws. */
 function leasedShowIds({ file, now, env = process.env } = {}) {
   const f = file || leasesFile(env);
@@ -154,5 +164,5 @@ const describe = (l) => `${l.show} leased to ${l.holder}${l.expiresAt ? ` until 
 
 module.exports = {
   WRITER_WINDOW_BEFORE_MIN, WRITER_WINDOW_AFTER_MIN, readUnknownMarker, DEFAULT_LEASES_FILE, DEFAULT_SHOWS_FILE, leasesFile, showsFile, tonightShowIds, readView,
-  writeBlockedShowIds, leaseSkipReason, partitionLeased, leasedShowIds, revertLeasedChanges, describe,
+  writeBlockedShowIds, leaseSkipReason, partitionLeased, writableShowIds, leasedShowIds, revertLeasedChanges, describe,
 };

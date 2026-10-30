@@ -80,6 +80,7 @@ const { getBestTextForScoring } = require('../lib/text-quality');
 const { shouldSuppressExcerptOnlyWrongShow } = require('../lib/excerpt-wrongshow-guard');
 const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
+const { writableShowIds } = require('../lib/opening-night-lane/lease-guard');
 const { humanClearOverridingRejection } = require('../lib/human-cleared-rejection');
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
@@ -819,6 +820,13 @@ function parseArgs(): ScoringPipelineOptions & {
 /**
  * Get all review text files
  */
+/** Review files whose show (its directory under review-texts) the opening-night lane does not hold right now. */
+export function dropLeasedFiles<T extends { path: string }>(files: T[], opts: Record<string, unknown> = {}): T[] {
+  const showOf = (f: T) => path.basename(path.dirname(f.path));
+  const ok = new Set<string>(writableShowIds([...new Set(files.map(showOf))], { label: 'scoring', ...opts }));
+  return files.filter((f) => ok.has(showOf(f)));
+}
+
 function getAllReviewFiles(showId?: string, showIds?: string[]): Array<{ path: string; data: ReviewTextFile }> {
   const files: Array<{ path: string; data: ReviewTextFile }> = [];
 
@@ -1079,7 +1087,8 @@ async function main(): Promise<void> {
   // Get review files
   // Support comma-separated show IDs: --show=foo,bar,baz
   const showIds = options.showId?.includes(',') ? options.showId.split(',').map(s => s.trim()).filter(Boolean) : undefined;
-  const allFiles = getAllReviewFiles(showIds ? undefined : options.showId, showIds);
+  // BRO-6648 S1-T3: shows the opening-night lane holds are the lane's to score; drop them from this run.
+  const allFiles = dropLeasedFiles(getAllReviewFiles(showIds ? undefined : options.showId, showIds));
 
   if (allFiles.length === 0) {
     console.log('No review files found.');

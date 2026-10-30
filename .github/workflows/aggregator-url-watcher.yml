@@ -79,6 +79,8 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Opening-night lease sync (BRO-6648)
+        uses: ./.github/actions/opening-night-lease-sync
 
       - name: Quick exit if no opening tonight
         id: gate

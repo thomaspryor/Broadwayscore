@@ -102,6 +102,8 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Opening-night lease sync (BRO-6648)
+        uses: ./.github/actions/opening-night-lease-sync
 
       - name: Determine market
         id: market

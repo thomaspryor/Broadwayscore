@@ -299,12 +299,23 @@ test('revertLeasedChanges handles staged new files and renames (autostash-confli
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 
 test('structural: every competing workflow syncs leases after each review-texts checkout', () => {
-  for (const w of ['opening-night-poller', 'opening-night-express', 'gather-reviews', 'enrich-reviews', 'rebuild-reviews', 'rebuild-fast']) {
+  for (const w of ['opening-night-poller', 'opening-night-express', 'gather-reviews', 'enrich-reviews', 'rebuild-reviews', 'rebuild-fast',
+    // BRO-6648 S1-T1..T5: the old-path writers
+    'collect-review-texts', 'overnight-collect', 'llm-ensemble-score', 'recollect-for-scores', 'opening-night-reviews', 'scrape-theatre-reviews', 'scrape-new-aggregators']) {
     const y = read(`.github/workflows/${w}.yml`);
     const checkouts = [...y.matchAll(/uses: \.\/\.github\/actions\/checkout-review-texts/g)].length;
     const syncs = [...y.matchAll(/uses: \.\/\.github\/actions\/opening-night-lease-sync/g)].length;
     assert.ok(checkouts > 0, `${w} has no review-texts checkout (list is stale)`);
     assert.equal(syncs, checkouts, `${w}: ${checkouts} checkout(s) but ${syncs} lease sync step(s)`);
+  }
+});
+
+test('structural: the watcher and the orchestrator sync leases after the core-data checkout (BRO-6648 S1-T1, S1-T5)', () => {
+  for (const w of ['aggregator-url-watcher', 'opening-night-orchestrator']) {
+    const y = read(`.github/workflows/${w}.yml`);
+    const syncAt = y.indexOf('uses: ./.github/actions/opening-night-lease-sync');
+    assert.ok(syncAt > 0, `${w} has no lease sync step`);
+    assert.ok(syncAt > y.indexOf('uses: ./.github/actions/checkout-core-data'), `${w}: sync must follow the core-data checkout (tonight's list reads shows.json)`);
   }
 });
 

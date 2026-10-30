@@ -299,6 +299,8 @@ async function main() {
   }
 
   const showId = show.id || show.slug;
+  // BRO-6648 S1-T4: a show the opening-night lane holds is the lane's to write.
+  if (!require('./lib/opening-night-lane/lease-guard').writableShowIds([showId], { label: 'discover' }).length) return;
   const showTitle = show.title;
   const year = (show.openingDate || '').substring(0, 4);
 

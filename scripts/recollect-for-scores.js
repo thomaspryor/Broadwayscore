@@ -48,6 +48,7 @@ const { setExtractedScore, isScoreClearSupersededBy } = require('./lib/score-rou
 const { isTier15OverrideActive } = require('./lib/rebuild-helpers');
 const { AGGREGATOR_DOMAINS } = require('./lib/aggregator-domains');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { writableShowIds } = require('./lib/opening-night-lane/lease-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { withDeadline } = require('./lib/cron-deadline');
 const { loadState, saveState, orderTargets, recordAttempt, pruneState } = require('./lib/recollect-state');
@@ -214,7 +215,8 @@ async function main() {
   console.log(`Limit: ${limit} | Delay: ${delay}ms\n`);
 
   // Find targets
-  const showDirs = listShowDirs(REVIEW_DIR);
+  // BRO-6648 S1-T4: shows the opening-night lane holds are the lane's to write.
+  const showDirs = writableShowIds(listShowDirs(REVIEW_DIR), { label: 'recollect' });
 
   const targets = [];
   for (const dir of showDirs) {

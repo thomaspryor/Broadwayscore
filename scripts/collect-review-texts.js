@@ -6273,6 +6273,12 @@ function pushReviewTextsCheckpoint(processed) {
 // FIND REVIEWS TO PROCESS
 // ============================================================================
 
+/** Reviews whose show the opening-night lane does not hold right now (lease-guard writableShowIds). */
+function dropLeasedReviews(reviews, opts) {
+  const ok = new Set(require('./lib/opening-night-lane/lease-guard').writableShowIds([...new Set(reviews.map(r => r.showId))], { label: 'collect', ...opts }));
+  return reviews.filter(r => ok.has(r.showId));
+}
+
 function findReviewsToProcess() {
   const reviews = [];
 
@@ -6782,6 +6788,13 @@ function findReviewsToProcess() {
       return true;
     });
     if (dropped) console.log(`  Deferred ${dropped} network retries past this run's caps (drain ${DRAIN_NETWORK_PER_RUN}, reopen ${MISMATCH_REOPEN_PER_RUN})`);
+    reviews.length = 0;
+    reviews.push(...kept);
+  }
+
+  // BRO-6648 S1-T2: the opening-night lane writes the shows it holds; drop them before the max limit.
+  {
+    const kept = dropLeasedReviews(reviews);
     reviews.length = 0;
     reviews.push(...kept);
   }
@@ -8420,7 +8433,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess, updateReviewJson };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess, dropLeasedReviews, updateReviewJson };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection

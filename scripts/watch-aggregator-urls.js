@@ -38,6 +38,7 @@ const { spawnSync } = require('child_process');
 const { discoverBwwRoundupUrl, scoreCandidate } = require('./lib/bww-rr-discover');
 const { fetchPage } = require('./lib/scraper');
 const { findInFlightCoverage } = require('./lib/poller-idempotency');
+const leaseGuard = require('./lib/opening-night-lane/lease-guard');
 const { findConflictingKey } = require('./lib/cache-collision');
 const W = require('./lib/watcher-loop');
 
@@ -320,13 +321,30 @@ function dispatchPoller(showId, overrides) {
   };
 }
 
+/** The openings this pass may write (slug map, state, dispatches). */
+function writableOpenings(openings, opts) {
+  const ok = new Set(leaseGuard.writableShowIds(openings.map((s) => s.id), { label: 'watch', ...opts }));
+  return openings.filter((s) => ok.has(s.id));
+}
+
+// Loop mode runs for hours: re-fetch the shared lease state (at most every 5 min) so a lease the lane
+// claims after the job started is seen. A failed sync leaves the unknown marker (tonight's shows wait).
+let leasesSyncedAt = Date.now(); // the workflow step synced just before this job started
+function refreshLeases({ now = Date.now(), run = () => require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'opening-night-lease.js'), 'sync'], { stdio: 'inherit', timeout: 90000 }) } = {}) {
+  if (now - leasesSyncedAt < 5 * 60000) return false;
+  leasesSyncedAt = now;
+  try { run(); } catch (e) { console.log(`[watch] lease re-sync failed (${String(e.message || e).slice(0, 120)}); using the lease file on disk`); }
+  return true;
+}
+
 async function pass(openings, ctx) {
   const { slugMap, state } = ctx;
   let dispatched = 0;
   let bwwFoundAny = false;
   let dtliFoundAny = false;
 
-  for (const show of openings) {
+  // BRO-6648: a show the opening-night lane holds is the lane's to write (re-read every pass: leases change mid-loop).
+  for (const show of writableOpenings(openings)) {
     console.log(`\n[watch] ${show.id} — "${show.title}"`);
     const overrides = {};
     let needsDispatch = false;
@@ -426,13 +444,16 @@ async function pass(openings, ctx) {
   return { done: !DRY_RUN && W.allDone(state, openings.map(s => s.id)) };
 }
 
-(async () => {
+module.exports = { writableOpenings, refreshLeases };
+
+if (require.main === module) (async () => {
   const shows = loadShows();
   const openings = findActiveOpenings(shows);
   const today = todayET();
 
   if (LIST_ACTIVE) {
-    console.log(openings.map(s => s.id).join(','));
+    // The orchestrator dispatches the watcher from this list: a show the lane holds is left out (BRO-6648 S1-T5).
+    console.log(writableOpenings(openings).map(s => s.id).join(','));
     process.exit(0);
   }
 
@@ -448,7 +469,7 @@ async function pass(openings, ctx) {
     const deadlineMs = Date.now() + LOOP_MINUTES * 60000;
     console.log(`[watch] loop mode: every ${INTERVAL_SECONDS}s for up to ${LOOP_MINUTES} min (opening set fixed at start)`);
     const r = await W.runLoop({
-      pass: (n) => { console.log(`\n[watch] ===== pass ${n} @ ${new Date().toISOString()} =====`); return pass(openings, ctx); },
+      pass: (n) => { console.log(`\n[watch] ===== pass ${n} @ ${new Date().toISOString()} =====`); refreshLeases(); return pass(openings, ctx); },
       intervalMs: INTERVAL_SECONDS * 1000,
       deadlineMs,
       sleep: (ms) => new Promise(res => setTimeout(res, ms)),

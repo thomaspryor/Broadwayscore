@@ -898,6 +898,11 @@ async function scrapeLBORoundups() {
     }
   }
 
+  // BRO-6648 S1-T4: drop the shows the opening-night lane holds before anything is written.
+  const writable = new Set(require('./lib/opening-night-lane/lease-guard').writableShowIds(
+    [...new Set([...matchedRoundups, ...matchedIndividual].map(r => r.show.id))], { label: 'lbo' }));
+  for (const list of [matchedRoundups, matchedIndividual]) list.splice(0, list.length, ...list.filter(r => writable.has(r.show.id)));
+
   // Process each matched roundup
   for (const { url, show } of matchedRoundups) {
     const showId = show.id;
