@@ -6046,14 +6046,15 @@
       "starScale": 5
     },
     "readaboutstuff": {
-      "displayName": "readaboutstuff",
+      "displayName": "Read About Stuff",
       "tier": 4,
       "aliases": [
         "readaboutstuff"
       ],
       "region": "london",
       "accessModel": "free",
-      "domain": "readaboutstuff.com"
+      "domain": "readaboutstuff.com",
+      "displayNameSource": "homepage"
     },
     "fairypoweredproductions": {
       "displayName": "Fairy Powered Productions",
@@ -10566,7 +10567,7 @@
       "regionInferredAt": "2026-08-17T21:52:12.003Z"
     },
     "primarytimes": {
-      "displayName": "primarytimes",
+      "displayName": "Primary Times",
       "tier": 3,
       "aliases": [
         "primarytimes"
@@ -10574,7 +10575,8 @@
       "domain": "primarytimes.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "homepage"
     },
     "today": {
       "displayName": "today",
@@ -10585,20 +10587,22 @@
       "domain": "today.com"
     },
     "timesofsandiego": {
-      "displayName": "timesofsandiego",
+      "displayName": "Times of San Diego",
       "tier": 3,
       "aliases": [
         "timesofsandiego"
       ],
-      "domain": "timesofsandiego.com"
+      "domain": "timesofsandiego.com",
+      "displayNameSource": "homepage"
     },
     "theunforgettableline": {
-      "displayName": "theunforgettableline",
+      "displayName": "The Unforgettable Line",
       "tier": 3,
       "aliases": [
         "theunforgettableline"
       ],
-      "domain": "theunforgettableline.com"
+      "domain": "theunforgettableline.com",
+      "displayNameSource": "homepage"
     },
     "raring2go": {
       "displayName": "raring2go",
@@ -10609,7 +10613,7 @@
       "domain": "raring2go.co.uk"
     },
     "openairtheatreheritage": {
-      "displayName": "openairtheatreheritage",
+      "displayName": "Open Air Theatre",
       "tier": 3,
       "aliases": [
         "openairtheatreheritage"
@@ -10617,7 +10621,8 @@
       "domain": "openairtheatreheritage.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "manual"
     },
     "letterboxd": {
       "displayName": "letterboxd",
@@ -10653,25 +10658,27 @@
       "regionInferredAt": "2026-08-18T14:28:06.532Z"
     },
     "chicagoconcertreviews": {
-      "displayName": "chicagoconcertreviews",
+      "displayName": "Chicago Concert Reviews",
       "tier": 3,
       "aliases": [
         "chicagoconcertreviews"
       ],
       "domain": "chicagoconcertreviews.com",
-      "metro": "chicago-il"
+      "metro": "chicago-il",
+      "displayNameSource": "homepage"
     },
     "chicagocultureauthority": {
-      "displayName": "chicagocultureauthority",
+      "displayName": "Chicago Culture Authority",
       "tier": 3,
       "aliases": [
         "chicagocultureauthority"
       ],
       "domain": "chicagocultureauthority.com",
-      "metro": "chicago-il"
+      "metro": "chicago-il",
+      "displayNameSource": "homepage"
     },
     "chelmsfordtheatre": {
-      "displayName": "chelmsfordtheatre",
+      "displayName": "Chelmsford Theatre",
       "tier": 3,
       "aliases": [
         "chelmsfordtheatre"
@@ -10679,7 +10686,8 @@
       "domain": "chelmsfordtheatre.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "homepage"
     },
     "renew-here": {
       "displayName": "renew here",
@@ -10691,7 +10699,7 @@
       "domain": "simplecirc.com"
     },
     "dayoutwiththekids": {
-      "displayName": "dayoutwiththekids",
+      "displayName": "Day Out With The Kids",
       "tier": 3,
       "aliases": [
         "dayoutwiththekids"
@@ -10699,15 +10707,17 @@
       "domain": "dayoutwiththekids.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "manual"
     },
     "boxofficeticketsales": {
-      "displayName": "boxofficeticketsales",
+      "displayName": "Box Office Ticket Sales",
       "tier": 3,
       "aliases": [
         "boxofficeticketsales"
       ],
-      "domain": "boxofficeticketsales.com"
+      "domain": "boxofficeticketsales.com",
+      "displayNameSource": "homepage"
     },
     "scorebig": {
       "displayName": "scorebig",
@@ -10718,7 +10728,7 @@
       "domain": "scorebig.com"
     },
     "muddystilettos": {
-      "displayName": "muddystilettos",
+      "displayName": "Muddy Stilettos",
       "tier": 3,
       "aliases": [
         "muddystilettos"
@@ -10726,10 +10736,11 @@
       "domain": "london.muddystilettos.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "manual"
     },
     "westwaleschronicle": {
-      "displayName": "westwaleschronicle",
+      "displayName": "West Wales Chronicle",
       "tier": 3,
       "aliases": [
         "westwaleschronicle"
@@ -10737,7 +10748,8 @@
       "domain": "westwaleschronicle.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "manual"
     },
     "oklahoman": {
       "displayName": "oklahoman",
@@ -10748,7 +10760,7 @@
       "domain": "oklahoman.com"
     },
     "cherylmarkosky": {
-      "displayName": "cherylmarkosky",
+      "displayName": "Cheryl Markosky",
       "tier": 3,
       "aliases": [
         "cherylmarkosky"
@@ -10756,32 +10768,36 @@
       "domain": "cherylmarkosky.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "homepage"
     },
     "melissamaney": {
-      "displayName": "melissamaney",
+      "displayName": "Melissa Maney",
       "tier": 3,
       "aliases": [
         "melissamaney"
       ],
-      "domain": "melissamaney.com"
+      "domain": "melissamaney.com",
+      "displayNameSource": "homepage"
     },
     "sohoplayhouse": {
-      "displayName": "sohoplayhouse",
+      "displayName": "SoHo Playhouse",
       "tier": 3,
       "aliases": [
         "sohoplayhouse"
       ],
-      "domain": "sohoplayhouse.com"
+      "domain": "sohoplayhouse.com",
+      "displayNameSource": "homepage"
     },
     "theatlantic": {
-      "displayName": "theatlantic",
+      "displayName": "The Atlantic",
       "tier": 3,
       "aliases": [
         "theatlantic",
         "atlantic"
       ],
-      "domain": "theatlantic.com"
+      "domain": "theatlantic.com",
+      "displayNameSource": "homepage"
     },
     "donyc": {
       "displayName": "donyc",
@@ -10792,7 +10808,7 @@
       "domain": "donyc.com"
     },
     "theatreboard": {
-      "displayName": "theatreboard",
+      "displayName": "TheatreBoard",
       "tier": 3,
       "aliases": [
         "theatreboard"
@@ -10801,7 +10817,8 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-08-18T14:28:06.532Z",
-      "scoreable": false
+      "scoreable": false,
+      "displayNameSource": "manual"
     },
     "visit-london": {
       "displayName": "Visit London",
@@ -10816,7 +10833,7 @@
       "regionInferredAt": "2026-08-18T14:28:06.532Z"
     },
     "bestoftheatre": {
-      "displayName": "bestoftheatre",
+      "displayName": "Best Of Theatre",
       "tier": 3,
       "aliases": [
         "bestoftheatre"
@@ -10824,10 +10841,11 @@
       "domain": "bestoftheatre.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "homepage"
     },
     "soundsandstage": {
-      "displayName": "soundsandstage",
+      "displayName": "Sounds & Stage",
       "tier": 3,
       "aliases": [
         "soundsandstage"
@@ -10835,15 +10853,17 @@
       "domain": "soundsandstage.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "manual"
     },
     "myshrewsbury": {
-      "displayName": "myshrewsbury",
+      "displayName": "My Shrewsbury",
       "tier": 3,
       "aliases": [
         "myshrewsbury"
       ],
-      "domain": "myshrewsbury.co.uk"
+      "domain": "myshrewsbury.co.uk",
+      "displayNameSource": "homepage"
     },
     "bookevents": {
       "displayName": "bookevents",
@@ -10854,12 +10874,13 @@
       "domain": "bookevents.nyc"
     },
     "eventticketscenter": {
-      "displayName": "eventticketscenter",
+      "displayName": "Event Tickets Center",
       "tier": 3,
       "aliases": [
         "eventticketscenter"
       ],
-      "domain": "eventticketscenter.com"
+      "domain": "eventticketscenter.com",
+      "displayNameSource": "homepage"
     },
     "stuborder": {
       "displayName": "stuborder",
@@ -10870,12 +10891,13 @@
       "domain": "stuborder.com"
     },
     "politeonsociety": {
-      "displayName": "politeonsociety",
+      "displayName": "Polite On Society",
       "tier": 3,
       "aliases": [
         "politeonsociety"
       ],
-      "domain": "politeonsociety.com"
+      "domain": "politeonsociety.com",
+      "displayNameSource": "homepage"
     },
     "clevescene": {
       "displayName": "clevescene",
@@ -10894,12 +10916,13 @@
       "domain": "masslive.com"
     },
     "redbulltheater": {
-      "displayName": "redbulltheater",
+      "displayName": "Red Bull Theater",
       "tier": 3,
       "aliases": [
         "redbulltheater"
       ],
-      "domain": "redbulltheater.com"
+      "domain": "redbulltheater.com",
+      "displayNameSource": "homepage"
     },
     "ipswich24": {
       "displayName": "ipswich24",
@@ -11445,7 +11468,7 @@
       "regionInferredAt": "2026-09-18T17:42:22.400Z"
     },
     "onceaweektheatre": {
-      "displayName": "Theatre reviews by Edward Lukes",
+      "displayName": "Once A Week Theatre",
       "tier": 3,
       "aliases": [
         "onceaweektheatre"
@@ -11453,7 +11476,8 @@
       "domain": "onceaweektheatre.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-09-19T07:33:57.183Z"
+      "regionInferredAt": "2026-09-19T07:33:57.183Z",
+      "displayNameSource": "manual"
     },
     "getthechance": {
       "displayName": "Get The Chance",
@@ -12678,12 +12702,13 @@
       "domain": "operacanada.ca"
     },
     "artsreviewhub": {
-      "displayName": "Performance Art & Theatre News and Reviews",
+      "displayName": "Arts Review Hub",
       "tier": 3,
       "aliases": [
         "artsreviewhub"
       ],
-      "domain": "artsreviewhub.com"
+      "domain": "artsreviewhub.com",
+      "displayNameSource": "manual"
     },
     "fandango": {
       "displayName": "Fandango",
@@ -13536,12 +13561,13 @@
       "domain": "swarthmorephoenix.com"
     },
     "singleticket": {
-      "displayName": "singleticket",
+      "displayName": "singleticket’s Substack",
       "tier": 4,
       "aliases": [
         "singleticket"
       ],
-      "domain": "singleticket.substack.com"
+      "domain": "singleticket.substack.com",
+      "displayNameSource": "manual"
     },
     "icareifyoulisten": {
       "displayName": "I Care If You Listen",

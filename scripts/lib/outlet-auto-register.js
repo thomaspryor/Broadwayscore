@@ -146,7 +146,8 @@ function nameSpellsOutlet(name, outletId, domain) {
  *   1. siteNames (BRO-5336): the outlet's own og:site_name / <title>, from
  *      extractSiteNames() on its homepage, accepted when it spells the id or
  *      the domain label ("San Diego Downtown News" for sandiegodowntownnews /
- *      sddowntownnews.com). The first accepted candidate wins.
+ *      sddowntownnews.com). Candidates spelling the id precede domain-only
+ *      matches; otherwise the first accepted candidate wins.
  *   2. the most common `outlet` string the outlet's own review files carry,
  *      accepted only when it spells the same id, so a critic name or a
  *      different outlet's label can never become the display name.
@@ -159,13 +160,18 @@ function nameSpellsOutlet(name, outletId, domain) {
  * @returns {{displayName: string, inferred: boolean}}
  */
 function deriveOutletDisplayName({ outletId, reviewOutletNames = [], siteNames = [], domain = null }) {
+  const mastheads = [];
   for (const raw of siteNames) {
     const name = String(raw || '').trim();
     if (name.length < 2 || name.length > 60) continue;
     if (name === name.toLowerCase()) continue; // a bare lowercase slug is no masthead
     if (!nameSpellsOutlet(name, outletId, domain)) continue;
-    return { displayName: name, inferred: false };
+    mastheads.push(name);
   }
+  // Prefer the outlet's name to a regional subdomain label ("London" on
+  // london.muddystilettos.co.uk). Domain aliases remain the fallback.
+  const masthead = mastheads.find(name => nameSpellsOutlet(name, outletId, null)) || mastheads[0];
+  if (masthead) return { displayName: masthead, inferred: false };
   const idCompact = compactName(outletId);
   const counts = new Map();
   for (const raw of reviewOutletNames) {
@@ -209,13 +215,14 @@ async function resolveMastheadName({ outletId, domain, fetchPage }) {
 }
 
 /**
- * BRO-5336 shape: a displayName that is just the capitalized run-together id
- * ("Hackneycitizen" for hackneycitizen). Long (12+ chars) single tokens only,
+ * BRO-5336/BRO-5603: a displayName that is just a run-together id, either
+ * capitalized (12+ chars) or lowercase (11+ chars, including "theatlantic").
+ * Long single tokens only,
  * so real one-word mastheads ("Variety", "Playbill") never match.
  */
 function isRunTogetherSlugDisplayName(outletId, displayName) {
   const d = String(displayName || '');
-  return /^[A-Z][a-z]{11,}$/.test(d) && d.toLowerCase() === String(outletId || '').replace(/-/g, '');
+  return /^[A-Z]?[a-z]{11,}$/.test(d) && d.toLowerCase() === String(outletId || '').replace(/-/g, '');
 }
 
 /**

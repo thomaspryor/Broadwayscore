@@ -31,6 +31,23 @@ test('shape detection: long run-together slug matches, real names and short ids 
   assert.deepEqual(rows, [{ outletId: 'hackneycitizen', displayName: 'Hackneycitizen' }]);
 });
 
+test('lowercase raw ids reach the masthead audit without widening capitalized or short names', () => {
+  const rows = findRunTogetherSlugDisplayNames({
+    theatlantic: { displayName: 'theatlantic' },
+    primarytimes: { displayName: 'primarytimes' },
+    timesofsandiego: { displayName: 'timesofsandiego' },
+    melissamaney: { displayName: 'melissamaney' },
+    washingtonian: { displayName: 'washingtonian', displayNameReviewed: true },
+    singleticket: { displayName: 'Single Ticket' },
+    variety: { displayName: 'variety' },
+    letterboxd: { displayName: 'letterboxd' },
+    anotheroutlet: { displayName: 'primarytimes' },
+  });
+  assert.deepEqual(rows.map(row => row.outletId), ['theatlantic', 'primarytimes', 'timesofsandiego', 'melissamaney']);
+  assert.equal(isRunTogetherSlugDisplayName('theatlantic', 'The Atlantic'), false);
+  assert.equal(isRunTogetherSlugDisplayName('theatlantic', 'Theatlantic'), false);
+});
+
 test('auto-add derivation prefers og:site_name over the capitalized slug', () => {
   const html = '<head><title>Home &#8211; Hackney Citizen</title><meta property="og:site_name" content="Hackney Citizen"></head>';
   const siteNames = extractSiteNames(html);
@@ -41,6 +58,13 @@ test('auto-add derivation prefers og:site_name over the capitalized slug', () =>
   assert.equal(deriveOutletDisplayName({ outletId: 'hudsonreview', siteNames: ['The Hudson Review'] }).displayName, 'The Hudson Review');
   // A site name that does not spell the outlet (platform name, other brand) is refused.
   assert.deepEqual(deriveOutletDisplayName({ outletId: 'hackneycitizen', siteNames: ['WordPress', 'Blogger'] }), { displayName: 'Hackneycitizen', inferred: true });
+});
+
+test('the outlet masthead wins over a regional subdomain label', () => {
+  const siteNames = extractSiteNames('<meta property="og:site_name" content="London"><title>London | Muddy Stilettos</title>');
+  assert.deepEqual(deriveOutletDisplayName({
+    outletId: 'muddystilettos', domain: 'london.muddystilettos.co.uk', siteNames,
+  }), { displayName: 'Muddy Stilettos', inferred: false });
 });
 
 test('resolveMastheadName fetches the homepage through the injected fetcher and never throws', async () => {
