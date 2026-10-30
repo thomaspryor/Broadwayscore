@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-30T22:49:54.784Z",
+  "generatedAt": "2026-10-30T23:53:20.387Z",
   "date": "2026-10-30",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 177163,
+  "entryCount": 182647,
   "shows": [
     {
       "showId": "a-bright-room-called-day-off-broadway-2019",
@@ -951,13 +951,13 @@
     },
     {
       "showId": "the-revlon-girl-off-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 189131,
+        "collected-to-scored": 792291,
+        "scored-to-rebuilt": 184222,
         "rebuilt-to-deployed": 79808197
       },
       "reviews_over_15min": 0,
@@ -2113,7 +2113,7 @@
     },
     {
       "showId": "the-heart-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 14,
       "median_e2e_ms": 64426374,
       "p90_e2e_ms": 74027068,
       "per_stage_median_ms": {
@@ -9820,13 +9820,13 @@
     },
     {
       "showId": "in-the-heights-off-broadway-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": 17981008,
       "p90_e2e_ms": 20491408,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1227135,
-        "scored-to-rebuilt": 554945,
+        "scored-to-rebuilt": 497147,
         "rebuilt-to-deployed": 16807702
       },
       "reviews_over_15min": 2,
@@ -12120,13 +12120,13 @@
     },
     {
       "showId": "middlemarch-rsc-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1260540,
+        "scored-to-rebuilt": 468017,
         "rebuilt-to-deployed": 4700190
       },
       "reviews_over_15min": 0,
