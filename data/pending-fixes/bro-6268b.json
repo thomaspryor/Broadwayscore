@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6268b",
   "planId": "985b4cf6-f24b-46e4-9a0c-bda48662be05",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T23:43:26.308Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T23:51:25.503Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/artshub--gina-fairley.json wrongProduction: true -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
