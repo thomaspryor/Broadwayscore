@@ -42,7 +42,10 @@ function buildDecisionEmail({ decision, description, secret, now = Date.now(), b
   const choices = answerChoices(description);
   const question = noDash(decision.question || decision.title);
   const subjectText = question.length > SUBJECT_MAX ? `${question.slice(0, SUBJECT_MAX - 1)}…` : question;
-  const subject = `${reminder ? 'Still waiting: ' : 'Decision needed: '}${subjectText}`;
+  // BRO-6654: Owner step lines make this a task the owner does by hand, then taps Done.
+  const task = block.task;
+  const subject = `${reminder ? 'Still waiting: ' : task ? 'Task for you: ' : 'Decision needed: '}${subjectText}`;
+  if (task) return { subject, html: taskHtml({ decision, block, choices, question, token, secret, now, baseUrl, reminder }), tokenHash: hash };
 
   const optionHtml = block.options.length >= 2
     ? block.options.map((o) => `<div style="margin:14px 0 4px;"><div style="font-weight:700;">${esc(o.label)}: ${esc(noDash(o.name))}</div>`
@@ -68,6 +71,27 @@ ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
+}
+
+// The task body: why it needs the owner, the numbered steps, then Done /
+// could-not-do-it. Tapping Done records the answer and sends the card back to
+// the work queue, so the work carries on without the owner finding the chat.
+function taskHtml({ decision, block, choices, question, token, secret, now, baseUrl, reminder }) {
+  const steps = block.steps.map((s) => `<li style="margin:0 0 10px;">${esc(noDash(s))}</li>`).join('');
+  const buttons = choices.map((c, i) => button(answerUrl(token, c.key, baseUrl), c.label, i === 0)).join('');
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:20px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;color:#222;">
+<div style="max-width:520px;margin:0 auto;">
+<p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'A task for you'}. Work on this is paused until you tap Done.</p>
+<h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
+${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(decision.title))}</p>` : ''}
+${block.why ? `<p style="margin:0 0 12px;"><strong>Why Claude cannot do this itself:</strong> ${esc(noDash(block.why))}</p>` : ''}
+<ol style="padding-left:22px;margin:12px 0 16px;">${steps}</ol>
+${buttons}
+${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
+<p style="margin:16px 0 0;color:#666;font-size:13px;">When you tap Done, the work picks back up on its own within about two hours. You do not need to find the Claude chat. Each button asks you to confirm first.${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''} This link works for 14 days.</p>
+<p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
+</div></body></html>`;
 }
 
 // One reminder email for decisions still open after a few days: a short list,

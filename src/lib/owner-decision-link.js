@@ -91,6 +91,16 @@ const LABEL_RES = {
 // (BRO-6241). Only that host and repo can be shown as an image on the owner pages.
 const EVIDENCE_RE = /^\s*(?:[-*>]\s+)?\**Evidence\**\s*:\s*\**\s*(?:([^|]{1,120})\|\s*)?(\S+)\s*$/i;
 const MAX_EVIDENCE = 8;
+// BRO-6654: "Owner step 1: ..." lines make the card an owner TASK (a Mac-only
+// step a cloud session cannot do): the email lists the steps and offers Done
+// instead of a choice. "Owner step", not "Step", so a plan written as "Step 1:"
+// on an ordinary decision card stays a decision. Steps keep the order written.
+const STEP_RE = /^\s*(?:[-*>]\s+)?\**Owner step\s+(\d{1,2})\**\s*[:.)]\s*\**\s*(\S.*)$/i;
+const MAX_STEPS = 12;
+const TASK_CHOICES = [
+  { key: 'done', label: 'Done, I did it', short: 'Done' },
+  { key: 'blocked', label: 'I could not do it', short: 'Could not do it' },
+];
 const EVIDENCE_URL_RE = /^https:\/\/raw\.githubusercontent\.com\/thomaspryor\/Broadwayscore\/[A-Za-z0-9._\/-]{1,200}\.(?:png|jpe?g)$/;
 function safeEvidenceUrl(raw) {
   const u = collapseSelfLinks(unescapeMarkdown(raw)).replace(/^<|>$/g, '');
@@ -111,7 +121,7 @@ function splitUpDown(rest) {
 
 /** Parse the plain-English parts of a decision card. Never throws. */
 function parseDecisionBlock(description) {
-  const out = { why: null, options: [], recommendation: null, defaultText: null, evidence: [] };
+  const out = { why: null, options: [], recommendation: null, defaultText: null, evidence: [], steps: [] };
   const seen = new Set();
   // Screenshots are only for visual approvals (BRO-6244): any other card with an Evidence line must not put images on the owner pages.
   const visual = parseVisualApproval(description);
@@ -121,6 +131,11 @@ function parseDecisionBlock(description) {
       if (!visual) continue;
       const url = safeEvidenceUrl(ev[2]);
       if (url && out.evidence.length < MAX_EVIDENCE) out.evidence.push({ label: plain(ev[1]).slice(0, 80) || 'Screenshot', url });
+      continue;
+    }
+    const step = STEP_RE.exec(line);
+    if (step) {
+      if (out.steps.length < MAX_STEPS) out.steps.push(plain(step[2]).slice(0, 400));
       continue;
     }
     const opt = OPTION_RE.exec(line);
@@ -138,13 +153,17 @@ function parseDecisionBlock(description) {
       if (m && !out[field]) out[field] = plain(m[1]).slice(0, 400);
     }
   }
+  // A task only when nothing else claims the card: real A/B options or a visual approval win.
+  out.task = out.steps.length > 0 && out.options.length < 2 && !visual;
   return out;
 }
 
-// Options a card offers. Cards without parseable options get the generic pair.
+// Options a card offers. Cards without parseable options get the generic pair,
+// or Done / could-not-do-it when the card is a task (has Owner step lines).
 function answerChoices(description) {
-  const { options } = parseDecisionBlock(description);
+  const { options, task } = parseDecisionBlock(description);
   if (options.length >= 2) return options.map((o) => ({ key: o.key, label: `${o.label}: ${o.name}`, short: o.label }));
+  if (task) return TASK_CHOICES.map((c) => ({ ...c }));
   return [
     { key: 'approve', label: 'Approved', short: 'Approve' },
     { key: 'reject', label: 'Rejected', short: 'Reject' },
@@ -397,7 +416,7 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, a
 // An approved change stays where it is: the lander ships it, so no worker should pick the card up.
 function todoStateId(issue, approved, visual) {
   const stateName = String((issue.state && issue.state.name) || '');
-  if (approved || !(/^(backlog|triage)$/i.test(stateName) || (visual && !/^(todo|done|canceled|cancelled)$/i.test(stateName)))) return null;
+  if (approved || !(/^(backlog|triage|paused)$/i.test(stateName) || (visual && !/^(todo|done|canceled|cancelled)$/i.test(stateName)))) return null;
   const todo = commentNodes({ nodes: issue.team && issue.team.states && issue.team.states.nodes }).find((s) => /^todo$/i.test(s.name));
   return todo ? todo.id : null;
 }
@@ -618,7 +637,7 @@ module.exports = {
   signListToken, verifyListToken, mintDecisionToken, listOpenDecisions, isPlaceholderQuestion,
   TOKEN_TTL_MS, MAX_ANSWER_CHARS, MARKER_RE, ID_RE, AWAITING_OWNER_LABEL,
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
-  parseDecisionBlock, answerChoices,
+  parseDecisionBlock, answerChoices, STEP_RE, TASK_CHOICES,
   VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
