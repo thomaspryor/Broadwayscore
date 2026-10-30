@@ -515,6 +515,10 @@ test('single-letter title words are required tokens for short titles (BRO-6596)'
     { id: 'avenue-q-2003', slug: 'avenue-q-2003', title: 'Avenue Q', status: 'closed' },
     { id: 'the-weddings-off-west-end-2027', slug: 'the-weddings', title: 'The Wedding(s)', status: 'upcoming' },
     { id: 'hms-pinafore-1976', slug: 'hms-pinafore-1976', title: 'H.M.S. Pinafore', status: 'closed' },
+    { id: 'teeth-n-smiles-west-end-2026', slug: 'teeth-n-smiles-west-end-2026', title: "Teeth 'n' Smiles", status: 'closed' },
+    { id: 'teeth-off-broadway-2024', slug: 'teeth-off-broadway-2024', title: 'Teeth', status: 'closed' },
+    { id: 'michael-r-jackson-wake-up-call-off-broadway-2026', slug: 'michael-r-jackson-wake-up-call-off-broadway-2026', title: 'Michael R. Jackson: Wake Up Call', status: 'closed' },
+    { id: 'dana-h-2021', slug: 'dana-h-2021', title: 'Dana H.', status: 'closed' },
   ];
   const id = s => { const r = matchSlugToShow(s, mini); return r ? r.show.id : null; };
   assert.equal(id('what-are-the-reviews-for-bedlams-4-person-version-of-shakespeares-othello'), 'bedlams-othello-off-broadway-2026');
@@ -525,4 +529,8 @@ test('single-letter title words are required tokens for short titles (BRO-6596)'
   const { _showDistinctiveTokens } = require('./show-matching.js');
   assert.deepEqual(_showDistinctiveTokens(mini[3]), ['wedding']);
   assert.deepEqual(_showDistinctiveTokens(mini[4]), ['pinafore']);
+  // Dropped initials and 'n'-as-"and" still route (ship-check BRO-6596).
+  assert.equal(id('read-the-reviews-for-teeth-and-smiles'), 'teeth-n-smiles-west-end-2026');
+  assert.equal(id('read-the-reviews-for-michael-jackson-wake-up-call'), 'michael-r-jackson-wake-up-call-off-broadway-2026');
+  assert.deepEqual(_showDistinctiveTokens(mini[8]), ['dana']);
 });

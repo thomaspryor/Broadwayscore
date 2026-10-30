@@ -1508,13 +1508,15 @@ function _showDistinctiveTokens(show) {
     const full = [...new Set(_tokenizeTitleText(String(titleRaw)))];
     if (full.length > tokens.length) { tokens = full; source = String(titleRaw); }
   }
-  // Standalone single letters ("R & J", "Avenue Q", "The King and I") are
-  // required tokens when the title has one or two long words, the same rule
-  // _missingShortTitleToken applies to page titles. Without them "Shakespeare's
-  // R & J" reduced to [shakespeares] and took a Bedlam Othello slug that said
-  // "shakespeares-othello" (BRO-6596). Only whole words count, so "Wedding(s)",
-  // "F*ck" and initialisms like "H.M.S." keep their old tokens.
-  if (tokens.filter(t => t.length > 2).length <= 2) {
+  // A title that reduces to ONE long word keeps its standalone letters as
+  // required tokens ("R & J", "Avenue Q", "Withnail and I"). Without them
+  // "Shakespeare's R & J" reduced to [shakespeares] and took a Bedlam Othello
+  // slug that said "shakespeares-othello" (BRO-6596). Two-word titles are
+  // already anchored, and requiring their letters lost real slugs that drop a
+  // middle initial ("michael-jackson-wake-up-call") or spell 'n' as "and"
+  // ("teeth-and-smiles"), so those two kinds are skipped everywhere. Only
+  // whole words count: "Wedding(s)", "F*ck" and "H.M.S." keep their old tokens.
+  if (tokens.filter(t => t.length > 2).length === 1) {
     for (const w of _standaloneTitleLetters(source)) {
       if (!tokens.includes(w)) tokens.push(w);
     }
@@ -1526,8 +1528,11 @@ function _standaloneTitleLetters(text) {
   return String(text).toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .split(/\s+/)
-    .map(w => w.replace(/^['\u2018\u2019"]+|['\u2018\u2019".]+$/g, ''))
-    .filter(w => /^[a-z]$/.test(w) && !_SLUG_STOPWORDS.has(w));
+    // "M." / "H." are initials and "'n'" stands for "and": slugs drop or
+    // respell both, so neither is a required letter.
+    .filter(w => !/\.$/.test(w))
+    .map(w => w.replace(/^['\u2018\u2019"]+|['\u2018\u2019"]+$/g, ''))
+    .filter(w => /^[a-z]$/.test(w) && w !== 'n' && !_SLUG_STOPWORDS.has(w));
 }
 
 function _tokenAppearsInSlug(token, cleanedSlug) {
