@@ -32647,6 +32647,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "workflow-alert:opening-night-stage-latency": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Opening-night stage-latency alert: scored entries missing",
+      "firstSeen": "2026-10-30T18:22:01.226Z",
+      "incidentOpenedAt": "2026-10-30T18:22:01.226Z",
+      "lastSeen": "2026-10-30T18:22:01.226Z",
+      "lastNotifiedAt": "2026-10-30T18:22:01.226Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6653",
+      "dispatch": {
+        "requestedAt": "2026-10-30T18:22:01.226Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41105683365",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41105683365"
+      }
     }
   }
 }
