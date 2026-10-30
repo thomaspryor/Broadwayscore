@@ -26,6 +26,8 @@ test('release depends on push success and on the lane having run', () => {
   const push = steps[idx('Push scored reviews to review-texts')];
   const rel = steps[idx('Release night lease')];
   assert.equal(push.id, 'push');
+  assert.match(rel.cond, /^always\(\)/); // runs after a failed lane (exit 4, step cap) too
+  assert.match(push.cond, /^always\(\)/);
   assert.match(rel.cond, /steps\.push\.outcome == 'success'/);
   assert.match(rel.cond, /steps\.lane\.outcome != 'skipped'/);
   assert.match(rel.body, /opening-night-lease\.js release/);

@@ -143,7 +143,7 @@ jobs:
     env:
       # The lane's lease holder (scripts/opening-night-lane.js defaults --holder to gha-$GITHUB_RUN_ID). push-review-texts'
       # `opening-night-lease.js enforce` reverts writes under leased shows unless the lease is this holder's, which it
-      # still is when the lane step was cut off before releasing.
+      # still is: the lane keeps its lease until "Release night lease" runs after the push (BRO-6618).
       OPENING_NIGHT_LANE_HOLDER: gha-${{ github.run_id }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -251,7 +251,8 @@ jobs:
         run: |
           RC=0
           node scripts/opening-night-lease.js release "--show=${SHOW}" "--night=${NIGHT}" "--holder=${OPENING_NIGHT_LANE_HOLDER}" || RC=$?
-          if [ "$RC" -ne 0 ]; then echo "::warning::night lease release exited ${RC}; the lease expires by TTL"; fi
+          if [ "$RC" -eq 3 ]; then echo "::notice::night lease is held by another run; left alone"
+          elif [ "$RC" -ne 0 ]; then echo "::warning::night lease release exited ${RC}; the lease expires by TTL"; fi
 
       # The driver pages through routeAlert( digest ) (owner-alert-router.js); its ledger and digest queue live on
       # this runner's disk, so commit them or the cooldown/dedup state resets every run.
