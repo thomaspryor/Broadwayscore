@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T08:34:40.229Z",
+  "timestamp": "2026-10-30T08:48:07.504Z",
   "stats": {
-    "totalReviews": 70091,
-    "alreadyFlagged": 22247,
+    "totalReviews": 70102,
+    "alreadyFlagged": 22248,
     "dateGuardCatches": 230,
-    "directorMismatch": 2868,
+    "directorMismatch": 2870,
     "tvFilmSignals": 2022,
-    "londonSignals": 3394,
-    "offBroadwaySignals": 631,
+    "londonSignals": 3395,
+    "offBroadwaySignals": 632,
     "yearMismatch": 285,
-    "noPublishDate": 8000
+    "noPublishDate": 8006
   },
   "findings": [
     {
@@ -9222,6 +9222,19 @@
       ]
     },
     {
+      "showId": "caesar-and-cleopatra-off-broadway-2019",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=WHDB5A",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ellis rabb\" from caesar-and-cleopatra-1977"
+        }
+      ]
+    },
+    {
       "showId": "call-me-izzy-2025",
       "file": "cititour--unknown.json",
       "score": 47,
@@ -15419,6 +15432,7 @@
     {
       "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
       "file": "whatsonstage--matt-barton.json",
+      "score": 56,
       "publishDate": "2026-09-25",
       "url": "https://www.whatsonstage.com/news/death-of-a-salesman-at-liverpool-everyman-review_1732637/",
       "findings": [
@@ -34466,6 +34480,24 @@
       ]
     },
     {
+      "showId": "london-assurance-off-broadway-2019",
+      "file": "theatres-leiter-side--samuel-l-leiter.json",
+      "publishDate": null,
+      "url": "https://slleiter.blogspot.com/2019/12/an-assured-production-ts-pleasure-to.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ronald eyre\" from london-assurance-1974"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "lone-star-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
       "score": 60,
@@ -52589,6 +52621,7 @@
     {
       "showId": "tell-me-how-it-ends-liverpool-everyman-regional-2024",
       "file": "whatsonstage--matt-barton.json",
+      "score": 65,
       "publishDate": "2024-06-14",
       "url": "https://www.whatsonstage.com/news/tell-me-how-it-ends-at-liverpool-everyman-review_1605492/",
       "findings": [
@@ -81728,6 +81761,7 @@
     {
       "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
       "file": "theatreandtonic--seana.json",
+      "score": 78,
       "publishDate": "2026-09-28",
       "url": "https://theatreandtonic.co.uk/blog/death-of-a-salesman-at-liverpool-everyman-theatrenbspreview",
       "findings": [
@@ -104761,6 +104795,7 @@
     {
       "showId": "sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025",
       "file": "theatreandtonic--roby.json",
+      "score": 89,
       "publishDate": "2025-11-23",
       "url": "https://theatreandtonic.co.uk/blog/sherlock-holmes-and-the-12-days-of-christmas-at-birmingham-rep-review",
       "findings": [
@@ -121524,6 +121559,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "white-noise-off-broadway-2019",
+      "file": "broadway-and-me--unknown.json",
+      "publishDate": null,
+      "url": "https://broadwayandme.blogspot.com/2019/03/white-noises-makes-sadly-familiar-sounds.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
