@@ -340,7 +340,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // ─── Email sign-in with a one-time code (BRO-6575) ───────────────────
-  // signInWithOtp emails a 6-digit code and a link (supabase/templates/
+  // signInWithOtp emails a 6-digit code (supabase/templates/
   // sign-in-code.html) and creates the account on first use. Code only, no
   // link: sign-in stays in this tab, whichever device reads the email.
   const sendEmailCode = useCallback(async (email: string, source: string, returnTo?: string): Promise<{ error?: string }> => {
