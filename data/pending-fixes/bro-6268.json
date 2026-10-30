@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6268",
   "planId": "31d2a4b7-4461-4833-ac99-32f7734a2cdb",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-30T13:07:17.745Z",
   "submitter": {
     "name": null,
@@ -65,5 +65,34 @@
         "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T14:16:07.715Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for sweeney-todd-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for sweeney-todd-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-country-girl-west-end-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-country-girl-west-end-2010"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
 }
