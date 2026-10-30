@@ -3475,5 +3475,36 @@
       }
     ],
     "queuedAt": "2026-10-30T21:57:05.725Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6666-schema-drift-card",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6666-schema-drift-card",
+    "description": "land.yml did not land land/bro-6666-schema-drift-card: the unit-tests-node gate went red at 522bce6592. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41134135213",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6666-schema-drift-card"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "522bce65929474f4c032d800c80bf9464dde20cf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41134135213"
+      }
+    ],
+    "queuedAt": "2026-10-30T22:17:30.142Z"
   }
 ]
