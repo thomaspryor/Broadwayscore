@@ -51,7 +51,7 @@ test('stale email drafts (A Few Good Men): Resend draft and Reddit draft built w
   const live = { 'a-few-good-men-2026': { score: 60, reviewCount: 24 } };
   const e = lineFor(AFGM(), AFGM_SHOW, { sentShows: sentWithDraft(), redditDrafts: redditEmailed(60, 23), live });
   assert.equal(e.line, 'A Few Good Men: 21 of 22 reviews live by 1:02am; reviews came out at 11:02pm, not the expected 10:00pm, so they were timed from 11:02pm; TheWrap went live at 1:24am (late); the first review was not live until 11:40pm (38 min after release); opening-night email draft is out of date (built with 23 reviews, the site shows 24 reviews); Reddit draft emailed to you is out of date (score 60 from 23 reviews, the site shows score 60 from 24 reviews). Failed.');
-  assert.deepEqual(e.misses.filter((m) => m.kind === 'email').map((m) => m.key), ['email:broadcast', 'email:reddit']);
+  assert.deepEqual(e.misses.filter((m) => m.kind === 'email').map((m) => m.key), ['email:broadcast:stale', 'email:reddit:stale']);
 });
 
 test('no draft: a miss after the 10am deadline, "not due" before it', () => {
@@ -86,11 +86,28 @@ test('pass: the A Few Good Men record with TheWrap and the first reviews on time
   assert.deepEqual(e.misses, []);
 });
 
-test('no record for a Broadway show that opened: not graded, never a pass', () => {
+test('no record for a Broadway show that opened: reviews not graded, never a pass; the emails still are', () => {
   const show = { id: 'x-2026', title: 'X', category: 'broadway', openingDate: '2026-10-29' };
-  const s = D.buildSection({ night: '2026-10-29', records: [], shows: [show], readNumbers: () => null, nowMs: AFTER_DEADLINE });
-  assert.equal(s.entries[0].line, 'X: not graded, the overnight check did not run.');
-  assert.equal(s.entries[0].verdict, 'UNKNOWN');
+  const sent = { 'x-2026': { draftId: 'd1', draftStatus: 'sent', sentAt: '2026-10-30T15:00:00Z' } };
+  const ok = D.buildSection({ night: '2026-10-29', records: [], shows: [show], sentShows: sent, readNumbers: () => null, nowMs: AFTER_DEADLINE });
+  assert.equal(ok.entries[0].line, 'X: not graded, the overnight check did not run; emails ready.');
+  assert.equal(ok.entries[0].verdict, 'UNKNOWN');
+  // A stopped probe must not hide a missing draft.
+  const miss = D.buildSection({ night: '2026-10-29', records: [], shows: [show], readNumbers: () => ({ score: 70, reviewCount: 14 }), nowMs: AFTER_DEADLINE });
+  assert.equal(miss.entries[0].line, 'X: reviews not graded, the overnight check did not run; no opening-night email draft; no Reddit draft emailed. Failed.');
+  assert.deepEqual(miss.entries[0].misses.map((m) => m.key), ['email:broadcast:missing', 'email:reddit:missing']);
+  // Below the broadcast's review floor no draft is owed yet: said, not failed.
+  const early = D.buildSection({ night: '2026-10-29', records: [], shows: [show], readNumbers: () => ({ score: null, reviewCount: 5 }), nowMs: AFTER_DEADLINE });
+  assert.equal(early.entries[0].line, 'X: not graded, the overnight check did not run; no opening-night email draft yet (the site has 5 of the 12 reviews a draft needs).');
+});
+
+test('emails: unreadable site numbers are "could not check", never "ready"; a stale draft is not a miss before 10am', () => {
+  const r = D.gradeEmails({ show: AFGM_SHOW, sentShows: sentWithDraft(), redditDraft: redditEmailed(60, 23)['a-few-good-men-2026'], readNumbers: () => null, nowMs: AFTER_DEADLINE });
+  assert.deepEqual(r.map((e) => e.status), ['pending', 'pending']);
+  assert.match(r[0].text, /could not check the opening-night email draft/);
+  const early = D.gradeEmails({ show: AFGM_SHOW, sentShows: sentWithDraft(), redditDraft: redditEmailed(60, 24)['a-few-good-men-2026'], readNumbers: numbers({ 'a-few-good-men-2026': { score: 60, reviewCount: 24 } }), nowMs: Date.parse('2026-10-30T11:30:00Z') });
+  assert.equal(early[0].status, 'pending');
+  assert.match(early[0].text, /out of date/);
 });
 
 test('lastNight: the ET calendar day before the email', () => {
@@ -106,10 +123,10 @@ function fakeLinear() {
   const comments = [];
   return {
     cards, created, comments,
-    lookupCard: async (key) => cards.find((c) => D.cardKeyOf(c.description) === key) || null,
+    lookupCards: async (keySlug) => cards.filter((c) => D.cardKeyOf(c.description) === keySlug),
     createCard: async (c) => {
       created.push(c);
-      const card = { identifier: `BRO-${9000 + created.length}`, description: c.notes, comments: [], state: 'Todo' };
+      const card = { identifier: `BRO-${9000 + created.length}`, description: c.notes, comments: [], completedAt: null };
       cards.push(card);
       return card.identifier;
     },
@@ -121,7 +138,7 @@ test('auto-filer: one card per show-night, nothing on re-run, a comment only for
   const live = { 'a-few-good-men-2026': { score: 60, reviewCount: 24 }, 'the-heart-off-broadway-2026': { score: 75, reviewCount: 4 } };
   const build = (sentShows, redditDrafts) => D.buildSection({ night: '2026-10-29', records: [{ showId: AFGM_SHOW.id, rec: AFGM() }, { showId: HEART_SHOW.id, rec: HEART() }], shows: [AFGM_SHOW, HEART_SHOW], sentShows, redditDrafts, readNumbers: numbers(live), nowMs: AFTER_DEADLINE });
   const L = fakeLinear();
-  const run = (section) => D.fileFixCards({ section, lookupCard: L.lookupCard, createCard: L.createCard, commentCard: L.commentCard });
+  const run = (section) => D.fileFixCards({ section, lookupCards: L.lookupCards, createCard: L.createCard, commentCard: L.commentCard });
 
   const r1 = await run(build(sentWithDraft(), redditEmailed(60, 24))); // Reddit current: only the Resend draft is stale
   assert.deepEqual(r1.filed.sort(), ['a-few-good-men-2026|2026-10-29', 'the-heart-off-broadway-2026|2026-10-29']);
@@ -131,9 +148,12 @@ test('auto-filer: one card per show-night, nothing on re-run, a comment only for
   assert.equal(afgm.priority, 1);
   assert.match(afgm.notes, /TheWrap went live at 1:24am ET/);
   assert.match(afgm.notes, /opening-night email draft is out of date/);
-  assert.match(afgm.notes, /^press-night-card-key: a-few-good-men-2026\|2026-10-29$/m);
-  assert.match(afgm.notes, /^press-night-miss: email:broadcast$/m);
-  assert.match(afgm.notes, /^VERIFY: node scripts\/press-night-record\.js --show=a-few-good-men-2026 --night=2026-10-29 --check --json$/m);
+  assert.match(afgm.notes, /^press-night-card-key: a-few-good-men-2026-2026-10-29$/m);
+  assert.match(afgm.notes, /^press-night-miss: email-broadcast-stale$/m);
+  assert.match(afgm.notes, /^press-night-miss: review-thewrap-robert-hofler$/m);
+  // A review miss cannot be re-graded green (the record is history): no VERIFY, close with PR-EVIDENCE.
+  assert.doesNotMatch(afgm.notes, /^VERIFY:/m);
+  assert.match(afgm.notes, /Close with PR-EVIDENCE/);
 
   // Re-run with the same misses: nothing filed, nothing commented.
   const r2 = await run(build(sentWithDraft(), redditEmailed(60, 24)));
@@ -148,25 +168,35 @@ test('auto-filer: one card per show-night, nothing on re-run, a comment only for
   assert.deepEqual(r3.commented, ['a-few-good-men-2026|2026-10-29']);
   assert.equal(L.comments[0].id, L.cards.find((c) => c.description === afgm.notes).identifier);
   assert.match(L.comments[0].text, /Reddit draft emailed to you is out of date/);
-  assert.match(L.comments[0].text, /^press-night-miss: email:reddit$/m);
+  assert.match(L.comments[0].text, /^press-night-miss: email-reddit-stale$/m);
   const r4 = await run(build(sentWithDraft(), redditEmailed(60, 23)));
   assert.equal(L.comments.length, 1);
   assert.deepEqual(r4.commented, []);
 
-  // A closed card is still the card for that show-night: never filed again.
-  for (const c of L.cards) c.state = 'Done';
+  // A closed card still counts: its misses are never filed again.
+  for (const c of L.cards) c.completedAt = '2026-10-30T20:00:00Z';
   const r5 = await run(build(sentWithDraft(), redditEmailed(60, 23)));
   assert.equal(L.created.length, 2);
   assert.deepEqual(r5.filed, []);
+  // A NEW miss after every card closed gets a new card (a comment on a closed card reaches nobody), listing
+  // only that miss; the run after files nothing.
+  const r6 = await run(build({}, redditEmailed(60, 23)));
+  assert.equal(L.created.length, 3);
+  assert.deepEqual(r6.filed, ['a-few-good-men-2026|2026-10-29']);
+  assert.equal(L.created[2].priority, 2);
+  assert.match(L.created[2].notes, /^- no opening-night email draft$/m);
+  assert.doesNotMatch(L.created[2].notes, /^- TheWrap/m); // only the new miss is listed
+  assert.match(L.created[2].notes, /^VERIFY: node scripts\/produce-press-night-digest-snapshot\.js --night=2026-10-29 --check=a-few-good-men-2026$/m);
+  assert.equal((await run(build({}, redditEmailed(60, 23)))).filed.length, 0);
 });
 
 test('auto-filer: an email-only miss files at P2; a Linear failure is reported, not thrown', async () => {
   const entry = { showId: 's', night: '2026-10-29', title: 'S', line: 'S: ...', misses: [{ key: 'email:broadcast', kind: 'email', text: 'no opening-night email draft' }] };
   const L = fakeLinear();
-  await D.fileFixCards({ section: { entries: [entry] }, lookupCard: L.lookupCard, createCard: L.createCard, commentCard: L.commentCard });
+  await D.fileFixCards({ section: { entries: [entry] }, lookupCards: L.lookupCards, createCard: L.createCard, commentCard: L.commentCard });
   assert.equal(L.created[0].priority, 2);
   assert.equal(L.created[0].title, 'P2: Opening night miss: S (2026-10-29)');
-  const r = await D.fileFixCards({ section: { entries: [entry] }, lookupCard: async () => { throw new Error('Linear down'); }, createCard: L.createCard, commentCard: L.commentCard });
+  const r = await D.fileFixCards({ section: { entries: [entry] }, lookupCards: async () => { throw new Error('Linear down'); }, createCard: L.createCard, commentCard: L.commentCard });
   assert.deepEqual(r.errors, ['s|2026-10-29: Linear down']);
   assert.equal(L.created.length, 1);
 });
@@ -195,6 +225,7 @@ test('email block: renders last night only, escapes the line, quiet when there w
   assert.match(html, /Last night's openings/);
   assert.match(html, /A &lt;b&gt;Show&lt;\/b&gt;: 1 of 2 reviews live by 1:02am\. Failed\./);
   assert.match(html, /color:#b91c1c;/);
-  assert.equal(D.renderPressNightBlock(snap, { nowMs: Date.parse('2026-11-01T11:30:00Z') }), ''); // an older night
+  // An older night: the section says the check has not run, never goes quiet.
+  assert.match(D.renderPressNightBlock(snap, { nowMs: Date.parse('2026-11-01T11:30:00Z') }), /not checked yet \(the hourly check has not run since yesterday\)/);
   assert.equal(D.renderPressNightBlock({ night: '2026-10-29', lines: [] }, { nowMs: MORNING }), '');
 });

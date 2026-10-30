@@ -23,6 +23,8 @@ const { draftBaseline, draftChanged } = require('./broadcast-refresh');
 const { draftDeadlineAt } = require('./broadcast-deadline');
 const { SUBREDDIT_BY_MARKET, MIN_REVIEWS, emailedNumbers } = require('./reddit-opening-post');
 const { getOutletDisplayName } = require('./review-normalization');
+const { classifyShowBroadcastState } = require('./missed-broadcasts');
+const { getConfidenceFloors } = require('./score-confidence-gate');
 
 const BROADCAST_MARKETS = new Set(['broadway', 'west-end']);
 const TZ = 'America/New_York';
@@ -64,9 +66,12 @@ const GATE_WORDS = {
 function gradeReviews(rec, nowMs = Date.now()) {
   if (!rec) return { verdict: 'UNKNOWN', finalized: false, why: 'the overnight check did not run', items: [] };
   if (!rec.probe || !rec.probe.endedAt) {
-    // A probe that stopped sampling an hour ago is not coming back (a cancelled or timed-out job).
+    // The probe runs to +6h in two jobs (early to +2h, late from that checkpoint), so a quiet record between
+    // them is normal. Past +7h with no end it is not coming back (a cancelled or timed-out job).
+    const embargo = Date.parse(rec.embargoAt || '');
     const last = Date.parse((rec.probe && (rec.probe.lastSampleAt || rec.probe.startedAt)) || '');
-    if (Number.isFinite(last) && nowMs - last > 60 * MIN) return { verdict: 'UNKNOWN', finalized: false, why: 'the overnight check stopped before it finished', items: [] };
+    const abandoned = Number.isFinite(embargo) ? nowMs > embargo + 7 * 60 * MIN : Number.isFinite(last) && nowMs - last > 60 * MIN;
+    if (abandoned) return { verdict: 'UNKNOWN', finalized: false, why: 'the overnight check stopped before it finished', items: [] };
     return { verdict: 'PENDING', finalized: false, why: 'still being checked', items: [] };
   }
   const result = evaluateCheck(rec);
@@ -123,20 +128,37 @@ function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, no
     const rec = sentShows[id];
     const key = rec && rec.broadcastKey;
     const ids = key ? key.slice(key.indexOf(':') + 1).split('+').filter(Boolean) : [id];
-    if (rec && rec.sentAt) out.push({ kind: 'broadcast', status: 'ok', text: 'opening-night email sent' });
-    else if (rec && rec.discardedAt) out.push({ kind: 'broadcast', status: 'ok', text: 'opening-night email skipped on purpose' });
-    else if (rec && rec.draftId) {
+    // One draft can cover several shows; only its first show files the card, so one draft gets one worker.
+    const files = ids[0] === id;
+    // The tracker's own reading (missed-broadcasts.js): a send seen on any record of the draft is a send,
+    // a cancelled draft counts as no draft, a draft Resend no longer lists is ambiguous (often a send).
+    const state = classifyShowBroadcastState(sentShows, id);
+    if (state === 'sent') out.push({ kind: 'broadcast', status: 'ok', text: 'opening-night email sent' });
+    else if (state === 'discarded') out.push({ kind: 'broadcast', status: 'ok', text: 'opening-night email skipped on purpose' });
+    else if (state === 'draft-unknown') out.push({ kind: 'broadcast', status: 'pending', text: 'opening-night email draft is no longer in Resend (it may have been sent)' });
+    else if (state === 'draft-stuck') {
       const now = {};
       for (const x of ids) now[x] = readNumbers(x);
       const complete = ids.every((x) => now[x] && now[x].reviewCount != null);
-      const was = draftBaseline(sentShows, { ids, record: (key && sentShows[key]) || rec });
-      if (complete && draftChanged(was, now, (key && sentShows[key]) || rec)) {
+      const record = (key && sentShows[key]) || rec;
+      const was = draftBaseline(sentShows, { ids, record });
+      if (!complete) out.push({ kind: 'broadcast', status: 'pending', text: "could not check the opening-night email draft (the site's numbers could not be read)" });
+      else if (draftChanged(was, now, record)) {
         const before = was && was[id] ? was[id] : { score: null, reviewCount: rec.reviewCount };
         const after = before.score == null ? { score: null, reviewCount: live && live.reviewCount } : live;
-        out.push({ kind: 'broadcast', status: 'miss', text: `opening-night email draft is out of date (built with ${nums(before)}, the site shows ${nums(after)})` });
+        const text = `opening-night email draft is out of date (built with ${nums(before)}, the site shows ${nums(after)})`;
+        // Before the 10am deadline the refresher still has time; reviews keep landing overnight.
+        out.push(due ? { kind: 'broadcast', status: 'miss', text, files } : { kind: 'broadcast', status: 'pending', text });
       } else out.push({ kind: 'broadcast', status: 'ok', text: 'opening-night email draft ready' });
     } else if (!due) out.push({ kind: 'broadcast', status: 'pending', text: `opening-night email draft not due until ${dueText}` });
-    else out.push({ kind: 'broadcast', status: 'miss', text: 'no opening-night email draft' });
+    else {
+      // The draft waits for the broadcast's own review floor (score-confidence-gate.js); below it no draft is
+      // owed yet, so the gap is in the reviews, not the email.
+      const floor = getConfidenceFloors(market).total;
+      const have = (live && live.reviewCount) || 0;
+      if (have < floor) out.push({ kind: 'broadcast', status: 'pending', text: `no opening-night email draft yet (the site has ${have} of the ${floor} reviews a draft needs)` });
+      else out.push({ kind: 'broadcast', status: 'miss', text: 'no opening-night email draft', files });
+    }
   }
 
   if (SUBREDDIT_BY_MARKET[market]) {
@@ -145,10 +167,12 @@ function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, no
     if (d && d.postedAt) out.push({ kind: 'reddit', status: 'ok', text: 'Reddit post is up' });
     else if (d && d.emailedAt) {
       const was = emailedNumbers(d);
-      const stale = live && live.reviewCount != null && (was.score !== live.score || was.reviewCount !== live.reviewCount);
-      out.push(stale
-        ? { kind: 'reddit', status: 'miss', text: `Reddit draft emailed to you is out of date (${nums(was)}, the site shows ${nums(live)})` }
-        : { kind: 'reddit', status: 'ok', text: 'Reddit draft emailed' });
+      if (!live || live.reviewCount == null) out.push({ kind: 'reddit', status: 'pending', text: "could not check the Reddit draft (the site's numbers could not be read)" });
+      else if (was.score !== live.score || was.reviewCount !== live.reviewCount) {
+        // After three update emails the drafter waits 6h before the next (reddit-opening-post.js
+        // updateAllowed), so a stale emailed draft only files a card once it outlived that wait.
+        out.push({ kind: 'reddit', status: 'miss', graceMin: 7 * 60, text: `Reddit draft emailed to you is out of date (${nums(was)}, the site shows ${nums(live)})` });
+      } else out.push({ kind: 'reddit', status: 'ok', text: 'Reddit draft emailed' });
     } else if (expected) {
       out.push(due ? { kind: 'reddit', status: 'miss', text: 'no Reddit draft emailed' }
         : { kind: 'reddit', status: 'pending', text: `Reddit draft not due until ${dueText}` });
@@ -161,17 +185,36 @@ function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, no
  * One show's line and its misses.
  * @returns {{verdict:'PASS'|'FAIL'|'UNKNOWN'|'PENDING', line:string, misses:{key,kind,text}[]}}
  */
+function emailParts(emails) {
+  const parts = [];
+  const misses = [];
+  for (const e of emails) {
+    if (e.status === 'ok') continue;
+    parts.push(e.text);
+    if (e.status === 'miss') misses.push({ key: `email:${e.kind}:${/^no /.test(e.text) ? 'missing' : 'stale'}`, kind: 'email', text: e.text, graceMin: e.graceMin, files: e.files !== false });
+  }
+  if (emails.length && emails.every((e) => e.status === 'ok')) parts.push('emails ready');
+  return { parts, misses };
+}
+
 function buildShowLine({ title, reviews, emails = [] }) {
   if (!reviews.finalized) {
-    return { verdict: reviews.verdict, line: `${title}: not graded${reviews.verdict === 'PENDING' ? ' yet' : ''}, ${reviews.why}.`, misses: [] };
+    // The emails are graded on their own: a stopped probe must not hide a missing draft.
+    const em = emailParts(emails);
+    const head = `${title}: ${em.misses.length ? 'reviews ' : ''}not graded${reviews.verdict === 'PENDING' ? ' yet' : ''}, ${reviews.why}`;
+    if (em.misses.length) return { verdict: 'FAIL', line: `${head}; ${em.parts.join('; ')}. Failed.`, misses: em.misses };
+    return { verdict: reviews.verdict, line: `${head}${em.parts.length ? `; ${em.parts.join('; ')}` : ''}.`, misses: [] };
   }
   const parts = [];
   const misses = [];
   const items = reviews.items;
   const by = etTime(new Date(Date.parse(reviews.embargoAt) + 2 * 3600000).toISOString());
+  const byMs = Date.parse(reviews.embargoAt) + 2 * 3600000;
+  // A review that came out later in the night counts as on time when it went live within 30 min of coming
+  // out (same-night-completeness), but it was not live by the +2h mark, so it is named, not counted.
+  const liveBy = (i) => i.status === 'ontime' && !(Date.parse(i.liveAt || '') > byMs);
   if (items.length) {
-    const ontime = items.filter((i) => i.status === 'ontime').length;
-    parts.push(`${ontime} of ${plural(items.length, 'review', 'reviews')} live by ${by}`);
+    parts.push(`${items.filter(liveBy).length} of ${plural(items.length, 'review', 'reviews')} live by ${by}`);
   }
   if (reviews.release) {
     parts.push(`reviews came out at ${etTime(reviews.release.observedAt)}, not the expected ${etTime(reviews.release.assumedAt)}, so they were timed from ${etTime(reviews.release.observedAt)}`);
@@ -187,6 +230,8 @@ function buildShowLine({ title, reviews, emails = [] }) {
       misses.push({ key: `review:${i.outletId}:${i.critic || ''}`, kind: 'review', text: `${name(i)} was not live${until} ET${i.seenAt ? ` (we had the review at ${etTime(i.seenAt)})` : ' (listed by the aggregators)'}` });
     } else if (i.status === 'pending') {
       parts.push(`${name(i)} not checked yet`);
+    } else if (!liveBy(i)) {
+      parts.push(`${name(i)} came out later and went live at ${etTime(i.liveAt)}, on time`);
     }
   }
   const fl = reviews.firstLive;
@@ -200,12 +245,9 @@ function buildShowLine({ title, reviews, emails = [] }) {
     // A failing gate with nothing named above (a dropped review, a short census): never a silent pass.
     misses.push({ key: 'review:other', kind: 'review', text: 'the press-night record failed (node scripts/press-night-record.js --check names the gate)' });
   }
-  for (const e of emails) {
-    if (e.status === 'ok') continue;
-    parts.push(e.text);
-    if (e.status === 'miss') misses.push({ key: `email:${e.kind}`, kind: 'email', text: e.text });
-  }
-  if (emails.length && emails.every((e) => e.status === 'ok')) parts.push('emails ready');
+  const em = emailParts(emails);
+  parts.push(...em.parts);
+  misses.push(...em.misses);
   const body = `${title}: ${parts.join('; ') || 'no reviews held to the night'}`;
   if (misses.length) return { verdict: 'FAIL', line: `${body}. Failed.`, misses };
   if (reviews.verdict === 'UNKNOWN') {
@@ -229,7 +271,7 @@ function buildSection({ night, records, shows, sentShows = {}, redditDrafts = {}
     seen.add(showId);
     const show = byId.get(showId) || { id: showId, title: showId, category: rec && rec.market, openingDate: night };
     const reviews = gradeReviews(rec, nowMs);
-    const emails = reviews.finalized ? gradeEmails({ show, sentShows, redditDraft: redditDrafts[showId] || null, readNumbers, nowMs }) : [];
+    const emails = gradeEmails({ show, sentShows, redditDraft: redditDrafts[showId] || null, readNumbers, nowMs });
     const { verdict, line, misses } = buildShowLine({ title: show.title || showId, reviews, emails });
     entries.push({ showId, night, title: show.title || showId, verdict, line, misses });
   };
@@ -271,7 +313,7 @@ function settledMisses(section, firstSeen, nowMs, graceMin = EMAIL_MISS_GRACE_MI
   const settled = (e, m) => {
     if (m.kind !== 'email') return true;
     const at = Date.parse(firstSeen[`${e.showId}|${e.night}|${m.key}`]);
-    return Number.isFinite(at) && nowMs - at >= graceMin * 60000;
+    return Number.isFinite(at) && nowMs - at >= (m.graceMin || graceMin) * 60000;
   };
   return { ...section, entries: section.entries.map((e) => ({ ...e, misses: e.misses.filter((m) => settled(e, m)) })) };
 }
@@ -279,17 +321,23 @@ function settledMisses(section, firstSeen, nowMs, graceMin = EMAIL_MISS_GRACE_MI
 const KEY_LINE_PREFIX = 'press-night-card-key: ';
 const MISS_LINE_PREFIX = 'press-night-miss: ';
 
-/** The show-night key a card's description carries (its first key line), or null. */
+// Key and miss lines are written as [a-z0-9-] slugs so Linear's markdown handling can never escape them
+// ("|", "_", "*" in a critic's name) and break the match that stops a card being filed twice.
+const slug = (k) => String(k).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+// At most this many new cards per run: a dedupe that stopped matching must not file one per show per hour.
+const MAX_NEW_CARDS_PER_RUN = 5;
+
+/** The show-night slug a card's description carries (its first key line), or null. */
 function cardKeyOf(description) {
-  const m = new RegExp(`^${KEY_LINE_PREFIX}(.+)$`, 'm').exec(String(description || ''));
-  return m ? m[1].trim() : null;
+  const m = new RegExp(`^${KEY_LINE_PREFIX}([a-z0-9-]+)`, 'm').exec(String(description || ''));
+  return m ? m[1] : null;
 }
 
-/** Miss keys already written on a card (description and comments). */
+/** Miss slugs already written on a card (description and comments). */
 function listedMisses(texts) {
   const out = new Set();
-  const re = new RegExp(`^${MISS_LINE_PREFIX}(.+)$`, 'gm');
-  for (const t of texts) for (const m of String(t || '').matchAll(re)) out.add(m[1].trim());
+  const re = new RegExp(`^${MISS_LINE_PREFIX}([a-z0-9-]+)`, 'gm');
+  for (const t of texts) for (const m of String(t || '').matchAll(re)) out.add(m[1]);
   return out;
 }
 
@@ -306,50 +354,57 @@ function cardNotes(entry, misses) {
     `Reviews: node scripts/press-night-record.js --show=${entry.showId} --night=${entry.night} --check (record data/audit/press-night/${entry.showId}-${entry.night}.json).`,
     'Email drafts: data/opening-night-sent.json (Resend draft, scripts/lib/broadcast-refresh.js) and data/audit/reddit-post-drafts.json (Reddit).',
     '',
-    `${KEY_LINE_PREFIX}${entry.showId}|${entry.night}`,
-    ...misses.map((m) => `${MISS_LINE_PREFIX}${m.key}`),
+    `${KEY_LINE_PREFIX}${slug(`${entry.showId}|${entry.night}`)}`,
+    ...misses.map((m) => `${MISS_LINE_PREFIX}${slug(m.key)}`),
     '',
     '## Acceptance criteria',
     '- The cause of each miss above is fixed, so the next opening does not repeat it.',
-    `VERIFY: node scripts/press-night-record.js --show=${entry.showId} --night=${entry.night} --check --json`,
+    ...(misses.some((m) => m.kind === 'review')
+      ? ['- The press-night record is history: its --check keeps failing after the fix. Close with PR-EVIDENCE (merged deployed checked) for the fix and its test.']
+      : [`VERIFY: node scripts/produce-press-night-digest-snapshot.js --night=${entry.night} --check=${entry.showId}`]),
   ].join('\n');
 }
 
 /**
  * File one card per show-night with misses; on a later run, comment only the misses the card does not list.
- * Linear is the record (no ledger file): every card carries a "press-night-card-key: show|night" line and one
- * "press-night-miss: <key>" line per miss, in its description or a later comment. lookupCard finds the card
- * in any state (a closed card is never re-filed), as auto-fix-first does with its key line.
+ * Linear is the record (no ledger file): every card carries a "press-night-card-key: <show-night slug>" line
+ * and one "press-night-miss: <miss slug>" line per miss, in its description or a later comment. lookupCards
+ * finds the show-night's cards in any state (closed included), so a listed miss is never filed again. A new
+ * miss becomes a comment on the open card, or a new card when every card is closed (a comment on a closed
+ * card reaches nobody).
  * @param {object} p
  * @param {object} p.section       buildSection output
- * @param {function} p.lookupCard  (key) -> Promise<{identifier, description, comments: string[]} | null>
+ * @param {function} p.lookupCards (keySlug) -> Promise<{identifier, description, comments: string[], completedAt?, canceledAt?}[]>
  * @param {function} p.createCard  ({title, notes, priority}) -> Promise<identifier>
  * @param {function} p.commentCard (card, text) -> Promise<void>
  * @returns {Promise<{filed:string[], commented:string[], skipped:string[], errors:string[]}>}
  */
-async function fileFixCards({ section, lookupCard, createCard, commentCard }) {
+async function fileFixCards({ section, lookupCards, createCard, commentCard }) {
   const res = { filed: [], commented: [], skipped: [], errors: [] };
-  for (const entry of section.entries) {
+  for (const raw of section.entries) {
+    const entry = { ...raw, misses: raw.misses.filter((m) => m.files !== false) };
     if (!entry.misses.length) continue;
     const key = `${entry.showId}|${entry.night}`;
     try {
-      const card = await lookupCard(key);
+      const cards = await lookupCards(slug(key));
+      const known = listedMisses(cards.flatMap((c) => [c.description, ...(c.comments || [])]));
+      const fresh = entry.misses.filter((m) => !known.has(slug(m.key)));
+      if (!fresh.length) { res.skipped.push(key); continue; }
+      const card = cards.find((c) => !c.completedAt && !c.canceledAt);
       if (!card) {
-        const priority = entry.misses.some((m) => m.kind === 'review') ? 1 : 2;
-        await createCard({ title: cardTitle(entry, priority), notes: cardNotes(entry, entry.misses), priority });
+        if (res.filed.length >= MAX_NEW_CARDS_PER_RUN) { res.errors.push(`${key}: not filed, ${MAX_NEW_CARDS_PER_RUN} cards already filed this run`); continue; }
+        const priority = fresh.some((m) => m.kind === 'review') ? 1 : 2;
+        await createCard({ title: cardTitle(entry, priority), notes: cardNotes(entry, fresh), priority });
         res.filed.push(key);
         continue;
       }
-      const known = listedMisses([card.description, ...(card.comments || [])]);
-      const fresh = entry.misses.filter((m) => !known.has(m.key));
-      if (!fresh.length) { res.skipped.push(key); continue; }
       await commentCard(card, [
         `New misses found for ${entry.title} (${entry.night}) since this card was filed:`,
         ...fresh.map((m) => `- ${m.text}`),
         '',
         `Line in the email now: ${entry.line}`,
         '',
-        ...fresh.map((m) => `${MISS_LINE_PREFIX}${m.key}`),
+        ...fresh.map((m) => `${MISS_LINE_PREFIX}${slug(m.key)}`),
       ].join('\n'));
       res.commented.push(key);
     } catch (e) {
@@ -370,8 +425,12 @@ const DOT = { PASS: '#15803d', FAIL: '#b91c1c', UNKNOWN: '#999', PENDING: '#999'
  * a night with no openings, or when the snapshot is about an older night than the email's last night.
  */
 function renderPressNightBlock(snapshot, { esc = defaultEsc, nowMs = Date.now() } = {}) {
-  if (!snapshot || !Array.isArray(snapshot.lines) || !snapshot.lines.length) return '';
-  if (snapshot.night !== lastNight(nowMs)) return '';
+  if (!snapshot || !Array.isArray(snapshot.lines)) return '';
+  if (snapshot.night !== lastNight(nowMs)) {
+    // The hourly grade has not run since yesterday (GitHub delays the schedule): say so, never go quiet.
+    return `<div style="margin:0 0 16px;font-size:14px;"><b>Last night's openings:</b> not checked yet (the hourly check has not run since yesterday).</div>`;
+  }
+  if (!snapshot.lines.length) return '';
   const rows = snapshot.lines.map((l) => {
     return `<div style="margin:0 0 8px;font-size:14px;"><span style="color:${DOT[l.verdict] || DOT.UNKNOWN};">&#9679;</span> ${esc(l.line)}</div>`;
   }).join('\n');
@@ -384,6 +443,6 @@ function renderPressNightBlock(snapshot, { esc = defaultEsc, nowMs = Date.now() 
 module.exports = {
   etTime, etDate, lastNight, gradeReviews, gradeEmails, buildShowLine, buildSection,
   EMAIL_MISS_GRACE_MIN, missFirstSeen, settledMisses,
-  KEY_LINE_PREFIX, MISS_LINE_PREFIX, cardKeyOf, listedMisses,
+  KEY_LINE_PREFIX, MISS_LINE_PREFIX, MAX_NEW_CARDS_PER_RUN, slug, cardKeyOf, listedMisses,
   cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock,
 };

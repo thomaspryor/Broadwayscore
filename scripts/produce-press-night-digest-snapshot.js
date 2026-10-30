@@ -18,6 +18,8 @@
  *   node scripts/produce-press-night-digest-snapshot.js [--night=YYYY-MM-DD] [--now=ISO] [--file-cards] [--dry-run]
  *
  * --dry-run prints the section and the cards it would file; writes nothing, files nothing.
+ * --check=SHOW_ID prints that show's line and exits 0 only when its emails have no miss now (the VERIFY of an
+ * email-draft fix card); writes nothing, files nothing.
  * Kill switch for filing: PRESS_NIGHT_FIX_CARDS_DISABLED=true.
  */
 'use strict';
@@ -74,20 +76,21 @@ function toSnapshot(section, firstSeen = {}) {
 function linearDeps(nowMs) {
   const linear = require('./lib/linear-client.js');
   return {
-    async lookupCard(key) {
+    async lookupCards(keySlug) {
       const since = new Date(nowMs - LOOKBACK_MS).toISOString();
-      const issues = await linear.listIssuesByProvenance({ since, descriptionMarkers: [`${D.KEY_LINE_PREFIX}${key}`] });
-      const mine = issues.filter((i) => D.cardKeyOf(i.description) === key);
-      if (!mine.length) return null;
+      const issues = await linear.listIssuesByProvenance({ since, descriptionMarkers: [`${D.KEY_LINE_PREFIX}${keySlug}`] });
+      const mine = issues.filter((i) => D.cardKeyOf(i.description) === keySlug);
+      if (!mine.length) return [];
       const comments = await linear.listIssueComments(mine.map((i) => i.identifier));
-      const card = mine[0];
-      const texts = (comments.get(card.identifier) || []).map((c) => (typeof c === 'string' ? c : c.body));
-      return { ...card, comments: texts };
+      return mine.map((i) => ({ ...i, comments: (comments.get(i.identifier) || []).map((c) => (typeof c === 'string' ? c : c.body)) }));
     },
     async createCard({ title, notes, priority }) {
       const { createLinearIssue } = require('./lib/linear-issue-create.js');
       // Linear priority: 2 = High (our P1), 3 = Medium (our P2). See card-dedupe.js DEDUPE_OPT_OUTS for the opt-out.
-      const { issue } = await createLinearIssue({ title, description: notes, priority: priority === 1 ? 2 : 3, dispatch: true, model: 'opus', dedupeOptOut: 'press-night-digest' });
+      // A review-miss card has no VERIFY on purpose (its record is history, --check never turns green):
+      // the notes tell the worker to close it with PR-EVIDENCE.
+      const noVerify = /^VERIFY:/m.test(notes) ? undefined : 'press-night record is history; the card closes with PR-EVIDENCE for the fix and its test';
+      const { issue } = await createLinearIssue({ title, description: notes, priority: priority === 1 ? 2 : 3, dispatch: true, model: 'opus', dedupeOptOut: 'press-night-digest', noVerify });
       return issue.identifier;
     },
     async commentCard(card, body) {
@@ -107,26 +110,38 @@ async function main() {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(night)) { console.error('--night must be YYYY-MM-DD'); return 2; }
 
   const section = D.buildSection({ night, nowMs, ...loadInputs(night) });
+  const checkId = arg('check');
+  if (checkId) {
+    const e = section.entries.find((x) => x.showId === checkId);
+    if (!e) { console.log(`${checkId}: no press night on ${night}`); return 1; }
+    console.log(e.line);
+    const emailMisses = e.misses.filter((m) => m.kind === 'email');
+    for (const m of emailMisses) console.log(`email miss: ${m.text}`);
+    return emailMisses.length ? 1 : 0;
+  }
   const previous = readJson(SNAPSHOT, {}) || {};
   const firstSeen = D.missFirstSeen(section, previous.missFirstSeen, new Date(nowMs).toISOString());
   const snap = toSnapshot(section, firstSeen);
   console.log(`Last night's openings (${night}):`);
   for (const l of snap.lines) console.log(`  [${l.verdict}] ${l.line}`);
   if (!snap.lines.length) console.log('  (no press nights)');
-  if (!dryRun) {
+  // Same lines and misses as the last run: leave the file alone, so the hourly telemetry commit only
+  // pushes when something changed (the night rolls over daily, well inside the 36h freshness window).
+  const same = (a) => JSON.stringify({ night: a.night, lines: a.lines, missFirstSeen: a.missFirstSeen });
+  if (!dryRun && same(previous) !== same(snap)) {
     fs.writeFileSync(SNAPSHOT, JSON.stringify(snap, null, 2) + '\n');
     console.log(`wrote ${path.relative(REPO, SNAPSHOT)}`);
-  }
+  } else if (!dryRun) console.log('snapshot unchanged');
 
   if (!argv.includes('--file-cards')) return 0;
   if (process.env.PRESS_NIGHT_FIX_CARDS_DISABLED === 'true') { console.log('fix cards: disabled (PRESS_NIGHT_FIX_CARDS_DISABLED=true)'); return 0; }
   if (night < FIRST_FILING_NIGHT) { console.log(`fix cards: none for ${night}, filing starts with the ${FIRST_FILING_NIGHT} night`); return 0; }
-  // Only finished records file cards: a probe still sampling can still turn a miss into a pass.
-  // An email miss younger than one draft-refresh cycle is left for the next run (D.settledMisses).
-  const graded = D.settledMisses({ ...section, entries: section.entries.filter((e) => e.verdict !== 'PENDING') }, firstSeen, nowMs);
+  // Review misses only come from finished records (a probe still sampling can still turn a miss into a pass);
+  // email misses are graded on their own. One younger than its grace is left for a later run (D.settledMisses).
+  const graded = D.settledMisses(section, firstSeen, nowMs);
   const deps = linearDeps(nowMs);
   if (dryRun) {
-    const would = await D.fileFixCards({ section: graded, lookupCard: deps.lookupCard,
+    const would = await D.fileFixCards({ section: graded, lookupCards: deps.lookupCards,
       createCard: async (c) => { console.log(`  would file: ${c.title}`); return 'DRY-RUN'; },
       commentCard: async (card) => { console.log(`  would comment on ${card.identifier}`); } });
     console.log(`fix cards (dry run): ${would.filed.length} new, ${would.commented.length} comments, ${would.skipped.length} already filed`);
