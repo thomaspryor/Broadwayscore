@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-30T06:59:09.853Z",
+  "timestamp": "2026-10-30T07:14:46.949Z",
   "stats": {
     "totalReviews": 70031,
     "alreadyFlagged": 22243,
@@ -8,7 +8,7 @@
     "tvFilmSignals": 2016,
     "londonSignals": 3390,
     "offBroadwaySignals": 631,
-    "yearMismatch": 284,
+    "yearMismatch": 285,
     "noPublishDate": 7993
   },
   "findings": [
@@ -51878,6 +51878,20 @@
     },
     {
       "showId": "sweeney-todd-2023",
+      "file": "billboard--greg-evans.json",
+      "score": 83,
+      "publishDate": "March 1, 2023",
+      "url": "https://www.billboard.com/culture/theater/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-1235244444/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2023 (0x). 2026 matches production: sweeney-todd-birmingham-rep-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "sweeney-todd-2023",
       "file": "culturesauce--thom-geier.json",
       "score": 75,
       "publishDate": null,
@@ -85511,6 +85525,7 @@
     {
       "showId": "girls-off-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
+      "score": 80,
       "publishDate": "2026-10-29",
       "url": "https://ayoungishperspective.co.uk/2026/10/29/review-girls/",
       "findings": [
