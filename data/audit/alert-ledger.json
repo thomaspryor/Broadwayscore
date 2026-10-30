@@ -245,15 +245,16 @@
       "disposition": "auto",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-30T20:14:04.618Z",
-      "lastSeen": "2026-10-30T20:14:04.618Z",
-      "lastNotifiedAt": "2026-10-30T20:14:04.618Z",
-      "lastSurfacedAt": "2026-10-30T20:14:04.618Z",
+      "incidentOpenedAt": "2026-10-30T19:49:00.398Z",
+      "lastSeen": "2026-10-30T20:33:23.764Z",
+      "lastNotifiedAt": "2026-10-30T19:49:00.398Z",
+      "lastSurfacedAt": "2026-10-30T19:49:00.398Z",
       "notifyCount": 191,
       "cardId": null,
       "linearIdentifier": "BRO-6656",
       "notifyCountAtRelease": 177,
-      "sweptTracker": "BRO-6422"
+      "sweptTracker": "BRO-6422",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26828,14 +26829,14 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
       "incidentOpenedAt": "2026-10-30T13:06:49.638Z",
-      "lastSeen": "2026-10-30T20:05:59.763Z",
+      "lastSeen": "2026-10-30T20:33:23.729Z",
       "lastNotifiedAt": "2026-10-30T13:06:49.638Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-6627",
       "absentRunIds": [],
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "open",
