@@ -29,6 +29,8 @@
 'use strict';
 
 require('./lib/cli-help').exitOnHelp(module);
+// Labels every ingest-review-from-url.js run this script starts (BRO-6588).
+process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'we-major-recovery';
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');

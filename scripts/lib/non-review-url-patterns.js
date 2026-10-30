@@ -633,7 +633,10 @@ const LISTING_PAGE_URL_PATTERNS = [
   // or id after the segment (/reviews/<slug>), which this never matches.
   // At least one segment before the hub word: a bare host/review is too
   // ambiguous to call (and is every test fixture's placeholder review url).
-  { host: /./, path: /\/[^/]+\/(?:reviews?|press|press-quotes|critics-say|what-the-critics-say)\/?$/i, reason: 'review-hub-page' },
+  // A paginated hub (/reviews/page/5/) is the same hub (BRO-6588: letterboxd
+  // /film/a-few-good-men/reviews/page/5/ filed as a review). Corpus check
+  // 2026-10-30: 0 of 35k reviews.json urls end in /<hub>/page/N.
+  { host: /./, path: /\/[^/]+\/(?:reviews?|press|press-quotes|critics-say|what-the-critics-say)(?:\/page\/\d+)?\/?$/i, reason: 'review-hub-page' },
   // Cititour event listings (BRO-5166): /NYC_Events/<Title>/<id> is the
   // calendar entry (press blurb, dates, prices). Its reviews live under
   // /NYC_Broadway/ and /NYC_News/ (all 292 scored Cititour rows on 2026-10-12;
@@ -879,6 +882,56 @@ function submissionNonReviewReason(url) {
   return classifyReviewUrl(url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null;
 }
 
+// Outlets whose reviews carry "review" (or "critic") in the url: on these
+// hosts a slug without the word, dated well before opening night, is a news
+// item, first look, feature or interview (BRO-6588: twelve such pages were
+// filed as A Few Good Men reviews before it opened). Measured on reviews.json
+// 2026-10-30: 3 of 35,058 rows match (2010-2019 pages; the writer applies
+// this to new files only, so none change).
+// Deliberately host-scoped: unscoped, the same test matched 221 real reviews,
+// mostly blogger preview reviews whose slugs never say "review".
+const REVIEW_SLUG_OUTLET_HOSTS = new Set([
+  'nytimes.com', 'vulture.com', 'variety.com', 'ew.com', 'avclub.com', 'cnn.com',
+  'goldderby.com', 'hollywoodreporter.com', 'thewrap.com', 'deadline.com', 'theguardian.com',
+]);
+const REVIEW_SLUG_WORD = /review|critic|critique/i;
+
+/**
+ * Why a NEW review file for this url should be refused as a pre-opening news
+ * page, or null (BRO-6588). All three must hold:
+ *   - the host is a REVIEW_SLUG_OUTLET_HOSTS outlet and the url (path+query)
+ *     never says review/critic/critique;
+ *   - the page's own date fails the shared anticipatory gate
+ *     (content-filters.isAnticipatoryPreviewPost: 2-day grace, 14 off-Broadway,
+ *     humanReviewedEarlyPublish), and is not inside a prior run or tour leg;
+ *   - that date came from the page or the caller, not the body-text regex
+ *     (dateSource 'text-regex' can be a run or closing date, BRO-5090).
+ * The writer calls this for every non-aggregator create, so discovery stubs
+ * are refused before the collector spends a fetch on them.
+ * @param {string} url
+ * @param {{publishDate?: string|null, dateSource?: string|null, outletId?: string|null,
+ *   show?: object|null, humanReviewedEarlyPublish?: boolean, allowEarlyDate?: boolean}} [ctx]
+ * @returns {'pre-opening-non-review'|null}
+ */
+function preOpeningNonReviewReason(url, ctx = {}) {
+  const { publishDate, dateSource, outletId, show, humanReviewedEarlyPublish, allowEarlyDate } = ctx;
+  if (!publishDate || !show || !show.openingDate || allowEarlyDate === true) return null;
+  if (dateSource === 'text-regex') return null;
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  if (!REVIEW_SLUG_OUTLET_HOSTS.has(registrableHost(u.hostname.toLowerCase()))) return null;
+  let slug = u.pathname + u.search;
+  try { slug = decodeURIComponent(slug); } catch { /* malformed escape: test it raw */ }
+  if (REVIEW_SLUG_WORD.test(slug)) return null;
+  const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+  if (isWithinPriorRun(publishDate, show.priorRuns) || isWithinTourLeg(publishDate, show.tourLegs)) return null;
+  const verdict = require('./content-filters').isAnticipatoryPreviewPost(publishDate, show.openingDate, outletId || null, {
+    humanReviewedEarlyPublish: humanReviewedEarlyPublish === true,
+    category: show.category,
+  });
+  return verdict.rejected ? 'pre-opening-non-review' : null;
+}
+
 /**
  * Should the review-gap census count this URL as a candidate review at all?
  * (BRO-4190 / BRO-4540 / BRO-4583: show hubs, venue /whats-on/ pages, ticket
@@ -954,6 +1007,8 @@ module.exports = {
   offTopicSectionReason,
   classifyGapCandidateUrl,
   submissionNonReviewReason,
+  REVIEW_SLUG_OUTLET_HOSTS,
+  preOpeningNonReviewReason,
   NON_REVIEW_HOST_PATTERNS,
   ALLOWED_ORG_HOSTS,
   NON_REVIEW_PATH_PATTERNS,

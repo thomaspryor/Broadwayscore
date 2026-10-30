@@ -223,6 +223,10 @@ const EXPECTED_REJECTION_REASONS = [
   // earlier-dated citation, so an undated page may be the prior run's review.
   // Correct until the page carries a date (NOT durable: a later run can ingest it).
   'publish-date-unresolved',
+  // BRO-6588: a news/feature page dated before opening on an outlet whose
+  // reviews say "review" in the url (review-file-writer.js). NOT durable: the
+  // verdict depends on openingDate, which can move.
+  'pre-opening-non-review',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -369,6 +373,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'publish-date-unresolved') {
     return `${showId}: ${url} has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD.`;
+  }
+  if (reason === 'pre-opening-non-review') {
+    return `${showId}: ${url} is dated before this show's opening on a review outlet and its URL has no review/critic word, so it was read as a pre-opening news, feature or interview page (BRO-6588, non-review-url-patterns.js preOpeningNonReviewReason). Expected rejection; if it IS an early-published review, ingest it with --allow-non-review-url.`;
   }
   if (reason === 'timeout-listing-capsule') {
     return `${showId}: ${url} is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest.`;

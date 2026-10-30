@@ -327,14 +327,14 @@ jobs:
           # pending (awaiting-score sweep), not as a dead end. A refusal
           # (blocked domain, blocklist, wrong show) still fails here.
           status=0
-          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL" || status=$?
+          node scripts/ingest-review-from-url.js --caller=process-review-submission --show="$SHOW_ID" --url="$REVIEW_URL" || status=$?
           [ "$status" -eq 0 ] && exit 0
           # Exit 3 = the page could not be read. Anything else is a refusal
           # (blocked/non-review URL, blocklist, wrong show): fail as before.
           [ "$status" -ne 3 ] && exit "$status"
           echo "::warning::First ingest attempt could not read the page; retrying in 60s"
           sleep 60
-          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL" --stub-on-failure
+          node scripts/ingest-review-from-url.js --caller=process-review-submission --show="$SHOW_ID" --url="$REVIEW_URL" --stub-on-failure
 
       # BRO-4141: score the new review before the rebuild. Without a score the
       # rebuild leaves it out, the landed check below reported "not on the

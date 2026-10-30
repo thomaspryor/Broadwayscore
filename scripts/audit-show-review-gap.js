@@ -46,6 +46,8 @@
 
 'use strict';
 
+// Labels every ingest-review-from-url.js run this script starts (BRO-6588).
+process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'audit-show-review-gap';
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -1689,6 +1691,11 @@ function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = fal
     const priorDate = show && quarantinedPriorRunDate(`${e && e.stdout || ''}${e && e.stderr || ''}`, show);
     if (priorDate) {
       return { ok: false, noop: true, expected: true, expectedReason: 'prior-production-quarantined', reason: `${showId}: ${url} dated ${priorDate} predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed.`, provisional };
+    }
+    // BRO-6588: the writer's pre-opening news refusal also exits 1; it is an expected skip, not a failed ingest.
+    const guardSkip = classifyIngestSkip(String(e && e.stdout || ''));
+    if (guardSkip.reason === 'pre-opening-non-review') {
+      return { ok: false, noop: true, expected: true, expectedReason: guardSkip.reason, reason: describeSkip(showId, url, guardSkip), provisional };
     }
     return { ok: false, reason: ingestFailureReason(e), provisional, zeroChar };
   }

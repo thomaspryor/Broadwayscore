@@ -43,6 +43,8 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+// Labels every ingest-review-from-url.js run this script starts (BRO-6588).
+process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'execute-approved-fix';
 const { runScriptArgs } = require('./lib/run-script-args');
 const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');

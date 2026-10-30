@@ -31,6 +31,8 @@
 'use strict';
 require('./lib/cli-help').exitOnHelp(module);
 
+// Labels every ingest-review-from-url.js run this script starts (BRO-6588).
+process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'seed-evidence-review-stubs';
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');

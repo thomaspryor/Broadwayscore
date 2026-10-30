@@ -12,6 +12,8 @@
  * after the ingest, so a re-run (or a crash mid-batch) never re-ingests a done (show,url).
  * Failures are recorded too and retried only with --retry-failed.
  */
+// Labels every ingest-review-from-url.js run this script starts (BRO-6588).
+process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'drain-unknown-outlets';
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');

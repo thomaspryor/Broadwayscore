@@ -25,6 +25,8 @@
  */
 'use strict';
 
+// Labels every ingest-review-from-url.js run this script starts (BRO-6588).
+process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'collect-talkinbroadway-index';
 const fs = require('fs');
 const os = require('os');
 const path = require('path');

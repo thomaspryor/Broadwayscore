@@ -612,3 +612,36 @@ test('namedNonReviewReason: cast-album reviews are not production reviews (BRO-6
 test('namedNonReviewReason: Musical Theatre Review cd-review slugs are album reviews (BRO-6580)', () => {
   assert.equal(namedNonReviewReason('https://musicaltheatrereview.com/cd-review-the-prince-of-egypt-original-london-cast/'), 'cast-album-review');
 });
+
+// BRO-6588: pre-opening news/feature pages on review outlets (A Few Good Men
+// press night saved ~12 of them as reviews) are refused at discovery.
+const { preOpeningNonReviewReason, listingPageUrlReason } = require('./non-review-url-patterns.js');
+const AFGM = { id: 'a-few-good-men-2026', openingDate: '2026-10-29', category: 'broadway' };
+
+test('BRO-6588: EW first-look dated 2026-10-08 for a show opening 2026-10-29 is rejected', () => {
+  const url = 'https://ew.com/a-few-good-men-broadway-first-look-photos-11823456';
+  assert.equal(preOpeningNonReviewReason(url, { publishDate: '2026-10-08', outletId: 'ew', show: AFGM }), 'pre-opening-non-review');
+  assert.equal(preOpeningNonReviewReason(url, { publishDate: '2026-10-08T14:00:00Z', outletId: 'ew', show: AFGM }), 'pre-opening-non-review', 'ISO datetime');
+  assert.equal(preOpeningNonReviewReason('https://www.nytimes.com/2026/10/20/theater/a-few-good-men-broadway.html',
+    { publishDate: '2026-10-20', outletId: 'nytimes', show: AFGM }), 'pre-opening-non-review');
+});
+
+test('BRO-6588: letterboxd /reviews/page/5/ is a review hub', () => {
+  assert.equal(listingPageUrlReason('https://letterboxd.com/film/a-few-good-men/reviews/page/5/'), 'review-hub-page');
+  assert.equal(listingPageUrlReason('https://letterboxd.com/film/a-few-good-men/reviews/'), 'review-hub-page');
+});
+
+test('BRO-6588: real opening-night and early-but-legit reviews are accepted', () => {
+  const ctx = (publishDate, extra = {}) => ({ publishDate, outletId: 'nytimes', show: AFGM, ...extra });
+  assert.equal(preOpeningNonReviewReason('https://www.nytimes.com/2026/10/29/theater/a-few-good-men-review.html', ctx('2026-10-29')), null);
+  assert.equal(preOpeningNonReviewReason('https://www.nytimes.com/2026/10/30/theater/a-few-good-men-broadway.html', ctx('2026-10-30')), null, 'slugless but on/after opening');
+  assert.equal(preOpeningNonReviewReason('https://www.vulture.com/article/a-few-good-men-broadway-critic.html', ctx('2026-10-08')), null, 'critic slug');
+  assert.equal(preOpeningNonReviewReason('https://pagesonstages.com/a-few-good-men-broadway', ctx('2026-10-08')), null, 'host not listed');
+  assert.equal(preOpeningNonReviewReason('https://ew.com/a-few-good-men-broadway-11823456', ctx('2026-10-08', { dateSource: 'text-regex' })), null, 'body date never refuses');
+  assert.equal(preOpeningNonReviewReason('https://ew.com/a-few-good-men-broadway-11823456', ctx('2026-10-08', { allowEarlyDate: true })), null, 'override');
+  assert.equal(preOpeningNonReviewReason('https://ew.com/a-few-good-men-broadway-11823456', ctx(null)), null, 'no date');
+  const offB = { id: 'x', openingDate: '2026-10-29', category: 'off-broadway' };
+  assert.equal(preOpeningNonReviewReason('https://www.nytimes.com/2026/10/24/theater/x.html', { publishDate: '2026-10-24', outletId: 'nytimes', show: offB }), null, 'off-Broadway grace');
+  const prior = { ...AFGM, priorRuns: [{ openingDate: '2026-09-01', closingDate: '2026-09-30' }] };
+  assert.equal(preOpeningNonReviewReason('https://www.nytimes.com/2026/09/15/theater/x.html', { publishDate: '2026-09-15', outletId: 'nytimes', show: prior }), null, 'prior run');
+});

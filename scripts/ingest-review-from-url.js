@@ -51,7 +51,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { isolateMultiShowSection, normSectionText, isolatedSectionWriteFields } = require('./lib/multi-show-section-extract');
 const { findCrossShowOwners } = require('./lib/url-ownership');
-const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
+const { extractArticleTextFromUrl, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const { isUnresolvableRedirectUrl } = require('./lib/unresolvable-url');
 const { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared } = require('./lib/ingest-html-score');
@@ -102,6 +102,13 @@ const dateWindow = (getArg('date-window') || '').split(',').filter(Boolean);
 // earlier-dated citation: an undated file bypasses the date-plausibility guard,
 // so a revival's folder could hold (and later score) the prior run's review.
 const requirePublishDate = hasFlag('require-publish-date');
+// --caller=<slug> (or INGEST_CALLER): the pipeline that ran this ingest, stored
+// as ingestSource so a bad file can be traced to its caller (BRO-6588: twelve
+// A Few Good Men news pages all read source 'submit-review-form').
+const callerArg = (() => {
+  const raw = getArg('caller') || process.env.INGEST_CALLER || '';
+  return /^[a-z0-9][a-z0-9._-]{0,63}$/i.test(raw) ? raw : null;
+})();
 const dryRun = hasFlag('dry-run');
 // --data-dir: override the review-texts root, same flag block-review.js already
 // exposes ("Override data/review-texts root (for tests)"). Flows to BOTH the
@@ -172,12 +179,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--caller=SLUG] [--land]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--caller=SLUG] [--land]');
   process.exit(1);
 }
 
@@ -392,7 +399,7 @@ if (!show) {
       criticName: criticArg || 'Unknown',
       url,
       source: 'submit-review-form',
-      fields: buildRetryStubFields(reason, { publishDate: publishDateArg }),
+      fields: { ...buildRetryStubFields(reason, { publishDate: publishDateArg }), ...(callerArg ? { ingestSource: callerArg } : {}) },
     }, { dryRun, reviewTextsDir, knownShowIds: knownShowIds() });
     if (stubResult.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(stubResult.reason)) {
       console.error(`\n❌ Retry stub refused by the write guard (${stubResult.reason})`);
@@ -492,9 +499,17 @@ if (!show) {
   // this the review lands with publishDate:undefined, which fails-open through
   // the anticipatory-pre-opening gate and weakens temporal wrong-production
   // detection. (1minutecritic HR + Maids incident, 2026-05-28.)
-  const publishDate = publishDateArg || extractPublishDate(html, url) || (stageMeta && stageMeta.publishDate) || null;
-  if (!publishDateArg && publishDate) {
+  // BRO-6588: then the byline date in the article text, as the collector does.
+  const resolvedDate = require('./lib/ingest-publish-date').resolveIngestPublishDate({
+    publishDateArg, html, url, text: hasBody ? text : null, stagePublishDate: stageMeta && stageMeta.publishDate,
+  });
+  const publishDate = resolvedDate.publishDate;
+  if (resolvedDate.from === 'page' || resolvedDate.from === 'stage') {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
+  } else if (resolvedDate.from === 'text') {
+    console.log(`  → Extracted publishDate from the byline text: ${publishDate}`);
+  } else if (resolvedDate.reason === 'body-url-conflict') {
+    console.log('  → Byline date disagrees with the URL path date: publishDate left empty for the rebuild backfill (BRO-5351)');
   }
 
   if (requirePublishDate && !publishDate) {
@@ -612,6 +627,10 @@ if (!show) {
     publishDate: publishDate,
     operatorTrust: false,
   });
+  if (resolvedDate.dateSource) fields.dateSource = resolvedDate.dateSource;
+  // Which pipeline asked for this ingest (BRO-6588). The source stays
+  // 'submit-review-form' because the writer's submission guards key on it.
+  if (callerArg) fields.ingestSource = callerArg;
   // Human override for review-file-writer's submitted-non-review-url guard
   // (a real review on a ticket/listing host). Persists on the file as a
   // record of the override.

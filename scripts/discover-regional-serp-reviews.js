@@ -40,6 +40,8 @@
 
 'use strict';
 
+// Labels every ingest-review-from-url.js run this script starts (BRO-6588).
+process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'discover-regional-serp-reviews';
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');

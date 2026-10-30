@@ -1395,6 +1395,23 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
+  // --- Guard: pre-opening news page on a review-slug outlet (BRO-6588) ---
+  // An EW first look, a Variety news item or a NYT feature dated weeks before
+  // opening, on an outlet whose reviews usually say "review" in the url (the
+  // date carries the rule: 453 real reviews there lack the word, 3 are dated
+  // early). Twelve reached A Few Good Men's folder through serp/rss/site-search/
+  // listing-poller stubs and url ingest, each burning a fetch and an LLM call
+  // before the rebuild excluded it. Any non-aggregator source, on NEW files here
+  // and on a merge that swaps a file's url (_mergeIntoExisting); the rule and
+  // its exemptions (prior runs, grace days, body-text dates) are in
+  // preOpeningNonReviewReason. A SERP stub has no date yet and passes; the
+  // collector's anticipatory gate still judges it after the fetch. A write that
+  // carries a roundup's score (bww-roundup etc.) is a cited review: exempt.
+  if (!(existing && existing.data) && !fs.existsSync(filepath)) {
+    const refusal = _preOpeningNewsRefusal(showId, outletId, input, fields);
+    if (refusal) return refusal;
+  }
+
   // --- Guard M: merged-away URL (BRO-4414) ---
   // A sibling file already absorbed this URL in an earlier merge and the
   // duplicate was deleted. Creating a file for it re-manufactures that duplicate
@@ -1760,6 +1777,28 @@ function revertBodyFromRefusedUrl(before, existing, input, fields) {
   return reverted;
 }
 
+// BRO-6588: the pre-opening news-page refusal, shared by the create path and
+// the merge path (a news url replacing a stub's url via maybeUpgradeUrl).
+function _preOpeningNewsRefusal(showId, outletId, input, fields) {
+  if (!input.url || isAggregatorReviewSource(input.source)
+    || hasPreservableAggregatorScore(fields) || fields.allowNonReviewUrl === true || input.allowNonReviewUrl) return null;
+  const show = _getShowById(showId);
+  // Same lane predicate as createOrMergeReviewFile's laneHolds('nonReview').
+  if (laneBypasses({ ...input, ...fields, showId }, 'nonReview', show && show.openingDate ? { openingDate: show.openingDate } : {})) return null;
+  const publishDate = fields.publishDate || input.publishDate || null;
+  const reason = require('./non-review-url-patterns').preOpeningNonReviewReason(input.url, {
+    publishDate,
+    dateSource: fields.dateSource || null,
+    outletId,
+    show,
+    humanReviewedEarlyPublish: fields.humanReviewedEarlyPublish === true,
+    allowEarlyDate: fields.allowEarlyDate === true,
+  });
+  if (!reason) return null;
+  console.warn(`  ⛔ Refusing pre-opening news page: ${input.url} (dated ${publishDate}, show opens ${(show || {}).openingDate})`);
+  return { action: 'skipped', reason, guardRefused: true };
+}
+
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   // BRO-5693: the create-only listing guard cannot protect a repaired slot
@@ -1769,6 +1808,10 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   if (listingReason && fields.allowNonReviewUrl !== true) {
     console.warn(`  Skipping listing URL after approved URL fix: ${input.url} (${listingReason})`);
     return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };
+  }
+  if (existing.url && input.url && existing.url !== input.url) {
+    const refusal = _preOpeningNewsRefusal(showId, ctx.outletId, input, fields);
+    if (refusal) return { ...refusal, filepath };
   }
   let changed = false;
   // Self-heal: legacy/nonstandard writers occasionally leave files without a

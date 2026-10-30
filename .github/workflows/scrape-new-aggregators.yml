@@ -193,7 +193,7 @@ jobs:
                   # see an RSC/Chichester production, so skip them and ingest
                   # the Guardian piece directly. The wider UK press is found by
                   # discover-regional-serp-reviews, dispatched after the push.
-                  node scripts/ingest-review-from-url.js --show="$pid" --url="$purl" --outlet=guardian || true
+                  node scripts/ingest-review-from-url.js --caller=scrape-new-aggregators --show="$pid" --url="$purl" --outlet=guardian || true
                 elif [ -n "$purl" ] && echo "$purl" | grep -q "broadwayworld.com"; then
                   node scripts/scrape-bww-reviews.js --shows="$pid" --roundup-url="$purl" || true
                 else
