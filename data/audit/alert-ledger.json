@@ -32899,6 +32899,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "workflow-alert:lighthouse-regression": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Lighthouse regression detected on broadwayscorecard.com",
+      "firstSeen": "2026-10-30T21:28:02.257Z",
+      "incidentOpenedAt": "2026-10-30T21:28:02.257Z",
+      "lastSeen": "2026-10-30T21:28:02.257Z",
+      "lastNotifiedAt": "2026-10-30T21:28:02.257Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6665",
+      "dispatch": {
+        "requestedAt": "2026-10-30T21:28:02.257Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41130845005",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41130845005"
+      }
     }
   }
 }
