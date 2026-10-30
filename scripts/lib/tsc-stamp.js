@@ -245,7 +245,10 @@ function main(argv) {
     const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
     const file = env.LAND_TSC_STAMP_FILE || '';
     const porcelain = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' });
-    const dirty = porcelain.trim();
+    // TSC_INERT_RESIDUE (gold-lists prep) is not dirt for tsc either: the same
+    // rule seed-export already applies (BRO-6519: the checks-job pre-warm runs
+    // the hook after the gauntlet left it dirty, and must not re-run tsc).
+    const dirty = porcelain.split('\n').filter((l) => l.trim() && !TSC_INERT_RESIDUE.has(l.slice(3))).join('\n');
     if (dirty && ['check', 'record'].includes(cmd)) { console.error('tsc-stamp: run checks (dirty tracked tree)'); return cmd === 'check' ? 1 : 0; }
     const hookDirty = hookDirtyLines(porcelain).length > 0; // untrimmed: each line's 3-char status prefix
     if (hookDirty && ['hook-check', 'hook-record', 'hook-seed-export'].includes(cmd)) { console.error('tsc-stamp: run hook checks (dirty tracked tree)'); return cmd === 'hook-check' ? 1 : 0; }

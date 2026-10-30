@@ -706,11 +706,12 @@ jobs:
           [ -n "$TSC_SEED" ] && echo "${TSC_SEED%%:*}" > "$LAND_TSC_STAMP_FILE"
           if [ "$(git rev-parse HEAD)" = "$REBASED" ] && [ -n "$BASE" ]; then
             node scripts/lib/tsc-stamp.js digest-pre --out="$RUNNER_TEMP/hook-data-digest-pre"
-            if echo "refs/heads/main $REBASED refs/heads/main $BASE" | bash scripts/hooks/pre-push > "$RUNNER_TEMP/hook-prewarm.log" 2>&1; then
-              SEED=$(git diff --name-only "$BASE..$REBASED" | node scripts/lib/tsc-stamp.js hook-seed-export --rebased="$REBASED" --pre="$RUNNER_TEMP/hook-data-digest-pre") || SEED=""
-            else
-              echo "pre-warm hook red (the real push re-runs it):"; tail -20 "$RUNNER_TEMP/hook-prewarm.log" || true
-            fi
+            # The hook records hook:<key> only after the audits + lints passed,
+            # so the export below needs no exit code (a later tsc red is not theirs).
+            HOOK_RC=0
+            echo "refs/heads/main $REBASED refs/heads/main $BASE" | bash scripts/hooks/pre-push > "$RUNNER_TEMP/hook-prewarm.log" 2>&1 || HOOK_RC=$?
+            [ "$HOOK_RC" = "0" ] || { echo "pre-warm hook exit $HOOK_RC (the real push re-runs what it needs):"; tail -20 "$RUNNER_TEMP/hook-prewarm.log" || true; }
+            SEED=$(git diff --name-only "$BASE..$REBASED" | node scripts/lib/tsc-stamp.js hook-seed-export --rebased="$REBASED" --pre="$RUNNER_TEMP/hook-data-digest-pre") || SEED=""
           else
             echo "HEAD is not the rebased tip, no pre-warm"
           fi

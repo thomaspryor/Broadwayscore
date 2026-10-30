@@ -327,9 +327,25 @@ test('land.yml wires the hook pre-warm: checks job runs the real hook + exports,
   const warm = y.slice(y.indexOf('id: hookseed'), y.indexOf('echo "seed=$SEED"', y.indexOf('id: hookseed')));
   assert.match(warm, /bash scripts\/hooks\/pre-push/, 'runs the real hook, not a copy of its tail');
   assert.match(warm, /hook-seed-export --rebased="\$REBASED"/);
+  assert.doesNotMatch(warm, /then\n\s*SEED=\$\(git diff/, "the export does not hang off the hook exit code (a later tsc red is not the tail's)");
   assert.match(warm, /git diff --name-only "\$BASE\.\.\$REBASED"/, 'the same file list the Land push range gives');
   assert.doesNotMatch(warm, /GH_TOKEN/, 'no token: the Land step has none either (audit-workflow-hygiene calls the API only with one)');
   assert.match(warm, /continue-on-error: true/);
   const seedAt = y.indexOf('tsc-stamp.js hook-seed --seed=');
   assert.ok(seedAt > 0 && seedAt < y.indexOf('- name: Land the branch'), 'seeded before the Land step');
+});
+
+test('CLI tsc check/record tolerate only the gold-lists prep residue (TSC_INERT_RESIDUE), as seed-export does', () => {
+  const r = mkRepo({});
+  const head = r.commit({ 'src/a.ts': 'x\n', 'data/gold-lists-computed.json': '{}\n' });
+  const stamp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'tsc-residue-')), 'stamp');
+  const env = { ...process.env, GITHUB_ACTIONS: 'true', LAND_TSC_STAMP_FILE: stamp };
+  const run = (cmd) => spawnSync('node', [SCRIPT, cmd, `--pushed-oid=${head}`, '--spec-count=1', '--remote-ref=refs/heads/main'], { cwd: r.d, env, encoding: 'utf8' });
+  fs.writeFileSync(path.join(r.d, 'data', 'gold-lists-computed.json'), '{"x":1}\n');
+  assert.equal(run('record').status, 0);
+  assert.equal(run('check').status, 0, 'gold-lists residue only -> recorded and skipped');
+  fs.writeFileSync(path.join(r.d, 'src', 'a.ts'), 'dirty\n');
+  assert.equal(run('check').status, 1, 'any other tracked dirt still runs tsc');
+  fs.rmSync(r.d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+  fs.rmSync(path.dirname(stamp), { recursive: true, force: true });
 });
