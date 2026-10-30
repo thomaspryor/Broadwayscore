@@ -13,7 +13,10 @@
     "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
     "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json",
     "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
-    "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json"
+    "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
   ],
   "failed": [
     "medea-off-broadway-2026/express-uk--neil-norman.json",
@@ -33,7 +36,18 @@
     "memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
     "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json"
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "a-few-good-men-2026/letterboxd--scott-alain.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -49,7 +63,9 @@
       "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
       "the-master-builder-off-west-end-2026/guardian--arifa-akbar.json",
       "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
-      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json"
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
     ],
     "amp": [],
     "browserbase": [
@@ -67,14 +83,20 @@
       "data/review-texts/memoriam-off-west-end-2026/thestage--dave-fargnoli.json",
       "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
       "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json"
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
     ],
     "archive": [
-      "medea-off-broadway-2026/thewrap--thom-geier.json"
+      "medea-off-broadway-2026/thewrap--thom-geier.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-30T08:04:36.278Z",
-  "lastProcessed": "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
   "log": [
     {
       "t": "2026-10-30T08:13:43.556Z",
@@ -87,6 +109,17 @@
       "event": "bb-session",
       "session": "c58e93d0",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-30T08:27:35.895Z",
+      "event": "bb-session",
+      "session": "d2a3c2d1",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-30T08:27:36.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
