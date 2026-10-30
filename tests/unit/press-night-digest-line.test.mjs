@@ -68,7 +68,7 @@ test('emails ready the second morning: draft current and Reddit emailed with cur
   const rv = L.reviewGrade(afgmPassing(), { outletName, gates: { firstLiveWithinMin: 60 } });
   const em = L.emailGrade({ show: afgmShow, sentShows: draftRecord({}), redditDrafts: reddit(60, 24), numbersNow: NUM, nowMs: MORNING2 });
   assert.equal(em.status, 'ok');
-  assert.equal(em.text, 'opening-night email draft ready at 60, Reddit draft emailed');
+  assert.equal(em.text, 'opening-night email draft ready at 60, Reddit post draft sent to you');
   assert.equal(rv.verdict, 'PASS');
 });
 
@@ -89,12 +89,12 @@ test('stale draft fails the night: the email draft says 23 reviews, the Reddit d
 test('missing draft past the deadline is a miss; an unreadable tracker is unknown, never "no draft"', () => {
   const missing = L.emailGrade({ show: afgmShow, sentShows: {}, redditDrafts: reddit(60, 24), numbersNow: NUM, nowMs: MORNING2 });
   assert.equal(missing.status, 'miss');
-  assert.equal(missing.text, 'Reddit draft emailed, no opening-night email draft was made');
+  assert.equal(missing.text, 'Reddit post draft sent to you, no opening-night email draft was made');
   const blind = L.emailGrade({ show: afgmShow, sentShows: null, redditDrafts: {}, numbersNow: NUM, nowMs: MORNING2 });
   assert.equal(blind.status, 'unknown');
   assert.deepEqual(blind.misses, []);
   const sent = L.emailGrade({ show: afgmShow, sentShows: draftRecord({ sentAt: '2026-10-30T15:00:00Z', draftStatus: 'sent' }), redditDrafts: reddit(60, 24), numbersNow: NUM, nowMs: MORNING2 });
-  assert.equal(sent.text, 'opening-night email sent, Reddit draft emailed');
+  assert.equal(sent.text, 'opening-night email sent, Reddit post draft sent to you');
 });
 
 test('no record fails once the probe had time to report; nothing published is not graded', () => {

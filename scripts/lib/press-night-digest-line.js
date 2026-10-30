@@ -182,13 +182,13 @@ function emailGrade({ show, sentShows = null, redditDrafts = {}, numbersNow = nu
   const d = redditDrafts[show.id];
   if (wantsReddit) {
     if (!d || !d.emailedAt) {
-      misses.push({ key: 'email:reddit-missing', text: 'the Reddit draft was not emailed' });
+      misses.push({ key: 'email:reddit-missing', text: 'the Reddit post draft was not sent to you' });
     } else {
       // The score is the post's headline; a one-review drift with the same score is not worth a card.
       const was = emailedNumbers(d);
       if (numbersNow && numbersNow.score != null && was.score !== numbersNow.score) {
         misses.push({ key: 'email:reddit-stale', text: `the Reddit draft is out of date (it says ${fmt(was)}, the site says ${fmt(numbersNow)})` });
-      } else ok.push('Reddit draft emailed');
+      } else ok.push('Reddit post draft sent to you');
     }
   }
   const text = [...ok, ...misses.map((m) => m.text)].join(', ');

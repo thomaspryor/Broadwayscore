@@ -8,7 +8,7 @@ name: Press Night Grade
 #
 # Runs when each Press Night Probe run finishes (its record is committed by then), and every 3 hours so the
 # email drafts (due 14:00 UTC the day after opening) are graded before the next morning's email (11:30 UTC).
-# Advisory: a failed run files nothing and the morning email flags the stale snapshot.
+# Advisory: a failed run keeps the ledger rows of cards it filed, and the morning email flags a stale snapshot.
 
 on:
   workflow_run:
@@ -78,5 +78,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Press night grade failed'
-          description: 'The opening-night grades for the morning email did not update, so the email shows the last snapshot (flagged stale after 36h) and no fix cards were filed this run.'
+          description: 'The opening-night grades for the morning email did not update, so the email shows the last snapshot (flagged stale after 36h) and fix cards may not have been filed for every miss this run (the next run files the rest).'
           severity: 'warning'
