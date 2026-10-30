@@ -989,10 +989,12 @@ async function searchDTLI(show) {
   // weekly discover-dtli-slugs.js runs) OR when the mapped URL fails validation.
   // Cheaper than URL-guessing (one sitemap fetch vs N failed HTTPS gets) and
   // catches shows with non-predictable slugs like "hamlet-bway" or "cabaret-at-the-kit-kat-club".
+  let sitemapIndex = null;
   try {
     const { discoverDtliSlug } = require('./lib/dtli-slug-discover.js');
     console.log('  DTLI: live sitemap discovery...');
     const discovery = await discoverDtliSlug(show);
+    sitemapIndex = discovery;
     if (discovery.url) {
       console.log(`    sitemap found: ${discovery.slug} (score ${discovery.candidates[0].score})`);
       const sitemapResult = await searchAggregator('DTLI', discovery.url);
@@ -1120,8 +1122,15 @@ async function searchDTLI(show) {
 
   console.log('  Searching Did They Like It...');
 
-  // Remove duplicates and empty strings
-  const uniqueVariations = [...new Set(allVariations)].filter(v => v && v.length > 0);
+  // Remove duplicates and empty strings, then drop guesses a complete live
+  // sitemap proves have no page (BRO-6589).
+  const { filterGuessesBySitemap } = require('./lib/dtli-slug-discover.js');
+  const sitemapFilter = filterGuessesBySitemap(
+    [...new Set(allVariations)].filter(v => v && v.length > 0), sitemapIndex);
+  const uniqueVariations = sitemapFilter.guesses;
+  if (sitemapFilter.skipped > 0) {
+    console.log(`    URL-guess ladder: ${uniqueVariations.length} kept, ${sitemapFilter.skipped} skipped (not in complete live sitemap, BRO-6589)`);
+  }
 
   let answeredProbes = 0;
   for (const slug of uniqueVariations) {

@@ -48,7 +48,7 @@ test('non-subtitled titles are unchanged (4 variants, original order)', () => {
   ]);
 });
 
-test('tryTbDirectUrl stops at the time budget instead of walking every candidate', async () => {
+test('tryTbDirectUrl starts no new fetch once the budget is spent', async () => {
   let t = 0;
   const now = () => t;
   const calls = [];
@@ -58,39 +58,61 @@ test('tryTbDirectUrl stops at the time budget instead of walking every candidate
     year: 2026, fetchPage, logger: { log() {} }, budgetMs: 150000, now,
   });
   assert.equal(r.found, false);
-  assert.match(r.reason, /time budget exhausted after 2 of/);
+  assert.match(r.reason, /time budget exhausted/);
   assert.equal(calls.length, 2, 'the third candidate must not be fetched once the budget is spent');
 });
 
 test('tryTbDirectUrl with a generous budget still tries every candidate and the index fallback', async () => {
-  let t = 0;
-  const now = () => t;
   const calls = [];
-  const fetchPage = async (url) => { calls.push(url); t += 1000; return { content: '' }; };
+  const fetchPage = async (url) => { calls.push(url); return { content: '' }; };
   const r = await tryTbDirectUrl({
     show: { id: 'hadestown-2019', title: 'Hadestown', openingDate: '2019-04-17' },
-    year: 2019, fetchPage, logger: { log() {} }, budgetMs: 240000, now,
+    year: 2019, fetchPage, logger: { log() {} }, budgetMs: 240000,
   });
   assert.equal(r.found, false);
+  assert.match(r.reason, /all 4 candidates \+ index fallback failed verification/);
   assert.equal(calls.length, 5, '4 candidates + index.html fallback');
   assert.ok(calls[4].endsWith('/page/world/index.html'));
 });
 
-test('a budget spent on the last candidate skips the index fallback and says so', async () => {
-  let t = 0;
-  const now = () => t;
-  const calls = [];
-  const logs = [];
-  const fetchPage = async (url) => { calls.push(url); t += 100000; return { content: '' }; };
+test('BRO-6589: candidates and the index are fetched together, not one after another', async () => {
+  let inFlight = 0, peak = 0;
+  const fetchPage = async () => {
+    inFlight++; peak = Math.max(peak, inFlight);
+    await new Promise(r => setTimeout(r, 30));
+    inFlight--;
+    return { content: '' };
+  };
+  const started = Date.now();
   const r = await tryTbDirectUrl({
     show: { id: 'hadestown-2019', title: 'Hadestown', openingDate: '2019-04-17' },
-    year: 2019, fetchPage, logger: { log: (m) => logs.push(m) }, budgetMs: 350000, now,
+    year: 2019, fetchPage, logger: { log() {} }, budgetMs: 240000,
   });
   assert.equal(r.found, false);
-  assert.equal(calls.length, 4, 'all four candidates fit the budget');
-  assert.ok(!calls.some(u => u.endsWith('/index.html')), 'index fallback must be skipped once the budget is spent');
-  assert.match(r.reason, /index fallback skipped/);
-  assert.ok(logs.some(m => /skipping the index\.html fallback/.test(m)), 'the skip is logged');
+  assert.equal(peak, 5, 'all 4 candidates + index in flight at once');
+  assert.ok(Date.now() - started < 120, 'one fetch of wall time, not five');
+});
+
+test('BRO-6589: a fetch already started when the budget runs out is awaited, not dropped', async () => {
+  const calls = [];
+  const fetchPage = async (url) => { calls.push(url); await new Promise(r => setTimeout(r, 40)); return { content: '' }; };
+  const r = await tryTbDirectUrl({
+    show: { id: 'school-girls-or-the-african-mean-girls-play-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' },
+    year: 2026, fetchPage, logger: { log() {} }, budgetMs: 20,
+  });
+  assert.equal(calls.length, 5, 'the first wave of 5 goes out, nothing after the budget');
+  assert.match(r.reason, /time budget exhausted with 8 of 13 fetches never started/);
+});
+
+test('BRO-6589: an async override is awaited and verified even at budget 0', async () => {
+  const calls = [];
+  const fetchPage = async (url) => { calls.push(url); await new Promise(r => setTimeout(r, 20)); return { content: '' }; };
+  const r = await tryTbDirectUrl({
+    show: { id: 'x-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' },
+    year: 2026, overrideUrl: W + 'SchoolGirls.html', fetchPage, logger: { log() {} }, budgetMs: 0,
+  });
+  assert.deepEqual(calls, [W + 'SchoolGirls.html']);
+  assert.match(r.reason, /failed verification/, 'the answer was read, not reported as unanswered');
 });
 
 test('an override URL is the only candidate, budget or not', async () => {

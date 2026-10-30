@@ -16,6 +16,8 @@ const {
   tokensFromTitle,
   slugify,
   extractShowSlugs,
+  fetchDtliShowSlugIndex,
+  filterGuessesBySitemap,
 } = require('../../scripts/lib/dtli-slug-discover.js');
 
 // Real slugs pulled from DTLI sitemaps (sampled) — representative of structure.
@@ -125,5 +127,76 @@ describe('discoverDtliSlug', () => {
       { fetchSlugs: async () => [] }
     );
     assert.strictEqual(r.slug, null);
+  });
+});
+
+// BRO-6589: a complete live sitemap lets searchDTLI skip URL guesses that
+// cannot exist; anything short of complete keeps the whole ladder.
+const INDEX_URL = 'https://didtheylikeit.com/sitemap_index.xml';
+const sm = n => `https://didtheylikeit.com/shows-sitemap${n}.xml`;
+const showsXml = slugs => slugs.map(s => `<url><loc>https://didtheylikeit.com/shows/${s}/</loc></url>`).join('');
+const indexXml = n => Array.from({ length: n }, (_, i) => `<sitemap><loc>${sm(i + 1)}</loc></sitemap>`).join('');
+const fakeGet = pages => async url => (url in pages ? pages[url] : { ok: false, status: 404 });
+
+describe('fetchDtliShowSlugIndex completeness (BRO-6589)', () => {
+  it('is complete when the index lists sitemaps and all of them load', async () => {
+    const r = await fetchDtliShowSlugIndex({ httpGet: fakeGet({
+      [INDEX_URL]: { ok: true, body: indexXml(2) },
+      [sm(1)]: { ok: true, body: showsXml(['proof-2', 'titanique']) },
+      [sm(2)]: { ok: true, body: showsXml(['hamlet-bway']) },
+    }) });
+    assert.strictEqual(r.complete, true);
+    assert.deepStrictEqual(r.slugs.sort(), ['hamlet-bway', 'proof-2', 'titanique']);
+  });
+
+  it('is incomplete when one listed sitemap fails', async () => {
+    const r = await fetchDtliShowSlugIndex({ httpGet: fakeGet({
+      [INDEX_URL]: { ok: true, body: indexXml(2) },
+      [sm(1)]: { ok: true, body: showsXml(['proof-2']) },
+    }) });
+    assert.strictEqual(r.complete, false);
+    assert.deepStrictEqual(r.slugs, ['proof-2']);
+  });
+
+  it('is incomplete when a listed sitemap returns 200 with a non-sitemap page', async () => {
+    const r = await fetchDtliShowSlugIndex({ httpGet: fakeGet({
+      [INDEX_URL]: { ok: true, body: indexXml(2) },
+      [sm(1)]: { ok: true, body: showsXml(['proof-2']) },
+      [sm(2)]: { ok: true, body: '<html>Just a moment...</html>' },
+    }) });
+    assert.strictEqual(r.complete, false);
+  });
+
+  it('is incomplete when the list came from the numbered-probe fallback', async () => {
+    const pages = {};
+    for (let i = 1; i <= 3; i++) pages[sm(i)] = { ok: true, body: showsXml([`show-${i}`]) };
+    const r = await fetchDtliShowSlugIndex({ httpGet: fakeGet(pages) });
+    assert.strictEqual(r.complete, false);
+    assert.strictEqual(r.slugs.length, 3);
+  });
+
+  it('discoverDtliSlug passes the index through; a bare array is never complete', async () => {
+    const show = { id: 'x', slug: 'x', title: 'Nothing Matches Here', category: 'broadway' };
+    const full = await discoverDtliSlug(show, { fetchSlugs: async () => ({ slugs: ['proof-2'], complete: true }) });
+    assert.strictEqual(full.sitemapComplete, true);
+    assert.ok(full.sitemapSlugs.has('proof-2'));
+    const bare = await discoverDtliSlug(show, { fetchSlugs: async () => ['proof-2'] });
+    assert.strictEqual(bare.sitemapComplete, false);
+  });
+});
+
+describe('filterGuessesBySitemap (BRO-6589)', () => {
+  const guesses = ['proof', 'proof-2', 'proof-bway', 'proof-broadway'];
+  it('keeps only guesses in a complete sitemap', () => {
+    const r = filterGuessesBySitemap(guesses, { sitemapSlugs: new Set(['proof-2', 'other']), sitemapComplete: true });
+    assert.deepStrictEqual(r, { guesses: ['proof-2'], skipped: 3 });
+  });
+  it('drops every guess when none are in a complete sitemap', () => {
+    const r = filterGuessesBySitemap(guesses, { sitemapSlugs: new Set(['other']), sitemapComplete: true });
+    assert.deepStrictEqual(r, { guesses: [], skipped: 4 });
+  });
+  it('keeps every guess when the sitemap is incomplete or missing', () => {
+    assert.deepStrictEqual(filterGuessesBySitemap(guesses, { sitemapSlugs: new Set(), sitemapComplete: false }), { guesses, skipped: 0 });
+    assert.deepStrictEqual(filterGuessesBySitemap(guesses, null), { guesses, skipped: 0 });
   });
 });

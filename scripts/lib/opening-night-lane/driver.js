@@ -157,7 +157,7 @@ function buildRealLaneDeps({
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
         adapters: [
           discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards(repoDir)), discovery.playbillVerdictAdapter(),
-          discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
+          discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter({ decodeImpl: require('../google-news-decode').decodeGoogleNewsLink }),
           discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
           discovery.serpAdapter({ search: adaptersConfig.search || realSerpSearch(env) }),
         ],

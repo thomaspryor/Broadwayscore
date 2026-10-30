@@ -17,7 +17,7 @@ const discover = (xml, opts = {}, resolve = async () => page) => {
     calls.push({ url, options });
     return url.includes('/rss/search?') ? { content: xml } : resolve(url);
   };
-  return discoverGoogleNewsReviews(show, { now, fetchPageImpl, ...opts }).then(results => ({ results, calls }));
+  return discoverGoogleNewsReviews(show, { now, fetchPageImpl, feedImpl: async () => null, decodeImpl: async () => null, ...opts }).then(results => ({ results, calls }));
 };
 
 test('the channel is wired into both existing opening-night callers and the poll summary', () => {
@@ -118,7 +118,7 @@ test('keeps a resolved URL when the subsequent article fetch fails', async () =>
 test('reuses registry critic resolution for a first-name-only publisher byline', async () => {
   const url = 'https://newyorktheater.me/current-review/';
   const results = await discoverGoogleNewsReviews({ ...show, category: 'broadway' }, {
-    now,
+    now, feedImpl: async () => null, decodeImpl: async () => null,
     fetchPageImpl: async requested => requested.includes('/rss/search?')
       ? { content: feed(item({ source: 'https://newyorktheater.me' })) }
       : { finalUrl: url, content: `<link rel="canonical" href="${url}"><meta name="author" content="Jonathan">` },
@@ -237,4 +237,97 @@ test('akaTitles: the press title is searched and matched (Billy Crystal 860 is r
   assert.ok(!isReviewHeadline({ title: 'New Balance Fresh Foam X 860 v15 Review (2026) - Doctors of Running', pubDate: 'Thu, 22 Oct 2026 02:00:00 GMT' }, show));
   assert.ok(isReviewHeadline({ title: '860: Billy Crystal Brings Down the House - New York Stage Review', pubDate: 'Thu, 22 Oct 2026 02:00:00 GMT' }, show));
   assert.equal(new URL(googleNewsRssUrl({ title: 'Hamlet', category: 'broadway' })).searchParams.get('q'), '"Hamlet" review');
+});
+
+// BRO-6589: HTTP decode first, Playwright wrapper wait only as the fallback.
+const { decodeGoogleNewsLink, fetchGoogleNewsFeed, wrapperId, parseDecodeParams, parseBatchResponse } = require('./google-news-decode');
+
+test('a decoded wrapper skips the Playwright wait and still fetches the article for the byline', async () => {
+  const { results, calls } = await discover(feed(item()), { decodeImpl: async () => publisher });
+  assert.equal(results[0].url, publisher);
+  assert.equal(results[0].criticName, 'Dominic Cavendish');
+  assert.ok(!calls.some(c => c.url === wrapper), 'wrapper must not be opened in Playwright');
+  assert.ok(calls.some(c => c.url === publisher && c.options.fast));
+});
+
+test('a decoded URL on the wrong domain falls back to the Playwright wrapper path', async () => {
+  const { results, calls } = await discover(feed(item()), { decodeImpl: async () => 'https://evil.example/review' });
+  assert.equal(results[0].url, publisher);
+  assert.ok(calls.some(c => c.url === wrapper && c.options.playwrightWaitForSelector));
+});
+
+test('decode stops for the batch after two straight misses', async () => {
+  let decodes = 0;
+  const links = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map(x => item({ link: `${wrapper}${x}` }));
+  await discover(feed(...links), { decodeImpl: async () => { decodes++; return null; } });
+  // Three workers can each start one decode before the second miss lands.
+  assert.ok(decodes >= 2 && decodes <= 3, `decodes=${decodes}`);
+});
+
+test('resolves items three at a time and keeps feed order in the results', async () => {
+  let inFlight = 0, peak = 0;
+  const pubs = ['a', 'b', 'c', 'd', 'e'].map(x => publisher.replace('catarina-review', `review-${x}`));
+  const xml = feed(...pubs.map((_, i) => item({ link: `${wrapper}${i}` })));
+  const { results } = await discover(xml, { decodeImpl: async link => pubs[Number(link.slice(-1))] }, async url => {
+    inFlight++; peak = Math.max(peak, inFlight);
+    await new Promise(r => setTimeout(r, 20));
+    inFlight--;
+    return { content: `<link rel="canonical" href="${url}">`, finalUrl: url };
+  });
+  assert.equal(peak, 3);
+  assert.deepEqual(results.map(r => r.url), pubs);
+});
+
+test('google-news-decode parses Google article params and batchexecute replies', async () => {
+  assert.equal(wrapperId('https://news.google.com/rss/articles/CBMiAU_yqL-x?oc=5'), 'CBMiAU_yqL-x');
+  assert.equal(wrapperId('https://evil.example/rss/articles/CBMi'), null);
+  assert.deepEqual(parseDecodeParams('<c-wiz data-n-a-sg="SIG" data-n-a-ts="1761800000">'), { sg: 'SIG', ts: 1761800000 });
+  assert.equal(parseDecodeParams('<html></html>'), null);
+  const reply = `)]}'\n\n[["wrb.fr","Fbv4je","[\\"garturlres\\",\\"${publisher}\\",1]",null,null,null,"generic"]]`;
+  assert.equal(parseBatchResponse(reply), publisher);
+  assert.equal(parseBatchResponse(')]}\'\n[["er",null]]'), null);
+  assert.equal(parseBatchResponse('not json'), null);
+
+  const seen = [];
+  const fetchImpl = async (url, init) => {
+    seen.push({ url, init });
+    if (!init.method) return { ok: true, text: async () => '<div data-n-a-sg="SIG" data-n-a-ts="17"></div>' };
+    return { ok: true, text: async () => reply };
+  };
+  assert.equal(await decodeGoogleNewsLink('https://news.google.com/rss/articles/CBMiabc?oc=5', { fetchImpl }), publisher);
+  assert.ok(seen.every(c => c.init.signal), 'every request carries a timeout signal');
+  assert.match(decodeURIComponent(seen[1].init.body), /Fbv4je/);
+  assert.equal(await decodeGoogleNewsLink('https://news.google.com/rss/articles/CBMiabc', { fetchImpl: async () => ({ ok: false }) }), null);
+  assert.equal(await decodeGoogleNewsLink('https://news.google.com/rss/articles/CBMiabc', { fetchImpl: async () => { throw new Error('reset'); } }), null);
+});
+
+test('the feed is read over plain HTTP first and through fetchPage only when that fails', async () => {
+  const xml = feed(item());
+  const viaHttp = await discover('', { feedImpl: async () => xml });
+  assert.equal(viaHttp.results.length, 1);
+  assert.ok(!viaHttp.calls.some(c => c.url.includes('/rss/search?')), 'no Playwright feed fetch when HTTP worked');
+  const viaPage = await discover(xml, { feedImpl: async () => null });
+  assert.equal(viaPage.results.length, 1);
+  assert.ok(viaPage.calls.some(c => c.url.includes('/rss/search?')));
+
+  const ok = { ok: true, text: async () => xml };
+  assert.equal(await fetchGoogleNewsFeed('https://news.google.com/rss/search?q=x', { fetchImpl: async () => ok }), xml);
+  assert.equal(await fetchGoogleNewsFeed('https://evil.example/rss', { fetchImpl: async () => ok }), null);
+  assert.equal(await fetchGoogleNewsFeed('http://news.google.com/rss/search?q=x', { fetchImpl: async () => ok }), null);
+  assert.equal(await fetchGoogleNewsFeed('https://news.google.com/rss/search?q=x', { fetchImpl: async () => ({ ok: true, text: async () => '<html>consent</html>' }) }), null);
+  assert.equal(await fetchGoogleNewsFeed('https://news.google.com/rss/search?q=x', { fetchImpl: async () => ({ ok: false }) }), null);
+  // An empty feed is still a feed: no fallback to the slow Playwright fetch.
+  const empty = '<?xml version="1.0"?><rss version="2.0"><channel><title>x</title></channel></rss>';
+  assert.equal(await fetchGoogleNewsFeed('https://news.google.com/rss/search?q=x', { fetchImpl: async () => ({ ok: true, text: async () => empty }) }), empty);
+});
+
+test('BRO-6589: an empty feed over HTTP returns no candidates and never opens the browser', async () => {
+  let pageCalls = 0;
+  const empty = '<?xml version="1.0"?><rss version="2.0"><channel><title>x</title></channel></rss>';
+  const results = await discoverGoogleNewsReviews(show, {
+    now, feedImpl: async () => empty, decodeImpl: async () => null,
+    fetchPageImpl: async () => { pageCalls++; return null; },
+  });
+  assert.deepEqual(results, []);
+  assert.equal(pageCalls, 0);
 });

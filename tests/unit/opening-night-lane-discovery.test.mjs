@@ -399,6 +399,36 @@ const gnFeed = (link = GN_LINK, title = 'Other Desert Cities review: a family at
   `<rss><channel><item><title>${title} - The New York Times</title><link>${link}</link><pubDate>Mon, 19 Oct 2026 03:00:00 GMT</pubDate><source url="${src}">The New York Times</source></item></channel></rss>`;
 const GN_FEED_URL = 'https://news.google.com/rss/search?q=%22Other+Desert+Cities%22+review&hl=en-US&gl=US&ceid=US%3Aen';
 
+test('BRO-6589: Google News adapter decodes the wrapper over HTTP first; the browser opens only when that fails', async () => {
+  const fetched = [];
+  const map = { [GN_FEED_URL]: gnFeed(), [GN_LINK]: `<link rel="canonical" href="${NYT_RAW}">` };
+  const track = pages(map);
+  const fetchText = async (url, o) => { fetched.push(url); return track.fetchText(url, o); };
+  const ok = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...track, fetchText,
+    adapters: [d.googleNewsAdapter({ decodeImpl: async () => NYT_RAW })] });
+  assert.deepEqual(ok.admitted.map((a) => a.key), [NYT]);
+  assert.ok(!fetched.includes(GN_LINK), 'decoded: the wrapper is never opened');
+  // A decode on another host is ignored and the existing browser unwrap still runs.
+  fetched.length = 0;
+  const off = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...track, fetchText,
+    adapters: [d.googleNewsAdapter({ decodeImpl: async () => 'https://evil.example.com/odc-review' })] });
+  assert.deepEqual(off.admitted.map((a) => a.key), [NYT]);
+  assert.ok(fetched.includes(GN_LINK));
+});
+
+test('BRO-6589: Google News decodes are capped per pass (count and time) so a hanging Google cannot hold the pass', async () => {
+  const track = pages({ [GN_FEED_URL]: gnFeed(), [GN_LINK]: `<link rel="canonical" href="${NYT_RAW}">` });
+  let calls = 0;
+  const decodeImpl = async () => { calls++; return null; };
+  await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...track,
+    adapters: [d.googleNewsAdapter({ decodeImpl, maxDecode: 0 })] });
+  assert.equal(calls, 0, 'count cap');
+  let t = 0;
+  await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...track,
+    adapters: [d.googleNewsAdapter({ decodeImpl, decodeBudgetMs: 10, now: () => (t += 100) })] });
+  assert.equal(calls, 0, 'time cap: budget already spent before the first item');
+});
+
 test('Google News adapter: the wrapper is unwrapped through the item\'s own source host, never emitted itself', async () => {
   const wrapper = `<html><head><link rel="canonical" href="${NYT_RAW}"></head><body>redirecting</body></html>`;
   const r = await passWith([d.googleNewsAdapter()], { [GN_FEED_URL]: gnFeed(), [GN_LINK]: wrapper });

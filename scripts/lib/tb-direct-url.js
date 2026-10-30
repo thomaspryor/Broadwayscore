@@ -194,8 +194,9 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
 // scraper layer can cost 60-90 s (provider chain: Scrapingdog 400 → stealth 500 → Bright
 // Data timeout → Playwright timeout); on 2026-09-28 the loop ate 9 of the poller's 10
 // per-show minutes and the pass was killed before any review file was written (BRO-4217).
-// The budget bounds that pathological case; when TB answers fast every candidate still fits.
+// Candidates are now fetched together (BRO-6589), so the budget only bounds a hung fetch.
 const DEFAULT_TB_BUDGET_MS = 240000;
+const TB_PARALLEL = 5;
 function tbBudgetMs(explicit) {
   if (Number.isFinite(explicit) && explicit >= 0) return explicit;
   // An unset workflow var arrives as '' (env: X: ${{ vars.X }}) and Number('') is 0,
@@ -205,93 +206,106 @@ function tbBudgetMs(explicit) {
   return Number.isFinite(env) && env >= 0 ? env : DEFAULT_TB_BUDGET_MS;
 }
 
+// Index fallback: TB always shows the latest review at /page/world/index.html.
+// Title format: `Talkin' Broadway on Broadway Review: "{TITLE}" {date}`.
+// Verify the quoted title matches the show before accepting.
+function verifyTbIndexPage(content, { show, isRevival }) {
+  if (!content || content.length < MIN_CONTENT_BYTES) return { ok: false, reason: 'index page empty' };
+  const pageTitle = extractTitle(content);
+  const quotedMatch = pageTitle.match(/"([^"]+)"/);
+  const indexShowTitle = quotedMatch ? quotedMatch[1].trim() : '';
+  const normIndex = normalizeText(indexShowTitle);
+  const normShow = normalizeText(show.title);
+  const titleMatches = containsAsWords(normIndex, normShow) || containsAsWords(normShow, normIndex);
+  if (!titleMatches) {
+    return { ok: false, reason: `title "${indexShowTitle}" does not match show "${show.title}"`, mismatch: true };
+  }
+  // Run the same byline/date verification we run on the candidate URLs.
+  const v = verifyTbPage(content, {
+    showTitle: indexShowTitle, // Use the index's title since we already matched
+    openingDate: show.openingDate,
+    isRevival,
+  });
+  return v.ok ? { ...v, indexShowTitle } : v;
+}
+
 async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, logger = console, budgetMs, now = Date.now }) {
   if (!show || !show.title) return { found: false, reason: 'no show title' };
   const candidates = overrideUrl
     ? [overrideUrl]
     : buildTbCandidateUrls(show.title, year);
+  const indexUrl = `${TB_HOST}/page/world/index.html`;
+  const urls = overrideUrl ? candidates : [...candidates, indexUrl];
+
+  // BRO-6589: every candidate is a ~60 s paid unlocker fetch behind Cloudflare, and before
+  // the review publishes all of them miss on every poll pass. Fetching up to TB_PARALLEL at
+  // a time takes one fetch of wall time for a plain title instead of five. The budget works
+  // as before: no new fetch starts once it is spent, and a fetch already started is awaited
+  // (fetchPage has its own provider timeouts). Once a candidate verifies, nothing of lower
+  // priority starts; the first verified candidate in priority order wins, then the index.
   const deadline = now() + tbBudgetMs(budgetMs);
-  let tried = 0;
-  const overBudget = () => tried > 0 && now() > deadline;
-  for (const url of candidates) {
-    if (overBudget()) {
-      logger.log(`  Talkin' Broadway: time budget exhausted after ${tried}/${candidates.length} candidates — stopping so the poll cycle can finish`);
-      return { found: false, reason: `time budget exhausted after ${tried} of ${candidates.length} candidates` };
+  const answered = urls.map(() => 'budget');
+  let next = 0;
+  let bestVerified = Infinity;
+  const worker = async () => {
+    // The first candidate always goes out, so an override URL is fetched even at budget 0.
+    while (next < urls.length && next < bestVerified && (next === 0 || now() < deadline)) {
+      const i = next++;
+      logger.log(urls[i] === indexUrl ? `  Talkin' Broadway: trying index.html fallback...` : `  Checking Talkin' Broadway: ${urls[i]}`);
+      answered[i] = await fetchPage(urls[i], { renderJs: false }).then(page => ({ page }), err => ({ err }));
+      const content = answered[i].page && answered[i].page.content;
+      if (i < candidates.length && content && verifyTbPage(content, { showTitle: show.title, openingDate: show.openingDate, isRevival }).ok) {
+        bestVerified = Math.min(bestVerified, i);
+      }
     }
-    tried++;
-    logger.log(`  Checking Talkin' Broadway: ${url}`);
-    let page;
-    try {
-      page = await fetchPage(url, { renderJs: false });
-    } catch (e) {
-      logger.log(`    fetch error: ${e.message}`);
-      continue;
-    }
-    if (!page || !page.content) {
-      continue;
-    }
-    const v = verifyTbPage(page.content, {
+  };
+  await Promise.all(Array.from({ length: Math.min(TB_PARALLEL, urls.length) }, worker));
+  const timedOut = answered.filter(p => p === 'budget').length;
+
+  for (let i = 0; i < candidates.length; i++) {
+    const r = answered[i];
+    if (r === 'budget') continue;
+    if (r.err) { logger.log(`    fetch error (${candidates[i]}): ${r.err.message}`); continue; }
+    if (!r.page || !r.page.content) continue;
+    const v = verifyTbPage(r.page.content, {
       showTitle: show.title,
       openingDate: show.openingDate,
       isRevival,
     });
     if (v.ok) {
-      logger.log(`  Talkin' Broadway: verified — ${url}`);
+      logger.log(`  Talkin' Broadway: verified — ${candidates[i]}`);
       return {
         found: true,
-        url,
+        url: candidates[i],
         source: overrideUrl ? 'direct-url-override' : 'direct-url-construction',
         publishDate: v.publishDate ? v.publishDate.toISOString() : null,
       };
     }
-    logger.log(`    rejected: ${v.reason}`);
+    logger.log(`    rejected (${candidates[i]}): ${v.reason}`);
   }
 
-  // Fallback: TB always shows the latest review at /page/world/index.html.
-  // Title format: `Talkin' Broadway on Broadway Review: "{TITLE}" {date}`.
-  // Verify the quoted title matches the show before accepting.
-  if (!overrideUrl && overBudget()) {
-    logger.log(`  Talkin' Broadway: time budget exhausted after ${tried}/${candidates.length} candidates — skipping the index.html fallback`);
-    return { found: false, reason: `time budget exhausted after ${tried} of ${candidates.length} candidates (index fallback skipped)` };
-  }
   if (!overrideUrl) {
-    const indexUrl = `${TB_HOST}/page/world/index.html`;
-    logger.log(`  Talkin' Broadway: trying index.html fallback...`);
-    try {
-      const page = await fetchPage(indexUrl, { renderJs: false });
-      if (page && page.content && page.content.length >= MIN_CONTENT_BYTES) {
-        const pageTitle = extractTitle(page.content);
-        const quotedMatch = pageTitle.match(/"([^"]+)"/);
-        const indexShowTitle = quotedMatch ? quotedMatch[1].trim() : '';
-        const normIndex = normalizeText(indexShowTitle);
-        const normShow = normalizeText(show.title);
-        const titleMatches = containsAsWords(normIndex, normShow) || containsAsWords(normShow, normIndex);
-        if (titleMatches) {
-          // Run the same byline/date verification we run on the candidate URLs.
-          const v = verifyTbPage(page.content, {
-            showTitle: indexShowTitle, // Use the index's title since we already matched
-            openingDate: show.openingDate,
-            isRevival,
-          });
-          if (v.ok) {
-            logger.log(`  Talkin' Broadway: index.html matched — "${indexShowTitle}"`);
-            return {
-              found: true,
-              url: indexUrl,
-              source: 'direct-url-index-fallback',
-              publishDate: v.publishDate ? v.publishDate.toISOString() : null,
-            };
-          }
-          logger.log(`    index rejected: ${v.reason}`);
-        } else {
-          logger.log(`  Talkin' Broadway index: title "${indexShowTitle}" does not match show "${show.title}"`);
-        }
+    const r = answered[candidates.length];
+    if (r !== 'budget' && r.err) logger.log(`    index fetch error: ${r.err.message}`);
+    else if (r !== 'budget' && r.page) {
+      const v = verifyTbIndexPage(r.page.content, { show, isRevival });
+      if (v.ok) {
+        logger.log(`  Talkin' Broadway: index.html matched — "${v.indexShowTitle}"`);
+        return {
+          found: true,
+          url: indexUrl,
+          source: 'direct-url-index-fallback',
+          publishDate: v.publishDate ? v.publishDate.toISOString() : null,
+        };
       }
-    } catch (e) {
-      logger.log(`    index fetch error: ${e.message}`);
+      logger.log(v.mismatch ? `  Talkin' Broadway index: ${v.reason}` : `    index rejected: ${v.reason}`);
     }
   }
 
+  if (timedOut > 0) {
+    logger.log(`  Talkin' Broadway: time budget exhausted with ${timedOut}/${urls.length} fetch(es) never started — stopping so the poll cycle can finish`);
+    return { found: false, reason: `time budget exhausted with ${timedOut} of ${urls.length} fetches never started` };
+  }
   return { found: false, reason: `all ${candidates.length} candidates${overrideUrl ? '' : ' + index fallback'} failed verification` };
 }
 

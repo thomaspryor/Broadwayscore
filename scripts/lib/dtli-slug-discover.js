@@ -63,28 +63,34 @@ async function httpGetText(url) {
 
 /**
  * Fetch all show sitemap URLs from the DTLI index.
+ *
+ * `fromIndex` is true only when the URLs came from sitemap_index.xml. The
+ * numbered-probe fallback skips failed probes silently, so its list can be
+ * short without anyone knowing; callers must not treat it as authoritative.
+ *
+ * @returns {Promise<{ urls: string[], fromIndex: boolean }>}
  */
-async function fetchSitemapList() {
-  const idx = await httpGetText(SITEMAP_INDEX_URL);
+async function fetchSitemapList(httpGet = httpGetText) {
+  const idx = await httpGet(SITEMAP_INDEX_URL);
   if (idx.ok) {
     const urls = [];
     const re = /<loc>(https:\/\/didtheylikeit\.com\/shows-sitemap\d+\.xml)<\/loc>/g;
     let m;
     while ((m = re.exec(idx.body)) !== null) urls.push(m[1]);
-    if (urls.length > 0) return urls;
+    if (urls.length > 0) return { urls, fromIndex: true };
   }
   // Fallback: probe numbered sitemaps directly.
   const urls = [];
   for (let i = 1; i <= MAX_FALLBACK_SITEMAPS; i++) {
     const url = `${SITEMAP_FALLBACK_PREFIX}${i}.xml`;
-    const res = await httpGetText(url);
+    const res = await httpGet(url);
     if (res.ok && res.body && res.body.includes('<loc>')) {
       urls.push(url);
     } else if (i > 5) {
       break;
     }
   }
-  return urls;
+  return { urls, fromIndex: false };
 }
 
 function extractShowSlugs(xml) {
@@ -100,16 +106,33 @@ function extractShowSlugs(xml) {
 /**
  * Fetch all sitemaps in parallel and return the union of show slugs.
  */
-async function fetchAllDtliShowSlugs() {
-  const sitemapUrls = await fetchSitemapList();
-  if (sitemapUrls.length === 0) return [];
-  const results = await Promise.all(sitemapUrls.map(httpGetText));
+/**
+ * Every show slug in the live DTLI sitemaps, plus whether the set is the
+ * whole sitemap (BRO-6589). `complete` is true only when the list came from
+ * the sitemap index, every listed sitemap fetched, and at least one slug was
+ * found. Only a complete set may be used to rule a slug out.
+ *
+ * @param {object} [opts]
+ * @param {function} [opts.httpGet] - override for testing; url -> { ok, body }
+ * @returns {Promise<{ slugs: string[], complete: boolean }>}
+ */
+async function fetchDtliShowSlugIndex(opts = {}) {
+  const httpGet = opts.httpGet || httpGetText;
+  const { urls, fromIndex } = await fetchSitemapList(httpGet);
+  if (urls.length === 0) return { slugs: [], complete: false };
+  const results = await Promise.all(urls.map(u => httpGet(u)));
   const slugs = new Set();
+  let allOk = true;
   for (const r of results) {
-    if (!r.ok || !r.body) continue;
+    // A 200 challenge/error page has no <loc>; it must not count toward a complete index.
+    if (!r.ok || !r.body || !r.body.includes('<loc>')) { allOk = false; continue; }
     for (const s of extractShowSlugs(r.body)) slugs.add(s);
   }
-  return Array.from(slugs);
+  return { slugs: Array.from(slugs), complete: fromIndex && allOk && slugs.size > 0 };
+}
+
+async function fetchAllDtliShowSlugs() {
+  return (await fetchDtliShowSlugIndex()).slugs;
 }
 
 /**
@@ -187,11 +210,16 @@ function scoreSlug(slug, show) {
  * @param {object} show - { id, slug, title, category }
  * @param {object} [opts]
  * @param {function} [opts.fetchSlugs] - override for testing; returns string[]
- * @returns {Promise<{ slug: string|null, url: string|null, candidates: Array }>}
+ *   (treated as an incomplete index) or { slugs, complete }
+ * @returns {Promise<{ slug: string|null, url: string|null, candidates: Array,
+ *   sitemapSlugs: Set<string>, sitemapComplete: boolean }>}
+ *   sitemapSlugs/sitemapComplete let searchDTLI skip URL guesses for slugs a
+ *   complete sitemap does not contain (BRO-6589).
  */
 async function discoverDtliSlug(show, opts = {}) {
-  const fetchSlugs = opts.fetchSlugs || fetchAllDtliShowSlugs;
-  const slugs = await fetchSlugs();
+  const fetched = await (opts.fetchSlugs || fetchDtliShowSlugIndex)();
+  const slugs = Array.isArray(fetched) ? fetched : (fetched?.slugs || []);
+  const sitemapComplete = !Array.isArray(fetched) && fetched?.complete === true;
   // Threshold 10 = must have exact core-match OR token-match with market-preference.
   // Token-only matches (+6) without any other signal aren't confident enough to
   // bypass slug-map — slug-map is still primary; live discovery is a fallback.
@@ -205,12 +233,35 @@ async function discoverDtliSlug(show, opts = {}) {
     slug: best?.slug || null,
     url: best ? `https://didtheylikeit.com/shows/${best.slug}/` : null,
     candidates: scored.slice(0, 5),
+    sitemapSlugs: new Set(slugs),
+    sitemapComplete,
   };
+}
+
+/**
+ * Drop URL guesses a complete sitemap proves do not exist (BRO-6589). Each
+ * guess is a paid fetch, and the ladder ran ~20 of them on every poll pass for
+ * shows DTLI has no page for. An incomplete or missing index keeps every guess.
+ * Accepted gap: DTLI's sitemap is CDN-cached ~10 min, so a page published in
+ * that window is caught by the homepage scan or the next pass instead.
+ *
+ * @param {string[]} guesses - candidate slugs
+ * @param {{ sitemapSlugs?: Set<string>, sitemapComplete?: boolean }|null} index
+ * @returns {{ guesses: string[], skipped: number }}
+ */
+function filterGuessesBySitemap(guesses, index) {
+  if (!index || index.sitemapComplete !== true || !(index.sitemapSlugs instanceof Set)) {
+    return { guesses, skipped: 0 };
+  }
+  const kept = guesses.filter(g => index.sitemapSlugs.has(g));
+  return { guesses: kept, skipped: guesses.length - kept.length };
 }
 
 module.exports = {
   discoverDtliSlug,
+  filterGuessesBySitemap,
   fetchAllDtliShowSlugs,
+  fetchDtliShowSlugIndex,
   extractShowSlugs,
   scoreSlug,
   tokensFromTitle,

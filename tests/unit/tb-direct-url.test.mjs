@@ -144,6 +144,34 @@ describe('verifyTbPage', () => {
 });
 
 describe('tryTbDirectUrl (integration with injected fetchPage)', () => {
+  it('BRO-6589: once a candidate verifies, no lower-priority fetch starts', async () => {
+    const calls = [];
+    async function fetchPage(url) {
+      calls.push(url);
+      await new Promise(r => setTimeout(r, 10));
+      return { content: realishReviewHtml({ title: "Fallen Angels; Or, A Comedy - Talkin' Broadway", body: "Reviewed by Matthew Murray: Fallen Angels; Or, A Comedy is a verdict critics love. Recommended." }) };
+    }
+    const res = await tryTbDirectUrl({
+      show: { id: 'fallen-angels-2026', title: 'Fallen Angels; Or, A Comedy', openingDate: '2026-04-19' },
+      year: 2026, fetchPage, logger: { log: () => {} },
+    });
+    assert.strictEqual(res.found, true);
+    assert.strictEqual(calls.length, 5, 'only the first wave of 5 of 13 URLs');
+  });
+  it('BRO-6589: the first candidate in priority order wins even when a later one answers first', async () => {
+    async function fetchPage(url) {
+      if (/FallenAngels2026\.html$/.test(url)) await new Promise(r => setTimeout(r, 30));
+      return { content: realishReviewHtml(), format: 'html', source: 'mock' };
+    }
+    const res = await tryTbDirectUrl({
+      show: { id: 'fallen-angels-2026', title: 'Fallen Angels', openingDate: '2026-04-19' },
+      year: 2026,
+      fetchPage,
+      logger: { log: () => {} },
+    });
+    assert.strictEqual(res.found, true);
+    assert.match(res.url, /FallenAngels2026\.html$/);
+  });
   it('returns found=true on first success', async () => {
     async function fetchPage(url) {
       return { content: realishReviewHtml(), format: 'html', source: 'mock' };

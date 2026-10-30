@@ -461,7 +461,7 @@ function outletTier(outletId) {
   return (o && o.tier) || 3;
 }
 
-function googleNewsAdapter({ maxUnwrap = 8 } = {}) {
+function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now } = {}) {
   const resolved = new Map(); // wrapper link -> { url|null, tries }
   return {
     name: 'google-news', kind: 'feed', phase: 'cheap',
@@ -489,8 +489,19 @@ function googleNewsAdapter({ maxUnwrap = 8 } = {}) {
       items.sort((a, b) => a.tier - b.tier);
       const out = [];
       let unwrapped = 0;
+      // Decodes call Google directly, outside the pass deadline's fetch wrapper, so they get their own count and time cap.
+      let decodes = 0;
+      const decodeUntil = now() + decodeBudgetMs;
       for (const it of items) {
         let r = resolved.get(it.link);
+        // BRO-6589: Google's own two-request HTTP decode first (~150 ms, no browser, not counted against maxUnwrap);
+        // the result must still land on the item's source host. The driver passes decodeGoogleNewsLink; tests stay offline.
+        if (decodeImpl && (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) && decodes < maxDecode && now() < decodeUntil) {
+          decodes++;
+          const decoded = await decodeImpl(it.link).catch(() => null);
+          const url = decoded ? publisherUrlFromWrapperPage('', it.sourceUrl, decoded) : null;
+          if (url) { r = { url, tries: ((r && r.tries) || 0) + 1 }; resolved.set(it.link, r); }
+        }
         if (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) {
           if (unwrapped >= maxUnwrap) continue;
           unwrapped++;

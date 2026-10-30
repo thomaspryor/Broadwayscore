@@ -10,6 +10,7 @@ const { isInOpeningWindow } = require('./opening-window-backoff');
 const { isBroadwayLocalRegion, isWestEndLocalRegion } = require('./outlet-region-map');
 const { extractByline } = require('./byline-extraction');
 const { resolveCritic } = require('./resolve-critic');
+const { decodeGoogleNewsLink, fetchGoogleNewsFeed } = require('./google-news-decode');
 
 // Press titles that differ from the listing title (shows.json akaTitles), e.g.
 // "Billy Crystal 860" is reviewed as "860". Searching only the listing title in
@@ -116,10 +117,12 @@ function publisherUrlFromPage(content, sourceUrl, finalUrl) {
 }
 
 /** Per-show opening-window discovery, shared by the poller and gather-reviews.
- * fetchPageImpl is a test seam; production always uses the shared scraper.
+ * fetchPageImpl, feedImpl and decodeImpl are test seams; production always
+ * uses the shared scraper and the plain-HTTP Google helpers.
  */
 async function discoverGoogleNewsReviews(show, options = {}) {
-  const { knownUrls = new Set(), now = new Date(), verbose = false, fetchPageImpl = fetchPage } = options;
+  const { knownUrls = new Set(), now = new Date(), verbose = false, fetchPageImpl = fetchPage,
+    feedImpl = fetchGoogleNewsFeed, decodeImpl = decodeGoogleNewsLink } = options;
   // Missing dates cannot safely bound either polling or publication eligibility.
   if (!show.openingDate || !isInOpeningWindow(show, now)) return [];
   const since = new Date(show.previewsStartDate || show.openingDate).getTime();
@@ -127,8 +130,11 @@ async function discoverGoogleNewsReviews(show, options = {}) {
   const seen = new Set([...knownUrls].map(normalizeUrl));
   const results = [];
   try {
-    const feed = await fetchPageImpl(googleNewsRssUrl(show), { skipVerify: true, preferPlaywright: true, fast: true });
-    let items = parseGoogleNewsItems(feed?.content || '').filter(item =>
+    // Plain HTTP first (BRO-6589); the Playwright fetch is the fallback.
+    const feedXml = await feedImpl(googleNewsRssUrl(show)).catch(() => null)
+      || (await fetchPageImpl(googleNewsRssUrl(show), { skipVerify: true, preferPlaywright: true, fast: true }))?.content || '';
+    if (verbose && !feedXml) console.log('  google-news-rss: feed fetch returned nothing');
+    let items = parseGoogleNewsItems(feedXml).filter(item =>
       Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
       && item.pubDate.getTime() <= new Date(now).getTime()
       // fuzzy title match: the outlet may misspell the title (CATERINA, BRO-4001);
@@ -154,24 +160,42 @@ async function discoverGoogleNewsReviews(show, options = {}) {
     });
     const batches = Math.ceil(items.length / 12);
     const offset = batches ? (Math.floor(new Date(now).getTime() / (15 * 60000)) % batches) * 12 : 0;
-    for (const item of items.slice(offset, offset + 12)) {
+    // Decode stops for the rest of the batch after 2 straight misses (blocked
+    // or RPC shape changed), so a dead decoder adds at most 3 wasted tries
+    // (one per worker below).
+    let decodeTried = 0, decodeOk = 0, decodeMissStreak = 0;
+    const batch = items.slice(offset, offset + 12);
+    const found = new Array(batch.length);
+    const resolveItem = async (item, i) => {
       try {
         const wrapper = new URL(item.link);
-        if (wrapper.protocol !== 'https:' || wrapper.hostname !== 'news.google.com') continue;
+        if (wrapper.protocol !== 'https:' || wrapper.hostname !== 'news.google.com') return;
         const publisherHost = new URL(item.sourceUrl).hostname.replace(/^www\./, '');
-        let page = await fetchPageImpl(item.link, {
-          skipVerify: true, preferPlaywright: true,
-          // Wait for the publisher or its interstitial link, not analytics
-          // network-idle on the destination (which often never settles).
-          playwrightWaitForSelector: `link[rel="canonical"][href*="${publisherHost}"], meta[property="og:url"][content*="${publisherHost}"], a[href*="${publisherHost}"]`,
-        });
-        const url = publisherUrlFromPage(page?.content || '', item.sourceUrl, page?.finalUrl);
+        let page = null;
+        let url = null;
+        // BRO-6589: resolve the wrapper over HTTP first; the Playwright wait
+        // below costs up to 20s per item and is now the fallback.
+        if (decodeMissStreak < 2) {
+          decodeTried++;
+          const decoded = await decodeImpl(item.link).catch(() => null);
+          url = decoded ? publisherUrlFromPage('', item.sourceUrl, decoded) : null;
+          if (url) { decodeOk++; decodeMissStreak = 0; } else decodeMissStreak++;
+        }
+        if (!url) {
+          page = await fetchPageImpl(item.link, {
+            skipVerify: true, preferPlaywright: true,
+            // Wait for the publisher or its interstitial link, not analytics
+            // network-idle on the destination (which often never settles).
+            playwrightWaitForSelector: `link[rel="canonical"][href*="${publisherHost}"], meta[property="og:url"][content*="${publisherHost}"], a[href*="${publisherHost}"]`,
+          });
+          url = publisherUrlFromPage(page?.content || '', item.sourceUrl, page?.finalUrl);
+        }
         if (!url) {
           if (verbose) console.log(`  google-news-rss: unresolved publisher link (${item.sourceName})`);
-          continue;
+          return;
         }
         const outlet = resolveOutletFromUrl(url);
-        if (!outlet || !outletMatchesMarket(registry[outlet.outletId], show) || seen.has(normalizeUrl(url))) continue;
+        if (!outlet || !outletMatchesMarket(registry[outlet.outletId], show) || seen.has(normalizeUrl(url))) return;
         seen.add(normalizeUrl(url));
         // An interstitial has no publisher byline. Fetch the resolved article
         // through the same scraper rather than trust Google page metadata.
@@ -181,18 +205,27 @@ async function discoverGoogleNewsReviews(show, options = {}) {
           try { page = await fetchPageImpl(url, { preferPlaywright: true, fast: true }); }
           catch { page = null; } // Keep the resolved URL for the normal byline recovery path.
         }
-        results.push({
+        found[i] = {
           showId: show.id, url, outletId: outlet.outletId,
           outlet: outlet.displayName || item.sourceName,
           criticName: resolveCritic({ byline: extractByline(page?.content || ''), outletEntry: registry[outlet.outletId] }), title: item.title,
           publishDate: publishedStampToLocalDate(item.pubDate, url, { tz: tzForMarket(show.category || show.market) || undefined }),
           dateSource: 'google-news-rss', source: 'google-news-rss',
-        });
+        };
         if (verbose) console.log(`  google-news-rss candidate: ${outlet.outletId} ${url}`);
       } catch (err) {
         if (verbose) console.log(`  google-news-rss: redirect failed (${item.sourceName}): ${err.message}`);
       }
-    }
+    };
+    // BRO-6589: each item ends in a ~15s Playwright article fetch for the
+    // byline; three at a time keeps a 12-item batch near a minute instead of
+    // three. The dedupe check-and-add above runs with no await in between, so
+    // two wrappers for one article cannot both pass it.
+    let next = 0;
+    const worker = async () => { while (next < batch.length) { const i = next++; await resolveItem(batch[i], i); } };
+    await Promise.all(Array.from({ length: Math.min(3, batch.length) }, worker));
+    results.push(...found.filter(Boolean));
+    if (verbose && decodeTried) console.log(`  google-news-rss: HTTP-decoded ${decodeOk}/${decodeTried} wrapper link(s)`);
   } catch (err) {
     if (verbose) console.log(`  google-news-rss error: ${err.message}`);
   }
