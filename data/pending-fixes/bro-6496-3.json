@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6496-3",
   "planId": "4b44dd37-dd6e-4e71-9ef4-e32933db543a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T23:24:24.658Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: this-aint-no-disco-off-broadway-2018.previewsStartDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T00:06:12.294Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for caesar-and-cleopatra-off-broadway-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for caesar-and-cleopatra-off-broadway-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for this-aint-no-disco-off-broadway-2018"
+    }
+  ],
+  "executedIn": "ci"
 }
