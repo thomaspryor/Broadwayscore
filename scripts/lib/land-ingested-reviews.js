@@ -24,6 +24,11 @@ const { pushWithRetry } = require('./push-with-retry');
 
 // Tests that inject `exec` must never reach the real push script (it could push a
 // real clone), so only the real exec gets the real helper.
+function revertHeldShows(reviewTextsDir) {
+  const guard = require('./opening-night-lane/lease-guard');
+  return guard.revertLeasedChanges(reviewTextsDir, guard.writeBlockedShowIds().shows);
+}
+
 const refusePush = () => ({ ok: false, code: null, stderr: 'pushRetry not injected alongside a stub exec' });
 
 /**
@@ -50,6 +55,9 @@ function pushReviewTexts({
   reviewTextsDir, touchedPaths, message, exec = execSync, log = console.log,
   isCheckout = isReviewTextsClone,
   pushRetry = exec === execSync ? pushWithRetry : refusePush,
+  // BRO-6648: this commits before any push-time enforce runs, so the lease check is here.
+  // Stub-exec tests get no lease check unless they inject one.
+  leaseRevert = exec === execSync ? revertHeldShows : () => [],
 }) {
   if (!isCheckout(reviewTextsDir)) {
     const error = `not the review-texts clone: ${reviewTextsDir}`;
@@ -59,7 +67,7 @@ function pushReviewTexts({
     log('     own. Point REVIEW_TEXTS_DIR at the clone (scripts/lib/review-texts-dir.js).');
     return { pushed: false, error };
   }
-  const relPaths = touchedPaths.map((p) => path.relative(reviewTextsDir, p));
+  let relPaths = touchedPaths.map((p) => path.relative(reviewTextsDir, p));
   const escaped = relPaths.filter((p) => p === '' || path.isAbsolute(p)
     || p === '..' || p.startsWith(`..${path.sep}`));
   if (escaped.length) {
@@ -68,6 +76,13 @@ function pushReviewTexts({
     log('     The files were written to a different review-texts root than the one being');
     log('     pushed; write and push the single dir resolveReviewTextsDir() returns.');
     return { pushed: false, error };
+  }
+  // A show the opening-night lane holds (fan-out siblings included) is reverted, not pushed.
+  const reverted = new Set(leaseRevert(reviewTextsDir));
+  if (reverted.size) {
+    log(`  ⚠️  ${reverted.size} file(s) under show(s) the opening-night lane holds were not pushed: ${[...reverted].slice(0, 3).join(', ')}`);
+    relPaths = relPaths.filter((p) => !reverted.has(p.split(path.sep).join('/')));
+    if (!relPaths.length) return { pushed: true, leaseHeld: true };
   }
   const q = relPaths.map((p) => `"${p}"`).join(' ');
   try {

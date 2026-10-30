@@ -303,7 +303,7 @@ test('structural: every competing workflow syncs leases after each review-texts 
     // BRO-6648 S1-T1..T5: the old-path writers
     'collect-review-texts', 'overnight-collect', 'llm-ensemble-score', 'recollect-for-scores', 'opening-night-reviews', 'scrape-theatre-reviews', 'scrape-new-aggregators',
     // they push review-texts themselves
-    'ingest-urls', 'recover-we-major-outlets']) {
+    'ingest-urls', 'recover-we-major-outlets', 'collect-talkinbroadway-index']) {
     const y = read(`.github/workflows/${w}.yml`);
     const checkouts = [...y.matchAll(/uses: \.\/\.github\/actions\/checkout-review-texts/g)].length;
     const syncs = [...y.matchAll(/uses: \.\/\.github\/actions\/opening-night-lease-sync/g)].length;

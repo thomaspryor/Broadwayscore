@@ -142,3 +142,31 @@ test('source: the remaining writer entry points filter through the shared guard 
   assert.match(watch, /for \(const show of writableOpenings\(openings\)\)/, 'each watcher pass re-reads the guard');
   assert.match(watch, /writableOpenings\(openings\)\.map\(s => s\.id\)\.join/, '--list-active (the orchestrator dispatch list) leaves held shows out');
 });
+
+test('land-ingested-reviews pushReviewTexts: a held show (fan-out sibling) is reverted and not committed, the free show is', async () => {
+  const { execSync } = await import('node:child_process');
+  const { pushReviewTexts } = require(path.join(ROOT, 'scripts/lib/land-ingested-reviews.js'));
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6648-rt-'));
+  const git = (c) => execSync(`git -C "${repo}" ${c}`, { encoding: 'utf8' });
+  git('init -q -b main'); git('config user.email t@t'); git('config user.name t');
+  fs.writeFileSync(path.join(repo, 'README'), 'x'); git('add -A'); git('commit -qm init');
+  const touched = [TONIGHT.id, LATER.id].map((id) => {
+    fs.mkdirSync(path.join(repo, id)); const f = path.join(repo, id, 'outlet--critic.json'); fs.writeFileSync(f, '{}'); return f;
+  });
+  let pushed = 0;
+  const res = withLeases('leased', ({ now }) => pushReviewTexts({
+    reviewTextsDir: repo, touchedPaths: touched, message: 'test', exec: execSync, log: () => {},
+    isCheckout: () => true, pushRetry: () => { pushed++; return { ok: true }; },
+    leaseRevert: (dir) => guard.revertLeasedChanges(dir, guard.writeBlockedShowIds({ now }).shows),
+  }));
+  assert.equal(res.pushed, true);
+  assert.equal(pushed, 1);
+  assert.deepEqual(git('show --name-only --format= HEAD').trim().split('\n'), [`${LATER.id}/outlet--critic.json`]);
+  assert.ok(!fs.existsSync(touched[0]), 'the held show file is removed, not left for a later commit');
+});
+
+test('land-ingested-reviews: the real exec path checks the lease by default', () => {
+  const src = read('scripts/lib/land-ingested-reviews.js');
+  assert.match(src, /leaseRevert = exec === execSync \? revertHeldShows/);
+  assert.ok(src.indexOf('leaseRevert(reviewTextsDir)') < src.indexOf('add -A -- ${q}'));
+});
