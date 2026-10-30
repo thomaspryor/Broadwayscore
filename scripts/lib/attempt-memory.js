@@ -38,6 +38,20 @@ const REPO = path.join(__dirname, '..', '..');
 const OVERRIDES_PATH = path.join(REPO, 'data', 'audit', 'attempt-memory-overrides.json');
 
 const DEFAULT_MAX_FAILURES = 2;
+// BRO-6632: a dispatch whose job never spawned is not a failed fix. It never
+// counts toward DEFAULT_MAX_FAILURES (two no-starts used to park a row as
+// "automatic fixes kept failing"), but a card refused at every launch must not
+// be relaunched forever either, so this many no-starts in a row park it with
+// the distinct LAUNCH_REFUSED_PREFIX reason.
+const DEFAULT_MAX_NO_STARTS = 3;
+const LAUNCH_REFUSED_PREFIX = 'launch-refused:';
+// The reconcilers' ORPHAN rows (digest-autofix, backlog-drain,
+// linear-drain-parked) carry outcomeKind 'no-start'; older rows only the note.
+const NO_START_NOTE_PREFIX = 'spawn never observed';
+function isNoStartOutcome(e) {
+  if (!e || e.event !== 'card-fail') return false;
+  return e.outcomeKind === 'no-start' || String(e.note || '').startsWith(NO_START_NOTE_PREFIX);
+}
 
 // Stable hash of the content that actually determines what the loop would
 // attempt — title + notes. Anything else on the card (priority, tags,
@@ -68,7 +82,9 @@ function attemptOutcomesForCard(ledgerEntries, cardId) {
     // the file-order-as-chronology bug this sort exists to prevent, just
     // reintroduced for one row instead of all of them.
     if (!Number.isFinite(new Date(e.ts).getTime())) continue;
-    if (e.event === 'card-fail' || (e.event === 'recovery' && /^fail:/.test(e.note || ''))) {
+    if (isNoStartOutcome(e)) {
+      outcomes.push({ ts: e.ts, contentHash: e.contentHash, outcome: 'no-start', reason: e.note || null });
+    } else if (e.event === 'card-fail' || (e.event === 'recovery' && /^fail:/.test(e.note || ''))) {
       outcomes.push({ ts: e.ts, contentHash: e.contentHash, outcome: 'fail', reason: e.note || null });
     } else if (e.event === 'card-pass' || e.event === 'auto-approve') {
       outcomes.push({ ts: e.ts, contentHash: e.contentHash, outcome: 'pass', reason: null });
@@ -108,6 +124,7 @@ function saveParkOverride(cardId, overridesPath = OVERRIDES_PATH) {
  */
 function checkPark(ledgerEntries, cardId, currentContentHash, opts = {}) {
   const maxFailures = Number.isInteger(opts.maxFailures) ? opts.maxFailures : DEFAULT_MAX_FAILURES;
+  const maxNoStarts = Number.isInteger(opts.maxNoStarts) ? opts.maxNoStarts : DEFAULT_MAX_NO_STARTS;
   const overrides = opts.overrides || {};
   const outcomes = attemptOutcomesForCard(ledgerEntries, cardId);
   if (!outcomes.length) return { parked: false, failureStreak: 0, reason: null };
@@ -117,16 +134,36 @@ function checkPark(ledgerEntries, cardId, currentContentHash, opts = {}) {
   // Walk newest → oldest, counting a consecutive run of failures on the
   // CURRENT hash. Stop at the first pass, the first hash mismatch (the card
   // was edited), or the first entry that predates an owner override.
+  // No-starts are stepped over (they neither count nor break the streak);
+  // noStartRun counts only the no-starts newer than any real outcome.
   const streak = [];
+  let noStartRun = 0;
+  let sawRealOutcome = false;
   for (let i = outcomes.length - 1; i >= 0; i--) {
     const o = outcomes[i];
     if (overrideAt !== null && new Date(o.ts).getTime() < overrideAt) break;
     if (o.contentHash !== currentContentHash) break;
+    if (o.outcome === 'no-start') {
+      if (!sawRealOutcome) noStartRun++;
+      continue;
+    }
+    sawRealOutcome = true;
     if (o.outcome !== 'fail') break;
     streak.push(o);
   }
 
-  if (streak.length < maxFailures) return { parked: false, failureStreak: streak.length, reason: null };
+  if (streak.length < maxFailures) {
+    if (noStartRun >= maxNoStarts) {
+      return {
+        parked: true,
+        kind: 'launch-refused',
+        failureStreak: streak.length,
+        noStartStreak: noStartRun,
+        reason: `${LAUNCH_REFUSED_PREFIX} ${noStartRun} dispatches in a row never started a job (refused at launch) — fix the launch refusal or clear the park to retry`,
+      };
+    }
+    return { parked: false, failureStreak: streak.length, noStartStreak: noStartRun, reason: null };
+  }
 
   // The "parked: " prefix is a load-bearing contract — scripts/autonomous-email.js
   // matches it via /^parked:/ to surface this in the owner's morning digest
@@ -134,11 +171,15 @@ function checkPark(ledgerEntries, cardId, currentContentHash, opts = {}) {
   // and don't reuse "parked:" for any other preFilter reason elsewhere.
   const reasons = streak.slice(0, 2).reverse().map(o => o.reason).filter(Boolean);
   const reason = `parked: failed ${streak.length}x unchanged${reasons.length ? ` (${reasons.join(' | ')})` : ''} — edit the card or clear the park to retry`;
-  return { parked: true, failureStreak: streak.length, reason };
+  return { parked: true, kind: 'failed', failureStreak: streak.length, noStartStreak: noStartRun, reason };
 }
 
 module.exports = {
   DEFAULT_MAX_FAILURES,
+  DEFAULT_MAX_NO_STARTS,
+  LAUNCH_REFUSED_PREFIX,
+  NO_START_NOTE_PREFIX,
+  isNoStartOutcome,
   OVERRIDES_PATH,
   computeContentHash,
   attemptOutcomesForCard,

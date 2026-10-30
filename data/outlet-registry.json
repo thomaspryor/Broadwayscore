@@ -778,7 +778,10 @@
         "billboard"
       ],
       "domain": "billboard.com",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "notDomainMoves": [
+        "billboard.com.br"
+      ]
     },
     "queerty": {
       "displayName": "Queerty",
@@ -3806,7 +3809,10 @@
         "santa-barbara-independent-maggie-yates"
       ],
       "domain": "independent.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "notDomainMoves": [
+        "independent.ie"
+      ]
     },
     "berkshire-eagle": {
       "displayName": "The Berkshire Eagle",
@@ -4141,7 +4147,11 @@
         "berkshire-on-stage-and-screen"
       ],
       "domain": "berkshireonstage.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "berkshireonstage.blog",
+        "berkshireonstage.wordpress.com"
+      ]
     },
     "the-movie-cricket": {
       "displayName": "The Movie Cricket",
@@ -6373,7 +6383,11 @@
         "travel-aol"
       ],
       "accessModel": "defunct",
-      "domain": "aol.com"
+      "domain": "aol.com",
+      "notDomainMoves": [
+        "aol.co.uk",
+        "aol.ca"
+      ]
     },
     "culturesonar": {
       "displayName": "CultureSonar",
@@ -6913,7 +6927,10 @@
         "nj-arts-maven"
       ],
       "accessModel": "free",
-      "domain": "njartsmaven.com"
+      "domain": "njartsmaven.com",
+      "domainAliases": [
+        "njartsmaven.substack.com"
+      ]
     },
     "suzee-behind-the-scenes": {
       "displayName": "Suzee Behind The Scenes",
@@ -7861,7 +7878,10 @@
       "domainAliases": [
         "the-independent.com"
       ],
-      "starScale": 5
+      "starScale": 5,
+      "notDomainMoves": [
+        "independent.ie"
+      ]
     },
     "i-paper": {
       "displayName": "The i",
@@ -9459,7 +9479,10 @@
       "region": "london",
       "accessModel": "free",
       "multiAuthor": true,
-      "starScale": 5
+      "starScale": 5,
+      "domainAliases": [
+        "northwestend.co.uk"
+      ]
     },
     "london-unattached": {
       "displayName": "London Unattached",
@@ -10818,7 +10841,10 @@
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-08-18T14:28:06.532Z",
       "scoreable": false,
-      "displayNameSource": "manual"
+      "displayNameSource": "manual",
+      "domainAliases": [
+        "theatreboard.co.uk"
+      ]
     },
     "visit-london": {
       "displayName": "Visit London",
@@ -12537,7 +12563,10 @@
       "domain": "artshub.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-10T06:54:18.708Z"
+      "regionInferredAt": "2026-10-10T06:54:18.708Z",
+      "notDomainMoves": [
+        "artshub.com.au"
+      ]
     },
     "maturetimes": {
       "displayName": "Maturetimes",

@@ -359,6 +359,7 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
         // usd: 0 (BRO-3454) — no job ever spawned, so no cost was incurred.
         // Mirrors digest-autofix.js's reconcileDigestOutcomes ORPHAN branch.
         event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: 0,
+        outcomeKind: 'no-start', // BRO-6632: attempt-memory steps over these (isNoStartOutcome)
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: kill switch, verify gate, terminal-state guard, or lease already held)`,
       });
       continue;

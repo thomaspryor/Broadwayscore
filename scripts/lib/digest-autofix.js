@@ -67,7 +67,7 @@ const { spawn, execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const dispatchReconcile = require('./dispatch-reconcile.js');
 const { withFileLock } = require('./file-lock.js');
-const { checkPark, computeContentHash } = require('./attempt-memory.js');
+const { checkPark, computeContentHash, isNoStartOutcome } = require('./attempt-memory.js');
 // BRO-3412: this path had neither of the two guards the sibling backlog
 // drain has (spend circuit breaker, concurrency ceiling) — verified by grep,
 // not assumed: this module's require list previously had no path to either
@@ -510,7 +510,9 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
  * check-health-row-absent.js form takes exactly one row).
  * @returns {Array<{name, message, title, state, taskId, conditionKey, model, affected}>}
  *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged' | 'decision' | 'info' | 'tracked' | 'parked'
+ *   | 'launch-refused'
  *   ('parked' is only ever set by runAutofix, never by planAutofix.)
+ *   ('launch-refused' likewise, BRO-6632.)
  */
 function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {}) {
   // BRO-5669: expired owner logins (lib/login-sources.js) can only be renewed
@@ -1126,6 +1128,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
         // Progress/In Review) — linear-next.js's startedStateGuard refuses
         // that cleanly (correctly: it's the guard closing exactly this class
         // of stray double-dispatch), so it belongs in this likely-cause list.
+        outcomeKind: 'no-start', // BRO-6632: attempt-memory steps over these (isNoStartOutcome)
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)`,
       });
       continue;
@@ -1244,6 +1247,7 @@ function reconcileAndAppendDigest(ledgerPath, tasksById, dispatchLedgerEntries, 
  *   | 'acknowledged' | 'decision' | 'tracked' | 'info' (left untouched — no card, no dispatch;
  *     'tracked' is also set on a reattached card already started or Paused, BRO-6081)
  *   | 'parked' (dispatch skipped — failed twice unchanged, see attempt-memory)
+ *   | 'launch-refused' (dispatch skipped — 3 dispatches in a row never started a job, BRO-6632)
  * and returns the same array (annotated) for the email renderer.
  */
 function runAutofix({
@@ -1510,7 +1514,9 @@ function runAutofix({
     const contentHash = computeContentHash({ name: numberFreeTitle(row.title) });
     const park = checkPark(digestLedgerEntries, String(row.taskId), contentHash);
     if (park.parked) {
-      row.state = 'parked';
+      // BRO-6632: launch-refused (dispatches that never started a job) is told
+      // apart from parked (fixes that ran and failed): different owner label.
+      row.state = park.kind === 'launch-refused' ? 'launch-refused' : 'parked';
       row.parkReason = park.reason;
       continue;
     }
@@ -1518,8 +1524,12 @@ function runAutofix({
     if (budget <= 0) { row.state = 'queued'; continue; }
     // Attempt N = how many times this exact content has already been
     // dispatched by this module (regardless of outcome) + this attempt.
-    const priorAttempts = digestLedgerEntries.filter(e =>
-      e.event === 'auto-dispatch' && String(e.taskId) === String(row.taskId) && e.contentHash === contentHash).length;
+    // BRO-6632: a dispatch that never started a job is not an attempt, so it
+    // must not escalate the first real try to opus.
+    const sameContent = e => String(e.taskId || e.cardId) === String(row.taskId) && e.contentHash === contentHash;
+    const priorAttempts = Math.max(0,
+      digestLedgerEntries.filter(e => e.event === 'auto-dispatch' && sameContent(e)).length
+      - digestLedgerEntries.filter(e => isNoStartOutcome(e) && sameContent(e)).length);
     const attempt = priorAttempts + 1;
     const model = row.model || (attempt >= 2 ? 'opus' : null);
     try {

@@ -355,6 +355,9 @@ const AUTOFIX_STATE_LABEL = {
   // Attempt-memory (task #843): same fixed content failed twice unchanged —
   // never redispatched blind, needs a human look at the card itself.
   'parked': ['\u23f8\ufe0f', 'kept failing the same way \u2014 parked, needs a manual look'],
+  // BRO-6632: every recent dispatch was refused before a job started, so no
+  // fix ever ran; told apart from 'parked' (fixes ran and failed).
+  'launch-refused': ['\u23f8\ufe0f', 'automatic fix could not start \u2014 the launch was refused every time'],
   // Liveness gate (task #940): the task list said in_progress but neither a
   // live cmux workspace nor an open headless job backs that claim right
   // now \u2014 the session that was working it may have died silently. Never
@@ -571,6 +574,7 @@ const OWNER_FIX_STATUS = {
   'tracked': 'already has a tracking card',
   'card-failed': 'not being fixed automatically yet',
   'parked': 'automatic fixes kept failing; not being fixed automatically',
+  'launch-refused': 'automatic fix could not start; not being fixed automatically',
   'no-live-session': 'fix attempt not confirmed (no live session found)',
   'watching': 'being watched; a fix is queued if it is still here after 3 days',
 };

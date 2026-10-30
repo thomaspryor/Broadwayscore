@@ -23,6 +23,7 @@
 'use strict';
 
 const { CLAUDE_HAIKU } = require('./lib/models.js');
+const { LAUNCH_REFUSED_PREFIX } = require('./lib/attempt-memory.js');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -410,7 +411,8 @@ async function main() {
     }
     for (const e of freshQueue.entries || []) {
       const reason = e && e.preFilter && e.preFilter.reason;
-      if (reason && /^parked:/.test(reason)) {
+      // BRO-6632: launch-refused parks (never started a job) are listed too.
+      if (reason && (/^parked:/.test(reason) || reason.startsWith(LAUNCH_REFUSED_PREFIX))) {
         attention.attemptMemoryParked.push({ name: (e.card && e.card.name) || e.card?.id || 'unknown card', reason });
       }
     }

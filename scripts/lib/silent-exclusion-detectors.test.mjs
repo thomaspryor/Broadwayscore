@@ -396,3 +396,39 @@ test('findProbableDomainMoves against the REAL registry + census stays under a s
   // before the domain-required guard).
   assert.ok(moves.length < census.length * 0.25, `expected a small advisory list, got ${moves.length}/${census.length}`);
 });
+
+test('BRO-6632: a host listed in the matched outlet\'s notDomainMoves is not reported; others still are', () => {
+  const outlets = {
+    'travel-aol': { domain: 'aol.com', notDomainMoves: ['aol.co.uk'] },
+    'berkshire-on-stage': { domain: 'berkshireonstage.com' },
+  };
+  const unknownHosts = [
+    { host: 'aol.co.uk', occurrences: 4 },
+    { host: 'aol.ca', occurrences: 1 },
+    { host: 'berkshireonstage.blog', occurrences: 5 },
+  ];
+  const hosts = findProbableDomainMoves(outlets, unknownHosts).map((m) => m.host).sort();
+  assert.deepEqual(hosts, ['aol.ca', 'berkshireonstage.blog']);
+});
+
+test('BRO-6632: the real registry + census report no probable domain moves (row clears)', () => {
+  const reg = JSON.parse(fs.readFileSync(path.join(__dirname, '../../data/outlet-registry.json'), 'utf8'));
+  let census;
+  try { census = JSON.parse(fs.readFileSync(path.join(__dirname, '../../data/audit/unknown-aggregator-outlets.json'), 'utf8')); } catch { return; }
+  const moves = findProbableDomainMoves(reg.outlets, census.outlets || []);
+  // Not pinned to zero (a new move can appear any day); pins that today's ten are resolved.
+  const fixed = ['berkshireonstage.blog', 'berkshireonstage.wordpress.com', 'aol.co.uk', 'aol.ca', 'independent.ie',
+    'northwestend.co.uk', 'theatreboard.co.uk', 'njartsmaven.substack.com', 'billboard.com.br', 'artshub.com.au'];
+  assert.deepEqual(moves.filter((m) => fixed.includes(m.host)), []);
+});
+
+test('BRO-6632: notDomainMoves clears only its own outlet pairing, whatever the registry order', () => {
+  const unknownHosts = [{ host: 'independent.ie', occurrences: 1 }];
+  const a = { domain: 'independent.co.uk' };
+  const b = { domain: 'independent.com', notDomainMoves: ['independent.ie'] };
+  for (const outlets of [{ uk: a, sb: b }, { sb: b, uk: a }]) {
+    assert.deepEqual(findProbableDomainMoves(outlets, unknownHosts).map((m) => m.outletId), ['uk']);
+  }
+  const both = { uk: { ...a, notDomainMoves: ['independent.ie'] }, sb: b };
+  assert.deepEqual(findProbableDomainMoves(both, unknownHosts), []);
+});

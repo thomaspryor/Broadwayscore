@@ -360,6 +360,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
         event: 'card-fail', cardId: taskId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: 0,
+        outcomeKind: 'no-start', // BRO-6632: attempt-memory steps over these (isNoStartOutcome)
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
       });
       continue;

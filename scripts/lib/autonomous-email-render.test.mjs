@@ -134,7 +134,7 @@ test('buildOwnerView: a watching visitor error stays listed; acknowledged rows a
 
 // A new autofix state must be classified on purpose, never by accident.
 test('OWNER_HANDLED_STATES: every owner-facing fix state is classified', () => {
-  const notHandled = new Set(['card-failed', 'parked', 'no-live-session']);
+  const notHandled = new Set(['card-failed', 'parked', 'launch-refused', 'no-live-session']);
   for (const state of Object.keys(OWNER_FIX_STATUS)) {
     assert.ok(OWNER_HANDLED_STATES.has(state) !== notHandled.has(state), `classify '${state}' as handled or not handled`);
   }
