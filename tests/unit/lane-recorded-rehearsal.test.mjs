@@ -13,12 +13,15 @@ const require = createRequire(import.meta.url);
 const recorded = require('../../scripts/lib/lane-recorded-nights/index.js');
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), '../../scripts/opening-night-lane-rehearse.js');
 
-/** A stand-in archive: one aggregator page per night listing the fixture's aggregator-sourced URLs, minus `drop`. */
-function archive(drop = []) {
+/** A stand-in archive: one aggregator page per night linking the fixture's aggregator-sourced URLs (never the
+ * off-aggregator ones, so that exemption is exercised), minus `drop`, plus any `extra` HTML. `nights` limits which
+ * nights get a page. */
+function archive(drop = [], { extra = '', nights = recorded.NIGHTS } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5201-archive-'));
-  for (const night of recorded.NIGHTS) {
+  for (const night of nights) {
     fs.mkdirSync(path.join(dir, 'dtli'), { recursive: true });
-    const links = night.urls().filter((u) => !drop.includes(u)).map((u) => `<a href="${u}">r</a>`).join('\n');
+    const off = new Set(night.offAggregator);
+    const links = night.urls().filter((u) => !drop.includes(u) && !off.has(u)).map((u) => `<a href="${u}">r</a>`).join('\n') + extra;
     fs.writeFileSync(path.join(dir, 'dtli', `${night.show}.html`), `<html><body>${links}</body></html>`);
   }
   return dir;
@@ -36,6 +39,24 @@ test('an archive with no page for one of the nights is a skip, not a pass', asyn
     const r = await recorded.runRecordedRehearsal({ archiveDir: dir });
     assert.equal(r.skipped, true);
     assert.match(r.reason, /no archived aggregator page for a-few-good-men-2026/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('a missing page for the second night is a skip, not a pass', async () => {
+  const dir = archive([], { nights: [recorded.NIGHTS[0]] });
+  try {
+    const r = await recorded.runRecordedRehearsal({ archiveDir: dir });
+    assert.equal(r.skipped, true);
+    assert.match(r.reason, /no archived aggregator page for the-imaginary-invalid-2026/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('provenance needs the exact link: a longer URL it prefixes, or the URL as page text, does not count', async () => {
+  const gone = recorded.NIGHTS[0].urls().find((u) => u.includes('deadline.com'));
+  const dir = archive([gone], { extra: `<a href="${gone.replace(/\/$/, '')}-2/">x</a><p>${gone}</p>` });
+  try {
+    const gaps = recorded.provenanceGaps(recorded.NIGHTS[0], dir);
+    assert.deepEqual(gaps, [gone]);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 

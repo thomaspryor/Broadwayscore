@@ -43,7 +43,7 @@ audit-aggregator-coverage.yml  # weekly internal QA report (BRO-3492 triage); a 
 # 1-day-late detection of provisional drift, with no user-facing staleness.
 audit-provisional-venues.yml
 audit-bww-rr-attributions.yml  # weekly internal audit; a stale week delays attribution findings only
-lane-rehearsal-recorded.yml  # weekly + on lane-code push (BRO-5201); fails safe: a stale or missing record disarms the lane and the old pipeline runs, and a red run notifies at warning
+lane-rehearsal-recorded.yml  # weekly + on lane-code push (BRO-5201); fails safe: a stale or missing record disarms the lane and the old pipeline runs, and a red run (a failure or a skip) notifies at warning
 # Digest-noise regression monitor (card #510): self-contained daily check
 # that alerts the owner directly via routeAlert() when it finds a violation.
 # A stale run means at-worst a 1-day-late detection of a noise regression —

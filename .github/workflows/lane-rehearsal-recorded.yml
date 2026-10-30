@@ -7,6 +7,7 @@ name: Opening-night lane recorded rehearsal
 #
 # The archive needs REVIEW_TEXTS_TOKEN. With no token, or no archive, the rehearsal skips LOUDLY (a warning, exit 78
 # from the script) and writes nothing: a skip is never a pass, so the previous record ages out and the lane disarms.
+# A skip also fails the run, so two in a row reach the failure notice instead of a quiet green run with a warning.
 # The synthetic health check (lane-rehearsal.yml) stays secret-free and separate.
 #
 # Schedule: Mondays 06:25 UTC (the record is good for 8 days), and on any push to main changing the lane code, so the
@@ -57,6 +58,7 @@ jobs:
           if [ -z "$REVIEW_TEXTS_TOKEN" ]; then
             echo "::warning::SKIPPED: REVIEW_TEXTS_TOKEN is not set, so the aggregator archive cannot be checked out. The recorded rehearsal did not run and nothing was recorded; this is not a pass."
             echo "present=false" >> "$GITHUB_OUTPUT"
+            exit 1
           else
             echo "present=true" >> "$GITHUB_OUTPUT"
           fi
@@ -67,7 +69,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      # Exit 78 is the script's loud skip (no archive page for a night): a warning, no record, never a pass.
+      # Exit 78 is the script's loud skip (no archive page for a night): no record, never a pass, and a red run.
       - name: Rehearse recorded nights
         id: rehearse
         if: steps.token.outputs.present == 'true'
@@ -78,7 +80,7 @@ jobs:
           set -e
           if [ "$code" -eq 78 ]; then
             echo "::warning::SKIPPED: the recorded rehearsal found no archived aggregator page for a night. Nothing was recorded; this is not a pass."
-            exit 0
+            exit 1
           fi
           exit "$code"
 

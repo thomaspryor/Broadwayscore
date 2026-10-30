@@ -34,15 +34,24 @@ const NIGHTS = [
   },
 ];
 
-const bare = (u) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/$/, '');
+/** Scheme, www., fragment and trailing slash do not tell two review links apart; the query string can, so it stays. */
+const bare = (u) => u.trim().replace(/&amp;/g, '&').replace(/^https?:\/\/(www\.)?/i, '').replace(/#.*$/, '').replace(/\/$/, '').toLowerCase();
+
+/** Every link target on the pages, normalised. Exact matches only: a URL that is a prefix of a longer one, or that
+ * appears only in page text, is not a link the aggregator listed. */
+function pageLinks(html) {
+  const links = new Set();
+  for (const m of html.matchAll(/href\s*=\s*["']([^"']+)["']/gi)) links.add(bare(m[1]));
+  return links;
+}
 
 /** Fixture URLs that should be on an archived aggregator page and are not. null when the night has no archived page. */
 function provenanceGaps(night, archiveDir) {
   const files = AGGREGATORS.map((a) => path.join(archiveDir, a, `${night.show}.html`)).filter((f) => fs.existsSync(f));
   if (!files.length) return null;
-  const pages = files.map((f) => fs.readFileSync(f, 'utf8')).join('\n');
+  const links = pageLinks(files.map((f) => fs.readFileSync(f, 'utf8')).join('\n'));
   const off = new Set(night.offAggregator.map(bare));
-  return night.urls().filter((u) => !off.has(bare(u)) && !pages.includes(bare(u)));
+  return night.urls().filter((u) => !off.has(bare(u)) && !links.has(bare(u)));
 }
 
 /**
@@ -69,4 +78,4 @@ async function runRecordedRehearsal({ archiveDir, nights = NIGHTS } = {}) {
   return { pass: failures.length === 0 && checked > 0, verdict: { checked, failures }, nights: out };
 }
 
-module.exports = { NIGHTS, AGGREGATORS, provenanceGaps, runRecordedRehearsal };
+module.exports = { NIGHTS, AGGREGATORS, pageLinks, provenanceGaps, runRecordedRehearsal };
