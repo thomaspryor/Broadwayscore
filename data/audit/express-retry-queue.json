@@ -77,7 +77,8 @@
       "market": "west-end",
       "queuedAt": "2026-10-28T13:02:52.195Z",
       "dueAt": "2026-10-30T08:00:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-30T08:32:48.704Z"
     },
     {
       "showId": "in-the-heights-off-broadway-2026",
@@ -144,7 +145,10 @@
       "outletIds": [
         "nytimes"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-30T08:32:48.704Z"
     },
     {
       "kind": "truncated-t1-refetch",
