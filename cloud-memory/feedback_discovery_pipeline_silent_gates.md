@@ -282,7 +282,7 @@ Both surfaced only via the monitor's independent WebSearch census. **This is why
 
 Detection: for any census URL, grep the domain against outlet-registry.json AND stage-latency.jsonl. Zero in both = missed-discovery, not a gather-gate rejection — don't go hunting in `data/audit/` exclusion logs for it.
 Fix: add the registry entry, then `scripts/ingest-review-from-url.js`, then let CI rebuild→score→rebuild.
-Trap: `data/outlet-registry.json` is **gitignored in the web repo**. The authoritative copy is `/Users/tompryor/broadway-scorecard-data/outlet-registry.json` — edit and commit there too, or the fix is local-only and evaporates.
+Superseded (BRO-1084): `data/outlet-registry.json` is now tracked in the public web repo and is its only authoritative copy; edit, commit and land it there (cloud included). The old private-repo copy rule below no longer applies. Old text: Trap: `data/outlet-registry.json` is **gitignored in the web repo**. The authoritative copy is `/Users/tompryor/broadway-scorecard-data/outlet-registry.json` — edit and commit there too, or the fix is local-only and evaporates.
 
 Related: BRO-2729's `networkidle` Playwright hang is **wordpress.com-specific** — the same ingest command succeeded on blogspot.com (exit 0, 6295 chars). Don't widen that card to blogs generally.
 

@@ -48,6 +48,7 @@ const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
 const { checkHiddenOwnerQuestion } = require('./lib/report-owner-question-guard');
+const { classifyPauseReport, ADVISORY_MARKER: PAUSE_GUARD_MARKER } = require('./lib/pause-report-guard');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
@@ -65,6 +66,10 @@ const USAGE = `Usage:
 
   report --status=paused|blocked|in-review that says the owner must decide is REFUSED (exit 6, nothing posted)
   unless the summary or the card carries a real "DECISION NEEDED:" block (BRO-6402).
+
+  report --status=paused|blocked that hands a step to "the next session/worker" without naming a block
+  (owner decision, missing key or access, Mac-only hands, a RECHECK-AFTER wait on a named event,
+  budget/spend) is flagged (BRO-6635): advisory now, PAUSE_GUARD_MODE=block refuses (exit 7).
 
   report --status=done is REFUSED (exit 5) unless the issue carries
   done-evidence: a "PR-EVIDENCE: merged deployed checked (<url>)" line, or a
@@ -308,12 +313,25 @@ async function cmdReport(args, deps = {}) {
     process.exit(6);
   }
 
+  // BRO-6635: a pause that hands a doable step to "the next session" without naming a block.
+  // Advisory (CLAUDE.md §19): warn and tag the comment so would-refuse pauses are countable in
+  // Linear; PAUSE_GUARD_MODE=block refuses before the post. The machine-caller skip covers it too.
+  const pause = deps.skipOwnerQuestionGuard ? { wouldRefuse: false } : classifyPauseReport({
+    status: args.status, summary: args.summary, verification: args.verification, description: issue.description,
+  });
+  if (pause.wouldRefuse && process.env.PAUSE_GUARD_MODE === 'block') {
+    console.error(`\n❌ REFUSED (pause-handoff) — ${issue.identifier}: nothing was posted.\n\n${pause.reason}\n`);
+    process.exit(7);
+  }
+  if (pause.wouldRefuse) console.error(`\n⚠️  pause-handoff (advisory) — ${issue.identifier}:\n${pause.reason}\n`);
+
   let body = lsr.buildOutcomeCommentBody({
     summary: args.summary,
     keyFiles: splitKeyFiles(args['key-files']),
     verification: args.verification,
     status: args.status,
   });
+  if (pause.wouldRefuse) body += `\n\n${PAUSE_GUARD_MARKER}`;
   // BRO-4241: a Done-gate bypass is recorded in this outcome comment (the
   // only record in cloud sessions, where the ledger file is skipped). Same
   // validity rule as the gate below: a --force reason of 10+ characters, or
