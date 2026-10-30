@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T19:32:46.818Z",
+  "generatedAt": "2026-10-30T22:50:14.366Z",
   "night": "2026-10-29",
   "counts": {
     "total": 5,
@@ -10,11 +10,11 @@
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "A Few Good Men: 21 of 22 reviews live by 1:02am; reviews came out at 11:02pm, not the expected 10:00pm, so they were timed from 11:02pm; TheWrap went live at 1:24am (late); the first review was not live until 11:40pm (38 min after release); Reddit draft emailed to you is out of date (score 60 from 23 reviews, the site shows score 60 from 24 reviews). Failed."
+      "line": "A Few Good Men: published by the regular pipeline; TheWrap fixed by hand at 12:42am; 21 of 22 reviews live by 1:02am; reviews came out at 11:02pm, not the expected 10:00pm, so they were timed from 11:02pm; TheWrap went live at 1:24am (late); the first review was not live until 11:40pm (38 min after release); emails ready. Failed."
     },
     {
       "verdict": "FAIL",
-      "line": "The Heart: 2 of 4 reviews live by 12:00am; Theater Pizzazz went live at 12:50am (late); Is Something Of A Miracle not live by 3:55am; no Reddit draft emailed. Failed."
+      "line": "The Heart: published by the regular pipeline; 2 of 4 reviews live by 12:00am; Theater Pizzazz went live at 12:50am (late); Is Something Of A Miracle not live by 3:55am; Reddit draft emailed to you is out of date (score 73 from 8 reviews, the site shows score 75 from 10 reviews). Failed."
     },
     {
       "verdict": "UNKNOWN",
@@ -26,14 +26,18 @@
     },
     {
       "verdict": "UNKNOWN",
-      "line": "The Lives of Others: not graded, the overnight check did not run; no opening-night email draft yet (the site has 0 of the 8 reviews a draft needs)."
+      "line": "The Lives of Others: published by the regular pipeline; no opening-night email draft yet (the site has 0 of the 8 reviews a draft needs). Not graded: could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night or whether reviews stayed up."
     }
   ],
+  "scoreboard": {
+    "graded": 5,
+    "passed": 0,
+    "passedOnOwn": 0
+  },
   "missFirstSeen": {
     "a-few-good-men-2026|2026-10-29|review:thewrap:Robert Hofler": "2026-10-30T19:32:46.818Z",
-    "a-few-good-men-2026|2026-10-29|email:reddit:stale": "2026-10-30T19:32:46.818Z",
     "the-heart-off-broadway-2026|2026-10-29|review:theater-pizzazz:Ron Fassler": "2026-10-30T19:32:46.818Z",
     "the-heart-off-broadway-2026|2026-10-29|review:is-something-of-a-miracle:": "2026-10-30T19:32:46.818Z",
-    "the-heart-off-broadway-2026|2026-10-29|email:reddit:missing": "2026-10-30T19:32:46.818Z"
+    "the-heart-off-broadway-2026|2026-10-29|email:reddit:stale": "2026-10-30T22:50:14.366Z"
   }
 }
