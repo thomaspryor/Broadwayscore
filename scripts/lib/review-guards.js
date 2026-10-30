@@ -4486,22 +4486,32 @@ function isCombinedReviewOfOtherMemberOnly(data, show, opts = {}) {
   // Opaque means the path carries no word at all (an id): a worded roundup
   // url naming no member is left to the url rule.
   const PATH_WORDS = new Set(['content', 'article', 'articles', 'news', 'review', 'reviews', 'stage', 'theatre', 'theater', 'culture', 'arts', 'html', 'edition', 'showbiz']);
-  const opaque = hay.split('-').every((w) => !/^[a-z]{4,}$/.test(w) || PATH_WORDS.has(w));
+  // Letters-only hex groups (deadbeef, cafe) are uuid parts, not words.
+  const opaque = hay.split('-').every((w) => !/^[a-z]{4,}$/.test(w) || PATH_WORDS.has(w) || /^[a-f]+$/.test(w));
   if (!opaque || data.combinedWith.length > 3 || text.length < 150 || namesOwn(text)) return false;
   if (!titles.buildShowTitleVariants(show.title).some((v) => v.length >= 4)
     && !names.some((n) => titles.textMentionsShortTitle(n, n, 1))) return false;
   let titleOf = opts.titleOf || isCombinedReviewOfOtherMemberOnly._titleOf;
   if (!titleOf) {
-    titleOf = new Map();
     try {
       const raw = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
-      for (const s of (Array.isArray(raw) ? raw : raw.shows) || []) titleOf.set(s.id, s.title);
-    } catch { /* no shows.json: the url rule above still applies */ }
-    isCombinedReviewOfOtherMemberOnly._titleOf = titleOf;
+      titleOf = new Map(((Array.isArray(raw) ? raw : raw.shows) || []).map((s) => [s.id, s.title]));
+      isCombinedReviewOfOtherMemberOnly._titleOf = titleOf;
+    } catch { return false; /* no shows.json: only the url rule applies (not cached, so a later call retries) */ }
   }
+  // A one-word co-member title is often an ordinary word ("the company of
+  // dancers" is not Company): it counts only written as a name, with its
+  // article ("The Tempest") or twice. Longer titles use the variant matcher.
+  const esc = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const asName = (v) => new RegExp(`(?<![A-Za-z0-9])${esc(v)}(?![A-Za-z0-9])`, 'g');
+  const memberNamed = (t) => {
+    const core = t.replace(/^(?:the|a|an)\s+/i, '');
+    if (core.trim().split(/\s+/).length >= 2) return !!titles.textMentionsTitle(text, t);
+    return (core !== t && asName(t).test(text)) || (text.match(asName(core)) || []).length >= 2;
+  };
   return data.combinedWith.some((id) => {
     const t = titleOf.get(id);
-    return !!t && slugify(t) !== own && !!titles.textMentionsTitle(text, t);
+    return !!t && slugify(t) !== own && memberNamed(t);
   });
 }
 

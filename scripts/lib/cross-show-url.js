@@ -277,13 +277,13 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       const joinedWords = joined.split('-').filter(t => t.length >= 4 && !GENERIC_TOKENS.has(t));
       // A word of this show's own title the other title lacks vouches for the
       // url: ".../bullets-broadway-...-guys-dolls/" is Bullets Over Broadway.
-      const ownWordInUrl = [...thisTokens].some(t => !joinedWords.includes(t)
+      const ownWordInUrl = () => [...thisTokens].some(t => !joinedWords.includes(t)
         && new RegExp(`(^|[^a-z0-9])${t}([^a-z0-9]|$)`).test(urlPath));
-      if (!ownWordInUrl && joined !== other.slug && joined !== bare && joined.length >= 8 && joined.includes('-')
+      if (joined !== other.slug && joined !== bare && joined.length >= 8 && joined.includes('-')
           && !CROSS_SHOW_SLUG_EXCLUDE.has(joined) && !URL_PATH_STOPWORDS.has(joined)
           && !joinedWords.every(t => thisTokens.has(t))
           && !thisShow.slug.includes(joined) && !idSlug.includes(joined) && !idSlugNorm.includes(joined) && !joined.includes(idSlugNorm)
-          && hasSlugRun(urlPath, joined)) {
+          && hasSlugRun(urlPath, joined) && !ownWordInUrl()) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
       // Also check a base-title slug (first significant words of the title, without

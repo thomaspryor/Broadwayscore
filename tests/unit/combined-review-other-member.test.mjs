@@ -112,3 +112,16 @@ test('opaque url: a shared index url (more than 3 co-members) is not judged by t
   const d = { ...ftTempest(), combinedWith: ['the-tempest-west-end-2024', 'a', 'b', 'c'] };
   assert.equal(isCombinedReviewOfOtherMemberOnly(d, MIKE, { titleOf }), false);
 });
+
+test('opaque url: a one-word co-member title used as an ordinary word does not exclude (review finding)', () => {
+  const d = { ...ftTempest(), combinedWith: ['company-west-end-2018'],
+    dtliExcerpt: 'The show brings Magic Mike to the Hippodrome. The company of dancers is drilled and tireless, the company never flags, and the hen parties scream at every routine.' };
+  const tm = new Map([['company-west-end-2018', 'Company']]);
+  // Text names the show only as "Magic Mike" (not its full title), so namesOwn is false and only the member rule decides.
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, MIKE, { titleOf: tm }), false);
+});
+
+test('opaque url: a uuid whose groups are letters-only hex still counts as opaque', () => {
+  const d = { ...ftTempest(), url: 'https://www.ft.com/content/deadbeef-cafe-4bff-a896-6a9c4d1bf3d3' };
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, MIKE, { titleOf }), true);
+});
