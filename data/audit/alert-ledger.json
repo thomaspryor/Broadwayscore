@@ -247,7 +247,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-29T22:11:20.502Z",
-      "lastSeen": "2026-10-30T03:52:56.673Z",
+      "lastSeen": "2026-10-30T04:12:50.358Z",
       "lastNotifiedAt": "2026-10-29T22:11:20.502Z",
       "lastSurfacedAt": "2026-10-29T22:11:20.502Z",
       "notifyCount": 188,
@@ -22612,20 +22612,23 @@
       "resolvedAt": "2026-10-22T19:07:31.568Z"
     },
     "test-yml:red:Unit Tests:f9a2e105": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real active target-outlet critics have author-page overrides\"",
       "firstSeen": "2026-10-20T20:23:23.923Z",
-      "incidentOpenedAt": "2026-10-20T22:02:19.935Z",
-      "lastSeen": "2026-10-22T22:33:03.313Z",
-      "lastNotifiedAt": "2026-10-20T22:02:19.935Z",
+      "incidentOpenedAt": "2026-10-30T04:12:48.828Z",
+      "lastSeen": "2026-10-30T04:12:48.828Z",
+      "lastNotifiedAt": "2026-10-30T04:12:48.828Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-5792",
-      "silentRefires": 85,
-      "resolvedAt": "2026-10-22T22:36:55.444Z",
-      "resolveReason": "job-green"
+      "linearIdentifier": "BRO-6587",
+      "dispatch": {
+        "requestedAt": "2026-10-30T04:12:48.828Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40999248252",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40999248252"
+      }
     },
     "land:land/bro-5788-probe-input": {
       "status": "resolved",
@@ -29973,7 +29976,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6557",
-      "silentRefires": 12
+      "silentRefires": 11,
+      "absentRunIds": [
+        "40999248252"
+      ]
     },
     "tour-page-audit:review-count-mismatch": {
       "status": "open",
@@ -31363,7 +31369,7 @@
       "title": "main test.yml red: E2E Tests / Run unit tests — \"returns shows from different markets with same title\"",
       "firstSeen": "2026-10-29T22:11:20.196Z",
       "incidentOpenedAt": "2026-10-29T22:11:20.196Z",
-      "lastSeen": "2026-10-30T03:52:56.655Z",
+      "lastSeen": "2026-10-30T04:12:50.342Z",
       "lastNotifiedAt": "2026-10-29T22:11:20.196Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
