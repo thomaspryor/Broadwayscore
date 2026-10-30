@@ -59,6 +59,12 @@ const SNAPSHOTS = [
   // in daily-digest.yml and committed; optionalIfMissing until the first run
   // lands the file on main.
   { key: 'newShowTypes', label: 'new tour/pre-Broadway/regional shows', file: 'new-show-types-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/produce-press-night-grade-snapshot.js (BRO-6645) — one plain-English
+  // grade per opening night of the last 48h (reviews live, email drafts ready).
+  // Written after each press-night probe's record job and by daily-digest.yml;
+  // rendered as "Last night's openings" in the owner-first top. Optional while
+  // no opening has happened since it landed.
+  { key: 'pressNightGrades', label: "last night's openings", file: 'press-night-grade-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
   // backlogDrain REMOVED 2026-09-15 (BRO-3390). Its producer,
   // scripts/backlog-drain.js, was deliberately decommissioned on 2026-08-31
   // when the board moved to Linear — so data/audit/backlog-drain-metric.json

@@ -148,3 +148,15 @@ test('etClock reads Eastern time across the DST change', () => {
   assert.equal(L.etClock('2026-10-30T05:24:12Z'), '1:24am');
   assert.equal(L.etClock('2026-11-09T05:24:12Z'), '12:24am');
 });
+
+test('email block: graded lines first, quiet nights folded into one line, nothing on an empty window', () => {
+  const empty = load('the-greatest-story-ever-off-broadway-2026-2026-10-29.json');
+  const items = [grade(afgmShow, AFGM), grade({ ...heartShow, title: 'The Greatest Story Ever' }, empty), grade({ ...heartShow, title: 'Kelly McCaughan: Catholic Guilt' }, empty)];
+  const html = L.renderPressNightGradesBlock({ items });
+  assert.match(html, /Last night's openings/);
+  assert.match(html, /A Few Good Men: Reviews came out at 11:02pm/);
+  assert.match(html, /No reviews came out overnight for The Greatest Story Ever and Kelly McCaughan: Catholic Guilt, so there was nothing to grade\./);
+  assert.equal((html.match(/nothing to grade/g) || []).length, 1);
+  assert.equal(L.renderPressNightGradesBlock({ items: [] }), '');
+  assert.equal(L.renderPressNightGradesBlock(null), '');
+});

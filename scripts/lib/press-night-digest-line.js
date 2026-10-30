@@ -74,7 +74,7 @@ function reviewGrade(rec, { outletName = humanizeId, gates = {} } = {}) {
   if (rel) parts.push(`reviews came out at ${etClock(rel.observedAt)}, not ${etClock(rel.assumedAt)} as assumed`);
 
   if (result.verdict === 'UNKNOWN' && nothingPublished(rec)) {
-    return { verdict: 'UNKNOWN', text: 'no reviews came out overnight, so there was nothing to grade', misses: [] };
+    return { verdict: 'UNKNOWN', text: 'no reviews came out overnight, so there was nothing to grade', misses: [], quiet: true };
   }
 
   const sn = gateOf(result, 'same-night-completeness');
@@ -255,6 +255,8 @@ function gradeShow({ show, rec, numbersNow, readNumbers = () => null, sentShows,
     showId: show.id, night: show.openingDate, title, verdict,
     line: `${title}: ${body ? `${body[0].toUpperCase()}${body.slice(1)}. ` : ''}${word}`,
     emails: em.status,
+    // Nothing published and no email owed or missed: the email lists these together in one line.
+    quiet: Boolean(rv.quiet) && em.status !== 'miss' && em.status !== 'pending',
     misses: [...rv.misses, ...em.misses],
   };
 }
@@ -341,7 +343,27 @@ async function applyFiling(actions, ledger, { fileCard, commentCard, save = () =
   return { ledger: next, results };
 }
 
+/**
+ * The morning email's "Last night's openings" block from the snapshot. Nothing when no night is in the window.
+ * Lines are plain text; `esc` escapes them for HTML.
+ */
+function renderPressNightGradesBlock(snapshot, { esc = (x) => String(x) } = {}) {
+  if (!snapshot || !Array.isArray(snapshot.items) || !snapshot.items.length) return '';
+  const color = { PASS: '#1a7f37', FAIL: '#b42318' };
+  const quiet = snapshot.items.filter((it) => it.quiet);
+  const graded = snapshot.items.filter((it) => !it.quiet);
+  const quietLine = quiet.length
+    ? `<p style="font-size:13px;color:#666;margin:0 0 8px;padding-left:11px;">No reviews came out overnight for ${esc(joinAnd(quiet.map((it) => it.title)))}, so there was nothing to grade.</p>`
+    : '';
+  const rows = graded.map((it) => `<p style="font-size:14px;margin:0 0 8px;${color[it.verdict] ? `border-left:3px solid ${color[it.verdict]};padding-left:8px;` : 'padding-left:11px;'}">${esc(it.line)}</p>`).join('\n');
+  return `<div style="margin:0 0 16px;">
+    <p style="font-size:14px;font-weight:700;margin:0 0 8px;">Last night's openings</p>
+    ${rows}
+    ${quietLine}
+  </div>`;
+}
+
 module.exports = {
   WINDOW_H, EMAIL_GRACE_H, FILE_FROM, etClock, humanizeId, joinAnd, nothingPublished, reviewGrade, emailGrade,
-  findBroadcastRecord, gradeOpenings, gradeShow, emptyLedger, planFiling, applyFiling,
+  findBroadcastRecord, gradeOpenings, gradeShow, emptyLedger, planFiling, applyFiling, renderPressNightGradesBlock,
 };

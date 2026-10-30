@@ -83,7 +83,7 @@ async function main(argv = process.argv.slice(2)) {
   });
   const snapshot = {
     generatedAt: new Date(nowMs).toISOString(),
-    items: entries.map(({ showId, night, title, verdict, line, emails, misses }) => ({ showId, night, title, verdict, line, emails, missKeys: misses.map((m) => m.key) })),
+    items: entries.map(({ showId, night, title, verdict, line, emails, quiet, misses }) => ({ showId, night, title, verdict, line, emails, quiet, missKeys: misses.map((m) => m.key) })),
   };
 
   const ledger = readJson(LEDGER_FILE) || lib.emptyLedger();
