@@ -547,7 +547,10 @@ const hhmm = (ms) => new Date(ms).toISOString().slice(11, 16) + 'Z';
  *  (b) an includable file first seen later that night (until embargo +sameNightEndH) is live within
  *      lateLiveWithinMin of first seen.
  * Needs rec.fileState (the review-text snapshot taken at capture). Without it the gate is unknown.
- * @returns {{status:string, detail:string}}
+ * items (BRO-6645, once the snapshot is readable): one row per review the night is held to, for the morning
+ * email's plain-English line: {outletId, outlet, critic, seenAt, liveAt, status: ontime|late|missing|pending}.
+ * A census outlet with no review file of the night gets one outlet-level row (critic null).
+ * @returns {{status:string, detail:string, items?:Array}}
  */
 function sameNightCheck(rec, g) {
   const embMs = toMs(rec.embargoAt);
@@ -574,6 +577,9 @@ function sameNightCheck(rec, g) {
   const missA = new Map(); // outlet -> reason
   const missB = new Map();
   const unknownB = [];
+  const items = [];
+  const iso = (ms) => (ms == null ? null : new Date(ms).toISOString());
+  const item = (f, seen, liveAt, status) => items.push({ outletId: f.outletId, outlet: f.outlet || null, critic: f.critic || null, seenAt: iso(seen), liveAt: iso(liveAt), status });
   const ref2 = rec.reference && rec.reference['2h'];
   const censusKnown = !!(ref2 && ref2.coverage != null && ref2.status !== 'no-census-yet');
   if (censusKnown) for (const o of ref2.missing) missA.set(o, 'listed by the aggregators, not live at +2h');
@@ -587,25 +593,39 @@ function sameNightCheck(rec, g) {
       if (liveAt == null || liveAt > Math.max(t2, seen + g.lateLiveWithinMin * MIN)) {
         const when = liveAt == null ? 'never live in the probe window' : `live at ${hhmm(liveAt)}, after +2h`;
         missA.set(f.outletId, `review first seen ${hhmm(seen)}, ${when}`);
-      }
+        item(f, seen, liveAt, liveAt == null ? 'missing' : 'late');
+      } else item(f, seen, liveAt, 'ontime');
     } else if (liveAt == null) {
-      if (lastOk != null && lastOk >= seen + g.lateLiveWithinMin * MIN) missB.set(f.outletId, `first seen ${hhmm(seen)}, never live in the probe window`);
-      else unknownB.push(f.outletId);
+      if (lastOk != null && lastOk >= seen + g.lateLiveWithinMin * MIN) {
+        missB.set(f.outletId, `first seen ${hhmm(seen)}, never live in the probe window`);
+        item(f, seen, null, 'missing');
+      } else {
+        unknownB.push(f.outletId);
+        item(f, seen, null, 'pending');
+      }
     } else if (liveAt > seen + g.lateLiveWithinMin * MIN) {
       missB.set(f.outletId, `first seen ${hhmm(seen)}, live ${hhmm(liveAt)} (${Math.round((liveAt - seen) / MIN)} min later, bar ${g.lateLiveWithinMin})`);
-    }
+      item(f, seen, liveAt, 'late');
+    } else item(f, seen, liveAt, 'ontime');
+  }
+  // Census outlets held to +2h with no review file of the night: one outlet-level row.
+  for (const o of missA.keys()) {
+    if (items.some((x) => x.outletId === o)) continue;
+    const named = fsnap.files.find((f) => f.outletId === o && f.outlet) || rec.perReview.find((p) => outletIdOf(p.outlet) === o);
+    const liveAt = byOutlet.get(o);
+    items.push({ outletId: o, outlet: named ? named.outlet : null, critic: null, seenAt: null, liveAt: iso(liveAt), status: liveAt == null ? 'missing' : 'late' });
   }
   const staleSnapshot = toMs(fsnap.capturedAt) != null && toMs(fsnap.capturedAt) < winEnd + g.lateLiveWithinMin * MIN;
   const list = (m) => [...m].map(([o, why]) => `${o} (${why})`).join('; ');
   const parts = [];
   if (missA.size) parts.push(`not live at +2h: ${list(missA)}`);
   if (missB.size) parts.push(`late-night reviews not live within ${g.lateLiveWithinMin} min: ${list(missB)}`);
-  if (parts.length) return { status: 'fail', detail: parts.join(' | ') };
-  if (staleSnapshot) return { status: 'unknown', detail: `the review-file snapshot was taken ${hhmm(toMs(fsnap.capturedAt))}, before embargo +${g.sameNightEndH}h plus ${g.lateLiveWithinMin} min, so reviews first seen later that night cannot be checked (the late checkout failed, or the capture ran early)` };
-  if (!censusKnown) return { status: 'unknown', detail: 'review files all live in time, but no census at +2h to check the aggregator listings against' };
-  if (unknownB.length) return { status: 'unknown', detail: `late-night review(s) not yet live and the probe did not run ${g.lateLiveWithinMin} min past first seen: ${unknownB.join(', ')}` };
+  if (parts.length) return { status: 'fail', detail: parts.join(' | '), items };
+  if (staleSnapshot) return { status: 'unknown', detail: `the review-file snapshot was taken ${hhmm(toMs(fsnap.capturedAt))}, before embargo +${g.sameNightEndH}h plus ${g.lateLiveWithinMin} min, so reviews first seen later that night cannot be checked (the late checkout failed, or the capture ran early)`, items };
+  if (!censusKnown) return { status: 'unknown', detail: 'review files all live in time, but no census at +2h to check the aggregator listings against', items };
+  if (unknownB.length) return { status: 'unknown', detail: `late-night review(s) not yet live and the probe did not run ${g.lateLiveWithinMin} min past first seen: ${unknownB.join(', ')}`, items };
   const excl = ref2.excluded && ref2.excluded.length ? `; excluded from the census: ${ref2.excluded.map((x) => `${x.outletId} (${x.reason})`).join(', ')}` : '';
-  return { status: 'pass', detail: `every listed outlet and every includable review file first seen by +${g.sameNightEndH}h was live on time${excl}` };
+  return { status: 'pass', detail: `every listed outlet and every includable review file first seen by +${g.sameNightEndH}h was live on time${excl}`, items };
 }
 
 /**
