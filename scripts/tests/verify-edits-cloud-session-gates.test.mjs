@@ -1991,6 +1991,10 @@ test('LOOSEENDS: real loose-end closings + SAFE TO ARCHIVE → BLOCKED', skipNoR
     'Checked only with simulated inputs. Both will happen naturally the next time it runs.',
     'BRO-5003 is paused, waiting on the checking session\'s approval.',
     'The topic-pages session left three minor review notes for later.',
+    'One thing I haven\'t seen with my own eyes: the caption on a real live show page.',
+    'I didn\'t run the repo\'s /what-else and /wrap-up finishing steps. I closed the card by hand.',
+    'I left two stale branches on GitHub; deleting them is your call.',
+    'I didn\'t verify the last deploy, and I haven\u2019t seen the live page.',
     '```\n━━━ TESTED ━━━\nProduction verified: partly. I could not confirm the last commit deployed.\n━━━━━━\n```\nThe rewrite works.',
   ]) {
     assertLoose(runHook(t, `${body}\n\nNothing needed from you.\n\nSAFE TO ARCHIVE`, LE_ON), body);
@@ -2017,6 +2021,7 @@ test('LOOSEENDS false-positive guards: ordinary finished closings', skipNoRepoHo
     '> Want me to keep going?\nYou asked that earlier; it is done now and landed.\n\nSAFE TO ARCHIVE',
     'Saved the report; the old rows were fixed and verified on main.\n\nSAFE TO ARCHIVE',
     'The card rechecks real poller runs on 10/22 by itself.\n\nSAFE TO ARCHIVE',
+    'I haven\'t seen any errors in the logs and I didn\'t run into issues. Nothing here is your call.\n\nSAFE TO ARCHIVE',
   ]) {
     assertAllowed(runHook(t, msg, LE_ON), msg.slice(0, 60));
   }

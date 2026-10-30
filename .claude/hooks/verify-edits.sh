@@ -1248,7 +1248,9 @@ _LOOSE_HARD_RE = re.compile(
     r"|(?:could not|couldn't|was unable to|unable to) (?:confirm|verify)|verified:? partly|partly verified"
     r"|(?:didn't|did not|couldn't|could not) (?:get )?fix\b|(?:isn't|wasn't|aren't|not yet|still not) fixed"
     r"|left (?:it|them|this|that|those) (?:alone|unfiled|unfixed)|\bunfiled\b"
-    r"|\bI(?:'ll| will) (?:re-?)?check\b|will happen naturally)",
+    r"|\bI(?:'ll| will) (?:re-?)?check\b|will happen naturally"
+    r"|\bI (?:haven['\u2019]t|have not) (?:yet )?(?:run|seen|checked|verified|confirmed|tested|deleted)\b(?!\s+(?:any\b|anything|a single|no\b|out\b|over\b|into\b))"
+    r"|\bI (?:didn['\u2019]t|did not) (?:yet )?(?:run|see|check|verify|confirm|test|delete)\b(?!\s+(?:any\b|anything|a single|no\b|out\b|over\b|into\b)))",
     re.IGNORECASE)
 # Phrases that a negation earlier in the same sentence turns into a finished
 # statement ("Nothing here needs an owner decision", "No longer waiting on
@@ -1256,6 +1258,7 @@ _LOOSE_HARD_RE = re.compile(
 _LOOSE_NEGATABLE_RE = re.compile(
     r"\b(?:needs? (?:an? |your )?(?:owner|human)(?:'s)? (?:call|decision|approval|answer|input)"
     r"|or (?:the owner|you) decides?"
+    r"|\b(?:is|it['\u2019]s|that['\u2019]s) your call\b"
     # BRO-6020: SAFE TO ARCHIVE while still waiting on a run or another
     # session's result is exactly the case KEEP OPEN exists for.
     r"|(?<!was )(?<!were )(?<!been )(?<!after )(?<!stopped )(?<!done )\bwaiting (?:on|for)\b"
