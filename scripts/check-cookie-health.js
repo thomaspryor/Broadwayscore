@@ -25,6 +25,7 @@ const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { checkWsjOtpFreshness } = require('./lib/wsj-otp-freshness');
+const { routeT1CookieAlerts } = require('./lib/cookie-expiry-alert');
 const { COOKIE_PROBES, classifyWalledProbe } = require('./lib/cookie-probes');
 const { recordSbCall, recordBdCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
@@ -954,6 +955,13 @@ async function main() {
     }
   }
 
+  // BRO-6628: an expired/expiring T1 auth cookie must reach the board, not just a red run
+  // (the NYT cookies died 2026-10-27 and nothing opened a card). Skipped for dry local runs.
+  if (process.env.COOKIE_EXPIRY_ALERT_DISABLED !== 'true') {
+    const routed = await routeT1CookieAlerts(results, AUTH_ERROR_DAYS);
+    if (routed.routed.length > 0) console.log(`\n[Alert] T1 auth-cookie card routed for: ${routed.routed.join(', ')}`);
+  }
+
   if (criticalFailures.length > 0) {
     process.exit(1);
   }
@@ -970,4 +978,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { CRITICAL_OUTLETS, walledVerdictToResult, checkLiveAccessWalledPlain };
+module.exports = { CRITICAL_OUTLETS, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain };

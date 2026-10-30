@@ -18,6 +18,13 @@ permissions:
   contents: write
   actions: read
 
+# Shares data-health-check.yml's group: this job now writes the alert ledger
+# (routeAlert, BRO-6628) and the retry-push helper keeps one side of data/audit
+# conflicts wholesale, so overlapping writers would drop cooldown state.
+concurrency:
+  group: data-health-check
+  cancel-in-progress: false
+
 jobs:
   check-cookies:
     runs-on: ubuntu-latest
@@ -28,6 +35,10 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
+
+      # routeAlert files Linear issues through scripts/lib/linear-client.js (BRO-6628).
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Check cookie health
         env:
@@ -40,6 +51,8 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Expired/expiring T1 auth cookies open a Linear card (BRO-6628).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           # Critical outlet cookies
           COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
           COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
@@ -56,6 +69,22 @@ jobs:
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
           # Other outlet cookies
         run: node scripts/check-cookie-health.js
+
+      # The card's cooldown ledger must leave the runner or every run re-files the
+      # same incident. if: always() so the red (cookie expired) run persists it too.
+      - name: Commit alert state
+        if: always()
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No alert state changes"
+          else
+            git commit -m "data: cookie health alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Commit scraper-spend ledger
         if: always()

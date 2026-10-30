@@ -52,10 +52,14 @@ permissions:
   actions: write
 
 concurrency:
-  # Drop overlapping ticks — if a previous run is still going, queue at most one.
-  # A single pass finishes in <60s; a loop-mode run (loop_minutes) holds the slot for
-  # up to its window, and cron ticks that arrive meanwhile collapse into one pending run.
-  group: aggregator-url-watcher
+  # Drop overlapping cron ticks: a single pass finishes in <60s, so queueing at most one
+  # is a debounce. Loop-mode runs (loop_minutes, BRO-6628) hold a slot for hours, so they
+  # get their OWN group: otherwise a cron tick arriving while a loop dispatch is pending
+  # would evict it (GitHub keeps one pending run per group) and the press-night loop
+  # would silently never start. The orchestrator only dispatches a loop when none is
+  # queued/running, and dispatchPoller's in-flight check absorbs cron+loop overlap.
+  # concurrency-queue-ok: cron ticks are a debounce; loop dispatches are deduped by the orchestrator step and never share this group
+  group: aggregator-url-watcher${{ inputs.loop_minutes != '' && inputs.loop_minutes != '0' && '-loop' || '' }}
   cancel-in-progress: false
 
 jobs:

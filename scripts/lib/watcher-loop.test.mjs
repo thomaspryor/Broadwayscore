@@ -92,4 +92,5 @@ test('watcher workflow exposes loop_minutes, titles loop runs, and bounds both m
   const job = Number(/timeout-minutes:\s*(\d+)/.exec(y)[1]);
   const cap = Number(/-gt (\d+) \] && INPUT_LOOP_MINUTES=\1/.exec(y)[1]);
   assert.ok(job >= cap + 5 + 10, `job timeout ${job} covers loop cap ${cap} + setup`);
+  assert.match(y, /group: aggregator-url-watcher\$\{\{[^}]*'-loop'/, 'loop runs use their own concurrency group so a cron tick cannot evict a pending loop dispatch');
 });
