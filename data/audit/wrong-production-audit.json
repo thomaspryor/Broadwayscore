@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T19:37:54.050Z",
+  "timestamp": "2026-10-30T19:56:45.821Z",
   "stats": {
-    "totalReviews": 71511,
-    "alreadyFlagged": 22326,
+    "totalReviews": 71598,
+    "alreadyFlagged": 22324,
     "dateGuardCatches": 230,
-    "directorMismatch": 2895,
+    "directorMismatch": 2901,
     "tvFilmSignals": 2031,
-    "londonSignals": 3408,
+    "londonSignals": 3409,
     "offBroadwaySignals": 635,
     "yearMismatch": 298,
-    "noPublishDate": 8257
+    "noPublishDate": 8283
   },
   "findings": [
     {
@@ -5151,6 +5151,84 @@
       "score": 82,
       "publishDate": "November 8, 2012",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/for-annie-actress-on-broadway-the-sun-has-come-out/2012/11/08/69514322-29e1-11e2-aaa5-ac786110c486_story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2025-12-22",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/annie-music-theater-works/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2025",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2025-12-21",
+      "url": "https://www.chicagotheatrereview.com/2025/12/leapin-lizards/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2025",
+      "file": "chicagotheaterandarts--reno-lovison.json",
+      "publishDate": "2025-12-21",
+      "url": "https://chicagotheaterandarts.com/2025/12/21/annie-a-hopeful-message/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2025",
+      "file": "chicagotribune--emily-mcclanathan.json",
+      "publishDate": "2025-12-22",
+      "url": "https://www.chicagotribune.com/2025/12/22/annie-music-theater-skokie/?clearUserState=true",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2025",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2025-12-23",
+      "url": "https://thefourthwalsh.com/2025/12/review-annie-music-theater-works-irresistibly-optimistic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2025",
+      "file": "wernerstheatrereviews--unknown.json",
+      "publishDate": "2025-12-31",
+      "url": "https://wernerstheatrereviews.wordpress.com/2025/12/31/a-family-friendly-annie-brings-optimism-to-music-theater-works/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -58230,7 +58308,7 @@
     {
       "showId": "the-heart-off-broadway-2026",
       "file": "one-minute-critic--matthew-wexler.json",
-      "score": null,
+      "score": 78,
       "publishDate": null,
       "url": "https://1minutecritic.com/the-heart-musical-roundabout-review/",
       "findings": [
@@ -89886,6 +89964,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "here-we-are-off-broadway-2023",
+      "file": "sunday-telegraph--diane-snyder.json",
+      "publishDate": "2023-10-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/here-we-are-stephen-sondheim-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
