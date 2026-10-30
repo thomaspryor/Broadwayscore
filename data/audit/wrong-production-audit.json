@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T01:15:55.982Z",
+  "timestamp": "2026-10-30T02:44:27.963Z",
   "stats": {
-    "totalReviews": 69723,
-    "alreadyFlagged": 22269,
+    "totalReviews": 69911,
+    "alreadyFlagged": 22291,
     "dateGuardCatches": 233,
-    "directorMismatch": 2849,
-    "tvFilmSignals": 1991,
-    "londonSignals": 3378,
-    "offBroadwaySignals": 623,
-    "yearMismatch": 280,
-    "noPublishDate": 8241
+    "directorMismatch": 2857,
+    "tvFilmSignals": 2005,
+    "londonSignals": 3380,
+    "offBroadwaySignals": 626,
+    "yearMismatch": 282,
+    "noPublishDate": 8134
   },
   "findings": [
     {
@@ -1716,6 +1716,7 @@
     {
       "showId": "a-dolls-house-crucible-regional-2024",
       "file": "guardian--nick-ahad.json",
+      "score": 78,
       "publishDate": "2024-09-29",
       "url": "https://www.theguardian.com/stage/2024/sep/29/a-dolls-house-review-chris-bush-elin-schofield-siena-kelly-crucible-sheffield",
       "findings": [
@@ -3234,6 +3235,7 @@
     {
       "showId": "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
       "file": "plays-international--unknown.json",
+      "score": 57,
       "publishDate": "2025-03-29",
       "url": "https://playsinternational.org.uk/alfred-hitchcock-presents-the-musical-theatre-royal-bath/",
       "findings": [
@@ -5482,6 +5484,7 @@
     {
       "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 85,
       "publishDate": null,
       "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
       "findings": [
@@ -6980,6 +6983,19 @@
     },
     {
       "showId": "beetlejuice-tour-2022",
+      "file": "chicagotribune--collin-mccarthy.json",
+      "publishDate": "2025-03-10",
+      "url": "https://wgnradio.com/wgn-plus/steve-dales-other-world/beetlejuice-the-musical-is-back-by-popular-demand/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2022 (0x). 2025 matches production: beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
       "file": "magnetmagazine--magnet-staff.json",
       "score": 86,
       "publishDate": "2025-07-30",
@@ -7017,6 +7033,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2026 (0x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "bella-bella-off-broadway-2019",
+      "file": "variety--marilyn-stasio.json",
+      "score": null,
+      "publishDate": "2019-10-22",
+      "url": "https://variety.com/2019/legit/reviews/bella-bella-review-harvey-fierstein-bella-abzug-1203370256/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -7775,6 +7805,32 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "gulf-coast--dave-elias.json",
+      "publishDate": "2025-03-08",
+      "url": "https://www.gulfcoastnewsnow.com/article/entertainment-review-book-mormon-play/64099348",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "gulf-coast--gulf-coast-news.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.gulfcoastnewsnow.com/article/entertainment-book-mormon-fort-myers/64087463",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "hotchka--jeremy-fogelman.json",
       "score": 85,
       "publishDate": "2026-04-29",
@@ -7841,6 +7897,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "palm-beach-daily-news--unknown.json",
+      "publishDate": "2025-03-12",
+      "url": "https://www.palmbeachdailynews.com/story/entertainment/arts/2025/03/12/book-of-mormon-playing-at-the-kravis-is-clever-original-review/82278547007/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -8311,6 +8385,48 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "broadway-bounty-hunter-off-broadway-2019",
+      "file": "frontmezzjunkies--steven-ross.json",
+      "score": null,
+      "publishDate": "2019-08-09",
+      "url": "http://frontmezzjunkies.com/2019/08/09/broadway-bounty-hunter/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "broadway-bounty-hunter-off-broadway-2019",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": null,
+      "publishDate": "2019-07-23",
+      "url": "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-annie-golden-nails-it/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "broadway-bounty-hunter-off-broadway-2019",
+      "file": "nysr--michael-sommers.json",
+      "score": null,
+      "publishDate": "2019-07-23",
+      "url": "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-exploiting-a-darling-character-in-pursuit-of-laughs/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -20077,6 +20193,25 @@
       ]
     },
     {
+      "showId": "four-quartets-royal-bath-regional-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/four-quartets-theatre-royal-bath-review-ralph-fiennes-gives-compelling-performance",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "foxfinder-west-end-2018",
       "file": "london-box-office--hugh-wooldridge.json",
       "score": 35,
@@ -20335,6 +20470,19 @@
       "score": 78,
       "publishDate": "2026-08-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-GAME-OF-THRONES-THE-MAD-KING-Royal-Shakespeare-Theatre-20260809",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "broadwayworld--stephi-wild.json",
+      "publishDate": "2026-08-10",
+      "url": "https://www.broadwayworld.com/translate/uk/Review-Roundup-GAME-OF-THRONES-THE-MAD-KING-is-Now-Playing-in-London-20260810",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -23818,6 +23966,19 @@
     },
     {
       "showId": "hamilton-tour-2024",
+      "file": "broadwayworld--erinmarie-reiter.json",
+      "publishDate": "2025-05-15",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-HAMILTON-at-Broadway-San-Diego-20250515",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-tour-2024",
       "file": "broadwayworld--jarrod-michael.json",
       "score": 82,
       "publishDate": "2026-02-05",
@@ -23827,6 +23988,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-tour-2024",
+      "file": "broadwayworld--jonathan-netek.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.broadwayworld.com/houston/article/Review-HAMILTON-at-Broadway-Across-America-20250307",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -28687,6 +28861,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "around-the-town-chicago--jacob-davis.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/into-the-woods-7/",
       "findings": [
@@ -28700,6 +28875,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "buzznews--bill-esler.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5675-into-the-woods-an-exciting-musical-fairytale-mashup-at-chopin-theater.html",
       "findings": [
@@ -28713,6 +28889,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://chicago.suntimes.com/theater/2024/10/28/into-the-woods-review-kokandy-productions-chicago-stephen-sondheim",
       "findings": [
@@ -28726,6 +28903,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 80,
       "publishDate": null,
       "url": "https://www.chicagotheatrereview.com/2024/10/i-wish/",
       "findings": [
@@ -28739,6 +28917,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "chicagotribune--chris-jones.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/11/04/review-into-the-woods-by-kokandy-productions-is-a-magical-sondheim-adventure/",
       "findings": [
@@ -28752,6 +28931,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "new-city-stage--mary-wisniewski.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://www.newcitystage.com/2024/10/29/bedtime-fairy-tales-a-review-of-kokandys-into-the-woods-at-the-chopin-studio-theatre/",
       "findings": [
@@ -28765,6 +28945,7 @@
     {
       "showId": "into-the-woods-regional-2024",
       "file": "picksinsix--ed-tracy.json",
+      "score": 83,
       "publishDate": null,
       "url": "https://www.conversationswithedtracy.com/picksinsix/2024/10/28/picksinsix-review-into-the-woods-kokandy-productions-chopin-theatre",
       "findings": [
@@ -29805,6 +29986,7 @@
     {
       "showId": "joe-turners-come-and-gone-regional-2024",
       "file": "broadwayworld--zac-thriffiley.json",
+      "score": 81,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/chicago/article/Review-JOE-TURNERS-COME-AND-GONE-at-Goodman-Theatre-20240425",
       "findings": [
@@ -30965,20 +31147,8 @@
     },
     {
       "showId": "kenrex-sheffield-regional-2024",
-      "file": "curtain-call-reviews--unknown.json",
-      "publishDate": null,
-      "url": "https://www.curtaincallreviews.co.uk/kenrex",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ed stambollouian\" from kenrex-off-broadway-2026"
-        }
-      ]
-    },
-    {
-      "showId": "kenrex-sheffield-regional-2024",
       "file": "guardian--mark-fisher.json",
+      "score": 79,
       "publishDate": "2024-11-01",
       "url": "https://www.theguardian.com/stage/2024/nov/01/kenrex-review-jack-holden-ed-stambollouian-playhouse-sheffield",
       "findings": [
@@ -30992,6 +31162,7 @@
     {
       "showId": "kenrex-sheffield-regional-2024",
       "file": "partially-obstructed-view--nick730.json",
+      "score": 90,
       "publishDate": null,
       "url": "http://partially-obstructed-view.blogspot.com/2025/03/theatre-review-kenrex.html",
       "findings": [
@@ -31005,6 +31176,7 @@
     {
       "showId": "kenrex-sheffield-regional-2024",
       "file": "revstanstheatreblog--unknown.json",
+      "score": 95,
       "publishDate": "2025-02-21",
       "url": "https://revstanstheatreblog.co.uk/2025/02/21/review-kenrex-southwark-playhouse-exhilerating-thriller/",
       "findings": [
@@ -31023,6 +31195,7 @@
     {
       "showId": "kenrex-sheffield-regional-2024",
       "file": "theatre-news--unknown.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.theatre-news.com/review/UK/5967/Theatre/KENREX-The-Crucible",
       "findings": [
@@ -32092,6 +32265,7 @@
     {
       "showId": "legally-blonde-the-musical-regional-2024",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://www.chicagotheatrereview.com/2024/12/what-you-want/",
       "findings": [
@@ -34212,6 +34386,7 @@
     {
       "showId": "loves-labours-lost-royal-shakespeare-regional-2024",
       "file": "i-paper--fiona-mountford.json",
+      "score": 79,
       "publishDate": "2024-04-19",
       "url": "https://inews.co.uk/culture/arts/loves-labours-lost-review-rsc-3014875?srsltid=AYCX9vLkFvGc0kAeSsLURVVDsOQEL9vw2s09I8eedGrMQZteQYdn2IEY",
       "findings": [
@@ -35267,6 +35442,19 @@
       "file": "theatermania--zachary-stewart.json",
       "publishDate": "2026-10-01",
       "url": "https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "theonlycritic--nate-adams.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.theonlycritic.com/post/maybe-happy-ending-review-a-tender-inventive-musical-that-pushes-all-the-right-buttons",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37462,6 +37650,7 @@
     {
       "showId": "much-ado-about-nothing-royal-shakespeare-regional-2025",
       "file": "guardian--mark-lawson.json",
+      "score": 67,
       "publishDate": "2025-04-23",
       "url": "https://www.theguardian.com/stage/2025/apr/23/much-ado-about-nothing-review-rsc-boots-the-action-to-elite-italian-football-in-a-play-of-two-halves",
       "findings": [
@@ -37480,6 +37669,7 @@
     {
       "showId": "much-ado-about-nothing-royal-shakespeare-regional-2025",
       "file": "mycultural--unknown.json",
+      "score": 19,
       "publishDate": "2025-04-23",
       "url": "https://mycultural.life/theatre/much-ado-about-nothing-royal-shakespeare-company-stratford-upon-avon/",
       "findings": [
@@ -39007,6 +39197,25 @@
       ]
     },
     {
+      "showId": "noises-off-west-end-2011",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2011-12-15",
+      "url": "https://variety.com/2011/legit/reviews/noises-off-1117946761/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy sams\" from noises-off-2001"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "noises-off-west-end-2023",
       "file": "london-theatre--marianka-swain.json",
       "score": 79,
@@ -39055,6 +39264,7 @@
     {
       "showId": "north-by-northwest-york-royal-regional-2025",
       "file": "fairypoweredproductions--katie-brewerton.json",
+      "score": 89,
       "publishDate": "2025-03-27",
       "url": "https://fairypoweredproductions.com/north-by-northwest-review/",
       "findings": [
@@ -39068,6 +39278,7 @@
     {
       "showId": "north-by-northwest-york-royal-regional-2025",
       "file": "guardian--arifa-akbar.json",
+      "score": 76,
       "publishDate": "2025-03-27",
       "url": "https://www.theguardian.com/stage/2025/mar/27/north-by-northwest-review-york-theatre-royal",
       "findings": [
@@ -39081,6 +39292,7 @@
     {
       "showId": "north-by-northwest-york-royal-regional-2025",
       "file": "northernartsreview--shannaz.json",
+      "score": 92,
       "publishDate": "2025-03-27",
       "url": "https://northernartsreview.co.uk/north-east/review-north-by-northwest-at-york-theatre-royal/",
       "findings": [
@@ -40340,6 +40552,7 @@
     {
       "showId": "once-pitlochry-festival-regional-2026",
       "file": "west-end-best-friend--lorna-murray.json",
+      "score": 86,
       "publishDate": "2026-05-31",
       "url": "https://www.westendbestfriend.co.uk/news/review-once-pitlochry-festival-theatre",
       "findings": [
@@ -40353,6 +40566,7 @@
     {
       "showId": "once-pitlochry-festival-regional-2026",
       "file": "whatsonstage--simon-thompson.json",
+      "score": 78,
       "publishDate": "2026-05-29",
       "url": "https://www.whatsonstage.com/news/once-musical-at-pitlochry-festival-theatre-review_1722698/",
       "findings": [
@@ -41734,6 +41948,29 @@
     },
     {
       "showId": "parade-tour-2025",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2025-03-13",
+      "url": "https://www.bostonglobe.com/2025/03/13/arts/parade-review-emerson-colonial/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
       "file": "chicago-sun-times--catey-sullivan.json",
       "score": 82,
       "publishDate": "2025-08-07",
@@ -41888,6 +42125,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "sleeplesscritic--unknown.json",
+      "publishDate": "2025-03-18",
+      "url": "https://sleeplesscritic.com/2025/03/18/review-featuring-a-stellar-cast-a-riveting-and-indelible-parade/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
         }
       ]
     },
@@ -42778,6 +43028,7 @@
     {
       "showId": "peter-and-the-starcatcher-regional-2024",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://www.chicagotheatrereview.com/2024/08/magic-soaring-up-into-the-sky/",
       "findings": [
@@ -43343,6 +43594,7 @@
     {
       "showId": "play-on-bristol-old-vic-regional-2025",
       "file": "guardian--arifa-akbar.json",
+      "score": 78,
       "publishDate": "2025-01-19",
       "url": "https://www.theguardian.com/stage/2025/jan/19/play-on-review-bristol-old-vic-talawa-belgrade-theatre",
       "findings": [
@@ -46793,6 +47045,19 @@
     },
     {
       "showId": "shucked-tour-2024",
+      "file": "stageandcinema--lynne-weiss.json",
+      "publishDate": "2025-04-11",
+      "url": "https://stageandcinema.com/2025/04/11/shucked-national-tour/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "shucked-tour-2024",
       "file": "the-daily-gazette--bill-kellert.json",
       "score": 74,
       "publishDate": "2025-03-21",
@@ -46913,6 +47178,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "sing-street-off-broadway-2019",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2019-12-16",
+      "url": "https://culturesauce.com/off-broadway-review-john-carneys-sing-street/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 5\""
         }
       ]
     },
@@ -48093,6 +48372,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "masslive--mark-auerbach.json",
+      "publishDate": "2025-05-01",
+      "url": "https://www.masslive.com/westfieldnews/2025/05/review-some-like-it-hot-at-the-bushnell.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
         }
       ]
     },
@@ -50724,6 +51016,20 @@
       ]
     },
     {
+      "showId": "sugarbye-tobacco-factory-regional-2025",
+      "file": "everything-theatre--verity-wood.json",
+      "score": 81,
+      "publishDate": "2025-09-17",
+      "url": "https://everything-theatre.co.uk/2025/09/review-sugarbye-tobacco-factory-bristol/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "summer-1976-2023",
       "file": "nydailynews--chris-jones.json",
       "score": 68,
@@ -52695,6 +53001,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"thea sharrock\" from the-bodyguard-west-end-2012"
+        }
+      ]
+    },
+    {
+      "showId": "the-bodyguard-tour-2026",
+      "file": "broadwayworld--yuliya-pokhylko.json",
+      "publishDate": "2026-10-24",
+      "url": "https://www.broadwayworld.com/rhode-island/article/Review-THE-BODYGUARD-at-Providence-Performing-Arts-Center-20261024",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -60641,6 +60960,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "stageandcinema--michael-m-landman-karny.json",
+      "score": 78,
       "publishDate": "2026-10-23",
       "url": "https://stageandcinema.com/2026/10/22/the-outsiders-national-tour-segerstrom-review/",
       "findings": [
@@ -62400,6 +62720,20 @@
       ]
     },
     {
+      "showId": "the-resistible-rise-of-arturo-ui-royal-shakespeare-regional-2026",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-22",
+      "url": "https://www.nytimes.com/2026/04/22/theater/the-resistible-rise-of-arturo-ui-rsc-mark-gatiss.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-revlon-girl-off-west-end-2026",
       "file": "london-unattached--dan-paling.json",
       "score": 80,
@@ -63151,6 +63485,7 @@
     {
       "showId": "the-singularity-play-regional-2024",
       "file": "chicagotribune--chris-jones.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://www.chicagotribune.com/2024/06/10/review-the-singularity-play-by-jackalope-at-berger-park-unleashes-ai-terror-on-theater-people/",
       "findings": [
@@ -67155,6 +67490,7 @@
     {
       "showId": "waitress-regional-2025",
       "file": "chicagocultureauthority--frank-sennett.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://chicagocultureauthority.com/2025/02/22/michelle-lauto-serves-up-a-breakout-performance-in-waitress-at-the-paramount/",
       "findings": [
@@ -67426,6 +67762,7 @@
     {
       "showId": "war-horse-lowry-regional-2024",
       "file": "fairypoweredproductions--carla-whittaker.json",
+      "score": 97,
       "publishDate": "2024-09-23",
       "url": "https://fairypoweredproductions.com/war-horse-review-3/",
       "findings": [
@@ -67449,6 +67786,7 @@
     {
       "showId": "war-horse-lowry-regional-2024",
       "file": "guardian--nick-ahad.json",
+      "score": 90,
       "publishDate": "2024-09-22",
       "url": "https://www.theguardian.com/stage/2024/sep/22/war-horse-review-the-lowry-salford",
       "findings": [
@@ -67472,6 +67810,7 @@
     {
       "showId": "war-horse-lowry-regional-2024",
       "file": "plays-to-see--jonah-issac-lewis-14.json",
+      "score": 90,
       "publishDate": "2024-09-23",
       "url": "https://playstosee.com/reviews/war-horse-3/",
       "findings": [
@@ -67498,6 +67837,7 @@
     {
       "showId": "war-horse-lowry-regional-2024",
       "file": "theweek--irenie-forshaw-the-week-uk.json",
+      "score": 88,
       "publishDate": "2024-09-26",
       "url": "https://theweek.com/culture-life/theatre/war-horse-revival-retains-the-power-of-the-epic-original",
       "findings": [
@@ -67511,6 +67851,7 @@
     {
       "showId": "war-horse-lowry-regional-2024",
       "file": "west-end-best-friend--jess-dalloway.json",
+      "score": 94,
       "publishDate": "2024-09-23",
       "url": "https://www.westendbestfriend.co.uk/news/review-war-horse-the-lowry-tour",
       "findings": [
@@ -71878,19 +72219,6 @@
       ]
     },
     {
-      "showId": "a-raisin-in-the-sun-leeds-regional-2024",
-      "file": "artsdesk--unknown.json",
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/raisin-sun-lyric-hammersmith-review-race-and-men",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
       "showId": "a-small-and-quiet-light-chichester-festival-regional-2026",
       "file": "theatreandtonic--rosie.json",
       "score": 56,
@@ -72032,6 +72360,7 @@
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
       "file": "timeout-london--tom-wicker.json",
+      "score": 68,
       "publishDate": null,
       "url": "https://www.timeout.com/london/theatre/a-tupperware-of-ashes-review",
       "findings": [
@@ -72293,6 +72622,7 @@
     {
       "showId": "abigails-party-royal-exchange-regional-2025",
       "file": "theatreandtonic--aimee.json",
+      "score": 66,
       "publishDate": "2025-04-10",
       "url": "https://theatreandtonic.co.uk/blog/abigails-party-royal-exchange-manchester-review",
       "findings": [
@@ -81503,6 +81833,20 @@
       ]
     },
     {
+      "showId": "dr-rides-american-beach-house-off-broadway-2019",
+      "file": "vulture--helen-shaw.json",
+      "score": null,
+      "publishDate": "2019-11-06",
+      "url": "https://www.vulture.com/2019/11/theater-review-dr-rides-american-beach-house-now-serving.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
       "showId": "dr-strangelove-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 88,
@@ -81924,6 +82268,7 @@
     {
       "showId": "edward-ii-royal-shakespeare-regional-2025",
       "file": "artsdesk--unknown.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/edward-ii-rsc-swan-theatre-stratford-review-monarchs-murder-and-mayhem-marlowe",
       "findings": [
@@ -86851,6 +87196,7 @@
     {
       "showId": "hamlet-royal-shakespeare-regional-2025",
       "file": "revstanstheatreblog--simon-p.json",
+      "score": 92,
       "publishDate": "2025-03-09",
       "url": "https://revstanstheatreblog.co.uk/2025/03/09/review-hamlet-royal-shakespeare-theatre-luke-thallon-is-a-stormy-prince/",
       "findings": [
@@ -103200,6 +103546,20 @@
       ]
     },
     {
+      "showId": "runboyrun-and-in-old-age-off-broadway-2019",
+      "file": "vulture--sara-holdren.json",
+      "score": null,
+      "publishDate": "2019-09-23",
+      "url": "https://www.vulture.com/2019/09/theater-reviews-runboyrun-in-old-age-and-sunday.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
       "showId": "russian-troll-farm-a-workplace-comedy-off-broadway-2024",
       "file": "theater-life--david-sheward.json",
       "score": 85,
@@ -104117,6 +104477,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sing-street-off-broadway-2019",
+      "file": "vulture--helen-shaw.json",
+      "score": null,
+      "publishDate": "2019-12-16",
+      "url": "https://www.vulture.com/2019/12/review-of-sing-street-at-new-york-theatre-workshop.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
@@ -107950,6 +108324,20 @@
       ]
     },
     {
+      "showId": "the-birthday-party-royal-bath-regional-2024",
+      "file": "artsdesk--unknown.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/birthday-party-ustinov-studio-theatre-royal-bath-review-pinter-still-packs-punch",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-blood-quilt-off-broadway-2024",
       "file": "theater-scene--victor-gluck.json",
       "score": 63,
@@ -110961,6 +111349,7 @@
     {
       "showId": "the-government-inspector-chichester-festival-regional-2025",
       "file": "theatreandtonic--rosie.json",
+      "score": 62,
       "publishDate": "2025-05-02",
       "url": "https://theatreandtonic.co.uk/blog/the-government-inspector-at-chichester-festival-theatre-review",
       "findings": [
@@ -110974,6 +111363,7 @@
     {
       "showId": "the-government-inspector-chichester-festival-regional-2025",
       "file": "viewfromthegods--simon-jenner.json",
+      "score": 89,
       "publishDate": "2025-05-06",
       "url": "https://viewfromthegods.co.uk/2025/05/06/nikolai-gogol-the-government-inspector-chichester-festival-theatre/",
       "findings": [
@@ -116617,6 +117007,7 @@
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
       "file": "theweek--the-week-uk.json",
+      "score": 84,
       "publishDate": "2025-05-23",
       "url": "https://theweek.com/culture-life/theatre/the-unlikely-pilgrimage-of-harold-fry-a-musical-with-foot-stomping-soul",
       "findings": [
@@ -118072,6 +118463,7 @@
     {
       "showId": "titus-andronicus-royal-shakespeare-regional-2025",
       "file": "all-that-dazzles-uk--raphael-kohn.json",
+      "score": 79,
       "publishDate": "2025-04-30",
       "url": "https://www.allthatdazzles.co.uk/post/review-titus-andronicus-swan-theatre",
       "findings": [
