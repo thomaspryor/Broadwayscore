@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { BASE_URL } from '@/lib/seo';
 import { Metadata } from 'next';
-import { client } from '@/sanity/client';
-import { postsListQuery, type PostListItem } from '@/sanity/queries';
+import { getPostsList } from '@/sanity/posts';
 
 export const revalidate = 3600;
 
@@ -21,7 +20,7 @@ function formatDate(iso: string) {
 }
 
 export default async function BlogIndexPage() {
-  const posts = await client.fetch<PostListItem[]>(postsListQuery);
+  const posts = await getPostsList();
 
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">

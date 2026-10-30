@@ -10,7 +10,11 @@ export const projectId = assertValue(
   'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID'
 );
 
-export const useCdn = false;
+// BRO-6659: published reads go to the API CDN, which has its own, far larger
+// request quota. The direct API quota ran out on 2026-10-30 and failed every
+// deploy; the CDN kept answering. Pages revalidate hourly, so CDN freshness
+// (seconds) is fine. Token-authenticated requests are served by the CDN too.
+export const useCdn = true;
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) throw new Error(errorMessage);

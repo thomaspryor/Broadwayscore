@@ -7,7 +7,7 @@
  * Activated when env var USE_SANITY_REVIEWS=true (see data-reviews-blog.ts).
  */
 import { toHTML } from '@portabletext/to-html';
-import { client } from '@/sanity/client';
+import { sanityFetch } from '@/sanity/fetch';
 import {
   reviewsListQuery,
   reviewBySlugQuery,
@@ -93,13 +93,27 @@ function toBlogReviewDetail(d: ReviewDetail): BlogReview {
   };
 }
 
-export async function getAllBlogReviewsFromSanity(): Promise<BlogReview[]> {
-  const items = await client.fetch<ReviewListItem[]>(reviewsListQuery);
+// Registry symbol: sanityFetch memoizes the fallback value, so every caller
+// (even after a dev-mode module reload) must compare against the same marker.
+const FAILED = Symbol.for('sanity-failed');
+
+// Sanity errors resolve to the caller's fallback (BRO-6659): the markdown
+// copies in content/reviews/, so a quota or outage never fails the build.
+// (Build only: at runtime sanityFetch rethrows and ISR keeps the last good page.)
+export async function getAllBlogReviewsFromSanity(
+  fallback: () => BlogReview[],
+): Promise<BlogReview[]> {
+  const items = await sanityFetch<ReviewListItem[] | null>(reviewsListQuery, {}, () => null);
+  if (!items) return fallback();
   return items.map(toBlogReviewListItem) as BlogReview[];
 }
 
-export async function getBlogReviewBySlugFromSanity(slug: string): Promise<BlogReview | null> {
-  const detail = await client.fetch<ReviewDetail | null>(reviewBySlugQuery, { slug });
+export async function getBlogReviewBySlugFromSanity(
+  slug: string,
+  fallback: () => BlogReview | null,
+): Promise<BlogReview | null> {
+  const detail = await sanityFetch<ReviewDetail | null | typeof FAILED>(reviewBySlugQuery, { slug }, () => FAILED);
+  if (detail === FAILED) return fallback();
   if (!detail) return null;
   return toBlogReviewDetail(detail);
 }

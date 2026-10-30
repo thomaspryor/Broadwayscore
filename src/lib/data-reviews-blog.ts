@@ -140,7 +140,7 @@ const USE_SANITY = process.env.USE_SANITY_REVIEWS === 'true';
 export async function getAllBlogReviews(): Promise<BlogReview[]> {
   if (USE_SANITY) {
     const { getAllBlogReviewsFromSanity } = await import('./data-reviews-blog-sanity');
-    return getAllBlogReviewsFromSanity();
+    return getAllBlogReviewsFromSanity(loadReviews);
   }
   return loadReviews();
 }
@@ -148,7 +148,7 @@ export async function getAllBlogReviews(): Promise<BlogReview[]> {
 export async function getBlogReviewBySlug(slug: string): Promise<BlogReview | undefined> {
   if (USE_SANITY) {
     const { getBlogReviewBySlugFromSanity } = await import('./data-reviews-blog-sanity');
-    const r = await getBlogReviewBySlugFromSanity(slug);
+    const r = await getBlogReviewBySlugFromSanity(slug, () => loadReviews().find(r => r.slug === slug) ?? null);
     return r ?? undefined;
   }
   return loadReviews().find(r => r.slug === slug);

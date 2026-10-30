@@ -2,18 +2,13 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { PortableText, type PortableTextComponents } from '@portabletext/react';
-import { client } from '@/sanity/client';
-import {
-  postBySlugQuery,
-  postSlugsQuery,
-  type PostDetail,
-} from '@/sanity/queries';
+import { getPostBySlug, getPostSlugs } from '@/sanity/posts';
 import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const slugs = await client.fetch<string[]>(postSlugsQuery);
+  const slugs = await getPostSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -23,7 +18,7 @@ export async function generateMetadata(
   }
 ): Promise<Metadata> {
   const params = await props.params;
-  const post = await client.fetch<PostDetail | null>(postBySlugQuery, { slug: params.slug });
+  const post = await getPostBySlug(params.slug);
   if (!post) return { title: 'Post not found' };
   return {
     title: post.title,
@@ -82,7 +77,7 @@ const portableComponents: PortableTextComponents = {
 
 export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const post = await client.fetch<PostDetail | null>(postBySlugQuery, { slug: params.slug });
+  const post = await getPostBySlug(params.slug);
   if (!post) notFound();
 
   const published = new Date(post.publishedAt).toLocaleDateString('en-US', {
