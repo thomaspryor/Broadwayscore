@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T21:21:28.404Z",
+  "timestamp": "2026-10-30T22:07:58.091Z",
   "stats": {
-    "totalReviews": 71983,
-    "alreadyFlagged": 22330,
-    "dateGuardCatches": 230,
-    "directorMismatch": 2922,
+    "totalReviews": 72321,
+    "alreadyFlagged": 22359,
+    "dateGuardCatches": 229,
+    "directorMismatch": 2933,
     "tvFilmSignals": 2034,
-    "londonSignals": 3409,
-    "offBroadwaySignals": 644,
-    "yearMismatch": 298,
-    "noPublishDate": 8554
+    "londonSignals": 3407,
+    "offBroadwaySignals": 645,
+    "yearMismatch": 300,
+    "noPublishDate": 8840
   },
   "findings": [
     {
@@ -24791,6 +24791,24 @@
       ]
     },
     {
+      "showId": "hamilton-tour-2024",
+      "file": "variety--anna-tingley.json",
+      "publishDate": "2026-10-29",
+      "url": "https://variety.com/2026/shopping/news/hamilton-deluxe-vinyl-box-set-buy-online-1236934117/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2024 (0x). 2015 matches production: hamilton-2015"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "hamilton-west-end-2021",
       "file": "daily-mail--robert-gore-langton.json",
       "score": 93,
@@ -42165,6 +42183,34 @@
       ]
     },
     {
+      "showId": "oslo-off-broadway-2016",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "July 11, 2016",
+      "url": "http://www.nytimes.com/2016/07/12/theater/review-a-byzantine-path-to-middle-east-peace-in-oslo.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "oslo-off-broadway-2016",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://t2conline.com/she-says-oslo-proves-when-talking-peace-it-is-never-short-or-easy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
       "showId": "othello-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -42794,6 +42840,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2027 (3x) more than 2025 (0x). 2027 matches production: paddington-the-musical-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "london-theatre-reviews--unknown.json",
+      "publishDate": "2026-10-29",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29482",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2027 (2x) more than 2025 (0x). 2027 matches production: paddington-the-musical-2026"
         }
       ]
     },
@@ -44071,6 +44130,62 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://thebroadwayblog.com/people-places-and-things-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "frontmezzjunkies--steven-ross.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://frontmezzjunkies.com/2017/10/25/people-places-and-things/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "huffpost--david-finkle.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.huffingtonpost.com/entry/must-sees-duncan-macmillans-people-places-things_us_59fcf29ee4b076eaaae26f88",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thewrap.com/people-places-things-theater-review-great-acting-best-kind-high/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
         }
       ]
     },
@@ -52842,6 +52957,76 @@
       ]
     },
     {
+      "showId": "sweat-off-broadway-2016",
+      "file": "more-than-the-play-blog--domenick-danza.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://morethantheplay.blogspot.com/2017/05/sweat.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "nytimes--charles-isherwood.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.nytimes.com/2016/11/04/theater/review-the-jobs-are-gone-in-sweat-so-are-peoples-hopes.html?_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theatrereviews.com/broadway-review-sweat-evaporates-quickly-at-studio-54/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "timeout--david-cote.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.timeout.com/newyork/blog/theater-review-sweat-offers-grim-truths-from-blue-collar-america-110316",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "vulture--jesse-green.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.vulture.com/2016/11/theater-review-lynn-nottages-sweat.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
       "showId": "sweeney-todd-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 93,
@@ -53125,8 +53310,8 @@
     {
       "showId": "sweet-charity-off-broadway-2016",
       "file": "nbcny--robert-kahn.json",
-      "publishDate": "2016-11-19",
-      "url": "https://www.nbcnewyork.com/broadway/sweet-charity-sutton-foster-review/1094364/",
+      "publishDate": null,
+      "url": "http://www.nbcnewyork.com/entertainment/the-scene/Sweet-Charity-Sutton-Foster-Review-402057275.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -73153,7 +73338,7 @@
     },
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "file": "theater-scene--unknown.json",
+      "file": "theater-scene--victor-gluck.json",
       "score": 75,
       "publishDate": "2026-10-30",
       "url": "https://www.theaterscene.net/plays/offbway-plays/a-ghost-in-your-ear/victor-gluck/",
@@ -91594,20 +91779,6 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "https://www.islingtontribune.co.uk/article/review-ilford-boy-at-donmar-warehouse",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 91,
       "publishDate": "2026-10-23",
@@ -97422,20 +97593,6 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "https://www.islingtontribune.co.uk/article/review-martin-guerre-at-old-vic-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 89,
       "publishDate": "2026-10-21",
@@ -102950,20 +103107,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "people-places-and-things-west-end-2016",
-      "file": "whatsonstage--daisy-bowie-sell.json",
-      "score": 97,
-      "publishDate": "2016-03-24",
-      "url": "https://www.whatsonstage.com/news/people-places-and-things-wyndhams-theatre_40032/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -108583,6 +108726,20 @@
       ]
     },
     {
+      "showId": "sunday-in-the-park-with-george-regional-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2026-09-14",
+      "url": "https://www.thewrap.com/creative-content/theater/sunday-in-the-park-with-george-postponed-ariana-grande-jonathan-bailey/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "sunny-afternoon-the-story-of-the-kinks-regional-2025",
       "file": "chicagotheaterandarts--jodie-jacobs.json",
       "score": 89,
@@ -108915,17 +109072,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "sweat-2017",
-      "file": "wsj--terry-teachout.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 121d before show (November 3, 2016 vs 2017-03-04)"
         }
       ]
     },
