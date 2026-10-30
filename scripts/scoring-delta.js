@@ -2250,7 +2250,7 @@ function main() {
       console.log(`SCORE CHANGED:    ${scoreFlips.length} reviews across ${affectedShowsScore.size} shows`);
       console.log(`URL DATE CHANGED: ${urlDateFlips.length} reviews across ${affectedShowsUrlDate.size} shows`);
     }
-    console.log(`T1 outlet flips:  ${t1Flips}  (inclusion: ${t1InclusionFlips}, score: ${t1ScoreFlips})`);
+    console.log(`T1 outlet flips:  ${t1Flips}  (inclusion: ${t1InclusionFlips}, score: ${t1ScoreFlips}, url-date: ${t1UrlDateFlips})`);
     console.log('');
 
     if (flipsExcluded.length > 0) {

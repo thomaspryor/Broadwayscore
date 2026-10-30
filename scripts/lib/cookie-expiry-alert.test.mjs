@@ -89,3 +89,19 @@ test('check-cookie-health.js routes the card before it exits non-zero, and the w
   assert.match(y, /npm ci/);
   assert.match(y, /git add data\/audit\/alert-ledger\.json/);
 });
+
+test('missing cookies (authDays null) neither file a card nor resolve an open one', async () => {
+  const r = fakeRouter();
+  const missing = [{ name: 'nytimes', layer: 2, status: 'warn', authDays: null, isCritical: true }];
+  const out = await A.routeT1CookieAlerts(missing, 1, r);
+  assert.deepEqual(out.routed, []);
+  assert.deepEqual(r.resolved, []);
+});
+
+test('routeAlert returning ok:false is an error, not a routed card', async () => {
+  const r = fakeRouter();
+  r.routeAlert = async () => ({ ok: false, error: 'linear 500' });
+  const out = await A.routeT1CookieAlerts([layer2('nytimes', NOW - 86400)], 1, r);
+  assert.deepEqual(out.routed, []);
+  assert.match(out.errors[0], /nytimes: linear 500/);
+});

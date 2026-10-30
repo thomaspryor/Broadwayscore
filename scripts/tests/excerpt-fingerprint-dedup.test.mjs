@@ -45,6 +45,7 @@ test('rebuild: byline-mangled twin with the same bwwExcerpt is collapsed to one 
     'independent--bcaitlin-hornik.json': rec('Bcaitlin Hornik'),
   });
   assert.match(r.out, /\[EXCERPT FINGERPRINT DEDUP\]/, r.out.slice(-600));
+  assert.match(r.out, /keeping independent--caitlin-hornik\.json/, 'the unmangled byline must survive');
   assert.equal(r.included, 1);
 });
 

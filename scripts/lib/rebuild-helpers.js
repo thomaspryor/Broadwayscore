@@ -1600,7 +1600,21 @@ function compareFilesForDedupPriority(a, b) {
   // flag ranks as attested, so callers that set it on neither file are unchanged.
   if (rank(a.isBylineUnattested) !== rank(b.isBylineUnattested)) return rank(a.isBylineUnattested) - rank(b.isBylineUnattested);
   if (rank(a.hasEnsemble) !== rank(b.hasEnsemble)) return rank(a.hasEnsemble) - rank(b.hasEnsemble);
+  // BRO-6628: byline-mangled twins (independent--bcaitlin-hornik vs --caitlin-hornik) tie on
+  // everything above; the file whose critic slug is the shorter suffix of the other's is the
+  // unmangled one and wins, so the garbled byline is not the one published.
+  const sa = criticSlugOfFile(a.file), sb = criticSlugOfFile(b.file);
+  if (sa && sb && sa !== sb) {
+    if (sb.endsWith(sa)) return -1;
+    if (sa.endsWith(sb)) return 1;
+  }
   return String(a.file).localeCompare(String(b.file));
+}
+
+/** 'independent--bcaitlin-hornik.json' -> 'bcaitlin-hornik' (null when the name has no outlet--critic shape). */
+function criticSlugOfFile(file) {
+  const m = /^[^/]*?--(.+?)(?:\.json)?$/.exec(String(file || '').split('/').pop());
+  return m ? m[1] : null;
 }
 
 /**

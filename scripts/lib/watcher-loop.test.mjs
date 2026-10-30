@@ -94,3 +94,10 @@ test('watcher workflow exposes loop_minutes, titles loop runs, and bounds both m
   assert.ok(job >= cap + 5 + 10, `job timeout ${job} covers loop cap ${cap} + setup`);
   assert.match(y, /group: aggregator-url-watcher\$\{\{[^}]*'-loop'/, 'loop runs use their own concurrency group so a cron tick cannot evict a pending loop dispatch');
 });
+
+test('a skipped poller dispatch does not mark the URL dispatched (the running poller may hold another URL)', async () => {
+  const fs = await import('node:fs');
+  const js = fs.readFileSync(new URL('../watch-aggregator-urls.js', import.meta.url), 'utf8');
+  const skipBlock = js.slice(js.indexOf('if (d.skipped) {'), js.indexOf('} else if (d.exitCode === 0)'));
+  assert.doesNotMatch(skipBlock, /mark(Bww|Dtli)Dispatched/);
+});

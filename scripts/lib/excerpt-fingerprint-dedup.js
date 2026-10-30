@@ -19,11 +19,8 @@
 
 const { computeContentFingerprint } = require('./content-quality');
 
-// Every aggregator-curated excerpt field the rebuild reads (see hasExcerpt in rebuild-all-reviews.js).
-const AGGREGATOR_EXCERPT_FIELDS = [
-  'bwwExcerpt', 'dtliExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt',
-  'lboRoundupExcerpt', 'stagedoorExcerpt', 'metaExcerpt',
-];
+// One list of aggregator excerpt fields for the whole codebase (includes the West End ones).
+const { EXCERPT_FIELDS: AGGREGATOR_EXCERPT_FIELDS } = require('./excerpt-fields');
 
 const MIN_FULLTEXT_CHARS = 100; // same bar as the fullText fingerprint dedup
 

@@ -397,9 +397,9 @@ async function pass(openings, ctx) {
         const d = dispatchPoller(show.id, overrides);
         if (d.skipped) {
           console.log(`  ⏭  Dispatch skipped — ${d.reason}`);
-          // A running poller covers this URL: do not keep re-probing for it.
-          if (bwwUrlFound) W.markBwwDispatched(state, show.id, bwwUrlFound);
-          if (dtliSlugFound) W.markDtliDispatched(state, show.id, dtliSlugFound);
+          // Not marked dispatched: the running poller may have been started for a
+          // different URL (an earlier DTLI dispatch, the orchestrator), so this URL
+          // could still never reach a poller. The next tick retries once it ends.
         } else if (d.exitCode === 0) {
           console.log(`  ✅ Dispatched opening-night-poller.yml`);
           dispatched++;

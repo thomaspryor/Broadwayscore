@@ -34,11 +34,11 @@ function findT1AuthFailures(results, authErrorDays) {
     typeof r.authDays === 'number' && r.authDays <= authErrorDays);
 }
 
-/** PURE. T1 outlets that were checked this run and are not failing on auth. */
+/** PURE. T1 outlets whose auth expiry was actually read this run and is not failing (missing cookies, authDays null, prove nothing). */
 function findT1AuthHealthy(results, authErrorDays) {
   const failing = new Set(findT1AuthFailures(results, authErrorDays).map(r => r.name));
   return (results || [])
-    .filter(r => r && T1_COOKIE_OUTLETS.includes(r.name) && r.layer === 2 && !failing.has(r.name))
+    .filter(r => r && T1_COOKIE_OUTLETS.includes(r.name) && r.layer === 2 && typeof r.authDays === 'number' && !failing.has(r.name))
     .map(r => r.name);
 }
 
@@ -76,7 +76,8 @@ async function routeT1CookieAlerts(results, authErrorDays, deps = {}) {
 
   for (const r of findT1AuthFailures(results, authErrorDays)) {
     try {
-      await routeAlert(buildAlert(r));
+      const res = await routeAlert(buildAlert(r));
+      if (res && res.ok === false) throw new Error(res.error || res.reason || 'routeAlert returned ok:false');
       out.routed.push(r.name);
     } catch (e) {
       out.errors.push(`${r.name}: ${e.message}`);

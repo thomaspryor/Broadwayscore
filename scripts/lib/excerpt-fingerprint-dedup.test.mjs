@@ -85,3 +85,17 @@ test('rebuild-all-reviews.js wires the excerpt dedup after the fullText fingerpr
   const arm = js.indexOf('ledger.arm();', ex);
   assert.ok(fp > 0 && ex > fp && arm > ex, 'order: fingerprint dedup, excerpt dedup, ledger.arm');
 });
+
+test('the survivor tie-break keeps the unmangled byline in either file order (BRO-6628 review)', () => {
+  const { compareFilesForDedupPriority: cmp } = require('./rebuild-helpers.js');
+  const a = { file: 'independent--bcaitlin-hornik.json' }, b = { file: 'independent--caitlin-hornik.json' };
+  assert.equal([a, b].sort(cmp)[0].file, b.file);
+  assert.equal([b, a].sort(cmp)[0].file, b.file);
+});
+
+test('West End excerpt fields are fingerprinted too (shared EXCERPT_FIELDS list)', () => {
+  const seen = new Map();
+  const rec = { theStageExcerpt: EXCERPT };
+  D.checkExcerptDuplicate(rec, 'thestage', 'a.json', seen);
+  assert.equal(D.checkExcerptDuplicate(rec, 'thestage', 'b.json', seen).duplicateOf, 'a.json');
+});
