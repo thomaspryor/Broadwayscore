@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T10:33:59.298Z",
+  "timestamp": "2026-10-30T10:56:35.656Z",
   "stats": {
-    "totalReviews": 70103,
-    "alreadyFlagged": 22250,
+    "totalReviews": 70175,
+    "alreadyFlagged": 22251,
     "dateGuardCatches": 230,
-    "directorMismatch": 2870,
+    "directorMismatch": 2869,
     "tvFilmSignals": 2022,
-    "londonSignals": 3396,
+    "londonSignals": 3395,
     "offBroadwaySignals": 632,
     "yearMismatch": 285,
-    "noPublishDate": 8006
+    "noPublishDate": 7979
   },
   "findings": [
     {
@@ -34476,24 +34476,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "london-assurance-off-broadway-2019",
-      "file": "theatres-leiter-side--samuel-l-leiter.json",
-      "publishDate": null,
-      "url": "https://slleiter.blogspot.com/2019/12/an-assured-production-ts-pleasure-to.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"ronald eyre\" from london-assurance-1974"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -121578,7 +121560,7 @@
     {
       "showId": "white-noise-off-broadway-2019",
       "file": "broadway-and-me--unknown.json",
-      "publishDate": null,
+      "publishDate": "March 23rd, 2019",
       "url": "https://broadwayandme.blogspot.com/2019/03/white-noises-makes-sadly-familiar-sounds.html",
       "findings": [
         {
