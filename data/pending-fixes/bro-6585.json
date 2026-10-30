@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6585",
   "planId": "935331fe-5a27-48a8-8f77-6bd1daf02f85",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-30T04:48:00.506Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "a-few-good-men-2026/thewrap--robert-hofler.json: publishDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T05:04:04.194Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/cititour--brian-scott-lipton.json publishDate: null -> \"2026-10-29\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "publishDate: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
 }
