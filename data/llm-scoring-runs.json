@@ -1683388,21 +1683388,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-30T18:34:01.180Z",
-    "completedAt": "2026-10-30T18:35:02.448Z",
-    "totalReviews": 13,
-    "processed": 12,
+    "startedAt": "2026-10-30T18:35:48.480Z",
+    "completedAt": "2026-10-30T18:36:16.098Z",
+    "totalReviews": 7,
+    "processed": 6,
     "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 72418,
-      "output": 3708,
-      "cacheRead": 45684,
+      "input": 33630,
+      "output": 1720,
+      "cacheRead": 22842,
       "cacheWrite": 0,
-      "total": 181898
+      "total": 86917
     },
-    "costUsd": 0.2734845,
-    "runId": "41106157474",
+    "costUsd": 0.127423,
+    "runId": "41106935779",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1697878,6 +1697878,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "hamlet-regional-2025",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 0,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "hamlet-royal-shakespeare-regional-2025",
         "ourDistribution": {
           "up": 3,
@@ -1709148,16 +1709158,6 @@
           "flat": 0,
           "down": 0,
           "total": 22
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "primary-trust-regional-2024",
-        "ourDistribution": {
-          "up": 12,
-          "flat": 0,
-          "down": 0,
-          "total": 12
         },
         "hasDisagreement": false
       },
@@ -1724600,8 +1724600,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-30T18:39:59.106Z",
-    "completedAt": "2026-10-30T18:39:59.108Z",
+    "startedAt": "2026-10-30T18:41:14.369Z",
+    "completedAt": "2026-10-30T18:41:14.371Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1724614,7 +1724614,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41106157474",
+    "runId": "41106935779",
     "source": "comparative-rescore",
     "errorDetails": []
   }
