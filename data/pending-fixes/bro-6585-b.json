@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6585-b",
   "planId": "42a50fe6-1928-457b-a73b-2488a9207698",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-30T07:12:00.848Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,19 @@
         "description": "BWW roundup glued the previous entry grade letter onto the byline"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-30T07:45:34.351Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-few-good-men-2026/independent--bcaitlin-hornik.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/independent--caitlin-hornik.json criticName: \"ACaitlin Hornik\" -> \"Caitlin Hornik\""
+    }
+  ],
+  "executedIn": "ci"
 }
