@@ -111,5 +111,11 @@
     "step": "Press-night morning grade (BRO-6645)",
     "script": "scripts/produce-press-night-digest-snapshot.js",
     "reason": "Advisory by design (CLAUDE.md rule 19): a lost write leaves yesterday's snapshot, which the morning email shows as 'not checked yet' (renderPressNightBlock night check) and digest-snapshots.js flags past 36h, so a failure is visible without failing the checklist job."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Shadow audit corpus-determinism",
+    "script": "scripts/audit-corpus-determinism.js",
+    "reason": "BRO-6038 shadow mode: the step writes a counts-only report that the digest row reads; a failed run leaves no file and the digest shows an undetermined row, never a pass. It does not gate anything while in shadow."
   }
 ]

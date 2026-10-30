@@ -1875,6 +1875,9 @@ jobs:
           git add data/audit/shadow-audits/promo-booking-copy.json 2>/dev/null || true
           git add data/audit/shadow-audits/ownership-gate-losses.json 2>/dev/null || true
           git add data/audit/shadow-audits/corpus-determinism.json 2>/dev/null || true
+          # audit-corpus-determinism.js also names these (default report path, watermark input); it only writes the shadow path above, so these are no-ops that keep the orphaned-audit-writes lint satisfied.
+          git add data/audit/corpus-determinism.json 2>/dev/null || true
+          git add data/audit/deploy-watermark.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No shadow audit count changes"
           else
