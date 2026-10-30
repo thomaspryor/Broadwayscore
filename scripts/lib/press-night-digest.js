@@ -60,10 +60,18 @@ function gradeReviews(rec, nowMs = Date.now()) {
   const rel = result.release || null;
   const graded = rel ? observedRecord(rec, rel) : rec;
   const gates = rel ? rel.observed.gates : result.gates;
-  const verdict = rel ? rel.observed.verdict : result.verdict;
+  const rawVerdict = rel ? rel.observed.verdict : result.verdict;
   const sn = sameNightCheck(graded, DEFAULT_GATES);
   const fl = firstNightLive(graded);
   const firstGate = gates.find((g) => g.name === 'first-live');
+  const items = sn.items || [];
+  let verdict = rawVerdict;
+  if (verdict === 'FAIL' && items.some(isPaywallExcused)
+    && !items.some((i) => (i.status === 'late' || i.status === 'missing') && !isPaywallExcused(i))
+    && gates.every((g) => !g.required || g.status !== 'fail' || ITEM_GATES.has(g.name))) {
+    // The only failures were paywalled outlets: excused, so the night grades on its other gates.
+    verdict = gates.some((g) => g.required && g.status === 'unknown') ? 'UNKNOWN' : 'PASS';
+  }
   let why = null;
   if (verdict === 'UNKNOWN') {
     const noPublish = firstGate && firstGate.status === 'unknown' && /no census or lane discovery shows any outlet published/.test(firstGate.detail);
@@ -71,11 +79,19 @@ function gradeReviews(rec, nowMs = Date.now()) {
       : `could not check ${gates.filter((g) => g.required && g.status === 'unknown').map((g) => GATE_WORDS[g.name] || g.name).join(' or ')}`;
   }
   return {
-    verdict, finalized: true, release: rel, embargoAt: graded.embargoAt, items: sn.items || [],
+    verdict, finalized: true, release: rel, embargoAt: graded.embargoAt, items,
     firstLive: fl ? { at: fl.at, outlet: fl.outlet, afterMin: Math.round((Date.parse(fl.at) - Date.parse(graded.embargoAt)) / MIN), failed: !!(firstGate && firstGate.status === 'fail') } : null,
     lastCheckedAt: rec.probe.lastOkSampleAt || null, why,
   };
 }
+
+// Owner decision 2026-10-30 ("Ignore NYT"): a hard-paywalled outlet passes once it is listed or queued.
+// Its full text may never come through, so it never fails a night or shows as a miss. Mirrors the
+// domains in paywall-completeness.js HARD_PAYWALL_FLOORS, keyed by outlet id.
+const PAYWALLED_OUTLETS = new Set(['nytimes', 'newyorker', 'washpost', 'washingtonpost', 'chicagotribune', 'wsj']);
+const isPaywallExcused = (i) => PAYWALLED_OUTLETS.has(i.outletId) && (i.status === 'late' || i.status === 'missing');
+// Gates that fail only because a listed review was late or missing.
+const ITEM_GATES = new Set(['same-night-completeness', 'coverage-2h']);
 
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 
@@ -189,7 +205,7 @@ function buildShowLine({ title, reviews, emails = [] }) {
   }
   const parts = [];
   const misses = [];
-  const items = reviews.items;
+  const items = reviews.items.filter((i) => !isPaywallExcused(i));
   const by = etTime(new Date(Date.parse(reviews.embargoAt) + 2 * 3600000).toISOString());
   const byMs = Date.parse(reviews.embargoAt) + 2 * 3600000;
   // A review that came out later in the night counts as on time when it went live within 30 min of coming
@@ -400,5 +416,5 @@ module.exports = {
   etTime, etDate, lastNight, gradeReviews, gradeEmails, buildShowLine, buildSection,
   EMAIL_MISS_GRACE_MIN, missFirstSeen, settledMisses,
   KEY_LINE_PREFIX, MISS_LINE_PREFIX, MAX_NEW_CARDS_PER_RUN, slug, cardKeyOf, listedMisses,
-  cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock,
+  cardTitle, cardNotes, fileFixCards, outletName, renderPressNightBlock, PAYWALLED_OUTLETS,
 };

@@ -234,3 +234,28 @@ test('email block: renders last night only, escapes the line, quiet when there w
   assert.match(D.renderPressNightBlock(snap, { nowMs: Date.parse('2026-11-01T11:30:00Z') }), /not checked yet \(the hourly check has not run since yesterday\)/);
   assert.equal(D.renderPressNightBlock({ night: '2026-10-29', lines: [] }, { nowMs: MORNING }), '');
 });
+
+// Owner decision 2026-10-30 ("Ignore NYT"): a hard-paywalled outlet passes once listed or queued.
+// The real Heart record with its late and missing outlets renamed to paywalled ones.
+const heartAs = (late, missing) => JSON.parse(JSON.stringify(HEART()).replaceAll('"theater-pizzazz"', `"${late}"`).replaceAll('"is-something-of-a-miracle"', `"${missing}"`));
+
+test('paywall rule: a late NYT and a missing WSJ never fail the night or show as a miss', () => {
+  const r = D.gradeReviews(heartAs('nytimes', 'wsj'), AFTER_DEADLINE);
+  assert.notEqual(r.verdict, 'FAIL');
+  const e = lineFor(heartAs('nytimes', 'wsj'), HEART_SHOW);
+  assert.ok(!/New York Times|Wall Street|WSJ|nytimes|wsj/i.test(e.line), e.line);
+  assert.ok(!e.misses.some((m) => m.kind === 'review'), JSON.stringify(e.misses));
+  assert.ok(!e.misses.some((m) => m.key === 'review:other'));
+});
+
+test('paywall rule: a non-paywalled miss on the same night still fails and is still named', () => {
+  const e = lineFor(heartAs('nytimes', 'is-something-of-a-miracle'), HEART_SHOW);
+  assert.equal(e.verdict, 'FAIL');
+  assert.match(e.line, /Is Something Of A Miracle not live/);
+  assert.ok(!/New York Times|nytimes/i.test(e.line), e.line);
+  assert.deepEqual(e.misses.filter((m) => m.kind === 'review').map((m) => m.key), ['review:is-something-of-a-miracle:']);
+});
+
+test('paywall rule: the outlet list covers every hard-paywall domain', () => {
+  for (const id of ['nytimes', 'newyorker', 'washpost', 'chicagotribune', 'wsj']) assert.ok(D.PAYWALLED_OUTLETS.has(id), id);
+});
