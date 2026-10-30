@@ -3351,5 +3351,36 @@
       }
     ],
     "queuedAt": "2026-10-30T21:05:28.089Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6583-cost",
+    "title": "Landing blocked: rebase red on land/bro-6583-cost",
+    "description": "land.yml did not land land/bro-6583-cost: the rebase gate went red at 3e3fdc6e79. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6583-cost @ 3e3fdc6e79 (origin/land/bro-6583-cost) → origin/main @ bbbcb18ef6 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 0ff32e04a4: Rebasing (1/1) error: could not apply 3e3fdc6e794... data: record BRO-6583 session cost hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", then run \"git rebase --continue\".  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41128234991",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6583-cost"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3e3fdc6e794ed1d504fb693fbd6779aa724a5a90"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41128234991"
+      }
+    ],
+    "queuedAt": "2026-10-30T21:09:30.188Z"
   }
 ]
