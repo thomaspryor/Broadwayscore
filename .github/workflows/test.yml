@@ -431,6 +431,8 @@ on:
       - 'scripts/promote-ob-historical.js'
       # scripts/ob-census-candidates.test.mjs (BRO-6496)
       - 'scripts/ob-census-candidates.js'
+      # scripts/ob-two-source-dates.test.mjs (BRO-6630)
+      - 'scripts/ob-two-source-dates.js'
       # scripts/lib/we-historical-pipeline.test.mjs (BRO-4851)
       - 'scripts/discover-historical-shows-we.js'
       - 'scripts/merge-wet-stars-urls.js'
