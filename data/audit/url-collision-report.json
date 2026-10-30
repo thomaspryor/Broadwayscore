@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-30T19:08:52.791Z",
+  "generatedAt": "2026-10-30T20:05:49.404Z",
   "summary": {
-    "total": 11,
+    "total": 12,
     "high": 6,
     "medium": 4,
-    "low": 1
+    "low": 2
   },
   "collisions": [
     {
@@ -87,6 +87,51 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YWDVVG",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "drag-the-musical-off-broadway-2024",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2024-10-21",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "empire-the-musical-off-broadway-2024",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2024-07-11",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "table-17-off-broadway-2024",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2024-09-06",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "the-counter-off-broadway-2024",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2024-10-09",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "drag-the-musical-off-broadway-2024",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
