@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-10-30T00:12:12.136Z",
+  "generatedAt": "2026-10-30T00:39:32.212Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 296,
-  "clean": 294,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "openingDate": "2026-10-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.56 vs local 83.9 (Δ0.34)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-10-30T00:12:06.770Z"
-    },
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.16 vs local 69.4 (Δ0.24)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-10-30T00:12:06.770Z"
-    }
-  ],
+  "clean": 296,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
