@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-30T20:31:07.134Z",
+  "timestamp": "2026-10-30T21:04:28.227Z",
   "stats": {
-    "totalReviews": 71701,
-    "alreadyFlagged": 22326,
+    "totalReviews": 71793,
+    "alreadyFlagged": 22327,
     "dateGuardCatches": 230,
-    "directorMismatch": 2903,
-    "tvFilmSignals": 2033,
+    "directorMismatch": 2910,
+    "tvFilmSignals": 2034,
     "londonSignals": 3409,
-    "offBroadwaySignals": 638,
+    "offBroadwaySignals": 644,
     "yearMismatch": 298,
-    "noPublishDate": 8327
+    "noPublishDate": 8374
   },
   "findings": [
     {
@@ -8852,6 +8852,7 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "off-off-online--deirdre-donovan.json",
+      "score": 81,
       "publishDate": "2023-12-26",
       "url": "https://www.offoffonline.com/offoffonline/2023/12/20/buena-vista-social-club",
       "findings": [
@@ -14201,6 +14202,19 @@
     },
     {
       "showId": "dead-outlaw-off-broadway-2024",
+      "file": "new-york-sun--elysa-gardner.json",
+      "publishDate": "2024-03-11",
+      "url": "https://www.nysun.com/article/dead-outlaw-find-humor-while-tracing-a-most-unusual-morose-story",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
       "file": "nysr--steven-suskin.json",
       "score": 82,
       "publishDate": null,
@@ -14276,6 +14290,24 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/dead-outlaw-a-sign-of-the-times-1-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
@@ -17151,6 +17183,7 @@
     {
       "showId": "drag-the-musical-off-broadway-2024",
       "file": "theater-scene--chip-deffaa.json",
+      "score": 80,
       "publishDate": "2024-11-04",
       "url": "https://www.theaterscene.net/columns/world-of-drag/chip-deffaa/",
       "findings": [
@@ -25038,6 +25071,19 @@
       "score": 81,
       "publishDate": "2022-04-14",
       "url": "https://thefrontrowcenter.com/2022/04/harmony/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"warren carlyle\" from harmony-2023"
+        }
+      ]
+    },
+    {
+      "showId": "harmony-off-broadway-2022",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QAXRCO",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52885,6 +52931,19 @@
       ]
     },
     {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "nbcny--robert-kahn.json",
+      "publishDate": "2016-11-19",
+      "url": "https://www.nbcnewyork.com/broadway/sweet-charity-sutton-foster-review/1094364/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
       "showId": "swept-away-2024",
       "file": "deadline--greg-evans.json",
       "score": 90,
@@ -53742,6 +53801,19 @@
       ]
     },
     {
+      "showId": "the-bands-visit-off-broadway-2016",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2016-12-09",
+      "url": "https://www.timeout.com/newyork/blog/theater-review-the-bands-visit-takes-us-to-a-distant-quirky-land-121416",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from the-bands-visit-2017"
+        }
+      ]
+    },
+    {
       "showId": "the-bands-visit-regional-2024",
       "file": "chicago-sun-times--steven-oxman.json",
       "score": 90,
@@ -53820,6 +53892,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bedwetter-off-broadway-2022",
+      "file": "cititour--unknown.json",
+      "publishDate": "2022-06-07",
+      "url": "https://cititour.com/NYC_News/Review-Sarah-Silvermans-The-Bedwetter/6472",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -56072,6 +56157,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-doctor-off-broadway-2023",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": "2023-06-28",
+      "url": "https://theaterlife.com/the-doctor-the-comeuppance/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from the-doctor-west-end-2022"
         }
       ]
     },
@@ -59280,6 +59378,19 @@
       "score": 74,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/jonathan-larson-project",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": "2025-03-28",
+      "url": "https://theaterlife.com/the-picture-of-dorian-gray-othello-the-jonathan-larson-project/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -66267,6 +66378,7 @@
     {
       "showId": "titanique-off-broadway-2022",
       "file": "theatrely--joey-sims.json",
+      "score": 84,
       "publishDate": "2022-07-07",
       "url": "https://www.theatrely.com/post/titanique-steers-the-right-way-review",
       "findings": [
@@ -73068,6 +73180,47 @@
       ]
     },
     {
+      "showId": "a-man-of-no-importance-off-broadway-2022",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-IVH5U",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "a-man-of-no-importance-off-broadway-2022",
+      "file": "theatrely--juan-a-ramirez.json",
+      "score": null,
+      "publishDate": "2022-10-31T05:41:03-04:00",
+      "url": "https://www.theatrely.com/post/a-man-of-no-importance-struggles-to-find-some-review",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "a-man-of-no-importance-off-broadway-2022",
+      "file": "vulture--jackson-mchenry.json",
+      "score": null,
+      "publishDate": "2022-10-31",
+      "url": "https://www.vulture.com/2022/10/theater-review-man-of-no-importance-jim-parsons.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
       "showId": "a-midsummer-nights-dream-chichester-festival-regional-2026",
       "file": "theatreandtonic--rosie.json",
       "score": 94,
@@ -79074,6 +79227,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "brooklyn-laundry-off-broadway-2024",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/brooklyn-laundry-pericles/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
@@ -108137,6 +108303,19 @@
     },
     {
       "showId": "suffs-2024",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": "2024-04-19",
+      "url": "https://theaterlife.com/suffs-teeth/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-2024",
       "file": "thestage--lane-williamson.json",
       "publishDate": "2024-04-19",
       "url": "https://www.thestage.co.uk/reviews/suffs-review-at-music-box-theatre-new-york-by-shaina-taub",
@@ -111239,6 +111418,7 @@
     {
       "showId": "the-counter-off-broadway-2024",
       "file": "off-off-online--colin-macdonald.json",
+      "score": 78,
       "publishDate": "2024-10-10",
       "url": "https://www.offoffonline.com/offoffonline/2024/10/6/the-counter",
       "findings": [
