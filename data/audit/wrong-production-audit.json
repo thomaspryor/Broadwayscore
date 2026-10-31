@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T00:11:09.891Z",
+  "timestamp": "2026-10-31T01:47:45.642Z",
   "stats": {
-    "totalReviews": 72739,
-    "alreadyFlagged": 22364,
+    "totalReviews": 72881,
+    "alreadyFlagged": 22368,
     "dateGuardCatches": 229,
-    "directorMismatch": 2934,
+    "directorMismatch": 2937,
     "tvFilmSignals": 2039,
     "londonSignals": 3407,
     "offBroadwaySignals": 645,
     "yearMismatch": 298,
-    "noPublishDate": 9226
+    "noPublishDate": 9362
   },
   "findings": [
     {
@@ -233,6 +233,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "1984-citizens-regional-2026",
+      "file": "thestage--fergus-morgan.json",
+      "publishDate": "2026-09-07",
+      "url": "https://www.thestage.co.uk/reviews/1984-review-citizens-theatre-glasgow-chris-hannan",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from 1984-2017"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
         }
       ]
     },
@@ -45242,6 +45260,20 @@
       ]
     },
     {
+      "showId": "plenty-off-broadway-2016",
+      "file": "theater-pizzazz--carol-rocamora.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://theaterpizzazz.com/plenty/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
       "showId": "poor-people-the-parody-musical-regional-2024",
       "file": "chicagotribune--emily-mcclanathan.json",
       "score": 78,
@@ -64349,7 +64381,7 @@
     },
     {
       "showId": "the-resistible-rise-of-arturo-ui-royal-shakespeare-regional-2026",
-      "file": "nytimes--unknown.json",
+      "file": "nytimes--houman-barekat.json",
       "score": 83,
       "publishDate": "2026-04-22",
       "url": "https://www.nytimes.com/2026/04/22/theater/the-resistible-rise-of-arturo-ui-rsc-mark-gatiss.html",
