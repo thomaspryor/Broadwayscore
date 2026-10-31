@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T22:10:49.569Z",
+  "timestamp": "2026-10-31T22:28:38.630Z",
   "stats": {
-    "totalReviews": 76286,
-    "alreadyFlagged": 21718,
+    "totalReviews": 76309,
+    "alreadyFlagged": 21725,
     "dateGuardCatches": 238,
-    "directorMismatch": 3241,
-    "tvFilmSignals": 2173,
-    "londonSignals": 3517,
+    "directorMismatch": 3244,
+    "tvFilmSignals": 2174,
+    "londonSignals": 3518,
     "offBroadwaySignals": 721,
     "yearMismatch": 323,
-    "noPublishDate": 8581
+    "noPublishDate": 8573
   },
   "findings": [
     {
@@ -22302,6 +22302,20 @@
       ]
     },
     {
+      "showId": "frozen-2004",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 45,
+      "publishDate": "2004-05-04",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=20FZNU",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from frozen-2018"
+        }
+      ]
+    },
+    {
       "showId": "fully-committed-2016",
       "file": "eater--joshua-david-stein.json",
       "score": 68,
@@ -25144,6 +25158,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam mendes\" from gypsy-2003"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 88,
+      "publishDate": "2025-01-10",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=P5EF8W",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
         }
       ]
     },
@@ -38717,6 +38745,20 @@
       ]
     },
     {
+      "showId": "maltby-and-shires-about-time-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 79,
+      "publishDate": "2026-03-16",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-TCRO3Z",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "mamma-mia-2025",
       "file": "amny--unknown.json",
       "score": 82,
@@ -39945,6 +39987,19 @@
       "score": 78,
       "publishDate": "2022-12-12",
       "url": "https://observer.com/2022/12/review-sondheims-brilliant-flop-merrily-we-roll-along-is-smartly-revived/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-off-broadway-2022",
+      "file": "talkinbroadway--james-wilson.json",
+      "publishDate": "2022-12-12",
+      "url": "https://www.talkinbroadway.com/page/ob/12_12_22.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -113203,6 +113258,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2011",
+      "file": "everything-theatre--everything-theatre.json",
+      "score": null,
+      "publishDate": "2011-06-21",
+      "url": "https://everything-theatre.co.uk/2011/06/rosencrantz-and-guildenstern-are-dead/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
