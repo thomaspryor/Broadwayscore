@@ -1602620,21 +1602620,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T15:26:22.244Z",
-    "completedAt": "2026-10-31T15:26:41.227Z",
-    "totalReviews": 4,
-    "processed": 4,
-    "skipped": 0,
+    "startedAt": "2026-10-31T15:26:10.882Z",
+    "completedAt": "2026-10-31T15:27:36.958Z",
+    "totalReviews": 19,
+    "processed": 18,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 22743,
-      "output": 1276,
-      "cacheRead": 15228,
+      "input": 113565,
+      "output": 5458,
+      "cacheRead": 68526,
       "cacheWrite": 0,
-      "total": 58571
+      "total": 280169
     },
-    "costUsd": 0.08766739999999999,
-    "runId": "41214270970",
+    "costUsd": 0.4234234,
+    "runId": "41214342831",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1606550,6 +1606550,16 @@
           "flat": 0,
           "down": 2,
           "total": 22
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "an-enemy-of-the-people-regional-2026",
+        "ourDistribution": {
+          "up": 17,
+          "flat": 1,
+          "down": 0,
+          "total": 18
         },
         "hasDisagreement": false
       },
@@ -1645761,16 +1645771,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "work-hard-have-fun-make-history-regional-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 1,
-          "down": 2,
-          "total": 4
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "work-it-out-home-regional-2024",
         "ourDistribution": {
           "up": 1,
@@ -1646080,8 +1646080,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T15:31:39.168Z",
-    "completedAt": "2026-10-31T15:31:39.169Z",
+    "startedAt": "2026-10-31T15:32:33.549Z",
+    "completedAt": "2026-10-31T15:32:33.550Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1646094,7 +1646094,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41214270970",
+    "runId": "41214342831",
     "source": "comparative-rescore",
     "errorDetails": []
   }
