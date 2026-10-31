@@ -31,9 +31,10 @@ test('files that execute lint do not call `next lint`', () => {
 });
 
 test('ESLint CLI still fails on a rules-of-hooks error (rule set intact)', { skip: !fs.existsSync(path.join(ROOT, 'node_modules/.bin/eslint')) }, () => {
-  const dir = fs.mkdtempSync(path.join(ROOT, 'src', '.lint-probe-'));
-  try {
-    fs.writeFileSync(path.join(dir, 'p.tsx'), 'export const A = () => <div />;\nif (true) { useEffect(() => {}); }\n');
-    assert.throws(() => execFileSync('npx', ['eslint', dir], { cwd: ROOT, stdio: 'pipe' }), (e) => /rules-of-hooks/.test(String(e.stdout)));
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  // Keep the probe off disk so parallel src/ scans cannot race its cleanup.
+  assert.throws(() => execFileSync('npx', ['eslint', '--stdin', '--stdin-filename', 'src/lint-probe.tsx'], {
+    cwd: ROOT,
+    stdio: 'pipe',
+    input: 'export const A = () => <div />;\nif (true) { useEffect(() => {}); }\n',
+  }), (e) => e.status === 1 && /rules-of-hooks/.test(String(e.stdout)));
 });
