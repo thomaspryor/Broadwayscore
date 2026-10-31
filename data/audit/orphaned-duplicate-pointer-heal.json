@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-31T22:16:35.531Z",
+  "generated": "2026-10-31T22:35:33.804Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 39,
+  "count": 40,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -85,6 +85,13 @@
       "loserFile": "mail-on-sunday--ryan-hooper.json",
       "targetFile": "daily-mail--ryan-hooper.json",
       "reason": "orphaned-duplicate-heal: daily-mail--ryan-hooper.json was flagged invalid after mail-on-sunday--ryan-hooper.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "loserFile": "variety--unknown.json",
+      "targetFile": "variety--ellise-shafer.json",
+      "reason": "orphaned-duplicate-heal: variety--ellise-shafer.json was flagged invalid after variety--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
