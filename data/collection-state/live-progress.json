@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T22:51:28.712Z",
-  "processed": 355,
-  "failed": 206,
-  "successRate": "63.3%",
+  "updatedAt": "2026-10-31T23:04:21.595Z",
+  "processed": 388,
+  "failed": 213,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 187,
-    "amp": 2,
-    "browserbase": 11,
+    "playwright": 205,
+    "amp": 3,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingdog": 23,
-    "scrapingbee": 14,
+    "scrapingdog": 26,
+    "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 30,
-    "archive": 98
+    "archiveToday": 33,
+    "archive": 106
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-10-31T21:17:08.425Z",
@@ -81,6 +81,17 @@
       "t": "2026-10-31T22:47:51.181Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T23:01:13.582Z",
+      "event": "bb-session",
+      "session": "6d7037a9",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-31T23:01:14.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
