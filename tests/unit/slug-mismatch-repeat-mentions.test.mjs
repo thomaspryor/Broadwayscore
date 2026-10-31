@@ -30,7 +30,7 @@ before(() => {
   w('b.json', { url: ONCE, fullText: filler + ' Also: The Lifespan of a Fact.' });
   w('d.json', { url: FLAGGED, wrongShow: true, fullText: filler + ' The Lifespan of a Fact. ' + filler + ' The Lifespan of a Fact.' });
   const d2 = path.join(root, ONEWORD.id); fs.mkdirSync(d2);
-  fs.writeFileSync(path.join(d2, 'e.json'), JSON.stringify({ url: 'https://example.com/a-story', fullText: filler + ' Rent was due. ' + filler + ' Rent again.' }));
+  fs.writeFileSync(path.join(d2, 'e.json'), JSON.stringify({ url: 'https://example.com/tenants-and-landlords', fullText: filler + ' Rent was due. ' + filler + ' Rent again.' }));
   w('c.json', { url: ROUNDUP, isRoundupArticle: true, fullText: filler + ' The Lifespan of a Fact. ' + filler + ' The Lifespan of a Fact.' });
 });
 after(() => fs.rmSync(root, { recursive: true, force: true }));
@@ -53,7 +53,7 @@ describe('repeated mentions beyond the lede', () => {
     assert.strictEqual(check.run(SHOW, ctx([FLAGGED])).ok, false);
   });
   it('one-word titles never clear on repeats', () => {
-    const c = { reviewTextsRoot: root, reviewsDoc: { [ONEWORD.id]: [{ outletId: 'o', criticName: 'c', url: 'https://example.com/a-story' }] } };
+    const c = { reviewTextsRoot: root, reviewsDoc: { [ONEWORD.id]: [{ outletId: 'o', criticName: 'c', url: 'https://example.com/tenants-and-landlords' }] } };
     assert.strictEqual(check.run(ONEWORD, c).ok, false);
   });
 });
