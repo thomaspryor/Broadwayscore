@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (316 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (317 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -322,7 +322,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 
 - **scoring** (4): `llm-evaluate.yml`, `scoring-experiment.yml`, `snapshot-audience-grades.yml`, `snapshot-award-scores.yml`
 - **scraping** (1): `diag-fetch-timing.yml`
-- **other** (29): `batch-commercial-research.yml`, `check-cutoff-freshness.yml`, `check-linear-drain-health.yml`, `check-opening-night-readiness.yml`, `check-secrets-health.yml`, `check-show-metadata-consensus.yml`, `critique-plan-v2.yml`, `generate-related-shows.yml`, `get-ai-feedback.yml`, `get-gpt-plan-review.yml`, `investigate-alert.yml`, `lighthouse-post-deploy.yml`, `opening-night-orchestrator.yml`, `opening-night-stage-alert.yml`, `posthog-weekly-insights.yml`, `review-sprint-plan.yml`, `rotate-apple-secret.yml`, `rotate-gitlab-token.yml`, `run-script.yml`, `scrapingdog-account-usage.yml`, `sentry-triage.yml`, `supabase-functions.yml`, `test-model-consistency.yml`, `test-paywalled-access.yml`, `test-review-validation.yml`, `tr-layout-diag.yml`, `verify-reviews.yml`, `we-newsletter-draft.yml`, `weekly-affiliate-report.yml`
+- **other** (30): `batch-commercial-research.yml`, `check-cutoff-freshness.yml`, `check-linear-drain-health.yml`, `check-opening-night-readiness.yml`, `check-secrets-health.yml`, `check-show-metadata-consensus.yml`, `critique-plan-v2.yml`, `generate-related-shows.yml`, `get-ai-feedback.yml`, `get-gpt-plan-review.yml`, `investigate-alert.yml`, `lighthouse-post-deploy.yml`, `opening-night-lane-switch.yml`, `opening-night-orchestrator.yml`, `opening-night-stage-alert.yml`, `posthog-weekly-insights.yml`, `review-sprint-plan.yml`, `rotate-apple-secret.yml`, `rotate-gitlab-token.yml`, `run-script.yml`, `scrapingdog-account-usage.yml`, `sentry-triage.yml`, `supabase-functions.yml`, `test-model-consistency.yml`, `test-paywalled-access.yml`, `test-review-validation.yml`, `tr-layout-diag.yml`, `verify-reviews.yml`, `we-newsletter-draft.yml`, `weekly-affiliate-report.yml`
 
 ## Secrets used by cross-repo writers
 
@@ -388,7 +388,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `REDDIT_CLIENT_SECRET` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
 | `RESEND_API_KEY` | 72 cross-repo writers (of 152 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
-| `REVIEW_TEXTS_TOKEN` | 140 cross-repo writers (of 252 workflows using it) |
+| `REVIEW_TEXTS_TOKEN` | 140 cross-repo writers (of 253 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 79 cross-repo writers (of 107 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 82 cross-repo writers (of 109 workflows using it) |
 | `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 9 workflows using it): `update-mezzanine.yml` |
