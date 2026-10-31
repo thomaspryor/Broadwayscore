@@ -1,30 +1,126 @@
 {
-  "generatedAt": "2026-10-31T16:32:04.609Z",
+  "generatedAt": "2026-10-31T17:01:30.870Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 300,
-  "defective": 1,
+  "clean": 294,
+  "defective": 7,
   "byType": {
-    "score-drift": 1
+    "score-drift": 7
   },
   "shows": [
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "title": "Garry Starr Classic Penguins",
-      "openingDate": "2026-10-23",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "openingDate": "2026-10-30",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 87.33 vs local 87.26 (Δ0.07)"
+          "detail": "deployed cs 56.95 vs local 59.66 (Δ2.71)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-10-31T16:31:59.972Z"
+      "localCount": 5,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-10-31T17:01:24.921Z"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.82 vs local 76.46 (Δ0.36)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-31T17:01:24.921Z"
+    },
+    {
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "openingDate": "2026-10-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.58 vs local 84.04 (Δ0.46)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-31T17:01:24.921Z"
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "openingDate": "2026-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.38 vs local 77.03 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-31T17:01:24.921Z"
+    },
+    {
+      "showId": "vladimir-regional-2026",
+      "title": "Vladimir",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.47 vs local 81.34 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-31T17:01:24.921Z"
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "title": "Going Bacharach: The Songs of an Icon",
+      "openingDate": "2026-09-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.29 vs local 80.82 (Δ0.53)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-31T17:01:24.921Z"
+    },
+    {
+      "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
+      "title": "A History of Paper",
+      "openingDate": "2026-08-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.34 vs local 70.08 (Δ2.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-10-31T17:01:24.921Z"
     }
   ],
   "persistentDefective": 0,

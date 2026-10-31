@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T16:32:05.002Z",
+  "generatedAt": "2026-10-31T17:01:31.237Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -112,6 +112,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -136,8 +140,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 786,
-  "matchedGaps": 6,
+  "itemsScanned": 778,
+  "matchedGaps": 7,
   "possibleGaps": 12,
   "gaps": [
     {
@@ -192,6 +196,15 @@
       "outletId": "theatre-reviews-limited",
       "url": "https://www.theatrereviews.com/off-broadway-review-the-heart-at-roundabout-theatre-companys-laura-pels-theatre-in-the-harold-and-miriam-steinberg-center-for-theatre-through-sunday-december-13-2026/",
       "headline": "Off-Broadway Review: &#8220;The Heart&#8221; at Roundabout Theatre Company&#8217;s Laura Pels Theatre in the Harold and Miriam Steinberg Center for Theatre (Through Sunday, December 13, 2026)",
+      "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "matched",
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
+      "headline": "Review: The Moth &#8211; Finborough Theatre, London",
       "publishDate": "2026-10-31"
     },
     {
