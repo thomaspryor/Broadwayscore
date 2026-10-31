@@ -467,7 +467,7 @@ jobs:
         run: |
           # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
-          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull origin main --rebase 2>/dev/null || true
+          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull origin main --rebase 2>/dev/null || { git rebase --abort 2>/dev/null; true; }
           REMAINING=$(node -e '
             const fs = require("fs");
             const path = require("path");

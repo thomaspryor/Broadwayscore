@@ -254,7 +254,7 @@ jobs:
           else
             # Full refresh: pull all latest changes
             echo "Refreshing all review-texts..."
-            git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull origin main --rebase --quiet 2>/dev/null || echo "Pull failed — using existing checkout"
+            git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull origin main --rebase --quiet 2>/dev/null || { git rebase --abort 2>/dev/null; echo "Pull failed — using existing checkout"; }
           fi
           cd ../..
           echo "Review-texts refreshed"

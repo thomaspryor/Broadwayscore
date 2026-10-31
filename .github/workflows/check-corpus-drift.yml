@@ -164,7 +164,7 @@ jobs:
           source scripts/lib/heal-phantom-shallow.sh
           heal_phantom_shallow || true
           git_net 300 fetch --shallow-since="10 days ago" origin main \
-            || { heal_phantom_shallow || true; git_net 300 fetch --deepen=4000 origin main; } \
+            || { heal_phantom_shallow || true; git_net 300 -c http.lowSpeedTime=600 fetch --deepen=4000 origin main; } \
             || echo "::warning::history deepen failed — churn-merge-coverage will run degraded"
           heal_phantom_shallow || true
 

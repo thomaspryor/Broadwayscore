@@ -326,7 +326,7 @@ jobs:
       - name: Pull latest
         run: |
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
-          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || true
+          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || { git rebase --abort 2>/dev/null; true; }
 
       - name: Configure git
         run: |
@@ -454,7 +454,7 @@ jobs:
       - name: Pull latest (after all gather jobs)
         run: |
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
-          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || true
+          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || { git rebase --abort 2>/dev/null; true; }
 
       - name: Configure git
         run: |
@@ -547,7 +547,7 @@ jobs:
       - name: Pull latest (after all gather + scrape jobs)
         run: |
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
-          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || true
+          git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || { git rebase --abort 2>/dev/null; true; }
 
       - name: Configure git
         run: |

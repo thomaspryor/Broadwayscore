@@ -96,7 +96,7 @@ jobs:
             CORE=/tmp/core-data-checkout
             # blob:none keeps the deepen to commits and trees; git show fetches
             # the two commercial.json blobs it needs on demand.
-            git_net 300 -C "$CORE" fetch -q --filter=blob:none --deepen=2000 origin main
+            git_net 300 -c http.lowSpeedTime=600 -C "$CORE" fetch -q --filter=blob:none --deepen=2000 origin main
             FULL=$(git -C "$CORE" rev-parse --verify "${REVERT}^{commit}")
             SUBJECT=$(git -C "$CORE" log -1 --format=%s "$FULL")
             if [ "$SUBJECT" != "data: release held commercial rows" ]; then
