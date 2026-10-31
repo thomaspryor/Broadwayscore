@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T17:36:52.326Z",
+  "generatedAt": "2026-10-31T17:59:11.896Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,24 +7,27 @@
   "clean": 297,
   "defective": 4,
   "byType": {
-    "score-drift": 4
+    "score-drift": 3,
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "paranormal-activity-west-end-2025",
-      "title": "Paranormal Activity",
-      "openingDate": "2025-12-14",
+      "showId": "lanny-bristol-old-vic-regional-2026",
+      "title": "Lanny",
+      "openingDate": "2026-10-23",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 57.21 vs local 56.95 (Δ0.26)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: observer"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-10-31T17:01:24.921Z"
+      "missingFromProd": [
+        "observer"
+      ],
+      "localCount": 13,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-31T17:59:03.683Z"
     },
     {
       "showId": "middlemarch-rsc-regional-2026",
@@ -38,9 +41,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 9,
+      "localCount": 10,
       "deployedCount": 10,
-      "firstDefectAt": "2026-10-31T17:36:47.479Z"
+      "firstDefectAt": "2026-10-31T17:59:03.683Z"
     },
     {
       "showId": "hadestown-2019",
@@ -56,7 +59,7 @@
       "missingFromProd": [],
       "localCount": 51,
       "deployedCount": 51,
-      "firstDefectAt": "2026-10-31T17:36:47.479Z"
+      "firstDefectAt": "2026-10-31T17:11:45.469Z"
     },
     {
       "showId": "the-mousetrap-west-end-2021",

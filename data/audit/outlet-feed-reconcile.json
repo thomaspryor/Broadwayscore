@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T17:36:52.584Z",
+  "generatedAt": "2026-10-31T17:59:12.285Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -117,7 +117,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -138,10 +138,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 778,
-  "matchedGaps": 7,
+  "itemsScanned": 748,
+  "matchedGaps": 6,
   "possibleGaps": 12,
   "gaps": [
     {
@@ -161,15 +165,6 @@
       "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
       "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "level": "matched",
-      "outletId": "new-york-classical-review",
-      "url": "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
-      "headline": "Yoncheva, Spyres provide adrenaline injection to Met&#8217;s &#8220;Medea&#8221; revival",
-      "publishDate": "2026-10-31"
     },
     {
       "showId": "memoriam-off-west-end-2026",
