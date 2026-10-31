@@ -1756,5 +1756,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T19:30:01.510Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6716-owncast",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6716-owncast",
+    "description": "land.yml did not land land/bro-6716-owncast: the unit-tests-node gate went red at 4a308ccc70. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41235218309",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6716-owncast"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4a308ccc704b8d7d3937a01a604bd9b0502091ff"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41235218309"
+      }
+    ],
+    "queuedAt": "2026-10-31T20:06:35.109Z"
   }
 ]
