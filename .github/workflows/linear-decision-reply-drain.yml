@@ -50,6 +50,8 @@ jobs:
           CAP: ${{ inputs.cap || '5' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
           ISSUE: ${{ inputs.issue || '' }}
+          BOARD_WORKER_FIRE_URL: ${{ secrets.BOARD_WORKER_FIRE_URL }}
+          BOARD_WORKER_FIRE_TOKEN: ${{ secrets.BOARD_WORKER_FIRE_TOKEN }}
         run: |
           ONLY=()
           if [ -n "$ISSUE" ]; then ONLY=(--issue "$ISSUE"); fi
