@@ -27,10 +27,11 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { cleanup } = require('./lib/scraper');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { venuesMatch } = require('./lib/deduplication');
 const { findConflictingShowId, isProductionMismatch } = require('./lib/show-score-url-map');
-const { disambiguateByVenue, mergeShowScoreCandidates } = require('./lib/show-score-venue-disambiguation');
+const { disambiguateByVenue, mergeShowScoreCandidates, corroborateShowScoreCandidates } = require('./lib/show-score-venue-disambiguation');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -680,6 +681,15 @@ async function main() {
     });
 
     if (write) {
+      const tdf = await corroborateShowScoreCandidates(candidatesData.candidates);
+      candidatesData.candidates = tdf.candidates;
+      candidatesData._meta.totalCandidates = tdf.candidates.length;
+      for (const c of tdf.refused) {
+        console.log(`  [TDF REFUSED] "${c.title}": Off-Off Broadway (${c.tdfUrl})`);
+      }
+      for (const warning of tdf.warnings) {
+        console.warn(`  [TDF UNAVAILABLE] "${warning.title}": ${warning.reason}`);
+      }
       const n = candidatesData.candidates.length;
       const r = candidatesData.venueRejected.length;
       if (!dryRun) {
@@ -692,7 +702,7 @@ async function main() {
   }
 }
 
-main().catch(err => {
+main().finally(async () => { await cleanup(); }).catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
 });

@@ -81,4 +81,70 @@ function mergeShowScoreCandidates({ candidates, venueRejects, existing, matchedU
   };
 }
 
-module.exports = { disambiguateByVenue, mergeShowScoreCandidates };
+/**
+ * BRO-6693: Show Score's Off-Broadway collection also contains Off-Off runs.
+ * Consult TDF for the merged candidates, including entries carried over from
+ * earlier runs. Only an exact title and an explicit show-page tier tag refuse
+ * intake. An absent match or unavailable TDF page supplies no tier evidence.
+ * Existing catalog URL assignments never pass through this gate.
+ *
+ * Finder results need JS. Restrict that request to the free browser tier and
+ * use free HTTP for show pages, which contain server-rendered tags. This also
+ * works in the discovery cron steps that have no paid-provider credentials.
+ */
+async function corroborateShowScoreCandidates(candidates, options = {}) {
+  const fetchTdfPage = options.fetchPage || require('./scraper').fetchPage;
+  const cheerio = require('cheerio');
+  const normalize = title => cheerio.load(title || '').text()
+    .replace(/\s*\((?:Off[- ]Broadway|NYC)\)\s*$/i, '')
+    .normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+  const kept = [], refused = [], warnings = [];
+  const checked = new Map();
+  for (const candidate of candidates) {
+    if (candidate.category !== 'off-broadway' || !normalize(candidate.title)) {
+      kept.push(candidate);
+      continue;
+    }
+    const title = normalize(candidate.title);
+    if (!checked.has(title)) {
+      let refusal = null;
+      try {
+        const searchUrl = new URL('https://www.tdf.org/on-stage/show-finder/');
+        searchUrl.searchParams.set('q', candidate.title.replace(/\s*\((?:Off[- ]Broadway|NYC)\)\s*$/i, ''));
+        const search = await fetchTdfPage(searchUrl.href, {
+          preferPlaywright: true, tiers: ['playwright-first'],
+          playwrightWaitForSelector: '[data-sf-count]:not([style*="display: none"])',
+        });
+        const $ = cheerio.load(search.content || '');
+        if (!$('[data-sf-results]').length) throw new Error('TDF Show Finder results missing');
+        const links = $('[data-sf-results] a[href]').filter((_, a) =>
+          normalize($(a).find('.show-card__title').text()) === title
+        ).map((_, a) => $(a).attr('href')).get();
+        for (const href of new Set(links)) {
+          const url = new URL(href, searchUrl);
+          // Follow only TDF show-page links, never third-party search results.
+          if (url.origin !== searchUrl.origin || !url.pathname.startsWith('/shows/')) continue;
+          const detail = await fetchTdfPage(url.href, { directOnly: true });
+          const page = cheerio.load(detail.content || '');
+          if (normalize(page('h1').text()) !== title) continue;
+          const offOff = page('.shows-single__types a').toArray().some(a =>
+            /^off[\s-]+off[\s-]+broadway$/i.test(page(a).text().trim())
+          );
+          if (offOff) {
+            refusal = { tdfUrl: url.href, reason: 'tdf-off-off-broadway' };
+            break;
+          }
+        }
+      } catch (error) {
+        warnings.push({ title: candidate.title, reason: error.message });
+      }
+      checked.set(title, refusal);
+    }
+    const refusal = checked.get(title);
+    if (refusal) refused.push({ ...candidate, ...refusal });
+    else kept.push(candidate);
+  }
+  return { candidates: kept, refused, warnings };
+}
+
+module.exports = { disambiguateByVenue, mergeShowScoreCandidates, corroborateShowScoreCandidates };
