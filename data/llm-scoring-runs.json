@@ -1551109,21 +1551109,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T14:30:16.823Z",
-    "completedAt": "2026-10-31T14:31:06.789Z",
-    "totalReviews": 10,
-    "processed": 10,
-    "skipped": 0,
+    "startedAt": "2026-10-31T14:37:44.197Z",
+    "completedAt": "2026-10-31T14:38:19.726Z",
+    "totalReviews": 9,
+    "processed": 7,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 60133,
-      "output": 2983,
-      "cacheRead": 38070,
+      "input": 44256,
+      "output": 2206,
+      "cacheRead": 26649,
       "cacheWrite": 0,
-      "total": 150985
+      "total": 108961
     },
-    "costUsd": 0.22597170000000003,
-    "runId": "41209937758",
+    "costUsd": 0.16603849999999998,
+    "runId": "41210608962",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1557583,6 +1557583,16 @@
           "up": 4,
           "flat": 2,
           "down": 1,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "blood-of-the-lamb-regional-2026",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 1,
+          "down": 0,
           "total": 7
         },
         "hasDisagreement": false
@@ -1573412,6 +1573422,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "mean-girls-regional-2026",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "mean-girls-west-end-2024",
         "ourDistribution": {
           "up": 22,
@@ -1580740,16 +1580760,6 @@
           "flat": 0,
           "down": 0,
           "total": 7
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "sisters-regional-2026",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 2,
-          "down": 3,
-          "total": 10
         },
         "hasDisagreement": false
       },
@@ -1594182,6 +1594192,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "yo-ho-regional-2026",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 4,
+          "down": 1,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "you-cant-take-it-with-you-2014",
         "ourDistribution": {
           "up": 15,
@@ -1594379,8 +1594399,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T14:36:03.547Z",
-    "completedAt": "2026-10-31T14:36:03.549Z",
+    "startedAt": "2026-10-31T14:43:17.688Z",
+    "completedAt": "2026-10-31T14:43:17.689Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1594393,7 +1594413,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41209937758",
+    "runId": "41210608962",
     "source": "comparative-rescore",
     "errorDetails": []
   },
