@@ -183,6 +183,7 @@ const EXEMPT_NEVER_CI = {
   // BRO-4061: asserts the gap-audit checkpoint grew past its 925-show plateau
   // a week after the catalogue lane landed. Date-gated RECHECK-AFTER probe.
   'scripts/verify-bro-4061-recheck.test.mjs': 'BRO-4061',
+  'scripts/verify-bro-6687-recheck.test.mjs': 'BRO-6687',
   // BRO-4930: asserts the 2026-10 outlet tier moves reached published show
   // JSON after the nightly rebuild-reviews run. Date-gated RECHECK-AFTER probe.
   'scripts/verify-outlet-tiers-published.test.mjs': 'BRO-4930',
