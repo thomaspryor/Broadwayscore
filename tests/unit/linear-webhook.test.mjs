@@ -46,3 +46,13 @@ test('waitsOnOwner: live decision or label yes; answered, closed or plain cards 
   assert.equal(w.waitsOnOwner({ description: 'DECISION NEEDED: pick?', labels: { nodes: [] }, state: { type: 'completed' } }), false);
   assert.equal(w.waitsOnOwner(null), false);
 });
+
+test('waitsOnOwner: a second open question survives an ANSWERED line; prose mentions and heading form behave', () => {
+  const w = require('../../src/lib/linear-webhook.js');
+  const open = { state: { type: 'unstarted' } };
+  assert.equal(w.waitsOnOwner({ ...open, description: 'ANSWERED by the owner (x).\n\nDECISION NEEDED: second question?' }), true);
+  assert.equal(w.waitsOnOwner({ ...open, description: 'We discussed the DECISION NEEDED process in prose.' }), false);
+  assert.equal(w.waitsOnOwner({ ...open, description: '## DECISION NEEDED (owner)\n\nWhich?' }), true);
+  assert.equal(w.waitsOnOwner({ state: { type: 'completed' }, labels: { nodes: [{ name: 'awaiting-owner' }] }, description: '' }), false);
+  assert.equal(w.replyCandidate({ type: 'Comment', action: 'create', data: { body: 'Visual change approved by the owner. The lander will ship it.', issueId: '0b0b0b0b-0b0b-0b0b-0b0b-0b0b0b0b0b0b' } }), null);
+});

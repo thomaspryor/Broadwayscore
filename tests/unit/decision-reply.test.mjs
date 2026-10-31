@@ -424,3 +424,24 @@ test('approval drain: reports an acknowledgement failure after applying the appr
     process.exitCode = 0;
   }
 });
+
+test('drain --issue touches only that card and wakes the worker once when it hands a card over', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  const calls = [];
+  const mk = (n) => issue(B6110_OPEN, [c('A', '19:01')], { id: `u${n}`, identifier: `BRO-61${n}0`, title: 'DECISION NEEDED: Cyrus?' });
+  const cards = { 'BRO-6110': mk(1), 'BRO-6120': mk(2) };
+  const linear = {
+    listOpenIssuesWithDescriptions: async () => Object.values(cards),
+    getIssue: async (id) => cards[id],
+    getTeam: async () => ({ states: { nodes: [{ id: 'todo', name: 'Todo', type: 'unstarted' }] } }),
+    createComment: async (id, body) => calls.push(['comment', id]),
+    updateIssue: async (id, input) => calls.push(['update', id]),
+  };
+  const wakes = [];
+  const live = await main(['--apply', '--issue', 'BRO-6120'], { linear, now: () => new Date('2026-10-24T20:00:00Z'), wake: async (x) => { wakes.push(x); return { requested: true }; } });
+  assert.deepEqual(live.dispatch, ['BRO-6120']);
+  assert.deepEqual(calls.map((x) => x[1]), ['u2', 'u2'], 'the other card is not read-written');
+  assert.deepEqual(wakes, [{ reason: 'BRO-6120' }]);
+  await main(['--issue', 'BRO-6120'], { linear, now: () => new Date('2026-10-24T20:00:00Z'), wake: async (x) => { wakes.push(x); } });
+  assert.equal(wakes.length, 1, 'a dry run wakes nothing');
+});

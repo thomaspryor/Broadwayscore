@@ -145,6 +145,12 @@ test('a fresh option or own-words answer fast-tracks; approving a held visual ch
   assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'Option B: Reject')]), NOW), true);
   assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'Option A: Approve')]), NOW), false);
   assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'Could not do it')]), NOW), false);
+  assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'I could not do it')]), NOW), false, 'the label recordAnswer really writes');
   assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, '', true)]), NOW), true);
   assert.equal(pick.isOwnerTaskResume(card([answerComment(49 * HOUR, 'Own words')]), NOW), false);
+});
+
+test('an answered card that a session has started is still not taken by a worker (state-started)', () => {
+  const started = { identifier: 'BRO-9', priority: 2, state: { type: 'started', name: 'In Progress' }, updatedAt: at(5 * MIN), description: 'x', comments: { nodes: [answerComment(5 * MIN, 'Option B: Reject')] }, labels: { nodes: [] } };
+  assert.match(String(pick.skipReason(started, NOW)), /state-started/);
 });

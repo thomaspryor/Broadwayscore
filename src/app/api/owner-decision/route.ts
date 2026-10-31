@@ -56,13 +56,14 @@ async function wakeWorker(identifier: string): Promise<void> {
   const ghToken = process.env.GH_DISPATCH_TOKEN;
   if (!ghToken || process.env.BOARD_WORKER_WAKE_DISABLED === 'true') return;
   try {
-    await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore'}/actions/workflows/board-worker-wake.yml/dispatches`, {
+    const res = await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore'}/actions/workflows/board-worker-wake.yml/dispatches`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json', 'User-Agent': 'broadwayscorecard-owner-decision' },
       body: JSON.stringify({ ref: 'main', inputs: { reason: identifier.slice(0, 20) } }),
       cache: 'no-store',
       signal: AbortSignal.timeout(8000),
     });
+    if (!res.ok) console.error('[owner-decision] wake dispatch refused', res.status);
   } catch (e) { console.error('[owner-decision] wake failed', e instanceof Error ? e.message : e); }
 }
 
@@ -123,8 +124,9 @@ export async function POST(req: NextRequest) {
     if (r.status === 'empty') return notice('Nothing typed', 'Go back and type your answer. Nothing was changed.', 400);
     if (r.status !== 'recorded') return staleNotice(r);
     // BRO-6715: start a board worker now (workflow holds the routine token); fail-soft, never blocks the answer.
-    // An Approve of a held visual change is shipped by the lander, so it needs no worker.
-    if (!/^Option A: Approve\b/i.test(String(r.answer?.label || ''))) await wakeWorker(String(r.issue?.identifier || ''));
+    // An Approve of a held visual change is shipped by the lander, and "I could not do it" changes nothing, so neither needs a worker
+    // (same exclusions as OWNER_TASK_DONE_RE in scripts/lib/cloud-worker-pick.js).
+    if (!/^(?:Option A: Approve\b|I could not do it|Could not do it)/i.test(String(r.answer?.label || ''))) await wakeWorker(String(r.issue?.identifier || ''));
     const card = r.issue ? `<p class="small">Card: ${esc(r.issue.identifier)} ${esc(r.issue.title)}</p>` : '';
     return page('Recorded', `<h1>Recorded</h1><p>Your answer is saved on the card: <strong>${esc(r.answer?.label)}</strong>.</p><p>Claude picks the card up from the board and carries on. You do not need to do anything else.</p>${card}`);
   } catch (e) { return failure(e); }

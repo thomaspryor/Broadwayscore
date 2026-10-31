@@ -74,7 +74,10 @@ function canonicalizeDecisionHeading(description) {
     if (at < 0) continue;
     const q = lines[at].replace(HEADING_LINE_PREFIX_RE, '').replace(/\*+$/, '').trim();
     if (!q || isPlaceholder(q) || isEmptyDecisionContent(q) || SETTLED_RE.test(q)) continue;
-    lines[i] = `${lines[i].replace(/\s*:?\s*\**\s*$/, '')}: ${q}`;
+    const base = lines[i].trimEnd();
+    const candidate = /:\s*(?:\*\*)?$/.test(base) ? `${base} ${q}` : `${base}: ${q}`;
+    if (!MARKER_RE.test(candidate)) continue; // a shape the one-line parser would still miss: leave the card alone
+    lines[i] = candidate;
     lines.splice(at, 1);
     break;
   }
