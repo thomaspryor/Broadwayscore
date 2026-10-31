@@ -1,128 +1,73 @@
 {
-  "updatedAt": "2026-10-31T15:20:14.265Z",
-  "processed": 539,
-  "failed": 159,
-  "successRate": "77.2%",
+  "updatedAt": "2026-10-31T15:24:20.651Z",
+  "processed": 143,
+  "failed": 37,
+  "successRate": "79.4%",
   "tierBreakdown": {
-    "playwright": 271,
-    "amp": 3,
-    "browserbase": 26,
-    "directCookies": 1,
-    "scrapingdog": 35,
-    "scrapingbee": 25,
-    "brightdata": 32,
-    "archiveToday": 65,
-    "archive": 188
+    "playwright": 78,
+    "amp": 4,
+    "browserbase": 8,
+    "directCookies": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 0,
+    "brightdata": 6,
+    "archiveToday": 12,
+    "archive": 58
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-10-31T11:03:15.349Z",
+      "t": "2026-10-31T14:48:49.219Z",
+      "event": "bb-session",
+      "session": "91c22912",
+      "url": "http://www.nytimes.com/2016/03/03/theater/review-straight-glides-between-sexual-"
+    },
+    {
+      "t": "2026-10-31T14:48:49.911Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T11:04:37.104Z",
+      "t": "2026-10-31T14:56:36.495Z",
       "event": "bb-session",
-      "session": "5d67735e",
-      "url": "https://www.wsj.com/articles/vanity-fair-review-becky-sharp-takes-the-stage-1491"
+      "session": "e38c266f",
+      "url": "http://www.nytimes.com/2016/02/24/theater/review-the-body-of-an-american-ties-cr"
     },
     {
-      "t": "2026-10-31T11:04:37.582Z",
+      "t": "2026-10-31T14:56:37.102Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T14:58:21.342Z",
+      "event": "bb-session",
+      "session": "25a5bf98",
+      "url": "https://www.nytimes.com/2016/02/21/theater/naian-gonzalez-norvind-reaches-for-hi"
+    },
+    {
+      "t": "2026-10-31T14:58:21.959Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T15:07:09.990Z",
+      "event": "bb-session",
+      "session": "dd0bc126",
+      "url": "http://www.wsj.com/articles/smart-people-review-not-so-right-minded-1455835004"
+    },
+    {
+      "t": "2026-10-31T15:07:10.664Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-31T11:22:34.323Z",
+      "t": "2026-10-31T15:14:19.531Z",
       "event": "bb-session",
-      "session": "4415e859",
-      "url": "http://www.hollywoodreporter.com/review/how-transcend-a-happy-marriage-theater-r"
+      "session": "471a5f9d",
+      "url": "http://www.nytimes.com/2016/02/22/theater/review-in-the-woodsman-a-love-lost-in-"
     },
     {
-      "t": "2026-10-31T11:35:34.952Z",
-      "event": "bb-session",
-      "session": "bbcdaeca",
-      "url": "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society"
-    },
-    {
-      "t": "2026-10-31T11:35:35.505Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:36:24.916Z",
-      "event": "bb-session",
-      "session": "291ffdb5",
-      "url": "https://www.nytimes.com/2017/03/13/theater/the-moors-review.html"
-    },
-    {
-      "t": "2026-10-31T11:36:25.357Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:55:15.144Z",
-      "event": "bb-session",
-      "session": "3fc87b21",
-      "url": "https://www.nytimes.com/2017/03/24/theater/review-emperor-jones-fearsome-and-fea"
-    },
-    {
-      "t": "2026-10-31T11:55:15.686Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:56:23.350Z",
-      "event": "bb-session",
-      "session": "efda11a1",
-      "url": "https://www.nytimes.com/2017/03/03/theater/review-little-miss-sunshine-trips-int"
-    },
-    {
-      "t": "2026-10-31T11:56:23.872Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T14:00:02.025Z",
-      "event": "bb-session",
-      "session": "f529db09",
-      "url": "http://www.newyorker.com/magazine/2016/12/05/a-strangely-muted-sweet-charity?mbi"
-    },
-    {
-      "t": "2026-10-31T14:00:02.544Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-31T15:13:12.656Z",
-      "event": "bb-session",
-      "session": "b22779b5",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-10-31T15:13:13.283Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-31T15:18:25.546Z",
-      "event": "bb-session",
-      "session": "7bc40c78",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-31T15:18:26.196Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T15:18:35.456Z",
-      "event": "bb-session",
-      "session": "4c1062ab",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-31T15:18:36.011Z",
+      "t": "2026-10-31T15:14:20.241Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
