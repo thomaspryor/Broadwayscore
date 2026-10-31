@@ -3469,12 +3469,12 @@ showDirs.forEach(showId => {
       // isVenueCarveoutPersistedWrongProduction in review-guards.js.
       // Also heals a CV-promoted flag the BRO-5805 own-cast rule would now refuse
       // (isOwnCastEvidencePersistedWrongProduction): same settle-and-retier path.
-      const wpHealKind = isVenueCarveoutPersistedWrongProduction(data, showById[showId]) ? 'venue'
+      const wpHealKind = isVenueCarveoutPersistedWrongProduction(data, showById[showId]) ? 'venue-carveout'
         : isOwnCastEvidencePersistedWrongProduction(data, showById[showId]) ? 'own-cast' : null;
       if (wpHealKind) {
         data.wrongProduction = false;
         data.wrongProductionSelfHealed = true;
-        data.wrongProductionSelfHealReason = wpHealKind === 'venue'
+        data.wrongProductionSelfHealReason = wpHealKind === 'venue-carveout'
           ? 'CV wrongProduction was a venue/category objection on this show\'s own run (BRO-6716 carve-out) — cleared'
           : 'CV wrongProduction contradicted by the body naming this show\'s own cast, dated at its opening (BRO-5805 rule, BRO-6716 heal) — cleared';
       // collect-review-texts parks a wrong-production body in wrongFullText; put it back
@@ -3500,7 +3500,7 @@ showDirs.forEach(showId => {
             data.incompleteDetail = null;
           }
         }
-        if (wpHealKind === 'venue') stats.cvVenueCarveoutWrongProductionHealed = (stats.cvVenueCarveoutWrongProductionHealed || 0) + 1;
+        if (wpHealKind === 'venue-carveout') stats.cvVenueCarveoutWrongProductionHealed = (stats.cvVenueCarveoutWrongProductionHealed || 0) + 1;
         else stats.cvOwnCastWrongProductionHealed = (stats.cvOwnCastWrongProductionHealed || 0) + 1;
         if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
           markRescoreNeeded(data, wpHealKind === 'own-cast' ? 'wrongProduction own-cast heal' : 'wrongProduction venue carve-out heal');
