@@ -5127,6 +5127,28 @@ function checkStarBandDrift() {
   return report ? starBandDriftResults(report) : [];
 }
 
+// BRO-6725: a review-seeded UK regional opening date ('guardian-review' / 'census-review')
+// is an upper bound on press night; a review dated before it means the date is late.
+function checkUkRegionalOpeningDates() {
+  try {
+    const { reconcileOpeningDate } = require('./lib/uk-regional-opening-date');
+    const { isUkRegionalVenue } = require('./lib/market-label');
+    const raw = require('../data/shows.json');
+    const all = Array.isArray(raw) ? raw : raw.shows;
+    const byShow = {};
+    for (const r of require('../data/reviews.json').reviews) (byShow[r.showId] = byShow[r.showId] || []).push(r.publishDate);
+    const late = all.filter((s) => s.category === 'regional' && isUkRegionalVenue(s.venue)
+      && reconcileOpeningDate(s, byShow[s.id]).action !== 'none' && ['guardian-review', 'census-review', 'first-review-date'].includes(s.openingDateSource));
+    if (!late.length) return [{ name: 'Data: UK regional opening dates', status: 'pass', message: 'No UK regional opening date sits after its earliest review' }];
+    return [{
+      name: 'Data: UK regional opening dates',
+      status: 'warn',
+      message: `${late.length} UK regional show(s) have a review dated before the review-seeded opening date (e.g. ${late.slice(0, 3).map((s) => s.id).join(', ')}).`,
+      hint: 'node scripts/reconcile-uk-regional-opening-dates.js --plan=bro-N writes the data-edit plan (BRO-6725).',
+    }];
+  } catch { return []; }
+}
+
 function checkEarlyPublishDates() {
   const report = readAuditJsonOrNull('early-publish-dates.json');
   return report ? earlyPublishDatesResults(report) : [];
@@ -6183,6 +6205,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
     ...checkSync(),
+    ...checkUkRegionalOpeningDates(),
     ...checkPipelines(),
     ...checkBatchState(),
     ...checkQuality(),

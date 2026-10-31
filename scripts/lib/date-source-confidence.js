@@ -67,6 +67,11 @@ const ALWAYS_UNCONFIRMED = new Set([
   'guardian-review',
   // theatreinchicago.com first-review publish date (BRO-6518), same reasoning.
   'tic-first-review',
+  // BRO-6725: census-review is the census run's rename of guardian-review (same
+  // meaning: a first-review date, press night was on or before it); first-review-date
+  // is the earliest review across outlets, written by reconcile-uk-regional-opening-dates.js.
+  'census-review',
+  'first-review-date',
   null,
   undefined,
   '',
