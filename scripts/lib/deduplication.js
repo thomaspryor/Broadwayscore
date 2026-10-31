@@ -249,7 +249,7 @@ function slugify(title) {
 
 // Multi-word possessives are ambiguous: "Midsummer Night's" is title content,
 // while "Thornton Wilder's" is an author credit. Only strip known credits.
-// Single-token prefixes retain their existing normalization behavior.
+// One-word possessives are kept too unless listed here (BRO-6547).
 const AUTHOR_PREFIXES = new Set([
   'agatha christie', 'alan bennett', 'andre heller', 'andrew lloyd webber',
   'anne washburn', 'august wilson', 'bob fosse', 'dolly parton', 'gore vidal',
@@ -260,7 +260,7 @@ const AUTHOR_PREFIXES = new Set([
   // Single-word brand/author possessives. A bare one-word possessive is NOT
   // stripped by default: "Hell's Kitchen"/"The Kitchen", "Marvin's Room"/"Veronica's
   // Room" and "A Doll's House"/"A Dog's House" collapsed to one key (BRO-6547).
-  'disney', 'shakespeare', 'ovid',
+  'disney', 'shakespeare',
 ]);
 
 /**

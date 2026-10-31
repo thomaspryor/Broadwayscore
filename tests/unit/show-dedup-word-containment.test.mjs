@@ -124,7 +124,7 @@ test('one-word possessives are kept unless a known brand/author', () => {
   }
   for (const [a, b] of [
     ["Disney's Beauty and the Beast", 'Beauty and the Beast'],
-    ["Shakespeare's Cabaret", 'Cabaret'],
+    ["Shakespeare's Macbeth", 'Macbeth'],
     ["Thornton Wilder's The Emporium", 'The Emporium'],
   ]) {
     assert.equal(normalizeTitle(a), normalizeTitle(b), `${a} vs ${b}`);
