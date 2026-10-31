@@ -41,17 +41,14 @@ const VERBOSE = args.includes('--verbose');
 
 function log(msg) { if (VERBOSE) console.log(msg); }
 
+const { normalizeArticleUrl } = require('./lib/combined-review-utils');
+
 function normalizeUrl(url) {
   if (!url) return null;
   try {
-    let u = url.trim().toLowerCase();
-    // Strip trailing slash, hash, query params for comparison
-    u = u.replace(/[#?].*$/, '').replace(/\/+$/, '');
-    // Normalize http → https
-    u = u.replace(/^http:\/\//, 'https://');
-    // Strip www.
-    u = u.replace(/^https:\/\/www\./, 'https://');
-    return u || null;
+    // Query params dropped except article ids (LSA story.asp?ID=N, BRO-6682).
+    const u = normalizeArticleUrl(url);
+    return u ? 'https://' + u : null;
   } catch { return null; }
 }
 

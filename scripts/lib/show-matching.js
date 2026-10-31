@@ -1754,7 +1754,14 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
   // drop them entirely. If nothing else matched, the article stays unmatched
   // (→ audit log → human), which is strictly safer than ingesting reviews
   // into the wrong show.
-  const viable = candidates.filter(c => !c.locPrefixed);
+  // BRO-6682 (GitHub #1018): a slug that names a LONGER show ("...-the-heart-of-
+  // rock-and-roll") contains every token of the shorter one ("The Heart"). The
+  // per-show Playbill Verdict poll passes only [show], so sibling shows cannot
+  // win the tie-break; look the siblings up the way matchTitleToShow does.
+  const slugText = cleanedSlug.replace(/-/g, ' ');
+  const viable = candidates.filter(c => !c.locPrefixed
+    && !(findContainingTitleSibling(slugText, c.show.title, { shows })
+      || findContainingTitleSibling(slugText, c.show.title)));
   if (viable.length === 0) return null;
   candidates.length = 0;
   candidates.push(...viable);

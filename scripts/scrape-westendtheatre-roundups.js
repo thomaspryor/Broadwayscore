@@ -534,6 +534,16 @@ async function main() {
 
     const show = matchResult.show;
 
+    // BRO-6682: never archive a roundup on a non-London row or a pre-run post.
+    {
+      const bad = require('./lib/wet-archive-guard').wetArchiveProblem(show, { postDate, postUrl });
+      if (bad) {
+        stats.skippedOtherProduction = (stats.skippedOtherProduction || 0) + 1;
+        console.log(`  [WET GUARD] "${showTitle}" → ${show.id}: ${bad.code} (${bad.detail}) — skipped`);
+        continue;
+      }
+    }
+
     // Same title, earlier production: a roundup posted well before this
     // production's previews reviews a prior London run (revival/return).
     {

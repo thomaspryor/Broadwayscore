@@ -62,6 +62,9 @@ function rotateMissingOutlets(outlets, offset = 0) {
   return [...outlets.slice(start), ...outlets.slice(0, start)];
 }
 
+const STALLED_STUB_MAX_HOURS = 72;
+const STUB_EXCLUDED_FLAGS = ['wrongShow', 'wrongProduction', 'isRoundupArticle', 'duplicateOf', 'fabricatedEntry', 'isNonReview'];
+
 function findStalledReviewStubs(show, showDir, now = new Date()) {
   if (!show.openingDate || !isInOpeningWindow(show, now) || !fs.existsSync(showDir)) return [];
   const stalled = [];
@@ -71,11 +74,18 @@ function findStalledReviewStubs(show, showDir, now = new Date()) {
     try {
       const review = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (review.contentTier !== 'stub' || (review.fullText || '').length !== 0) continue;
+      // BRO-6682 (BRO-6670 #33): a stub the pipeline already excluded (news
+      // article, wrong show, roundup, duplicate) is not a stalled collection;
+      // warning on it every poll for weeks (variety--cynthia-littleton) hid the
+      // real stalls.
+      if (STUB_EXCLUDED_FLAGS.some((f) => review[f])) continue;
       // firstSeenAt is immutable at the writer. mtime is a conservative
       // fallback for older files that predate that discovery clock.
       const seen = Date.parse(review.firstSeenAt);
       const ageHours = (+now - (Number.isFinite(seen) ? seen : fs.statSync(filePath).mtimeMs)) / 3600000;
-      if (ageHours > 2) stalled.push({ file, ageHours });
+      // Collection that has not completed three days after the first poll is
+      // abandoned, not stalled (frontmezzjunkies--unknown sat at 529h).
+      if (ageHours > 2 && ageHours <= STALLED_STUB_MAX_HOURS) stalled.push({ file, ageHours });
     } catch { /* Other validity checks report malformed files. */ }
   }
   return stalled;
@@ -89,4 +99,4 @@ function warnStalledReviewStubs(show, showDir, { now = new Date(), log = console
   return stalled;
 }
 
-module.exports = { selectMissingT1T2Outlets, getLondonSupplementalOutlets, reviewSearchKeyword, rotateMissingOutlets, findStalledReviewStubs, warnStalledReviewStubs };
+module.exports = { selectMissingT1T2Outlets, getLondonSupplementalOutlets, reviewSearchKeyword, rotateMissingOutlets, STALLED_STUB_MAX_HOURS, findStalledReviewStubs, warnStalledReviewStubs };

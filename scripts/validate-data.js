@@ -3558,7 +3558,7 @@ function validateReviewTextDuplicates(shows) {
             || data.multiShowSplitChild === true || data.multiShowSplitParent === true) continue;
         if (!data.url) continue;
         // URL normalization: strip protocol, www, trailing slash, query/fragment, lowercase
-        const normUrl = data.url.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase();
+        const normUrl = require('./lib/combined-review-utils').normalizeArticleUrl(data.url);
         if (!normUrl) continue;
         // Check if all sources are aggregator-based
         const allSources = new Set();

@@ -111,4 +111,41 @@ function shouldRecoverJointWrongShow(data, showTitle) {
   return true;
 }
 
-module.exports = { baseSlug, areSameTitleSiblings, computeCombinedWith, shouldRecoverJointWrongShow };
+/**
+ * URL key used to decide that two shows' files are the SAME article.
+ *
+ * Tracking params and fragments are dropped, but a query that IS the article id
+ * is kept: Lighting & Sound America serves every story as /news/story.asp?ID=N,
+ * and stripping "?ID=N" collapsed all of them into one key, so
+ * lighting-and-sound-america--david-barbour.json ended up with combinedWith
+ * listing ~400 shows (BRO-6670 #27, BRO-6682).
+ */
+const ARTICLE_ID_PARAMS = ['id', 'p', 'page_id', 'story', 'storyid', 'story_id', 'article', 'articleid', 'article_id', 'post', 'nid'];
+function normalizeArticleUrl(url) {
+  if (!url) return null;
+  const base = String(url).trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/#.*$/, '');
+  const qi = base.indexOf('?');
+  let pathPart = (qi === -1 ? base : base.slice(0, qi)).replace(/\/$/, '').toLowerCase();
+  if (qi !== -1) {
+    const params = new URLSearchParams(base.slice(qi + 1));
+    const kept = [];
+    for (const [k, v] of params) {
+      if (ARTICLE_ID_PARAMS.includes(k.toLowerCase()) && v) kept.push(`${k.toLowerCase()}=${v.toLowerCase()}`);
+    }
+    if (kept.length) pathPart += '?' + kept.sort().join('&');
+  }
+  return pathPart || null;
+}
+
+/**
+ * A combinedWith list this long is not a joint review: the file was grouped by a
+ * collapsed URL key (LSA story.asp, ~400 shows). flag-combined-reviews clears
+ * the flag when the corrected key no longer groups the file with 2+ shows.
+ */
+const MAX_PLAUSIBLE_COMBINED_SHOWS = 10;
+function isBogusCombinedFlag(data) {
+  return !!data && data.isCombinedReview === true && Array.isArray(data.combinedWith)
+    && data.combinedWith.length > MAX_PLAUSIBLE_COMBINED_SHOWS;
+}
+
+module.exports = { isBogusCombinedFlag, MAX_PLAUSIBLE_COMBINED_SHOWS, normalizeArticleUrl, baseSlug, areSameTitleSiblings, computeCombinedWith, shouldRecoverJointWrongShow };

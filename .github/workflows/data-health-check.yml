@@ -454,6 +454,14 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-early-unmarked-publish-dates.js --counts=data/audit/early-publish-dates.json
 
+      # BRO-6682: WET roundup archives filed under a non-London show or a pre-run post (e.g. the 2015 London
+      # In the Heights roundup on the 2026 NYC production). Advisory first (CLAUDE.md rule 19).
+      - name: WET archive market audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 1
+        run: node scripts/audit-wet-archive-market.js
+
       # BRO-6147: the daily batched decision email moved to owner-decision-emails.yml
       # (one email per decision, tap-to-answer buttons, every 20 minutes).
 
