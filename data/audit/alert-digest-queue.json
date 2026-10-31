@@ -1002,5 +1002,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T16:10:05.682Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:clifford-odets-waiting-for-lefty-off-broadway-2026",
+    "title": "Auto-remediation gave up on clifford-odets-waiting-for-lefty-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"clifford-odets-waiting-for-lefty-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T16:15:11.445Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-moth-off-west-end-2026",
+    "title": "Auto-remediation gave up on the-moth-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-moth-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T16:15:11.524Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-stoker-wilde-off-west-end-2026",
+    "title": "Placeholder synopsis on Stoker Wilde",
+    "description": "synopsis for stoker-wilde-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T16:15:13.042Z"
   }
 ]
