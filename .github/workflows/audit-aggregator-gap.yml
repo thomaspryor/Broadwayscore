@@ -261,7 +261,7 @@ jobs:
       # last step of this ~25-min job, then wait on a 17-min full rebuild before
       # scoring was even dispatched (53 min to live, bar 30). Publish them now:
       # push review-texts and dispatch the per-show scoring lane (scoring + fast
-      # rebuild) for shows in their opening-night window. Additive only: the
+      # rebuild) on shows near their opening night. Additive only: the
       # end-of-job full rebuild trigger below is unchanged, so anything this
       # skips (stubs, back-catalogue) still publishes the slow way.
       - name: Push ingested review-texts now (fast path)
