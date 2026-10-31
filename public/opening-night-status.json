@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T16:29:04.555Z",
+  "generatedAt": "2026-10-31T16:43:04.031Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -388,23 +388,23 @@
       "status": "open",
       "slug": "the-moth-off-west-end",
       "thumbnail": "/images/shows/the-moth-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 59.66,
-      "liveScore": 60,
-      "scoreDrift": 0.3400000000000034,
+      "siteScore": 56.95,
+      "liveScore": 57,
+      "scoreDrift": 0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
       "t2": 2,
-      "t3": 3,
+      "t3": 4,
       "positive": 2,
       "mixed": 1,
-      "negative": 2,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "6/8 total",
           "T1:0/3",
           "hi-conf:5/6"
         ],
@@ -567,6 +567,18 @@
           "p": 2,
           "m": 1,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-31T16:43:04.031Z",
+          "rc": 6,
+          "s": 56.95,
+          "t1": 0,
+          "t2": 2,
+          "t3": 4,
+          "p": 2,
+          "m": 1,
+          "n": 3,
           "bc": "waiting"
         }
       ]
@@ -2156,17 +2168,17 @@
       "status": "open",
       "slug": "the-heart-off-broadway",
       "thumbnail": "/images/shows/the-heart-off-broadway-2026/thumbnail.webp",
-      "siteScore": 76.46,
-      "liveScore": 76,
-      "scoreDrift": -0.45999999999999375,
+      "siteScore": 76.82,
+      "liveScore": 77,
+      "scoreDrift": 0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
+      "total": 16,
       "t1": 2,
       "t2": 8,
-      "t3": 5,
-      "positive": 11,
+      "t3": 6,
+      "positive": 12,
       "mixed": 2,
       "negative": 2,
       "readiness": {
@@ -2174,7 +2186,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 15,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2615,6 +2627,18 @@
           "t2": 8,
           "t3": 5,
           "p": 11,
+          "m": 2,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-31T16:43:04.031Z",
+          "rc": 16,
+          "s": 76.82,
+          "t1": 2,
+          "t2": 8,
+          "t3": 6,
+          "p": 12,
           "m": 2,
           "n": 2,
           "bc": "waiting"
