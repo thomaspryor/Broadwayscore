@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { findViolations } = require('../../scripts/lint-font-floor.js');
+const { findViolations } = require('../../scripts/lib/font-floor.js');
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('flags 9/10/11px, not 12px or text-xs', () => {
