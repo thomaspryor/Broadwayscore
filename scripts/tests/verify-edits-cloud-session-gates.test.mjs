@@ -159,7 +159,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDIDLE_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -2044,6 +2044,12 @@ function assertWakeless(r, message) {
 }
 const BG_WAIT = toolUse('Bash', { command: 'node scripts/lib/wait-for-land.js land/x 60 --prod', run_in_background: true, description: 'wait for land' },
   'Command running in background with ID: b1e9y745t. Output is being written to: /tmp/x.output.');
+// Real Monitor receipt shape (BRO-6717): "Monitor started (task X, ...". The
+// old fixture "Monitor started with ID: X" never occurs and hid that Monitors
+// were keyed call-N, so a finished one counted as a live wake forever.
+const MONITOR_STARTED = 'Monitor started (task m0n1t0r9, expires in 1800s). You will be notified on each event. Keep working; do not poll or sleep.';
+const MONITOR_EVENT = notice('<task-notification>\n<task-id>m0n1t0r9</task-id>\n<summary>Monitor event: "land run"</summary>\n<event>still queued</event>\n</task-notification>');
+const MONITOR_ENDED = notice('<task-notification>\n<task-id>m0n1t0r9</task-id>\n<tool-use-id>toolu_x</tool-use-id>\n<output-file>/tmp/m.output</output-file>\n<status>completed</status>\n<summary>Monitor "land run" stream ended</summary>\n</task-notification>');
 const BG_DONE = notice('<task-notification>\n<task-id>b1e9y745t</task-id>\n<status>completed</status>\n</task-notification>');
 
 test('WAKELESS: incident replay — NOT SAFE, waiting, nothing armed → BLOCKED', skipNoRepoHook, () => {
@@ -2054,7 +2060,7 @@ test('WAKELESS: incident replay — NOT SAFE, waiting, nothing armed → BLOCKED
 
 test('WAKELESS: each real wake passes — background Bash, Monitor, background Agent, started session, PR subscription, owner-asked send_later', skipNoRepoHook, () => {
   const dir = makeTmpDir('wake-armed');
-  const monitor = toolUse('Monitor', { command: 'until gh-free-check; do sleep 60; done', description: 'land run' }, 'Monitor started with ID: m0n1t0r9.');
+  const monitor = toolUse('Monitor', { command: 'until gh-free-check; do sleep 60; done', description: 'land run' }, MONITOR_STARTED);
   const agent = toolUse('Agent', { description: 'scan', prompt: 'x', run_in_background: true }, 'Async agent launched successfully.\nagentId: a1b2c3d4e5f6');
   const sub = toolUse('mcp__claude-code-remote__subscribe_pr_activity', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 42 }, 'subscribed');
   const later = toolUse('mcp__claude-code-remote__send_later', { delay_minutes: 60, message: 'check', initiation: 'human_request' }, `{"fire_at":"${FAR}","trigger_id":"trig_01OWNER"}`);
@@ -2120,6 +2126,14 @@ test('LOOSEENDS false-positive guards from the ship-check review: negations and 
   ]) {
     assertAllowed(runHook(t, `${body}\n\nSAFE TO ARCHIVE`, LE_ON), body);
   }
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('WAKELESS: a finished Monitor is not a wake; a Monitor event line does not finish it (BRO-6717)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-monitor');
+  const monitor = toolUse('Monitor', { command: 'until done; do sleep 60; done', description: 'land run' }, MONITOR_STARTED);
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, monitor, MONITOR_ENDED]), STALE, WK_ON), 'stream ended');
+  assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, monitor, MONITOR_EVENT]), STALE, WK_ON), 'an event line is progress, not the end');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

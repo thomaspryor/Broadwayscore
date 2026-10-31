@@ -716,6 +716,24 @@ def _closing():
         lines.pop()
     return t, (lines[-1] if lines else '')
 
+# Bash bg: "with ID: X"; Monitor: "Monitor started (task X, ...". Keyed by "ID:" only, every Monitor
+# got a call-N key no notice matched and counted as live forever (BRO-6717: BRO-6518 sat 17h + 19h).
+_BG_ID_RE = re.compile(r'\bID:\s*([0-9A-Za-z_-]{4,})|\bMonitor started \(task\s+([0-9A-Za-z_-]{4,})')
+
+def _bg_task_id(res):
+    m = _BG_ID_RE.search(res or '')
+    return (m.group(1) or m.group(2)) if m else None
+
+def _ended_task_ids(text):
+    """Ids whose <task-notification> ended the task; a "Monitor event" line (no <status>) is progress."""
+    out = []
+    for mn in re.finditer(r'<task-notification>(.*?)</task-notification>', text or '', flags=re.DOTALL):
+        body = mn.group(1)
+        idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', body)
+        if idm and ('<status>' in body or not (re.search(r'<summary>\s*Monitor event\b', body) or '<event>' in body)):
+            out.append(idm.group(1))
+    return out
+
 _live_cache = []
 
 def _live_work():
@@ -745,7 +763,6 @@ def _live_work():
     # The new session's own "id" field first; a bare token only as fallback.
     idfield_re = re.compile(r'"id"\s*:\s*"((?:session|cse)_[0-9A-Za-z]{10,})"')
     bucket_re = re.compile(r'status_bucket\\?"?\s*[:=]\s*\\?"?(?:SESSION_STATUS_BUCKET_)?([A-Za-z_]+)', re.IGNORECASE)
-    bg_id_re = re.compile(r'\bID:\s*([0-9A-Za-z_-]{4,})')
     R = 'mcp__Claude_Code_Remote__'
     trig = {}          # trig id -> {'idx', 'label', 'fire' (ts|None for cron), 'done' (idx)}
     agent_start = {}   # agent id -> (idx, label)
@@ -816,9 +833,9 @@ def _live_work():
                 # Only waits started since the owner's latest message: one that
                 # finished earlier with no notice must not count forever.
                 if ok and i > last_owner:
-                    m = bg_id_re.search(res)
+                    bid = _bg_task_id(res)
                     label = '%s "%s"' % (name, (inp.get('description') or inp.get('command') or '')[:50])
-                    waits[m.group(1) if m else 'call-%d' % i] = (i, label)
+                    waits[bid or 'call-%d' % i] = (i, label)
             elif name == 'mcp__github__subscribe_pr_activity' or name.endswith('subscribe_pr_activity'):
                 if ok and not name.endswith('unsubscribe_pr_activity'):
                     pr_watch = True
@@ -843,10 +860,8 @@ def _live_work():
                         continue  # errored / unreadable result: keeps the last real reading
                     child[sid]['done'] = i if bm.group(1).upper() in ('COMPLETED', 'REVIEW_READY') else -1
         elif kind in ('user_notice', 'user_text'):
-            for mn in re.finditer(r'<task-notification>(.*?)</task-notification>', payload or '', flags=re.DOTALL):
-                idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', mn.group(1))
-                if idm:
-                    task_done[idm.group(1)] = i
+            for tid_done in _ended_task_ids(payload):
+                task_done[tid_done] = i
             for mh in re.finditer(r'<agent-message\s+from="([^"]+)"', payload or ''):
                 task_done[mh.group(1)] = i
 
@@ -1363,6 +1378,29 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Child idle gate (CHILDIDLE, BRO-6717) ──────────────────────────────────
+# A child claiming running work needs a live bg Bash/Monitor/Agent of its own (BRO-6518 idled 17h, 19h on
+# a setsid job). Decision: scripts/lib/child-idle-watch.mjs. Kill switch CHILDIDLE_GATE_DISABLE=1. Fail-open.
+if os.environ.get('CHILDIDLE_GATE_DISABLE', '0') != '1':
+    try:
+        _ci_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'child-idle-watch.mjs')
+        if not _ve_seen('CHILDIDLE') and os.path.isfile(_ci_js) and 'NO-VERIFY:' not in (_last_msg or ''):
+            _ci_text, _ci_last = _closing()
+            if not _owner_must_act(_ci_text):
+                import subprocess
+                _ci_lw = _live_work()
+                _ci = subprocess.run(['node', _ci_js, 'stop-decision'], capture_output=True, text=True, timeout=10,
+                    input=json.dumps({'firstPrompt': '\n'.join(_user_prompts), 'closing': _ci_text, 'lastLine': _ci_last,
+                        'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
+                        'live': {'waits': _ci_lw['waits'], 'agents': _ci_lw['agents']}}))
+                sys.stderr.write(('⚠️  CHILDIDLE: ' + _ci.stderr.strip()[:200] + '\n') if _ci.stderr.strip() else '')
+                _ci_r = json.loads(_ci.stdout or '{}')
+                if _ci_r.get('block'):
+                    sys.stderr.write('   CHILDIDLE: %s\n' % str(_ci_r.get('reason', ''))[:240])
+                    _ve_block("CHILDIDLE")
+    except Exception:
+        pass  # fail-open
+
 # ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
 # Owner: sessions end "NOT SAFE TO EXIT — waiting on X" and never come back;
 # a day later X is long done and nobody checked. Real case (session 014vS4Wn,
@@ -1399,8 +1437,7 @@ if os.environ.get('CHILDWAIT_GATE_DISABLE', '0') != '1':
         if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('CHILDWAIT')
                 and os.path.isfile(_cw_js) and not _owner_must_act(_cw_text)):
             import subprocess
-            _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
-                        for m in re.findall(r'<task-notification>.*?<task-id>\s*([^<\s]+)\s*</task-id>', p or '', re.DOTALL)}
+            _cw_done = {m for k, p in events if k in ('user_notice', 'user_text') for m in _ended_task_ids(p)}
             _cw_tools = []
             for _i, (_k, _p) in enumerate(events):
                 if _k != 'tool':
@@ -1409,9 +1446,8 @@ if os.environ.get('CHILDWAIT_GATE_DISABLE', '0') != '1':
                 _inp = _inp if isinstance(_inp, dict) else {}
                 if _nm == 'TaskStop':
                     _cw_done.add(str(_inp.get('task_id') or _inp.get('taskId') or ''))
-                _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', tool_results_by_id.get(_tid, '') or '')
                 _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp, 'ok': _tid not in tool_error_ids,
-                                  'taskId': _bm.group(1) if _bm else None})
+                                  'taskId': _bg_task_id(tool_results_by_id.get(_tid, ''))})
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')}}))
@@ -2409,6 +2445,11 @@ fi
 
 if [[ "$result" == "CLEARCLOSE" ]]; then
   echo "🛑 BLOCKED: the closing message is not clear enough for the owner, who reads only its end (BRO-5910, owner 2026-10-22). Rewrite the end of the message as: one or two plain sentences on what changed for them; Still running: <what, and what wakes you> (or Nothing is still running.); You need to: <the one thing> (or Nothing needed from you.); then one verdict: SAFE TO ARCHIVE — <why>, KEEP OPEN — <what is pending and what wakes you>, or ACTION NEEDED FROM YOU — <what they must do>. Keep card ids, commit hashes, file paths and code out of those last lines (they belong in the Linear comment). Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "CHILDIDLE" ]]; then
+  echo "🛑 BLOCKED: this is a child worker session with no human, and its closing says work is still running, but nothing running in THIS session will wake it (BRO-6717: BRO-6518 ended 'KEEP OPEN, ingest and scoring still running, I'll check back' and sat 17h, then 19h, while its parent waited). A detached setsid/nohup job, a finished Monitor, a session you started or a message to @parent wakes nothing. Do one of these: (1) keep polling inside your turn: a Bash with run_in_background: true and timeout up to 7200000 that loops until the job finishes (a land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a deploy: node scripts/check-prod-deploy.js <sha> --wait; a local job: loop on its pid or output file), or Monitor; its exit wakes you, and if it times out start another; or (2) hand the remaining queue to something durable that runs without you (a GitHub workflow, the tic-daily pending queue), send_message @parent what is done and what that mechanism will finish, and end SAFE TO ARCHIVE. If nothing is actually running, say 'Nothing is still running.' Bypass: NO-VERIFY: <reason>. Kill switch CHILDIDLE_GATE_DISABLE=1." >&2
   exit 2
 fi
 
