@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T20:03:24.821Z",
+  "timestamp": "2026-10-31T20:21:08.079Z",
   "stats": {
-    "totalReviews": 76036,
-    "alreadyFlagged": 21759,
+    "totalReviews": 76093,
+    "alreadyFlagged": 21760,
     "dateGuardCatches": 238,
     "directorMismatch": 3230,
-    "tvFilmSignals": 2171,
+    "tvFilmSignals": 2175,
     "londonSignals": 3511,
     "offBroadwaySignals": 718,
     "yearMismatch": 320,
-    "noPublishDate": 8588
+    "noPublishDate": 8595
   },
   "findings": [
     {
@@ -43006,6 +43006,19 @@
       ]
     },
     {
+      "showId": "no-such-thing-regional-2025",
+      "file": "chicagotribune--emily-mcclanathan.json",
+      "publishDate": "2025-04-03",
+      "url": "https://www.chicagotribune.com/2025/04/03/review-no-such-thing-by-rivendell/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "noises-off-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 89,
@@ -58442,6 +58455,7 @@
     {
       "showId": "sweet-charity-regional-2025",
       "file": "allie-and-the-after-party--allie-bugajski.json",
+      "score": 77,
       "publishDate": "2025-05-16",
       "url": "https://www.allieandtheafterparty.com/reviews/blank-theatre-company-sweet-charity-review",
       "findings": [
@@ -58455,6 +58469,7 @@
     {
       "showId": "sweet-charity-regional-2025",
       "file": "around-the-town-chicago--unknown.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/sweet-charity-3/",
       "findings": [
@@ -58468,6 +58483,7 @@
     {
       "showId": "sweet-charity-regional-2025",
       "file": "broadwayworld--zac-thriffiley.json",
+      "score": 78,
       "publishDate": "2025-05-21",
       "url": "https://www.broadwayworld.com/chicago/article/Review-SWEET-CHARITY-at-Blank-Theatre-Company-20250521",
       "findings": [
@@ -58481,6 +58497,7 @@
     {
       "showId": "sweet-charity-regional-2025",
       "file": "buzznews--lauren-katz.json",
+      "score": 87,
       "publishDate": "2025-05-17",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5885-blank-theatre-s-sweet-charity-charms-with-talented-cast-and-standout-choreography.html",
       "findings": [
@@ -58494,6 +58511,7 @@
     {
       "showId": "sweet-charity-regional-2025",
       "file": "chicago-reader--rob-silverman-ascher.json",
+      "score": 85,
       "publishDate": "2025-05-21",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/sweet-charity-blank-theatre-company/",
       "findings": [
@@ -58507,6 +58525,7 @@
     {
       "showId": "sweet-charity-regional-2025",
       "file": "chicago-theatre-review--alina-c-hevia.json",
+      "score": 88,
       "publishDate": "2025-05-14",
       "url": "https://www.chicagotheatrereview.com/2025/05/the-blank-theatres-sweet-charity-is-a-ray-of-brightly-colored-sunshine/",
       "findings": [
@@ -58520,6 +58539,7 @@
     {
       "showId": "sweet-charity-regional-2025",
       "file": "entertainingchicago--alli-doubek.json",
+      "score": 87,
       "publishDate": "2025-05-14",
       "url": "https://entertainingchicago.com/blank-theatre-companys-sweet-charity-is-a-charming-tale-of-love/",
       "findings": [
@@ -65807,6 +65827,19 @@
       ]
     },
     {
+      "showId": "the-lifespan-of-a-fact-regional-2025",
+      "file": "buzznews--mitchell-oldham.json",
+      "publishDate": "2025-03-21",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5813-the-search-for-truth-turns-to-war-in-oil-lamp-s-outstanding-the-lifespan-of-a-fact.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
       "showId": "the-light-in-the-piazza-2005",
       "file": "playbill--steven-suskin.json",
       "score": 92,
@@ -68730,6 +68763,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (4x) more than 2024 (3x). 2026 matches production: the-penelopiad-york-royal-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-penelopiad-york-royal-regional-2026",
+      "file": "grandgoldman--claire-hodges.json",
+      "publishDate": "2026-10-17",
+      "url": "https://grandgoldman.com/fa/blogs/celebrity/the-penelopiad-review-atwood-gives-voice-to-penelopes-maids",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -74070,6 +74116,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "twelfth-night-crucible-regional-2026",
+      "file": "soz6--unknown.json",
+      "publishDate": "2026-10-18",
+      "url": "https://www.soz6.com/news/twelfth-night-review-mathew-horne-oozes-arrogance-as-a-brilliantly-buttoned-up-malvolio",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
