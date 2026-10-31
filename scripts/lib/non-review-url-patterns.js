@@ -31,6 +31,7 @@
 // `declaredHosts` to isBlockedReviewUrl for fully deterministic fixtures.
 const { TICKET_DOMAINS, LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS, matchesDomainSet, isBlockedReviewUrl } = require('./domain-filters');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+const { isNonReviewUrl } = require('./serp-non-review-url');
 
 // Non-review domains ignored inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -754,6 +755,9 @@ function classifyReviewUrl(url) {
   }
   const h = hostOf(url);
   if (!h) return { ok: false, reason: 'unparseable-url' };
+  // BRO-6696: share discovery's film, book-shop and announcement policy with
+  // ingest. A distinct reason lets the narrow write gate refuse these too.
+  if (isNonReviewUrl(url)) return { ok: false, reason: 'non-stage-review' };
   if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) {
     return { ok: false, reason: 'non-review-host' };
   }
@@ -879,7 +883,9 @@ function submissionNonReviewReason(url) {
   // whose only post sits at the root would otherwise be refused outright.
   const listing = listingPageUrlReason(url);
   if (listing && listing !== 'bare-host') return listing;
-  return classifyReviewUrl(url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null;
+  // Keep the classifier's broad host/path rules out of the submission gate.
+  const reason = classifyReviewUrl(url).reason;
+  return reason === 'ticketing-reseller' || reason === 'non-stage-review' ? reason : null;
 }
 
 // Outlets whose reviews carry "review" (or "critic") in the url: on these
@@ -990,6 +996,7 @@ const INGEST_REFUSED_URL_REASONS = new Set([
   'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
   'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
   'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
+  'non-stage-review',
 ]);
 
 /** The refusal reason ingest-review-from-url.js would give this URL, or null. */
