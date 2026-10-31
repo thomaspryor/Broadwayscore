@@ -4063,5 +4063,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T07:47:07.425Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6567-font-floor",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6567-font-floor",
+    "description": "land.yml did not land land/bro-6567-font-floor: the unit-tests-node gate went red at 23b7cfdae2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41182768218",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6567-font-floor"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "23b7cfdae2c65f328123da42164a571e18e76c22"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41182768218"
+      }
+    ],
+    "queuedAt": "2026-10-31T08:24:05.512Z"
   }
 ]
