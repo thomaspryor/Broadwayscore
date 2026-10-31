@@ -20,6 +20,32 @@ import assert from 'node:assert/strict';
 import { extractByline, extractJsonLdAuthor } from './byline-extraction.js';
 import { extractAuthorFromHtml } from './content-quality.js';
 
+for (const handle of ['Sam - Admin', 'Lily - Admin', 'Ri-admin', 'VivantAdmin', 'LALadmin', 'ARH Admin', 'OperaWireAdmin2', 'Admin', 'Editor', 'Staff', 'Webmaster']) {
+  test(`ingest rejects CMS author ${handle} in metadata and author links`, () => {
+    const jsonLd = `<script type="application/ld+json">${JSON.stringify({ author: { '@type': 'Person', name: handle } })}</script>`;
+    assert.equal(extractJsonLdAuthor(jsonLd), null);
+    for (const markup of [jsonLd, `<meta name="author" content="${handle}">`, `<meta property="article:author" content="${handle}">`, `<a rel="author">${handle}</a>`, `<span class="author-name">${handle}</span>`]) {
+      assert.equal(extractByline(markup), null, markup);
+      assert.equal(extractByline(`${markup}<span class="byline">By Michael Buzzelli</span>`), 'Michael Buzzelli');
+    }
+  });
+}
+
+test('ingest falls back to the printed Plays International header after rejecting its account', () => {
+  const text = '“Electra/Persona” at the Lyttelton, National Theatre Neil Dowden on the South Bank ★★★☆☆ 4 September 2026';
+  const html = '<meta name="author" content="Ri-admin">';
+  assert.equal(extractByline(html, { outletId: 'plays-international', text }), 'Neil Dowden');
+  assert.equal(extractByline(html, { outletId: 'another-outlet', text }), null);
+  assert.equal(extractByline(html, { outletId: 'plays-international', text: 'No printed byline.' }), null);
+  assert.equal(extractByline(html, { outletId: 'plays-international', text: 'Jan van der Berg in North London ★★★☆☆ 4 September 2026' }), null);
+  assert.equal(extractByline('<meta name="author" content="Jane Critic">', { outletId: 'plays-international', text }), 'Jane Critic');
+});
+
+test('ingest accepts the lowercase printed byline under the Burgh Vivant account', () => {
+  assert.equal(extractByline('<meta name="author" content="VivantAdmin"><p>by Michael Buzzelli</p>'), 'Michael Buzzelli');
+  assert.equal(extractByline('<p>by the company</p>'), null);
+});
+
 test('extracts a byline nested inside an <a id="article-author-tag"> (TheaterMania live-page shape)', () => {
   const html = `<p class="author-name mb-0 me-2 text-decoration-none text-blue"><a id="article-author-tag" class="text-decoration-none text-blue" href="https://www.theatermania.com/authors/kenji-fujishima">Kenji Fujishima</a></p>`;
   assert.equal(extractByline(html), 'Kenji Fujishima');

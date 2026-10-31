@@ -489,7 +489,7 @@ if (!show) {
   const critic = resolveCritic({
     criticArg,
     lsaCritic,
-    byline: extractByline(html),
+    byline: extractByline(html, { outletId, text }),
     stageCritic: stageMeta && stageMeta.criticName,
     outletEntry: (require('../data/outlet-registry.json').outlets || {})[outletId],
   });

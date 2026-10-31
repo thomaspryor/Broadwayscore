@@ -11,6 +11,12 @@
 
 const { stripBylineSuffixes } = require('./byline-normalization');
 const { decodeHtmlEntities } = require('./text-cleaning');
+const { CMS_ADMIN_HANDLE_RE } = require('./byline-recovery');
+const { extractBylineFromText } = require('./byline-from-text');
+
+function isCmsAccountName(name) {
+  return CMS_ADMIN_HANDLE_RE.test(name) || /^(editor|staff|webmaster)$/i.test(name);
+}
 
 const REVIEWER_LINE_RE = />\s*Reviewer:\s*([A-Z][A-Za-z.'’-]+(?:\s+[A-Z][A-Za-z.'’-]+){1,3})\s*</;
 const NOT_A_PERSON_RE = /\b(?:anonymous|staff|team|editor|editorial|desk|admin|guest|verified|customer|reviews?|hub|critics?|press|night|theatre|theater|magazine|news|online|london|uk)\b|^(?:the|our)\b/i;
@@ -77,7 +83,7 @@ const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|plasa media|dotdash mer
 // following ',' or '&', and a captured " and " tail is cut in extractByline.
 // Without the ',' / '&' stops the capture backtracked to the first word only
 // ("Meg") because "<word> <Capital>" was the only shape the lookahead allowed.
-const INLINE_BY_RE = />By:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/,&]|\s+(?:[A-Z]|—))/;
+const INLINE_BY_RE = />[Bb]y:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/,&]|\s+(?:[A-Z]|—))/;
 const SIGN_OFF_RE = /<b>\s*(?:--|—)\s*([A-Z][A-Za-z.'’ -]{3,40}?)\s*<\/b>/;
 const PROSE_NOT_A_NAME_RE = /\b(?:date|dates|numbers?|name|title|category|categories|price|popularity|rating|ratings|recommended|highly|stars?|sunday|monday|tuesday|wednesday|thursday|friday|saturday|january|february|march|april|june|july|august|september|october|november|december)\b/i;
 function looksLikeProseName(name) {
@@ -122,7 +128,7 @@ function extractJsonLdAuthor(html) {
           if (typeof raw !== 'string') continue;
           const name = stripBylineSuffixes(decodeHtmlEntities(raw).trim());
           if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
-          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name)) continue;
+          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name) || isCmsAccountName(name)) continue;
           return name;
         }
       }
@@ -132,7 +138,7 @@ function extractJsonLdAuthor(html) {
   return null;
 }
 
-function extractByline(html) {
+function extractByline(html, { outletId, text } = {}) {
   if (!html) return null;
   const reviewer = extractReviewerLine(html) || extractReviewedByLine(html) || extractSignOffBeforeShare(html);
   if (reviewer) return reviewer;
@@ -193,6 +199,9 @@ function extractByline(html) {
       // normalizeBylineCapture; one implementation.
       name = stripBylineSuffixes(name);
       if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
+      // The uploader account is not a critic. Continue to the printed credit
+      // rather than letting meta/rel=author win (BRO-5317).
+      if (isCmsAccountName(name)) continue;
       if (URL_LIKE_RE.test(name)) continue;
       // A publisher or house byline is not a critic (New Yorker meta author
       // "Condé Nast", house byline "The New Yorker", BRO-3414); fall through.
@@ -213,7 +222,8 @@ function extractByline(html) {
       return name;
     }
   }
-  return null;
+  const printed = extractBylineFromText(outletId, text);
+  return printed && printed.known ? printed.name : null;
 }
 
 module.exports = {
