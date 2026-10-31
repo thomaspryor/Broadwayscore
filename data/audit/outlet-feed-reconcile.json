@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T15:11:36.242Z",
+  "generatedAt": "2026-10-31T15:39:34.044Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -128,6 +128,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "plays-international",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -140,8 +144,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 774,
-  "matchedGaps": 9,
+  "itemsScanned": 767,
+  "matchedGaps": 10,
   "possibleGaps": 11,
   "gaps": [
     {
@@ -206,6 +210,15 @@
       "url": "https://www.offoffonline.com/offoffonline/2026/10/22/the-heart",
       "headline": "The Heart",
       "publishDate": "2026-10-30"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "matched",
+      "outletId": "theatre-reviews-limited",
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-heart-at-roundabout-theatre-companys-laura-pels-theatre-in-the-harold-and-miriam-steinberg-center-for-theatre-through-sunday-december-13-2026/",
+      "headline": "Off-Broadway Review: &#8220;The Heart&#8221; at Roundabout Theatre Company&#8217;s Laura Pels Theatre in the Harold and Miriam Steinberg Center for Theatre (Through Sunday, December 13, 2026)",
+      "publishDate": "2026-10-31"
     },
     {
       "showId": "the-moth-off-west-end-2026",

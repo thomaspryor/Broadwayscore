@@ -320,20 +320,6 @@
     "queuedAt": "2026-10-31T15:02:53.051Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T15:05:19.179Z"
-  },
-  {
     "conditionKey": "outlet-ground-truth:glengarry-glen-ross-2025:https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
     "title": "Missing review from a tracked outlet: glengarry-glen-ross-2025 — theatermania",
     "description": "theatermania lists a review we don't hold (https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/), and automatic ingest did not recover it.",
@@ -799,9 +785,79 @@
     "queuedAt": "2026-10-31T15:03:23.717Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-31.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "conditionKey": "review-gap:opening-window:billy-crystal-860-2026",
+    "title": "Review gap — \"Billy Crystal 860\" missing 5 cited review(s)",
+    "description": "Billy Crystal 860 (billy-crystal-860-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=billy-crystal-860-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T15:38:14.638Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:garry-starr-classic-penguins-off-west-end-2026",
+    "title": "Review gap — \"Garry Starr Classic Penguins\" missing 8 cited review(s)",
+    "description": "Garry Starr Classic Penguins (garry-starr-classic-penguins-off-west-end-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=garry-starr-classic-penguins-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T15:38:14.692Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:girls-off-west-end-2026",
+    "title": "Review gap — \"Girls\" missing 13 cited review(s)",
+    "description": "Girls (girls-off-west-end-2026): 13 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=girls-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T15:38:14.713Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
+    "title": "Review gap — \"The Imaginary Invalid\" missing 4 cited review(s)",
+    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T15:38:14.876Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-lives-of-others-west-end-2026",
+    "title": "Review gap — \"The Lives of Others\" missing 2 cited review(s)",
+    "description": "The Lives of Others (the-lives-of-others-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-lives-of-others-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T15:38:14.910Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
     "severity": "info",
     "url": null,
     "decision": false,
@@ -810,6 +866,6 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-31T15:36:06.195Z"
+    "queuedAt": "2026-10-31T15:39:06.797Z"
   }
 ]

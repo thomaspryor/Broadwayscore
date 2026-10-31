@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-10-31T15:11:35.915Z",
+  "generatedAt": "2026-10-31T15:39:33.643Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 301,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 299,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "openingDate": "2026-10-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.04 vs local 84.74 (Δ0.7)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-31T15:39:27.054Z"
+    },
+    {
+      "showId": "an-oak-tree-off-west-end-2026",
+      "title": "An Oak Tree",
+      "openingDate": "2026-10-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.83 vs local 74.24 (Δ1.59)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 19,
+      "firstDefectAt": "2026-10-31T15:39:27.054Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
