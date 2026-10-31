@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T10:48:37.657Z",
+  "generatedAt": "2026-10-31T11:15:56.431Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -107,24 +107,8 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
-    },
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
-    },
-    {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -145,15 +129,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 656,
+  "itemsScanned": 784,
   "matchedGaps": 9,
-  "possibleGaps": 10,
+  "possibleGaps": 11,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -307,6 +287,15 @@
       "url": "https://stageandcinema.com/2026/10/28/assimilation-word-for-word-z-below-san-francisco-review/",
       "headline": "Theater Review: ASSIMILATION (Word for Word / San Francisco)",
       "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
+      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
+      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-heart-off-broadway-2026",

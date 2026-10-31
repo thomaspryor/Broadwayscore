@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-10-31T10:48:37.259Z",
+  "generatedAt": "2026-10-31T11:15:56.015Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 302,
-  "clean": 301,
-  "defective": 1,
+  "clean": 300,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "antigone-tron-regional-2026",
-      "title": "Antigone",
-      "openingDate": "2026-10-01",
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "openingDate": "2026-10-28",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.93 vs local 83.51 (Δ0.58)"
+          "detail": "deployed cs 84.75 vs local 85.16 (Δ0.41)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-31T10:48:28.289Z"
+      "localCount": 15,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-10-31T11:15:50.904Z"
+    },
+    {
+      "showId": "a-strange-loop-regional-2026",
+      "title": "A Strange Loop",
+      "openingDate": "2026-10-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.56 vs local 83.75 (Δ0.81)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-31T11:15:50.904Z"
     }
   ],
   "persistentDefective": 0,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T10:48:08.558Z",
+  "generatedAt": "2026-10-31T11:15:30.261Z",
   "windowDays": 45,
   "showsScanned": 218,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 136.92046166666665,
+      "fileAgeHours": 137.37984666666668,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 122.38116416666666,
+      "nonTerminalAgeHours": 122.83719277777777,
       "needsManualRecovery": false
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 165.44017166666666,
+      "fileAgeHours": 165.89955305555554,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 151.49305555555554,
+      "nonTerminalAgeHours": 151.94908416666667,
       "needsManualRecovery": false
     },
     {
@@ -60,13 +60,13 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=middlemarch-rsc-regional-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/middlemarch-review-rsc-5pvrgw963 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-31T09:52:03.597Z",
-      "fileAgeHours": 0.9347113888888889,
+      "fileAgeHours": 1.3907397222222222,
       "gapSeenAt": "2026-10-31T10:48:08.558Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 0.4560286111111111,
       "needsManualRecovery": false
     }
   ],
