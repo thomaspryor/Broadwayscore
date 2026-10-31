@@ -92,7 +92,10 @@ function closedCreditFloor(band, creditPts) {
 
 function isClosedShow(show, comm, now = Date.now()) {
   const close = Date.parse(show && show.closingDate);
-  return !!(show && (show.status === 'closed' || (Number.isFinite(close) && close < now)));
+  if (!show) return false;
+  // An open or previewing show with a stale closing date is still running.
+  if (show.status === 'open' || show.status === 'previews') return false;
+  return show.status === 'closed' || (Number.isFinite(close) && close < now);
 }
 
 function applyReturnedSoFarFields(comm, returned, show) {

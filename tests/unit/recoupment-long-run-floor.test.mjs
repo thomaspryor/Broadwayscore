@@ -41,5 +41,20 @@ test('closed credit floor raises the centre and high, never the low', () => {
 test('isClosedShow reads status or a past closing date', () => {
   assert.equal(isClosedShow({ status: 'closed' }, {}, NOW), true);
   assert.equal(isClosedShow({ status: 'open', closingDate: '2030-01-01' }, {}, NOW), false);
-  assert.equal(isClosedShow({ status: 'open', closingDate: '2020-01-01' }, {}, NOW), true);
+  assert.equal(isClosedShow({ status: 'open', closingDate: '2020-01-01' }, {}, NOW), false);
+  assert.equal(isClosedShow({ closingDate: '2020-01-01' }, {}, NOW), true);
+});
+
+test('applyReturnedSoFarFields applies the credit floor only for a closed show', () => {
+  const { applyReturnedSoFarFields } = require('../../scripts/lib/model-run-fields.js');
+  const returned = { recoupmentPctLow: 0, recoupmentPctCentral: 0, recoupmentPctHigh: 0, taxCreditApplied: 2e6 };
+  const closed = { capitalization: 10e6 };
+  applyReturnedSoFarFields(closed, returned, { status: 'closed' });
+  assert.deepEqual(closed.modelReturnedExCreditPct, [0, 15, 20]);
+  const open = { capitalization: 10e6 };
+  applyReturnedSoFarFields(open, returned, { status: 'open' });
+  assert.deepEqual(open.modelReturnedExCreditPct, [0, 0, 0]);
+  const noShow = { capitalization: 10e6 };
+  applyReturnedSoFarFields(noShow, returned);
+  assert.deepEqual(noShow.modelReturnedExCreditPct, [0, 0, 0]);
 });
