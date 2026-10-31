@@ -22,6 +22,7 @@
  *   node scripts/lib/child-idle-watch.mjs stop-decision   < {firstPrompt, env, closing, lastLine, live}
  *   node scripts/lib/child-idle-watch.mjs arm --child <session_id> [--until <iso> | --minutes N]
  *   node scripts/lib/child-idle-watch.mjs check --session-json <file|-> [--last-report <iso>]
+ *     exit 0 = nothing to do, 3 = act on `say`, 2 = bad input
  */
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -34,13 +35,15 @@ export const IDLE_MINUTES = 30;
 export const WORKING_RECHECK_MINUTES = 20; // must stay <= IDLE_MINUTES so an idle child is seen within IDLE_MINUTES
 export const MIN_ARM_MINUTES = 2;
 export const MAX_ARM_MINUTES = 110; // under the 2h run_in_background ceiling
+export const REPORT_SLACK_MINUTES = 10;
 
 // ─── Child side ─────────────────────────────────────────────────────────────
 
 const VERDICT_RE = /^[\s*_•>-]{0,4}(KEEP OPEN|NOT SAFE TO EXIT|SAFE TO ARCHIVE|SAFE TO EXIT|ACTION NEEDED FROM YOU)\b/;
-const STILL_RUNNING_RE = /^[\s*_•-]{0,4}Still running\s*:\s*(.*)$/i;
-// "Still running: nothing", "Still running: nothing here.", "none", "n/a".
-const NOTHING_RE = /^(?:nothing|none|no(?:thing)? (?:jobs?|work)|n\/a|-)\b/i;
+const STILL_RUNNING_RE = /^[\s*_•-]{0,4}Still running\s*[*_]{0,2}\s*:\s*(.*)$/i;
+// "Still running: nothing", "**Still running:** nothing here.", "none", "(none)", "no.", "n/a", "-", "—".
+const NOTHING_RE = /^(?:nothing\b|none\b|no\b|n\/a\b|[-–—]+$)/i;
+const bare = (t) => String(t || '').replace(/^[\s*_()[\]]+/, '').trim();
 
 /** The final message claims something is still running (it will be waited on). */
 export function claimsRunningWork(closing = '', lastLine = '') {
@@ -48,11 +51,15 @@ export function claimsRunningWork(closing = '', lastLine = '') {
   if (verdict === 'KEEP OPEN' || verdict === 'NOT SAFE TO EXIT') {
     return { claims: true, why: `closing verdict ${verdict}` };
   }
+  // A SAFE verdict says this session waits on nothing; a "Still running:" line then names what owns
+  // the work (a workflow, the tic-daily queue), which is exactly the hand-off the block message asks for.
+  if (/^SAFE TO (?:ARCHIVE|EXIT)$/.test(verdict)) return { claims: false, why: `closing verdict ${verdict}` };
   if (/\bNothing is still running\b/i.test(closing)) return { claims: false, why: 'nothing is still running' };
   for (const line of String(closing || '').split('\n')) {
     const m = STILL_RUNNING_RE.exec(line);
-    if (m && m[1].trim() && !NOTHING_RE.test(m[1].trim())) {
-      return { claims: true, why: `"Still running: ${m[1].trim().slice(0, 80)}"` };
+    const what = m ? bare(m[1]) : '';
+    if (m && what && !NOTHING_RE.test(what)) {
+      return { claims: true, why: `"Still running: ${what.slice(0, 80)}"` };
     }
   }
   return { claims: false, why: 'no running-work claim' };
@@ -85,7 +92,7 @@ const bucketOf = (s) => String(s?.status_bucket || '').replace(/^SESSION_STATUS_
 export function parseSession(raw) {
   if (raw && typeof raw === 'object') return raw.ccr || raw;
   const t = String(raw || '');
-  const i = t.indexOf('{');
+  const i = t.indexOf('{"ccr"') >= 0 ? t.indexOf('{"ccr"') : t.indexOf('{');
   if (i < 0) throw new Error('no JSON object in get_session output');
   let depth = 0;
   for (let k = i; k < t.length; k++) {
@@ -129,11 +136,13 @@ export function childCheck({ session, now = Date.now(), lastReportAt = null, idl
   // can still carry status_bucket WORKING (seen 2026-10-31 on an idle parent:
   // SESSION_STATUS_IDLE + SESSION_STATUS_BUCKET_WORKING). The bucket only
   // decides when session_status is absent.
-  if (/RUNNING/.test(status) || (!status && bucket === 'WORKING')) {
+  // Any other live status (RUNNING, or one this code does not know yet, e.g. QUEUED) is not idle.
+  if ((status && !/IDLE/.test(status)) || (!status && bucket === 'WORKING')) {
     return out('working', false, at(now + ms(WORKING_RECHECK_MINUTES)), 'Child is working. Re-arm the watcher and end the turn KEEP OPEN.');
   }
   // Not running: its turn ended (IDLE, whatever the bucket says).
-  if (report != null && (updated == null || report >= updated - ms(2))) {
+  // A report counts unless the child kept working well after it (wrap-up and Stop-gate retries take minutes).
+  if (report != null && (updated == null || report >= updated - ms(REPORT_SLACK_MINUTES))) {
     return out('reported', false, null, 'Child reported back after its last turn; act on the report.');
   }
   if (updated == null) {
@@ -179,7 +188,7 @@ async function main(argv) {
   }
   if (cmd === 'arm') {
     const child = arg(argv, '--child', '');
-    if (!/^(?:session|cse)_[0-9A-Za-z]{6,}$/.test(child)) {
+    if (!/^(?:session|cse)_[0-9A-Za-z]{10,}$/.test(child)) {
       process.stderr.write('usage: child-idle-watch.mjs arm --child <session_id> [--until <iso> | --minutes N]\n');
       return 2;
     }
@@ -193,10 +202,12 @@ async function main(argv) {
   if (cmd === 'check') {
     const src = arg(argv, '--session-json');
     if (!src) { process.stderr.write('usage: child-idle-watch.mjs check --session-json <file|-> [--last-report <iso>]\n'); return 2; }
-    const raw = src === '-' ? fs.readFileSync(0, 'utf8') : fs.readFileSync(src, 'utf8');
-    const session = parseSession(raw);
+    let session;
+    try {
+      session = parseSession(src === '-' ? fs.readFileSync(0, 'utf8') : fs.readFileSync(src, 'utf8'));
+    } catch (e) { process.stderr.write(`child-idle-watch check: ${e.message}\n`); return 2; }
     const r = childCheck({ session, lastReportAt: arg(argv, '--last-report') });
-    const rearm = r.nextWakeAt ? `node scripts/lib/child-idle-watch.mjs arm --child ${session.id} --until ${r.nextWakeAt}` : null;
+    const rearm = r.nextWakeAt && session.id ? `node scripts/lib/child-idle-watch.mjs arm --child ${session.id} --until ${r.nextWakeAt}` : null;
     process.stdout.write(JSON.stringify({ child: session.id, ...r, rearm }, null, 2) + '\n');
     return r.act ? 3 : 0;
   }

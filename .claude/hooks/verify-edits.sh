@@ -730,7 +730,7 @@ def _ended_task_ids(text):
     for mn in re.finditer(r'<task-notification>(.*?)</task-notification>', text or '', flags=re.DOTALL):
         body = mn.group(1)
         idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', body)
-        if idm and ('<status>' in body or not (re.search(r'<summary>\s*Monitor event\b', body) or '<event>' in body)):
+        if idm and ('<status>' in re.sub(r'<event>.*?</event>', '', body, flags=re.DOTALL) or not (re.search(r'<summary>\s*Monitor event\b', body) or '<event>' in body)):
             out.append(idm.group(1))
     return out
 
@@ -1392,7 +1392,7 @@ if os.environ.get('CHILDIDLE_GATE_DISABLE', '0') != '1':
                 _ci = subprocess.run(['node', _ci_js, 'stop-decision'], capture_output=True, text=True, timeout=10,
                     input=json.dumps({'firstPrompt': '\n'.join(_user_prompts), 'closing': _ci_text, 'lastLine': _ci_last,
                         'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
-                        'live': {'waits': _ci_lw['waits'], 'agents': _ci_lw['agents']}}))
+                        'live': {'waits': _ci_lw['waits'], 'agents': _ci_lw['agents'] + _ci_lw['triggers'] + (['PR watch'] if _ci_lw['pr_watch'] else [])}}))
                 sys.stderr.write(('⚠️  CHILDIDLE: ' + _ci.stderr.strip()[:200] + '\n') if _ci.stderr.strip() else '')
                 _ci_r = json.loads(_ci.stdout or '{}')
                 if _ci_r.get('block'):
@@ -2449,7 +2449,7 @@ if [[ "$result" == "CLEARCLOSE" ]]; then
 fi
 
 if [[ "$result" == "CHILDIDLE" ]]; then
-  echo "🛑 BLOCKED: this is a child worker session with no human, and its closing says work is still running, but nothing running in THIS session will wake it (BRO-6717: BRO-6518 ended 'KEEP OPEN, ingest and scoring still running, I'll check back' and sat 17h, then 19h, while its parent waited). A detached setsid/nohup job, a finished Monitor, a session you started or a message to @parent wakes nothing. Do one of these: (1) keep polling inside your turn: a Bash with run_in_background: true and timeout up to 7200000 that loops until the job finishes (a land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a deploy: node scripts/check-prod-deploy.js <sha> --wait; a local job: loop on its pid or output file), or Monitor; its exit wakes you, and if it times out start another; or (2) hand the remaining queue to something durable that runs without you (a GitHub workflow, the tic-daily pending queue), send_message @parent what is done and what that mechanism will finish, and end SAFE TO ARCHIVE. If nothing is actually running, say 'Nothing is still running.' Bypass: NO-VERIFY: <reason>. Kill switch CHILDIDLE_GATE_DISABLE=1." >&2
+  echo "🛑 BLOCKED: this is a child worker session with no human, and its closing says work is still running, but nothing running in THIS session will wake it (BRO-6717: BRO-6518 ended 'KEEP OPEN, ingest and scoring still running, I'll check back' and sat 17h, then 19h, while its parent waited). A detached setsid/nohup job, a finished Monitor, a session you started or a message to @parent wakes nothing. Do one of these: (1) keep polling inside your turn: a Bash with run_in_background: true and timeout up to 7200000 that loops until the job finishes (a land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a deploy: node scripts/check-prod-deploy.js <sha> --wait; a local job: loop on its pid or output file), or Monitor; its exit wakes you, and if it times out start another; or (2) hand the remaining queue to something durable that runs without you (a GitHub workflow, the tic-daily pending queue), send_message @parent what is done and what that mechanism will finish, and end 'Still running: nothing in this session (<what finishes it>)' plus SAFE TO ARCHIVE. If nothing is actually running, say 'Nothing is still running.' Bypass: NO-VERIFY: <reason>. Kill switch CHILDIDLE_GATE_DISABLE=1." >&2
   exit 2
 fi
 

@@ -63,10 +63,14 @@ test('stopDecision: not a child session, NO-VERIFY, or no running-work claim →
 test('claimsRunningWork: verdict or a non-empty Still running: line', () => {
   assert.equal(claimsRunningWork('x', 'KEEP OPEN — waiting').claims, true);
   assert.equal(claimsRunningWork('x', 'NOT SAFE TO EXIT — waiting').claims, true);
-  assert.equal(claimsRunningWork('Still running: the crawl.\n\nSAFE TO ARCHIVE', 'SAFE TO ARCHIVE').claims, true, 'SAFE with a running claim still claims');
-  for (const none of ['Still running: nothing.', 'Still running: none', 'Still running: nothing here', 'Nothing is still running.']) {
-    assert.equal(claimsRunningWork(none + '\n\nSAFE TO ARCHIVE', 'SAFE TO ARCHIVE').claims, false, none);
+  // The hand-off the block message asks for: SAFE + a Still running line naming what owns the work.
+  assert.equal(claimsRunningWork('Still running: tic-daily finishes the queue overnight.\n\nSAFE TO ARCHIVE — handed off', 'SAFE TO ARCHIVE — handed off').claims, false, 'SAFE hand-off');
+  assert.equal(claimsRunningWork('Still running: the crawl.\n\nNothing needed from you.', '').claims, true, 'no verdict + running line claims');
+  for (const none of ['Still running: nothing.', 'Still running: none', 'Still running: nothing here', 'Nothing is still running.',
+    '**Still running:** nothing', '**Still running**: none', 'Still running: -', 'Still running: —', 'Still running: (none)', 'Still running: no.', 'Still running: n/a']) {
+    assert.equal(claimsRunningWork(none + '\n\nYou need to: nothing.', 'You need to: nothing.').claims, false, none);
   }
+  assert.equal(claimsRunningWork('**Still running:** the crawl', '').claims, true, 'bold running line still claims');
 });
 
 // ─── End to end through the real Stop hook ──────────────────────────────────
@@ -216,6 +220,21 @@ test('childCheck: running → re-arm in 20 min; reported after its last turn →
   assert.equal(rep.act, false);
   const stale = childCheck({ session: CHILD_IDLE_1817, now: at('2026-10-30T18:17:27Z', 90), lastReportAt: '2026-10-30T12:00:00Z' });
   assert.equal(stale.verdict, 'idle-no-report', 'a report from an earlier turn does not cover this one');
+});
+
+test('childCheck: unknown live status is not idle; a report made minutes before its last activity counts', () => {
+  const now = at('2026-10-31T13:56:28Z', 90);
+  assert.equal(childCheck({ session: { ...IDLE_WORKING_BUCKET, session_status: 'SESSION_STATUS_QUEUED' }, now }).verdict, 'working');
+  const rep = new Date(Date.parse('2026-10-31T13:56:28Z') - 8 * 60_000).toISOString();
+  assert.equal(childCheck({ session: IDLE_WORKING_BUCKET, now, lastReportAt: rep }).verdict, 'reported', 'wrap-up after the report');
+  const old = new Date(Date.parse('2026-10-31T13:56:28Z') - 40 * 60_000).toISOString();
+  assert.equal(childCheck({ session: IDLE_WORKING_BUCKET, now, lastReportAt: old }).verdict, 'idle-no-report', 'report long before more work');
+});
+
+test('parseSession: a brace in the frame before the record; check: bad file exits 2', () => {
+  assert.equal(parseSession('note {see below}\n{"ccr":{"id":"session_x1234567890"}}').id, 'session_x1234567890');
+  const r = spawnSync('node', [CLI, 'check', '--session-json', '/nonexistent/x.json'], { encoding: 'utf8' });
+  assert.equal(r.status, 2);
 });
 
 test('childCheck: archived, failed, blocked', () => {
