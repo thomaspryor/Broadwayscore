@@ -1,75 +1,30 @@
 {
-  "generatedAt": "2026-10-30T09:07:17.420Z",
+  "generatedAt": "2026-10-31T08:55:40.598Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "0f2198a9a40edfe49e8f70ed5258012c8b44fa6b",
-  "state": "RED",
-  "consecutiveFailures": 78,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "e6033190be1abc584b34c821da397822c15820c7",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 25,
+  "greenSince": "2026-10-31T02:48:38Z",
+  "greenForHours": 6.117388333333333,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-29T17:28:53Z",
-  "redForHours": 15.640116666666666,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-29T17:13:35Z",
-  "latestFailedRunId": "41027228435",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41027228435",
-  "decidedRuns": 98,
+  "lastSuccessAt": "2026-10-31T08:18:29Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 97,
   "verdictLag": {
-    "verdictSha": "0f2198a9a40edfe49e8f70ed5258012c8b44fa6b",
-    "verdictAt": "2026-10-30T08:33:21Z",
-    "verdictAgeHours": 0.5656722222222222,
+    "verdictSha": "e6033190be1abc584b34c821da397822c15820c7",
+    "verdictAt": "2026-10-31T08:18:29Z",
+    "verdictAgeHours": 0.6198883333333334,
     "newerHeads": 2,
     "runsInFlight": 2,
     "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Run autoclear-vs-ensemble corpus test (needs review-texts)",
-        "Audit review contamination"
-      ]
-    },
-    {
-      "name": "E2E Tests",
-      "steps": [
-        "Run unit tests"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/lib/show-venue.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
-      "evidence": "not ok 12653 - BRO-2281: relocated Hackney Empire run carries the actual venue, not the cancelled Peacock Theatre booking"
-    },
-    {
-      "path": "scripts/lib/autoclear-vs-ensemble.test.mjs",
-      "job": "Data Validation",
-      "step": "Run autoclear-vs-ensemble corpus test (needs review-texts)",
-      "evidence": "not ok 8 - corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)"
-    },
-    {
-      "path": "tests/unit/data-core.test.ts",
-      "job": "E2E Tests",
-      "step": "Run unit tests",
-      "evidence": "not ok 2 - returns shows from different markets with same title"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
