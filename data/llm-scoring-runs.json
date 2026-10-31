@@ -1507898,21 +1507898,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T14:12:04.078Z",
-    "completedAt": "2026-10-31T14:12:32.779Z",
-    "totalReviews": 6,
-    "processed": 6,
-    "skipped": 0,
+    "startedAt": "2026-10-31T14:13:03.260Z",
+    "completedAt": "2026-10-31T14:14:03.603Z",
+    "totalReviews": 13,
+    "processed": 12,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 37945,
-      "output": 1882,
-      "cacheRead": 19035,
-      "cacheWrite": 3807,
-      "total": 93384
+      "input": 75882,
+      "output": 3543,
+      "cacheRead": 45684,
+      "cacheWrite": 0,
+      "total": 186670
     },
-    "costUsd": 0.15531195000000003,
-    "runId": "41208641994",
+    "costUsd": 0.2822462,
+    "runId": "41208525540",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1540229,6 +1540229,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-birth-of-the-pill-regional-2026",
+        "ourDistribution": {
+          "up": 10,
+          "flat": 1,
+          "down": 1,
+          "total": 12
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-birthday-party-royal-bath-regional-2024",
         "ourDistribution": {
           "up": 2,
@@ -1550638,20 +1550648,10 @@
       {
         "showId": "witch-regional-2023",
         "ourDistribution": {
-          "up": 12,
+          "up": 6,
           "flat": 0,
           "down": 0,
-          "total": 12
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "witch-regional-2026",
-        "ourDistribution": {
-          "up": 12,
-          "flat": 0,
-          "down": 0,
-          "total": 12
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1551108,8 +1551108,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T14:17:30.867Z",
-    "completedAt": "2026-10-31T14:17:30.868Z",
+    "startedAt": "2026-10-31T14:18:59.818Z",
+    "completedAt": "2026-10-31T14:18:59.820Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1551122,7 +1551122,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41208641994",
+    "runId": "41208525540",
     "source": "comparative-rescore",
     "errorDetails": []
   }
