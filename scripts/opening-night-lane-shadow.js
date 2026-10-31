@@ -44,7 +44,6 @@ async function main() {
   const ledgerDir = path.resolve(outDir, 'ledger');
   fs.mkdirSync(ledgerDir, { recursive: true });
 
-  const { runLaneNight } = require('./lib/opening-night-lane/lane-runner');
   const discovery = require('./lib/opening-night-lane/discovery');
   const inline = require('./lib/opening-night-lane/inline-score');
   const publish = require('./lib/opening-night-lane/publish');
@@ -92,7 +91,7 @@ async function main() {
   }
   console.log(`shadow: ${showId} ${night}, window ${windowMin} min, live site ${liveBase}; no lease, no publish`);
   try {
-    result = await runLaneNight({
+    result = await shadow.runShadowNight({
       show, night, openingDate: show.openingDate, timeZone: show.market === 'west-end' ? 'Europe/London' : 'America/New_York',
       ledgerDir, fetchText, windowMs: windowMin * 60 * 1000, dryRun: true,
       adapters: require('./lib/opening-night-lane/adapters').laneAdapters({

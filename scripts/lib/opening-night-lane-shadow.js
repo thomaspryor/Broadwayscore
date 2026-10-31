@@ -12,12 +12,24 @@
  * Everything the report needs is appended to JSONL files as it happens (live first-seen, lane scores), so a job killed
  * mid-night still leaves a complete record; the site keeps no history to rebuild it from.
  *
- * Pure parts only; scripts/opening-night-lane-shadow.js wires the real ports.
+ * scripts/opening-night-lane-shadow.js wires the real ports.
  */
 const fs = require('fs');
 const path = require('path');
 const { canonicalUrl } = require('./opening-night-lane/discovery');
 const ledger = require('./opening-night-lane/ledger');
+const { beginPressNightSpend } = require('./spend-purpose');
+const { withSpendShow } = require('./provider-telemetry');
+
+/** The shadow bypasses the live driver's lease, but must share its count-and-warn spend scope. */
+async function runShadowNight(options) {
+  const restoreSpend = beginPressNightSpend(options.show, options.now());
+  try {
+    return await withSpendShow(options.show.id, () => require('./opening-night-lane/lane-runner').runLaneNight(options));
+  } finally {
+    restoreSpend();
+  }
+}
 
 // The real night job (opening-night-lane-live.yml, mode=night) runs the lane for 270 minutes; a shadow review scored
 // later than that is reported but would not have been the lane's on a real night.
@@ -256,5 +268,6 @@ function writeShadowReport(outDir, rep) {
 }
 
 module.exports = {
+  runShadowNight,
   REAL_NIGHT_WINDOW_MIN, createShadowPublishPorts, createScoreRecorder, createLiveRecorder, buildShadowReport, reportMarkdown, writeShadowReport,
 };
