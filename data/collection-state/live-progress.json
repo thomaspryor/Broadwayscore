@@ -1,41 +1,23 @@
 {
-  "updatedAt": "2026-10-31T11:48:30.677Z",
-  "processed": 515,
-  "failed": 252,
-  "successRate": "67.1%",
+  "updatedAt": "2026-10-31T11:53:17.176Z",
+  "processed": 206,
+  "failed": 44,
+  "successRate": "82.4%",
   "tierBreakdown": {
-    "playwright": 220,
+    "playwright": 92,
     "amp": 0,
-    "browserbase": 21,
+    "browserbase": 22,
     "directCookies": 0,
-    "scrapingdog": 28,
-    "scrapingbee": 17,
-    "brightdata": 11,
-    "archiveToday": 32,
-    "archive": 176
+    "scrapingdog": 8,
+    "scrapingbee": 12,
+    "brightdata": 12,
+    "archiveToday": 23,
+    "archive": 80
   },
-  "browserbaseSessions": 21,
+  "browserbaseSessions": 12,
   "recentActivity": [
     {
-      "t": "2026-10-31T09:44:03.768Z",
-      "event": "bb-session",
-      "session": "bf971130",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunday-in-the-park-george-cance"
-    },
-    {
-      "t": "2026-10-31T09:44:43.945Z",
-      "event": "bb-session",
-      "session": "fe7231ec",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
-    },
-    {
-      "t": "2026-10-31T09:45:25.480Z",
-      "event": "bb-session",
-      "session": "41a36af0",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-31T09:45:26.151Z",
+      "t": "2026-10-31T10:14:04.269Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -83,7 +65,7 @@
     {
       "t": "2026-10-31T10:05:30.574Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "nytimes.com"
     },
     {
       "t": "2026-10-31T10:16:28.021Z",
@@ -125,10 +107,37 @@
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     },
     {
-      "t": "2026-10-31T11:16:58.715Z",
+      "t": "2026-10-31T11:04:37.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-31T11:22:34.323Z",
       "event": "bb-session",
-      "session": "cf4fc64f",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+      "session": "4415e859",
+      "url": "http://www.hollywoodreporter.com/review/how-transcend-a-happy-marriage-theater-r"
+    },
+    {
+      "t": "2026-10-31T11:35:34.952Z",
+      "event": "bb-session",
+      "session": "bbcdaeca",
+      "url": "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society"
+    },
+    {
+      "t": "2026-10-31T11:35:35.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T11:36:24.916Z",
+      "event": "bb-session",
+      "session": "291ffdb5",
+      "url": "https://www.nytimes.com/2017/03/13/theater/the-moors-review.html"
+    },
+    {
+      "t": "2026-10-31T11:36:25.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
