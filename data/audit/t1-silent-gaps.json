@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T17:01:07.424Z",
+  "generatedAt": "2026-10-31T17:11:24.599Z",
   "windowDays": 45,
   "showsScanned": 218,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 143.14156722222222,
+      "fileAgeHours": 143.31280583333333,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 128.59751583333335,
+      "nonTerminalAgeHours": 128.76895333333334,
       "needsManualRecovery": false
     },
     {
@@ -40,16 +40,16 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 171.66126166666666,
+      "fileAgeHours": 171.83251361111112,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 157.7094072222222,
+      "nonTerminalAgeHours": 157.88084472222224,
       "needsManualRecovery": true
     },
     {
       "showId": "kowalski-regional-2026",
       "title": "Kowalski",
       "openingDate": "2026-09-23",
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--savannah-brooks.json",
       "outletId": "talkinbroadway",
       "tier": 2,
       "type": "empty-body",
@@ -58,10 +58,10 @@
       "recovery": null,
       "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=kowalski-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch925.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "node scripts/ingest-review-from-url.js --show=kowalski-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch925.html --outlet=talkinbroadway --critic=\"Savannah Brooks\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-31T13:59:51.230Z",
-      "fileAgeHours": 3.021161388888889,
-      "gapSeenAt": "2026-10-31T17:01:07.424Z",
+      "fileAgeHours": 3.192598333333333,
+      "gapSeenAt": "2026-10-31T17:11:24.599Z",
       "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     }

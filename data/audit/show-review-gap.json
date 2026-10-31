@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-31T17:07:08.919Z",
+  "generatedAt": "2026-10-31T17:11:01.350Z",
   "windowDays": 21,
-  "targets": 33,
-  "auditedThisRun": 910,
-  "carriedForward": 645,
+  "targets": 8,
+  "auditedThisRun": 8,
+  "carriedForward": 1140,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 623,
-    "missingCurrentRun": 1327,
-    "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 868,
-    "totalRecoverable": 55,
-    "totalRecovered": 68,
-    "humanExcluded": 12,
-    "automatedExcluded": 788,
-    "automatedExcludedListed": 620,
-    "priorProductionCitations": 6106
+    "withGap": 590,
+    "missingCurrentRun": 1193,
+    "totalCitedNoUrl": 2,
+    "totalFlaggedMisses": 846,
+    "totalRecoverable": 53,
+    "totalRecovered": 69,
+    "humanExcluded": 7,
+    "automatedExcluded": 655,
+    "automatedExcludedListed": 545,
+    "priorProductionCitations": 5908
   },
   "results": [
     {
@@ -28721,35 +28721,19 @@
       "openingDate": "2026-04-22",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-the-critics-think-of-beaches-on-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/beaches-musical-broadway-review/",
-        "https://cititour.com/NYC_Broadway/Beaches/1375",
-        "https://culturesauce.com/2026/04/22/beaches-musical-broadway-review/",
-        "https://deadline.com/2026/04/beaches-musical-broadway-review-1236866946/",
-        "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
-        "https://thefrontrowcenter.com/2026/04/beaches/",
-        "https://www.theguardian.com/stage/2026/apr/22/beaches-review-broadway-musical",
-        "https://www.vulture.com/article/beaches-made-me-sad-but-not-the-way-it-wants-to.html",
-        "https://nypost.com/2026/04/22/entertainment/beaches-a-new-musical-review-schlocky-friendship-show-arrives-during-broadways-low-tide/",
-        "https://nystagereview.com/2026/04/22/beaches-much-loved-novel-and-movie-bursts-into-so-so-songs/",
-        "https://nystagereview.com/2026/04/22/beaches-maudlin-and-middling/",
-        "https://www.newyorktheatreguide.com/reviews/beaches-broadway-review",
-        "https://newyorktheater.me/2026/04/22/beaches-broadway-review/",
         "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html",
-        "https://people.com/broadway-beaches-musical-review-11953683",
-        "https://therecs.co.uk/beaches-the-musical/",
-        "https://www.slantmagazine.com/theater/beaches-review/",
+        "https://www.newyorktheatreguide.com/reviews/beaches-broadway-review",
         "https://www.timeout.com/newyork/news/broadway-review-beaches-be-trippin-042326",
-        "https://www.theatermania.com/news/review-beaches-an-irresistible-broadway-tearjerker_1833737/",
-        "https://www.theatrely.com/post/despite-jessica-vosk-beaches-is-beached-review",
         "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-remake-bette-midler-film-1236727693/",
-        "https://www.thewrap.com/creative-content/theater/beaches-broadway-review-bette-midler-musical/",
+        "https://nypost.com/2026/04/22/entertainment/beaches-a-new-musical-review-schlocky-friendship-show-arrives-during-broadways-low-tide/",
+        "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
         "https://www.theaterscene.net/musicals/broadway/beaches/victor-gluck/",
+        "https://newyorktheater.me/2026/04/22/beaches-broadway-review/",
         "https://pagesonstages.com/2026/05/02/beaches/",
-        "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html"
+        "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html",
+        "https://1minutecritic.com/beaches-musical-broadway-review/"
       ],
       "dirFiles": 45,
       "dirClean": 36,
@@ -28761,7 +28745,27 @@
           "count": 1
         },
         {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "deadline.com",
+          "count": 1
+        },
+        {
           "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
           "count": 1
         },
         {
@@ -28781,6 +28785,18 @@
           "count": 1
         },
         {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "people.com",
+          "count": 1
+        },
+        {
+          "host": "slantmagazine.com",
+          "count": 1
+        },
+        {
           "host": "stagebuddy.com",
           "count": 1
         },
@@ -28789,11 +28805,31 @@
           "count": 1
         },
         {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
           "host": "theaterlife.com",
           "count": 1
         },
         {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
           "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
           "count": 1
         },
         {
@@ -28809,15 +28845,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 97,
-        "byReason": {
-          "aggregator-internal-nav": 46,
-          "not-http-url": 20,
-          "production-database-listing": 6,
-          "aggregator-section-root": 5,
-          "non-review-host": 19,
-          "non-stage-review": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -28828,235 +28857,77 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://1minutecritic.com/beaches-musical-broadway-review/",
-            "outletId": "1minutecritic.com",
+            "url": "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html",
+            "outletId": "nytimes.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Beaches/1375",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://culturesauce.com/2026/04/22/beaches-musical-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://deadline.com/2026/04/beaches-musical-broadway-review-1236866946/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/04/beaches/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/apr/22/beaches-review-broadway-musical",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/beaches-made-me-sad-but-not-the-way-it-wants-to.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://nypost.com/2026/04/22/entertainment/beaches-a-new-musical-review-schlocky-friendship-show-arrives-during-broadways-low-tide/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/04/22/beaches-much-loved-novel-and-movie-bursts-into-so-so-songs/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/04/22/beaches-maudlin-and-middling/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/beaches-broadway-review",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/04/22/beaches-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://people.com/broadway-beaches-musical-review-11953683",
-            "outletId": "people.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://therecs.co.uk/beaches-the-musical/",
-            "outletId": "therecs.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.slantmagazine.com/theater/beaches-review/",
-            "outletId": "slantmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           },
           {
             "url": "https://www.timeout.com/newyork/news/broadway-review-beaches-be-trippin-042326",
             "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-beaches-an-irresistible-broadway-tearjerker_1833737/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/despite-jessica-vosk-beaches-is-beached-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           },
           {
             "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-remake-bette-midler-film-1236727693/",
             "outletId": "variety.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           },
           {
-            "url": "https://www.thewrap.com/creative-content/theater/beaches-broadway-review-bette-midler-musical/",
-            "outletId": "thewrap.com",
+            "url": "https://nypost.com/2026/04/22/entertainment/beaches-a-new-musical-review-schlocky-friendship-show-arrives-during-broadways-low-tide/",
+            "outletId": "nypost.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           },
           {
             "url": "https://www.theaterscene.net/musicals/broadway/beaches/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/04/22/beaches-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           },
           {
             "url": "https://pagesonstages.com/2026/05/02/beaches/",
             "outletId": "pagesonstages.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           },
           {
             "url": "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html",
             "outletId": "interestedbystander.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://1minutecritic.com/beaches-musical-broadway-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 24,
-        "candidateCount": 24
+        "liveCount": 11,
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
-    },
-    {
-      "showId": "beautiful-little-fool-west-end-2026",
-      "title": "Beautiful Little Fool",
-      "openingDate": "2026-01-22",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
-      },
-      "dedupedVariants": [],
-      "unextractable": [],
-      "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
-        "suppressedMissing": [],
-        "candidates": [],
-        "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 0
-      },
-      "computedAt": "2026-10-31T17:07:08.919Z"
-    },
-    {
-      "showId": "beauty-and-the-beast-citizens-regional-2025",
-      "title": "Beauty and the Beast",
-      "openingDate": "2025-12-08",
-      "status": "closed",
-      "category": "regional",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
-      },
-      "dedupedVariants": [],
-      "unextractable": [],
-      "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
-        "suppressedMissing": [],
-        "candidates": [],
-        "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 0
-      },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T17:11:01.350Z"
     },
     {
       "showId": "beauty-and-the-beast-tour-2025",
@@ -37046,7 +36917,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T17:11:01.350Z"
     },
     {
       "showId": "blackout-songs-off-broadway-2026",
@@ -84923,6 +84794,300 @@
       "openingDate": "2026-04-19",
       "status": "closed",
       "category": "broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/04/19/theater/fallen-angels-review-byrne-kelli-ohara-broadway.html",
+        "https://www.newyorktheatreguide.com/reviews/fallen-angels-broadway-review-rose-byrne-kelli-ohara",
+        "https://www.vulture.com/article/theater-review-fallen-angels-noel-coward-kelli-ohara-rose-byrne-broadway.html",
+        "https://www.nydailynews.com/2026/04/19/broadway-review-fallen-angels-kelli-ohara-rose-byrne/",
+        "https://variety.com/2026/legit/reviews/fallen-angels-broadway-review-rose-byrne-kelli-ohara-lackluster-noel-coward-revival-1236725348/",
+        "https://nypost.com/2026/04/19/entertainment/fallen-angels-review-rose-byrne-kelli-ohara-offer-hilarity-in-rice-paper-thin-broadway-revival/",
+        "https://www.theatermania.com/news/review-kelli-ohara-and-rose-byrne-are-a-great-slapstick-duo-in-fallen-angels_1833432/",
+        "https://www.talkinbroadway.com/page/world/FallenAngels.html",
+        "https://www.theaterscene.net/plays/broadway-plays/fallen-angels-2/samuel-l-leiter/",
+        "https://www.theatrereviews.com/broadway-review-fallen-angels-at-the-todd-haimes-theatre-through-sunday-june-7-2026/",
+        "https://newyorktheater.me/2026/04/19/fallen-angels-broadway-review/",
+        "https://culturesauce.com/2026/04/19/fallen-angels-rose-byrne-kelli-ohara-broadway-review/",
+        "https://theaterscene.com/reviews/fallen-angels/",
+        "https://1minutecritic.com/fallen-angels-rose-byrne-kelli-ohara-broadway-review/",
+        "https://www.interestedbystander.com/2026/04/broadway-reviews-august-wilsons-joe.html",
+        "https://pagesonstages.com/2026/04/19/fallen-angels/"
+      ],
+      "dirFiles": 43,
+      "dirClean": 34,
+      "inReviewsJson": 34,
+      "missing": [
+        {
+          "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-august-wilsons-joe.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "davidcote1.substack.com",
+          "count": 1
+        },
+        {
+          "host": "deadline.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "slantmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
+          "host": "thecontending.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nydailynews.com/2026/04/19/broadway-review-fallen-angels-kelli-ohara-rose-byrne/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2026/04/19/broadway-review-fallen-angels-kelli-ohara-rose-byrne/"
+            }
+          ],
+          "exclusion": "humanExcluded",
+          "basis": [
+            "knownSyndicationSecondary"
+          ],
+          "copyOfLiveReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-august-wilsons-joe.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-august-wilsons-joe.html"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nydailynews.com/2026/04/19/broadway-review-fallen-angels-kelli-ohara-rose-byrne/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2026/04/19/theater/fallen-angels-review-byrne-kelli-ohara-broadway.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/fallen-angels-broadway-review-rose-byrne-kelli-ohara",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-fallen-angels-noel-coward-kelli-ohara-rose-byrne-broadway.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/reviews/fallen-angels-broadway-review-rose-byrne-kelli-ohara-lackluster-noel-coward-revival-1236725348/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://nypost.com/2026/04/19/entertainment/fallen-angels-review-rose-byrne-kelli-ohara-offer-hilarity-in-rice-paper-thin-broadway-revival/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-kelli-ohara-and-rose-byrne-are-a-great-slapstick-duo-in-fallen-angels_1833432/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/world/FallenAngels.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/broadway-plays/fallen-angels-2/samuel-l-leiter/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-fallen-angels-at-the-todd-haimes-theatre-through-sunday-june-7-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/04/19/fallen-angels-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://culturesauce.com/2026/04/19/fallen-angels-rose-byrne-kelli-ohara-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://theaterscene.com/reviews/fallen-angels/",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://1minutecritic.com/fallen-angels-rose-byrne-kelli-ohara-broadway-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/04/19/fallen-angels/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-august-wilsons-joe.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          },
+          {
+            "url": "https://www.nydailynews.com/2026/04/19/broadway-review-fallen-angels-kelli-ohara-rose-byrne/",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T17:11:01.350Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 14,
+        "candidateCount": 16
+      },
+      "computedAt": "2026-10-31T17:11:01.350Z"
+    },
+    {
+      "showId": "falls-for-jodie-off-broadway-2026",
+      "title": "Falls for Jodie",
+      "openingDate": "2026-09-24",
+      "status": "open",
+      "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/04/19/theater/fallen-angels-review-byrne-kelli-ohara-broadway.html",
@@ -176195,7 +176360,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T17:11:01.350Z"
     },
     {
       "showId": "midnight-off-broadway-2026",
@@ -184039,11 +184204,11 @@
       "candidatesRejected": {
         "count": 108,
         "byReason": {
-          "not-http-url": 5,
-          "non-review-host": 20,
           "aggregator-internal-nav": 65,
-          "aggregator-section-root": 4,
+          "not-http-url": 5,
           "production-database-listing": 11,
+          "aggregator-section-root": 4,
+          "non-review-host": 20,
           "non-stage-review": 3
         }
       },
@@ -184076,7 +184241,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:00:43.220Z"
+      "computedAt": "2026-10-31T17:11:01.350Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -259908,7 +260073,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T10:20:07.676Z"
+      "computedAt": "2026-10-31T17:11:01.350Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -317166,7 +317331,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-31T17:00:43.220Z"
+      "computedAt": "2026-10-31T17:11:01.350Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -340244,6 +340409,43 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "wonder-regional-2026",
+      "title": "Wonder",
+      "openingDate": "2025-12-18",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-31T17:11:01.350Z"
     },
     {
       "showId": "working-girl-la-jolla-regional-2025",
