@@ -1505324,21 +1505324,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T13:58:57.692Z",
-    "completedAt": "2026-10-31T13:59:41.757Z",
-    "totalReviews": 9,
-    "processed": 9,
-    "skipped": 0,
+    "startedAt": "2026-10-31T14:00:26.670Z",
+    "completedAt": "2026-10-31T14:01:25.529Z",
+    "totalReviews": 11,
+    "processed": 10,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 59918,
-      "output": 2674,
-      "cacheRead": 34263,
+      "input": 64484,
+      "output": 3144,
+      "cacheRead": 38070,
       "cacheWrite": 0,
-      "total": 144373
+      "total": 157741
     },
-    "costUsd": 0.2201907,
-    "runId": "41207608593",
+    "costUsd": 0.24181950000000002,
+    "runId": "41207589814",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1523746,16 +1523746,6 @@
           "flat": 12,
           "down": 2,
           "total": 22
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "jimmy-buffets-escape-to-margaritaville-regional-2026",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 1,
-          "down": 0,
-          "total": 9
         },
         "hasDisagreement": false
       },
@@ -1547003,6 +1546993,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "vladimir-regional-2026",
+        "ourDistribution": {
+          "up": 10,
+          "flat": 0,
+          "down": 0,
+          "total": 10
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "volcano-west-end-2012",
         "ourDistribution": {
           "up": 0,
@@ -1548494,8 +1548494,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T14:04:38.984Z",
-    "completedAt": "2026-10-31T14:04:38.986Z",
+    "startedAt": "2026-10-31T14:06:21.454Z",
+    "completedAt": "2026-10-31T14:06:21.459Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1548508,7 +1548508,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41207608593",
+    "runId": "41207589814",
     "source": "comparative-rescore",
     "errorDetails": []
   }
