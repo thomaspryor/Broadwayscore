@@ -101,19 +101,25 @@ function isHeldSyndicatedReprint(d, isHeldPrimary) {
 // (culturesauce 4/5 stars, theatermania 'review-...' pages, theater-scene, stagezine). When
 // the ONLY non-review evidence is that LLM verdict, review-shaped evidence on the file
 // contradicts it: an extracted star/score rating, or a verdict excerpt an aggregator quoted.
+// (originalScore can occasionally be relayed from an aggregator, BRO-6018; at worst that only
+// sends the row to re-verify, it never un-excludes anything.)
 // Deliberately body/field based, not URL-slug based: slugs match round-ups and miss cases.
 function hasValue(v) {
   return v != null && v !== false && String(v).trim() !== '' && String(v).trim().toLowerCase() !== 'null';
 }
 function hasReviewShapedEvidence(d) {
   if (!d) return false;
-  return hasValue(d.originalScore) || hasValue(d.showScoreExcerpt) || hasValue(d.humanReviewScore);
+  return hasValue(d.originalScore) || hasValue(d.showScoreExcerpt);
 }
 // Deterministic exclusions (date gates) are not LLM opinions; a rating on the page does not
 // undo "published 10 days before opening" (BRO-6689 monstagigz: self-labelled preview).
-const DETERMINISTIC_GATE_REASONS = new Set(['anticipatory_pre_opening_post', 'dateless-revival']);
+// Any wrongProduction/wrongShow reason that is not an LLM verdict text came from a rule
+// (anticipatory_pre_opening_post, dateless-revival, prior-run-republish, date guards, ...).
+// humanReviewScore is not a signal here: it makes the row humanExcluded upstream.
+const LLM_REASON = /^(CV-promoted|Collector LLM)/i;
 function isDeterministicGateExclusion(d) {
-  return DETERMINISTIC_GATE_REASONS.has(d.wrongProductionReason) || DETERMINISTIC_GATE_REASONS.has(d.wrongShowReason);
+  return [d.wrongProductionReason, d.wrongShowReason]
+    .some(r => typeof r === 'string' && r.trim() !== '' && !LLM_REASON.test(r.trim()));
 }
 // "Confirmed" = the exclusion is the correct outcome (a non-review, a Time Out
 // listing capsule, a held syndicated reprint), not a gap. Name kept from BRO-5500.
