@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T17:00:23.939Z",
+  "timestamp": "2026-10-31T17:20:00.698Z",
   "stats": {
-    "totalReviews": 75196,
-    "alreadyFlagged": 21715,
+    "totalReviews": 75290,
+    "alreadyFlagged": 21729,
     "dateGuardCatches": 238,
-    "directorMismatch": 3162,
-    "tvFilmSignals": 2147,
-    "londonSignals": 3503,
-    "offBroadwaySignals": 710,
-    "yearMismatch": 319,
-    "noPublishDate": 8494
+    "directorMismatch": 3184,
+    "tvFilmSignals": 2149,
+    "londonSignals": 3505,
+    "offBroadwaySignals": 712,
+    "yearMismatch": 318,
+    "noPublishDate": 8501
   },
   "findings": [
     {
@@ -18207,8 +18207,22 @@
     },
     {
       "showId": "eclipsed-off-broadway-2015",
+      "file": "exeunt-magazine--loren-noveck.json",
+      "score": null,
+      "publishDate": "2015-10-15",
+      "url": "http://exeuntmagazine.com/reviews/eclipsed-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
       "file": "financialtimes--brendan-lemon.json",
-      "publishDate": null,
+      "publishDate": "2015-10-15",
       "url": "https://www.ft.com/intl/cms/s/0/f924ddb8-7256-11e5-bdb1-e6e4767162cc.html",
       "findings": [
         {
@@ -18236,6 +18250,20 @@
       "file": "hollywood-reporter--unknown.json",
       "publishDate": "2015-10-14",
       "url": "http://www.hollywoodreporter.com/review/lupita-nyongo-danai-guriras-eclipsed-832110",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
+      "file": "njcom--christopher-kelly.json",
+      "score": null,
+      "publishDate": "2015-10-15",
+      "url": "http://www.nj.com/entertainment/index.ssf/2015/10/lupita_nyongo_eclipsed_review_public_theater.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18274,9 +18302,42 @@
     },
     {
       "showId": "eclipsed-off-broadway-2015",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "2015-10-14",
+      "url": "http://www.theatermania.com/off-broadway/reviews/eclipsed_74569.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2015-10-13",
+      "url": "http://www.thewrap.com/eclipsed-theater-review-lupita-nyongo-shines-danai-gurira-walking-dead/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
       "file": "timeout--adam-feldman.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2015-10-14",
       "url": "http://www.timeout.com/newyork/theater/eclipsed-1",
       "findings": [
         {
@@ -18289,7 +18350,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "usatoday--elysa-gardner.json",
-      "publishDate": null,
+      "publishDate": "2015-10-14",
       "url": "http://www.usatoday.com/story/life/theater/2015/10/14/nyongo-makes-impression-eclipsed/73870142/?utm_source=feedblitz&utm_medium=FeedBlitzRss&utm_campaign=usatoday-lifetopstories",
       "findings": [
         {
@@ -26302,6 +26363,219 @@
       ]
     },
     {
+      "showId": "hamnet-regional-2026",
+      "file": "allie-and-the-after-party--allie-bugajski.json",
+      "publishDate": "2026-02-14",
+      "url": "https://www.allieandtheafterparty.com/reviews/chicago-shakespeare-theater-hamnet",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/hamnet-reviewed-by-frank-meccia/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": "2026-02-14",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-HAMNET-at-Chicago-Shakespeare-Theater-20260214",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": "2026-02-16",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/6192-shakespeare-is-in-love-again-in-hamnet-at-chicago-shakespeare-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2026-02-19",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/hamnet-chicago-shakespeare-theater-royal-shakespeare-company/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2026-02-15",
+      "url": "https://chicago.suntimes.com/theater/2026/02/15/review-hamnet-chicago-shakespeare-theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-02-16",
+      "url": "https://www.chicagotheatrereview.com/2026/02/a-family-portrait-of-love-and-loss/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "chicagocultureauthority--frank-sennett.json",
+      "publishDate": "2026-02-14",
+      "url": "https://chicagocultureauthority.com/2026/02/14/a-mothers-love-and-anguish-drive-hamnet-to-stunning-emotional-heights-at-chicago-shakes/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "chicagoonstage--karen-topham.json",
+      "publishDate": "2026-02-16",
+      "url": "https://www.chicagoonstage.com/rscs-hamnet-at-cst-is-an-enthralling-exploration-of-grief/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2026-02-15",
+      "url": "https://www.chicagotribune.com/2026/02/15/review-hamnet-chicago-shakespeare/?clearUserState=true",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2026-02-14",
+      "url": "https://www.letsplaytheatricalreview.com/blog/hamnet",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "new-city-stage--mary-wisniewski.json",
+      "publishDate": "2026-02-18",
+      "url": "https://www.newcitystage.com/2026/02/18/the-royal-shakespeare-companys-hamnet-shows-how-grief-inspires-art/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-02-15",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/2/14/picksinsix-review-royal-shakespeare-company-chicago-shakespeare-theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "splash-magazines--debra-davy.json",
+      "publishDate": "2026-02-15",
+      "url": "https://splashmags.com/2026/02/hamnet-the-play-review-alas-poor-yoric/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2026-02-17",
+      "url": "https://thefourthwalsh.com/2026/02/review-hamnet-chicago-shakespeare-theater-thought-provoking-and-clever-origin-story/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "hamnet-regional-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-02-15",
+      "url": "https://thirdcoastreview.com/stages/2026/02/15/review-royal-shakespeares-hamnet-chishakes",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
+        }
+      ]
+    },
+    {
       "showId": "hand-to-god-2015",
       "file": "broadwayworld--michael-dale.json",
       "score": 89,
@@ -28335,6 +28609,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "hedda-gabler-regional-2026",
+      "file": "stageandcinema--cj-fernandes.json",
+      "publishDate": "2026-02-16",
+      "url": "https://stageandcinema.com/2026/02/16/hedda-gabler-remy-bumppo/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -56567,9 +56854,51 @@
     },
     {
       "showId": "sweat-off-broadway-2016",
+      "file": "ap--bill-canacci.json",
+      "score": null,
+      "publishDate": "2016-11-15",
+      "url": "http://www.app.com/story/entertainment/theater/2016/11/15/review-sweat-powerful-play-working-class-americans/93900456/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2016-11-30",
+      "url": "http://broadwayandme.blogspot.com/2016/11/sweat-speaks-up-for-working-class.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
       "file": "broadwayworld--michael-dale.json",
       "publishDate": "2016-11-07",
       "url": "http://www.broadwayworld.com/article/BWW-Review-Lynn-Nottages-SWEAT-A-Moving-Labor-Tragedy-20161107",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "guardian--alexis-soloski.json",
+      "score": null,
+      "publishDate": "2016-11-04",
+      "url": "https://www.theguardian.com/stage/2016/nov/03/sweat-review-small-town-drama-lynn-nottage-election",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56621,23 +56950,9 @@
     },
     {
       "showId": "sweat-off-broadway-2016",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theatrereviews.com/broadway-review-sweat-evaporates-quickly-at-studio-54/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
-        }
-      ]
-    },
-    {
-      "showId": "sweat-off-broadway-2016",
       "file": "timeout--david-cote.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2016-11-04",
       "url": "https://www.timeout.com/newyork/blog/theater-review-sweat-offers-grim-truths-from-blue-collar-america-110316",
       "findings": [
         {
@@ -57009,6 +57324,20 @@
       "score": null,
       "publishDate": "2016-11-20",
       "url": "http://deadline.com/2016/11/sweet-charity-sutton-foster-review-1201857837/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "epoch-times--judd-hollander.json",
+      "score": null,
+      "publishDate": "2016-12-09",
+      "url": "http://www.theepochtimes.com/n3/2193825-theater-review-sweet-charity/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -61443,20 +61772,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-front-page-2016",
-      "file": "woman-around-town--alix-cohen.json",
-      "score": 59,
-      "publishDate": "2026-03-31",
-      "url": "https://www.womanaroundtown.com/sections/playing-around/the-front-page-less-than-the-sum-of-its-parts",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: the-front-page-regional-2026"
         }
       ]
     },
@@ -68828,6 +69143,20 @@
       ]
     },
     {
+      "showId": "the-royale-off-broadway-2016",
+      "file": "the-knockturnal--adam-hobbins.json",
+      "score": null,
+      "publishDate": "2016-03-08",
+      "url": "http://theknockturnal.com/theater-review-the-royale-proves-history-does-repeat-itself/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
       "showId": "the-score-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 57,
@@ -72958,20 +73287,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
-      "file": "deadline--greg-evans.json",
-      "score": 63,
-      "publishDate": "2025-08-12",
-      "url": "https://deadline.com/2025/08/two-strangers-carry-a-cake-across-new-york-broadway-1236484562/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
         }
       ]
     },
@@ -99588,6 +99903,20 @@
       ]
     },
     {
+      "showId": "john-off-broadway-2015",
+      "file": "deadline--jeremy-gerard.json",
+      "score": null,
+      "publishDate": "August 27th, 2015",
+      "url": "http://deadline.com/2015/08/whorl-inside-a-loop-john-reviews-1201508505/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "firstnightmagazine--unknown.json",
       "score": 63,
@@ -109872,6 +110201,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pot-girls-regional-2026",
+      "file": "chicago-reader--kerry-reid.json",
+      "score": 87,
+      "publishDate": "2026-02-19",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/pot-girls-story-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
