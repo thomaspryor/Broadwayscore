@@ -48,6 +48,7 @@ const { execFileSync } = require('child_process');
 const { serpQuery } = require('./lib/url-discovery');
 const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet } = require('./lib/regional-serp-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
+const { isNonReviewUrl } = require('./lib/serp-non-review-url');
 const { _parseDomain } = require('./lib/outlet-canonicalize');
 const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
@@ -171,7 +172,7 @@ async function processShow(show) {
       skippedExisting++;
       continue;
     }
-    if (!urlLooksLikeReview(url, show.title) || looksLikeAggregationOrReaction(url, r.title, show.title)) {
+    if (isNonReviewUrl(url) || !urlLooksLikeReview(url, show.title) || looksLikeAggregationOrReaction(url, r.title, show.title)) {
       skippedNotReview++;
       continue;
     }

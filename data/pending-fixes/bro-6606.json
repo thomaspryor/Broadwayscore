@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-6606",
+  "planId": "76e5e214-6e88-4029-b3fd-40eef67b88bf",
+  "status": "pending",
+  "createdAt": "2026-10-31T03:58:20.886Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove 7 non-review or wrong-production rows the UK SERP pass ingested (BRO-6606)",
+    "steps": [
+      "Letterboxd film-fan comment on the 2015 film, not a review of the Chichester stage production",
+      "Letterboxd comment on the 2023 Disney film, not the Bristol Old Vic production",
+      "book shop product page, not a review",
+      "tour announcement from a film site, not a review",
+      "pre-opening announcement (2026-06-15), not a review",
+      "casting announcement, not a review",
+      "BroadwayWorld Omaha review of a different (Nebraska) production"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-boy-called-christmas-chichester-festival-regional-2025/letterboxd--unknown.json",
+        "description": "Letterboxd film-fan comment on the 2015 film, not a review of the Chichester stage production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-little-mermaid-bristol-old-vic-regional-2025/letterboxd--unknown.json",
+        "description": "Letterboxd comment on the 2023 Disney film, not the Bristol Old Vic production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pig-heart-boy-crucible-regional-2025/timesbookshop--unknown.json",
+        "description": "book shop product page, not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pig-heart-boy-crucible-regional-2025/cineramafilm--neil-baker.json",
+        "description": "tour announcement from a film site, not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jekyll-and-hyde-liverpool-everyman-regional-2026/theatre-weekly--unknown.json",
+        "description": "pre-opening announcement (2026-06-15), not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "being-mr-wickham-chichester-festival-regional-2026/theatre-news--unknown.json",
+        "description": "casting announcement, not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable-dundee-rep-regional-2025/broadwayworld--christine-swerczek.json",
+        "description": "BroadwayWorld Omaha review of a different (Nebraska) production"
+      }
+    ]
+  }
+}
