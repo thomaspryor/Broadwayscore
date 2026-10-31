@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-31T21:34:29.443Z",
+  "generatedAt": "2026-10-31T23:08:26.999Z",
   "summary": {
-    "total": 15,
-    "high": 8,
-    "medium": 6,
-    "low": 1
+    "total": 13,
+    "high": 6,
+    "medium": 5,
+    "low": 2
   },
   "collisions": [
     {
@@ -33,87 +33,6 @@
       "suggestedWinner": "an-american-in-paris-tour-2022",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
-    },
-    {
-      "url": "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html?m=0",
-      "normalizedUrl": "https://interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html",
-      "candidates": [
-        {
-          "showId": "beaches-2026",
-          "file": "the-interested-bystander--cary-wong.json",
-          "publishDate": null,
-          "openingDate": "2026-04-22",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "the-interested-bystander"
-        },
-        {
-          "showId": "becky-shaw-2026",
-          "file": "the-interested-bystander--interested-bystander.json",
-          "publishDate": "2026-04-22",
-          "openingDate": "2026-04-06",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "the-interested-bystander"
-        }
-      ],
-      "suggestedWinner": "becky-shaw-2026",
-      "reason": "publishDate 2026-04-22 is 16 days from becky-shaw-2026 opening (2026-04-06)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/",
-      "normalizedUrl": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses",
-      "candidates": [
-        {
-          "showId": "bughouse-off-broadway-2026",
-          "file": "la-voce-di-new-york--jk-clarke.json",
-          "publishDate": "2026-03-12",
-          "openingDate": "2026-03-11",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "la-voce-di-new-york"
-        },
-        {
-          "showId": "silver-manhattan-off-broadway-2026",
-          "file": "la-voce-di-new-york--jk-clarke.json",
-          "publishDate": "2026-03-12",
-          "openingDate": "2026-03-04",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "la-voce-di-new-york"
-        }
-      ],
-      "suggestedWinner": "bughouse-off-broadway-2026",
-      "reason": "publishDate 2026-03-12 is 1 days from bughouse-off-broadway-2026 but also 8 days from silver-manhattan-off-broadway-2026",
-      "confidence": "medium"
-    },
-    {
-      "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-      "normalizedUrl": "https://interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-      "candidates": [
-        {
-          "showId": "chinese-republicans-off-broadway-2026",
-          "file": "the-interested-bystander--cary-wong.json",
-          "publishDate": null,
-          "openingDate": "2026-02-26",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "the-interested-bystander"
-        },
-        {
-          "showId": "mother-russia-off-broadway-2026",
-          "file": "the-interested-bystander--cary-wong.json",
-          "publishDate": "2026-03-03",
-          "openingDate": "2026-02-23",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "the-interested-bystander"
-        }
-      ],
-      "suggestedWinner": "mother-russia-off-broadway-2026",
-      "reason": "publishDate 2026-03-03 is 8 days from mother-russia-off-broadway-2026 opening (2026-02-23)",
-      "confidence": "high"
     },
     {
       "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
@@ -168,6 +87,33 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
+    },
+    {
+      "url": "https://windycitytimes.com/m/APPredirect.php?AID=71625",
+      "normalizedUrl": "https://windycitytimes.com/m/appredirect.php",
+      "candidates": [
+        {
+          "showId": "fannie-the-music-and-life-of-fannie-lou-hamer-regional-2021",
+          "file": "windycitytimes--mary-shen-barnidge.json",
+          "publishDate": null,
+          "openingDate": "2021-10-27",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "windycitytimes"
+        },
+        {
+          "showId": "school-girls-or-the-african-mean-girls-play-regional-2021",
+          "file": "windycitytimes--mary-shen-barnidge.json",
+          "publishDate": null,
+          "openingDate": "2021-08-05",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "windycitytimes"
+        }
+      ],
+      "suggestedWinner": "fannie-the-music-and-life-of-fannie-lou-hamer-regional-2021",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
