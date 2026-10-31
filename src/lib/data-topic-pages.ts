@@ -4,7 +4,7 @@
 
 import { getCriticScoreMap } from '../../scripts/lib/canonical-critic-scores';
 import { getAllShows } from './data-core';
-import { getAudienceBuzz, hasEnoughAudienceReviews } from './data-audience';
+import { getAudienceBuzz, hasFullConfidenceAudienceReviews } from './data-audience';
 import { getMarketDate } from './date-utils';
 import { getTopicShowInputs } from './data-commercial';
 import { featureFlags } from '@/config/feature-flags';
@@ -18,11 +18,11 @@ let cache: TopicShowInput[] | null = null;
 
 function inputs(): TopicShowInput[] {
   if (!cache) {
-    // Audience score counts only with enough audience reviews behind it.
+    // Audience score counts only with enough audience reviews behind it (full-confidence bar: this feeds analyses).
     const audience = new Map<string, number | null>();
     for (const s of getAllShows()) {
       const buzz = getAudienceBuzz(s.id);
-      audience.set(s.id, buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore ?? null : null);
+      audience.set(s.id, buzz && hasFullConfidenceAudienceReviews(buzz) ? buzz.combinedScore ?? null : null);
     }
     // Commercial data is read only while featureFlags.commercial is on (released 2026-10-26, BRO-6192).
     const base = featureFlags.commercial ? getTopicShowInputs(getCriticScoreMap(), audience) : [];

@@ -32,6 +32,7 @@ import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
+import { FULL_CONFIDENCE_AUDIENCE_REVIEWS } from '@/lib/audience-grade-utils';
 import { isLiveTour } from '@/lib/tour-listing';
 import {
   ScoreBadge,
@@ -626,6 +627,11 @@ function Inner({
                 {audienceCount > 0 && (
                   <p className="text-xs text-fg-muted mt-0.5 leading-snug">
                     {audienceCount.toLocaleString('en-US')} audience reviews
+                  </p>
+                )}
+                {audienceCount > 0 && audienceCount < FULL_CONFIDENCE_AUDIENCE_REVIEWS && (
+                  <p className="text-xs text-fg-muted mt-0.5 leading-snug italic" data-testid="hero-small-sample">
+                    Small sample
                   </p>
                 )}
               </div>

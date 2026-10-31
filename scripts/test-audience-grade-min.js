@@ -12,7 +12,7 @@ const ROOT = path.join(__dirname, '..');
 const cfg = require('../src/config/audience-grade.json');
 
 assert.strictEqual(cfg.minReviews, 10, 'minReviews should be 10');
-assert.ok(cfg.smallSampleBelow > cfg.minReviews, 'small-sample note threshold must sit above the minimum');
+assert.ok(cfg.fullConfidenceReviews > cfg.minReviews, 'small-sample note threshold must sit above the minimum');
 
 // 1. Every consumer reads the shared config, none keeps its own number.
 const consumers = [
@@ -52,7 +52,7 @@ if (fs.existsSync(buzzPath)) {
   const shows = require(buzzPath).shows;
   const total = (b) => Object.values(b.sources || {}).reduce((a, s) => a + ((s && s.reviewCount) || 0), 0);
   const d = shows['downstate-west-end-2019'];
-  assert.ok(d && total(d) >= cfg.minReviews && total(d) < cfg.smallSampleBelow, 'Downstate should sit in the newly graded band');
+  assert.ok(d && total(d) >= cfg.minReviews && total(d) < cfg.fullConfidenceReviews, 'Downstate should sit in the newly graded band');
   const below = Object.values(shows).filter((b) => b.combinedScore != null && total(b) < cfg.minReviews).length;
   const newly = Object.values(shows).filter((b) => b.combinedScore != null && total(b) >= cfg.minReviews && total(b) < 15).length;
   console.log(`Downstate: ${total(d)} reviews -> graded. Still ungraded: ${below}. Newly graded (10-14): ${newly}.`);

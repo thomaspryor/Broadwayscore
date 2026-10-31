@@ -5,7 +5,7 @@
 
 import { getBroadwayShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/engine';
-import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceGrade, hasFullConfidenceAudienceReviews } from '@/lib/data-audience';
 import { isTonyEligible } from '@/lib/data-awards';
 import {
   tonySeasonForCeremonyYear,
@@ -1158,7 +1158,7 @@ export function serializeShow(
   opts: { tier?: RecipeTier; seasonLabel?: string } = {},
 ): SerializedTonyShow {
   const buzz = getAudienceBuzz(show.id);
-  const enoughAudience = buzz ? hasEnoughAudienceReviews(buzz) : false;
+  const enoughAudience = buzz ? hasFullConfidenceAudienceReviews(buzz) : false; // predictions keep the full-confidence bar
   const audScore = buzz?.combinedScore ?? null;
 
   const tonyAud = computeTonyAudienceGrade(show.id);

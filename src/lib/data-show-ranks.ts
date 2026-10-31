@@ -50,7 +50,7 @@ import type { ComputedShow } from '@/lib/data-types';
 import { getAllShows } from '@/lib/data-core';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getSeason } from '@/lib/data-commercial';
-import { getAudienceBuzz, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { getAudienceBuzz, hasFullConfidenceAudienceReviews } from '@/lib/data-audience';
 import type { Market } from '@/lib/awards-scoring';
 import { computeSiteAwardScore } from '@/lib/awards-site-score';
 import { getShowGrosses } from '@/lib/data-grosses';
@@ -159,7 +159,8 @@ function valCriticAllTime(show: ComputedShow): number | null {
 function valAudience(show: ComputedShow): number | null {
   const buzz = getAudienceBuzz(show.id);
   if (!buzz || buzz.combinedScore == null) return null;
-  if (!hasEnoughAudienceReviews(buzz)) return null;
+  // Rankings need the full-confidence bar, not the lower grade-display bar.
+  if (!hasFullConfidenceAudienceReviews(buzz)) return null;
   return Math.round(buzz.combinedScore);
 }
 
@@ -234,7 +235,7 @@ function getMetricValue(show: ComputedShow, metric: RankMetric, pool: RankPool):
   }
   // All-time pool uses the fullest data we have for each metric — no
   // review-threshold or season gate. Audience already self-filters via
-  // hasEnoughAudienceReviews; awards self-filters via score>0; box-office
+  // hasFullConfidenceAudienceReviews; awards self-filters via score>0; box-office
   // via allTime.gross presence.
   if (pool === 'allTime') {
     if (metric === 'critic') return valCriticAllTime(show);

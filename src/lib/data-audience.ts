@@ -10,7 +10,7 @@ import showScoreUrlsData from '../../data/show-score-urls.json';
 import { isBroadwayComMarket, isRedditMarket, calculateCombinedScore, getDesignation } from '../../scripts/lib/audience-weighting';
 
 // Re-export pure functions from lightweight module for backward compat
-export { getAudienceGrade, getAudienceGradeClasses, getTotalAudienceReviews, hasEnoughAudienceReviews, MIN_AUDIENCE_REVIEWS } from './audience-grade-utils';
+export { getAudienceGrade, getAudienceGradeClasses, getTotalAudienceReviews, hasEnoughAudienceReviews, hasFullConfidenceAudienceReviews, MIN_AUDIENCE_REVIEWS, FULL_CONFIDENCE_AUDIENCE_REVIEWS } from './audience-grade-utils';
 
 interface AudienceBuzzFile {
   _meta: {

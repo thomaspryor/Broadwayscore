@@ -13,9 +13,12 @@ import audienceGradeConfig from '../config/audience-grade.json';
 export const MIN_AUDIENCE_REVIEWS: number = audienceGradeConfig.minReviews;
 
 /**
- * Grades built on fewer reviews than this carry a "small sample" note.
+ * Full-confidence bar (15). A grade built on fewer reviews than this is still shown,
+ * with a "small sample" note, but the show stays OUT of rankings, "ranked"
+ * lists, analyses, Tony predictions and fantasy scoring: a handful of reviews
+ * must not put a show at "#2 of 81".
  */
-export const SMALL_SAMPLE_AUDIENCE_REVIEWS: number = audienceGradeConfig.smallSampleBelow;
+export const FULL_CONFIDENCE_AUDIENCE_REVIEWS: number = audienceGradeConfig.fullConfidenceReviews;
 
 /**
  * Get total audience review count across all sources.
@@ -33,6 +36,14 @@ export function getTotalAudienceReviews(buzz: AudienceBuzzData): number {
  */
 export function hasEnoughAudienceReviews(buzz: AudienceBuzzData): boolean {
   return getTotalAudienceReviews(buzz) >= MIN_AUDIENCE_REVIEWS;
+}
+
+/**
+ * Enough reviews for rankings, aggregates and predictions (the full-confidence bar).
+ * Use this, not hasEnoughAudienceReviews, anywhere a number is ranked or averaged.
+ */
+export function hasFullConfidenceAudienceReviews(buzz: AudienceBuzzData): boolean {
+  return getTotalAudienceReviews(buzz) >= FULL_CONFIDENCE_AUDIENCE_REVIEWS;
 }
 
 /**

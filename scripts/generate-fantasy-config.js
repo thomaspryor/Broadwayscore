@@ -210,7 +210,8 @@ function computeCriticScore(showId) {
 // Tier mappers shared with compute-fantasy-scores.js; pinned to the site's
 // scoring.ts / audience-grade-utils.ts by tests/unit/fantasy-tier-parity.test.ts.
 const { criticLabelForScore: getCriticLabel, audienceGradeForScore: gradeFromAudienceScore } = require('./lib/fantasy-helpers');
-const MIN_AUDIENCE_REVIEWS = require('../src/config/audience-grade.json').minReviews; // shared with src/lib/audience-grade-utils.ts
+// Fantasy points use the full-confidence bar so game rules do not shift when the display minimum changes.
+const MIN_AUDIENCE_REVIEWS = require('../src/config/audience-grade.json').fullConfidenceReviews;
 function getAudienceGrade(showId) {
   const data = audienceData[showId];
   if (!data || !data.sources) return null;
