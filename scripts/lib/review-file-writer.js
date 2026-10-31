@@ -1644,7 +1644,8 @@ function isOutletRegistryName(name) {
 /**
  * Whether a merge may write the incoming byline onto a file stored as Unknown
  * (BRO-4485). Opt-in only: the caller must have read the name off this same
- * page (input.bylineFromOwnPage, set by ingest-urls), and the incoming URL
+ * page (input.bylineFromOwnPage, set by ingest-urls) or a listing naming it for
+ * this URL (input.bylineFromListing), and the incoming URL
  * must be the file's URL. Aggregator rows and URL-less writes never qualify:
  * their names are untrusted and pass 1 of findExistingReviewFile can match an
  * --unknown file with no URL check at all. Also refuses a hand-set or locked
@@ -1655,7 +1656,9 @@ function isOutletRegistryName(name) {
  */
 function shouldUpgradeUnknownByline(filepath, existing, ctx) {
   const { input } = ctx;
-  if (!input || input.bylineFromOwnPage !== true || !input.url) return false;
+  // bylineFromListing (BRO-6518): the caller's listing named this critic for this
+  // exact URL (theatreinchicago.com), which is as specific as the page itself.
+  if (!input || (input.bylineFromOwnPage !== true && input.bylineFromListing !== true) || !input.url) return false;
   const { canonicalReviewUrl } = require('./review-url-clusters');
   if (!existing || !existing.url || canonicalReviewUrl(existing.url) !== canonicalReviewUrl(input.url)) return false;
   const pageText = input.fields && typeof input.fields.fullText === 'string' ? input.fields.fullText : null;

@@ -61,12 +61,13 @@ async function evaluate(row, ctx, io) {
   const dupe = stage.findDuplicate(show, ctx.shows);
   if (dupe) return { status: 'rejected', reason: `duplicate:${dupe.id}`, retry: false };
   stage.dedupeId(show, page, new Set(ctx.shows.map((x) => x.id)));
-  return { status: 'accepted', show, reviews: stage.linkedReviews(page).map((r) => r.url) };
+  // The listed critic rides along (BRO-6518): some outlets' pages carry only a site-wide author.
+  return { status: 'accepted', show, reviews: stage.linkedReviews(page).map((r) => ({ url: r.url, critic: r.critic || null })) };
 }
 
 /**
  * Run the day. Mutates `shows` (the parsed shows.json array) with accepted entries.
- * Returns { added:[{id, urls}], seen } where `seen` is the updated memory.
+ * Returns { added:[{id, urls:[{url, critic}]}], seen } where `seen` is the updated memory.
  */
 async function runDaily({ listing, shows, seen, today, io, max = 15, log = () => {} }) {
   const next = { ...seen };

@@ -37,6 +37,11 @@ test('runDaily adds an accepted show with the Chicago fields and remembers it', 
   assert.equal(s.localOnly, true);
   assert.equal(out.seen[10].reason, 'added');
   assert.equal(out.added[0].urls.length, 3);
+  // BRO-6518: the listed critic travels with each link into the ingest line.
+  for (const u of out.added[0].urls) { assert.equal(typeof u.url, 'string'); assert.ok('critic' in u); }
+  const { formatIngestLine, parseIngestLine } = require('./ingest-url-line.js');
+  const first = out.added[0].urls[0];
+  assert.equal(parseIngestLine(formatIngestLine(first)).listedCritic, first.critic);
 });
 
 test('thin pages are retried tomorrow, virtual venues are final', async () => {

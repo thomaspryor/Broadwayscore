@@ -1,4 +1,5 @@
 'use strict';
+const { formatIngestLine } = require('./ingest-url-line');
 
 /**
  * ingest-batch-pacing.js — pure decisions for scripts/dispatch-ingest-batch.js (BRO-6485).
@@ -38,7 +39,7 @@ function formatUrlsInput(entries, knownOutlets) {
     if (knownOutlets && !knownOutlets.has(e.outlet)) throw new Error(`ingest batch: outlet "${e.outlet}" is not in the outlet registry (${e.url})`);
     if (seen.has(e.url)) continue;
     seen.add(e.url);
-    lines.push(`${e.url} ${e.outlet}`);
+    lines.push(formatIngestLine({ url: e.url, outlet: e.outlet, critic: e.critic }));
   }
   return lines.join('\n');
 }

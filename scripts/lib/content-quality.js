@@ -3379,6 +3379,25 @@ function extractAuthorFromHtml(html, text, options = {}) {
   return null;
 }
 
+// Outlets whose only author markup is a site-wide account (BRO-6518); see the
+// check in extractAuthorFromHtmlUnfiltered. Matched on the parsed hostname or the
+// outlet id, so a query string naming the domain cannot trigger it.
+const SITE_WIDE_AUTHOR_HOSTS = new Set(['aroundthetownchicago.com', 'picksinsix.com', 'conversationswithedtracy.com', 'chicagotheaterandarts.com']);
+// The account names those pages print on every post. Only these are treated as
+// "no byline" when a stored review carries them; a real critic stored on the
+// same outlet (Julia W. Rath, Reno Lovison) is a real byline.
+const SITE_WIDE_AUTHOR_ACCOUNTS = new Set(['jacob davis', 'frank meccia', 'ed tracy', 'jodie jacobs']);
+function isSiteWideAuthorAccount(name) { return SITE_WIDE_AUTHOR_ACCOUNTS.has(String(name || '').trim().toLowerCase()); }
+const SITE_WIDE_AUTHOR_OUTLETS = new Set(['around-the-town-chicago', 'picksinsix', 'chicagotheaterandarts']);
+function isSiteWideAuthorSource({ url, outletId } = {}) {
+  if (outletId && SITE_WIDE_AUTHOR_OUTLETS.has(String(outletId))) return true;
+  if (!url) return false;
+  let host;
+  try { host = new URL(String(url)).hostname.toLowerCase().replace(/^www\./, ''); } catch { return false; }
+  for (const h of SITE_WIDE_AUTHOR_HOSTS) if (host === h || host.endsWith(`.${h}`)) return true;
+  return false;
+}
+
 function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   if (!html) return null;
 
@@ -3389,6 +3408,14 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
     const tl = extractTheaterLifeByline(text);
     if (tl) return tl;
   }
+
+  // Outlets whose only author markup is a site-wide account (BRO-6518): every
+  // Around the Town Chicago post read as "Jacob Davis" or "Frank Meccia", every
+  // PicksInSix post as "Ed Tracy", every Chicago Theater and Arts post as
+  // "Jodie Jacobs", whoever wrote it (476 of 1,764 Chicago
+  // reviews misnamed). No name beats a wrong one: callers that know the byline
+  // pass it (ingest-urls "URL | Critic"), backfill-tic-bylines.js fixes the rest.
+  if (options && isSiteWideAuthorSource(options)) return null;
 
   // Outlet override: thestage.co.uk prints the critic as an inline anchor
   // right under the headline — <a class="aos-ArticleAuthor ..." title="Holly
@@ -4080,7 +4107,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   };
 }
 
-module.exports = {
+module.exports = { isSiteWideAuthorSource, isSiteWideAuthorAccount,
   PROMO_BOOKING_COPY_PATTERNS,
   PROMO_BOOKING_COPY_STRONG_PATTERNS,
   PROMO_BOOKING_COPY_WEAK_PATTERNS,
