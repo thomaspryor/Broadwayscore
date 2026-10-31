@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { getBreakdownTierId, getScoreTierId, getReviewBreakdownTierId, parseVerdictTierId } = require('./score-tiers.js');
+const { getBreakdownTierId, getScoreTierId, getReviewBreakdownTierId, parseVerdictTierId, verdictAppliesToSource } = require('./score-tiers.js');
 
 const BAR_FOR_BADGE = {
   'must-see': 'rave',
@@ -65,4 +65,24 @@ test('parseVerdictTierId reads the ensemble majority from modelAgreement', () =>
   assert.equal(parseVerdictTierId('Both models agree: Positive'), 'positive');
   assert.equal(parseVerdictTierId('Bucket disagreement: claude=Mixed, openai=Positive'), null);
   assert.equal(parseVerdictTierId(null), null);
+});
+
+test('parseVerdictTierId: no majority returns null so the score band decides', () => {
+  assert.equal(parseVerdictTierId('3/4 models agree: Positive'), 'positive');
+  assert.equal(parseVerdictTierId('Adjacent bucket split (Positive/Rave) - using median score'), null);
+  assert.equal(parseVerdictTierId('No bucket consensus - using median score'), null);
+});
+
+test('verdict only applies where the published score is the ensemble\'s', () => {
+  for (const ok of ['llm-v6', 'llmScore', 'llmScore-lowconf', 'llmScore-thumb-boosted', 'anchored-v6']) assert.equal(verdictAppliesToSource(ok), true, ok);
+  for (const no of ['originalScore-priority0', 'originalScore', 'adjudicated', 'human-review', 'assignedScore', 'aggregatorStars-relay', null, undefined]) assert.equal(verdictAppliesToSource(no), false, String(no));
+});
+
+test('rebuild and the reddit/email/social consumers read the verdict', () => {
+  const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const read = f => readFileSync(join(root, f), 'utf8');
+  assert.match(read('scripts/rebuild-all-reviews.js'), /verdictAppliesToSource\(source\)/);
+  assert.match(read('scripts/lib/reddit-opening-post.js'), /getReviewBreakdownTierId\(r\.v, r\.s/);
+  assert.match(read('scripts/send-opening-night-broadcast.js'), /getReviewBreakdownTierId\(r\.verdict, r\.assignedScore/);
+  assert.match(read('src/app/show/[slug]/page.tsx'), /reviewScore: r\.reviewScore, verdict: r\.verdict/);
 });

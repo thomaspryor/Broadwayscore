@@ -133,6 +133,19 @@ function parseVerdictTierId(modelAgreement) {
 }
 
 /**
+ * True when the ensemble's verdict describes the review's published score: the
+ * score came from the LLM ensemble (llm-v6, llmScore*) or was anchored to the
+ * critic's rating on top of it (anchored-v6). Scores set by a better source
+ * (originalScore stars, adjudicated, human-review, assignedScore, aggregator
+ * stars) must keep their score band: the ensemble data on those rows can be
+ * stale, and CLAUDE.md section 3 makes stars the score band.
+ * @param {string | null | undefined} scoreSource
+ */
+function verdictAppliesToSource(scoreSource) {
+  return typeof scoreSource === 'string' && /^(llm|anchored-v6)/.test(scoreSource);
+}
+
+/**
  * Breakdown-bar tier for ONE review (BRO-6686, owner 2026-10-31): the critic's
  * verdict when it has one, else the score band (getBreakdownTierId). Accepts
  * the verdict in any casing ('Rave' on reviews.json rows, 'rave' elsewhere).
@@ -162,5 +175,6 @@ module.exports = {
   getScoreTierLabel,
   getBreakdownTierId,
   parseVerdictTierId,
+  verdictAppliesToSource,
   getReviewBreakdownTierId,
 };
