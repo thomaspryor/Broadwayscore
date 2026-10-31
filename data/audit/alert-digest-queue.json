@@ -4001,5 +4001,36 @@
       }
     ],
     "queuedAt": "2026-10-31T06:44:21.873Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6687-cm-argmax",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6687-cm-argmax",
+    "description": "land.yml did not land land/bro-6687-cm-argmax: the unit-tests-node gate went red at b3a868745b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41177971634",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6687-cm-argmax"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b3a868745bcb5f918303b467330038615e81179d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41177971634"
+      }
+    ],
+    "queuedAt": "2026-10-31T07:02:49.924Z"
   }
 ]
