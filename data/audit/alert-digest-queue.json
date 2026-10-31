@@ -785,20 +785,6 @@
     "queuedAt": "2026-10-31T14:40:35.354Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-31.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T15:13:44.202Z"
-  },
-  {
     "conditionKey": "bd-circuit-breaker-web_unlocker2",
     "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (3634/1750 reqs)",
     "description": "Zone web_unlocker2 billed 3634 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n22 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (746), collect-review-texts.js (429), opening-night-poller.js (304).",
@@ -811,5 +797,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T15:03:23.717Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-31.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T15:36:06.195Z"
   }
 ]
