@@ -276,5 +276,36 @@
       }
     ],
     "queuedAt": "2026-10-31T14:35:39.077Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6717-child-idle",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6717-child-idle",
+    "description": "land.yml did not land land/bro-6717-child-idle: the unit-tests-node gate went red at ee64ab8e5f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41209845610",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6717-child-idle"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ee64ab8e5f48b6066388cdb50c62eb3962dcf722"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41209845610"
+      }
+    ],
+    "queuedAt": "2026-10-31T14:40:35.354Z"
   }
 ]
