@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-31T03:02:41.372Z",
-  "processed": 538,
-  "failed": 302,
-  "successRate": "64.0%",
+  "updatedAt": "2026-10-31T03:20:14.554Z",
+  "processed": 543,
+  "failed": 310,
+  "successRate": "63.7%",
   "tierBreakdown": {
-    "playwright": 245,
+    "playwright": 249,
     "amp": 7,
     "browserbase": 7,
     "directCookies": 0,
     "scrapingdog": 32,
     "scrapingbee": 17,
     "brightdata": 2,
-    "archiveToday": 38,
-    "archive": 165
+    "archiveToday": 48,
+    "archive": 166
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-30T22:39:54.142Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-30T22:40:40.847Z",
-      "event": "bb-session",
-      "session": "069dce26",
-      "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
-    },
     {
       "t": "2026-10-30T22:42:06.378Z",
       "event": "bb-session",
@@ -125,6 +114,18 @@
       "t": "2026-10-31T02:53:21.521Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T03:11:10.889Z",
+      "event": "bb-session",
+      "session": "82dfba5b",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-31T03:12:16.860Z",
+      "event": "bb-session",
+      "session": "4322108b",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
