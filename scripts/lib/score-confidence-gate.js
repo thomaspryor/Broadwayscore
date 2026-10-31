@@ -64,4 +64,4 @@ function evaluateScoreConfidence({ showReviews, category, getOutletTier, newRevi
   return { ok: reasons.length === 0, reasons, counts, floors: { ...floors, newReturning: minNewReturning } };
 }
 
-module.exports = { evaluateScoreConfidence, getConfidenceFloors, BROADWAY_FLOORS, LONDON_FLOORS };
+module.exports = { evaluateScoreConfidence, getConfidenceFloors, rowConfidence, BROADWAY_FLOORS, LONDON_FLOORS };

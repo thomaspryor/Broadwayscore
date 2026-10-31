@@ -24,7 +24,7 @@ const { evaluateBroadcastReadiness, isLaneAggregatorRow, BROADWAY_MIN } = requir
 const { isScoreableSurvivor, hasValidScore } = require('../../scripts/verify-all-scored.js');
 const { liveScoredCounts, MIN_SCORED_REVIEWS } = require('../../scripts/lib/critic-consensus-eligibility.js');
 const { loadReviewTexts } = require('../../scripts/lib/critic-consensus-inputs.js');
-const { evaluateScoreConfidence } = require('../../scripts/lib/score-confidence-gate.js');
+const { evaluateScoreConfidence, rowConfidence } = require('../../scripts/lib/score-confidence-gate.js');
 
 const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
 const outlets = registry.outlets || registry;
@@ -160,7 +160,7 @@ test('paywall fallback lane rows (aggregator thumb or stars, no LLM score) pass 
   }
 });
 
-test('wiring: the rebuild stamps laneSource from laneRowSource, and the workflow and missed-broadcasts use the readiness gate', () => {
+test('wiring: the rebuild stamps laneSource from laneRowSource, and the workflow and missed-broadcasts use the readiness gate, the poller check uses rowConfidence', () => {
   const rebuild = fs.readFileSync(path.join(ROOT, 'scripts', 'rebuild-all-reviews.js'), 'utf8');
   assert.match(rebuild, /laneSource: src/);
   assert.match(rebuild, /laneRowSource\(data, \{ openingDate/);
@@ -168,4 +168,9 @@ test('wiring: the rebuild stamps laneSource from laneRowSource, and the workflow
   assert.match(wf, /evaluateBroadcastReadiness\(/);
   const missed = fs.readFileSync(path.join(ROOT, 'scripts', 'lib', 'missed-broadcasts.js'), 'utf8');
   assert.match(missed, /evaluateBroadcastReadiness\(/);
+  // the poller/status readiness check counts confidence the same way as the send floor
+  const onr = fs.readFileSync(path.join(ROOT, 'scripts', 'lib', 'opening-night-readiness.js'), 'utf8');
+  assert.match(onr, /includes\(rowConfidence\(r\)\)/);
+  assert.equal(rowConfidence({ llmScore: { confidence: 'high' } }), 'high');
+  assert.equal(rowConfidence({ scoreConfidence: 'low', llmScore: { confidence: 'high' } }), 'low');
 });

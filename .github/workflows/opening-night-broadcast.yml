@@ -218,7 +218,7 @@ jobs:
         id: readiness_gate
         run: |
           # Market-aware readiness gate (scripts/lib/broadcast-readiness.js):
-          #   - Broadway: 15+ scored reviews AND >=1 aggregator (DTLI or BWW).
+          #   - Broadway: 15+ scored reviews AND >=1 aggregator (DTLI, BWW, or a lane aggregator row, BRO-6623).
           #   - West End: 12+ scored reviews, NO aggregator requirement (WE reviews
           #     are LLM-scored and never carry DTLI/BWW thumbs; the old Broadway-only
           #     aggregator gate silently excluded every WE show — 2026-06-29).

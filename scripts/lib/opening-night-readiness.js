@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
+const { rowConfidence } = require('./score-confidence-gate'); // BRO-6623: raw lane rows keep confidence in llmScore
 const { getConfidenceFloors } = require('./score-confidence-gate');
 const { getFoundOutletIds } = require('./found-outlet-ids');
 const { selectMissingT1T2Outlets } = require('./opening-night-discovery-policy');
@@ -76,7 +77,7 @@ function checkReadiness(showId, market = 'broadway') {
   const showRevs = arr.filter(r => r.showId === showId && r.assignedScore > 0);
   const t1 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 1; }).length;
   const t2 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 2; }).length;
-  const hiConf = showRevs.filter(r => r.scoreConfidence === 'high' || r.scoreConfidence === 'medium').length;
+  const hiConf = showRevs.filter(r => ['high', 'medium'].includes(rowConfidence(r))).length;
 
   return {
     total: showRevs.length,
