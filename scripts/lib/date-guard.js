@@ -334,6 +334,20 @@ function evaluateLlmYearMisdate({ review, show, isMultiProductionTitle }) {
   return { corrected: new Date(shifted).toISOString().slice(0, 10), original: review.publishDate };
 }
 
+/**
+ * The date a date-guard note names (BRO-6702): the record's publishDate, else the
+ * date the guard actually used (a full URL date for a file with no publishDate).
+ * The note used to print "review undefined", which left wrong-production-autoclear
+ * nothing to match a priorRuns window against.
+ * @param {object} review - review-text JSON
+ * @param {Date} pubDate - the date the guard evaluated
+ * @returns {string}
+ */
+function guardNoteDate(review, pubDate) {
+  if (review && review.publishDate) return String(review.publishDate);
+  return pubDate instanceof Date && !isNaN(pubDate.getTime()) ? pubDate.toISOString().slice(0, 10) : 'unknown date';
+}
+
 const DATELINE_MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
 /**
@@ -437,6 +451,7 @@ function guardPublishDate(review, show) {
 
 module.exports = {
   textDateline,
+  guardNoteDate,
   textNumericDates,
   guardPublishDate,
   evaluateLlmYearMisdate,

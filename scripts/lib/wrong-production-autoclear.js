@@ -336,10 +336,26 @@ function effectiveFlagDate(data) {
     if (pd && !isNaN(pd.getTime())) return pd;
   }
   const blob = `${data.wrongProductionNote || ''} ${data.wrongProductionReason || ''}`;
-  const m = blob.match(/\b(\d{4}-\d{2}-\d{2})\b/);
+  // "review undefined is Nd before 2026-10-28": the only date in the note is the
+  // show's own start date, not the review's (BRO-6702; older writers printed null).
+  const undatedGuardNote = /\breview (?:undefined|null)\b/.test(blob);
+  const m = undatedGuardNote ? null : blob.match(/\b(\d{4}-\d{2}-\d{2})\b/);
   if (m) {
     const d = parseDate(m[1]);
     if (d && !isNaN(d.getTime())) return d;
+  }
+  // BRO-6702: flag-wrong-production-by-date dates a file with no publishDate from
+  // its URL (full YYYY-MM-DD only) and wrote "review undefined" into the note, so
+  // a priorRuns window could never clear the flag the URL date put there
+  // (specimen-off-broadway-2026 twi-ny, 67 such notes corpus-wide). Only for that
+  // note, and read the URL exactly as the flagger did (extractDateFromUrl).
+  if (undatedGuardNote && !data.publishDate && data.url) {
+    const { extractDateFromUrl } = require('./url-date');
+    const u = extractDateFromUrl(data.url);
+    if (u && /^\d{4}-\d{2}-\d{2}$/.test(u.date || '')) {
+      const d = parseDate(u.date);
+      if (d && !isNaN(d.getTime())) return d;
+    }
   }
   return null;
 }

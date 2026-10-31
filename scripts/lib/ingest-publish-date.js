@@ -10,7 +10,7 @@
 const { extractPublishDate } = require('./article-extractor');
 const { extractDateFromText } = require('./body-date-mismatch');
 const { bodyPublishDateFallback } = require('./publish-date-provenance');
-const { extractDateFromUrl } = require('./rebuild-helpers');
+const { extractDateFromUrl } = require('./url-date');
 
 /**
  * @param {object} a

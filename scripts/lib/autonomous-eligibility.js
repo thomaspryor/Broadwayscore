@@ -200,6 +200,7 @@ const EXCLUDED_FILES = new Set([
   'src/lib/data-core.ts',
   // scoring-delta SCORE_VALUE_FILES
   'scripts/lib/rebuild-helpers.js',
+  'scripts/lib/url-date.js', // BRO-6702: extractDateFromUrl moved out of rebuild-helpers
   'scripts/lib/score-extractors.js',
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',

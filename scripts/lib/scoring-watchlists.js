@@ -131,6 +131,8 @@ const LLM_INPUT_FILES = [
 // the watchlist; the NY Post stars fix 2026-04-22 slipped past this gate.
 const SCORE_VALUE_FILES = [
   'scripts/lib/rebuild-helpers.js',
+  // BRO-6702: extractDateFromUrl moved here from rebuild-helpers (BRO-6628 replays it).
+  'scripts/lib/url-date.js',
   'scripts/lib/score-extractors.js',
   'scripts/lib/score-parsers.js',
   'scripts/lib/review-normalization.js',

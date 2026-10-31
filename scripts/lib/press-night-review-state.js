@@ -24,7 +24,13 @@ const SYNDICATED_REASONS = new Set(['knownSyndicationSecondary', 'syndicatedDupl
 
 // Reasons that say the listed article is about a different production/show, not this night's review.
 const WRONG_PRODUCTION_REASONS = new Set(['wrongProduction', 'wrongShow']);
-const urlKey = (u) => String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/[?&](utm_[^=&]*|fbclid|gclid)=[^&]*/g, '').replace(/\?$/, '').replace(/\/+$/, '');
+// Both sides go through normUrl first (BRO-6702): fileState urls are stored normalized, census urls are raw.
+const urlKey = (u) => String(normUrl(u) || u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/[?&](utm_[^=&]*|fbclid|gclid)=[^&]*/g, '').replace(/\?$/, '').replace(/\/+$/, '');
+
+function normUrl(u) {
+  if (!u) return null;
+  try { return require('./review-normalization').normalizeUrl(String(u)) || null; } catch (_) { return null; }
+}
 
 function outletIdOfFile(d) {
   const raw = String(d.outletId || d.outlet || '').trim();
@@ -63,7 +69,8 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
       // BRO-6652: when the text was scored (a paywalled review can be listed long before its text arrives).
       scoredAt: (d.llmMetadata && d.llmMetadata.scoredAt) || null,
       publishDate: d.publishDate || null,
-      url: d.url || null,
+      // Normalized (BRO-6702): it lands in the public record, and normalizeUrl strips paywall-access tokens.
+      url: normUrl(d.url),
       includable: reason === null,
       reason: reason || null,
       syndicatedUnder,
@@ -80,7 +87,7 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
  * or a ticket page seen last week says nothing about the night's review. With `opts.windowStartMs` a
  * file counts only if first seen at/after it, or published on/after `opts.night` (YYYY-MM-DD); a file
  * with neither date is not provably the night's and is ignored. Without opts every file counts (legacy).
- * @returns {Array<{outletId:string, reason:string}>}
+ * @returns {Array<{outletId:string, reason:string, priorRunCandidate?:boolean}>}
  */
 function censusExclusions(census, files, opts = {}) {
   const { windowStartMs = null, night = null } = opts;
@@ -110,7 +117,12 @@ function censusExclusions(census, files, opts = {}) {
   for (const e of census.entries) {
     const urls = [...new Set([...(e.urls || []), ...(e.url ? [e.url] : [])])];
     const wl = urls.length && urls.every((u) => wrongListing.has(urlKey(u))) && !(byOutlet.get(e.outletId) || []).some((f) => f.includable) && wrongListing.get(urlKey(urls[0]));
-    if (wl) { out.push({ outletId: e.outletId, reason: `listing is another production's review (${wl.reason})` }); continue; }
+    if (wl) {
+      // BRO-6702: a wrongProduction listing may be the same production's earlier run (Specimen's May premiere
+      // reviews listed on the Oct encore); flag it so the record says "declare priorRuns if so".
+      out.push({ outletId: e.outletId, reason: `listing is another production's review (${wl.reason})`, ...(wl.reason === 'wrongProduction' ? { priorRunCandidate: true } : {}) });
+      continue;
+    }
     const fs_ = byOutlet.get(e.outletId) || byOutlet.get(e.outletId.replace(/-london$/, '')) || byOutlet.get(`${e.outletId}-london`) || [];
     if (!fs_.length || fs_.some((f) => f.includable)) continue;
     const synd = fs_.find((f) => f.syndicatedUnder || SYNDICATED_REASONS.has(f.reason));

@@ -1,7 +1,7 @@
 /**
  * URL-date replay for scoring-delta.js (BRO-6628, from the BRO-6585 postmortem).
  *
- * extractDateFromUrl lives in rebuild-helpers.js and feeds the date guards in
+ * extractDateFromUrl lives in url-date.js (re-exported by rebuild-helpers.js) and feeds the date guards in
  * rebuild-all-reviews.js, but scoring-delta's guard replays use publishDate only
  * and Phase B's getBestScore replay never reads the URL date, so a change to
  * extractDateFromUrl reported 0/0/0 while it moved 2,339 files. This compares the
@@ -20,7 +20,7 @@ function same(a, b) {
 }
 
 /**
- * @param {(url: string) => (object|null)} baselineFn extractDateFromUrl from HEAD's rebuild-helpers
+ * @param {(url: string) => (object|null)} baselineFn extractDateFromUrl from HEAD's url-date.js (via rebuild-helpers)
  * @param {(url: string) => (object|null)} workingFn  extractDateFromUrl from the working tree
  * @param {string} url
  * @returns {{baseline: object|null, working: object|null}|null} null when both agree

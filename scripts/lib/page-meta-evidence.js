@@ -232,7 +232,7 @@ function headlineSubject(headline) {
 
 /** {date|null, year} from the URL path, or null (extractDateFromUrl returns {date, yearOnly, source}). */
 function urlDateOf(url) {
-  const r = require('./rebuild-helpers').extractDateFromUrl(url);
+  const r = require('./url-date').extractDateFromUrl(url);
   if (!r) return null;
   const date = typeof r === 'string' ? r : r.date;
   const year = r.yearOnly || (date ? Number(String(date).slice(0, 4)) : null);

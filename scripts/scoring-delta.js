@@ -789,7 +789,7 @@ function loadWorkingTreeScoring() {
  * anticipatory-grace replays below (BRO-3338). Deliberately parseDate(publishDate)
  * ONLY — no URL-date fallback, unlike rebuild-all-reviews.js:1380-1387's
  * reviewDate. Two reasons, both found in ship-check's adversarial review:
- *   1. extractDateFromUrl lives in rebuild-helpers.js, which is NOT sandboxed
+ *   1. extractDateFromUrl lives in url-date.js (re-exported by rebuild-helpers.js), NOT sandboxed
  *      per-side (only date-guard.js/wrong-production-autoclear.js/
  *      failed-fetch-policy.js/cross-market-guard.js are, in
  *      loadBaselineGuards/loadWorkingTreeGuards below) — a URL-fallback-using

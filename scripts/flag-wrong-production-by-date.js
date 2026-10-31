@@ -19,7 +19,7 @@ const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCity } = require('./lib/wrong-production-autoclear');
-const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateShowScorePreviousProduction, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateShowScorePreviousProduction, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, guardNoteDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { evaluateCurrentRunCorroboration, shouldHoldDateGuardFlag } = require('./lib/wrong-production-corroboration');
 const { applyDateGuardHold, clearDateGuardHold, holdMarkerNeedsWrite, rebuildExcludesHeld } = require('./lib/date-guard-hold');
@@ -321,11 +321,14 @@ function run() {
         continue;
       }
 
+      // BRO-6702: a URL-dated file has no publishDate; name the date the guard
+      // actually used so a priorRuns window can find it (was "review undefined").
+      const flagDate = guardNoteDate(data, pubDate);
       const note = nonLondonCityFlag
-        ? `Non-London city guard: review ${data.publishDate} is ${diffDays}d before ${earliestStr} (preview/open) and URL names another city — likely a different production`
+        ? `Non-London city guard: review ${flagDate} is ${diffDays}d before ${earliestStr} (preview/open) and URL names another city — likely a different production`
         : issue === 'before_preview'
-        ? `Date guard: review ${data.publishDate} is ${diffDays}d before ${earliestStr} (preview/open) — likely different production`
-        : `Date guard: review ${data.publishDate} is ${diffDays}d after ${show.closingDate} (close+${DAYS_AFTER_CLOSE}d) — likely different production`;
+        ? `Date guard: review ${flagDate} is ${diffDays}d before ${earliestStr} (preview/open) — likely different production`
+        : `Date guard: review ${flagDate} is ${diffDays}d after ${show.closingDate} (close+${DAYS_AFTER_CLOSE}d) — likely different production`;
 
       if (issue === 'before_preview') flaggedEarly++;
       else flaggedLate++;
