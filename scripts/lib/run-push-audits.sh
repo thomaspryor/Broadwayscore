@@ -79,6 +79,22 @@ run_audit() {
   return 0
 }
 
+# Committed merge-conflict markers (BRO-6687). push-with-retry.sh ran this
+# detector for CI pushes only, so a land/<name> push from a session carried a
+# stash-apply conflict straight to the Land run. Any changed file; deleted
+# files are skipped (--list keeps every path so selection stays deterministic).
+# Intentional fixtures: PUSH_SKIP_CONFLICT_CHECK=1, as in push-with-retry.sh.
+if [ "${PUSH_SKIP_CONFLICT_CHECK:-}" != "1" ]; then
+  CM_FILES=()
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    if [ "$LIST_ONLY" = "1" ] || [ -f "$f" ]; then CM_FILES+=("$f"); fi
+  done <<<"$CHANGED_FILES"
+  if [ ${#CM_FILES[@]} -gt 0 ]; then
+    run_audit "conflict-markers" "scripts/lib/conflict-markers.js" "${CM_FILES[@]}" || FAIL=1
+  fi
+fi
+
 # Unbounded git fetch on a shallow-checkout path (task #420).
 if grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/(workflows|actions)/.*\.ya?ml$" <<<"$CHANGED_FILES"; then
   run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js" || FAIL=1

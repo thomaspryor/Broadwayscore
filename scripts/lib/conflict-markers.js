@@ -141,13 +141,16 @@ if (require.main === module) {
   }
   let bad = 0;
   for (const f of files) {
-    let text;
+    let buf;
     try {
-      text = fs.readFileSync(f, 'utf8');
+      buf = fs.readFileSync(f);
     } catch {
       continue; // deleted/unreadable — not our concern here
     }
-    const hits = findConflictMarkers(text);
+    // Binary files (a NUL in the first 8KB, git's own heuristic) can hold
+    // marker-like bytes: public/og/biz/musicals-since-reopening.png does (BRO-6687).
+    if (buf.subarray(0, 8192).includes(0)) continue;
+    const hits = findConflictMarkers(buf.toString('utf8'));
     for (const h of hits) {
       console.error(`${f}:${h.line}: ${h.text}`);
       bad++;

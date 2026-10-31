@@ -22,7 +22,8 @@ function listAudits(files, tipMessage = '') {
     // [skip-cron-audit] cannot change selection under test.
     env: { ...process.env, PUSH_AUDITS_TIP_MESSAGE: tipMessage },
   });
-  return out.trim().split('\n').filter(Boolean).sort();
+  // conflict-markers (BRO-6687) selects on every non-empty list; it has its own tests below.
+  return out.trim().split('\n').filter((l) => l && l !== 'conflict-markers').sort();
 }
 
 // BRO-5621: cheap CI-parity unit tests selected by any scripts/ source edit;
@@ -212,7 +213,7 @@ test('argv form (no stdin) matches piped-stdin form', () => {
     'help-flag-safety',
     'unbounded-fetch',
     'write-routing',
-  ], ...PARITY, PARITY_TOP));
+  ], ...PARITY, PARITY_TOP, 'conflict-markers'));
 });
 
 test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', () => {
@@ -427,4 +428,41 @@ test('end-to-end: run-push-audits.sh passes on a real clean scripts/*.js file', 
     out = `${err.stdout ?? ''}${err.stderr ?? ''}`;
   }
   assert.doesNotMatch(out, /AUDIT BLOCKED: write-routing/);
+});
+
+// BRO-6687: committed conflict markers are blocked on every audited push, not only
+// on push-with-retry.sh's CI pushes. Marker lines are built at runtime so this
+// file never carries one at line start.
+const OPEN = '<'.repeat(7), CLOSE = '>'.repeat(7);
+const rawList = (files, env = {}) => execFileSync('bash', [SCRIPT, '--list'], {
+  input: files.join('\n'), encoding: 'utf8', env: { ...process.env, PUSH_AUDITS_TIP_MESSAGE: '', ...env },
+}).trim().split('\n').filter(Boolean);
+
+test('conflict-markers is selected for any changed file, even a deleted one, and honours PUSH_SKIP_CONFLICT_CHECK', () => {
+  assert.ok(rawList(['README.md']).includes('conflict-markers'));
+  assert.ok(rawList(['no/such/file.json']).includes('conflict-markers'));
+  assert.ok(!rawList(['README.md'], { PUSH_SKIP_CONFLICT_CHECK: '1' }).includes('conflict-markers'));
+});
+
+test('conflict-markers blocks a pushed file with markers and passes clean, binary and deleted files', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cm-audit-'));
+  try {
+    const bad = join(dir, 'ledger.jsonl');
+    const clean = join(dir, 'clean.jsonl');
+    const bin = join(dir, 'img.png');
+    writeFileSync(bad, `{"a":1}\n${OPEN} Updated upstream\n{"b":2}\n=======\n{"c":3}\n${CLOSE} Stashed changes\n`);
+    writeFileSync(clean, '{"a":1}\n');
+    writeFileSync(bin, Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0, 0]), Buffer.from(`\n${OPEN}<<\n`)]));
+    const cli = (...files) => { try { execFileSync('node', [join(LIB_DIR, 'conflict-markers.js'), ...files], { stdio: 'pipe' }); return 0; } catch (e) { return e.status; } };
+    assert.equal(cli(bad), 1);
+    assert.equal(cli(clean, bin, join(dir, 'gone.json')), 0);
+    // The runner itself: absolute paths work although it cds to the repo root.
+    const run = (files) => { try { execFileSync('bash', [SCRIPT], { input: files.join('\n'), stdio: 'pipe' }); return { code: 0, out: '' }; } catch (e) { return { code: e.status, out: String(e.stdout) }; } };
+    const r = run([bad]);
+    assert.equal(r.code, 1);
+    assert.match(r.out, /AUDIT BLOCKED: conflict-markers failed/);
+    assert.equal(run([clean, join(dir, 'gone.json')]).code, 0);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
