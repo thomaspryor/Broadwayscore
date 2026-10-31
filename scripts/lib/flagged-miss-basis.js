@@ -96,6 +96,25 @@ function isHeldSyndicatedReprint(d, isHeldPrimary) {
     && Number(d.syndicationSimilarity) >= 80
     && typeof isHeldPrimary === 'function' && !!isHeldPrimary(d);
 }
+// BRO-6689: the CV pass reads a (often truncated, plot-heavy) slice of the body, so its
+// "preview/feature, not a review" verdict can be wrong. Real reviews were hidden that way
+// (culturesauce 4/5 stars, theatermania 'review-...' pages, theater-scene, stagezine). When
+// the ONLY non-review evidence is that LLM verdict, review-shaped evidence on the file
+// contradicts it: an extracted star/score rating, or a verdict excerpt an aggregator quoted.
+// Deliberately body/field based, not URL-slug based: slugs match round-ups and miss cases.
+function hasValue(v) {
+  return v != null && v !== false && String(v).trim() !== '' && String(v).trim().toLowerCase() !== 'null';
+}
+function hasReviewShapedEvidence(d) {
+  if (!d) return false;
+  return hasValue(d.originalScore) || hasValue(d.showScoreExcerpt) || hasValue(d.humanReviewScore);
+}
+// Deterministic exclusions (date gates) are not LLM opinions; a rating on the page does not
+// undo "published 10 days before opening" (BRO-6689 monstagigz: self-labelled preview).
+const DETERMINISTIC_GATE_REASONS = new Set(['anticipatory_pre_opening_post', 'dateless-revival']);
+function isDeterministicGateExclusion(d) {
+  return DETERMINISTIC_GATE_REASONS.has(d.wrongProductionReason) || DETERMINISTIC_GATE_REASONS.has(d.wrongShowReason);
+}
 // "Confirmed" = the exclusion is the correct outcome (a non-review, a Time Out
 // listing capsule, a held syndicated reprint), not a gap. Name kept from BRO-5500.
 function isConfirmedNonReviewFile(d, isHeldPrimary) {
@@ -104,7 +123,8 @@ function isConfirmedNonReviewFile(d, isHeldPrimary) {
   const cv = d && d.contentVerification;
   if (!cv || cv.isValid !== false || cv.confidence !== 'high') return false;
   if (cv.articleTypeConfidence !== 'high' || !NONREVIEW_ARTICLE_TYPES.has(cv.articleType)) return false;
-  return d.isNonReview === true && d.rejectionReason === 'not_a_review';
+  if (!(d.isNonReview === true && d.rejectionReason === 'not_a_review')) return false;
+  return isDeterministicGateExclusion(d) || !hasReviewShapedEvidence(d);
 }
 
 /**
@@ -147,6 +167,7 @@ module.exports = {
   rawDetectorBasis,
   classifyFlaggedMiss,
   isConfirmedNonReviewFile,
+  hasReviewShapedEvidence,
   shouldReverify,
   countAutomatedExcludedListed,
 };

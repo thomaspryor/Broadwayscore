@@ -657,6 +657,28 @@ test('acceptSerpCensusResult drops BWW city editions and story-collection book r
     assert.equal(classifyFlaggedMiss([{ ...ens, rejectionAgreeCount: 2 }], explain).confirmedNonReview, false);
   });
 
+  // BRO-6689: an LLM-only not_a_review verdict that a review-shaped file contradicts is not 'confirmed'.
+  test('BRO-6689: LLM-only not_a_review contradicted by a rating/aggregator excerpt is NOT confirmed', () => {
+    const llmOnly = { _file: 'cs--t.json', outletId: 'cs', url: 'https://cs.example/data-review', fullText: '',
+      wrongShow: true, wrongShowReason: 'CV-promoted: feature, not a review', isNonReview: true, rejectionReason: 'not_a_review',
+      contentVerification: { isValid: false, confidence: 'high', articleType: 'feature', articleTypeConfidence: 'high' } };
+    assert.equal(classifyFlaggedMiss([llmOnly], explain).confirmedNonReview, true, 'bare LLM verdict still confirmed');
+    for (const extra of [{ originalScore: '4/5 stars' }, { showScoreExcerpt: 'A verdict quote.\n\nRead more' }]) {
+      const c = classifyFlaggedMiss([{ ...llmOnly, ...extra }], explain);
+      assert.equal(c.confirmedNonReview, false, JSON.stringify(extra));
+      assert.equal(shouldReverify(c), true, 'surfaced for re-verify');
+    }
+    assert.equal(classifyFlaggedMiss([{ ...llmOnly, originalScore: null, showScoreExcerpt: 'null' }], explain).confirmedNonReview, true);
+  });
+
+  test('BRO-6689: deterministic anticipatory gate stays confirmed even with a rating on the page', () => {
+    const gate = { _file: 'mg--u.json', outletId: 'mg', url: 'https://mg.example/preview', fullText: '',
+      wrongProduction: true, wrongProductionReason: 'anticipatory_pre_opening_post', originalScore: '3/5',
+      isNonReview: true, rejectionReason: 'not_a_review',
+      contentVerification: { isValid: false, confidence: 'high', articleType: 'preview', articleTypeConfidence: 'high' } };
+    assert.equal(classifyFlaggedMiss([gate], explain).confirmedNonReview, true);
+  });
+
   test('BRO-5391: mixed list with one unconfirmed automated file stays a gap', () => {
     const ens = { _file: 'e--u.json', outletId: 'e', url: 'https://e.example/a', fullText: body,
       rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'not_a_review', rejectionAgreeCount: 3 };
