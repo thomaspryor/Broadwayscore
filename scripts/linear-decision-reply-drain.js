@@ -140,7 +140,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       failed.push(id);
     }
   }
-  const summary = { mode: apply ? 'apply' : 'dry-run', candidates: candidates.length, ...done, failed, skipped, cap };
+  // BRO-6715: an answered, worker-ready card should start now, not at the next 2-hourly firing.
+  let woke = null;
+  if (apply && done.dispatch.length) woke = await (deps.wake || require('./lib/board-worker-wake.js').wakeBoardWorker)({ reason: done.dispatch.join(',') });
+  const summary = { mode: apply ? 'apply' : 'dry-run', candidates: candidates.length, ...done, failed, skipped, cap, woke };
   console.log(args.json ? JSON.stringify(summary) : `linear-decision-reply-drain: ${summary.mode}, ${candidates.length} open decisions/approvals, dispatched ${done.dispatch.length}, needs-session ${done['needs-session'].length}, owner-only ${done['owner-only'].length}, asked ${done.clarify.length}, approved ${done.approve.length}, declined ${done.decline.length}, skipped ${JSON.stringify(skipped)}`);
   if (failed.length) process.exitCode = 1;
   return summary;

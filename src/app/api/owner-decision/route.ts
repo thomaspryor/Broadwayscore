@@ -52,6 +52,20 @@ function staleNotice(l: Loaded): Response {
   return page('Already handled', `<h1>Nothing to answer</h1><p>This question was changed or is no longer waiting on you. Nothing was changed.</p>${url}`);
 }
 
+async function wakeWorker(identifier: string): Promise<void> {
+  const ghToken = process.env.GH_DISPATCH_TOKEN;
+  if (!ghToken || process.env.BOARD_WORKER_WAKE_DISABLED === 'true') return;
+  try {
+    await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore'}/actions/workflows/board-worker-wake.yml/dispatches`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${ghToken}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json', 'User-Agent': 'broadwayscorecard-owner-decision' },
+      body: JSON.stringify({ ref: 'main', inputs: { reason: identifier.slice(0, 20) } }),
+      cache: 'no-store',
+      signal: AbortSignal.timeout(8000),
+    });
+  } catch (e) { console.error('[owner-decision] wake failed', e instanceof Error ? e.message : e); }
+}
+
 function failure(err: unknown): Response {
   console.error('[owner-decision]', err instanceof Error ? err.message : err);
   return notice('Could not record that', 'Something went wrong talking to the board. Nothing was changed. Tap the link again in a minute.', 502);
@@ -108,6 +122,9 @@ export async function POST(req: NextRequest) {
     if (r.status === 'bad-choice') return notice('Not recognised', 'That choice is not one of the options. Nothing was changed.', 400);
     if (r.status === 'empty') return notice('Nothing typed', 'Go back and type your answer. Nothing was changed.', 400);
     if (r.status !== 'recorded') return staleNotice(r);
+    // BRO-6715: start a board worker now (workflow holds the routine token); fail-soft, never blocks the answer.
+    // An Approve of a held visual change is shipped by the lander, so it needs no worker.
+    if (!/^Option A: Approve\b/i.test(String(r.answer?.label || ''))) await wakeWorker(String(r.issue?.identifier || ''));
     const card = r.issue ? `<p class="small">Card: ${esc(r.issue.identifier)} ${esc(r.issue.title)}</p>` : '';
     return page('Recorded', `<h1>Recorded</h1><p>Your answer is saved on the card: <strong>${esc(r.answer?.label)}</strong>.</p><p>Claude picks the card up from the board and carries on. You do not need to do anything else.</p>${card}`);
   } catch (e) { return failure(e); }
