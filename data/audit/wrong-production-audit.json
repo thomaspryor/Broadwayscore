@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T05:13:21.659Z",
+  "timestamp": "2026-10-31T05:59:47.607Z",
   "stats": {
-    "totalReviews": 73075,
-    "alreadyFlagged": 22381,
-    "dateGuardCatches": 230,
-    "directorMismatch": 2979,
-    "tvFilmSignals": 2055,
-    "londonSignals": 3411,
-    "offBroadwaySignals": 653,
+    "totalReviews": 73484,
+    "alreadyFlagged": 22420,
+    "dateGuardCatches": 229,
+    "directorMismatch": 2991,
+    "tvFilmSignals": 2059,
+    "londonSignals": 3413,
+    "offBroadwaySignals": 654,
     "yearMismatch": 302,
-    "noPublishDate": 9250
+    "noPublishDate": 8274
   },
   "findings": [
     {
@@ -4725,20 +4725,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "sunday-times--dominic-maxwell.json",
-      "score": 75,
-      "publishDate": "2024-03-19",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/an-enemy-of-the-people-review-jeremy-strong-strikes-sparks-in-ibsen-rjqh0hdm3",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
         }
       ]
     },
@@ -9734,6 +9720,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "cardinal-off-broadway-2018",
+      "file": "theatres-leiter-side--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2018-02-12",
+      "url": "https://slleiter.blogspot.com/2018/02/157-2017-2018-review-cardinal-seen.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "cardinal-off-broadway-2018",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2018-01-30",
+      "url": "https://www.thewrap.com/cardinal-theater-review-anna-chlumsky-adam-pally-paints-town-red/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -17001,20 +17015,6 @@
       ]
     },
     {
-      "showId": "disruption-off-broadway-2026",
-      "file": "thestage--dave-fargnoli.json",
-      "score": 81,
-      "publishDate": "2023-07-14",
-      "url": "https://www.thestage.co.uk/reviews/disruption-review-at-the-park-theatre-london-andrew-stein-hersh-ellis-debbie-korley-oliver-alvin-wilson",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1104d before show (2023-07-14 vs 2026-07-22)"
-        }
-      ]
-    },
-    {
       "showId": "doctor-faustus-west-end-2016",
       "file": "hollywood-reporter--leslie-felperin.json",
       "score": 75,
@@ -17723,6 +17723,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
+      "file": "nytimes--charles-isherwood.json",
+      "score": null,
+      "publishDate": "October 14, 2015",
+      "url": "http://www.nytimes.com/2015/10/15/theater/review-in-eclipsed-female-captives-in-liberias-civil-war-seek-sustenance.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
         }
       ]
     },
@@ -18472,7 +18486,7 @@
       "showId": "evening-at-the-talk-house-off-broadway-2017",
       "file": "newsday--linda-winer.json",
       "score": 56,
-      "publishDate": null,
+      "publishDate": "February 16th, 2017",
       "url": "http://www.newsday.com/entertainment/theater/evening-at-the-talk-house-review-a-grim-theater-party-indeed-1.13131136",
       "findings": [
         {
@@ -20297,6 +20311,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "fire-and-air-off-broadway-2018",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2018-02-01",
+      "url": "https://dctheatrescene.com/2018/02/01/fire-air-review-terrence-mcnallys-new-play-diaghilev-nijinsky-ballets-russes/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -25376,7 +25404,7 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "broadway-blog--samuel-l-leiter.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "February 16th, 2018",
       "url": "http://thebroadwayblog.com/hangmen-atlantic-theater-company/",
       "findings": [
         {
@@ -25390,8 +25418,22 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2018-02-11",
       "url": "https://www.broadwayworld.com/article/BWW-Review-Martin-McDonaghs-Darkly-Comic-HANGMEN-is-Enjoyably-Discomforting-20180212",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "center-on-the-aisle--shari-lifland.json",
+      "score": null,
+      "publishDate": "2018-02-13",
+      "url": "https://centerontheaisle.com/4450/theatre-review-martin-mcdonaghs-hangmen/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25404,7 +25446,7 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "curtainup--elyse-sommer.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "February 5th, 2018",
       "url": "http://www.curtainup.com/hangmen18",
       "findings": [
         {
@@ -25435,6 +25477,34 @@
     },
     {
       "showId": "hangmen-off-broadway-2018",
+      "file": "front-row-center--tulis-mccall.json",
+      "score": null,
+      "publishDate": "2018-02-13",
+      "url": "http://thefrontrowcenter.com/2018/02/the-hangmen/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "newnownextcom--michael-musto.json",
+      "score": null,
+      "publishDate": "2018-02-06",
+      "url": "http://www.newnownext.com/hangmen-martin-mcdonagh-atlantic-theater/02/2018/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
       "file": "newsday--barbara-schuler.json",
       "score": null,
       "publishDate": "2018-02-06",
@@ -25454,10 +25524,104 @@
     },
     {
       "showId": "hangmen-off-broadway-2018",
-      "file": "theater-scene--david-kaufman.json",
+      "file": "ny1--roma-torre.json",
       "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/plays/offbway-plays/hangmen/david-kaufman/",
+      "publishDate": "2018-02-05",
+      "url": "http://www.ny1.com/nyc/all-boroughs/news/2018/02/06/atlantic-theater-company-debut-hangmen-martin-mcdonagh-play",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2018-03-07",
+      "url": "https://newyorktheater.me/2018/03/07/hangmen-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "off-off-online--edward-karam.json",
+      "score": null,
+      "publishDate": "2018-02-10",
+      "url": "https://www.offoffonline.com/offoffonline/2018/2/8/hangmen",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "stage-left--robert-russo.json",
+      "score": null,
+      "publishDate": "2018-02-06",
+      "url": "https://www.stageleft.nyc/blog/2018/2/6/review-martin-mcdonaghs-menacingly-funny-hangmen",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "stagebuddy--k-krombie.json",
+      "score": null,
+      "publishDate": "2018-02-21",
+      "url": "https://stagebuddy.com/theater/theater-review/review-hangmen",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "theater-life--david-sheward.json",
+      "score": null,
+      "publishDate": "2018-02-15",
+      "url": "http://theaterlife.com/hangmen-1-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "theatermania--david-gordon.json",
+      "score": null,
+      "publishDate": "2018-02-05",
+      "url": "http://www.theatermania.com/off-broadway/reviews/hangmen_83958.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25470,7 +25634,7 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "theatre-reviews-limited--david-roberts.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "March 8th, 2018",
       "url": "https://www.theatrereviews.com/off-broadway-review-hangmen-at-atlantic-theater-company/",
       "findings": [
         {
@@ -25484,8 +25648,27 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "thewrap--robert-hofler.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2018-02-05",
       "url": "https://www.thewrap.com/hangmen-theater-review-martin-mcdonagh-gleefully-explores-habit-murder/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "score": null,
+      "publishDate": "February 26th, 2018",
+      "url": "http://twi-ny.com/blog/2018/02/26/hangmen/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25531,7 +25714,7 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "village-voice--helen-shaw.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "February 7th, 2018",
       "url": "https://www.villagevoice.com/2018/02/07/hangmen-is-another-deft-dose-of-poison-from-martin-mcdonagh/",
       "findings": [
         {
@@ -25559,7 +25742,7 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "woman-around-town--alix-cohen.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "March 7th, 2018",
       "url": "https://www.womanaroundtown.com/sections/playing-around/hangmen-black-comedy-driven-misdirection/",
       "findings": [
         {
@@ -32668,7 +32851,7 @@
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 87,
       "publishDate": "2021-12-10",
-      "url": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=86UE8C",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36519,7 +36702,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 44,
       "publishDate": "2021-11-24",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/manor-review-odd-mix-pantomime-socio-political-evaluation/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -43331,7 +43514,7 @@
       "showId": "pacific-overtures-off-broadway-2017",
       "file": "nytimes--jesse-green.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "May 4th, 2017",
       "url": "https://www.nytimes.com/2017/05/04/theater/pacific-overtures-review.html?_r=0",
       "findings": [
         {
@@ -43359,7 +43542,7 @@
       "showId": "pacific-overtures-off-broadway-2017",
       "file": "village-voice--david-cote.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "May 17th, 2017",
       "url": "http://www.villagevoice.com/2017/05/17/john-doyles-pacific-overtures-is-sleepy-chamber-size-sondheim/",
       "findings": [
         {
@@ -44675,9 +44858,23 @@
     },
     {
       "showId": "people-places-and-things-off-broadway-2017",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "November 11th, 2017",
+      "url": "http://broadwayandme.blogspot.com/2017/11/people-places-things-is-good-thing.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
       "file": "broadway-blog--samuel-l-leiter.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "October 29th, 2017",
       "url": "http://thebroadwayblog.com/people-places-and-things-review/",
       "findings": [
         {
@@ -44691,7 +44888,7 @@
       "showId": "people-places-and-things-off-broadway-2017",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "October 25th, 2017",
       "url": "https://frontmezzjunkies.com/2017/10/25/people-places-and-things/",
       "findings": [
         {
@@ -44705,7 +44902,7 @@
       "showId": "people-places-and-things-off-broadway-2017",
       "file": "huffpost--david-finkle.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "November 3rd, 2017",
       "url": "https://www.huffingtonpost.com/entry/must-sees-duncan-macmillans-people-places-things_us_59fcf29ee4b076eaaae26f88",
       "findings": [
         {
@@ -44719,7 +44916,7 @@
       "showId": "people-places-and-things-off-broadway-2017",
       "file": "thewrap--robert-hofler.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "October 25th, 2017",
       "url": "https://www.thewrap.com/people-places-things-theater-review-great-acting-best-kind-high/",
       "findings": [
         {
@@ -45763,6 +45960,20 @@
     },
     {
       "showId": "plenty-off-broadway-2016",
+      "file": "carey-purcell--carey-purcell.json",
+      "score": null,
+      "publishDate": "November 4th, 2016",
+      "url": "http://www.careypurcell.com/?p=10822",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": null,
       "publishDate": "2016-10-23",
@@ -45793,7 +46004,7 @@
       "showId": "plenty-off-broadway-2016",
       "file": "nytimes--ben-brantley.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "October 24th, 2016",
       "url": "http://www.nytimes.com/2016/10/24/theater/review-in-david-hares-plenty-time-takes-the-edge-off-a-femme-fatale.html",
       "findings": [
         {
@@ -45807,7 +46018,7 @@
       "showId": "plenty-off-broadway-2016",
       "file": "theater-pizzazz--carol-rocamora.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "November 5th, 2016",
       "url": "http://theaterpizzazz.com/plenty/",
       "findings": [
         {
@@ -52313,7 +52524,7 @@
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 63,
       "publishDate": "2022-04-07",
-      "url": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ZD7YK3",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -54035,7 +54246,7 @@
       "showId": "sweet-charity-off-broadway-2016",
       "file": "nbcny--robert-kahn.json",
       "score": 87,
-      "publishDate": null,
+      "publishDate": "November 20th, 2016",
       "url": "http://www.nbcnewyork.com/entertainment/the-scene/Sweet-Charity-Sutton-Foster-Review-402057275.html",
       "findings": [
         {
@@ -54076,7 +54287,7 @@
     {
       "showId": "sweet-charity-off-broadway-2016",
       "file": "nytimes--ben-brantley.json",
-      "publishDate": null,
+      "publishDate": "November 20th, 2016",
       "url": "http://www.nytimes.com/2016/11/21/theater/sutton-foster-sweet-charity-review.html",
       "findings": [
         {
@@ -74420,8 +74631,8 @@
       "showId": "a-man-of-no-importance-off-broadway-2022",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 78,
-      "publishDate": null,
-      "url": null,
+      "publishDate": "November 9th, 2022",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-IVH5U",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -86866,6 +87077,20 @@
       ]
     },
     {
+      "showId": "fire-and-air-off-broadway-2018",
+      "file": "front-row-center--austin-yang.json",
+      "score": null,
+      "publishDate": "2018-02-02",
+      "url": "http://thefrontrowcenter.com/2018/02/fire-and-air/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
       "showId": "fire-fire-off-west-end-2026",
       "file": "north-west-end--gaurav-singh-nijjer.json",
       "score": 79,
@@ -87023,7 +87248,7 @@
       "file": "thestage--jn-benjamin.json",
       "score": 78,
       "publishDate": "2022-04-14",
-      "url": null,
+      "url": "https://www.thestage.co.uk/reviews/for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-review-royal-court-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -90300,6 +90525,20 @@
       ]
     },
     {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "theater-scene--david-schultz.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://theaterscene.com/hangmen.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "hangmen-west-end-2015",
       "file": "daily-mail--quentin-letts.json",
       "score": 66,
@@ -92485,7 +92724,7 @@
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 62,
       "publishDate": "2017-12-07",
-      "url": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-XUM1ME",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -98382,7 +98621,7 @@
       "showId": "marie-and-rosetta-off-broadway-2016",
       "file": "nytimes--charles-isherwood.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "September 14th, 2016",
       "url": "http://www.nytimes.com/2016/09/15/theater/marie-and-rosetta-review.html",
       "findings": [
         {
@@ -116556,19 +116795,6 @@
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "file": "londontheatredirect--jose-izcue-gana.json",
-      "publishDate": null,
-      "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
