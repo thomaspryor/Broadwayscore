@@ -189,3 +189,63 @@ test('fetcher saves shows.json when only markers changed', () => {
   assert.match(src, /\(results\.success\.length > 0 \|\| verifyCtx\?\.noArtChanged > 0\) && !dryRunMode\) \{\n\s+saveShowsData\(\);/);
   assert.doesNotMatch(src, /if \(results\.success\.length > 0 && !dryRunMode\) \{\n\s+saveShowsData\(\);/);
 });
+
+const { noArtRejectionActions } = require('./no-reliable-art');
+const dataEdit = (field, newValue, oldValue = null) => ({ type: 'data-edit', file: 'shows.json', showId: endgame().id, field, oldValue, newValue });
+
+test('marker plans preserve distinct rejected sources for blank slots and existing rejections', () => {
+  const show = { ...marked(endgame()), rejectedImageUrls: ['https://cdn.example/prior.jpg'] };
+  const source = 'https://cdn.example/wrong.jpg';
+  const actions = [dataEdit('noReliableArt', show.noReliableArt), dataEdit('images', show.images, { thumbnail: '/images/shows/endgame-west-end-2020/thumbnail.webp' })];
+  const extra = noArtRejectionActions(actions, [show], { [show.id]: { thumbnail: source, poster: source, hero: 'google-images:https://example.com/page' } });
+  assert.equal(extra.length, 1);
+  assert.deepEqual(extra[0].oldValue, show.rejectedImageUrls);
+  assert.deepEqual(extra[0].newValue, ['https://cdn.example/prior.jpg', source, 'google-images:https://example.com/page']);
+  assert.deepEqual(show.rejectedImageUrls, ['https://cdn.example/prior.jpg'], 'no data mutation');
+});
+
+test('marker plans never blacklist a retained slot, manual note or unrelated row', () => {
+  const show = { ...marked(endgame()), images: { poster: '/images/shows/endgame-west-end-2020/poster.webp' } };
+  const extra = noArtRejectionActions([dataEdit('noReliableArt', show.noReliableArt)], [show, { ...show, id: 'other' }], {
+    [show.id]: { poster: 'https://cdn.example/kept.jpg', thumbnail: 'manual:checked by eye' },
+    other: { hero: 'https://cdn.example/other.jpg' },
+  });
+  assert.deepEqual(extra, []);
+});
+
+test('marker plans use old local file provenance, including another production owner', () => {
+  const show = marked(endgame());
+  const extra = noArtRejectionActions([
+    dataEdit('images', show.images, { thumbnail: '/images/shows/linked-production/thumbnail.webp', poster: 'https://cdn.example/old-poster.jpg' }),
+    dataEdit('noReliableArt', show.noReliableArt),
+  ], [show], {
+    'linked-production': { thumbnail: 'https://cdn.example/old-thumbnail.jpg' },
+    [show.id]: { thumbnail: 'https://cdn.example/stale.jpg', poster: 'https://cdn.example/stale-poster.jpg' },
+  });
+  assert.deepEqual(extra[0].newValue, ['https://cdn.example/old-thumbnail.jpg', 'https://cdn.example/old-poster.jpg']);
+});
+
+test('marker backfills preserve URL variants, and a second run adds no action', () => {
+  const show = marked(endgame());
+  const actions = [dataEdit('noReliableArt', show.noReliableArt)];
+  const sources = { [show.id]: { thumbnail: 'https://cdn.example/art.jpg?w=100', poster: 'https://cdn.example/art.jpg?w=200' } };
+  const extra = noArtRejectionActions(actions, [show], sources);
+  assert.deepEqual(extra[0].newValue, Object.values(sources[show.id]));
+  assert.deepEqual(noArtRejectionActions(actions, [{ ...show, rejectedImageUrls: extra[0].newValue }], sources), []);
+});
+
+test('no marker, cleared marker and absent provenance create no rejections', () => {
+  const show = marked(endgame());
+  assert.deepEqual(noArtRejectionActions([], [show], {}), []);
+  assert.deepEqual(noArtRejectionActions([dataEdit('noReliableArt', null)], [show], {}), []);
+  assert.deepEqual(noArtRejectionActions([dataEdit('noReliableArt', show.noReliableArt)], [{ ...show, noReliableArt: null }], {}), []);
+  assert.deepEqual(noArtRejectionActions([dataEdit('noReliableArt', show.noReliableArt)], [show], {}), []);
+});
+
+test('duplicate existing rejections do not hide a newly recorded source', () => {
+  const show = { ...marked(endgame()), rejectedImageUrls: ['https://cdn.example/prior.jpg', 'https://cdn.example/prior.jpg'] };
+  const extra = noArtRejectionActions([dataEdit('noReliableArt', show.noReliableArt)], [show], {
+    [show.id]: { thumbnail: 'https://cdn.example/new.jpg' },
+  });
+  assert.deepEqual(extra[0].newValue, ['https://cdn.example/prior.jpg', 'https://cdn.example/new.jpg']);
+});

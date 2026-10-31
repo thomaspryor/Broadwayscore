@@ -107,3 +107,47 @@ test('buildPlans keeps one show\'s actions in one plan', async () => {
   assert.ok(Object.values(where).every((v) => v.size === 1));
   assert.ok(plans.every((p) => p.plan.plan.actions.length <= 25));
 });
+
+test('marker plus null images auto-fills rejected URLs in either action order', () => {
+  const marker = { at: '2026-10-31', reason: 'wrong production', key: 'a|old|2026-01-02' };
+  for (const markerFirst of [false, true]) {
+    const data = { shows: [{ id: 'a-2026', title: 'A', venue: 'Old', openingDate: '2026-01-02',
+      images: { poster: '/images/shows/a-2026/poster.webp', thumbnail: null, hero: null } }] };
+    const edits = [
+      { type: 'data-edit', file: 'shows.json', showId: 'a-2026', field: 'images', newValue: { poster: null, thumbnail: null, hero: null } },
+      { type: 'data-edit', file: 'shows.json', showId: 'a-2026', field: 'noReliableArt', newValue: marker },
+    ];
+    if (markerFirst) edits.reverse();
+    const result = completeActions(edits, { loadData: () => data, readReview: () => null,
+      loadImageSources: () => ({ 'a-2026': { poster: 'https://cdn.example/wrong.jpg' } }) });
+    assert.deepEqual(result.problems, []);
+    assert.equal(result.actions.length, 3);
+    assert.deepEqual(result.actions[2].newValue, ['https://cdn.example/wrong.jpg']);
+    assert.equal(result.actions[2].oldValue, null);
+    assert.deepEqual(data.shows[0].rejectedImageUrls, ['https://cdn.example/wrong.jpg']);
+    assert.deepEqual(buildPlans('bro-6581', 'marker', result.actions, { max: 3 })[0].plan.plan.actions, result.actions);
+  }
+});
+
+test('auto-filled rejection chains after an explicit rejection edit and stays beside its show', () => {
+  const data = { shows: [{ id: 'a-2026', title: 'A', venue: 'Old', images: { thumbnail: null },
+    rejectedImageUrls: ['https://cdn.example/previous.jpg'] }, { id: 'b-2026', runtime: '1h' }] };
+  const result = completeActions([
+    { type: 'data-edit', file: 'shows.json', showId: 'a-2026', field: 'noReliableArt', newValue: { at: '2026-10-31', reason: 'wrong art', key: 'a|old|' } },
+    { type: 'data-edit', file: 'shows.json', showId: 'a-2026', field: 'rejectedImageUrls', newValue: ['https://cdn.example/previous.jpg', 'https://cdn.example/explicit.jpg'] },
+    { type: 'data-edit', file: 'shows.json', showId: 'b-2026', field: 'runtime', newValue: '2h' },
+  ], { loadData: () => data, readReview: () => null,
+    loadImageSources: () => ({ 'a-2026': { thumbnail: 'https://cdn.example/wrong.jpg' } }) });
+  assert.deepEqual(result.problems, []);
+  assert.equal(result.actions[2].field, 'rejectedImageUrls');
+  assert.equal(result.actions[3].showId, 'b-2026');
+  assert.deepEqual(result.actions[2].oldValue, ['https://cdn.example/previous.jpg', 'https://cdn.example/explicit.jpg']);
+  assert.deepEqual(result.actions[2].newValue, [...result.actions[2].oldValue, 'https://cdn.example/wrong.jpg']);
+});
+
+test('ordinary edits never read image sources', () => {
+  const result = completeActions([{ type: 'data-edit', file: 'shows.json', showId: 'a-2026', field: 'runtime', newValue: '2h' }], {
+    loadData: shows, readReview: () => null, loadImageSources: () => { throw new Error('must not read'); },
+  });
+  assert.deepEqual(result.problems, []);
+});

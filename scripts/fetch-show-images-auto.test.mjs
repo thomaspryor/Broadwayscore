@@ -261,3 +261,110 @@ test('TodayTix SERP: an owner-rejected hit is one miss and failures keep accumul
   attempts = recordGoogleImagesAttempt(attempts, key, todaytixSerpHitOutcome(true, false), now + 60 * DAY);
   assert.equal(attempts[key], undefined);
 });
+
+// BRO-6581: exercise the API branch's real helper without paid provider calls.
+const { fetchTodayTixApiImages } = require('./lib/todaytix-api-images');
+const apiShow = { title: 'The Lives of Others', category: 'west-end', venue: 'Adelphi Theatre', openingDate: '2026-10-29' };
+const apiArt = { square: 'https://cdn.example/square.png', poster: 'https://cdn.example/poster.png', hero: 'https://cdn.example/hero.png' };
+const webp = url => `${url}?fm=webp&q=90`;
+
+test('TodayTix API: wrong square template drops only thumbnail, with a right poster and hero', async () => {
+  const calls = [];
+  const rateLimiter = async () => {};
+  const images = await fetchTodayTixApiImages(apiShow, apiArt, {
+    verifyCtx: { rateLimiter }, downloadImage: async url => Buffer.from(url),
+    verifyImage: async (buffer, title, options) => {
+      calls.push(buffer.toString());
+      assert.equal(title, apiShow.title);
+      assert.equal(options.venue, apiShow.venue);
+      assert.equal(options.openingDate, apiShow.openingDate);
+      assert.equal(options.market, 'west-end');
+      assert.equal(options.rateLimiter, rateLimiter);
+      return { match: buffer.toString() !== webp(apiArt.square), confidence: 'high' };
+    },
+  });
+  assert.deepEqual(images, { thumbnail: null, poster: webp(apiArt.poster), hero: webp(apiArt.hero) });
+  assert.deepEqual(calls, Object.values(apiArt).map(webp));
+});
+
+test('TodayTix API: every slot can fail independently and all failures fall through', async () => {
+  for (const [slot, field] of [['thumbnail', 'square'], ['poster', 'poster'], ['hero', 'hero']]) {
+    const images = await fetchTodayTixApiImages(apiShow, apiArt, {
+      verifyCtx: {}, downloadImage: async url => Buffer.from(url),
+      verifyImage: async buffer => ({ match: buffer.toString() !== webp(apiArt[field]), confidence: 'high' }),
+    });
+    assert.deepEqual(images, { thumbnail: webp(apiArt.square), poster: webp(apiArt.poster), hero: webp(apiArt.hero), [slot]: null });
+  }
+  assert.equal(await fetchTodayTixApiImages(apiShow, apiArt, {
+    verifyCtx: {}, downloadImage: async url => Buffer.from(url),
+    verifyImage: async () => ({ match: false, confidence: 'high' }),
+  }), null);
+});
+
+test('TodayTix API: identical URLs cost one download and one verification and share a verdict', async () => {
+  let downloads = 0, calls = 0;
+  const images = await fetchTodayTixApiImages(apiShow, { ...apiArt, hero: apiArt.square }, {
+    verifyCtx: {}, downloadImage: async url => { downloads++; return Buffer.from(url); },
+    verifyImage: async buffer => { calls++; return { match: buffer.toString() !== webp(apiArt.square), confidence: 'high' }; },
+  });
+  assert.equal(downloads, 2);
+  assert.equal(calls, 2);
+  assert.deepEqual(images, { thumbnail: null, poster: webp(apiArt.poster), hero: null });
+});
+
+test('TodayTix API: outage in one slot does not skip rejection checks on the others', async () => {
+  const calls = [];
+  const images = await fetchTodayTixApiImages(apiShow, apiArt, {
+    verifyCtx: {}, downloadImage: async url => Buffer.from(url),
+    verifyImage: async buffer => {
+      const url = buffer.toString(); calls.push(url);
+      if (url === webp(apiArt.square)) throw new Error('provider outage');
+      return { match: false, confidence: 'high' };
+    },
+  });
+  assert.equal(calls.length, 3);
+  assert.deepEqual(images, { thumbnail: webp(apiArt.square), poster: null, hero: null });
+});
+
+test('TodayTix API: unavailable downloads are dropped, uncertain verdicts retain the fail-open policy', async () => {
+  for (const confidence of ['medium', 'low', 'error']) {
+    const images = await fetchTodayTixApiImages(apiShow, apiArt, {
+      verifyCtx: {}, downloadImage: async url => url === webp(apiArt.square) ? null : Buffer.from(url),
+      verifyImage: async () => ({ match: false, confidence }),
+    });
+    assert.deepEqual(images, { thumbnail: null, poster: webp(apiArt.poster), hero: webp(apiArt.hero) });
+  }
+});
+
+test('TodayTix API: placeholders and owner-rejected slots never reach vision, even without verification', async () => {
+  const placeholders = ['NORAM_Poster.png', 'coming-soon.png', 'square_photo.png',
+    'https://images.ctfassets.net/space/74xXALpVG4Bdn59x8L9OYN/hash/generic.png'];
+  for (const placeholder of placeholders) {
+    const art = { square: `https://cdn.example/${placeholder}`, poster: apiArt.poster, hero: apiArt.hero };
+    if (placeholder.startsWith('https:')) art.square = placeholder;
+    for (const verifyCtx of [null, {}]) {
+      let calls = 0;
+      const images = await fetchTodayTixApiImages({ ...apiShow, rejectedImageUrls: [apiArt.hero] }, art, {
+        verifyCtx, downloadImage: async url => Buffer.from(url),
+        verifyImage: async () => { calls++; return { match: true, confidence: 'high' }; },
+      });
+      assert.deepEqual(images, { thumbnail: null, poster: webp(apiArt.poster), hero: null });
+      assert.equal(calls, verifyCtx ? 1 : 0);
+    }
+  }
+});
+
+test('TodayTix API: alternate fields, existing query strings and missing slots', async () => {
+  const url = 'https://cdn.example/art.png?w=400';
+  assert.deepEqual(await fetchTodayTixApiImages(apiShow, { imageForAds: url, headerImage: url }),
+    { thumbnail: url, poster: null, hero: url });
+  assert.equal(await fetchTodayTixApiImages(apiShow, { hero: url }), null);
+  assert.equal(await fetchTodayTixApiImages(apiShow, {}), null);
+});
+
+test('TodayTix API: fetchShowImages calls the per-slot helper with the shared verification context', () => {
+  const src = fs.readFileSync(new URL('./fetch-show-images-auto.js', import.meta.url), 'utf8');
+  assert.match(src, /await fetchTodayTixApiImages\(show, apiData, \{\s*verifyCtx,\s*downloadImage: downloadImageDirect,/);
+  assert.match(src, /if \(apiImages\) return apiImages;/);
+  assert.doesNotMatch(src, /addWebp\(filteredThumb \|\| filteredPoster\)/);
+});

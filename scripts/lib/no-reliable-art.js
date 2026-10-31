@@ -130,6 +130,43 @@ function validateNoReliableArtValue(value, show) {
   return null;
 }
 
+/**
+ * After replaying a plan, preserve sources for slots blanked under a marker.
+ * Prefer the old file's owner when a row used another production's local art.
+ * Already blank rows can use their remaining provenance for a marker backfill.
+ * Manual notes are not URLs; Google Images page references are valid sources.
+ * Returns explicit plan actions, never mutates the real data.
+ */
+function noArtRejectionActions(actions, shows, imageSources) {
+  const { imagePathOwner } = require('./image-source-match');
+  const markedIds = new Set(actions.filter(a => a.type === 'data-edit' && a.file === 'shows.json'
+    && a.field === 'noReliableArt' && a.newValue).map(a => a.showId));
+  const out = [];
+  for (const show of shows) {
+    if (!markedIds.has(show.id) || !show.noReliableArt) continue;
+    const oldImages = actions.find(a => a.type === 'data-edit' && a.file === 'shows.json'
+      && a.showId === show.id && a.field === 'images')?.oldValue || {};
+    const previous = show.rejectedImageUrls ?? null;
+    const urls = new Set(previous || []);
+    const previousSize = urls.size;
+    for (const slot of ['thumbnail', 'poster', 'hero']) {
+      if (show.images?.[slot]) continue;
+      const oldPath = oldImages[slot];
+      const owner = imagePathOwner(oldPath) || show.id;
+      const source = /^(google-images:)?https?:\/\/\S+$/i.test(oldPath || '')
+        ? oldPath : imageSources[owner]?.[slot];
+      if (typeof source === 'string' && /^(google-images:)?https?:\/\/\S+$/i.test(source)) urls.add(source);
+    }
+    if (urls.size === previousSize) continue;
+    out.push({
+      type: 'data-edit', file: 'shows.json', showId: show.id, field: 'rejectedImageUrls',
+      oldValue: previous, newValue: [...urls],
+      description: 'Preserve rejected art sources when writing noReliableArt',
+    });
+  }
+  return out;
+}
+
 module.exports = {
   NON_CLOSED_MARKER_TTL_DAYS,
   hasLapsingMarker,
@@ -141,4 +178,5 @@ module.exports = {
   noArtOutcome,
   partitionNoReliableArt,
   validateNoReliableArtValue,
+  noArtRejectionActions,
 };

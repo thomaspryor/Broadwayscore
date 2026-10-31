@@ -2091,98 +2091,17 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     console.log('   ⚠ regional venue sourcing failed — falling through to generic chain');
   }
 
-  // Step 1: Try TodayTix API data (native square images, no HTTP call needed)
-  // TRUSTED SOURCE — skip verification
+  // TodayTix can clone another listing's art into just one API slot.
   if (apiData) {
     console.log(`   Found in TodayTix API: "${apiData.displayName}" (ID: ${apiData.id})`);
-
-    const thumbnail = apiData.square || apiData.imageForAds || null;
-    const poster = apiData.poster || null;
-    const hero = apiData.hero || apiData.headerImage || null;
-
-    // Filter out "Coming Soon" placeholder images from TodayTix
-    // Detect by filename pattern OR known Contentful asset IDs (some use generic filenames)
-    const COMING_SOON_ASSET_IDS = new Set([
-      '74xXALpVG4Bdn59x8L9OYN', '42EOxYmUHQE0Xuza0dUlJm', '1Ya0iMOMWjrOvnZPMv9y8k',
-      '6W6O3eG33mXg3uJes4DBQ2', 'Y2lDO0gaKjUKp333ZG3zW', '3khjL5U7k9860pnRWY6wxe',
-      '3kXlmb7NIDQUq2fEi8FK8C', '2NXMbF8ZGgylEVESpiUIlf', '4dVF8DYwWDn4B5OFSi3x3c',
-    ]);
-    const getAssetId = (url) => { const m = url && url.match(/ctfassets\.net\/[^/]+\/([^/]+)/); return m ? m[1] : null; };
-    const isComingSoon = (url) => url && (
-      /coming.?soon/i.test(url) ||
-      /NORAM[_\s]/i.test(url) ||          // TodayTix generic "Coming Soon" poster/hero template
-      /square_photo\.png/i.test(url) ||    // TodayTix generic "Coming Soon" square template
-      COMING_SOON_ASSET_IDS.has(getAssetId(url))
-    );
-    const filteredThumb = isComingSoon(thumbnail) ? null : thumbnail;
-    const filteredPoster = isComingSoon(poster) ? null : poster;
-    const filteredHero = isComingSoon(hero) ? null : hero;
-
-    if (filteredThumb !== thumbnail || filteredPoster !== poster || filteredHero !== hero) {
-      console.log(`   ⚠️  Filtered out "Coming Soon" placeholder image(s)`);
-    }
-
-    if (filteredThumb || filteredPoster) {
-      // Add webp quality param to Contentful URLs that don't already have params
-      const addWebp = (url) => {
-        if (!url) return null;
-        if (url.includes('?')) return url;
-        return url + '?fm=webp&q=90';
-      };
-
-      const thumbIsNative = isNativeSquareUrl(filteredThumb);
-      console.log(`     - Square (thumbnail): ${filteredThumb ? (thumbIsNative ? '✓ native square from API' : '⚠ poster crop from API') : 'not available'}`);
-      console.log(`     - Portrait (poster): ${filteredPoster ? 'from API' : 'not available'}`);
-      console.log(`     - Landscape (hero): ${filteredHero ? 'from API' : 'not available'}`);
-
-      // Verify TodayTix API images when --verify is active.
-      // TodayTix was the source of every Coming Soon placeholder that hit the site —
-      // visual verification catches novel placeholder designs that URL patterns miss.
-      if (verifyCtx) {
-        const { verifyImage: verifyTodayTixImage } = require('./lib/verify-image');
-        const verifyUrl = addWebp(filteredThumb || filteredPoster);
-        try {
-          const buffer = await downloadImageDirect(verifyUrl);
-          if (buffer) {
-            const result = await verifyTodayTixImage(buffer, show.title, {
-              year: show.openingDate ? show.openingDate.substring(0, 4) : null,
-              openingDate: show.openingDate,
-              market: resolveMarketSlug(show.category, show.market),
-              venue: show.venue,
-              rateLimiter: verifyCtx.rateLimiter,
-            });
-            if (result.match === false && result.confidence === 'high') {
-              console.log(`   ✗ TodayTix API image REJECTED by verification: ${result.description} [${result.issues?.join(', ')}]`);
-              // Fall through to other sources
-            } else {
-              console.log(`   ✓ TodayTix API image verified: ${result.description}`);
-              return {
-                hero: addWebp(filteredHero),
-                thumbnail: addWebp(filteredThumb),
-                poster: addWebp(filteredPoster),
-              };
-            }
-          }
-        } catch (err) {
-          // Verification failed (network, rate limit) — trust URL-based detection and accept
-          console.log(`   ⚠ TodayTix API verification failed (${err.message}), accepting based on URL check`);
-          return {
-            hero: addWebp(filteredHero),
-            thumbnail: addWebp(filteredThumb),
-            poster: addWebp(filteredPoster),
-          };
-        }
-      } else {
-        // No verification — trust URL-based filtering
-        return {
-          hero: addWebp(filteredHero),
-          thumbnail: addWebp(filteredThumb),
-          poster: addWebp(filteredPoster),
-        };
-      }
-    }
-
-    console.log(`   API match found but all images are placeholders, trying other sources`);
+    const { fetchTodayTixApiImages } = require('./lib/todaytix-api-images');
+    const apiImages = await fetchTodayTixApiImages(show, apiData, {
+      verifyCtx,
+      downloadImage: downloadImageDirect,
+      log: (message) => console.log(message),
+    });
+    if (apiImages) return apiImages;
+    console.log('   API match found but no usable poster or thumbnail, trying other sources');
   }
 
   // When --verify is active, collect candidates from all tiers and pick the best

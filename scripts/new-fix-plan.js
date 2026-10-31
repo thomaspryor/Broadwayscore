@@ -88,7 +88,8 @@ function typeChangeProblem(a) {
   return `${a.field} would change from ${from} to ${to}${hint}`;
 }
 
-function completeActions(actions, { loadData, readReview }) {
+function completeActions(actions, { loadData, readReview, loadImageSources = () =>
+  JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'image-sources.json'), 'utf8')) }) {
   const problems = [];
   const reviewNow = new Map(); // `${file}|${field}` -> value after earlier edits
   const out = actions.map((orig, i) => {
@@ -128,6 +129,19 @@ function completeActions(actions, { loadData, readReview }) {
     }
     return ordered(a);
   });
+  if (!problems.length && out.some(a => a.type === 'data-edit' && a.file === 'shows.json'
+      && a.field === 'noReliableArt' && a.newValue)) {
+    const { noArtRejectionActions } = require('./lib/no-reliable-art');
+    const data = loadData('shows.json');
+    const extra = completeActions(noArtRejectionActions(out, data.shows || data, loadImageSources()),
+      { loadData, readReview, loadImageSources });
+    problems.push(...extra.problems);
+    // Keep the generated action beside its show's last edit for plan splitting.
+    for (const action of extra.actions) {
+      const last = out.findLastIndex(a => a.showId === action.showId && a.file === 'shows.json');
+      out.splice(last + 1, 0, action);
+    }
+  }
   return { actions: out, problems };
 }
 
