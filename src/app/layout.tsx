@@ -198,6 +198,7 @@ export default function RootLayout({
                 castPages: featureFlags.castPages,
                 fantasyLeague: isFantasyListed(),
                 tours: isCategoryEnabled('tour'),
+                regional: featureFlags.regional,
               }}
             />
 

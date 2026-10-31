@@ -227,6 +227,10 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
   const today = new Date().toISOString().slice(0, 10);
 
   // Top Touring Shows: the best-scored tours on the road now, each with where it is.
+  // Beyond London: the list is already gated on enough reviews (customSort), so the shelf is the
+  // best-scored productions on stage now or opened within the last 180 days (BRO-6713).
+  const isUkHub = config.regionalScope === 'uk';
+  const ukShelfSince = new Date(Date.parse(`${today}T00:00:00Z`) - 180 * 86400000).toISOString().slice(0, 10);
   const shelfIds = new Set(isTourHub
     ? shows
         // Same gate as the show page's badge, so the shelf never shows a number the page hides.
@@ -234,12 +238,28 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
         .sort((a, b) => (b.criticScore!.score - a.criticScore!.score) || a.title.localeCompare(b.title))
         .slice(0, 12)
         .map(s => s.id)
-    : []);
+    : isUkHub
+      ? shows
+          .filter(s => s.criticScore?.score != null
+            && (s.status === 'open' || s.status === 'previews' || (s.openingDate ?? '') >= ukShelfSince))
+          .sort((a, b) => (b.criticScore!.score - a.criticScore!.score) || a.title.localeCompare(b.title))
+          .slice(0, 12)
+          .map(s => s.id)
+      : []);
   const shelfShows = serializedShows
     .filter(s => shelfIds.has(s.id))
     .sort((a, b) => (b.criticScore!.score! - a.criticScore!.score!) || a.title.localeCompare(b.title));
   const shelfCaptions: Record<string, string> = {};
+  if (isUkHub) {
+    const byId = new Map(shows.map(x => [x.id, x]));
+    for (const s of shelfShows) {
+      const full = byId.get(s.id);
+      const place = (full?.venue ?? '').split(',')[0].trim();
+      if (place) shelfCaptions[s.id] = place;
+    }
+  }
   for (const s of shelfShows) {
+    if (!isTourHub) break;
     const nn = getTourNowNextForShow(s, today);
     if (nn?.now) shelfCaptions[s.id] = `Now in ${shortCity(nn.now.city)}`;
     else if (nn?.next) shelfCaptions[s.id] = `Next: ${shortCity(nn.next.city)}, ${stopDateRange(nn.next.start, nn.next.start)}`;
@@ -346,7 +366,7 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
           statusFilter={isTourHub}
           tourCities={isTourHub ? tourCities : undefined}
           beforeControls={shelfShows.length > 0 ? (
-            <FeaturedRowServer shows={shelfShows} title="Top Touring Shows" captions={shelfCaptions} />
+            <FeaturedRowServer shows={shelfShows} title={isUkHub ? 'Top Rated Right Now' : 'Top Touring Shows'} captions={shelfCaptions} />
           ) : undefined}
         />
 

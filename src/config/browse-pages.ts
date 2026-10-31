@@ -302,6 +302,11 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     cityFilter: true,
     customSort: shows => pickRegionalShelf(shows, { limit: Infinity, requireEnoughReviews: true }),
     hideRanks: true,
+    // Same headings as the US Pre-Broadway page. pickRegionalShelf orders running shows first,
+    // then newest opening first, so each label is one contiguous run (BrowseListClient needs that).
+    sectionGroup: (show) => (show.status === 'open' || show.status === 'previews'
+      ? 'On Stage Now'
+      : show.openingDate ? `Opened ${show.openingDate.slice(0, 4)}` : 'Earlier productions'),
     howItWorks: 'CriticScore combines reviews from local and national UK critics, with major publications carrying more weight. Shows appear once they have enough reviews to display a score. Running productions appear first, followed by the most recently opened productions.',
     relatedPages: ['best-west-end-musicals', 'best-west-end-plays', 'best-off-west-end-shows'],
   },

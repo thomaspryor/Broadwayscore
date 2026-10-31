@@ -56,6 +56,8 @@ const isHist = (s) => Array.isArray(s.tags) && s.tags.includes('historical');
 const COHORT_FILTERS = {
   'bw-historical': (s) => s.market === 'broadway' && isBroadwayCategory(s) && isHist(s),
   'ob-historical': (s) => require('./lib/ob-historical-cohort').isObHistoricalRow(s),
+  // BRO-6713: the rows /browse/beyond-london lists (same filter as the fact-check 'uk-regional' cohort).
+  'uk-regional': (s) => require('./lib/fact-check-sample').COHORTS['uk-regional'].filter(s),
 };
 function cohortFilter(c) {
   if (COHORT_FILTERS[c]) return COHORT_FILTERS[c];
@@ -65,6 +67,7 @@ function cohortFilter(c) {
   throw new Error(`unknown cohort ${c}`);
 }
 function stratum(c, s) {
+  if (c === 'uk-regional') return s.city || 'unknown';
   if (c === 'bw-historical') { const y = parseInt(String(s.openingDate || '').slice(0, 4), 10); return Number.isFinite(y) ? `${Math.floor(y / 10) * 10}s` : 'undated'; }
   return 'all';
 }
@@ -270,7 +273,7 @@ async function cmdCompleteness() {
 // ---------- page metadata + belongs-to-production ----------
 function pagePrompt(show, page, url) {
   return `You are auditing a theatre-review database. ${page ? 'Read this web page' : `Open and read this web page: ${url}`} and answer from the page only.
-Production we believe it reviews: "${show.title}"${show.venue ? ` at ${show.venue}` : ''}${show.openingDate ? `, opened ${show.openingDate}` : ''}${show.market === 'west-end' ? ' (London)' : ' (New York)'}.
+Production we believe it reviews: "${show.title}"${show.venue ? ` at ${show.venue}` : ''}${show.openingDate ? `, opened ${show.openingDate}` : ''}${show.market === 'west-end' ? ' (London)' : COHORT_FILTERS['uk-regional'](show) ? ' (UK theatre outside London)' : ' (New York)'}.
 ${page ? `Page metadata:
 ${page.meta.slice(0, 2500)}
 Page text (truncated):
@@ -406,7 +409,7 @@ function loadText(dir, r) {
   return null;
 }
 function scorePrompt(show, text) {
-  return `Score this theatre review of "${show.title}" (${show.market === 'west-end' ? 'London' : 'New York'}) on a 0-100 scale of the critic's overall verdict: 0-30 pan, 31-50 negative, 51-70 mixed or lukewarm, 71-90 positive, 91-100 rave. If the review states a star rating, the score must fall inside that star's band (1/5 0-30, 2/5 31-50, 3/5 51-70, 4/5 71-90, 5/5 91-100). Judge the critic's verdict, not the quality of the play.
+  return `Score this theatre review of "${show.title}" (${show.market === 'west-end' ? 'London' : COHORT_FILTERS['uk-regional'](show) ? 'UK theatre outside London' : 'New York'}) on a 0-100 scale of the critic's overall verdict: 0-30 pan, 31-50 negative, 51-70 mixed or lukewarm, 71-90 positive, 91-100 rave. If the review states a star rating, the score must fall inside that star's band (1/5 0-30, 2/5 31-50, 3/5 51-70, 4/5 71-90, 5/5 91-100). Judge the critic's verdict, not the quality of the play.
 Review text:
 ${text.slice(0, 6000)}
 

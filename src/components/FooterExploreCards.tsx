@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
+import { featureFlags } from '@/config/feature-flags';
 
 /**
  * "Explore More Theatre" footer cards — reordered by current market.
@@ -42,6 +43,17 @@ export default function FooterExploreCards() {
     </Link>
   );
 
+  const ukCard = (
+    <Link key="uk" href="/browse/beyond-london" className="flex-1 p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-teal-400/30 hover:bg-teal-400/[0.03] transition-colors text-center group">
+      <div className="text-xl mb-1">&#127963;</div>
+      <div className="text-sm font-bold text-white group-hover:text-teal-400 transition-colors whitespace-nowrap">
+        <span className="sm:hidden">UK Reg.</span>
+        <span className="hidden sm:inline">UK Regional</span>
+      </div>
+      <div className="text-[10px] text-fg-muted">Beyond London</div>
+    </Link>
+  );
+
   const operaCard = (
     <Link key="opera" href="/opera" className="flex-1 p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-amber-400/30 hover:bg-amber-400/[0.03] transition-colors text-center group">
       <div className="text-xl mb-1">&#127914;</div>
@@ -54,7 +66,7 @@ export default function FooterExploreCards() {
     <div className="mb-8 pb-8 border-b border-white/5">
       <h4 className="text-xs font-bold text-fg-muted uppercase tracking-wider mb-3">Explore More Theatre</h4>
       <div className="flex gap-2 sm:gap-3 flex-wrap">
-        {isLondon ? <>{weCard}{oweCard}{obCard}{operaCard}</> : <>{obCard}{weCard}{oweCard}{operaCard}</>}
+        {isLondon ? <>{weCard}{oweCard}{featureFlags.regional && ukCard}{obCard}{operaCard}</> : <>{obCard}{weCard}{oweCard}{featureFlags.regional && ukCard}{operaCard}</>}
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ interface MarketStats {
   westEnd: { openShows: number; theaters: number };
   offBroadway?: { openShows: number };
   offWestEnd?: { openShows: number };
+  /** UK regional theatre (Beyond London). `shows` = scored productions listed on the page. */
+  ukRegional?: { shows: number; openShows: number };
 }
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
@@ -93,6 +95,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
                 : isOffWestEnd
                   ? 'bg-violet-500/[0.12] border-violet-500/25 text-violet-300 hover:bg-violet-500/20'
+                  : isUkRegional
+                    ? 'bg-teal-500/[0.12] border-teal-500/25 text-teal-300 hover:bg-teal-500/20'
                   : isRegional
                     ? 'bg-emerald-500/[0.12] border-emerald-500/25 text-emerald-300 hover:bg-emerald-500/20'
                     : isTour
@@ -231,7 +235,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           <Link
             href="/west-end"
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
-              isWestEnd ? 'bg-white/[0.06]' : 'hover:bg-white/[0.04]'
+              isWestEnd && !isUkRegional ? 'bg-white/[0.06]' : 'hover:bg-white/[0.04]'
             }`}
             onClick={() => setIsOpen(false)}
           >
@@ -239,7 +243,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               <div className="text-sm font-semibold text-white">West End</div>
               <div className="text-[11px] text-fg-muted">{stats.westEnd.openShows} open shows · {stats.westEnd.theaters} theaters</div>
             </div>
-            {isWestEnd && (
+            {isWestEnd && !isUkRegional && (
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
@@ -262,6 +266,28 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               </div>
               {isOffWestEnd && (
                 <svg className="w-4 h-4 text-violet-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </Link>
+          )}
+          {featureFlags.regional && stats.ukRegional && stats.ukRegional.shows > 0 && (
+            <Link
+              href="/browse/beyond-london"
+              className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                isUkRegional ? 'bg-teal-500/[0.10]' : 'hover:bg-white/[0.04]'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`w-1.5 h-1.5 rounded-full ${isUkRegional ? 'bg-teal-400 shadow-[0_0_6px_rgba(45,212,191,0.5)]' : 'bg-teal-500/60'}`} />
+                <div>
+                  <div className={`text-sm font-semibold ${isUkRegional ? 'text-teal-200' : 'text-white'}`}>UK Regional</div>
+                  <div className="text-[11px] text-fg-muted">Beyond London · {stats.ukRegional.shows} scored shows</div>
+                </div>
+              </div>
+              {isUkRegional && (
+                <svg className="w-4 h-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               )}

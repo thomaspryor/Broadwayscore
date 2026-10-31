@@ -59,6 +59,36 @@ const COHORTS = {
     },
   },
 };
+// BRO-6713: UK regional productions (the rows /browse/beyond-london lists). Same population as
+// scripts/uk-regional-coverage.js: category regional at a uk-regional-venues.json house, not local-only.
+// Stratified by city. The prompt names the venue (a bare title like "1984" or "Macbeth" matches dozens
+// of UK productions), so the `theatre` field tests that a page puts THIS production at THAT house:
+// the answer still needs a cited page that states it, and null reads as "no source found".
+const ukRegionalRow = (s) => !!s && s.category === 'regional'
+  && require('./market-label').isUkRegionalVenue(s.venue)
+  && !require('./local-market').isLocalOnlyShow(s);
+COHORTS['uk-regional'] = {
+  label: 'UK regional productions (/browse/beyond-london: regional category at a uk-regional-venues.json house)',
+  market: 'UK regional theatre (outside London)',
+  filter: ukRegionalRow,
+  stratum: (s) => s.city || 'unknown',
+  fields: ['theatre', 'previewsStart', 'openingNight', 'closing', 'type'],
+  skip: ['synopsis', 'poster'],
+  buildPrompt: (show) => {
+    const y = String(show.openingDate || show.previewsStartDate || '').slice(0, 4);
+    const when = y ? `the production whose run began around ${y}` : 'the production with an unknown start year';
+    return `Use web search. I need facts about one specific UK theatre production: "${show.title}" at ${show.venue}, ${when}. Several productions can share a title, so answer only about a production of "${show.title}" at that theatre in that period. If you cannot find a page showing "${show.title}" was staged at that theatre in that period, return null for every field.
+
+Return JSON only, no prose, in this exact shape. Every non-null value needs the URL of a web page that states it (a page you actually found, not a guess). Never use broadwayscorecard.com as a source: it is the site being checked. Use null when you cannot find a page that states the fact.
+{
+  "theatre": {"value": "the theatre (and stage or studio inside it) where this production played", "source": "url"},
+  "previewsStart": {"value": "YYYY-MM-DD (first public performance)", "source": "url"},
+  "openingNight": {"value": "YYYY-MM-DD (official press/opening night, not first preview)", "source": "url"},
+  "closing": {"value": "YYYY-MM-DD (final performance at this theatre, including any extension)", "source": "url"},
+  "type": {"value": "play | musical | other", "source": "url"}
+}`;
+  },
+};
 // BRO-6489: NYC show facts. Carries its own fields, prompt and comparisons (scripts/lib/nyc-facts-audit.js);
 // a getter because that module reads this one's helpers.
 Object.defineProperty(COHORTS, 'nyc-facts', { enumerable: true, get: () => require('./nyc-facts-audit').NYC_COHORT });

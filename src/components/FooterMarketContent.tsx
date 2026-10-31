@@ -19,6 +19,8 @@ interface FooterMarketContentProps {
     fantasyLeague: boolean;
     /** National tours market launched (markets.json, isCategoryEnabled('tour')). */
     tours: boolean;
+    /** UK regional (Beyond London) page live: NEXT_PUBLIC_FEATURES=regional. */
+    regional: boolean;
   };
 }
 
@@ -65,6 +67,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/best-off-west-end-musicals" className="hover:text-white transition-colors">Best OWE Musicals</Link></li>
               <li><Link href="/browse/best-off-west-end-plays" className="hover:text-white transition-colors">Best OWE Plays</Link></li>
               <li><Link href="/browse/upcoming-off-west-end-shows" className="hover:text-white transition-colors">Upcoming OWE</Link></li>
+              {featureFlags.regional && <li><Link href="/browse/beyond-london" className="hover:text-white transition-colors">UK Regional Theatre</Link></li>}
             </ul>
           </div>
           <div>
@@ -95,6 +98,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/best-recent-musicals" className="hover:text-white transition-colors">New Musicals</Link></li>
               <li><Link href="/browse/longest-running-broadway-shows" className="hover:text-white transition-colors">Longest-Running</Link></li>
               {featureFlags.tours && <li><Link href="/browse/broadway-national-tours" className="hover:text-white transition-colors">National Tours</Link></li>}
+              {featureFlags.regional && <li><Link href="/browse/beyond-london" className="hover:text-white transition-colors">UK Regional Theatre</Link></li>}
             </ul>
           </div>
           <div>

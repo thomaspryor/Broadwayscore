@@ -2,6 +2,7 @@
 // Imports: shows.json (~1.3 MB), reviews.json (~3.8 MB), audience.json (~8 KB), buzz.json (~7 KB)
 // Also imports getShowGrosses from data-grosses for browse page performance sort
 
+import { pickRegionalShelf } from '@/lib/regional-shelf';
 import path from 'path';
 import { isLocalOnlyShow } from '@/lib/local-market';
 import { versionedImagePath } from './versioned-image-path';
@@ -406,6 +407,7 @@ export function getMarketStats() {
   const weOpen = weShows.filter(s => s.status === 'open' || s.status === 'previews');
   const obOpen = obShows.filter(s => s.status === 'open' || s.status === 'previews');
   const oweOpen = oweShows.filter(s => s.status === 'open' || s.status === 'previews');
+  const ukRegional = getUkRegionalShows();
   return {
     nyc: {
       openShows: bwOpen.length,
@@ -420,6 +422,12 @@ export function getMarketStats() {
     },
     offWestEnd: {
       openShows: oweOpen.length,
+    },
+    // UK regional theatre (/browse/beyond-london). `shows` is the listed (scored) count the
+    // page itself shows, so the dropdown and the page cannot disagree.
+    ukRegional: {
+      shows: pickRegionalShelf(ukRegional, { limit: Infinity, requireEnoughReviews: true }).length,
+      openShows: ukRegional.filter(s => s.status === 'open' || s.status === 'previews').length,
     },
   };
 }
