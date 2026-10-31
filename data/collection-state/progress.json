@@ -75,8 +75,7 @@
     "hangmen-off-broadway-2018/nytg--unknown.json",
     "hangmen-off-broadway-2018/newnownextcom--michael-musto.json",
     "hangmen-off-broadway-2018/theatermania--david-gordon.json",
-    "the-lives-of-others-west-end-2026/londontheatredirect--jose-izcue-gana.json",
-    "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "paradise-blue-off-broadway-2018/bobs-theater-blog--robert-sholiton.json",
@@ -99,7 +98,19 @@
     "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
     "a-few-good-men-2026/goldderby--ethan-alter.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
-    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json"
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -165,14 +176,16 @@
       "data/review-texts/amy-and-the-orphans-off-broadway-2018/nytimes--ben-brantley.json",
       "amy-and-the-orphans-off-broadway-2018/nytimes--ben-brantley.json",
       "data/review-texts/in-the-body-of-the-world-off-broadway-2018/nytimes--jesse-green.json",
-      "in-the-body-of-the-world-off-broadway-2018/nytimes--jesse-green.json"
+      "in-the-body-of-the-world-off-broadway-2018/nytimes--jesse-green.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
     ],
     "directCookies": [],
     "scrapingdog": [
       "mlimas-tale-off-broadway-2018/theater-life--david-sheward.json",
       "amy-and-the-orphans-off-broadway-2018/theater-life--david-sheward.json",
       "in-the-body-of-the-world-off-broadway-2018/theater-life--david-sheward.json",
-      "in-the-body-of-the-world-off-broadway-2018/theater-life--patrick-christiano.json"
+      "in-the-body-of-the-world-off-broadway-2018/theater-life--patrick-christiano.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
     ],
     "scrapingbee": [
       "paradise-blue-off-broadway-2018/cititour--brian-scott-lipton.json",
@@ -186,7 +199,11 @@
     "archiveToday": [
       "data/review-texts/mlimas-tale-off-broadway-2018/theater-reviews-from-my-seat--joe-lombardi.json",
       "data/review-texts/amy-and-the-orphans-off-broadway-2018/bsonarts--bruce-smith.json",
-      "data/review-texts/in-the-body-of-the-world-off-broadway-2018/broadway-blog--matthew-wexler.json"
+      "data/review-texts/in-the-body-of-the-world-off-broadway-2018/broadway-blog--matthew-wexler.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
     ],
     "archive": [
       "fire-and-air-off-broadway-2018/amny--matt-windman.json",
@@ -207,11 +224,12 @@
       "in-the-body-of-the-world-off-broadway-2018/city-cabaret--elizabeth-ahlfors.json",
       "in-the-body-of-the-world-off-broadway-2018/ny1--roma-torre.json",
       "in-the-body-of-the-world-off-broadway-2018/theater-pizzazz--carol-rocamora.json",
-      "hangmen-off-broadway-2018/newnownextcom--michael-musto.json"
+      "hangmen-off-broadway-2018/newnownextcom--michael-musto.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-31T04:41:48.868Z",
-  "lastProcessed": "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+  "lastProcessed": "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
   "log": [
     {
       "t": "2026-10-31T04:45:56.945Z",
@@ -245,6 +263,28 @@
       "t": "2026-10-31T05:03:49.848Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T05:30:28.221Z",
+      "event": "bb-session",
+      "session": "15361418",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T05:30:28.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T05:32:13.012Z",
+      "event": "bb-session",
+      "session": "b0e7ae4c",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T05:32:13.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
