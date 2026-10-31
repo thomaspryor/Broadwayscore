@@ -1658754,21 +1658754,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T17:33:59.470Z",
-    "completedAt": "2026-10-31T17:34:15.130Z",
-    "totalReviews": 3,
-    "processed": 3,
+    "startedAt": "2026-10-31T17:35:35.315Z",
+    "completedAt": "2026-10-31T17:36:04.844Z",
+    "totalReviews": 6,
+    "processed": 6,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 17683,
-      "output": 964,
-      "cacheRead": 11421,
+      "input": 34768,
+      "output": 1943,
+      "cacheRead": 22842,
       "cacheWrite": 0,
-      "total": 44799
+      "total": 88760
     },
-    "costUsd": 0.0675598,
-    "runId": "41224549761",
+    "costUsd": 0.1335737,
+    "runId": "41224743633",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1660758,16 +1660758,6 @@
           "flat": 4,
           "down": 1,
           "total": 6
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "a-picasso-regional-2025",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 0,
-          "down": 1,
-          "total": 3
         },
         "hasDisagreement": false
       },
@@ -1670057,6 +1670047,16 @@
           "flat": 0,
           "down": 0,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "dorian-regional-2025",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 0,
+          "down": 0,
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1702828,8 +1702828,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T17:39:11.384Z",
-    "completedAt": "2026-10-31T17:39:11.386Z",
+    "startedAt": "2026-10-31T17:41:02.368Z",
+    "completedAt": "2026-10-31T17:41:02.370Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1702842,7 +1702842,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41224549761",
+    "runId": "41224743633",
     "source": "comparative-rescore",
     "errorDetails": []
   }
