@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-4490-2",
+  "planId": "88b4d679-c4bc-451f-8ee7-989235284df8",
+  "status": "partial",
+  "createdAt": "2026-10-22T15:26:53.100Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4490: two tier-1.5-cleared ratings that each outlet's page confirms (Time Out 5/5 on Long Day's Journey 2016, Jewish Chronicle 2/5 on The Devil Wears Prada West End 2024) are restored as verified ratings, so both scores move into the critic's star band. The other 23 cleared rows were checked page by page on 2026-10-22: their live scores already match the page or the page shows no rating, so they stay. Also backfills textFetchedAt for truncated-text files.",
+    "steps": [
+      "Time Out page rating block shows five filled stars with the label '5 out of 5 stars' (checked 2026-10-22). The cleared 5/5 was right; the shipped llm-v6 88 sat below the 91-100 band.",
+      "Jewish Chronicle article opens with the rating line 'Dominion | two of five stars' (JSON-LD articleBody, checked 2026-10-22). The cleared 4/5 was wrong; the shipped llm-v6 26 sat below the 31-50 band.",
+      "Stamp textFetchedAt on truncated-text files that have none, from firstSeenAt/addedAt/collectedAt, so isTruncatedScoreNowComplete can see a later complete text"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/timeout--adam-feldman.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5",
+        "description": "Time Out page rating block shows five filled stars with the label '5 out of 5 stars' (checked 2026-10-22). The cleared 5/5 was right; the shipped llm-v6 88 sat below the 91-100 band."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/the-jewish-chronicle--john-nathan.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5",
+        "description": "Jewish Chronicle article opens with the rating line 'Dominion | two of five stars' (JSON-LD articleBody, checked 2026-10-22). The cleared 4/5 was wrong; the shipped llm-v6 26 sat below the 31-50 band."
+      },
+      {
+        "type": "run-script",
+        "description": "Stamp textFetchedAt on truncated-text files that have none, from firstSeenAt/addedAt/collectedAt, so isTruncatedScoreNowComplete can see a later complete text",
+        "script": "backfill-text-fetched-at.js",
+        "args": "--apply --git-depth=0"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T21:46:54.398Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "originalScore: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/the-jewish-chronicle--john-nathan.json originalScore: null -> \"2/5\" (retracted originalScoreCleared, originalScoreClearedReason, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran backfill-text-fetched-at.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

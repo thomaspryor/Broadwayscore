@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-5927-c",
+  "planId": "0970bdee-7eeb-4c47-a270-0d3a23245065",
+  "status": "applied",
+  "createdAt": "2026-10-23T13:53:48.987Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5927: set 28 published review scores that contradict the critic's own rating into the rating's band (part 3 of 3)",
+    "steps": [
+      "caroline-or-change-west-end-2018/observer--clare-brennan.json: published 63 contradicts 4/5 stars (same-article sibling record), set in-band 77",
+      "caroline-or-change-west-end-2018/observer--clare-brennan.json: humanReviewNote",
+      "bacchae-west-end-2025/londontheatre1--mary-beer.json: published 15 contradicts 2/5 stars (same-article sibling record), set in-band 40",
+      "bacchae-west-end-2025/londontheatre1--mary-beer.json: humanReviewNote",
+      "after-life-west-end-2021/observer--susannah-clapp.json: published 87 contradicts 100 (same-article sibling record), set in-band 96",
+      "after-life-west-end-2021/observer--susannah-clapp.json: humanReviewNote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-west-end-2018/observer--clare-brennan.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 77,
+        "description": "caroline-or-change-west-end-2018/observer--clare-brennan.json: published 63 contradicts 4/5 stars (same-article sibling record), set in-band 77"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-west-end-2018/observer--clare-brennan.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 63 sat outside the critic printed rating 4/5 stars (stored on the same-URL sibling record guardian--clare-brennan.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 77.",
+        "description": "caroline-or-change-west-end-2018/observer--clare-brennan.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bacchae-west-end-2025/londontheatre1--mary-beer.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 40,
+        "description": "bacchae-west-end-2025/londontheatre1--mary-beer.json: published 15 contradicts 2/5 stars (same-article sibling record), set in-band 40"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bacchae-west-end-2025/londontheatre1--mary-beer.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 15 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record londontheatre1--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.",
+        "description": "bacchae-west-end-2025/londontheatre1--mary-beer.json: humanReviewNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-life-west-end-2021/observer--susannah-clapp.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 96,
+        "description": "after-life-west-end-2021/observer--susannah-clapp.json: published 87 contradicts 100 (same-article sibling record), set in-band 96"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-life-west-end-2021/observer--susannah-clapp.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 87 sat outside the critic printed rating 100 (stored on the same-URL sibling record guardian--susannah-clapp.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 96.",
+        "description": "after-life-west-end-2021/observer--susannah-clapp.json: humanReviewNote"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T16:44:08.443Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-west-end-2018/observer--clare-brennan.json humanReviewScore: null -> 77"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-west-end-2018/observer--clare-brennan.json humanReviewNote: null -> \"BRO-5927: published 63 sat outside the critic printed rating 4/5 stars (stored on the same-URL sibling record guardian--clare-brennan.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 77.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bacchae-west-end-2025/londontheatre1--mary-beer.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bacchae-west-end-2025/londontheatre1--mary-beer.json humanReviewNote: null -> \"BRO-5927: published 15 sat outside the critic printed rating 2/5 stars (stored on the same-URL sibling record londontheatre1--unknown.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-life-west-end-2021/observer--susannah-clapp.json humanReviewScore: null -> 96"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-life-west-end-2021/observer--susannah-clapp.json humanReviewNote: null -> \"BRO-5927: published 87 sat outside the critic printed rating 100 (stored on the same-URL sibling record guardian--susannah-clapp.json, outlet-extracted); this record holds no rating, so the rebuild could not clamp. Set to that sibling in-band verdict 96.\""
+    }
+  ],
+  "executedIn": "ci"
+}

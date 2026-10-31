@@ -1,0 +1,475 @@
+{
+  "_comment": "BRO-2688 baseline: audit-*.js scripts that no workflow, action, package.json script or other code references. Wire a new audit into CI instead of adding it here; add it only when it is intentionally manual (bucket b). Reasoning: docs/triage-audit-scripts.md.",
+  "entries": {
+    "audit-star-bands.js": {
+      "bucket": "a",
+      "rank": 1,
+      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+    },
+    "audit-announced-cast.js": {
+      "bucket": "a",
+      "rank": 2,
+      "reason": "announced shows must not hold an older production's cast (BRO-5809); core data only; live run today flags the-wedding-march-off-broadway-2026"
+    },
+    "audit-scoreless-llmscore.js": {
+      "bucket": "a",
+      "rank": 3,
+      "reason": "files with an llmScore object but no numeric score are never scored or published (BRO-5395); needs review-texts"
+    },
+    "audit-uncounted-real-reviews.js": {
+      "bucket": "a",
+      "rank": 4,
+      "reason": "review texts on 2026 shows missing from reviews.json (BRO-5794); needs review-texts"
+    },
+    "audit-listing-page-text.js": {
+      "bucket": "a",
+      "rank": 5,
+      "reason": "listing or search page scored as a review (BRO-5375, scored 87 on the site); only a test.yml path trigger today; needs review-texts"
+    },
+    "audit-promo-booking-copy.js": {
+      "bucket": "a",
+      "rank": 6,
+      "reason": "booking and deal copy ingested as review text (BRO-5902, BRO-5906); only a test.yml path trigger today; needs review-texts"
+    },
+    "audit-ownership-gate-losses.js": {
+      "bucket": "a",
+      "rank": 7,
+      "reason": "reviews dropped by the push ownership gate that exist nowhere in the corpus (BRO-5373); needs review-texts git history"
+    },
+    "audit-corpus-determinism.js": {
+      "bucket": "a",
+      "rank": 8,
+      "reason": "published review count moving down or flapping; PASS today; needs deploy-watermark git history"
+    },
+    "audit-flagged-file-contamination.js": {
+      "bucket": "a",
+      "rank": 9,
+      "reason": "merge target landing inside a flagged review file (BRO-3219); only a test.yml path trigger; needs review-texts"
+    },
+    "audit-stale-review-texts.js": {
+      "bucket": "a",
+      "rank": 10,
+      "reason": "stale manual-clear reasons hiding genuinely wrong texts (BRO-2395); only a test.yml path trigger; needs review-texts"
+    },
+    "audit-shared-url-quote.js": {
+      "bucket": "a",
+      "rank": 11,
+      "reason": "multi-show column copied whole onto each show (BRO-4594); report only; needs review-texts"
+    },
+    "audit-form-d-capitalization.js": {
+      "bucket": "a",
+      "rank": 12,
+      "reason": "commercial.json capitalization stored as the Form D maximum (BRO-5732); clean today (0 of 37); core data plus SEC fetch"
+    },
+    "audit-excluded-with-own-show-evidence.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-5805 read-only sweep, needs the private review-texts corpus (cloud-run-script --review-texts); --gate mode is not wired; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-feature-as-review.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 incident; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-demoted-nonreview.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 incident; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-uk-rows-on-broadway.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 incident; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-scored-other-critic.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep from the BRO-5420 follow-up; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-director-guard-dates.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only cousin sweep for BRO-5373; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-critic-name-apostrophe.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep for BRO-5444 truncated critic names; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-split-section-scores.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "read-only sweep for BRO-6000 split-section back-references; needs review-texts and judgment per hit"
+    },
+    "audit-cast-matching.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "one-shot re-evaluation of cast files against new IBDB matching rules"
+    },
+    "audit-critic-listing-parity.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "one-shot parity check for decideCriticListingPromotion (task 995); sprint-scoped"
+    },
+    "audit-data-quality.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "metrics dump to stdout for ad-hoc inspection; no pass/fail"
+    },
+    "audit-feedback-overnight-branches.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "inspects local checkouts of the iOS app repo; cannot run in CI"
+    },
+    "audit-stranded-reviewed-branches.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "inspects local worktrees; exits 2 as untrustworthy where none exist; Mac-only"
+    },
+    "audit-image-aspect.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "poster geometry check over a local image archive; hygiene, not correctness"
+    },
+    "audit-roundup-coverage.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "CLI wrapper for a pasted editorial roundup; manual input by design"
+    },
+    "audit-outlet-text-status.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "one outlet's text coverage on demand; diagnostic with an outlet argument"
+    },
+    "audit-non-quote-excerpts.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "diagnostic count for BRO-5344; no pass/fail threshold"
+    },
+    "audit-title-quality.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "title artifact buckets, report only (BRO-3915); hygiene"
+    },
+    "audit-tour-leg-venues.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "report-only corpus audit (BRO-2278); needs judgment per hit"
+    },
+    "audit-always-commit-after-validate.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "advisory workflow linter (BRO-5293); exits 0 by design, rule 19 forbids arming it"
+    },
+    "audit-flat-git-add.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "advisory workflow linter (BRO-2945); exits 0 by design, rule 19 forbids arming it"
+    },
+    "audit-apply-scripts-verify-pushed.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Finds --apply scripts that write review texts without verify-review-texts-pushed, risking fixes left only on disk; schedule as a source-only advisory count, not a blocking gate."
+    },
+    "audit-audience-scores.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Checks audience-buzz score ranges, source weights, designations and staleness against shows.json; recurring published-data drift merits a digest using report severity counts; no network calls."
+    },
+    "audit-awards-data.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Checks awards.json for orphan show IDs, duplicate nominations, impossible wins and season gaps; recurring catalog edits can regress these, so schedule severity counts; needs awards.json, no network calls."
+    },
+    "audit-bro79-ensemble-rejections.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time repair of named July 2026 ensemble rejections and a Wicked excerpt recovery; writes private review files by default unless --dry-run, so never schedule as a recurring audit."
+    },
+    "audit-close-time-verify.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Pre-rollout experiment that lists cards through retired notion-brain.js and executes their acceptance commands in a fresh checkout; manual migration evidence, not a daily data-health check."
+    },
+    "audit-content-quality.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Legacy mixed heuristic sweep includes extractYearFromUrl for production guesses and broad byline/domain checks; keep manual without --fix until checks use sourced metadata under CLAUDE.md section 3."
+    },
+    "audit-coverage-slot-drops.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Finds aggregator URL slots, other-critic URL ownership, dateless holds and stale non-review slots with replacement reviews; recurring ingest losses merit candidate counts; needs review-texts, no fetches."
+    },
+    "audit-creative-team-serp.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Retro-audits unprovenanced non-Broadway creative credits predating the SERP guard; two searches per member plus optional Opus adjudication and --fix require a scoped, budgeted manual run, not cron."
+    },
+    "audit-critic-tenure.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Counts unresolved critic/outlet tenure mismatches using findTenureFlags and reviewed exceptions; new attribution errors warrant recurring visibility; needs review-texts, no network calls, supports --max."
+    },
+    "audit-cross-attribution-by-critic.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Matches stored review content against title, cast, creative and venue fingerprints to detect wrong-show attribution; schedule report-only confidence counts with review-texts; never --apply on cron."
+    },
+    "audit-doubled-market-ids.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Standing shows.json detector for market words leaking from titles into generated IDs; new discovery rows can repeat BRO-2886, so schedule sweepShows with its reviewed allowlist; core data only."
+    },
+    "audit-duplicate-images.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Hashes hero, poster and thumbnail files for same-title productions; requires the complete local public/images/shows archive, tolerates absent files and writes a /tmp repair list, so use for image triage."
+    },
+    "audit-excerpt-only-backfill-queue.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Reports excerpt-only files eligible for the existing daily unscored pipeline; queue size is not a failure or completion guarantee because scoring is capped, so use for manual backfill progress checks."
+    },
+    "audit-explicit-scores.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Ranks originalScore suspects using positive/negative word lists and extraction-source hints; sentiment disagreement is not proof an explicit rating is wrong, so inspect evidence manually rather than alert on every hit."
+    },
+    "audit-false-dead-ledger-rows.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Dispatch retry-cap incident probe fetches Linear comments per issue to corroborate dead ledger rows; the live gate already uses classifyDeadRowsForTask, so reserve the extra API scan for investigations."
+    },
+    "audit-fetch-timeouts.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Scans source for fetch and HTTP request call sites lacking a matched abort or destroy timeout; recurring hang regressions merit source-only advisory counts; full scan intentionally exits 0 on existing debt."
+    },
+    "audit-field-consistency.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Detects wordCount, contentTier and legacy text-status drift that can change rebuild inclusion; schedule the default report over review-texts, never --fix; no network calls."
+    },
+    "audit-flag-wipe-signature.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Retroactive scan for the pre-16c834c9 maybeUpgradeUrl exclusion-flag wipe breadcrumb; incident-cohort repair needs per-hit review of legitimate clears, not a standing count of all URL changes."
+    },
+    "audit-git-show-maxbuffer.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Finds git show/cat-file/ls-tree/diff/log subprocesses missing maxBuffer, which can misread large data files as absent; recurring source regressions merit a cheap offline check."
+    },
+    "audit-grosses-data.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Adds snapshot staleness, missing open Broadway shows, ATP and all-time consistency checks beyond the wired history-integrity rules; schedule severity counts with shows and both grosses files; no fetches."
+    },
+    "audit-late-add-corpus-wide.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Historical late-add census deliberately includes closed shows outside the production ledger window; existing opening-night coverage handles current targets, so use this snapshot for scoped historical cleanup."
+    },
+    "audit-levenshtein-matches.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Pre-migration inventory of fuzzy critic-name matches to decide which true typos belong in CRITIC_ALIASES; pairs require human identity review before changing matching rules, not recurring alerts."
+    },
+    "audit-llm-hallucinations.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Uses canonical keyword checks to find LLM-verified live text lacking show identity and quarantine-gate contradictions; schedule separate suspect counts with review-texts, not automatic reclassification; no LLM calls."
+    },
+    "audit-llm-scores.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Blind re-scoring experiment with provider calls, retries, calibration and a spend cap; use --pass1-only or a scoped funded investigation, not an unrestricted daily cron."
+    },
+    "audit-llm-scoring-parity.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Runs the real rebuild and LLM scoreability predicates over review-texts to expose wasted scoring and orphan-unscored divergences; schedule bucketed report counts, accounting for intentional differences; no LLM calls."
+    },
+    "audit-london-outlet-flags.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-5896 recovery diagnostic groups held and self-healed NYC reviews by current outlet region; legitimate London holds and released totals are not defects, so inspect suspect regions manually rather than gate total flags."
+    },
+    "audit-mirror-status-drift.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Samples local ~/.claude/tasks mirror entries against live Notion statuses; depends on retired Notion tooling and a workstation mirror, so keep as historical investigation tooling, not CI."
+    },
+    "audit-multi-production-titles.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Generates same-title production groups as fixtures for routing work; revivals and transfers legitimately share titles, so a collision count alone is not an alertable defect."
+    },
+    "audit-multi-verdict-stars.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Finds stored star ratings borrowed from another section of multi-review articles; schedule mismatch counts separately from ambiguous sections using review-texts; --write-plan stays manual, no fetches."
+    },
+    "audit-multishow-titlecase.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "A/B replay of titlecase, URL-evidence and flag-clearing rules for BRO-5373/BRO-5395; changed verdicts need cohort adjudication and can retain other exclusions, so run during rule/backfill investigations."
+    },
+    "audit-nonreview-cv-conflict.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Counts stale isNonReview flags intentionally outranked by fresher verification at read time; these persist on disk and need not drain to zero, so the optional ceiling is diagnostic, not a daily failure signal."
+    },
+    "audit-nyt-pick-coverage.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Proposes missing NYT Pick reviews using title words in URL slugs and run windows; matches need sourced confirmation under the no-URL-metadata rule before ingestion, so keep candidate research manual."
+    },
+    "audit-opening-night-extraction.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Post-opening verification requires an explicit --show and live BWW/DTLI pages or cached --no-live inputs; run for a selected opening after reviews exist, not as an unscoped daily catalog scan."
+    },
+    "audit-opera-discovery-gap.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Replays outlet-site discovery to classify misses for a selected show/category and opening window; live listing fetches can use Bright Data and need a bounded research scope, not a default full-catalog cron."
+    },
+    "audit-orphan-inprogress.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time drain of local mirrored in-progress tasks using cmux, git evidence and retired Notion cards; --fix mutates tasks and cards, and CI lacks the workstation sessions it must corroborate."
+    },
+    "audit-orphaned-audit-writes.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Finds workflow audit reports discarded because commit steps never stage them; schedule the source-only --check ratchet against reviewed persistence gaps, with shadow-mode visibility before blocking."
+    },
+    "audit-outlet-tiers.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Builds outlet volume/evidence tables and simulates proposed tier changes from supplied justifications; tier policy needs sourced human decisions and explicit output files, so no automatic recurring gate."
+    },
+    "audit-paywall-leaks.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Detects subscriber-login boilerplate stored as fullText via the shared positional paywall detector; recurring cookie failures merit a weekly report with review-texts and --strict in shadow mode; no fetches."
+    },
+    "audit-registry-nonreview-outlets.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time pre-guard registry cross-check against venue, PR and ticketing host rules; domain collisions can flag real scored outlets, so use findings as manual evidence and never remove registry rows on a cron."
+    },
+    "audit-reroute-backlog.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "One-time inventory of already-flagged reviews that might fit sibling productions; requires the main checkout and .core-data-checkout/shows.json plus collision/year-only adjudication, so keep repair planning manual."
+    },
+    "audit-review-pair-anomalies.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Detects identical text under different critics/URLs and stale own-domain roundup flags across sibling files; per-file guards miss these, so schedule report-only pair and roundup counts with review-texts."
+    },
+    "audit-safe-form-allowlist.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Source-only read-only-allowlist invariants already run in scripts/lib/safe-form-allowlist.test.mjs, including transitive writes and live-gate agreement; CLI --candidates is manual admission research, so no duplicate cron."
+    },
+    "audit-show-score-url-redirects.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Live per-URL HTTP probe for Show Score mappings redirecting to generic listings; use --show or --limit to investigate a suspected mapping, alongside the offline archive audit, rather than refetch the whole map daily."
+    },
+    "audit-single-author-mismatches.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Uses critic distribution and staff-turnover exceptions to propose multiAuthor registry changes; low-data and legitimate turnover cases need attribution review, and --apply changes scoring inputs, so keep manual."
+    },
+    "audit-soft-404-review-texts.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Finds stored soft-404 templates and byte-identical bodies across critics, complementing the collector guard on newly fetched text; schedule read-only finding counts with review-texts, no live fetches."
+    },
+    "audit-stale-open-premises.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Backlog research runs open cards acceptance commands in a fresh checkout and marks only stale-premise candidates; broad tests and absent private data are inconclusive, so results need owner judgment, not automatic cron action."
+    },
+    "audit-text-gap-cards.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Card-specific evidence for BRO-4426, BRO-4564 and BRO-4301, selected with --card and named repair plans; each cohort measures a different text-recovery hypothesis, so use for those investigations."
+    },
+    "audit-truncated-reviews.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Legacy local heuristic inventory of suspicious endings, paywall phrases and short bodies; findings need article inspection and reuse of current collector rules before becoming a recurring alert signal."
+    },
+    "audit-url-collisions.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Classifies same-show/outlet URL groups to separate legitimate aggregator multi-critic pages from copied-text contamination; schedule contamination counts with review-texts, never --apply; no network calls."
+    },
+    "audit-url-validation.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Retroactive roundup-URL investigation mixes URL-title guesses, cached archives and potentially paid fetchPage validation; needs a bounded scope and content-based evidence before recurring use, not a default daily sweep."
+    },
+    "audit-we-historical-season.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Manual release gate for a specified West End backfill --season about seven days after scoring; displayability, run windows, duplicates and provenance determine whether the next season can start, not daily catalog health."
+    },
+    "audit-we-market-misroutes.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Historical backlog replay of gather-time market routing over flagged West End files; --execute moves private review files and collisions need adjudication, while the standing ingest guard handles new rows."
+    },
+    "audit-we-reviews.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Live review refetch plus OpenAI and Gemini adjudication per review; default --limit is unbounded and production/sentiment findings need evidence review, so use a funded manual sample, not cron."
+    },
+    "audit-wet-roundup-bleed.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Cross-checks cached WET roundup rows and review files for borrowed critics/URLs and cross-outlet domains; schedule unflagged contamination counts, keeping weak leads separate; needs WET archive and review-texts, no fetches."
+    },
+    "audit-workflow-activity.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Whole-workflow inventory complements the existing critical-cron monitor; refresh costs about two GitHub API calls per workflow before retries, so use cached/manual retirement reviews rather than daily duplicate polling."
+    },
+    "audit-wrong-article-parity.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-3956 diagnostic compares wrongArticle checks to canonical rejection; medium-confidence and manual-clear disagreements are intentional in URL ownership routing, so a nonzero parity count is not a recurring defect."
+    },
+    "audit-wt-integ-stashes.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "Read-only triage of the shared workstation stash stack, including dangerous truncations; CI has no representative wt-integ recovery stashes, so run during local stash cleanup, never as a catalog cron."
+    },
+    "audit-timeout-patterns.js": {
+      "bucket": "a",
+      "rank": 99,
+      "reason": "Finds Promise.race timeout wrappers whose timers are never cleared, causing scripts to linger after work ends; schedule the offline source scan as a regression signal, using withTimeout as the repair."
+    },
+    "audit-guard-call-sites.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-2484 advisory heuristic: flags audience-facing guards with a unit test but no test proving the call site; run by hand (--strict to fail), exercised by tests/unit/audit-guard-call-sites.test.mjs"
+    },
+    "audit-lane-trouble-rate.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "BRO-2978: manual read of per-lane dispatch retry burn from the per-machine dispatch ledger (gitignored, absent in CI), so no workflow can run it"
+    },
+    "audit-malformed-review-urls.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "BRO-5162: read-only sweep of review-texts url values; needs the private review-texts corpus, so run it through cloud-run-script. The write-time guard (review-write-guard) is the standing prevention."
+    }
+  }
+}

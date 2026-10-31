@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-4371",
+  "planId": "e6e213e4-a8fe-4b4c-b536-709c62c52ec9",
+  "status": "applied",
+  "createdAt": "2026-10-29T08:20:57.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4371: seven shows have a bwwExcerpt cut short by the BWW roundup parser at a digit-leading outlet name. Rewrite those excerpts from the private BWW archive (and-then-the-rodeo, bigfoot, bloodlove, disruption, jerome, whoopi-monologues, winters-tale). Dry run on the full archive found exactly these 7 files, bwwExcerpt only, no fullText.",
+    "steps": [
+      "Run repair-bww-digit-outlets.js with --write --expect=7. It fails the run unless exactly 7 files were repaired with no write-guard refusals."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "repair-bww-digit-outlets.js",
+        "args": "--write --expect=7",
+        "description": "Repair the 7 corrupted BWW excerpts from the archive"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T12:51:31.359Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-bww-digit-outlets.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

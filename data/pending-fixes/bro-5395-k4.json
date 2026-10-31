@@ -1,0 +1,205 @@
+{
+  "issueNumber": "bro-5395-k4",
+  "planId": "270683fe-9141-452e-96d6-d9d3c2b82c71",
+  "status": "partial",
+  "createdAt": "2026-10-15T22:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5395 (k4): clear showNotMentioned on 7 real reviews whose body describes the show without printing its title, each checked by hand against the show's venue and run (url-evidence corpus audit, 43 of 52 real).",
+    "steps": [
+      "breadcrumb",
+      "clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/theupcoming--benedetta-mancusi.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/ (published 2026-04-01) names this show and its venue/run; show record Shaftesbury Theatre 2026-04-16..2027-01-03. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/theupcoming--benedetta-mancusi.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/thestage--sam-marlowe.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/black-superhero-review-royal-court-theatre-downstairs-london-danny-lee-wynter (published 2023-03-22) names this show and its venue/run; show record Royal Court 2023-03-21..2023-04-29. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-superhero-west-end-2023/thestage--sam-marlowe.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/standard--nick-curtis.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/guess-how-much-i-love-you-royal-court-theatre-review-b1267807.html (published 2026-01-23) names this show and its venue/run; show record Royal Court 2026-01-22..2026-02-21. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/standard--nick-curtis.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/guess-how-much-i-love-you-review-jerwood-theatre-downstairs-royal-court-theatre-london-luke-norris-jeremy-herrin (published 2026-01-23) names this show and its venue/run; show record Royal Court 2026-01-22..2026-02-21. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "retrograde-west-end-2025/thestage--laurie-yule.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/retrograde-review-apollo-theatre-london-ryan-calais-cameron-amit-sharma-ivanno-jeremiah (published March 20th, 2025) names this show and its venue/run; show record Apollo Theatre 2025-03-19..2025-06-14. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "retrograde-west-end-2025/thestage--laurie-yule.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-british-bake-off-musical-west-end-2023/standard--nick-curtis.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/the-great-british-bake-off-musical-noel-coward-theatre-review-half-baked-b1065243.html (published March 9th, 2023) names this show and its venue/run; show record Noël Coward Theatre 2023-03-06..2023-05-14. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-british-bake-off-musical-west-end-2023/standard--nick-curtis.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legends-of-them-west-end-2024/thestage--laurie-yule.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-legends-of-them-review-at-the-royal-court-london-by-sutara-gayle-aka-lorna-gee (published 2024-12-11) names this show and its venue/run; show record Royal Court 2024-12-05..2024-12-21. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legends-of-them-west-end-2024/thestage--laurie-yule.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T22:33:13.521Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "avenue-q-west-end-2026/theupcoming--benedetta-mancusi.json showNotMentionedManualClear applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "avenue-q-west-end-2026/theupcoming--benedetta-mancusi.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "black-superhero-west-end-2023/thestage--sam-marlowe.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/black-superhero-review-royal-court-theatre-downstairs-london-danny-lee-wynter (published 2023-03-22) names this show and its venue/run; show record Royal Court 2023-03-21..2023-04-29. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "black-superhero-west-end-2023/thestage--sam-marlowe.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "guess-how-much-i-love-you-west-end-2026/standard--nick-curtis.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/guess-how-much-i-love-you-royal-court-theatre-review-b1267807.html (published 2026-01-23) names this show and its venue/run; show record Royal Court 2026-01-22..2026-02-21. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "guess-how-much-i-love-you-west-end-2026/standard--nick-curtis.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/guess-how-much-i-love-you-review-jerwood-theatre-downstairs-royal-court-theatre-london-luke-norris-jeremy-herrin (published 2026-01-23) names this show and its venue/run; show record Royal Court 2026-01-22..2026-02-21. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "retrograde-west-end-2025/thestage--laurie-yule.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/retrograde-review-apollo-theatre-london-ryan-calais-cameron-amit-sharma-ivanno-jeremiah (published March 20th, 2025) names this show and its venue/run; show record Apollo Theatre 2025-03-19..2025-06-14. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "retrograde-west-end-2025/thestage--laurie-yule.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-british-bake-off-musical-west-end-2023/standard--nick-curtis.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/the-great-british-bake-off-musical-noel-coward-theatre-review-half-baked-b1065243.html (published March 9th, 2023) names this show and its venue/run; show record Noël Coward Theatre 2023-03-06..2023-05-14. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-british-bake-off-musical-west-end-2023/standard--nick-curtis.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-legends-of-them-west-end-2024/thestage--laurie-yule.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-legends-of-them-review-at-the-royal-court-london-by-sutara-gayle-aka-lorna-gee (published 2024-12-11) names this show and its venue/run; show record Royal Court 2024-12-05..2024-12-21. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-legends-of-them-west-end-2024/thestage--laurie-yule.json showNotMentioned: true -> false"
+    }
+  ]
+}

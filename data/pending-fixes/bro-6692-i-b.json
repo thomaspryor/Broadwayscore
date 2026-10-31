@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-6692-i-b",
+  "planId": "dbb48ffa-091b-4be1-9dae-4c4be8f936f6",
+  "status": "partial",
+  "createdAt": "2026-10-31T06:46:58.879Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest census reviews for the new UK hub productions (part 2 of 2)",
+    "steps": [
+      "BRO-6541: ingest british-theatre review for the-grand-babylon-hotel-hull-truck-regional-2026",
+      "BRO-6541: ingest thestage review for the-lieutenant-of-inishmore-liverpool-everyman-regional-2024",
+      "BRO-6541: ingest thereviewshub review for the-lieutenant-of-inishmore-liverpool-everyman-regional-2024",
+      "BRO-6541: ingest thereviewshub review for austens-women-lady-susan-york-royal-regional-2025",
+      "BRO-6541: ingest british-theatre review for austens-women-lady-susan-york-royal-regional-2025",
+      "BRO-6541: ingest thereviewshub review for the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024",
+      "BRO-6541: ingest thestage review for the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024",
+      "BRO-6541: ingest thereviewshub review for the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+      "BRO-6541: ingest british-theatre review for the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+      "BRO-6541: ingest thereviewshub review for the-lion-the-witch-and-the-wardrobe-leeds-regional-2024",
+      "BRO-6541: ingest british-theatre review for the-lion-the-witch-and-the-wardrobe-leeds-regional-2024",
+      "BRO-6541: ingest thereviewshub review for beautiful-the-carole-king-musical-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest british-theatre review for beautiful-the-carole-king-musical-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest thereviewshub review for the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026",
+      "BRO-6541: ingest thestage review for the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-grand-babylon-hotel-hull-truck-regional-2026 --url=https://www.britishtheatreguide.info/reviews/the-grand-babyl-hull-truck-25406 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-grand-babylon-hotel-hull-truck-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lieutenant-of-inishmore-liverpool-everyman-regional-2024 --url=https://www.thestage.co.uk/reviews/the-lieutenant-of-inishmore-review-everyman-theatre-liverpool-martin-mcdonagh-chris-sonnex --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-lieutenant-of-inishmore-liverpool-everyman-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lieutenant-of-inishmore-liverpool-everyman-regional-2024 --url=https://www.thereviewshub.com/the-lieutenant-of-inishmore-everyman-liverpool/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-lieutenant-of-inishmore-liverpool-everyman-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=austens-women-lady-susan-york-royal-regional-2025 --url=https://www.thereviewshub.com/austens-women-lady-susan-york-theatre-royal-studio/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for austens-women-lady-susan-york-royal-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=austens-women-lady-susan-york-royal-regional-2025 --url=https://www.britishtheatreguide.info/reviews/austen-s-women-york-theatre-ro-24920 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for austens-women-lady-susan-york-royal-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024 --url=https://www.thereviewshub.com/the-rock-n-roll-panto-rapunzel-liverpool-everyman/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024 --url=https://www.thestage.co.uk/reviews/the-rock-n-roll-panto-rapunzel-at-liverpool-everyman-by-jude-christian-starring-adam-keast-directed-by-francesca-goodridge --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-night-larry-kramer-kissed-me-hope-mill-regional-2026 --url=https://www.thereviewshub.com/the-night-larry-kramer-kissed-me-hope-mill-theatre-manchester/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-night-larry-kramer-kissed-me-hope-mill-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-night-larry-kramer-kissed-me-hope-mill-regional-2026 --url=https://www.britishtheatreguide.info/reviews/the-night-larry-hope-mill-theat-25324 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-night-larry-kramer-kissed-me-hope-mill-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lion-the-witch-and-the-wardrobe-leeds-regional-2024 --url=https://www.thereviewshub.com/the-lion-the-witch-and-the-wardrobe-leeds-playhouse/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-lion-the-witch-and-the-wardrobe-leeds-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lion-the-witch-and-the-wardrobe-leeds-regional-2024 --url=https://www.britishtheatreguide.info/reviews/the-lion-the-w-leeds-playhouse-23982 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-lion-the-witch-and-the-wardrobe-leeds-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=beautiful-the-carole-king-musical-pitlochry-festival-regional-2024 --url=https://www.thereviewshub.com/beautiful-the-carole-king-musical-pitlochry-festival-theatre/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for beautiful-the-carole-king-musical-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=beautiful-the-carole-king-musical-pitlochry-festival-regional-2024 --url=https://www.britishtheatreguide.info/reviews/beautiful-the-pitlochry-festi-23361 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for beautiful-the-carole-king-musical-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026 --url=https://www.thereviewshub.com/the-assassination-of-margaret-thatcher-liverpool-everyman-theatre/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026 --url=https://www.thestage.co.uk/reviews/the-assassination-of-margaret-thatcher-review-liverpool-everyman-hilary-mantel --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T11:08:20.131Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024 --url=https://www.thereviewshub.com/the-rock-n-roll-panto-rapunzel-liverpool-everyman/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-night-larry-kramer-kissed-me-hope-mill-regional-2026 --url=https://www.thereviewshub.com/the-night-larry-kramer-kissed-me-hope-mill-theatre-manchester/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026 --url=https://www.thereviewshub.com/the-assassination-of-margaret-thatcher-liverpool-everyman-theatre/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

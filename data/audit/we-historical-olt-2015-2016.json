@@ -1,0 +1,5540 @@
+{
+  "generatedAt": "2026-10-26T15:47:59.067Z",
+  "season": "2015-2016",
+  "sources": [
+    "official-london-theatre (wayback)",
+    "tr-az",
+    "tr-page",
+    "wos-review",
+    "olivier-2016",
+    "olivier-2017"
+  ],
+  "counts": {
+    "listings": 93,
+    "promotable": 20,
+    "notPromotable": {
+      "no review signal (WOS review, Olivier nomination)": 17,
+      "no closing date": 8,
+      "closing": 21,
+      "non-theatre genre": 23,
+      "run of 0 days < 14": 1,
+      "transfer leg of the Savoy Theatre run (closed": 1,
+      "closing conflict": 1,
+      "run of 3 days < 14": 1
+    }
+  },
+  "candidates": [
+    {
+      "title": "Future Conditional",
+      "venue": "Old Vic",
+      "previewsStartDate": "2015-09-01",
+      "openingDate": "2015-09-10",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-10-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-01-19",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160119173103/http://www.officiallondontheatre.co.uk:80/london-shows/show/item282302/future-conditional/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Photograph 51",
+      "venue": "Noël Coward Theatre (Albery)",
+      "previewsStartDate": "2015-09-05",
+      "openingDate": "2015-09-14",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-02-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160212124501/http://www.officiallondontheatre.co.uk/london-shows/show/item280220/photograph-51/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/898"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-page"
+      }
+    },
+    {
+      "title": "Kinky Boots",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2015-08-21",
+      "openingDate": "2015-09-15",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-07",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171007232349/http://www.officiallondontheatre.co.uk:80/london-shows/show/item270484/kinky-boots",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/908"
+      },
+      "trAz": {
+        "title": "KINKY BOOTS",
+        "venue": "Adelphi",
+        "opened": "2015-09-15"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "Lady Macbeth of Mtsensk",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2015-09-26",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-10-20",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-09-26",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20150926031001/http://www.officiallondontheatre.co.uk:80/london-shows/show/item285990/lady-macbeth-of-mtsensk/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-10-20 unconfirmed: newest OLT snapshot 2015-09-26 predates it"
+      }
+    },
+    {
+      "title": "The Barber of Seville",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2015-09-28",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-11",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127002742/http://www.officiallondontheatre.co.uk:80/london-shows/show/item285987/the-barber-of-seville/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "Farinelli and the King",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2015-09-14",
+      "openingDate": "2015-09-29",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2015-11-28",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151128020337/http://www.officiallondontheatre.co.uk:80/london-shows/show/item277439/farinelli-and-the-king",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/966"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-05 unconfirmed: newest OLT snapshot 2015-11-28 predates it"
+      }
+    },
+    {
+      "title": "Showstopper! The Improvised Musical",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2015-09-24",
+      "openingDate": "2015-09-30",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-28",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-15",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151115140536/http://www.officiallondontheatre.co.uk:80/london-shows/show/item327020/showstopper-the-improvised-musical/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-11-28 unconfirmed: newest OLT snapshot 2015-11-15 predates it"
+      }
+    },
+    {
+      "title": "The Father",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": "2015-09-30",
+      "openingDate": "2015-10-05",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127002846/http://www.officiallondontheatre.co.uk:80/london-shows/show/item292112/the-father/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Wuthering Heights",
+      "venue": "Ambassadors Theatre",
+      "previewsStartDate": "2015-09-18",
+      "openingDate": "2015-10-06",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-04",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151112005204/http://www.officiallondontheatre.co.uk:80/london-shows/show/item287007/wuthering-heights/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-04 unconfirmed: newest OLT snapshot 2015-11-12 predates it"
+      }
+    },
+    {
+      "title": "Consensual",
+      "venue": "Ambassadors Theatre",
+      "previewsStartDate": "2015-09-18",
+      "openingDate": "2015-10-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-04",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151112005158/http://www.officiallondontheatre.co.uk:80/london-shows/show/item287006/consensual/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-04 unconfirmed: newest OLT snapshot 2015-11-12 predates it"
+      }
+    },
+    {
+      "title": "The Merchant of Venice",
+      "venue": "Ambassadors Theatre",
+      "previewsStartDate": "2015-09-18",
+      "openingDate": "2015-10-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-04",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-28",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151128022027/http://www.officiallondontheatre.co.uk:80/london-shows/show/item287009/the-merchant-of-venice"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-04 unconfirmed: newest OLT snapshot 2015-11-28 predates it"
+      }
+    },
+    {
+      "title": "Lord of the Dance: Dangerous Games",
+      "venue": "Playhouse Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-10-10",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-24",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-02-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160201133521/http://www.officiallondontheatre.co.uk/london-shows/show/item334247/lord-of-the-dance-dangerous-games/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Close to You: Bacharach Reimagined",
+      "venue": "Criterion Theatre",
+      "previewsStartDate": "2015-10-03",
+      "openingDate": "2015-10-15",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-02-14",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-01-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160131205436/http://www.officiallondontheatre.co.uk/london-shows/show/item332456/close-to-you-bacharach-reimagined/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/1031"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-02-14 unconfirmed: newest OLT snapshot 2016-01-31 predates it"
+      }
+    },
+    {
+      "title": "La Bohème",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2015-10-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-26",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127004221/http://www.officiallondontheatre.co.uk:80/london-shows/show/item285989/la-boheme/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "Cats",
+      "venue": "London Palladium",
+      "previewsStartDate": "2015-10-23",
+      "openingDate": "2015-10-27",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-02",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-07-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170701210535/http://www.officiallondontheatre.co.uk/london-shows/show/item281093/cats/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/1078"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-page"
+      }
+    },
+    {
+      "title": "The Hairy Ape",
+      "venue": "Old Vic",
+      "previewsStartDate": "2015-10-17",
+      "openingDate": "2015-10-29",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127002727/http://www.officiallondontheatre.co.uk:80/london-shows/show/item282303/the-hairy-ape/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Elf",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": "2015-10-24",
+      "openingDate": "2015-11-05",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-02",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-01-11",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160111165911/http://www.officiallondontheatre.co.uk:80/london-shows/show/item273771/elf/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/1131"
+      },
+      "trAz": {
+        "title": "ELF",
+        "venue": null,
+        "opened": "2015-11-05"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "The Winter's Tale",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2015-10-17",
+      "openingDate": "2015-11-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-16",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-10-14",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171014122137/http://www.officiallondontheatre.co.uk:80/london-shows/show/item280622/the-winters-tale"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Harlequinade / All on Her Own",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2015-10-24",
+      "openingDate": "2015-11-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-13",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-08-14",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170814152442/http://www.officiallondontheatre.co.uk:80/london-shows/show/item280628/harlequinade/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Force of Destiny",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2015-11-09",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-04",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127005605/http://www.officiallondontheatre.co.uk:80/london-shows/show/item285984/the-force-of-destiny/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-04 unconfirmed: newest OLT snapshot 2015-11-27 predates it"
+      }
+    },
+    {
+      "title": "30 Million Minutes",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2015-11-11",
+      "openingDate": "2015-11-12",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-05",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-29",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151129054823/http://www.officiallondontheatre.co.uk:80/london-shows/show/item280212/30-million-minutes/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-05 unconfirmed: newest OLT snapshot 2015-11-29 predates it"
+      }
+    },
+    {
+      "title": "The Illusionists – Witness the Impossible",
+      "venue": "Shaftesbury Theatre",
+      "previewsStartDate": "2015-11-14",
+      "openingDate": "2015-11-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-09-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160927113115/http://www.officiallondontheatre.co.uk/london-shows/show/item291442/the-illusionists-witness-the-impossible/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Blofeld and Baxter: Rogues on the Road",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-11-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-16",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127194046/http://www.officiallondontheatre.co.uk:80/london-shows/show/item291618/blofeld-and-baxter-rogues-on-the-road/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Derren Brown: Miracle",
+      "venue": "Palace Theatre",
+      "previewsStartDate": "2015-11-11",
+      "openingDate": "2015-11-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-16",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-12-10",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151210002653/http://www.officiallondontheatre.co.uk:80/london-shows/show/item287443/derren-brown-miracle"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-01-16 unconfirmed: newest OLT snapshot 2015-12-10 predates it"
+      }
+    },
+    {
+      "title": "The Mikado",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2015-11-21",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-02-06",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-02-02",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160202034250/http://www.officiallondontheatre.co.uk/london-shows/show/item285993/the-mikado/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-02-06 unconfirmed: newest OLT snapshot 2016-02-02 predates it"
+      }
+    },
+    {
+      "title": "Joe Lycett: That's the Way, A-Ha A-Ha, Joe Lycett",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-11-23",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-30",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127002737/http://www.officiallondontheatre.co.uk:80/london-shows/show/item285982/joe-lycett-thats-the-way-a-ha-a-ha-joe-lycett/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-11-30 unconfirmed: newest OLT snapshot 2015-11-27 predates it"
+      }
+    },
+    {
+      "title": "The Tiger Who Came to Tea",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-11-25",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-10",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-02-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160201140336/http://www.officiallondontheatre.co.uk/london-shows/show/item292081/the-tiger-who-came-to-tea/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/1270"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Kings of Broadway: Herman, Sondheim & Styne",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-11-29",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-11-29",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-12-13",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151213012940/http://www.officiallondontheatre.co.uk:80/london-shows/show/item298401/kings-of-broadway-herman-sondheim-styne"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Nina Conti – In Your Face",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-11-30",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-07",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151127131613/http://www.officiallondontheatre.co.uk:80/london-shows/show/item288259/nina-conti-in-your-face/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-07 unconfirmed: newest OLT snapshot 2015-11-27 predates it"
+      }
+    },
+    {
+      "title": "Hangmen",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": "2015-12-01",
+      "openingDate": "2015-12-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-08-02",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160802233556/http://www.officiallondontheatre.co.uk:80/london-shows/show/item335860/hangmen/"
+      },
+      "trAz": {
+        "title": "HANGMEN",
+        "venue": null,
+        "opened": "2015-12-09"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-12-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-01-28",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160128132418/http://www.officiallondontheatre.co.uk:80/london-shows/show/item340174/a-christmas-carol/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Carlos Acosta – A Classical Selection",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2015-12-08",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-12-13",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151112080958/http://www.officiallondontheatre.co.uk:80/london-shows/show/item338755/carlos-acosta-a-classical-selection/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2015-12-13 unconfirmed: newest OLT snapshot 2015-11-12 predates it"
+      }
+    },
+    {
+      "title": "Peter Pan Goes Wrong",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2015-12-04",
+      "openingDate": "2015-12-09",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-31",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-07-02",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170702040808/http://www.officiallondontheatre.co.uk/london-shows/show/item333238/peter-pan-goes-wrong/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Noël Coward Theatre (Albery)",
+      "previewsStartDate": "2015-11-30",
+      "openingDate": "2015-12-09",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-30",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-06-28",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160628043854/http://www.officiallondontheatre.co.uk:80/london-shows/show/item333371/a-christmas-carol/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Gruffalo",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-12-15",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-02-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160201111123/http://www.officiallondontheatre.co.uk/london-shows/show/item337316/the-gruffalo/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Nutcracker",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2015-12-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-10",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-03-08",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160308060558/http://www.officiallondontheatre.co.uk:80/london-shows/show/item279250/nutcracker"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Dr. Seuss's the Lorax",
+      "venue": "Old Vic",
+      "previewsStartDate": "2015-12-04",
+      "openingDate": "2015-12-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-16",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-02-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160201030450/http://www.officiallondontheatre.co.uk/london-shows/show/item282304/dr-seusss-the-lorax/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Goodnight Mister Tom",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2015-12-11",
+      "openingDate": "2015-12-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-02-20",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-05-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160531183051/https://www.officiallondontheatre.co.uk/london-shows/show/item332407/goodnight-mister-tom/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/35/page/1265"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-page"
+      }
+    },
+    {
+      "title": "Peppa Pig's Surprise",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2015-12-18",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-17",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-10-25",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151025074545/http://www.officiallondontheatre.co.uk:80/london-shows/show/item334632/peppa-pigs-surprise/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-01-17 unconfirmed: newest OLT snapshot 2015-10-25 predates it"
+      }
+    },
+    {
+      "title": "Guys and Dolls",
+      "venue": "Savoy Theatre",
+      "previewsStartDate": "2015-12-10",
+      "openingDate": "2016-01-06",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-12",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-07-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170701211143/http://www.officiallondontheatre.co.uk/london-shows/show/item288339/guys-and-dolls/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Le Corsaire",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-01-13",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-24",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-02-02",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160202004634/http://www.officiallondontheatre.co.uk/london-shows/show/item279251/le-corsaire/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Action to the Word's Dracula",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-01-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-01-17",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-10-07",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171007221506/http://www.officiallondontheatre.co.uk:80/london-shows/show/item346328/action-to-the-words-dracula"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "The Wimps Show: Improvised Comedy",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-01-29",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-11",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-10-13",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20161013090709/http://www.officiallondontheatre.co.uk:80/london-shows/show/item346371/the-wimps-show-improvised-comedy"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Red Velvet",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2016-01-23",
+      "openingDate": "2016-02-01",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-02-27",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-08-14",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170814154524/http://www.officiallondontheatre.co.uk:80/london-shows/show/item337708/red-velvet/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Master Builder",
+      "venue": "Old Vic",
+      "previewsStartDate": "2016-01-23",
+      "openingDate": "2016-02-03",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-19",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-05-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160531182020/https://www.officiallondontheatre.co.uk/london-shows/show/item334803/the-master-builder/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Magic Flute",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-02-05",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-19",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-05-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160531192347/https://www.officiallondontheatre.co.uk/london-shows/show/item285992/the-magic-flute/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "The End of Longing",
+      "venue": "Playhouse Theatre",
+      "previewsStartDate": "2016-02-02",
+      "openingDate": "2016-02-11",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-05-14",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-06-20",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160620052522/http://www.officiallondontheatre.co.uk:80/london-shows/show/item343850/the-end-of-longing/?",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/117"
+      },
+      "trAz": {
+        "title": "THE END OF LONGING",
+        "venue": "Playhouse",
+        "opened": "2016-02-06"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "Nell Gwynn",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2016-02-04",
+      "openingDate": "2016-02-12",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-04-30",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-06-30",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160630173610/http://www.officiallondontheatre.co.uk:80/london-shows/show/item343642/nell-gwynn",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/154"
+      },
+      "trAz": {
+        "title": "NELL GWYNN",
+        "venue": "Apollo",
+        "opened": "2016-02-12"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "Hand to God",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2016-02-05",
+      "openingDate": "2016-02-15",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-04-30",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-05-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160531185334/https://www.officiallondontheatre.co.uk/london-shows/show/item341633/hand-to-god/"
+      },
+      "trAz": {
+        "title": "HAND TO GOD UK",
+        "venue": "Vaudeville",
+        "opened": "2016-02-15"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "Showstopper! The Improvised Musical",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-02-15",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-06",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171006071851/http://www.officiallondontheatre.co.uk:80/london-shows/show/item342673/showstoppertheimprovisedmusical/?"
+      },
+      "trAz": {
+        "title": "SHOWSTOPPER! THE IMPROVISED MUSICAL",
+        "venue": "Lyric",
+        "opened": "2016-02-15"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "Mrs Henderson Presents",
+      "venue": "Noël Coward Theatre (Albery)",
+      "previewsStartDate": "2016-02-09",
+      "openingDate": "2016-02-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-08-04",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160804124302/http://www.officiallondontheatre.co.uk/london-shows/show/item337315/mrs-henderson-presents/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/170"
+      },
+      "trAz": {
+        "title": "MRS HENDERSON PRESENTS",
+        "venue": "Noël Coward",
+        "opened": "2016-02-16"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "Norma",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-02-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-11",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-05-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160531192456/https://www.officiallondontheatre.co.uk/london-shows/show/item285991/norma/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "The War of the Worlds",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": "2016-02-08",
+      "openingDate": "2016-02-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-04-30",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-05-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160531182933/https://www.officiallondontheatre.co.uk/london-shows/show/item340948/the-war-of-the-worlds/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Father",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2016-02-24",
+      "openingDate": "2016-03-01",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-26",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-08-15",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160815035214/http://www.officiallondontheatre.co.uk/london-shows/show/item349280/the-father/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Akhnaten",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-03-04",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-03-18",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-05-31",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160531210440/https://www.officiallondontheatre.co.uk/london-shows/show/item285988/akhnaten/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "Motown the Musical",
+      "venue": "Shaftesbury Theatre",
+      "previewsStartDate": "2016-02-11",
+      "openingDate": "2016-03-08",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-14",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171014125153/http://www.officiallondontheatre.co.uk:80/london-shows/show/item284188/motown-the-musical",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/238"
+      },
+      "trAz": {
+        "title": "MOTOWN: THE MUSICAL",
+        "venue": "Shaftesbury",
+        "opened": "2016-03-08"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "F.A.N.Y (First Aid Nursing Yeomanry)",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-03-15",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-04-02",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160427024625/http://www.officiallondontheatre.co.uk:80/london-shows/show/item346470/f-a-n-y-first-aid-nursing-yeomanry"
+      },
+      "trAz": {
+        "title": "F.A.N.Y",
+        "venue": "Arts",
+        "opened": "2016-03-17"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "The Painkiller",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2016-03-05",
+      "openingDate": "2016-03-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-04-30",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-07",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171007111209/http://www.officiallondontheatre.co.uk:80/london-shows/show/item280629/the-painkiller",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/297"
+      },
+      "trAz": {
+        "title": "THE PAINKILLER",
+        "venue": "Garrick",
+        "opened": "2016-03-05"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "Guys and Dolls",
+      "venue": "Phoenix Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-03-19",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-21",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-08-22",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160822055030/http://www.officiallondontheatre.co.uk:80/london-shows/show/item350047/guys-and-dolls",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/785"
+      },
+      "trAz": {
+        "title": "GUYS AND DOLLS",
+        "venue": "Phoenix",
+        "opened": "2016-03-19"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "transfer leg of the Savoy Theatre run (closed 2016-03-12)"
+      }
+    },
+    {
+      "title": "People, Places & Things",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": "2016-03-15",
+      "openingDate": "2016-03-23",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-06-18",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-08-04",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160804130626/http://www.officiallondontheatre.co.uk/london-shows/show/item340282/people-places-and-things/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/306"
+      },
+      "trAz": {
+        "title": "PEOPLE, PLACES AND THINGS",
+        "venue": "Wyndham's",
+        "opened": "2016-03-15"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "Sunset Boulevard",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-04-01",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-05-07",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-09-15",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160915142029/http://www.officiallondontheatre.co.uk/london-shows/show/item346182/sunset-boulevard/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Caretaker",
+      "venue": "Old Vic",
+      "previewsStartDate": "2016-03-29",
+      "openingDate": "2016-04-06",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-05-14",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-06-09",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160609115229/http://www.officiallondontheatre.co.uk:80/london-shows/show/item334870/the-caretaker",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/368"
+      },
+      "trAz": {
+        "title": "THE CARETAKER",
+        "venue": "Old Vic",
+        "opened": "2016-04-05"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "All That Fall",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-04-13",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-05-14",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-04-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160412041943/http://www.officiallondontheatre.co.uk:80/london-shows/show/item358892/all-that-fall/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-05-14 unconfirmed: newest OLT snapshot 2016-04-12 predates it"
+      }
+    },
+    {
+      "title": "Funny Girl",
+      "venue": "Savoy Theatre",
+      "previewsStartDate": "2016-04-09",
+      "openingDate": "2016-04-20",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-10-08",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-07-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170701212036/http://www.officiallondontheatre.co.uk/london-shows/show/item340784/funnygirl/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/438"
+      },
+      "trAz": {
+        "title": "FUNNY GIRL",
+        "venue": "Savoy",
+        "opened": "2016-04-20"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "The Comedy About a Bank Robbery",
+      "venue": "Criterion Theatre",
+      "previewsStartDate": "2016-03-31",
+      "openingDate": "2016-04-21",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-07",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171007214337/http://www.officiallondontheatre.co.uk:80/london-shows/show/item345037/the-comedy-about-a-bank-robbery",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/441"
+      },
+      "trAz": {
+        "title": "THE COMEDY ABOUT A BANK ROBBERY",
+        "venue": "Criterion",
+        "opened": "2016-04-14"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "Doctor Faustus",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2016-04-09",
+      "openingDate": "2016-04-25",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-06-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-09-26",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160926130621/http://www.officiallondontheatre.co.uk:80/london-shows/show/item350526/doctor-faustus",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/469"
+      },
+      "trAz": {
+        "title": "DOCTOR FAUSTUS",
+        "venue": "Duke Of York's",
+        "opened": "2016-04-21"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "DiaoChan: The Rise of the Courtesan",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-05-09",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-05-28",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-07-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160701075456/http://www.officiallondontheatre.co.uk:80/london-shows/show/item346491/diaochan-the-rise-of-the-courtesan"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Madam Butterfly",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-05-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-07-07",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-08-04",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160804124850/http://www.officiallondontheatre.co.uk/london-shows/show/item346226/madam-butterfly/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "Jekyll & Hyde",
+      "venue": "Old Vic",
+      "previewsStartDate": null,
+      "openingDate": "2016-05-20",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-05-28",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-06-29",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160629111520/http://www.officiallondontheatre.co.uk:80/london-shows/show/item334929/the-strange-case-of-dr-jekyll-and-mr-hyde/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "A View From Islington North",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2016-05-18",
+      "openingDate": "2016-05-24",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-07-02",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-07-09",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160709020903/http://www.officiallondontheatre.co.uk:80/london-shows/show/item354386/a-view-from-islington-north/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/562"
+      },
+      "trAz": {
+        "title": "A VIEW FROM ISLINGTON NORTH",
+        "venue": "Arts",
+        "opened": "2016-05-24"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "Romeo and Juliet",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2016-05-12",
+      "openingDate": "2016-05-25",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-13",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-08-20",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170820024652/http://www.officiallondontheatre.co.uk:80/london-shows/show/item280630/romeo-and-juliet/"
+      },
+      "trAz": {
+        "title": "ROMEO AND JULIET",
+        "venue": "Garrick",
+        "opened": "2016-05-12"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "The Go-Between",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2016-05-27",
+      "openingDate": "2016-06-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-10-15",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-18",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171018120438/http://www.officiallondontheatre.co.uk/london-shows/show/item352009/the-go-between/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/630"
+      },
+      "trAz": {
+        "title": "THE GO-BETWEEN",
+        "venue": "Apollo",
+        "opened": "2016-06-07"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "Hobson's Choice",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2016-06-08",
+      "openingDate": "2016-06-14",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-09-10",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-08-28",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160828033029/http://www.officiallondontheatre.co.uk/london-shows/show/item359294/hobsons-choice/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/643"
+      },
+      "trAz": {
+        "title": "HOBSON'S CHOICE",
+        "venue": "Vaudeville",
+        "opened": "2016-06-15"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-09-10 unconfirmed: newest OLT snapshot 2016-08-28 predates it"
+      }
+    },
+    {
+      "title": "Disney's Aladdin",
+      "venue": "Prince Edward Theatre",
+      "previewsStartDate": "2016-05-27",
+      "openingDate": "2016-06-15",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-08",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171008015328/http://www.officiallondontheatre.co.uk:80/london-shows/show/item341641/disneys-aladdin"
+      },
+      "trAz": {
+        "title": "ALADDIN",
+        "venue": "Prince Edward",
+        "opened": "2016-06-15"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "The Truth",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": "2016-06-22",
+      "openingDate": "2016-06-27",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-09-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-09-27",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160927071206/http://www.officiallondontheatre.co.uk:80/london-shows/show/item364814/the-truth"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "1984",
+      "venue": "Playhouse Theatre",
+      "previewsStartDate": "2016-06-14",
+      "openingDate": "2016-06-28",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-10-29",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-01-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170112092404/http://www.officiallondontheatre.co.uk/london-shows/show/item359190/1984/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Savage",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2016-06-29",
+      "openingDate": "2016-07-01",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-07-23",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-05-30",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160530163452/http://www.officiallondontheatre.co.uk:80/london-shows/show/item358932/savage"
+      },
+      "trAz": {
+        "title": "SAVAGE",
+        "venue": "Arts",
+        "opened": "2016-07-01"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-07-23 unconfirmed: newest OLT snapshot 2016-05-30 predates it"
+      }
+    },
+    {
+      "title": "Lady Day at Emerson's Bar & Grill",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": "2016-06-25",
+      "openingDate": "2016-07-05",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-10-13",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20161013082651/http://www.officiallondontheatre.co.uk:80/london-shows/show/item349679/ladydayatemersonsbargrill"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "The Gruffalo",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-07-06",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2017-01-08",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-09-20",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170920011842/http://www.officiallondontheatre.co.uk/london-shows/show/item347598/the-gruffalo/"
+      },
+      "trAz": {
+        "title": "THE GRUFFALO",
+        "venue": "Lyric",
+        "opened": "2016-07-06"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "How the Other Half Loves",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2016-07-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-10-01",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-10-29",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20161029081220/http://www.officiallondontheatre.co.uk:80/london-shows/show/item366907/how-the-other-half-loves"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "American Idiot",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2016-07-08",
+      "openingDate": "2016-07-13",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-09-25",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-08",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171008184210/http://www.officiallondontheatre.co.uk:80/london-shows/show/item359412/american-idiot",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/784"
+      },
+      "trAz": {
+        "title": "AMERICAN IDIOT",
+        "venue": "Arts",
+        "opened": "2016-07-13"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page"
+      }
+    },
+    {
+      "title": "Impossible",
+      "venue": "Noël Coward Theatre (Albery)",
+      "previewsStartDate": "2016-07-08",
+      "openingDate": "2016-07-13",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-27",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-08-25",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160825170457/http://www.officiallondontheatre.co.uk:80/london-shows/show/item362890/impossible",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/783"
+      },
+      "trAz": {
+        "title": "IMPOSSIBLE",
+        "venue": "Noël Coward",
+        "opened": "2016-07-13"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-08-27 unconfirmed: newest OLT snapshot 2016-08-25 predates it"
+      }
+    },
+    {
+      "title": "The Bodyguard",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": "2016-07-15",
+      "openingDate": "2016-07-18",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2017-01-07",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page",
+        "wos-review"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-01-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170112054446/http://www.officiallondontheatre.co.uk/london-shows/show/item352419/thebodyguard/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-bodyguard-dominion-theatre_41335/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/794"
+      },
+      "trAz": {
+        "title": "THE BODYGUARD",
+        "venue": "Dominion",
+        "opened": "2016-07-18"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page, wos-review"
+      }
+    },
+    {
+      "title": "Cinderella",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-07-20",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-07-23",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-07-07",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160707162601/http://www.officiallondontheatre.co.uk:80/london-shows/show/item354363/cinderella"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-07-23 unconfirmed: newest OLT snapshot 2016-07-07 predates it"
+      }
+    },
+    {
+      "title": "Harry Potter and the Cursed Child Parts I and II",
+      "venue": "Palace Theatre",
+      "previewsStartDate": "2016-06-07",
+      "openingDate": "2016-07-30",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page",
+        "wos-review"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-14",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171014125218/http://www.officiallondontheatre.co.uk:80/london-shows/show/item347931/harry-potter-and-the-cursed-child-parts-i-and-ii",
+        "wosReview": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/844"
+      },
+      "trAz": {
+        "title": "HARRY POTTER AND THE CURSED CHILD",
+        "venue": "Palace",
+        "opened": "2016-07-30"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "The Secret Garden",
+      "venue": "Ambassadors Theatre",
+      "previewsStartDate": "2016-07-27",
+      "openingDate": "2016-08-03",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-31",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-08-22",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160822073440/http://www.officiallondontheatre.co.uk:80/london-shows/show/item362791/the-secret-garden"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing 2016-08-31 unconfirmed: newest OLT snapshot 2016-08-22 predates it"
+      }
+    },
+    {
+      "title": "Horrible Histories - The Best of Barmy Britain",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2016-08-05",
+      "openingDate": "2016-08-09",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-09-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-10-06",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20161006074838/http://www.officiallondontheatre.co.uk:80/london-shows/show/item361443/horrible-histories-the-best-of-barmy-britain"
+      },
+      "trAz": {
+        "title": "HORRIBLE HISTORIES - THE BEST OF BARMY BRITAIN",
+        "venue": "Apollo",
+        "opened": "2016-08-09"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Thunderstorm",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-08-11",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-14",
+      "genres": [
+        "opera"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-08-28",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160828041018/http://www.officiallondontheatre.co.uk/london-shows/show/item357201/thunderstorm/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "Groundhog Day",
+      "venue": "The Old Vic",
+      "previewsStartDate": "2016-07-15",
+      "openingDate": "2016-08-16",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-09-19",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-page",
+        "wos-review"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-18",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171018115308/http://www.officiallondontheatre.co.uk/london-shows/show/item356836/groundhog-day/",
+        "wosReview": "https://www.whatsonstage.com/news/review-groundhog-day-old-vic_41556/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/871"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "closing conflict: OLT 2016-09-19, Theatre Record 2016-09-17"
+      }
+    },
+    {
+      "title": "Echoes of Eternity",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-08-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-21",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-08-28",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160828041007/http://www.officiallondontheatre.co.uk/london-shows/show/item357315/echoes-of-eternity/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Scooby-Doo Live! Musical Mysteries",
+      "venue": "London Palladium",
+      "previewsStartDate": "2016-08-18",
+      "openingDate": "2016-08-18",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-21",
+      "genres": [
+        "musical"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-09-02",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160902002808/http://www.officiallondontheatre.co.uk:80/london-shows/show/item367962/scooby-doo-live-musical-mysteries/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 3 days < 14"
+      }
+    },
+    {
+      "title": "Her Name Was Carmen",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2016-08-23",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-08-28",
+      "genres": [
+        "dance"
+      ],
+      "season": "2015-2016",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-10-13",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20161013093111/http://www.officiallondontheatre.co.uk:80/london-shows/show/item370217/her-name-was-carmen"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "The Entertainer",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2016-08-20",
+      "openingDate": "2016-08-30",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2016-11-12",
+      "genres": [
+        "play"
+      ],
+      "season": "2015-2016",
+      "signals": [
+        "tr-az",
+        "tr-page",
+        "wos-review"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-01-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170112053439/http://www.officiallondontheatre.co.uk/london-shows/show/item280204/theentertainer/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-entertainer-garrick-theatre_41640/",
+        "theatreRecord": "https://www.theatrerecord.com/archive/volume/36/page/914"
+      },
+      "trAz": {
+        "title": "THE ENTERTAINER",
+        "venue": "Garrick",
+        "opened": "2016-08-30"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, tr-page, wos-review"
+      }
+    }
+  ],
+  "signalInputs": {
+    "reviews": [
+      {
+        "title": "Dick Whittington",
+        "venue": "Birmingham Hippodrome",
+        "date": "2016-12-23",
+        "url": "https://www.whatsonstage.com/news/review-dick-whittington-birmingham-hippodrome_42571/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Scrooge and the Seven Dwarves",
+        "venue": "Theatre503",
+        "date": "2016-12-21",
+        "url": "https://www.whatsonstage.com/news/review-scrooge-and-the-seven-dwarves-theatre503_42558/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Der Rosenkavalier",
+        "venue": "Royal Opera House",
+        "date": "2016-12-21",
+        "url": "https://www.whatsonstage.com/news/review-der-rosenkavalier-royal-opera-house_42530/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Snow White and the Seven Dwarfs",
+        "venue": "Theatre Royal Plymouth",
+        "date": "2016-12-21",
+        "url": "https://www.whatsonstage.com/news/review-snow-white-and-the-seven-dwarfs-theatre-royal-plymouth_42546/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Art",
+        "venue": "Old Vic",
+        "date": "2016-12-21",
+        "url": "https://www.whatsonstage.com/news/review-art-old-vic_42545/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Saint Joan",
+        "venue": "Donmar Warehouse",
+        "date": "2016-12-19",
+        "url": "https://www.whatsonstage.com/news/review-saint-joan-donmar-warehouse_42541/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Mr Popper's Penguins",
+        "venue": "Criterion Theatre",
+        "date": "2016-12-19",
+        "url": "https://www.whatsonstage.com/news/review-mr-poppers-penguins-criterion-theatre_42529/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Babe the Sheep-Pig",
+        "venue": "Polka Theatre",
+        "date": "2016-12-16",
+        "url": "https://www.whatsonstage.com/news/review-babe-the-sheep-pig-polka-theatre_42528/",
+        "rating": 3,
+        "market": [
+          83,
+          98,
+          85
+        ]
+      },
+      {
+        "title": "A Christmas Carol",
+        "venue": "Arts Theatre",
+        "date": "2016-12-16",
+        "url": "https://www.whatsonstage.com/news/review-a-christmas-carol-arts-theatre_42517/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Red Shoes",
+        "venue": "Sadler's Wells",
+        "date": "2016-12-15",
+        "url": "https://www.whatsonstage.com/news/review-the-red-shoes-sadlers-wells_42513/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Mary Stuart",
+        "venue": "Almeida",
+        "date": "2016-12-15",
+        "url": "https://www.whatsonstage.com/news/review-mary-stuart-almeida_42512/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Cinderella",
+        "venue": "London Palladium",
+        "date": "2016-12-15",
+        "url": "https://www.whatsonstage.com/news/review-cinderella-london-palladium_42504/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Annie Get Your Gun",
+        "venue": "Crucible Theatre, Sheffield",
+        "date": "2016-12-15",
+        "url": "https://www.whatsonstage.com/news/review-annie-get-your-gun-crucible-theatre-sheffield_42503/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Dreamgirls",
+        "venue": "Savoy Theatre",
+        "date": "2016-12-14",
+        "url": "https://www.whatsonstage.com/news/review-dreamgirls-savoy-theatre_42500/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Dick Whittington",
+        "venue": "New Wimbledon Theatre",
+        "date": "2016-12-14",
+        "url": "https://www.whatsonstage.com/news/review-dick-whittington-new-wimbledon-theatre_42501/",
+        "rating": 2,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Peter Pan",
+        "venue": "Churchill Theatre, Bromley",
+        "date": "2016-12-14",
+        "url": "https://www.whatsonstage.com/news/review-peter-pan-churchill-theatre-bromley_42496/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Love",
+        "venue": "National Theatre",
+        "date": "2016-12-14",
+        "url": "https://www.whatsonstage.com/news/review-love-national-theatre_42495/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Kiki's Delivery Service",
+        "venue": "Southwark Playhouse",
+        "date": "2016-12-14",
+        "url": "https://www.whatsonstage.com/news/review-kikis-delivery-service-southwark-playhouse_42494/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Rent",
+        "venue": "St James Theatre",
+        "date": "2016-12-14",
+        "url": "https://www.whatsonstage.com/news/review-rent-st-james-theatre_42493/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Soho Cinders",
+        "venue": "Union Theatre",
+        "date": "2016-12-13",
+        "url": "https://www.whatsonstage.com/news/review-soho-cinders-union-theatre_42489/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Living",
+        "venue": "Young Vic",
+        "date": "2016-12-13",
+        "url": "https://www.whatsonstage.com/news/review-living-with-the-lights-on-young-vic_42487/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Muted",
+        "venue": "Bunker Theatre",
+        "date": "2016-12-13",
+        "url": "https://www.whatsonstage.com/news/review-muted-bunker-theatre_42486/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Hedda Gabler",
+        "venue": "Lyttelton, National Theatre",
+        "date": "2016-12-12",
+        "url": "https://www.whatsonstage.com/news/review-hedda-gabler-lyttelton-national-theatre_42481/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "We're Going On A Bear Hunt",
+        "venue": "Arts Depot",
+        "date": "2016-12-12",
+        "url": "https://www.whatsonstage.com/news/review-were-going-on-a-bear-hunt-arts-depot_42483/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Sinbad the Sailor",
+        "venue": "Theatre Royal Stratford East",
+        "date": "2016-12-12",
+        "url": "https://www.whatsonstage.com/news/review-sinbad-the-sailor-theatre-royal-stratford-east_42474/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Screwtape Letters",
+        "venue": "Park Theatre",
+        "date": "2016-12-12",
+        "url": "https://www.whatsonstage.com/news/review-the-screwtape-letters-park-theatre_42472/",
+        "rating": 1,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Hamlet",
+        "venue": "Trafalagar Studios",
+        "date": "2016-12-12",
+        "url": "https://www.whatsonstage.com/news/review-hamlet-trafalagar-studios_42471/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Wind in the Willows",
+        "venue": "Rose Theatre Kingston",
+        "date": "2016-12-10",
+        "url": "https://www.whatsonstage.com/news/review-the-wind-in-the-willows-rose-theatre-kingston_42470/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Benighted",
+        "venue": "Old Red Lion",
+        "date": "2016-12-09",
+        "url": "https://www.whatsonstage.com/news/review-benighted-old-red-lion_42460/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Sleeping Beauty",
+        "venue": "Richmond Theatre",
+        "date": "2016-12-09",
+        "url": "https://www.whatsonstage.com/news/review-sleeping-beauty-richmond-theatre_42458/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Wild Honey",
+        "venue": "Hampstead Theatre",
+        "date": "2016-12-09",
+        "url": "https://www.whatsonstage.com/news/review-wild-honey-hampstead-theatre_42457/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Snow Queen",
+        "venue": "Bristol Old Vic",
+        "date": "2016-12-09",
+        "url": "https://www.whatsonstage.com/news/review-the-snow-queen-bristol-old-vic_42456/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Sweet Charity",
+        "venue": "Royal Exchange",
+        "date": "2016-12-09",
+        "url": "https://www.whatsonstage.com/news/review-sweet-charity-royal-exchange_42455/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "All the Angels: Handel and the First Messiah",
+        "venue": "Sam Wanamaker Playhouse",
+        "date": "2016-12-09",
+        "url": "https://www.whatsonstage.com/news/review-all-the-angels-handel-and-the-first-messiah-sam-wanamaker-playhouse_42452/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Mother Goose",
+        "venue": "Wilton's Music Hall",
+        "date": "2016-12-08",
+        "url": "https://www.whatsonstage.com/news/review-mother-goose-wiltons-music-hall_42445/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "A Christmas Treasure Island",
+        "venue": "Hull Truck Theatre",
+        "date": "2016-12-08",
+        "url": "https://www.whatsonstage.com/news/review-a-christmas-treasure-island-hull-truck-theatre_42440/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "She Loves Me",
+        "venue": "Menier Chocolate Factory",
+        "date": "2016-12-08",
+        "url": "https://www.whatsonstage.com/news/review-she-loves-me-menier-chocolate-factory_42439/",
+        "rating": 5,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Phoebe Waller-Bridge in Fleabag",
+        "venue": "Soho Theatre",
+        "date": "2016-12-07",
+        "url": "https://www.whatsonstage.com/news/review-phoebe-waller-bridge-in-fleabag-soho-theatre_42438/",
+        "rating": 5,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Very Hungry Caterpillar",
+        "venue": "Ambassadors Theatre",
+        "date": "2016-12-07",
+        "url": "https://www.whatsonstage.com/news/review-the-very-hungry-caterpillar-ambassadors-theatre_42436/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Dirty Dancing",
+        "venue": "Phoenix Theatre",
+        "date": "2016-12-07",
+        "url": "https://www.whatsonstage.com/news/review-dirty-dancing-phoenix-theatre_42432/",
+        "rating": 2,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Strictly Ballroom",
+        "venue": "West Yorkshire Playhouse",
+        "date": "2016-12-07",
+        "url": "https://www.whatsonstage.com/news/review-strictly-ballroom-west-yorkshire-playhouse_42431/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Once in a Lifetime",
+        "venue": "Young Vic",
+        "date": "2016-12-07",
+        "url": "https://www.whatsonstage.com/news/review-once-in-a-lifetime-young-vic_42430/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Il trovatore",
+        "venue": "Royal Opera House",
+        "date": "2016-12-06",
+        "url": "https://www.whatsonstage.com/news/review-il-trovatore-royal-opera-house_42427/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Beauty on the Piste",
+        "venue": "Above the Stag",
+        "date": "2016-12-06",
+        "url": "https://www.whatsonstage.com/news/review-beauty-on-the-piste-above-the-stag_42422/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Thebes Land",
+        "venue": "Arcola",
+        "date": "2016-12-06",
+        "url": "https://www.whatsonstage.com/news/review-thebes-land-arcola_42420/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Pinocchio",
+        "venue": "King's Head Theatre",
+        "date": "2016-12-06",
+        "url": "https://www.whatsonstage.com/news/review-pinocchio-kings-head-theatre_42419/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Peter Pan",
+        "venue": "Olivier, National Theatre",
+        "date": "2016-12-05",
+        "url": "https://www.whatsonstage.com/news/review-peter-pan-olivier-national-theatre_42413/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Licensed to Ill",
+        "venue": "Southwark Playhouse",
+        "date": "2016-12-05",
+        "url": "https://www.whatsonstage.com/news/review-licensed-to-ill-southwark-playhouse_42409/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "The Seven Acts of Mercy",
+        "venue": "Swan Theatre",
+        "date": "2016-12-05",
+        "url": "https://www.whatsonstage.com/news/review-the-seven-acts-of-mercy-swan-theatre_42412/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Peter and the Starcatcher",
+        "venue": "Royal & Derngate",
+        "date": "2016-12-03",
+        "url": "https://www.whatsonstage.com/news/review-peter-and-the-starcatcher-royal-derngate_42408/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Alice's Adventures in Wonderland",
+        "venue": "Lyceum Theatre, Edinburgh",
+        "date": "2016-12-02",
+        "url": "https://www.whatsonstage.com/news/review-alices-adventures-in-wonderland-lyceum-theatre-edinburgh_42395/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "The Little Matchgirl and Other Happier Tales",
+        "venue": "Sam Wanamaker Playhouse",
+        "date": "2016-12-02",
+        "url": "https://www.whatsonstage.com/news/review-the-little-matchgirl-and-other-happier-tales-sam-wanamaker-playhouse_42393/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Buried Child",
+        "venue": "Trafalgar Studios",
+        "date": "2016-12-02",
+        "url": "https://www.whatsonstage.com/news/review-buried-child-trafalgar-studios_42390/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Grease",
+        "venue": "Leicester Curve",
+        "date": "2016-12-02",
+        "url": "https://www.whatsonstage.com/news/review-grease-leicester-curve_42389/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Sleeping Beauty",
+        "venue": "Hackney Empire",
+        "date": "2016-12-02",
+        "url": "https://www.whatsonstage.com/news/review-sleeping-beauty-hackney-empire_42388/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Fantastic Mr Fox",
+        "venue": "Nuffield Southampton",
+        "date": "2016-12-01",
+        "url": "https://www.whatsonstage.com/news/review-fantastic-mr-fox-nuffield-southampton_42383/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "This House",
+        "venue": "Garrick Theatre",
+        "date": "2016-12-01",
+        "url": "https://www.whatsonstage.com/news/review-this-house-garrick-theatre_42382/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Borrowers",
+        "venue": "Sherman Theatre",
+        "date": "2016-11-30",
+        "url": "https://www.whatsonstage.com/news/review-the-borrowers-sherman-theatre_42369/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Treasure Island",
+        "venue": "Birmingham Rep",
+        "date": "2016-11-30",
+        "url": "https://www.whatsonstage.com/news/review-treasure-island-birmingham-rep_42371/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Bianco",
+        "venue": "Southbank Centre",
+        "date": "2016-11-30",
+        "url": "https://www.whatsonstage.com/news/review-bianco-southbank-centre_42370/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Underneath",
+        "venue": "Soho Theatre",
+        "date": "2016-11-29",
+        "url": "https://www.whatsonstage.com/news/review-underneath-soho-theatre_42363/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Sheppey",
+        "venue": "Orange Tree Theatre",
+        "date": "2016-11-29",
+        "url": "https://www.whatsonstage.com/news/review-sheppey-orange-tree-theatre_42361/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Aladdin",
+        "venue": "Lyric Hammersmith",
+        "date": "2016-11-28",
+        "url": "https://www.whatsonstage.com/news/review-aladdin-lyric-hammersmith_42353/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Nice Fish",
+        "venue": "Harold Pinter Theatre",
+        "date": "2016-11-25",
+        "url": "https://www.whatsonstage.com/news/review-nice-fish-harold-pinter-theatre_42352/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Children",
+        "venue": "Royal Court",
+        "date": "2016-11-25",
+        "url": "https://www.whatsonstage.com/news/review-the-children-royal-court_42338/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Putting Words in Your Mouth",
+        "venue": "Roundhouse",
+        "date": "2016-11-24",
+        "url": "https://www.whatsonstage.com/news/review-putting-words-in-your-mouth-roundhouse_42329/",
+        "rating": 5,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Ghosts",
+        "venue": "HOME, Manchester",
+        "date": "2016-11-24",
+        "url": "https://www.whatsonstage.com/news/review-ghosts-home-manchester_42328/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Manon Lescaut",
+        "venue": "Royal Opera House",
+        "date": "2016-11-23",
+        "url": "https://www.whatsonstage.com/news/review-manon-lescaut-royal-opera-house_42324/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Tempest in the Donmar Trilogy",
+        "venue": "King's Cross Theatre",
+        "date": "2016-11-23",
+        "url": "https://www.whatsonstage.com/news/review-the-tempest-in-the-donmar-trilogy-kings-cross-theatre_42318/",
+        "rating": 5,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Tempest",
+        "venue": "Royal Shakespeare Theatre",
+        "date": "2016-11-18",
+        "url": "https://www.whatsonstage.com/news/review-the-tempest-royal-shakespeare-theatre_42290/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Half a Sixpence",
+        "venue": "Noel Coward Theatre",
+        "date": "2016-11-17",
+        "url": "https://www.whatsonstage.com/news/review-half-a-sixpence-noel-coward-theatre_42286/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "La Soiree",
+        "venue": "Spiegeltent, Leicester Square",
+        "date": "2016-11-17",
+        "url": "https://www.whatsonstage.com/news/review-la-soiree-spiegeltent-leicester-square_42287/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Sewing Group",
+        "venue": "Royal Court",
+        "date": "2016-11-17",
+        "url": "https://www.whatsonstage.com/news/review-the-sewing-group-royal-court_42279/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Trouble In Mind",
+        "venue": "Ustinov Studio, Bath Theatre Royal",
+        "date": "2016-11-17",
+        "url": "https://www.whatsonstage.com/news/review-trouble-in-mind-ustinov-studio-bath-theatre-royal_42278/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Simplicius Simplicissimus",
+        "venue": "Lilian Baylis Theatre",
+        "date": "2016-11-16",
+        "url": "https://www.whatsonstage.com/news/review-simplicius-simplicissimus-the-lilian-baylis-theatre_42273/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "I Call My Brothers",
+        "venue": "Gate Theatre",
+        "date": "2016-11-15",
+        "url": "https://www.whatsonstage.com/news/review-i-call-my-brothers-gate-theatre_42260/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "School of Rock",
+        "venue": "New London Theatre",
+        "date": "2016-11-14",
+        "url": "https://www.whatsonstage.com/news/review-school-of-rock-new-london-theatre_42256/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Removal Men",
+        "venue": "Yard Theatre",
+        "date": "2016-11-14",
+        "url": "https://www.whatsonstage.com/news/review-removal-men-yard-theatre_42246/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Orca",
+        "venue": "Southwark Playhouse",
+        "date": "2016-11-11",
+        "url": "https://www.whatsonstage.com/news/review-orca-southwark-playhouse_42232/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "An Inspector Calls",
+        "venue": "Playhouse Theatre",
+        "date": "2016-11-10",
+        "url": "https://www.whatsonstage.com/news/review-an-inspector-calls-playhouse-theatre_42228/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Lulu",
+        "venue": "London Coliseum",
+        "date": "2016-11-10",
+        "url": "https://www.whatsonstage.com/news/review-lulu-london-coliseum_42225/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "London Stories: Made by Migrants",
+        "venue": "Battersea Arts Centre",
+        "date": "2016-11-10",
+        "url": "https://www.whatsonstage.com/news/review-london-stories-made-by-migrants-battersea-arts-centre_42218/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Oreste",
+        "venue": "Wilton's Music Hall",
+        "date": "2016-11-09",
+        "url": "https://www.whatsonstage.com/news/review-oreste-wiltons-music-hall_42211/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Royale",
+        "venue": "Bush Theatre at the Tabernacle",
+        "date": "2016-11-09",
+        "url": "https://www.whatsonstage.com/news/review-the-royale-bush-theatre-at-the-tabernacle_42207/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Lazarus",
+        "venue": "King's Cross Theatre",
+        "date": "2016-11-08",
+        "url": "https://www.whatsonstage.com/news/review-lazarus-kings-cross-theatre_42205/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Les Contes d'Hoffmann",
+        "venue": "Royal Opera House",
+        "date": "2016-11-08",
+        "url": "https://www.whatsonstage.com/news/review-les-contes-dhoffmann-royal-opera-house_42201/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Drones, Baby, Drones",
+        "venue": "Arcola Theatre",
+        "date": "2016-11-08",
+        "url": "https://www.whatsonstage.com/news/review-drones-baby-drones-arcola-theatre_42200/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Still Ill",
+        "venue": "New Diorama",
+        "date": "2016-11-07",
+        "url": "https://www.whatsonstage.com/news/review-still-ill-new-diorama_42185/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "La Calisto",
+        "venue": "Saffron Hall and tour",
+        "date": "2016-11-05",
+        "url": "https://www.whatsonstage.com/news/review-la-calisto-saffron-hall-and-tour_42184/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "King Lear",
+        "venue": "Old Vic",
+        "date": "2016-11-05",
+        "url": "https://www.whatsonstage.com/news/review-king-lear-old-vic_42181/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Dead Funny",
+        "venue": "Vaudeville Theatre",
+        "date": "2016-11-04",
+        "url": "https://www.whatsonstage.com/news/review-dead-funny-vaudeville-theatre_42174/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Deny, Deny, Deny",
+        "venue": "Park Theatre",
+        "date": "2016-11-04",
+        "url": "https://www.whatsonstage.com/news/review-deny-deny-deny-park-theatre_42173/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Ulysses' Homecoming",
+        "venue": "Saffron Hall and tour",
+        "date": "2016-11-03",
+        "url": "https://www.whatsonstage.com/news/review-ulysses-homecoming-saffron-hall-and-tour_42164/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Broken Biscuits",
+        "venue": "Hull Truck Theatre",
+        "date": "2016-11-03",
+        "url": "https://www.whatsonstage.com/news/review-broken-biscuits-hull-truck-theatre_42161/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Breaking the Code",
+        "venue": "Royal Exchange",
+        "date": "2016-11-03",
+        "url": "https://www.whatsonstage.com/news/review-breaking-the-code-royal-exchange_42160/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "All My Sons",
+        "venue": "Rose Theatre, Kingston",
+        "date": "2016-11-02",
+        "url": "https://www.whatsonstage.com/news/review-all-my-sons-rose-theatre-kingston_42156/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Last Five Years",
+        "venue": "St James Theatre",
+        "date": "2016-11-02",
+        "url": "https://www.whatsonstage.com/news/review-the-last-five-years-st-james-theatre_42157/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Comus A Masque In Honour of Chastity",
+        "venue": "Shakespeare's Globe",
+        "date": "2016-11-02",
+        "url": "https://www.whatsonstage.com/news/review-comus-a-masque-in-honour-of-chastity-shakespeares-globe_42153/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "What Shadows",
+        "venue": "Birmingham Rep",
+        "date": "2016-11-02",
+        "url": "https://www.whatsonstage.com/news/review-what-shadows-birmingham-rep_42151/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Grain in the Blood",
+        "venue": "Traverse Theatre",
+        "date": "2016-11-02",
+        "url": "https://www.whatsonstage.com/news/review-grain-in-the-blood-traverse-theatre_42147/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Fool for Love",
+        "venue": "Found 111",
+        "date": "2016-11-01",
+        "url": "https://www.whatsonstage.com/news/review-fool-for-love-found-111_42138/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Nest",
+        "venue": "Young Vic",
+        "date": "2016-11-01",
+        "url": "https://www.whatsonstage.com/news/review-the-nest-young-vic_42139/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Magnificence",
+        "venue": "Finborough Theatre",
+        "date": "2016-10-31",
+        "url": "https://www.whatsonstage.com/news/review-magnificence-finborough-theatre_42130/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Intelligent Homosexual's Guide to Capitalism with a Key to the Scriptures",
+        "venue": "Hampstead Theatre",
+        "date": "2016-10-28",
+        "url": "https://www.whatsonstage.com/news/review-the-intelligent-homosexuals-guide-to-capitalism-with-a-key-to-the-scriptures-hampstead-theatre_42120/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Billy Budd",
+        "venue": "Leeds Grand Theatre and tour",
+        "date": "2016-10-27",
+        "url": "https://www.whatsonstage.com/news/review-billy-budd-leeds-grand-theatre-and-tour_42118/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Amadeus",
+        "venue": "Olivier, National Theatre",
+        "date": "2016-10-27",
+        "url": "https://www.whatsonstage.com/news/review-amadeus-olivier-national-theatre_42110/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Side Show",
+        "venue": "Southwark Playhouse",
+        "date": "2016-10-27",
+        "url": "https://www.whatsonstage.com/news/review-side-show-southwark-playhouse_42109/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Don Giovanni",
+        "venue": "Glyndebourne and tour",
+        "date": "2016-10-26",
+        "url": "https://www.whatsonstage.com/news/review-don-giovanni-glyndebourne-and-tour_42105/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "The Hotel Cerise",
+        "venue": "Theatre Royal Stratford East",
+        "date": "2016-10-26",
+        "url": "https://www.whatsonstage.com/news/review-the-hotel-cerise-theatre-royal-stratford-east_42101/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Nose",
+        "venue": "Royal Opera House",
+        "date": "2016-10-24",
+        "url": "https://www.whatsonstage.com/news/review-the-nose-royal-opera-house_42093/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Disney's Broadway Hits",
+        "venue": "Royal Albert Hall",
+        "date": "2016-10-24",
+        "url": "https://www.whatsonstage.com/news/review-disneys-broadway-hits-royal-albert-hall_42083/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Tomorrow I Was Always a Lion",
+        "venue": "Arcola Theatre",
+        "date": "2016-10-24",
+        "url": "https://www.whatsonstage.com/news/review-tomorrow-i-was-always-a-lion-arcola-theatre_42082/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Grinning Man",
+        "venue": "Bristol Old Vic",
+        "date": "2016-10-21",
+        "url": "https://www.whatsonstage.com/news/review-the-grinning-man-bristol-old-vic_42067/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Spring/The Last Dance",
+        "venue": "Theatre Room",
+        "date": "2016-10-21",
+        "url": "https://www.whatsonstage.com/news/review-spring-the-last-dance-the-theatre-room_42066/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Pearl Fishers",
+        "venue": "London Coliseum",
+        "date": "2016-10-20",
+        "url": "https://www.whatsonstage.com/news/review-the-pearl-fishers-london-coliseum_42062/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Wind in the Willows",
+        "venue": "Theatre Royal Plymouth",
+        "date": "2016-10-20",
+        "url": "https://www.whatsonstage.com/news/review-the-wind-in-the-willows-theatre-royal-plymouth_42055/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "A Pacifist’s Guide to the War on Cancer",
+        "venue": "Dorfman, National Theatre",
+        "date": "2016-10-20",
+        "url": "https://www.whatsonstage.com/news/review-a-pacifists-guide-to-the-war-on-cancer-dorfman-national-theatre_42054/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Blue Heart",
+        "venue": "Orange Tree Theatre",
+        "date": "2016-10-19",
+        "url": "https://www.whatsonstage.com/news/review-blue-heart-orange-tree-theatre_42044/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Moby Dick",
+        "venue": "Union Theatre",
+        "date": "2016-10-19",
+        "url": "https://www.whatsonstage.com/news/review-moby-dick-union-theatre_42043/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Ragtime",
+        "venue": "Charing Cross Theatre",
+        "date": "2016-10-18",
+        "url": "https://www.whatsonstage.com/news/review-ragtime-charing-cross-theatre_42038/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Red Barn",
+        "venue": "Lyttelton, National Theatre",
+        "date": "2016-10-18",
+        "url": "https://www.whatsonstage.com/news/review-the-red-barn-lyttelton-national-theatre_42037/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Oil",
+        "venue": "Almeida",
+        "date": "2016-10-16",
+        "url": "https://www.whatsonstage.com/news/review-oil-almeida_42024/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Madama Butterfly",
+        "venue": "Glyndebourne and tour",
+        "date": "2016-10-15",
+        "url": "https://www.whatsonstage.com/news/review-madama-butterfly-glyndebourne-and-tour_42027/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Skin a Cat",
+        "venue": "Bunker",
+        "date": "2016-10-14",
+        "url": "https://www.whatsonstage.com/news/review-skin-a-cat-the-bunker_42015/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "A Man of Good Hope",
+        "venue": "Young Vic",
+        "date": "2016-10-14",
+        "url": "https://www.whatsonstage.com/news/review-a-man-of-good-hope-young-vic_42016/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Dresser",
+        "venue": "Duke of York's",
+        "date": "2016-10-13",
+        "url": "https://www.whatsonstage.com/news/review-the-dresser-duke-of-yorks_42004/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Mountaintop",
+        "venue": "Young Vic",
+        "date": "2016-10-13",
+        "url": "https://www.whatsonstage.com/news/review-the-mountaintop-young-vic_42007/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Shopping and F***ing",
+        "venue": "Lyric Hammersmith",
+        "date": "2016-10-13",
+        "url": "https://www.whatsonstage.com/news/review-shopping-and-fing-lyric-hammersmith_42005/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Merchant of Venice",
+        "venue": "Bristol Hippodrome and tour",
+        "date": "2016-10-12",
+        "url": "https://www.whatsonstage.com/news/review-the-merchant-of-venice-bristol-hippodrome-and-tour_42000/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Gaul",
+        "venue": "Hull Truck Theatre",
+        "date": "2016-10-12",
+        "url": "https://www.whatsonstage.com/news/review-the-gaul-hull-truck-theatre_41997/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "One Night in Miami",
+        "venue": "Donmar Warehouse",
+        "date": "2016-10-12",
+        "url": "https://www.whatsonstage.com/news/review-one-night-in-miami-donmar-warehouse_41995/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Heads Will Roll",
+        "venue": "Drum, Plymouth",
+        "date": "2016-10-11",
+        "url": "https://www.whatsonstage.com/news/review-heads-will-roll-the-drum-plymouth_41987/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Lunch and The Bow of Ulysses",
+        "venue": "Trafalgar Studios 2",
+        "date": "2016-10-11",
+        "url": "https://www.whatsonstage.com/news/review-lunch-and-the-bow-of-ulysses-trafalgar-studios-2_41986/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Confessional",
+        "venue": "Southwark Playhouse",
+        "date": "2016-10-10",
+        "url": "https://www.whatsonstage.com/news/review-confessional-southwark-playhouse_41971/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Autumn Garden",
+        "venue": "Jermyn Street Theatre",
+        "date": "2016-10-10",
+        "url": "https://www.whatsonstage.com/news/review-the-autumn-garden-jermyn-street-theatre_41970/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Kissing the Shotgun Goodnight",
+        "venue": "Ovalhouse",
+        "date": "2016-10-10",
+        "url": "https://www.whatsonstage.com/news/review-kissing-the-shotgun-goodnight-ovalhouse_41969/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Xerxes",
+        "venue": "Hackney Empire and tour",
+        "date": "2016-10-09",
+        "url": "https://www.whatsonstage.com/news/review-xerxes-hackney-empire-and-tour_41968/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "A Room with a View",
+        "venue": "Theatre Royal, Bath",
+        "date": "2016-10-07",
+        "url": "https://www.whatsonstage.com/news/review-a-room-with-a-view-theatre-royal-bath_41958/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "This Place We Know",
+        "venue": "Bush Theatre, off-site",
+        "date": "2016-10-07",
+        "url": "https://www.whatsonstage.com/news/review-this-place-we-know-bush-theatre-off-site_41956/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Domestica",
+        "venue": "Battersea Arts Centre",
+        "date": "2016-10-06",
+        "url": "https://www.whatsonstage.com/news/review-domestica-battersea-arts-centre_41952/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Half Life",
+        "venue": "Theatre Royal Bath",
+        "date": "2016-10-06",
+        "url": "https://www.whatsonstage.com/news/review-half-life-theatre-royal-bath_41949/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Murder Ballad",
+        "venue": "Arts Theatre",
+        "date": "2016-10-06",
+        "url": "https://www.whatsonstage.com/news/review-murder-ballad-arts-theatre_41948/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Jason and the Argonauts",
+        "venue": "Unicorn Theatre",
+        "date": "2016-10-05",
+        "url": "https://www.whatsonstage.com/news/review-jason-and-the-argonauts-unicorn-theatre_41941/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Boys in the Band",
+        "venue": "Park Theatre",
+        "date": "2016-10-05",
+        "url": "https://www.whatsonstage.com/news/review-the-boys-in-the-band-park-theatre_41940/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Suppliant Women",
+        "venue": "Lyceum Theatre, Edinburgh",
+        "date": "2016-10-05",
+        "url": "https://www.whatsonstage.com/news/review-the-suppliant-women-lyceum-theatre-edinburgh_41939/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Travesties",
+        "venue": "Menier Chocolate Factory",
+        "date": "2016-10-05",
+        "url": "https://www.whatsonstage.com/news/review-travesties-menier-chocolate-factory_41938/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "No's Knife",
+        "venue": "Old Vic Theatre",
+        "date": "2016-10-04",
+        "url": "https://www.whatsonstage.com/news/review-nos-knife-old-vic-theatre_41930/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Adding Machine",
+        "venue": "Finborough Theatre",
+        "date": "2016-10-03",
+        "url": "https://www.whatsonstage.com/news/review-adding-machine-finborough-theatre_41921/",
+        "rating": 4,
+        "market": [
+          83,
+          98,
+          85
+        ]
+      },
+      {
+        "title": "Don Giovanni",
+        "venue": "London Coliseum",
+        "date": "2016-10-01",
+        "url": "https://www.whatsonstage.com/news/review-don-giovanni-london-coliseum_41920/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Miss Saigon: 25th Anniversary Performance",
+        "venue": "in cinemas",
+        "date": "2016-09-30",
+        "url": "https://www.whatsonstage.com/news/review-miss-saigon-25th-anniversary-performance-in-cinemas_41915/",
+        "rating": 5,
+        "market": [
+          83,
+          98,
+          85
+        ]
+      },
+      {
+        "title": "Sleuth",
+        "venue": "West Yorkshire Playhouse",
+        "date": "2016-09-30",
+        "url": "https://www.whatsonstage.com/news/review-sleuth-west-yorkshire-playhouse_41905/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Pigeon English",
+        "venue": "Ambassadors Theatre",
+        "date": "2016-09-30",
+        "url": "https://www.whatsonstage.com/news/review-pigeon-english-ambassadors-theatre_41900/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Machine",
+        "venue": "Barbican",
+        "date": "2016-09-30",
+        "url": "https://www.whatsonstage.com/news/review-the-machine-barbican_41902/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Floyd Collins",
+        "venue": "Wilton's Music Hall",
+        "date": "2016-09-29",
+        "url": "https://www.whatsonstage.com/news/review-floyd-collins-wiltons-music-hall_41887/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Villette",
+        "venue": "West Yorkshire Playhouse",
+        "date": "2016-09-29",
+        "url": "https://www.whatsonstage.com/news/review-villette-west-yorkshire-playhouse_41893/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Wish List",
+        "venue": "Royal Exchange, Manchester",
+        "date": "2016-09-29",
+        "url": "https://www.whatsonstage.com/news/review-wish-list-royal-exchange-manchester_41891/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Dominic Cooper in The Libertine",
+        "venue": "Theatre Royal Haymarket",
+        "date": "2016-09-27",
+        "url": "https://www.whatsonstage.com/news/review-dominic-cooper-in-the-libertine-theatre-royal-haymarket_41877/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Wipers Times",
+        "venue": "Watermill, Newbury",
+        "date": "2016-09-27",
+        "url": "https://www.whatsonstage.com/news/review-the-wipers-times-watermill-newbury_41871/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Lady Chatterley’s Lover",
+        "venue": "Sheffield Crucible",
+        "date": "2016-09-27",
+        "url": "https://www.whatsonstage.com/news/review-lady-chatterleys-lover-sheffield-crucible_41867/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Imogen",
+        "venue": "Shakespeare's Globe",
+        "date": "2016-09-26",
+        "url": "https://www.whatsonstage.com/news/review-imogen-shakespeares-globe_41856/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Così fan tutte",
+        "venue": "Royal Opera House",
+        "date": "2016-09-23",
+        "url": "https://www.whatsonstage.com/news/review-cosi-fan-tutte-royal-opera-house_41853/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Father Comes Home from the Wars",
+        "venue": "Royal Court",
+        "date": "2016-09-23",
+        "url": "https://www.whatsonstage.com/news/review-father-comes-home-from-the-wars-royal-court_41848/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Good Canary",
+        "venue": "Rose Theatre Kingston",
+        "date": "2016-09-22",
+        "url": "https://www.whatsonstage.com/news/review-good-canary-rose-theatre-kingston_41832/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Million Dollar Quartet",
+        "venue": "Curve, Leicester",
+        "date": "2016-09-21",
+        "url": "https://www.whatsonstage.com/news/review-million-dollar-quartet-curve-leicester_41824/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Dedication",
+        "venue": "Nuffield Theatre, Southampton",
+        "date": "2016-09-21",
+        "url": "https://www.whatsonstage.com/news/review-dedication-nuffield-theatre-southampton_41825/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "No Man's Land",
+        "venue": "Wyndham's Theatre",
+        "date": "2016-09-20",
+        "url": "https://www.whatsonstage.com/news/review-no-mans-land-wyndhams-theatre_41818/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Greater Game",
+        "venue": "Southwark Playhouse",
+        "date": "2016-09-20",
+        "url": "https://www.whatsonstage.com/news/review-the-greater-game-southwark-playhouse_41816/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Der Rosenkavalier",
+        "venue": "Leeds Grand Theatre and tour",
+        "date": "2016-09-19",
+        "url": "https://www.whatsonstage.com/news/review-der-rosenkavalier-leeds-grand-theatre-and-tour_41813/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Things I Know to Be True",
+        "venue": "Lyric Hammersmith",
+        "date": "2016-09-19",
+        "url": "https://www.whatsonstage.com/news/review-things-i-know-to-be-true-lyric-hammersmith_41807/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Rover",
+        "venue": "Swan Theatre, Stratford-upon-Avon",
+        "date": "2016-09-19",
+        "url": "https://www.whatsonstage.com/news/review-the-rover-swan-theatre-stratford-upon-avon_41806/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "A Lovely Sunday for Creve Coeur",
+        "venue": "Print Room",
+        "date": "2016-09-16",
+        "url": "https://www.whatsonstage.com/news/review-a-lovely-sunday-for-creve-coeur-print-room_41802/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Party Trap",
+        "venue": "Shoreditch Town Hall",
+        "date": "2016-09-16",
+        "url": "https://www.whatsonstage.com/news/review-party-trap-shoreditch-town-hall_41795/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "David Baddiel: My Family – Not the Sitcom",
+        "venue": "Vaudeville Theatre",
+        "date": "2016-09-16",
+        "url": "https://www.whatsonstage.com/news/review-david-baddiel-my-family-not-the-sitcom-vaudeville-theatre_41791/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Rivals",
+        "venue": "Bristol Old Vic",
+        "date": "2016-09-16",
+        "url": "https://www.whatsonstage.com/news/review-the-rivals-bristol-old-vic_41789/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Il barbiere di Siviglia",
+        "venue": "Royal Opera House",
+        "date": "2016-09-15",
+        "url": "https://www.whatsonstage.com/news/review-il-barbiere-di-siviglia-royal-opera-house_41783/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "A Tale of Two Cities",
+        "venue": "Royal & Derngate, Northampton",
+        "date": "2016-09-15",
+        "url": "https://www.whatsonstage.com/news/review-a-tale-of-two-cities-royal-derngate-northampton_41778/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "The Cheviot, the Stag and the Black, Black Oil",
+        "venue": "Royal Lyceum Theatre, Edinburgh",
+        "date": "2016-09-15",
+        "url": "https://www.whatsonstage.com/news/review-the-cheviot-the-stag-and-the-black-black-oil-royal-lyceum-theatre-edinburgh_41777/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "The Importance of Being Earnest",
+        "venue": "Birmingham Repertory Theatre",
+        "date": "2016-09-15",
+        "url": "https://www.whatsonstage.com/news/review-the-importance-of-being-earnest-birmingham-repertory-theatre_41776/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Dinner at the Twits",
+        "venue": "Vaults",
+        "date": "2016-09-15",
+        "url": "https://www.whatsonstage.com/news/review-dinner-at-the-twits-the-vaults_41775/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Norma",
+        "venue": "Royal Opera House",
+        "date": "2016-09-14",
+        "url": "https://www.whatsonstage.com/news/review-norma-royal-opera-house_41772/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Torn",
+        "venue": "Royal Court",
+        "date": "2016-09-14",
+        "url": "https://www.whatsonstage.com/news/review-torn-royal-court_41766/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "A Streetcar Named Desire",
+        "venue": "Royal Exchange, Manchester",
+        "date": "2016-09-14",
+        "url": "https://www.whatsonstage.com/news/review-a-streetcar-named-desire-royal-exchange-manchester_41765/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Jess and Joe Forever",
+        "venue": "Orange Tree Theatre",
+        "date": "2016-09-13",
+        "url": "https://www.whatsonstage.com/news/review-jess-and-joe-forever-orange-tree-theatre_41755/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "27",
+        "venue": "Cockpit",
+        "date": "2016-09-13",
+        "url": "https://www.whatsonstage.com/news/review-27-the-cockpit_41756/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Girls",
+        "venue": "HighTide Festival",
+        "date": "2016-09-12",
+        "url": "https://www.whatsonstage.com/news/review-girls-hightide-festival_41750/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Pilgrims",
+        "venue": "HighTide Festival",
+        "date": "2016-09-12",
+        "url": "https://www.whatsonstage.com/news/review-pilgrims-hightide-festival_41741/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Punkplay",
+        "venue": "Southwark Playhouse",
+        "date": "2016-09-12",
+        "url": "https://www.whatsonstage.com/news/review-punkplay-southwark-playhouse_41740/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Emperor",
+        "venue": "Young Vic",
+        "date": "2016-09-09",
+        "url": "https://www.whatsonstage.com/news/review-the-emperor-young-vic_41728/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "How to Date a Feminist",
+        "venue": "Arcola",
+        "date": "2016-09-09",
+        "url": "https://www.whatsonstage.com/news/review-how-to-date-a-feminist-the-arcola_41726/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Crime and Punishment",
+        "venue": "Scoop",
+        "date": "2016-09-08",
+        "url": "https://www.whatsonstage.com/news/review-crime-and-punishment-the-scoop_41723/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Labyrinth",
+        "venue": "Hampstead Theatre",
+        "date": "2016-09-08",
+        "url": "https://www.whatsonstage.com/news/review-labyrinth-hampstead-theatre_41715/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Inn at Lydda",
+        "venue": "Sam Wanamaker Playhouse",
+        "date": "2016-09-08",
+        "url": "https://www.whatsonstage.com/news/review-the-inn-at-lydda-sam-wanamaker-playhouse_41716/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "A Doll’s House",
+        "venue": "Various locations",
+        "date": "2016-09-07",
+        "url": "https://www.whatsonstage.com/news/review-a-dolls-house-various-locations_41709/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Sunny Afternoon",
+        "venue": "New Alexandra Theatre, Birmingham",
+        "date": "2016-09-07",
+        "url": "https://www.whatsonstage.com/news/review-sunny-afternoon-new-alexandra-theatre-birmingham_41708/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Vanities: the Musical",
+        "venue": "Trafalgar Studios",
+        "date": "2016-09-07",
+        "url": "https://www.whatsonstage.com/news/review-vanities-the-musical-trafalgar-studios_41706/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "If We Got Some More Cocaine I Could Show You How I Love You",
+        "venue": "Old Red Lion",
+        "date": "2016-09-05",
+        "url": "https://www.whatsonstage.com/news/review-if-we-got-some-more-cocaine-i-could-show-you-how-i-love-you-old-red-lion_41688/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Owen Wingrave",
+        "venue": "Peacock Theatre",
+        "date": "2016-09-05",
+        "url": "https://www.whatsonstage.com/news/review-owen-wingrave-peacock-theatre_41691/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Burning Doors",
+        "venue": "Soho Theatre",
+        "date": "2016-09-05",
+        "url": "https://www.whatsonstage.com/news/review-burning-doors-soho-theatre_41686/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Britten in Brooklyn",
+        "venue": "Wilton's Music Hall",
+        "date": "2016-09-05",
+        "url": "https://www.whatsonstage.com/news/review-britten-in-brooklyn-wiltons-music-hall_41689/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Counting Stars",
+        "venue": "Theatre Royal Stratford East",
+        "date": "2016-09-02",
+        "url": "https://www.whatsonstage.com/news/review-counting-stars-theatre-royal-stratford-east_41670/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "King Lear",
+        "venue": "Royal Shakespeare Theatre",
+        "date": "2016-09-02",
+        "url": "https://www.whatsonstage.com/news/review-king-lear-royal-shakespeare-theatre_41671/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Waiting for Waiting for Godot",
+        "venue": "St James Theatre",
+        "date": "2016-09-02",
+        "url": "https://www.whatsonstage.com/news/review-waiting-for-waiting-for-godot-st-james-theatre_41669/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Unfaithful",
+        "venue": "Found111",
+        "date": "2016-09-01",
+        "url": "https://www.whatsonstage.com/news/review-unfaithful-found111_41656/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Christeene: Trigger",
+        "venue": "Soho Theatre",
+        "date": "2016-08-31",
+        "url": "https://www.whatsonstage.com/news/review-christeene-trigger-soho-theatre_41641/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Entertainer",
+        "venue": "Garrick Theatre",
+        "date": "2016-08-31",
+        "url": "https://www.whatsonstage.com/news/review-the-entertainer-garrick-theatre_41640/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Much Ado About Nothing",
+        "venue": "Selfridges",
+        "date": "2016-08-30",
+        "url": "https://www.whatsonstage.com/news/review-much-ado-about-nothing-selfridges_41643/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Reluctant Fundamentalist",
+        "venue": "Finborough Theatre",
+        "date": "2016-08-26",
+        "url": "https://www.whatsonstage.com/news/review-the-reluctant-fundamentalist-finborough-theatre_41631/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Two Noble Kinsmen",
+        "venue": "Swan Theatre, Stratford-upon-Avon",
+        "date": "2016-08-25",
+        "url": "https://www.whatsonstage.com/news/review-the-two-noble-kinsmen-swan-theatre-stratford-upon-avon_41617/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-25",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-the-toad-knew-kings-theatre_41615/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Sister Act",
+        "venue": "Grand Theatre, Leeds",
+        "date": "2016-08-25",
+        "url": "https://www.whatsonstage.com/news/review-sister-act-grand-theatre-leeds_41616/",
+        "rating": 4,
+        "market": [
+          83,
+          98,
+          85
+        ]
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-24",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-angel-gilded-balloon_41610/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-24",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-house-amongst-the-reeds-assembly-george-square-one-hundred-homes-summerhall_41608/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Little Shop of Horrors",
+        "venue": "New Wimbledon Theatre",
+        "date": "2016-08-24",
+        "url": "https://www.whatsonstage.com/news/review-little-shop-of-horrors-new-wimbledon-theatre_41607/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "They Drink It in the Congo",
+        "venue": "Almeida Theatre",
+        "date": "2016-08-24",
+        "url": "https://www.whatsonstage.com/news/review-they-drink-it-in-the-congo-almeida-theatre_41605/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-23",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-i-could-go-on-singing-over-the-rainbow-summerhall_41603/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-23",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-blow-off-traverse-theatre_41600/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-22",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-how-to-win-against-history-assembly-george-square_41590/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-19",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-lucy-lucy-and-lucy-barfield-pleasance-courtyard_41583/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-19",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-torch-underbelly_41581/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Strife",
+        "venue": "Chichester Festival Theatre",
+        "date": "2016-08-19",
+        "url": "https://www.whatsonstage.com/news/review-strife-chichester-festival-theatre_41579/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-19",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-anything-that-gives-off-light-edinburgh-international-conference-centre_41576/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-18",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-dublin-oldschool-pleasance-theatre_41571/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-18",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-revolt-she-said-revolt-again-traverse-theatre_41568/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "946: The Amazing Story of Adolphus Tips",
+        "venue": "Shakespeare's Globe",
+        "date": "2016-08-18",
+        "url": "https://www.whatsonstage.com/news/review-946-the-amazing-story-of-adolphus-tips-shakespeares-globe_41565/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Groundhog Day",
+        "venue": "Old Vic",
+        "date": "2016-08-16",
+        "url": "https://www.whatsonstage.com/news/review-groundhog-day-old-vic_41556/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Allegro",
+        "venue": "Southwark Playhouse",
+        "date": "2016-08-16",
+        "url": "https://www.whatsonstage.com/news/review-allegro-southwark-playhouse_41554/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-16",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-often-onstage-pleasance-dome_41545/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Screens",
+        "venue": "Theatre503",
+        "date": "2016-08-15",
+        "url": "https://www.whatsonstage.com/news/review-screens-theatre503_41524/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-15",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-where-do-all-the-dead-pigeons-go-summerhall_41540/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-15",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-ten-storey-love-song-pleasance-dome_41538/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-15",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-swansong-pleasance-theatre_41537/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-15",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-katie-brennans-quarter-life-crisis-underbelly-george-square_41536/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-15",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-once-assembly-george-square_41535/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-13",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-cock-and-bull-forest-fringe_41533/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-13",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-weird-seance-forest-fringe_41532/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-12",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-tank-pleasance-dome_41521/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-12",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-lucy-mccormick-triple-threat-underbelly_41522/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "A Midsummer Night's Dream",
+        "venue": "Glyndebourne",
+        "date": "2016-08-12",
+        "url": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-glyndebourne_41523/",
+        "rating": 4,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-12",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-faslane-summerhall_41520/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-12",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-shake-lyceum-theatre_41518/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-11",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-wonderman-underbelly_41511/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-11",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-bonita-billie-holiday-assembly-roxy_41501/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-11",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-counting-sheep-summerhall_41507/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "A Midsummer Night's Dream",
+        "venue": "Theatre Royal Bath",
+        "date": "2016-08-11",
+        "url": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-theatre-royal-bath_41506/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-10",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-the-inevitable-heartbreak-of-gavin-plimsole-pleasance-theatre_41499/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-10",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-the-vaudevillains-assembly-george-square_41496/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-10",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-jonny-and-the-baptists-eat-the-poor-summerhall_41491/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-10",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-hamlet-in-bed-pleasance-courtyard_41495/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-10",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-travesty-assembly-george-square_41494/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-09",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-love-lies-and-taxidermy-summerhall_41489/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-09",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-two-man-show-summerhall_41488/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-09",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-daffodils-a-play-with-songs-traverse-theatre_41487/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-09",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-daniel-kitson-mouse-the-persistence-of-an-unlikely-thought-traverse-theatre_41486/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-09",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-bucket-list-pleasance-dome_41482/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-09",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-on-the-conditions-and-possibilities-of-hillary-clinton-taking-me-as-her-young-lover-summerhall_41481/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-09",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-letters-to-windsor-house-summerhal_41480/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-bricking-it-underbelly_41478/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-world-without-us-summerhall_41473/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-putting-the-band-back-together-summerhall_41472/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-milk-traverse-theatre_41477/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-nina-conti-in-your-face-pleasance-theatre_41465/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-the-duke-pleasance-courtyard_41474/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-blush-underbelly_41464/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-the-glass-menagerie-kings-theatre_41470/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-interiors-lyceum-theatre_41469/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-ghost-quartet-summerhall_41468/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-mark-thomas-the-red-shed-traverse-theatre_41467/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-scorch-summerhall_41466/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-08",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-growth-summerhall_41463/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-07",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-diary-of-a-madman-traverse-theatre_41462/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-07",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-wind-resistance-lyceum-theatre_41461/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-07",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-alan-cumming-sings-sappy-songs-the-hub_41460/",
+        "rating": 5,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-07",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-my-eyes-went-dark-traverse-theatre_41459/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-06",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-expensive-shit-traverse-theatre_41457/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-06",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-greater-belfast-traverse_41456/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-06",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-only-bones-summerhall_41455/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-06",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-blank-summerhall_41454/",
+        "rating": 2,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-06",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-yokai-underbelly_41452/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-06",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-in-fidelity-traverse_41453/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "The Collector",
+        "venue": "Vaults",
+        "date": "2016-08-05",
+        "url": "https://www.whatsonstage.com/news/review-the-collector-the-vaults_41448/",
+        "rating": 2,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-05",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-equations-for-a-moving-body-summerhall_41445/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Crazy For You",
+        "venue": "Watermill Theatre",
+        "date": "2016-08-05",
+        "url": "https://www.whatsonstage.com/news/review-crazy-for-you-watermill-theatre_41444/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Yerma",
+        "venue": "Young Vic",
+        "date": "2016-08-04",
+        "url": "https://www.whatsonstage.com/news/review-yerma-young-vic_41439/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-04",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-tell-me-anything-summerhall_41434/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Edinburgh",
+        "venue": null,
+        "date": "2016-08-04",
+        "url": "https://www.whatsonstage.com/news/edinburgh-review-heads-up-summerhall_41432/",
+        "rating": 4,
+        "market": []
+      },
+      {
+        "title": "Treasure Island",
+        "venue": "St Paul's Church",
+        "date": "2016-08-03",
+        "url": "https://www.whatsonstage.com/news/review-treasure-island-st-pauls-church_41424/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Extravaganza Macabre",
+        "venue": "Battersea Arts Centre",
+        "date": "2016-08-01",
+        "url": "https://www.whatsonstage.com/news/review-extravaganza-macabre-battersea-arts-centre_41406/",
+        "rating": 2,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Always Orange/Fall of the Kingdom, Rise of the Foot Soldier",
+        "venue": "RSC",
+        "date": "2016-08-01",
+        "url": "https://www.whatsonstage.com/news/review-always-orange-fall-of-the-kingdom-rise-of-the-foot-soldier-rsc_41405/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Exposure the Musical",
+        "venue": "St James Theatre",
+        "date": "2016-07-30",
+        "url": "https://www.whatsonstage.com/news/review-exposure-the-musical-st-james-theatre_41391/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Rotterdam",
+        "venue": "Trafalgar Studios",
+        "date": "2016-07-29",
+        "url": "https://www.whatsonstage.com/news/review-rotterdam-trafalgar-studios_41392/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Hollow",
+        "venue": "Mill at Sonning",
+        "date": "2016-07-29",
+        "url": "https://www.whatsonstage.com/news/review-the-hollow-the-mill-at-sonning_41396/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Breakfast at Tiffany's",
+        "venue": "Theatre Royal Haymarket",
+        "date": "2016-07-28",
+        "url": "https://www.whatsonstage.com/news/review-breakfast-at-tiffanys-theatre-royal-haymarket_41389/",
+        "rating": 2,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "The Plough and the Stars",
+        "venue": "Lyttelton, National Theatre",
+        "date": "2016-07-28",
+        "url": "https://www.whatsonstage.com/news/review-the-plough-and-the-stars-lyttelton-national-theatre_41379/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Half a Sixpence",
+        "venue": "Chichester Festival Theatre",
+        "date": "2016-07-27",
+        "url": "https://www.whatsonstage.com/news/review-half-a-sixpence-chichester-festival-theatre_41370/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Harry Potter and the Cursed Child",
+        "venue": "Palace Theatre",
+        "date": "2016-07-26",
+        "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
+        "rating": 5,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Béatrice et Bénédict",
+        "venue": "Glyndebourne",
+        "date": "2016-07-24",
+        "url": "https://www.whatsonstage.com/news/review-beatrice-et-benedict-glyndebourne_41352/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Pigs and Dogs",
+        "venue": "Royal Court",
+        "date": "2016-07-23",
+        "url": "https://www.whatsonstage.com/news/review-pigs-and-dogs-royal-court_41351/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Now We Are Here",
+        "venue": "Young Vic",
+        "date": "2016-07-23",
+        "url": "https://www.whatsonstage.com/news/review-now-we-are-here-young-vic_41348/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "Die Fledermaus",
+        "venue": "Opera Holland Park",
+        "date": "2016-07-22",
+        "url": "https://www.whatsonstage.com/news/review-die-fledermaus-opera-holland-park_41345/",
+        "rating": 4,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Bodyguard",
+        "venue": "Dominion Theatre",
+        "date": "2016-07-22",
+        "url": "https://www.whatsonstage.com/news/review-the-bodyguard-dominion-theatre_41335/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "Jesus Christ Superstar",
+        "venue": "Open Air Theatre",
+        "date": "2016-07-22",
+        "url": "https://www.whatsonstage.com/news/review-jesus-christ-superstar-open-air-theatre_41334/",
+        "rating": 3,
+        "market": [
+          83,
+          85
+        ]
+      },
+      {
+        "title": "The Game's Afoot",
+        "venue": "Madame Tussauds",
+        "date": "2016-07-21",
+        "url": "https://www.whatsonstage.com/news/review-the-games-afoot-madame-tussauds_41331/",
+        "rating": 4,
+        "market": [
+          83,
+          98
+        ]
+      },
+      {
+        "title": "While the Sun Shines",
+        "venue": "Theatre Royal Bath",
+        "date": "2016-07-21",
+        "url": "https://www.whatsonstage.com/news/review-while-the-sun-shines-theatre-royal-bath_41327/",
+        "rating": 3,
+        "market": []
+      },
+      {
+        "title": "Some Girl(s)",
+        "venue": "Park Theatre",
+        "date": "2016-07-20",
+        "url": "https://www.whatsonstage.com/news/review-some-girls-park-theatre_41323/",
+        "rating": 3,
+        "market": [
+          83
+        ]
+      },
+      {
+        "title": "Blanc de Blanc",
+        "venue": "London Hippodrome",
+        "date": "2016-07-20",
+        "url": "https://www.whatsonstage.com/news/review-blanc-de-blanc-london-hippodrome_41322/",
+        "rating": 3,
+        "market": [
+          83,
+          98
+        ]
+      }
+    ],
+    "oliviers": []
+  }
+}

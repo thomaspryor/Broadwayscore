@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-4289",
+  "planId": "be374e7d-81cc-4796-9d6f-f0c4dc93b993",
+  "status": "applied",
+  "createdAt": "2026-10-28T17:38:37.452Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct the three Broadway venue near-misses identified by BRO-4289 to their exact theater metadata names.",
+    "steps": [
+      "shows.json: the-fantasticks-2026.venue",
+      "shows.json: gloria-2026.venue",
+      "shows.json: the-sound-of-music-2027.venue"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-fantasticks-2026",
+        "field": "venue",
+        "oldValue": "Hayes Theater",
+        "newValue": "Helen Hayes Theater",
+        "description": "shows.json: the-fantasticks-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gloria-2026",
+        "field": "venue",
+        "oldValue": "Hayes Theater",
+        "newValue": "Helen Hayes Theater",
+        "description": "shows.json: gloria-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-music-2027",
+        "field": "venue",
+        "oldValue": "Vivian Beaumont Theater - Lincoln Center Theater",
+        "newValue": "Vivian Beaumont Theater",
+        "description": "shows.json: the-sound-of-music-2027.venue"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T20:33:46.725Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-fantasticks-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for gloria-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-sound-of-music-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

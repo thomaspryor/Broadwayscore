@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6571-i",
+  "planId": "25806986-9f78-47bb-aa03-79fc76d23e2d",
+  "status": "applied",
+  "createdAt": "2026-10-30T05:19:08.698Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6571: ingest census reviews for the new UK hub productions (part 1 of 2)",
+    "steps": [
+      "BRO-6571: ingest whatsonstage review for takeaway-liverpool-everyman-regional-2025",
+      "BRO-6571: ingest all-that-dazzles-uk review for barriers-birmingham-rep-regional-2025",
+      "BRO-6571: ingest west-end-best-friend review for the-snowflake-birmingham-rep-regional-2024",
+      "BRO-6571: ingest all-that-dazzles-uk review for attachment-liverpool-everyman-regional-2026",
+      "BRO-6571: ingest whatsonstage review for sweeney-todd-birmingham-rep-regional-2026",
+      "BRO-6571: ingest whatsonstage review for bhangra-nation-birmingham-rep-regional-2024",
+      "BRO-6571: ingest west-end-best-friend review for bhangra-nation-birmingham-rep-regional-2024",
+      "BRO-6571: ingest all-that-dazzles-uk review for bhangra-nation-birmingham-rep-regional-2024",
+      "BRO-6571: ingest all-that-dazzles-uk review for withnail-and-i-birmingham-rep-regional-2024",
+      "BRO-6571: ingest artsdesk review for withnail-and-i-birmingham-rep-regional-2024",
+      "BRO-6571: ingest all-that-dazzles-uk review for becoming-nancy-birmingham-rep-regional-2024",
+      "BRO-6571: ingest west-end-best-friend review for becoming-nancy-birmingham-rep-regional-2024",
+      "BRO-6571: ingest whatsonstage review for becoming-nancy-birmingham-rep-regional-2024",
+      "BRO-6571: ingest all-that-dazzles-uk review for spitfire-girls-birmingham-rep-regional-2025",
+      "BRO-6571: ingest west-end-best-friend review for to-move-in-time-birmingham-rep-regional-2024",
+      "BRO-6571: ingest all-that-dazzles-uk review for jekyll-and-hyde-liverpool-everyman-regional-2026",
+      "BRO-6571: ingest everything-theatre review for the-vagina-monologues-crucible-regional-2025",
+      "BRO-6571: ingest all-that-dazzles-uk review for all-my-pretty-ones-birmingham-rep-regional-2025",
+      "BRO-6571: ingest whatsonstage review for tell-me-how-it-ends-liverpool-everyman-regional-2024",
+      "BRO-6571: ingest all-that-dazzles-uk review for death-of-a-salesman-liverpool-everyman-regional-2026",
+      "BRO-6571: ingest whatsonstage review for a-thousand-splendid-suns-birmingham-rep-regional-2025",
+      "BRO-6571: ingest west-end-best-friend review for a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024",
+      "BRO-6571: ingest whatsonstage review for oasis-vs-blur-comedy-the-battle-birmingham-rep-regional-2026",
+      "BRO-6571: ingest everything-theatre review for showstopper-the-improvised-musical-crucible-regional-2025",
+      "BRO-6571: ingest all-that-dazzles-uk review for sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=takeaway-liverpool-everyman-regional-2025 --url=https://www.whatsonstage.com/news/takeaway-at-liverpool-everyman-theatre-review_1675752/ --outlet=whatsonstage",
+        "description": "BRO-6571: ingest whatsonstage review for takeaway-liverpool-everyman-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=barriers-birmingham-rep-regional-2025 --url=https://www.allthatdazzles.co.uk/post/review-barrier-s-birmingham-rep --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for barriers-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-snowflake-birmingham-rep-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-the-snowflake-birmingham-rep --outlet=west-end-best-friend",
+        "description": "BRO-6571: ingest west-end-best-friend review for the-snowflake-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=attachment-liverpool-everyman-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-attachment-liverpool-everyman --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for attachment-liverpool-everyman-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sweeney-todd-birmingham-rep-regional-2026 --url=https://www.whatsonstage.com/news/sweeney-todd-with-ramin-karimloo-and-meow-meow-at-birmingham-rep-review_1727408/ --outlet=whatsonstage",
+        "description": "BRO-6571: ingest whatsonstage review for sweeney-todd-birmingham-rep-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bhangra-nation-birmingham-rep-regional-2024 --url=https://www.whatsonstage.com/news/bhangra-nation-at-birmingham-rep-review-a-firecracker-of-energy-and-enthusiasm_1579460/ --outlet=whatsonstage",
+        "description": "BRO-6571: ingest whatsonstage review for bhangra-nation-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bhangra-nation-birmingham-rep-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-bhangra-nation-birmingham-rep --outlet=west-end-best-friend",
+        "description": "BRO-6571: ingest west-end-best-friend review for bhangra-nation-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bhangra-nation-birmingham-rep-regional-2024 --url=https://www.allthatdazzles.co.uk/post/review-bhangra-nation-a-new-musical-birmingham-rep --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for bhangra-nation-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=withnail-and-i-birmingham-rep-regional-2024 --url=https://www.allthatdazzles.co.uk/post/review-withnail-and-i-birmingham-rep --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for withnail-and-i-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=withnail-and-i-birmingham-rep-regional-2024 --url=https://theartsdesk.com/theatre/withnail-and-i-birmingham-rep-review-bruce-robinsons-1987-film-makes-theatrical-hit --outlet=artsdesk",
+        "description": "BRO-6571: ingest artsdesk review for withnail-and-i-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=becoming-nancy-birmingham-rep-regional-2024 --url=https://www.allthatdazzles.co.uk/post/review-becoming-nancy-birmingham-rep --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for becoming-nancy-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=becoming-nancy-birmingham-rep-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-becoming-nancy-birmingham-rep --outlet=west-end-best-friend",
+        "description": "BRO-6571: ingest west-end-best-friend review for becoming-nancy-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=becoming-nancy-birmingham-rep-regional-2024 --url=https://www.whatsonstage.com/news/becoming-nancy-musical-at-birmingham-rep-review_1640863/ --outlet=whatsonstage",
+        "description": "BRO-6571: ingest whatsonstage review for becoming-nancy-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=spitfire-girls-birmingham-rep-regional-2025 --url=https://www.allthatdazzles.co.uk/post/review-spitfire-girls-birmingham-rep --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for spitfire-girls-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=to-move-in-time-birmingham-rep-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-to-move-in-time-birmingham-rep --outlet=west-end-best-friend",
+        "description": "BRO-6571: ingest west-end-best-friend review for to-move-in-time-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jekyll-and-hyde-liverpool-everyman-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-jekyll-and-hyde-liverpool-everyman --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for jekyll-and-hyde-liverpool-everyman-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-vagina-monologues-crucible-regional-2025 --url=https://everything-theatre.co.uk/2025/07/review-the-vagina-monologues-crucible-theatre-sheffield/ --outlet=everything-theatre",
+        "description": "BRO-6571: ingest everything-theatre review for the-vagina-monologues-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-my-pretty-ones-birmingham-rep-regional-2025 --url=https://www.allthatdazzles.co.uk/post/review-all-my-pretty-ones-birmingham-rep --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for all-my-pretty-ones-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-me-how-it-ends-liverpool-everyman-regional-2024 --url=https://www.whatsonstage.com/news/tell-me-how-it-ends-at-liverpool-everyman-review_1605492/ --outlet=whatsonstage",
+        "description": "BRO-6571: ingest whatsonstage review for tell-me-how-it-ends-liverpool-everyman-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=death-of-a-salesman-liverpool-everyman-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-death-of-a-salesman-liverpool-everyman --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for death-of-a-salesman-liverpool-everyman-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-thousand-splendid-suns-birmingham-rep-regional-2025 --url=https://www.whatsonstage.com/news/a-thousand-splendid-suns-at-birmingham-rep-review_1674047/ --outlet=whatsonstage",
+        "description": "BRO-6571: ingest whatsonstage review for a-thousand-splendid-suns-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-a-christmas-carol-a-ghost-story-birmingham-rep --outlet=west-end-best-friend",
+        "description": "BRO-6571: ingest west-end-best-friend review for a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oasis-vs-blur-comedy-the-battle-birmingham-rep-regional-2026 --url=https://www.whatsonstage.com/news/oasis-vs-blur-comedy-the-battle-at-birmingham-rep-review_1712547/ --outlet=whatsonstage",
+        "description": "BRO-6571: ingest whatsonstage review for oasis-vs-blur-comedy-the-battle-birmingham-rep-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=showstopper-the-improvised-musical-crucible-regional-2025 --url=https://everything-theatre.co.uk/2025/06/review-showstopper-the-improvised-musical-crucible-theatre-sheffield/ --outlet=everything-theatre",
+        "description": "BRO-6571: ingest everything-theatre review for showstopper-the-improvised-musical-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025 --url=https://www.allthatdazzles.co.uk/post/review-sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep --outlet=all-that-dazzles-uk",
+        "description": "BRO-6571: ingest all-that-dazzles-uk review for sherlock-holmes-and-the-12-days-of-christmas-birmingham-rep-regional-2025"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T07:04:33.204Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

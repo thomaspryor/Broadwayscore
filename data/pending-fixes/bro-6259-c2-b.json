@@ -1,0 +1,800 @@
+{
+  "issueNumber": "bro-6259-c2-b",
+  "planId": "2aca24f2-14c7-4269-84d1-e105650372ba",
+  "status": "applied",
+  "createdAt": "2026-10-26T23:49:21.481Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6259 cohort 2: add 82 Off-Broadway shows that opened 2023-06 to 2024-05 (TheaterMania listings, Playbill-validated) (part 2 of 4)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "infinite-life-off-broadway-2023",
+          "title": "Infinite Life",
+          "slug": "infinite-life-off-broadway-2023",
+          "venue": "Atlantic Theater Company/Linda Gross Theater",
+          "previewsStartDate": "2023-08-18",
+          "openingDate": "2023-09-12",
+          "closingDate": "2023-10-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/infinite-life-off-broadway-atlantic-theater-company-linda-gross-theater-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/infinite-life_1712700/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "pay-the-writer-off-broadway-2023",
+          "title": "Pay the Writer",
+          "slug": "pay-the-writer-off-broadway-2023",
+          "venue": "The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre",
+          "previewsStartDate": "2023-08-13",
+          "openingDate": "2023-08-21",
+          "closingDate": "2023-09-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/pay-the-writer-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/pay-the-writer_1711603/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "prometheus-firebringer-off-broadway-2023",
+          "title": "Prometheus Firebringer",
+          "slug": "prometheus-firebringer-off-broadway-2023",
+          "venue": "Theatre for a New Audience @ Polonsky Shakespeare Center",
+          "previewsStartDate": "2023-09-15",
+          "openingDate": "2023-09-15",
+          "closingDate": "2023-10-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/prometheus-firebringer-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/prometheus-firebringer_1711511/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "death-let-me-do-my-show-off-broadway-2023",
+          "title": "Death, Let Me Do My Show",
+          "slug": "death-let-me-do-my-show-off-broadway-2023",
+          "venue": "Lucille Lortel Theatre",
+          "previewsStartDate": "2023-09-06",
+          "openingDate": "2023-09-14",
+          "closingDate": "2023-09-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/death-let-me-do-my-show-off-broadway-lucille-lortel-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/death-let-me-do-my-show_1711506/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "covenant-off-broadway-2023",
+          "title": "Covenant",
+          "slug": "covenant-off-broadway-2023",
+          "venue": "Roundabout Theatre Company - Black Box Theatre",
+          "previewsStartDate": "2023-10-05",
+          "openingDate": "2023-10-26",
+          "closingDate": "2023-12-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/covenant-off-broadway-roundabout-theatre-company-black-box-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/covenant_1710564/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-refuge-plays-off-broadway-2023",
+          "title": "The Refuge Plays",
+          "slug": "the-refuge-plays-off-broadway-2023",
+          "venue": "Roundabout Theatre Company - Laura Pels Theatre",
+          "previewsStartDate": "2023-09-14",
+          "openingDate": "2023-10-04",
+          "closingDate": "2023-11-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-refuge-plays-off-broadway-roundabout-theatre-company-laura-pels-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-refuge-plays_1710559/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "here-we-are-off-broadway-2023",
+          "title": "Here We Are",
+          "slug": "here-we-are-off-broadway-2023",
+          "venue": "The Shed",
+          "previewsStartDate": "2023-09-28",
+          "openingDate": "2023-10-22",
+          "closingDate": "2024-01-21",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/here-we-are-off-broadway-the-shed-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/here-we-are_1708504/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "swing-state-off-broadway-2023",
+          "title": "Swing State",
+          "slug": "swing-state-off-broadway-2023",
+          "venue": "Minetta Lane Theatre",
+          "previewsStartDate": "2023-09-08",
+          "openingDate": "2023-09-17",
+          "closingDate": "2023-10-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/swing-state-off-broadway-minetta-lane-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/swing-state_1708232/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-creeps-off-broadway-2023",
+          "title": "The Creeps",
+          "slug": "the-creeps-off-broadway-2023",
+          "venue": "Playhouse 46 at St. Luke's",
+          "previewsStartDate": "2023-09-01",
+          "openingDate": "2023-09-07",
+          "closingDate": "2023-11-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-creeps-off-broadway-playhouse-46-at-st-lukes-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-creeps_1707643/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lets-call-her-patty-off-broadway-2023",
+          "title": "Let's Call Her Patty",
+          "slug": "lets-call-her-patty-off-broadway-2023",
+          "venue": "Claire Tow Theater",
+          "previewsStartDate": "2023-07-15",
+          "openingDate": "2023-07-31",
+          "closingDate": "2023-08-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/lets-call-her-patty-off-broadway-claire-tow-theater-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/lets-call-her-patty_1706477/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "toros-off-broadway-2023",
+          "title": "Toros",
+          "slug": "toros-off-broadway-2023",
+          "venue": "McGinn/Cazale Theatre",
+          "previewsStartDate": "2023-07-18",
+          "openingDate": "2023-08-01",
+          "closingDate": "2023-08-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/toros-off-broadway-mcginn-cazale-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/toros_1706244/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sesame-street-the-musical-off-broadway-2023",
+          "title": "Sesame Street: The Musical",
+          "slug": "sesame-street-the-musical-off-broadway-2023",
+          "venue": "Theater 555",
+          "previewsStartDate": "2023-07-29",
+          "openingDate": "2023-07-29",
+          "closingDate": "2023-12-31",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/sesame-street-the-musical-off-broadway-theater-555-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sesame-street-the-musical_1706037/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "orpheus-descending-off-broadway-2023",
+          "title": "Orpheus Descending",
+          "slug": "orpheus-descending-off-broadway-2023",
+          "venue": "Theatre for a New Audience @ Polonsky Shakespeare Center",
+          "previewsStartDate": "2023-07-09",
+          "openingDate": "2023-07-18",
+          "closingDate": "2023-08-06",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/orpheus-descending-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/orpheus-descending_1705690/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-doctor-off-broadway-2023",
+          "title": "The Doctor",
+          "slug": "the-doctor-off-broadway-2023",
+          "venue": "Park Avenue Armory",
+          "previewsStartDate": "2023-06-03",
+          "openingDate": "2023-06-13",
+          "closingDate": "2023-08-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-doctor-off-broadway-park-avenue-armory-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-doctor_1705675/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "flex-off-broadway-2023",
+          "title": "Flex",
+          "slug": "flex-off-broadway-2023",
+          "venue": "Mitzi E. Newhouse Theater",
+          "previewsStartDate": "2023-06-23",
+          "openingDate": "2023-07-20",
+          "closingDate": "2023-08-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/flex-off-broadway-mitzi-e-newhouse-theater-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/flex_1705610/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "i-can-get-it-for-you-wholesale-off-broadway-2023",
+          "title": "I Can Get It for You Wholesale",
+          "slug": "i-can-get-it-for-you-wholesale-off-broadway-2023",
+          "venue": "Classic Stage Company",
+          "previewsStartDate": "2023-10-10",
+          "openingDate": "2023-10-30",
+          "closingDate": "2023-12-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/i-can-get-it-for-you-wholesale-off-broadway-classic-stage-company-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/i-can-get-it-for-you-wholesale_1704982/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-half-god-of-rainfall-off-broadway-2023",
+          "title": "The Half-God of Rainfall",
+          "slug": "the-half-god-of-rainfall-off-broadway-2023",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2023-07-13",
+          "openingDate": "2023-07-31",
+          "closingDate": "2023-08-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-half-god-of-rainfall-off-broadway-new-york-theatre-workshop-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-half-god-of-rainfall_1704821/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cat-kid-comic-club-the-musical-off-broadway-2023",
+          "title": "Cat Kid Comic Club: The Musical",
+          "slug": "cat-kid-comic-club-the-musical-off-broadway-2023",
+          "venue": "Lucille Lortel Theatre",
+          "previewsStartDate": "2023-07-21",
+          "openingDate": "2023-07-30",
+          "closingDate": "2023-08-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/cat-kid-comic-club-the-musical-off-broadway-lucille-lortel-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/cat-kid-comic-club-the-musical_1704004/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-saviour-off-broadway-2023",
+          "title": "The Saviour",
+          "slug": "the-saviour-off-broadway-2023",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2023-07-01",
+          "openingDate": "2023-07-13",
+          "closingDate": "2023-08-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-saviour-off-broadway-irish-repertory-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-saviour_1702200/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "triple-threat-off-broadway-2023",
+          "title": "Triple Threat",
+          "slug": "triple-threat-off-broadway-2023",
+          "venue": "Theatre Row Theatre",
+          "previewsStartDate": "2023-06-17",
+          "openingDate": "2023-06-23",
+          "closingDate": "2023-07-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/triple-threat-off-broadway-theatre-row-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/triple-threat_1702190/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-gospel-according-to-heather-off-broadway-2023",
+          "title": "The Gospel According to Heather",
+          "slug": "the-gospel-according-to-heather-off-broadway-2023",
+          "venue": "Theater 555",
+          "previewsStartDate": "2023-06-14",
+          "openingDate": "2023-06-22",
+          "closingDate": "2023-07-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-gospel-according-to-heather-off-broadway-theater-555-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-gospel-according-to-heather_1699669/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "stargazers-off-broadway-2024",
+          "title": "Stargazers",
+          "slug": "stargazers-off-broadway-2024",
+          "venue": "Connelly Theatre",
+          "previewsStartDate": "2024-04-08",
+          "openingDate": "2024-04-20",
+          "closingDate": "2024-05-10",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/stargazers-off-broadway-connelly-theatre-2024",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/stargazers_1737888/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "still-off-broadway-2024",
+          "title": "Still",
+          "slug": "still-off-broadway-2024",
+          "venue": "DR2 Theatre",
+          "previewsStartDate": "2024-04-13",
+          "openingDate": "2024-04-18",
+          "closingDate": "2024-05-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/still-off-broadway-dr2-theatre-2024",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/still_1737582/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "just-another-day-off-broadway-2024",
+          "title": "Just Another Day",
+          "slug": "just-another-day-off-broadway-2024",
+          "venue": "Theater 555",
+          "previewsStartDate": "2024-05-03",
+          "openingDate": "2024-05-12",
+          "closingDate": "2024-06-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/just-another-day-off-broadway-theater-555-2024",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/just-another-day_1737236/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "scarlett-dreams-off-broadway-2024",
+          "title": "Scarlett Dreams",
+          "slug": "scarlett-dreams-off-broadway-2024",
+          "venue": "Greenwich House Theater",
+          "previewsStartDate": "2024-04-03",
+          "openingDate": "2024-04-15",
+          "closingDate": "2024-05-26",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-26T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/scarlett-dreams-off-broadway-greenwich-house-theater-2024",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/scarlett-dreams_1736247/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-27T00:10:39.560Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added infinite-life-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added pay-the-writer-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added prometheus-firebringer-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-let-me-do-my-show-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added covenant-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-refuge-plays-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added here-we-are-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added swing-state-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-creeps-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lets-call-her-patty-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added toros-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sesame-street-the-musical-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added orpheus-descending-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-doctor-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added flex-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added i-can-get-it-for-you-wholesale-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-half-god-of-rainfall-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cat-kid-comic-club-the-musical-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-saviour-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added triple-threat-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-gospel-according-to-heather-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added stargazers-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added still-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added just-another-day-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added scarlett-dreams-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

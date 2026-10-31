@@ -1,0 +1,357 @@
+{
+  "issueNumber": "bro-4599-e",
+  "planId": "ab1b684d-5ce4-4f71-b6e4-a04b4916e375",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Articles filed under 2+ shows with one shared pull quote (audit-shared-url-quote.js): give each show its own section quote and score, flag misfiled copies, human-clear flags that misread a multi-show column. Part 5 of 6.",
+    "steps": [
+      "the-audience-2015: per-show fix",
+      "the-cher-show-2018: per-show fix",
+      "the-lost-boys-2026: per-show fix",
+      "the-pass-off-broadway-2026: per-show fix",
+      "the-rose-tattoo-2019: per-show fix",
+      "the-sound-inside-2019: per-show fix",
+      "the-visit-2015: per-show fix",
+      "titanique-2026: per-show fix",
+      "twelfth-night-2013: per-show fix",
+      "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025: per-show fix",
+      "waiting-for-godot-2013: per-show fix"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-audience-2015/newyorker--hilton-als.json",
+        "field": "llmPullQuote",
+        "oldValue": "The director, Anna D. Shapiro, moves bodies around the stage with little visible evidence that she’s concerned about their inner lives, and rarely steps outside the Broadway machinery to reënvision the dreck she’s stuck with.",
+        "newValue": "There is nothing like watching a great director with a great star; the relationship can and often does transcend weak material.",
+        "description": "Audience section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-audience-2015/newyorker--hilton-als.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 82,
+        "description": "section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-audience-2015/newyorker--hilton-als.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: The Audience section is positive: praises Daldry staging and Mirren's controlled, comic Queen; reservation on Ivey's Thatcher.",
+        "description": "explain section-only score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cher-show-2018/wsj--terry-teachout.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 25,
+        "description": "section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cher-show-2018/wsj--terry-teachout.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Cher Show section is a pan: glitzy but devoid of wit, clunky storytelling, bland staging; only the Chers praised.",
+        "description": "explain section-only score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/latimes--charles-mcnulty.json",
+        "field": "llmPullQuote",
+        "oldValue": "And this bawdy crowd-pleaser at least has the courage of its crackpot convictions.",
+        "newValue": "Something preciously human survives the supernatural barrage, and it's this tender quality that rescues \"The Lost Boys\" from the jaws of vampire musical defeat.",
+        "description": "Lost Boys section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/latimes--charles-mcnulty.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 80,
+        "description": "section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/latimes--charles-mcnulty.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Lost Boys section is positive: critic was won over, staging a marvel and leads electric, despite an overstuffed second act and weak coda.",
+        "description": "explain section-only score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/la-voce-di-new-york--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 40,
+        "description": "2/5 stars for The Pass"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/la-voce-di-new-york--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Three-play roundup, The Pass section rated 2/5 stars: fine actors hampered by script and direction; 40.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/la-voce-di-new-york--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "JK Clarke",
+        "description": "BRO-4599: byline of the shared article (same critic as the sibling file)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-rose-tattoo-2019/frontmezzjunkies--steven-ross.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: mis-flag: article has a full Rose Tattoo section with its own verdict; caller may drop if already-flagged files must stay untouched"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-rose-tattoo-2019/frontmezzjunkies--steven-ross.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 38,
+        "description": "section verdict negative"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-rose-tattoo-2019/frontmezzjunkies--steven-ross.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Rose Tattoo section is negative: cluttered, loud, misdirected production; Tomei and some supporting players spared.",
+        "description": "explains section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sound-inside-2019/frontmezzjunkies--steven-ross.json",
+        "field": "llmPullQuote",
+        "oldValue": "Tomei had to struggle against a troubling application of The Rose Tattoo in order for her to showcase her talented wisdom of characterization.",
+        "newValue": "It never gives it away, nor holds our hand as we move forward into the unknown, and it is all done with such strange intimate power.",
+        "description": "from The Sound Inside section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-visit-2015/deadline--jeremy-gerard.json",
+        "field": "llmPullQuote",
+        "oldValue": "But D’Amour, while clearly sympathetic to her characters, conjures a world too neatly balanced, too eccentric, too oddly wholesome.",
+        "newValue": "I can’t imagine this show appealing to a Broadway audience seeking upbeat thrills, but I’m glad it finally made it here.",
+        "description": "shared quote came from the Airline Highway section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-visit-2015/deadline--jeremy-gerard.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 66,
+        "description": "section mixes praise for the deepened show with sharp reservations on performances"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-visit-2015/deadline--jeremy-gerard.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Two-show column. The Visit section: show has deepened, score is beautiful, but Rees singing is painful and appeal is doubted; mixed-positive, 66.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/latimes--charles-mcnulty.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 42,
+        "description": "section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/latimes--charles-mcnulty.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Titanique section is negative: critic wanted to jump ship early, found humor repetitive, concedes crowd appeal and conviction.",
+        "description": "explain section-only score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-2013/ew--thom-geier.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 90,
+        "description": "section verdict rave"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-2013/ew--thom-geier.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Twelfth Night section is a rave: comic approach works best here, called a triumph.",
+        "description": "explains section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-2013/timeout--david-cote.json",
+        "field": "llmPullQuote",
+        "oldValue": "They achieve a spectacle of surpassing elegance and buoyancy: We see a classic comedy and a bloody tragedy in their pure Shakespearean glory.",
+        "newValue": "The performances are all pitched perfectly between light comedy and pensive melancholy, which is precisely where Twelfth Night lives.",
+        "description": "from Twelfth Night section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nysr--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4599: November 2025 Longacre Broadway review, not the mid-2025 A.R.T. Cambridge regional run",
+        "description": "flag had no reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/ew--thom-geier.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: mis-flag: review is of the 2013 McKellen/Stewart Broadway Godot (same production id); caller may drop if already-flagged files must stay untouched"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:56:23.132Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-audience-2015/newyorker--hilton-als.json llmPullQuote: \"The director, Anna D. Shapiro, moves bodies around the stage with little visible evidence that she’s concerned about their inner lives, and rarely steps outside the Broadway machinery to reënvision the dreck she’s stuck with.\" -> \"There is nothing like watching a great director with a great star; the relationship can and often does transcend weak material.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-audience-2015/newyorker--hilton-als.json humanReviewScore: null -> 82"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-audience-2015/newyorker--hilton-als.json humanReviewNote: null -> \"BRO-4599: The Audience section is positive: praises Daldry staging and Mirren's controlled, comic Queen; reservation on Ivey's Thatcher.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cher-show-2018/wsj--terry-teachout.json humanReviewScore: null -> 25"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cher-show-2018/wsj--terry-teachout.json humanReviewNote: null -> \"BRO-4599: Cher Show section is a pan: glitzy but devoid of wit, clunky storytelling, bland staging; only the Chers praised.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/latimes--charles-mcnulty.json llmPullQuote: \"And this bawdy crowd-pleaser at least has the courage of its crackpot convictions.\" -> \"Something preciously human survives the supernatural barrage, and it's this tender quality that rescues \\\"The Lost Boys\\\" from the jaws of vampire musical defeat.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/latimes--charles-mcnulty.json humanReviewScore: null -> 80"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/latimes--charles-mcnulty.json humanReviewNote: null -> \"BRO-4599: Lost Boys section is positive: critic was won over, staging a marvel and leads electric, despite an overstuffed second act and weak coda.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/la-voce-di-new-york--unknown.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/la-voce-di-new-york--unknown.json humanReviewNote: null -> \"BRO-4599: Three-play roundup, The Pass section rated 2/5 stars: fine actors hampered by script and direction; 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/la-voce-di-new-york--unknown.json criticName: \"Unknown\" -> \"JK Clarke\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rose-tattoo-2019/frontmezzjunkies--steven-ross.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rose-tattoo-2019/frontmezzjunkies--steven-ross.json humanReviewScore: null -> 38"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rose-tattoo-2019/frontmezzjunkies--steven-ross.json humanReviewNote: null -> \"BRO-4599: Rose Tattoo section is negative: cluttered, loud, misdirected production; Tomei and some supporting players spared.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sound-inside-2019/frontmezzjunkies--steven-ross.json llmPullQuote: \"Tomei had to struggle against a troubling application of The Rose Tattoo in order for her to showcase her talented wisdom of characterization.\" -> \"It never gives it away, nor holds our hand as we move forward into the unknown, and it is all done with such strange intimate power.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-2015/deadline--jeremy-gerard.json llmPullQuote: \"But D’Amour, while clearly sympathetic to her characters, conjures a world too neatly balanced, too eccentric, too oddly wholesome.\" -> \"I can’t imagine this show appealing to a Broadway audience seeking upbeat thrills, but I’m glad it finally made it here.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-2015/deadline--jeremy-gerard.json humanReviewScore: null -> 66"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-2015/deadline--jeremy-gerard.json humanReviewNote: null -> \"BRO-4599: Two-show column. The Visit section: show has deepened, score is beautiful, but Rees singing is painful and appeal is doubted; mixed-positive, 66.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/latimes--charles-mcnulty.json humanReviewScore: null -> 42"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/latimes--charles-mcnulty.json humanReviewNote: null -> \"BRO-4599: Titanique section is negative: critic wanted to jump ship early, found humor repetitive, concedes crowd appeal and conviction.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-2013/ew--thom-geier.json humanReviewScore: null -> 90"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-2013/ew--thom-geier.json humanReviewNote: null -> \"BRO-4599: Twelfth Night section is a rave: comic approach works best here, called a triumph.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-2013/timeout--david-cote.json llmPullQuote: \"They achieve a spectacle of surpassing elegance and buoyancy: We see a classic comedy and a bloody tragedy in their pure Shakespearean glory.\" -> \"The performances are all pitched perfectly between light comedy and pensive melancholy, which is precisely where Twelfth Night lives.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nysr--unknown.json wrongProductionReason: null -> \"BRO-4599: November 2025 Longacre Broadway review, not the mid-2025 A.R.T. Cambridge regional run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/ew--thom-geier.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-5091",
+  "planId": "7c309162-e7bd-45d8-91e2-ac1d1e3ccc84",
+  "status": "applied",
+  "createdAt": "2026-10-11T22:23:14.298Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Merrily We Roll Along: cite its weekly nut (about $950,000, Broadway Journal)",
+    "steps": [
+      "Add the Broadway Journal citation and a trade-reported methodology to Merrily's existing $950,000 weekly running cost"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Nov 6, 2023): \"Merrily We Roll Along -- produced by ATG subsidiary Sonia Friedman Productions -- has a weekly nut of about $950,000, according to a production estimate.\" https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
+        "description": "merrily: weekly nut cited from a production estimate reported by Broadway Journal, quote checked on the page (BRO-5091)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": "trade-reported",
+        "description": "merrily: weekly nut cited from a production estimate reported by Broadway Journal, quote checked on the page (BRO-5091)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T01:17:20.303Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for merrily-we-roll-along"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for merrily-we-roll-along"
+    }
+  ]
+}

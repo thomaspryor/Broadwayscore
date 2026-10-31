@@ -1,0 +1,257 @@
+{
+  "generatedAt": "2026-10-31T11:21:32.926Z",
+  "threshold": 50,
+  "summary": {
+    "totalSyndicatedPairs": 0,
+    "newlyFlagged": 0,
+    "alreadyFlagged": 0,
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
+    "avgScoreDiff": 0
+  },
+  "syndicationPairs": [
+    {
+      "critic": "chris jones",
+      "primaryOutlet": "chicagotribune",
+      "secondaryOutlets": [
+        "nydailynews"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "kathleen campion",
+      "primaryOutlet": "nytg",
+      "secondaryOutlets": [
+        "front-row-center"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "tulis mccall",
+      "primaryOutlet": "nytg",
+      "secondaryOutlets": [
+        "front-row-center"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "stanford friedman",
+      "primaryOutlet": "nytg",
+      "secondaryOutlets": [
+        "front-row-center"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "david rooney",
+      "primaryOutlet": "hollywood-reporter",
+      "secondaryOutlets": [
+        "reuters"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "alexandra lipari",
+      "primaryOutlet": "newsday",
+      "secondaryOutlets": [
+        "entertainmenthour"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "zachary stewart",
+      "primaryOutlet": "theatermania",
+      "secondaryOutlets": [
+        "whatsonstage"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "david gordon",
+      "primaryOutlet": "theatermania",
+      "secondaryOutlets": [
+        "whatsonstage"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "mark kennedy",
+      "primaryOutlet": "ap",
+      "secondaryOutlets": [
+        "abc-news",
+        "collider",
+        "washington-times",
+        "minneapolis-star-tribune",
+        "washpost",
+        "sfgate",
+        "huffpost",
+        "seattle-post-intelligencer",
+        "news-tribune",
+        "npr",
+        "boston-com",
+        "abscbnnewscom"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "jennifer farrar",
+      "primaryOutlet": "ap",
+      "secondaryOutlets": [
+        "abc-news",
+        "minneapolis-star-tribune"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "jocelyn noveck",
+      "primaryOutlet": "ap",
+      "secondaryOutlets": [
+        "seattle-post-intelligencer"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "jonathan mandell",
+      "primaryOutlet": "nyt-theater",
+      "secondaryOutlets": [
+        "dctheatrescene",
+        "faster-times"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "simon jenner",
+      "primaryOutlet": "fringereview",
+      "secondaryOutlets": [
+        "viewfromthegods"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "samantha genzer",
+      "primaryOutlet": "boston-com",
+      "secondaryOutlets": [
+        "newsbreak"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "thom geier",
+      "primaryOutlet": "thewrap",
+      "secondaryOutlets": [
+        "culturesauce"
+      ],
+      "count": 0
+    },
+    {
+      "critic": "david cote",
+      "primaryOutlet": "timeout",
+      "secondaryOutlets": [
+        "ny1"
+      ],
+      "count": 0
+    }
+  ],
+  "flagged": [],
+  "authorMismatches": [
+    {
+      "showId": "birthday-candles-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "file": "nytimes--michael-paulson.json",
+      "fileCritic": "michael-paulson",
+      "detectedAuthor": "Jason Zinoman",
+      "pattern": "tail"
+    },
+    {
+      "showId": "frozen-2018",
+      "file": "insidethemagic--cristina-sanza.json",
+      "fileCritic": "cristina-sanza",
+      "detectedAuthor": "Theater Cristina",
+      "pattern": "tail"
+    },
+    {
+      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "fileCritic": "david-rooney",
+      "detectedAuthor": "Frank Scheck",
+      "pattern": "head"
+    },
+    {
+      "showId": "how-i-learned-to-drive-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    },
+    {
+      "showId": "julie-west-end-2018",
+      "file": "sunday-times--jane-edwardes.json",
+      "fileCritic": "jane-edwardes",
+      "detectedAuthor": "Polly Stenham",
+      "pattern": "head"
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "file": "frostmagazine--margaret-graham.json",
+      "fileCritic": "margaret-graham",
+      "detectedAuthor": "Paul Vates",
+      "pattern": "tail"
+    },
+    {
+      "showId": "murder-she-didnt-write-west-end-2025",
+      "file": "guardian--kate-wyver.json",
+      "fileCritic": "kate-wyver",
+      "detectedAuthor": "Pip Williams",
+      "pattern": "tail"
+    },
+    {
+      "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+      "file": "sunday-times--jane-edwardes.json",
+      "fileCritic": "jane-edwardes",
+      "detectedAuthor": "David Lev",
+      "pattern": "head"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "theater-scene--deirdre-donovan.json",
+      "fileCritic": "deirdre-donovan",
+      "detectedAuthor": "Marc Bruni",
+      "pattern": "head"
+    },
+    {
+      "showId": "the-mentor-west-end-2017",
+      "file": "nytimes--matt-wolf.json",
+      "fileCritic": "matt-wolf",
+      "detectedAuthor": "Christopher Hampton",
+      "pattern": "head"
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    },
+    {
+      "showId": "this-is-not-about-me-off-west-end-2026",
+      "file": "thestage--lyn-gardner.json",
+      "fileCritic": "lyn-gardner",
+      "detectedAuthor": "proves that she",
+      "pattern": "tail"
+    },
+    {
+      "showId": "thoughts-of-a-colored-man-2021",
+      "file": "nytimes--jesse-green.json",
+      "fileCritic": "jesse-green",
+      "detectedAuthor": "Maya Phillips",
+      "pattern": "tail"
+    }
+  ]
+}

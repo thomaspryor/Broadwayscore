@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!-- Dispatch-watchdog health pager (card #1102, plan-review secondary
+     pre-mortem scenario): a cmux app restart kills the crowned OWNER
+     dashboard AND every Stop hook that could resurrect it — the whole
+     ownership mechanism can be silently dead for hours. This launchd tick
+     runs OUTSIDE cmux, so it cannot call the cmux socket pre-restart (ACL),
+     but it CAN read the heartbeat file and email the owner via the alert
+     router; post-restart (password mode) its best-effort ensure-tab also
+     works. -->
+<dict>
+  <key>Label</key>
+  <string>com.broadwayscore.dispatch-watchdog-health</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>/opt/homebrew/bin/node /Users/tompryor/Broadwayscore/scripts/dispatch-watchdog.js --health</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>900</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/tompryor/Library/Logs/dispatch-watchdog-health.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tompryor/Library/Logs/dispatch-watchdog-health.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

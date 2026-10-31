@@ -1,0 +1,70 @@
+name: Visual Approval Land
+
+# BRO-6241: ships a website change the owner approved from the decision list or
+# email. A worker parks the change on visual-hold/bro-n and asks "does this look
+# right?" (scripts/visual-approval.js). When the owner taps Approve, the server
+# writes a signed "Visual approval ref VQA<mac>" comment; this job verifies it
+# with APPROVAL_HMAC_SECRET, checks the held branch still has the approved
+# patch-id, and pushes it to land/bro-n-visual so land.yml gates and ships it.
+# Also removes requests nobody answered in 14 days. No Claude session involved.
+
+on:
+  schedule:
+    - cron: '11,31,51 * * * *'
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # redispatch-after-hours: 0.75  (BRO-6244: an owner-approved change must not wait on GitHub's dropped schedules)
+        # Set by scripts/cron-redispatch.js when no run was created in the band. Nothing branches
+        # on the trigger: the lander is idempotent (landed markers, one concurrency group).
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
+      dry_run:
+        description: 'Dry run (no pushes, no Linear writes)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: visual-approval-land
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  land:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # Full commit graph (patch-id needs the merge-base with main) but no
+          # historical blobs: a plain fetch-depth 0 takes ~35 min on this repo
+          # and hit the 10 min timeout on both dry runs (land.yml, BRO-423).
+          fetch-depth: 0
+          filter: blob:none
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Land approved visual changes
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          args=""
+          if [ "$DRY_RUN" = "true" ]; then args="--dry-run"; fi
+          node scripts/visual-approval-land.js $args
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Visual Approval Land Failed'
+          severity: 'warning'

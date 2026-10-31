@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-5782",
+  "planId": "d2e7f3d2-186f-47d0-9fc2-9a80fcb43772",
+  "status": "applied",
+  "createdAt": "2026-10-20T16:09:51.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5782: purpose-2025 recoupedSource and notes say it recouped 'about nine months after closing'. Broadway News (Jun 4 2026) gives the announcement date and no recoupment date, so the nine months is the gap between closing and the report. Reword both to say it was reported nine months after closing; the /biz table now shows a ~24 week estimate for Purpose, and the show page must not contradict it.",
+    "steps": [
+      "Compare-and-set commercial.json recoupedSource for purpose-2025: 'recouped ... about nine months after closing' becomes 'reported about nine months after closing that it recouped ...'.",
+      "Compare-and-set commercial.json notes for purpose-2025: same sentence, plus 'No source dates the recoupment itself.'"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "field": "recoupedSource",
+        "oldValue": "Deadline, Broadway News, Playbill (Jun 2026): recouped its $5.25M capitalization about nine months after closing, from operating profit plus the NY State Broadway tax credit.",
+        "newValue": "Deadline, Broadway News, Playbill (Jun 2026): reported about nine months after closing that it recouped its $5.25M capitalization, from run profits plus the NY State Broadway tax credit.",
+        "description": "Say the nine months is the report timing, not a sourced recoupment date (Broadway News Jun 4 2026 gives the announcement only)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "field": "notes",
+        "oldValue": "Commercial Broadway transfer of the Steppenwolf production (lead producer David Stone) at the Helen Hayes, Feb 25 to Aug 31, 2025. Won the 2025 Tony for Best Play and the Pulitzer Prize. Recouped its $5.25M capitalization about nine months after closing, helped by the revived NY State Broadway tax credit (Deadline, Jun 2026).",
+        "newValue": "Commercial Broadway transfer of the Steppenwolf production (lead producer David Stone) at the Helen Hayes, Feb 25 to Aug 31, 2025. Won the 2025 Tony for Best Play and the Pulitzer Prize. Reported in Jun 2026, about nine months after closing, that it had recouped its $5.25M capitalization, helped by the revived NY State Broadway tax credit (Deadline, Jun 2026). No source dates the recoupment itself.",
+        "description": "Same wording fix in the research notes shown under Show details."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T16:54:22.195Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for purpose-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

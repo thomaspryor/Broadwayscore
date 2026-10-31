@@ -1,0 +1,68 @@
+{
+  "issueNumber": "bro-5254-c",
+  "planId": "41e07c44-2e5e-4f5b-bb51-356dd1aec244",
+  "status": "applied",
+  "createdAt": "2026-10-13T23:51:48.408Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5254 full batch. (1) Keep the pre-strip score on the sample rows whose rescore moved 5+ points or changed bucket (the strip removes no review content; parent hand-read ragtime-1998/variety--greg-evans and found the old Mixed 62 fits better than the new 71 from a 2-of-3 split). (2) Strip the Variety promo modules, and an exactly repeated lead paragraph (excerpt prepended to the body), from all remaining live Variety review texts. Sample A/B on 29 live rows (llm-ensemble run 38484508649, $0.64): mean drift +0.55, max bucket share shift 3.4pts, 1 bucket change, PASS. Every stripped row is rescored next with llm-ensemble, then --restore-big-moves runs again. Three strip actions of up to 200 rows each keep each run under the 5-minute run-script cap; later ones pick up what earlier ones left. Refused rows are left for a refetch.",
+    "steps": [
+      "Run strip-variety-promo-bleed.js --restore-big-moves --apply (sample rows).",
+      "Run strip-variety-promo-bleed.js --apply --limit=200 three times.",
+      "Dispatch llm-ensemble-score.yml needs_rescore=true rescore_reason=variety-promo-bleed, then --restore-big-moves --apply, --ab, scoring-delta.js and test-temporal-override-regression.js."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--restore-big-moves --apply",
+        "description": "BRO-5254: keep the pre-strip score where the sample rescore moved 5+ or changed bucket"
+      },
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-5254: strip promo modules and duplicated lead paragraphs from the remaining live Variety review texts (batch 1 of 3)"
+      },
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-5254: strip promo modules and duplicated lead paragraphs from the remaining live Variety review texts (batch 2 of 3)"
+      },
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-5254: strip promo modules and duplicated lead paragraphs from the remaining live Variety review texts (batch 3 of 3)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T00:30:02.604Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
+}

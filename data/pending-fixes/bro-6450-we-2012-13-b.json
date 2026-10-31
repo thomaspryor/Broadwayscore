@@ -1,0 +1,385 @@
+{
+  "issueNumber": "bro-6450-we-2012-13-b",
+  "planId": "d56a6933-efa4-4f01-8343-b0e45f648da8",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:44.992Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 11 closed West End production(s) for 2012-2013 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append doktor-glas-west-end-2013 (Wyndham's Theatre, 2013-04-18 to 2013-05-11)",
+      "Append merrily-we-roll-along-west-end-2013 (Harold Pinter Theatre, 2013-04-23 to 2013-07-31)",
+      "Append the-hothouse-west-end-2013 (Trafalgar Theatre, 2013-05-04 to 2013-08-03)",
+      "Append the-play-that-goes-wrong-west-end-2013 (Trafalgar Theatre, 2013-05-10 to 2013-06-01)",
+      "Append charlie-and-the-chocolate-factory-west-end-2013 (Theatre Royal Drury Lane, 2013-05-18 to 2017-01-07)",
+      "Append relatively-speaking-west-end-2013 (Wyndham's Theatre, 2013-05-20 to 2013-08-31)",
+      "Append the-cripple-of-inishmaan-west-end-2013 (Noël Coward Theatre, 2013-06-08 to 2013-08-31)",
+      "Append fences-west-end-2013 (Duchess Theatre, 2013-06-19 to 2013-09-14)",
+      "Append dirty-dancing-west-end-2013 (Piccadilly Theatre, 2013-07-13 to 2014-02-22)",
+      "Append chimerica-west-end-2013 (Harold Pinter Theatre, 2013-08-06 to 2013-10-19)",
+      "Append a-dolls-house-west-end-2013 (Duke of York's Theatre, 2013-08-14 to 2013-10-26)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "doktor-glas-west-end-2013",
+          "title": "Doktor Glas",
+          "slug": "doktor-glas-west-end-2013",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2013-04-18",
+          "openingDate": "2013-04-18",
+          "closingDate": "2013-05-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.720Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7k3/doktor-glas/production/1525"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "merrily-we-roll-along-west-end-2013",
+          "title": "Merrily We Roll Along",
+          "slug": "merrily-we-roll-along-west-end-2013",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2013-04-23",
+          "openingDate": "2013-04-23",
+          "closingDate": "2013-07-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.741Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/8w6/merrily-we-roll-along/production/12qk"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-hothouse-west-end-2013",
+          "title": "The Hothouse",
+          "slug": "the-hothouse-west-end-2013",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2013-05-04",
+          "openingDate": "2013-05-04",
+          "closingDate": "2013-08-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.764Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/536/the-hothouse/production/1ahb"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-play-that-goes-wrong-west-end-2013",
+          "title": "The Play That Goes Wrong",
+          "slug": "the-play-that-goes-wrong-west-end-2013",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2013-05-10",
+          "openingDate": "2013-05-10",
+          "closingDate": "2013-06-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.794Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/egr/the-play-that-goes-wrong/production/xrj"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "charlie-and-the-chocolate-factory-west-end-2013",
+          "title": "Charlie and the Chocolate Factory",
+          "slug": "charlie-and-the-chocolate-factory-west-end-2013",
+          "venue": "Theatre Royal Drury Lane",
+          "previewsStartDate": "2013-05-18",
+          "openingDate": "2013-05-18",
+          "closingDate": "2017-01-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.821Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7xm/charlie-and-the-chocolate-factory/production/vta"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "relatively-speaking-west-end-2013",
+          "title": "Relatively Speaking",
+          "slug": "relatively-speaking-west-end-2013",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2013-05-20",
+          "openingDate": "2013-05-20",
+          "closingDate": "2013-08-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.844Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4n2/relatively-speaking/production/152a"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-cripple-of-inishmaan-west-end-2013",
+          "title": "The Cripple of Inishmaan",
+          "slug": "the-cripple-of-inishmaan-west-end-2013",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2013-06-08",
+          "openingDate": "2013-06-08",
+          "closingDate": "2013-08-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.866Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/6a2/the-cripple-of-inishmaan/production/12nk"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fences-west-end-2013",
+          "title": "Fences",
+          "slug": "fences-west-end-2013",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2013-06-19",
+          "openingDate": "2013-06-19",
+          "closingDate": "2013-09-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.890Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5tb/fences/production/1339"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dirty-dancing-west-end-2013",
+          "title": "Dirty Dancing",
+          "slug": "dirty-dancing-west-end-2013",
+          "venue": "Piccadilly Theatre",
+          "previewsStartDate": "2013-07-13",
+          "openingDate": "2013-07-13",
+          "closingDate": "2014-02-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.911Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dnb/dirty-dancing/production/v8k"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "chimerica-west-end-2013",
+          "title": "Chimerica",
+          "slug": "chimerica-west-end-2013",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2013-08-06",
+          "openingDate": "2013-08-06",
+          "closingDate": "2013-10-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.932Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fpk/chimerica/production/10k6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-dolls-house-west-end-2013",
+          "title": "A Doll's House",
+          "slug": "a-dolls-house-west-end-2013",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2013-08-14",
+          "openingDate": "2013-08-14",
+          "closingDate": "2013-10-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.954Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e1/a-dolls-house/production/v1e"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T01:01:30.382Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added doktor-glas-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added merrily-we-roll-along-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-hothouse-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-play-that-goes-wrong-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added charlie-and-the-chocolate-factory-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added relatively-speaking-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-cripple-of-inishmaan-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fences-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dirty-dancing-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added chimerica-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-dolls-house-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
+}

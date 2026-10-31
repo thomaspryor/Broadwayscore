@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-6201-b",
+  "planId": "439657ac-d90f-402b-a230-dacc9e584661",
+  "status": "applied",
+  "createdAt": "2026-10-29T01:09:16.619Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Merge lost-diacritic Zo/Zoë Anderson duplicate (an-american-in-paris-west-end-2017, independent)",
+    "steps": [
+      "Delete lost-diacritic byline duplicate: 'Zo Anderson' (Show Score byline) of Zoë Anderson, same Independent article a7645281 and publish date; file is invalid-tier, wrongProduction-flagged, no fullText; keeper independent--zoe-anderson.json has text and score (BRO-4156 double-count shape)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "an-american-in-paris-west-end-2017/independent--zo-anderson.json",
+        "destPath": null,
+        "description": "Delete lost-diacritic byline duplicate: 'Zo Anderson' (Show Score byline) of Zoë Anderson, same Independent article a7645281 and publish date; file is invalid-tier, wrongProduction-flagged, no fullText; keeper independent--zoe-anderson.json has text and score (BRO-4156 double-count shape)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T02:19:25.683Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted an-american-in-paris-west-end-2017/independent--zo-anderson.json"
+    }
+  ],
+  "executedIn": "ci"
+}

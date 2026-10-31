@@ -1,0 +1,124 @@
+name: Evidence Review Catch-up
+
+# BRO-4290: closed Off-West-End rows promoted from audit review evidence
+# start with zero reviews and nothing else gathers them. Each run fetches the
+# one evidence URL for at most 2 such shows (scripts/seed-evidence-review-stubs.js)
+# under a hard monthly cap (EVIDENCE_CATCHUP_MONTHLY_CAP_USD in
+# scripts/lib/evidence-catchup-spend.js). Every 2h keeps a 49-show promotion
+# batch inside ~2 days; a run with no candidates stops after selection.
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Shows this run (max 5; 5 = the CLAUDE.md §8 E2E test)'
+        required: false
+        default: '2'
+        type: string
+      dry_run:
+        description: 'Dry run (no fetches, no writes)'
+        required: false
+        default: false
+        type: boolean
+
+# One run at a time: the spend rollup is read-modify-write, and a queued
+# duplicate of an every-2h job loses nothing when replaced.
+concurrency:
+  group: evidence-review-catchup
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  catchup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 300  # BRO-2388: ledger push from a 30-min job
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Select candidates and check the spend cap
+        id: select
+        env:
+          # The selection step reports which scraper secrets are set (the CLAUDE.md §8 E2E check), so it sees the same ones the fetch step does.
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit || '2' }}
+        run: node scripts/seed-evidence-review-stubs.js --dry-run --limit="${INPUT_LIMIT}"
+
+      - uses: ./.github/actions/checkout-review-texts
+        if: steps.select.outputs.candidates != '0' && github.event.inputs.dry_run != 'true'
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Install dependencies
+        if: steps.select.outputs.candidates != '0' && github.event.inputs.dry_run != 'true'
+        run: npm ci --ignore-scripts
+
+      # ingest-review-from-url.js fetches Playwright-first hosts.
+      - name: Setup Playwright
+        if: steps.select.outputs.candidates != '0' && github.event.inputs.dry_run != 'true'
+        uses: ./.github/actions/setup-playwright
+
+      - name: Fetch evidence reviews
+        if: steps.select.outputs.candidates != '0' && github.event.inputs.dry_run != 'true'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit || '2' }}
+        run: node scripts/seed-evidence-review-stubs.js --limit="${INPUT_LIMIT}"
+
+      - name: Push review texts
+        if: always() && steps.select.outputs.candidates != '0' && github.event.inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "feat: Evidence review catch-up (BRO-4290)"
+
+      # The rollup holds this month's reservations. A lost push would let spend
+      # go unrecorded, so a failure here fails the job loudly; the next run
+      # also refuses to fetch while the ledger shows tagged spend the rollup
+      # lacks (assertRollupCoversLedger).
+      - name: Commit spend rollup
+        if: always() && github.event.inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/evidence-catchup-spend.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No spend rollup changes"
+          else
+            git commit -m "audit: evidence review catch-up spend [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh || { echo "::error::Evidence catch-up spend rollup was NOT pushed; reservations are lost from main and the next run will refuse to fetch until data/audit/evidence-catchup-spend.json is restored"; exit 1; }
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: evidence-review-catchup
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Evidence Review Catch-up Failed'
+          severity: 'warning'

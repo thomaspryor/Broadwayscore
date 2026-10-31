@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-6137-r2-e",
+  "planId": "14dd58e8-0c9d-4a43-8a4c-5695d7ea7307",
+  "status": "applied",
+  "createdAt": "2026-10-24T16:25:24.829Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137 round 2 (part 5 of 5): Nonprofit labels, Did Not Recoup for silent commercial closures (BRO-5645), Easy Winner for two recouped limited runs.",
+    "steps": [
+      "farinelli-and-the-king-2017: designation checked against the cited Playbill recoupment report.",
+      "farinelli-and-the-king-2017: recouped during its limited engagement per the cited Playbill report, so the designation can no longer be TBD.",
+      "sunday-in-the-park-with-george-2017: designation checked against the cited Playbill recoupment report.",
+      "sunday-in-the-park-with-george-2017: recouped during its limited engagement per the cited Playbill report, so the designation can no longer be TBD."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "farinelli-and-the-king-2017",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "farinelli-and-the-king-2017: designation checked against the cited Playbill recoupment report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "farinelli-and-the-king-2017",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "farinelli-and-the-king-2017: recouped during its limited engagement per the cited Playbill report, so the designation can no longer be TBD."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunday-in-the-park-with-george-2017",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "sunday-in-the-park-with-george-2017: designation checked against the cited Playbill recoupment report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunday-in-the-park-with-george-2017",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "sunday-in-the-park-with-george-2017: recouped during its limited engagement per the cited Playbill report, so the designation can no longer be TBD."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T17:15:37.653Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for farinelli-and-the-king-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for farinelli-and-the-king-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for sunday-in-the-park-with-george-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for sunday-in-the-park-with-george-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

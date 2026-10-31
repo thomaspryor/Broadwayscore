@@ -1,0 +1,177 @@
+{
+  "issueNumber": "bro-4953-d",
+  "planId": "4b9c3a4e-ee07-4002-9eae-fb7a68aedf4e",
+  "status": "applied",
+  "createdAt": "2026-10-10T00:30:13.189Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Delete 27 poisoned aggregator-archive caches that the new containing-title guard (BRO-4953) flags: each is a roundup for a different show whose title contains the target's (The Heart of Rock and Roll for The Heart, Fun Home for Home, Once Upon a Mattress for Once, ...). Built from data/audit/aggregator-archive-integrity.json (reason containing-title-sibling), not hand-listed. Without this, check-corpus-drift's --strict integrity audit alerts daily until a scraper happens to re-read each file. Part 2 of 2 (MAX_PLAN_ACTIONS is 25).",
+    "steps": [
+      "Delete aggregator-archive/dtli/the-pass-off-west-end-2026.html",
+      "Delete aggregator-archive/dtli/vanya-off-broadway-2025.html",
+      "Delete aggregator-archive/nyc-theatre/cats-west-end-2026.html",
+      "Delete aggregator-archive/playbill-verdict/cats-1982.html",
+      "Delete aggregator-archive/playbill-verdict/cats-west-end-2026.html",
+      "Delete aggregator-archive/playbill-verdict/fish-off-broadway-2026.html",
+      "Delete aggregator-archive/playbill-verdict/girls-off-west-end-2026.html",
+      "Delete aggregator-archive/playbill-verdict/hair-2011.html",
+      "Delete aggregator-archive/playbill-verdict/once-2012.html",
+      "Delete aggregator-archive/playbill-verdict/rain-2010.html",
+      "Delete aggregator-archive/playbill-verdict/sea-wall-off-broadway-2026.html",
+      "Delete aggregator-archive/playbill-verdict/the-children-off-west-end-2026.html",
+      "Delete aggregator-archive/playbill-verdict/the-heart-off-broadway-2026.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/dtli/the-pass-off-west-end-2026.html",
+        "description": "Cached dtli page for \"The Pass\" is about a different, longer-titled show: \"Pass Over - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/dtli/vanya-off-broadway-2025.html",
+        "description": "Cached dtli page for \"Vanya\" is about a different, longer-titled show: \"Vanya and Sonia and Masha and Spike - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/nyc-theatre/cats-west-end-2026.html",
+        "description": "Cached nyc-theatre page for \"Cats\" is about a different, longer-titled show: \"Reviews: CATS: The Jellicle Ball Reviews Are In! - News from New York City Theatre\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/cats-1982.html",
+        "description": "Cached playbill-verdict page for \"Cats\" is about a different, longer-titled show: \"Reviews: What Do Critics Think of Cats: 'The Jellicle Ball' at Perelman Performing Arts Center? | Pl\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/cats-west-end-2026.html",
+        "description": "Cached playbill-verdict page for \"Cats\" is about a different, longer-titled show: \"Reviews: What Do the Critics Think Of Cats: The Jellicle Ball on Broadway? | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/fish-off-broadway-2026.html",
+        "description": "Cached playbill-verdict page for \"Fish\" is about a different, longer-titled show: \"The Verdict: Critics Review New Broadway Musical Big Fish | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/girls-off-west-end-2026.html",
+        "description": "Cached playbill-verdict page for \"Girls\" is about a different, longer-titled show: \"What Are Reviews For Eisa Davis' ||: Girls :||: Chance :||: Music :|| Off-Broadway? | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/hair-2011.html",
+        "description": "Cached playbill-verdict page for \"Hair\" is about a different, longer-titled show: \"Reviews: What Do Critics Think of Jaja's African Hair Braiding on Broadway? | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/once-2012.html",
+        "description": "Cached playbill-verdict page for \"Once\" is about a different, longer-titled show: \"Reviews: Are Critics in Love With the Once Upon a Mattress Broadway Revival? | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/rain-2010.html",
+        "description": "Cached playbill-verdict page for \"Rain\" is about a different, longer-titled show: \"Did the Reviewers Go Crazy for the Prince-Inspired Purple Rain Musical? | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/sea-wall-off-broadway-2026.html",
+        "description": "Cached playbill-verdict page for \"Sea Wall\" is about a different, longer-titled show: \"What Did Critics Think of Off-Broadway's Sea Wall/A Life, Starring Tom Sturridge and Jake Gyllenhaal\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/the-children-off-west-end-2026.html",
+        "description": "Cached playbill-verdict page for \"The Children\" is about a different, longer-titled show: \"Read Reviews for Children of a Lesser God, With Joshua Jackson and Lauren Ridloff | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/playbill-verdict/the-heart-off-broadway-2026.html",
+        "description": "Cached playbill-verdict page for \"The Heart\" is about a different, longer-titled show: \"Reviews: What Critics Are Saying About Broadway's The Heart of Rock and Roll | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T01:45:30.678Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/the-pass-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/vanya-off-broadway-2025.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/nyc-theatre/cats-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/cats-1982.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/cats-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/fish-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/girls-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/hair-2011.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/once-2012.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/rain-2010.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/sea-wall-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/the-children-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/the-heart-off-broadway-2026.html"
+    }
+  ]
+}

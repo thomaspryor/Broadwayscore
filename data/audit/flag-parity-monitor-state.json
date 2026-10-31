@@ -1,0 +1,34 @@
+{
+  "lastRunAt": "2026-10-26T19:15:21.899Z",
+  "lastSummary": {
+    "flagHealth": [
+      {
+        "key": "ticket-primary-platform",
+        "ok": true,
+        "problem": null
+      },
+      {
+        "key": "ads",
+        "ok": true,
+        "problem": null
+      },
+      {
+        "key": "related-shows-position",
+        "ok": true,
+        "problem": null
+      },
+      {
+        "key": "mobile-gate-timing",
+        "ok": true,
+        "problem": null
+      }
+    ],
+    "unregistered": [],
+    "guardrailDrift": {
+      "key": "gate-cold-start",
+      "status": "skipped",
+      "reason": "Experiment is not a registered live split.",
+      "snapshots": []
+    }
+  }
+}

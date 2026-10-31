@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6573",
+  "planId": "d84531ae-c4d8-4a4a-b39d-175f4c7513e0",
+  "status": "partial",
+  "createdAt": "2026-10-30T02:23:49.493Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6573: flag Around the Town Chicago 2016-17 Deborah Cox tour review (both files) wrongProduction on the-bodyguard-tour-2026",
+    "steps": [
+      "reason for wrongProduction flag",
+      "flag 2016-17 Chicago tour review as wrong production",
+      "reason for wrongProduction flag",
+      "flag duplicate of 2016-17 Chicago tour review as wrong production"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-bodyguard-tour-2026/around-the-town-chicago--julia-w-rath.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Page is Alan Bresloff's review of the 2016-17 Deborah Cox tour at the Oriental Theatre, Chicago, not the 2026 North American tour (BRO-6573)",
+        "description": "reason for wrongProduction flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bodyguard-tour-2026/around-the-town-chicago--julia-w-rath.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "flag 2016-17 Chicago tour review as wrong production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bodyguard-tour-2026/around-the-town-chicago--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Page is Alan Bresloff's review of the 2016-17 Deborah Cox tour at the Oriental Theatre, Chicago, not the 2026 North American tour (BRO-6573)",
+        "description": "reason for wrongProduction flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bodyguard-tour-2026/around-the-town-chicago--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "flag duplicate of 2016-17 Chicago tour review as wrong production"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T02:56:54.245Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bodyguard-tour-2026/around-the-town-chicago--julia-w-rath.json wrongProductionReason: null -> \"Page is Alan Bresloff's review of the 2016-17 Deborah Cox tour at the Oriental Theatre, Chicago, not the 2026 North American tour (BRO-6573)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bodyguard-tour-2026/around-the-town-chicago--julia-w-rath.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bodyguard-tour-2026/around-the-town-chicago--unknown.json wrongProductionReason: null -> \"Page is Alan Bresloff's review of the 2016-17 Deborah Cox tour at the Oriental Theatre, Chicago, not the 2026 North American tour (BRO-6573)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-bodyguard-tour-2026/around-the-town-chicago--unknown.json wrongProduction applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,416 @@
+{
+  "issueNumber": "bro-5020-e",
+  "planId": "c75a7143-b1ea-4ae9-9071-bc989349785b",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 owner policy B backfill, part 1 of 5 (21 shows): every Fizzle/Flop gets designationBasis; silence-based labels on shows closed under 6 months return to TBD with needsLossEvidence; grey-house regains its label on the silence basis (unlocked). Supersedes bro-5020-d, which never executed. Old values read from live commercial.json at 2026-10-11T11:51:28.223Z.",
+    "steps": [
+      "hells-kitchen: designationBasis",
+      "cabaret-2024: designationBasis",
+      "water-for-elephants: designationBasis",
+      "suffs: designationBasis",
+      "the-notebook: designationBasis",
+      "back-to-the-future: designationBasis",
+      "boop: designationBasis",
+      "the-roommate: designationBasis",
+      "our-town: designationBasis",
+      "death-becomes-her: designation, recouped, needsLossEvidence",
+      "chess: designationBasis",
+      "liberation: designationBasis",
+      "oedipus: designationBasis",
+      "queen-of-versailles: designationBasis",
+      "all-out: designationBasis",
+      "parade-2023: designationBasis",
+      "smash-2025: designationBasis",
+      "sunset-boulevard-2024: designationBasis",
+      "redwood: designationBasis",
+      "once-upon-a-mattress-2024: designationBasis",
+      "cats-the-jellicle-ball: designation, recouped, needsLossEvidence"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "showId": "hells-kitchen",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "hells-kitchen: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "showId": "cabaret-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "cabaret-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "water-for-elephants: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "showId": "suffs",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "suffs: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "showId": "the-notebook",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "the-notebook: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "back-to-the-future",
+        "showId": "back-to-the-future",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "back-to-the-future: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "boop: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "showId": "the-roommate",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-roommate: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-town",
+        "showId": "our-town",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "our-town: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "death-becomes-her: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "death-becomes-her: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "death-becomes-her: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chess",
+        "showId": "chess",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "chess: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "showId": "liberation",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "liberation: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "oedipus: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "queen-of-versailles",
+        "showId": "queen-of-versailles",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "queen-of-versailles: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "all-out: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "showId": "parade-2023",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "parade-2023: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "smash-2025",
+        "showId": "smash-2025",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "smash-2025: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2024",
+        "showId": "sunset-boulevard-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "sunset-boulevard-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "redwood: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "once-upon-a-mattress-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "cats-the-jellicle-ball: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "cats-the-jellicle-ball: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "cats-the-jellicle-ball: needsLossEvidence"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T12:44:43.370Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for hells-kitchen"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-notebook"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for back-to-the-future"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for our-town"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for chess"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for queen-of-versailles"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for parade-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for smash-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for sunset-boulevard-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for cats-the-jellicle-ball"
+    }
+  ]
+}

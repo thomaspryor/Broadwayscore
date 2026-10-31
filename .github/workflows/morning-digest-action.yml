@@ -1,0 +1,113 @@
+name: Morning Digest (Action dry-run)
+
+# BRO-6230 (Mac-to-cloud Phase 2a): builds the owner's morning digest on GitHub
+# instead of the Mac Studio, as a DRY RUN, and compares it with the digest the
+# Mac really sent today. It never sends: there is no send mode until cutover
+# (cutover checklist on BRO-6230; the Mac launchd job is still the only sender).
+#
+# Public repo, public logs: the digest's own output goes to a file on the runner,
+# the preview HTML (it can hold signed dispatch links) is never uploaded, and the
+# only public lines are counts and fixed section headings. Pass pubkey_b64 (a
+# one-time RSA public key, base64 PEM, see scripts/lib/sealed-output.js) to get
+# the line-level diff and the run output sealed between the run-script markers.
+#
+# Snapshots (data/audit/*-snapshot.json, data/freshness-report.json) are pinned
+# to the main commit current when the Mac sent, so the diff shows code and
+# environment differences, not 5 hours of data drift. Live reads (Linear,
+# GitHub, Resend) are not pinned.
+#
+# Flags: --no-autofix (no dispatch fleet on a runner), --skip-mac-local (Mac-only
+# ledgers and tabs, named in one line in the email), --resend-sent-guard (the
+# send-once guard a second machine can see; dry-run reports its verdict).
+# Schedule: off. The cron is UTC: 11:30 is 07:30 EDT but 06:30 EST (after
+# early November), so pick the cutover-season value. At cutover uncomment it AND set repo variable
+# MORNING_DIGEST_ACTION_ENABLED=true; the job refuses schedule events without it.
+on:
+  # schedule:
+  #   - cron: '30 11 * * *'
+  workflow_dispatch:
+    inputs:
+      pubkey_b64:
+        description: 'One-time public key (base64 PEM) to seal the full diff + run output to'
+        required: false
+        default: ''
+
+concurrency:
+  group: morning-digest-action
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  statuses: read
+  actions: read  # login-sources reads workflow runs (gh run list)
+
+jobs:
+  digest:
+    if: github.event_name == 'workflow_dispatch' || vars.MORNING_DIGEST_ACTION_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      # No npm ci: the digest's require graph is node built-ins and repo files
+      # only (pinned by tests/unit/morning-digest-action.test.mjs).
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Fetch today's Mac-sent digest from Resend
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/morning-digest-compare.js --fetch-mac --out="$RUNNER_TEMP/mac"
+
+      - name: Pin snapshots to when the Mac sent
+        run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          # created_at normalised to ISO in node: Resend's format is not one GNU date parses reliably.
+          read -r SENT SINCE < <(node -e "const m=require(process.argv[1]);const t=m.found&&Date.parse(m.created_at);if(t)process.stdout.write(new Date(t).toISOString()+' '+new Date(t-2*3600e3).toISOString())" "$RUNNER_TEMP/mac/mac-meta.json") || true
+          if [ -z "$SENT" ]; then echo "No Mac digest today; snapshots stay at main."; exit 0; fi
+          git_net 300 fetch --quiet --shallow-since="$SINCE" origin main
+          SHA=$(git rev-list -1 --before="$SENT" origin/main)
+          if [ -z "$SHA" ]; then echo "No main commit before $SENT in the fetched history; snapshots stay at main."; exit 0; fi
+          git checkout "$SHA" -- 'data/audit/*-snapshot.json' data/freshness-report.json
+          echo "Snapshots pinned to $SHA (main as of $SENT)."
+
+      - name: Build the digest (dry run, output kept off the public log)
+        # lint-allow-swallow: not swallowed; '|| status=$?' keeps the exit code and the step ends with exit "$status"
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          status=0
+          node scripts/send-morning-digest.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \
+            > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
+          echo "digest dry-run exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, sealed below when a key is given)"
+          grep -E '^\[digest\] (Resend sent-today guard|DRY RUN)' "$RUNNER_TEMP/digest.log" | sed -E 's/\(subject: .*\)$/(subject withheld)/' || true
+          exit "$status"
+
+      - name: Compare with the Mac digest
+        if: always()
+        env:
+          PUBKEY_B64: ${{ inputs.pubkey_b64 }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/morning-digest-compare.js --diff --mac="$RUNNER_TEMP/mac/mac.html" \
+            --action=data/audit/morning-digest-preview.html --log="$RUNNER_TEMP/digest.log" \
+            ${PUBKEY_B64:+--pubkey-b64="$PUBKEY_B64"}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Morning Digest (Action dry-run) Failed'
+          # Manual dry-runs warn; a scheduled (post-cutover) run that fails means no
+          # digest, and with MAC_ALIVE_SIGNAL=heartbeat nothing else would notice.
+          severity: ${{ github.event_name == 'schedule' && 'critical' || 'warning' }}

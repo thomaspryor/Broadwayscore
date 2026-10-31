@@ -1,0 +1,847 @@
+{
+  "issueNumber": "bro-6503-we-2010-11",
+  "planId": "31af909b-5f00-40f9-8c3b-b5d11ebbf4e8",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:46:47.418Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2010-2011 from the historical backfill (we-historical:theatricalia; BRO-6503).",
+    "steps": [
+      "Append blood-and-gifts-west-end-2010 (Lyttelton Theatre, 2010-09-01 to 2010-11-14)",
+      "Append krapps-last-tape-west-end-2010 (Duchess Theatre, 2010-09-15 to 2010-11-20)",
+      "Append birdsong-west-end-2010 (Harold Pinter Theatre, 2010-09-18 to 2011-01-15)",
+      "Append hamlet-west-end-2010 (Olivier Theatre, 2010-09-30 to 2011-01-26)",
+      "Append the-country-girl-west-end-2010 (Apollo Theatre, 2010-10-06 to 2011-02-26)",
+      "Append onassis-west-end-2010 (Novello Theatre, 2010-10-12 to 2011-01-08)",
+      "Append flashdance-the-musical-west-end-2010 (Shaftesbury Theatre, 2010-10-14 to 2011-01-15)",
+      "Append when-we-are-married-west-end-2010 (Garrick Theatre, 2010-10-19 to 2011-02-26)",
+      "Append men-should-weep-west-end-2010 (Lyttelton Theatre, 2010-10-26 to 2011-01-10)",
+      "Append a-flea-in-her-ear-west-end-2010 (The Old Vic, 2010-11-01 to 2011-03-31)",
+      "Append an-ideal-husband-west-end-2010 (Vaudeville Theatre, 2010-11-04 to 2011-02-19)",
+      "Append fela-west-end-2010 (Olivier Theatre, 2010-11-16 to 2011-01-06)",
+      "Append end-of-the-rainbow-west-end-2010 (Trafalgar Theatre, 2010-11-22 to 2011-05-21)",
+      "Append the-rivals-west-end-2010 (Theatre Royal Haymarket, 2010-11-23 to 2011-02-26)",
+      "Append the-gruffalo-west-end-2010 (Garrick Theatre, 2010-11-24 to 2011-01-16)",
+      "Append love-story-west-end-2010 (Duchess Theatre, 2010-11-27 to 2011-02-26)",
+      "Append seasons-greetings-west-end-2010 (Lyttelton Theatre, 2010-12-01 to 2011-03-13)",
+      "Append twelfth-night-west-end-2011 (Dorfman Theatre, 2011-01-11 to 2011-03-02)",
+      "Append woody-sez-the-life-and-music-of-woody-guthrie-west-end-2011 (Arts Theatre, 2011-01-13 to 2011-04-02)",
+      "Append clybourne-park-west-end-2011 (Wyndham's Theatre, 2011-01-28 to 2011-05-07)",
+      "Append the-heretic-west-end-2011 (Royal Court, 2011-02-04 to 2011-03-19)",
+      "Append frankenstein-west-end-2011 (Olivier Theatre, 2011-02-05 to 2011-05-02)",
+      "Append million-dollar-quartet-west-end-2011 (Noël Coward Theatre, 2011-02-08 to 2012-01-14)",
+      "Append blithe-spirit-west-end-2011 (Apollo Theatre, 2011-03-02 to 2011-06-18)",
+      "Append flare-path-west-end-2011 (Theatre Royal Haymarket, 2011-03-04 to 2011-06-04)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "blood-and-gifts-west-end-2010",
+          "title": "Blood and Gifts",
+          "slug": "blood-and-gifts-west-end-2010",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2010-09-01",
+          "openingDate": "2010-09-01",
+          "closingDate": "2010-11-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.494Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/adk/blood-and-gifts/production/n9a"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "krapps-last-tape-west-end-2010",
+          "title": "Krapp's Last Tape",
+          "slug": "krapps-last-tape-west-end-2010",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2010-09-15",
+          "openingDate": "2010-09-15",
+          "closingDate": "2010-11-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.527Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/9x/krapps-last-tape/production/n56"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "birdsong-west-end-2010",
+          "title": "Birdsong",
+          "slug": "birdsong-west-end-2010",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2010-09-18",
+          "openingDate": "2010-09-18",
+          "closingDate": "2011-01-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.544Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/aht/birdsong/production/nm4"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hamlet-west-end-2010",
+          "title": "Hamlet",
+          "slug": "hamlet-west-end-2010",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2010-09-30",
+          "openingDate": "2010-09-30",
+          "closingDate": "2011-01-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.568Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/2/hamlet/production/nax"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-country-girl-west-end-2010",
+          "title": "The Country Girl",
+          "slug": "the-country-girl-west-end-2010",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2010-10-06",
+          "openingDate": "2010-10-06",
+          "closingDate": "2011-02-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.584Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5a7/the-country-girl/production/n5c"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "onassis-west-end-2010",
+          "title": "Onassis",
+          "slug": "onassis-west-end-2010",
+          "venue": "Novello Theatre",
+          "previewsStartDate": "2010-10-12",
+          "openingDate": "2010-10-12",
+          "closingDate": "2011-01-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.601Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gz6/onassis/production/1581"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "flashdance-the-musical-west-end-2010",
+          "title": "Flashdance The Musical",
+          "slug": "flashdance-the-musical-west-end-2010",
+          "venue": "Shaftesbury Theatre",
+          "previewsStartDate": "2010-10-14",
+          "openingDate": "2010-10-14",
+          "closingDate": "2011-01-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.617Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/9y7/flashdance-the-musical/production/13t2"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "when-we-are-married-west-end-2010",
+          "title": "When We Are Married",
+          "slug": "when-we-are-married-west-end-2010",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2010-10-19",
+          "openingDate": "2010-10-19",
+          "closingDate": "2011-02-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.633Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3dk/when-we-are-married/production/1355"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "men-should-weep-west-end-2010",
+          "title": "Men Should Weep",
+          "slug": "men-should-weep-west-end-2010",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2010-10-26",
+          "openingDate": "2010-10-26",
+          "closingDate": "2011-01-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.650Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/59s/men-should-weep/production/ndr"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-flea-in-her-ear-west-end-2010",
+          "title": "A Flea in Her Ear",
+          "slug": "a-flea-in-her-ear-west-end-2010",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2010-11-01",
+          "openingDate": "2010-11-01",
+          "closingDate": "2011-03-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.664Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4mb/a-flea-in-her-ear/production/nfp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "an-ideal-husband-west-end-2010",
+          "title": "An Ideal Husband",
+          "slug": "an-ideal-husband-west-end-2010",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2010-11-04",
+          "openingDate": "2010-11-04",
+          "closingDate": "2011-02-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.681Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3kh/an-ideal-husband/production/n5b"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fela-west-end-2010",
+          "title": "Fela!",
+          "slug": "fela-west-end-2010",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2010-11-16",
+          "openingDate": "2010-11-16",
+          "closingDate": "2011-01-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.697Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ae7/fela/production/naw"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "end-of-the-rainbow-west-end-2010",
+          "title": "End of the Rainbow",
+          "slug": "end-of-the-rainbow-west-end-2010",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2010-11-22",
+          "openingDate": "2010-11-22",
+          "closingDate": "2011-05-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.711Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/71r/end-of-the-rainbow/production/151t"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-rivals-west-end-2010",
+          "title": "The Rivals",
+          "slug": "the-rivals-west-end-2010",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2010-11-23",
+          "openingDate": "2010-11-23",
+          "closingDate": "2011-02-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.727Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e/the-rivals/production/109e"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-gruffalo-west-end-2010",
+          "title": "The Gruffalo",
+          "slug": "the-gruffalo-west-end-2010",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2010-11-24",
+          "openingDate": "2010-11-24",
+          "closingDate": "2011-01-16",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.744Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gx6/the-gruffalo/production/135e"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "love-story-west-end-2010",
+          "title": "Love Story",
+          "slug": "love-story-west-end-2010",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2010-11-27",
+          "openingDate": "2010-11-27",
+          "closingDate": "2011-02-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.759Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gw5/love-story/production/1333"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "seasons-greetings-west-end-2010",
+          "title": "Season's Greetings",
+          "slug": "seasons-greetings-west-end-2010",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2010-12-01",
+          "openingDate": "2010-12-01",
+          "closingDate": "2011-03-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.774Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/58g/seasons-greetings/production/n99"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "twelfth-night-west-end-2011",
+          "title": "Twelfth Night",
+          "slug": "twelfth-night-west-end-2011",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": "2011-01-11",
+          "openingDate": "2011-01-11",
+          "closingDate": "2011-03-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.790Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f/twelfth-night/production/n9n"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "woody-sez-the-life-and-music-of-woody-guthrie-west-end-2011",
+          "title": "Woody Sez, The Life & Music of Woody Guthrie",
+          "slug": "woody-sez-the-life-and-music-of-woody-guthrie-west-end-2011",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2011-01-13",
+          "openingDate": "2011-01-13",
+          "closingDate": "2011-04-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.805Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gj4/woody-sez-the-life-music-of-woody-guthrie/production/12fj"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "clybourne-park-west-end-2011",
+          "title": "Clybourne Park",
+          "slug": "clybourne-park-west-end-2011",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2011-01-28",
+          "openingDate": "2011-01-28",
+          "closingDate": "2011-05-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.822Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f0r/clybourne-park/production/1524"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-heretic-west-end-2011",
+          "title": "The Heretic",
+          "slug": "the-heretic-west-end-2011",
+          "venue": "Royal Court",
+          "previewsStartDate": "2011-02-04",
+          "openingDate": "2011-02-04",
+          "closingDate": "2011-03-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.839Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/jda/the-heretic/production/1are"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "frankenstein-west-end-2011",
+          "title": "Frankenstein",
+          "slug": "frankenstein-west-end-2011",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2011-02-05",
+          "openingDate": "2011-02-05",
+          "closingDate": "2011-05-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.854Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ae6/frankenstein/production/nat"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "million-dollar-quartet-west-end-2011",
+          "title": "Million Dollar Quartet",
+          "slug": "million-dollar-quartet-west-end-2011",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2011-02-08",
+          "openingDate": "2011-02-08",
+          "closingDate": "2012-01-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.869Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gnh/million-dollar-quartet/production/12ns"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "blithe-spirit-west-end-2011",
+          "title": "Blithe Spirit",
+          "slug": "blithe-spirit-west-end-2011",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2011-03-02",
+          "openingDate": "2011-03-02",
+          "closingDate": "2011-06-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.886Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3gx/blithe-spirit/production/n5d"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "flare-path-west-end-2011",
+          "title": "Flare Path",
+          "slug": "flare-path-west-end-2011",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2011-03-04",
+          "openingDate": "2011-03-04",
+          "closingDate": "2011-06-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.907Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3g5/flare-path/production/109f"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T10:04:47.535Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added blood-and-gifts-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added krapps-last-tape-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added birdsong-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hamlet-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-country-girl-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added onassis-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added flashdance-the-musical-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added when-we-are-married-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added men-should-weep-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-flea-in-her-ear-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added an-ideal-husband-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fela-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added end-of-the-rainbow-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-rivals-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-gruffalo-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added love-story-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added seasons-greetings-west-end-2010"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added twelfth-night-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added woody-sez-the-life-and-music-of-woody-guthrie-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added clybourne-park-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-heretic-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added frankenstein-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added million-dollar-quartet-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added blithe-spirit-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added flare-path-west-end-2011"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,66 @@
+name: Test Review Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      review_url:
+        description: 'Review URL to validate'
+        required: true
+        type: string
+      show_name:
+        description: 'Show name (optional)'
+        required: false
+        type: string
+      outlet_name:
+        description: 'Outlet name (optional)'
+        required: false
+        type: string
+      critic_name:
+        description: 'Critic name (optional)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  test-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test validation
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INPUT_REVIEW_URL: ${{ inputs.review_url }}
+          INPUT_SHOW_NAME: ${{ inputs.show_name }}
+          INPUT_OUTLET_NAME: ${{ inputs.outlet_name }}
+          INPUT_CRITIC_NAME: ${{ inputs.critic_name }}
+        run: |
+          node scripts/test-review-submission.js \
+            "${INPUT_REVIEW_URL}" \
+            "${INPUT_SHOW_NAME}" \
+            "${INPUT_OUTLET_NAME}" \
+            "${INPUT_CRITIC_NAME}"
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Test Review Validation Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

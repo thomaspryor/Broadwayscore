@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-6153",
+  "planId": "13892023-8f83-4440-90a8-617518980b0f",
+  "status": "applied",
+  "createdAt": "2026-10-24T16:59:38.711Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Phase H hand ramp for the Off-Broadway historical backfill: add 2 award-nominated 2024-25 shows with Playbill-validated dates (BRO-6153)",
+    "steps": [
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hold-on-to-me-darling-off-broadway-2024",
+          "title": "Hold On to Me Darling",
+          "slug": "hold-on-to-me-darling-off-broadway-2024",
+          "venue": "Lucille Lortel Theatre",
+          "previewsStartDate": "2024-09-24",
+          "openingDate": "2024-10-16",
+          "closingDate": "2024-12-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:hand",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/hold-on-to-me-darling-off-broadway-lucille-lortel-theatre-2024"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sumo-off-broadway-2025",
+          "title": "Sumo",
+          "slug": "sumo-off-broadway-2025",
+          "venue": "Public Theater",
+          "previewsStartDate": "2025-02-20",
+          "openingDate": "2025-03-05",
+          "closingDate": "2025-03-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:hand",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/sumo-off-broadway-public-theater-anspacher-theater-2025"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T19:02:19.268Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hold-on-to-me-darling-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sumo-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

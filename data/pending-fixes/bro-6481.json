@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-6481",
+  "planId": "2a2ed013-a740-45d0-944b-0cfd01ca03db",
+  "status": "partial",
+  "createdAt": "2026-10-28T19:57:21.246Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6481 outlet census: retire two duplicate show entries the closed-show duplicate scan found",
+    "steps": [
+      "retire-show",
+      "retire-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "going-bacharach-off-broadway-2026",
+        "expectTitle": "GOING BACHARACH",
+        "duplicateOf": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+        "reason": "BRO-6481: duplicate of going-bacharach-the-songs-of-an-icon-off-broadway-2026 (same venue, same 2026-01-08/01-12/02-22 dates); 0 reviews held under it"
+      },
+      {
+        "type": "retire-show",
+        "id": "clara-sex-love-and-classical-off-broadway-2026",
+        "expectTitle": "Clara: Sex, Love and Classical",
+        "duplicateOf": "clara-sex-love-and-classical-music-off-broadway-2026",
+        "reason": "BRO-6481: truncated-title duplicate of clara-sex-love-and-classical-music-off-broadway-2026 (59E59, same 2026-04-22 start, same 2026-05-10 close); 0 reviews held under it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T21:38:25.572Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired going-bacharach-off-broadway-2026 (\"GOING BACHARACH\" @ Marjorie S. Deane Little Theater @ The West Side Y); dropped its audience-buzz.json key"
+    },
+    {
+      "action": "retire-show",
+      "ok": false,
+      "reason": "retire-show clara-sex-love-and-classical-off-broadway-2026: clara-sex-love-and-classical-off-broadway-2026 has 1 review(s): move them before retiring"
+    }
+  ],
+  "executedIn": "ci"
+}

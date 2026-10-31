@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6489-playbill-1",
+  "planId": "254a39b0-31c6-4b02-b324-278cdf8868e5",
+  "status": "partial",
+  "createdAt": "2026-10-29T09:03:08.505Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "bro-6489-playbill: 25 edits on 21 rows where the Playbill production page (venue and year matched) contradicts the stored value and a checker agreed with Playbill",
+    "steps": [
+      "shows.json: sea-wall-off-broadway-2026.isRevival",
+      "shows.json: king-of-the-yees-off-broadway-2026.openingDate",
+      "shows.json: elektra-off-broadway-2026.isRevival",
+      "shows.json: the-fever-greenwich-house-theater-off-broadway-2026.isRevival",
+      "shows.json: the-play-that-goes-wrong-off-broadway-2019.openingDate",
+      "shows.json: the-holes-off-broadway-2026.openingDate",
+      "shows.json: the-seat-of-our-pants-off-broadway-2025.type",
+      "shows.json: bear-grease-off-broadway-2025.type",
+      "shows.json: stereophonic-off-broadway-2023.openingDate",
+      "shows.json: reunions-off-broadway-2025.type",
+      "shows.json: saturday-church-off-broadway-2025.type",
+      "shows.json: the-bakers-wife-off-broadway-2025.type",
+      "shows.json: the-bakers-wife-off-broadway-2025.isRevival",
+      "shows.json: picnic-at-hanging-rock-off-broadway-2025.type",
+      "shows.json: beyond-the-stardust-off-broadway-2026.closingDate",
+      "shows.json: the-lonely-few-off-broadway-2024.previewsStartDate",
+      "shows.json: the-lonely-few-off-broadway-2024.openingDate",
+      "shows.json: the-lonely-few-off-broadway-2024.closingDate",
+      "shows.json: the-disappear-off-broadway-2026.openingDate",
+      "shows.json: birthright-off-broadway-2026.previewsStartDate",
+      "shows.json: birthright-off-broadway-2026.openingDate",
+      "shows.json: the-reservoir-off-broadway-2026.openingDate",
+      "shows.json: mother-russia-off-broadway-2026.closingDate",
+      "shows.json: heartbreak-hotel-off-broadway-2026.openingDate",
+      "shows.json: the-dinosaurs-off-broadway-2026.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sea-wall-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: sea-wall-off-broadway-2026.isRevival (Playbill production page https://playbill.com/production/sea-wall-off-broadway-studio-seaview-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-20",
+        "newValue": "2026-10-19",
+        "description": "shows.json: king-of-the-yees-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/king-of-the-yees-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "elektra-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: elektra-off-broadway-2026.isRevival (Playbill production page https://playbill.com/production/elektra-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-fever-greenwich-house-theater-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: the-fever-greenwich-house-theater-off-broadway-2026.isRevival (Playbill production page https://playbill.com/production/the-fever-off-broadway-greenwich-house-theater-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-off-broadway-2019",
+        "field": "openingDate",
+        "oldValue": "2019-02-11",
+        "newValue": "2019-02-20",
+        "description": "shows.json: the-play-that-goes-wrong-off-broadway-2019.openingDate (Playbill production page https://playbill.com/production/the-play-that-goes-wrong-off-broadway-new-world-stages-stage-4-2019)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-holes-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-23",
+        "newValue": "2026-09-22",
+        "description": "shows.json: the-holes-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/the-holes-off-broadway-the-wild-project-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-seat-of-our-pants-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-seat-of-our-pants-off-broadway-2025.type (Playbill production page https://playbill.com/production/the-seat-of-our-pants-off-broadway-public-theater-newman-theater-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bear-grease-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: bear-grease-off-broadway-2025.type (Playbill production page https://playbill.com/production/bear-grease-off-broadway-st-lukes-theatre-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stereophonic-off-broadway-2023",
+        "field": "openingDate",
+        "oldValue": "2023-10-17",
+        "newValue": "2023-10-29",
+        "description": "shows.json: stereophonic-off-broadway-2023.openingDate (Playbill production page https://playbill.com/production/stereophonic-off-broadway-playwrights-horizons-mainstage-theater-2023)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "reunions-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: reunions-off-broadway-2025.type (Playbill production page https://playbill.com/production/reunions-off-broadway-new-york-city-center-stage-ii-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "saturday-church-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: saturday-church-off-broadway-2025.type (Playbill production page https://playbill.com/production/saturday-church-off-broadway-new-york-theatre-workshop-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bakers-wife-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-bakers-wife-off-broadway-2025.type (Playbill production page https://playbill.com/production/the-bakers-wife-off-broadway-classic-stage-company-lynn-f-angelson-theater-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bakers-wife-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-bakers-wife-off-broadway-2025.isRevival (Playbill production page https://playbill.com/production/the-bakers-wife-off-broadway-classic-stage-company-lynn-f-angelson-theater-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "picnic-at-hanging-rock-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: picnic-at-hanging-rock-off-broadway-2025.type (Playbill production page https://playbill.com/production/picnic-at-hanging-rock-off-broadway-greenwich-house-theater-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beyond-the-stardust-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-10-18",
+        "newValue": "2026-10-28",
+        "description": "shows.json: beyond-the-stardust-off-broadway-2026.closingDate (Playbill production page https://playbill.com/production/beyond-the-stardust-off-broadway-the-flea-theater-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lonely-few-off-broadway-2024",
+        "field": "previewsStartDate",
+        "oldValue": "2024-05-07",
+        "newValue": "2024-04-26",
+        "description": "shows.json: the-lonely-few-off-broadway-2024.previewsStartDate (Playbill production page https://playbill.com/production/the-lonely-few-off-broadway-the-robert-w-wilson-mcc-theater-space-2024)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lonely-few-off-broadway-2024",
+        "field": "openingDate",
+        "oldValue": "2024-05-21",
+        "newValue": "2024-05-20",
+        "description": "shows.json: the-lonely-few-off-broadway-2024.openingDate (Playbill production page https://playbill.com/production/the-lonely-few-off-broadway-the-robert-w-wilson-mcc-theater-space-2024)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lonely-few-off-broadway-2024",
+        "field": "closingDate",
+        "oldValue": "2024-06-02",
+        "newValue": "2024-06-09",
+        "description": "shows.json: the-lonely-few-off-broadway-2024.closingDate (Playbill production page https://playbill.com/production/the-lonely-few-off-broadway-the-robert-w-wilson-mcc-theater-space-2024)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-disappear-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-01-08",
+        "newValue": "2026-01-15",
+        "description": "shows.json: the-disappear-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/the-disappear-off-broadway-minetta-lane-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "birthright-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-06-05",
+        "newValue": "2026-06-16",
+        "description": "shows.json: birthright-off-broadway-2026.previewsStartDate (Playbill production page https://playbill.com/production/birthright-off-broadway-the-robert-w-wilson-mcc-theater-space-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "birthright-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-06-24",
+        "newValue": "2026-06-29",
+        "description": "shows.json: birthright-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/birthright-off-broadway-the-robert-w-wilson-mcc-theater-space-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-reservoir-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-02-05",
+        "newValue": "2026-02-24",
+        "description": "shows.json: the-reservoir-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/the-reservoir-off-broadway-atlantic-theater-company-linda-gross-theater-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-russia-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-03-29",
+        "newValue": "2026-03-22",
+        "description": "shows.json: mother-russia-off-broadway-2026.closingDate (Playbill production page https://playbill.com/production/mother-russia-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heartbreak-hotel-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-03-20",
+        "newValue": "2026-03-24",
+        "description": "shows.json: heartbreak-hotel-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/heartbreak-hotel-off-broadway-dr2-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-dinosaurs-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-02-04",
+        "newValue": "2026-02-16",
+        "description": "shows.json: the-dinosaurs-off-broadway-2026.openingDate (Playbill production page https://playbill.com/production/the-dinosaurs-off-broadway-playwrights-horizons-the-judy-theater-2026)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T17:01:07.726Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for sea-wall-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for king-of-the-yees-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for elektra-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-fever-greenwich-house-theater-off-broadway-2026 (tags: [\"upcoming\",\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-play-that-goes-wrong-off-broadway-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-holes-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-seat-of-our-pants-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "type: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for stereophonic-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for reunions-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for saturday-church-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-bakers-wife-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-bakers-wife-off-broadway-2025 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for picnic-at-hanging-rock-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for beyond-the-stardust-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-lonely-few-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-lonely-few-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-lonely-few-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-disappear-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for birthright-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for birthright-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-reservoir-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for mother-russia-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for heartbreak-hotel-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-dinosaurs-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

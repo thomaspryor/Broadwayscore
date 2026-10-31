@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-6394",
+  "planId": "6f1d5a3e-9b8c-4c2e-a1d4-6394a0c0de01",
+  "status": "partial",
+  "createdAt": "2026-10-26T21:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire bob-odenkirk-presents-hospital-hour-off-broadway-2026 as a duplicate of hospital-hour-off-broadway-2026: one production (Rachel Kaly, Hospital Hour, The Night Egg at the Culture Club, Oct 16 to Nov 23 2026, official opening Oct 26, same TodayTix listing 48160). The old id and slug become aliases on the kept row; the kept row has the correct opening date and cast/credits.",
+    "steps": [
+      "Set the kept row's venue to the official room name",
+      "Retire bob-odenkirk-presents-hospital-hour-off-broadway-2026 as a duplicate of hospital-hour-off-broadway-2026, id only"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hospital-hour-off-broadway-2026",
+        "field": "venue",
+        "oldValue": "The Culture Club",
+        "newValue": "The Night Egg at the Culture Club",
+        "description": "Use the official room name (TheaterMania, TodayTix) so the duplicate row is the same house"
+      },
+      {
+        "type": "retire-show",
+        "id": "bob-odenkirk-presents-hospital-hour-off-broadway-2026",
+        "expectTitle": "Bob Odenkirk Presents HOSPITAL HOUR",
+        "reason": "Duplicate listing of hospital-hour-off-broadway-2026 (shared TodayTix listing 48160, same Culture Club run; TheaterMania: official opening 2026-10-26); BRO-6394",
+        "duplicateOf": "hospital-hour-off-broadway-2026",
+        "evidenceUrl": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/",
+        "description": "Retire the duplicate Bob Odenkirk Presents listing"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T21:38:16.874Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for hospital-hour-off-broadway-2026"
+    },
+    {
+      "action": "retire-show",
+      "ok": false,
+      "reason": "retire-show bob-odenkirk-presents-hospital-hour-off-broadway-2026: bob-odenkirk-presents-hospital-hour-off-broadway-2026 has 1 review(s): move them before retiring"
+    }
+  ],
+  "executedIn": "ci"
+}

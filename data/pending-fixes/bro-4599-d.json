@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-4599-d",
+  "planId": "d9f33630-83a9-48a7-ab5e-d393f34171f1",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Articles filed under 2+ shows with one shared pull quote (audit-shared-url-quote.js): give each show its own section quote and score, flag misfiled copies, human-clear flags that misread a multi-show column. Part 4 of 6.",
+    "steps": [
+      "old-times-2015: per-show fix",
+      "once-2012: per-show fix",
+      "once-upon-a-mattress-2024: per-show fix",
+      "operation-mincemeat-2025: per-show fix",
+      "our-town-2024: per-show fix",
+      "paranormal-activity-2026: per-show fix",
+      "richard-iii-2013: per-show fix",
+      "romeo-juliet-2024: per-show fix",
+      "smash-2025: per-show fix",
+      "sondheim-on-sondheim-2010: per-show fix",
+      "stranger-things-2024: per-show fix",
+      "sweat-2017: per-show fix"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "old-times-2015/njcom--christopher-kelly.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: text contains the Old Times (2015 Broadway, Hodge) section; prior CV flag misread the roundup"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-2015/njcom--christopher-kelly.json",
+        "field": "wrongProductionReason",
+        "oldValue": "CV-promoted: The scraped content is primarily a review of 'Fool for Love' (wrong production entirely), with only a truncated fragment about 'Old Times' at the very end. The expected review should be exclusively ab",
+        "newValue": "BRO-4599: cleared; multi-show roundup whose Old Times section reviews this 2015 Broadway revival",
+        "description": "record why flag cleared"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-2015/njcom--christopher-kelly.json",
+        "field": "llmPullQuote",
+        "oldValue": "Here, though, Rockwell and Arianda gleefully tear into one another, generating palpable sexual tension and nailing the grimly comic underbelly of Shepard's dialogue.",
+        "newValue": "But the three actors' performance styles -- Owen, cool and remote; Reilly, pixieish and flirty; Best, diva-scaled and emotive -- never mesh.",
+        "description": "Old Times section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-2015/njcom--christopher-kelly.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 35,
+        "description": "section verdict; llm 86 contradicts"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-2015/njcom--christopher-kelly.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Old Times section is negative: underpowered lead, styles never mesh, director's choices throw everything at the wall.",
+        "description": "explain section-only score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-2012/amny--matt-windman.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "article is about Once Upon a Mattress, a different show (currently mislabeled as wrongProduction)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-mattress-2024/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: mis-flag: review explicitly covers the Hudson Theatre Broadway revival with Foster, matching this show id"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/artsfuse--christopher-caggiano.json",
+        "field": "llmPullQuote",
+        "oldValue": "Both arrive with clarity and purpose, and both serve as reminders of what the Broadway musical, carefully wrought, can accomplish.",
+        "newValue": "It’s a rare musical that can make you laugh so hard while also sneaking up on you with moments that catch you off-guard with their emotional power.",
+        "description": "joint closing quote replaced with Mincemeat section quote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/latimes--charles-mcnulty.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 90,
+        "description": "section verdict rave"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/latimes--charles-mcnulty.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Our Town section is a rave: production called a balm, ensemble whole greater than parts.",
+        "description": "explains section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-2026/the-interested-bystander--cary-wong.json",
+        "field": "llmPullQuote",
+        "oldValue": "The real reason this production works is the acting, especially the two leads and two actors in smaller roles.",
+        "newValue": "Once the show is over, the plot logic, you realize, was a bit wonky, but for those who love this kind of stuff, the activity onstage is goofy, paranormal fun.",
+        "description": "Paranormal Activity section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "richard-iii-2013/ew--thom-geier.json",
+        "field": "llmPullQuote",
+        "oldValue": "Plainly speaking, this Twelfth Night is a triumph.",
+        "newValue": "His Richard, while consistently entertaining, throws the play's more tragic elements somewhat off-balance, particularly in the many (more serious) scenes when he's off stage.",
+        "description": "from Richard III section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "richard-iii-2013/ew--thom-geier.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 80,
+        "description": "section verdict positive with reservations"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "richard-iii-2013/ew--thom-geier.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Richard III section is positive with reservations: comic Richard unbalances tragedy, but well worth seeing.",
+        "description": "explains section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "richard-iii-2013/timeout--david-cote.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: mis-flag: article has a full Richard III section; caller may drop if already-flagged files must stay untouched"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "richard-iii-2013/timeout--david-cote.json",
+        "field": "llmPullQuote",
+        "oldValue": "They achieve a spectacle of surpassing elegance and buoyancy: We see a classic comedy and a bloody tragedy in their pure Shakespearean glory.",
+        "newValue": "Rylance’s reading is so unfeigned, so childlike in its simplicity, we almost feel sympathy for the devil.",
+        "description": "from Richard III section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/latimes--charles-mcnulty.json",
+        "field": "llmPullQuote",
+        "oldValue": "“Our Town,” unfolding at the Ethel Barrymore Theatre like a glorious hymn, was the play I didn’t realize just how badly our country needed right now.",
+        "newValue": "Gold’s “Romeo + Juliet” similarly succeeds more theatrically than dramatically.",
+        "description": "from Romeo + Juliet section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/latimes--charles-mcnulty.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 62,
+        "description": "section verdict mixed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/latimes--charles-mcnulty.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Romeo + Juliet section is mixed: lively, leads radiant, but doubling dizzying, chemistry thin, tragedy lost in hyperactive staging.",
+        "description": "explains section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "smash-2025/washpost--naveen-kumar.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 40,
+        "description": "Smash sections: strong belters but thin, flat, purposeless"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "smash-2025/washpost--naveen-kumar.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Joint review. Smash sections: powerhouse singers but thinly conceived, flat sitcom rhythms, no verve; negative, 40.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sondheim-on-sondheim-2010/village-voice--michael-feingold.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4599 human clear: fullText has a full Sondheim on Sondheim review section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sondheim-on-sondheim-2010/village-voice--michael-feingold.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Multi-show column. Sondheim on Sondheim section is its own review (mixed, lackluster despite high points); wrongShow cleared, existing quote is from this section.",
+        "description": "unflag note"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-2024/thestage--dave-fargnoli.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4599: December 2023 Phoenix Theatre London review, not the 2025 Marquis Broadway production",
+        "description": "flag had no reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweat-2017/out-magazine--michael-musto.json",
+        "field": "llmPullQuote",
+        "oldValue": "But the story grabbed me, as teenage Kim works in a sex club run by a raunchy character known as the Engineer, falling for an American GI, Chris, who feels she deserves better.",
+        "newValue": "Nottage won the Pulitzer for Ruined, and with this, her first Broadway play, she’s achieved something earnest but worthwhile.",
+        "description": "Sweat section verdict"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:56:15.326Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-2015/njcom--christopher-kelly.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-2015/njcom--christopher-kelly.json wrongProductionReason: \"CV-promoted: The scraped content is primarily a review of 'Fool for Love' (wrong production entirely), with only a truncated fragment about 'Old Times' at the very end. The expected review should be exclusively ab\" -> \"BRO-4599: cleared; multi-show roundup whose Old Times section reviews this 2015 Broadway revival\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-2015/njcom--christopher-kelly.json llmPullQuote: \"Here, though, Rockwell and Arianda gleefully tear into one another, generating palpable sexual tension and nailing the grimly comic underbelly of Shepard's dialogue.\" -> \"But the three actors' performance styles -- Owen, cool and remote; Reilly, pixieish and flirty; Best, diva-scaled and emotive -- never mesh.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-2015/njcom--christopher-kelly.json humanReviewScore: null -> 35"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-2015/njcom--christopher-kelly.json humanReviewNote: null -> \"BRO-4599: Old Times section is negative: underpowered lead, styles never mesh, director's choices throw everything at the wall.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-2012/amny--matt-windman.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-mattress-2024/amny--matt-windman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/artsfuse--christopher-caggiano.json llmPullQuote: \"Both arrive with clarity and purpose, and both serve as reminders of what the Broadway musical, carefully wrought, can accomplish.\" -> \"It’s a rare musical that can make you laugh so hard while also sneaking up on you with moments that catch you off-guard with their emotional power.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/latimes--charles-mcnulty.json humanReviewScore: null -> 90"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/latimes--charles-mcnulty.json humanReviewNote: null -> \"BRO-4599: Our Town section is a rave: production called a balm, ensemble whole greater than parts.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-2026/the-interested-bystander--cary-wong.json llmPullQuote: \"The real reason this production works is the acting, especially the two leads and two actors in smaller roles.\" -> \"Once the show is over, the plot logic, you realize, was a bit wonky, but for those who love this kind of stuff, the activity onstage is goofy, paranormal fun.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "richard-iii-2013/ew--thom-geier.json llmPullQuote: \"Plainly speaking, this Twelfth Night is a triumph.\" -> \"His Richard, while consistently entertaining, throws the play's more tragic elements somewhat off-balance, particularly in the many (more serious) scenes when he's off stage.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "richard-iii-2013/ew--thom-geier.json humanReviewScore: null -> 80"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "richard-iii-2013/ew--thom-geier.json humanReviewNote: null -> \"BRO-4599: Richard III section is positive with reservations: comic Richard unbalances tragedy, but well worth seeing.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "richard-iii-2013/timeout--david-cote.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "richard-iii-2013/timeout--david-cote.json llmPullQuote: \"They achieve a spectacle of surpassing elegance and buoyancy: We see a classic comedy and a bloody tragedy in their pure Shakespearean glory.\" -> \"Rylance’s reading is so unfeigned, so childlike in its simplicity, we almost feel sympathy for the devil.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-juliet-2024/latimes--charles-mcnulty.json llmPullQuote: \"“Our Town,” unfolding at the Ethel Barrymore Theatre like a glorious hymn, was the play I didn’t realize just how badly our country needed right now.\" -> \"Gold’s “Romeo + Juliet” similarly succeeds more theatrically than dramatically.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-juliet-2024/latimes--charles-mcnulty.json humanReviewScore: null -> 62"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-juliet-2024/latimes--charles-mcnulty.json humanReviewNote: null -> \"BRO-4599: Romeo + Juliet section is mixed: lively, leads radiant, but doubling dizzying, chemistry thin, tragedy lost in hyperactive staging.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "smash-2025/washpost--naveen-kumar.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "smash-2025/washpost--naveen-kumar.json humanReviewNote: null -> \"BRO-4599: Joint review. Smash sections: powerhouse singers but thinly conceived, flat sitcom rhythms, no verve; negative, 40.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sondheim-on-sondheim-2010/village-voice--michael-feingold.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sondheim-on-sondheim-2010/village-voice--michael-feingold.json humanReviewNote: null -> \"BRO-4599: Multi-show column. Sondheim on Sondheim section is its own review (mixed, lackluster despite high points); wrongShow cleared, existing quote is from this section.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/thestage--dave-fargnoli.json wrongProductionReason: null -> \"BRO-4599: December 2023 Phoenix Theatre London review, not the 2025 Marquis Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweat-2017/out-magazine--michael-musto.json llmPullQuote: \"But the story grabbed me, as teenage Kim works in a sex club run by a raunchy character known as the Engineer, falling for an American GI, Chris, who feels she deserves better.\" -> \"Nottage won the Pulitzer for Ruined, and with this, her first Broadway play, she’s achieved something earnest but worthwhile.\""
+    }
+  ]
+}

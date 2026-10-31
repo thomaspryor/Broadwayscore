@@ -1,0 +1,153 @@
+name: Supabase Backup to R2
+
+# BRO-5884: daily encrypted export of every public table + auth users to the R2
+# cold-backup bucket, then a verify step that downloads the upload, decrypts it and
+# compares row counts to live. Complements Supabase's own daily physical backups
+# (7 days, no PITR, not downloadable) and r2-cold-backup.yml (git repos only).
+# Logs print table names and counts only, never row contents.
+# Retention: the bucket has a 90-day lock rule (owner, 2026-10-24) that refuses overwrite
+# and delete, so every run writes to its own run-<id>-<attempt> folder and the only delete
+# this job attempts is the lock canary, which must be refused (BRO-6132). The upload key
+# deliberately has no bucket-admin rights (BRO-5963).
+# backup-restore-drill.yml restores the latest set monthly to prove it is usable.
+
+on:
+  schedule:
+    - cron: '17 5 * * *'  # daily 05:17 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: supabase-backup
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Repo is at the 100-secret cap; R2 + GPG secrets live in the 'backup' environment
+    # (same as r2-cold-backup.yml). Supabase secrets are repo-level and still visible here.
+    environment: backup
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.BACKUP_R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      R2_ENDPOINT: https://${{ secrets.BACKUP_R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+      R2_BUCKET: broadwayscorecard-cold-backup
+      GPG_PASSPHRASE: ${{ secrets.BACKUP_GPG_PASSPHRASE }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            scripts/supabase-backup.js
+            scripts/supabase-backup-verify.js
+            scripts/lib/supabase-backup-core.js
+            scripts/lib/backup-drill.js
+            scripts/lib/cli-help.js
+            .github/actions/notify-failure
+            scripts/lib/discord-notify.js
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+
+      - name: Validate required secrets present
+        run: |
+          missing=0
+          for v in AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY GPG_PASSPHRASE NEXT_PUBLIC_SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF; do
+            if [ -z "${!v}" ]; then echo "::error::Missing required secret: $v"; missing=1; fi
+          done
+          if [ -z "${{ secrets.BACKUP_R2_ACCOUNT_ID }}" ]; then echo "::error::Missing required secret: BACKUP_R2_ACCOUNT_ID"; missing=1; fi
+          [ "$missing" -eq 0 ]
+
+      - name: Export tables and auth users
+        run: |
+          mkdir -p "$RUNNER_TEMP/export"
+          node scripts/supabase-backup.js "$RUNNER_TEMP/export"
+
+      - name: Package and encrypt
+        run: |
+          STAMP=$(date -u +%Y-%m-%d)
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+          cd "$RUNNER_TEMP"
+          tar -C export -czf supabase-data.tar.gz .
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" \
+            --cipher-algo AES256 --symmetric --output supabase-data.tar.gz.gpg supabase-data.tar.gz
+          cp export/BACKUP_MANIFEST.json BACKUP_MANIFEST.json
+          sha256sum supabase-data.tar.gz.gpg > MANIFEST.sha256
+          rm -f supabase-data.tar.gz
+          ls -l supabase-data.tar.gz.gpg
+          cat MANIFEST.sha256
+
+      - name: Upload to Cloudflare R2
+        run: |
+          cd "$RUNNER_TEMP"
+          PREFIX="daily/${STAMP}/run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          for f in supabase-data.tar.gz.gpg MANIFEST.sha256 BACKUP_MANIFEST.json; do
+            aws s3 cp "$f" "s3://${R2_BUCKET}/${PREFIX}/$f" --endpoint-url "$R2_ENDPOINT" --only-show-errors
+          done
+          echo "Uploaded to s3://${R2_BUCKET}/${PREFIX}/"
+
+      - name: Verify upload (download, checksum, decrypt, compare counts to live)
+        run: |
+          VDIR="$RUNNER_TEMP/verify"; rm -rf "$VDIR"; mkdir -p "$VDIR/data"
+          cd "$VDIR"
+          PREFIX="daily/${STAMP}/run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          for f in supabase-data.tar.gz.gpg MANIFEST.sha256; do
+            aws s3 cp "s3://${R2_BUCKET}/${PREFIX}/$f" "$f" --endpoint-url "$R2_ENDPOINT" --only-show-errors
+          done
+          sha256sum -c MANIFEST.sha256
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" \
+            --output supabase-data.tar.gz --decrypt supabase-data.tar.gz.gpg
+          tar -C data -xzf supabase-data.tar.gz
+          cd "$GITHUB_WORKSPACE"
+          node scripts/supabase-backup-verify.js "$VDIR/data"
+
+      - name: Check bucket lock still refuses deletes
+        # BRO-6132: the owner's 90-day bucket lock is what stops a bad workflow or stolen
+        # key from erasing the backups. Runs after verify so a missing lock never hides a
+        # bad backup. Try to delete a fresh canary object and judge by whether it still
+        # exists afterwards, not by the delete command's exit code.
+        run: |
+          KEY="lock-canary/${STAMP}-run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.txt"
+          echo "canary" > "$RUNNER_TEMP/canary.txt"
+          aws s3 cp "$RUNNER_TEMP/canary.txt" "s3://${R2_BUCKET}/${KEY}" --endpoint-url "$R2_ENDPOINT" --only-show-errors
+          # The refusal text is logged so a key that simply lacks delete rights (which would
+          # make this check pass with no lock) is visible in the log.
+          if RM_OUT=$(aws s3 rm "s3://${R2_BUCKET}/${KEY}" --endpoint-url "$R2_ENDPOINT" 2>&1); then
+            echo "delete call returned success: $RM_OUT"
+          else
+            echo "delete call refused (expected under the lock): $RM_OUT"
+          fi
+          if HEAD_OUT=$(aws s3api head-object --bucket "$R2_BUCKET" --key "$KEY" --endpoint-url "$R2_ENDPOINT" 2>&1); then
+            echo "Bucket lock verified: canary survived the delete attempt"
+          elif echo "$HEAD_OUT" | grep -qE '\(404\)|Not Found'; then
+            echo "::error::Bucket lock is OFF: a backup object was deleted. Re-enable the lock rule on the R2 bucket."
+            exit 1
+          else
+            echo "::error::Could not check the canary object (not a lock failure): $HEAD_OUT"
+            exit 1
+          fi
+
+      - name: Remove decrypted data
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/export" "$RUNNER_TEMP/verify" "$RUNNER_TEMP"/supabase-data.tar.gz*
+
+      - name: Notify on failure
+        # BRO-3707: a job-timeout hit reports "cancelled", which a bare failure() skips.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Supabase Backup Failed'
+          # warning: the owner cannot fix this by hand; check-cron-health.yml keys staleness off
+          # the last SUCCESSFUL run (36h) and surfaces it in the morning digest.
+          severity: 'warning'
+          email: 'false'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-5001",
+  "planId": "23bec24e-7dbe-40e1-8d1b-ebb1d81a1e5c",
+  "status": "applied",
+  "createdAt": "2026-10-12T22:54:13.602Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Il Cimento at NYU Skirball is listed twice. Keep the older row (its id matches TodayTix 47756) with the real April 22-24, 2027 dates, and retire the provisional venue-page copy. The 860 / Billy Crystal 860 duplicate is already retired.",
+    "steps": [
+      "Retire anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (provisional venue-page duplicate), id only",
+      "anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027: status announced -> upcoming, previewsStartDate -> 2027-04-22, closingDate -> 2027-04-24"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+        "expectTitle": "Anne Teresa De Keersmaeker & Radouan Mriziga: Il Cimento dell'Armonia e dell'Inventione",
+        "reason": "Duplicate of anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (same production at NYU Skirball, April 22-24 2027); provisional venue-page:nyu-skirball add (BRO-5001)",
+        "description": "Retire provisional duplicate row"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "NYU Skirball listing (TodayTix 47756, newyorktheatreguide): April 22-24, 2027"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-04-22",
+        "description": "NYU Skirball listing (TodayTix 47756, newyorktheatreguide): April 22-24, 2027"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T00:17:21.048Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (\"Anne Teresa De Keersmaeker & Radouan Mriziga: Il Cimento dell'Armonia e dell'Inventione\" @ NYU Skirball)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027"
+    }
+  ]
+}

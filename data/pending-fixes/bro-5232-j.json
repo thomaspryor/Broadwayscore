@@ -1,0 +1,324 @@
+{
+  "issueNumber": "bro-5232-j",
+  "planId": "0eae3a5c-ee6d-419c-a304-df850ed1eff0",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:20:23.542Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch j: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "golden-boy-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Neil Dowden",
+        "description": "BRO-5232: live page byline line under the title names Neil Dowden as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/golden-boy-almeida-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "David Wootton",
+        "description": "BRO-5232: live page byline line under the title names David Wootton as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tartuffe-remixed-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-5232: live page byline line under the title names Jeremy Malies as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/tartuffe-remixed-marylebone-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tru-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-5232: live page byline line under the title names Jeremy Malies as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/tru-menier-chocolate-factory/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/theater-life--eric-march.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: live row URL page is a different review bylined Lauren Yarger; this row stored text is identical to the sibling and matches the live sibling page bylined David Sheward Evidence: https://theaterlife.com/the-glass-menagerie-ly/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/theater-life--eric-march.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of theater-life--david-sheward.json credited to the wrong outlet/critic; evidence https://theaterlife.com/the-glass-menagerie-ly/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-2025/theater-life--patrick-christiano.json",
+        "field": "criticName",
+        "oldValue": "Patrick Christiano",
+        "newValue": "Samuel L. Leiter",
+        "description": "BRO-5232: live page byline is By Samuel L. Leiter; stored text matches the live page Evidence: https://theaterlife.com/john-proctor-is-the-villain1-2/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-in-time-2025/theater-life--patrick-christiano.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: live row URL page is a different review bylined Paulanne Simmons; this row stored text is identical to the sibling and matches the live sibling page bylined Samuel L. Leiter Evidence: https://theaterlife.com/just-in-time/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-in-time-2025/theater-life--patrick-christiano.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of theater-life--samuel-l-leiter.json credited to the wrong outlet/critic; evidence https://theaterlife.com/just-in-time/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "skeleton-crew-2022/theater-life--patrick-christiano.json",
+        "field": "criticName",
+        "oldValue": "Patrick Christiano",
+        "newValue": "David Sheward",
+        "description": "BRO-5232: live page byline is By David Sheward; stored text matches the live page Evidence: https://theaterlife.com/skeleton-crew-1-2/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "smash-2025/theater-life--patrick-christiano.json",
+        "field": "criticName",
+        "oldValue": "Patrick Christiano",
+        "newValue": "David Sheward",
+        "description": "BRO-5232: live page byline is By David Sheward; stored text matches the live page Evidence: https://theaterlife.com/smash-2/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-trip-to-bountiful-2013/theater-life--eric-march.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: live row URL page is a different review bylined Patrick Christiano; this row stored text is identical to the sibling and matches the live sibling page bylined David Sheward Evidence: https://theaterlife.com/the-trip-to-bountiful-2/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-trip-to-bountiful-2013/theater-life--eric-march.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of theater-life--david-sheward.json credited to the wrong outlet/critic; evidence https://theaterlife.com/the-trip-to-bountiful-2/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "america-who-hurt-you-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck, Editor-in-Chief",
+        "newValue": "Tony Marinelli",
+        "description": "BRO-5232: live page byline and twitter author tag are Tony Marinelli (also the URL author slug) Evidence: https://www.theaterscene.net/plays/solo-plays/america-who-hurt-you/tony-marinelli/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-2022/theater-scene--victor-gluck-editor-in-chief.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck, Editor-in-Chief",
+        "newValue": "Joel Benjamin",
+        "description": "BRO-5232: live page byline and twitter author tag are Joel Benjamin (also the URL author slug) Evidence: http://www.theaterscene.net/musicals/broadway/kimberly-akimbo-broadway/joel-benjamin/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lost-in-del-valle-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck, Editor-in-Chief",
+        "newValue": "Tony Marinelli",
+        "description": "BRO-5232: live page byline and twitter author tag are Tony Marinelli (also the URL author slug) Evidence: https://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck, Editor-in-Chief",
+        "newValue": "Tony Marinelli",
+        "description": "BRO-5232: live page byline and twitter author tag are Tony Marinelli (also the URL author slug) Evidence: https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/usatoday--patrick-ryan.json",
+        "field": "criticName",
+        "oldValue": "Patrick Ryan",
+        "newValue": "Elysa Gardner",
+        "description": "BRO-5232: usatoday returned 402; stored text byline is Elysa Gardner USA TODAY Nov. 24, 2013; the same-URL Elysa Gardner sibling is already marked duplicateOf this row Evidence: https://www.usatoday.com/story/life/theater/2013/11/24/broadway-reviews-waiting-for-godot-no-mans-land/3627461/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/cineramafilm--cinerama-film.json",
+        "field": "criticName",
+        "oldValue": "Cinerama Film",
+        "newValue": "Jane Jung",
+        "description": "BRO-5232: live page JSON-LD author, meta author and visible byline are Jane Jung, 12 October 2026 Evidence: https://cineramafilm.com/2026/10/12/franz-and-marie/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hells-kitchen-2024/chelsea-community-news--scott-stiffler.json",
+        "field": "criticName",
+        "oldValue": "Scott Stiffler",
+        "newValue": "Michael Musto",
+        "description": "BRO-5232: live page byline names Michael Musto; the same-URL sibling row carries a stale wrong-production flag, so this counted row is renamed instead of pointed at it Evidence: https://chelseacommunitynews.com/2024/04/20/review-hells-kitchen-is-a-coming-of-age-musical-thats-in-all-the-right-alicia-keys/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jitney-2017/njcom--vicki-hyman.json",
+        "field": "criticName",
+        "oldValue": "Vicki Hyman",
+        "newValue": "Patrick Maley",
+        "description": "BRO-5232: nj.com returned 403; stored text byline is By Patrick Maley for NJ.com Evidence: https://www.nj.com/entertainment/index.ssf/2017/01/jitney_august_wilson_broadway_review.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-boheme-off-broadway-2026/operawire--operawireadmin2.json",
+        "field": "criticName",
+        "oldValue": "OperaWireAdmin2",
+        "newValue": "Jennifer E. Pyron",
+        "description": "BRO-5232: live page byline is By Jennifer E. Pyron; JSON-LD author is the OperaWireAdmin2 posting account Evidence: https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tao-of-glass-west-end-2026/gramilano--grahamgramilanospicer.json",
+        "field": "criticName",
+        "oldValue": "GrahamGramilanoSpicer",
+        "newValue": "Matthew Paluch",
+        "description": "BRO-5232: live page JSON-LD author and visible byline are Matthew Paluch Evidence: https://www.gramilano.com/2026/08/review-tao-of-glass/"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:14:12.043Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-noel-coward-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"David Wootton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tartuffe-remixed-off-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/theater-life--eric-march.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/theater-life--eric-march.json wrongAttributionReason: null -> \"BRO-5232: copy of theater-life--david-sheward.json credited to the wrong outlet/critic; evidence https://theaterlife.com/the-glass-menagerie-ly/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-2025/theater-life--patrick-christiano.json criticName: \"Patrick Christiano\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/theater-life--patrick-christiano.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/theater-life--patrick-christiano.json wrongAttributionReason: null -> \"BRO-5232: copy of theater-life--samuel-l-leiter.json credited to the wrong outlet/critic; evidence https://theaterlife.com/just-in-time/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "skeleton-crew-2022/theater-life--patrick-christiano.json criticName: \"Patrick Christiano\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "smash-2025/theater-life--patrick-christiano.json criticName: \"Patrick Christiano\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-trip-to-bountiful-2013/theater-life--eric-march.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-trip-to-bountiful-2013/theater-life--eric-march.json wrongAttributionReason: null -> \"BRO-5232: copy of theater-life--david-sheward.json credited to the wrong outlet/critic; evidence https://theaterlife.com/the-trip-to-bountiful-2/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "america-who-hurt-you-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json criticName: \"Victor Gluck, Editor-in-Chief\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-2022/theater-scene--victor-gluck-editor-in-chief.json criticName: \"Victor Gluck, Editor-in-Chief\" -> \"Joel Benjamin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lost-in-del-valle-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json criticName: \"Victor Gluck, Editor-in-Chief\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json criticName: \"Victor Gluck, Editor-in-Chief\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/usatoday--patrick-ryan.json criticName: \"Patrick Ryan\" -> \"Elysa Gardner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/cineramafilm--cinerama-film.json criticName: \"Cinerama Film\" -> \"Jane Jung\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-2024/chelsea-community-news--scott-stiffler.json criticName: \"Scott Stiffler\" -> \"Michael Musto\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jitney-2017/njcom--vicki-hyman.json criticName: \"Vicki Hyman\" -> \"Patrick Maley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-boheme-off-broadway-2026/operawire--operawireadmin2.json criticName: \"OperaWireAdmin2\" -> \"Jennifer E. Pyron\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tao-of-glass-west-end-2026/gramilano--grahamgramilanospicer.json criticName: \"GrahamGramilanoSpicer\" -> \"Matthew Paluch\""
+    }
+  ]
+}

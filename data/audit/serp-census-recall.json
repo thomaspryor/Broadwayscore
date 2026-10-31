@@ -1,0 +1,875 @@
+{
+  "generatedAt": "2026-10-26T17:42:05.977Z",
+  "naivePages": 2,
+  "settlingHours": 24,
+  "totals": {
+    "shows": 5,
+    "excluded": [],
+    "undatedCandidates": 6,
+    "truthUrls": 53,
+    "scopedUrls": 16,
+    "naiveUrls": 20,
+    "onDiskUrls": 39,
+    "newFromNaive": 8,
+    "perArm": {
+      "naive-p0": {
+        "found": 9,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.17
+      },
+      "naive-p1": {
+        "found": 11,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.208
+      },
+      "onDisk": {
+        "found": 39,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.736
+      },
+      "scoped-q0": {
+        "found": 6,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.113
+      },
+      "scoped-q1": {
+        "found": 12,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.226
+      }
+    },
+    "perFamily": {
+      "naive": {
+        "found": 20,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.377
+      },
+      "onDisk": {
+        "found": 39,
+        "arms": 1,
+        "failed": 0,
+        "recall": 0.736
+      },
+      "scoped": {
+        "found": 16,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.302
+      }
+    },
+    "byCategory": {
+      "off-broadway": {
+        "shows": 3,
+        "truthUrls": 14,
+        "families": {
+          "naive": {
+            "found": 6,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.429
+          },
+          "onDisk": {
+            "found": 11,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.786
+          },
+          "scoped": {
+            "found": 4,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.286
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 1,
+        "truthUrls": 29,
+        "families": {
+          "naive": {
+            "found": 9,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.31
+          },
+          "onDisk": {
+            "found": 22,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.759
+          },
+          "scoped": {
+            "found": 9,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.31
+          }
+        }
+      },
+      "west-end": {
+        "shows": 1,
+        "truthUrls": 10,
+        "families": {
+          "naive": {
+            "found": 5,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.5
+          },
+          "onDisk": {
+            "found": 6,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.6
+          },
+          "scoped": {
+            "found": 3,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.3
+          }
+        }
+      }
+    },
+    "scopedRecall": 0.302,
+    "naiveRecall": 0.377
+  },
+  "shows": [
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "market": "off-broadway",
+      "openingDate": "2026-10-24",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
+      "counts": {
+        "truth": 8,
+        "scoped": 1,
+        "naive": 2,
+        "onDisk": 7
+      },
+      "recall": {
+        "scoped": 0.125,
+        "naive": 0.25,
+        "onDisk": 0.875,
+        "censusPlusDisk": 0.875
+      },
+      "newFromNaive": [
+        "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/"
+      ],
+      "missedByCensus": [
+        "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/",
+        "https://www.nysun.com/article/privilege-meets-its-reckoning-in-aftermath",
+        "https://www.talkinbroadway.com/page/ob/10_24_26.html",
+        "https://theaterpizzazz.com/aftermath-a-difficult-family-drama/",
+        "https://www.theatermania.com/news/review-a-rich-family-confronts-their-privilege-in-aftermath_1858158/",
+        "https://www.thereviewshub.com/aftermath-cluntergate-centre-horbury/",
+        "https://www.timeout.com/melbourne/restaurants/aftermath-diner"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Aftermath\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 1,
+          "urls": [
+            "https://newyorktheater.me/2026/10/24/aftermath-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Aftermath\" review york",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://newyorktheater.me/2026/10/24/aftermath-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 9,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://newyorktheater.me/2026/10/24/aftermath-review/",
+            "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 7,
+          "accepted": 7,
+          "urls": [
+            "https://www.nysun.com/article/privilege-meets-its-reckoning-in-aftermath",
+            "https://newyorktheater.me/2026/10/24/aftermath-review/",
+            "https://www.talkinbroadway.com/page/ob/10_24_26.html",
+            "https://theaterpizzazz.com/aftermath-a-difficult-family-drama/",
+            "https://www.theatermania.com/news/review-a-rich-family-confronts-their-privilege-in-aftermath_1858158/",
+            "https://www.thereviewshub.com/aftermath-cluntergate-centre-horbury/",
+            "https://www.timeout.com/melbourne/restaurants/aftermath-diner"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-kick-inside-off-broadway-2026",
+      "title": "The Kick Inside",
+      "market": "off-broadway",
+      "openingDate": "2026-10-23",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "us",
+      "naiveQuery": "The Kick Inside HERE Arts Center review",
+      "counts": {
+        "truth": 5,
+        "scoped": 3,
+        "naive": 4,
+        "onDisk": 3
+      },
+      "recall": {
+        "scoped": 0.6,
+        "naive": 0.8,
+        "onDisk": 0.6,
+        "censusPlusDisk": 0.6
+      },
+      "newFromNaive": [
+        "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
+        "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
+      ],
+      "missedByCensus": [
+        "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
+        "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Kick Inside\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Kick Inside\" review here",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
+            "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
+            "https://thefrontrowcenter.com/2026/10/the-kick-inside/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Kick Inside HERE Arts Center review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
+            "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
+            "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Kick Inside HERE Arts Center review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 3,
+          "accepted": 3,
+          "urls": [
+            "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
+            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
+            "https://thefrontrowcenter.com/2026/10/the-kick-inside/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "market": "off-west-end",
+      "openingDate": "2026-10-23",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+      "counts": {
+        "truth": 29,
+        "scoped": 9,
+        "naive": 9,
+        "onDisk": 22
+      },
+      "recall": {
+        "scoped": 0.31,
+        "naive": 0.31,
+        "onDisk": 0.759,
+        "censusPlusDisk": 0.966
+      },
+      "newFromNaive": [
+        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins"
+      ],
+      "missedByCensus": [
+        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
+        "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
+        "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
+        "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
+        "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
+        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
+        "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
+        "https://www.london-unattached.com/classic-penguins-gary-starr/",
+        "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
+        "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-garry-starr-classic-penguins",
+        "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-Arts-Theatre-20251104",
+        "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
+        "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-3/",
+        "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
+        "https://theaterscene.com/reviews/garry-starr-classic-penguins/",
+        "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
+        "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
+        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-arts-theatre",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/garry-starr-classic-penguins_1727588/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Garry Starr Classic Penguins\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 7,
+          "accepted": 4,
+          "urls": [
+            "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
+            "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-4/",
+            "https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
+            "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Garry Starr Classic Penguins\" review other",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
+            "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
+            "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+            "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
+            "https://1minutecritic.substack.com/p/garry-starr-classic-penguins-review"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
+            "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
+            "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
+            "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
+            "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
+            "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
+            "https://www.london-unattached.com/classic-penguins-gary-starr/",
+            "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 22,
+          "accepted": 22,
+          "urls": [
+            "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-garry-starr-classic-penguins",
+            "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-Arts-Theatre-20251104",
+            "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
+            "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
+            "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
+            "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-3/",
+            "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
+            "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
+            "https://www.london-unattached.com/classic-penguins-gary-starr/",
+            "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
+            "https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
+            "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
+            "https://theaterscene.com/reviews/garry-starr-classic-penguins/",
+            "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
+            "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
+            "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
+            "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
+            "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins",
+            "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
+            "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-arts-theatre",
+            "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/garry-starr-classic-penguins_1727588/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "cirque-berserk-west-end-2026",
+      "title": "Cirque Berserk",
+      "market": "west-end",
+      "openingDate": "2026-10-23",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Cirque Berserk Garrick Theatre review",
+      "counts": {
+        "truth": 10,
+        "scoped": 3,
+        "naive": 5,
+        "onDisk": 6
+      },
+      "recall": {
+        "scoped": 0.3,
+        "naive": 0.5,
+        "onDisk": 0.6,
+        "censusPlusDisk": 0.6
+      },
+      "newFromNaive": [
+        "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
+        "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+        "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
+        "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping"
+      ],
+      "missedByCensus": [
+        "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
+        "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+        "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
+        "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+        "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+        "https://www.broadwayworld.com/westend/article/Review-CIRQUE-BERSERK-at-Riverside-Studios-20230220",
+        "https://soundsandstage.com/show/cirque-berserk"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Cirque Berserk\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 5,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Cirque Berserk\" review garrick",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
+            "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
+            "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Cirque Berserk Garrick Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
+            "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Cirque Berserk Garrick Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
+            "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+            "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 6,
+          "accepted": 6,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
+            "https://www.broadwayworld.com/westend/article/Review-CIRQUE-BERSERK-at-Riverside-Studios-20230220",
+            "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
+            "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
+            "https://soundsandstage.com/show/cirque-berserk",
+            "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "women-who-eat-off-broadway-2026",
+      "title": "Women Who Eat",
+      "market": "off-broadway",
+      "openingDate": "2026-10-22",
+      "sampleState": "measured",
+      "sampleReason": "opened 4d ago",
+      "geo": "us",
+      "naiveQuery": "Women Who Eat Theaterlab review",
+      "counts": {
+        "truth": 1,
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 1
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://theaterlabnyc.com/atelier-theaterlab-women-who-eat/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Women Who Eat\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Women Who Eat\" review theaterlab",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Women Who Eat Theaterlab review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Women Who Eat Theaterlab review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 1,
+          "accepted": 1,
+          "urls": [
+            "https://theaterlabnyc.com/atelier-theaterlab-women-who-eat/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "providerOutage": false,
+  "onDiskUnavailable": false,
+  "trend": {
+    "entry": {
+      "date": "2026-10-26",
+      "generatedAt": "2026-10-26T17:42:05.977Z",
+      "naivePages": 2,
+      "shows": 5,
+      "informativeShows": 5,
+      "excluded": {
+        "settling": 1
+      },
+      "truthUrls": 53,
+      "onDiskUrls": 39,
+      "newFromNaive": 8,
+      "families": {
+        "naive": 0.377,
+        "onDisk": 0.736,
+        "scoped": 0.302
+      },
+      "arms": {
+        "naive-p0": 0.17,
+        "naive-p1": 0.208,
+        "onDisk": 0.736,
+        "scoped-q0": 0.113,
+        "scoped-q1": 0.226
+      },
+      "combinedRecall": 0.849,
+      "familyYield": {
+        "naive": 4,
+        "onDisk": 7.8,
+        "scoped": 3.2
+      },
+      "armYield": {
+        "naive-p0": 1.8,
+        "naive-p1": 2.2,
+        "onDisk": 7.8,
+        "scoped-q0": 1.2,
+        "scoped-q1": 2.4
+      },
+      "armsFailed": {
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 0,
+        "scoped-q0": 0,
+        "scoped-q1": 0
+      },
+      "unavailableArms": [],
+      "byCategory": {
+        "off-broadway": {
+          "shows": 3,
+          "truthUrls": 14,
+          "families": {
+            "naive": 0.429,
+            "onDisk": 0.786,
+            "scoped": 0.286
+          }
+        },
+        "off-west-end": {
+          "shows": 1,
+          "truthUrls": 29,
+          "families": {
+            "naive": 0.31,
+            "onDisk": 0.759,
+            "scoped": 0.31
+          }
+        },
+        "west-end": {
+          "shows": 1,
+          "truthUrls": 10,
+          "families": {
+            "naive": 0.5,
+            "onDisk": 0.6,
+            "scoped": 0.3
+          }
+        }
+      },
+      "sampleIds": [
+        "aftermath-art-new-york-off-broadway-2026",
+        "the-kick-inside-off-broadway-2026",
+        "garry-starr-classic-penguins-off-west-end-2026",
+        "cirque-berserk-west-end-2026",
+        "women-who-eat-off-broadway-2026"
+      ]
+    },
+    "judgement": {
+      "verdict": "ok",
+      "reason": "3 search method(s) within 0.15 of their 4-run median",
+      "regressions": [],
+      "latest": {
+        "date": "2026-10-26",
+        "generatedAt": "2026-10-26T17:42:05.977Z",
+        "naivePages": 2,
+        "shows": 5,
+        "informativeShows": 5,
+        "excluded": {
+          "settling": 1
+        },
+        "truthUrls": 53,
+        "onDiskUrls": 39,
+        "newFromNaive": 8,
+        "families": {
+          "naive": 0.377,
+          "onDisk": 0.736,
+          "scoped": 0.302
+        },
+        "arms": {
+          "naive-p0": 0.17,
+          "naive-p1": 0.208,
+          "onDisk": 0.736,
+          "scoped-q0": 0.113,
+          "scoped-q1": 0.226
+        },
+        "combinedRecall": 0.849,
+        "familyYield": {
+          "naive": 4,
+          "onDisk": 7.8,
+          "scoped": 3.2
+        },
+        "armYield": {
+          "naive-p0": 1.8,
+          "naive-p1": 2.2,
+          "onDisk": 7.8,
+          "scoped-q0": 1.2,
+          "scoped-q1": 2.4
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-broadway": {
+            "shows": 3,
+            "truthUrls": 14,
+            "families": {
+              "naive": 0.429,
+              "onDisk": 0.786,
+              "scoped": 0.286
+            }
+          },
+          "off-west-end": {
+            "shows": 1,
+            "truthUrls": 29,
+            "families": {
+              "naive": 0.31,
+              "onDisk": 0.759,
+              "scoped": 0.31
+            }
+          },
+          "west-end": {
+            "shows": 1,
+            "truthUrls": 10,
+            "families": {
+              "naive": 0.5,
+              "onDisk": 0.6,
+              "scoped": 0.3
+            }
+          }
+        },
+        "sampleIds": [
+          "aftermath-art-new-york-off-broadway-2026",
+          "the-kick-inside-off-broadway-2026",
+          "garry-starr-classic-penguins-off-west-end-2026",
+          "cirque-berserk-west-end-2026",
+          "women-who-eat-off-broadway-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
+    }
+  }
+}

@@ -1,0 +1,516 @@
+{
+  "issueNumber": "bro-5089-d",
+  "planId": "45ffdf95-baf2-4856-855f-c63e01d045b5",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.560Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 4/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bye-bye-birdie-2009",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bye-bye-birdie-2009/thumbnail.jpg",
+          "poster": "/images/shows/bye-bye-birdie-2009/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "bye-bye-birdie-2009: poster and thumbnail cleared, other-production: The image shows the names 'Chita Rivera' and 'Dick Van Dyke' and the phrase 'Original Broadway Cast' — indicating the 1960 original production, not the 2009 Stephen Sondheim Theatre revival. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-2010",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/fences-2010/thumbnail.jpg",
+          "poster": "/images/shows/fences-2010/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "fences-2010: poster and thumbnail cleared, other-production: The poster clearly shows the venue text '46th STREET THEATRE' at the bottom, tying it to an earlier staging rather than the 2010 Kenny Leon revival at the (Cort/James Earl Jones) Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "next-to-normal-2009",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/next-to-normal-2009/thumbnail.jpg",
+          "poster": "/images/shows/next-to-normal-2009/poster.webp",
+          "hero": "/images/shows/next-to-normal-2009/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/next-to-normal-2009/hero.webp"
+        },
+        "description": "next-to-normal-2009: poster and thumbnail cleared, other-production: The poster text reads 'SYMPHONY SPACE' and 'LONDON'S WEST END', which ties it to a different venue/marketing (not the Booth Theatre Broadway production 2009–2011). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "next-to-normal-2009",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3f7Ko23f37fBgjZfPnCBqd/bac9f813997553327342ed87c413d197/Next_to_Normal_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3f7Ko23f37fBgjZfPnCBqd/bac9f813997553327342ed87c413d197/Next_to_Normal_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "next-to-normal-2009: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-back-little-sheba-2008",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/come-back-little-sheba-2008/thumbnail.jpg",
+          "poster": "/images/shows/come-back-little-sheba-2008/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "come-back-little-sheba-2008: poster and thumbnail cleared, other-production: The cover text reads 'for The Booth Theatre' (identifying a different theatre than the Samuel J. Friedman/Biltmore), indicating a different production/staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "november-2008",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/november-2008/thumbnail.jpg",
+          "poster": "/images/shows/november-2008/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "november-2008: poster and thumbnail cleared, wrong-show: Image text prominently shows 'Mary Martin' and 'The Sound of Music' with credits to Rodgers & Hammerstein and Lindsay & Crouse — not David Mamet’s 'November' at the Ethel Barrymore. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "finians-rainbow-2009",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/finians-rainbow-2009/thumbnail.jpg",
+          "poster": "/images/shows/finians-rainbow-2009/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "finians-rainbow-2009: poster and thumbnail cleared, other-production: The poster names the Los Angeles Civic Light Opera Association / Philharmonic (bottom text) and has vintage credits (eg. Walter Winchell quote) and styling — it does not mention St. James Theatre, the 2009–2010 dates, or (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grease-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/grease-2007/thumbnail.jpg",
+          "poster": "/images/shows/grease-2007/poster.webp",
+          "hero": "/images/shows/grease-2007/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/grease-2007/hero.webp"
+        },
+        "description": "grease-2007: poster and thumbnail cleared, other-production: Poster text reads 'DON'T VAPE! THE GREASE PARODY' — the image advertises a parody titled 'Don't Vape', not the 2007–2009 Broadway production of Grease. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grease-2007",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/VENurjGRKqaezF3p8EqBc/7f1a520cbfe5091953caf176a18c8439/Vape_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/VENurjGRKqaezF3p8EqBc/7f1a520cbfe5091953caf176a18c8439/Vape_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "grease-2007: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/legally-blonde-2007/thumbnail.jpg",
+          "poster": "/images/shows/legally-blonde-2007/poster.webp",
+          "hero": "/images/shows/legally-blonde-2007/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/legally-blonde-2007/hero.webp"
+        },
+        "description": "legally-blonde-2007: poster and thumbnail cleared, other-production: The image reads \"ACTOR THERAPY sings LEGALLY BLONDE\" and shows the venue name \"54 BELOW,\" indicating a cabaret/concert at 54 Below rather than the Broadway Palace Theatre run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-2007",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5eBrB0QNf1siu96m2Bnkyi/d97d3838bb95b2ea01f11f17e6e51075/TT-poster-ActorTherapySingsLegallyBlonde.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5eBrB0QNf1siu96m2Bnkyi/d97d3838bb95b2ea01f11f17e6e51075/TT-poster-ActorTherapySingsLegallyBlonde.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "legally-blonde-2007: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "journeys-end-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/journeys-end-2007/thumbnail.jpg",
+          "poster": "/images/shows/journeys-end-2007/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "journeys-end-2007: poster and thumbnail cleared, other-production: The poster includes the text \"Henry Miller's Theatre\" (not Belasco Theatre), indicating a different/earlier staging of Journey's End. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inherit-the-wind-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/inherit-the-wind-2007/thumbnail.jpg",
+          "poster": "/images/shows/inherit-the-wind-2007/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "inherit-the-wind-2007: poster and thumbnail cleared, other-production: Top-left text reads 'The Playbill for the National Theatre,' indicating this Playbill/poster is for a National Theatre staging rather than the Lyceum Theatre Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-apple-tree-2006",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-apple-tree-2006/thumbnail.jpg",
+          "poster": "/images/shows/the-apple-tree-2006/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-apple-tree-2006: poster and thumbnail cleared, other-production: Poster text lists stars 'Barbara Harris', 'Larry Blyden', 'Alan Alda', credits director 'Mike Nichols' and shows 'Shubert Theatre' — identifying the original 1960s Shubert production, not the 2006 Steinberg Center reviva (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prelude-to-a-kiss-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/prelude-to-a-kiss-2007/thumbnail.jpg",
+          "poster": "/images/shows/prelude-to-a-kiss-2007/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "prelude-to-a-kiss-2007: poster and thumbnail cleared, other-production: The Playbill cover in the image shows the venue text 'THE HELEN HAYES THEATRE' (and the title 'PRELUDE TO A KISS'), which ties it to a different theatre than the Todd Haimes/American Airlines/Selwyn house for the 2007 ru (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rabbit-hole-2006",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rabbit-hole-2006/thumbnail.jpg",
+          "poster": "/images/shows/rabbit-hole-2006/poster.webp",
+          "hero": "/images/shows/rabbit-hole-2006/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/rabbit-hole-2006/hero.webp"
+        },
+        "description": "rabbit-hole-2006: poster and thumbnail cleared, wrong-show: Poster reads 'SYMPHONY SPACE' and 'DOWN THE RABBIT HOLE WITH RADIOLAB WITH LULU MILLER & LATIF NASSIR WED, MAR 06 | 7PM' — an event at Symphony Space, not the Samuel J. Friedman Theatre production of Rabbit Hole (no play (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rabbit-hole-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1pasyJWADlprqvWTLOOoIc/1aabee089c528bb843313ecfd562ce90/RadioLab_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1pasyJWADlprqvWTLOOoIc/1aabee089c528bb843313ecfd562ce90/RadioLab_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "rabbit-hole-2006: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-chorus-line-2006",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-chorus-line-2006/hero.webp",
+          "thumbnail": "/images/shows/a-chorus-line-2006/thumbnail.webp",
+          "poster": "/images/shows/a-chorus-line-2006/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/a-chorus-line-2006/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-chorus-line-2006: poster and thumbnail cleared, other-production: the poster text 'OFFICIAL 50TH ANNIVERSARY CELEBRATION' — indicates a 50th‑anniversary staging/year, which does not match the 2006–2008 Broadway revival run (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-chorus-line-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5VcyoEJBFYFwmufmzKF7Z7/bdac1f1d736defeab524a70ec6b3cb48/ACL-Assets-TodayTix-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5VcyoEJBFYFwmufmzKF7Z7/bdac1f1d736defeab524a70ec6b3cb48/ACL-Assets-TodayTix-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "a-chorus-line-2006: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-caine-mutiny-courtmartial-2006",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-caine-mutiny-courtmartial-2006/thumbnail.jpg",
+          "poster": "/images/shows/the-caine-mutiny-courtmartial-2006/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-caine-mutiny-courtmartial-2006: poster and thumbnail cleared, other-production: The Playbill cover shows 'CIRCLE IN THE SQUARE THEATRE' under the PLAYBILL header, indicating a different theatre than the Gerald Schoenfeld/Plymouth/Schoenfeld run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-2002",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/la-boheme-2002/hero.webp",
+          "thumbnail": "/images/shows/la-boheme-2002/thumbnail.webp",
+          "poster": "/images/shows/la-boheme-2002/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/la-boheme-2002/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "la-boheme-2002: poster and thumbnail cleared, other-production: The poster includes the text 'The Metropolitan Opera', indicating this is the Met Opera production rather than the Broadway (Baz Luhrmann) staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/18dhTa5quQyTnbrRqjB8Bz/c0cae5f0d4555a6f73339e44d2b394db/TodayTix_2526_Imagery_Boheme_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3qw5kid1wU4o8pNSgQQRP4/bea297e4fe63039597bf131ec4c8d8ee/TodayTix_2526_Imagery_Boheme_1080x1080_Social.jpg?fm=webp&q=90"
+        ],
+        "description": "la-boheme-2002: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-boys-from-syracuse-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-boys-from-syracuse-2002/thumbnail.jpg",
+          "poster": "/images/shows/the-boys-from-syracuse-2002/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-boys-from-syracuse-2002: poster and thumbnail cleared, other-production: The poster reads \"George Abbott presents\" and credits George Abbott (vintage style artwork and original-production billing: \"Music by Richard Rodgers / Lyrics by Lorenz Hart\"), not the 2002 revival credits (Scott Ellis,  (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-boys-from-syracuse-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/2464/medium_TBFS1.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/2464/preview_TBFS1.jpg"
+        ],
+        "description": "the-boys-from-syracuse-2002: never re-take this art source (BRO-5089)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:00:56.115Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bye-bye-birdie-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for fences-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for next-to-normal-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for next-to-normal-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for come-back-little-sheba-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for november-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for finians-rainbow-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for grease-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for grease-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for journeys-end-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for inherit-the-wind-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-apple-tree-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for prelude-to-a-kiss-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rabbit-hole-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for rabbit-hole-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-chorus-line-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-chorus-line-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-caine-mutiny-courtmartial-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for la-boheme-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for la-boheme-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-boys-from-syracuse-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-boys-from-syracuse-2002"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "generatedAt": "2026-10-31T10:41:19.888Z",
+    "windowDays": 3,
+    "minChurn": 30,
+    "degraded": true,
+    "note": "Churn-vs-merge-attribute coverage monitor. Non-blocking; surfaced via health-check.js digest. Flagged = high-churn tracked file with no merge driver and no merge-coverage=exempt mark in .gitattributes."
+  },
+  "summary": {
+    "minChurn": 30,
+    "flaggedCount": 0,
+    "exemptCount": 1,
+    "coveredCount": 2,
+    "highChurnTracked": 3
+  },
+  "flagged": [],
+  "exempt": [
+    {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 56
+    }
+  ],
+  "covered": [
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 109,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 34,
+      "mergeAttr": "union"
+    }
+  ]
+}

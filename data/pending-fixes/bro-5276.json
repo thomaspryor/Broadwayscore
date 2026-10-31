@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5276",
+  "planId": "02dd70d9-df2d-4eaf-9b15-34f9c166a340",
+  "status": "applied",
+  "createdAt": "2026-10-13T22:03:24.084052Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5276: remove Theatr audience data from the 108 shows that closed before 2021 (Theatr had no users then; the votes belong to a modern same-titled production) and recompute their combined audience score from the remaining sources.",
+    "steps": [
+      "Run neutralize-stale-theatr-buzz.js --apply: deletes sources.theatr and recomputes combinedScore/designation for shows closed before 2021."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "neutralize-stale-theatr-buzz.js",
+        "args": "--apply",
+        "description": "BRO-5276: drop stale Theatr source on pre-2021 closures, recompute combinedScore (dry run on 2026-10-13 listed 108 shows)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T01:29:11.223Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran neutralize-stale-theatr-buzz.js successfully"
+    }
+  ]
+}

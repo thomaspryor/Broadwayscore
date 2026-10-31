@@ -1,0 +1,297 @@
+{
+  "issueNumber": "bro-4956-f",
+  "planId": "6d3ebade-9d0b-41b3-ad9b-7e5f412dcda0",
+  "status": "applied",
+  "createdAt": "2026-10-10T07:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956 backfill: 53 reviews that Best of Theatre round-ups link for London shows opened 2026-08-12..09-18 were never collected (the WE gap audit compared only WET/theatre.reviews/LBO and only for 21 days). Ingest each; the script's own production/date/cross-show guards still apply, so prior-production or wrong-show pages are refused. (batch 2 of 3, 25 reviews)",
+    "steps": [
+      "Ingest 25 round-up-listed reviews (batch 2 of 3)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/fire-fire-review-arcola-theatre --critic=\"Dave Fargnoli\"",
+        "description": "The Stage, Dave Fargnoli on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=night-city-off-west-end-2026 --url=https://musicaltheatremusings.co.uk/night-city/ --critic=\"Sarah McPartlan\"",
+        "description": "Musical Theatre Musings, Sarah McPartlan on night-city-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=night-city-off-west-end-2026 --url=https://playstosee.com/reviews/uk-reviews/london/night-city/ --critic=\"Jad Adams\"",
+        "description": "Plays To See, Jad Adams on night-city-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=night-city-off-west-end-2026 --url=\"https://www.londontheatrereviews.co.uk/post.cfm?p=29022\" --critic=\"Cara-Louise Scott-Lapish\"",
+        "description": "London Theatre Reviews, Cara-Louise Scott-Lapish on night-city-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=man-to-man-west-end-2026 --url=https://northwestend.com/man-to-man-the-royal-court/ --critic=\"Phil Meikle\"",
+        "description": "North West End, Phil Meikle on man-to-man-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tartuffe-remixed-off-west-end-2026 --url=https://playstosee.com/reviews/tartuffe-remixed/ --critic=\"Lennon Hu\"",
+        "description": "Plays To See, Lennon Hu on tartuffe-remixed-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tartuffe-remixed-off-west-end-2026 --url=https://www.theupcoming.co.uk/2026/09/11/tartuffe-remixed-at-marylebone-theatre-theatre-review/ --critic=\"Thomas Messner\"",
+        "description": "The Upcoming, Thomas Messner on tartuffe-remixed-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bloodsport-after-helen-of-troy-off-west-end-2026 --url=https://theartsdesk.com/theatre/bloodsport-stratford-east-review-1536-author-pits-more-essex-girls-against-bellicose-englishmen --critic=\"Helen Hawkins\"",
+        "description": "theartsdesk, Helen Hawkins on bloodsport-after-helen-of-troy-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=youre-so-special-off-west-end-2026 --url=https://theatreandtonic.co.uk/blog/youre-so-special-at-soho-theatre-review --critic=\"Chiara\"",
+        "description": "Theatre and Tonic, Chiara on youre-so-special-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=youre-so-special-off-west-end-2026 --url=https://www.thereviewshub.com/youre-so-special-soho-theatre-london/ --critic=\"Scott Matthewman\"",
+        "description": "The Reviews Hub, Scott Matthewman on youre-so-special-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=youre-so-special-off-west-end-2026 --url=https://www.westendbestfriend.co.uk/news/review-youre-so-special-soho-theatre --critic=\"Oli Burgin\"",
+        "description": "West End Best Friend, Oli Burgin on youre-so-special-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=youre-so-special-off-west-end-2026 --url=https://www.allthatdazzles.co.uk/post/review-you-re-so-special-soho-theatre --critic=\"Sam Woodward\"",
+        "description": "All That Dazzles, Sam Woodward on youre-so-special-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=youre-so-special-off-west-end-2026 --url=https://theatreweekly.com/review-youre-so-special-at-soho-theatre/ --critic=\"George Rennie\"",
+        "description": "Theatre Weekly, George Rennie on youre-so-special-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=youre-so-special-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/youre-so-special-review-soho-theatre-london --critic=\"Holly O’Mahony\"",
+        "description": "The Stage, Holly O’Mahony on youre-so-special-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kimberly-akimbo-off-west-end-2026 --url=https://playstosee.com/reviews/uk-reviews/kimberly-akimbo/ --critic=\"Tim Hochstrasser\"",
+        "description": "Plays To See, Tim Hochstrasser on kimberly-akimbo-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jane-eyre-off-west-end-2026 --url=https://musicaltheatrereview.com/jane-eyre-a-musical-southwark-playhouse-elephant/ --critic=\"Susan Elkin\"",
+        "description": "Musical Theatre Review, Susan Elkin on jane-eyre-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jeeves-takes-charge-west-end-2026 --url=https://southlondon.co.uk/lifestyle/review-jeeves-takes-charge-charing-cross-theatre/ --critic=\"Melina Block\"",
+        "description": "southlondon.co.uk, Melina Block on jeeves-takes-charge-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://www.allthatdazzles.co.uk/post/review-a-slow-fire-jermyn-street-theatre --critic=\"Molly Gulvin\"",
+        "description": "All That Dazzles, Molly Gulvin on a-slow-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://www.theartsdesk.com/theatre/slow-fire-jermyn-street-theatre-review-smouldering-post-apocalyptical-drama --critic=\"Gary Naylor\"",
+        "description": "theartsdesk, Gary Naylor on a-slow-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://www.thereviewshub.com/a-slow-fire-jermyn-street-theatre-london/ --critic=\"Richard Maguire\"",
+        "description": "The Reviews Hub, Richard Maguire on a-slow-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://theatreandtonic.co.uk/blog/a-slow-fire-at-jermyn-street-theatre-review --critic=\"Penny Walshe\"",
+        "description": "Theatre and Tonic, Penny Walshe on a-slow-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://www.westendbestfriend.co.uk/news/review-a-slow-fire-jermyn-street-theatre --critic=\"A.M.H.\"",
+        "description": "West End Best Friend, A.M.H. on a-slow-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://theatreweekly.com/review-a-slow-fire-at-jermyn-street-theatre/ --critic=\"Ke Meng\"",
+        "description": "Theatre Weekly, Ke Meng on a-slow-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=who-killed-marilyn-off-west-end-2026 --url=https://www.westendbestfriend.co.uk/news/review-who-killed-marilyn-emerald-theatre --critic=\"Brian Penn\"",
+        "description": "West End Best Friend, Brian Penn on who-killed-marilyn-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=who-killed-marilyn-off-west-end-2026 --url=\"https://www.londontheatrereviews.co.uk/post.cfm?p=28806\" --critic=\"Jason Lane\"",
+        "description": "London Theatre Reviews, Jason Lane on who-killed-marilyn-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T07:37:39.644Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

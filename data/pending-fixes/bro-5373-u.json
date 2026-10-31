@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-5373-u",
+  "planId": "ee58c5d4-e6db-4378-a80f-de3f30dc7d30",
+  "status": "applied",
+  "createdAt": "2026-10-15T02:01:52.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (u): recover 3 reviews the push ownership gate lost: re-move Mokrynski to the Apollo show, restore Matheou (The Other Place) and Cavendish (Leopoldstadt) from history.",
+    "steps": [
+      "move",
+      "delete+restore",
+      "restore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "christmas-carol-goes-wrong-west-end-2026/broadwayworld--kat-mokrynski.json",
+        "destPath": "christmas-carol-goes-wrong-apollo-west-end-2025/broadwayworld--kat-mokrynski.json",
+        "description": "BRO-5373: redo of plan bro-5368-p's move. Kat Mokrynski's BroadwayWorld review of the Apollo run (url .../Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-Theatre-20251216). The first move was dropped by the push ownership gate (fixed in 89ad97aea and 83af436f8) and the collector later re-created the file under the 2026 show."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-other-place-west-end-2024/artsdesk--demetrios-matheou.json",
+        "description": "BRO-5373: excerpt-only remnant (0 chars of text) of Demetrios Matheou's Arts Desk review. The full 4,832-char version was dropped by the push ownership gate on 2026-10-11 and exists nowhere else; deleted so the next action can restore it at this path."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-other-place-west-end-2024/artsdesk--demetrios-matheou.json",
+        "fromCommit": "46ccfeaed99898281cd6313b2b915ac8659765d9",
+        "description": "BRO-5373: restore the full review from the commit before the 2026-10-11 ownership-gate drop (audit-ownership-gate-losses.js)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "leopoldstadt-west-end-2020/telegraph--dominic-cavendish.json",
+        "fromCommit": "a9491571ca7c04067228dd11129ca0efe6b0135c",
+        "description": "BRO-5373: Dominic Cavendish's Telegraph review of the Wyndham's run (4,222 chars, url .../leopoldstadt-review-wyndhams-theatre-tom-stoppard-delivers-unforgettable/). Dropped by the push ownership gate on 2026-10-10 and exists nowhere today; restored from the commit before the drop."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T02:36:17.380Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved christmas-carol-goes-wrong-west-end-2026/broadwayworld--kat-mokrynski.json → christmas-carol-goes-wrong-apollo-west-end-2025/broadwayworld--kat-mokrynski.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-west-end-2024/artsdesk--demetrios-matheou.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-other-place-west-end-2024/artsdesk--demetrios-matheou.json@46ccfeaed99898281cd6313b2b915ac8659765d9 -> the-other-place-west-end-2024/artsdesk--demetrios-matheou.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored leopoldstadt-west-end-2020/telegraph--dominic-cavendish.json@a9491571ca7c04067228dd11129ca0efe6b0135c -> leopoldstadt-west-end-2020/telegraph--dominic-cavendish.json"
+    }
+  ]
+}

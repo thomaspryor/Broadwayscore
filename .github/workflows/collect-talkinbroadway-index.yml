@@ -1,0 +1,109 @@
+name: Collect Talkin' Broadway Index
+
+# BRO-5679: read talkinbroadway.com's own index pages once a day so no review is
+# invisible. TB sits behind a Cloudflare managed challenge that Bright Data,
+# ScrapingBee and headless Playwright cannot pass from CI; one Browserbase
+# session can (probe 2026-10-19). Spend is one session a day, held to the
+# caller allowance in scripts/lib/browserbase-caps.js (expires 2026-11-19).
+# Kill switch: repo variable TB_INDEX_COLLECTOR_DISABLED=true.
+
+on:
+  schedule:
+    - cron: '17 15 * * *'   # daily, after the morning review wave
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'List missing reviews only; write nothing'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: collect-talkinbroadway-index
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ vars.TB_INDEX_COLLECTOR_DISABLED != 'true' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # Depth 300 keeps push-with-retry.sh's shallow boundary an ancestor of main
+          # for the final ledger commit (same as scrape-stagedoor.yml, BRO-2388).
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # BRO-6648: ingest --land commits review-texts itself; land-ingested-reviews reverts held shows from this file
+      - name: Opening-night lease sync (BRO-6648)
+        uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ingest --land commits inside data/review-texts, which the checkout action leaves without an identity.
+      - name: Configure git identity for review-texts
+        run: |
+          git -C data/review-texts config user.name "github-actions[bot]"
+          git -C data/review-texts config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # The Browserbase session carries the browser; this job only needs the
+      # playwright package to drive it over CDP, not a local Chromium.
+      - name: Collect missing Talkin' Broadway reviews
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          ARGS=""
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          # shellcheck disable=SC2086
+          node scripts/collect-talkinbroadway-index.js $ARGS
+
+      # Safety net: ingest --land pushes each review itself; this catches anything it left.
+      - name: Push review-texts to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from collect-talkinbroadway-index'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: collect-talkinbroadway-index
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: "Collect Talkin' Broadway Index Failed"
+          severity: 'warning'

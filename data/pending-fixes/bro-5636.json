@@ -1,0 +1,372 @@
+{
+  "issueNumber": "bro-5636",
+  "planId": "57f10063-d647-4181-903a-e4de8f219527",
+  "status": "applied",
+  "createdAt": "2026-10-18T18:56:20.459Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5636 (part a): 25 closed shows labelled Fizzle/Flop with no estimate of money returned become \"Did Not Recoup\" (owner decision 2026-10-18, Option A).",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "a-strange-loop-2022: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "allegiance-2015",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "allegiance-2015: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "american-buffalo-2022: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Did Not Recoup",
+        "description": "beetlejuice-2022: no estimate of how much came back, so the Fizzle named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dana-h-2021",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "dana-h-2021: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "fat-ham-2023: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "fela-2012: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays notes-stated."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "grey-house: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "holler-if-ya-hear-me-2014: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "how-to-dance-in-ohio: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "left-on-tenth-2024: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "life-of-pi-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "life-of-pi-2023: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "mr-saturday-night-2022: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "on-the-town-2014: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "patriots: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pictures-from-home-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "pictures-from-home-2023: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pretty-woman-the-musical-2018",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "pretty-woman-the-musical-2018: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-anarchist-2012: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-bridges-of-madison-county-2014: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-cottage: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-great-society-2019: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-kite-runner-2022: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lyons-2012",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-lyons-2012: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-shark-is-broken",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-shark-is-broken: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T19:32:28.426Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for allegiance-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for dana-h-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for life-of-pi-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for pretty-woman-the-musical-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lyons-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-shark-is-broken"
+    }
+  ]
+}

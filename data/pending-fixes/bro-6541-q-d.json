@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6541-q-d",
+  "planId": "a35983c8-d31a-4adc-a0df-0cafa92861b0",
+  "status": "partial",
+  "createdAt": "2026-10-29T20:55:20.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest reviews for the new UK hub productions (part 4 of 6)",
+    "steps": [
+      "BRO-6541: ingest whatsonstage review for the-birthday-party-royal-bath-regional-2024",
+      "BRO-6541: ingest artsdesk review for the-birthday-party-royal-bath-regional-2024",
+      "BRO-6541: ingest thestage review for educating-rita-dundee-rep-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for summer-holiday-crucible-regional-2026",
+      "BRO-6541: ingest whatsonstage review for summer-holiday-crucible-regional-2026",
+      "BRO-6541: ingest everything-theatre review for summer-holiday-crucible-regional-2026",
+      "BRO-6541: ingest thestage review for summer-holiday-crucible-regional-2026",
+      "BRO-6541: ingest thestage review for tristan-yseult-royal-bath-regional-2026",
+      "BRO-6541: ingest thestage review for doubt-a-parable-dundee-rep-regional-2025",
+      "BRO-6541: ingest whatsonstage review for chariots-of-fire-crucible-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for chariots-of-fire-crucible-regional-2024",
+      "BRO-6541: ingest thestage review for chariots-of-fire-crucible-regional-2024",
+      "BRO-6541: ingest thestage review for follow-the-signs-tobacco-factory-regional-2024",
+      "BRO-6541: ingest thestage review for the-kelton-hill-fair-tron-regional-2025",
+      "BRO-6541: ingest thestage review for the-glasgow-poisoner-oran-mor-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for being-mr-wickham-chichester-festival-regional-2026",
+      "BRO-6541: ingest thestage review for a-family-business-tobacco-factory-regional-2024",
+      "BRO-6541: ingest thestage review for dial-m-for-mayhem-dundee-rep-regional-2025",
+      "BRO-6541: ingest thestage review for scots-the-musical-dundee-rep-regional-2026",
+      "BRO-6541: ingest thestage review for echo-and-narcissus-royal-bath-regional-2024",
+      "BRO-6541: ingest everything-theatre review for dear-young-monster-sheffield-regional-2025",
+      "BRO-6541: ingest thestage review for the-only-way-out-is-in-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest thestage review for jeeves-takes-charge-royal-bath-regional-2024",
+      "BRO-6541: ingest thestage review for to-have-and-to-hold-hull-truck-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for a-manchester-anthem-hope-mill-regional-2025"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-birthday-party-royal-bath-regional-2024 --url=https://www.whatsonstage.com/news/the-birthday-party-at-theatre-royal-baths-ustinov-studio-review_1622789/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-birthday-party-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-birthday-party-royal-bath-regional-2024 --url=https://theartsdesk.com/theatre/birthday-party-ustinov-studio-theatre-royal-bath-review-pinter-still-packs-punch --outlet=artsdesk",
+        "description": "BRO-6541: ingest artsdesk review for the-birthday-party-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=educating-rita-dundee-rep-regional-2026 --url=https://www.thestage.co.uk/reviews/educating-rita-review-dundee-rep-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for educating-rita-dundee-rep-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=summer-holiday-crucible-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-summer-holiday-crucible-theatre-sheffield --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for summer-holiday-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=summer-holiday-crucible-regional-2026 --url=https://www.whatsonstage.com/news/summer-holiday-musical-at-the-crucible-theatre-review_1726266/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for summer-holiday-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=summer-holiday-crucible-regional-2026 --url=https://everything-theatre.co.uk/2026/06/review-summer-holiday-the-musical-crucible-theatre/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for summer-holiday-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=summer-holiday-crucible-regional-2026 --url=https://www.thestage.co.uk/reviews/summer-holiday-the-musical-review-crucible-theatre-sheffield --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for summer-holiday-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tristan-yseult-royal-bath-regional-2026 --url=https://www.thestage.co.uk/reviews/tristan-yseult-review-theatre-royal-bath --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for tristan-yseult-royal-bath-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=doubt-a-parable-dundee-rep-regional-2025 --url=https://www.thestage.co.uk/reviews/doubt-a-parable-review-dundee-rep-theatre-john-patrick-shanley-joanna-bowman --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for doubt-a-parable-dundee-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=chariots-of-fire-crucible-regional-2024 --url=https://www.whatsonstage.com/news/chariots-of-fire-at-the-crucible-theatre-review_1613886/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for chariots-of-fire-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=chariots-of-fire-crucible-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-chariots-of-fire-sheffield-crucible --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for chariots-of-fire-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=chariots-of-fire-crucible-regional-2024 --url=https://www.thestage.co.uk/reviews/chariots-of-fire-review-crucible-theatre-sheffield-mike-bartlett-robert-hastie --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for chariots-of-fire-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=follow-the-signs-tobacco-factory-regional-2024 --url=https://www.thestage.co.uk/reviews/follow-the-signs-review-tobacco-factory-theatres-bristol-chris-fonseca-harry-jardine --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for follow-the-signs-tobacco-factory-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-kelton-hill-fair-tron-regional-2025 --url=https://www.thestage.co.uk/reviews/the-kelton-hill-fair-review-tron-theatre-glasgow-by-wonder-fools --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-kelton-hill-fair-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-glasgow-poisoner-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/the-glasgow-poisoner-review-oran-mor-glasgow-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-glasgow-poisoner-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=being-mr-wickham-chichester-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-being-mr-wickham-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for being-mr-wickham-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-family-business-tobacco-factory-regional-2024 --url=https://www.thestage.co.uk/reviews/a-family-business-review-tobacco-factory-theatres-bristol-chris-thorpe --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-family-business-tobacco-factory-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dial-m-for-mayhem-dundee-rep-regional-2025 --url=https://www.thestage.co.uk/reviews/dial-m-for-mayhem-review-dundee-rep-theatre-middle-ground-margaret-may-hobbs-michael-lunney --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for dial-m-for-mayhem-dundee-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=scots-the-musical-dundee-rep-regional-2026 --url=https://www.thestage.co.uk/reviews/scots-the-musical-review-dundee-rep --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for scots-the-musical-dundee-rep-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=echo-and-narcissus-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/echo-and-narcissus-review-at-ustinov-studio-bath-by-benjamin-britten-and-kim-brandstrup --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for echo-and-narcissus-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dear-young-monster-sheffield-regional-2025 --url=https://everything-theatre.co.uk/2025/09/review-dear-young-monster-tanya-moiseiwitsch-playhouse-sheffield/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for dear-young-monster-sheffield-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-only-way-out-is-in-pitlochry-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/the-only-way-out-is-in-review-pitlochry-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-only-way-out-is-in-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jeeves-takes-charge-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/jeeves-takes-charge-review-at-ustinov-studio-bath-from-director-hugh-wooldridge-starring-sam-harrison --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for jeeves-takes-charge-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=to-have-and-to-hold-hull-truck-regional-2025 --url=https://www.thestage.co.uk/reviews/to-have-and-to-hold-review-hull-truck-theatre-terry-johnson-paula-wilcox-stephen-tompkinson --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for to-have-and-to-hold-hull-truck-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-manchester-anthem-hope-mill-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-a-manchester-anthem-hope-mill-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for a-manchester-anthem-hope-mill-regional-2025"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T01:32:01.002Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=scots-the-musical-dundee-rep-regional-2026 --url=https://www.thestage.co.uk/reviews/scots-the-musical-review-dundee-rep --outlet=thestage"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

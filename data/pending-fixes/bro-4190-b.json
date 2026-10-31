@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4190-b",
+  "planId": "5675f290-874a-41d5-9678-eaa73a188fd3",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:07:42.320Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4190 follow-up: re-ingest the TheatreVibe Last Ship 2026 review. Plan bro-4190 refused it because a flagged TheatreVibe news post (news-... slug) held the theatre-vibe--unknown slot; the landed theatrevibe news-article rule lets the writer replace that stale non-review slot.",
+    "steps": [
+      "Ingest the TheatreVibe review url for the-last-ship-west-end-2026."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-ship-west-end-2026 --url=https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/ --stub-on-failure",
+        "description": "BRO-4190: TheatreVibe review, Drury Lane 2026"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:45:16.616Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

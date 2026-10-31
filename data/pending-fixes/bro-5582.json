@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-5582",
+  "planId": "503f45e3-4e8c-4709-a5f8-9ff5c5cc2762",
+  "status": "pending",
+  "createdAt": "2026-10-29T09:50:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5582: 1,643 review files carry wrongProduction=true with no record of why. Stamp a behavior-neutral wrongProductionLegacyAudit field (basis, backfilledBy, backfilledAt) so each flag has an audit trail. No flag value, score or auto-clear behavior changes.",
+    "steps": [
+      "Run backfill-wrongproduction-legacy-audit.js with --apply --expect=1643. It fails the run unless exactly 1643 files were written with no write-guard refusals."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "backfill-wrongproduction-legacy-audit.js",
+        "args": "--apply --expect=1643",
+        "description": "Stamp the audit field on 1643 legacy wrongProduction flags"
+      }
+    ]
+  }
+}

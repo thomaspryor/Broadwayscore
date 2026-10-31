@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-5530-b",
+  "planId": "19c717f2-4262-44f8-aa02-9ede4798fcf0",
+  "status": "applied",
+  "createdAt": "2026-10-28T19:04:54.050Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5530: add four producer-matched Form D capitalizations and document five production-specific no-figure results; remove the unrelated corporate citation for The Lyons. See docs/bro-5530-capitalization-sweep.md for all 44 scoped rows, including 17 existing figures and the remaining no-figure reasons. (part 2 of 2)",
+    "steps": [
+      "No figure: title and Maloney/Prezioso Form D searches, 2024 through October 28, 2026, returned no match. https://www.ibdb.com/broadway-production/beaches-a-new-musical-545267",
+      "No figure: Billy Crystal and Janice Crystal Form D searches, 2025 through October 28, 2026, returned no match. https://www.ibdb.com/broadway-production/860-547321"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "No verified public capitalization located for the 2026 Broadway production. IBDB identifies Jennifer Maloney-Prezioso and Broadway & Beyond Theatricals among its producers; no matching offering was located in the title and lead-producer Form D searches. https://www.ibdb.com/broadway-production/beaches-a-new-musical-545267",
+        "description": "No figure: title and Maloney/Prezioso Form D searches, 2024 through October 28, 2026, returned no match. https://www.ibdb.com/broadway-production/beaches-a-new-musical-545267"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "billy-crystal-860",
+        "field": "capitalizationSource",
+        "oldValue": "No verified public source found",
+        "newValue": "No verified public capitalization located for the 2026 Broadway production. IBDB lists Janice Crystal, James L. Nederlander and Larry Magid among its producers; no matching offering was located under Billy or Janice Crystal. https://www.ibdb.com/broadway-production/860-547321",
+        "description": "No figure: Billy Crystal and Janice Crystal Form D searches, 2025 through October 28, 2026, returned no match. https://www.ibdb.com/broadway-production/860-547321"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T20:27:18.575Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for billy-crystal-860"
+    }
+  ],
+  "executedIn": "ci"
+}

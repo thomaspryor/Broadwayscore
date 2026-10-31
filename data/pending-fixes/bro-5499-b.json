@@ -1,0 +1,113 @@
+{
+  "issueNumber": "bro-5499-b",
+  "planId": "5c0c2de5-6611-43fe-85cb-1e60b5db73b4",
+  "status": "applied",
+  "createdAt": "2026-10-16T17:26:05.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (b): correct critic names printed on the pages (Leiter, Hayes, Gardner casing, Pilevsky, Rosenberg, Hoban, Drexel).",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck",
+        "newValue": "Samuel L. Leiter",
+        "description": "BRO-5499: page prints 'Posted on October 15, 2026 by Samuel L. Leiter'; Victor Gluck is the site editor credit"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/josh-at-the-movies--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Joshua M. Hayes",
+        "description": "BRO-5499: byline printed on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/new-york-sun--elysa-gardner.json",
+        "field": "criticName",
+        "oldValue": "ELYSA GARDNER",
+        "newValue": "Elysa Gardner",
+        "description": "BRO-5499: casing"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Mason Pilevsky",
+        "description": "BRO-5499: Pages on Stages author bio on the page; same critic as the Midnight review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "arias-with-a-twist-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck",
+        "newValue": "Karen Karin Rosenberg",
+        "description": "BRO-5499: page prints 'Posted on September 24, 2026 by Karen Karin Rosenberg'"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-boston-regional-2026/theater-mirror--michele.json",
+        "field": "criticName",
+        "oldValue": "Michele",
+        "newValue": "Mike Hoban",
+        "description": "BRO-5499: page prints 'Posted on July 18, 2026 by Mike Hoban'"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/netheatregeek--eugene.json",
+        "field": "criticName",
+        "oldValue": "Eugene",
+        "newValue": "Kitty Drexel",
+        "description": "BRO-5499: page prints 'Posted on August 23, 2026 by Kitty Drexel'"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T19:55:45.805Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/theater-scene--victor-gluck.json criticName: \"Victor Gluck\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/josh-at-the-movies--unknown.json criticName: \"Unknown\" -> \"Joshua M. Hayes\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/new-york-sun--elysa-gardner.json criticName: \"ELYSA GARDNER\" -> \"Elysa Gardner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--unknown.json criticName: \"Unknown\" -> \"Mason Pilevsky\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/theater-scene--victor-gluck.json criticName: \"Victor Gluck\" -> \"Karen Karin Rosenberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-boston-regional-2026/theater-mirror--michele.json criticName: \"Michele\" -> \"Mike Hoban\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/netheatregeek--eugene.json criticName: \"Eugene\" -> \"Kitty Drexel\""
+    }
+  ]
+}

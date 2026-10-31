@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5141-e",
+  "planId": "5a72e459-318f-4ac0-bfef-ef58b9f58eea",
+  "status": "applied",
+  "createdAt": "2026-10-12T08:26:36.239Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5141: clear the wrongShow flag copied onto the re-ingested Time Out Joseph review from the deleted Anna X record.",
+    "steps": [
+      "Set wrongShowManualClear, then clear wrongShow."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/timeout-london--andrzej-lukowski.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5141: this file now holds the real Time Out Joseph review (Andrzej Lukowski, 1 Aug 2021), re-ingested from its url by plan bro-5141; the push step copied wrongShow over from the deleted Anna X record at the same path (fixed in review-write-guard _replacedFlaggedText)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/timeout-london--andrzej-lukowski.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the copied wrongShow (marker set above)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T09:26:45.045Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/timeout-london--andrzej-lukowski.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/timeout-london--andrzej-lukowski.json wrongShow: true -> false"
+    }
+  ]
+}

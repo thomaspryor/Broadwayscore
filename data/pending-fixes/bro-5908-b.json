@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-5908-b",
+  "planId": "acf241a4-96b7-41b8-8ecc-89cb8a3ae054",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Petite Rouge: set closing date to 2026-10-31 (TodayTix calendar and TheaterMania/NYTG-extended run) and runtime to site format.",
+    "steps": [
+      "closingDate 2026-10-31",
+      "runtime 1h 30m"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "petite-rouge-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-31",
+        "description": "TodayTix lists performances through Sat Oct 31 2026 and end date Oct 31"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "petite-rouge-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1 hour 30 minutes",
+        "newValue": "1h 30m",
+        "description": "Match site runtime format"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T05:45:53.054Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for petite-rouge-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for petite-rouge-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

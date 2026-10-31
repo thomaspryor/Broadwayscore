@@ -1,0 +1,218 @@
+{
+  "issueNumber": "bro-5645",
+  "planId": "30d228d9-39e9-49bd-92c2-b0a48b82ac13",
+  "status": "applied",
+  "createdAt": "2026-10-18T20:42:20.983Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5645: owner Option A (2026-10-18). Seven researched closures with no recoupment reported and no estimate become Did Not Recoup (Liberation, Oedipus, Spamalot, Sunset Boulevard 2017, Jerusalem 2011, Job, The Hills of California). The Music Man (2022) and John Proctor Is the Villain stay Undisclosed until a source settles them.",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "liberation: researched, closed more than six months, no recoupment ever reported and no estimate of how much came back; owner chose to label these Did Not Recoup (2026-10-18, Option A). The edit stamps basis no-recoupment-announced and clears needsLossEvidence; no lock, so a later recoupment report (tours, licensing) can still change it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "liberation: closed without a reported recoupment, matching its loss label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "oedipus: researched, closed more than six months, no recoupment ever reported and no estimate of how much came back; owner chose to label these Did Not Recoup (2026-10-18, Option A). The edit stamps basis no-recoupment-announced and clears needsLossEvidence; no lock, so a later recoupment report (tours, licensing) can still change it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "oedipus: closed without a reported recoupment, matching its loss label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "spamalot: researched, closed more than six months, no recoupment ever reported and no estimate of how much came back; owner chose to label these Did Not Recoup (2026-10-18, Option A). The edit stamps basis no-recoupment-announced and clears needsLossEvidence; no lock, so a later recoupment report (tours, licensing) can still change it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "spamalot: closed without a reported recoupment, matching its loss label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2017",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "sunset-boulevard-2017: researched, closed more than six months, no recoupment ever reported and no estimate of how much came back; owner chose to label these Did Not Recoup (2026-10-18, Option A). The edit stamps basis no-recoupment-announced and clears needsLossEvidence; no lock, so a later recoupment report (tours, licensing) can still change it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "sunset-boulevard-2017: closed without a reported recoupment, matching its loss label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "jerusalem-2011: researched, closed more than six months, no recoupment ever reported and no estimate of how much came back; owner chose to label these Did Not Recoup (2026-10-18, Option A). The edit stamps basis no-recoupment-announced and clears needsLossEvidence; no lock, so a later recoupment report (tours, licensing) can still change it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "jerusalem-2011: closed without a reported recoupment, matching its loss label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "job-2024: researched, closed more than six months, no recoupment ever reported and no estimate of how much came back; owner chose to label these Did Not Recoup (2026-10-18, Option A). The edit stamps basis no-recoupment-announced and clears needsLossEvidence; no lock, so a later recoupment report (tours, licensing) can still change it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "job-2024: closed without a reported recoupment, matching its loss label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-hills-of-california-2024: researched, closed more than six months, no recoupment ever reported and no estimate of how much came back; owner chose to label these Did Not Recoup (2026-10-18, Option A). The edit stamps basis no-recoupment-announced and clears needsLossEvidence; no lock, so a later recoupment report (tours, licensing) can still change it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-hills-of-california-2024: closed without a reported recoupment, matching its loss label."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T21:44:47.278Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for sunset-boulevard-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for sunset-boulevard-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-hills-of-california-2024"
+    }
+  ]
+}

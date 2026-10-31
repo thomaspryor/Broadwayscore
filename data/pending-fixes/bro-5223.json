@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5223",
+  "planId": "cfe852f0-f14b-4319-80a0-470e4b5c77cc",
+  "status": "applied",
+  "createdAt": "2026-10-17T00:00:00Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5223: the unicode-stars-fallthrough extractor read a Time Out page-chrome headline about another show (\"Theater review: Well, I'll Let You Go (★★★★★)\") as this review's rating. Orphans (2013) was already cleared; the same chrome put 5/5 on Adam Feldman's Jekyll & Hyde (2013) Time Out review (BWW thumb 2, LLM score 22). Clears that phantom rating.",
+    "steps": [
+      "Clear the phantom 5/5 on jekyll-and-hyde-2013 Time Out (Adam Feldman)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "jekyll-and-hyde-2013/timeout--adam-feldman.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "BRO-5223: the only star group in the text is a related-article headline for another show (Well, I'll Let You Go) in the page footer; the fixed extractor returns no rating for this text."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T13:14:52.163Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jekyll-and-hyde-2013/timeout--adam-feldman.json originalScore: \"5/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, starRating)"
+    }
+  ]
+}

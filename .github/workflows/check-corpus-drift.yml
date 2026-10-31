@@ -1,0 +1,518 @@
+# Corpus-statistics drift monitor — runs the three audits that assert on live
+# corpus properties (review text-quality %, local-vs-aggregator count ratios,
+# content-quality regex false-positive counts). These drift continuously as the
+# rebuild bots commit reviews.json / review-texts every ~30 min, so they are
+# MONITORING, not code-correctness gates. They used to live in test.yml's
+# blocking data-validation job and reddened main for non-code reasons every few
+# hours. Moved here (non-blocking) 2026-06-21: writes data/audit/corpus-drift.json,
+# surfaced in the daily digest by scripts/health-check.js. The catastrophe FLOOR
+# (a genuine quality collapse) stays blocking in test.yml via
+# `audit-text-quality.js --gate`. Never triggers rebuild or scraping.
+# NOT read-only as of 2026-08-13: the first step self-heals data/cast-changes.json
+# (audit-cast-changes.js --write, no scrape — it derives purely from shows.json +
+# the existing file) and commits it [skip ci], because this DAILY monitor kept
+# re-flagging staleness that update-cast-changes.yml's Wed/Sat scrape had not
+# caught up to. That makes the cast-changes drift number mean "what could not be
+# auto-healed", which is the number worth alerting on. A lost update against a
+# concurrent writer is self-correcting: the next run re-derives the same state.
+name: Check Corpus Drift
+
+on:
+  schedule:
+    # Daily at 08:20 UTC: 4h20m after the 04:00 rebuild (04:30 scoring), so the
+    # audits see the freshly rebuilt corpus; GitHub's schedule lag needs 4h+
+    # between ordered crons (BRO-4801; scripts/lib/cron-ordering.js). Offset
+    # from check-review-count-drift (09:00) to avoid a checkout-core-data stampede.
+    - cron: '20 8 * * *'
+  workflow_run:
+    # Re-check right after each rebuild — drift is caused by the rebuild, not by
+    # code pushes, so this is the cadence that matters.
+    workflows: ['Rebuild Reviews Data']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      strict:
+        description: 'Fail the job if any audit reports drift (default: monitor only)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  # actions: read — the Live-data step's BRO-3887 probe reads the repo's
+  # Actions cache usage (BRO-447); notify-failure's listWorkflowRuns needs it too.
+  actions: read
+
+concurrency:
+  group: check-corpus-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    name: Run corpus-statistics audits (non-blocking)
+    runs-on: ubuntu-latest
+    # 15 -> 20 (BRO-3535, 2026-09-16): 14 more audits were added to AUDITS,
+    # moved out of test.yml's blocking data-validation job. This worktree has
+    # no review-texts checkout to measure real per-audit runtime against the
+    # live corpus, so this is a conservative buffer, not a measured number —
+    # confirm against the first few real runs' logged durations and adjust
+    # (see BRO-2706 for the measured-cost-model precedent this should follow
+    # if 20 turns out to be wrong in either direction).
+    timeout-minutes: 60 # BRO-5788: 30->60 (reached live-data at 29m + 22m step cap + 8m routing/commit), real runs reached the live-data step at 29m10s (Deepen 13m + monitor 6.5m), leaving no room for routing; BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): timeout is now 30 min (BRO-5729), so the final ledger commit needs depth 300.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout aggregator-archive (private repo)
+        # BRO-3535 ship-check catch (Codex): audit-aggregator-archive-integrity.js
+        # was moved here without this checkout. It does `if (!fs.existsSync(dir))
+        # continue;` per source (scripts/audit-aggregator-archive-integrity.js) —
+        # a missing data/aggregator-archive/ silently scans ZERO files and
+        # reports "clean" against the baseline, which routePerAuditAlerts()
+        # below would then resolve as healthy. Without this checkout the audit
+        # is a permanent, invisible no-op, not a passing check.
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Auto-heal cast-changes.json before the drift check
+        # audit-cast-changes.js --write repairs stale closure dates / collapsed
+        # departures / dedupes WITHOUT needing a fresh scrape — it only reads
+        # shows.json (checked out above) + the existing cast-changes.json.
+        # update-cast-changes.yml's full scrape cron runs Wed/Sat only, but
+        # shows.json's closingDate changes daily, so this DAILY monitor kept
+        # flagging the same auto-healable staleness the twice-weekly write
+        # hadn't caught up to yet (task #805/#434). Running --write here closes
+        # that gap for free (no scrape cost, no new secrets).
+        # Non-blocking: a heal failure must not fail a monitoring job.
+        continue-on-error: true
+        run: |
+          node scripts/audit-cast-changes.js --write
+          if git status --porcelain data/cast-changes.json | grep -q .; then
+            git add data/cast-changes.json
+            git commit -m "chore: Auto-heal cast-changes.json (corpus-drift self-heal) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Auto-heal slug-shaped outlet names before the live-data check
+        # BRO-5728: rebuild-all-reviews.js auto-registers outlets offline and,
+        # with no review label, capitalizes the id ("Slotkinletter",
+        # displayNameInferred). Nothing repaired those, so the live-registry
+        # ceiling in tests/unit/outlet-registry-live-data.test.mjs crept past
+        # 10 every few days. This fetches each slug-shaped outlet's homepage
+        # and applies the masthead only when it spells the id or domain
+        # (deriveOutletDisplayName's rule); the rest stay for a human to stamp
+        # displayNameReviewed. About a dozen fetches a day, capped below; 180s
+        # because the job's 20-minute timeout is already close (each fix is
+        # written as found, so a cut-off run keeps its progress).
+        # Non-blocking: a heal failure must not fail a monitoring job.
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          SB_CREDIT_BUDGET: '60'
+          # outlet-registry.json is union-merged (the rebuild commits it too).
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          status=0; timeout 180 node scripts/audit-registry-slug-displaynames.js --fetch --apply || status=$?
+          # BRO-5732: mastheads found for outlets the rebuild parked land on
+          # the staging file; the next rebuild registers them from there.
+          if git status --porcelain data/outlet-registry.json data/audit/outlet-registry-staging.json | grep -q .; then
+            git add data/outlet-registry.json data/audit/outlet-registry-staging.json
+            git commit -m "data: Auto-heal slug-shaped outlet names (corpus-drift self-heal, BRO-5728) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+          exit "$status"
+
+      - name: Deepen history for churn-merge-coverage audit
+        # audit-churn-merge-coverage.js (run by check-corpus-drift.js) measures
+        # per-file commit churn over the last 3 days. The checkout above is shallow
+        # (depth 1), so fetch a 10-day window (margin over the 3-day audit window)
+        # instead of full history (130k+ commits). Best-effort: if the fetch fails,
+        # the audit reports degraded:true and exits 0 — it never fails this job.
+        # BRO-4603: --shallow-since is the fetch known to leave a phantom
+        # .git/shallow entry (cloud-memory/feedback_shallow_since_poisons_git_shallow.md,
+        # first hit here 2026-07-28) that makes every later fetch die with
+        # "error in object: unshallow". Heal before and after so the deepen
+        # fallback and this job's later pushes keep working.
+        run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          source scripts/lib/heal-phantom-shallow.sh
+          heal_phantom_shallow || true
+          git_net 300 fetch --shallow-since="10 days ago" origin main \
+            || { heal_phantom_shallow || true; git_net 300 -c http.lowSpeedTime=600 fetch --deepen=4000 origin main; } \
+            || echo "::warning::history deepen failed — churn-merge-coverage will run degraded"
+          heal_phantom_shallow || true
+
+      - name: Run corpus-drift monitor
+        # LINEAR_API_KEY (BRO-3535): routePerAuditAlerts() in check-corpus-drift.js
+        # calls routeAlert(disposition:'digest') per audit, which self-promotes to
+        # disposition:'auto' (files a real Linear card via createLinearIssue) once
+        # a gate's notifyCount crosses owner-alert-router.js's escalation
+        # threshold. Without this secret, createLinearIssue() throws and the
+        # promotion silently degrades to a logged warning — see
+        # routePerAuditAlerts()'s catch block.
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # BRO-4434: audit-awards-freshness.js asks the commits-by-path API
+          # via `gh api` (one call/day); the runner's default token is enough.
+          GH_TOKEN: ${{ github.token }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.strict }}" = "true" ]; then
+            ARGS="$ARGS --strict"
+          fi
+          node scripts/check-corpus-drift.js $ARGS
+
+      - name: Audit review-URL byline clusters (non-blocking)
+        if: always()
+        env:
+          REVIEW_TEXTS_DIR: data/review-texts
+        run: |
+          # Byline-explosion detector: one review URL scraped into 3+ files under
+          # different critic names. criticName-keyed dedup misses these; they
+          # usually leave the real review unscored (invalid tier + circular dup),
+          # which buried WhatsOnStage reviews for the concurrent 2026 Midsummers.
+          # Non-blocking warning. Threshold lowered 5->3 (task #1627, 2026-08-15)
+          # after sweeping the threshold=3 backlog to 0 — this is standing
+          # detection so new clusters at that scale get caught instead of
+          # silently re-accumulating until the next manual sweep.
+          OUT=$(node scripts/audit-review-url-clusters.js --threshold=3 || true)
+          echo "$OUT"
+          if echo "$OUT" | grep -q "byline-explosion cluster"; then
+            N=$(echo "$OUT" | head -1 | grep -oE '[0-9]+' | head -1)
+            echo "::warning::review-url-cluster audit found $N byline-explosion cluster(s) — reviews likely buried/unscored. Run: node scripts/audit-review-url-clusters.js"
+          fi
+
+      - name: Audit live publisher-domain misattributions (BRO-4411)
+        if: always()
+        run: |
+          # Measures the LIVE reviews.json, not the heal rule: 15 NYT reviews sat
+          # live as "About Entertainment" while heal-outlet-mismatch dry-run said 0
+          # (the rule skipped pointer-marked duplicates the rebuild then recovered).
+          # Non-blocking warning; exit 2 = unreadable input.
+          RC=0; OUT=$(node scripts/audit-publisher-domain-live.js 2>&1) || RC=$?
+          echo "$OUT" | tail -25
+          if [ "$RC" = "1" ]; then
+            echo "::warning::publisher-domain audit: live reviews whose URL host belongs to a different outlet than outletId. Run: node scripts/audit-publisher-domain-live.js"
+          elif [ "$RC" != "0" ]; then
+            echo "::warning::audit-publisher-domain-live.js could not run (exit=$RC) — no misattribution signal this run."
+          fi
+
+      - name: Audit wrong-production reviews, UTC-shifted dates, UK Show Score audience (BRO-5499, advisory)
+        if: always()
+        continue-on-error: true # lands advisory first (BRO-2123)
+        run: |
+          # Three classes the Sea Wall / Midnight / Memoirs cleanup found (2026-10-16). Each exits 1 while hits remain.
+          RC1=0; OUT1=$(node scripts/audit-sibling-production-cast.js --strict 2>&1) || RC1=$?
+          echo "$OUT1" | tail -15
+          [ "$RC1" != "0" ] && echo "::warning::sibling-cast audit: a scored review names only another production's cast (wrong production). Run: node scripts/audit-sibling-production-cast.js"
+          RC2=0; OUT2=$(node scripts/fix-utc-shifted-publish-dates.js --strict 2>&1) || RC2=$?
+          echo "$OUT2" | tail -4
+          [ "$RC2" != "0" ] && echo "::warning::publishDate stored a day late (UTC truncation). Fix: node scripts/fix-utc-shifted-publish-dates.js --apply"
+          RC3=0; OUT3=$(node scripts/purge-uk-show-score-audience.js --strict 2>&1) || RC3=$?
+          echo "$OUT3" | tail -6
+          [ "$RC3" != "0" ] && echo "::warning::UK Show Score ratings on US shows. Fix: node scripts/purge-uk-show-score-audience.js --apply"
+          exit 0
+
+      - name: Audit isNonReview content-type/wrongShow + slug coverage (BRO-3862)
+        if: always()
+        run: |
+          # Two independent, non-blocking measurements landed together for the
+          # same investigation (BRO-3862): classify-non-reviews.js's LLM
+          # classifier is documented as unreliable (memory:
+          # feedback_llm_verifier_hallucinates.md), and neither existing
+          # isNonReview false-positive audit (audit-exclusion-flags.js's
+          # essay-intro sweep, run report-only in the next step, and
+          # audit-cross-show-url.js's URL-slug detector)
+          # covers the content-based cross-show-misattribution class this adds.
+          # Soaking non-blocking here first rather than a hard --gate in
+          # test.yml's data-validation job — this is a brand-new predicate on
+          # a corpus that drifts every ~30min, and every sibling gate in that
+          # job that reached --strict/--gate hardness did so only after
+          # observing real trip frequency first.
+          set +e
+          OUT1=$(node scripts/audit-review-type-wrong-show.js 2>&1)
+          RC1=$?
+          echo "$OUT1"
+          OUT2=$(node scripts/audit-nonreview-slug-coverage.js 2>&1)
+          RC2=$?
+          echo "$OUT2"
+          set -e
+          if [ "$RC1" -ne 0 ]; then
+            echo "::warning::audit-review-type-wrong-show.js could not run (exit=$RC1) — no wrongShow-gap signal this run."
+          fi
+          N1=$(echo "$OUT1" | grep -oE '[0-9]+ match' | grep -oE '^[0-9]+' | head -1)
+          if [ "${N1:-0}" -gt 0 ]; then
+            echo "::warning::audit-review-type-wrong-show.js found $N1 isNonReview file(s) whose classifier contentType is 'review' (genuine review content) with no wrongShow promotion — likely misattributed to the wrong show. Run: node scripts/audit-review-type-wrong-show.js --apply (after manually verifying each hit is real cross-show content, not an extraction failure the classifier mislabeled — see that script's excluded rejectionReason/wrongProduction cases)."
+          fi
+          if [ "$RC2" -ne 0 ]; then
+            echo "::warning::audit-nonreview-slug-coverage.js could not run (exit=$RC2) — no slug-coverage signal this run."
+          fi
+          N2=$(echo "$OUT2" | grep -oE 'unaudited: *[0-9]+' | grep -oE '[0-9]+' | head -1)
+          echo "::notice::nonreview-slug-coverage: ${N2:-0} isNonReview file(s) with 400+ words and a review URL slug remain unaudited (no existing predicate covers them — no validated auto-clear rule exists yet, BRO-3862)."
+
+      - name: Audit essay-intro isNonReview false positives (BRO-2237, report-only)
+        if: always()
+        env:
+          REVIEW_TEXTS_DIR: data/review-texts
+        run: |
+          # audit-exclusion-flags.js (BRO-57) sweeps isNonReview:true files for the
+          # essay-intro false-positive class classify-non-reviews.js keeps minting.
+          # REPORT-ONLY: --apply must never run from CI. BRO-2090 is the incident
+          # where an unattended exclusion-flag drain stripped 64 correct flags;
+          # every clear stays a human-verified, hand-run action.
+          # The log goes to RUNNER_TEMP so the tracked data/audit copy stays clean
+          # for the push-with-retry steps below. stdout only: the FAIL line is on
+          # stderr and would break the JSON parse.
+          set +e
+          OUT=$(EXCLUSION_FLAGS_AUDIT_LOG="$RUNNER_TEMP/exclusion-flags-audit.json" node scripts/audit-exclusion-flags.js --gate --max=0 --json 2>/dev/null)
+          RC=$?
+          set -e
+          SCANNED=$(echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).scanned)}catch{console.log('')}})")
+          COUNT=$(echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).count)}catch{console.log('')}})")
+          echo "essay-intro isNonReview FP sweep: scanned=${SCANNED:-none} matches=${COUNT:-none} exit=$RC"
+          if [ -z "$SCANNED" ] || [ "$SCANNED" = "0" ]; then
+            echo "::warning::audit-exclusion-flags.js could not run (exit=$RC, no corpus scanned) — no essay-intro isNonReview drift signal this run."
+          elif [ "${COUNT:-0}" -gt 0 ]; then
+            echo "$OUT" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{for(const h of JSON.parse(s).hits.slice(0,20))console.log('  '+h.showId+'/'+h.file+' type='+h.nonReviewType+' words='+h.wordCount)})"
+            echo "::warning::audit-exclusion-flags.js found $COUNT isNonReview file(s) matching the essay-intro false-positive pattern (genuine reviews likely excluded from scoring). Verify each by hand, then clear them from a local checkout with the script's --show and --apply flags (never from CI)."
+          fi
+
+      - name: Audit star-rating accuracy (HARD blocking-signal, SUSPECT warning)
+        if: always()
+        run: |
+          # Catches displayed scores that contradict the critic's published star:
+          # HARD = star-governed scoreSource whose assignedScore != the star's
+          # conversion (definite conversion bug); SUSPECT = LLM-scored review
+          # >22pts from its captured star (miscaptured star OR a genuine
+          # star/prose gap the anchored rollout will clamp). Was written
+          # 2026-06 but wired into no workflow — 32 out-of-band Broadway scores
+          # accumulated unseen (found 2026-07-11 during NYC rollout simulation).
+          # Non-blocking (::warning) until the NYC anchoring rollout clears the
+          # known backlog; flip to --gate after that lands.
+          set +e
+          OUT=$(node scripts/audit-star-accuracy.js 2>&1)
+          RC=$?
+          set -e
+          echo "$OUT"
+          # A crashed audit or a changed summary format must WARN, not silently
+          # report zero (Codex review 2026-07-11): the summary line is the
+          # contract — its absence means the audit itself is broken.
+          SUMMARY=$(echo "$OUT" | grep -E 'HARD conversion bugs: [0-9]+' || true)
+          if [ "$RC" -ne 0 ] || [ -z "$SUMMARY" ]; then
+            echo "::warning::star-accuracy audit is BROKEN (exit=$RC, summary line missing) — no star-vs-score signal this run. Fix scripts/audit-star-accuracy.js or its data checkout."
+          else
+            HARD=$(echo "$SUMMARY" | grep -oE 'HARD conversion bugs: [0-9]+' | grep -oE '[0-9]+')
+            SUS=$(echo "$OUT" | grep -oE 'SUSPECT captures: [0-9]+' | grep -oE '[0-9]+' || echo 0)
+            if [ "${HARD:-0}" -gt 0 ]; then
+              echo "::warning::star-accuracy audit: $HARD HARD conversion bug(s) — displayed score contradicts the critic's published star. Run: node scripts/audit-star-accuracy.js"
+            fi
+            if [ "${SUS:-0}" -gt 74 ]; then
+              echo "::warning::star-accuracy audit: SUSPECT count ($SUS) grew past baseline 74 — check for a new extraction/scoring regression."
+            fi
+          fi
+
+      - name: Audit OB transfer review gaps (advisory, read-only)
+        if: always()
+        continue-on-error: true # lands advisory first (BRO-2123); BRO-4792
+        run: |
+          set +e
+          OUT=$(node scripts/audit-transfer-review-gaps.js --ci --dry-run 2>&1)
+          RC=$?
+          echo "$OUT"
+          {
+            echo "## OB transfer review gaps"
+            echo '```'
+            echo "$OUT" | head -60
+            echo '```'
+          } >> $GITHUB_STEP_SUMMARY
+          exit $RC
+
+      - name: Check for changes
+        id: changes
+        if: always()
+        run: |
+          # Fires on a new or modified verdict for EITHER monitor file (porcelain
+          # prints "?? path" for untracked, "M path" for modified, nothing if clean).
+          if git status --porcelain data/audit/corpus-drift.json data/audit/churn-merge-coverage.json data/audit/guard-escalation-state.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null | grep -q .; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push audit
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # BRO-2424: guard-escalation-state.json must be staged here or the
+          # audit-crash streak resets to 0 on every fresh checkout — the same
+          # class of bug BRO-545 documents in rebuild-reviews.yml's commit
+          # step. Each path is staged independently (memory/feedback_silent_git_add_failures.md):
+          # a single `git add A B` is atomic on pathspec-match failure, so a
+          # not-yet-written state file (common case — it's only written when
+          # a guard's streak actually changes) would otherwise silently drop
+          # corpus-drift.json too.
+          # BRO-2955 review: routeAlert(disposition:'digest') writes ONLY
+          # alert-digest-queue.json + alert-ledger.json (owner-alert-router.js).
+          # Staging just guard-escalation-state.json meant the escalation — the
+          # entire payoff of auto-recovery — died with the runner and the job
+          # went green with no alert reaching the owner anywhere.
+          bash scripts/lib/git-add-existing.sh data/audit/corpus-drift.json data/audit/churn-merge-coverage.json data/audit/guard-escalation-state.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          SUMMARY=$(node -e "const d=require('./data/audit/corpus-drift.json'); console.log(d.summary.driftCount + ' drift, ' + d.summary.crashCount + ' crashed')")
+          git commit -m "audit: corpus-drift monitor ($SUMMARY) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: check-corpus-drift
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f data/audit/corpus-drift.json ]; then
+            echo "## Corpus Drift" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const d = require('./data/audit/corpus-drift.json');
+              console.log('**Audits run:** ' + d.summary.auditsRun);
+              console.log('**Drift:** ' + d.summary.driftCount + ' | **Crashed:** ' + d.summary.crashCount);
+              console.log('');
+              console.log('| Audit | Status | Exit |');
+              console.log('|-------|--------|------|');
+              for (const a of d.audits) {
+                const s = a.crashed ? 'CRASHED' : a.ok ? 'ok' : 'drift';
+                console.log('| ' + a.name + ' | ' + s + ' | ' + a.exitCode + ' |');
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Corpus Drift Monitor Failed (audit could not run)'
+          severity: 'warning'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      # Live-data node:test files moved OUT of test.yml's no-data unit batch
+      # (2026-09-24, BRO-3425): both assert on data state (stale AUTO-FLAGGED
+      # cast entries; gather-reviews scraper credits/day), so they turned main's
+      # code CI red with no code change (test.yml run 36077865497). Here a red
+      # result reds this data-health workflow, which the digest's
+      # "Workflow repeat-failure" row escalates. Placed AFTER "Notify on
+      # failure" on purpose: that email means "audit could not run", which is
+      # not what a data finding here means.
+      # 2026-09-29 (BRO-3425): + image-presence (imageless scored shows vs the
+      # self-heal threshold) and outlet-registry-live-data (null-domain ceiling,
+      # domain collisions) — same shape, reddened main 2026-09-29.
+      # BRO-4750: + tour-runtime-coverage (every national tour carries a runtime and
+      # synopsis unless a documented gap) — shows.json changes daily and new tours
+      # appear, so it would redden main with no code change.
+      # BRO-5729: + the live-data halves of merge-reviews-json, cast-changes-data-quality,
+      # duplicate-images, drain-unknown-outlets, discover-playbill-urls-target,
+      # audit-bad-stub-visibility, doubled-market-ids, outlet-domain-validation,
+      # automated-clear-not-manual and critic-spelling-duplicates (split into
+      # tests/unit/*-live-data.test.mjs), plus scripts/verify-contamination-gate.test.mjs
+      # (whole file is a live-corpus probe; dropped from OPT_IN).
+      # BRO-5737: + duplicate-show-dedup-live-data, review-gap-remediation-live-data.
+      # BRO-5798: + review-pullquotes-live-data (recoverable excerpt left unused in review-texts).
+      # BRO-447: the bro3887 probe now asserts repo Actions cache usage (< 8 GiB,
+      # the cause of SERP-cache eviction) via the GitHub API instead of a fixed
+      # credits/day ceiling, hence GH_TOKEN here and actions: read above.
+      - name: Live-data assertions (moved from test.yml unit batch)
+        id: livedata
+        if: always()
+        # BRO-5788: bounded so the routing + ledger-commit steps below still fit the job timeout.
+        timeout-minutes: 22
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUIRE_REVIEW_CORPUS: '1' # a failed review-texts checkout must fail here, not skip green (BRO-5729)
+        run: |
+          # BRO-5788: spec to stdout (the log reads as before), TAP to a file for
+          # the routing step. The exit code is node --test's own, unchanged.
+          node --test --test-reporter=spec --test-reporter-destination=stdout \
+            --test-reporter=tap --test-reporter-destination="$RUNNER_TEMP/live-data.tap" \
+            tests/unit/cast-changes-real-data.test.mjs \
+            tests/unit/bro3887-cache-fix-acceptance.test.mjs \
+            tests/unit/image-presence.test.mjs \
+            tests/unit/outlet-registry-live-data.test.mjs \
+            tests/unit/venue-complex-live-data.test.mjs \
+            tests/unit/tour-runtime-coverage.test.mjs \
+            tests/unit/merge-reviews-json-live-data.test.mjs \
+            tests/unit/cast-changes-data-quality-live-data.test.mjs \
+            tests/unit/duplicate-images-live-data.test.mjs \
+            tests/unit/drain-unknown-outlets-live-data.test.mjs \
+            tests/unit/discover-playbill-urls-target-live-data.test.mjs \
+            tests/unit/audit-bad-stub-visibility-live-data.test.mjs \
+            tests/unit/doubled-market-ids-live-data.test.mjs \
+            tests/unit/outlet-domain-validation-live-data.test.mjs \
+            tests/unit/automated-clear-not-manual-live-data.test.mjs \
+            tests/unit/critic-spelling-duplicates-live-data.test.mjs \
+            tests/unit/review-pullquotes-live-data.test.mjs \
+            tests/unit/duplicate-show-dedup-live-data.test.mjs \
+            tests/unit/review-gap-remediation-live-data.test.mjs \
+            scripts/verify-contamination-gate.test.mjs
+
+      # BRO-5788: every failing live-data test above becomes its own routed
+      # condition (live-data-test:<file>::<name>): a Linear card once it stays
+      # red (owner-alert-router digest escalation, like routePerAuditAlerts in
+      # check-corpus-drift.js), resolved when green. Best-effort and exit 0, so
+      # the step above stays the sole pass/fail. The ledger commit that
+      # "Commit and push audit" does earlier in the job cannot see these writes,
+      # hence the second commit step.
+      - name: Route live-data failures to owner-alert-router (BRO-5788)
+        if: always() && contains(fromJSON('["success","failure"]'), steps.livedata.outcome)
+        continue-on-error: true # routing is best-effort; the live-data step stays the sole pass/fail
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/route-live-data-failures.js --tap="$RUNNER_TEMP/live-data.tap" --exit="$([ '${{ steps.livedata.outcome }}' = success ] && echo 0 || echo 1)"
+
+      - name: Commit live-data alert ledger (BRO-5788)
+        if: always()
+        continue-on-error: true # a slow push must not red a job whose tests passed
+        timeout-minutes: 5
+        run: |
+          if git status --porcelain data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null | grep -q .; then
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            bash scripts/lib/git-add-existing.sh data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+            git commit -m "audit: live-data alert routing (corpus-drift, BRO-5788) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
