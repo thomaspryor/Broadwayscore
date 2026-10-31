@@ -92,10 +92,14 @@ if [ "${PUSH_SKIP_CONFLICT_CHECK:-}" != "1" ]; then
   done <<<"$CHANGED_FILES"
   if [ ${#CM_FILES[@]} -gt 0 ]; then
     # Via a list file, not argv: a bulk regeneration can push >10k paths.
-    CM_LIST="/tmp/push-audit-cm.$$.$RANDOM.list"
-    printf '%s\n' ${CM_FILES[@]+"${CM_FILES[@]}"} >"$CM_LIST"
-    run_audit "conflict-markers" "scripts/lib/conflict-markers.js" "--files-from=$CM_LIST" || FAIL=1
-    rm -f "$CM_LIST"
+    # mktemp (private, unpredictable name); a failed or short write fails closed.
+    if CM_LIST=$(mktemp "${TMPDIR:-/tmp}/push-audit-cm.XXXXXX") \
+      && printf '%s\n' ${CM_FILES[@]+"${CM_FILES[@]}"} >"$CM_LIST"; then
+      run_audit "conflict-markers" "scripts/lib/conflict-markers.js" "--files-from=$CM_LIST" || FAIL=1
+    else
+      echo "AUDIT BLOCKED: conflict-markers could not write its file list"; FAIL=1
+    fi
+    rm -f "${CM_LIST:-}"
   fi
 fi
 
@@ -104,6 +108,8 @@ fi
 # was found ~20 min after the push. Strict, changed .sh files only (~0.2s).
 SH_FILES=()
 while IFS= read -r f; do
+  # A path starting with "-" gets "./" so the audit does not read it as a flag.
+  case "$f" in -*) f="./$f" ;; esac
   case "$f" in *.sh) if [ "$LIST_ONLY" = "1" ] || [ -f "$f" ]; then SH_FILES+=("$f"); fi ;; esac
 done <<<"$CHANGED_FILES"
 if [ ${#SH_FILES[@]} -gt 0 ]; then

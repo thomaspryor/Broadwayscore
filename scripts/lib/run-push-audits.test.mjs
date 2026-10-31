@@ -482,3 +482,22 @@ test('set-u-expansions runs strict on changed shell scripts only, and blocks an 
     rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+test('conflict-markers fails closed when its file list cannot be written, and a "--"-named .sh is still linted (BRO-6687)', () => {
+  const run = (input, env = {}) => {
+    try { execFileSync('bash', [SCRIPT], { input, stdio: 'pipe', env: { ...process.env, ...env } }); return { code: 0, out: '' }; }
+    catch (e) { return { code: e.status, out: String(e.stdout) }; }
+  };
+  const r = run('scripts/lib/run-push-audits.sh', { TMPDIR: '/nonexistent-bro-6687' });
+  assert.equal(r.code, 1);
+  assert.match(r.out, /conflict-markers could not write its file list/);
+  const name = '--bro-6687-dash.sh';
+  writeFileSync(name, '#!/usr/bin/env bash\nset -uo pipefail\nA=()\nprintf "%s" "${A[@]}"\n');
+  try {
+    const d = run(name);
+    assert.equal(d.code, 1);
+    assert.match(d.out, /AUDIT BLOCKED: set-u-expansions failed/);
+  } finally {
+    rmSync(name, { force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
