@@ -27,7 +27,7 @@ const {
 } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { getBreakdownTierId } = require('./lib/score-tiers');
+const { getReviewBreakdownTierId } = require('./lib/score-tiers');
 
 // Wrap the HTML builder so every send/draft path picks up GA4/PostHog UTM
 // attribution (idempotent — see scripts/lib/email-utm.js). Campaign is the
@@ -243,10 +243,10 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
 
 /**
  * Count scored reviews and compute rave/positive/mixed/negative for a show.
- * 4-tier breakdown matching the live site's ScoreBreakdownBar.getBreakdownTier:
- * Cutoffs come from getBreakdownTierId in score-tiers.js (rounded score; Rave =
- * Critical Gold, Positive = 65 to gold-1, Mixed = 55-64, Negative < 55), the
- * same function ScoreBreakdownBar uses.
+ * 4-tier breakdown matching the live site's ScoreBreakdownBar: each review counts
+ * by the critic's verdict (review.verdict), else the score band from
+ * getBreakdownTierId in score-tiers.js (rounded score; Rave = Critical Gold,
+ * Positive = 65 to gold-1, Mixed = 55-64, Negative < 55). Same function as the bar.
  */
 function getReviewStats(reviews, showId, market, show, shows) {
   const showReviews = (reviews || []).filter(r => r.showId === showId && Number.isFinite(r.assignedScore));
@@ -257,7 +257,7 @@ function getReviewStats(reviews, showId, market, show, shows) {
   let rave = 0, positive = 0, mixed = 0, negative = 0;
 
   for (const r of showReviews) {
-    const tier = getBreakdownTierId(r.assignedScore, market);
+    const tier = getReviewBreakdownTierId(r.verdict, r.assignedScore, market);
     if (tier === 'rave') rave++;
     else if (tier === 'positive') positive++;
     else if (tier === 'mixed') mixed++;

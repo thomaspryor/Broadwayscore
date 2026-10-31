@@ -173,9 +173,15 @@ test('dedupe path marker does not match a longer slug', () => {
 });
 
 test('breakdown uses the site bar buckets with the market gold threshold', () => {
-  const r = s => s;
-  assert.deepEqual(breakdownFor([r(83), r(84.6), r(70), r(69), r(55), r(54), r(null)], 'broadway'), { rave: 2, positive: 1, mixed: 2, negative: 1 });
+  const r = s => ({ s });
+  // 65-69 is Positive on the site (blue badge band), so 69 is not Mixed.
+  assert.deepEqual(breakdownFor([r(83), r(84.6), r(70), r(69), r(55), r(54), r(null)], 'broadway'), { rave: 2, positive: 2, mixed: 1, negative: 1 });
   assert.deepEqual(breakdownFor([r(84), r(85)], 'west-end'), { rave: 1, positive: 1, mixed: 0, negative: 0 }); // London gold is 85
+});
+
+test('breakdown counts by the critic verdict, falling back to the score band (BRO-6686)', () => {
+  const rv = [{ s: 67, v: 'mixed' }, { s: 53, v: 'mixed' }, { s: 91, v: 'rave' }, { s: 78 }, { s: 48, v: 'pan' }];
+  assert.deepEqual(breakdownFor(rv, 'off-broadway'), { rave: 1, positive: 1, mixed: 2, negative: 1 });
 });
 
 test('poster rules: a portrait at least 440 px wide, confirmed by the vision check', () => {

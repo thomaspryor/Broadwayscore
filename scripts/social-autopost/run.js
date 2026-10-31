@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getScoreTierId, getScoreTierLabel, getGoldThreshold } = require('../lib/score-tiers');
+const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require('../lib/score-tiers');
 const { findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
 const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
@@ -97,17 +97,16 @@ function loadContext() {
 
 /**
  * Rave/Positive/Mixed/Negative counts, the same buckets as the site's breakdown bar
- * (src/components/show-cards/ScoreBreakdownBar.tsx getBreakdownTier): rounded score
- * vs the market's gold threshold, 70, 55. Takes the public show file's review
- * scores (rv[].s), the list the site's bar and review count are built from.
+ * (src/components/show-cards/ScoreBreakdownBar.tsx): each review counts by the critic's
+ * verdict (rv[].v), else its score band (getBreakdownTierId: rounded score vs the market's
+ * gold threshold, 65, 55). Takes the public show file's reviews (rv[]), the list the
+ * site's bar and review count are built from.
  */
-function breakdownFor(scores, category) {
-  const gold = getGoldThreshold(category);
+function breakdownFor(reviews, category) {
   const b = { rave: 0, positive: 0, mixed: 0, negative: 0 };
-  for (const raw of scores || []) {
-    if (!Number.isFinite(raw)) continue;
-    const s = Math.round(raw);
-    if (s >= gold) b.rave++; else if (s >= 70) b.positive++; else if (s >= 55) b.mixed++; else b.negative++;
+  for (const r of reviews || []) {
+    const tier = getReviewBreakdownTierId(r && r.v, r && r.s, category);
+    if (tier) b[tier]++;
   }
   return b;
 }
@@ -118,7 +117,7 @@ function describe(show, ctx) {
   if (!Number.isFinite(pub.cs)) throw new Error(`${show.id}: no Critic Score in public/data/shows`);
   // Rounded the way the site badge shows it (scripts/lib/canonical-critic-scores.ts).
   const score = Math.round(pub.cs);
-  const breakdown = breakdownFor((pub.rv || []).map(r => r.s), show.category);
+  const breakdown = breakdownFor(pub.rv || [], show.category);
   const counted = breakdown.rave + breakdown.positive + breakdown.mixed + breakdown.negative;
   // The caption says "from N critics' reviews" next to the tally: they must agree.
   if (counted !== pub.rc) throw new Error(`${show.id}: breakdown counts ${counted} reviews, the site says ${pub.rc}`);

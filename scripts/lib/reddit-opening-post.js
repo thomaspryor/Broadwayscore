@@ -20,7 +20,7 @@
 // venue-write-guard-ok: buildFacts only reads show.venue into an in-memory fact sheet for a Reddit draft; nothing writes it back to shows.json.
 
 const { foldDiacritics } = require('./title-match');
-const { getBreakdownTierId } = require('./score-tiers');
+const { getReviewBreakdownTierId } = require('./score-tiers');
 
 const SUBREDDIT_BY_MARKET = {
   'west-end': 'TheWestEnd',
@@ -135,12 +135,13 @@ function audienceReviewCount(au) {
 }
 
 // Same Rave/Positive/Mixed/Negative split as the site's breakdown bar and the
-// opening-night email (getBreakdownTierId), computed from each review's score so
-// a 65-69 review is Positive here too. The stored LLM bucket (r.b) uses older cutoffs.
+// opening-night email (getReviewBreakdownTierId): each review counts by the critic's
+// verdict (r.v), else its score band. The stored LLM bucket (r.b) is score-derived
+// with older cutoffs, so it is not used.
 function bucketCounts(slim, market) {
   const out = { rave: 0, positive: 0, mixed: 0, negative: 0 };
   for (const r of slim.rv || []) {
-    const tier = getBreakdownTierId(r.s, market);
+    const tier = getReviewBreakdownTierId(r.v, r.s, market);
     if (tier) out[tier]++;
   }
   return out;

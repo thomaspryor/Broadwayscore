@@ -91,11 +91,11 @@ import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisi
 // ─── Props ───────────────────────────────────────────────────────────────
 
 interface ShowHeroRedesignProps {
-  // Narrowed to only the field ScoreBreakdownBar reads (reviewScore) — the full
+  // Narrowed to only the field ScoreBreakdownBar reads (reviewScore, verdict) — the full
   // ComputedReview objects (criticName/outlet/url/quote/summary/...) tripled the
   // size of this show's own review array in the RSC payload once counted across
   // this boundary + ShowPageBelowFoldLoader + ReviewsList. Card #962.
-  show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>;
+  show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore' | 'verdict'>>;
   consensusText: string | null;
   audienceGrade: AudienceGrade | null;
   audienceCount: number;
@@ -850,7 +850,7 @@ function Inner({
 
 // ─── Sub-components ──────────────────────────────────────────────────────
 
-function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; tourReviewYears: string | null }) {
+function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore' | 'verdict'>>; tourReviewYears: string | null }) {
   // One hierarchy step below the venue line (text-sm gray-300) so the two
   // stacked rows read as place → metadata instead of two identical gray lines.
   const dateClass = 'text-xs text-fg-muted';
@@ -880,7 +880,7 @@ function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pic
   );
 }
 
-function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected = false }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number; reviewsRemaining: number; noReviewsExpected?: boolean }) {
+function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected = false }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore' | 'verdict'>>; reviewCount: number; reviewsRemaining: number; noReviewsExpected?: boolean }) {
   if (shouldShowReviewsSyncing(show)) {
     return (
       <div className="card p-4 text-center bg-surface-overlay border-white/5" data-testid="reviews-syncing">

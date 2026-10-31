@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { getBreakdownTierId, getScoreTierId } = require('./score-tiers.js');
+const { getBreakdownTierId, getScoreTierId, getReviewBreakdownTierId, parseVerdictTierId } = require('./score-tiers.js');
 
 const BAR_FOR_BADGE = {
   'must-see': 'rave',
@@ -44,7 +44,25 @@ test('rounds like the badge and rejects non-finite scores', () => {
 
 test('no hard-coded 70 cutoff returns to the bar or the broadcast', () => {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-  for (const f of ['src/components/show-cards/ScoreBreakdownBar.tsx', 'scripts/send-opening-night-broadcast.js', 'scripts/lib/reddit-opening-post.js']) {
+  for (const f of ['src/components/show-cards/ScoreBreakdownBar.tsx', 'scripts/send-opening-night-broadcast.js', 'scripts/lib/reddit-opening-post.js', 'scripts/social-autopost/run.js']) {
     assert.doesNotMatch(readFileSync(join(root, f), 'utf8'), /(rounded|score|r)\s*>=\s*70\b/, `${f} must use getBreakdownTierId`);
   }
+});
+
+test('verdict wins over the score band; no verdict falls back to the band (BRO-6686)', () => {
+  assert.equal(getReviewBreakdownTierId('mixed', 67), 'mixed'); // Vulture on The Heart: 67 reads Positive by score
+  assert.equal(getReviewBreakdownTierId('Mixed', 53), 'mixed'); // Culture Sauce: 53 reads Negative by score
+  assert.equal(getReviewBreakdownTierId('pan', 90), 'negative');
+  assert.equal(getReviewBreakdownTierId(null, 67), 'positive');
+  assert.equal(getReviewBreakdownTierId(undefined, 53), 'negative');
+  assert.equal(getReviewBreakdownTierId('bogus', 91), 'rave');
+  assert.equal(getReviewBreakdownTierId(null, null), null);
+});
+
+test('parseVerdictTierId reads the ensemble majority from modelAgreement', () => {
+  assert.equal(parseVerdictTierId('All 3 models agree: Rave'), 'rave');
+  assert.equal(parseVerdictTierId('2/3 models agree: Mixed'), 'mixed');
+  assert.equal(parseVerdictTierId('Both models agree: Positive'), 'positive');
+  assert.equal(parseVerdictTierId('Bucket disagreement: claude=Mixed, openai=Positive'), null);
+  assert.equal(parseVerdictTierId(null), null);
 });

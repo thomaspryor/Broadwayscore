@@ -148,6 +148,7 @@ export interface RawReview {
   assignedScore?: number;          // Manual 0-100 score
   originalRating?: string;         // e.g., "B+", "3 stars", "4/5"
   bucket?: string;                 // Rave, Positive, Mixed, Negative, Pan
+  verdict?: string;                // Critic's verdict (ensemble majority bucket, lowercase); breakdown bar counts by it (BRO-6686)
   thumb?: string;                  // Up, Flat, Down
   designation?: string;            // Critics_Pick, Critics_Choice, etc.
   quote?: string;                  // Direct quote from the review
@@ -198,6 +199,7 @@ export interface ComputedReview {
   tierWeight: number;
   assignedScore: number;
   bucketScore?: number;
+  verdict?: string;
   thumbScore?: number;
   reviewScore: number;      // The computed score used for averaging
   confidenceWeight: number; // Content quality multiplier (1.0 for full text, lower for excerpts)
@@ -412,6 +414,7 @@ export function computeCriticScore(reviews: RawReview[], showCategory?: string, 
       tierWeight: r.tierWeight,
       assignedScore: review.assignedScore as number,
       bucketScore: review.bucket ? BUCKET_SCORE_MAP[review.bucket] : undefined,
+      verdict: review.verdict,
       thumbScore: review.thumb ? THUMB_SCORE_MAP[review.thumb] : undefined,
       reviewScore: r.reviewScore,
       confidenceWeight: r.confidenceWeight,
