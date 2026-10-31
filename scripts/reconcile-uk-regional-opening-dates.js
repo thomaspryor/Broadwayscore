@@ -14,6 +14,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const root = path.join(__dirname, '..');
 const { reconcileOpeningDate } = require('./lib/uk-regional-opening-date');
 const { isUkRegionalVenue } = require('./lib/market-label');
