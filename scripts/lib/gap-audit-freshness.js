@@ -49,17 +49,17 @@ function alertReadsRow(show, entry, now = Date.now()) {
 // 8-21, but a show there that audited clean on day 7 fell to tier 2 behind ~770
 // back-catalogue shows and waited 2-13 days for re-audit (43 of 67 in-window
 // slow-market shows on 2026-10-31), so late reviews were not found in-window.
-// These shows get their own tier between alerting rows and the back catalogue,
-// re-checked every 48h: about 25 audits/day for ~50 shows, against ~70/day of
-// observed audit throughput. Rows that still count uncollected reviews stay
-// tier 1, and rows the slow-market rollup still alerts on (slowMarketResidual,
-// which also counts reverify exclusions) keep the 12h default.
-const SLOW_MARKET_CLEAN_TIER = 1.5;
-const SLOW_MARKET_CLEAN_FRESHNESS_MS = 48 * 60 * 60 * 1000;
-function isSlowMarketCleanInWindow(show, entry, now = Date.now()) {
-  return show?.status !== 'closed' && SLOW_MARKETS.has(show?.category)
-    && inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS)
-    && !!entry && !(entry.uncollected > 0) && !(entry.slowMarketResidual > 0);
+// Every slow-market show inside the 21-day alert window (open or closed: a
+// show that closed after a short run still gets reviews) therefore gets its
+// own tier between alerting rows and the back catalogue, and is re-audited at
+// least daily (20h, so consecutive hourly runs never miss the day). Rows that
+// still count uncollected reviews stay tier 1 with their shorter freshness.
+// Throughput (2026-10-31): ~75 in-window shows at 20h is ~90 audits/day for
+// this tier; tier 2 keeps its reserved lanes (reserveStalestSlots).
+const SLOW_MARKET_TIER = 1.5;
+const SLOW_MARKET_DAILY_FRESHNESS_MS = 20 * 60 * 60 * 1000;
+function isSlowMarketDailyWindow(show, now = Date.now()) {
+  return SLOW_MARKETS.has(show?.category) && inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS);
 }
 
 function inOpeningPriorityWindow(show, now = Date.now()) {
@@ -73,7 +73,21 @@ function inOpeningPriorityWindow(show, now = Date.now()) {
 // rarely change, so they get a long skip (don't re-burn credits); open shows
 // and shows with gaps are re-checked sooner so newly-published reviews are
 // caught; opening-week shows re-check every run.
-function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now() } = {}) {
+function freshnessMsFor(show, lastEntry, opts = {}) {
+  const base = baseFreshnessMs(show, lastEntry, opts);
+  const now = opts.now ?? Date.now();
+  // BRO-6687: in-window slow-market shows re-audit at least daily, whatever the
+  // closed/clean skip or the configured freshness would otherwise allow.
+  if (!isSlowMarketDailyWindow(show, now)) return base;
+  // A clean row (nothing uncollected, nothing the rollup counts) past the
+  // opening week re-audits exactly daily, not at the 12h default, to keep the
+  // tier's daily cost near one audit per show.
+  const clean = !!lastEntry && !(lastEntry.uncollected > 0) && !(lastEntry.slowMarketResidual > 0);
+  if (clean && !inOpeningPriorityWindow(show, now)) return SLOW_MARKET_DAILY_FRESHNESS_MS;
+  return Math.min(base, SLOW_MARKET_DAILY_FRESHNESS_MS);
+}
+
+function baseFreshnessMs(show, lastEntry, { freshnessHours = 12, now = Date.now() } = {}) {
   const closed = show && show.status === 'closed';
   // A closed show that audited clean won't get new reviews — re-check only yearly
   // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
@@ -88,7 +102,6 @@ function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now()
       ? OPENING_WINDOW_FRESHNESS_MS
       : OPENING_WARM_FRESHNESS_MS;
   }
-  if (isSlowMarketCleanInWindow(show, lastEntry, now)) return Math.max(SLOW_MARKET_CLEAN_FRESHNESS_MS, freshnessHours * 60 * 60 * 1000);
   return freshnessHours * 60 * 60 * 1000; // open/previews — re-check often for new reviews
 }
 
@@ -124,8 +137,28 @@ function auditTier(show, entry, now = Date.now()) {
   if (inOpeningPriorityWindow(show, now)) return 0;
   if (show?.status !== 'closed' && inOpeningWindow(show, now) && (!entry || entry.uncollected > 0)) return 1;
   if (show?.status === 'closed' && alertReadsRow(show, entry, now)) return 1; // BRO-5513
-  if (isSlowMarketCleanInWindow(show, entry, now)) return SLOW_MARKET_CLEAN_TIER; // BRO-6687
+  if (isSlowMarketDailyWindow(show, now)) return SLOW_MARKET_TIER; // BRO-6687
   return 2;
+}
+
+// BRO-6687: a --show run (newsletter list, catalogue backfill batch) skips all
+// checkpoint scheduling, and it shares one concurrency slot with the hourly
+// cron, so a day of dispatched batches starved every opening-window show
+// (2026-10-31: 4 of the last 5 runs were 30-show 2016-17 backfill batches; all
+// 33 tier-0 shows were due and up to 7h old). The targeted run therefore audits
+// the head of the normal due queue (tiers 0-1.5 only, never the back catalogue)
+// after its own list. Pure: callers pass the checkpoint snapshot.
+const DUE_LANE_CAP = 3;
+function pickDueLane(allShows, checkpoint, requestedIds, { now = Date.now(), cap = DUE_LANE_CAP, freshnessHours = 12 } = {}) {
+  const requested = new Set(requestedIds);
+  return allShows
+    .filter((s) => s && !requested.has(s.id) && auditTier(s, checkpoint[s.id], now) < 2)
+    .filter((s) => {
+      const e = checkpoint[s.id];
+      return !e || (now - checkpointTs(e)) >= freshnessMsFor(s, e, { freshnessHours, now });
+    })
+    .sort((a, b) => compareAuditPriority(a, b, checkpoint, now))
+    .slice(0, Math.max(0, cap));
 }
 
 function compareAuditPriority(a, b, checkpoint, now = Date.now()) {
@@ -279,9 +312,11 @@ module.exports = {
   inOpeningPriorityWindow,
   compareAuditPriority,
   auditTier,
-  isSlowMarketCleanInWindow,
-  SLOW_MARKET_CLEAN_TIER,
-  SLOW_MARKET_CLEAN_FRESHNESS_MS,
+  isSlowMarketDailyWindow,
+  pickDueLane,
+  DUE_LANE_CAP,
+  SLOW_MARKET_TIER,
+  SLOW_MARKET_DAILY_FRESHNESS_MS,
   checkpointTs,
   OPENING_PRIORITY_WINDOW_DAYS,
   OPENING_HOT_DAYS,

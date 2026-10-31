@@ -174,7 +174,10 @@ const INGEST_PER_SHOW_CAP = parseInt(args.find(a => a.startsWith('--ingest-cap='
 // the back catalogue) instead of re-auditing the same first shows forever.
 const useCheckpoint = args.includes('--checkpoint');
 const includeClosed = args.includes('--include-closed');
+// BRO-6687: budget slice held back for the due lane on targeted runs (min(5 min, a quarter of the budget)).
+const DUE_LANE_RESERVE_MS_DEFAULT = 5 * 60 * 1000;
 const TIME_BUDGET_MS = parseInt(args.find(a => a.startsWith('--time-budget-min='))?.split('=')[1] || '20', 10) * 60 * 1000;
+const DUE_LANE_RESERVE_MS = Math.min(DUE_LANE_RESERVE_MS_DEFAULT, Math.floor(TIME_BUDGET_MS / 4));
 const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours='))?.split('=')[1] || '12', 10);
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
 // WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
@@ -241,7 +244,7 @@ function writeJsonAtomic(filePath, obj) {
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
-const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
+const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, pickDueLane, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
 const { mergeGapAudit, countsFor, priorCensusUrls, seedPriorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
@@ -2354,6 +2357,18 @@ async function main(argv = process.argv.slice(2)) {
     if (oldest) console.log(`audit-show-review-gap: oldest due gap row ${oldest.showId} (${oldest.ageHours}h, computedAt ${oldest.computedAt}); 1 in ${STALE_RESERVE_EVERY} slots reserved for stalest rows`);
   }
 
+  // BRO-6687: a targeted --checkpoint run also audits the head of the normal due
+  // queue (tiers 0-1.5) after its own list, with the last DUE_LANE_RESERVE_MS of
+  // the budget held back for it, so dispatched batches can't starve opening-window
+  // and in-window slow-market shows. Kill switch: GAP_AUDIT_DUE_LANE=0.
+  const dueLaneIds = new Set();
+  if (useCheckpoint && showFilter && process.env.GAP_AUDIT_DUE_LANE !== '0') {
+    const lane = pickDueLane(allShows, checkpoint, targets.map((s) => s.id), { now: Date.now(), freshnessHours: FRESHNESS_HOURS });
+    for (const s of lane) dueLaneIds.add(s.id);
+    targets = targets.concat(lane);
+    console.log(`audit-show-review-gap: due lane appended ${lane.length} overdue show(s) after the requested list: ${lane.map((s) => s.id).join(', ') || 'none'}`);
+  }
+
   console.log(`audit-show-review-gap: ${targets.length} target(s) (window=${windowDays}d${includeClosed ? ', incl. closed' : ''})`);
 
   const results = [];
@@ -2377,7 +2392,15 @@ async function main(argv = process.argv.slice(2)) {
     // Soft time budget: stop taking on new shows before the CI hard timeout so
     // the checkpoint + ingested review-texts commit cleanly (the 25-min cancel
     // race). Next run resumes from the next least-recently-audited show.
-    if (useCheckpoint && (Date.now() - runStart) > TIME_BUDGET_MS) {
+    // Requested shows stop DUE_LANE_RESERVE_MS early when a due lane follows them.
+    const budgetFor = dueLaneIds.size && !dueLaneIds.has(s.id) ? TIME_BUDGET_MS - DUE_LANE_RESERVE_MS : TIME_BUDGET_MS;
+    if (useCheckpoint && (Date.now() - runStart) > budgetFor) {
+      if (budgetFor < TIME_BUDGET_MS) {
+        // skip the rest of the requested list but still run the due lane
+        if (!budgetHit) console.log(`⏱  requested-list budget reached — skipping to the ${dueLaneIds.size}-show due lane.`);
+        budgetHit = true;
+        continue;
+      }
       budgetHit = true;
       console.log(`⏱  time budget (${Math.round(TIME_BUDGET_MS / 60000)}m) reached — stopping after ${results.length} shows; checkpoint will resume the rest next run.`);
       break;

@@ -86,9 +86,10 @@ function isoDaysBefore(nowMs, days) {
  * @param {object[]} shows shows.json rows
  * @param {object[]} reviews reviews.json rows
  * @param {number} nowMs
+ * @param {{category?: string}} [opts] market to measure (default broadway; BRO-6687 grades the slow markets)
  * @returns {{scored: object[], allShows: string[], outletsByShow: Map<string,Set<string>>}}
  */
-function computeSeasonWindows(shows, reviews, nowMs) {
+function computeSeasonWindows(shows, reviews, nowMs, { category = 'broadway' } = {}) {
   const seasons = [];
   for (let i = 0; i < SEASONS; i++) {
     const end = isoDaysBefore(nowMs, i * SEASON_DAYS);
@@ -97,7 +98,7 @@ function computeSeasonWindows(shows, reviews, nowMs) {
   }
   const inWindowIds = new Set();
   for (const s of shows) {
-    if (!s || s.category !== 'broadway') continue;
+    if (!s || s.category !== category) continue;
     // Recency falls back openingDate -> previewsStartDate (scripts/lib/collection-priority.js) —
     // this used to be a bare `!s.openingDate` skip, the same class of bug fixed in
     // audit-show-review-gap.js: a live show stuck in previews with a null openingDate never
@@ -332,6 +333,7 @@ module.exports = {
   evaluateCoverageExpectationDrift,
   classifyCoverageExpectationDrift,
   measureOutletCoverage,
+  computeSeasonWindows,
   PROMOTE_OVERALL,
   PROMOTE_MIN_SEASON,
   DEMOTE_OVERALL,
