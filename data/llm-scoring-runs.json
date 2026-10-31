@@ -1702885,21 +1702885,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T17:59:25.748Z",
-    "completedAt": "2026-10-31T18:00:31.299Z",
-    "totalReviews": 14,
-    "processed": 12,
-    "skipped": 2,
+    "startedAt": "2026-10-31T17:59:12.746Z",
+    "completedAt": "2026-10-31T17:59:42.270Z",
+    "totalReviews": 6,
+    "processed": 6,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 76282,
-      "output": 3946,
-      "cacheRead": 45684,
+      "input": 33256,
+      "output": 1749,
+      "cacheRead": 22842,
       "cacheWrite": 0,
-      "total": 187803
+      "total": 86312
     },
-    "costUsd": 0.28821230000000003,
-    "runId": "41226660440",
+    "costUsd": 0.1269646,
+    "runId": "41226573993",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1704328,6 +1704328,16 @@
           "flat": 0,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "a-devil-comes-to-town-regional-2025",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 1,
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1747009,8 +1747019,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T18:05:27.431Z",
-    "completedAt": "2026-10-31T18:05:27.432Z",
+    "startedAt": "2026-10-31T18:04:39.357Z",
+    "completedAt": "2026-10-31T18:04:39.359Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1747023,7 +1747033,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41226660440",
+    "runId": "41226573993",
     "source": "comparative-rescore",
     "errorDetails": []
   },
