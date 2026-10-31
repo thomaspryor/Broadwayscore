@@ -193,6 +193,8 @@ function buildDecisionsSection(issues, { max = 8, now = new Date(), secret = pro
         headline: String(d.title || '').replace(/^\s*DECISION NEEDED\s*:\s*/i, '').trim() || null,
         cardUrl: d.url,
         decision: d.card,
+        // BRO-6715: signed one-tap answer buttons (confirm page, then recordAnswer).
+        answerButtons: require('./digest-answer-buttons.js').answerButtonsFor(byId.get(d.identifier), { secret, now: now.getTime() }),
         ageDays: Number.isFinite(ageDays) && ageDays >= 0 ? ageDays : null,
         actionLabel: d.actionLink ? 'Tap to do this \u2192' : undefined,
       };
