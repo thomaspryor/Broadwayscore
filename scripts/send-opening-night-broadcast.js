@@ -355,6 +355,11 @@ async function main() {
   }
 
   if (!RESEND_API_KEY && !DRY_RUN) {
+    // BRO-6623: a --send-to preview was asked for by name, so a missing key is a failure, not a quiet skip.
+    if (SEND_TO) {
+      console.error(`Missing RESEND_API_KEY — preview to ${SEND_TO} NOT sent (this script does not read .env; export the key)`);
+      process.exit(1);
+    }
     console.log('Missing RESEND_API_KEY — skipping draft creation');
     process.exit(0);
   }
