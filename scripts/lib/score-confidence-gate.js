@@ -32,6 +32,14 @@ function getConfidenceFloors(category) {
  *   overrides getConfidenceFloors(category).
  * @returns {{ok:boolean, reasons:string[], counts:{total:number,t1:number,t2:number,t3:number,highConfidence:number}, floors:object}}
  */
+// A rebuilt row carries scoreConfidence (from llmScore.confidence). A raw opening-night lane row in reviews.json
+// before the next rebuild carries only llmScore.confidence (BRO-6623); read it the same way the rebuild does.
+// A top-level value (e.g. the lane's paywall-fallback 'low') wins.
+function rowConfidence(r) {
+  if (r.scoreConfidence != null) return r.scoreConfidence;
+  return (r.llmScore && r.llmScore.confidence) || null;
+}
+
 function evaluateScoreConfidence({ showReviews, category, getOutletTier, newReviewCount = null, floors: override = null }) {
   const floors = override ? { ...override } : getConfidenceFloors(category);
   // BRO-4954: a transfer/return carries its earlier run's reviews, so it can clear
@@ -45,7 +53,7 @@ function evaluateScoreConfidence({ showReviews, category, getOutletTier, newRevi
     t2: scored.filter(r => tierOf(r) === 2).length,
     t3: scored.filter(r => tierOf(r) === 3).length,
     // full-text scored, not excerpt-only
-    highConfidence: scored.filter(r => r.scoreConfidence === 'high' || r.scoreConfidence === 'medium').length,
+    highConfidence: scored.filter(r => ['high', 'medium'].includes(rowConfidence(r))).length,
   };
   const reasons = [];
   if (counts.total < floors.total) reasons.push(`${counts.total}/${floors.total} total`);

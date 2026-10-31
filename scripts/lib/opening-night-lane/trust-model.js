@@ -77,6 +77,12 @@ function isLaneReview(review, ctx = {}) {
   return true;
 }
 
+/** How the lane found a review ('aggregator' | 'outlet-index'), or null when it is not a lane review. The rebuild
+ * stamps this on reviews.json rows as `laneSource` (BRO-6623), since it drops the provenance block itself. */
+function laneRowSource(review, ctx = {}) {
+  return isLaneReview(review, ctx) ? review[PROVENANCE_KEY].source : null;
+}
+
 /** Whether `guard` must stand down for `review`. Unknown guard names throw. `ctx` is forwarded to isLaneReview. */
 function laneBypasses(review, guard, ctx = {}) {
   if (!LANE_BYPASSED_GUARDS.includes(guard)) {
@@ -207,5 +213,5 @@ function buildLaneReview({
 
 module.exports = {
   PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS,
-  buildLaneProvenance, isLaneReview, laneBypasses, calendarDateIn, admitLaneCandidate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
+  buildLaneProvenance, isLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
 };

@@ -1491,6 +1491,7 @@ const leaseGuard = require('./lib/opening-night-lane/lease-guard');
 // BRO-4806: a lane review (provenance block + productionVerified:"aggregator") is never excluded by the corpus guards
 // named in trust-model LANE_BYPASSED_GUARDS. Every gate below calls this one predicate, never re-derives it.
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
+const { laneRowSource } = require('./lib/opening-night-lane/trust-model'); // BRO-6623
 const leasedShowIds = new Set(leaseGuard.leasedShowIds());
 if (leasedShowIds.size) console.log(`Opening-night lease: not rebuilding ${[...leasedShowIds].join(', ')}; existing rows carried over`);
 const showDirs = listShowDirs(reviewTextsDir)
@@ -5608,7 +5609,10 @@ showDirs.forEach(showId => {
         // BRO-4806: a lane review scored from a paywalled aggregator thumb/stars carries scoreConfidence:'low' on its
         // file (trust-model buildLaneReview). Keep it on the row: low wins over any llmScore confidence, and it is
         // never promoted. Ordinary reviews are untouched.
-        ...(laneOk('scraperGarbage') && data.scoreConfidence === 'low' ? { scoreConfidence: 'low' } : {})
+        ...(laneOk('scraperGarbage') && data.scoreConfidence === 'low' ? { scoreConfidence: 'low' } : {}),
+        // BRO-6623: keep how the lane found this review (aggregator roundup vs outlet index). The lane never writes
+        // dtliThumb/bwwThumb, so broadcast-readiness.js reads this as the Broadway aggregator signal after a rebuild.
+        ...((src) => (src ? { laneSource: src } : {}))(laneRowSource(data, { openingDate: showById[showId] && showById[showId].openingDate }))
       };
 
       // Sanitize display fields: decode HTML entities in outlet, pullQuote

@@ -361,7 +361,7 @@ function findMissedBroadcasts({
     const state = classifyShowBroadcastState(sentShows, s.id);
     if (state === 'sent' || state === 'discarded') continue;
 
-    // The real gate, not a copy of it: Broadway needs 15 AND a DTLI/BWW
+    // The real gate, not a copy of it: Broadway needs 15 AND a DTLI/BWW (or lane-aggregator, BRO-6623)
     // aggregator, West End needs 12 and no aggregator. Reporting a Broadway
     // show with 13 reviews as a missed send would be a confident lie — it
     // never qualified in the first place.

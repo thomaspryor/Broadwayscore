@@ -170,10 +170,11 @@ async function replay(opts = {}) {
         extractMeta: (_html, url) => ({ criticName: CRITIC.get(d.canonicalUrl(url)) || null, publishDate: NIGHT }),
       },
       // The models: WSJ's teaser is not a review; the excerpt and every full review score.
+      // opts.scoreText (BRO-6623): a scorer shaped like the production one (inline.ensembleScoreText) instead of the bare score.
       scoreText: async (text, ctx) => {
         scorerCalls.push({ url: ctx.url, tier: ctx.contentTier, chars: text.length });
         if (/wsj\.com/.test(ctx.url) && text) return { rejected: true, rejection: 'not_a_review' };
-        return { score: text ? 60 : 45, extra: {} };
+        return opts.scoreText ? opts.scoreText(text, ctx) : { score: text ? 60 : 45, extra: {} };
       },
       publishPorts: site || replayPublishPorts(now), now, wait: async (ms) => { clock += ms; },
       reviewTextsDir, onDiskUrls: [], onDiskRows: [], showScoreGuards: { urlMap: {}, allShows: [SHOW] }, search: async () => [], decodeImpl: null,
@@ -188,7 +189,10 @@ async function replay(opts = {}) {
       const rec = grade.replayToPressNightRecord({ show: SHOW, night: NIGHT, live: site.live(), ledgerDir, reviewTextsDir, censusOutletIds, startedAt: T0, closedAt });
       graded = grade.gradeReplay(rec, res);
     }
-    return { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir, browserbase, graded, live: site ? site.live() : [], reviewFiles: fs.readdirSync(reviewTextsDir) };
+    const out = { ...res, scored: new Map(res.admitted.map((x) => [x.key, x])), scorerCalls, dir, browserbase, graded, live: site ? site.live() : [], reviewFiles: fs.readdirSync(reviewTextsDir) };
+    // opts.inspect (BRO-6623): read the night's written review files before the temp dir goes.
+    if (opts.inspect) out.inspected = await opts.inspect({ reviewTextsDir, show: SHOW, live: out.live });
+    return out;
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
