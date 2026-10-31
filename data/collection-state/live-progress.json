@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-31T17:27:57.577Z",
+  "updatedAt": "2026-10-31T17:49:53.944Z",
   "processed": 379,
-  "failed": 202,
-  "successRate": "65.2%",
+  "failed": 216,
+  "successRate": "63.7%",
   "tierBreakdown": {
     "playwright": 206,
     "amp": 1,
-    "browserbase": 14,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingdog": 26,
     "scrapingbee": 17,
     "brightdata": 0,
-    "archiveToday": 34,
+    "archiveToday": 38,
     "archive": 102
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-31T15:38:08.536Z",
-      "event": "bb-session",
-      "session": "2202a999",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-10-31T15:38:09.409Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-31T15:39:33.450Z",
       "event": "bb-session",
@@ -90,6 +79,50 @@
     },
     {
       "t": "2026-10-31T15:55:25.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T17:42:01.919Z",
+      "event": "bb-session",
+      "session": "1989c183",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T17:42:02.258Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T17:43:48.302Z",
+      "event": "bb-session",
+      "session": "13e68046",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T17:43:48.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T17:48:59.483Z",
+      "event": "bb-session",
+      "session": "3086fda6",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T17:48:59.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T17:49:08.828Z",
+      "event": "bb-session",
+      "session": "a6d0f9ab",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T17:49:09.064Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

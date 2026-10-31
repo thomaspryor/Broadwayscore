@@ -582,7 +582,21 @@
     "the-swallow-regional-2026/talkinbroadway--unknown.json",
     "man-to-man-west-end-2026/deadline--katie-campione.json",
     "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
-    "man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json"
+    "man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -811,7 +825,8 @@
       "data/review-texts/these-paper-bullets-off-broadway-2015/nytimes--charles-isherwood.json",
       "these-paper-bullets-off-broadway-2015/nytimes--charles-isherwood.json",
       "data/review-texts/invisible-thread-off-broadway-2015/nytimes--charles-isherwood.json",
-      "invisible-thread-off-broadway-2015/nytimes--charles-isherwood.json"
+      "invisible-thread-off-broadway-2015/nytimes--charles-isherwood.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -896,7 +911,11 @@
       "data/review-texts/table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "data/review-texts/the-birth-of-the-pill-regional-2026/curtaincallchicago--unknown.json",
       "data/review-texts/the-swallow-regional-2026/talkinbroadway--unknown.json",
-      "data/review-texts/man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json"
+      "data/review-texts/man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
     ],
     "archive": [
       "sing-street-off-broadway-2019/lighting-and-sound-america--david-barbour.json",
@@ -1004,7 +1023,7 @@
     ]
   },
   "startTime": "2026-10-31T14:03:27.018Z",
-  "lastProcessed": "the-cook-regional-2026/broadwayworld--steve-murray.json",
+  "lastProcessed": "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-10-31T15:38:08.536Z",
@@ -1080,6 +1099,50 @@
     },
     {
       "t": "2026-10-31T15:55:25.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T17:42:01.919Z",
+      "event": "bb-session",
+      "session": "1989c183",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T17:42:02.258Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T17:43:48.302Z",
+      "event": "bb-session",
+      "session": "13e68046",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T17:43:48.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T17:48:59.483Z",
+      "event": "bb-session",
+      "session": "3086fda6",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T17:48:59.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T17:49:08.828Z",
+      "event": "bb-session",
+      "session": "a6d0f9ab",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T17:49:09.064Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
