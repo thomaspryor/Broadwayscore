@@ -114,6 +114,42 @@ function getBreakdownTierId(score, category) {
   return 'negative';
 }
 
+/**
+ * The critic's own verdict: the scoring ensemble's majority bucket, read from
+ * ensembleData.modelAgreement ("All 3 models agree: Rave", "2/3 models agree:
+ * Mixed"). Not llmScore.bucket or reviews.json `bucket`: both are derived from
+ * the numeric score, so they repeat the score band instead of the verdict.
+ * "Pan" counts as Negative (the bar has no fifth bucket). Returns null when the
+ * review has no ensemble majority (single-model, manual, lane scores).
+ * @param {string | null | undefined} modelAgreement
+ * @returns {'rave' | 'positive' | 'mixed' | 'negative' | null}
+ */
+function parseVerdictTierId(modelAgreement) {
+  if (typeof modelAgreement !== 'string') return null;
+  const m = modelAgreement.match(/models? agree:\s*(Rave|Positive|Mixed|Negative|Pan)\b/i);
+  if (!m) return null;
+  const v = m[1].toLowerCase();
+  return v === 'pan' ? 'negative' : v;
+}
+
+/**
+ * Breakdown-bar tier for ONE review (BRO-6686, owner 2026-10-31): the critic's
+ * verdict when it has one, else the score band (getBreakdownTierId). Accepts
+ * the verdict in any casing ('Rave' on reviews.json rows, 'rave' elsewhere).
+ * @param {string | null | undefined} verdict
+ * @param {number | null | undefined} score
+ * @param {string} [category]
+ * @returns {'rave' | 'positive' | 'mixed' | 'negative' | null}
+ */
+function getReviewBreakdownTierId(verdict, score, category) {
+  if (typeof verdict === 'string') {
+    const v = verdict.toLowerCase();
+    if (v === 'rave' || v === 'positive' || v === 'mixed' || v === 'negative') return v;
+    if (v === 'pan') return 'negative';
+  }
+  return getBreakdownTierId(score, category);
+}
+
 module.exports = {
   MARKET_GOLD_THRESHOLD,
   DEFAULT_GOLD_THRESHOLD,
@@ -125,4 +161,6 @@ module.exports = {
   getScoreTierId,
   getScoreTierLabel,
   getBreakdownTierId,
+  parseVerdictTierId,
+  getReviewBreakdownTierId,
 };

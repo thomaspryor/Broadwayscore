@@ -27,6 +27,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { parseVerdictTierId } = require('./lib/score-tiers');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -5599,6 +5600,8 @@ showDirs.forEach(showId => {
         ...(data.ensembleData ? {
           scoreDelta: data.ensembleData.scoreDelta || 0,
           modelAgreement: data.ensembleData.modelAgreement || null,
+          // BRO-6686: the critic's verdict (ensemble majority bucket) for the breakdown bar.
+          ...(parseVerdictTierId(data.ensembleData.modelAgreement) ? { verdict: parseVerdictTierId(data.ensembleData.modelAgreement) } : {}),
           needsReview: data.ensembleData.needsReview || false,
           // Emergency flag: 1-of-N models succeeded — excluded from compositeScore by engine.ts
           ...(data.ensembleData.singleModelEmergency ? { singleModelEmergency: true } : {}),

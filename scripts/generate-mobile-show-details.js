@@ -564,6 +564,7 @@ for (const show of visibleShows) {
         b: r.bucket,                        // bucket (Positive/Mixed/Negative)
         t: tier,                            // tier (1-4, regional)
       };
+      if (r.verdict) entry.v = r.verdict;   // critic's verdict (ensemble majority), BRO-6686
 
       // Optional fields — omit if null/empty to save bytes
       if (r.url) entry.u = r.url;

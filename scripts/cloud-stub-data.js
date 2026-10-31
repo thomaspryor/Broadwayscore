@@ -15,7 +15,7 @@ const NOW = '2026-07-01T00:00:00.000Z';
 // Guard: refuse to overwrite any git-tracked file
 const { execSync } = require('child_process');
 const tracked = new Set(
-  execSync('git ls-files data', { cwd: ROOT }).toString().trim().split('\n')
+  execSync('git ls-files data', { cwd: ROOT, maxBuffer: 256 * 1024 * 1024 }).toString().trim().split('\n')
 );
 function writeJson(rel, obj) {
   if (tracked.has(rel)) {

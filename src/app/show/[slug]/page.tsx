@@ -432,11 +432,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   }
 
   const reviewItems = getReviewListItems(show);
-  const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> = {
+  const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore' | 'verdict'>> = {
     ...show,
     venue: tourVenue ?? show.venue,
     criticScore: show.criticScore
-      ? { ...show.criticScore, reviews: show.criticScore.reviews.map(r => ({ reviewScore: r.reviewScore })) }
+      ? { ...show.criticScore, reviews: show.criticScore.reviews.map(r => ({ reviewScore: r.reviewScore, verdict: r.verdict })) }
       : null,
   };
   const showForBelowFold: ComputedShowWithReviews<never> = {
