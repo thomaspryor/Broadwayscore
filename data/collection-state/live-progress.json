@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T22:19:54.536Z",
-  "processed": 267,
-  "failed": 154,
-  "successRate": "63.4%",
+  "updatedAt": "2026-10-31T22:51:28.712Z",
+  "processed": 355,
+  "failed": 206,
+  "successRate": "63.3%",
   "tierBreakdown": {
-    "playwright": 145,
+    "playwright": 187,
     "amp": 2,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 16,
-    "scrapingbee": 9,
+    "scrapingdog": 23,
+    "scrapingbee": 14,
     "brightdata": 0,
-    "archiveToday": 26,
-    "archive": 71
+    "archiveToday": 30,
+    "archive": 98
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-31T21:17:08.425Z",
@@ -68,6 +68,17 @@
     },
     {
       "t": "2026-10-31T21:58:47.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T22:47:50.514Z",
+      "event": "bb-session",
+      "session": "0fe6dd9c",
+      "url": "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.ht"
+    },
+    {
+      "t": "2026-10-31T22:47:51.181Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
