@@ -257,6 +257,34 @@ jobs:
       #     on CANCELLATION, and this job is routinely hard-cancelled at the
       #     timeout cap, where always()-steps cost ~5 extra minutes for a report
       #     nobody will read.
+      # BRO-6695 (The Moth, 2026-10-30): ingests used to sit unpushed until the
+      # last step of this ~25-min job, then wait on a 17-min full rebuild before
+      # scoring was even dispatched (53 min to live, bar 30). Publish them now:
+      # push review-texts and dispatch the per-show scoring lane (scoring + fast
+      # rebuild) for shows in their opening-night window. Additive only: the
+      # end-of-job full rebuild trigger below is unchanged, so anything this
+      # skips (stubs, back-catalogue) still publishes the slow way.
+      - name: Push ingested review-texts now (fast path)
+        id: fast_push
+        if: ${{ !cancelled() }}
+        # lint-allow-swallow: speed-up only; the end-of-job push + rebuild trigger still publish everything
+        continue-on-error: true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "ingest: audit-aggregator-gap auto-ingested review-texts"
+
+      - name: Fast-publish ingested reviews
+        id: fast_publish
+        if: ${{ !cancelled() && steps.fast_push.outputs.pushed == 'true' }}
+        # lint-allow-swallow: speed-up only; the end-of-job rebuild trigger still publishes everything
+        continue-on-error: true
+        env:
+          BEFORE_SHA: ${{ steps.rt_before.outputs.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/lib/gap-ingest-fast-path.js
+
       - name: Stateless coverage-candidate report (warn-only)
         if: success() || failure()
         continue-on-error: true

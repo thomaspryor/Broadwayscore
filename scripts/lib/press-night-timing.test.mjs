@@ -26,7 +26,7 @@ test('newShowIdsFromPaths: show dirs only, unique, skips _pending and non-json',
   assert.deepEqual(ids, ['other-show-2026', 'the-moth-off-west-end-2026']);
 });
 
-test('fastPublish: dispatches urgent shows through the per-show lane, all handled', async () => {
+test('fastPublish: dispatches urgent shows through the per-show lane', async () => {
   const calls = [];
   const r = await fastPublish({
     showIds: ['the-moth-off-west-end-2026'],
@@ -34,29 +34,32 @@ test('fastPublish: dispatches urgent shows through the per-show lane, all handle
     dispatch: async (id, opts) => { calls.push([id, opts]); return { ok: true }; },
   });
   assert.deepEqual(calls, [['the-moth-off-west-end-2026', { reason: 'gap-ingest' }]]);
-  assert.equal(r.allHandled, true);
+  assert.deepEqual(r.dispatched, ['the-moth-off-west-end-2026']);
 });
 
-test('fastPublish: non-urgent or failed shows leave the slow rebuild trigger in charge', async () => {
+test('fastPublish: non-urgent, failed and thrown dispatches are reported, never raised', async () => {
   const urgentIds = new Set(['hot-2026']);
   const ok = async () => ({ ok: true });
   const mixed = await fastPublish({ showIds: ['hot-2026', 'cold-2017'], urgentIds, dispatch: ok });
   assert.deepEqual(mixed.dispatched, ['hot-2026']);
   assert.deepEqual(mixed.notUrgent, ['cold-2017']);
-  assert.equal(mixed.allHandled, false);
   const failed = await fastPublish({ showIds: ['hot-2026'], urgentIds, dispatch: async () => ({ ok: false, error: 'no-token' }) });
   assert.deepEqual(failed.failed, ['hot-2026']);
-  assert.equal(failed.allHandled, false);
   const thrown = await fastPublish({ showIds: ['hot-2026'], urgentIds, dispatch: async () => { throw new Error('boom'); } });
-  assert.equal(thrown.allHandled, false);
-  const none = await fastPublish({ showIds: [], urgentIds, dispatch: ok });
-  assert.equal(none.allHandled, false);
+  assert.deepEqual(thrown.failed, ['hot-2026']);
+});
+
+test('fastPublish: caps dispatches per run', async () => {
+  const ids = ['a', 'b', 'c', 'd'];
+  const r = await fastPublish({ showIds: ids, urgentIds: new Set(ids), dispatch: async () => ({ ok: true }), max: 2 });
+  assert.deepEqual(r.dispatched, ['a', 'b']);
+  assert.deepEqual(r.notUrgent, ['c', 'd']);
 });
 
 test('audit-aggregator-gap.yml publishes ingests right after the ingest step', () => {
   const wf = fs.readFileSync(path.join(root, '.github/workflows/audit-aggregator-gap.yml'), 'utf8');
   const ingest = wf.indexOf('- name: Run gap audit');
-  const fast = wf.indexOf('- name: Fast-publish ingested reviews');
+  const fast = wf.indexOf('- name: Push ingested review-texts now (fast path)');
   const firstReport = wf.indexOf('- name: Stateless coverage-candidate report');
   assert.ok(ingest > 0 && fast > ingest && fast < firstReport,
     'fast-publish step must sit between "Run gap audit" and the slow reporting steps');
@@ -64,7 +67,9 @@ test('audit-aggregator-gap.yml publishes ingests right after the ingest step', (
   assert.match(block, /uses: \.\/\.github\/actions\/push-review-texts/);
   assert.match(block, /gap-ingest-fast-path\.js/);
   assert.match(block, /BEFORE_SHA: \$\{\{ steps\.rt_before\.outputs\.sha \}\}/);
-  const trigger = wf.slice(wf.indexOf('- name: Trigger rebuild if review-texts changed'));
-  assert.match(trigger.split('run:')[0], /steps\.fast_publish\.outputs\.all_handled != 'true'/,
-    'full rebuild must be skipped only when every new show was fast-dispatched');
+  assert.match(block, /GITHUB_TOKEN: \$\{\{ secrets\.GITHUB_TOKEN \}\}/, 'dispatchRescore needs GITHUB_TOKEN');
+  assert.match(block, /steps\.fast_push\.outputs\.pushed == 'true'/, 'dispatch only after the files are on the remote');
+  const trigger = wf.slice(wf.indexOf('- name: Trigger rebuild if review-texts changed')).split('run:')[0];
+  assert.doesNotMatch(trigger, /fast_publish|fast_push/,
+    'the full-rebuild trigger stays unconditional: stubs/back-catalogue still need it');
 });

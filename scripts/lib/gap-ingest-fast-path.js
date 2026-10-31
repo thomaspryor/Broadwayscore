@@ -11,8 +11,10 @@
  *
  * Fast path: right after the ingest step, push review-texts and dispatch the
  * per-show scoring lane (dispatchRescore: scoring + fast rebuild) for every
- * show that gained a NEW review file and is urgent (in or near its opening
- * night window). Non-urgent shows (back-catalogue) keep the old slow path.
+ * show that gained or changed a review file and is urgent (in or near its opening
+ * night window). It only ADDS speed: the end-of-job full rebuild trigger is
+ * unchanged, so a review with nothing to score (stub, relay) is still published
+ * by the slow path. Non-urgent shows (back-catalogue) rely on that path alone.
  */
 const { execFileSync } = require('child_process');
 
@@ -38,25 +40,27 @@ function newShowIdsFromPaths(paths) {
  * @param {string[]} p.showIds        shows that gained a review file
  * @param {Set<string>} p.urgentIds   urgentScoringShowIds() result
  * @param {(showId:string, opts:object)=>Promise<{ok:boolean,error?:string}>} p.dispatch
- * @returns {Promise<{dispatched:string[], notUrgent:string[], failed:string[], allHandled:boolean}>}
- *   allHandled: every new show was dispatched OK, so the slow full-rebuild
- *   trigger is redundant. False when any show was skipped or failed.
+ * @returns {Promise<{dispatched:string[], notUrgent:string[], failed:string[]}>}
  */
-async function fastPublish({ showIds, urgentIds, dispatch, reason = 'gap-ingest' }) {
+// Cap per run: the review-texts diff can include files other writers pushed
+// while the audit ran, and each dispatch is a full scoring-workflow run.
+const MAX_DISPATCH = 5;
+
+async function fastPublish({ showIds, urgentIds, dispatch, reason = 'gap-ingest', max = MAX_DISPATCH }) {
   const dispatched = [];
   const notUrgent = [];
   const failed = [];
   for (const id of showIds) {
-    if (!urgentIds.has(id)) { notUrgent.push(id); continue; }
+    if (!urgentIds.has(id) || dispatched.length + failed.length >= max) { notUrgent.push(id); continue; }
     let res;
     try { res = await dispatch(id, { reason }); } catch (e) { res = { ok: false, error: String(e && e.message || e) }; }
     (res && res.ok ? dispatched : failed).push(id);
   }
-  return { dispatched, notUrgent, failed, allHandled: showIds.length > 0 && notUrgent.length === 0 && failed.length === 0 };
+  return { dispatched, notUrgent, failed };
 }
 
 function listAddedPaths(repoDir, beforeSha) {
-  const out = execFileSync('git', ['-C', repoDir, 'diff', '--name-only', '--diff-filter=A', `${beforeSha}..HEAD`], { encoding: 'utf8' });
+  const out = execFileSync('git', ['-C', repoDir, 'diff', '--name-only', '--diff-filter=AM', `${beforeSha}..HEAD`], { encoding: 'utf8' });
   return out.split('\n').filter(Boolean);
 }
 
@@ -64,12 +68,10 @@ module.exports = { newShowIdsFromPaths, fastPublish, listAddedPaths };
 
 // CLI (audit-aggregator-gap.yml "Fast-publish ingested reviews"):
 //   BEFORE_SHA=<review-texts sha before ingest> node scripts/lib/gap-ingest-fast-path.js
-// Prints `all_handled=true|false` for $GITHUB_OUTPUT. Never throws: a failure
-// here must leave the old slow rebuild trigger in charge.
+// Never throws: the old slow rebuild trigger runs regardless.
 if (require.main === module) {
   require('./cli-help').exitOnHelp(module);
   (async () => {
-    let allHandled = false;
     try {
       const fs = require('fs');
       const path = require('path');
@@ -83,13 +85,9 @@ if (require.main === module) {
       const shows = Array.isArray(raw) ? raw : (raw.shows || []);
       const urgentIds = urgentScoringShowIds(shows, { evidence: loadReviewEvidence() });
       const r = await fastPublish({ showIds, urgentIds, dispatch: dispatchRescore });
-      allHandled = r.allHandled;
       console.log(`gap-ingest-fast-path: new shows=[${showIds}] dispatched=[${r.dispatched}] notUrgent=[${r.notUrgent}] failed=[${r.failed}]`);
     } catch (e) {
-      console.log(`::warning::gap-ingest-fast-path failed (${String(e.message).split('\n')[0]}); slow rebuild trigger stays in charge`);
+      console.log(`::warning::gap-ingest-fast-path failed (${String(e.message).split('\n')[0]}); slow rebuild trigger still runs`);
     }
-    if (process.env.GITHUB_OUTPUT) fs_append(process.env.GITHUB_OUTPUT, `all_handled=${allHandled}\n`);
   })();
 }
-
-function fs_append(file, text) { require('fs').appendFileSync(file, text); }
