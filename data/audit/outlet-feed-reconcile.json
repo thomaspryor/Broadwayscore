@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T09:56:57.243Z",
+  "generatedAt": "2026-10-31T10:20:33.551Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -112,7 +112,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -133,10 +133,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 777,
-  "matchedGaps": 10,
+  "itemsScanned": 746,
+  "matchedGaps": 9,
   "possibleGaps": 11,
   "gaps": [
     {
@@ -219,15 +223,6 @@
       "url": "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
       "headline": "Review: The Moth &#8211; Finborough Theatre, London",
       "publishDate": "2026-10-31"
-    },
-    {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
-      "headline": "The Revlon Girl",
-      "publishDate": "2026-10-30"
     },
     {
       "showId": "girls-off-west-end-2026",
