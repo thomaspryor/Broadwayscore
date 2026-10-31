@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6606",
   "planId": "76e5e214-6e88-4029-b3fd-40eef67b88bf",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T03:58:20.886Z",
   "submitter": {
     "name": null,
@@ -63,5 +63,44 @@
         "description": "BroadwayWorld Omaha review of a different (Nebraska) production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T04:40:13.270Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-boy-called-christmas-chichester-festival-regional-2025/letterboxd--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-little-mermaid-bristol-old-vic-regional-2025/letterboxd--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pig-heart-boy-crucible-regional-2025/timesbookshop--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pig-heart-boy-crucible-regional-2025/cineramafilm--neil-baker.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted jekyll-and-hyde-liverpool-everyman-regional-2026/theatre-weekly--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted being-mr-wickham-chichester-festival-regional-2026/theatre-news--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable-dundee-rep-regional-2025/broadwayworld--christine-swerczek.json"
+    }
+  ],
+  "executedIn": "ci"
 }
