@@ -295,7 +295,10 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       if (baseTitle.length >= 6 && !URL_PATH_STOPWORDS.has(baseTitle)
           && baseTitle !== idSlug
           && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
-          && hasSlugRun(urlPath, baseTitle)) {
+          && hasSlugRun(urlPath, baseTitle)
+          // A shortened title can be this show's own words ("Beautiful" in
+          // "A Beautiful Noise"), even when the full titles are unrelated.
+          && !baseTitle.split('-').every(t => thisShow.slug.split('-').includes(t))) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
     }

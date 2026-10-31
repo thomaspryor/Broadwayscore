@@ -42,6 +42,64 @@ test('does not flag prefix-related titles (Kinky Boots vs Kinky Boots the Musica
   assert.equal(check('kinky-boots-2013', 'https://example.com/reviews/kinky-boots-the-musical-review'), null);
 });
 
+// BRO-6599: subtitle stripping turns "Beautiful: The Carole King Musical"
+// into "beautiful", which also occurs in A Beautiful Noise's own review URLs.
+const BEAUTIFUL_INDEX = buildShowSlugIndex([
+  { id: 'a-beautiful-noise-the-neil-diamond-musical-2022', title: 'A Beautiful Noise, The Neil Diamond Musical' },
+  { id: 'beautiful-the-carole-king-musical-regional-2023', title: 'Beautiful: The Carole King Musical' },
+  { id: 'schmigadoon-2026', title: 'Schmigadoon!' },
+]);
+
+test('BRO-6599: real A Beautiful Noise reviews do not match the shortened Beautiful title', () => {
+  for (const url of [
+    'https://www.amny.com/entertainment/review-neil-diamond-a-beautiful-noise/',
+    'https://www.broadwaynews.com/2022/12/04/in-broadways-a-beautiful-noise-the-music-is-more-interesting-than-the-man/',
+    'https://www.broadwayworld.com/los-angeles/article/Review-A-BEAUTIFUL-NOISE-at-Hollywood-Pantages-Theater-20250709',
+  ]) {
+    assert.equal(detectCrossShowUrlMismatch('a-beautiful-noise-the-neil-diamond-musical-2022', url,
+      { index: BEAUTIFUL_INDEX }), null, url);
+  }
+});
+
+test('BRO-6599: a full Beautiful title still flags a genuine misfile under A Beautiful Noise', () => {
+  const hit = detectCrossShowUrlMismatch('a-beautiful-noise-the-neil-diamond-musical-2022',
+    'https://example.com/reviews/beautiful-the-carole-king-musical-review/', { index: BEAUTIFUL_INDEX });
+  assert.equal(hit?.matchedShowId, 'beautiful-the-carole-king-musical-regional-2023');
+});
+
+test('BRO-6599: a shortened title still flags an unrelated show', () => {
+  const hit = detectCrossShowUrlMismatch('schmigadoon-2026',
+    'https://example.com/reviews/beautiful-review/', { index: BEAUTIFUL_INDEX });
+  assert.equal(hit?.matchedShowId, 'beautiful-the-carole-king-musical-regional-2023');
+});
+
+test('BRO-6599: shortened-title subsets use whole words and require every word', () => {
+  const idx = buildShowSlugIndex([
+    { id: 'a-beautiful-noise-the-neil-diamond-musical-2022', title: 'A Beautiful Noise, The Neil Diamond Musical' },
+    { id: 'noise-beautiful-2023', title: 'Noise Beautiful: A Play' },
+    { id: 'beautiful-day-2023', title: 'Beautiful Day: A Play' },
+    { id: 'beautifully-2023', title: 'Beautifully: A Play' },
+  ]);
+  const checkNoise = url => detectCrossShowUrlMismatch('a-beautiful-noise-the-neil-diamond-musical-2022', url, { index: idx });
+  assert.equal(checkNoise('https://example.com/noise-beautiful-review/'), null);
+  assert.equal(checkNoise('https://example.com/beautiful-day-review/')?.matchedShowId, 'beautiful-day-2023');
+  assert.equal(checkNoise('https://example.com/beautifully-review/')?.matchedShowId, 'beautifully-2023');
+});
+
+test('BRO-6599: parenthetical subtitles and punctuation share the shortened-title guard', () => {
+  for (const [showId, title, otherId, otherTitle, url] of [
+    ['the-tragedy-of-macbeth-regional-2024', 'The Tragedy of Macbeth',
+      'macbeth-an-undoing-off-broadway-2024', 'Macbeth (An Undoing)',
+      'https://buzznews.net/theatre/theatre-reviews/item/5686-blood-and-brilliance-invictus-theatre-s-macbeth-stands-tall-in-chicago-theatre.html'],
+    ['topdog-underdog-regional-2024', 'Topdog/Underdog',
+      'underdog-the-other-other-bronte-west-end-2024', 'Underdog: The Other Other Bronte',
+      'https://aroundthetownchicago.com/theatre-reviews/top-dog-underdog-reviewed-by-frank-meccia/'],
+  ]) {
+    const idx = buildShowSlugIndex([{ id: showId, title }, { id: otherId, title: otherTitle }]);
+    assert.equal(detectCrossShowUrlMismatch(showId, url, { index: idx }), null, title);
+  }
+});
+
 test('does not flag on common URL-path stopwords', () => {
   // "/broadway/" appears in ~most review URLs; "broadway" is excluded from the index.
   assert.equal(check('schmigadoon-2026', 'https://www.nytimes.com/2026/04/20/theater/broadway/schmigadoon-review.html'), null);
