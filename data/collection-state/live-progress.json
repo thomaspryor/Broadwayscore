@@ -1,133 +1,76 @@
 {
-  "updatedAt": "2026-10-31T10:10:23.688Z",
-  "processed": 236,
-  "failed": 121,
-  "successRate": "66.1%",
+  "updatedAt": "2026-10-31T10:38:48.650Z",
+  "processed": 80,
+  "failed": 10,
+  "successRate": "88.9%",
   "tierBreakdown": {
-    "playwright": 104,
+    "playwright": 28,
     "amp": 0,
     "browserbase": 18,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 8,
-    "brightdata": 9,
-    "archiveToday": 22,
-    "archive": 82
+    "scrapingdog": 2,
+    "scrapingbee": 5,
+    "brightdata": 4,
+    "archiveToday": 7,
+    "archive": 35
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-10-31T08:38:34.837Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-31T08:42:15.230Z",
+      "t": "2026-10-31T10:14:03.764Z",
       "event": "bb-session",
-      "session": "0fe6170d",
-      "url": "https://www.talkinbroadway.com/page/ob/04_21_22.html"
+      "session": "26d098ec",
+      "url": "https://www.nytimes.com/2017/06/03/theater/building-the-wall-closing.html"
     },
     {
-      "t": "2026-10-31T08:42:15.937Z",
+      "t": "2026-10-31T10:14:04.269Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-31T08:57:48.188Z",
+      "t": "2026-10-31T10:14:48.258Z",
       "event": "bb-session",
-      "session": "02bef680",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+      "session": "9864c310",
+      "url": "https://www.nytimes.com/2017/05/15/theater/venus-review.html"
     },
     {
-      "t": "2026-10-31T08:57:48.883Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-10-31T08:58:49.147Z",
-      "event": "bb-session",
-      "session": "98229634",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-10-31T09:37:22.851Z",
-      "event": "bb-session",
-      "session": "b56663a6",
-      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
-    },
-    {
-      "t": "2026-10-31T09:37:23.550Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-31T09:44:03.768Z",
-      "event": "bb-session",
-      "session": "bf971130",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunday-in-the-park-george-cance"
-    },
-    {
-      "t": "2026-10-31T09:44:43.945Z",
-      "event": "bb-session",
-      "session": "fe7231ec",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
-    },
-    {
-      "t": "2026-10-31T09:45:25.480Z",
-      "event": "bb-session",
-      "session": "41a36af0",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-31T09:45:26.151Z",
+      "t": "2026-10-31T10:14:48.749Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T09:56:47.445Z",
+      "t": "2026-10-31T10:15:05.766Z",
       "event": "bb-session",
-      "session": "4a2ff41c",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+      "session": "bde59fad",
+      "url": "http://deadline.com/2017/05/venue-review-suzan-lori-parks-1202093828/"
     },
     {
-      "t": "2026-10-31T09:56:48.097Z",
+      "t": "2026-10-31T10:22:37.788Z",
+      "event": "bb-session",
+      "session": "b76c4562",
+      "url": "https://www.nytimes.com/2017/05/08/theater/review-could-a-long-gone-antarctic-ex"
+    },
+    {
+      "t": "2026-10-31T10:22:38.340Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T09:58:46.990Z",
+      "t": "2026-10-31T10:32:57.002Z",
       "event": "bb-session",
-      "session": "0204e814",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+      "session": "ad2fedea",
+      "url": "https://www.nytimes.com/2017/05/08/theater/review-he-can-cook-too-so-why-not-mar"
     },
     {
-      "t": "2026-10-31T09:58:56.236Z",
-      "event": "bb-session",
-      "session": "88f2cdcd",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-10-31T09:59:39.904Z",
-      "event": "bb-session",
-      "session": "5b77b247",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-10-31T09:59:48.906Z",
-      "event": "bb-session",
-      "session": "4b49dd88",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-10-31T10:05:29.879Z",
-      "event": "bb-session",
-      "session": "10a9e7b8",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-10-31T10:05:30.574Z",
+      "t": "2026-10-31T10:32:57.556Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T10:33:15.085Z",
+      "event": "bb-session",
+      "session": "5d6beb94",
+      "url": "http://www.hollywoodreporter.com/review/pacific-overtures-theater-1000003"
     }
   ]
 }
