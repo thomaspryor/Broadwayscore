@@ -653,20 +653,6 @@
     "queuedAt": "2026-10-29T16:06:20.972Z"
   },
   {
-    "conditionKey": "corpus-drift:contradicted-flag-basis",
-    "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
-    "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 3378 shows scanned, 2 match(es).\n  [wrongProduction] a-view-from-the-bridge-2015/njcom--christopher-kelly.json\n      basis cites 2015-07-01 but record is dated 2015-11-12, inside run 2015-10-21..2016-02-28\n  [wrongProduction] richard-iii-west-end-2014/timeout-london--andrzej-lukowski.json\n      basis cites 2019-11-22 but record is dated 2014-07-09, inside run 2014-07-01..2014-10-04\n\nFAIL: 2 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T16:49:09.425Z"
-  },
-  {
     "conditionKey": "land:land/bro-4303-visual",
     "title": "Landing blocked: rebase red on land/bro-4303-visual",
     "description": "land.yml did not land land/bro-4303-visual: the rebase gate went red at b8ed076521. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40892679867",
@@ -2586,20 +2572,6 @@
     "queuedAt": "2026-10-30T14:56:01.865Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-30.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-30T15:41:07.475Z"
-  },
-  {
     "conditionKey": "land:land/bro-6631-pull-quotes",
     "title": "Landing blocked: unit-tests-node red on land/bro-6631-pull-quotes",
     "description": "land.yml did not land land/bro-6631-pull-quotes: the unit-tests-node gate went red at 222a6efe48. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41075641332",
@@ -3627,6 +3599,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T23:44:40.319Z"
+  },
+  {
+    "conditionKey": "corpus-drift:contradicted-flag-basis",
+    "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+    "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 4041 shows scanned, 2 match(es).\n  [wrongProduction] a-view-from-the-bridge-2015/njcom--christopher-kelly.json\n      basis cites 2015-07-01 but record is dated 2015-11-12, inside run 2015-10-21..2016-02-28\n  [wrongProduction] richard-iii-west-end-2014/timeout-london--andrzej-lukowski.json\n      basis cites 2019-11-22 but record is dated 2014-07-09, inside run 2014-07-01..2014-10-04\n\nFAIL: 2 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T00:29:03.697Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +14 more). Checked 2026-10-31.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T00:29:03.759Z"
   },
   {
     "conditionKey": "land:land/bro-6676-systemic",
