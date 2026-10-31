@@ -62,10 +62,22 @@ if (require.main === module) {
 // seeded after the one-off plans, so a review-seeded date never stays after a review.
 function applyMoves(shows, reviews) {
   const { moves } = plan(shows, reviews);
+  const { newDuplicateFindings } = require('./lib/shows-duplicate-rule');
+  const before = shows.map((x) => ({ ...x }));
   for (const m of moves) {
+    m.prev = { openingDate: m.show.openingDate, openingDateSource: m.show.openingDateSource };
     m.show.openingDate = m.openingDate;
     m.show.openingDateSource = m.openingDateSource;
   }
-  return moves;
+  // A date move can bring two rows of one run inside the duplicate rule's window and the
+  // shows write guard would then refuse the whole save. Leave those shows alone; they stay
+  // visible in the strict check until a person decides which row to keep.
+  const bad = new Set();
+  for (const f of newDuplicateFindings(before, shows)) { bad.add(f.show.id); bad.add(f.existing.id); }
+  const kept = [];
+  for (const m of moves) {
+    if (bad.has(m.show.id)) { Object.assign(m.show, m.prev); m.skippedDuplicate = true; } else kept.push(m);
+  }
+  return kept;
 }
 module.exports = { plan, applyMoves };
