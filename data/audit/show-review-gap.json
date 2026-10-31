@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-31T08:36:58.086Z",
+  "generatedAt": "2026-10-31T08:58:08.970Z",
   "windowDays": 21,
-  "targets": 18,
-  "auditedThisRun": 14,
-  "carriedForward": 1087,
+  "targets": 11,
+  "auditedThisRun": 11,
+  "carriedForward": 1094,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 563,
-    "missingCurrentRun": 1099,
+    "withGap": 565,
+    "missingCurrentRun": 1103,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 798,
+    "totalFlaggedMisses": 800,
     "totalRecoverable": 36,
-    "totalRecovered": 46,
+    "totalRecovered": 42,
     "humanExcluded": 6,
-    "automatedExcluded": 593,
-    "automatedExcludedListed": 489,
+    "automatedExcluded": 595,
+    "automatedExcludedListed": 491,
     "priorProductionCitations": 5811
   },
   "results": [
@@ -25154,7 +25154,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thebroadwayblog.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thebroadwayblog.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch fa",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         },
         {
@@ -25166,19 +25166,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=somedayprods.com): Scrapingdog HTTP 404: {\"message\":\"DNS resolution failed for hostname \\\"somedayprods.com\\\". The domain could not be translated to an IP address - it may be misspelled, expired, not registered, or its DNS may not have propag\n⚠️  ScrapingBee failed (render_js=false, domain=somedayprods.com): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per reques\n⚠️  Playwright failed:",
-          "recoveryCount": 1,
-          "uncited": true
-        },
-        {
-          "url": "http://slleiter.blogspot.com/2017/06/27-2017-2018-review-attack-of-elvis.html",
-          "host": "slleiter.blogspot.com",
-          "file": "theatres-leiter-side--samuel-l-leiter.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -25252,7 +25240,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-31T08:36:58.086Z"
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -49988,19 +49976,14 @@
       "openingDate": "2017-09-18",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-critics-think-of-charm-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
-        "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
-        "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
-        "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
-        "http://www.timeout.com/newyork/theater/charm",
-        "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
         "https://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
         "https://www.timeout.com/newyork/theater/charm",
+        "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
         "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
+        "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
+        "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
         "http://www.theatermania.com/off-broadway/reviews/charm_82456.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TR4NKL",
         "http://www.theaterscene.net/plays/offbway-plays/charm/victor-gluck/",
@@ -50013,9 +49996,12 @@
         "http://www.thewrap.com/charm-theater-review-emily-post-transgender-miss-gloria-allen/",
         "http://www.towleroad.com/2017/09/broadway-charm/",
         "http://broadwayandme.blogspot.com/2017/09/charm-celebrates-gender-fluidity.html",
+        "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
         "http://www.newnownext.com/michael-musto-lisa-lampanelli/09/2017",
         "http://www.newsday.com/entertainment/theater/mcc-theater-s-charm-has-plenty-of-it-1.14251439",
-        "https://gotham-playgoer.blogspot.com/2017/09/charm.html"
+        "https://gotham-playgoer.blogspot.com/2017/09/charm.html",
+        "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
+        "http://www.timeout.com/newyork/theater/charm"
       ],
       "dirFiles": 22,
       "dirClean": 22,
@@ -50030,85 +50016,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 111,
-        "byReason": {
-          "aggregator-internal-nav": 69,
-          "not-http-url": 6,
-          "production-database-listing": 10,
-          "aggregator-section-root": 4,
-          "non-review-host": 22
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
-          "host": "thedailybeast.com",
-          "file": "dailybeast--tim-teeman.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
-          "url": "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
-          "host": "deadline.com",
-          "file": "deadline--jeremy-gerard.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
-            "outletId": "nydailynews.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/charm",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
           {
             "url": "https://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
             "outletId": "nytimes.com",
@@ -50122,8 +50040,26 @@
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
           },
           {
+            "url": "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
             "url": "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
             "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
+            "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
           },
@@ -50200,6 +50136,12 @@
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
           },
           {
+            "url": "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
             "url": "http://www.newnownext.com/michael-musto-lisa-lampanelli/09/2017",
             "outletId": "newnownext.com",
             "state": "live",
@@ -50216,13 +50158,25 @@
             "outletId": "gotham-playgoer.blogspot.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/charm",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 22,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-31T08:36:58.086Z"
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -81661,7 +81615,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -81673,7 +81627,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -81685,7 +81639,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -81697,7 +81651,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nArticle extraction retur",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -81813,7 +81767,7 @@
         "liveCount": 17,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-31T08:36:58.086Z"
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -124797,13 +124751,20 @@
       "openingDate": "2017-10-23",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-jesus-hopped-the-a-train",
+        "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Adly-Guirgis-JESUS-HOPPED-THE-A-TRAIN-20171024"
+      ],
       "aggregatorListedUrls": [
+        "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+        "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+        "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
+        "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
         "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
         "https://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
         "http://deadline.com/2017/11/stage-review-school-girls-actually-jesus-hopped-the-a-train-1202215847/",
-        "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
-        "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
         "http://www.theatermania.com/off-broadway/reviews/jesus-hopped-the-a-train_82856.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=3EXELW",
         "http://www.theaterscene.net/plays/offbway-plays/jesus-hopped-train/joel-benjamin/",
@@ -124818,16 +124779,12 @@
         "https://slleiter.blogspot.com/2017/10/93-2017-2018-review-jesus-hopped-a.html",
         "https://dctheatrescene.com/2017/10/23/jesus-hopped-train-review-killers-finding-god/",
         "http://t2conline.com/jesus-hopped-the-a-train-must-see-theatre/",
-        "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
         "https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240",
         "http://twi-ny.com/blog/2017/10/24/jesus-hopped-the-a-train/",
         "http://showshowdown.blogspot.com/2017/10/jesus-hopped-a-train.html",
         "http://morethantheplay.blogspot.com/2017/10/jesus-hopped-a-train.html",
         "http://www.themodernistbeat.com/2017/11/20/what-happens-to-the-message-if-the-messenger-is-flawed/",
-        "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html",
-        "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
-        "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
-        "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/"
+        "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html"
       ],
       "dirFiles": 27,
       "dirClean": 27,
@@ -124847,9 +124804,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 415,
         "byReason": {
-          "aggregator-internal-nav": 1
+          "aggregator-internal-nav": 296,
+          "not-http-url": 65,
+          "production-database-listing": 10,
+          "aggregator-section-root": 8,
+          "non-review-host": 36
         }
       },
       "dedupedVariants": [],
@@ -124865,7 +124826,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -124877,7 +124838,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -124886,6 +124847,36 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
           {
             "url": "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
             "outletId": "nytimes.com",
@@ -124899,20 +124890,14 @@
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
           {
+            "url": "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
             "url": "http://deadline.com/2017/11/stage-review-school-girls-actually-jesus-hopped-the-a-train-1202215847/",
             "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
-            "outletId": "hollywoodreporter.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
@@ -125001,12 +124986,6 @@
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
           {
-            "url": "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
             "url": "https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240",
             "outletId": "huffingtonpost.com",
             "state": "live",
@@ -125041,31 +125020,13 @@
             "outletId": "gotham-playgoer.blogspot.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 26,
         "candidateCount": 26
       },
-      "computedAt": "2026-10-31T08:36:58.086Z"
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "job-2024",
@@ -153243,18 +153204,6 @@
       "unextractable": [],
       "recoveryResults": [
         {
-          "url": "https://stagebuddy.com/dance/dance-review/review-mary-shelleys-frankenstein",
-          "host": "stagebuddy.com",
-          "file": "stagebuddy--tami-shaloum.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
           "url": "http://www.theatermania.com/off-broadway/reviews/mary-shelley-frankenstein_83590.html",
           "host": "theatermania.com",
           "file": "theatermania--kenji-fujishima.json",
@@ -153263,7 +153212,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         },
         {
@@ -153274,8 +153223,8 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nArticle extraction retur",
-          "recoveryCount": 1,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"",
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -153301,7 +153250,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-31T08:36:58.086Z"
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -165377,6 +165326,132 @@
         "candidateCount": 29
       },
       "computedAt": "2026-10-26T05:26:34.334Z"
+    },
+    {
+      "showId": "mlimas-tale-off-broadway-2018",
+      "title": "Mlima’s Tale",
+      "openingDate": "2018-04-15",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.amny.com/entertainment/lynn-nottage-review-mlima-s-tale-1.18057963",
+          "host": "amny.com",
+          "file": "amny--matt-windman.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/mlimas-tale-theater-review-1102826",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/mlima-tale-review-lynn-nottage-drama-opens-public-article-1.3932011",
+          "host": "nydailynews.com",
+          "file": "nydailynews--joe-dziemianowicz.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-31T08:58:08.970Z"
+    },
+    {
+      "showId": "money-talks-off-broadway-2017",
+      "title": "Money Talks",
+      "openingDate": "2017-07-23",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.theasy.com/Reviews/2017/M/moneytalks.php",
+          "host": "theasy.com",
+          "file": "theatre-is-easy--angelina-joyce-dibart.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
@@ -189358,7 +189433,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -189552,7 +189627,7 @@
         "liveCount": 25,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-31T08:36:58.086Z"
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "paranormal-activity-2026",
@@ -228694,6 +228769,190 @@
       "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
+      "showId": "sweetee-off-broadway-2017",
+      "title": "Sweetee",
+      "openingDate": "2017-06-01",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.theatermania.com/off-broadway/reviews/sweetee_81287.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=YVGK9F",
+        "http://www.talkinbroadway.com/page/ob/6_01_17a.html",
+        "http://www.theaterscene.net/musicals/offbway/sweetee/victor-gluck/",
+        "http://www.curtainup.com/sweetee17.html",
+        "http://www.theasy.com/Reviews/2017/S/sweetee.php",
+        "http://theaterpizzazz.com/sweetee/",
+        "https://stagebuddy.com/theater/theater-review/review-sweetee",
+        "http://thebroadwayblog.com/2017/06/02/16608-sweetee-review",
+        "http://www.huffingtonpost.com/entry/jordan-tyson-is-a-winning-musical-sweetee_us_5930ca55e4b0649fff2117b4",
+        "http://t2conline.com/opening-night-of-sweetee-not-so-sweet/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "http://musicaltheatrereview.com/sweetee-ford-foundation-studio-theatre-at-the-pershing-square-signature-center-new-york/",
+        "https://saysmesaysmom.blogspot.com/2017/06/"
+      ],
+      "dirFiles": 14,
+      "dirClean": 13,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-sweetee",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "stagebuddy--erin-kahn.json",
+              "flag": "nonReview",
+              "urlInDir": "https://stagebuddy.com/theater/theater-review/review-sweetee"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "http://thebroadwayblog.com/2017/06/02/16608-sweetee-review",
+          "host": "thebroadwayblog.com",
+          "file": "broadway-blog--samuel-l-leiter.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thebroadwayblog.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thebroadwayblog.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch fa",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagebuddy.com/theater/theater-review/review-sweetee"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/sweetee_81287.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=YVGK9F",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/6_01_17a.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/offbway/sweetee/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.curtainup.com/sweetee17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/S/sweetee.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/sweetee/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/2017/06/02/16608-sweetee-review",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/jordan-tyson-is-a-winning-musical-sweetee_us_5930ca55e4b0649fff2117b4",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://t2conline.com/opening-night-of-sweetee-not-so-sweet/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://musicaltheatrereview.com/sweetee-ford-foundation-studio-theatre-at-the-pershing-square-signature-center-new-york/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "https://saysmesaysmom.blogspot.com/2017/06/",
+            "outletId": "saysmesaysmom.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/review-sweetee",
+            "outletId": "stagebuddy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 13,
+        "candidateCount": 14
+      },
+      "computedAt": "2026-10-31T08:58:08.970Z"
+    },
+    {
       "showId": "swept-away-2024",
       "title": "Swept Away",
       "openingDate": "2024-11-19",
@@ -233297,6 +233556,308 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-14T01:02:05.257Z"
+    },
+    {
+      "showId": "the-artificial-jungle-off-broadway-2017",
+      "title": "The Artificial Jungle",
+      "openingDate": "2017-06-08",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/06/12/theater/review-the-artificial-jungle.html",
+        "https://www.timeout.com/newyork/theater/the-artificial-jungle",
+        "http://www.theatermania.com/off-broadway/reviews/the-artificial-jungle_81390.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=LPO6Z6",
+        "http://www.theaterscene.net/plays/offbway-plays/the-artificial-jungle/david-kaufman/",
+        "http://www.theasy.com/Reviews/2017/A/theartificialjungle.php",
+        "http://thefrontrowcenter.com/2017/06/the-artificial-jungle/",
+        "http://upstage-downstage.blogspot.com/2017/06/the-artificial-jungle-mind-piranhas.html",
+        "http://www.theaterinthenow.com/2017/06/review-welcome-to-pet-shop.html",
+        "http://www.huffingtonpost.com/entry/59386552e4b0b65670e5672f",
+        "http://reviewsoffbroadway.blogspot.com/2017/06/farce-explodes-across-asphalt-jungle.html",
+        "https://dramaqueennyc.com/2017/06/09/review-the-artificial-jungle/",
+        "http://www.huffingtonpost.com/entry/ludams-ridiculous-the-artificial-jungle-at-the-clurman_us_5946bfb9e4b024b7e0df4d2a",
+        "http://www.thereviewshub.com/the-artificial-jungle-theatre-row-new-york/"
+      ],
+      "dirFiles": 9,
+      "dirClean": 8,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LPO6Z6",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/A/theartificialjungle.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy"
+        },
+        {
+          "url": "http://www.theaterinthenow.com/2017/06/review-welcome-to-pet-shop.html",
+          "host": "theaterinthenow.com",
+          "knownOutletId": "theater-in-the-now"
+        },
+        {
+          "url": "http://reviewsoffbroadway.blogspot.com/2017/06/farce-explodes-across-asphalt-jungle.html",
+          "host": "reviewsoffbroadway.blogspot.com",
+          "knownOutletId": "reviews-off-broadway"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.thereviewshub.com/the-artificial-jungle-theatre-row-new-york/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thereviewshub--adrienne-sowers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.thereviewshub.com/the-artificial-jungle-theatre-row-new-york/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "site-search-page": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LPO6Z6",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/A/theartificialjungle.php",
+          "host": "theasy.com",
+          "outletId": "theatre-is-easy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "http://www.theaterinthenow.com/2017/06/review-welcome-to-pet-shop.html",
+          "host": "theaterinthenow.com",
+          "outletId": "theater-in-the-now",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://reviewsoffbroadway.blogspot.com/2017/06/farce-explodes-across-asphalt-jungle.html",
+          "host": "reviewsoffbroadway.blogspot.com",
+          "outletId": "reviews-off-broadway",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://dramaqueennyc.com/2017/06/09/review-the-artificial-jungle/",
+          "host": "dramaqueennyc.com",
+          "file": "drama-queen-nyc--jonathan-warman.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=dramaqueennyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LPO6Z6"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2017/A/theartificialjungle.php"
+          },
+          {
+            "outletId": "theater-in-the-now",
+            "outlet": "theater-in-the-now",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterinthenow.com/2017/06/review-welcome-to-pet-shop.html"
+          },
+          {
+            "outletId": "reviews-off-broadway",
+            "outlet": "reviews-off-broadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://reviewsoffbroadway.blogspot.com/2017/06/farce-explodes-across-asphalt-jungle.html"
+          },
+          {
+            "outletId": "thereviewshub",
+            "outlet": "thereviewshub",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thereviewshub.com/the-artificial-jungle-theatre-row-new-york/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/06/12/theater/review-the-artificial-jungle.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-artificial-jungle",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/the-artificial-jungle_81390.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/the-artificial-jungle/david-kaufman/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/06/the-artificial-jungle/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://upstage-downstage.blogspot.com/2017/06/the-artificial-jungle-mind-piranhas.html",
+            "outletId": "upstage-downstage.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/59386552e4b0b65670e5672f",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "https://dramaqueennyc.com/2017/06/09/review-the-artificial-jungle/",
+            "outletId": "dramaqueennyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/ludams-ridiculous-the-artificial-jungle-at-the-clurman_us_5946bfb9e4b024b7e0df4d2a",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LPO6Z6",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/A/theartificialjungle.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.theaterinthenow.com/2017/06/review-welcome-to-pet-shop.html",
+            "outletId": "theater-in-the-now",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://reviewsoffbroadway.blogspot.com/2017/06/farce-explodes-across-asphalt-jungle.html",
+            "outletId": "reviews-off-broadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          },
+          {
+            "url": "http://www.thereviewshub.com/the-artificial-jungle-theatre-row-new-york/",
+            "outletId": "thereviewshub",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:58:08.970Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 8,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "the-ask-off-broadway-2026",
@@ -278838,7 +279399,7 @@
         "liveCount": 30,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-31T08:36:58.086Z"
+      "computedAt": "2026-10-31T08:58:08.970Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
