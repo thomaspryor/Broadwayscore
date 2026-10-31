@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T19:13:40.568Z",
+  "timestamp": "2026-10-31T19:32:22.533Z",
   "stats": {
-    "totalReviews": 75810,
-    "alreadyFlagged": 21752,
+    "totalReviews": 75911,
+    "alreadyFlagged": 21756,
     "dateGuardCatches": 238,
-    "directorMismatch": 3212,
-    "tvFilmSignals": 2165,
-    "londonSignals": 3511,
-    "offBroadwaySignals": 717,
+    "directorMismatch": 3218,
+    "tvFilmSignals": 2167,
+    "londonSignals": 3510,
+    "offBroadwaySignals": 718,
     "yearMismatch": 320,
-    "noPublishDate": 8559
+    "noPublishDate": 8577
   },
   "findings": [
     {
@@ -4064,6 +4064,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "amelie-regional-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 78,
+      "publishDate": "2025-08-05",
+      "url": "https://www.chicagotribune.com/2025/08/05/review-amelie-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -22094,25 +22108,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "four-quartets-royal-bath-regional-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/four-quartets-theatre-royal-bath-review-ralph-fiennes-gives-compelling-performance",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -46838,6 +46833,19 @@
       ]
     },
     {
+      "showId": "pass-over-regional-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2025-07-29",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/pass-over-fleetwood-jourdain-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from pass-over-2021"
+        }
+      ]
+    },
+    {
       "showId": "passion-play-west-end-2013",
       "file": "guardian--sheldon-green.json",
       "score": 62,
@@ -46848,6 +46856,71 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "passion-regional-2025",
+      "file": "around-the-town-chicago--unknown.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/passion-reviewed-by-mark-reinecke/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from passion-1994"
+        }
+      ]
+    },
+    {
+      "showId": "passion-regional-2025",
+      "file": "broadwayworld--zac-thriffiley.json",
+      "publishDate": "2025-07-22",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-PASSION-at-Blank-Theatre-Company-20250722",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from passion-1994"
+        }
+      ]
+    },
+    {
+      "showId": "passion-regional-2025",
+      "file": "buzznews--john-accrocco.json",
+      "publishDate": "2025-07-17",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5940-review-blank-theatre-s-passion-at-greenhouse-theater-center.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from passion-1994"
+        }
+      ]
+    },
+    {
+      "showId": "passion-regional-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2025-07-22",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/passion-blank-theatre-company/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from passion-1994"
+        }
+      ]
+    },
+    {
+      "showId": "passion-regional-2025",
+      "file": "chicago-theatre-review--kevin-curran.json",
+      "publishDate": "2025-07-17",
+      "url": "https://www.chicagotheatrereview.com/2025/07/passion/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from passion-1994"
         }
       ]
     },
@@ -50231,6 +50304,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "queen-for-a-day-regional-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2025-07-16",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/queen-for-a-day-hell-in-a-handbag/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -77230,6 +77316,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "white-rabbit-red-rabbit-regional-2025",
+      "file": "buzznews--bree-samani.json",
+      "publishDate": "2025-07-10",
+      "url": "https://www.buzznews.net/theatre/theatre-reviews/item/5934-review-in-white-rabbit-red-rabbit-the-audience-becomes-the-play.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -128332,6 +128431,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "tick-tick-boom-off-broadway-2016",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-19KBS1",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
