@@ -84,6 +84,7 @@ const JUNK_CRITIC_NAME_PATTERNS = [
   CMS_ADMIN_HANDLE_RE,                      // "Sam - Admin", "LALadmin", "OperaWireAdmin2"
   /^[a-z]+\d+$/,                            // account handles: "nick730", "helena6"
   /^guest author$/i,
+  /^(submitted|written|posted|reviewed|published)\s+by:?$/i, // byline label with no name after it (BRO-6518: Chicago On the Aisle, Chi-MT)
   /^(national theatre|york magazine|london theatre direct)$/i,
   /\s[Tt]heat(re|er)(\s+[A-Z]{2})?$/,       // venue names: "Morris Theatre DC", "J. Friedman Theatre"
   /\s(and|on|sitting)$/,                    // cut mid-phrase: "Shanxi Radio and", "Deirdre Donovan on"

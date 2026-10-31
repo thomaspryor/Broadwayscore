@@ -27,7 +27,7 @@ const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
-const { parseIngestLine } = require('./lib/ingest-url-line');
+const { parseIngestLine, chooseIngestByline } = require('./lib/ingest-url-line');
 const { isPlausiblePersonName } = require('./lib/byline-recovery');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
@@ -260,19 +260,19 @@ async function main() {
     // in only where the page gave none: TIC has its own typos ("Carey Sullivan"), and
     // the two site-wide-author hosts now return no page byline. Joint or implausible
     // names stay out.
-    const usableListed = listedCritic && !/\s(and|&)\s|\//i.test(listedCritic) && isPlausiblePersonName(listedCritic) ? listedCritic : null;
+    const byline = chooseIngestByline(criticName, listedCritic, isPlausiblePersonName);
 
     // Create/merge review file
     const input = {
       outletId,
       outlet: outletName,
-      criticName: criticName || usableListed || 'Unknown', // collect-review-texts fills it in later when neither gave one
+      // Page byline, else the listed critic, else Unknown (collect-review-texts fills it in later).
+      criticName: byline.criticName,
       // Read off this URL's own HTML, so the writer may fill an existing
       // Unknown file at the same URL with it (BRO-4485).
-      bylineFromOwnPage: !!criticName,
-      // Named for this exact URL by the listing the caller read it from, used only
-      // when the page gave no byline (BRO-6518).
-      bylineFromListing: !criticName && !!usableListed,
+      bylineFromOwnPage: byline.bylineFromOwnPage,
+      // Named for this exact URL by the listing the caller read it from (BRO-6518).
+      bylineFromListing: byline.bylineFromListing,
       url,
       source: 'ingest-urls',
       fields: {},
@@ -292,7 +292,7 @@ async function main() {
     // ingest-manual-review.js / ingest-review-from-url.js).
     let preExisting = null;
     if (!dryRun) {
-      try { preExisting = findExistingReviewFile(path.join(reviewTextsDir, showId), outletId, criticName || usableListed || 'Unknown', originalUrl || url); } catch { preExisting = null; }
+      try { preExisting = findExistingReviewFile(path.join(reviewTextsDir, showId), outletId, byline.criticName, originalUrl || url); } catch { preExisting = null; }
     }
     const writeResult = createOrMergeReviewFile(showId, input, {
       dryRun, reviewTextsDir, knownShowIds: showsData.shows.map((s) => s.id),

@@ -10,7 +10,7 @@
  * are left alone. A review matches a TIC row only on the same site.
  */
 
-const JOINT_RE = /\s(and|&)\s|\//i;
+const { JOINT_BYLINE_RE: JOINT_RE } = require('./ingest-url-line');
 const GENERIC_SEGMENTS = new Set(['review', 'reviews', 'theatre-review', 'theater-review', 'index', 'amp']);
 
 function hostOf(url) {
