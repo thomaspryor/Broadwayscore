@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
+import { audienceSortScore } from '@/lib/audience-grade-utils';
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
@@ -38,6 +39,7 @@ export interface OffWestEndShow {
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
+  audienceSmallSample?: boolean;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   /** Comma-joined creative team names (search only); the full team is not shipped to market list pages (BRO-5991). */
   creativeTeamNames?: string;
@@ -357,8 +359,8 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
       switch (sort) {
         case 'score_desc': {
           if (scoreMode === 'audience') {
-            const aAud = (a.status === 'previews') ? -1 : (a.audienceCombinedScore ?? -1);
-            const bAud = (b.status === 'previews') ? -1 : (b.audienceCombinedScore ?? -1);
+            const aAud = (a.status === 'previews') ? -1 : (audienceSortScore(a) ?? -1);
+            const bAud = (b.status === 'previews') ? -1 : (audienceSortScore(b) ?? -1);
             return bAud - aAud;
           }
           const aHasEnough = oweHasEnoughReviews(a);
@@ -369,8 +371,8 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
         }
         case 'score_asc': {
           if (scoreMode === 'audience') {
-            const aAud = (a.status === 'previews') ? Infinity : (a.audienceCombinedScore ?? Infinity);
-            const bAud = (b.status === 'previews') ? Infinity : (b.audienceCombinedScore ?? Infinity);
+            const aAud = (a.status === 'previews') ? Infinity : (audienceSortScore(a) ?? Infinity);
+            const bAud = (b.status === 'previews') ? Infinity : (audienceSortScore(b) ?? Infinity);
             return aAud - bAud;
           }
           const aHasEnough = oweHasEnoughReviews(a);
@@ -380,13 +382,13 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
           return aScore - bScore;
         }
         case 'audience_buzz': {
-          const aScore = (a.status === 'previews') ? -1 : (a.audienceCombinedScore ?? -1);
-          const bScore = (b.status === 'previews') ? -1 : (b.audienceCombinedScore ?? -1);
+          const aScore = (a.status === 'previews') ? -1 : (audienceSortScore(a) ?? -1);
+          const bScore = (b.status === 'previews') ? -1 : (audienceSortScore(b) ?? -1);
           return bScore - aScore;
         }
         case 'audience_asc': {
-          const aScore = (a.status === 'previews') ? Infinity : (a.audienceCombinedScore ?? Infinity);
-          const bScore = (b.status === 'previews') ? Infinity : (b.audienceCombinedScore ?? Infinity);
+          const aScore = (a.status === 'previews') ? Infinity : (audienceSortScore(a) ?? Infinity);
+          const bScore = (b.status === 'previews') ? Infinity : (audienceSortScore(b) ?? Infinity);
           return aScore - bScore;
         }
         case 'alpha':

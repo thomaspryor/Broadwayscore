@@ -1,4 +1,4 @@
-import { getAudienceBuzz, hasEnoughAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, hasEnoughAudienceReviews, hasFullConfidenceAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
 import type { ShowCardShow } from '@/components/show-cards/types';
 import { getTourNowNextForShow, getTourTicketLinks } from '@/lib/data-tour-schedule';
 
@@ -76,6 +76,7 @@ export function serializeShowForClient(
     audienceCombinedScore: overrides?.audienceCombinedScore !== undefined
       ? overrides.audienceCombinedScore
       : (hasAudience ? buzz!.combinedScore : null),
+    audienceSmallSample: hasAudience && !hasFullConfidenceAudienceReviews(buzz!) ? true : undefined,
     audienceGrade: overrides?.audienceGrade !== undefined
       ? overrides.audienceGrade
       : (hasAudience ? getAudienceGrade(buzz!.combinedScore) : null),

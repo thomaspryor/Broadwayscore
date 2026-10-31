@@ -30,6 +30,8 @@ export interface ShowCardShow {
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
+  /** Graded on fewer reviews than the full-confidence bar: excluded from audience sort order. */
+  audienceSmallSample?: boolean;
   audienceGrade: AudienceGrade | null;
   category?: string; // undefined for legacy Broadway shows — defaults to 'broadway'
   genre?: string; // dance/magic/comedy/cabaret/concert/circus — drives GenrePill + OWE routing (see src/lib/genre.ts)

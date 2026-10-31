@@ -15,6 +15,7 @@ import path from 'node:path';
 import {
   hasEnoughAudienceReviews,
   hasFullConfidenceAudienceReviews,
+  audienceSortScore,
   MIN_AUDIENCE_REVIEWS,
   FULL_CONFIDENCE_AUDIENCE_REVIEWS,
 } from '../../src/lib/audience-grade-utils';
@@ -39,6 +40,23 @@ describe('audience review bars', () => {
   test('sources split across platforms are summed, null sources ignored', () => {
     const b = { combinedScore: 80, sources: { mezzanine: { score: 80, reviewCount: 8 }, showScore: { score: 80, reviewCount: 7 }, reddit: null } } as unknown as AudienceBuzzData;
     assert.strictEqual(hasFullConfidenceAudienceReviews(b), true);
+  });
+});
+
+describe('audience sort key', () => {
+  test('small-sample shows get no sort key, full-confidence shows keep their score', () => {
+    assert.strictEqual(audienceSortScore({ audienceCombinedScore: 95, audienceSmallSample: true }), null);
+    assert.strictEqual(audienceSortScore({ audienceCombinedScore: 95, audienceSmallSample: false }), 95);
+    assert.strictEqual(audienceSortScore({ audienceCombinedScore: 80 }), 80);
+    assert.strictEqual(audienceSortScore({ audienceCombinedScore: null }), null);
+  });
+  test('sorting a 13-review 95 against a 931-review 90 puts the big sample first', () => {
+    const shows = [
+      { id: 'small', audienceCombinedScore: 95, audienceSmallSample: true },
+      { id: 'big', audienceCombinedScore: 90 },
+    ];
+    const sorted = [...shows].sort((a, b) => (audienceSortScore(b) ?? -1) - (audienceSortScore(a) ?? -1));
+    assert.deepStrictEqual(sorted.map((s) => s.id), ['big', 'small']);
   });
 });
 

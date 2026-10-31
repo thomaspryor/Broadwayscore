@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense, lazy } from 'react';
+import { audienceSortScore } from '@/lib/audience-grade-utils';
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -52,6 +53,7 @@ export interface HomepageShow {
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   // Pre-computed server-side (avoids importing data-audience.ts on client)
   audienceCombinedScore: number | null;
+  audienceSmallSample?: boolean;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   category?: string;
   subtitle?: string;
@@ -597,8 +599,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
         switch (sort) {
           case 'score_desc': {
             if (scoreMode === 'audience') {
-              const aAud = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.audienceCombinedScore ?? -1);
-              const bAud = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.audienceCombinedScore ?? -1);
+              const aAud = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (audienceSortScore(a) ?? -1);
+              const bAud = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (audienceSortScore(b) ?? -1);
               return bAud - aAud;
             }
             const aDesc = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.criticScore?.score ?? -1);
@@ -607,8 +609,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
           }
           case 'score_asc': {
             if (scoreMode === 'audience') {
-              const aAud = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (a.audienceCombinedScore ?? Infinity);
-              const bAud = (b.status === 'previews' || b.status === 'upcoming') ? Infinity : (b.audienceCombinedScore ?? Infinity);
+              const aAud = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (audienceSortScore(a) ?? Infinity);
+              const bAud = (b.status === 'previews' || b.status === 'upcoming') ? Infinity : (audienceSortScore(b) ?? Infinity);
               return aAud - bAud;
             }
             const aAsc = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (a.criticScore?.score ?? Infinity);
@@ -618,13 +620,13 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
           case 'audience_buzz': {
             // Sort by audience buzz combined score (highest first)
             // NOTE: Numeric scores are used ONLY for sorting, never displayed to users
-            const aScore = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (a.audienceCombinedScore ?? -1);
-            const bScore = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.audienceCombinedScore ?? -1);
+            const aScore = (a.status === 'previews' || a.status === 'upcoming') ? -1 : (audienceSortScore(a) ?? -1);
+            const bScore = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (audienceSortScore(b) ?? -1);
             return bScore - aScore;
           }
           case 'audience_asc': {
-            const aScore = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (a.audienceCombinedScore ?? Infinity);
-            const bScore = (b.status === 'previews' || b.status === 'upcoming') ? Infinity : (b.audienceCombinedScore ?? Infinity);
+            const aScore = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (audienceSortScore(a) ?? Infinity);
+            const bScore = (b.status === 'previews' || b.status === 'upcoming') ? Infinity : (audienceSortScore(b) ?? Infinity);
             return aScore - bScore;
           }
           case 'alpha':

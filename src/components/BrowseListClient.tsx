@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect, startTransition, type ReactNode } from 'react';
+import { audienceSortScore } from '@/lib/audience-grade-utils';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -25,6 +26,7 @@ export interface BrowseShow {
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
+  audienceSmallSample?: boolean;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   performances?: number;
   reviewYearNote?: string;
@@ -193,12 +195,12 @@ export default function BrowseListClient({
       switch (sort) {
         case 'score':
           if (scoreMode === 'audience') {
-            return compareScore(a.audienceCombinedScore, b.audienceCombinedScore, false);
+            return compareScore(audienceSortScore(a), audienceSortScore(b), false);
           }
           return compareScore(getEffectiveScore(a), getEffectiveScore(b), false);
         case 'score_asc':
           if (scoreMode === 'audience') {
-            return compareScore(a.audienceCombinedScore, b.audienceCombinedScore, true);
+            return compareScore(audienceSortScore(a), audienceSortScore(b), true);
           }
           return compareScore(getEffectiveScore(a), getEffectiveScore(b), true);
         case 'alpha':

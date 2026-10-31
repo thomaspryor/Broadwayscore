@@ -47,6 +47,15 @@ export function hasFullConfidenceAudienceReviews(buzz: AudienceBuzzData): boolea
 }
 
 /**
+ * Sort key for "sort by audience" lists. Shows graded on a small sample
+ * (below the full-confidence bar) still display their grade but get no sort
+ * key, so they land at the bottom instead of topping a list.
+ */
+export function audienceSortScore(show: { audienceCombinedScore: number | null; audienceSmallSample?: boolean }): number | null {
+  return show.audienceSmallSample ? null : show.audienceCombinedScore;
+}
+
+/**
  * Compute audience letter grade from combinedScore.
  * Grade scale shifted down 2 points from standard academic.
  * Colors use solid fills matching the critic score badge style.

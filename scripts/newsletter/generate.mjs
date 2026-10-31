@@ -25,6 +25,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // Bridge to the canonical CJS email-templates lib. Imports use repo-relative
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
+const AUDIENCE_GRADE_CONFIG = cjsRequire('../../src/config/audience-grade.json');
 const { grossesWeekLabel } = cjsRequire('../lib/grosses-week-label.js');
 // Shared show-format labels (mirror of src/lib/show-format.ts) so newsletter
 // pills agree with the site and the digest emails — `special` is EVENT, not
@@ -370,7 +371,7 @@ function audienceChip(showId) {
   const buzz = audienceBuzz[showId];
   if (!buzz || buzz.combinedScore == null) return '';
   const totalReviews = Object.values(buzz.sources || {}).reduce((a, s) => a + (s?.reviewCount ?? 0), 0);
-  if (totalReviews < 15) return '';
+  if (totalReviews < AUDIENCE_GRADE_CONFIG.minReviews) return ''; // shared with the site: src/config/audience-grade.json
   const g = getAudienceGrade(buzz.combinedScore);
   // 12% alpha bg + solid text color, 10px leading-none
   const bg = g.color + '20';

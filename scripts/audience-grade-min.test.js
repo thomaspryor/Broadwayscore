@@ -23,12 +23,18 @@ const consumers = [
   'scripts/lib/generate-market-archive.js',
   'scripts/generate-fantasy-config.js',
   'scripts/lib/reddit-opening-post.js',
+  'scripts/newsletter/generate.mjs',
 ];
 for (const f of consumers) {
   const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
   assert.ok(/audience-grade\.json/.test(src), `${f} must read src/config/audience-grade.json`);
   assert.ok(!/MIN_AUDIENCE_REVIEWS\s*(:\s*number\s*)?=\s*\d+/.test(src), `${f} hardcodes MIN_AUDIENCE_REVIEWS`);
 }
+
+// Known non-gate uses of a bare 10/15 next to a review total (each with the reason).
+const NOT_THE_GATE = {
+  'scripts/audit-audience-scores.js': 'data-quality warning for open shows under 10 reviews, not the grade gate',
+};
 
 // 2. Sweep: no other script keeps a private copy of the audience minimum.
 const strays = [];
@@ -39,8 +45,11 @@ const strays = [];
     if (e.isDirectory()) walk(p);
     else if (/\.(js|mjs|ts|tsx)$/.test(e.name) && !/test/.test(e.name)) {
       const rel = path.relative(ROOT, p);
-      if (consumers.includes(rel)) continue;
-      if (/MIN_AUDIENCE_REVIEWS\s*=\s*\d+/.test(fs.readFileSync(p, 'utf8'))) strays.push(rel);
+      if (consumers.includes(rel) || NOT_THE_GATE[rel]) continue;
+      const src = fs.readFileSync(p, 'utf8');
+      // named copy of the constant, or a bare 10/15 compared with a review total in audience code
+      if (/MIN_AUDIENCE_REVIEWS\s*=\s*\d+/.test(src)) strays.push(rel);
+      else if (/audience/i.test(src) && /\b(totalReviews|totalAudienceReviews|audienceReviews)\s*(<|>=|>|<=)\s*(10|15)\b/.test(src)) strays.push(rel);
     }
   }
 })(path.join(ROOT, 'scripts'));
