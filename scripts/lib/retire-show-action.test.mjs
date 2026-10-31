@@ -134,6 +134,9 @@ test('nonProduction: a non-provisional announced row with no reviews retires wit
     [base, { status: 'open' }, none, /announced\/upcoming/],
     [base, { status: 'closed' }, none, /announced\/upcoming/],
     [base, { openingDate: '2026-10-01' }, none, /real run/],
+    [base, { openingDate: '2099-01-01' }, none, /real run/],
+    [{ ...base, outOfTier: true }, { openingDate: '2026-10-01' }, none, /real run/],
+    [{ ...base, outOfTier: 'yes' }, {}, none, /outOfTier must be true/],
     [base, {}, () => 2, /2 review/],
     [base, {}, undefined, /review count unavailable/],
   ];
@@ -286,4 +289,14 @@ test('BRO-6481: an "@ building" venue tail and a single-letter room tail are the
   // A different house that merely starts the same is still refused.
   const park = [row('p1', 'Hamlet: The Play', 'Park Avenue Armory'), row('p2', 'Hamlet', 'Park')];
   assert.equal(applyRetireShow(park, { type: 'retire-show', id: 'p2', expectTitle: 'Hamlet', duplicateOf: 'p1', reason: 'test dup' }, opts).ok, false);
+});
+
+test('outOfTier: an upcoming row with a future scheduled opening date retires (BRO-6531)', () => {
+  const { retire } = scratch();
+  const r0 = row('peter-panto-off-broadway-2026', 'Peter Panto', { provisional: undefined, status: 'upcoming', openingDate: '2026-11-21' });
+  const shows = [r0];
+  const action = { id: r0.id, expectTitle: r0.title, reason: 'Off-Off-Broadway, no such tier', nonProduction: true, outOfTier: true, evidenceUrl: 'https://www.tdf.org/shows/23550/peter-panto/' };
+  const r = applyRetireShow(shows, action, { retire, reviewCount: none, now: new Date('2026-10-31T00:00:00Z') });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(shows.length, 0);
 });

@@ -140,11 +140,19 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
  * row that has opened or carries any review is a real run; those go through
  * a human Mac session, never a plan.
  */
-function nonProductionRefusal(row, action, reviewCount) {
+function nonProductionRefusal(row, action, reviewCount, now) {
   if (action.duplicateOf !== undefined) return 'nonProduction and duplicateOf are exclusive';
   if (typeof action.evidenceUrl !== 'string' || !/^https:\/\/[^\s/]+\.[^\s]+$/.test(action.evidenceUrl)) return 'nonProduction needs evidenceUrl (https link to the venue listing that shows it is not a production)';
   if (!NON_PRODUCTION_STATUSES.has(row.status)) return `status is "${row.status}": only an announced/upcoming row can be retired as a non-production`;
-  if (isoOrNull(row.openingDate)) return `openingDate ${row.openingDate} is set: a row dated as opened is a real run`;
+  // `outOfTier: true` (BRO-6531): an out-of-tier listing (Off-Off-Broadway) carries a scheduled
+  // opening date from its source. It may go while that date is still ahead; one that has
+  // opened is a real run either way.
+  const opening = isoOrNull(row.openingDate);
+  if (opening) {
+    const today = (now instanceof Date ? now : now ? new Date(now) : new Date()).toISOString().slice(0, 10);
+    if (action.outOfTier !== true || opening <= today) return `openingDate ${row.openingDate} is set: a row dated as opened is a real run`;
+  }
+  if (action.outOfTier !== undefined && action.outOfTier !== true) return 'outOfTier must be true when present';
   if (typeof reviewCount !== 'function') return 'review count unavailable';
   const n = reviewCount(row.id);
   if (n !== 0) return `${row.id} has ${n} review(s): move them before retiring`;
@@ -163,7 +171,7 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
   if (row.title !== a.expectTitle) return { ok: false, reason: `retire-show ${a.id}: title is "${row.title}", plan expected "${a.expectTitle}" — refused` };
   if (a.nonProduction !== undefined && a.nonProduction !== true) return { ok: false, reason: `retire-show ${a.id}: nonProduction must be true when present` };
   if (a.nonProduction === true) {
-    const why = nonProductionRefusal(row, a, reviewCount);
+    const why = nonProductionRefusal(row, a, reviewCount, now);
     if (why) return { ok: false, reason: `retire-show ${a.id}: ${why}` };
   } else if (a.duplicateOf !== undefined) {
     // A non-automated row may go when it duplicates another row (same title,
