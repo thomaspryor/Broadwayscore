@@ -1,64 +1,13 @@
 {
-  "generatedAt": "2026-10-31T03:23:27.923Z",
+  "generatedAt": "2026-10-31T06:35:11.162Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 302,
-  "clean": 299,
-  "defective": 3,
-  "byType": {
-    "score-drift": 3
-  },
-  "shows": [
-    {
-      "showId": "a-few-good-men-2026",
-      "title": "A Few Good Men",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.89 vs local 60.95 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 26,
-      "firstDefectAt": "2026-10-31T03:23:21.799Z"
-    },
-    {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
-      "openingDate": "2026-10-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.36 vs local 79.62 (Δ1.26)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-10-31T03:23:21.799Z"
-    },
-    {
-      "showId": "schmigadoon-2026",
-      "title": "Schmigadoon!",
-      "openingDate": "2026-04-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.38 vs local 78.98 (Δ0.4)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 42,
-      "deployedCount": 42,
-      "firstDefectAt": "2026-10-31T03:23:21.799Z"
-    }
-  ],
+  "clean": 302,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

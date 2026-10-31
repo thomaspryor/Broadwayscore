@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T03:22:59.762Z",
+  "generatedAt": "2026-10-31T06:32:09.111Z",
   "windowDays": 45,
   "showsScanned": 218,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 129.4951272222222,
+      "fileAgeHours": 132.65583166666667,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 114.96205416666666,
+      "nonTerminalAgeHours": 118.11465111111112,
       "needsManualRecovery": false
     },
     {
@@ -40,33 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 158.014835,
+      "fileAgeHours": 161.1755388888889,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 144.07394555555555,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "title": "The Hairy Ape",
-      "openingDate": "2026-10-04",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "outletId": "nydailynews",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/hairy-ape-bobby-cannavale-profane-theater-review-article-1.3031263",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Fetch failed: All scraping methods failed"
-      },
-      "recoveryCount": 1,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-hairy-ape-irish-repertory-theatre-off-broadway-2026 --url=http://www.nydailynews.com/entertainment/theater-arts/hairy-ape-bobby-cannavale-profane-theater-review-article-1.3031263 --outlet=nydailynews --critic=\"Joe Dziemianowicz\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-31T01:45:18.388Z",
-      "fileAgeHours": 1.6272683333333333,
-      "gapSeenAt": "2026-10-31T03:22:59.762Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 147.2265425,
       "needsManualRecovery": false
     }
   ],
