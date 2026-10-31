@@ -1,25 +1,25 @@
 {
   "system": "main",
-  "status": "error",
-  "lastChecked": "2026-10-30T08:41:09.869Z",
+  "status": "warn",
+  "lastChecked": "2026-10-31T08:29:12.839Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Main: red streak",
-      "status": "error",
-      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 6.1h (no green run found in the runs checked — actual gap may be longer) (28 failing runs) — first red commit 46c31f9c5, job \"Unit Tests, E2E Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "status": "pass",
+      "message": "Last run green"
     },
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 44.8% (green 250 / red 308, 558 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 44.5%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 41.6% (green 251 / red 352, 603 runs, 3 hung (cancelled >= 10 min, counted red)), 7d trend from 41.5%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Main: mid-setup cancels",
       "status": "pass",
-      "message": "0% of the last 18 test.yml main runs cancelled mid-setup (threshold 30%)"
+      "message": "0% of the last 19 test.yml main runs cancelled mid-setup (threshold 30%)"
     }
   ]
 }

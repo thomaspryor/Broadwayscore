@@ -1,21 +1,12 @@
 {
-  "updatedAt": "2026-10-30T09:06:53.645Z",
-  "scanned": 3831,
-  "showsWithViolations": 45,
-  "totalViolations": 45,
-  "newSinceLastRun": 11,
+  "updatedAt": "2026-10-31T08:55:18.355Z",
+  "scanned": 4077,
+  "showsWithViolations": 47,
+  "totalViolations": 47,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "king-lear-royal-exchange-regional-2026",
-    "tristan-and-yseult-royal-bath-regional-2026",
-    "a-midsummer-nights-dream-chichester-festival-regional-2026",
-    "1984-citizens-regional-2026",
-    "east-is-east-octagon-regional-2026",
-    "twelfth-night-crucible-regional-2026",
-    "the-penelopiad-york-royal-regional-2026",
-    "dial-m-for-murder-regional-2026",
-    "antigone-tron-regional-2026",
-    "little-shop-of-horrors-hope-mill-regional-2026",
-    "death-of-a-salesman-liverpool-everyman-regional-2026"
+    "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
+    "million-dollar-quartet-regional-2024"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -57,8 +48,10 @@
     "a-midsummer-nights-dream-chichester-festival-regional-2026",
     "1984-citizens-regional-2026",
     "east-is-east-octagon-regional-2026",
+    "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
     "twelfth-night-crucible-regional-2026",
     "the-penelopiad-york-royal-regional-2026",
+    "million-dollar-quartet-regional-2024",
     "dial-m-for-murder-regional-2026",
     "antigone-tron-regional-2026",
     "little-shop-of-horrors-hope-mill-regional-2026",
@@ -132,7 +125,7 @@
       "showId": "and-juliet-2022",
       "title": "& Juliet",
       "openingDate": "2022-11-17",
-      "message": "and-juliet-2022 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "and-juliet-2022 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -417,6 +410,15 @@
       ]
     },
     {
+      "showId": "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
+      "title": "Wiping My Mother's Arse",
+      "openingDate": "2026-08-22",
+      "message": "wiping-my-mothers-arse-pitlochry-festival-regional-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "twelfth-night-crucible-regional-2026",
       "title": "Twelfth Night",
       "openingDate": "2026-10-18",
@@ -430,6 +432,15 @@
       "title": "The Penelopiad",
       "openingDate": "2026-10-17",
       "message": "the-penelopiad-york-royal-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-regional-2024",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2024-07-23",
+      "message": "million-dollar-quartet-regional-2024 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

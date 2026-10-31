@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-31T05:52:15.040Z",
+  "generatedAt": "2026-10-31T09:04:49.774Z",
   "date": "2026-10-31",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 217526,
+  "entryCount": 235216,
   "shows": [
     {
       "showId": "a-bright-room-called-day-off-broadway-2019",
@@ -1933,7 +1933,7 @@
     },
     {
       "showId": "macbeth-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4076,13 +4076,13 @@
     },
     {
       "showId": "little-shop-of-horrors-hope-mill-regional-2026",
-      "reviewCount": 3,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 219019,
+        "scored-to-rebuilt": 854002,
         "rebuilt-to-deployed": 65358858
       },
       "reviews_over_15min": 0,
@@ -4316,13 +4316,13 @@
     },
     {
       "showId": "stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 2143384,
-        "scored-to-rebuilt": 773900,
+        "scored-to-rebuilt": 773921,
         "rebuilt-to-deployed": 81192327
       },
       "reviews_over_15min": 0,
@@ -4586,13 +4586,13 @@
     },
     {
       "showId": "a-manchester-anthem-hope-mill-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 496424,
+        "scored-to-rebuilt": 773887,
         "rebuilt-to-deployed": 65358865
       },
       "reviews_over_15min": 0,
@@ -5066,13 +5066,13 @@
     },
     {
       "showId": "driftwood-sheffield-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 773838,
+        "scored-to-rebuilt": 851306,
         "rebuilt-to-deployed": 81192337
       },
       "reviews_over_15min": 0,
@@ -5141,13 +5141,13 @@
     },
     {
       "showId": "the-little-mermaid-bristol-old-vic-regional-2025",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 773841,
+        "scored-to-rebuilt": 841338,
         "rebuilt-to-deployed": 81192325
       },
       "reviews_over_15min": 0,
@@ -5306,13 +5306,13 @@
     },
     {
       "showId": "the-new-real-royal-shakespeare-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 773819,
+        "scored-to-rebuilt": 836399,
         "rebuilt-to-deployed": 81192324
       },
       "reviews_over_15min": 0,
@@ -5321,13 +5321,13 @@
     },
     {
       "showId": "reverberation-bristol-old-vic-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 773812,
+        "scored-to-rebuilt": 833988,
         "rebuilt-to-deployed": 81192329
       },
       "reviews_over_15min": 0,
@@ -5861,13 +5861,13 @@
     },
     {
       "showId": "ben-and-imo-royal-shakespeare-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1014563,
+        "scored-to-rebuilt": 944188,
         "rebuilt-to-deployed": 80472280
       },
       "reviews_over_15min": 0,
@@ -6011,13 +6011,13 @@
     },
     {
       "showId": "dark-noon-aviva-studios-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 289417,
+        "scored-to-rebuilt": 568471,
         "rebuilt-to-deployed": 28611474
       },
       "reviews_over_15min": 0,
@@ -6795,36 +6795,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-lives-of-others-west-end-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "buffy-revamped-west-end-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "medea-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
@@ -7126,13 +7096,13 @@
     },
     {
       "showId": "to-move-in-time-birmingham-rep-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 953640,
+        "scored-to-rebuilt": 906991,
         "rebuilt-to-deployed": 58655408
       },
       "reviews_over_15min": 0,
@@ -7501,13 +7471,13 @@
     },
     {
       "showId": "showstopper-the-improvised-musical-crucible-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 462484,
+        "scored-to-rebuilt": 635516,
         "rebuilt-to-deployed": 38860148
       },
       "reviews_over_15min": 0,
@@ -8101,13 +8071,13 @@
     },
     {
       "showId": "starter-for-ten-bristol-old-vic-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 635440,
+        "scored-to-rebuilt": 739282,
         "rebuilt-to-deployed": 49108825
       },
       "reviews_over_15min": 0,
@@ -15815,6 +15785,96 @@
       "slowest_reviews": []
     },
     {
+      "showId": "fire-and-air-off-broadway-2018",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 6768288,
+        "scored-to-rebuilt": 1476488,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "paradise-blue-off-broadway-2018",
+      "reviewCount": 18,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 8932146,
+        "scored-to-rebuilt": 163471,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "mlimas-tale-off-broadway-2018",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 8648573,
+        "scored-to-rebuilt": 74669,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "amy-and-the-orphans-off-broadway-2018",
+      "reviewCount": 21,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 8275236,
+        "scored-to-rebuilt": 690822,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "in-the-body-of-the-world-off-broadway-2018",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 7880179,
+        "scored-to-rebuilt": 602842,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "reviewCount": 24,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 7200876,
+        "scored-to-rebuilt": 482701,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "ideal-lowry-regional-2025",
       "reviewCount": 2,
       "median_e2e_ms": null,
@@ -15875,8 +15935,68 @@
       "slowest_reviews": []
     },
     {
+      "showId": "cardinal-off-broadway-2018",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 6527487,
+        "scored-to-rebuilt": 238737,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "mary-shelleys-frankenstein-off-broadway-2017",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 6376288,
+        "scored-to-rebuilt": 175433,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "office-hour-off-broadway-2017",
+      "reviewCount": 18,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 6220821,
+        "scored-to-rebuilt": 1211357,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "red-roses-green-gold-off-broadway-2017",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 6047771,
+        "scored-to-rebuilt": 1134160,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "afterglow-off-broadway-2017",
-      "reviewCount": 2,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15892,21 +16012,6 @@
     {
       "showId": "all-the-fine-boys-off-broadway-2017",
       "reviewCount": 10,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "amy-and-the-orphans-off-broadway-2018",
-      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15937,21 +16042,6 @@
     {
       "showId": "aubergine-off-broadway-2016",
       "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "cardinal-off-broadway-2018",
-      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16070,21 +16160,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "fire-and-air-off-broadway-2018",
-      "reviewCount": 7,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "fulfillment-center-off-broadway-2017",
       "reviewCount": 1,
       "median_e2e_ms": null,
@@ -16115,21 +16190,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "hangmen-off-broadway-2018",
-      "reviewCount": 3,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "if-i-forget-off-broadway-2017",
       "reviewCount": 2,
       "median_e2e_ms": null,
@@ -16145,29 +16205,14 @@
       "slowest_reviews": []
     },
     {
-      "showId": "in-the-body-of-the-world-off-broadway-2018",
-      "reviewCount": 3,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "jesus-hopped-the-a-train-off-broadway-2017",
-      "reviewCount": 1,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 5423076,
+        "scored-to-rebuilt": 867795,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16235,38 +16280,8 @@
       "slowest_reviews": []
     },
     {
-      "showId": "mary-shelleys-frankenstein-off-broadway-2017",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "master-harold-and-the-boys-off-broadway-2016",
       "reviewCount": 14,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "mlimas-tale-off-broadway-2018",
-      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16295,23 +16310,8 @@
       "slowest_reviews": []
     },
     {
-      "showId": "office-hour-off-broadway-2017",
-      "reviewCount": 6,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "on-the-shore-of-the-wide-world-off-broadway-2017",
-      "reviewCount": 9,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16355,21 +16355,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "paradise-blue-off-broadway-2018",
-      "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "party-people-off-broadway-2016",
       "reviewCount": 9,
       "median_e2e_ms": null,
@@ -16386,7 +16371,7 @@
     },
     {
       "showId": "people-places-and-things-off-broadway-2017",
-      "reviewCount": 6,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16417,21 +16402,6 @@
     {
       "showId": "plenty-off-broadway-2016",
       "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "red-roses-green-gold-off-broadway-2017",
-      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16491,13 +16461,13 @@
     },
     {
       "showId": "the-last-match-off-broadway-2017",
-      "reviewCount": 1,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 5660851,
+        "scored-to-rebuilt": 1087767,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16536,13 +16506,13 @@
     },
     {
       "showId": "the-portuguese-kid-off-broadway-2017",
-      "reviewCount": 1,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 5642810,
+        "scored-to-rebuilt": 951686,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16626,6 +16596,111 @@
     },
     {
       "showId": "vietgone-off-broadway-2016",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "a-midsummer-nights-dream-off-broadway-2017",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ghost-light-off-broadway-2017",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "julius-caesar-off-broadway-2017",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "malory-towers-royal-bath-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 950764,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-beautiful-future-is-coming-bristol-old-vic-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 932875,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "radiant-vermin-tron-regional-2024",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 887024,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-whirligig-off-broadway-2017",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,

@@ -134,20 +134,27 @@ module.exports = { findConflictMarkers, hasConflictMarkers, conflictSides, parse
 
 if (require.main === module) {
   const fs = require('fs');
-  const files = process.argv.slice(2);
+  // --files-from=<list> (one path per line) keeps a bulk push under ARG_MAX (BRO-6687).
+  const fromArg = process.argv.slice(2).find((a) => a.startsWith('--files-from='));
+  const files = fromArg
+    ? fs.readFileSync(fromArg.slice('--files-from='.length), 'utf8').split('\n').filter(Boolean)
+    : process.argv.slice(2);
   if (files.length === 0) {
-    console.error('usage: node scripts/lib/conflict-markers.js <file> [<file> ...]');
+    console.error('usage: node scripts/lib/conflict-markers.js <file> [<file> ...] | --files-from=<list>');
     process.exit(2);
   }
   let bad = 0;
   for (const f of files) {
-    let text;
+    let buf;
     try {
-      text = fs.readFileSync(f, 'utf8');
+      buf = fs.readFileSync(f);
     } catch {
       continue; // deleted/unreadable — not our concern here
     }
-    const hits = findConflictMarkers(text);
+    // Binary files (a NUL in the first 8KB, git's own heuristic) can hold
+    // marker-like bytes: public/og/biz/musicals-since-reopening.png does (BRO-6687).
+    if (buf.subarray(0, 8192).includes(0)) continue;
+    const hits = findConflictMarkers(buf.toString('utf8'));
     for (const h of hits) {
       console.error(`${f}:${h.line}: ${h.text}`);
       bad++;

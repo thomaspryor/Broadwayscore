@@ -22,7 +22,8 @@ function listAudits(files, tipMessage = '') {
     // [skip-cron-audit] cannot change selection under test.
     env: { ...process.env, PUSH_AUDITS_TIP_MESSAGE: tipMessage },
   });
-  return out.trim().split('\n').filter(Boolean).sort();
+  // conflict-markers (BRO-6687) selects on every non-empty list; it has its own tests below.
+  return out.trim().split('\n').filter((l) => l && l !== 'conflict-markers').sort();
 }
 
 // BRO-5621: cheap CI-parity unit tests selected by any scripts/ source edit;
@@ -57,7 +58,7 @@ test('tests/unit/*.test.mjs selects the full test-registration audit set (BRO-32
 test('scripts/lib/**/*.test.* selects the full test-registration audit set (BRO-3239 HOLE 1)', () => {
   assert.deepEqual(
     listAudits(['scripts/lib/push-with-retry.stall-diagnostics.test.sh']),
-    plus(['colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch'])
+    plus(['colocated-test-ci-coverage', 'orphan-tests', 'set-u-expansions', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch'])
   );
   assert.deepEqual(
     listAudits(['scripts/lib/nested/deeper/x.test.mjs']),
@@ -212,7 +213,7 @@ test('argv form (no stdin) matches piped-stdin form', () => {
     'help-flag-safety',
     'unbounded-fetch',
     'write-routing',
-  ], ...PARITY, PARITY_TOP));
+  ], ...PARITY, PARITY_TOP, 'conflict-markers'));
 });
 
 test('scripts/*.mjs and scripts/*.ts also select write-routing (not just .js)', () => {
@@ -427,4 +428,76 @@ test('end-to-end: run-push-audits.sh passes on a real clean scripts/*.js file', 
     out = `${err.stdout ?? ''}${err.stderr ?? ''}`;
   }
   assert.doesNotMatch(out, /AUDIT BLOCKED: write-routing/);
+});
+
+// BRO-6687: committed conflict markers are blocked on every audited push, not only
+// on push-with-retry.sh's CI pushes. Marker lines are built at runtime so this
+// file never carries one at line start.
+const OPEN = '<'.repeat(7), CLOSE = '>'.repeat(7);
+const rawList = (files, env = {}) => execFileSync('bash', [SCRIPT, '--list'], {
+  input: files.join('\n'), encoding: 'utf8', env: { ...process.env, PUSH_AUDITS_TIP_MESSAGE: '', ...env },
+}).trim().split('\n').filter(Boolean);
+
+test('conflict-markers is selected for any changed file, even a deleted one, and honours PUSH_SKIP_CONFLICT_CHECK', () => {
+  assert.ok(rawList(['README.md']).includes('conflict-markers'));
+  assert.ok(rawList(['no/such/file.json']).includes('conflict-markers'));
+  assert.ok(!rawList(['README.md'], { PUSH_SKIP_CONFLICT_CHECK: '1' }).includes('conflict-markers'));
+});
+
+test('conflict-markers blocks a pushed file with markers and passes clean, binary and deleted files', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cm-audit-'));
+  try {
+    const bad = join(dir, 'ledger.jsonl');
+    const clean = join(dir, 'clean.jsonl');
+    const bin = join(dir, 'img.png');
+    writeFileSync(bad, `{"a":1}\n${OPEN} Updated upstream\n{"b":2}\n=======\n{"c":3}\n${CLOSE} Stashed changes\n`);
+    writeFileSync(clean, '{"a":1}\n');
+    writeFileSync(bin, Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0, 0]), Buffer.from(`\n${OPEN}<<\n`)]));
+    const cli = (...files) => { try { execFileSync('node', [join(LIB_DIR, 'conflict-markers.js'), ...files], { stdio: 'pipe' }); return 0; } catch (e) { return e.status; } };
+    assert.equal(cli(bad), 1);
+    assert.equal(cli(clean, bin, join(dir, 'gone.json')), 0);
+    // The runner itself: absolute paths work although it cds to the repo root.
+    const run = (files) => { try { execFileSync('bash', [SCRIPT], { input: files.join('\n'), stdio: 'pipe' }); return { code: 0, out: '' }; } catch (e) { return { code: e.status, out: String(e.stdout) }; } };
+    const r = run([bad]);
+    assert.equal(r.code, 1);
+    assert.match(r.out, /AUDIT BLOCKED: conflict-markers failed/);
+    assert.equal(run([clean, join(dir, 'gone.json')]).code, 0);
+  } finally {
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('set-u-expansions runs strict on changed shell scripts only, and blocks an unguarded expansion (BRO-6687)', () => {
+  assert.ok(listAudits(['scripts/lib/stage-data-changes.sh']).includes('set-u-expansions'));
+  assert.ok(!listAudits(['scripts/foo.js']).includes('set-u-expansions'));
+  const dir = mkdtempSync(join(tmpdir(), 'setu-audit-'));
+  try {
+    const sh = join(dir, 'bad.sh');
+    writeFileSync(sh, '#!/usr/bin/env bash\nset -uo pipefail\nA=()\nprintf "%s" "${A[@]}"\n');
+    let code = 0, out = '';
+    try { execFileSync('bash', [SCRIPT], { input: sh, stdio: 'pipe' }); } catch (e) { code = e.status; out = String(e.stdout); }
+    assert.equal(code, 1);
+    assert.match(out, /AUDIT BLOCKED: set-u-expansions failed/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('conflict-markers fails closed when its file list cannot be written, and a "--"-named .sh is still linted (BRO-6687)', () => {
+  const run = (input, env = {}) => {
+    try { execFileSync('bash', [SCRIPT], { input, stdio: 'pipe', env: { ...process.env, ...env } }); return { code: 0, out: '' }; }
+    catch (e) { return { code: e.status, out: String(e.stdout) }; }
+  };
+  const r = run('scripts/lib/run-push-audits.sh', { TMPDIR: '/nonexistent-bro-6687' });
+  assert.equal(r.code, 1);
+  assert.match(r.out, /conflict-markers could not write its file list/);
+  const name = '--bro-6687-dash.sh';
+  writeFileSync(name, '#!/usr/bin/env bash\nset -uo pipefail\nA=()\nprintf "%s" "${A[@]}"\n');
+  try {
+    const d = run(name);
+    assert.equal(d.code, 1);
+    assert.match(d.out, /AUDIT BLOCKED: set-u-expansions failed/);
+  } finally {
+    rmSync(name, { force: true, maxRetries: 10, retryDelay: 50 });
+  }
 });

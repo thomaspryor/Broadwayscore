@@ -1,113 +1,103 @@
 {
-  "lastChecked": "2026-10-26",
+  "lastChecked": "2026-10-31",
   "performance": {
-    "clicks": 3343,
-    "impressions": 139725,
-    "ctr": 0.0239,
-    "position": 9.3,
-    "priorClicks": 3650,
-    "priorImpressions": 145876,
+    "clicks": 3089,
+    "impressions": 132893,
+    "ctr": 0.0232,
+    "position": 9,
+    "priorClicks": 3777,
+    "priorImpressions": 140785,
     "botSignature": {
-      "botImpressions": 73,
-      "botQueries": 13,
-      "botShare": 0.0011,
-      "namedImpressions": 66581,
-      "organicImpressions": 66508,
-      "priorBotImpressions": 32,
-      "priorOrganicImpressions": 74696,
+      "botImpressions": 115,
+      "botQueries": 22,
+      "botShare": 0.0019,
+      "namedImpressions": 58981,
+      "organicImpressions": 58866,
+      "priorBotImpressions": 30,
+      "priorOrganicImpressions": 67172,
       "truncated": false,
       "examples": [
         "\"2024-2025\" broadway \"new musical\" jukebox",
         "\"billy crystal\" \"860\" \"los angeles\"",
+        "\"broadwayscorecard.com\" site:x.com -site:broadwayscorecard.com -site:theaterscorecard.com -site:showscorecard.com -site:github.com/thomaspryor",
         "\"john heard\" \"new york ny\"",
-        "\"john heard\" \"new york stock exchange\"",
-        "\"last theatre performance\" \"1988\" \"1994\""
+        "\"john heard\" \"new york stock exchange\""
       ]
     }
   },
   "indexCoverage": {
-    "indexed": 14,
-    "notIndexed": 16,
+    "indexed": 16,
+    "notIndexed": 14,
     "total": 30,
-    "rate": 47,
+    "rate": 53,
     "issues": [
       {
-        "url": "https://broadwayscorecard.com/show/closer-1999",
+        "url": "https://broadwayscorecard.com/show/the-glass-menagerie-dundee-rep-regional-2025",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/my-fair-lady-1981",
+        "url": "https://broadwayscorecard.com/show/youre-a-good-man-charlie-brown-1971",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/here-lies-love",
+        "url": "https://broadwayscorecard.com/show/the-columnist-2012",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/the-changing-room-1973",
+        "url": "https://broadwayscorecard.com/show/nice-work-if-you-can-get-it-2012",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/othello-1970",
+        "url": "https://broadwayscorecard.com/show/aint-misbehavin-1988",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/democracy-2004",
+        "url": "https://broadwayscorecard.com/show/crazy-for-you-1992",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/pictures-from-home-2023",
+        "url": "https://broadwayscorecard.com/show/the-little-prince-and-the-aviator-1982",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/saint-joan-2018",
+        "url": "https://broadwayscorecard.com/show/teibele-and-her-demon-1979",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/good-night-and-good-luck-2025",
-        "verdict": "NEUTRAL",
-        "coverageState": "URL is unknown to Google"
-      },
-      {
-        "url": "https://broadwayscorecard.com/show/canciones-de-mi-padre-1988",
+        "url": "https://broadwayscorecard.com/show/almost-an-eagle-1982",
         "verdict": "NEUTRAL",
         "coverageState": "Crawled - currently not indexed"
       },
       {
-        "url": "https://broadwayscorecard.com/show/just-for-us",
+        "url": "https://broadwayscorecard.com/show/metamorphoses-2002",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/sweet-charity-2005",
+        "url": "https://broadwayscorecard.com/show/strangers-1979",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/i-need-that",
-        "verdict": "NEUTRAL",
-        "coverageState": "Crawled - currently not indexed"
-      },
-      {
-        "url": "https://broadwayscorecard.com/show/a-christmas-carol-2019",
+        "url": "https://broadwayscorecard.com/show/rodgers-hammersteins-cinderella-2013",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/kerry-jackson-west-end-2022",
+        "url": "https://broadwayscorecard.com/show/the-judas-kiss-1998",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       },
       {
-        "url": "https://broadwayscorecard.com/show/betrayal-2000",
+        "url": "https://broadwayscorecard.com/show/therese-raquin-2015",
         "verdict": "NEUTRAL",
         "coverageState": "URL is unknown to Google"
       }
@@ -121,257 +111,251 @@
         "path": "https://broadwayscorecard.com/sitemap/8.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.991Z"
+        "lastSubmitted": "2026-10-31T06:39:14.068Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/7.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.812Z"
+        "lastSubmitted": "2026-10-31T06:39:13.993Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/6.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.646Z"
+        "lastSubmitted": "2026-10-31T06:39:13.895Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/5.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.456Z"
+        "lastSubmitted": "2026-10-31T06:39:13.808Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/4.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.385Z"
+        "lastSubmitted": "2026-10-31T06:39:13.714Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/3.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.319Z"
+        "lastSubmitted": "2026-10-31T06:39:13.623Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/2.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.241Z"
+        "lastSubmitted": "2026-10-31T06:39:13.522Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/1.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:12.167Z"
+        "lastSubmitted": "2026-10-31T06:39:13.425Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/0.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-10-25T23:57:11.955Z"
+        "lastSubmitted": "2026-10-31T06:39:13.307Z"
       }
     ]
   },
   "newPages": {
-    "checked": 19,
-    "indexed": 18,
-    "resubmitted": 1
+    "checked": 14,
+    "indexed": 10,
+    "resubmitted": 4
   },
   "stalePages": {
     "sampled": 30,
-    "stale": 1,
-    "resubmitted": 1
+    "stale": 2,
+    "resubmitted": 2
   },
   "targetKeywords": [
     {
       "keyword": "broadway scorecard",
       "position": 1,
-      "clicks": 110,
-      "impressions": 129,
-      "ctr": 0.8527
-    },
-    {
-      "keyword": "best broadway shows 2026",
-      "position": 5.4,
-      "clicks": 3,
-      "impressions": 178,
-      "ctr": 0.0169
-    },
-    {
-      "keyword": "hamilton vs wicked",
-      "position": 5.7,
-      "clicks": 0,
-      "impressions": 3,
-      "ctr": 0
+      "clicks": 101,
+      "impressions": 176,
+      "ctr": 0.5739
     },
     {
       "keyword": "broadway show ratings",
-      "position": 7.5,
-      "clicks": 2,
-      "impressions": 24,
-      "ctr": 0.0833
+      "position": 4,
+      "clicks": 3,
+      "impressions": 27,
+      "ctr": 0.1111
     },
     {
-      "keyword": "best broadway musicals 2026",
-      "position": 8.9,
-      "clicks": 1,
-      "impressions": 30,
-      "ctr": 0.0333
-    },
-    {
-      "keyword": "broadway box office grosses",
-      "position": 8.9,
-      "clicks": 1,
-      "impressions": 52,
-      "ctr": 0.0192
-    },
-    {
-      "keyword": "broadway musicals ranked",
-      "position": 10.3,
+      "keyword": "hamilton vs wicked",
+      "position": 4.7,
       "clicks": 0,
-      "impressions": 3,
+      "impressions": 6,
       "ctr": 0
     },
     {
       "keyword": "broadway ratings",
-      "position": 12.9,
+      "position": 4.9,
+      "clicks": 0,
+      "impressions": 15,
+      "ctr": 0
+    },
+    {
+      "keyword": "best broadway shows 2026",
+      "position": 5.6,
+      "clicks": 2,
+      "impressions": 136,
+      "ctr": 0.0147
+    },
+    {
+      "keyword": "best broadway musicals 2026",
+      "position": 8.6,
+      "clicks": 1,
+      "impressions": 21,
+      "ctr": 0.0476
+    },
+    {
+      "keyword": "broadway box office grosses",
+      "position": 8.7,
+      "clicks": 0,
+      "impressions": 52,
+      "ctr": 0
+    },
+    {
+      "keyword": "broadway musicals ranked",
+      "position": 9.8,
+      "clicks": 0,
+      "impressions": 4,
+      "ctr": 0
+    },
+    {
+      "keyword": "broadway show reviews",
+      "position": 10.3,
+      "clicks": 1,
+      "impressions": 57,
+      "ctr": 0.0175
+    },
+    {
+      "keyword": "broadway shows closing soon",
+      "position": 12.2,
+      "clicks": 0,
+      "impressions": 6,
+      "ctr": 0
+    },
+    {
+      "keyword": "best broadway musicals",
+      "position": 13.6,
+      "clicks": 0,
+      "impressions": 56,
+      "ctr": 0
+    },
+    {
+      "keyword": "best broadway plays",
+      "position": 14.6,
       "clicks": 0,
       "impressions": 31,
       "ctr": 0
     },
     {
-      "keyword": "best broadway musicals",
-      "position": 13.1,
-      "clicks": 0,
-      "impressions": 55,
-      "ctr": 0
-    },
-    {
-      "keyword": "broadway shows closing soon",
-      "position": 13.7,
-      "clicks": 0,
-      "impressions": 7,
-      "ctr": 0
-    },
-    {
       "keyword": "best broadway shows",
-      "position": 14,
+      "position": 15.5,
       "clicks": 0,
-      "impressions": 121,
+      "impressions": 124,
       "ctr": 0
-    },
-    {
-      "keyword": "best broadway plays",
-      "position": 14.3,
-      "clicks": 0,
-      "impressions": 18,
-      "ctr": 0
-    },
-    {
-      "keyword": "broadway show reviews",
-      "position": 15.2,
-      "clicks": 2,
-      "impressions": 59,
-      "ctr": 0.0339
     },
     {
       "keyword": "broadway shows for kids",
-      "position": 59.9,
+      "position": 49.9,
       "clicks": 0,
-      "impressions": 9,
+      "impressions": 7,
       "ctr": 0
     }
   ],
   "reviewIntentRankings": {
-    "queries": 3002,
-    "avgPosition": 8.1,
-    "page1Share": 55,
+    "queries": 3078,
+    "avgPosition": 8.2,
+    "page1Share": 56,
     "buckets": {
-      "top3": 574,
-      "page1": 1069,
-      "page2": 574,
-      "beyond": 785
+      "top3": 575,
+      "page1": 1138,
+      "page2": 593,
+      "beyond": 772
     },
-    "clicks": 2809,
-    "impressions": 53603,
+    "clicks": 2633,
+    "impressions": 53967,
     "topOpportunities": [
       {
         "query": "broadway reviews",
-        "position": 10.1,
-        "impressions": 215,
-        "clicks": 10
+        "position": 10.7,
+        "impressions": 236,
+        "clicks": 12
       },
       {
-        "query": "the urmetazoan play review",
-        "position": 14.5,
-        "impressions": 190,
-        "clicks": 11
+        "query": "the pianist park theatre reviews",
+        "position": 10.4,
+        "impressions": 216,
+        "clicks": 16
       },
       {
         "query": "broadway show reviews",
-        "position": 14.5,
-        "impressions": 189,
+        "position": 13.8,
+        "impressions": 192,
         "clicks": 3
       },
       {
         "query": "martin guerre old vic review",
         "position": 15,
-        "impressions": 168,
+        "impressions": 169,
         "clicks": 7
       },
       {
-        "query": "affluenza play review",
-        "position": 11.5,
-        "impressions": 138,
-        "clicks": 6
+        "query": "the standard of living play review",
+        "position": 11.8,
+        "impressions": 142,
+        "clicks": 4
       },
       {
         "query": "rent west end reviews",
-        "position": 11.5,
-        "impressions": 100,
+        "position": 10.5,
+        "impressions": 116,
         "clicks": 8
       },
       {
         "query": "baby brixton house review",
         "position": 14.5,
-        "impressions": 97,
+        "impressions": 98,
         "clicks": 6
       },
       {
-        "query": "broadway shows reviews",
-        "position": 13.5,
-        "impressions": 87,
+        "query": "& juliet reviews",
+        "position": 11.5,
+        "impressions": 91,
         "clicks": 3
       },
       {
         "query": "copperfield musical review",
-        "position": 10.5,
-        "impressions": 87,
+        "position": 11.3,
+        "impressions": 88,
         "clicks": 2
       },
       {
-        "query": "& juliet reviews",
-        "position": 11.2,
+        "query": "off broadway reviews",
+        "position": 18.6,
+        "impressions": 86,
+        "clicks": 0
+      },
+      {
+        "query": "broadway shows reviews",
+        "position": 13.5,
         "impressions": 85,
         "clicks": 3
       },
       {
-        "query": "off broadway reviews",
-        "position": 19.1,
-        "impressions": 84,
-        "clicks": 0
-      },
-      {
-        "query": "the ask off broadway review",
-        "position": 10,
-        "impressions": 81,
-        "clicks": 4
-      },
-      {
         "query": "rent west end review",
-        "position": 16.4,
-        "impressions": 81,
+        "position": 16.2,
+        "impressions": 85,
         "clicks": 2
       },
       {
@@ -381,217 +365,230 @@
         "clicks": 5
       },
       {
-        "query": "the urmetazoan review",
-        "position": 10.9,
-        "impressions": 73,
-        "clicks": 3
+        "query": "hay fever review",
+        "position": 12.3,
+        "impressions": 72,
+        "clicks": 4
+      },
+      {
+        "query": "best broadway reviews",
+        "position": 18.4,
+        "impressions": 57,
+        "clicks": 0
       }
     ]
   },
   "coreWebVitals": [
     {
       "url": "https://broadwayscorecard.com/",
-      "lcp": 791,
+      "lcp": 779,
       "fid": null,
       "cls": 0,
-      "inp": 99,
-      "performanceScore": 75,
-      "lcpLab": 6022,
-      "clsLab": 0.00006230928174512775,
-      "tbt": 110,
+      "inp": null,
+      "performanceScore": 96,
+      "lcpLab": 2701,
+      "clsLab": 0.00040744350377862717,
+      "tbt": 53,
       "fieldScope": "url"
     },
     {
       "url": "https://broadwayscorecard.com/guides/best-broadway-musicals",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 98,
-      "lcpLab": 2251,
+      "inp": 120,
+      "performanceScore": 95,
+      "lcpLab": 1051,
       "clsLab": 0,
-      "tbt": 81,
+      "tbt": 221,
+      "fieldScope": "origin"
+    },
+    {
+      "url": "https://broadwayscorecard.com/west-end",
+      "originFallback": true,
+      "lcp": 1295,
+      "fid": null,
+      "cls": 0,
+      "inp": 120,
+      "performanceScore": 88,
+      "lcpLab": 3751,
+      "clsLab": 0.00007691906675058471,
+      "tbt": 46,
       "fieldScope": "origin"
     },
     {
       "url": "https://broadwayscorecard.com/off-broadway",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 73,
-      "lcpLab": 5926,
-      "clsLab": 0.0001059558800690095,
-      "tbt": 129,
-      "fieldScope": "origin"
-    },
-    {
-      "url": "https://broadwayscorecard.com/show/the-three-musketeers-1984",
-      "originFallback": true,
-      "lcp": 1336,
-      "fid": null,
-      "cls": 0,
-      "inp": 119,
-      "performanceScore": 96,
+      "inp": 120,
+      "performanceScore": 93,
       "lcpLab": 2701,
-      "clsLab": 0,
-      "tbt": 25,
+      "clsLab": 0.00001392175981020366,
+      "tbt": 201,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/the-three-sisters-1973",
+      "url": "https://broadwayscorecard.com/show/the-tale-of-the-allergists-wife-2000",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 95,
-      "lcpLab": 2551,
+      "inp": 120,
+      "performanceScore": 96,
+      "lcpLab": 1051,
       "clsLab": 0,
-      "tbt": 173,
+      "tbt": 230,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/stone-belly",
+      "url": "https://broadwayscorecard.com/show/the-tap-dance-kid-1983",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 83,
-      "lcpLab": 4426,
-      "clsLab": 0,
-      "tbt": 83,
-      "fieldScope": "origin"
-    },
-    {
-      "url": "https://broadwayscorecard.com/show/stories-from-the-brink-off-broadway",
-      "originFallback": true,
-      "lcp": 1336,
-      "fid": null,
-      "cls": 0,
-      "inp": 119,
+      "inp": 120,
       "performanceScore": 89,
-      "lcpLab": 3151,
-      "clsLab": 0.1215066828675577,
-      "tbt": 41,
-      "fieldScope": "origin"
-    },
-    {
-      "url": "https://broadwayscorecard.com/show/american-psycho-off-west-end",
-      "originFallback": true,
-      "lcp": 1336,
-      "fid": null,
-      "cls": 0,
-      "inp": 119,
-      "performanceScore": 84,
-      "lcpLab": 3909,
+      "lcpLab": 1051,
       "clsLab": 0,
-      "tbt": 178,
+      "tbt": 345,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/amplify-off-west-end",
+      "url": "https://broadwayscorecard.com/show/stargazers-off-broadway-2024",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 85,
-      "lcpLab": 4074,
+      "inp": 120,
+      "performanceScore": 97,
+      "lcpLab": 1065,
       "clsLab": 0,
-      "tbt": 113,
+      "tbt": 195,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/bull-durham-paper-mill-regional-2025",
+      "url": "https://broadwayscorecard.com/show/starstuff",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 85,
-      "lcpLab": 4351,
+      "inp": 120,
+      "performanceScore": 100,
+      "lcpLab": 1051,
       "clsLab": 0,
-      "tbt": 21,
+      "tbt": 22,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/crazysexycool-regional-2026",
+      "url": "https://broadwayscorecard.com/show/lost-atoms-off-west-end",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 77,
-      "lcpLab": 5101,
+      "inp": 120,
+      "performanceScore": 91,
+      "lcpLab": 1052,
       "clsLab": 0,
-      "tbt": 191,
+      "tbt": 330,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+      "url": "https://broadwayscorecard.com/show/lou-wall-where-are-all-the-tall-grandmas-off-west-end",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
+      "inp": 120,
+      "performanceScore": 95,
+      "lcpLab": 2251,
+      "clsLab": 0.08980569265452977,
+      "tbt": 137,
+      "fieldScope": "origin"
+    },
+    {
+      "url": "https://broadwayscorecard.com/show/alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
+      "originFallback": true,
+      "lcp": 1295,
+      "fid": null,
+      "cls": 0,
+      "inp": 120,
+      "performanceScore": 89,
+      "lcpLab": 1051,
+      "clsLab": 0,
+      "tbt": 405,
+      "fieldScope": "origin"
+    },
+    {
+      "url": "https://broadwayscorecard.com/show/alice-by-heart-regional-2024",
+      "originFallback": true,
+      "lcp": 1295,
+      "fid": null,
+      "cls": 0,
+      "inp": 120,
+      "performanceScore": 94,
+      "lcpLab": 1522,
+      "clsLab": 0,
+      "tbt": 114,
+      "fieldScope": "origin"
+    },
+    {
+      "url": "https://broadwayscorecard.com/show/the-wiz-tour-2026",
+      "originFallback": true,
+      "lcp": 1295,
+      "fid": null,
+      "cls": 0,
+      "inp": 120,
       "performanceScore": 92,
       "lcpLab": 3301,
-      "clsLab": 0,
-      "tbt": 16,
+      "clsLab": 0.00007104890387051011,
+      "tbt": 106,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/the-whos-tommy-tour-2026",
+      "url": "https://broadwayscorecard.com/show/waitress-tour-2026",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 83,
-      "lcpLab": 4351,
-      "clsLab": 0,
-      "tbt": 59,
+      "inp": 120,
+      "performanceScore": 98,
+      "lcpLab": 1051,
+      "clsLab": 0.0004950287527879175,
+      "tbt": 165,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/legally-blonde-west-end",
+      "url": "https://broadwayscorecard.com/show/elf-west-end-2015",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 87,
-      "lcpLab": 3834,
-      "clsLab": 0.03280680437424058,
-      "tbt": 28,
+      "inp": 120,
+      "performanceScore": 98,
+      "lcpLab": 1051,
+      "clsLab": 0,
+      "tbt": 138,
       "fieldScope": "origin"
     },
     {
-      "url": "https://broadwayscorecard.com/show/lemons-lemons-lemons-lemons-lemons-west-end-2023",
+      "url": "https://broadwayscorecard.com/show/emilia-west-end-2019",
       "originFallback": true,
-      "lcp": 1336,
+      "lcp": 1295,
       "fid": null,
       "cls": 0,
-      "inp": 119,
-      "performanceScore": 84,
-      "lcpLab": 4501,
+      "inp": 120,
+      "performanceScore": 93,
+      "lcpLab": 1825,
       "clsLab": 0,
-      "tbt": 54,
+      "tbt": 53,
       "fieldScope": "origin"
     }
   ],
-  "anomalies": [
-    {
-      "type": "cwv_lighthouse_drop",
-      "severity": "warning",
-      "message": "/off-broadway: simulated-test score dropped to 73 (was 90)"
-    }
-  ],
-  "quotaUsedToday": 39,
+  "anomalies": [],
+  "quotaUsedToday": 88,
   "richResults": [
     {
       "slug": "schmigadoon",

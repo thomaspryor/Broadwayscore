@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-31T00:23:55.671Z",
+    "generatedAt": "2026-10-31T07:32:11.660Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -8,254 +8,52 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 1,
-    "exemptCount": 14,
-    "coveredCount": 36,
-    "highChurnTracked": 51
+    "flaggedCount": 0,
+    "exemptCount": 1,
+    "coveredCount": 7,
+    "highChurnTracked": 8
   },
-  "flagged": [
-    {
-      "path": "data/audit/indexing-api-usage.json",
-      "churn": 65
-    }
-  ],
+  "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 1138
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 570
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 242
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 182
-    },
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 180
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 180
-    },
-    {
-      "path": "public/data/stats-reviews.json",
-      "churn": 143
-    },
-    {
-      "path": "public/opening-night-status.json",
-      "churn": 82
-    },
-    {
-      "path": "public/data/shows/the-comedy-about-spies-west-end-2025.json",
-      "churn": 53
-    },
-    {
-      "path": "public/data/shows/translations-west-end-2018.json",
-      "churn": 51
-    },
-    {
-      "path": "public/data/shows/a-few-good-men-2026.json",
       "churn": 49
-    },
-    {
-      "path": "public/data/shows/the-heart-off-broadway-2026.json",
-      "churn": 45
-    },
-    {
-      "path": "public/data/shows/girls-off-west-end-2026.json",
-      "churn": 32
-    },
-    {
-      "path": ".github/workflows/test.yml",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 1432,
+      "churn": 98,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 817,
+      "churn": 33,
       "mergeAttr": "union"
     },
     {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 584,
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 313,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 296,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 296,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 296,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 296,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/landings.jsonl",
-      "churn": 268,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 253,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 212,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 180,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
-      "churn": 133,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/live-progress.json",
-      "churn": 131,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/score-public-since.json",
-      "churn": 107,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 82,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 82,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 82,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/syndicated-duplicates.json",
-      "churn": 82,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/tour-sweep.json",
-      "churn": 82,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/wrong-production-audit.json",
-      "churn": 82,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-a-few-good-men-2026.json",
-      "churn": 80,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 80,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 79,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 74,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/main-streak-failing-jobs.json",
-      "churn": 57,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/lane-rehearsal.json",
-      "churn": 41,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 39,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-collision-report.json",
-      "churn": 39,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/alert-router-attempts.jsonl",
-      "churn": 36,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/validation-baseline.json",
-      "churn": 36,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-lives-of-others-west-end-2026.json",
-      "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/buffy-revamped-west-end-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/showstopper-the-kids-show-off-west-end-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-revlon-girl-off-west-end-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]

@@ -1,32 +1,38 @@
 {
-  "generatedAt": "2026-10-31T05:52:28.535Z",
+  "generatedAt": "2026-10-31T09:05:07.523Z",
   "night": "2026-10-30",
   "counts": {
     "total": 3,
     "passed": 0,
-    "failed": 1,
-    "notGraded": 2
+    "failed": 3,
+    "notGraded": 0
   },
   "lines": [
     {
       "verdict": "FAIL",
+      "line": "Medea: published by the regular pipeline; 0 of 2 reviews live by 12:00am; The New York Times not live by 3:57am; A Younger Theatre not live by 3:57am. Failed."
+    },
+    {
+      "verdict": "FAIL",
+      "line": "Specimen: published by the regular pipeline; 0 of 4 reviews live by 12:00am; Theater Scene not live by 3:56am; Front Row Center not live by 3:56am; This Week in New York not live by 3:56am; Off Off Online not live by 3:56am. Failed."
+    },
+    {
+      "verdict": "FAIL",
       "line": "The Moth: published by the regular pipeline; 3 of 6 reviews live by 7:00pm; FringeReview (Simon Jenner) went live at 8:18pm (late); FringeReview (Unknown) went live at 8:18pm (late); London Pub Theatres went live at 8:18pm (late). Failed."
-    },
-    {
-      "verdict": "PENDING",
-      "line": "Medea: not graded yet, still being checked."
-    },
-    {
-      "verdict": "PENDING",
-      "line": "Specimen: not graded yet, still being checked."
     }
   ],
   "scoreboard": {
-    "graded": 6,
+    "graded": 8,
     "passed": 0,
     "passedOnOwn": 0
   },
   "missFirstSeen": {
+    "medea-off-broadway-2026|2026-10-30|review:nytimes:": "2026-10-31T09:05:07.523Z",
+    "medea-off-broadway-2026|2026-10-30|review:a-younger-theatre:": "2026-10-31T09:05:07.523Z",
+    "specimen-off-broadway-2026|2026-10-30|review:theater-scene:": "2026-10-31T09:05:07.523Z",
+    "specimen-off-broadway-2026|2026-10-30|review:front-row-center:": "2026-10-31T09:05:07.523Z",
+    "specimen-off-broadway-2026|2026-10-30|review:this-week-in-new-york:": "2026-10-31T09:05:07.523Z",
+    "specimen-off-broadway-2026|2026-10-30|review:off-off-online:": "2026-10-31T09:05:07.523Z",
     "the-moth-off-west-end-2026|2026-10-30|review:fringereview:Simon Jenner": "2026-10-31T05:52:28.535Z",
     "the-moth-off-west-end-2026|2026-10-30|review:fringereview:Unknown": "2026-10-31T05:52:28.535Z",
     "the-moth-off-west-end-2026|2026-10-30|review:londonpubtheatres:Katie Walker-Cook": "2026-10-31T05:52:28.535Z"

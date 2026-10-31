@@ -533,6 +533,7 @@ on:
       - 'scripts/check-brand-tokens-sync.js'
       - 'scripts/check-image-aspect.js'
       - 'scripts/lint-design-tokens.js'
+      - 'scripts/lint-font-floor.js'
       - 'scripts/test-email-broadcast.js'
       - 'scripts/test-ordinal-publishdate-guards.js'
       - 'scripts/test-temporal-override-regression.js'
@@ -4580,6 +4581,11 @@ jobs:
         # gate, drift reappears in ~2 weeks. Exemption: `// design-lint-ok: <reason>`.
         # See memory/design-system.md for the canonical token list.
         run: node scripts/lint-design-tokens.js
+      - name: Web font floor (advisory)
+        # BRO-6567: counts text-[9-11px] uses in src/ (12px floor, as in the iOS app).
+        # Advisory first per CLAUDE.md section 19; always exits 0.
+        continue-on-error: true
+        run: node scripts/lint-font-floor.js
       - name: Check brand-tokens.json ↔ tailwind.config.ts sync
         # public/brand-tokens.json feeds Claude Design, Figma, Canva, email
         # templates, and the brand kit — tailwind.config.ts feeds the running

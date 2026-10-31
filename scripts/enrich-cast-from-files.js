@@ -4,6 +4,9 @@
  *
  * Reads per-show IBDB cast files and writes simplified {name, role} arrays
  * into shows.json for mobile app and content-matching consumers.
+ * Also fills castBilling from validated Playbill snapshots in cast-changes.json,
+ * collected by scrape-cast-changes.js using its existing production-page fetch.
+ * Missing snapshots leave billing alone; source URLs must still match the registry.
  *
  * Zero network requests — purely local file transformation.
  *
@@ -12,7 +15,7 @@
  *
  * Options:
  *   --dry-run           Show changes without writing
- *   --force             Overwrite existing cast entries
+ *   --force             Overwrite existing cast entries and billing
  *   --category=CAT      Filter: broadway, off-broadway, west-end (default: all)
  *   --status=STATUS     Filter: open, previews, closed (default: all)
  *   --max-members=N     Max principals per show (default: 15)
@@ -22,6 +25,7 @@
 const fs = require('fs');
 const { castFileMismatchReason } = require('./lib/cast-tombstone');
 const { extractCast: extractCastPrincipals } = require('./lib/cast-principals');
+const { enrichCastBillingFromSnapshot } = require('./lib/playbill-cast-billing');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
@@ -35,6 +39,8 @@ Usage:
 `;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
+const CAST_CHANGES_FILE = path.join(__dirname, '..', 'data', 'cast-changes.json');
+const PLAYBILL_URLS_FILE = path.join(__dirname, '..', 'data', 'playbill-urls.json');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -81,14 +87,11 @@ function main() {
   let shows = showsData.shows;
   console.log(`Total shows in database: ${shows.length}`);
 
-  // Check cast directory exists
-  if (!fs.existsSync(CAST_DIR)) {
-    console.error('Cast directory not found:', CAST_DIR);
-    process.exit(1);
-  }
-
+  // Billing snapshots do not depend on the separate IBDB cast directory.
   const castFiles = new Set(
-    fs.readdirSync(CAST_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
+    fs.existsSync(CAST_DIR)
+      ? fs.readdirSync(CAST_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
+      : []
   );
   console.log(`Cast files found: ${castFiles.size}`);
 
@@ -110,8 +113,21 @@ function main() {
 
   console.log(`Shows after filters: ${targets.length}`);
 
+  // Optional local source, so ordinary cast enrichment still works without it.
+  let playbillUrls = {};
+  let castChanges = {};
+  if (fs.existsSync(CAST_CHANGES_FILE) && fs.existsSync(PLAYBILL_URLS_FILE)) {
+    try {
+      playbillUrls = JSON.parse(fs.readFileSync(PLAYBILL_URLS_FILE, 'utf8')).shows || {};
+      castChanges = JSON.parse(fs.readFileSync(CAST_CHANGES_FILE, 'utf8')).shows || {};
+    } catch (e) {
+      console.log(`  Warning: Failed to read Playbill billing snapshots: ${e.message}`);
+    }
+  }
+
   // Process
   let enriched = 0;
+  let billingEnriched = 0;
   let skippedExisting = 0;
   let skippedNoCastFile = 0;
   let skippedEmptySource = 0;
@@ -120,6 +136,13 @@ function main() {
   const enrichedShows = [];
 
   for (const show of targets) {
+    // Independent of the alphabetical cast array and its early exits below.
+    // Most affected shows already have cast, so they must reach this writer.
+    if (enrichCastBillingFromSnapshot(show, castChanges[show.id]?.castBilling, playbillUrls[show.id], { force })) {
+      billingEnriched++;
+      if (dryRun) console.log(`  Would enrich billing: ${show.id} - ${show.castBilling.slice(0, 4).join(', ')}`);
+    }
+
     // Skip if already has cast and not forcing
     if (show.cast && show.cast.length > 0 && !force) {
       skippedExisting++;
@@ -173,10 +196,10 @@ function main() {
   }
 
   // Write
-  if (!dryRun && enriched > 0) {
+  if (!dryRun && (enriched > 0 || billingEnriched > 0)) {
     saveShows(showsData);
     if (skippedMismatch) console.log(`Skipped (wrong production): ${skippedMismatch}`);
-    console.log(`\nWrote shows.json with ${enriched} enriched cast arrays`);
+    console.log(`\nWrote shows.json with ${enriched} enriched cast arrays and ${billingEnriched} billing lists`);
   }
 
   // Summary
@@ -184,6 +207,7 @@ function main() {
   console.log('SUMMARY');
   console.log('='.repeat(60));
   console.log(`  Enriched:              ${enriched}`);
+  console.log(`  Billing enriched:      ${billingEnriched}`);
   console.log(`  Skipped (existing):    ${skippedExisting}`);
   console.log(`  Skipped (no file):     ${skippedNoCastFile}`);
   console.log(`  Skipped (empty src):   ${skippedEmptySource}`);

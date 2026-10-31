@@ -79,6 +79,43 @@ run_audit() {
   return 0
 }
 
+# Committed merge-conflict markers (BRO-6687). push-with-retry.sh ran this
+# detector for CI pushes only, so a land/<name> push from a session carried a
+# stash-apply conflict straight to the Land run. Any changed file; deleted
+# files are skipped (--list keeps every path so selection stays deterministic).
+# Intentional fixtures: PUSH_SKIP_CONFLICT_CHECK=1, as in push-with-retry.sh.
+if [ "${PUSH_SKIP_CONFLICT_CHECK:-}" != "1" ]; then
+  CM_FILES=()
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    if [ "$LIST_ONLY" = "1" ] || [ -f "$f" ]; then CM_FILES+=("$f"); fi
+  done <<<"$CHANGED_FILES"
+  if [ ${#CM_FILES[@]} -gt 0 ]; then
+    # Via a list file, not argv: a bulk regeneration can push >10k paths.
+    # mktemp (private, unpredictable name); a failed or short write fails closed.
+    if CM_LIST=$(mktemp "${TMPDIR:-/tmp}/push-audit-cm.XXXXXX") \
+      && printf '%s\n' ${CM_FILES[@]+"${CM_FILES[@]}"} >"$CM_LIST"; then
+      run_audit "conflict-markers" "scripts/lib/conflict-markers.js" "--files-from=$CM_LIST" || FAIL=1
+    else
+      echo "AUDIT BLOCKED: conflict-markers could not write its file list"; FAIL=1
+    fi
+    rm -f "${CM_LIST:-}"
+  fi
+fi
+
+# set -u empty-array expansions in changed shell scripts (BRO-2555 lint).
+# Before BRO-6687 only Land's scripts-lib-tests ran it, so a bare "${arr[@]}"
+# was found ~20 min after the push. Strict, changed .sh files only (~0.2s).
+SH_FILES=()
+while IFS= read -r f; do
+  # A path starting with "-" gets "./" so the audit does not read it as a flag.
+  case "$f" in -*) f="./$f" ;; esac
+  case "$f" in *.sh) if [ "$LIST_ONLY" = "1" ] || [ -f "$f" ]; then SH_FILES+=("$f"); fi ;; esac
+done <<<"$CHANGED_FILES"
+if [ ${#SH_FILES[@]} -gt 0 ]; then
+  run_audit "set-u-expansions" "scripts/lib/audit-set-u-expansions.js" --strict ${SH_FILES[@]+"${SH_FILES[@]}"} || FAIL=1
+fi
+
 # Unbounded git fetch on a shallow-checkout path (task #420).
 if grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/(workflows|actions)/.*\.ya?ml$" <<<"$CHANGED_FILES"; then
   run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js" || FAIL=1
