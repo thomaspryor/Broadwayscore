@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T18:54:22.559Z",
+  "timestamp": "2026-10-31T19:13:40.568Z",
   "stats": {
-    "totalReviews": 75725,
-    "alreadyFlagged": 21753,
+    "totalReviews": 75810,
+    "alreadyFlagged": 21752,
     "dateGuardCatches": 238,
-    "directorMismatch": 3211,
-    "tvFilmSignals": 2162,
-    "londonSignals": 3508,
+    "directorMismatch": 3212,
+    "tvFilmSignals": 2165,
+    "londonSignals": 3511,
     "offBroadwaySignals": 717,
     "yearMismatch": 320,
-    "noPublishDate": 8543
+    "noPublishDate": 8559
   },
   "findings": [
     {
@@ -2127,6 +2127,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-new-brain-regional-2025",
+      "file": "allie-and-the-after-party--allie-bugajski.json",
+      "publishDate": "2025-09-02",
+      "url": "https://www.allieandtheafterparty.com/reviews/pridearts-a-new-brain",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "a-new-brain-regional-2025",
+      "file": "stageandcinema--cj-fernandes.json",
+      "publishDate": "2025-08-28",
+      "url": "https://stageandcinema.com/2025/08/28/a-new-brain-pridearts/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -6190,6 +6216,7 @@
     {
       "showId": "ashland-avenue-regional-2025",
       "file": "new-city-stage--mary-wisniewski.json",
+      "score": 82,
       "publishDate": "2025-09-19",
       "url": "https://www.newcitystage.com/2025/09/19/in-ashland-avenue-one-chicago-shop-owner-must-come-to-terms-with-the-future/",
       "findings": [
@@ -6203,6 +6230,7 @@
     {
       "showId": "ashland-avenue-regional-2025",
       "file": "thefourthwalsh--unknown.json",
+      "score": 63,
       "publishDate": "2025-09-17",
       "url": "https://thefourthwalsh.com/2025/09/review-ashland-avenue-goodman-theatre-the-office-fans-this-one-is-for-you/",
       "findings": [
@@ -52323,6 +52351,19 @@
       ]
     },
     {
+      "showId": "side-by-side-by-sondheim-regional-2025",
+      "file": "splash-magazines--mira-temkin.json",
+      "publishDate": "2025-09-05",
+      "url": "https://chicago.splashmags.com/2025/09/side-by-side-by-sondheim-enjoy-a-musical-celebration-of-the-master/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ned sherrin\" from side-by-side-by-sondheim-1977"
+        }
+      ]
+    },
+    {
       "showId": "side-show-2014",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 82,
@@ -62178,6 +62219,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-f-ck-house-regional-2025",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2025-09-02",
+      "url": "https://thirdcoastreview.com/stages/2025/09/02/review-strawdog-theatre-the-fck-house",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -83323,6 +83377,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "ballad-lines-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2026-01-30",
+      "url": "https://theatreandtonic.co.uk/blog/ballad-lines-at-southwark-playhouse-elephant-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -104784,6 +104852,19 @@
     },
     {
       "showId": "mass-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "publishDate": "2026-05-01",
+      "url": "https://www.allthatdazzles.co.uk/post/review-mass-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
       "score": 81,
       "publishDate": null,
@@ -117386,6 +117467,20 @@
       "score": 79,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-the-authenticator-dorfman-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "britishtheatrecom--susan-novak.json",
+      "score": null,
+      "publishDate": "2026-04-03",
+      "url": "https://www.britishtheatre.com/posts/the-authenticator-at-the-national-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
