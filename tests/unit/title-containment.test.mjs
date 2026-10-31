@@ -150,4 +150,8 @@ test('BRO-6727: a short title inside a longer UNcatalogued title is not redirect
   // The catalogued longer show still wins over the short one when nothing extra is named.
   assert.equal(matchTitleToShow('Mamma Mia! West End Reviews', shows, { market: 'west-end' })?.show?.id, 'mamma-mia-west-end-2021');
   assert.equal(matchTitleToShow('MAMMA MIA! Reviews | BroadwayWorld', shows)?.show?.id, 'mamma-mia-west-end-2021');
+  // Words BEFORE the title ("Reviews of", a possessive credit) don't make it a longer title.
+  assert.equal(matchTitleToShow("Reviews of ABBA's Mamma Mia!", shows, { market: 'west-end' })?.show?.id, 'mamma-mia-west-end-2021');
+  // A tagline after the dash is not a longer title: the pre-dash variant still matches.
+  assert.equal(matchTitleToShow('Mamma Mia! review – a night to remember', shows, { market: 'west-end' })?.show?.id, 'mamma-mia-west-end-2021');
 });

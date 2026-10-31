@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
-const { findContainingTitleSibling, distinctTitleKey } = require('./title-containment');
+const { findContainingTitleSibling, distinctTitleKey, phraseNorm } = require('./title-containment');
 
 // ---------------------------------------------------------------------------
 // Known Aliases: External show titles → slugs in shows.json
@@ -726,7 +726,7 @@ function matchTitleToShow(externalTitle, shows, options) {
   for (const variant of titleVariants) {
     if (variant.length > 2) {
       const wordMatches = [];
-      const containingSiblings = new Set();
+      const containingSiblings = new Map(); // distinctTitleKey -> sibling phrase
       for (const show of shows) {
         const showTitle = (show.title || '').trim();
         if (showTitle.length > 2 && titleWordsMatch(showTitle, variant)) {
@@ -738,7 +738,7 @@ function matchTitleToShow(externalTitle, shows, options) {
           // (matchTitleToShow(t, [show])) have no longer titles of their own.
           const containing = findContainingTitleSibling(variant, showTitle, { shows })
             || findContainingTitleSibling(variant, showTitle);
-          if (containing) { containingSiblings.add(distinctTitleKey(containing.sibling)); continue; }
+          if (containing) { containingSiblings.set(distinctTitleKey(containing.sibling), containing.sibling); continue; }
           wordMatches.push(show);
         }
       }
@@ -752,13 +752,23 @@ function matchTitleToShow(externalTitle, shows, options) {
         // BRO-6727: the redirect skips titleWordsMatch, so apply its short-title
         // guard here. "Mia" word-matched "Mamma Mia! The Party" and the redirect
         // filed it under "Mamma Mia!" even though "party" names a different show.
-        // Only the headline counts, not a "| BroadwayWorld" site suffix.
-        const headline = variant.split(/\s+\|\s+/)[0];
-        const named = shows.filter(show => containingSiblings.has(distinctTitleKey(show.title || ''))
-          && !_hasUnexplainedExtraWords(show.title || '', headline));
+        // A guard rejection tries the next (shorter) variant: "Mamma Mia! review
+        // – a night to remember" still matches on "mamma mia! review".
+        // Only the headline counts, not a "| BroadwayWorld" suffix or a "– tagline".
+        // Only words AFTER the title count ("Mamma Mia! The Party"); a prefix
+        // like "Reviews of" or "Irving Berlin's" does not make a longer title.
+        const headline = phraseNorm(variant.split(/\s+[|\u2013\u2014]\s+/)[0]);
+        const siblingRows = shows.filter(show => containingSiblings.has(distinctTitleKey(show.title || '')));
+        const named = siblingRows.filter((show) => {
+          const sibling = containingSiblings.get(distinctTitleKey(show.title || ''));
+          const at = headline.indexOf(sibling);
+          const after = at === -1 ? headline : headline.slice(at + sibling.length);
+          return !_hasUnexplainedExtraWords(`${phraseNorm(show.title)} ${sibling}`, after);
+        });
         if (named.length > 0) {
           return { show: pickBestProduction(named, targetYear, preferredMarket, prefer, activeDate), confidence: 'medium' };
         }
+        if (siblingRows.length > 0) continue;
         // The named show isn't in the caller's list: none of the remaining
         // word matches is the show the title is about.
         return null;
@@ -1619,7 +1629,8 @@ function _tokenOnlyLocationPrefixed(token, cleanedSlug) {
 
 /**
  * Is `token` (ending in "s") used as a possessive name in the slug, i.e. is
- * every occurrence followed by the full title of one of `others`?
+ * every occurrence preceded by a word and followed by the full title of one
+ * of `others`?
  * "heather-christians-animal-wisdom" with others [Animal Wisdom] → true.
  */
 function _isPossessivePrefix(token, cleanedSlug, others) {
@@ -1627,9 +1638,10 @@ function _isPossessivePrefix(token, cleanedSlug, others) {
   let idx = -1;
   let saw = false;
   while ((idx = cleanedSlug.indexOf(token, idx + 1)) !== -1) {
-    const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
     const end = idx + token.length;
-    if (!startOk || (end !== cleanedSlug.length && cleanedSlug[end] !== '-')) continue;
+    if ((idx > 0 && cleanedSlug[idx - 1] !== '-') || (end !== cleanedSlug.length && cleanedSlug[end] !== '-')) continue;
+    // A possessive surname follows a first name; a slug-leading "oedipus-..." is the title.
+    if (idx === 0) return false;
     saw = true;
     const rest = cleanedSlug.slice(end + 1);
     const ownsRest = others.some(o => {
