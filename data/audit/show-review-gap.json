@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-31T02:57:17.839Z",
+  "generatedAt": "2026-10-31T03:22:12.044Z",
   "windowDays": 1095,
   "targets": 1388,
-  "auditedThisRun": 23,
-  "carriedForward": 1052,
+  "auditedThisRun": 21,
+  "carriedForward": 1054,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 546,
-    "missingCurrentRun": 1070,
+    "missingCurrentRun": 1067,
     "totalCitedNoUrl": 2,
     "totalFlaggedMisses": 781,
     "totalRecoverable": 29,
     "totalRecovered": 29,
     "humanExcluded": 6,
-    "automatedExcluded": 572,
-    "automatedExcludedListed": 471,
-    "priorProductionCitations": 5748
+    "automatedExcluded": 569,
+    "automatedExcludedListed": 469,
+    "priorProductionCitations": 5783
   },
   "results": [
     {
@@ -2475,11 +2475,12 @@
       "category": "tour",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/",
+        "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+        "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+        "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
         "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
-        "https://www.theatermania.com/news/a-beautiful-noise-the-neil-diamond-musical-to-tour-north-america_95001/",
-        "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
         "https://revuewm.com/arts/review-neil-diamonds-music-dazzles-in-a-beautiful-noise",
+        "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
         "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
         "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/"
       ],
@@ -2488,9 +2489,23 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/",
-          "host": "limelight-arts.com.au",
-          "knownOutletId": "limelight-magazine-au",
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
+        },
+        {
+          "url": "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+          "host": "rhetoricalreview.com",
+          "knownOutletId": "rhetoricalreview",
+          "serpCensus": true
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
           "serpCensus": true
         },
         {
@@ -2502,25 +2517,17 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theatermania.com/news/a-beautiful-noise-the-neil-diamond-musical-to-tour-north-america_95001/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "priorRun": true,
-          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-          "serpCensus": true
-        },
-        {
           "url": "https://revuewm.com/arts/review-neil-diamonds-music-dazzles-in-a-beautiful-noise",
           "host": "revuewm.com",
           "knownOutletId": "revue",
           "priorRun": true,
           "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
           "serpCensus": true
         },
         {
@@ -2551,8 +2558,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2572,7 +2579,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -2582,7 +2589,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -2592,23 +2599,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 24,
         "byReason": {
+          "non-review-host": 18,
           "ticketing-reseller": 2,
-          "non-review-host": 22,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 2,
-          "show-listing-page": 3
+          "non-review-path": 1,
+          "show-listing-page": 2,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -2616,15 +2623,15 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
-          "host": "hotchka.com",
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
-          "host": "broadwayworld.com",
+          "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
+          "host": "hotchka.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -2639,9 +2646,54 @@
       ],
       "ingestResults": [
         {
-          "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au",
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+          "host": "rhetoricalreview.com",
+          "outletId": "rhetoricalreview",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -2681,34 +2733,39 @@
           "expectedReason": "tour-review",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
-        },
+          "reason": "⚠️  Cross-market reroute: a-beautiful-noise-the-neil-diamond-musical-tour-2026 → a-beautiful-noise-the-neil-diamond-musical-tour-2024 (tour: date fits a-beautiful-noise-the-neil-diamond-musical-tour-2024)\n  ⛔ Refusing write: limelight-magazine-au--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/",
           "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+          "outletId": "limelight-magazine-au"
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "limelight-magazine-au",
-            "outlet": "limelight-magazine-au",
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/"
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/"
+          },
+          {
+            "outletId": "rhetoricalreview",
+            "outlet": "rhetoricalreview",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works"
           },
           {
             "outletId": "theatermania",
@@ -2734,6 +2791,34 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+            "outletId": "around-the-town-chicago",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+            "outletId": "rhetoricalreview",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T00:11:50.524Z"
+          },
           {
             "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/",
             "outletId": "limelight-magazine-au",
@@ -2765,9 +2850,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "a-bright-new-boise-off-broadway-2023",
@@ -32751,8 +32836,10 @@
         "https://www.vulture.com/article/theater-broadway-review-billy-crystal-860.html",
         "https://people.com/billy-crystal-860-broadway-review-12187320",
         "https://newyorktheater.me/2026/10/21/860-review-billy-crystal-recalls-his-lost-home-plus-61-celebrities/",
-        "https://maxhechtmanfilms.com/blog/billy-crystal-860-filmmaker-review",
+        "https://1minutecritic.substack.com/p/billy-crystal-860-broadway-review",
         "https://totaltheater1.wordpress.com/2026/10/26/billy-crystal-860/",
+        "https://www.inkl.com/news/860-review-billy-crystal-is-all-humor-and-heart-in-new-solo-broadway-show",
+        "https://maxhechtmanfilms.com/blog/billy-crystal-860-filmmaker-review",
         "https://thedaviddesk2.blogspot.com/2026/10/broadway-review-billy-crystal-860.html",
         "https://ew.com/860-broadway-review-billy-crystal-brilliant-show-brings-audiences-into-his-home-12181826",
         "https://www.yahoo.com/entertainment/tv/articles/broadway-review-billy-crystal-860-015145099.html",
@@ -32762,6 +32849,7 @@
         "https://se.headtopics.com/news/860-broadway-review-billy-crystal-remembers-the-good-89063463",
         "https://kr.headtopics.com/news/860-broadway-review-billy-crystal-remembers-the-good-89063463",
         "https://eg.headtopics.com/news/860-broadway-review-billy-crystal-remembers-the-good-89063463",
+        "https://www.yahoo.com/entertainment/tv/articles/broadway-review-billy-crystal-860-015145099.html",
         "https://www.newsbreak.com/news/4959963424448-860-broadway-review-billy-crystal-makes-audiences-feel-right-at-home-while-reflecting-on-losing-his-own"
       ],
       "dirFiles": 38,
@@ -32769,9 +32857,9 @@
       "inReviewsJson": 29,
       "missing": [
         {
-          "url": "https://www.yahoo.com/entertainment/tv/articles/broadway-review-billy-crystal-860-015145099.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
+          "url": "https://www.inkl.com/news/860-review-billy-crystal-is-all-humor-and-heart-in-new-solo-broadway-show",
+          "host": "inkl.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -32866,7 +32954,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -32876,7 +32964,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -32886,7 +32974,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -32896,7 +32984,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -32916,40 +33004,48 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 320,
+        "count": 326,
         "byReason": {
-          "ticketing-reseller": 5,
-          "non-review-host": 36,
-          "no-review-evidence": 1,
-          "roundup-page": 2,
-          "aggregator-internal-nav": 216,
+          "aggregator-internal-nav": 215,
           "not-http-url": 52,
           "production-database-listing": 1,
           "aggregator-section-root": 5,
-          "bare-host": 1,
-          "venue-production-page": 1
+          "non-review-host": 41,
+          "roundup-page": 2,
+          "ticketing-reseller": 6,
+          "census-junk-host": 2,
+          "venue-production-page": 1,
+          "show-listing-page": 1
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://1minutecritic.substack.com/p/billy-crystal-860-broadway-review",
+          "host": "1minutecritic.substack.com",
+          "matchedUrl": "https://1minutecritic.com/billy-crystal-860-broadway-review/",
+          "outletId": "one-minute-critic",
+          "reason": "same outlet \"one-minute-critic\" already held at 1minutecritic.com; 1minutecritic.substack.com is a registered alias of it"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.yahoo.com/entertainment/tv/articles/broadway-review-billy-crystal-860-015145099.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": false,
-          "ok": false,
+          "url": "https://www.inkl.com/news/860-review-billy-crystal-is-all-humor-and-heart-in-new-solo-broadway-show",
+          "host": "inkl.com",
+          "outletId": "inkl",
+          "provisional": true,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -32957,7 +33053,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "reason": null
         },
         {
           "url": "https://au.headtopics.com/news/860-broadway-review-billy-crystal-remembers-the-good-89063463",
@@ -33002,7 +33098,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=se.headtopics.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=se.headtopics.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  operator"
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=se.headtopics.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=se.headtopics.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"succ"
         },
         {
           "url": "https://kr.headtopics.com/news/860-broadway-review-billy-crystal-remembers-the-good-89063463",
@@ -33025,17 +33121,22 @@
           "url": "https://eg.headtopics.com/news/860-broadway-review-billy-crystal-remembers-the-good-89063463",
           "host": "headtopics.com",
           "outletId": "headtopics"
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/tv/articles/broadway-review-billy-crystal-860-015145099.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "yahoo",
-            "outlet": "yahoo",
+            "outletId": "inkl.com",
+            "outlet": "inkl.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.yahoo.com/entertainment/tv/articles/broadway-review-billy-crystal-860-015145099.html"
+            "url": "https://www.inkl.com/news/860-review-billy-crystal-is-all-humor-and-heart-in-new-solo-broadway-show"
           },
           {
             "outletId": "headtopics",
@@ -33197,6 +33298,18 @@
             "firstSeenAt": "2026-10-23T17:42:57.462Z"
           },
           {
+            "url": "https://1minutecritic.substack.com/p/billy-crystal-860-broadway-review",
+            "outletId": "1minutecritic.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://totaltheater1.wordpress.com/2026/10/26/billy-crystal-860/",
+            "outletId": "totaltheater1.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T01:32:30.606Z"
+          },
+          {
             "url": "https://maxhechtmanfilms.com/blog/billy-crystal-860-filmmaker-review",
             "outletId": "maxhechtmanfilms.com",
             "state": "live",
@@ -33227,11 +33340,11 @@
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
           },
           {
-            "url": "https://www.yahoo.com/entertainment/tv/articles/broadway-review-billy-crystal-860-015145099.html",
-            "outletId": "yahoo",
+            "url": "https://www.inkl.com/news/860-review-billy-crystal-is-all-humor-and-heart-in-new-solo-broadway-show",
+            "outletId": "inkl.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T23:33:33.656Z"
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "https://au.headtopics.com/news/860-broadway-review-billy-crystal-remembers-the-good-89063463",
@@ -33277,10 +33390,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 22,
-        "candidateCount": 25
+        "liveCount": 23,
+        "candidateCount": 27
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "bird-grove-off-west-end-2026",
@@ -73431,8 +73544,10 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.mainspring.watch/review/erebus-origin-gmt-classic-black-seiko-nh34-microbrand-just-one-more-watch-review",
         "https://www.watchforum.com/threads/erebus-origin-gmt-classic-black.11588/",
         "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
+        "https://www.the-wind-up.com/blog/erebus-watches-review",
         "https://luxurygoodsmediaa.com/erebus-ascent-luxury-style/",
         "https://ogp.68wim-vi.com/ysej/erebus-watches/",
         "https://gearspace.com/threads/dreadbox-erebus-3.1214119/page-8",
@@ -73443,11 +73558,25 @@
       "inReviewsJson": 0,
       "missing": [
         {
+          "url": "https://www.mainspring.watch/review/erebus-origin-gmt-classic-black-seiko-nh34-microbrand-just-one-more-watch-review",
+          "host": "mainspring.watch",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
           "host": "watchcrunch.com",
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "pending-file-date:2025-07-27",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.the-wind-up.com/blog/erebus-watches-review",
+          "host": "the-wind-up.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-09-10",
           "serpCensus": true
         },
         {
@@ -73550,7 +73679,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -73571,7 +73700,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -73581,7 +73710,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -73597,15 +73726,16 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 22,
+        "count": 27,
         "byReason": {
-          "non-review-host": 18,
-          "no-review-evidence": 2,
+          "non-review-host": 23,
+          "no-review-evidence": 1,
           "census-junk-host": 1,
+          "ugc-platform": 1,
           "bare-host": 1
         }
       },
@@ -73619,9 +73749,31 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
+        },
+        {
+          "url": "https://www.the-wind-up.com/blog/erebus-watches-review",
+          "host": "the-wind-up.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.mainspring.watch/review/erebus-origin-gmt-classic-black-seiko-nh34-microbrand-just-one-more-watch-review",
+          "host": "mainspring.watch",
+          "outletId": "mainspring",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
         {
           "url": "https://luxurygoodsmediaa.com/erebus-ascent-luxury-style/",
           "host": "luxurygoodsmediaa.com",
@@ -73635,7 +73787,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"luxurygoodsmediaa\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=luxurygoodsmediaa.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  provisional outlet \"luxurygoodsmediaa\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
           "url": "https://ogp.68wim-vi.com/ysej/erebus-watches/",
@@ -73657,6 +73809,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "mainspring.watch",
+            "outlet": "mainspring.watch",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.mainspring.watch/review/erebus-origin-gmt-classic-black-seiko-nh34-microbrand-just-one-more-watch-review"
+          },
           {
             "outletId": "luxurygoodsmediaa.com",
             "outlet": "luxurygoodsmediaa.com",
@@ -73689,6 +73848,13 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.mainspring.watch/review/erebus-origin-gmt-classic-black-seiko-nh34-microbrand-just-one-more-watch-review",
+            "outletId": "mainspring.watch",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
             "url": "https://luxurygoodsmediaa.com/erebus-ascent-luxury-style/",
             "outletId": "luxurygoodsmediaa.com",
             "state": "IN_FLIGHT",
@@ -73719,9 +73885,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -81709,7 +81875,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -81719,7 +81885,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -81760,14 +81926,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 23,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 4,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 8,
+          "no-review-evidence": 3,
+          "write-path-blocked": 2,
+          "non-review-path": 2,
           "merch-store": 1,
-          "review-hub-page": 1,
-          "non-review-path": 1,
-          "bare-host": 3
+          "review-hub-page": 3,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -81781,7 +81949,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "ghost-of-john-mccain-off-broadway-2024",
@@ -83711,187 +83879,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.vulture.com/2018/11/the-indignity-and-glory-of-female-adolescence-in-usual-girls.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2018/11/05/usual-girls-aching-just-like-a-woman-and-breaking-too/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/For-Colored-Girls/1072",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/broadway/review-half-a-century-on-for-colored-girls-shines-again/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://broadwaynews.com/2022/04/20/review-the-breathtaking-beauty-of-for-colored-girls/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-colored-girls-revival-20220421-wna26hhfyffcpkf5prr57qxpr4-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/for-colored-girls-beautifully-raises-black-womens-voices-on-broadway",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://deadline.com/2022/04/for-colored-girls-broadway-review-ntozake-shange-1235004962/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.harlemcommunitynews.com/for-colored-girls-is-a-clarion-call-to-black-women-on-broadway/",
-          "host": "harlemcommunitynews.com",
-          "knownOutletId": "harlem-community-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-for-colored-girls-revival-20220421-mqvnqonspjfeji3s5jyz3jk6v4-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nypost.com/2022/04/20/for-colored-girls-review-broadway-play-has-lost-its-power/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/for-colored-girls-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/for-colored-girls-returns-home-to-broadway-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2022/04/for-colored-girls-broadway-theater-review.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/to-my-girls-is-a-weekend-of-gay-hell-in-palm-springs",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/04/12/to-my-girls-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/to-my-girls-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/04/12/theater/to-my-girls-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/offensive-and-fabulous-to-my-girls-offers-searing-critique-of-gay-culture-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
           "url": "https://1minutecritic.com/school-girls-broadway-review/",
           "host": "1minutecritic.com",
           "knownOutletId": "one-minute-critic",
@@ -84160,15 +84147,13 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 700,
+        "count": 279,
         "byReason": {
-          "non-review-host": 75,
-          "roundup-page": 99,
-          "aggregator-internal-nav": 388,
-          "not-http-url": 70,
-          "production-database-listing": 49,
-          "aggregator-section-root": 18,
-          "bare-host": 1
+          "aggregator-internal-nav": 204,
+          "not-http-url": 51,
+          "aggregator-section-root": 6,
+          "non-review-host": 15,
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
@@ -84188,190 +84173,6 @@
       ],
       "automatedExcludedListed": 1,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.thedailybeast.com/the-wild-world-of-usual-girls-sex-misogyny-racism-and-cuddly-toys",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.vulture.com/2018/11/the-indignity-and-glory-of-female-adolescence-in-usual-girls.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://nystagereview.com/2018/11/05/usual-girls-aching-just-like-a-woman-and-breaking-too/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/For-Colored-Girls/1072",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.amny.com/entertainment/broadway/review-half-a-century-on-for-colored-girls-shines-again/",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://broadwaynews.com/2022/04/20/review-the-breathtaking-beauty-of-for-colored-girls/",
-          "host": "broadwaynews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-colored-girls-revival-20220421-wna26hhfyffcpkf5prr57qxpr4-story.html",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thedailybeast.com/for-colored-girls-beautifully-raises-black-womens-voices-on-broadway",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://deadline.com/2022/04/for-colored-girls-broadway-review-ntozake-shange-1235004962/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.harlemcommunitynews.com/for-colored-girls-is-a-clarion-call-to-black-women-on-broadway/",
-          "host": "harlemcommunitynews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-for-colored-girls-revival-20220421-mqvnqonspjfeji3s5jyz3jk6v4-story.html",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nypost.com/2022/04/20/for-colored-girls-review-broadway-play-has-lost-its-power/",
-          "host": "nypost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/for-colored-girls-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/for-colored-girls-returns-home-to-broadway-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.vulture.com/2022/04/for-colored-girls-broadway-theater-review.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thedailybeast.com/to-my-girls-is-a-weekend-of-gay-hell-in-palm-springs",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://newyorktheater.me/2022/04/12/to-my-girls-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/to-my-girls-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2022/04/12/theater/to-my-girls-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/offensive-and-fabulous-to-my-girls-offers-searing-critique-of-gay-culture-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
       "ingestResults": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
@@ -85031,7 +84832,7 @@
         "liveCount": 13,
         "candidateCount": 34
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -112638,13 +112439,39 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-IN-THE-HEIGHTS-Opens-at-New-York-City-Center-20261030",
-        "https://playbill.com/article/reviews-sound-off-on-in-the-heights-at-new-york-city-center"
+        "https://playbill.com/article/reviews-sound-off-on-in-the-heights-at-new-york-city-center",
+        "https://playbill.com/article/read-the-reviews-for-the-in-the-heights-movie",
+        "https://www.broadwayworld.com/article/Review-Roundup-IN-THE-HEIGHTS-Opens-at-New-York-City-Center-20261030"
       ],
       "aggregatorListedUrls": [
         "https://culturesauce.com/in-the-heights-encores-off-broadway-review/",
-        "https://newyorktheater.me/2026/10/30/in-the-heights-at-new-york-city-center/",
         "https://www.vulture.com/article/theater-review-in-the-heights-musical-encores-city-center-miranda-hudes.html",
+        "https://newyorktheater.me/2026/10/30/in-the-heights-at-new-york-city-center/",
+        "https://film.avclub.com/in-the-heights-joyfully-brings-lin-manuel-miranda-s-fir-1846932171",
+        "https://collider.com/in-the-heights-review-movie-lin-manuel-miranda-hbo-max/",
+        "https://deadline.com/video/in-the-heights-review-lin-manuel-mirandas-tony-winning-musical-makes-buoyant-leap-to-the-screen/",
+        "https://www.empireonline.com/movies/reviews/in-the-heights/",
+        "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/",
+        "https://www.standard.co.uk/culture/film/in-the-heights-film-review-immigrants-hamilton-lin-manuel-miranda-b936529.html",
+        "https://www.forbes.com/sites/scottmendelson/2021/05/21/review-in-the-heights-lin-manuel-miranda-jon-m-chu-warner-bros-hbo-max/",
+        "https://www.theguardian.com/film/2021/may/21/in-the-heights-review-high-energy-movie-musical-loaded-with-sunny-d-optimism",
+        "https://www.hollywoodreporter.com/movies/movie-reviews/lin-manuel-mirandas-in-the-heights-1234955500/",
+        "https://www.ign.com/articles/in-the-heights-movie-review",
+        "https://www.independent.co.uk/arts-entertainment/films/reviews/in-the-heights-review-lin-manuel-miranda-b1851464.html",
+        "https://www.indiewire.com/2021/05/in-the-heights-movie-review-1234639010/",
+        "https://www.latimes.com/entertainment-arts/movies/story/2021-05-21/in-the-heights-review-lin-manuel-miranda",
+        "https://mashable.com/article/in-the-heights-movie-review/",
+        "https://www.nytimes.com/2021/06/09/movies/in-the-heights-review.html",
+        "https://observer.com/2021/05/in-the-heights-film-review/",
+        "https://datebook.sfchronicle.com/movies-tv/review-jon-m-chus-in-the-heights-marks-the-return-of-grand-scale-movies",
+        "https://www.slantmagazine.com/film/review-in-the-heights-brings-the-broadway-musical-to-exuberantly-cinematic-life/",
+        "https://www.theatrely.com/post/in-the-heights-lives-up-to-its-name-review",
+        "https://www.timeout.com/movies/in-the-heights-2021",
+        "https://www.usatoday.com/story/entertainment/movies/2021/05/21/in-heights-review-lin-manuel-miranda-musical-cultural-joy/5186601001/",
+        "https://www.vanityfair.com/hollywood/2021/05/review-in-the-heights-is-just-what-weve-been-waiting-for",
+        "https://variety.com/2021/film/reviews/in-the-heights-review-lin-manuel-miranda-hamilton-1234978405/",
+        "https://www.vox.com/22440448/in-the-heights-movie-review-miranda-ramos-chu-hudes",
+        "https://www.thewrap.com/in-the-heights-film-review-lin-manuel-miranda-anthony-ramos-movie/",
         "https://www.metacritic.com/movie/in-the-heights/user-reviews/",
         "http://www.curtainup.com/heights.html",
         "https://www.timeout.com/newyork/theater/in-the-heights-1"
@@ -112653,6 +112480,181 @@
       "dirClean": 3,
       "inReviewsJson": 3,
       "missing": [
+        {
+          "url": "https://film.avclub.com/in-the-heights-joyfully-brings-lin-manuel-miranda-s-fir-1846932171",
+          "host": "avclub.com",
+          "knownOutletId": "av-club",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://collider.com/in-the-heights-review-movie-lin-manuel-miranda-hbo-max/",
+          "host": "collider.com",
+          "knownOutletId": "collider",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/video/in-the-heights-review-lin-manuel-mirandas-tony-winning-musical-makes-buoyant-leap-to-the-screen/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/in-the-heights/",
+          "host": "empireonline.com",
+          "knownOutletId": "empire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/film/in-the-heights-film-review-immigrants-hamilton-lin-manuel-miranda-b936529.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.forbes.com/sites/scottmendelson/2021/05/21/review-in-the-heights-lin-manuel-miranda-jon-m-chu-warner-bros-hbo-max/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/may/21/in-the-heights-review-high-energy-movie-musical-loaded-with-sunny-d-optimism",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/lin-manuel-mirandas-in-the-heights-1234955500/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ign.com/articles/in-the-heights-movie-review",
+          "host": "ign.com",
+          "knownOutletId": "ign",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/films/reviews/in-the-heights-review-lin-manuel-miranda-b1851464.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2021/05/in-the-heights-movie-review-1234639010/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-05-21/in-the-heights-review-lin-manuel-miranda",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mashable.com/article/in-the-heights-movie-review/",
+          "host": "mashable.com",
+          "knownOutletId": "mashable",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2021/06/09/movies/in-the-heights-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2021/05/in-the-heights-film-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-jon-m-chus-in-the-heights-marks-the-return-of-grand-scale-movies",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/film/review-in-the-heights-brings-the-broadway-musical-to-exuberantly-cinematic-life/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/in-the-heights-lives-up-to-its-name-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/movies/in-the-heights-2021",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2021/05/21/in-heights-review-lin-manuel-miranda-musical-cultural-joy/5186601001/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/05/review-in-the-heights-is-just-what-weve-been-waiting-for",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/in-the-heights-review-lin-manuel-miranda-hamilton-1234978405/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vox.com/22440448/in-the-heights-movie-review-miranda-ramos-chu-hudes",
+          "host": "vox.com",
+          "knownOutletId": "vox",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/in-the-heights-film-review-lin-manuel-miranda-anthony-ramos-movie/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.metacritic.com/movie/in-the-heights/user-reviews/",
           "host": "metacritic.com",
@@ -112681,18 +112683,202 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 382,
+        "count": 533,
         "byReason": {
-          "non-review-host": 36,
-          "aggregator-internal-nav": 250,
-          "not-http-url": 77,
-          "production-database-listing": 9,
-          "aggregator-section-root": 10
+          "aggregator-internal-nav": 311,
+          "not-http-url": 85,
+          "production-database-listing": 19,
+          "aggregator-section-root": 14,
+          "non-review-host": 56,
+          "roundup-page": 48
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-the-in-the-heights-movie",
+          "publishDate": "2021-05-21"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://film.avclub.com/in-the-heights-joyfully-brings-lin-manuel-miranda-s-fir-1846932171",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://collider.com/in-the-heights-review-movie-lin-manuel-miranda-hbo-max/",
+          "host": "collider.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/video/in-the-heights-review-lin-manuel-mirandas-tony-winning-musical-makes-buoyant-leap-to-the-screen/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/in-the-heights/",
+          "host": "empireonline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/in-the-heights-movie-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/film/in-the-heights-film-review-immigrants-hamilton-lin-manuel-miranda-b936529.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.forbes.com/sites/scottmendelson/2021/05/21/review-in-the-heights-lin-manuel-miranda-jon-m-chu-warner-bros-hbo-max/",
+          "host": "forbes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/may/21/in-the-heights-review-high-energy-movie-musical-loaded-with-sunny-d-optimism",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/lin-manuel-mirandas-in-the-heights-1234955500/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ign.com/articles/in-the-heights-movie-review",
+          "host": "ign.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/films/reviews/in-the-heights-review-lin-manuel-miranda-b1851464.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/2021/05/in-the-heights-movie-review-1234639010/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-05-21/in-the-heights-review-lin-manuel-miranda",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mashable.com/article/in-the-heights-movie-review/",
+          "host": "mashable.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2021/06/09/movies/in-the-heights-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2021/05/in-the-heights-film-review/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-jon-m-chus-in-the-heights-marks-the-return-of-grand-scale-movies",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/film/review-in-the-heights-brings-the-broadway-musical-to-exuberantly-cinematic-life/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/in-the-heights-lives-up-to-its-name-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/movies/in-the-heights-2021",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2021/05/21/in-heights-review-lin-manuel-miranda-musical-cultural-joy/5186601001/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/05/review-in-the-heights-is-just-what-weve-been-waiting-for",
+          "host": "vanityfair.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/in-the-heights-review-lin-manuel-miranda-hamilton-1234978405/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vox.com/22440448/in-the-heights-movie-review-miranda-ramos-chu-hudes",
+          "host": "vox.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/in-the-heights-film-review-lin-manuel-miranda-anthony-ramos-movie/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.metacritic.com/movie/in-the-heights/user-reviews/",
@@ -112775,14 +112961,14 @@
             "firstSeenAt": "2026-10-30T16:58:09.613Z"
           },
           {
-            "url": "https://newyorktheater.me/2026/10/30/in-the-heights-at-new-york-city-center/",
-            "outletId": "newyorktheater.me",
+            "url": "https://www.vulture.com/article/theater-review-in-the-heights-musical-encores-city-center-miranda-hudes.html",
+            "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-10-30T23:31:22.664Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-in-the-heights-musical-encores-city-center-miranda-hudes.html",
-            "outletId": "vulture.com",
+            "url": "https://newyorktheater.me/2026/10/30/in-the-heights-at-new-york-city-center/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-10-30T23:31:22.664Z"
           },
@@ -112812,7 +112998,7 @@
         "liveCount": 3,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -115676,7 +115862,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -150053,16 +150239,10 @@
         "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
         "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/"
       ],
-      "dirFiles": 63,
-      "dirClean": 38,
+      "dirFiles": 64,
+      "dirClean": 39,
       "inReviewsJson": 39,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "broadwaynews.com",
@@ -150253,24 +150433,6 @@
       ],
       "automatedExcludedListed": 4,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "recoveryResults": [
         {
           "url": "https://www.thestage.co.uk/reviews/maybe-happy-ending-review-belasco-theatre-new-york-darren-criss-helen-j-shen-will-aronson-hue-park-michael-arden",
@@ -150281,7 +150443,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -150385,6 +150547,78 @@
             "url": "https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
             "outletId": "talkinbroadway.com",
             "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/broadway/maybe-happy-ending/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-maybe-happy-ending-at-the-belasco-theatre-currently-on/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
+            "outletId": "pagesonstages.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T14:18:07.998Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
+            "outletId": "nystagereview.com",
+            "state": "live",
             "firstSeenAt": "2026-10-31T02:57:17.839Z"
           },
           {
@@ -150400,80 +150634,14 @@
             "firstSeenAt": "2026-10-31T02:57:17.839Z"
           },
           {
-            "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
-          },
-          {
-            "url": "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
-            "outletId": "pagesonstages.wordpress.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
             "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
             "outletId": "showbiz411.com",
             "state": "live",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
-            "url": "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
-            "outletId": "slantmagazine.com",
+            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
@@ -150494,13 +150662,6 @@
             "outletId": "thewrap.com",
             "state": "live",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
           },
           {
             "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
@@ -150528,7 +150689,7 @@
             "outletId": "lighting-and-sound-america",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "https://baltimorefishbowl.com/stories/tony-nominated-robot-love-story-maybe-happy-ending-to-launch-national-tour-from-baltimores-hippodrome-theatre/",
@@ -150539,10 +150700,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 25,
+        "liveCount": 26,
         "candidateCount": 31
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -152259,24 +152420,207 @@
       "openingDate": "2026-10-30",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera",
+        "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale",
+        "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928",
+        "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+      ],
       "aggregatorListedUrls": [
+        "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+        "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+        "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+        "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+        "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+        "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+        "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare",
+        "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+        "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+        "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+        "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+        "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+        "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+        "https://www.timeout.com/newyork/theater/medea-2",
+        "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+        "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
+        "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
+        "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
+        "https://www.theguardian.com/stage/2014/jul/22/medea-carrie-cracknell-helen-mccrory-national-theatre-review",
+        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10980862/Medea-National-Theatre-review-thrilling-and-merciless.html",
+        "https://www.standard.co.uk/goingout/theatre/medea-national-theatre--theatre-review-helen-mccrory-is-on-exceptional-form-9620591.html",
+        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/medea-national-theatre-review-unforgettable-and-horribly-gripping-9621292.html",
+        "http://www.dailymail.co.uk/tvshowbiz/article-2700820/An-exciting-fashionable-production-horrid-play-QUENTIN-LETTS-reviews-Medea.html",
+        "http://www.huffingtonpost.co.uk/victoria-sadler/helen-mccrory-medea-review_b_5614983.html",
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
-        "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/",
-        "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-        "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-        "https://indieopera.com/review-medea/",
         "https://www.timeout.com/newyork/theater/medea-4",
+        "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
         "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
         "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-        "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
-        "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/"
+        "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+        "https://indieopera.com/review-medea/",
+        "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/",
+        "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/"
       ],
       "dirFiles": 17,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+          "host": "newyorkclassicalreview.com",
+          "knownOutletId": "new-york-classical-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+          "host": "operawire.com",
+          "knownOutletId": "operawire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+          "host": "parterre.com",
+          "knownOutletId": "parterre-box",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2014/jul/22/medea-carrie-cracknell-helen-mccrory-national-theatre-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10980862/Medea-National-Theatre-review-thrilling-and-merciless.html",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/goingout/theatre/medea-national-theatre--theatre-review-helen-mccrory-is-on-exceptional-form-9620591.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/medea-national-theatre-review-unforgettable-and-horribly-gripping-9621292.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2700820/An-exciting-fashionable-production-horrid-play-QUENTIN-LETTS-reviews-Medea.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "mail-on-sunday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.huffingtonpost.co.uk/victoria-sadler/helen-mccrory-medea-review_b_5614983.html",
+          "host": "huffingtonpost.co.uk",
+          "knownOutletId": "huffpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
           "host": "newyorktheatrereview.blogspot.com",
@@ -152285,29 +152629,15 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-          "host": "the-tls.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-          "host": "operacanada.ca",
-          "knownOutletId": "operacanada",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-10-13",
-          "serpCensus": true
-        },
-        {
-          "url": "https://indieopera.com/review-medea/",
-          "host": "indieopera.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.timeout.com/newyork/theater/medea-4",
           "host": "timeout.com",
           "knownOutletId": "timeout",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "serpCensus": true
         },
         {
@@ -152322,12 +152652,20 @@
           "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
           "host": "operawire.com",
           "knownOutletId": "operawire",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-10-18",
           "serpCensus": true
         },
         {
-          "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
-          "host": "classicalsource.com",
-          "knownOutletId": "classical-source",
+          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+          "host": "the-tls.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://indieopera.com/review-medea/",
+          "host": "indieopera.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -152339,6 +152677,54 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
           "host": "ayoungertheatre.com",
@@ -152400,8 +152786,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -152410,7 +152796,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -152421,7 +152807,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -152431,7 +152817,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -152441,30 +152827,211 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 1071,
         "byReason": {
-          "ticketing-reseller": 2,
-          "non-review-host": 19,
-          "no-review-evidence": 2,
-          "aggregator-internal-nav": 2,
+          "aggregator-internal-nav": 793,
+          "not-http-url": 121,
+          "production-database-listing": 21,
+          "aggregator-section-root": 22,
+          "non-review-host": 103,
+          "roundup-page": 2,
+          "ticketing-reseller": 3,
+          "event-listing": 1,
+          "no-review-evidence": 3,
           "review-hub-page": 1,
-          "show-listing-page": 1
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera",
+          "publishDate": "2022-09-29"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale",
+          "publishDate": "2020-01-31"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131",
+          "publishDate": "2020-01-31"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928",
+          "publishDate": "2022-09-28"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725",
+          "publishDate": "2014-07-25"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+          "host": "newyorkclassicalreview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+          "host": "operawire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+          "host": "parterre.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-2",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2014/jul/22/medea-carrie-cracknell-helen-mccrory-national-theatre-review",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10980862/Medea-National-Theatre-review-thrilling-and-merciless.html",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/goingout/theatre/medea-national-theatre--theatre-review-helen-mccrory-is-on-exceptional-form-9620591.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/medea-national-theatre-review-unforgettable-and-horribly-gripping-9621292.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2700820/An-exciting-fashionable-production-horrid-play-QUENTIN-LETTS-reviews-Medea.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.huffingtonpost.co.uk/victoria-sadler/helen-mccrory-medea-review_b_5614983.html",
+          "host": "huffingtonpost.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
           "host": "newyorktheatrereview.blogspot.com",
@@ -152485,9 +153052,46 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
+        },
+        {
+          "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
+          "host": "operawire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-4",
+          "host": "timeout.com",
+          "outletId": "timeout",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "medea-off-broadway-2026: https://www.timeout.com/newyork/theater/medea-4 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Refusing to ingest — collision with theatermania--zachary-stewart.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2022-09-28\",\n  \"incomingUrl\": \"https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/\",\n  \"incomingPublishDate\": \"2022-09-28\"\n}\n\nMan"
+        },
         {
           "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
           "host": "the-tls.com",
@@ -152519,24 +153123,9 @@
           "reason": "medea-off-broadway-2026: https://indieopera.com/review-medea/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/medea-4",
-          "host": "timeout.com",
-          "outletId": "timeout",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "timeout-listing-capsule",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://www.timeout.com/newyork/theater/medea-4 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        },
-        {
-          "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-          "host": "operawire.com",
-          "outletId": "operawire",
+          "url": "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/",
+          "host": "letterboxd.com",
+          "outletId": "letterboxd",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -152575,6 +153164,20 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/medea-4"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/"
+          },
+          {
             "outletId": "the-tls.com",
             "outlet": "the-tls.com",
             "critic": "Unknown",
@@ -152587,27 +153190,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://indieopera.com/review-medea/"
-          },
-          {
-            "outletId": "timeout",
-            "outlet": "timeout",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/medea-4"
-          },
-          {
-            "outletId": "operawire",
-            "outlet": "operawire",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/"
-          },
-          {
-            "outletId": "classical-source",
-            "outlet": "classical-source",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/"
           },
           {
             "outletId": "letterboxd",
@@ -152627,6 +153209,20 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.timeout.com/newyork/theater/medea-4",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T00:11:50.524Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
             "outletId": "the-tls.com",
             "state": "GAP",
@@ -152639,27 +153235,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/medea-4",
-            "outletId": "timeout",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T00:11:50.524Z"
-          },
-          {
-            "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-            "outletId": "operawire",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
-          },
-          {
-            "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
-            "outletId": "classical-source",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
           },
           {
             "url": "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/",
@@ -152678,9 +153253,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -163982,11 +164557,11 @@
       "candidatesRejected": {
         "count": 108,
         "byReason": {
-          "non-review-host": 20,
           "aggregator-internal-nav": 68,
           "not-http-url": 5,
           "production-database-listing": 11,
-          "aggregator-section-root": 4
+          "aggregator-section-root": 4,
+          "non-review-host": 20
         }
       },
       "dedupedVariants": [],
@@ -164018,7 +164593,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -198915,7 +199490,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
@@ -213482,7 +214057,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -213533,12 +214108,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 33,
         "byReason": {
-          "non-review-host": 33,
-          "aggregator-internal-nav": 1,
+          "non-review-host": 30,
           "non-review-path": 1,
-          "venue-production-page": 3
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
@@ -213616,7 +214190,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "spellbound-off-broadway-2026",
@@ -214267,7 +214841,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -214277,7 +214851,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -214318,13 +214892,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 21,
         "byReason": {
-          "non-review-host": 24,
-          "write-path-blocked": 1,
           "aggregator-internal-nav": 2,
           "production-database-listing": 1,
-          "census-junk-host": 2
+          "non-review-host": 17,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -214338,7 +214911,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "stephane-wrembels-django-a-gogo-off-broadway-2026",
@@ -216855,7 +217428,7 @@
         "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
@@ -228268,7 +228841,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -230456,7 +231029,7 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "the-brothers-size-off-broadway-2025",
@@ -252057,32 +252630,32 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://northwestend.com/tag/the-master-builder/",
-        "https://www.theguardian.com/stage/2026/oct/27/the-master-builder-review-arcola-theatre-david-hicks",
         "https://theatreandtonic.co.uk/blog/the-master-builder-at-arcola-theatre-review",
-        "https://www.westminsterextra.co.uk/article/review-the-master-builder-at-arcola-theatre",
-        "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
-        "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
-        "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
-        "https://www.theupcoming.co.uk/2026/10/23/the-master-builder-at-arcola-theatre-theatre-review/",
-        "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
-        "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
-        "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
-        "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
-        "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
-        "https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre",
+        "https://www.theguardian.com/stage/2026/oct/27/the-master-builder-review-arcola-theatre-david-hicks",
         "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/",
-        "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
-        "https://northwestend.com/the-master-builder-arcola-theatre/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
         "https://londongrip.co.uk/2026/10/the-master-builder-review-by-barbara-lewis/",
+        "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
         "https://www.reviewsgate.co.uk/all-reviews/the-master-builder-by-henrik-ibsen-the-arcola-theatre-studio-1-24-ashwin-street-london-e8-until-21-november-2026-review-by-william-russell",
+        "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
         "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
         "https://www.londonpubtheatres.com/the-master-builder-at-arcola-theatre-16-oct-21-nov-2026",
+        "https://www.timeout.com/london/theatre/the-master-builder-3",
+        "https://northwestend.com/the-master-builder-arcola-theatre/",
+        "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+        "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
+        "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
+        "https://liamodell.com/2026/10/23/the-master-builder-review-arcola-theatre-london-henrik-ibsen-greg-hicks/",
+        "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
+        "https://www.theupcoming.co.uk/2026/10/23/the-master-builder-at-arcola-theatre-theatre-review/",
+        "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
+        "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
         "https://northwestend.com/the-master-builder-arcola-theatre/amp/",
         "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
         "https://playstosee.com/reviews/the-master-builder-3/",
         "http://www.westendextra.com/article/review-the-master-builder-at-arcola-theatre",
         "https://www.islingtontribune.co.uk/article/review-the-master-builder-at-arcola-theatre",
-        "https://www.timeout.com/london/theatre/the-master-builder-3",
+        "https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre",
         "https://www.aol.co.uk/articles/master-builder-review-false-swagger-150307000.html",
         "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
         "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
@@ -252094,7 +252667,7 @@
         "https://www.thestage.co.uk/reviews/my-master-builder-review-wyndhams-theatre-london-2025-ewan-mcgregor-elizabeth-debicki-michael-grandage",
         "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html",
         "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
-        "https://liamodell.com/2026/10/23/the-master-builder-review-arcola-theatre-london-henrik-ibsen-greg-hicks/",
+        "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
         "https://www.britishtheatreguide.info/reviews/the-master-buil-arcola-theatre-26155"
       ],
       "dirFiles": 28,
@@ -252102,15 +252675,9 @@
       "inReviewsJson": 21,
       "missing": [
         {
-          "url": "https://www.westminsterextra.co.uk/article/review-the-master-builder-at-arcola-theatre",
-          "host": "westminsterextra.co.uk",
-          "knownOutletId": "westminsterextra",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre",
-          "host": "camdennewjournal.co.uk",
-          "knownOutletId": "camdennewjournal",
+          "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "serpCensus": true
         },
         {
@@ -252120,9 +252687,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre",
+          "host": "camdennewjournal.co.uk",
+          "knownOutletId": "camdennewjournal",
           "serpCensus": true
         },
         {
@@ -252337,7 +252904,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -252348,7 +252915,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -252358,7 +252925,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -252367,26 +252934,24 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 21,
         "byReason": {
-          "ticketing-reseller": 13,
-          "non-review-host": 10,
+          "non-review-host": 12,
+          "roundup-page": 1,
+          "ticketing-reseller": 5,
           "event-listing": 1,
           "no-review-evidence": 1,
-          "roundup-page": 1,
-          "ticket-seller-product-page": 1,
-          "ticketing-listing": 1,
           "write-path-blocked": 1
         }
       },
@@ -252439,34 +253004,19 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.westminsterextra.co.uk/article/review-the-master-builder-at-arcola-theatre",
-          "host": "westminsterextra.co.uk",
-          "outletId": "westminsterextra",
+          "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
           "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
           "conflictReason": null,
           "expected": true,
-          "expectedReason": "publish-date-unresolved",
+          "expectedReason": "timeout-listing-capsule",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "the-master-builder-off-west-end-2026: https://www.westminsterextra.co.uk/article/review-the-master-builder-at-arcola-theatre has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre",
-          "host": "camdennewjournal.co.uk",
-          "outletId": "camdennewjournal",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-master-builder-off-west-end-2026: https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "the-master-builder-off-west-end-2026: https://www.timeout.com/london/theatre/the-master-builder-3 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
         },
         {
           "url": "http://www.westendextra.com/article/review-the-master-builder-at-arcola-theatre",
@@ -252519,18 +253069,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "westminsterextra",
-            "outlet": "westminsterextra",
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.westminsterextra.co.uk/article/review-the-master-builder-at-arcola-theatre"
-          },
-          {
-            "outletId": "camdennewjournal",
-            "outlet": "camdennewjournal",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre"
+            "url": "https://www.timeout.com/london/theatre/the-master-builder-3"
           },
           {
             "outletId": "westendextra.com",
@@ -252577,16 +253120,46 @@
             "firstSeenAt": "2026-10-28T19:57:53.939Z"
           },
           {
+            "url": "https://theatreandtonic.co.uk/blog/the-master-builder-at-arcola-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/oct/27/the-master-builder-review-arcola-theatre-david-hicks",
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-28T09:17:12.111Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/the-master-builder-at-arcola-theatre-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T08:25:08.978Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://londongrip.co.uk/2026/10/the-master-builder-review-by-barbara-lewis/",
+            "outletId": "londongrip.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T16:01:10.315Z"
+          },
+          {
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-master-builder-by-henrik-ibsen-the-arcola-theatre-studio-1-24-ashwin-street-london-e8-until-21-november-2026-review-by-william-russell",
+            "outletId": "reviewsgate.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T16:01:10.315Z"
           },
           {
             "url": "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
@@ -252595,52 +253168,22 @@
             "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
+            "outletId": "saltertonartsreview.com",
             "state": "live",
-            "firstSeenAt": "2026-10-24T15:06:22.735Z"
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.londonpubtheatres.com/the-master-builder-at-arcola-theatre-16-oct-21-nov-2026",
+            "outletId": "londonpubtheatres.com",
             "state": "live",
-            "firstSeenAt": "2026-10-26T16:01:10.315Z"
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/10/23/the-master-builder-at-arcola-theatre-theatre-review/",
-            "outletId": "theupcoming.co.uk",
+            "url": "https://northwestend.com/the-master-builder-arcola-theatre/",
+            "outletId": "northwestend.com",
             "state": "live",
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
             "url": "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
@@ -252655,26 +253198,32 @@
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
-            "url": "https://londongrip.co.uk/2026/10/the-master-builder-review-by-barbara-lewis/",
-            "outletId": "londongrip.co.uk",
+            "url": "https://liamodell.com/2026/10/23/the-master-builder-review-arcola-theatre-london-henrik-ibsen-greg-hicks/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T09:17:12.111Z"
+          },
+          {
+            "url": "https://www.theupcoming.co.uk/2026/10/23/the-master-builder-at-arcola-theatre-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
+            "outletId": "playsinternational.org.uk",
             "state": "live",
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/the-master-builder-by-henrik-ibsen-the-arcola-theatre-studio-1-24-ashwin-street-london-e8-until-21-november-2026-review-by-william-russell",
-            "outletId": "reviewsgate.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T16:01:10.315Z"
-          },
-          {
-            "url": "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
-            "outletId": "saltertonartsreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://www.londonpubtheatres.com/the-master-builder-at-arcola-theatre-16-oct-21-nov-2026",
-            "outletId": "londonpubtheatres.com",
+            "url": "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
@@ -252715,10 +253264,10 @@
             "firstSeenAt": "2026-10-27T06:11:00.993Z"
           },
           {
-            "url": "https://liamodell.com/2026/10/23/the-master-builder-review-arcola-theatre-london-henrik-ibsen-greg-hicks/",
-            "outletId": "liamodell.com",
+            "url": "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
+            "outletId": "londontheatre1.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/the-master-buil-arcola-theatre-26155",
@@ -252727,15 +253276,15 @@
             "firstSeenAt": "2026-10-28T19:57:53.939Z"
           },
           {
-            "url": "https://www.westminsterextra.co.uk/article/review-the-master-builder-at-arcola-theatre",
-            "outletId": "westminsterextra",
+            "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+            "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
-            "url": "https://www.camdennewjournal.co.uk/article/review-the-master-builder-at-arcola-theatre",
-            "outletId": "camdennewjournal",
+            "url": "http://www.westendextra.com/article/review-the-master-builder-at-arcola-theatre",
+            "outletId": "westendextra.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T13:27:09.994Z"
@@ -252746,13 +253295,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T13:27:09.994Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
             "url": "https://www.aol.co.uk/articles/master-builder-review-false-swagger-150307000.html",
@@ -252777,10 +253319,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 20,
+        "liveCount": 21,
         "candidateCount": 27
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "the-meeting-the-interpreter-off-broadway-2024",
@@ -264846,32 +265388,50 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.harrytheatrelife.co.uk/post/review-the-revlon-girl-park-theatre-london",
-        "https://theatreandtonic.co.uk/blog/the-revlon-girl-park-theatre-review",
-        "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
-        "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
-        "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
-        "https://theatresoutheast.com/revlon-girl-park-90-review/",
-        "https://www.allthatdazzles.co.uk/post/review-the-revlon-girl-park-theatre",
-        "https://www.thestage.co.uk/reviews/the-revlon-girl-review-park-theatre-london",
-        "https://www.theupcoming.co.uk/2026/10/29/the-revlon-girl-at-park-theatre-theatre-review-2/",
+        "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
+        "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+        "https://www.redbrick.me/theatre-review-the-revlon-girl/",
+        "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
         "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
         "https://www.timeout.com/london/theatre/the-revlon-girl",
         "https://fairypoweredproductions.com/revlon-girl-review/",
         "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
         "https://www.britishtheatreguide.info/reviews/the-revlon-girl-assembly-roxy-14815",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/the-revlon-girl-theatre-review-a7960131.html",
-        "https://thespyinthestalls.com/2026/10/the-revlon-girl/",
-        "https://www.london-unattached.com/the-revlon-girl-park-theatre/",
+        "https://www.londontheatre1.com/theatre-news/the-revlon-girl-neil-anthony-docking-park-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-the-revlon-girl-park-theatre",
+        "https://theatreandtonic.co.uk/blog/the-revlon-girl-park-theatre-review",
+        "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
+        "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
+        "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
+        "https://theatresoutheast.com/revlon-girl-park-90-review/",
+        "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
         "https://readaboutstuff.com/2026/10/29/review-the-revlon-girl-park-theatre-london/",
         "https://www.westendbestfriend.co.uk/news/review-the-revlon-girl-park-theatre",
         "https://www.buzzmag.co.uk/revlon-girl-stage-review-riverfront-newport-aberfan-disaster/",
-        "https://oazis.app/en/event/the-revlon-girl-2026-10-26"
+        "https://www.thestage.co.uk/reviews/the-revlon-girl-review-park-theatre-london"
       ],
-      "dirFiles": 15,
+      "dirFiles": 16,
       "dirClean": 13,
       "inReviewsJson": 13,
       "missing": [
+        {
+          "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
+          "host": "oazis.app",
+          "knownOutletId": "oazis",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+          "host": "westminsterextra.co.uk",
+          "knownOutletId": "westminsterextra",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.redbrick.me/theatre-review-the-revlon-girl/",
+          "host": "redbrick.me",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
           "host": "thestage.co.uk",
@@ -264903,6 +265463,22 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.londontheatre1.com/theatre-news/the-revlon-girl-neil-anthony-docking-park-theatre/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-08-15",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-assembly-roxy-14815",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-08-19",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/the-revlon-girl-theatre-review-a7960131.html",
           "host": "independent.co.uk",
           "knownOutletId": "independent",
@@ -264919,6 +265495,31 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-box-office--stacey-tyler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2017-09-26",
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.thestage.co.uk/reviews/the-revlon-girl-review-park-theatre-london",
           "host": "thestage.co.uk",
@@ -265013,8 +265614,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 6,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -265023,7 +265624,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 3,
             "error": null
           },
@@ -265050,17 +265651,17 @@
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 15,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 14,
+        "count": 19,
         "byReason": {
-          "non-review-host": 9,
-          "roundup-page": 1,
-          "ticketing-listing": 2,
-          "census-junk-host": 1,
-          "non-review-path": 1
+          "aggregator-internal-nav": 2,
+          "non-review-host": 13,
+          "ticketing-reseller": 2,
+          "ticketing-listing": 1,
+          "static-asset": 1
         }
       },
       "dedupedVariants": [],
@@ -265089,8 +265690,8 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/the-revlon-girl-theatre-review-a7960131.html",
-          "host": "independent.co.uk",
+          "url": "https://www.londontheatre1.com/theatre-news/the-revlon-girl-neil-anthony-docking-park-theatre/",
+          "host": "londontheatre1.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -265113,9 +265714,39 @@
           "reason": "the-revlon-girl-off-west-end-2026: https://www.timeout.com/london/theatre/the-revlon-girl is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
         },
         {
-          "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
-          "host": "oazis.app",
-          "outletId": "oazis",
+          "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+          "host": "westminsterextra.co.uk",
+          "outletId": "westminsterextra",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-revlon-girl-off-west-end-2026: https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90 dated 2017-09-29 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.redbrick.me/theatre-review-the-revlon-girl/",
+          "host": "redbrick.me",
+          "outletId": "redbrick",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-revlon-girl-off-west-end-2026: https://www.redbrick.me/theatre-review-the-revlon-girl/ dated 2021-10-29 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-revlon-girl",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -265140,8 +265771,22 @@
             "url": "https://www.timeout.com/london/theatre/the-revlon-girl"
           },
           {
-            "outletId": "oazis",
-            "outlet": "oazis",
+            "outletId": "westminsterextra",
+            "outlet": "westminsterextra",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90"
+          },
+          {
+            "outletId": "redbrick.me",
+            "outlet": "redbrick.me",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.redbrick.me/theatre-review-the-revlon-girl/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26"
@@ -265157,8 +265802,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.harrytheatrelife.co.uk/post/review-the-revlon-girl-park-theatre-london",
-            "outletId": "harrytheatrelife.co.uk",
+            "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T06:43:10.293Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-revlon-girl-park-theatre",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-31T02:57:17.839Z"
           },
@@ -265199,20 +265850,8 @@
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/10/29/the-revlon-girl-at-park-theatre-theatre-review-2/",
-            "outletId": "theupcoming.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T06:43:10.293Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/10/the-revlon-girl/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
@@ -265248,8 +265887,22 @@
             "firstSeenAt": "2026-10-28T09:17:12.111Z"
           },
           {
-            "url": "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
-            "outletId": "oazis",
+            "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+            "outletId": "westminsterextra",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.redbrick.me/theatre-review-the-revlon-girl/",
+            "outletId": "redbrick.me",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-revlon-girl",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-28T09:17:12.111Z"
@@ -265263,10 +265916,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
+        "liveCount": 11,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "the-rocky-horror-show-2026",
@@ -270038,8 +270691,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -270049,7 +270702,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -270089,13 +270742,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 32,
         "byReason": {
-          "non-review-host": 21,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 25,
           "no-review-evidence": 1,
-          "write-path-blocked": 2,
-          "aggregator-internal-nav": 3,
-          "non-review-path": 4
+          "non-review-path": 3,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -270205,7 +270858,7 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "the-unknown-off-broadway-2026",
@@ -280984,8 +281637,13 @@
       "openingDate": "2026-11-01",
       "status": "upcoming",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+      ],
       "aggregatorListedUrls": [
+        "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
+        "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+        "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
         "https://www.nytimes.com/2022/10/05/arts/music/tosca-met-opera-review.html",
         "https://www.nytimes.com/2021/12/03/arts/music/met-opera-tosca.html",
         "https://newyorkclassicalreview.com/2022/10/kurzak-provides-the-spark-in-mets-simmering-tosca/",
@@ -280994,13 +281652,23 @@
       "dirFiles": 9,
       "dirClean": 1,
       "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [
+      "missing": [
         {
-          "host": "zealnyc.com",
-          "count": 1
+          "url": "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
+          "host": "newyorkclassicalreview.com",
+          "knownOutletId": "new-york-classical-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.nytimes.com/2022/10/05/arts/music/tosca-met-opera-review.html",
@@ -281106,22 +281774,60 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 105,
+        "byReason": {
+          "aggregator-internal-nav": 61,
+          "not-http-url": 8,
+          "production-database-listing": 10,
+          "aggregator-section-root": 4,
+          "non-review-host": 20,
+          "roundup-page": 2
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca",
+          "publishDate": "2018-01-02"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
+          "host": "newyorkclassicalreview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
+        "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
+            "outletId": "zealnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          }
+        ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 1,
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -293276,9 +293982,7 @@
       "openingDate": "2026-11-03",
       "status": "previews",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-see-what-critics-think-of-john-j-caswell-jr-s-wet-brain-world-premiere"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
@@ -293293,23 +293997,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 191,
-        "byReason": {
-          "non-review-host": 21,
-          "roundup-page": 6,
-          "aggregator-internal-nav": 143,
-          "not-http-url": 6,
-          "production-database-listing": 11,
-          "aggregator-section-root": 4
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-see-what-critics-think-of-john-j-caswell-jr-s-wet-brain-world-premiere",
-          "publishDate": "2023-06-07"
-        }
-      ],
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -293320,7 +294011,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T02:57:17.839Z"
+      "computedAt": "2026-10-31T03:22:12.044Z"
     },
     {
       "showId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
@@ -302711,13 +303402,12 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-31T02:57:17.838Z",
+    "at": "2026-10-31T03:22:12.043Z",
     "reserveEvery": 4,
     "reservedAttempted": [
       "the-master-builder-off-west-end-2026",
       "billy-crystal-860-2026",
-      "maybe-happy-ending-2024",
-      "oh-mary-2024"
+      "maybe-happy-ending-2024"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
@@ -302728,12 +303418,12 @@
     "oldestDueRowAtStart": {
       "showId": "maybe-happy-ending-2024",
       "computedAt": "2026-09-21T00:49:24.476Z",
-      "ageHours": 961.8
+      "ageHours": 962.2
     },
     "oldestDueRowAfterRun": {
-      "showId": "the-outsiders-2024",
+      "showId": "oh-mary-2024",
       "computedAt": "2026-09-21T00:49:24.476Z",
-      "ageHours": 962.1
+      "ageHours": 962.5
     }
   }
 }
