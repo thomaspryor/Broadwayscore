@@ -7,25 +7,25 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-10-30T22:10:11.389Z",
-    "endedAt": null,
+    "endedAt": "2026-10-31T03:00:23.142Z",
     "intervalMin": 5,
-    "samples": 10,
+    "samples": 58,
     "failedSamples": 0,
-    "lastSampleAt": "2026-10-30T22:55:13.883Z",
-    "lastOkSampleAt": "2026-10-30T22:55:13.883Z"
+    "lastSampleAt": "2026-10-31T02:58:45.393Z",
+    "lastOkSampleAt": "2026-10-31T02:58:45.393Z"
   },
   "firstLiveAt": "2026-10-30T22:10:11.389Z",
   "firstLiveBaseline": true,
-  "lastLiveAt": "2026-10-30T22:10:11.389Z",
-  "liveCount": 3,
+  "lastLiveAt": "2026-10-31T00:18:39.372Z",
+  "liveCount": 5,
   "liveCountAt": {
     "1h": null,
-    "2h": null,
+    "2h": 3,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-10-30T22:10:11.389Z",
-    "2h": null,
+    "2h": "2026-10-30T23:03:36.531Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -70,6 +70,31 @@
       "prevOkSampleAt": null,
       "baseline": true,
       "liveNow": true
+    },
+    {
+      "key": "fringereview|simon jenner",
+      "outlet": "FringeReview",
+      "critic": "Simon Jenner",
+      "tier": 3,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-31T00:18:39.372Z",
+      "prevOkSampleAt": "2026-10-31T00:13:39.132Z",
+      "baseline": false,
+      "liveNow": true,
+      "renamedFrom": "fringereview|unknown"
+    },
+    {
+      "key": "london pub theatres|katie walker-cook",
+      "outlet": "London Pub Theatres",
+      "critic": "Katie Walker-Cook",
+      "tier": 3,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-31T00:18:39.372Z",
+      "prevOkSampleAt": "2026-10-31T00:13:39.132Z",
+      "baseline": false,
+      "liveNow": true
     }
   ],
   "dropped": [],
@@ -84,6 +109,17 @@
       "liveCount": 3,
       "fetchedAt": "2026-10-30T23:00:26.323Z",
       "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 5,
+      "fetchedAt": "2026-10-31T03:00:22.079Z",
+      "censusNote": "archive only"
     }
   },
   "manualActions": [],
@@ -96,11 +132,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-10-31T03:00:22.162Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-10-30T23:00:27.047Z",
+    "capturedAt": "2026-10-31T03:00:23.090Z",
     "files": [
       {
         "file": "afridiziak-theatre-news--basil-g-lumsden.json",
@@ -139,6 +181,30 @@
         "syndicatedUnder": null
       },
       {
+        "file": "fringereview--simon-jenner.json",
+        "outletId": "fringereview",
+        "outlet": "FringeReview",
+        "critic": "Simon Jenner",
+        "firstSeenAt": "2026-10-30T23:26:01.435Z",
+        "scoredAt": "2026-10-30T23:55:08.083Z",
+        "publishDate": "2026-10-30",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "fringereview--unknown.json",
+        "outletId": "fringereview",
+        "outlet": "FringeReview",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-30T23:26:01.435Z",
+        "scoredAt": "2026-10-30T23:55:08.083Z",
+        "publishDate": "2026-10-30",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
         "file": "jewishnews--poppy-shulman.json",
         "outletId": "jewishnews",
         "outlet": "Jewishnews",
@@ -157,6 +223,18 @@
         "critic": "Stuart King",
         "firstSeenAt": "2026-10-30T00:32:49.280Z",
         "scoredAt": "2026-10-30T00:47:50.094Z",
+        "publishDate": "2026-10-30",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "londonpubtheatres--katie-walker-cook.json",
+        "outletId": "londonpubtheatres",
+        "outlet": "London Pub Theatres",
+        "critic": "Katie Walker-Cook",
+        "firstSeenAt": "2026-10-30T23:25:52.427Z",
+        "scoredAt": "2026-10-30T23:55:12.199Z",
         "publishDate": "2026-10-30",
         "includable": true,
         "reason": null,
