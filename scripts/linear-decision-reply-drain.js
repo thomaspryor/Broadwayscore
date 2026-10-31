@@ -22,7 +22,8 @@
  *   node scripts/linear-decision-reply-drain.js --apply   write (at most --cap cards, default 5)
  *   --json   one JSON summary line   --help
  * Kill switch: LINEAR_DECISION_REPLY_DRAIN_DISABLED=1. Scheduled twice a day by
- * .github/workflows/linear-decision-reply-drain.yml. Sends no email.
+ * .github/workflows/linear-decision-reply-drain.yml, and run for one card within a minute of a
+ * Linear comment by src/app/api/linear-webhook/route.ts (BRO-6715). Sends no email.
  */
 'use strict';
 
@@ -35,11 +36,13 @@ const FLOOD_LIMIT = 12;
 
 const USAGE = `linear-decision-reply-drain.js: act on owner decision and awaiting-owner replies (BRO-6168, BRO-6180).
   (no flags)  dry run     --apply  write     --cap N  per-run limit (default ${DEFAULT_CAP})
+  --issue BRO-N  only that card (the Linear webhook uses this)
   --json      summary     Kill switch: LINEAR_DECISION_REPLY_DRAIN_DISABLED=1`;
 
 async function main(argv = process.argv.slice(2), deps = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return null; }
-  const args = parseArgs(argv, { coerceBooleans: true, textFlags: ['cap'] });
+  const args = parseArgs(argv, { coerceBooleans: true, textFlags: ['cap', 'issue'] });
+  const only = String(args.issue || '').trim();
   const apply = args.apply === true;
   const cap = Number.isFinite(Number(args.cap)) && Number(args.cap) >= 0 ? Number(args.cap) : DEFAULT_CAP;
   if (/^(1|true|yes|on)$/i.test(String(process.env.LINEAR_DECISION_REPLY_DRAIN_DISABLED || '').trim())) {
@@ -58,7 +61,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const planOptions = { date, verifyCommand: drain.verifyCommand, unfitReason: (i) => headlessUnfitReason(i), nowMs: now.getTime() };
 
   const open = await linear.listOpenIssuesWithDescriptions();
-  const candidates = open.filter((i) => i && (findDecisionQuestion(i.description) || isAwaitingOwner(i)));
+  // BRO-6715: --issue BRO-N (or the Linear id) acts on one card; the Linear webhook sends it the moment a comment lands.
+  const candidates = open.filter((i) => i && (!only || i.identifier === only || i.id === only) && (findDecisionQuestion(i.description) || isAwaitingOwner(i)));
   const plans = [];
   const skipped = {};
   for (const stub of candidates) {
