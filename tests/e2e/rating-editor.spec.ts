@@ -17,6 +17,12 @@ function localToday(): string {
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0];
 }
 
+/** Click position in the right half of a star button, whatever width the button has (phones: a fifth of the row). */
+async function rightHalf(btn: import('@playwright/test').Locator): Promise<{ x: number; y: number }> {
+  const b = (await btn.boundingBox())!;
+  return { x: b.width * 0.75, y: b.height / 2 };
+}
+
 async function goToEditor(page: Page, query = ''): Promise<void> {
   await page.goto(`/test/rating-editor-fixture${query}`);
   await page.waitForSelector('[data-testid="rating-editor-fixture"]', { timeout: 30000 });
@@ -39,7 +45,7 @@ for (const vp of VIEWPORTS) {
       const editor = page.locator('[data-testid="rating-editor"]');
 
       // Full star — click the right side of the 3rd star.
-      await editor.getByRole('button', { name: '3 stars' }).click({ position: { x: 30, y: 20 } });
+      await editor.getByRole('button', { name: '3 stars' }).click({ position: await rightHalf(editor.getByRole('button', { name: '3 stars' })) });
       await expect(editor.getByText('3.0', { exact: true })).toBeVisible();
 
       // Half star — click the left side of the 4th star.
@@ -145,6 +151,47 @@ for (const vp of VIEWPORTS) {
       await expect(editor.locator('[data-testid="rating-value"]')).toHaveText('2.5');
     });
 
+    test('stars use the full row on phones and keep the compact row on desktop (BRO-6719)', async ({ page }) => {
+      // Owner report 2026-10-31: five 44px stars huddled left with the hint beside them.
+      // Phones: each star owns a full fifth of the editor width (no dead gaps), the glyph is
+      // centred in it. Desktop (sm+) keeps the fixed 40px row.
+      await goToEditor(page);
+      const editor = page.locator('[data-testid="rating-editor"]');
+      const buttons = editor.locator('button[aria-label$="star"], button[aria-label$="stars"]');
+      const boxes = await buttons.evaluateAll(es => es.map(e => {
+        const r = e.getBoundingClientRect();
+        const g = (e.firstElementChild as HTMLElement | null)?.getBoundingClientRect();
+        return { x: r.x, y: r.y, w: r.width, h: r.height, gx: g?.x ?? 0, gy: g?.y ?? 0, gw: g?.width ?? 0, gh: g?.height ?? 0 };
+      }));
+      expect(boxes).toHaveLength(5);
+      const editorBox = (await editor.boundingBox())!;
+      if (vp.width < 640) {
+        const spanned = boxes[4].x + boxes[4].w - boxes[0].x;
+        expect(spanned).toBeGreaterThanOrEqual(editorBox.width - 2);
+        for (let i = 1; i < 5; i++) expect(Math.abs(boxes[i].x - (boxes[i - 1].x + boxes[i - 1].w))).toBeLessThanOrEqual(1);
+        for (const b of boxes) {
+          // The whole glyph sits inside its tap target (a taller glyph than button left dead strips at the star's top and bottom),
+          // is square, and is centred in its cell.
+          expect(b.gy).toBeGreaterThanOrEqual(b.y - 0.5);
+          expect(b.gy + b.gh).toBeLessThanOrEqual(b.y + b.h + 0.5);
+          expect(Math.abs(b.gw - b.gh)).toBeLessThanOrEqual(1);
+          expect(Math.abs((b.gx + b.gw / 2) - (b.x + b.w / 2))).toBeLessThanOrEqual(1);
+        }
+        // A tap near the outer edge of star 3's cell still rates star 3 (no dead zone), left half = 2.5.
+        const star3 = boxes[2];
+        await page.mouse.click(star3.x + star3.w * 0.08, star3.y + star3.h / 2);
+        await expect(editor.locator('[data-testid="rating-value"]')).toHaveText('2.5');
+        // A tap in the top strip of a star (above where a 44px button would end) also lands on the star.
+        const star4 = boxes[3];
+        await page.mouse.click(star4.x + star4.w * 0.75, star4.y + 2);
+        await expect(editor.locator('[data-testid="rating-value"]')).toHaveText('4.0');
+      } else {
+        // Desktop keeps the compact row: five 40px stars with the 4px gap, 216px wide.
+        for (const b of boxes) expect(Math.round(b.w)).toBe(40);
+        expect(Math.round(boxes[4].x + boxes[4].w - boxes[0].x)).toBe(216);
+      }
+    });
+
     test('modal presentation escapes .card containment — Save reachable', async ({ page }) => {
       // Regression: .card sets `contain: layout style`, which traps position:fixed
       // descendants; before the Modal portal fix, the bottom sheet rendered inside
@@ -160,7 +207,7 @@ for (const vp of VIEWPORTS) {
 
       // Save must be fully inside the viewport and clickable.
       const editor = page.locator('[data-testid="rating-editor"]');
-      await editor.getByRole('button', { name: '4 stars' }).click({ position: { x: 30, y: 20 } });
+      await editor.getByRole('button', { name: '4 stars' }).click({ position: await rightHalf(editor.getByRole('button', { name: '4 stars' })) });
       const saveBtn = page.getByRole('button', { name: /^save$/i });
       const box = await saveBtn.boundingBox();
       const viewport = page.viewportSize()!;
@@ -201,7 +248,7 @@ for (const vp of VIEWPORTS) {
       const editor = page.locator('[data-testid="rating-editor"]');
       const stacked = page.locator('[data-testid="stacked-modal"]');
 
-      await editor.getByRole('button', { name: '4 stars' }).click({ position: { x: 30, y: 20 } });
+      await editor.getByRole('button', { name: '4 stars' }).click({ position: await rightHalf(editor.getByRole('button', { name: '4 stars' })) });
       await page.locator('textarea').fill('gated draft');
       await page.getByRole('button', { name: /^save$/i }).click();
       await expect(stacked).toBeVisible({ timeout: 3000 });

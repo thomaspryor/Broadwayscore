@@ -14,6 +14,11 @@ interface StarRatingProps {
   expandHitTarget?: boolean;
   /** Live hover preview (null on leave) — lets the parent echo the would-be value. */
   onHoverChange?: (value: number | null) => void;
+  /** Phones only (below sm): spread the five stars across the container width instead of
+   *  clustering them left. Each button becomes a full fifth of the row (no dead gaps between
+   *  stars) and the glyph is centred in it, so the half-star maths still reads the button rect.
+   *  From sm up the row keeps its fixed size. (BRO-6719 mobile web, matches the iOS app.) */
+  fill?: boolean;
 }
 
 const SIZE_MAP = {
@@ -70,7 +75,7 @@ function fillFor(displayRating: number, starIndex: number): '0%' | '50%' | '100%
  * is the whole point — the previous isTouchDevice/synthetic-mousemove heuristic
  * broke half-stars on real phones.
  */
-export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, expandHitTarget = false, onHoverChange }: StarRatingProps) {
+export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, expandHitTarget = false, onHoverChange, fill = false }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const { star: starSize, gap } = SIZE_MAP[size];
   const uid = useId();
@@ -134,13 +139,14 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
   const labelValue = rating !== null ? (readOnly ? rating : hoverRating ?? rating) : null;
 
   return (
-    <div className="inline-flex flex-col items-start">
+    <div className={fill ? 'flex w-full flex-col items-start sm:inline-flex sm:w-auto' : 'inline-flex flex-col items-start'}>
       <div
         // star-compact: readOnly display stars must not inherit the mobile
         // 44px tap-target minimums — they're non-interactive, and the minimums
         // ballooned xs stars into row-crushing giants (2026-07-19).
-        className={`inline-flex items-center ${readOnly ? 'star-compact' : 'cursor-pointer'}`}
-        style={{ gap }}
+        className={`${fill ? 'flex w-full gap-0 sm:inline-flex sm:w-auto sm:gap-[var(--gap)]' : 'inline-flex'} items-center ${readOnly ? 'star-compact' : 'cursor-pointer'}`}
+        style={fill ? ({ '--gap': `${gap}px` } as React.CSSProperties) : { gap }}
+        data-fill={fill ? 'true' : undefined}
         onMouseLeave={handleMouseLeave}
         role={readOnly ? 'img' : 'radiogroup'}
         aria-label={readOnly ? `${(rating ?? 0).toFixed(1)} out of 5 stars` : 'Star rating'}
@@ -155,14 +161,23 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
               // small on purpose, but the click/tap target expands via an invisible pseudo-element
               // into the surrounding gap/padding, which has room to spare on the poster.
               !readOnly && expandHitTarget ? "before:content-[''] before:absolute before:-inset-3" : ''
-            }`}
-            style={{ width: starSize, height: starSize }}
+            } ${fill ? 'flex h-14 min-w-0 flex-1 items-center justify-center sm:h-[var(--star)] sm:w-[var(--star)] sm:flex-none' : ''}`}
+            // Phones: the button is as tall as the largest glyph (56px = h-14), so the whole
+            // glyph is inside the tap target. An inline height of 40px lost to the global 44px
+            // mobile min-height and left the glyph 6px taller than its button.
+            style={fill ? ({ '--star': `${starSize}px` } as React.CSSProperties) : { width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
             onClick={readOnly ? undefined : e => handleClick(e, starIndex)}
             onKeyDown={readOnly ? undefined : handleArrowKey}
             aria-label={`${starIndex} star${starIndex !== 1 ? 's' : ''}`}
           >
-            <StarShape fill={fillFor(displayRating, starIndex)} clipId={`half-${uid}-${starIndex}`} />
+            {fill ? (
+              <span className="relative block aspect-square w-[min(56px,100%)] sm:w-full pointer-events-none">
+                <StarShape fill={fillFor(displayRating, starIndex)} clipId={`half-${uid}-${starIndex}`} />
+              </span>
+            ) : (
+              <StarShape fill={fillFor(displayRating, starIndex)} clipId={`half-${uid}-${starIndex}`} />
+            )}
           </button>
         ))}
         {labelValue !== null && labelValue !== undefined && !hideLabel && (

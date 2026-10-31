@@ -205,8 +205,8 @@ export default function RatingEditor({
       {/* Adjustable stars — the core fix (editor no longer opens locked at 5.0).
           While hovering, the big number previews the would-be value (slightly
           dimmer) so left-half = X.5 / right-half = X.0 is legible pre-click. */}
-      <div className="flex items-center gap-3 mb-4">
-        <StarRating rating={rating > 0 ? rating : null} onRatingChange={setRating} onHoverChange={setHoverValue} size="lg" hideLabel />
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 mb-4">
+        <StarRating rating={rating > 0 ? rating : null} onRatingChange={setRating} onHoverChange={setHoverValue} size="lg" hideLabel fill />
         {(hoverValue ?? rating) >= 0.5 ? (
           <span
             className={`text-lg font-bold tabular-nums ${hoverValue !== null ? 'text-amber-300/80' : 'text-amber-400'}`}
