@@ -13,8 +13,9 @@
  * that name a different venue, star-rating vs score band.
  * Prints counts and show ids only. Never prints review text.
  *
- * Usage: node scripts/uk-regional-deterministic-check.js [--json]
- * Exit 0 always (advisory report); --json prints the machine summary.
+ * Usage: node scripts/uk-regional-deterministic-check.js [--json] [--strict]
+ * Exit 0 (advisory report); --json prints the machine summary; --strict exits 1 when a seeded opening
+ * date sits after a review or a star rating falls outside its band (BRO-6725).
  */
 const path = require('path');
 const root = path.join(__dirname, '..');
@@ -32,6 +33,8 @@ const byShow = {};
 for (const r of reviews) if (ids.has(r.showId)) (byShow[r.showId] = byShow[r.showId] || []).push(r);
 
 const { foldDiacritics } = require('./lib/url-slug');
+const { reconcileOpeningDate } = require('./lib/uk-regional-opening-date');
+const { scoreOutsideStarBand } = require('./lib/star-band-bounds');
 const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const today = new Date().toISOString().slice(0, 10);
 const days = (a, b) => Math.round((Date.parse(a) - Date.parse(b)) / 864e5);
@@ -53,7 +56,6 @@ for (const list of Object.values(seen)) {
   }
 }
 
-const bandOf = (stars) => ({ 1: [0, 30], 2: [31, 50], 3: [51, 70], 4: [71, 90], 5: [91, 100] })[stars];
 const venueWords = venues.map((v) => ({ words: [v.idKey, ...(v.aliases || [])].map(norm), city: v.city }));
 
 for (const s of uk) {
@@ -72,15 +74,14 @@ for (const s of uk) {
   if (s.openingDate && dated.length) {
     const d = days(dated[0], s.openingDate);
     if (d < -3) add('earliestReviewBeforeOpening', s.id, `${d}d`);
+    // BRO-6725: a review-seeded date (guardian-review/census-review/first-review-date) is only an upper bound,
+    // so any review dated before it is a derivation error. --strict fails on this class.
+    if (['guardian-review', 'census-review', 'first-review-date'].includes(s.openingDateSource) && reconcileOpeningDate(s, dated).action !== 'none') add('seededOpeningAfterReview', s.id, `${d}d`);
     if (d > 14) add('earliestReviewLongAfterOpening', s.id, `+${d}d`);
     if (s.openingDateSource) out._openingSources = out._openingSources || {}, (out._openingSources[s.openingDateSource] = (out._openingSources[s.openingDateSource] || 0) + 1);
   }
   for (const r of rs) {
-    const m = String(r.originalRating || '').match(/(\d)\s*(?:\/|out of)\s*5/);
-    if (m && r.assignedScore != null) {
-      const band = bandOf(Number(m[1]));
-      if (band && (r.assignedScore < band[0] || r.assignedScore > band[1])) add('starOutsideBand', s.id, `${m[1]}/5 -> ${r.assignedScore}`);
-    }
+    if (scoreOutsideStarBand(r.originalRating, r.assignedScore)) add('starOutsideBand', s.id, `${r.originalRating} -> ${r.assignedScore}`);
     const u = norm(String(r.url || '').replace(/^https?:\/\/[^/]+/, ''));
     const yr = (String(r.url || '').match(/\/(20\d\d)\//) || [])[1];
     if (yr && idYear && Math.abs(Number(yr) - Number(idYear)) >= 2) add('reviewUrlYearFarFromRun', s.id, `url ${yr}`);
@@ -101,5 +102,11 @@ if (process.argv.includes('--json')) {
 } else {
   console.log(JSON.stringify(summary, null, 1));
   for (const [k, v] of Object.entries(out)) if (Array.isArray(v)) console.log(`\n${k} (${v.length}): ${v.slice(0, 6).join('; ')}${v.length > 6 ? ' ...' : ''}`);
+}
+// --strict (BRO-6725): exit 1 on the classes that must stay at zero.
+const STRICT_ZERO = ['seededOpeningAfterReview', 'starOutsideBand'];
+if (process.argv.includes('--strict')) {
+  const bad = STRICT_ZERO.filter((k) => (out[k] || []).length);
+  if (bad.length) { console.error(`STRICT FAIL: ${bad.map((k) => `${k}=${out[k].length}`).join(', ')}`); process.exitCode = 1; }
 }
 module.exports = { uk };

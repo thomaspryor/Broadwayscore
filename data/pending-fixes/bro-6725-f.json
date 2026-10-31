@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-6725-f",
+  "planId": "e56325ee-625c-46a7-934b-05249232f94a",
+  "status": "pending",
+  "createdAt": "2026-10-31T15:48:47.113Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 6 of 9)",
+    "steps": [
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 9d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 3d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 14d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-lear-crucible-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-06",
+        "newValue": "2026-09-05",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-lear-crucible-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-brothers-a-genius-sheffield-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-02-01",
+        "newValue": "2026-01-31",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-brothers-a-genius-sheffield-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-crucible-crucible-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-03-10",
+        "newValue": "2024-03-08",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-crucible-crucible-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ladies-football-club-crucible-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-03-07",
+        "newValue": "2026-03-06",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ladies-football-club-crucible-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-crucible-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-18",
+        "newValue": "2026-10-17",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-crucible-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wish-you-werent-here-sheffield-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-02-04",
+        "newValue": "2024-01-26",
+        "description": "Earliest review is 9d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wish-you-werent-here-sheffield-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "edward-ii-royal-shakespeare-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-03-09",
+        "newValue": "2025-03-06",
+        "description": "Earliest review is 3d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "edward-ii-royal-shakespeare-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-new-real-royal-shakespeare-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-10-27",
+        "newValue": "2024-10-13",
+        "description": "Earliest review is 14d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-new-real-royal-shakespeare-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "his-last-report-york-royal-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-07-25",
+        "newValue": "2025-07-24",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "his-last-report-york-royal-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-penelopiad-york-royal-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-17",
+        "newValue": "2026-10-15",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-penelopiad-york-royal-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "art-royal-bath-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-09-09",
+        "newValue": "2024-09-05",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "art-royal-bath-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-oran-mor-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-02-21",
+        "newValue": "2024-02-20",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-oran-mor-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      }
+    ]
+  }
+}

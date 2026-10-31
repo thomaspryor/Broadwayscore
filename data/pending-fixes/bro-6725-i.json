@@ -1,0 +1,238 @@
+{
+  "issueNumber": "bro-6725-i",
+  "planId": "0d7c411d-ceee-4b7c-94b0-3fc904e38e37",
+  "status": "pending",
+  "createdAt": "2026-10-31T15:48:47.113Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 9 of 9)",
+    "steps": [
+      "Earliest review is 5d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 7d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 6d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 3d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-family-business-tobacco-factory-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-02-13",
+        "newValue": "2024-02-08",
+        "description": "Earliest review is 5d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-family-business-tobacco-factory-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-have-and-to-hold-hull-truck-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-05-15",
+        "newValue": "2025-05-08",
+        "description": "Earliest review is 7d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-have-and-to-hold-hull-truck-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "figures-in-extinction-aviva-studios-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-02-21",
+        "newValue": "2025-02-20",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "figures-in-extinction-aviva-studios-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-high-life-the-musical-dundee-rep-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-04-07",
+        "newValue": "2026-04-03",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-high-life-the-musical-dundee-rep-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-09-05",
+        "newValue": "2024-08-30",
+        "description": "Earliest review is 6d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-06-14",
+        "newValue": "2024-06-13",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-05-05",
+        "newValue": "2025-05-01",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cock-53two-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-11-17",
+        "newValue": "2024-11-14",
+        "description": "Earliest review is 3d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cock-53two-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "withnail-and-i-birmingham-rep-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-05-19",
+        "newValue": "2024-05-15",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "withnail-and-i-birmingham-rep-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-pretty-ones-birmingham-rep-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-05-16",
+        "newValue": "2025-05-15",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-pretty-ones-birmingham-rep-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-27",
+        "newValue": "2026-09-25",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      }
+    ]
+  }
+}

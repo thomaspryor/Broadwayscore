@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-6725-d",
+  "planId": "f8df5e1c-1c87-4334-99ed-df37966f4250",
+  "status": "pending",
+  "createdAt": "2026-10-31T15:48:47.113Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 4 of 9)",
+    "steps": [
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 7d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 3d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 5d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 9d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 9d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "small-island-leeds-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-03-20",
+        "newValue": "2026-03-18",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "small-island-leeds-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-taste-of-honey-royal-exchange-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-03-22",
+        "newValue": "2024-03-21",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-taste-of-honey-royal-exchange-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "animal-farm-octagon-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-02-14",
+        "newValue": "2024-02-07",
+        "description": "Earliest review is 7d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "animal-farm-octagon-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bank-of-dave-the-musical-lowry-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-05-10",
+        "newValue": "2026-05-08",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bank-of-dave-the-musical-lowry-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-02-16",
+        "newValue": "2025-02-13",
+        "description": "Earliest review is 3d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fun-home-royal-exchange-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-07-12",
+        "newValue": "2026-07-10",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fun-home-royal-exchange-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "iron-home-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-18",
+        "newValue": "2026-09-17",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "iron-home-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-10-15",
+        "newValue": "2025-10-10",
+        "description": "Earliest review is 5d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "of-mice-and-men-octagon-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-03-30",
+        "newValue": "2025-03-28",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "of-mice-and-men-octagon-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shed-exploded-view-royal-exchange-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-02-25",
+        "newValue": "2024-02-16",
+        "description": "Earliest review is 9d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shed-exploded-view-royal-exchange-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "singin-in-the-rain-royal-exchange-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-12-07",
+        "newValue": "2025-12-06",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "singin-in-the-rain-royal-exchange-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-jungle-book-octagon-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-12-06",
+        "newValue": "2024-11-27",
+        "description": "Earliest review is 9d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-jungle-book-octagon-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      }
+    ]
+  }
+}

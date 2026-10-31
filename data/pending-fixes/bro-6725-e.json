@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-6725-e",
+  "planId": "b5d07fa0-d644-456b-9556-ef46bfe60c13",
+  "status": "pending",
+  "createdAt": "2026-10-31T15:48:47.113Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 5 of 9)",
+    "steps": [
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 3d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 13d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Earliest review is 3d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-memory-of-water-octagon-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-02-05",
+        "newValue": "2026-02-04",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-memory-of-water-octagon-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-08-21",
+        "newValue": "2026-08-17",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "happy-days-pitlochry-festival-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-28",
+        "newValue": "2026-09-24",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "happy-days-pitlochry-festival-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-can-die-too-pitlochry-festival-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-07-17",
+        "newValue": "2026-07-16",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-can-die-too-pitlochry-festival-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inexperience-pitlochry-festival-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-06-20",
+        "newValue": "2026-06-19",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inexperience-pitlochry-festival-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-06-06",
+        "newValue": "2025-06-05",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-music-pitlochry-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-11-24",
+        "newValue": "2024-11-21",
+        "description": "Earliest review is 3d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-music-pitlochry-festival-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-08-22",
+        "newValue": "2026-08-21",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aladdin-stephen-joseph-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-12-22",
+        "newValue": "2024-12-09",
+        "description": "Earliest review is 13d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aladdin-stephen-joseph-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-trial-of-romeo-oscar-stephen-joseph-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-11",
+        "newValue": "2026-09-09",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-trial-of-romeo-oscar-stephen-joseph-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-crucible-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-09-29",
+        "newValue": "2024-09-27",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-crucible-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gwendas-garage-sheffield-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-10-20",
+        "newValue": "2025-10-17",
+        "description": "Earliest review is 3d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gwendas-garage-sheffield-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      }
+    ]
+  }
+}
