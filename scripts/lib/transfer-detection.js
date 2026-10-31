@@ -96,6 +96,38 @@ function detectTransferPairs(shows) {
     }
     pairs.push({ regionalId: r.id, broadwayId: candidates[0].id, reason: 'title match, Broadway opening postdates tryout' });
   }
+  return _enforceOneRegionalPerBroadway(pairs, list);
+}
+
+// transferOf is single-valued, so a Broadway show can be the transfer of only
+// ONE regional. Two regional runs of the same title (ragtime-regional-2021 and
+// -2023 → ragtime-2025) used to both claim it; the second write overwrote
+// transferOf and validate-data.js then failed "transferredTo ... is not
+// reciprocated" for the first (BRO-6725, update-show-status commit gate).
+// Keep the most recent regional (closest tryout) and report the rest as
+// ambiguous so a human can decide.
+function _enforceOneRegionalPerBroadway(pairs, list) {
+  const byId = new Map(list.filter(Boolean).map(s => [s.id, s]));
+  const claims = new Map();
+  for (const p of pairs) {
+    if (!p.broadwayId) continue;
+    if (!claims.has(p.broadwayId)) claims.set(p.broadwayId, []);
+    claims.get(p.broadwayId).push(p);
+  }
+  for (const [broadwayId, group] of claims) {
+    if (group.length < 2) continue;
+    const ranked = [...group].sort((a, b) => {
+      const da = _dateOf(byId.get(a.regionalId));
+      const db = _dateOf(byId.get(b.regionalId));
+      if (da !== db) return da < db ? 1 : -1; // latest first
+      return a.regionalId < b.regionalId ? -1 : 1;
+    });
+    const winner = ranked[0];
+    for (const loser of ranked.slice(1)) {
+      loser.broadwayId = null;
+      loser.reason = `ambiguous: ${broadwayId} already claimed by ${winner.regionalId}`;
+    }
+  }
   return pairs;
 }
 

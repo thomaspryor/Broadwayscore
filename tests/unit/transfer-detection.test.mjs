@@ -187,3 +187,16 @@ test('London: the Into the Woods (Bridge → Noël Coward, 115d) and Arcadia (Ol
     ],
   );
 });
+
+test('BRO-6725: two regionals of one title never both claim the same Broadway show', () => {
+  const pairs = detectTransferPairs([
+    { id: 'ragtime-regional-2021', title: 'Ragtime', category: 'regional', openingDate: '2021-03-01' },
+    { id: 'ragtime-regional-2023', title: 'Ragtime', category: 'regional', openingDate: '2023-03-01' },
+    { id: 'ragtime-2025', title: 'Ragtime', category: 'broadway', openingDate: '2025-10-01' },
+  ]);
+  const linked = pairs.filter(p => p.broadwayId);
+  assert.deepEqual(linked.map(p => [p.regionalId, p.broadwayId]), [['ragtime-regional-2023', 'ragtime-2025']]);
+  const older = pairs.find(p => p.regionalId === 'ragtime-regional-2021');
+  assert.equal(older.broadwayId, null);
+  assert.match(older.reason, /ambiguous.*ragtime-regional-2023/);
+});
