@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-10-31T18:18:04.713Z",
+  "runDate": "2026-10-31T18:30:16.530Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "stoker-wilde-off-west-end-2026",
+    "showFilter": "showstopper-the-kids-show-off-west-end-2026,middlemarch-rsc-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 1,
+    "failed": 4,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -28,36 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 0,
-    "failed": 1,
+    "failed": 4,
     "shows": [
-      "stoker-wilde-off-west-end-2026"
+      "middlemarch-rsc-regional-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,12 +67,18 @@
   },
   "processed": [],
   "failed": [
-    "stoker-wilde-off-west-end-2026/theatre-weekly--unknown.json"
+    "middlemarch-rsc-regional-2026/sunday-telegraph--dominic-cavendish.json",
+    "middlemarch-rsc-regional-2026/theatrecat--unknown.json",
+    "middlemarch-rsc-regional-2026/thestage--alexandra-coghlan.json",
+    "middlemarch-rsc-regional-2026/times-uk--clive-davis.json"
   ],
   "cumulativeResumedState": {
     "processed": [],
     "failed": [
-      "stoker-wilde-off-west-end-2026/theatre-weekly--unknown.json"
+      "middlemarch-rsc-regional-2026/sunday-telegraph--dominic-cavendish.json",
+      "middlemarch-rsc-regional-2026/theatrecat--unknown.json",
+      "middlemarch-rsc-regional-2026/thestage--alexandra-coghlan.json",
+      "middlemarch-rsc-regional-2026/times-uk--clive-davis.json"
     ]
   },
   "tierDetails": {
@@ -86,14 +92,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "Theatre Weekly": {
-      "count": 1,
-      "domain": "theatreweekly.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
