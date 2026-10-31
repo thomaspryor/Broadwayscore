@@ -24,7 +24,7 @@ const path = require('path');
 const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS, resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
 const { AP_WIRE_URL } = require('./ap-wire-detect');
-const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, isBareSuffix } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, isBareSuffix, canonicalPublicationHost } = require('./host-suffix-lists');
 
 let _cachedRegistry = null;
 let _cachedDomainMap = null;
@@ -181,7 +181,9 @@ function resolveCanonicalOutletId({ outletArg, url }) {
     if (pathResolved) {
       urlResolved = pathResolved.outletId;
     } else {
-      const domain = parseDomain(url);
+      // A Blogger country mirror or open.substack.com/pub/<name> link is
+      // looked up under the host the publication registered (BRO-6716).
+      const domain = canonicalPublicationHost(url) || parseDomain(url);
       if (domain) {
         urlResolved = lookupOutletForHost(domain);
         // A parent-domain match is weaker evidence than an exact one: a partner

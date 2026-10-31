@@ -696,13 +696,39 @@ test('publicationHostOf: Blogger country mirrors and open.substack.com/pub resol
   assert.equal(publicationHostOf('not a url'), null);
 });
 
-test('publicationHostOf: the real outlet registry resolves the BRO-6716 mirror rows to their outlets', () => {
-  const { publicationHostOf, registrableHost } = require('./non-review-url-patterns.js');
-  const reg = require('../../data/outlet-registry.json').outlets;
-  const byHost = new Map();
-  for (const [id, o] of Object.entries(reg)) {
-    for (const d of [o.domain, ...(o.domainAliases || [])].filter(Boolean)) byHost.set(registrableHost(d), id);
+test('publicationHostOf: the gap audit domain map resolves the BRO-6716 mirror rows to their outlets', () => {
+  const { publicationHostOf } = require('./non-review-url-patterns.js');
+  const { getKnownDomainMap } = require('../audit-show-review-gap.js');
+  const map = getKnownDomainMap();
+  assert.equal(map.get(publicationHostOf('https://slleiter.blogspot.co.uk/2017/x.html')), 'theatres-leiter-side');
+  assert.equal(map.get(publicationHostOf('https://dougmarino.blogspot.de/2019/x.html')), 'act-three-the-reviews');
+  assert.equal(map.get(publicationHostOf('https://open.substack.com/pub/newyorknotebook/p/x')), 'new-york-notebook');
+});
+
+// Reviewer finding on the first cut of BRO-6716: the audit resolved a mirror to
+// its registered outlet, then ingest re-resolved the raw host and minted
+// provisional outlets ("slleiter", "open"). Every layer must map the same way.
+test('canonicalPublicationHost: ingest resolver and outlet-domain check accept mirror hosts', () => {
+  const { canonicalPublicationHost } = require('./host-suffix-lists.js');
+  const { resolveCanonicalOutletId } = require('./outlet-canonicalize.js');
+  const { hostMatchesOutletDomain } = require('./outlet-domain-validation.js');
+  const registry = require('../../data/outlet-registry.json');
+  assert.equal(canonicalPublicationHost('https://m.slleiter.blogspot.com.au/x'), 'slleiter.blogspot.com');
+  assert.equal(canonicalPublicationHost('https://open.substack.com/pub/NewYorkNotebook/p/x'), 'newyorknotebook.substack.com');
+  assert.equal(canonicalPublicationHost('https://open.substack.com/p/x'), null);
+  assert.equal(canonicalPublicationHost('https://slleiter.blogspot.com/x'), null);
+  assert.equal(canonicalPublicationHost('not a url'), null);
+  const cases = [
+    ['https://slleiter.blogspot.co.uk/2024/05/x.html', 'slleiter', 'theatres-leiter-side'],
+    ['https://dougmarino.blogspot.com.au/2024/x.html', 'dougmarino', 'act-three-the-reviews'],
+    ['https://open.substack.com/pub/newyorknotebook/p/x', 'open', 'new-york-notebook'],
+  ];
+  for (const [url, arg, want] of cases) {
+    assert.equal(resolveCanonicalOutletId({ outletArg: arg, url }).outletId, want, url);
+    assert.equal(hostMatchesOutletDomain(url, want, registry), true, url);
   }
-  assert.equal(byHost.get(publicationHostOf('https://slleiter.blogspot.co.uk/2017/x.html')), 'theatres-leiter-side');
-  assert.equal(byHost.get(publicationHostOf('https://open.substack.com/pub/newyorknotebook/p/x')), 'new-york-notebook');
+  // An unregistered substack publication still falls back to its own slug.
+  assert.equal(resolveCanonicalOutletId({ outletArg: 'unknownzz', url: 'https://open.substack.com/pub/unknownzz/p/x' }).outletId, 'unknownzz');
+  // A mirror never matches a different outlet's domain.
+  assert.equal(hostMatchesOutletDomain('https://slleiter.blogspot.co.uk/x', 'nytimes', registry), false);
 });

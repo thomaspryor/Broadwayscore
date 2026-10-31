@@ -200,6 +200,31 @@ function multipartSuffixOf(host) {
   return MULTIPART_PUBLIC_SUFFIXES.find((s) => h.endsWith('.' + s)) || null;
 }
 
+/**
+ * The host a shared-host publication is registered under (BRO-6716), or null
+ * when the URL is not one of these shapes:
+ *   - Blogger country mirrors: x.blogspot.co.uk -> x.blogspot.com
+ *   - Substack's shared link host: open.substack.com/pub/<name>/... -> <name>.substack.com
+ * Lives here, the lowest host layer, so the gap audit, ingest's outlet resolver
+ * and the outlet-domain check all map the same way. Before this, the audit
+ * resolved a mirror to its registered outlet but ingest re-resolved the raw
+ * host and minted a provisional outlet ("slleiter", "open").
+ */
+function canonicalPublicationHost(url) {
+  let parsed;
+  try { parsed = new URL(url); } catch { return null; }
+  const host = stripCosmeticPrefixes(parsed.hostname.toLowerCase());
+  const suffix = platformSuffixOf(host);
+  if (suffix && suffix !== 'blogspot.com' && suffix.startsWith('blogspot.') && host.length > suffix.length + 1) {
+    return host.slice(0, host.length - suffix.length) + 'blogspot.com';
+  }
+  if (host === 'open.substack.com') {
+    const m = parsed.pathname.match(/^\/pub\/([a-z0-9-]+)(?:\/|$)/i);
+    if (m) return `${m[1].toLowerCase()}.substack.com`;
+  }
+  return null;
+}
+
 module.exports = {
   PLATFORM_HOST_SUFFIXES,
   MULTIPART_PUBLIC_SUFFIXES,
@@ -207,4 +232,5 @@ module.exports = {
   multipartSuffixOf,
   stripCosmeticPrefixes,
   isBareSuffix,
+  canonicalPublicationHost,
 };

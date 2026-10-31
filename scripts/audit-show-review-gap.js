@@ -1344,7 +1344,11 @@ async function auditShow(show, opts = {}) {
     // counts dir files whose OWN url is itself a plausible review URL (or has
     // no url — manual entries) — a BWW /shows/…/cast stub must not "cover"
     // the BWW hub URL and hide a genuine gap (The Vessel, 2026-08-05).
-    const dirFilesAll = dirByHost.get(aggHost) || [];
+    // A stored copy on the registered host (slleiter.blogspot.com) covers the
+    // same review cited on a mirror (slleiter.blogspot.co.uk), BRO-6716.
+    const _pubHost = publicationHostOf(aggUrl);
+    const dirFilesAll = [...(dirByHost.get(aggHost) || []),
+      ...(_pubHost && _pubHost !== aggHost ? (dirByHost.get(_pubHost) || []) : [])];
     const aggNorm = gapUrlIdentity(aggUrl);
     const exactMatches = dirFilesAll.filter(d => d.url && gapUrlIdentity(d.url) === aggNorm);
     const dirFiles = exactMatches.length > 0

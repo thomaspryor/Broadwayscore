@@ -30,7 +30,7 @@
 // reads data/outlet-registry.json lazily (blog-host exemptions, BRO-5273); pass
 // `declaredHosts` to isBlockedReviewUrl for fully deterministic fixtures.
 const { TICKET_DOMAINS, LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS, matchesDomainSet, isBlockedReviewUrl } = require('./domain-filters');
-const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, canonicalPublicationHost } = require('./host-suffix-lists');
 const { isNonReviewUrl } = require('./serp-non-review-url');
 
 // Non-review domains ignored inside aggregator articles (platform widgets,
@@ -749,17 +749,8 @@ function hostOf(u) {
 function publicationHostOf(u) {
   const host = hostOf(u);
   if (!host) return host;
-  const suffix = platformSuffixOf(host);
-  if (suffix && suffix !== 'blogspot.com' && suffix.startsWith('blogspot.')) {
-    return host.slice(0, host.length - suffix.length) + 'blogspot.com';
-  }
-  if (host === 'open.substack.com') {
-    try {
-      const m = new URL(u).pathname.match(/^\/pub\/([a-z0-9-]+)(?:\/|$)/i);
-      if (m) return `${m[1].toLowerCase()}.substack.com`;
-    } catch { /* fall through */ }
-  }
-  return host;
+  const mapped = canonicalPublicationHost(u);
+  return mapped ? registrableHost(mapped) : host;
 }
 
 const STATIC_ASSET_EXT_RE = /\.(css|js|json|xml|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|mp4|pdf)$/i;

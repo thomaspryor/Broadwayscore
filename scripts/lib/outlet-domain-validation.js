@@ -48,6 +48,7 @@
 'use strict';
 
 const { WIRE_SERVICE_OUTLETS, normalizeOutlet, resolveOutletFromUrl } = require('./review-normalization');
+const { canonicalPublicationHost } = require('./host-suffix-lists');
 
 // The only source this check applies to — see the SCOPE note above. Widen
 // this set only after running the same corpus-wide false-positive scan this
@@ -146,7 +147,10 @@ function hostMatchesOutletDomain(url, outletId, registry) {
   if (domains.length === 0) return null;
   const host = extractHost(url);
   if (!host) return null;
-  return domains.some((d) => hostMatchesDomain(host, d));
+  if (domains.some((d) => hostMatchesDomain(host, d))) return true;
+  // Blogger country mirror / open.substack.com/pub/<name> (BRO-6716).
+  const mapped = canonicalPublicationHost(url);
+  return mapped ? domains.some((d) => hostMatchesDomain(normalizeHost(mapped), d)) : false;
 }
 
 /**
