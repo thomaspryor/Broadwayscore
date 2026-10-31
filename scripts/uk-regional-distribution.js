@@ -95,6 +95,7 @@ function distribution(shows, reviews) {
       if (!out.earliestReview || d < out.earliestReview.date) out.earliestReview = { id: s.id, date: d };
       if (!out.latestReview || d > out.latestReview.date) out.latestReview = { id: s.id, date: d };
     }
+    // venue-write-guard-ok: report output only, never written to shows.json
     if (n === 0) out.zeroReviewShows.push({ id: s.id, city: s.city || null, venue: s.venue, openingDate: s.openingDate || null });
   }
   return out;

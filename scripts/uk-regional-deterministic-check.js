@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * audit-uk-regional-deterministic.js (BRO-6713)
+ * uk-regional-deterministic-check.js (BRO-6713)
  *
  * Free, model-free integrity checks over the UK regional population
  * (shows.json category 'regional' at a data/uk-regional-venues.json house,
@@ -13,7 +13,7 @@
  * that name a different venue, star-rating vs score band.
  * Prints counts and show ids only. Never prints review text.
  *
- * Usage: node scripts/audit-uk-regional-deterministic.js [--json]
+ * Usage: node scripts/uk-regional-deterministic-check.js [--json]
  * Exit 0 always (advisory report); --json prints the machine summary.
  */
 const path = require('path');
@@ -31,7 +31,8 @@ const ids = new Set(uk.map((s) => s.id));
 const byShow = {};
 for (const r of reviews) if (ids.has(r.showId)) (byShow[r.showId] = byShow[r.showId] || []).push(r);
 
-const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const { foldDiacritics } = require('./lib/url-slug');
+const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const today = new Date().toISOString().slice(0, 10);
 const days = (a, b) => Math.round((Date.parse(a) - Date.parse(b)) / 864e5);
 const out = {};

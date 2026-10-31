@@ -2,7 +2,7 @@
 
 Population: 329 shows outside London (category regional at a uk-regional-venues house), 1,280 reviews, 224 scored.
 Auditors: Gemini 2.5 Flash and GPT-5 mini (no Claude). Harnesses: `fact-check-historical-sample.js --cohort=uk-regional`,
-`audit-review-crossmodel.js pages|score --cohort=uk-regional`, plus free checks in `audit-uk-regional-deterministic.js`.
+`audit-review-crossmodel.js pages|score --cohort=uk-regional`, plus free checks in `uk-regional-deterministic-check.js`.
 Cost (run logs): show facts $1.44 model fees plus $7.33 of search fees at list price; review pages $0.65; scores $0.27.
 
 ## Show facts (120 shows, stratified by city)
