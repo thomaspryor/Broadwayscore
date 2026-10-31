@@ -16,7 +16,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
   console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0].replace(/^#!.*\n\/\*\*?/, '').replace(/^ \* ?/gm, ''));
   process.exit(0);
 }
-const { auditWetArchives } = require('./lib/wet-archive-guard');
+const { auditWetArchives, showsFromJson } = require('./lib/wet-archive-guard');
 
 const ROOT = path.join(__dirname, '..');
 const argv = process.argv.slice(2);
@@ -24,7 +24,11 @@ const arg = (n, d) => { const a = argv.find((x) => x.startsWith(`--${n}=`)); ret
 const dir = arg('archive-dir', path.join(ROOT, 'data', 'aggregator-archive', 'westendtheatre'));
 
 const raw = require('../data/shows.json');
-const shows = Array.isArray(raw) ? raw : Object.values(raw);
+const shows = showsFromJson(raw);
+if (!shows.length) {
+  console.error('audit-wet-archive-market: no show rows read from data/shows.json; refusing to report every archive as unknown');
+  process.exit(2);
+}
 if (!fs.existsSync(dir)) {
   console.log(`audit-wet-archive-market: no archive dir at ${dir} (private review-texts not attached); nothing checked`);
   process.exit(0);

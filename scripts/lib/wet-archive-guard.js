@@ -43,6 +43,14 @@ function wetArchiveProblem(show, archive) {
  * @param {Array<{showId:string, archive:object}>} archives parsed WET archive files
  * @returns {Array<{showId:string, code:string, detail:string, postUrl:string|null}>}
  */
+// shows.json is { _meta, shows: [...] }; Object.values() of that yields no show rows,
+// which made every archive read as unknown-show.
+function showsFromJson(raw) {
+  if (Array.isArray(raw)) return raw;
+  if (raw && Array.isArray(raw.shows)) return raw.shows;
+  return Object.values(raw || {}).filter((s) => s && typeof s === 'object' && s.id);
+}
+
 function auditWetArchives(shows, archives) {
   const byId = new Map((shows || []).map((s) => [s.id, s]));
   const out = [];
@@ -53,4 +61,4 @@ function auditWetArchives(shows, archives) {
   return out;
 }
 
-module.exports = { wetArchiveProblem, auditWetArchives, POST_BEFORE_OPENING_MAX_DAYS };
+module.exports = { wetArchiveProblem, auditWetArchives, showsFromJson, POST_BEFORE_OPENING_MAX_DAYS };
