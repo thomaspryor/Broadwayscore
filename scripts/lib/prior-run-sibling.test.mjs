@@ -441,3 +441,30 @@ test('collectSameTitleProductionFiles: a later production that started after thi
   assert.deepEqual(collectSameTitleProductionFiles({ ...ORIG, closingDate: undefined }, [ORIG, RET], deps), []);
   assert.deepEqual(collectSameTitleProductionFiles({ ...ORIG, closingDate: '2026-09-20' }, [ORIG, RET], deps), []);
 });
+
+test('collectSameTitleProductionFiles: later-run boundaries, category and three productions', () => {
+  const ORIG = { id: 'x-off-broadway-2026', title: 'X', category: 'off-broadway',
+    previewsStartDate: '2026-02-01', openingDate: '2026-02-10', closingDate: '2026-05-01' };
+  const RET = { id: 'x-return-off-broadway-2026', title: 'X', category: 'off-broadway', previewsStartDate: '2026-09-01' };
+  const files = {
+    [RET.id]: [{ _file: 'in.json', url: 'https://x.com/in', publishDate: '2026-09-05' }],
+    'x-tour-2026': [{ _file: 'tour.json', url: 'https://x.com/tour', publishDate: '2026-09-05' }],
+    'x-off-broadway-2025': [{ _file: 'old.json', url: 'https://x.com/old', publishDate: '2025-06-02' }],
+  };
+  const deps = { loadFiles: id => files[id] || [], isCovered: () => true };
+  // Open-ended later run: matches, tagged _laterRun.
+  const got = collectSameTitleProductionFiles(ORIG, [ORIG, RET], deps);
+  assert.deepEqual(got.map(d => [d._file, d._laterRun]), [['in.json', true]]);
+  // Later run starting exactly on this run's closing date: nothing.
+  assert.deepEqual(collectSameTitleProductionFiles(ORIG, [ORIG, { ...RET, previewsStartDate: '2026-05-01' }], deps), []);
+  // Later run closed before the file date: excluded.
+  assert.deepEqual(collectSameTitleProductionFiles(ORIG, [ORIG, { ...RET, closingDate: '2026-09-03' }], deps), []);
+  // A tour of the same title: not this run's return, unless it links this run.
+  const TOUR = { id: 'x-tour-2026', title: 'X', category: 'tour', previewsStartDate: '2026-09-01' };
+  assert.deepEqual(collectSameTitleProductionFiles(ORIG, [ORIG, TOUR], deps), []);
+  assert.deepEqual(collectSameTitleProductionFiles(ORIG, [ORIG, { ...TOUR, priorRuns: [{ id: ORIG.id }] }], deps).map(d => d._file), ['tour.json']);
+  // Earlier, current and later together: both directions, earlier untagged.
+  const OLD = { id: 'x-off-broadway-2025', title: 'X', category: 'off-broadway', previewsStartDate: '2025-06-01', closingDate: '2025-07-01' };
+  const both = collectSameTitleProductionFiles(ORIG, [OLD, ORIG, RET], deps);
+  assert.deepEqual(both.map(d => [d._file, !!d._laterRun]).sort(), [['in.json', true], ['old.json', false]]);
+});

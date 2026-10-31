@@ -1493,16 +1493,17 @@ async function auditShow(show, opts = {}) {
       if (d.url) housed.set(gapUrlIdentity(d.url), d._housedOnShowId);
     }
     // BRO-5489: an unlinked, earlier-starting same-title production holding it, dated in its own run.
+    // BRO-6716: or a later one that opened after this run closed (tagged later-run-held).
     for (const d of collectSameTitleProductionFiles(show, opts.allShows, housedDeps)) {
       const k = d.url && gapUrlIdentity(d.url);
-      if (k && !housed.has(k)) housed.set(k, d._housedOnShowId);
+      if (k && !housed.has(k)) housed.set(k, d._laterRun ? `later:${d._housedOnShowId}` : d._housedOnShowId);
     }
     if (housed.size) {
       for (const m of [...result.missing, ...result.flaggedMisses]) {
         const sib = housed.get(gapUrlIdentity(m.url));
         if (!sib || m.priorRun) continue;
         m.priorRun = true;
-        m.priorRunSource = `sibling-held:${sib}`;
+        m.priorRunSource = sib.startsWith('later:') ? `later-run-held:${sib.slice(6)}` : `sibling-held:${sib}`;
       }
     }
     // Not held anywhere, but the slug names the earlier run's house and not this one.
@@ -2539,7 +2540,7 @@ async function main(argv = process.argv.slice(2)) {
         try {
           const { sendAlert } = require('./lib/discord-notify');
           const lines = [
-            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? (String(m.priorRunSource || '').startsWith('pending-file-date') ? ' [prior-run: stored review date]' : /^(sibling-held|url-names-prior-run-venue|url-dated-in-prior-run)/.test(String(m.priorRunSource || '')) ? ` [prior-run: ${m.priorRunSource}]` : ' [prior-run roundup]') : ''}`),
+            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? (String(m.priorRunSource || '').startsWith('pending-file-date') ? ' [prior-run: stored review date]' : /^(sibling-held|later-run-held|url-names-prior-run-venue|url-dated-in-prior-run)/.test(String(m.priorRunSource || '')) ? ` [prior-run: ${m.priorRunSource}]` : ' [prior-run roundup]') : ''}`),
             ...r.citedNoUrl.map(c => `• ${c.outletId} — cited by ${c.source}${c.stars ? ` (${c.stars}★)` : ''}, no URL${c.priorRun ? ' [prior-run roundup]' : ''}`),
           ];
           const delivered = await sendAlert({

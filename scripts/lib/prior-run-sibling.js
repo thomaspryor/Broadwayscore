@@ -437,10 +437,14 @@ function collectHousedSiblingFiles(show, shows, deps) {
  * the Rose Theatre Kingston "Jane Eyre" play, Oct 2026). The ingest refused the
  * Southwark-held URL as cross-show-url-owned and the opening-window alert kept
  * counting it as a gap the Kingston entry could never collect.
- * Dated files only (an undated one could be a misfiled review of this run), and a
- * review dated on or after this run's start never matches. Report-only evidence.
+ * Dated files only (an undated one could be a misfiled review of this run). From an
+ * earlier production, a review dated on or after this run's start never matches.
+ * BRO-6716: a LATER production also counts when it opened after this run closed and
+ * is the same category or links this run in its priorRuns (Lost in Del Valle's
+ * September return held the NYTG review the April run's gap row cited); only files
+ * dated inside that later run, tagged `_laterRun`. Report-only evidence.
  *
- * @returns {Array<object>} copies tagged `_housedOnShowId`
+ * @returns {Array<object>} copies tagged `_housedOnShowId` (and `_laterRun` when later)
  */
 function collectSameTitleProductionFiles(show, shows, deps) {
   const out = [];
@@ -458,8 +462,12 @@ function collectSameTitleProductionFiles(show, shows, deps) {
     // BRO-6716: also a LATER same-title production that started after this one closed
     // (Lost in Del Valle's September return holds its own reviews; the April run's gap
     // row cited them). Only files dated inside that later run, so no overlap is possible.
+    // Narrow: same category, or the later show names this one in its priorRuns. A tour or
+    // UK regional sharing the title is not this run's return.
     const thisEnd = toDateMs(show.closingDate);
-    const later = otherStart > start && Number.isFinite(thisEnd) && otherStart > thisEnd;
+    const relinks = Array.isArray(other.priorRuns) && other.priorRuns.some(r => r && r.id === show.id);
+    const later = otherStart > start && Number.isFinite(thisEnd) && thisEnd >= start && otherStart > thisEnd
+      && (other.category === show.category || relinks);
     if (otherStart >= start && !later) continue;
     const otherEnd = toDateMs(other.closingDate);
     for (const d of deps.loadFiles(other.id) || []) {
@@ -467,7 +475,7 @@ function collectSameTitleProductionFiles(show, shows, deps) {
       if (!Number.isFinite(ms) || ms < otherStart || (!later && ms >= start)) continue;
       if (Number.isFinite(otherEnd) && ms > otherEnd) continue;
       if (!deps.isCovered(d, other)) continue;
-      out.push({ ...d, _housedOnShowId: other.id });
+      out.push({ ...d, _housedOnShowId: other.id, ...(later ? { _laterRun: true } : {}) });
     }
   }
   return out;
