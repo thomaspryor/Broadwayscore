@@ -137,3 +137,17 @@ test('validateRoundupPageTitle rejects it too (archive-cache guard + integrity a
   assert.equal(r.reason, 'containing-title-sibling');
   assert.equal(validateRoundupPageTitle(own, 'Home').ok, true);
 });
+
+test('BRO-6727: a short title inside a longer UNcatalogued title is not redirected to the catalogued sibling', () => {
+  // Data-independent fixture: before BRO-6727 this only passed while shows.json
+  // lacked a one-word "Mia" (catalogued 2026-10-31, which turned main red).
+  const shows = [
+    { id: 'mamma-mia-west-end-2021', title: 'Mamma Mia!', slug: 'mamma-mia-west-end', category: 'west-end', openingDate: '1999-04-06' },
+    { id: 'mia-regional-2023', title: 'Mia', slug: 'mia-regional-2023', category: 'regional', openingDate: '2023-01-01' },
+  ];
+  // "party" names a different show; neither Mia nor Mamma Mia! is it.
+  assert.equal(matchTitleToShow('Mamma Mia! The Party', shows, { market: 'west-end' }), null);
+  // The catalogued longer show still wins over the short one when nothing extra is named.
+  assert.equal(matchTitleToShow('Mamma Mia! West End Reviews', shows, { market: 'west-end' })?.show?.id, 'mamma-mia-west-end-2021');
+  assert.equal(matchTitleToShow('MAMMA MIA! Reviews | BroadwayWorld', shows)?.show?.id, 'mamma-mia-west-end-2021');
+});

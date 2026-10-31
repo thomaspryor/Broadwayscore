@@ -749,7 +749,13 @@ function matchTitleToShow(externalTitle, shows, options) {
         // ("'n'" vs "and"), so look it up directly.
         // distinctTitleKey: "Little Women" and "Little Women the Musical" are
         // productions of one show; let pickBestProduction choose between them.
-        const named = shows.filter(show => containingSiblings.has(distinctTitleKey(show.title || '')));
+        // BRO-6727: the redirect skips titleWordsMatch, so apply its short-title
+        // guard here. "Mia" word-matched "Mamma Mia! The Party" and the redirect
+        // filed it under "Mamma Mia!" even though "party" names a different show.
+        // Only the headline counts, not a "| BroadwayWorld" site suffix.
+        const headline = variant.split(/\s+\|\s+/)[0];
+        const named = shows.filter(show => containingSiblings.has(distinctTitleKey(show.title || ''))
+          && !_hasUnexplainedExtraWords(show.title || '', headline));
         if (named.length > 0) {
           return { show: pickBestProduction(named, targetYear, preferredMarket, prefer, activeDate), confidence: 'medium' };
         }
@@ -883,6 +889,46 @@ function matchesAsWholeWord(word, text) {
   return re.test(normalizedText) || re.test(normalizedText.replace(/-/g, ' '));
 }
 
+/**
+ * Does `candidateLower` carry a distinctive word that is not in `showTitle`
+ * (after dropping generic, venue/review-context and year tokens)? Such a
+ * candidate is likely a different, longer-titled show.
+ */
+function _hasUnexplainedExtraWords(showTitle, candidateLower) {
+  const normalizeWord = w => w.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+  // Context words that commonly appear in URLs/titles alongside show names
+  // but don't indicate a different show (venues, review terms, markets)
+  const CONTEXT_WORDS = new Set([
+    'review', 'reviews', 'theatre', 'theater', 'london', 'broadway',
+    'west', 'end', 'musical', 'play', 'show', 'stage', 'tickets',
+    'cast', 'opening', 'night', 'preview', 'stars', 'rating', 'score',
+    'garrick', 'palace', 'lyceum', 'apollo', 'gielgud', 'savoy',
+    'roundup', 'round', 'critics', 'critic', 'rated', 'best', 'worst',
+    'waterloo', 'soho', 'covent', 'garden', 'piccadilly', 'drury', 'lane',
+    'bridge', 'donmar', 'warehouse', 'national', 'arts', 'fortune',
+    'globe', 'old', 'vic', 'young', 'duke', 'york', 'haymarket',
+    'east', 'north', 'south', 'street', 'square', 'road', 'house',
+  ]);
+  // Use FULL title words (including subtitle) — showSlugWords may only have pre-colon part
+  const fullTitleWords = showTitle.toLowerCase().split(/[\s,:()&]+/)
+    .map(normalizeWord)
+    .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+  const showWordsClean = new Set(fullTitleWords);
+  // No hyphen in the split (unlike fullTitleWords' pattern would need none either) —
+  // splitting on '-' here while fullTitleWords keeps hyphenated words intact broke
+  // matching for titles like "A-Changin'"/"Court-Martial": normalizeWord() already
+  // strips the hyphen from an intact token ("a-changin'" -> "achangin"), but
+  // pre-splitting on '-' instead produces two separate tokens ("a", "changin") that
+  // never equal the show's single "achangin" token — so a real hyphenated word was
+  // always flagged as an unexplained "extra" word once the guard below started
+  // running on partial matches too (2026-08-24).
+  const candidateWords = candidateLower.split(/[\s,_/]+/)
+    .map(normalizeWord)
+    .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w)
+      && !/^(?:19|20)\d\d$/.test(w));  // Exclude year tokens (2024, 2025, etc.)
+  return candidateWords.some(w => !showWordsClean.has(w));
+}
+
 function titleWordsMatch(showTitle, candidateText) {
   // First try the pre-colon part (e.g., "All Out" from "All Out: Comedy About Ambition")
   // Normalize: strip accents (NFD decompose + remove combining marks) and punctuation
@@ -947,38 +993,7 @@ function titleWordsMatch(showTitle, candidateText) {
   // and "rhinoceros"/"giamatti"/"turturro" as unexplained extra words — a real production
   // silently dropped from regional auto-promotion (2026-08-24, #playbill-verdict).
   if (showSlugWords.length <= 3 && matchCount >= threshold) {
-    // Context words that commonly appear in URLs/titles alongside show names
-    // but don't indicate a different show (venues, review terms, markets)
-    const CONTEXT_WORDS = new Set([
-      'review', 'reviews', 'theatre', 'theater', 'london', 'broadway',
-      'west', 'end', 'musical', 'play', 'show', 'stage', 'tickets',
-      'cast', 'opening', 'night', 'preview', 'stars', 'rating', 'score',
-      'garrick', 'palace', 'lyceum', 'apollo', 'gielgud', 'savoy',
-      'roundup', 'round', 'critics', 'critic', 'rated', 'best', 'worst',
-      'waterloo', 'soho', 'covent', 'garden', 'piccadilly', 'drury', 'lane',
-      'bridge', 'donmar', 'warehouse', 'national', 'arts', 'fortune',
-      'globe', 'old', 'vic', 'young', 'duke', 'york', 'haymarket',
-      'east', 'north', 'south', 'street', 'square', 'road', 'house',
-    ]);
-    // Use FULL title words (including subtitle) — showSlugWords may only have pre-colon part
-    const fullTitleWords = showTitle.toLowerCase().split(/[\s,:()&]+/)
-      .map(normalizeWord)
-      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
-    const showWordsClean = new Set(fullTitleWords);
-    // No hyphen in the split (unlike fullTitleWords' pattern would need none either) —
-    // splitting on '-' here while fullTitleWords keeps hyphenated words intact broke
-    // matching for titles like "A-Changin'"/"Court-Martial": normalizeWord() already
-    // strips the hyphen from an intact token ("a-changin'" -> "achangin"), but
-    // pre-splitting on '-' instead produces two separate tokens ("a", "changin") that
-    // never equal the show's single "achangin" token — so a real hyphenated word was
-    // always flagged as an unexplained "extra" word once the guard below started
-    // running on partial matches too (2026-08-24).
-    const candidateWords = candidateLower.split(/[\s,_/]+/)
-      .map(normalizeWord)
-      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w) && !CONTEXT_WORDS.has(w)
-        && !/^(?:19|20)\d\d$/.test(w));  // Exclude year tokens (2024, 2025, etc.)
-    const extraWords = candidateWords.filter(w => !showWordsClean.has(w));
-    if (extraWords.length >= 1) return false;
+    if (_hasUnexplainedExtraWords(showTitle, candidateLower)) return false;
   }
 
   return true;
@@ -1603,6 +1618,30 @@ function _tokenOnlyLocationPrefixed(token, cleanedSlug) {
 }
 
 /**
+ * Is `token` (ending in "s") used as a possessive name in the slug, i.e. is
+ * every occurrence followed by the full title of one of `others`?
+ * "heather-christians-animal-wisdom" with others [Animal Wisdom] → true.
+ */
+function _isPossessivePrefix(token, cleanedSlug, others) {
+  if (!token || !token.endsWith('s') || others.length === 0) return false;
+  let idx = -1;
+  let saw = false;
+  while ((idx = cleanedSlug.indexOf(token, idx + 1)) !== -1) {
+    const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
+    const end = idx + token.length;
+    if (!startOk || (end !== cleanedSlug.length && cleanedSlug[end] !== '-')) continue;
+    saw = true;
+    const rest = cleanedSlug.slice(end + 1);
+    const ownsRest = others.some(o => {
+      const toks = _showDistinctiveTokens(o.show);
+      return toks.length > 0 && rest.startsWith(toks[0]) && toks.every(t => _tokenAppearsInSlug(t, rest));
+    });
+    if (!ownsRest) return false;
+  }
+  return saw;
+}
+
+/**
  * Tie-break between two candidates that matched the slug equally well (the
  * date-context, closed and recency axes of the sort in
  * _matchCleanedSlugAgainstShows). Candidates are { show }. Shared with the
@@ -1763,8 +1802,14 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     && !(findContainingTitleSibling(slugText, c.show.title, { shows })
       || findContainingTitleSibling(slugText, c.show.title)));
   if (viable.length === 0) return null;
+  // BRO-6602: "heather-christians-animal-wisdom" is Heather Christian's Animal
+  // Wisdom. Once "The Christians" was catalogued its one long token outscored
+  // [animal, wisdom]. A one-word "...s" title followed by another candidate's
+  // whole title is a possessive name, not the show.
+  const possessive = viable.filter(c => c.total === 1
+    && _isPossessivePrefix(_showDistinctiveTokens(c.show)[0], cleanedSlug, viable.filter(o => o !== c)));
   candidates.length = 0;
-  candidates.push(...viable);
+  candidates.push(...viable.filter(c => !possessive.includes(c)));
   candidates.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.totalLen !== a.totalLen) return b.totalLen - a.totalLen;

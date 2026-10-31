@@ -81,6 +81,18 @@ const BWW_TITLE_FIXTURES = [
   ['Review-Roundup-HOLIDAY-INN-Opens-on-Broadway-20161006', 'holiday-inn-the-new-irving-berlin-musical-2016', 'subtitled ID — must match on pre-comma title not full id tokens'],
 ];
 
+test('BRO-6602: a possessive name before a title does not route to a same-word show', () => {
+  // Data-independent: passed only until "The Christians" was catalogued.
+  const shows = [
+    { id: 'animal-wisdom-off-broadway-2022', title: 'Animal Wisdom', slug: 'animal-wisdom', openingDate: '2022-01-01' },
+    { id: 'the-christians-regional-2023', title: 'The Christians', slug: 'the-christians-regional-2023', openingDate: '2023-01-01' },
+  ];
+  assert.equal(matchSlugToShow('read-reviews-for-heather-christians-animal-wisdom', shows)?.show?.id, 'animal-wisdom-off-broadway-2022');
+  // The one-word show still matches its own slugs.
+  assert.equal(matchSlugToShow('read-reviews-for-the-christians', shows)?.show?.id, 'the-christians-regional-2023');
+  assert.equal(matchSlugToShow('the-christians-review-a-church-divided', shows)?.show?.id, 'the-christians-regional-2023');
+});
+
 test('cleanSlugTitle strips head and tail patterns', () => {
   assert.equal(cleanSlugTitle('read-reviews-for-heather-christians-animal-wisdom'),
     'Heather Christians Animal Wisdom');
