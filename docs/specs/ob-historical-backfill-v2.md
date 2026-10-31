@@ -631,3 +631,35 @@ The other 209 shows: 0 right-production gaps (complete).
 | Approved-fix plan set wrongProductionManualClear to a prose reason | plan bro-6640 | review-field-edit.js validator: the field must be a boolean |
 | Gap list noise dropped on vetting: podcasts, longer-title slugs, slugs with no title word, prior-production citations | 8 podcast, 14 longer-title, 12 slug-no-title | currentRunOnly plus the guards above |
 | Outlets not in the registry | 6 URLs (temptalkinbroadway, hollywoodpresscorps, culturalweekly, qctimes, a list-manage tracking link) | left out: below the census bar or not a review URL |
+
+## 2015-06 to 2018-05 backfill (2026-10-30 to 31, BRO-6630)
+
+Owner approved option A on 2026-10-30 with a $35 cap and a hard floor of 2015-06-01. Same method as BRO-6496: outlet-first notability from the census, Playbill dates where a production page exists, otherwise the two-source rule (BroadwayWorld plus TheaterMania or Broadway.com agreeing, `scripts/ob-two-source-dates.js`), transfers per BRO-6254. Seasons ran newest first.
+
+| Season | Shows added | 0 | 1-2 | 3-4 | 5-9 | 10+ | Status at 2026-10-31 21:20Z |
+|---|---|---|---|---|---|---|---|
+| 2017-18 | 28 | 0 | 1 | 3 | 6 | 18 | complete (gathered, collected, scored, gap-ingested) |
+| 2016-17 | 43 | 16 | 19 | 3 | 1 | 4 | collected; most reviews still in the scoring queue |
+| 2015-16 | 29 | 12 | 14 | 3 | 0 | 0 | collected; most reviews still in the scoring queue |
+
+100 new shows in the window (VERIFY passes, 100 against 30). Shear Madness (2015) was already in the catalog from a manual request, so its add was refused as a duplicate. That is correct.
+
+Thin shows are mostly unscored, not missing. 41 of the 63 shows with 2 or fewer scored reviews already hold 12 to 47 clean review files each. They wait in the site-wide half-price scoring queue: about 2,400 unscored reviews, 400 per scheduled run, 4 runs a day. 20 shows were never reached by the gather: one 2016-17 shard hit its 75-minute timeout and was cancelled, and some 2015-16 shows had no gap-audit row. They were re-gathered on 2026-10-31. Ghost Light (2017) is the one genuinely thin show found so far.
+
+Fact-check (BRO-6489 harness, 15 shows, 5 per season): 1 wrong field, no date errors. Afterglow (2017) was stored at the Davenport Theatre's main stage; it played the Loft at the Davenport. Fixed by plan bro-6630-fc and verified in core data. Seven other flagged fields were naming variants or checker misses, adjudicated correct in `data/audit/fact-check/off-broadway-historical-adjudications.json`. Fact-check cost $1.33.
+
+Completeness pass (BRO-6640 method): all 100 shows went through `audit-aggregator-gap.yml` with `show_ids` and `ingest_missing=true`. 18 shows had right-production gaps left past the 5-per-show ingest cap or failed fetches. Their 50 URLs went through `dispatch-ingest-batch.js` (at most 10 queued). For the four transfer shows (Sweat, Eclipsed, Oslo, Dear Evan Hansen), only URLs dated inside the off-Broadway run were kept. Their Broadway and movie roundups were already tagged prior-run by `articleRunIdentity` and never ingested, and no wrong-production review landed (checked in reviews.json). The census sources still list the transfer production's undated URLs as current-run missing (Sweat: 37 of 46). Filed as BRO-6733.
+
+Spend at 2026-10-31 21:20Z, about $18 to $19 of $35:
+- Scraping on ledger rows tagged with cohort show ids: $5.47 (2017-18 $1.43, 2016-17 $2.23, 2015-16 $1.81).
+- LLM: about $10 to $12. That includes one $5 full-price (`sync=true`) run for 2017-18. Every run after it was half price, per BRO-5047.
+- Fact-check: $1.33.
+
+No season passed 2x its share of the estimate. The remaining scoring rides the half-price batch runs, roughly $5 to $9 more.
+
+Runbook lessons:
+- Gather about 25 shows per run, not 5 or 6. Every small run waits for one of 2 shared slots, so 21 small runs would have taken about 15 hours of queue. Four large runs plus their deferral hops took about 10.
+- Deferral hops run as single-show gather runs that each wait hours for a slot. Start the collect pass once the hops are down to one or two shows.
+- Do not pass `sync=true` to `llm-ensemble-score.yml` for a backfill. The scheduled `--batch` runs are half price, and a cohort this size is 400 to 600 reviews.
+- `audit-aggregator-gap.yml` stops at an 18-minute budget (about 10 to 20 shows a run). Rerun with the same `show_ids` until the log says "full eligible set complete".
+- Every apply's post-apply gather auto-dispatch was deferred by the gather in-flight cap. Recover the show list from the `##[error]` line and dispatch the gathers yourself.
