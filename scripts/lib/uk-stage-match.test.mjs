@@ -42,3 +42,10 @@ test('a studio inside the parent venue matches by name part plus city (Ustinov S
   const s = show('jeeves', 'Jeeves Takes Charge', 'Theatre Royal Bath, Bath', '2024-12-17');
   assert.ok(matchEntry(s, E('jeeves-takes-charge-review-at-ustinov-studio-bath-from-director', '2024-12-17T14:21+00:00')));
 });
+
+test('a one-word venue needs the city too (Octagon, Bolton vs Octagon, Yeovil), and a missing lastmod is not a match', () => {
+  const s = show('hf', 'Hobsons Choice', 'Octagon Theatre, Bolton', '2025-02-01');
+  assert.equal(matchEntry(s, E('hobsons-choice-review-at-octagon-yeovil', '2025-02-05T00:00+00:00')), null);
+  assert.ok(matchEntry(s, E('hobsons-choice-review-at-octagon-theatre-bolton', '2025-02-05T00:00+00:00')));
+  assert.deepEqual(Object.keys(matchShows([s], [E('hobsons-choice-review-at-octagon-theatre-bolton', undefined)])), []);
+});

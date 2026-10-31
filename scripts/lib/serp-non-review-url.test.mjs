@@ -23,5 +23,12 @@ test('keeps real reviews, including ones whose slug mentions casting or returns'
     'https://www.thereviewshub.com/bluebelle-crucible-theatre-sheffield/',
     'https://fairypoweredproductions.com/a-christmas-carol-a-ghost-story-review/',
     'https://www.thestage.co.uk/reviews/pantomime-review-returns-as-tour',
+    'https://www.newsday.com/entertainment/theater/casting-ideal-material-unreal-in-addams-family-x1',
+    'https://www.out.com/theater/paramour-dazzling-corny-also-drag-race-casting-gossip',
+    'https://example.com/broadcasting-the-tourism-play',
   ]) assert.equal(isNonReviewUrl(u), false, u);
+});
+
+test('a malformed percent escape does not throw', () => {
+  assert.doesNotThrow(() => isNonReviewUrl('https://example.com/a%E0%A4b'));
 });

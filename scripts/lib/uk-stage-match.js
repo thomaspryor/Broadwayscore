@@ -58,8 +58,7 @@ function titleMatches(showSlug, stageSlug) {
   const b = stripThe(stageSlug);
   if (a === b) return true;
   // "A Christmas Carol: A Ghost Story" is listed under its main title.
-  const colon = String(showSlug);
-  return b.length >= 8 && a.startsWith(`${b}-`) && b.split('-').length >= 2 && colon.length > b.length;
+  return b.length >= 8 && a.startsWith(`${b}-`) && b.split('-').length >= 2;
 }
 
 /**
@@ -74,6 +73,8 @@ function matchEntry(show, entry) {
   const v = venueTokens(show);
   const nameHit = v.name.length ? v.name.filter((t) => rest.has(t)).length / v.name.length : 0;
   const cityHit = v.city.length ? v.city.some((t) => rest.has(t)) : false;
+  // One-word venues (Tron, Crucible, Octagon, Home) exist in several cities: the city must match too.
+  if (v.name.length === 1 && !cityHit) return null;
   if (!(nameHit >= 0.75 || (nameHit >= 0.5 && cityHit))) return null;
   const open = show.openingDate ? Date.parse(show.openingDate) : NaN;
   const mod = entry.lastmod ? Date.parse(entry.lastmod) : NaN;
@@ -82,14 +83,14 @@ function matchEntry(show, entry) {
   return { venueScore: nameHit, cityHit, dateOk, url: entry.url, lastmod: entry.lastmod };
 }
 
-/** Matches per show id: only entries whose date window also fits (dateOk !== false). */
+/** Matches per show id: only entries whose date window is confirmed (dateOk === true). */
 function matchShows(shows, entries) {
   const out = {};
   for (const s of shows) {
     const hits = [];
     for (const e of entries) {
       const m = matchEntry(s, e);
-      if (m && m.dateOk !== false) hits.push(m);
+      if (m && m.dateOk === true) hits.push(m);
     }
     if (hits.length) out[s.id] = hits;
   }

@@ -48,7 +48,7 @@ function main(argv = process.argv.slice(2)) {
   const plan = {};
   const rows = [];
   for (const s of pool) {
-    const hits = (matches[s.id] || []).filter((m) => !(have.get(s.id) || { urls: new Set() }).urls.has(m.url));
+    const hits = (matches[s.id] || []).filter((m) => !(have.get(s.id) || { urls: new Set() }).urls.has(m.url.replace(/\/$/, '')));
     rows.push({ id: s.id, city: s.city, reviews: (have.get(s.id) || {}).n || 0, stage: hits.length });
     if (hits.length) plan[s.id] = hits.map((m) => ({ url: m.url, outlet: 'thestage' }));
   }
