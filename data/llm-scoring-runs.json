@@ -1739928,21 +1739928,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T16:34:08.086Z",
-    "completedAt": "2026-10-31T16:34:56.014Z",
-    "totalReviews": 10,
-    "processed": 10,
-    "skipped": 0,
+    "startedAt": "2026-10-31T16:33:54.641Z",
+    "completedAt": "2026-10-31T16:34:36.055Z",
+    "totalReviews": 9,
+    "processed": 8,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 61772,
-      "output": 2874,
-      "cacheRead": 38070,
+      "input": 49937,
+      "output": 2373,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 153335
+      "total": 123506
     },
-    "costUsd": 0.22950600000000002,
-    "runId": "41219797589",
+    "costUsd": 0.1861379,
+    "runId": "41219756822",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1748326,6 +1748326,16 @@
           "flat": 0,
           "down": 0,
           "total": 10
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "changing-channels-regional-2026",
+        "ourDistribution": {
+          "up": 8,
+          "flat": 0,
+          "down": 0,
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -1779296,16 +1779306,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-sugar-wife-regional-2026",
-        "ourDistribution": {
-          "up": 9,
-          "flat": 1,
-          "down": 0,
-          "total": 10
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-sunshine-boys-west-end-2012",
         "ourDistribution": {
           "up": 3,
@@ -1781910,16 +1781910,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "two-sisters-and-a-piano-regional-2026",
-        "ourDistribution": {
-          "up": 7,
-          "flat": 3,
-          "down": 0,
-          "total": 10
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "two-strangers-bway-2025",
         "ourDistribution": {
           "up": 33,
@@ -1783868,8 +1783858,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T16:39:52.526Z",
-    "completedAt": "2026-10-31T16:39:52.527Z",
+    "startedAt": "2026-10-31T16:39:33.437Z",
+    "completedAt": "2026-10-31T16:39:33.439Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1783882,7 +1783872,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41219797589",
+    "runId": "41219756822",
     "source": "comparative-rescore",
     "errorDetails": []
   }
