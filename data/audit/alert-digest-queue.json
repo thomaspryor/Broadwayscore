@@ -1404,20 +1404,6 @@
     "queuedAt": "2026-10-31T18:23:05.989Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-ask-off-broadway-2026",
-    "title": "Review gap — \"The Ask\" missing 4 cited review(s)",
-    "description": "The Ask (the-ask-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-ask-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:23:06.003Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-bodyguard-tour-2026",
     "title": "Review gap — \"The Bodyguard\" missing 8 cited review(s)",
     "description": "The Bodyguard (the-bodyguard-tour-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bodyguard-tour-2026 --checkpoint --ingest-missing",
@@ -1806,20 +1792,6 @@
     "queuedAt": "2026-10-31T20:06:35.109Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T20:57:52.640Z"
-  },
-  {
     "conditionKey": "land:land/bro-6725-date-ci2",
     "title": "Landing blocked: unit-tests-node red on land/bro-6725-date-ci2",
     "description": "land.yml did not land land/bro-6725-date-ci2: the unit-tests-node gate went red at 87d11cc2aa. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41237220211",
@@ -1880,6 +1852,20 @@
       }
     ],
     "queuedAt": "2026-10-31T20:29:24.508Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T21:22:08.406Z"
   },
   {
     "conditionKey": "opening-night-publish-date-pre-opening:missing:medea-off-broadway-2026",

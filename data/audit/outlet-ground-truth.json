@@ -1,296 +1,42 @@
 {
-  "generatedAt": "2026-10-31T15:11:16.068Z",
+  "generatedAt": "2026-10-31T21:24:48.220Z",
   "phase": "done",
-  "days": 4000,
-  "shows": 2015,
+  "days": 21,
+  "shows": 84,
   "sources": {
     "theatermania": {
-      "queries": 253,
-      "listed": 60,
+      "queries": 48,
+      "listed": 19,
+      "errors": 0
+    },
+    "whatsonstage": {
+      "queries": 36,
+      "listed": 10,
+      "errors": 0
+    },
+    "nysr": {
+      "queries": 48,
+      "listed": 16,
+      "errors": 0
+    },
+    "newyorktheater": {
+      "queries": 48,
+      "listed": 7,
       "errors": 0
     },
     "nytimes": {
       "queries": 4,
       "listed": 2,
       "errors": 0
+    },
+    "theatre-reviews": {
+      "queries": 36,
+      "listed": 47,
+      "errors": 0
     }
   },
-  "listingTruncated": true,
-  "listed": 62,
-  "ingested": [
-    {
-      "showId": "glengarry-glen-ross-2025",
-      "url": "https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
-      "ok": false,
-      "error": "Command failed: node /home/runner/work/Broadwayscore/Broadwayscore/scripts/ingest-review-from-url.js --show=glengarry-glen-ross-2025 --url=https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/ --stub-on-failure"
-    },
-    {
-      "showId": "othello-2025",
-      "url": "https://www.theatermania.com/news/review-classical-theatre-of-harlems-othello-is-the-best-of-a-recent-batch_1844714/",
-      "ok": true
-    },
-    {
-      "showId": "othello-2025",
-      "url": "https://www.theatermania.com/news/review-wendell-pierce-commands-the-stage-in-stcs-gripping-othello_1839319/",
-      "ok": true
-    },
-    {
-      "showId": "othello-2025",
-      "url": "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
-      "ok": true
-    },
-    {
-      "showId": "eureka-day-2024",
-      "url": "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/",
-      "ok": false,
-      "error": "Command failed: node /home/runner/work/Broadwayscore/Broadwayscore/scripts/ingest-review-from-url.js --show=eureka-day-2024 --url=https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/ --stub-on-failure"
-    },
-    {
-      "showId": "eureka-day-2024",
-      "url": "https://www.theatermania.com/news/review-in-this-much-i-know-jonathan-spector-spins-a-yarn-about-the-science-of-decision-making_1805267/",
-      "ok": true
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "url": "https://www.theatermania.com/news/review-hells-kitchen-ignites-at-the-pantages-with-heart-and-hits-of-alicia-keys_1839593/",
-      "ok": true
-    },
-    {
-      "showId": "suffs-2024",
-      "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-reminds-us-to-keep-marching_1812851/",
-      "ok": true
-    },
-    {
-      "showId": "prayer-for-the-french-republic-2024",
-      "url": "https://www.theatermania.com/news/review-joanna-gleason-as-a-nana-with-a-secret-in-joshua-harmons-we-had-a-world_1767722/",
-      "ok": true
-    },
-    {
-      "showId": "spamalot-2023",
-      "url": "https://www.theatermania.com/news/review-monty-pythons-spamalot-feels-a-bit-tired-on-the-road_1830804/",
-      "ok": true
-    },
-    {
-      "showId": "here-lies-love-2023",
-      "url": "https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-reimagined-in-los-angeles_1825289/",
-      "ok": true
-    },
-    {
-      "showId": "fat-ham-2023",
-      "url": "https://www.theatermania.com/news/review-good-bones-but-a-shaky-foundation-in-james-ijamess-wilderness-generation_1833156/",
-      "ok": true
-    }
-  ],
-  "missing": [
-    {
-      "source": "theatermania",
-      "showId": "glengarry-glen-ross-2025",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
-      "date": "2026-02-26"
-    },
-    {
-      "source": "theatermania",
-      "showId": "othello-2025",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-classical-theatre-of-harlems-othello-is-the-best-of-a-recent-batch_1844714/",
-      "date": "2026-07-06"
-    },
-    {
-      "source": "theatermania",
-      "showId": "othello-2025",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-wendell-pierce-commands-the-stage-in-stcs-gripping-othello_1839319/",
-      "date": "2026-05-29"
-    },
-    {
-      "source": "theatermania",
-      "showId": "eureka-day-2024",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/",
-      "date": "2026-06-29"
-    },
-    {
-      "source": "theatermania",
-      "showId": "eureka-day-2024",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-in-this-much-i-know-jonathan-spector-spins-a-yarn-about-the-science-of-decision-making_1805267/",
-      "date": "2025-09-30"
-    },
-    {
-      "source": "theatermania",
-      "showId": "hells-kitchen-2024",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-hells-kitchen-ignites-at-the-pantages-with-heart-and-hits-of-alicia-keys_1839593/",
-      "date": "2026-06-01"
-    },
-    {
-      "source": "theatermania",
-      "showId": "suffs-2024",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-reminds-us-to-keep-marching_1812851/",
-      "date": "2025-11-20"
-    },
-    {
-      "source": "theatermania",
-      "showId": "spamalot-2023",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-monty-pythons-spamalot-feels-a-bit-tired-on-the-road_1830804/",
-      "date": "2026-03-30"
-    },
-    {
-      "source": "theatermania",
-      "showId": "sweeney-todd-2023",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-jennifer-nettless-giulia-is-a-female-empowerment-sweeney-todd_1845124/",
-      "date": "2026-07-10"
-    },
-    {
-      "source": "theatermania",
-      "showId": "sweeney-todd-2023",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-jason-alexander-leaves-a-little-gristle-in-new-production-of-sweeney-todd_1822951/",
-      "date": "2026-02-03"
-    },
-    {
-      "source": "theatermania",
-      "showId": "bob-fosses-dancin-2023",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-broadway-revival-of-dancin-knows-fosses-steps-but-lacks-his-vibe_94988/",
-      "date": "2023-03-19"
-    },
-    {
-      "source": "theatermania",
-      "showId": "a-dolls-house-2023",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-lucas-hnaths-a-dolls-house-part-2-sputters-when-it-should-sparkle_1781253/",
-      "date": "2025-05-28"
-    },
-    {
-      "source": "theatermania",
-      "showId": "a-christmas-carol-2022",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-a-christmas-carol-starring-michael-cerveris-is-tight-as-a-drum-and-pretty-as-a-picture_1814116/",
-      "date": "2025-12-05"
-    },
-    {
-      "source": "theatermania",
-      "showId": "the-piano-lesson-2022",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-hershey-felder-imagines-chopins-last-piano-lesson-in-monsieur-chopin_1721793/",
-      "date": "2023-11-20"
-    },
-    {
-      "source": "theatermania",
-      "showId": "the-kite-runner-2022",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-khaled-hosseinis-the-kite-runner-comes-to-broadway-is-it-as-good-as-the-book_94063/",
-      "date": "2022-07-21"
-    },
-    {
-      "source": "theatermania",
-      "showId": "macbeth-2022",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-macbeth-a-tale-of-halting-ambition-at-the-metropolitan-opera_1854763/",
-      "date": "2026-09-23"
-    },
-    {
-      "source": "theatermania",
-      "showId": "the-skin-of-our-teeth-2022",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-the-seat-of-our-pants-joins-thornton-wilder-for-a-song-at-the-end-of-the-world_1811867/",
-      "date": "2025-11-13"
-    },
-    {
-      "source": "theatermania",
-      "showId": "birthday-candles-2022",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-birthday-candles-with-debra-messing-wont-be-getting-star-baker-anytime-soon_93629/",
-      "date": "2022-04-10"
-    },
-    {
-      "source": "theatermania",
-      "showId": "paradise-square-2022",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-a-no-expense-spared-great-gatsby-on-broadway-with-jeremy-jordan-belting-to-the-rafters_1738140/",
-      "date": "2024-04-25"
-    },
-    {
-      "source": "theatermania",
-      "showId": "lackawanna-blues-2021",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-you-wont-sing-the-blues-at-ruben-santiago-hudsons-lackawanna_92857/",
-      "date": "2021-10-07"
-    },
-    {
-      "source": "theatermania",
-      "showId": "west-side-story-2020",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
-      "date": "2025-12-03"
-    },
-    {
-      "source": "theatermania",
-      "showId": "all-my-sons-2019",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-a-woman-among-women-is-a-frustrating-experience-at-lct3_1840772/",
-      "date": "2026-06-04"
-    },
-    {
-      "source": "theatermania",
-      "showId": "hadestown-2019",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-hadestown-gets-a-magnificent-film-capture_1844684/",
-      "date": "2026-07-23"
-    },
-    {
-      "source": "theatermania",
-      "showId": "oklahoma-2019",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-oklahoma-samovar-never-quite-reaches-a-boil_1814457/",
-      "date": "2025-12-09"
-    },
-    {
-      "source": "theatermania",
-      "showId": "king-lear-2019",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
-      "date": "2026-10-14"
-    },
-    {
-      "source": "theatermania",
-      "showId": "king-lear-2019",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
-      "date": "2026-02-26"
-    },
-    {
-      "source": "theatermania",
-      "showId": "king-lear-2019",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/",
-      "date": "2026-01-28"
-    },
-    {
-      "source": "theatermania",
-      "showId": "king-lear-2019",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-laowang-cooks-up-a-shakespearean-tragedy-in-chinatown_1812325/",
-      "date": "2025-11-17"
-    },
-    {
-      "source": "theatermania",
-      "showId": "network-2018",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
-      "date": "2026-10-20"
-    },
-    {
-      "source": "theatermania",
-      "showId": "mean-girls-2018",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-school-girls-or-the-african-mean-girls-play-brings-80s-fashion-and-ageless-politics-to-broadway_1855224/",
-      "date": "2026-09-28"
-    }
-  ]
+  "listingTruncated": false,
+  "listed": 101,
+  "ingested": [],
+  "missing": []
 }
