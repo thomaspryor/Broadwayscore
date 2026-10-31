@@ -1,7 +1,7 @@
 // Tests the live-site parity DISPLAY gates in send-opening-digest.js:
 //   - critic score: getMarketMinReviews() → West End / Broadway = 5,
 //     Off-West End / Off-Broadway = 3 (canonical, mirror of score-buckets.ts)
-//   - audience grade: MIN_AUDIENCE_REVIEWS = 15
+//   - audience grade: MIN_AUDIENCE_REVIEWS = src/config/audience-grade.json minReviews
 // Requires the REAL functions (CLAUDE.md rule 15) — no copied logic.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -10,6 +10,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { minReviewsToShowScore, getAudience, MIN_AUDIENCE_REVIEWS, computeCriticScore, setOutletRegistryForTest } =
   require('../../scripts/send-opening-digest.js');
+const audienceGradeConfig = require('../../src/config/audience-grade.json');
+const MIN = audienceGradeConfig.minReviews;
 const { computeCriticScore: canonicalComputeCriticScore } = require('../../scripts/lib/compute-critic-score.js');
 
 test('critic-score gate matches getMarketMinReviews', () => {
@@ -20,16 +22,16 @@ test('critic-score gate matches getMarketMinReviews', () => {
   assert.equal(minReviewsToShowScore(undefined), 5); // unknown → Broadway floor
 });
 
-test('MIN_AUDIENCE_REVIEWS mirrors the site (15)', () => {
-  assert.equal(MIN_AUDIENCE_REVIEWS, 15);
+test('MIN_AUDIENCE_REVIEWS mirrors the site (shared config minReviews)', () => {
+  assert.equal(MIN_AUDIENCE_REVIEWS, MIN);
 });
 
 const buzz = (n) => ({
   shows: { x: { combinedScore: 42, designation: 'Mixed', sources: { a: { reviewCount: n } } } },
 });
 
-test('audience grade suppressed below 15 reviews', () => {
-  for (const n of [0, 1, 14]) {
+test('audience grade suppressed below the shared minimum', () => {
+  for (const n of [0, 1, MIN - 1]) {
     const a = getAudience(buzz(n), 'x');
     assert.equal(a.score, null, `n=${n} should yield null score`);
     assert.equal(a.designation, null, `n=${n} should yield null designation`);
@@ -37,8 +39,8 @@ test('audience grade suppressed below 15 reviews', () => {
   }
 });
 
-test('audience grade shown at >= 15 reviews', () => {
-  for (const n of [15, 40]) {
+test('audience grade shown at >= the shared minimum', () => {
+  for (const n of [MIN, 40]) {
     const a = getAudience(buzz(n), 'x');
     assert.equal(a.score, 42, `n=${n} should show score`);
     assert.equal(a.designation, 'Mixed');

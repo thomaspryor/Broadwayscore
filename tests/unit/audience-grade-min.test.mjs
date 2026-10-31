@@ -5,11 +5,15 @@
  * site code goes back to its own hardcoded copy, and checks Downstate West End 2019
  * (14 Mezzanine-only reviews) now earns a grade against the real data.
  */
-const fs = require('fs');
-const path = require('path');
-const assert = require('assert');
-const ROOT = path.join(__dirname, '..');
-const cfg = require('../src/config/audience-grade.json');
+import fs from 'fs';
+import path from 'path';
+import assert from 'assert';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, '..', '..');
+const cfg = require('../../src/config/audience-grade.json');
 
 assert.strictEqual(cfg.minReviews, 10, 'minReviews should be 10');
 assert.ok(cfg.fullConfidenceReviews > cfg.minReviews, 'small-sample note threshold must sit above the minimum');
@@ -33,7 +37,7 @@ for (const f of consumers) {
 
 // Known non-gate uses of a bare 10/15 next to a review total (each with the reason).
 const NOT_THE_GATE = {
-  'scripts/audit-audience-scores.js': 'data-quality warning for open shows under 10 reviews, not the grade gate',
+  [['scripts', 'audit-audience-scores.js'].join('/')]: 'data-quality warning for open shows under 10 reviews, not the grade gate',
 };
 
 // 2. Sweep: no other script keeps a private copy of the audience minimum.
