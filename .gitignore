@@ -343,6 +343,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
 !/docs/bro-6493-opening-dates.md
+# BRO-6622: the lane switch runbook CLOUD.md points sessions to.
+!/docs/opening-night-lane-switch-runbook.md
 # BRO-2880 requires the accepted core-data CI cadence in writing on main.
 !/docs/bro-2880-core-data-ci-cadence.md
 # BRO-3699 requires the first-party ticketing-platform research on main.

@@ -47,6 +47,9 @@ on:
       - 'scripts/press-night-record.js'
       - '.github/workflows/opening-night-lane-live.yml'
       - '.github/actions/read-lane-only-vars/**'
+      # BRO-6622: tests/unit/lane-rollback.test.mjs runs the CLI refusals and pins the switch workflow.
+      - 'scripts/lane-switch.js'
+      - '.github/workflows/opening-night-lane-switch.yml'
       # scripts/tests/** — same glob fix for scripts/tests/ (BRO-5309). A new
       # scripts/tests/*.test.mjs with no literal entry below failed
       # scripts/lib/test-yml-manifest-paths.test.mjs at land time (land run

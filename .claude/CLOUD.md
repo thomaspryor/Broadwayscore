@@ -51,7 +51,7 @@ Don't run `scripts/merge-worktree-to-main.sh` in cloud (its name trips `pre-merg
 
 ## Overnight watches (the owner is asleep)
 
-The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anything needing their tap then fails (`list_sessions` and `create_session` prompt in practice too, Auto mode included), so a watch that re-arms itself with `send_later` dies after one pass.
+The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anything needing their tap then fails (`list_sessions`/`create_session` prompt too, even in Auto mode), so a watch that re-arms itself with `send_later` dies after one pass.
 
 0. **One session owns press night (BRO-6585).** The coordinator session (BRO-5955 lineage) owns every aggregator-listed review live and scored, and the lane trial, and starts fix workers. Any other session asked about that night reads the coordinator card first (`node scripts/coordinator-check.js --card BRO-N`), reports to the coordinator, and lands nothing for that show without its go. A hand-added review muddies the trial grade: only the coordinator adds one, recorded as manual.
 1. **Reviews don't depend on a Claude watch.** `opening-night-orchestrator.yml` fires ~01:00-01:20 UTC nightly and dispatches the poller every 15 min for ~4.5 h; `aggregator-url-watcher.yml` runs every 5 min. Confirm they're armed (`node scripts/check-opening-night-readiness.js --show=ID`, recent orchestrator runs).
@@ -62,7 +62,7 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 
 - **Cite the landed commit:** `PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/<sha>)`, sha from `git log origin/main` (land rebases). A prod URL alone is refused.
 - **Live check without VERCEL_TOKEN:** `node scripts/check-prod-deploy.js <sha>` (one-shot; exit 0 live, 1 not yet, 2 unknown; `--wait`/`--json` still need the token; can't see a dashboard rollback).
-- **A card that needs the owner's call** starts with `DECISION NEEDED: <plain-English question>`, then options and your recommendation. That line emails the owner and stops workers taking the card; "needs owner approval" wording never reaches the owner. Whoever acts on the answer deletes it. Emailing the owner: `docs/owner-email-guidelines.md`. **Owner answered in chat? Record it:** `node scripts/record-owner-answer.js BRO-N --choice A|B|own --text "<words>"` (its own question only). Run it the same turn. Visual ask shipped another way: `--choice void`.
+- **A card that needs the owner's call** starts with `DECISION NEEDED: <plain-English question>`, then options and your recommendation. That line emails the owner and stops workers taking the card; "needs owner approval" wording never reaches the owner. Whoever acts on the answer deletes it. Emailing the owner: `docs/owner-email-guidelines.md`. **Owner answered in chat? Record it:** `node scripts/record-owner-answer.js BRO-N --choice A|B|own --text "<words>"` (its own question only). Visual ask shipped another way: `--choice void`.
 - **Board status questions:** show the `node scripts/board-report.js --markdown` table, never hand-built categories. Read a card before saying it waits on the owner (BRO-6411).
 - **RECHECK-AFTER probe tests** (red by design until their date) go in EXEMPT_NEVER_CI in `scripts/audit-orphan-tests.js` AND carry a skip-until guard in the file (`{ skip: Date.now() < CHECKABLE_FROM && '...' }`) or a `RECHECK-GREEN-TODAY: <why>` line: an unguarded red probe refuses your landing (BRO-5937).
 - **Close out last**, after your last commit/push. A `--force` close is recorded as a `DONE-GATE-BYPASS:` line on the issue.
@@ -83,9 +83,7 @@ Cached setup runs after cloning, before Claude (BRO-5221/6126):
 for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && CLAUDE_CODE_REMOTE=true node "$d/scripts/install-home-claude-config.js" --adopt-hookless-settings; done; true
 ```
 
-The first loop refreshes the checkout.
-
-It cannot change auto mode (the classifier reads `autoMode` only from user, managed or `--settings` sources; BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
+It cannot change auto mode (BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
 
 ## Owner's investor figures (confidential)
 
@@ -122,13 +120,17 @@ If that reports DRIFT or nothing, no hooks fire: run `bash scripts/cloud-bootstr
 
 The environment has PostHog, Sentry and Supabase keys (read+write): `POSTHOG_PERSONAL_API_KEY` + `POSTHOG_PROJECT_ID` (us.posthog.com), `SENTRY_AUTH_TOKEN` + `SENTRY_ORG` + `SENTRY_PROJECT`, `SUPABASE_SERVICE_ROLE_KEY` (`sb_secret_` key; the `apikey` header), `SUPABASE_ACCESS_TOKEN` (Management API, project-scoped) + `SUPABASE_PROJECT_REF`, `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Scraper, Resend, Bing, Impact, Formspree keys are set; no GA4 or Anthropic key. `node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] scripts/<x>.js [args...]` dispatches `run-script.yml`, runs the script as on origin/main with read keys, and prints its sealed output. Without `gh`, use `mcp__github__actions_run_trigger` (`script`, `args_json`, `pubkey_b64` from `generateKeyPair()` in `scripts/lib/sealed-output.js`, `request_id`) and `open()` the sealed block from `get_job_logs`. Paywalled: `scripts/fetch-page-probe.js`. Land scripts first. Data changes use `execute-approved-fix.yml` or their own workflows. Withheld: VERCEL_TOKEN, logins, cookies.
 
+## Opening-night lane switch (BRO-6622)
+
+Lane variables 403 in cloud: dispatch `opening-night-lane-switch.yml` (`set`/`clear` `LANE_ONLY_MARKETS`|`LANE_STANDDOWN`, or `rollback`), `mode` `dry-run` first, then `live`. Steps: `docs/opening-night-lane-switch-runbook.md`.
+
 ## Phone or Mac?
 
 The owner is mostly on iPhone/iPad. Before saying something needs "the Mac":
 
 - **Phone browser is enough** (give a direct link, never say Mac): GitHub settings (secrets, token scopes), ScrapingBee, Bright Data, Vercel and Supabase dashboards, Gmail filters (desktop-site mode), claude.ai/code environment settings, Routines.
 - **Cloud can do it**: committed scripts with production keys (`cloud-run-script.js`), any workflow dispatch, private data edits (`execute-approved-fix.yml`), starting work in its own session (`create_session`).
-- **Really the Mac**: outlet cookie renewal (The Stage, WSJ), the Mac's checkout and launchd jobs, cmux, WhatsApp/iMessage/Apple Reminders. One list. Owner's hands only: task email (`docs/owner-email-guidelines.md`, BRO-6654).
+- **Really the Mac**: outlet cookie renewal (The Stage, WSJ), the Mac's checkout and launchd jobs, cmux, WhatsApp/iMessage/Apple Reminders. Owner's hands only: task email (`docs/owner-email-guidelines.md`, BRO-6654).
 
 ## Key gaps cloud has vs local
 
@@ -141,11 +143,11 @@ The owner is mostly on iPhone/iPad. Before saying something needs "the Mac":
 
 ## When in doubt
 
-Do what you can from cloud first (sections above). Work a Mac session can do alone: `--dispatch --mac-only "<why>"` (`linear-brain.js --help`). Else say so in a line, keep going. Never ask the owner to switch to a local session or make a technical choice.
+Do what you can from cloud first. Work a Mac session can do alone: `--dispatch --mac-only "<why>"` (`linear-brain.js --help`). Else say so in a line, keep going. Never ask the owner to switch to a local session or make a technical choice.
 
 ## Starting a worker session (BRO-5040)
 
-The board worker's queue is weeks deep, so "queued for the worker" is never a finish line (owner, 2026-10-11). Anything important that comes up while the owner is here (a P0/P1, a bug they raised, a fix your work turned up) gets its own session now:
+"Queued for the worker" is never a finish line (owner, 2026-10-11). Anything important (a P0/P1, a bug they raised, a fix your work turned up) gets its own session now:
 
 1. File or claim the card first; it carries the handoff and a safe-form `VERIFY:` line. File it `--child "BRO-N: <short>"` (BRO-6359): In Progress and claimed, so no worker takes it (`--dispatch` gets built twice). If `create_session` fails, move it back to Todo.
 2. **Model (BRO-5228):** always pass `model` from `node scripts/session-model.js BRO-N ...` (`--no-card` without one); omitted, it inherits your Opus (a hook blocks it). Mixed batch: Sonnet; Opus cards go to an Opus subagent.

@@ -147,7 +147,8 @@ async function watchdog() {
   const sinceMs = Date.parse(arg('since') || '') || Date.now();
   const budgetMs = Number(arg('budget-min') || af.WAIT_JOB_BUDGET_MIN) * 60 * 1000;
   const runUrl = process.env.RUN_URL || '';
-  const market = show.market === 'west-end' ? 'west-end' : 'broadway';
+  const { marketFor, oldPathDispatchArgs } = require('./lib/opening-night-lane/old-path-dispatch');
+  const market = marketFor(show);
   const t0 = Date.now();
   let pending = null; // the fallback decision to page, set by ports.page
   const ports = {
@@ -171,7 +172,7 @@ async function watchdog() {
     dispatchOldPath: () => {
       if (dryRun) { console.log(`dry-run: would dispatch opening-night-orchestrator.yml show_id=${id} market=${market}`); return true; }
       try {
-        execFileSync('gh', ['workflow', 'run', 'opening-night-orchestrator.yml', '-f', `show_id=${id}`, '-f', `market=${market}`], { stdio: 'inherit', timeout: 60000 });
+        execFileSync('gh', oldPathDispatchArgs(show), { stdio: 'inherit', timeout: 60000 });
         return true;
       } catch (e) { console.log(`::warning::old-path dispatch failed (${String(e.message).slice(0, 120)})`); return false; }
     },
