@@ -1,0 +1,820 @@
+{
+  "generatedAt": "2026-10-27T23:55:28.960Z",
+  "season": "2013-2014",
+  "issue": "BRO-6450",
+  "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
+  "sources": [
+    "theatricalia (venue histories)",
+    "tr-az",
+    "olt",
+    "guardian",
+    "wikipedia (venue articles)"
+  ],
+  "counts": {
+    "reference": 52,
+    "theatricaliaOnly": 3,
+    "excludedShortRuns": 7
+  },
+  "reference": [
+    {
+      "title": "Edward II",
+      "venue": "Olivier Theatre",
+      "start": "2013-09-04",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/2c/edward-ii/production/16xb"
+    },
+    {
+      "title": "A Midsummer Night's Dream",
+      "venue": "Noël Coward Theatre",
+      "start": "2013-09-07",
+      "end": "2013-11-16",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/1e/a-midsummer-nights-dream/production/vyw"
+    },
+    {
+      "title": "Much Ado About Nothing",
+      "venue": "The Old Vic",
+      "start": "2013-09-07",
+      "end": "2013-11-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/1/much-ado-about-nothing/production/vr0"
+    },
+    {
+      "title": "Barking In Essex",
+      "venue": "Wyndham's Theatre",
+      "start": "2013-09-16",
+      "end": "2014-01-04",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gnn/barking-in-essex/production/1526"
+    },
+    {
+      "title": "The Resistible Rise of Arturo Ui",
+      "venue": "Duchess Theatre",
+      "start": "2013-09-18",
+      "end": "2013-12-07",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/57j/the-resistible-rise-of-arturo-ui/production/133a"
+    },
+    {
+      "title": "Routes",
+      "venue": "Royal Court",
+      "start": "2013-09-20",
+      "end": "2013-10-12",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fw8/routes/production/10yc"
+    },
+    {
+      "title": "The Commitments",
+      "venue": "Palace Theatre",
+      "start": "2013-09-21",
+      "end": "2014-01-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gtk/the-commitments/production/1306"
+    },
+    {
+      "title": "Prince of Denmark",
+      "venue": "Ambassadors Theatre",
+      "start": "2013-09-23",
+      "end": "2013-11-25",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gr2/prince-of-denmark/production/12vb"
+    },
+    {
+      "title": "Tory Boyz",
+      "venue": "Ambassadors Theatre",
+      "start": "2013-09-23",
+      "end": "2013-11-27",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gr4/tory-boyz/production/12vd"
+    },
+    {
+      "title": "Romeo and Juliet",
+      "venue": "Ambassadors Theatre",
+      "start": "2013-09-26",
+      "end": "2013-11-29",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/n/romeo-and-juliet/production/12vc"
+    },
+    {
+      "title": "From Here To Eternity",
+      "venue": "Shaftesbury Theatre",
+      "start": "2013-09-30",
+      "end": "2014-03-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/g0q/from-here-to-eternity/production/1179"
+    },
+    {
+      "title": "Mojo",
+      "venue": "Harold Pinter Theatre",
+      "start": "2013-10-26",
+      "end": "2014-01-25",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/6bq/mojo/production/12qj"
+    },
+    {
+      "title": "Twelve Angry Men",
+      "venue": "Garrick Theatre",
+      "start": "2013-11-07",
+      "end": "2014-06-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4j7/twelve-angry-men/production/1353"
+    },
+    {
+      "title": "Jeeves and Wooster in Perfect Nonsense",
+      "venue": "Duke of York's Theatre",
+      "start": "2013-11-12",
+      "end": "2014-09-20",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/exa/jeeves-and-wooster-in-perfect-nonsense/production/14xp"
+    },
+    {
+      "title": "Strangers on a Train",
+      "venue": "Gielgud Theatre",
+      "start": "2013-11-19",
+      "end": "2014-02-22",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8bc/strangers-on-a-train/production/14b8"
+    },
+    {
+      "title": "Henry V",
+      "venue": "Noël Coward Theatre",
+      "start": "2013-11-23",
+      "end": "2014-02-15",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/1y/henry-v/production/v8h"
+    },
+    {
+      "title": "The Duck House",
+      "venue": "Vaudeville Theatre",
+      "start": "2013-11-27",
+      "end": "2014-03-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8ak/the-duck-house/production/14s7"
+    },
+    {
+      "title": "Seussical the Musical",
+      "venue": "Arts Theatre",
+      "start": "2013-11-30",
+      "end": "2014-01-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/bwx/seussical-the-musical/production/12ez"
+    },
+    {
+      "title": "Stephen Ward",
+      "venue": "Aldwych Theatre",
+      "start": "2013-12-03",
+      "end": "2014-03-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fx0/stephen-ward/production/10z7"
+    },
+    {
+      "title": "Fortune's Fool",
+      "venue": "The Old Vic",
+      "start": "2013-12-06",
+      "end": "2014-02-22",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/68y/fortunes-fool/production/x5f"
+    },
+    {
+      "title": "Ghosts",
+      "venue": "Trafalgar Theatre",
+      "start": "2013-12-17",
+      "end": "2014-03-22",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/74/ghosts/production/v48"
+    },
+    {
+      "title": "King Lear",
+      "venue": "Olivier Theatre",
+      "start": "2014-01-14",
+      "end": "2014-07-02",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/y/king-lear/production/16v5"
+    },
+    {
+      "title": "The Weir",
+      "venue": "Wyndham's Theatre",
+      "start": "2014-01-22",
+      "end": "2014-04-19",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/6d3/the-weir/production/1529"
+    },
+    {
+      "title": "Tell Me On A Sunday",
+      "venue": "Duchess Theatre",
+      "start": "2014-02-18",
+      "end": "2014-03-08",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dmz/tell-me-on-a-sunday/production/133c"
+    },
+    {
+      "title": "The Full Monty",
+      "venue": "Noël Coward Theatre",
+      "start": "2014-02-20",
+      "end": "2014-03-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dj3/the-full-monty/production/tza"
+    },
+    {
+      "title": "Blithe Spirit",
+      "venue": "Gielgud Theatre",
+      "start": "2014-03-01",
+      "end": "2014-06-07",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3gx/blithe-spirit/production/ve7"
+    },
+    {
+      "title": "Dirty Rotten Scoundrels",
+      "venue": "Savoy Theatre",
+      "start": "2014-03-10",
+      "end": "2015-03-07",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dn0/dirty-rotten-scoundrels/production/v6q"
+    },
+    {
+      "title": "Jersey Boys",
+      "venue": "Piccadilly Theatre",
+      "start": "2014-03-15",
+      "end": "2017-03-26",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h1z/jersey-boys/production/14h5"
+    },
+    {
+      "title": "Relative Values",
+      "venue": "Harold Pinter Theatre",
+      "start": "2014-03-19",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3xj/relative-values/production/12qh"
+    },
+    {
+      "title": "Fatal Attraction",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2014-03-25",
+      "end": "2014-06-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fht/fatal-attraction/production/1091"
+    },
+    {
+      "title": "Let the Right One In",
+      "venue": "Apollo Theatre",
+      "start": "2014-03-26",
+      "end": "2014-08-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h0w/let-the-right-one-in/production/13e7"
+    },
+    {
+      "title": "Birdland",
+      "venue": "Royal Court",
+      "start": "2014-04-03",
+      "end": "2014-05-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fwj/birdland/production/10yr"
+    },
+    {
+      "title": "A Small Family Business",
+      "venue": "Olivier Theatre",
+      "start": "2014-04-08",
+      "end": "2014-08-27",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5h6/a-small-family-business/production/vkx"
+    },
+    {
+      "title": "Good People",
+      "venue": "Noël Coward Theatre",
+      "start": "2014-04-10",
+      "end": "2014-06-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dqh/good-people/production/ve8"
+    },
+    {
+      "title": "Handbagged",
+      "venue": "Vaudeville Theatre",
+      "start": "2014-04-10",
+      "end": "2014-08-02",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fd9/handbagged/production/14s8"
+    },
+    {
+      "title": "The Silver Tassie",
+      "venue": "Lyttelton Theatre",
+      "start": "2014-04-23",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5qp/the-silver-tassie/production/1bc4"
+    },
+    {
+      "title": "1984",
+      "venue": "Playhouse Theatre",
+      "start": "2014-04-28",
+      "end": "2014-08-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e7m/1984/production/zv3"
+    },
+    {
+      "title": "Wolf Hall",
+      "venue": "Aldwych Theatre",
+      "start": "2014-05-01",
+      "end": "2014-10-04",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fxx/wolf-hall/production/110x"
+    },
+    {
+      "title": "The Pajama Game",
+      "venue": "Shaftesbury Theatre",
+      "start": "2014-05-02",
+      "end": "2014-09-13",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/446/the-pajama-game/production/1178"
+    },
+    {
+      "title": "Miss Saigon",
+      "venue": "Prince Edward Theatre",
+      "start": "2014-05-03",
+      "end": "2014-10-25",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5p0/miss-saigon/production/v8j"
+    },
+    {
+      "title": "Bring Up the Bodies",
+      "venue": "Aldwych Theatre",
+      "start": "2014-05-07",
+      "end": "2014-10-04",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fxy/bring-up-the-bodies/production/110y"
+    },
+    {
+      "title": "Bakersfield Mist",
+      "venue": "Duchess Theatre",
+      "start": "2014-05-10",
+      "end": "2014-08-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwa/bakersfield-mist/production/133e"
+    },
+    {
+      "title": "Skylight",
+      "venue": "Wyndham's Theatre",
+      "start": "2014-06-18",
+      "end": "2014-08-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/653/skylight/production/152b"
+    },
+    {
+      "title": "The Importance of Being Earnest",
+      "venue": "Harold Pinter Theatre",
+      "start": "2014-06-27",
+      "end": "2014-09-20",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3f/the-importance-of-being-earnest/production/vg5"
+    },
+    {
+      "title": "Great Britain",
+      "venue": "Lyttelton Theatre",
+      "start": "2014-06-30",
+      "end": "2014-08-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fhv/great-britain/production/1dag"
+    },
+    {
+      "title": "Richard III",
+      "venue": "Trafalgar Theatre",
+      "start": "2014-07-01",
+      "end": "2014-09-27",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/18/richard-iii/production/1ams"
+    },
+    {
+      "title": "Shakespeare in Love",
+      "venue": "Noël Coward Theatre",
+      "start": "2014-07-02",
+      "end": "2015-04-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dsq/shakespeare-in-love/production/vnz"
+    },
+    {
+      "title": "The Elephantom",
+      "venue": "Gillian Lynne Theatre",
+      "start": "2014-07-05",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dt5/the-elephantom/production/vqj"
+    },
+    {
+      "title": "Daytona",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2014-07-07",
+      "end": "2014-08-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/djc/daytona/production/1090"
+    },
+    {
+      "title": "The Confessions of Gordon Brown",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-07-08",
+      "end": "2014-07-30",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gye/the-confessions-of-gordon-brown/production/1381"
+    },
+    {
+      "title": "Let It Be",
+      "venue": "Garrick Theatre",
+      "start": "2014-07-10",
+      "end": "2014-09-20",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwt/let-it-be/production/14f3"
+    },
+    {
+      "title": "Medea",
+      "venue": "Olivier Theatre",
+      "start": "2014-07-14",
+      "end": "2014-08-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3gv/medea/production/16bw"
+    }
+  ],
+  "uncorroborated": [
+    {
+      "title": "Storm in a Flower Vase",
+      "venue": "Arts Theatre",
+      "start": "2013-09-13",
+      "end": "2013-10-12",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/djz/storm-in-a-flower-vase/production/v1d"
+    },
+    {
+      "title": "Barmy Britain (Part II)",
+      "venue": "Garrick Theatre",
+      "start": "2013-09-26",
+      "end": "2014-01-05",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gx0/barmy-britain-part-ii/production/1356"
+    },
+    {
+      "title": "Peppa Pig's Big Splash",
+      "venue": "Criterion Theatre",
+      "start": "2013-12-05",
+      "end": "2014-01-05",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/h2w/peppa-pigs-big-splash/production/13jp"
+    }
+  ],
+  "excluded": [
+    {
+      "title": "Maria Friedman & Adam Guettel",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-05-20",
+      "end": "2014-05-21",
+      "reason": "run of 2 days < 14"
+    },
+    {
+      "title": "Oliver Reed – Wild Thing",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-04-01",
+      "end": "2014-04-08",
+      "reason": "run of 8 days < 14"
+    },
+    {
+      "title": "Ghost Stories",
+      "venue": "Arts Theatre",
+      "start": "2014-02-13",
+      "end": "2014-02-25",
+      "reason": "run of 13 days < 14"
+    },
+    {
+      "title": "Cool Rider",
+      "venue": "Duchess Theatre",
+      "start": "2014-04-15",
+      "end": "2014-04-19",
+      "reason": "run of 5 days < 14"
+    },
+    {
+      "title": "Constellations",
+      "venue": "Duke of York's Theatre",
+      "start": "2013-11-09",
+      "end": "2013-01-05",
+      "reason": "run of -307 days < 14"
+    },
+    {
+      "title": "Suggs: My Life Story",
+      "venue": "Garrick Theatre",
+      "start": "2014-06-01",
+      "end": "2014-06-01",
+      "reason": "run of 1 days < 14"
+    },
+    {
+      "title": "King Lear",
+      "venue": "The Old Vic",
+      "start": "2013-09-29",
+      "end": "2013-09-29",
+      "reason": "run of 1 days < 14"
+    }
+  ]
+}

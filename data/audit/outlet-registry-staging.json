@@ -1,0 +1,69 @@
+{
+  "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
+  "updatedAt": "2026-10-31T04:06:33.669Z",
+  "staged": [
+    {
+      "outletId": "globalnews2",
+      "reason": "name-unresolved",
+      "domainHint": "globalnews2.xyz",
+      "reviewCount": 1,
+      "exampleShowId": "a-few-good-men-2026",
+      "firstSeenAt": "2026-10-31T03:11:56.044Z",
+      "lastSeenAt": "2026-10-31T03:22:20.272Z"
+    },
+    {
+      "outletId": "irishfilmcritic",
+      "reason": "name-unresolved",
+      "domainHint": "irishfilmcritic.com",
+      "reviewCount": 1,
+      "exampleShowId": "aint-too-proud-tour-2024",
+      "firstSeenAt": "2026-10-30T11:24:23.963Z",
+      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+    },
+    {
+      "outletId": "marissavivian",
+      "reason": "name-unresolved",
+      "domainHint": "marissavivian.substack.com",
+      "reviewCount": 1,
+      "exampleShowId": "king-of-the-yees-off-broadway-2026",
+      "firstSeenAt": "2026-10-29T16:20:03.318Z",
+      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+    },
+    {
+      "outletId": "substack-com",
+      "reason": "no-domain",
+      "domainHint": null,
+      "reviewCount": 1,
+      "exampleShowId": "other-desert-cities-2026",
+      "firstSeenAt": "2026-10-27T06:13:56.432Z",
+      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+    },
+    {
+      "outletId": "the-showmance-already-happened",
+      "reason": "no-domain",
+      "domainHint": null,
+      "reviewCount": 1,
+      "exampleShowId": "anna-christie-off-broadway-2025",
+      "firstSeenAt": "2026-10-25T16:53:00.991Z",
+      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+    },
+    {
+      "outletId": "theglobalcelebritymeter",
+      "reason": "name-unresolved",
+      "domainHint": "theglobalcelebritymeter.blogspot.com",
+      "reviewCount": 1,
+      "exampleShowId": "billy-crystal-860-2026",
+      "firstSeenAt": "2026-10-27T17:56:48.576Z",
+      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+    },
+    {
+      "outletId": "wtlgomag",
+      "reason": "name-unresolved",
+      "domainHint": "wtlgomag.com",
+      "reviewCount": 2,
+      "exampleShowId": "shucked-tour-2024",
+      "firstSeenAt": "2026-10-27T10:31:52.801Z",
+      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+    }
+  ]
+}

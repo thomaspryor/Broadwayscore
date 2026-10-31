@@ -1,0 +1,235 @@
+{
+  "runDate": "2026-02-08T23:56:59.931Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "king-charles-iii-2015,prince-of-broadway-2017,war-paint-2017,oslo-2017,bandstand-2017,kiss-me-kate-2019,the-bands-visit-2017,wicked-2003,cats-1982,charlie-and-the-chocolate-factory-2017,the-terms-of-my-surrender-2017,m-butterfly-2017,ink-2019,oklahoma-2019,the-nap-2018,significant-other-2017,fun-home-2015,airline-highway-2015,hand-to-god-2015,a-bronx-tale-2007,frankie-and-johnny-in-the-clair-de-lune-2019,burn-this-2019,almost-famous-2022,travesties-2018,here-lies-love-2023,it-shoulda-been-you-2015,the-little-mermaid-2008,the-normal-heart-2011,macbeth-2013,a-strange-loop-2022,cult-of-love-2024,leopoldstadt-2022,the-audience-2015,ohio-state-murders-2022,women-on-the-verge-of-a-nervous-breakdown-2010,harry-potter-2021,purpose-2025,book-of-mormon-2011,camelot-2023,next-to-normal-2009,the-rose-tattoo-2019,jesus-christ-superstar-2012,pippin-2013,the-assembled-parties-2013,cabaret-2014,floyd-collins-2025,mary-poppins-2006,present-laughter-2010,the-shark-is-broken-2023,born-yesterday-2011,godspell-2011,once-upon-a-one-more-time-2023,the-lehman-trilogy-2021,twelfth-night-2013,everyday-rapture-2010,its-only-a-play-2014,oh-hello-on-broadway-2016,relatively-speaking-2011,the-notebook-2024,wolf-hall-parts-one-and-two-2015,appropriate-2023,driving-miss-daisy-2010,lucky-guy-2013,prima-facie-2023,summer-1976-2023,therese-raquin-2015,9-to-5-2009,a-life-in-the-theatre-2010,bloody-bloody-andrew-jackson-2010,for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022,jerusalem-2011,nice-work-if-you-can-get-it-2012,spring-awakening-2015,thoughts-of-a-colored-man-2021,a-wonderful-world-the-louis-armstrong-musical-2024,cabaret-2024,doctor-zhivago-2015,honeymoon-in-vegas-2015,macbeth-2022,six-2021,the-gershwins-porgy-and-bess-2012,the-peewee-herman-show-2010,vanya-and-sonia-and-masha-and-spike-2013,aladdin-2014,bob-fosses-dancin-2023,death-becomes-her-2024,high-2011,la-bete-2010,other-desert-cities-2011,that-championship-season-2011,the-lifespan-of-a-fact-2018,700-sundays-2013,a-view-from-the-bridge-2010,days-of-wine-and-roses-2024,fela-2009,hands-on-a-hardbody-2013,purlie-victorious-2023,the-cripple-of-inishmaan-2014,a-moon-for-the-misbegotten-2007,chaplin-2012,illinoise-2024,potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022,sunset-boulevard-2017,the-velocity-of-autumn-2014,breakfast-at-tiffanys-2013,english-2025,private-lives-2011,the-new-one-2018,constellations-2015,rent-1996,the-lyons-2012,buena-vista-social-club-2025,faith-healer-2006,mothers-and-sons-2014,the-philanthropist-2009,in-the-heights-2008,the-royal-family-2009,just-in-time-2025,real-women-have-curves-2025,a-tale-of-two-cities-2008,burn-the-floor-2009,is-he-dead-2007,the-lieutenant-of-inishmore-2006,crybaby-2008,joe-turners-come-and-gone-2009,superior-donuts-2009,the-woman-in-white-2005,accent-on-youth-2009,come-back-little-sheba-2008,in-the-next-room-2009,lennon-2005,prelude-to-a-kiss-2007,the-farnsworth-invention-2007,thurgood-2008",
+    "aggressive": true,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 6,
+    "failed": 94,
+    "skipped": 0,
+    "successRate": "6.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "browserbase": 0,
+    "scrapingbee": 2,
+    "brightdata": 0,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 22,
+    "tier1Success": 19,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 68,
+    "tier2Success": 16,
+    "tier3Attempts": 54,
+    "tier3Success": 30,
+    "tier4Attempts": 59,
+    "tier4Success": 16,
+    "totalFailed": 94,
+    "scrapingBeeCreditsUsed": 453,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 22,
+    "urlDiscoverySuccess": 9,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+    "airline-highway-2015/nytg--stanford-friedman.json",
+    "bloody-bloody-andrew-jackson-2010/nytheatrecom--martin-denton.json",
+    "burn-this-2019/hollywood-reporter--david-rooney.json",
+    "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+    "high-2011/hollywood-reporter--david-rooney.json"
+  ],
+  "failed": [
+    "9-to-5-2009/hollywood-reporter--unknown.json",
+    "a-view-from-the-bridge-2010/variety--david-rooney.json",
+    "almost-famous-2022/hollywood-reporter--angie-han.json",
+    "almost-famous-2022/variety--frank-rizzo.json",
+    "appropriate-2023/hollywood-reporter--angie-han.json",
+    "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "bandstand-2017/hollywood-reporter--david-rooney.json",
+    "bandstand-2017/hollywood-reporter--frank-scheck.json",
+    "bandstand-2017/nyt-theater--jonathan-mandell.json",
+    "bandstand-2017/variety--frank-rizzo.json",
+    "bandstand-2017/variety--marilyn-stasio.json",
+    "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
+    "bloody-bloody-andrew-jackson-2010/variety--steven-suskin.json",
+    "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json",
+    "bob-fosses-dancin-2023/nytg--gillian-russo.json",
+    "bob-fosses-dancin-2023/variety--charles-isherwood.json",
+    "bob-fosses-dancin-2023/variety--peter-marks.json",
+    "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
+    "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "born-yesterday-2011/hollywood-reporter--david-rooney.json",
+    "born-yesterday-2011/variety--marilyn-stasio.json",
+    "breakfast-at-tiffanys-2013/variety--marilyn-stasio.json",
+    "cabaret-2014/hollywood-reporter--david-rooney.json",
+    "cabaret-2014/variety--marilyn-stasio.json",
+    "cabaret-2024/variety--aramide-tinubu.json",
+    "camelot-2023/nyt-theater--jonathan-mandell.json",
+    "camelot-2023/nytg--joe-dziemianowicz.json",
+    "camelot-2023/variety--aramide-tinubu.json",
+    "camelot-2023/variety--charles-isherwood.json",
+    "camelot-2023/variety--frank-rizzo.json",
+    "cats-1982/hollywood-reporter--jordan-riefe.json",
+    "chaplin-2012/hollywood-reporter--david-rooney.json",
+    "charlie-and-the-chocolate-factory-2017/hollywood-reporter--david-rooney.json",
+    "charlie-and-the-chocolate-factory-2017/nyt-theater--david-nounou.json",
+    "charlie-and-the-chocolate-factory-2017/nyt-theater--jonathan-mandell.json",
+    "constellations-2015/hollywood-reporter--david-rooney.json",
+    "crybaby-2008/variety--charles-isherwood.json",
+    "cult-of-love-2024/hollywood-reporter--david-rooney.json",
+    "cult-of-love-2024/nyt-theater--jonathan-mandell.json",
+    "cult-of-love-2024/nytg--joe-dziemianowicz.json",
+    "cult-of-love-2024/variety--aramide-tinubu.json",
+    "cult-of-love-2024/variety--daniel-daddario.json",
+    "days-of-wine-and-roses-2024/hollywood-reporter--anita-gates.json",
+    "death-becomes-her-2024/nyt-theater--jonathan-mandell.json",
+    "death-becomes-her-2024/variety--steven-oxman.json",
+    "doctor-zhivago-2015/hollywood-reporter--frank-scheck.json",
+    "doctor-zhivago-2015/variety--marilyn-stasio.json",
+    "driving-miss-daisy-2010/variety--charles-isherwood.json",
+    "driving-miss-daisy-2010/variety--david-rooney.json",
+    "driving-miss-daisy-2010/variety--marilyn-stasio.json",
+    "english-2025/nytg--allison-considine.json",
+    "everyday-rapture-2010/variety--david-rooney.json",
+    "fela-2009/variety--charles-isherwood.json",
+    "fela-2009/variety--sam-thielman.json",
+    "floyd-collins-2025/nyt-theater--jonathan-mandell.json",
+    "floyd-collins-2025/variety--christian-lewis.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/hollywood-reporter--angie-han.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nyt-theater--jonathan-mandell.json",
+    "fun-home-2015/hollywood-reporter--david-rooney.json",
+    "fun-home-2015/hollywood-reporter--unknown.json",
+    "fun-home-2015/nytg--tulis-mccall.json",
+    "godspell-2011/hollywood-reporter--david-rooney.json",
+    "hand-to-god-2015/hollywood-reporter--david-rooney.json",
+    "hand-to-god-2015/variety--gordon-cox.json",
+    "hand-to-god-2015/variety--marilyn-stasio.json",
+    "hands-on-a-hardbody-2013/hollywood-reporter--david-rooney.json",
+    "here-lies-love-2023/hollywood-reporter--angie-han.json",
+    "here-lies-love-2023/nyt-theater--jonathan-mandell.json",
+    "here-lies-love-2023/variety--aramide-tinubu.json",
+    "honeymoon-in-vegas-2015/hollywood-reporter--david-rooney.json",
+    "honeymoon-in-vegas-2015/variety--marilyn-stasio.json",
+    "illinoise-2024/hollywood-reporter--angie-han.json",
+    "illinoise-2024/hollywood-reporter--david-rooney.json",
+    "illinoise-2024/nyt-theater--jonathan-mandell.json",
+    "illinoise-2024/variety--charles-isherwood.json",
+    "in-the-heights-2008/variety--david-rooney.json",
+    "ink-2019/hollywood-reporter--david-rooney.json",
+    "ink-2019/hollywood-reporter--unknown.json",
+    "ink-2019/nytg--mark-shenton.json",
+    "ink-2019/variety--christopher-kelly.json",
+    "ink-2019/variety--frank-rizzo.json",
+    "ink-2019/variety--marilyn-stasio.json",
+    "is-he-dead-2007/variety--david-rooney.json",
+    "it-shoulda-been-you-2015/hollywood-reporter--frank-scheck.json",
+    "it-shoulda-been-you-2015/nytg--elliot-lanes.json",
+    "its-only-a-play-2014/hollywood-reporter--david-rooney.json",
+    "its-only-a-play-2014/variety--marilyn-stasio.json",
+    "jerusalem-2011/hollywood-reporter--david-rooney.json",
+    "jerusalem-2011/variety--marilyn-stasio.json",
+    "jesus-christ-superstar-2012/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-2012/variety--marilyn-stasio.json",
+    "king-charles-iii-2015/hollywood-reporter--david-rooney.json",
+    "king-charles-iii-2015/hollywood-reporter--stephen-dalton.json",
+    "king-charles-iii-2015/nyt-theater--david-nounou.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "airline-highway-2015/nytg--stanford-friedman.json"
+    ],
+    "browserbase": [],
+    "scrapingbee": [
+      "bloody-bloody-andrew-jackson-2010/nytheatrecom--martin-denton.json",
+      "high-2011/hollywood-reporter--david-rooney.json"
+    ],
+    "brightdata": [],
+    "archive": [
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+      "burn-this-2019/hollywood-reporter--david-rooney.json",
+      "everyday-rapture-2010/hollywood-reporter--frank-scheck.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "Variety": {
+      "count": 9,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The Hollywood Reporter": {
+      "count": 5,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "New York Theatre Guide": {
+      "count": 1,
+      "domain": "newyorktheatreguide.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "almost-famous-2022/hollywood-reporter--angie-han.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-broadway-review-1235246420/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-cameron-crowe-recaptures-70s-rock-fandom-on-broadway-1235254652/"
+    },
+    {
+      "reviewId": "appropriate-2023/hollywood-reporter--angie-han.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-broadway-review-1235737013/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/"
+    },
+    {
+      "reviewId": "cabaret-2024/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2024/legit/reviews/cabaret-kit-kat-club-broadway-review-eddie-redmayne-gayle-rankin-1235960176/",
+      "newUrl": "https://variety.com/2024/legit/columns/cabaret-broadway-revival-reviews-male-critics-gayle-rankin-1235984887/"
+    },
+    {
+      "reviewId": "camelot-2023/variety--aramide-tinubu.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/camelot-broadway-review-lincoln-center-theater-1235598242/",
+      "newUrl": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235582644/"
+    },
+    {
+      "reviewId": "camelot-2023/variety--charles-isherwood.json",
+      "oldUrl": "https://variety.com/2023/legit/reviews/camelot-review-broadway-revival-1235594631/",
+      "newUrl": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235582644/"
+    },
+    {
+      "reviewId": "charlie-and-the-chocolate-factory-2017/nyt-theater--david-nounou.json",
+      "oldUrl": "https://newyorktheater.me/2017/04/24/charlie-and-the-chocolate-factory-review/",
+      "newUrl": "https://newyorktheater.me/2017/04/26/charlie-and-the-chocolate-factory-broadway-review-death-by-chocolate/"
+    },
+    {
+      "reviewId": "hand-to-god-2015/hollywood-reporter--david-rooney.json",
+      "oldUrl": "https://www.hollywoodreporter.com/news/general-news/hand-god-theater-review-787041/",
+      "newUrl": "https://www.hollywoodreporter.com/news/general-news/hand-god-theater-review-786761/"
+    },
+    {
+      "reviewId": "ink-2019/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2019/legit/reviews/ink-review-broadway-bertie-carvel-1203381043/",
+      "newUrl": "https://variety.com/2019/legit/reviews/ink-review-broadway-jonny-lee-miller-1203196513/"
+    },
+    {
+      "reviewId": "jerusalem-2011/variety--marilyn-stasio.json",
+      "oldUrl": "https://variety.com/2011/legit/reviews/jerusalem-1117945176/",
+      "newUrl": "https://variety.com/2011/legit/reviews/jerusalem-1117945063/"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "_meta": {
+    "source": "scripts/scrape-boring-waltz-costs.js via scripts/lib/waltz-model-fit.js",
+    "note": "Aggregates only. Our single-week profit at his posted cost vs his closed profit ranges."
+  },
+  "history": [
+    {
+      "asOf": "2026-10-06",
+      "generatedAt": "2026-10-12",
+      "windowDays": 84,
+      "weeks": 12,
+      "overall": {
+        "n": 80,
+        "shows": 10,
+        "insidePct": 55,
+        "medianSignedPctNut": 0
+      },
+      "bands": {
+        "low": {
+          "n": 4,
+          "suppressed": true
+        },
+        "mid": {
+          "n": 70,
+          "shows": 10,
+          "insidePct": 63,
+          "medianSignedPctNut": 0
+        },
+        "high": {
+          "n": 6,
+          "shows": 4,
+          "insidePct": 0,
+          "medianSignedPctNut": 7.9
+        }
+      }
+    },
+    {
+      "asOf": "2026-10-13",
+      "generatedAt": "2026-10-19",
+      "windowDays": 84,
+      "weeks": 12,
+      "overall": {
+        "n": 83,
+        "shows": 10,
+        "insidePct": 53,
+        "medianSignedPctNut": 0
+      },
+      "bands": {
+        "low": {
+          "n": 3,
+          "suppressed": true
+        },
+        "mid": {
+          "n": 71,
+          "shows": 10,
+          "insidePct": 62,
+          "medianSignedPctNut": 0
+        },
+        "high": {
+          "n": 9,
+          "shows": 6,
+          "insidePct": 0,
+          "medianSignedPctNut": 10.5
+        }
+      }
+    },
+    {
+      "asOf": "2026-10-20",
+      "generatedAt": "2026-10-26",
+      "windowDays": 84,
+      "weeks": 12,
+      "overall": {
+        "n": 85,
+        "shows": 9,
+        "insidePct": 49,
+        "medianSignedPctNut": 0
+      },
+      "bands": {
+        "low": {
+          "n": 3,
+          "suppressed": true
+        },
+        "mid": {
+          "n": 69,
+          "shows": 9,
+          "insidePct": 59,
+          "medianSignedPctNut": 0
+        },
+        "high": {
+          "n": 13,
+          "shows": 6,
+          "insidePct": 8,
+          "medianSignedPctNut": 10.4
+        }
+      }
+    }
+  ]
+}

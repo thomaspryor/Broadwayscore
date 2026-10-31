@@ -1,0 +1,192 @@
+{
+  "issueNumber": "bro-4838-c",
+  "planId": "a22b014b-d38c-43e4-9885-758be903cd9f",
+  "status": "partial",
+  "createdAt": "2026-10-11T20:57:04.713Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4838 follow-up (owner 2026-10-11: fix systematically across existing shows). The daily site-integrity sweep listed 39 reviews excluded as not-a-review while the newer content verification said review (high). Each was read: 13 are genuine critic reviews (restored here, locked with nonReviewManualClear); the rest are correctly excluded (review round-ups, ground.news aggregator pages, fan forums, Show-Score listings, our own pages, an NYT profile) or have an attribution question (two Variety Stranger Things files share one URL; a theaterscene URL names a different critic) and are left for review. (part 2 of 2)",
+    "steps": [
+      "Clear isNonReview / rejectionReason on 13 hand-verified reviews",
+      "Set nonReviewManualClear so classify-non-reviews.js skips them"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "amaze-magic-off-broadway-2025/cititour--brian-scott-lipton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review misread as not-a-review: Cititour review by Brian Scott Lipton of Amaze at New World Stages"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amaze-magic-off-broadway-2025/cititour--brian-scott-lipton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "that-math-show-off-broadway-2026/stageandcinema--paulanne-simmons.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review misread as not-a-review: Stage and Cinema review by Paulanne Simmons"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "that-math-show-off-broadway-2026/stageandcinema--paulanne-simmons.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/theatre-news--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: Theatre News REVIEW by Marco Gandolfi, Garrick Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/theatre-news--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/theatre-news--unknown.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-11T18:08:32.130Z",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: Theatre News REVIEW by Marco Gandolfi, Garrick Theatre (same verdict, recorded by ensemble-scoreability-check)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/theatre-news--unknown.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: Theatre News REVIEW by Marco Gandolfi, Garrick Theatre (same verdict, recorded by ensemble-scoreability-check)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/zebra--jordan-wright.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: The Zebra review by Jordan Wright of the national tour opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/zebra--jordan-wright.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/zebra--jordan-wright.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-07T03:30:25.667Z",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: The Zebra review by Jordan Wright of the national tour opening night (same verdict, recorded by ensemble-scoreability-check)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/zebra--jordan-wright.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: The Zebra review by Jordan Wright of the national tour opening night (same verdict, recorded by ensemble-scoreability-check)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine Arts Desk review by Helen Hawkins (5/5, /theatre/tao-glass-soho-place-review-...): the content verification misread it as a preview"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:12:52.816Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amaze-magic-off-broadway-2025/cititour--brian-scott-lipton.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amaze-magic-off-broadway-2025/cititour--brian-scott-lipton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "that-math-show-off-broadway-2026/stageandcinema--paulanne-simmons.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "that-math-show-off-broadway-2026/stageandcinema--paulanne-simmons.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/theatre-news--unknown.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/theatre-news--unknown.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "rejectedAt: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/theatre-news--unknown.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json rejectedAt: \"2026-10-07T03:30:25.667Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json wrongArticleManualClear: null -> true"
+    }
+  ]
+}

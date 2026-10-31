@@ -1,0 +1,127 @@
+{
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "issueNumber": "bro-5093",
+  "planId": "37fac6e7-4ee9-4ae1-91e2-1b3f12e9e6ac",
+  "createdAt": "2026-10-11T22:35:57Z",
+  "plan": {
+    "summary": "Tag what each cited weekly cost figure is (fixed running costs, breakeven gross, or all-in operating expense), read from its quote",
+    "steps": [
+      "Set weeklyRunningCostBasis on the 7 records whose cited quote states the basis; Wicked ('weekly expenses') is left untagged"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "all-in",
+        "description": "Basis from the cited quote: \"averaged a weekly operating expense\" (AG financial statements): royalties and percentage rent included"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "breakeven",
+        "description": "Basis from the cited quote: \"Its weekly breakeven, after deductions, is $469,000.\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harry-potter",
+        "showId": "harry-potter",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "all-in",
+        "description": "Basis from the cited quote: \"weekly operating expenses exceeding $1 million\" (operating expenses, all costs)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hamilton",
+        "showId": "hamilton",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "Basis from the cited quote: \"fixed expenses ... excluding royalties and percentage rent\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "matilda-the-musical-2013",
+        "showId": "matilda-the-musical-2013",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "Basis from the cited quote: \"fixed weekly expenses ... plus 7 percent of grosses payable to the landlord\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "Basis from the cited quote: \"fixed weekly operating costs\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "showId": "the-great-gatsby",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "Basis from the cited quote: \"weekly running costs\""
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T01:23:22.497Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for harry-potter"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for hamilton"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for matilda-the-musical-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for the-great-gatsby"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "issueNumber": "bro-3986",
+  "planId": "97d551a0-9cac-4e44-b433-477715f542a5",
+  "status": "applied",
+  "createdAt": "2026-10-11T01:21:50.111Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the manually validated original 1995 WPA Theatre production of Songs for a New World, which is absent from the catalog. This is a closed Off-Broadway production, not a current revival or regional staging.",
+    "steps": [
+      "Add the original production with opening October 26, 1995, previews October 11, 1995, and closing November 5, 1995.",
+      "Make the production available to the existing gather-reviews.js pipeline when historical review gathering is requested."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "Create the original WPA Theatre production after manual venue and date validation from Playbill, the composer, and a contemporaneous Variety review.",
+        "show": {
+          "id": "songs-for-a-new-world-off-broadway-1995",
+          "title": "Songs for a New World",
+          "slug": "songs-for-a-new-world-off-broadway-1995",
+          "venue": "WPA Theatre",
+          "theaterAddress": "519 West 23rd Street, New York, NY 10011",
+          "openingDate": "1995-10-26",
+          "openingDateSource": "manual",
+          "previewsStartDate": "1995-10-11",
+          "closingDate": "1995-11-05",
+          "status": "closed",
+          "type": "musical",
+          "category": "off-broadway",
+          "market": "broadway",
+          "isRevival": false,
+          "discoverySource": "manual-user-request",
+          "synopsis": "Jason Robert Brown's theatrical song cycle follows characters facing pivotal choices across different places and times.",
+          "tags": [],
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Brooks Ashmanskas"
+            },
+            {
+              "name": "Andréa Burns"
+            },
+            {
+              "name": "Jessica Molaskey"
+            },
+            {
+              "name": "Billy Porter"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Jason Robert Brown",
+              "role": "Music & Lyrics"
+            },
+            {
+              "name": "Daisy Prince",
+              "role": "Director"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "manualValidation": {
+    "validatedAt": "2026-10-11",
+    "sources": [
+      {
+        "url": "https://playbill.com/article/listening-party-look-back-at-songs-for-a-new-world-off-broadway",
+        "supports": "Original 1995 WPA Theatre production, Off-Broadway classification, and original cast. Distinguishes the 2018 City Center revival."
+      },
+      {
+        "url": "https://www.jasonrobertbrown.com/projects/songs-for-a-new-world",
+        "supports": "Original production venue and address, October 26, 1995 opening, October 11, 1995 first preview, cast, composer, and director. Its November 5, 2005 closing year conflicts with contemporary evidence and is not used."
+      },
+      {
+        "url": "https://www.jasonrobertbrown.com/reviews/songs-for-a-new-world",
+        "supports": "Contemporaneous Variety review by Greg Evans, dated November 6, 1995, identifies the WPA Theatre run and says the limited engagement closed November 5. Confirms closing November 5, 1995."
+      },
+      {
+        "url": "https://ovrtur.com/production/2881896",
+        "supports": "The Main Run venue section independently lists WPA Theatre, October 26, 1995 through November 5, 1995. The conflicting 2005 closing year in the top summary is not used."
+      }
+    ],
+    "venueValidator": {
+      "command": "node scripts/validate-show-venue.js --candidates-file=.cache/bro-3986/candidates.json --show=songs-for-a-new-world-off-broadway-1995 --dry-run --verbose",
+      "exitCode": 3,
+      "result": "Unresolved: No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN). Ran before any shows.json addition; no automated pass claimed. Manual validation above uses authoritative production content, not URL metadata."
+    }
+  },
+  "executedAt": "2026-10-12T09:44:42.045Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added songs-for-a-new-world-off-broadway-1995"
+    }
+  ]
+}

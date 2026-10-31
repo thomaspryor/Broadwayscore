@@ -1,0 +1,125 @@
+{
+  "issueNumber": "bro-5873",
+  "planId": "c08f69e5-f49e-48fe-adfb-1176a0e40777",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5873: add commercial entries for the four 2017-20 new Broadway musicals that had none (Summer, Head Over Heels, The Lightning Thief, Beetlejuice).",
+    "steps": [
+      "Head Over Heels: WRAL (Nov 26, 2018) reports up to $14.5M capitalization per an SEC filing and that the show did not recoup; Broadway Journal put it at least $11.6M. Did Not Recoup, reported-loss.",
+      "Beetlejuice (2019 Broadway run): Broadway News (Dec 9, 2019) reports capitalization up to $21M per an SEC filing. No Broadway recoupment was ever announced (the national tour recouped, a separate production). Did Not Recoup on no-recoupment-announced.",
+      "Summer and The Lightning Thief: no capitalization published in any source found; closed over 183 days ago with no recoupment announced. Did Not Recoup on no-recoupment-announced, capitalization left empty."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "head-over-heels-2018",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "recouped": false,
+          "designationBasis": "reported-loss",
+          "capitalization": 14500000,
+          "capitalizationSource": "WRAL (Nov 26, 2018), citing an SEC filing: up to $14.5M; Broadway Journal (Jul 2018) put it at least $11.6M",
+          "notes": "Go-Go's jukebox musical at the Hudson, opened Jul 26, 2018 and closed Jan 6, 2019. Capitalized at up to $14.5M per SEC filing; weekly grosses peaked at $297,421 (34% of potential). Reported as not recouping its costs.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.wral.com/archive/18022029/",
+              "date": "2018-11-26"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/head-over-heels-to-close-in-january/",
+              "date": "2018-11-26"
+            }
+          ]
+        },
+        "description": "head-over-heels-2018: add commercial entry (did not recoup)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "beetlejuice-2019",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "recouped": false,
+          "designationBasis": "no-recoupment-announced",
+          "capitalization": 21000000,
+          "capitalizationSource": "Broadway News (Dec 9, 2019), citing an SEC filing: up to $21M",
+          "notes": "Original Broadway run at the Winter Garden, opened Apr 25, 2019 and closed Mar 10, 2020 (shortened by the pandemic shutdown). Capitalized at up to $21M per SEC filing. No Broadway recoupment was announced; the national tour is a separate production.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/beetlejuice-to-end-its-run-at-the-winter-garden-in-june/",
+              "date": "2019-12-09"
+            }
+          ]
+        },
+        "description": "beetlejuice-2019: add commercial entry (no recoupment announced)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "summer-2018",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "recouped": false,
+          "designationBasis": "no-recoupment-announced",
+          "notes": "Donna Summer jukebox musical at the Lunt-Fontanne, opened Apr 23, 2018 and closed Dec 30, 2018 after 289 performances. Peak week $1.16M; grosses fell to $462,727 (32% of potential) by Thanksgiving. Capitalization was not published in any source found and no recoupment was announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://broadwaynews.com/2018/11/28/summer-will-close-at-the-end-of-december/",
+              "date": "2018-11-28"
+            }
+          ]
+        },
+        "description": "summer-2018: add commercial entry (no recoupment announced)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-lightning-thief-2019",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "recouped": false,
+          "designationBasis": "no-recoupment-announced",
+          "notes": "Percy Jackson musical at the Longacre, opened Oct 16, 2019 and closed Jan 5, 2020 as a limited engagement (95 performances, about $5.06M total gross). Capitalization was not published in any source found and no recoupment was announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/the-lightning-thief-the-percy-jackson-musical-ends-broadway-run-january-5",
+              "date": "2019-10-17"
+            }
+          ]
+        },
+        "description": "the-lightning-thief-2019: add commercial entry (no recoupment announced)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T04:24:30.623Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"head-over-heels-2018\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"beetlejuice-2019\" already has a commercial entry (use data-edit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added summer-2018 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-lightning-thief-2019 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
+}

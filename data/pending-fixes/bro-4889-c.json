@@ -1,0 +1,127 @@
+{
+  "issueNumber": "bro-4889-c",
+  "planId": "c6156033-cc15-4d8c-aeda-328e3a7d20da",
+  "status": "applied",
+  "createdAt": "2026-10-13T03:12:26.720Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4889: Three Days of Rain (2006) counts a one-sentence preview blurb; Cat on a Hot Tin Roof (2008) counts an LA Times letters page; Private Lives (2011) and August: Osage County (2007) exclude genuine reviews",
+    "steps": [
+      "Mark the USA Today preview blurb and the LA Times letters page as non-reviews",
+      "Clear false wrongProduction flags on Private Lives 2011 Vulture and Osage 2007 New Yorker"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "three-days-of-rain-2006/usatoday--elysa-gardner.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "stored text is one sentence from a March 2006 preview piece, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-days-of-rain-2006/usatoday--elysa-gardner.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: one-sentence March 2006 preview blurb (172 chars); the real review is usatoday.com/life/theater/reviews/2006-04-19-three-days_x.htm",
+        "description": "Reason for the non-review flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2008/latimes--charles-mcnulty-bway.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "LA Times Calendar letters page (2008-03-09), not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2008/latimes--charles-mcnulty-bway.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: LA Times Calendar reader-letters page (\"Breaking through the Brick wall\"), not a review",
+        "description": "Reason for the non-review flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2011/vulture--scott-brown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews the Richard Eyre revival with Kim Cattrall (2011)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2011/vulture--scott-brown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/newyorker--hilton-als.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; Hilton Als on the Broadway run with Deanna Dunagan and Amy Morton"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/newyorker--hilton-als.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:59:29.098Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/usatoday--elysa-gardner.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/usatoday--elysa-gardner.json isNonReviewReason: null -> \"BRO-4889: one-sentence March 2006 preview blurb (172 chars); the real review is usatoday.com/life/theater/reviews/2006-04-19-three-days_x.htm\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2008/latimes--charles-mcnulty-bway.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2008/latimes--charles-mcnulty-bway.json isNonReviewReason: null -> \"BRO-4889: LA Times Calendar reader-letters page (\\\"Breaking through the Brick wall\\\"), not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/vulture--scott-brown.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/vulture--scott-brown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/newyorker--hilton-als.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/newyorker--hilton-als.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "system": "quality",
+  "status": "warn",
+  "lastChecked": "2026-10-30T08:41:09.867Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Quality: opening date vs review dates",
+      "status": "warn",
+      "message": "8 show(s) store an opening date later than their reviews: an-american-in-paris-west-end-2017 (stored 2017-04-01, reviews 2017-03-22); a-small-and-quiet-light-chichester-festival-regional-2026 (stored 2026-08-31, reviews 2026-08-28); the-borrowers-hull-truck-regional-2024 (stored 2024-12-15, reviews 2024-12-04)"
+    },
+    {
+      "name": "Quality: star-vs-score mismatch",
+      "status": "warn",
+      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: confederates-off-broadway-2022 New York Theater A→90 vs LLM 49, gap 41)"
+    },
+    {
+      "name": "Quality: scored review ratio",
+      "status": "pass",
+      "message": "96.1% scored (39244/40837)"
+    },
+    {
+      "name": "Quality: corpus drift",
+      "status": "pass",
+      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
+    },
+    {
+      "name": "Quality: DMARC deliverability",
+      "status": "pass",
+      "message": "16520 messages, 0 auth failures (p=reject)"
+    },
+    {
+      "name": "Quality: missing contentTier",
+      "status": "pass",
+      "message": "No scored reviews missing contentTier"
+    },
+    {
+      "name": "Quality: outlet domain moves",
+      "status": "warn",
+      "message": "10 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
+    },
+    {
+      "name": "Quality: Show Score gap",
+      "status": "pass",
+      "message": "Every opened Broadway/off-Broadway show with a cached Show Score URL has a Show Score audience score"
+    },
+    {
+      "name": "Quality: outlet stub rate",
+      "status": "pass",
+      "message": "No broken-extractor signature in 1745 outlet(s), 70051 review(s)"
+    },
+    {
+      "name": "Quality: outlet invalid-content rate",
+      "status": "warn",
+      "message": "1 outlet(s) show a broken-extractor signature (worst: bristol247 — 3/5 recent invalid, 60% vs 0% baseline)"
+    },
+    {
+      "name": "Quality: standingCoverage drift",
+      "status": "pass",
+      "message": "No standingCoverage drift"
+    },
+    {
+      "name": "Quality: coverageExpectation drift",
+      "status": "warn",
+      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
+    },
+    {
+      "name": "Quality: outlet-heartbeat red flags",
+      "status": "warn",
+      "message": "Heartbeat monitor last ran 11d ago (>8d)"
+    },
+    {
+      "name": "Quality: outlet feed staleness",
+      "status": "pass",
+      "message": "64 feed(s) checked, none stale or failing"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+name: Sync env to Vercel
+
+# Copies selected GitHub secrets into the Vercel project's production env
+# (BRO-5170: LINEAR_API_KEY was never added there, so every digest "Fix this"
+# tap failed). Idempotent; values are never printed. Env changes reach only
+# NEW deployments: redeploy afterwards (vercel-deploy.yml).
+#
+# Probe mode (probe_condition_key set): skips the sync and only POSTs a signed
+# dispatch link to the live site. Run it AFTER the redeploy that picks the env
+# up. The key's anchor "[conditionKey:<key>]" must sit in an open parked Linear
+# issue (the probe checks and refuses otherwise), so the route answers
+# "Already Being Fixed" instead of filing work (scripts/lib/probe-dispatch-link.js).
+
+on:
+  workflow_dispatch:
+    inputs:
+      names:
+        description: 'Comma-separated names to copy (must be in ALLOWED in scripts/lib/sync-vercel-env.js and mapped below)'
+        default: 'LINEAR_API_KEY'
+        required: true
+      probe_condition_key:
+        description: 'Probe mode: condition key for the live dispatch probe (blank = sync mode)'
+        default: ''
+        required: false
+      probe_expect:
+        description: 'Page title the probe must get (Already Being Fixed = no new issue filed)'
+        default: 'Already Being Fixed'
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-vercel-env
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Sync secrets to Vercel production env
+        if: ${{ inputs.probe_condition_key == '' }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Also needs the name in ALLOWED (scripts/lib/sync-vercel-env.js) to sync.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          NAMES: ${{ inputs.names }}
+        run: node scripts/lib/sync-vercel-env.js "--names=$NAMES"
+
+      - name: Pull Vercel production env and check runtime names
+        if: ${{ inputs.probe_condition_key == '' }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx --yes vercel pull --yes --environment=production --token=$VERCEL_TOKEN >/dev/null
+          node scripts/lib/check-vercel-required-env.js --strict
+          rm -f .vercel/.env.production.local
+
+      - name: Live dispatch probe
+        if: ${{ inputs.probe_condition_key != '' }}
+        env:
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          KEY: ${{ inputs.probe_condition_key }}
+          EXPECT: ${{ inputs.probe_expect }}
+        run: node scripts/lib/probe-dispatch-link.js "--condition-key=$KEY" "--expect=$EXPECT"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Sync env to Vercel Failed'
+          severity: 'warning'

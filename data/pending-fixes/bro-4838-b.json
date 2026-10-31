@@ -1,0 +1,205 @@
+{
+  "issueNumber": "bro-4838-b",
+  "planId": "8a0ea2b7-3ceb-472f-b659-ad209babddde",
+  "status": "applied",
+  "createdAt": "2026-10-11T20:57:04.713Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4838 follow-up (owner 2026-10-11: fix systematically across existing shows). The daily site-integrity sweep listed 39 reviews excluded as not-a-review while the newer content verification said review (high). Each was read: 13 are genuine critic reviews (restored here, locked with nonReviewManualClear); the rest are correctly excluded (review round-ups, ground.news aggregator pages, fan forums, Show-Score listings, our own pages, an NYT profile) or have an attribution question (two Variety Stranger Things files share one URL; a theaterscene URL names a different critic) and are left for review. (part 1 of 2)",
+    "steps": [
+      "Clear isNonReview / rejectionReason on 13 hand-verified reviews",
+      "Set nonReviewManualClear so classify-non-reviews.js skips them"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/variety--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review misread as not-a-review: Variety review by David Rooney (\"one might expect The Book of Mormon to show the influences of Spamalot\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/variety--david-rooney.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-west-end-2025/west-end-wilma--unknown.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review misread as not-a-review: West End Wilma review of the Trafalgar Theatre production (attended a matinee)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-west-end-2025/west-end-wilma--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/west-end-best-friend--unknown.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review misread as not-a-review: West End Best Friend review at the Dominion (\"head into the West End to see...\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/west-end-best-friend--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/independent--louis-chilton.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: Independent review by Louis Chilton (/reviews/avenue-q-review-shaftesbury-theatre)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/independent--louis-chilton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/independent--louis-chilton.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-07T03:57:47.963Z",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: Independent review by Louis Chilton (/reviews/avenue-q-review-shaftesbury-theatre) (same verdict, recorded by ensemble-scoreability-check)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/independent--louis-chilton.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Genuine review misread as not-a-review: Independent review by Louis Chilton (/reviews/avenue-q-review-shaftesbury-theatre) (same verdict, recorded by ensemble-scoreability-check)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/theatre-weekly--unknown.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review misread as not-a-review: Theatre Weekly review at the Phoenix Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/theatre-weekly--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-west-end-2024/musical-theatre-review--angela-thomas.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Genuine review misread as not-a-review: Musical Theatre Review review, \"Star rating: three stars\""
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-west-end-2024/musical-theatre-review--angela-thomas.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the classifier does not re-flag it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:09:13.766Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "book-of-mormon-2011/variety--david-rooney.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "book-of-mormon-2011/variety--david-rooney.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-west-end-2025/west-end-wilma--unknown.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-west-end-2025/west-end-wilma--unknown.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/west-end-best-friend--unknown.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/west-end-best-friend--unknown.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "avenue-q-west-end-2026/independent--louis-chilton.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "avenue-q-west-end-2026/independent--louis-chilton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "avenue-q-west-end-2026/independent--louis-chilton.json rejectedAt: \"2026-10-07T03:57:47.963Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "avenue-q-west-end-2026/independent--louis-chilton.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/theatre-weekly--unknown.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/theatre-weekly--unknown.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-west-end-2024/musical-theatre-review--angela-thomas.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-west-end-2024/musical-theatre-review--angela-thomas.json nonReviewManualClear: null -> true"
+    }
+  ]
+}

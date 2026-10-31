@@ -1,0 +1,218 @@
+name: Commercial Release Held Rows
+
+# BRO-5041: releases named human-review-held rows (requiresHumanReview, e.g.
+# the BRO-4990 backfill) from data/commercial-pending-review.json into
+# commercial.json. Manual only: someone (or a session acting on the owner's
+# review page) names the slugs. Runs here, not locally, because the cited
+# pages must be read with the scraper credentials before a figure may print
+# as fact (BRO-4758). apply-commercial-pending.js --release-held refuses any
+# record that already has a non-TBD or human-reviewed label or a recoupment
+# on file, merges onto the existing record, and never publishes the row's "recouped"
+# claim. The tail matches commercial-friday.yml.
+#
+# revert_core_commit undoes a release instead: each named record goes back to
+# what the core-data repo held just before that release commit (removed when
+# the release created it). Only a "data: release held commercial rows" commit
+# is accepted. The pending rows are not touched (a release deletes them; the
+# push merge may have kept them, and either way re-holding is separate).
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated slugs of held pending rows to release'
+        required: true
+        type: string
+      dry_run:
+        description: 'Dry run (no commit/push)'
+        required: false
+        type: boolean
+        default: false
+      revert_core_commit:
+        description: 'Undo instead: core-data SHA of an earlier release commit (records restored for the named shows)'
+        required: false
+        type: string
+        default: ''
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # ~2min setup + 12min page-verification budget (apply-commercial-pending.js)
+    # + validation + ~3min gates/model refresh + up to 10min PUSH_DEADLINE_SEC
+    # + ~3min push-core-data + deploy dispatch = ~32min worst case.
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Release held rows
+        env:
+          SHOWS: ${{ inputs.shows }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          REVERT: ${{ inputs.revert_core_commit }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          # pipefail: the script's exit code (validate-data failure after the
+          # save) must fail this step, not tee's.
+          set -o pipefail
+          LIST=$(echo "$SHOWS" | tr -d ' ')
+          if ! echo "$LIST" | grep -Eq '^[a-z0-9-]+(,[a-z0-9-]+)*$'; then
+            echo "::error::shows must be comma-separated slugs (a-z, 0-9, -)"
+            exit 1
+          fi
+          if [ -n "$REVERT" ]; then
+            if ! echo "$REVERT" | grep -Eq '^[0-9a-f]{7,40}$'; then
+              echo "::error::revert_core_commit must be a commit SHA"
+              exit 1
+            fi
+            CORE=/tmp/core-data-checkout
+            # blob:none keeps the deepen to commits and trees; git show fetches
+            # the two commercial.json blobs it needs on demand.
+            git_net 300 -c http.lowSpeedTime=600 -C "$CORE" fetch -q --filter=blob:none --deepen=2000 origin main
+            FULL=$(git -C "$CORE" rev-parse --verify "${REVERT}^{commit}")
+            SUBJECT=$(git -C "$CORE" log -1 --format=%s "$FULL")
+            if [ "$SUBJECT" != "data: release held commercial rows" ]; then
+              echo "::error::$FULL is \"$SUBJECT\", not a held-row release commit"
+              exit 1
+            fi
+            git -C "$CORE" show "${FULL}^:commercial.json" > "${RUNNER_TEMP}/commercial.before-release.json"
+            git -C "$CORE" show "${FULL}:commercial.json" > "${RUNNER_TEMP}/commercial.at-release.json"
+            ARGS="--previous=${RUNNER_TEMP}/commercial.before-release.json --released=${RUNNER_TEMP}/commercial.at-release.json --shows=$LIST"
+            if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+            node scripts/revert-commercial-release.js $ARGS | tee "${RUNNER_TEMP}/release.log"
+            # --dry-run: validate only; its audit/baseline writes would ride the
+            # blanket data/ sweep below (audit-blanket-sweep-audit-writes).
+            # blanket-sweep-audit-ok: data/audit/validation-baseline.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json validate-data runs with --dry-run here, so it writes nothing
+            if [ "$DRY_RUN" != "true" ]; then node scripts/validate-data.js --dry-run > "${RUNNER_TEMP}/validate.log" 2>&1 || { tail -40 "${RUNNER_TEMP}/validate.log"; exit 1; }; fi
+          else
+            ARGS="--release-held=$LIST"
+            if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+            node scripts/apply-commercial-pending.js $ARGS | tee "${RUNNER_TEMP}/release.log"
+          fi
+
+      - name: Self-heal resurrected duplicate key pairs
+        if: inputs.dry_run != true
+        run: |
+          if ! node scripts/dedupe-commercial-id-keys.js --apply; then
+            echo "dedupe-commercial-id-keys refused a conflicting ID/slug pair — blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
+      - name: Commercial data strict gate (required)
+        if: inputs.dry_run != true
+        run: |
+          if ! node scripts/audit-commercial-data.js --strict; then
+            echo "commercial strict audit failed (unsourced recouped or LLM-tool source URL) — blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
+      - name: Refresh recoupment model
+        if: inputs.dry_run != true
+        # Released records keep their model* fields (merge onto the record);
+        # this refreshes them for the new label and figures.
+        run: node scripts/merge-model-recoupment.js
+        continue-on-error: true
+
+      - name: Deletion guard for commercial.json
+        if: always() && inputs.dry_run != true
+        run: |
+          node -e "
+            const fs = require('fs');
+            if (!fs.existsSync('./data/commercial.json')) { console.log('no commercial.json'); process.exit(0); }
+            const comm = JSON.parse(fs.readFileSync('./data/commercial.json','utf8'));
+            const count = Object.keys(comm.shows || {}).length;
+            console.log('Current show count: ' + count);
+            if (count < 120) {
+              console.error('::error::Commercial show count dropped below 120 (' + count + '). Aborting commit.');
+              process.exit(1);
+            }
+          "
+
+      - name: Commit released data
+        if: inputs.dry_run != true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+          SHOWS: ${{ inputs.shows }}
+          REVERT: ${{ inputs.revert_core_commit }}
+        run: |
+          git add data/commercial-pending-review.json 2>/dev/null || true
+          bash scripts/lib/stage-data-changes.sh
+          if git diff --staged --quiet; then
+            echo "No changes to commit (nothing released)"
+          else
+            if [ -n "$REVERT" ]; then
+              SUBJ="data: revert held commercial release $REVERT"
+            else
+              SUBJ="data: release held commercial rows"
+            fi
+            git commit -m "$SUBJ
+
+          Named via commercial-release-held.yml: $SHOWS
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "${{ inputs.revert_core_commit != '' && format('data: revert held commercial release {0}', inputs.revert_core_commit) || 'data: release held commercial rows' }}"
+
+      - name: Dispatch deploy
+        if: inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Commercial Release Held Rows" >> $GITHUB_STEP_SUMMARY
+          if [ -f "${RUNNER_TEMP}/release.log" ]; then
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -E '^  |Not in pending|would apply|Applied [0-9]|🏁' "${RUNNER_TEMP}/release.log" | cut -c1-300 >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial Release Held Rows Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "showId": "specimen-off-broadway-2026",
+  "night": "2026-10-30",
+  "market": "off-broadway",
+  "embargoAt": "2026-10-31T02:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-10-31T01:30:03.295Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-31T03:55:11.687Z",
+    "lastOkSampleAt": "2026-10-31T03:55:11.687Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-31T03:00:08.717Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "incomplete",
+      "source": [
+        "show-score"
+      ],
+      "count": 4,
+      "covered": 0,
+      "coverage": 0,
+      "missing": [
+        "theater-scene",
+        "front-row-center",
+        "this-week-in-new-york",
+        "off-off-online"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-10-31T04:00:23.393Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-10-31T04:00:23.476Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-10-31T04:00:27.215Z",
+    "files": [
+      {
+        "file": "front-row-center--david-walters.json",
+        "outletId": "front-row-center",
+        "outlet": "Front Row Center",
+        "critic": "David Walters",
+        "firstSeenAt": "2026-10-27T07:06:32.080Z",
+        "scoredAt": null,
+        "publishDate": "2026-05-21",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "off-off-online--stanford-friedman.json",
+        "outletId": "off-off-online",
+        "outlet": "Off Off Online",
+        "critic": "Stanford Friedman",
+        "firstSeenAt": "2026-10-27T07:06:44.770Z",
+        "scoredAt": null,
+        "publishDate": "2026-05-11",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theater-scene--tony-marinelli.json",
+        "outletId": "theater-scene",
+        "outlet": "Theater Scene",
+        "critic": "Tony Marinelli",
+        "firstSeenAt": "2026-10-27T07:06:21.876Z",
+        "scoredAt": null,
+        "publishDate": "2026-05-25",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "this-week-in-new-york--mark-rifkin.json",
+        "outletId": "this-week-in-new-york",
+        "outlet": "This Week in New York",
+        "critic": "Mark Rifkin",
+        "firstSeenAt": "2026-10-27T07:06:38.513Z",
+        "scoredAt": "2026-10-27T07:42:33.416Z",
+        "publishDate": null,
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

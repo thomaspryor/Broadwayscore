@@ -1,0 +1,155 @@
+name: Opening-night lane switch
+run-name: 'Opening-night lane switch ${{ inputs.action }} ${{ inputs.variable }} ${{ inputs.show }} ${{ inputs.mode }} ${{ inputs.request_id }}'
+
+# BRO-6622 (cutover card 8). The one way a session changes the opening-night lane's two repo variables, and the lane
+# rollback. Cloud sessions get 403 on repo variables, so they dispatch this workflow (mcp__github__actions_run_trigger)
+# instead of asking the owner to click. workflow_dispatch only, never a cron.
+#
+#   action=set|clear  variable=LANE_ONLY_MARKETS|LANE_STANDDOWN  value=...  reason=...  mode=live|dry-run
+#       Any other variable name is refused. set refuses an empty value (use clear) and any market the lane does not know.
+#   action=rollback  [show=ID [night=YYYY-MM-DD]]  reason=...  mode=live|dry-run|drill  [hard=true]
+#       LANE_STANDDOWN=all, delete LANE_ONLY_MARKETS, wait up to 15 min for the lane to stand down by itself, cancel a
+#       night run still holding (at once with hard=true), wait for it to push, release its lease, and hand each
+#       show-night inside its press-night window to the old path once (the watchdog's claim, so never twice).
+#
+# mode is required on purpose: live writes; dry-run and drill end with "NOTHING WAS CHANGED". drill writes only the
+# scratch variable LANE_SWITCH_PROBE and the opening-night-lane-drill* branches. Every live run appends who, why and
+# the old and new values to data/audit/lane-switch.jsonl. Logic: scripts/lib/opening-night-lane/lane-switch.js.
+# Runbook: docs/opening-night-lane-switch-runbook.md. Variables are written with REVIEW_TEXTS_TOKEN (VARS_TOKEN), the
+# same token the orchestrator reads and deletes variables with. No concurrency group: a queued rollback must never be
+# dropped by a newer dispatch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'set, clear or rollback'
+        required: true
+        type: choice
+        options: [set, clear, rollback]
+      variable:
+        description: 'set/clear only: which variable'
+        required: false
+        type: choice
+        options: [LANE_ONLY_MARKETS, LANE_STANDDOWN]
+        default: LANE_STANDDOWN
+      value:
+        description: 'set only: e.g. broadway, or west-end, or all (LANE_STANDDOWN only)'
+        required: false
+        type: string
+        default: ''
+      reason:
+        description: 'Who asked and why (recorded in data/audit/lane-switch.jsonl)'
+        required: true
+        type: string
+      mode:
+        description: 'live, dry-run or drill (rollback only). No default: say live to change anything.'
+        required: true
+        type: string
+      show:
+        description: 'rollback only: one show id (empty = every live lease and in-flight night run)'
+        required: false
+        type: string
+        default: ''
+      night:
+        description: 'rollback only: YYYY-MM-DD (empty = the show''s opening date)'
+        required: false
+        type: string
+        default: ''
+      hard:
+        description: 'rollback only: cancel the lane at once instead of waiting up to 15 min for it to stand down'
+        required: false
+        type: boolean
+        default: false
+      request_id:
+        description: 'Any short tag, shown in the run name so the dispatching session can find its run'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write  # audit row, lease release (opening-night-leases), fallback claim, drill branches
+
+jobs:
+  switch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      actions: write  # gh run list/cancel (lane night runs) and gh workflow run (old path)
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # BRO-2388: depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor of main for the audit commit.
+          fetch-depth: 1000
+
+      - name: Validate inputs
+        env:
+          ACTION: ${{ inputs.action }}
+          MODE: ${{ inputs.mode }}
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          REQUEST_ID: ${{ inputs.request_id }}
+          REF: ${{ github.ref }}
+        run: |
+          # A live change from a branch would run unreviewed code with the variables token and skip the audit commit.
+          if [ "$MODE" = live ] && [ "$REF" != refs/heads/main ]; then echo "::error::mode live runs only from main (this is $REF)"; exit 1; fi
+          case "$MODE" in live|dry-run) ;; drill) [ "$ACTION" = rollback ] || { echo "::error::drill is for rollback only"; exit 1; } ;;
+            *) echo "::error::mode must be live, dry-run or drill"; exit 1 ;; esac
+          if [ -n "$SHOW" ]; then printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show must be a show id"; exit 1; }; fi
+          if [ -n "$NIGHT" ]; then printf '%s' "$NIGHT" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "::error::night needs YYYY-MM-DD"; exit 1; }; fi
+          if [ -n "$REQUEST_ID" ]; then printf '%s' "$REQUEST_ID" | grep -Eq '^[A-Za-z0-9._-]{1,64}$' || { echo "::error::request_id: letters, digits, . _ - only"; exit 1; }; fi
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data (root JSON only)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Run the lane switch
+        env:
+          VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REQUEST_ID: ${{ inputs.request_id }}
+          ACTION: ${{ inputs.action }}
+          VARIABLE: ${{ inputs.variable }}
+          VALUE: ${{ inputs.value }}
+          REASON: ${{ inputs.reason }}
+          MODE: ${{ inputs.mode }}
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          HARD: ${{ inputs.hard }}
+        run: |
+          if [ "$ACTION" = rollback ]; then
+            args=(rollback "--reason=$REASON" "--mode=$MODE" "--show=$SHOW" "--night=$NIGHT")
+            [ "$HARD" = true ] && args+=(--hard)
+          else
+            args=("$ACTION" "--variable=$VARIABLE" "--value=$VALUE" "--reason=$REASON" "--mode=$MODE")
+          fi
+          node scripts/lane-switch.js "${args[@]}"
+
+      - name: Commit audit row
+        # Not continue-on-error: a live change whose audit row did not land must turn the run red.
+        if: always() && inputs.mode == 'live' && github.ref == 'refs/heads/main'
+        env:
+          ACTION: ${{ inputs.action }}
+          WHO: ${{ github.triggering_actor }}
+        run: |
+          git add data/audit/lane-switch.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No audit row to commit"; exit 0; fi
+          git commit -m "audit: opening-night lane switch $ACTION ($WHO) [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane switch failed'
+          description: 'BRO-6622. A lane switch or rollback step failed (the run summary names it and says to re-run the rollback), or the audit row did not commit (the row is in the run log).'
+          severity: 'warning'
+          email: 'false'

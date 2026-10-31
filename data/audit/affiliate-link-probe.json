@@ -1,0 +1,107 @@
+{
+  "base": "https://broadwayscorecard.com",
+  "pagesChecked": 5,
+  "pagesFailed": 0,
+  "destinationsChecked": 3,
+  "destinationsBroken": 0,
+  "destinationsSkipped": 0,
+  "allDestinationsSkipped": false,
+  "results": [
+    {
+      "id": "aladdin-2014",
+      "slug": "aladdin",
+      "status": "open",
+      "todaytixId": 105,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/aladdin",
+      "verdict": "pass",
+      "linksFound": 2,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway"
+      ]
+    },
+    {
+      "id": "and-juliet-2022",
+      "slug": "and-juliet",
+      "status": "open",
+      "todaytixId": 25598,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/and-juliet",
+      "verdict": "pass",
+      "linksFound": 4,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+        "https://www.todaytix.com/nyc/shows/25598-&-juliet-on-broadway"
+      ]
+    },
+    {
+      "id": "angels-bone-west-end-2026",
+      "slug": "angels-bone-west-end",
+      "status": "open",
+      "todaytixId": 46928,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/angels-bone-west-end",
+      "verdict": "pass",
+      "linksFound": 2,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/london/shows/46928-angel-bones",
+        "https://www.todaytix.com/london/shows/46928-angel-bones"
+      ]
+    },
+    {
+      "id": "a-ghost-in-your-ear-off-broadway-2026",
+      "slug": "a-ghost-in-your-ear-off-broadway",
+      "status": "open",
+      "todaytixId": 47577,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/a-ghost-in-your-ear-off-broadway",
+      "verdict": "pass",
+      "linksFound": 2,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/47577-a-ghost-in-your-ear",
+        "https://www.todaytix.com/nyc/shows/47577-a-ghost-in-your-ear"
+      ]
+    },
+    {
+      "id": "as-you-like-it-globe-west-end-2026",
+      "slug": "as-you-like-it-globe-west-end",
+      "status": "closed",
+      "todaytixId": 27568,
+      "expectLinks": false,
+      "url": "https://broadwayscorecard.com/show/as-you-like-it-globe-west-end",
+      "verdict": "pass",
+      "linksFound": 0,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": []
+    }
+  ],
+  "destChecks": [
+    {
+      "dest": "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/nyc/shows/25598-&-juliet-on-broadway",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    }
+  ],
+  "updatedAt": "2026-10-26T18:57:10.073Z"
+}

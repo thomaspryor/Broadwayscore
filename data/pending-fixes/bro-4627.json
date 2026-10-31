@@ -1,0 +1,301 @@
+{
+  "issueNumber": "bro-4627",
+  "planId": "b551cf0e-09d2-4a7f-9abd-1d35e089fd37",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 4: add commercial entries for 11 Broadway productions that had none (Gutenberg!, The Shark Is Broken, Grey House, The Hills of California, Left on Tenth, Elf, The Last Five Years, John Proctor Is the Villain, Beaches, Other Desert Cities, Billy Crystal's 860).",
+    "steps": [
+      "Gutenberg! recouped its $6.75M capitalization (Broadway News, Deadline, Playbill, Jan 2024).",
+      "The others announced no recoupment and most never reported a capitalization, so they are TBD with no Flop/Fizzle guess. Closed runs get recouped=false; Elf (a holiday limited run with record grosses, outcome never reported) and the two running shows get recouped=null (unknown).",
+      "Entries citing Broadway News' recoupment list link to it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "gutenberg",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2024-01",
+          "recoupedSource": "Broadway News, Deadline, Playbill (Jan 29, 2024): recouped its $6.75M capitalization the day after closing.",
+          "capitalization": 6750000,
+          "capitalizationSource": "Deadline (Jan 2024)",
+          "notes": "Commercial limited run at the James Earl Jones (opened Oct 12, 2023; closed Jan 28, 2024) starring Josh Gad and Andrew Rannells. Recouped its $6.75M capitalization; final week set a house record.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://deadline.com/2024/01/gutenberg-broadway-recoup-1235807515/",
+              "date": "2024-01-29"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/gutenberg-recoups-broadway-investment-cast-album-to-be-released/",
+              "date": "2024-01-29"
+            }
+          ]
+        },
+        "description": "gutenberg: add commercial entry (recouped Jan 2024)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-shark-is-broken",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": 5150000,
+          "capitalizationSource": "New York Times (Michael Paulson), quoted by ArtsJournal (May 2024)",
+          "notes": "Commercial transfer of the West End production (Sonia Friedman Productions) at the Golden, Aug 10 to Nov 19, 2023. Capitalized at $5.15M; total Broadway gross about $4.5M. No recoupment announced (the 2022 recoupment headline refers to the West End run).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.artsjournal.com/calltime/2024/05/30/a-new-golden-age-off-broadway-where-less-is-more/",
+              "date": "2024-05-30"
+            }
+          ]
+        },
+        "description": "the-shark-is-broken: add commercial entry (cap reported, no recoupment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "grey-house",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "notes": "Commercial play at the Lyceum; closed Jul 30, 2023, five weeks ahead of schedule. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/grey-house-cuts-broadway-run-short",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
+            }
+          ]
+        },
+        "description": "grey-house: add commercial entry (no data)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-hills-of-california-2024",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "notes": "Commercial production (Sonia Friedman Productions lead; Manhattan Theatre Club joined as co-producer) at the Broadhurst, Sep 29 to Dec 22, 2024. Total gross about $6.6M. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/manhattan-theatre-club-joins-producing-team-for-broadways-the-hills-of-california-adds-title-to-subscriber-season",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
+            }
+          ]
+        },
+        "description": "the-hills-of-california-2024: add commercial entry (no data)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "left-on-tenth-2024",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "notes": "Commercial play (Daryl Roth) at the James Earl Jones, Oct 23, 2024 to Feb 2, 2025. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/left-on-tenth-leaves-broadway-february-2",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
+            }
+          ]
+        },
+        "description": "left-on-tenth-2024: add commercial entry (no data)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "elf-2024",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "notes": "Holiday limited run at the Marquis, Nov 17, 2024 to Jan 4, 2025; twice broke the house record and grossed about $13.5M over 56 performances. No capitalization reported and no recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://deadline.com/2024/12/elf-the-musical-record-marquis-broadway-box-office-week-31-2024-1236241878/",
+              "date": "2024-12-31"
+            }
+          ]
+        },
+        "description": "elf-2024: add commercial entry (no data)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-last-five-years-2025",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "notes": "Commercial revival (Seaview) at the Hudson with Nick Jonas and Adrienne Warren, Apr 6 to Jun 22, 2025. Total gross about $8.9M. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/production/the-last-five-years-broadway-hudson-theatre-2025",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
+            }
+          ]
+        },
+        "description": "the-last-five-years-2025: add commercial entry (no data)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "john-proctor-is-the-villain-2025",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "notes": "Commercial production at the Booth, Apr 14 to Sep 7, 2025 (extended three times; seven Tony nominations). No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://deadline.com/2025/09/broadway-box-office-john-proctor-is-the-villain-1236513171/",
+              "date": "2025-09-08"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
+            }
+          ]
+        },
+        "description": "john-proctor-is-the-villain-2025: add commercial entry (no data)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "beaches",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "notes": "Commercial new musical at the Majestic; opened Apr 22, 2026 and closed May 24, 2026, more than three months early, after grossing about $4.2M. No capitalization reported and no recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/beaches-plays-final-performance-on-broadway-may-24",
+              "date": null
+            }
+          ]
+        },
+        "description": "beaches: add commercial entry (no data)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "other-desert-cities",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "notes": "Commercial revival at the Hudson, limited run through Jan 17, 2027 (Julia Louis-Dreyfus, Ed Harris, Allison Janney). No capitalization reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://deadline.com/2026/05/julia-louis-dreyfus-broadway-other-desert-cities-ed-harris-1236920897/",
+              "date": null
+            }
+          ]
+        },
+        "description": "other-desert-cities: add commercial entry (running)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "billy-crystal-860",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "notes": "Billy Crystal solo show at the Imperial, limited 14 weeks through Jan 3, 2027. No capitalization reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/billy-crystals-new-solo-show-860-sets-dates-at-broadways-imperial",
+              "date": null
+            }
+          ]
+        },
+        "description": "billy-crystal-860: add commercial entry (running)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T00:55:58.286Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added gutenberg (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-shark-is-broken (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added grey-house (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-hills-of-california-2024 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added left-on-tenth-2024 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added elf-2024 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-last-five-years-2025 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added john-proctor-is-the-villain-2025 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added beaches (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added other-desert-cities (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added billy-crystal-860 (TBD)"
+    }
+  ]
+}

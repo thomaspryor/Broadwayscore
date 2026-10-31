@@ -1,0 +1,100 @@
+{
+  "issueNumber": "bro-5708",
+  "planId": "d5df8335-b61c-4e4a-802b-55b9911bf56b",
+  "status": "applied",
+  "createdAt": "2026-10-28T15:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add both Broadway runs of Springsteen on Broadway (Walter Kerr 2017-18, St. James 2021) as closed shows, linked as prior runs.",
+    "steps": [
+      "Append springsteen-on-broadway-2017",
+      "Append springsteen-on-broadway-2021 with priorRunOf link"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "springsteen-on-broadway-2017",
+          "title": "Springsteen on Broadway",
+          "slug": "springsteen-on-broadway-2017",
+          "venue": "Walter Kerr Theatre",
+          "openingDate": "2017-10-12",
+          "closingDate": "2018-12-15",
+          "previewsStartDate": "2017-10-03",
+          "status": "closed",
+          "type": "special",
+          "isRevival": false,
+          "category": "broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Bruce Springsteen performs a solo show of songs and stories drawn from his memoir Born to Run.",
+          "openingDateSource": "playbill",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Bruce Springsteen",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": []
+        },
+        "description": "Add the 2017-18 Walter Kerr run"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "springsteen-on-broadway-2021",
+          "title": "Springsteen on Broadway",
+          "slug": "springsteen-on-broadway-2021",
+          "venue": "St. James Theatre",
+          "openingDate": "2021-06-26",
+          "closingDate": "2021-09-04",
+          "status": "closed",
+          "type": "special",
+          "isRevival": true,
+          "category": "broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Bruce Springsteen returns with his solo show of songs and stories for a limited run after the pandemic closure of Broadway.",
+          "openingDateSource": "playbill",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Bruce Springsteen",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": []
+        },
+        "priorRunOf": "springsteen-on-broadway-2017",
+        "description": "Add the 2021 St. James run, linked to the 2017 run"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T15:11:44.937Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added springsteen-on-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added springsteen-on-broadway-2021 (priorRuns -> springsteen-on-broadway-2017)"
+    }
+  ],
+  "executedIn": "ci"
+}

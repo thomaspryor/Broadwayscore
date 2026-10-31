@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4305",
+  "planId": "dc075ef3-80bc-479d-a038-01f85d9b8792",
+  "status": "partial",
+  "createdAt": "2026-10-25T01:59:04.491Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear the manual roundup flag on the La Voce three-play article for Disruption so it counts like its Benevolent and The Pass copies (joint multi-show review, own section scored 74)",
+    "steps": [
+      "disruption-off-broadway-2026/la-voce-di-new-york--jk-clarke.json: isRoundupArticle"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "isRoundupArticle",
+        "oldValue": true,
+        "newValue": false,
+        "description": "disruption-off-broadway-2026/la-voce-di-new-york--jk-clarke.json: isRoundupArticle"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T04:13:52.335Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "isRoundupArticle: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
+}

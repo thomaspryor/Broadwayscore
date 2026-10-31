@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-5373-q",
+  "planId": "4170b093-40ef-43c3-9f48-1e98c226d58e",
+  "status": "partial",
+  "createdAt": "2026-10-14T21:32:25.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (q): shadowlands-west-end-2026, point the mis-credited Gore-Langton copy of Marmion's review at Marmion's file, not the other way round.",
+    "steps": [
+      "duplicateClearReason + clear duplicateOf on Marmion",
+      "set duplicateOf on the Gore-Langton copy"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "shadowlands-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5373: both files hold Patrick Marmion's dailymail.co.uk review (same text, 'Published: 13 February 2026', his url /PATRICK-MARMION-review-Shadowlands...). The Gore-Langton file is the mis-credited copy; Marmion's own file is the genuine row.",
+        "description": "BRO-5373: both files hold Patrick Marmion's dailymail.co.uk review (same text, 'Published: 13 February 2026', his url /PATRICK-MARMION-review-Shadowlands...). The Gore-Langton file is the mis-credited copy; Marmion's own file is the genuine row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shadowlands-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "duplicateOf",
+        "oldValue": "daily-mail--robert-gore-langton.json",
+        "newValue": null,
+        "description": "BRO-5373: both files hold Patrick Marmion's dailymail.co.uk review (same text, 'Published: 13 February 2026', his url /PATRICK-MARMION-review-Shadowlands...). The Gore-Langton file is the mis-credited copy; Marmion's own file is the genuine row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shadowlands-west-end-2026/daily-mail--robert-gore-langton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "daily-mail--patrick-marmion.json",
+        "description": "BRO-5373: both files hold Patrick Marmion's dailymail.co.uk review (same text, 'Published: 13 February 2026', his url /PATRICK-MARMION-review-Shadowlands...). The Gore-Langton file is the mis-credited copy; Marmion's own file is the genuine row."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T22:12:00.952Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "shadowlands-west-end-2026/daily-mail--patrick-marmion.json duplicateClearReason: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "clearing duplicateOf needs a duplicateClearReason edit first (else the write guard restores it)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "shadowlands-west-end-2026/daily-mail--robert-gore-langton.json duplicateOf: write guard kept null"
+    }
+  ]
+}

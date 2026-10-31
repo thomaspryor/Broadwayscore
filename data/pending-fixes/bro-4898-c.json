@@ -1,0 +1,178 @@
+{
+  "issueNumber": "bro-4898-c",
+  "planId": "c916de0e-6083-471a-a296-b32f36274635",
+  "status": "applied",
+  "createdAt": "2026-10-13T02:58:14.228Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4898: An Enemy of the People (2024, Broadway) counts six reviews of the London Duke of York's production (Matt Smith, Feb 2024); flag them wrongProduction like the other London rows already flagged on this page",
+    "steps": [
+      "Set wrongProduction + reason on 6 London reviews"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/daily-mail--patrick-marmion.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/daily-mail--patrick-marmion.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/daily-mail--robert-gore-langton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/daily-mail--robert-gore-langton.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/financialtimes--sarah-hemming.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/financialtimes--sarah-hemming.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/guardian--arifa-akbar.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/guardian--arifa-akbar.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/independent--alice-saville.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/independent--alice-saville.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/times-uk--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/times-uk--clive-davis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)",
+        "description": "Reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:38:14.003Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/daily-mail--patrick-marmion.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/daily-mail--patrick-marmion.json wrongProductionReason: null -> \"BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/daily-mail--robert-gore-langton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/daily-mail--robert-gore-langton.json wrongProductionReason: null -> \"BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/financialtimes--sarah-hemming.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/financialtimes--sarah-hemming.json wrongProductionReason: null -> \"BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/guardian--arifa-akbar.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/guardian--arifa-akbar.json wrongProductionReason: null -> \"BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/independent--alice-saville.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/independent--alice-saville.json wrongProductionReason: null -> \"BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/times-uk--clive-davis.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/times-uk--clive-davis.json wrongProductionReason: null -> \"BRO-4898: review of the London production (Matt Smith, Duke of York's Theatre, Feb 2024), not the Broadway production at Circle in the Square (opened 2024-03-18)\""
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "issueNumber": "bro-4891",
+  "planId": "a00564f8-ebc1-4b11-9d57-805833f3491f",
+  "status": "partial",
+  "createdAt": "2026-10-13T00:29:44.505Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4891: fix two opening dates found in the revival spot check (Paddington West End press night 30 Nov 2025; John Proctor Is the Villain West End 2027 press night 11 Feb 2027).",
+    "steps": [
+      "paddington-the-musical-west-end-2025: openingDate -> 2025-11-30",
+      "paddington-the-musical-west-end-2025: openingDateSource -> press night Sunday 30 November 2025 (expressandstar.com 2025-12-01, Wikipedia)",
+      "john-proctor-is-the-villain-west-end-2027: openingDate -> 2027-02-11",
+      "john-proctor-is-the-villain-west-end-2027: openingDateSource -> press night 11 February 2027 (thestage.co.uk transfer announcement); run 2 Feb - 24 Apr 2027"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paddington-the-musical-west-end-2025",
+        "field": "openingDate",
+        "oldValue": "2025-11-29",
+        "newValue": "2025-11-30",
+        "description": "Official opening Sunday 30 Nov 2025 https://www.expressandstar.com/showbiz/2025/12/01/tom-fletcher-hopes-for-royal-visit-as-paddington-the-musical-opens-in-west-end"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paddington-the-musical-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "inferred-from-reviews",
+        "newValue": "press night Sunday 30 November 2025 (expressandstar.com 2025-12-01, Wikipedia)",
+        "description": "source for the corrected openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-proctor-is-the-villain-west-end-2027",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-02-11",
+        "description": "The Stage transfer announcement https://www.thestage.co.uk/home/most-read/john-proctor-is-the-villain-lands-west-end-transfer : press night 11 February 2027"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-proctor-is-the-villain-west-end-2027",
+        "field": "openingDateSource",
+        "oldValue": null,
+        "newValue": "press night 11 February 2027 (thestage.co.uk transfer announcement); run 2 Feb - 24 Apr 2027",
+        "description": "source for the corrected openingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:21:29.753Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for paddington-the-musical-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for john-proctor-is-the-villain-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

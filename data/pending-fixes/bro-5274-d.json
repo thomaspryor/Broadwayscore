@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-5274-d",
+  "planId": "61134473-6343-4280-863a-56e0723aa0ec",
+  "status": "partial",
+  "createdAt": "2026-10-14T04:46:49.068668Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5274 part 4: 14 duplicate (showDir|outlet|critic) pairs that appeared after the first sweep; weaker copy marked duplicateOf (or removed where the write guard cannot point at it). reviews.json already collapses the key, so no score changes.",
+    "steps": [
+      "Mark or remove the weaker copy of each pair."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-soldiers-play-2020/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--aramide-tinubu.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--aramide-tinubu.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/amny--matt-windman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "amny--emlyn-travis.json",
+        "description": "BRO-5274: same article as amny--emlyn-travis.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "hollywood-reporter--angie-han.json",
+        "description": "BRO-5274: same article as hollywood-reporter--angie-han.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/variety--ayanna-prescod.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--aramide-tinubu.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deuce-2007/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--charles-isherwood.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "follies-2011/variety--steven-suskin.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--david-rooney.json",
+        "description": "BRO-5274: same article as variety--david-rooney.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/hollywood-reporter--frank-scheck.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "hollywood-reporter--david-rooney.json",
+        "description": "BRO-5274: same article as hollywood-reporter--david-rooney.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "radio-golf-2007/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--charles-isherwood.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2006/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--charles-isherwood.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/hollywood-reporter--frank-scheck.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "hollywood-reporter--david-rooney.json",
+        "description": "BRO-5274: same article as hollywood-reporter--david-rooney.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-inheritance-2019/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--charles-isherwood.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--charles-isherwood.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json (same url or opening text); this copy is the weaker file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-shark-is-broken-2023/nyt-theater--david-nounou.json",
+        "description": "BRO-5274: same article as nyt-theater--jonathan-mandell.json under another byline filename; the write guard refused the duplicateOf pointer, so the weaker copy is removed"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T05:44:27.718Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "a-soldiers-play-2020/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "between-riverside-and-crazy-2022/variety--naveen-kumar.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/amny--matt-windman.json duplicateOf: null -> \"amny--emlyn-travis.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "caroline-or-change-2021/hollywood-reporter--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "caroline-or-change-2021/variety--ayanna-prescod.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "deuce-2007/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "follies-2011/variety--steven-suskin.json duplicateOf: null -> \"variety--david-rooney.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "in-transit-2016/hollywood-reporter--frank-scheck.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "radio-golf-2007/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "spring-awakening-2006/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "straight-white-men-2018/hollywood-reporter--frank-scheck.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-inheritance-2019/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-lehman-trilogy-2021/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-shark-is-broken-2023/nyt-theater--david-nounou.json"
+    }
+  ]
+}

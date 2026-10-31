@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6487-pn-a",
+  "planId": "a611cecc-97b3-40d9-8c9b-8bc85c16f2aa",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:40.062Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set a of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: the-mystery-of-charles-dickens-west-end-2012.openingDate",
+      "shows.json: the-mystery-of-charles-dickens-west-end-2012.openingDateSource",
+      "shows.json: uncle-vanya-west-end-2012.previewsStartDate",
+      "shows.json: uncle-vanya-west-end-2012.openingDate",
+      "shows.json: uncle-vanya-west-end-2012.openingDateSource",
+      "shows.json: a-christmas-carol-west-end-2012.openingDateSource",
+      "shows.json: the-tailor-made-man-west-end-2013.previewsStartDate",
+      "shows.json: the-tailor-made-man-west-end-2013.openingDate",
+      "shows.json: the-tailor-made-man-west-end-2013.openingDateSource",
+      "shows.json: othello-west-end-2013.openingDate",
+      "shows.json: othello-west-end-2013.openingDateSource",
+      "shows.json: relatively-speaking-west-end-2013.previewsStartDate",
+      "shows.json: relatively-speaking-west-end-2013.openingDate",
+      "shows.json: relatively-speaking-west-end-2013.openingDateSource",
+      "shows.json: a-midsummer-nights-dream-west-end-2013.openingDate",
+      "shows.json: a-midsummer-nights-dream-west-end-2013.openingDateSource",
+      "shows.json: seussical-the-musical-west-end-2013.openingDate",
+      "shows.json: seussical-the-musical-west-end-2013.openingDateSource",
+      "shows.json: birdland-west-end-2014.openingDate",
+      "shows.json: birdland-west-end-2014.openingDateSource",
+      "shows.json: skylight-west-end-2014.previewsStartDate",
+      "shows.json: skylight-west-end-2014.openingDate",
+      "shows.json: skylight-west-end-2014.openingDateSource",
+      "shows.json: the-confessions-of-gordon-brown-west-end-2014.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-charles-dickens-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-09-13",
+        "newValue": "2012-09-17",
+        "description": "shows.json: the-mystery-of-charles-dickens-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-charles-dickens-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-09-17 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: the-mystery-of-charles-dickens-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "uncle-vanya-west-end-2012",
+        "field": "previewsStartDate",
+        "oldValue": "2012-10-25",
+        "newValue": "2012-10-24",
+        "description": "shows.json: uncle-vanya-west-end-2012.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "uncle-vanya-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-10-25",
+        "newValue": "2012-11-02",
+        "description": "shows.json: uncle-vanya-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "uncle-vanya-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-11-02 (officiallondontheatre.com; BRO-6487)",
+        "description": "shows.json: uncle-vanya-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: a-christmas-carol-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tailor-made-man-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-02-14",
+        "newValue": "2013-02-13",
+        "description": "shows.json: the-tailor-made-man-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tailor-made-man-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-02-14",
+        "newValue": "2013-02-21",
+        "description": "shows.json: the-tailor-made-man-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tailor-made-man-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-02-21 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: the-tailor-made-man-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-04-16",
+        "newValue": "2013-04-23",
+        "description": "shows.json: othello-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-04-23 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: othello-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relatively-speaking-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-05-20",
+        "newValue": "2013-05-14",
+        "description": "shows.json: relatively-speaking-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relatively-speaking-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-05-20",
+        "newValue": "2013-05-20",
+        "description": "shows.json: relatively-speaking-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relatively-speaking-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-05-20 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: relatively-speaking-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-09-07",
+        "newValue": "2013-09-17",
+        "description": "shows.json: a-midsummer-nights-dream-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-09-17 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: a-midsummer-nights-dream-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seussical-the-musical-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-11-30",
+        "newValue": "2013-12-02",
+        "description": "shows.json: seussical-the-musical-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seussical-the-musical-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-12-02 (uktw.co.uk; BRO-6487)",
+        "description": "shows.json: seussical-the-musical-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "birdland-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-04-03",
+        "newValue": "2014-04-09",
+        "description": "shows.json: birdland-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "birdland-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-04-09 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: birdland-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "skylight-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-06-18",
+        "newValue": "2014-06-06",
+        "description": "shows.json: skylight-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "skylight-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-06-18",
+        "newValue": "2014-06-18",
+        "description": "shows.json: skylight-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "skylight-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-06-18 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: skylight-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-confessions-of-gordon-brown-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-confessions-of-gordon-brown-west-end-2014.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T13:21:07.872Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-mystery-of-charles-dickens-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-mystery-of-charles-dickens-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for uncle-vanya-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for uncle-vanya-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for uncle-vanya-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-christmas-carol-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-tailor-made-man-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-tailor-made-man-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-tailor-made-man-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for othello-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for othello-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for relatively-speaking-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for relatively-speaking-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for relatively-speaking-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-midsummer-nights-dream-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-midsummer-nights-dream-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for seussical-the-musical-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for seussical-the-musical-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for birdland-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for birdland-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for skylight-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for skylight-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for skylight-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-confessions-of-gordon-brown-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,145 @@
+{
+  "timestamp": "2026-10-25T08:19:49.579Z",
+  "hasIssues": true,
+  "current": {
+    "date": "2026-10-25",
+    "totalReviews": 61140,
+    "unknownOutlets": 26,
+    "duplicates": 22,
+    "syncDelta": 28638
+  },
+  "previous": {
+    "date": "2026-10-18",
+    "totalReviews": 57504,
+    "unknownOutlets": 18,
+    "duplicates": 5,
+    "syncDelta": 27906
+  },
+  "issues": [
+    {
+      "type": "unknown_outlets",
+      "severity": "critical",
+      "message": "26 reviews have unknown outlets",
+      "examples": [
+        {
+          "file": "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-tour-2024/themetroland--patrick-white.json",
+          "outletId": "themetroland",
+          "outlet": "themetroland"
+        },
+        {
+          "file": "data/review-texts/back-to-the-future-2023/whose-title-is-something-of-a-misnomer--the-musical.json",
+          "outletId": "whose-title-is-something-of-a-misnomer",
+          "outlet": "whose-title-is-something-of-a-misnomer"
+        },
+        {
+          "file": "data/review-texts/backstairs-billy-west-end-2023/stagedoor--lyn-gardner.json",
+          "outletId": "stagedoor",
+          "outlet": "stagedoor"
+        },
+        {
+          "file": "data/review-texts/beetlejuice-tour-2022/magnetmagazine--magnet-staff.json",
+          "outletId": "magnetmagazine",
+          "outlet": "magnetmagazine"
+        },
+        {
+          "file": "data/review-texts/copperfield-the-new-musical-off-broadway-2026/frombroadway--pete-hempstead.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
+        },
+        {
+          "file": "data/review-texts/grand-horizons-2020/the-unthinkable-happens--grand-horizons.json",
+          "outletId": "the-unthinkable-happens",
+          "outlet": "the-unthinkable-happens"
+        },
+        {
+          "file": "data/review-texts/hamilton-tour-2024/bestofthislife--emily-smith.json",
+          "outletId": "bestofthislife",
+          "outlet": "bestofthislife"
+        },
+        {
+          "file": "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/theatre-s-leiter-side--samuel-l-leiter.json",
+          "outletId": "theatre-s-leiter-side",
+          "outlet": "theatre-s-leiter-side"
+        },
+        {
+          "file": "data/review-texts/high-school-musical-off-west-end-2026/bellecoaches--distinctive-systems-ltd.json",
+          "outletId": "bellecoaches",
+          "outlet": "bellecoaches"
+        },
+        {
+          "file": "data/review-texts/just-for-one-day-the-live-aid-musical-west-end-2025/a-hopeful-antidote-to-trying-times-photo-credit--one-day.json",
+          "outletId": "a-hopeful-antidote-to-trying-times-photo-credit",
+          "outlet": "a-hopeful-antidote-to-trying-times-photo-credit"
+        }
+      ]
+    },
+    {
+      "type": "duplicates",
+      "severity": "critical",
+      "message": "22 duplicate reviews detected",
+      "examples": [
+        {
+          "file": "data/review-texts/affluenza-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+          "key": "affluenza-off-west-end-2026|londontheatredirect|harriet lewis"
+        },
+        {
+          "file": "data/review-texts/aladdin-2014/theatermania--zachary-stewart.json",
+          "key": "aladdin-2014|theatermania|zachary stewart"
+        },
+        {
+          "file": "data/review-texts/baghdaddy-west-end-2022/times-uk--unknown.json",
+          "key": "baghdaddy-west-end-2022|times-uk|dominic maxwell"
+        },
+        {
+          "file": "data/review-texts/camp-siegfried-west-end-2021/whatsonstage--unknown.json",
+          "key": "camp-siegfried-west-end-2021|whatsonstage|alex wood"
+        },
+        {
+          "file": "data/review-texts/cruise-west-end-2021/whatsonstage--sarah-crompton.json",
+          "key": "cruise-west-end-2021|whatsonstage|sarah crompton"
+        },
+        {
+          "file": "data/review-texts/endgame-west-end-2020/times-uk--unknown.json",
+          "key": "endgame-west-end-2020|times-uk|clive davis"
+        },
+        {
+          "file": "data/review-texts/im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+          "key": "im-every-woman-off-west-end-2026|theupcoming|emilia gould"
+        },
+        {
+          "file": "data/review-texts/labour-of-love-west-end-2017/standard--henry-hitchings.json",
+          "key": "labour-of-love-west-end-2017|standard|henry hitchings"
+        },
+        {
+          "file": "data/review-texts/memphis-2009/variety--david-rooney.json",
+          "key": "memphis-2009|variety|david rooney"
+        },
+        {
+          "file": "data/review-texts/next-to-normal-west-end-2024/broadwayworld--abby-grundy.json",
+          "key": "next-to-normal-west-end-2024|broadwayworld|abbie grundy"
+        }
+      ]
+    },
+    {
+      "type": "sync_delta",
+      "severity": "critical",
+      "message": "review-texts (61140) and reviews.json (32502) are out of sync by 28638 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 18 to 26"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 5 to 22"
+    }
+  ],
+  "summary": {
+    "totalReviews": 61140,
+    "unknownOutlets": 26,
+    "duplicates": 22,
+    "syncDelta": 28638
+  }
+}

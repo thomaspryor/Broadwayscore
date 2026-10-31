@@ -1,0 +1,373 @@
+{
+  "issueNumber": "bro-5080-e",
+  "planId": "fb0f7ca1-c14d-49dc-b44c-25c707183f53",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:45:25.577Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 class sweep part 1/2 (apply after bro-5080..d): Broadway historical rows filed at the Steinberg Center that played Studio 54, and Director credits that belong to another production or another role (sourced).",
+    "steps": [
+      "venue -> Studio 54 (IBDB production page)",
+      "creativeTeam: drop the Director entry another production or role holds (sourced)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "a-wonderful-world-the-louis-armstrong-musical-2024: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/a-wonderful-world-the-louis-armstrong-musical-538991); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pictures-from-home-2023",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "pictures-from-home-2023: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/pictures-from-home-535460); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-minutes-2022",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-minutes-2022: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/the-minutes-525378); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caroline-or-change-2021",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "caroline-or-change-2021: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/caroline-or-change-523864); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-inside-2019",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-sound-inside-2019: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/the-sound-inside-522762); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kiss-me-kate-2019",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "kiss-me-kate-2019: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/kiss-me-kate-518742); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lifespan-of-a-fact-2018",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-lifespan-of-a-fact-2018: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/the-lifespan-of-a-fact-518712); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "children-of-a-lesser-god-2018",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "children-of-a-lesser-god-2018: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/children-of-a-lesser-god-515596); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "latin-history-for-morons-2017",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "latin-history-for-morons-2017: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/latin-history-for-morons-515722); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sweat-2017",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "sweat-2017: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/sweat-512126); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "holiday-inn-the-new-irving-berlin-musical-2016: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/holiday-inn-the-new-irving-berlin-musical-503850); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "she-loves-me-2016",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "she-loves-me-2016: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/she-loves-me-501744); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "therese-raquin-2015",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "therese-raquin-2015: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/thrse-raquin-501120); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-2014",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "cabaret-2014: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/cabaret-495251); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-edwin-drood-2012",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-mystery-of-edwin-drood-2012: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/the-mystery-of-edwin-drood-493101); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harvey-2012",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "harvey-2012: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/harvey-491285); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-people-in-the-picture-2011",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-people-in-the-picture-2011: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/the-people-in-the-picture-489215); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brief-encounter-2010",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "brief-encounter-2010: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/brief-encounter-488164); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sondheim-on-sondheim-2010",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "sondheim-on-sondheim-2010: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/sondheim-on-sondheim-485091); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wishful-drinking-2009",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "wishful-drinking-2009: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/wishful-drinking-483888); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waiting-for-godot-2009",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "waiting-for-godot-2009: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/waiting-for-godot-481504); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pal-joey-2008",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "pal-joey-2008: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/pal-joey-477922); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sunday-in-the-park-with-george-2008",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "sunday-in-the-park-with-george-2008: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/sunday-in-the-park-with-george-457137); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "110-in-the-shade-2007",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "110-in-the-shade-2007: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/110-in-the-shade-423558); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-apple-tree-2006",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-apple-tree-2006: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/the-apple-tree-450811); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:39:03.764Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for a-wonderful-world-the-louis-armstrong-musical-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for caroline-or-change-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-sound-inside-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-lifespan-of-a-fact-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for children-of-a-lesser-god-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for latin-history-for-morons-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for sweat-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for holiday-inn-the-new-irving-berlin-musical-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for she-loves-me-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for therese-raquin-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for cabaret-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-mystery-of-edwin-drood-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for harvey-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-people-in-the-picture-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for brief-encounter-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for sondheim-on-sondheim-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for wishful-drinking-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for waiting-for-godot-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for pal-joey-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for sunday-in-the-park-with-george-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for 110-in-the-shade-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-apple-tree-2006"
+    }
+  ]
+}

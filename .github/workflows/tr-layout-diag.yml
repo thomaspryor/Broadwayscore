@@ -1,0 +1,70 @@
+name: TR Layout Diagnostic
+# hygiene-notify-ok: manual one-shot diagnostic, dry run, writes nothing (BRO-6287)
+
+# BRO-6287: print the masked structure (no prose) around the reviews the
+# Theatre Record parsers pick for given shows, from the dispatched ref. Dry run,
+# writes nothing: the JSON goes to the job log. Needs the subscriber login that
+# only Actions holds.
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show ids'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Install PDF tools
+        run: sudo apt-get install -y poppler-utils
+
+      - name: Probe Theatre Record
+        env:
+          TR_EMAIL: ${{ secrets.TR_EMAIL }}
+          TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
+          SHOWS: ${{ inputs.shows }}
+        run: |
+          status=0
+          node scripts/extract-theatre-record.js --dry-run --shows="$SHOWS" \
+            --probe-out=/tmp/tr-diag.json > /tmp/tr-diag.log 2>&1 || status=$?
+          echo "extract exit: $status"
+          tail -5 /tmp/tr-diag.log
+          echo "=== DIAG-JSON-BEGIN ==="
+          node -e "
+            const d = require('/tmp/tr-diag.json').shows;
+            for (const [id, s] of Object.entries(d)) {
+              const sec = s.pdf && s.pdf.sections;
+              if (!sec) { console.log(id, 'no sections', JSON.stringify(s.pdf || {}).slice(0, 300)); continue; }
+              for (const m of ['layout', 'raw', 'default']) for (const r of sec[m] || [])
+                console.log('DIAG', JSON.stringify({ id, mode: m, outlet: r.outlet, date: r.date, line: r.line, section: r.section, runTitle: r.runTitle, owned: r.owned, before: r.before, tail: r.tail }));
+            }
+          "
+          echo "=== DIAG-JSON-END ==="

@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5995",
+  "planId": "a5e9f015-4f29-44b0-b03a-21f3bc1c62c7",
+  "status": "applied",
+  "createdAt": "2026-10-27T21:31:47.122Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5995: relabel the Star 102 Cleveland review of A Beautiful Noise (2024 tour) from cleveland-plain-dealer to clevelands-star-102",
+    "steps": [
+      "BRO-5995: url is audacy.com/star102cleveland and the record's own outlet label is Cleveland's Star 102; the registry has clevelands-star-102.",
+      "BRO-5995: file name follows the relabelled outletId so the rebuild heal keeps it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json",
+        "field": "outletId",
+        "oldValue": "cleveland-plain-dealer",
+        "newValue": "clevelands-star-102",
+        "description": "BRO-5995: url is audacy.com/star102cleveland and the record's own outlet label is Cleveland's Star 102; the registry has clevelands-star-102."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json",
+        "destPath": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/clevelands-star-102--glenn-anderson.json",
+        "description": "BRO-5995: file name follows the relabelled outletId so the rebuild heal keeps it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-27T22:59:43.277Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json outletId: \"cleveland-plain-dealer\" -> \"clevelands-star-102\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json → a-beautiful-noise-the-neil-diamond-musical-tour-2024/clevelands-star-102--glenn-anderson.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

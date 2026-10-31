@@ -1,0 +1,392 @@
+{
+  "issueNumber": "bro-6223",
+  "planId": "f7d3b3d2-112e-4442-833f-c064382b316d",
+  "status": "pending",
+  "createdAt": "2026-10-29T06:54:09.649Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6223: redate the last migrated trade cost anchor (Cats: The Jellicle Ball, $1M/week, Playbill Aug 11, 2026) from a guessed date to its report date",
+    "steps": [
+      "cats-the-jellicle-ball: the Playbill figure states no measured period, so the anchor becomes reported-current at the Aug 11, 2026 article date instead of the migrated closing-date cap (Aug 8)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "costHistory",
+        "oldValue": [
+          {
+            "asOf": "2026-03-24",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1s2mlsa/grosses_analysis_week_ending_march_22/",
+            "postId": "1s2mlsa",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 22"
+          },
+          {
+            "asOf": "2026-03-31",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1s8vjqr/grosses_analysis_week_ending_march_29/",
+            "postId": "1s8vjqr",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 29"
+          },
+          {
+            "asOf": "2026-04-07",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "postId": "1sf5swb",
+            "note": "u/Boring_Waltz_9545: EASTER GROSSES ANALYSIS- Week Ending April 5"
+          },
+          {
+            "asOf": "2026-04-14",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1sli64o/grosses_analysis_week_ending_april_12/",
+            "postId": "1sli64o",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 12"
+          },
+          {
+            "asOf": "2026-04-21",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ss3304/grosses_analysis_week_ending_april_19/",
+            "postId": "1ss3304",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 19"
+          },
+          {
+            "asOf": "2026-04-28",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1sybxdh/grosses_analysis_week_ending_april_26/",
+            "postId": "1sybxdh",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 26"
+          },
+          {
+            "asOf": "2026-05-05",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1t4pi5w/pretony_nominations_grosses_analysis_week_ending/",
+            "postId": "1t4pi5w",
+            "note": "u/Boring_Waltz_9545: PRE-TONY NOMINATIONS GROSSES ANALYSIS- Week Ending May 3"
+          },
+          {
+            "asOf": "2026-05-12",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1tbc9ab/posttony_nominations_grosses_week_ending_may_10/",
+            "postId": "1tbc9ab",
+            "note": "u/Boring_Waltz_9545: POST-TONY NOMINATIONS GROSSES- Week Ending May 10"
+          },
+          {
+            "asOf": "2026-05-19",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1thwqk4/grosses_analysis_week_ending_may_17/",
+            "postId": "1thwqk4",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending May 17"
+          },
+          {
+            "asOf": "2026-05-27",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1tphzu3/memorial_day_grosses_week_ending_may_24/",
+            "postId": "1tphzu3",
+            "note": "u/Boring_Waltz_9545: MEMORIAL DAY GROSSES- Week Ending May 24"
+          },
+          {
+            "asOf": "2026-06-02",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1tv35rb/grosses_analyses_week_ending_may_31/",
+            "postId": "1tv35rb",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSES- Week Ending May 31"
+          },
+          {
+            "asOf": "2026-06-09",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1u1eg6w/tonys_grosses_analysis/",
+            "postId": "1u1eg6w",
+            "note": "u/Boring_Waltz_9545: TONYS GROSSES ANALYSIS"
+          },
+          {
+            "asOf": "2026-06-30",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ujxc2n/im_back_grosses_analysis_week_ending_june_28/",
+            "postId": "1ujxc2n",
+            "note": "u/Boring_Waltz_9545: I'm Back! Grosses Analysis Week Ending June 28"
+          },
+          {
+            "asOf": "2026-07-07",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1uq48bb/grosses_analysis_week_ending_july_7/",
+            "postId": "1uq48bb",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 7"
+          },
+          {
+            "asOf": "2026-07-14",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1uwgeks/grosses_analysis_week_ending_july_12/",
+            "postId": "1uwgeks",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 12"
+          },
+          {
+            "asOf": "2026-07-21",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1v2od62/grosses_analysis_week_ending_july_18/",
+            "postId": "1v2od62",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 18"
+          },
+          {
+            "asOf": "2026-07-28",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1v98bd9/grosses_analysis_week_ending_july_26/",
+            "postId": "1v98bd9",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 26"
+          },
+          {
+            "asOf": "2026-08-04",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1vfj4yh/grosses_analysis_week_ending_august_2/",
+            "postId": "1vfj4yh",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 2"
+          },
+          {
+            "asOf": "2026-08-08",
+            "amount": 1000000,
+            "kind": "running-cost",
+            "sourceType": "trade",
+            "sourceUrl": "https://playbill.com/article/cats-the-jellicle-ball-closes-to-200-ticket-average-and-more-from-last-weeks-broadway-grosses",
+            "note": "migrated from weeklyRunningCost (trade-reported)",
+            "dateBasis": "migrated",
+            "dateFrom": "source-text+capped-at-closing"
+          },
+          {
+            "asOf": "2026-08-11",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1vloonj/grosses_analysis_week_ending_august_9/",
+            "postId": "1vloonj",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 9"
+          }
+        ],
+        "newValue": [
+          {
+            "asOf": "2026-03-24",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1s2mlsa/grosses_analysis_week_ending_march_22/",
+            "postId": "1s2mlsa",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 22"
+          },
+          {
+            "asOf": "2026-03-31",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1s8vjqr/grosses_analysis_week_ending_march_29/",
+            "postId": "1s8vjqr",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 29"
+          },
+          {
+            "asOf": "2026-04-07",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "postId": "1sf5swb",
+            "note": "u/Boring_Waltz_9545: EASTER GROSSES ANALYSIS- Week Ending April 5"
+          },
+          {
+            "asOf": "2026-04-14",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1sli64o/grosses_analysis_week_ending_april_12/",
+            "postId": "1sli64o",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 12"
+          },
+          {
+            "asOf": "2026-04-21",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ss3304/grosses_analysis_week_ending_april_19/",
+            "postId": "1ss3304",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 19"
+          },
+          {
+            "asOf": "2026-04-28",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1sybxdh/grosses_analysis_week_ending_april_26/",
+            "postId": "1sybxdh",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 26"
+          },
+          {
+            "asOf": "2026-05-05",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1t4pi5w/pretony_nominations_grosses_analysis_week_ending/",
+            "postId": "1t4pi5w",
+            "note": "u/Boring_Waltz_9545: PRE-TONY NOMINATIONS GROSSES ANALYSIS- Week Ending May 3"
+          },
+          {
+            "asOf": "2026-05-12",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1tbc9ab/posttony_nominations_grosses_week_ending_may_10/",
+            "postId": "1tbc9ab",
+            "note": "u/Boring_Waltz_9545: POST-TONY NOMINATIONS GROSSES- Week Ending May 10"
+          },
+          {
+            "asOf": "2026-05-19",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1thwqk4/grosses_analysis_week_ending_may_17/",
+            "postId": "1thwqk4",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending May 17"
+          },
+          {
+            "asOf": "2026-05-27",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1tphzu3/memorial_day_grosses_week_ending_may_24/",
+            "postId": "1tphzu3",
+            "note": "u/Boring_Waltz_9545: MEMORIAL DAY GROSSES- Week Ending May 24"
+          },
+          {
+            "asOf": "2026-06-02",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1tv35rb/grosses_analyses_week_ending_may_31/",
+            "postId": "1tv35rb",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSES- Week Ending May 31"
+          },
+          {
+            "asOf": "2026-06-09",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1u1eg6w/tonys_grosses_analysis/",
+            "postId": "1u1eg6w",
+            "note": "u/Boring_Waltz_9545: TONYS GROSSES ANALYSIS"
+          },
+          {
+            "asOf": "2026-06-30",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ujxc2n/im_back_grosses_analysis_week_ending_june_28/",
+            "postId": "1ujxc2n",
+            "note": "u/Boring_Waltz_9545: I'm Back! Grosses Analysis Week Ending June 28"
+          },
+          {
+            "asOf": "2026-07-07",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1uq48bb/grosses_analysis_week_ending_july_7/",
+            "postId": "1uq48bb",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 7"
+          },
+          {
+            "asOf": "2026-07-14",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1uwgeks/grosses_analysis_week_ending_july_12/",
+            "postId": "1uwgeks",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 12"
+          },
+          {
+            "asOf": "2026-07-21",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1v2od62/grosses_analysis_week_ending_july_18/",
+            "postId": "1v2od62",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 18"
+          },
+          {
+            "asOf": "2026-07-28",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1v98bd9/grosses_analysis_week_ending_july_26/",
+            "postId": "1v98bd9",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 26"
+          },
+          {
+            "asOf": "2026-08-04",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1vfj4yh/grosses_analysis_week_ending_august_2/",
+            "postId": "1vfj4yh",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 2"
+          },
+          {
+            "asOf": "2026-08-11",
+            "amount": 1000000,
+            "kind": "running-cost",
+            "sourceType": "trade",
+            "sourceUrl": "https://playbill.com/article/cats-the-jellicle-ball-closes-to-200-ticket-average-and-more-from-last-weeks-broadway-grosses",
+            "note": "Playbill (Aug 11, 2026): weekly running costs reported to be around $1 million. No measured interval stated; dated to the report, not the closing date.",
+            "dateBasis": "reported-current",
+            "reportedAt": "2026-08-11"
+          },
+          {
+            "asOf": "2026-08-11",
+            "amount": 850000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1vloonj/grosses_analysis_week_ending_august_9/",
+            "postId": "1vloonj",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 9"
+          }
+        ],
+        "description": "cats-the-jellicle-ball: redate migrated trade anchor to reported-current 2026-08-11"
+      }
+    ]
+  }
+}

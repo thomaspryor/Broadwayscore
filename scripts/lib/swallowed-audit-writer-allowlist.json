@@ -1,0 +1,115 @@
+[
+  {
+    "workflow": "*",
+    "script": "scripts/validate-data.js",
+    "reason": "Nonzero exit means validation findings, not a lost write. Its data/audit writes go through writeAuditArtifact (derivations of the corpus, rebuilt next run) plus the validation-baseline ratchet file, and the commit gate reads validate-data's own push-refusal sentinel."
+  },
+  {
+    "workflow": "audit-aggregator-coverage.yml",
+    "step": "Detect venue transfers",
+    "script": "scripts/detect-venue-transfers.js",
+    "reason": "Workflow comment: non-blocking report written for review."
+  },
+  {
+    "workflow": "audit-aggregator-gap.yml",
+    "step": "Uncollected-review strand guard",
+    "script": "scripts/audit-uncollected-live-reviews.js",
+    "reason": "Workflow comment: advisory; health-check.js uncollectedStrandResults reads the file daily and flags a stale or missing one."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Coverage holes on current shows",
+    "script": "scripts/audit-coverage-holes.js",
+    "reason": "Workflow comment: advisory, never fails the job; health-check.js 'review coverage holes' row reads it the next day."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Spend guard audit",
+    "script": "scripts/guard-audit.js",
+    "reason": "Workflow comment: a crash must not block the snapshot commits; a stuck producer shows as stale in the spend rows."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Provider spend reconciliation",
+    "script": "scripts/check-provider-spend.js",
+    "reason": "Workflow comment: must not block the health commit; digest-snapshots.js 36h staleness banner surfaces a stuck producer, and unreachable billing APIs are recorded as unknown days by the script."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Open backlog acceptance sweep (shadow mode)",
+    "script": "scripts/sweep-open-backlog-acceptance.js",
+    "reason": "Shadow-mode sweep: report-only by design, internal deadline plus step timeout backstop, regenerated daily."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Cross-outlet attribution drift check (shadow mode)",
+    "script": "scripts/check-cross-outlet-attribution-drift.js",
+    "reason": "Workflow comment: drift is expected as reviews arrive, so a hard gate would redden main; health-check.js digest check surfaces it."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "cv-wrongproduction lifetime sweep (shadow mode)",
+    "script": "scripts/audit-cv-wrongproduction-lifetime.js",
+    "reason": "Workflow comment: shadow mode, the digest check in health-check.js surfaces the count; exit 1 on a hit is for manual triage."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "wrong-article LLM adjudication (Opus, capped)",
+    "script": "scripts/audit-wrong-article.js",
+    "reason": "Workflow comment: verdicts are written after each call so a cap hit or crash loses nothing already adjudicated; capped per run."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "wrong-article audit (report-only)",
+    "script": "scripts/audit-wrong-article.js",
+    "reason": "Workflow comment: report-only while the backlog drains; exit 1 means suspects, annotated as ::warning::. Re-arm once the unverified count stays 0 for a week."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Stale announced shows audit (shadow mode)",
+    "script": "scripts/audit-stale-announced-shows.js",
+    "reason": "Shadow-mode audit: report-only, regenerated daily."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Notion-schedule-coupling audit (shadow mode)",
+    "script": "scripts/audit-notion-schedule-coupling.js",
+    "reason": "Workflow comment: shadow mode like every sweep above, report-only, never fails on a finding."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Trunk status snapshot",
+    "script": "scripts/produce-trunk-snapshot.js",
+    "reason": "Workflow comment: a gh hiccup must never block the health commit; a missing snapshot fails the close gate open."
+  },
+  {
+    "workflow": "data-health-check.yml",
+    "step": "Time-to-publish SLA",
+    "script": "scripts/time-to-publish-sla.js",
+    "reason": "Workflow comment: a metric must never block the health commit."
+  },
+  {
+    "workflow": "update-show-status.yml",
+    "step": "Discover new shows",
+    "script": "scripts/discover-new-shows.js",
+    "reason": "Workflow comment: discovery is best-effort and slow; it must not cancel the critical status pipeline."
+  },
+  {
+    "workflow": "land.yml",
+    "step": "Next-base key (the rebased tip's tree)",
+    "script": "scripts/lib/land-gate-delta.js",
+    "reason": "Workflow comment: publishing the key is an optimisation and never fails a landing."
+  },
+  {
+    "workflow": "update-show-status.yml",
+    "step": "Guard - stranded zero-review rows (advisory)",
+    "script": "scripts/find-zero-review-catchup-gaps.js",
+    "reason": "Read-only re-run of the selector (BRO-4290): it only loads data/audit/zero-review-catchup-attempts.json via loadAttempts and writes nothing to data/audit; a nonzero exit means stranded rows were found, not a lost write. The attempts file is written by the separate Record step, which is not continue-on-error."
+  },
+  {
+    "workflow": "opening-night-checklist.yml",
+    "step": "Press-night morning grade (BRO-6645)",
+    "script": "scripts/produce-press-night-digest-snapshot.js",
+    "reason": "Advisory by design (CLAUDE.md rule 19): a lost write leaves yesterday's snapshot, which the morning email shows as 'not checked yet' (renderPressNightBlock night check) and digest-snapshots.js flags past 36h, so a failure is visible without failing the checklist job."
+  }
+]

@@ -1,0 +1,101 @@
+{
+  "issueNumber": "bro-5222-d",
+  "planId": "18846fbe-aa19-4f80-8a73-f4d042470afe",
+  "status": "applied",
+  "createdAt": "2026-10-13T04:40:50.608Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5222 critic plausibility check: four rows credited a critic to an outlet they never wrote for, and each held text already counted under the real critic or outlet (double counts). Rename two to the real critic so the outlet+critic dedupe collapses them; flag two as wrong attribution.",
+    "steps": [
+      "criticName to the real byline",
+      "wrongAttribution on cross-outlet copies"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "time-stands-still-2010/hollywood-reporter--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "The row excerpt (Bottom Line: Donald Margulies sharp, well-observed drama...) is the Hollywood Reporter review already counted as hollywood-reporter--david-rooney.json; Charles Isherwood was the New York Times critic in 2010 (his NYT row exists). Its url is a 404. Rename collapses the double count."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-2009/ap--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Michael Kuchwara",
+        "description": "The row excerpt is the opening of the AP review by Michael Kuchwara (same text as ap--michael-kuchwara.json, a syndicated AP copy); Ben Brantley was the New York Times critic. Rename collapses it onto the AP row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disgraced-2014/forward--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt is from Jesse Green’s Vulture review (vulture--jesse-green.json, complete text, counted); Green did not write for the Forward. The row counted the same review twice."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disgraced-2014/forward--jesse-green.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5222: excerpt matches Jesse Green’s Vulture review (vulture--jesse-green.json); not a Forward review",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/billboard--greg-evans.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Text is Greg Evans’s Deadline review (deadline--greg-evans.json, complete, counted); the Billboard url 404s (fetched 2026-10-13) and Evans does not review for Billboard. The row counted the review twice."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/billboard--greg-evans.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5222: text matches Greg Evans’s Deadline review (deadline--greg-evans.json); Billboard url 404",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T05:48:41.599Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-stands-still-2010/hollywood-reporter--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-to-normal-2009/ap--ben-brantley.json criticName: \"Ben Brantley\" -> \"Michael Kuchwara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disgraced-2014/forward--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disgraced-2014/forward--jesse-green.json wrongAttributionReason: null -> \"BRO-5222: excerpt matches Jesse Green’s Vulture review (vulture--jesse-green.json); not a Forward review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/billboard--greg-evans.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/billboard--greg-evans.json wrongAttributionReason: null -> \"BRO-5222: text matches Greg Evans’s Deadline review (deadline--greg-evans.json); Billboard url 404\""
+    }
+  ]
+}

@@ -1,0 +1,801 @@
+{
+  "_comment": "BRO-6515: the ONE venue -> metro table for regional city hubs (UK BRO-6516, US BRO-6498). scripts/lib/venue-metro.js resolveMetro(venue) reads it: venue aliases first (longest wins, word-bounded, case/punctuation-insensitive), then the trailing place of the venue string (\"..., Evanston, IL\"), then for US/Canada a generic \"City, ST\" suffix slugged the same way as src/lib/tour-cities.ts citySlug so hub slugs line up with /tours/[city]. Aliases must be specific: never a bare generic name (\"Theatre Royal\", \"Playhouse\", \"Lyric Theatre\", \"Signature Theatre\") that also names a London or NYC house. Seeded from REGIONAL_FEEDER_VENUES (scripts/lib/aggregator-candidate-extract.js) and data/uk-regional-venues.json; venue-metro.test.mjs asserts both still resolve here.",
+  "hubs": {
+    "manchester": {
+      "name": "Manchester",
+      "country": "UK"
+    },
+    "yorkshire": {
+      "name": "Yorkshire",
+      "country": "UK"
+    },
+    "bristol-bath": {
+      "name": "Bristol & Bath",
+      "country": "UK"
+    },
+    "stratford": {
+      "name": "Stratford-upon-Avon",
+      "country": "UK"
+    },
+    "chichester": {
+      "name": "Chichester",
+      "country": "UK"
+    },
+    "scotland": {
+      "name": "Scotland",
+      "country": "UK"
+    },
+    "chicago": {
+      "name": "Chicago",
+      "country": "US"
+    },
+    "washington-dc": {
+      "name": "Washington, DC",
+      "country": "US"
+    },
+    "los-angeles": {
+      "name": "Los Angeles",
+      "country": "US"
+    },
+    "birmingham": {
+      "name": "Birmingham",
+      "country": "UK"
+    },
+    "liverpool": {
+      "name": "Liverpool",
+      "country": "UK"
+    }
+  },
+  "metros": {
+    "manchester-uk": {
+      "name": "Manchester",
+      "country": "UK",
+      "hub": "manchester"
+    },
+    "leeds-uk": {
+      "name": "Leeds",
+      "country": "UK",
+      "hub": "yorkshire"
+    },
+    "sheffield-uk": {
+      "name": "Sheffield",
+      "country": "UK",
+      "hub": "yorkshire"
+    },
+    "york-uk": {
+      "name": "York",
+      "country": "UK",
+      "hub": "yorkshire"
+    },
+    "scarborough-uk": {
+      "name": "Scarborough",
+      "country": "UK",
+      "hub": "yorkshire"
+    },
+    "hull-uk": {
+      "name": "Hull",
+      "country": "UK",
+      "hub": "yorkshire"
+    },
+    "bristol-uk": {
+      "name": "Bristol",
+      "country": "UK",
+      "hub": "bristol-bath"
+    },
+    "bath-uk": {
+      "name": "Bath",
+      "country": "UK",
+      "hub": "bristol-bath"
+    },
+    "stratford-upon-avon-uk": {
+      "name": "Stratford-upon-Avon",
+      "country": "UK",
+      "hub": "stratford"
+    },
+    "chichester-uk": {
+      "name": "Chichester",
+      "country": "UK",
+      "hub": "chichester"
+    },
+    "glasgow-uk": {
+      "name": "Glasgow",
+      "country": "UK",
+      "hub": "scotland"
+    },
+    "dundee-uk": {
+      "name": "Dundee",
+      "country": "UK",
+      "hub": "scotland"
+    },
+    "pitlochry-uk": {
+      "name": "Pitlochry",
+      "country": "UK",
+      "hub": "scotland"
+    },
+    "edinburgh-uk": {
+      "name": "Edinburgh",
+      "country": "UK"
+    },
+    "birmingham-uk": {
+      "name": "Birmingham",
+      "country": "UK",
+      "hub": "birmingham"
+    },
+    "liverpool-uk": {
+      "name": "Liverpool",
+      "country": "UK",
+      "hub": "liverpool"
+    },
+    "nottingham-uk": {
+      "name": "Nottingham",
+      "country": "UK"
+    },
+    "leicester-uk": {
+      "name": "Leicester",
+      "country": "UK"
+    },
+    "newcastle-uk": {
+      "name": "Newcastle",
+      "country": "UK"
+    },
+    "cardiff-uk": {
+      "name": "Cardiff",
+      "country": "UK"
+    },
+    "mold-uk": {
+      "name": "Mold",
+      "country": "UK"
+    },
+    "belfast-uk": {
+      "name": "Belfast",
+      "country": "UK"
+    },
+    "newbury-uk": {
+      "name": "Newbury",
+      "country": "UK"
+    },
+    "salisbury-uk": {
+      "name": "Salisbury",
+      "country": "UK"
+    },
+    "colchester-uk": {
+      "name": "Colchester",
+      "country": "UK"
+    },
+    "chicago-il": {
+      "name": "Chicago",
+      "country": "US",
+      "hub": "chicago"
+    },
+    "washington-dc": {
+      "name": "Washington, DC",
+      "country": "US",
+      "hub": "washington-dc"
+    },
+    "los-angeles-ca": {
+      "name": "Los Angeles",
+      "country": "US",
+      "hub": "los-angeles"
+    },
+    "boston-ma": {
+      "name": "Boston",
+      "country": "US"
+    },
+    "san-diego-ca": {
+      "name": "San Diego",
+      "country": "US"
+    },
+    "san-francisco-ca": {
+      "name": "San Francisco",
+      "country": "US"
+    },
+    "laguna-beach-ca": {
+      "name": "Laguna Beach",
+      "country": "US"
+    },
+    "seattle-wa": {
+      "name": "Seattle",
+      "country": "US"
+    },
+    "atlanta-ga": {
+      "name": "Atlanta",
+      "country": "US"
+    },
+    "millburn-nj": {
+      "name": "Millburn",
+      "country": "US"
+    }
+  },
+  "places": {
+    "Manchester": "manchester-uk",
+    "Salford": "manchester-uk",
+    "Bolton": "manchester-uk",
+    "Leeds": "leeds-uk",
+    "Sheffield": "sheffield-uk",
+    "York": "york-uk",
+    "Scarborough": "scarborough-uk",
+    "Hull": "hull-uk",
+    "Bristol": "bristol-uk",
+    "Bath": "bath-uk",
+    "Stratford-upon-Avon": "stratford-upon-avon-uk",
+    "Chichester": "chichester-uk",
+    "Glasgow": "glasgow-uk",
+    "Dundee": "dundee-uk",
+    "Pitlochry": "pitlochry-uk",
+    "Edinburgh": "edinburgh-uk",
+    "Birmingham": "birmingham-uk",
+    "Liverpool": "liverpool-uk",
+    "Nottingham": "nottingham-uk",
+    "Leicester": "leicester-uk",
+    "Newcastle": "newcastle-uk",
+    "Newcastle upon Tyne": "newcastle-uk",
+    "Cardiff": "cardiff-uk",
+    "Mold": "mold-uk",
+    "Belfast": "belfast-uk",
+    "Newbury": "newbury-uk",
+    "Salisbury": "salisbury-uk",
+    "Colchester": "colchester-uk",
+    "Evanston, IL": "chicago-il",
+    "Glencoe, IL": "chicago-il",
+    "Skokie, IL": "chicago-il",
+    "Lincolnshire, IL": "chicago-il",
+    "Oakbrook Terrace, IL": "chicago-il",
+    "Washington, D.C.": "washington-dc",
+    "Arlington, VA": "washington-dc",
+    "Bethesda, MD": "washington-dc",
+    "Olney, MD": "washington-dc",
+    "Pasadena, CA": "los-angeles-ca",
+    "Beverly Hills, CA": "los-angeles-ca",
+    "Culver City, CA": "los-angeles-ca",
+    "Cambridge, MA": "boston-ma",
+    "La Jolla, CA": "san-diego-ca",
+    "Berkeley, CA": "san-francisco-ca",
+    "Laguna Beach, CA": "los-angeles-ca",
+    "Costa Mesa, CA": "los-angeles-ca",
+    "Aurora, IL": "chicago-il",
+    "Alexandria, VA": "washington-dc",
+    "Silver Spring, MD": "washington-dc",
+    "Glendale, CA": "los-angeles-ca",
+    "Santa Monica, CA": "los-angeles-ca",
+    "La Mirada, CA": "los-angeles-ca",
+    "Thousand Oaks, CA": "los-angeles-ca"
+  },
+  "venues": [
+    {
+      "venue": "Royal Exchange Theatre",
+      "metro": "manchester-uk",
+      "aliases": [
+        "royal exchange theatre",
+        "royal exchange manchester",
+        "royal exchange, manchester"
+      ]
+    },
+    {
+      "venue": "HOME",
+      "metro": "manchester-uk",
+      "aliases": [
+        "home manchester",
+        "home, manchester",
+        "home theatre, manchester"
+      ]
+    },
+    {
+      "venue": "The Lowry",
+      "metro": "manchester-uk",
+      "aliases": [
+        "the lowry",
+        "lowry theatre",
+        "lowry, salford"
+      ]
+    },
+    {
+      "venue": "Octagon Theatre",
+      "metro": "manchester-uk",
+      "aliases": [
+        "octagon theatre, bolton",
+        "bolton octagon",
+        "octagon bolton"
+      ]
+    },
+    {
+      "venue": "Hope Mill Theatre",
+      "metro": "manchester-uk",
+      "aliases": [
+        "hope mill theatre"
+      ]
+    },
+    {
+      "venue": "Leeds Playhouse",
+      "metro": "leeds-uk",
+      "aliases": [
+        "leeds playhouse",
+        "west yorkshire playhouse"
+      ]
+    },
+    {
+      "venue": "Crucible Theatre",
+      "metro": "sheffield-uk",
+      "aliases": [
+        "crucible theatre",
+        "sheffield crucible",
+        "crucible, sheffield"
+      ]
+    },
+    {
+      "venue": "Lyceum Theatre, Sheffield",
+      "metro": "sheffield-uk",
+      "aliases": [
+        "lyceum theatre, sheffield",
+        "sheffield lyceum",
+        "lyceum, sheffield"
+      ]
+    },
+    {
+      "venue": "Sheffield Playhouse",
+      "metro": "sheffield-uk",
+      "aliases": [
+        "sheffield playhouse",
+        "playhouse, sheffield",
+        "studio, sheffield"
+      ]
+    },
+    {
+      "venue": "York Theatre Royal",
+      "metro": "york-uk",
+      "aliases": [
+        "york theatre royal",
+        "theatre royal, york",
+        "theatre royal york"
+      ]
+    },
+    {
+      "venue": "Stephen Joseph Theatre",
+      "metro": "scarborough-uk",
+      "aliases": [
+        "stephen joseph theatre"
+      ]
+    },
+    {
+      "venue": "Hull Truck Theatre",
+      "metro": "hull-uk",
+      "aliases": [
+        "hull truck theatre",
+        "hull truck"
+      ]
+    },
+    {
+      "venue": "Bristol Old Vic",
+      "metro": "bristol-uk",
+      "aliases": [
+        "bristol old vic"
+      ]
+    },
+    {
+      "venue": "Tobacco Factory Theatres",
+      "metro": "bristol-uk",
+      "aliases": [
+        "tobacco factory theatres",
+        "tobacco factory theatre",
+        "tobacco factory"
+      ]
+    },
+    {
+      "venue": "Theatre Royal Bath",
+      "metro": "bath-uk",
+      "aliases": [
+        "theatre royal bath",
+        "theatre royal, bath",
+        "ustinov studio",
+        "the egg, bath"
+      ]
+    },
+    {
+      "venue": "Royal Shakespeare Theatre",
+      "metro": "stratford-upon-avon-uk",
+      "aliases": [
+        "royal shakespeare theatre",
+        "royal shakespeare company",
+        "swan theatre, stratford",
+        "swan theatre stratford",
+        "the other place, stratford",
+        "the other place stratford"
+      ]
+    },
+    {
+      "venue": "Chichester Festival Theatre",
+      "metro": "chichester-uk",
+      "aliases": [
+        "chichester festival theatre",
+        "chichester festival",
+        "minerva theatre, chichester",
+        "minerva theatre chichester",
+        "minerva, chichester"
+      ]
+    },
+    {
+      "venue": "Citizens Theatre",
+      "metro": "glasgow-uk",
+      "aliases": [
+        "citizens theatre",
+        "citizens theatre glasgow",
+        "glasgow citizens",
+        "citizens, glasgow"
+      ]
+    },
+    {
+      "venue": "Tron Theatre",
+      "metro": "glasgow-uk",
+      "aliases": [
+        "tron theatre",
+        "tron, glasgow"
+      ]
+    },
+    {
+      "venue": "Dundee Rep",
+      "metro": "dundee-uk",
+      "aliases": [
+        "dundee rep",
+        "dundee repertory theatre"
+      ]
+    },
+    {
+      "venue": "Pitlochry Festival Theatre",
+      "metro": "pitlochry-uk",
+      "aliases": [
+        "pitlochry festival theatre",
+        "pitlochry festival"
+      ]
+    },
+    {
+      "venue": "Royal Lyceum Theatre",
+      "metro": "edinburgh-uk",
+      "aliases": [
+        "royal lyceum theatre",
+        "royal lyceum",
+        "lyceum edinburgh"
+      ]
+    },
+    {
+      "venue": "Birmingham Rep",
+      "metro": "birmingham-uk",
+      "aliases": [
+        "birmingham rep",
+        "birmingham repertory theatre"
+      ]
+    },
+    {
+      "venue": "Liverpool Everyman",
+      "metro": "liverpool-uk",
+      "aliases": [
+        "liverpool everyman",
+        "everyman theatre, liverpool",
+        "everyman, liverpool"
+      ]
+    },
+    {
+      "venue": "Liverpool Playhouse",
+      "metro": "liverpool-uk",
+      "aliases": [
+        "liverpool playhouse",
+        "playhouse, liverpool"
+      ]
+    },
+    {
+      "venue": "Nottingham Playhouse",
+      "metro": "nottingham-uk",
+      "aliases": [
+        "nottingham playhouse"
+      ]
+    },
+    {
+      "venue": "Goodman Theatre",
+      "metro": "chicago-il",
+      "aliases": [
+        "goodman theatre",
+        "goodman theater",
+        "albert theatre",
+        "albert theater"
+      ]
+    },
+    {
+      "venue": "Steppenwolf Theatre Company",
+      "metro": "chicago-il",
+      "aliases": [
+        "steppenwolf"
+      ]
+    },
+    {
+      "venue": "Chicago Shakespeare Theater",
+      "metro": "chicago-il",
+      "aliases": [
+        "chicago shakespeare"
+      ]
+    },
+    {
+      "venue": "Northlight Theatre",
+      "metro": "chicago-il",
+      "aliases": [
+        "northlight theatre",
+        "northlight theater"
+      ]
+    },
+    {
+      "venue": "Victory Gardens Theater",
+      "metro": "chicago-il",
+      "aliases": [
+        "victory gardens"
+      ]
+    },
+    {
+      "venue": "Lookingglass Theatre Company",
+      "metro": "chicago-il",
+      "aliases": [
+        "lookingglass theatre",
+        "lookingglass theater"
+      ]
+    },
+    {
+      "venue": "Writers Theatre",
+      "metro": "chicago-il",
+      "aliases": [
+        "writers theatre, glencoe",
+        "writers theatre glencoe"
+      ]
+    },
+    {
+      "venue": "Court Theatre",
+      "metro": "chicago-il",
+      "aliases": [
+        "court theatre, chicago"
+      ]
+    },
+    {
+      "venue": "Arena Stage",
+      "metro": "washington-dc",
+      "aliases": [
+        "arena stage",
+        "kreeger",
+        "fichandler"
+      ]
+    },
+    {
+      "venue": "Shakespeare Theatre Company",
+      "metro": "washington-dc",
+      "aliases": [
+        "shakespeare theatre company",
+        "harman hall",
+        "lansburgh theatre"
+      ]
+    },
+    {
+      "venue": "Ford's Theatre",
+      "metro": "washington-dc",
+      "aliases": [
+        "ford's theatre",
+        "fords theatre",
+        "ford's theater",
+        "fords theater"
+      ]
+    },
+    {
+      "venue": "Signature Theatre (Arlington)",
+      "metro": "washington-dc",
+      "aliases": [
+        "signature theatre, arlington",
+        "signature theatre arlington"
+      ]
+    },
+    {
+      "venue": "Woolly Mammoth Theatre Company",
+      "metro": "washington-dc",
+      "aliases": [
+        "woolly mammoth"
+      ]
+    },
+    {
+      "venue": "Round House Theatre",
+      "metro": "washington-dc",
+      "aliases": [
+        "round house theatre"
+      ]
+    },
+    {
+      "venue": "Olney Theatre Center",
+      "metro": "washington-dc",
+      "aliases": [
+        "olney theatre center"
+      ]
+    },
+    {
+      "venue": "Center Theatre Group",
+      "metro": "los-angeles-ca",
+      "aliases": [
+        "center theatre group",
+        "ahmanson",
+        "mark taper",
+        "kirk douglas theatre"
+      ]
+    },
+    {
+      "venue": "Geffen Playhouse",
+      "metro": "los-angeles-ca",
+      "aliases": [
+        "geffen playhouse"
+      ]
+    },
+    {
+      "venue": "Pasadena Playhouse",
+      "metro": "los-angeles-ca",
+      "aliases": [
+        "pasadena playhouse"
+      ]
+    },
+    {
+      "venue": "Wallis Annenberg Center",
+      "metro": "los-angeles-ca",
+      "aliases": [
+        "wallis annenberg",
+        "the wallis"
+      ]
+    },
+    {
+      "venue": "American Repertory Theater",
+      "metro": "boston-ma",
+      "aliases": [
+        "american repertory theater",
+        "american repertory theatre",
+        "loeb drama center",
+        "loeb drama centre"
+      ]
+    },
+    {
+      "venue": "Huntington Theatre Company",
+      "metro": "boston-ma",
+      "aliases": [
+        "huntington theatre",
+        "huntington theater",
+        "huntington avenue theatre",
+        "calderwood pavilion"
+      ]
+    },
+    {
+      "venue": "La Jolla Playhouse",
+      "metro": "san-diego-ca",
+      "aliases": [
+        "la jolla playhouse",
+        "mandell weiss",
+        "potiker theatre",
+        "potiker theater"
+      ]
+    },
+    {
+      "venue": "The Old Globe",
+      "metro": "san-diego-ca",
+      "aliases": [
+        "old globe",
+        "lowell davies",
+        "shiley stage"
+      ]
+    },
+    {
+      "venue": "Berkeley Repertory Theatre",
+      "metro": "san-francisco-ca",
+      "aliases": [
+        "berkeley rep",
+        "berkeley repertory"
+      ]
+    },
+    {
+      "venue": "American Conservatory Theater",
+      "metro": "san-francisco-ca",
+      "aliases": [
+        "american conservatory theater",
+        "toni rembe"
+      ]
+    },
+    {
+      "venue": "Laguna Playhouse",
+      "metro": "laguna-beach-ca",
+      "aliases": [
+        "laguna playhouse"
+      ]
+    },
+    {
+      "venue": "South Coast Repertory",
+      "metro": "los-angeles-ca",
+      "aliases": [
+        "south coast repertory",
+        "south coast rep"
+      ]
+    },
+    {
+      "venue": "5th Avenue Theatre",
+      "metro": "seattle-wa",
+      "aliases": [
+        "5th avenue theatre"
+      ]
+    },
+    {
+      "venue": "Seattle Repertory Theatre",
+      "metro": "seattle-wa",
+      "aliases": [
+        "seattle rep",
+        "seattle repertory",
+        "bagley wright theatre",
+        "bagley wright theater"
+      ]
+    },
+    {
+      "venue": "Alliance Theatre",
+      "metro": "atlanta-ga",
+      "aliases": [
+        "alliance theatre",
+        "coca-cola stage",
+        "coca cola stage"
+      ]
+    },
+    {
+      "venue": "Paper Mill Playhouse",
+      "metro": "millburn-nj",
+      "aliases": [
+        "paper mill playhouse"
+      ]
+    },
+    {
+      "venue": "Aviva Studios",
+      "metro": "manchester-uk",
+      "aliases": [
+        "aviva studios",
+        "factory international"
+      ]
+    },
+    {
+      "venue": "Òran Mór",
+      "metro": "glasgow-uk",
+      "aliases": [
+        "òran mór",
+        "oran mor"
+      ]
+    },
+    {
+      "venue": "Birmingham Hippodrome",
+      "metro": "birmingham-uk",
+      "aliases": [
+        "birmingham hippodrome",
+        "hippodrome, birmingham"
+      ]
+    },
+    {
+      "venue": "Liverpool Royal Court",
+      "metro": "liverpool-uk",
+      "aliases": [
+        "liverpool royal court",
+        "royal court, liverpool",
+        "royal court theatre, liverpool"
+      ]
+    },
+    {
+      "venue": "Liverpool Unity Theatre",
+      "metro": "liverpool-uk",
+      "aliases": [
+        "liverpool unity theatre",
+        "unity theatre liverpool",
+        "unity theatre, liverpool",
+        "unity liverpool"
+      ]
+    }
+  ],
+  "notRegionalPlaces": [
+    "London",
+    "New York",
+    "New York, NY",
+    "Manhattan",
+    "Brooklyn",
+    "Brooklyn, NY",
+    "London, UK",
+    "London, England",
+    "London, United Kingdom",
+    "New York, NY, USA",
+    "New York, USA"
+  ]
+}

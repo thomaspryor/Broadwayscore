@@ -1,0 +1,73 @@
+{
+  "issue": "BRO-6450",
+  "description": "Sourced reasons for season reference entries (data/audit/we-season-reference/<season>.json) that the completeness matcher does not pair with a west-end row. same-production: the entry is that existing row under another title; counts as present only while the row exists and starts within 75 days of the entry. out-of-scope: the entry is outside what the site lists (category must be in OUT_OF_SCOPE_CATEGORIES, scripts/lib/we-season-reference.js); it leaves the in-scope denominator and is still printed by the audit. Entries are matched by exact reference title + start. Every other miss stays an open gap to promote.",
+  "seasons": {
+    "2012-2013": [
+      {
+        "title": "Untold Stories (Hymn & Cocktail Sticks)",
+        "start": "2013-03-22",
+        "kind": "same-production",
+        "showId": "alan-bennetts-untold-stories-west-end-2013",
+        "reason": "Same Duchess Theatre run, 2013-03-22 to 2013-06-15, as the existing row titled Alan Bennett's Untold Stories; Hymn and Cocktail Sticks are the two plays that make up that bill.",
+        "evidence": ["https://theatricalia.com/play/ffh/untold-stories-hymn-cocktail-sticks/production/104d"]
+      }
+    ],
+    "2013-2014": [
+      {
+        "title": "Bring Up the Bodies",
+        "start": "2014-05-07",
+        "kind": "same-production",
+        "showId": "wolf-hall-west-end-2014",
+        "reason": "The RSC's Aldwych transfer played Wolf Hall and Bring Up the Bodies in repertory as one production with one company, closing the same day (2014-10-04) as the existing wolf-hall-west-end-2014 row.",
+        "evidence": [
+          "https://theatricalia.com/play/fxy/bring-up-the-bodies/production/110y",
+          "https://theatricalia.com/play/fxx/wolf-hall/production/110x"
+        ]
+      },
+      {
+        "title": "Prince of Denmark",
+        "start": "2013-09-23",
+        "kind": "out-of-scope",
+        "category": "non-professional-company",
+        "reason": "National Youth Theatre REP season at the Ambassadors Theatre (youth ensemble), not a professional production.",
+        "evidence": ["https://theatricalia.com/play/gr2/prince-of-denmark/production/12vb"]
+      },
+      {
+        "title": "Tory Boyz",
+        "start": "2013-09-23",
+        "kind": "out-of-scope",
+        "category": "non-professional-company",
+        "reason": "National Youth Theatre REP season at the Ambassadors Theatre (youth ensemble), not a professional production.",
+        "evidence": ["https://theatricalia.com/play/gr4/tory-boyz/production/12vd"]
+      },
+      {
+        "title": "Romeo and Juliet",
+        "start": "2013-09-26",
+        "kind": "out-of-scope",
+        "category": "non-professional-company",
+        "reason": "National Youth Theatre REP season at the Ambassadors Theatre (youth ensemble), not a professional production.",
+        "evidence": ["https://theatricalia.com/play/n/romeo-and-juliet/production/12vc"]
+      }
+    ],
+    "2014-2015": [
+      {
+        "title": "Private Peaceful / Macbeth / Selfie",
+        "start": "2014-09-17",
+        "kind": "out-of-scope",
+        "category": "non-professional-company",
+        "reason": "National Youth Theatre REP season at the Ambassadors Theatre (youth ensemble), not a professional production.",
+        "evidence": ["https://theatricalia.com/play/gyd/private-peaceful-macbeth-selfie/production/1380"]
+      }
+    ],
+    "2015-2016": [
+      {
+        "title": "The Merchant of Venice / Wuthering Heights / Consensual",
+        "start": "2015-09-18",
+        "kind": "out-of-scope",
+        "category": "non-professional-company",
+        "reason": "National Youth Theatre REP season at the Ambassadors Theatre (youth ensemble), not a professional production.",
+        "evidence": ["https://theatricalia.com/play/gy9/the-merchant-of-venice-wuthering-heights-consensual/production/137v"]
+      }
+    ]
+  }
+}

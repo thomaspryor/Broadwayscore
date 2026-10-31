@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-02-06T04:01:10.740Z",
+  "mode": "live",
+  "showFilter": "all",
+  "stats": {
+    "pass1_urlFixed": 0,
+    "pass2_profileFlagged": 0,
+    "pass3_tourFlagged": 0,
+    "pass4a_urlDupeFlagged": 8,
+    "pass4a_urlDupeMerged": 8,
+    "pass4b_keyCritDupeFlagged": 0,
+    "pass4b_keyCritDupeMerged": 0,
+    "skippedAlreadyFlagged": 612,
+    "filesRead": 22841,
+    "filesModified": 16
+  },
+  "modifications": [
+    {
+      "showId": "she-loves-me-2016",
+      "file": "amny--unknown.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: amny--matt-windman.json"
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "file": "deadline--unknown.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: deadline--jeremy-gerard.json"
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "file": "ew--unknown.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: ew--jessica-derschowitz.json"
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "file": "huffpost--steven-suskin.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: huffpost--unknown.json"
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "file": "newsday--linda-winer.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: newsday--unknown.json"
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "file": "nydailynews--unknown.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: nydailynews--joe-dziemianowicz.json"
+    },
+    {
+      "showId": "she-loves-me-2016",
+      "file": "thewrap--robert-hofler.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: thewrap--unknown.json"
+    },
+    {
+      "showId": "the-humans-2016",
+      "file": "chicagotribune--chris-jones.json",
+      "pass": "4a",
+      "action": "url-dupe-flagged",
+      "detail": "winner: chicagotribune--unknown.json"
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "issueNumber": "bro-4317-b-08",
+  "planId": "4e74cd6b-d220-41ad-a781-1698be2c75d1",
+  "status": "applied",
+  "createdAt": "2026-10-13T01:56:27.499Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 8/9: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete redwood/theater-life--david-sheward.json",
+      "delete romeo-juliet/theatrely--juan-a-ramirez.json",
+      "delete schmigadoon/theater-life--david-sheward.json",
+      "delete six-the-musical-west-end/theater-life--samuel-l-leiter.json",
+      "move spamalot/nysr--sandy-macdonald.json -> spamalot-2023/nysr--sandy-macdonald.json (replaces thinner copy)",
+      "delete the-balusters/theater-life--paulanne-simmons.json",
+      "delete the-coast-of-utopia/theater-life--eric-march.json",
+      "delete the-cottage/theater-life--samuel-l-leiter.json",
+      "delete the-dinosaurs-off-broadway/theater-life--samuel-l-leiter.json",
+      "delete the-norman-conquests/theater-life--eric-march.json",
+      "delete the-notebook/theater-life--samuel-l-leiter.json",
+      "delete the-other-place-2026/hollywood-reporter--david-rooney.json",
+      "delete the-other-place-2026/nytimes--charles-isherwood.json",
+      "delete the-people-versus-lenny-bruce-off-broadway/theater-life--samuel-l-leiter.json",
+      "move the-whos-tommy/nysr--david-finkle.json -> the-whos-tommy-2024/nysr--david-finkle.json (replaces thinner copy)",
+      "delete the-whos-tommy/theater-life--samuel-l-leiter.json",
+      "delete the-wiz/theater-life--david-sheward.json",
+      "delete uncle-vanya/nysr--david-finkle.json",
+      "move uncle-vanya/nysr--melissa-rose-bernardo.json -> uncle-vanya-2024/nysr--melissa-rose-bernardo.json (replaces thinner copy)",
+      "delete water-for-elephants/theater-life--samuel-l-leiter.json",
+      "move spamalot-off-broadway-2026/broadwayworld--amanda-callas.json -> spamalot-tour-2025/broadwayworld--amanda-callas.json",
+      "move spamalot-off-broadway-2026/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json -> spamalot-tour-2025/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json",
+      "move spamalot-off-broadway-2026/dc-theater-arts--amy-kotkin.json -> spamalot-tour-2025/dc-theater-arts--amy-kotkin.json",
+      "move spamalot-off-broadway-2026/fortworthbusiness--rick-mauch.json -> spamalot-tour-2025/fortworthbusiness--rick-mauch.json",
+      "move spamalot-off-broadway-2026/laduenews--mark-bretz.json -> spamalot-tour-2025/laduenews--mark-bretz.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "redwood/theater-life--david-sheward.json",
+        "description": "same review, slug-variant url copy already in redwood-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "romeo-juliet/theatrely--juan-a-ramirez.json",
+        "description": "same-url copy already in romeo-juliet-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "schmigadoon/theater-life--david-sheward.json",
+        "description": "same review, slug-variant url copy already in schmigadoon-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "six-the-musical-west-end/theater-life--samuel-l-leiter.json",
+        "description": "same-url copy already in six-the-musical-west-end-2021"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "spamalot/nysr--sandy-macdonald.json",
+        "destPath": "spamalot-2023/nysr--sandy-macdonald.json",
+        "overwrite": true,
+        "description": "publishDate 2023-11-16 is the Broadway opening night; target flag cites the spring 2023 Kennedy Center run; target has 0 text"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-balusters/theater-life--paulanne-simmons.json",
+        "description": "same review, slug-variant url copy already in the-balusters-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-coast-of-utopia/theater-life--eric-march.json",
+        "description": "same review, slug-variant url copy already in the-coast-of-utopia-2006"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-cottage/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in the-cottage-2023"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-dinosaurs-off-broadway/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in the-dinosaurs-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-norman-conquests/theater-life--eric-march.json",
+        "description": "same-url copy already in the-norman-conquests-2009"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-notebook/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in the-notebook-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-other-place-2026/hollywood-reporter--david-rooney.json",
+        "description": "same review, slug-variant url copy already in the-other-place-2013"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-other-place-2026/nytimes--charles-isherwood.json",
+        "description": "same review, slug-variant url copy already in the-other-place-2013"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-people-versus-lenny-bruce-off-broadway/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in the-people-versus-lenny-bruce-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-whos-tommy/nysr--david-finkle.json",
+        "destPath": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "overwrite": true,
+        "description": "publishDate 2024-03-28 is the Broadway opening night; target flag cites the 2023 Goodman tryout, which had closed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-whos-tommy/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in the-whos-tommy-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-wiz/theater-life--david-sheward.json",
+        "description": "same-url copy already in the-wiz-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "uncle-vanya/nysr--david-finkle.json",
+        "description": "same-url copy already in uncle-vanya-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "uncle-vanya/nysr--melissa-rose-bernardo.json",
+        "destPath": "uncle-vanya-2024/nysr--melissa-rose-bernardo.json",
+        "overwrite": true,
+        "description": "orphan is the 2024-04-24 review of uncle-vanya-2024 (opened 2024-04-24); target holds her 2023 review of another production, flagged WP"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "water-for-elephants/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in water-for-elephants-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "spamalot-off-broadway-2026/broadwayworld--amanda-callas.json",
+        "destPath": "spamalot-tour-2025/broadwayworld--amanda-callas.json",
+        "description": "publishDate 2026-03-30 inside spamalot-tour-2025 run window"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "spamalot-off-broadway-2026/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json",
+        "destPath": "spamalot-tour-2025/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json",
+        "description": "publishDate 2026-05-26 inside spamalot-tour-2025 run window"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "spamalot-off-broadway-2026/dc-theater-arts--amy-kotkin.json",
+        "destPath": "spamalot-tour-2025/dc-theater-arts--amy-kotkin.json",
+        "description": "publishDate 2025-12-21 inside spamalot-tour-2025 run window"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "spamalot-off-broadway-2026/fortworthbusiness--rick-mauch.json",
+        "destPath": "spamalot-tour-2025/fortworthbusiness--rick-mauch.json",
+        "description": "publishDate 2026-04-30 inside spamalot-tour-2025 run window"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "spamalot-off-broadway-2026/laduenews--mark-bretz.json",
+        "destPath": "spamalot-tour-2025/laduenews--mark-bretz.json",
+        "description": "publishDate 2026-05-11 inside spamalot-tour-2025 run window"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:35:12.791Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted redwood/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-juliet/theatrely--juan-a-ramirez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted schmigadoon/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted six-the-musical-west-end/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved spamalot/nysr--sandy-macdonald.json → spamalot-2023/nysr--sandy-macdonald.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-balusters/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-coast-of-utopia/theater-life--eric-march.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-dinosaurs-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-norman-conquests/theater-life--eric-march.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-notebook/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/nytimes--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-people-versus-lenny-bruce-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-whos-tommy/nysr--david-finkle.json → the-whos-tommy-2024/nysr--david-finkle.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-whos-tommy/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-wiz/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted uncle-vanya/nysr--david-finkle.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved uncle-vanya/nysr--melissa-rose-bernardo.json → uncle-vanya-2024/nysr--melissa-rose-bernardo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted water-for-elephants/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved spamalot-off-broadway-2026/broadwayworld--amanda-callas.json → spamalot-tour-2025/broadwayworld--amanda-callas.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved spamalot-off-broadway-2026/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json → spamalot-tour-2025/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved spamalot-off-broadway-2026/dc-theater-arts--amy-kotkin.json → spamalot-tour-2025/dc-theater-arts--amy-kotkin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved spamalot-off-broadway-2026/fortworthbusiness--rick-mauch.json → spamalot-tour-2025/fortworthbusiness--rick-mauch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved spamalot-off-broadway-2026/laduenews--mark-bretz.json → spamalot-tour-2025/laduenews--mark-bretz.json"
+    }
+  ]
+}

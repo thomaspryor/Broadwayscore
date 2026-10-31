@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-4914-c",
+  "planId": "aacf404b-e37d-4ccc-8c3f-0d1a54861936",
+  "status": "partial",
+  "createdAt": "2026-10-23T04:59:45.952Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4914 leftovers after bro-4914-b: let the Stage and Cinema Evita review (US critic at the London Palladium) through the cross-market guard, and fix the Musical Theatre Review Evita byline (Jeremy Chapman) and date (2025-07-03).",
+    "steps": [
+      "BRO-4914 item 5: Stage and Cinema (US outlet) sent Michael M. Landman-Karny to the London Palladium Evita (url stageandcinema.com/2025/07/16/evita-london-palladium/; stored text names the Palladium, Zegler and the balcony staging). The rebuild's forward cross-market guard drops every non-trade US outlet on a London show, so the BRO-4914-b ingest landed wrongProduction; this per-review marker lets it through.",
+      "BRO-4914 item 5: human-clear breadcrumb before clearing the cross-market wrongProduction flag (review is of this production)",
+      "BRO-4914 item 5: false-positive 'Cross-market: US outlet reviewing London show' flag; the review is of the London Palladium production",
+      "BRO-4914 item 5: page byline is the site's generic 'Admin' account but the review is signed Jeremy Chapman at the end (musicaltheatrereview.com/evita-london-palladium/)",
+      "BRO-4914 item 5: page dateline 'Thursday, 3 July, 2025'; file had no publishDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/stageandcinema--michael-m-landman-karny.json",
+        "field": "allowCrossMarket",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4914 item 5: Stage and Cinema (US outlet) sent Michael M. Landman-Karny to the London Palladium Evita (url stageandcinema.com/2025/07/16/evita-london-palladium/; stored text names the Palladium, Zegler and the balcony staging). The rebuild's forward cross-market guard drops every non-trade US outlet on a London show, so the BRO-4914-b ingest landed wrongProduction; this per-review marker lets it through."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/stageandcinema--michael-m-landman-karny.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4914 item 5: human-clear breadcrumb before clearing the cross-market wrongProduction flag (review is of this production)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/stageandcinema--michael-m-landman-karny.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4914 item 5: false-positive 'Cross-market: US outlet reviewing London show' flag; the review is of the London Palladium production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/musical-theatre-review--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Jeremy Chapman",
+        "description": "BRO-4914 item 5: page byline is the site's generic 'Admin' account but the review is signed Jeremy Chapman at the end (musicaltheatrereview.com/evita-london-palladium/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/musical-theatre-review--unknown.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2025-07-03",
+        "description": "BRO-4914 item 5: page dateline 'Thursday, 3 July, 2025'; file had no publishDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:42:28.603Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/stageandcinema--michael-m-landman-karny.json allowCrossMarket: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/stageandcinema--michael-m-landman-karny.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/stageandcinema--michael-m-landman-karny.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: evita-west-end-2025/musical-theatre-review--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: evita-west-end-2025/musical-theatre-review--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
+}

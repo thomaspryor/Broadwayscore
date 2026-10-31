@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6158-b",
+  "planId": "9aed5581-e327-4be9-b37e-be30fe671336",
+  "status": "applied",
+  "createdAt": "2026-10-24T18:31:26.642Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Closed-show estimated designations (owner 2026-10-24): 20 closed TBD shows get a model-estimate designation (part 2 of 2)",
+    "steps": [
+      "commercial.json: celebrity-autobiography.designation",
+      "commercial.json: celebrity-autobiography.designationBasis",
+      "commercial.json: celebrity-autobiography.needsLossEvidence",
+      "commercial.json: a-dolls-house-2023.designation",
+      "commercial.json: a-dolls-house-2023.designationBasis",
+      "commercial.json: good-night-oscar-2023.designation",
+      "commercial.json: good-night-oscar-2023.designationBasis",
+      "commercial.json: macbeth-2022.designation",
+      "commercial.json: macbeth-2022.designationBasis",
+      "commercial.json: take-me-out-2022.designation",
+      "commercial.json: take-me-out-2022.designationBasis",
+      "commercial.json: carousel-2018.designation",
+      "commercial.json: carousel-2018.designationBasis",
+      "commercial.json: burn-this-2019.designation",
+      "commercial.json: burn-this-2019.designationBasis",
+      "commercial.json: burn-this-2019.needsLossEvidence",
+      "commercial.json: holiday-inn-the-new-irving-berlin-musical-2016.designation",
+      "commercial.json: holiday-inn-the-new-irving-berlin-musical-2016.designationBasis",
+      "commercial.json: holiday-inn-the-new-irving-berlin-musical-2016.needsLossEvidence",
+      "commercial.json: motown-the-musical-2016.designation",
+      "commercial.json: motown-the-musical-2016.designationBasis",
+      "commercial.json: motown-the-musical-2016.needsLossEvidence",
+      "commercial.json: an-act-of-god-2016.designation",
+      "commercial.json: an-act-of-god-2016.designationBasis",
+      "commercial.json: an-act-of-god-2016.needsLossEvidence"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "celebrity-autobiography",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: celebrity-autobiography.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "celebrity-autobiography",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: celebrity-autobiography.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "celebrity-autobiography",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: celebrity-autobiography.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "commercial.json: a-dolls-house-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: a-dolls-house-2023.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-oscar-2023",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "commercial.json: good-night-oscar-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-oscar-2023",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: good-night-oscar-2023.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "macbeth-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Trickle",
+        "description": "commercial.json: macbeth-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "macbeth-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate",
+        "description": "commercial.json: macbeth-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "take-me-out-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: take-me-out-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "take-me-out-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: take-me-out-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "carousel-2018",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: carousel-2018.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "carousel-2018",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: carousel-2018.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "burn-this-2019",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "commercial.json: burn-this-2019.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "burn-this-2019",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: burn-this-2019.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "burn-this-2019",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: burn-this-2019.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holiday-inn-the-new-irving-berlin-musical-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: holiday-inn-the-new-irving-berlin-musical-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holiday-inn-the-new-irving-berlin-musical-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: holiday-inn-the-new-irving-berlin-musical-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holiday-inn-the-new-irving-berlin-musical-2016",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: holiday-inn-the-new-irving-berlin-musical-2016.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "motown-the-musical-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: motown-the-musical-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "motown-the-musical-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: motown-the-musical-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "motown-the-musical-2016",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: motown-the-musical-2016.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "an-act-of-god-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: an-act-of-god-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "an-act-of-god-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: an-act-of-god-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "an-act-of-god-2016",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: an-act-of-god-2016.needsLossEvidence"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T22:54:04.600Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for celebrity-autobiography"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for celebrity-autobiography"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for celebrity-autobiography"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for good-night-oscar-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for good-night-oscar-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for take-me-out-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for take-me-out-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for burn-this-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for burn-this-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for burn-this-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for holiday-inn-the-new-irving-berlin-musical-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for holiday-inn-the-new-irving-berlin-musical-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for holiday-inn-the-new-irving-berlin-musical-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for motown-the-musical-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for motown-the-musical-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for motown-the-musical-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for an-act-of-god-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for an-act-of-god-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for an-act-of-god-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

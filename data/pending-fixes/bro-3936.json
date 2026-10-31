@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-3936",
+  "planId": "83b3dace-5053-413d-ae70-ff945a2b4474",
+  "status": "applied",
+  "createdAt": "2026-10-14T00:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3936: delete two evita rows whose outlet is a cast member mentioned in a review excerpt (parser fixed in the same change).",
+    "steps": [
+      "Outlet is actor Elena Roger; already wrong_content, misfiled under evita-1979.",
+      "Outlet is actor Ricky Martin, not a critic or outlet; the NYT review is carried by the nytimes row."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "evita-1979/elena-roger--unknown.json",
+        "description": "Outlet is actor Elena Roger; already wrong_content, misfiled under evita-1979."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "evita-2012/ricky-martin--unknown.json",
+        "description": "Outlet is actor Ricky Martin, not a critic or outlet; the NYT review is carried by the nytimes row."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:48:00.766Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted evita-1979/elena-roger--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted evita-2012/ricky-martin--unknown.json"
+    }
+  ]
+}

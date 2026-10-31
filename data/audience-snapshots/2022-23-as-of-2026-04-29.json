@@ -1,0 +1,426 @@
+{
+  "_meta": {
+    "snapshotAt": "2026-04-29T04:00:35.527Z",
+    "snapshotTag": "as-of-2026-04-29",
+    "tonySeason": "2022-23",
+    "sourceLastUpdated": "2026-04-29T00:26:22.829Z",
+    "nomineeCount": 18,
+    "eligibleShowCount": 0,
+    "totalShows": 18,
+    "note": "Audience grades captured at this point in time. Tony Predictions backtest evaluation should read THIS snapshot rather than live audience-buzz.json (which accumulates post-Tony halo ratings). Re-running on the same day overwrites; tag distinct snapshots with --tag."
+  },
+  "shows": {
+    "and-juliet-2022": {
+      "title": "& Juliet",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 84.58,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 91,
+          "reviewCount": 5763
+        },
+        "mezzanine": {
+          "score": 79,
+          "reviewCount": 4939
+        },
+        "theatr": {
+          "score": 80,
+          "reviewCount": 2712
+        },
+        "broadwayCom": {
+          "score": 94,
+          "reviewCount": 665
+        },
+        "reddit": {
+          "score": 73,
+          "reviewCount": 504
+        }
+      }
+    },
+    "leopoldstadt-2022": {
+      "title": "Leopoldstadt",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 83.45,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 1437
+        },
+        "mezzanine": {
+          "score": 81,
+          "reviewCount": 781
+        },
+        "theatr": {
+          "score": 82,
+          "reviewCount": 218
+        }
+      }
+    },
+    "aint-no-mo-2022": {
+      "title": "Ain't No Mo'",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 79.57,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 78,
+          "reviewCount": 236
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 291
+        },
+        "theatr": {
+          "score": 89,
+          "reviewCount": 26
+        }
+      }
+    },
+    "between-riverside-and-crazy-2022": {
+      "title": "Between Riverside and Crazy",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 81.48,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 482
+        },
+        "mezzanine": {
+          "score": 74,
+          "reviewCount": 200
+        },
+        "theatr": {
+          "score": 69,
+          "reviewCount": 16
+        }
+      }
+    },
+    "cost-of-living-2022": {
+      "title": "Cost of Living",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 83.37,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 362
+        },
+        "mezzanine": {
+          "score": 79,
+          "reviewCount": 178
+        },
+        "theatr": {
+          "score": 71,
+          "reviewCount": 14
+        },
+        "reddit": {
+          "score": 78,
+          "reviewCount": 2
+        }
+      }
+    },
+    "fat-ham-2023": {
+      "title": "Fat Ham",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 85.89,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 768
+        },
+        "mezzanine": {
+          "score": 86,
+          "reviewCount": 732
+        },
+        "theatr": {
+          "score": 89,
+          "reviewCount": 192
+        }
+      }
+    },
+    "kimberly-akimbo-2022": {
+      "title": "Kimberly Akimbo",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 80.91,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 2535
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 3536
+        },
+        "theatr": {
+          "score": 78,
+          "reviewCount": 902
+        }
+      }
+    },
+    "new-york-new-york-2023": {
+      "title": "New York, New York",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 62.13,
+      "designation": "Disliking",
+      "sources": {
+        "showScore": {
+          "score": 72,
+          "reviewCount": 814
+        },
+        "mezzanine": {
+          "score": 60,
+          "reviewCount": 1111
+        },
+        "theatr": {
+          "score": 38,
+          "reviewCount": 235
+        }
+      }
+    },
+    "shucked-2023": {
+      "title": "Shucked",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 80.62,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 1938
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 2873
+        },
+        "theatr": {
+          "score": 82,
+          "reviewCount": 719
+        }
+      }
+    },
+    "some-like-it-hot-2022": {
+      "title": "Some Like It Hot",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 83.42,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 1860
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 2267
+        },
+        "theatr": {
+          "score": 82,
+          "reviewCount": 553
+        }
+      }
+    },
+    "a-dolls-house-2023": {
+      "title": "A Doll's House",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 78.19,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 602
+        },
+        "mezzanine": {
+          "score": 77,
+          "reviewCount": 541
+        },
+        "theatr": {
+          "score": 69,
+          "reviewCount": 180
+        },
+        "reddit": {
+          "score": 70,
+          "reviewCount": 30
+        }
+      }
+    },
+    "the-piano-lesson-2022": {
+      "title": "The Piano Lesson",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 78.93,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 337
+        },
+        "mezzanine": {
+          "score": 74,
+          "reviewCount": 297
+        },
+        "theatr": {
+          "score": 71,
+          "reviewCount": 31
+        }
+      }
+    },
+    "the-sign-in-sidney-brusteins-window-2023": {
+      "title": "The Sign in Sidney Brustein's Window",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 75.36,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 79,
+          "reviewCount": 307
+        },
+        "mezzanine": {
+          "score": 75,
+          "reviewCount": 524
+        },
+        "theatr": {
+          "score": 68,
+          "reviewCount": 126
+        }
+      }
+    },
+    "parade-2023": {
+      "title": "Parade",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 92.11,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 91,
+          "reviewCount": 1015
+        },
+        "mezzanine": {
+          "score": 92,
+          "reviewCount": 2286
+        },
+        "theatr": {
+          "score": 95,
+          "reviewCount": 474
+        }
+      }
+    },
+    "camelot-2023": {
+      "title": "Camelot",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 75.86,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 79,
+          "reviewCount": 721
+        },
+        "mezzanine": {
+          "score": 75,
+          "reviewCount": 1024
+        },
+        "theatr": {
+          "score": 68,
+          "reviewCount": 176
+        },
+        "reddit": {
+          "score": 54,
+          "reviewCount": 13
+        }
+      }
+    },
+    "into-the-woods-2022": {
+      "title": "Into the Woods",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 88.56,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 91,
+          "reviewCount": 964
+        },
+        "mezzanine": {
+          "score": 88,
+          "reviewCount": 3371
+        },
+        "theatr": {
+          "score": 86,
+          "reviewCount": 187
+        }
+      }
+    },
+    "sweeney-todd-2023": {
+      "title": "Sweeney Todd",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 87.29,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 1659
+        },
+        "mezzanine": {
+          "score": 86,
+          "reviewCount": 5089
+        },
+        "theatr": {
+          "score": 91,
+          "reviewCount": 997
+        }
+      }
+    },
+    "topdog-underdog-2022": {
+      "title": "Topdog / Underdog",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 84.4,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 511
+        },
+        "mezzanine": {
+          "score": 82,
+          "reviewCount": 341
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "createdAt": "2026-10-12T07:01:25Z",
+  "issueNumber": "bro-4190-f",
+  "plan": {
+    "summary": "BRO-4658: re-run the Torera ingest from plan bro-4190-d. That run landed before the shared-post fix (isolatedSectionWriteFields), so the post URL, owned by its Punch section under punch-2025, was refused as cross-show-owned. Toera and Punch are distinct titles, so the isolated section may now share the URL.",
+    "steps": [
+      "Ingest the Torera section of the Interested Bystander multi-show post."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=torera-off-broadway-2026 --url=https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html --section-title=Toera --stub-on-failure",
+        "description": "BRO-4658: Interested Bystander Torera (WP Theater) review, heading spelled Toera"
+      }
+    ]
+  },
+  "planId": "52179bd6-aad7-4c04-ad77-ad8868e000b4",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "executedAt": "2026-10-12T08:14:50.871Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

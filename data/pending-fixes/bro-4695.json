@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-4695",
+  "planId": "69bbc2ea-ed4a-47a4-b550-27c747796781",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4695: clear the 2 cross-outlet attribution suspects: Guardian byline verified as Clive Paget; BWW Fish roundup page marked wrongAttribution.",
+    "steps": [
+      "Mark guardian--clive-paget crossOutletVerified with evidence",
+      "Mark fish broadwayworld--nicole-serratore wrongAttribution"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "angels-bone-west-end-2026/guardian--clive-paget.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Checked live Guardian page 2026-10-21: JSON-LD author and byline are Clive Paget (theguardian.com/profile/clive-paget). Legit Guardian credit, not limelight-magazine-au bleed.",
+        "description": "BRO-4695: record the byline evidence for the Guardian Angel's Bone review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angels-bone-west-end-2026/guardian--clive-paget.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4695: Guardian byline confirmed as Clive Paget, clear from cross-outlet audit."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fish-off-broadway-2026/broadwayworld--nicole-serratore.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BroadwayWorld /reviews/fish is a multi-critic roundup page (isRoundupArticle), not a single review by Nicole Serratore; byline unverifiable.",
+        "description": "BRO-4695: record why the roundup page is not credited to one critic."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fish-off-broadway-2026/broadwayworld--nicole-serratore.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4695: roundup page wrongly credited to Nicole Serratore; exclude from scoring and the cross-outlet audit."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T17:38:04.829Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angels-bone-west-end-2026/guardian--clive-paget.json crossOutletVerifiedNote: null -> \"Checked live Guardian page 2026-10-21: JSON-LD author and byline are Clive Paget (theguardian.com/profile/clive-paget). Legit Guardian credit, not limelight-magazine-au bleed.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angels-bone-west-end-2026/guardian--clive-paget.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-off-broadway-2026/broadwayworld--nicole-serratore.json wrongAttributionReason: null -> \"BroadwayWorld /reviews/fish is a multi-critic roundup page (isRoundupArticle), not a single review by Nicole Serratore; byline unverifiable.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-off-broadway-2026/broadwayworld--nicole-serratore.json wrongAttribution: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

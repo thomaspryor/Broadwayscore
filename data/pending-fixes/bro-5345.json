@@ -1,0 +1,108 @@
+{
+  "issueNumber": "bro-5345",
+  "planId": "5c3fa1e6-56e4-4595-a4b7-0b0f63c5411a",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5345: clear six listing-site official URLs. Venue fallback prevention lands first; private core-data corrections require execute-approved-fix.yml.",
+    "steps": [
+      "Land the fallback guard and advisory officialUrl validation.",
+      "Apply these six compare-and-set corrections to private core data with execute-approved-fix.yml.",
+      "After application, make validateOfficialUrls blocking by switching warn() to error()."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fallen-angels-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.broadway.org/shows/fallen-angels",
+        "newValue": null,
+        "description": "Remove a listing-site URL incorrectly stored as the official site (BRO-5345)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-star-off-broadway-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.newyorktheatreguide.com/",
+        "newValue": null,
+        "description": "Remove a listing-site URL incorrectly stored as the official site (BRO-5345)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.newyorktheatreguide.com/",
+        "newValue": null,
+        "description": "Remove a listing-site URL incorrectly stored as the official site (BRO-5345)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-matter-of-the-disappearance-of-michael-anthony-smith-jr-off-broadway-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.newyorktheatreguide.com/",
+        "newValue": null,
+        "description": "Remove a listing-site URL incorrectly stored as the official site (BRO-5345)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quarter-rican-off-broadway-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.newyorktheatreguide.com/",
+        "newValue": null,
+        "description": "Remove a listing-site URL incorrectly stored as the official site (BRO-5345)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-kidman-carol-off-broadway-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.newyorktheatreguide.com/",
+        "newValue": null,
+        "description": "Remove a listing-site URL incorrectly stored as the official site (BRO-5345)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T13:24:40.960Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for fallen-angels-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for the-blue-violinist-over-west-end-avenue-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for the-matter-of-the-disappearance-of-michael-anthony-smith-jr-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for quarter-rican-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for a-kidman-carol-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

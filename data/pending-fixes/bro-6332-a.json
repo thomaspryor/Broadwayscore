@@ -1,0 +1,549 @@
+{
+  "issueNumber": "bro-6332-a",
+  "planId": "4b47cf33-5217-4b6b-a0fd-bf12791d66d0",
+  "status": "applied",
+  "createdAt": "2026-10-26T14:33:54.405Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6332: add 2014-15 season commercial records (nonprofit and sourced outcomes) from public sources.",
+    "steps": [
+      "airline-highway-2015: Manhattan Theatre Club production, nonprofit.",
+      "constellations-2015: Manhattan Theatre Club production, nonprofit.",
+      "the-country-house-2014: Manhattan Theatre Club production, nonprofit.",
+      "the-real-thing-2014: Roundabout Theatre Company production, nonprofit.",
+      "on-the-twentieth-century-2015: Roundabout Theatre Company production, nonprofit.",
+      "the-king-and-i-2015: Lincoln Center Theater production, nonprofit.",
+      "skylight-2015: recouped, per https://playbill.com/article/tony-winning-skylight-with-carey-mulligan-and-bill-nighy-ends-broadway-affair-com-351718",
+      "fish-in-the-dark-2015: recouped, per https://www.theatermania.com/news/larry-davids-record-setting-fish-in-the-dark-recoups-investment_72980/",
+      "the-elephant-man-2014: recouped, per https://playbill.com/article/bradley-cooper-elephant-man-is-a-record-breaker-revival-recoups-on-broadway-com-338067",
+      "the-river-2014: recouped, per https://www.wccbcharlotte.com/?p=117573",
+      "its-only-a-play-2014: recouped, per https://www.playbill.com/article/nathan-lane-and-matthew-broderick-take-their-final-bows-in-its-only-a-play-today-com-350724",
+      "the-curious-incident-of-the-dog-in-the-nighttime-2014: recouped, per https://playbill.com/article/acclaimed-curious-incident-of-the-dog-in-the-night-time-recoups-on-broadway-com-340141",
+      "the-audience-2015: recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10394/the-audience-completes-its-run",
+      "the-heidi-chronicles-2015: reported not recouped, per https://www.broadwayworld.com/article/BWW-Flashback-THE-HEIDI-CHRONICLES-Starring-Elisabeth-Moss-Concludes-Broadway-Run-Today-20150503",
+      "the-visit-2015: reported not recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10345/the-visit-closes-on-broadway",
+      "it-shoulda-been-you-2015: reported not recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10456/it-shoulda-been-you-closes-on-broadway",
+      "living-on-love-2015: reported not recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10203/living-on-love-closes-after-one-month",
+      "Wolf Hall: capitalization only; outcome unannounced.",
+      "Doctor Zhivago: capitalization only; outcome unannounced."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "description": "airline-highway-2015: Manhattan Theatre Club production, nonprofit.",
+        "slug": "airline-highway-2015",
+        "entry": {
+          "designation": "Nonprofit",
+          "weeklyRunningCost": null,
+          "recouped": null,
+          "capitalization": null,
+          "nonprofitOrg": "Manhattan Theatre Club",
+          "notes": "Manhattan Theatre Club production (opened Apr 23, 2015). A nonprofit run: no commercial capitalization or recoupment applies.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.theatermania.com/news/airline-highway_72625/",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "constellations-2015: Manhattan Theatre Club production, nonprofit.",
+        "slug": "constellations-2015",
+        "entry": {
+          "designation": "Nonprofit",
+          "weeklyRunningCost": null,
+          "recouped": null,
+          "capitalization": null,
+          "nonprofitOrg": "Manhattan Theatre Club",
+          "notes": "Manhattan Theatre Club production (opened Jan 13, 2015). A nonprofit run: no commercial capitalization or recoupment applies.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.newyorktheatreguide.com/theatre-news/news/ruth-wilson-to-star-in-broadways-constellations",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-country-house-2014: Manhattan Theatre Club production, nonprofit.",
+        "slug": "the-country-house-2014",
+        "entry": {
+          "designation": "Nonprofit",
+          "weeklyRunningCost": null,
+          "recouped": null,
+          "capitalization": null,
+          "nonprofitOrg": "Manhattan Theatre Club",
+          "notes": "Manhattan Theatre Club production (opened Oct 2, 2014). A nonprofit run: no commercial capitalization or recoupment applies.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.newyorktheatreguide.com/theatre-news/news/mtcs-the-country-house-announces-full-casting",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-real-thing-2014: Roundabout Theatre Company production, nonprofit.",
+        "slug": "the-real-thing-2014",
+        "entry": {
+          "designation": "Nonprofit",
+          "weeklyRunningCost": null,
+          "recouped": null,
+          "capitalization": null,
+          "nonprofitOrg": "Roundabout Theatre Company",
+          "notes": "Roundabout Theatre Company production (opened Oct 30, 2014). A nonprofit run: no commercial capitalization or recoupment applies.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.theatermania.com/news/the-real-thing_70468/",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "on-the-twentieth-century-2015: Roundabout Theatre Company production, nonprofit.",
+        "slug": "on-the-twentieth-century-2015",
+        "entry": {
+          "designation": "Nonprofit",
+          "weeklyRunningCost": null,
+          "recouped": null,
+          "capitalization": null,
+          "nonprofitOrg": "Roundabout Theatre Company",
+          "notes": "Roundabout Theatre Company production (opened Mar 15, 2015). A nonprofit run: no commercial capitalization or recoupment applies.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.newyorktheatreguide.com/theatre-news/news/on-the-twentieth-century-starring-kristin-chenoweth",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-king-and-i-2015: Lincoln Center Theater production, nonprofit.",
+        "slug": "the-king-and-i-2015",
+        "entry": {
+          "designation": "Nonprofit",
+          "weeklyRunningCost": null,
+          "recouped": null,
+          "capitalization": null,
+          "nonprofitOrg": "Lincoln Center Theater",
+          "notes": "Lincoln Center Theater production (opened Apr 16, 2015). A nonprofit run: no commercial capitalization or recoupment applies.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/12609/extraordinary-revival-of-the-king-and-i-concludes-run",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "skylight-2015: recouped, per https://playbill.com/article/tony-winning-skylight-with-carey-mulligan-and-bill-nighy-ends-broadway-affair-com-351718",
+        "slug": "skylight-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": null,
+          "capitalizationSource": null,
+          "recouped": true,
+          "recoupedDate": "2015-05",
+          "recoupedSource": "Playbill (Jun 21, 2015): Skylight \"recouped its investment in late May.\"",
+          "notes": "Limited-engagement revival (opened Apr 2, 2015). No capitalization published in the cited coverage.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/tony-winning-skylight-with-carey-mulligan-and-bill-nighy-ends-broadway-affair-com-351718",
+              "date": "2015-06-21"
+            },
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10330/skylight-and-fish-in-the-dark-recoup",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "fish-in-the-dark-2015: recouped, per https://www.theatermania.com/news/larry-davids-record-setting-fish-in-the-dark-recoups-investment_72980/",
+        "slug": "fish-in-the-dark-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": null,
+          "capitalizationSource": null,
+          "recouped": true,
+          "recoupedDate": "2015-05",
+          "recoupedSource": "TheaterMania (May 20, 2015): Fish in the Dark \"has recouped its entire capitalization.\"",
+          "notes": "Larry David play (opened Mar 5, 2015). No capitalization figure in the cited coverage.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.theatermania.com/news/larry-davids-record-setting-fish-in-the-dark-recoups-investment_72980/",
+              "date": "2015-05-20"
+            },
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10330/skylight-and-fish-in-the-dark-recoup",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-elephant-man-2014: recouped, per https://playbill.com/article/bradley-cooper-elephant-man-is-a-record-breaker-revival-recoups-on-broadway-com-338067",
+        "slug": "the-elephant-man-2014",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": 3100000,
+          "capitalizationSource": "Playbill (Dec 28, 2014): \"$3.1 million investment\"",
+          "recouped": true,
+          "recoupedDate": "2014-12",
+          "recoupedSource": "Playbill (Dec 28, 2014): the revival \"has recouped its $3.1 million investment in six-and-a-half weeks.\"",
+          "notes": "Limited-engagement revival (opened Dec 7, 2014).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/bradley-cooper-elephant-man-is-a-record-breaker-revival-recoups-on-broadway-com-338067",
+              "date": "2014-12-28"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-river-2014: recouped, per https://www.wccbcharlotte.com/?p=117573",
+        "slug": "the-river-2014",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": 3200000,
+          "capitalizationSource": "Associated Press via WCCB (Dec 19, 2014): \"$3.2 million investment\"",
+          "recouped": true,
+          "recoupedDate": "2014-12",
+          "recoupedSource": "Associated Press via WCCB (Dec 19, 2014): The River \"had recouped its $3.2 million investment.\"",
+          "notes": "Limited-engagement play at Circle in the Square (opened Nov 16, 2014).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.wccbcharlotte.com/?p=117573",
+              "date": "2014-12-19"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "its-only-a-play-2014: recouped, per https://www.playbill.com/article/nathan-lane-and-matthew-broderick-take-their-final-bows-in-its-only-a-play-today-com-350724",
+        "slug": "its-only-a-play-2014",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": 3900000,
+          "capitalizationSource": "Playbill: \"$3.9 million capitalization\"",
+          "recouped": true,
+          "recoupedDate": "2014-12",
+          "recoupedSource": "Playbill: the production \"recouped its $3.9 million capitalization Dec. 17, 2014.\"",
+          "notes": "Play (opened Oct 9, 2014).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.playbill.com/article/nathan-lane-and-matthew-broderick-take-their-final-bows-in-its-only-a-play-today-com-350724",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-curious-incident-of-the-dog-in-the-nighttime-2014: recouped, per https://playbill.com/article/acclaimed-curious-incident-of-the-dog-in-the-night-time-recoups-on-broadway-com-340141",
+        "slug": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": 4750000,
+          "capitalizationSource": "Playbill (Jan 26, 2015): \"$4.75 million capitalization\"",
+          "recouped": true,
+          "recoupedDate": "2015-01",
+          "recoupedSource": "Playbill (Jan 26, 2015): the production \"has officially recouped its $4.75 million capitalization.\"",
+          "notes": "Play (opened Oct 5, 2014).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/acclaimed-curious-incident-of-the-dog-in-the-night-time-recoups-on-broadway-com-340141",
+              "date": "2015-01-26"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-audience-2015: recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10394/the-audience-completes-its-run",
+        "slug": "the-audience-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": 3400000,
+          "capitalizationSource": "NYTix: \"recouped its initial investment of $3.4 million\"",
+          "recouped": true,
+          "recoupedDate": "2015-06",
+          "recoupedSource": "NYTix (Jun 2015 closing article): The Audience \"recouped its initial investment of $3.4 million.\" Also reported by infonews.ca: \"earned back its $3.4 million costs.\"",
+          "notes": "Limited-engagement play (opened Mar 8, 2015). Exact recoupment month was not published; the closing month is used.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10394/the-audience-completes-its-run",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://infonews.ca/?p=180625",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-heidi-chronicles-2015: reported not recouped, per https://www.broadwayworld.com/article/BWW-Flashback-THE-HEIDI-CHRONICLES-Starring-Elisabeth-Moss-Concludes-Broadway-Run-Today-20150503",
+        "slug": "the-heidi-chronicles-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": null,
+          "capitalizationSource": null,
+          "recouped": false,
+          "recoupedSource": "BroadwayWorld (May 3, 2015): the production was \"unable to recoup the $3.5-4 million it took to mount the production.\"",
+          "notes": "Play (opened Mar 19, 2015). BroadwayWorld gives a $3.5M to $4M range, so no single capitalization is recorded.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayworld.com/article/BWW-Flashback-THE-HEIDI-CHRONICLES-Starring-Elisabeth-Moss-Concludes-Broadway-Run-Today-20150503",
+              "date": "2015-05-03"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-visit-2015: reported not recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10345/the-visit-closes-on-broadway",
+        "slug": "the-visit-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": null,
+          "capitalizationSource": null,
+          "recouped": false,
+          "recoupedSource": "NYTix (2015 closing article): The Visit closed \"certainly nowhere near its entire capitalization\" and \"will certainly go down in history as a financial loss.\"",
+          "notes": "Musical (opened Apr 23, 2015).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10345/the-visit-closes-on-broadway",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "it-shoulda-been-you-2015: reported not recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10456/it-shoulda-been-you-closes-on-broadway",
+        "slug": "it-shoulda-been-you-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": null,
+          "capitalizationSource": null,
+          "recouped": false,
+          "recoupedSource": "NYTix (2015 closing article): \"the Broadway run will not make profits.\"",
+          "notes": "Musical (opened Apr 14, 2015).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10456/it-shoulda-been-you-closes-on-broadway",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "living-on-love-2015: reported not recouped, per https://web.archive.org/web/2017/http://www.nytix.com/news/10203/living-on-love-closes-after-one-month",
+        "slug": "living-on-love-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": null,
+          "capitalizationSource": null,
+          "recouped": false,
+          "recoupedSource": "NYTix (2015 closing article): Living on Love \"will close at a serious loss.\"",
+          "notes": "Comedy (opened Apr 20, 2015).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10203/living-on-love-closes-after-one-month",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "Wolf Hall: capitalization only; outcome unannounced.",
+        "slug": "wolf-hall-parts-one-and-two-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": 4200000,
+          "capitalizationSource": "NYTix (2015 closing article): \"reported capitalization of $4.2 million\"",
+          "recouped": null,
+          "notes": "Two-part play (opened Apr 9, 2015). NYTix notes the production \"has not officially announced recoupment,\" so no outcome is recorded.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10435/wolf-hall-parts-one-and-two-concludes-on-broadway",
+              "date": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "Doctor Zhivago: capitalization only; outcome unannounced.",
+        "slug": "doctor-zhivago-2015",
+        "entry": {
+          "designation": "TBD",
+          "weeklyRunningCost": null,
+          "capitalization": 12000000,
+          "capitalizationSource": "NYTix (2015 closing article): \"With a capitalization of $12 million\"",
+          "recouped": null,
+          "notes": "Musical (opened Apr 21, 2015). The cited article reports a capitalization but no recoupment outcome, so none is recorded.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://web.archive.org/web/2017/http://www.nytix.com/news/10172/doctor-zhivago-concludes-run-early",
+              "date": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T14:43:16.189Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added airline-highway-2015 (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added constellations-2015 (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-country-house-2014 (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-real-thing-2014 (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added on-the-twentieth-century-2015 (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-king-and-i-2015 (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added skylight-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added fish-in-the-dark-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-elephant-man-2014 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-river-2014 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added its-only-a-play-2014 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-curious-incident-of-the-dog-in-the-nighttime-2014 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-audience-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-heidi-chronicles-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-visit-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added it-shoulda-been-you-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added living-on-love-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added wolf-hall-parts-one-and-two-2015 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added doctor-zhivago-2015 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
+}

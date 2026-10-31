@@ -1,0 +1,94 @@
+{
+  "issueNumber": "bro-3472",
+  "planId": "9ee13f45-11ab-48eb-ad7a-4f5fa8fa02ce",
+  "status": "applied",
+  "createdAt": "2026-10-22T14:34:24.535Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3472: delete 6 westendtheatre.com roundup pages misfiled under Time Out/Telegraph/Standard ids. All carry the WET compiler byline and isRoundupArticle=true (already excluded from scores); each show keeps the quoted outlet's real named-critic review. Group A (6 stale roundup flags) was already cleared on main: clear-stale-roundup-flags reports 0 stale.",
+    "steps": [
+      "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Time Out; Time Out already has its own named-critic review for this show",
+      "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Time Out; Time Out already has its own named-critic review for this show",
+      "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Telegraph; Telegraph already has its own named-critic review for this show",
+      "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Time Out; Time Out already has its own named-critic review for this show",
+      "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Standard; Standard already has its own named-critic review for this show",
+      "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Telegraph; Telegraph already has its own named-critic review for this show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "beetlejuice-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+        "description": "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Time Out; Time Out already has its own named-critic review for this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "equus-west-end-2026/timeout--julianna-barnaby.json",
+        "description": "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Time Out; Time Out already has its own named-critic review for this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "glengarry-glen-ross-west-end-2026/telegraph--louisa-baldwin.json",
+        "description": "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Telegraph; Telegraph already has its own named-critic review for this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mother-courage-and-her-children-globe-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+        "description": "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Time Out; Time Out already has its own named-critic review for this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--julianna-barnaby.json",
+        "description": "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Standard; Standard already has its own named-critic review for this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-price-off-west-end-2026/telegraph--ghenet-pinderhughes-randall.json",
+        "description": "BRO-3472: westendtheatre.com roundup page (WET compiler byline, isRoundupArticle=true, already excluded from scoring) filed under Telegraph; Telegraph already has its own named-critic review for this show"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T14:50:58.468Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted beetlejuice-west-end-2026/timeout--ghenet-pinderhughes-randall.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted equus-west-end-2026/timeout--julianna-barnaby.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted glengarry-glen-ross-west-end-2026/telegraph--louisa-baldwin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mother-courage-and-her-children-globe-west-end-2026/timeout--ghenet-pinderhughes-randall.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted one-flew-over-the-cuckoos-nest-west-end-2026/standard--julianna-barnaby.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-price-off-west-end-2026/telegraph--ghenet-pinderhughes-randall.json"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-6039",
+  "planId": "6a81c20d-edc1-4311-a302-6e7e3b488036",
+  "status": "applied",
+  "createdAt": "2026-10-23T05:04:57.705Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6039: the Thelma & Louise Times review is Clive Davis's; drop the empty Davis stub and refile the text under Davis. Clears the validate-data same-URL duplicate that blocks shows.json writers.",
+    "steps": [
+      "delete stub",
+      "rename butter -> davis",
+      "fix criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json",
+        "destPath": null,
+        "description": "Delete the empty Clive Davis stub (no text; recover-explicit-ratings phase 0 attached the same Times URL). The real Davis review is in the butter file."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json",
+        "destPath": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json",
+        "description": "The text filed under Susannah Butter is Clive Davis's Times review (theatre.reviews and westendtheatre.com roundups name Davis; the stored text matches the quoted lines). File it under Davis."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json",
+        "field": "criticName",
+        "oldValue": "Susannah Butter",
+        "newValue": "Clive Davis",
+        "description": "Byline: Clive Davis (theatre.reviews roundup https://theatre.reviews/reviews-roundup/thelma-louise-young-vic-reviews/ names The Times (Clive Davis))."
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:23:39.033Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json → thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--clive-davis.json criticName: \"Susannah Butter\" -> \"Clive Davis\""
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,94 @@
+name: Replay Push Rescue
+
+# BRO-6615: when every review-texts push attempt fails, push-with-retry.sh and
+# the push-review-texts action save the job's commit to a push-rescue/* branch
+# in broadway-review-texts (scripts/lib/push-rescue.js). This restores the NEW
+# review files from those branches on a fresh checkout, runs the cross-show
+# ownership gate on them, pushes, and deletes each branch once its files are
+# on main. Before this, a lost push of a new review was a digest line and the
+# review stayed off the site (opening-night-poller run 41013824281).
+# The first step is one ls-remote; without a rescue branch the run stops there.
+
+on:
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: replay-push-rescue
+  cancel-in-progress: false
+
+jobs:
+  replay:
+    name: Replay rescued review-texts pushes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Kill switch: repo variable PUSH_RESCUE_REPLAY_DISABLED=true (branches are kept, nothing is deleted).
+    if: vars.PUSH_RESCUE_REPLAY_DISABLED != 'true'
+
+    steps:
+      - name: Any rescue branches?
+        id: probe
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # A failed ls-remote (auth, network) must fail the run, not read as "none".
+          OUT=$(timeout 60 git ls-remote "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 'refs/heads/push-rescue/*') \
+            || { echo "::error::ls-remote of broadway-review-texts failed; rescue branches were not checked"; exit 1; }
+          N=$(printf '%s\n' "$OUT" | grep -c . || true)
+          echo "Rescue branches: $N"
+          echo "count=$N" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repository
+        if: steps.probe.outputs.count != '0'
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Checkout review-texts
+        if: steps.probe.outputs.count != '0'
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        if: steps.probe.outputs.count != '0'
+
+      - name: Restore rescued review files
+        id: replay
+        if: steps.probe.outputs.count != '0'
+        working-directory: data/review-texts
+        run: node ../../scripts/lib/push-rescue.js replay --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
+
+      - name: Push to private repo
+        id: push
+        if: steps.probe.outputs.count != '0' && steps.replay.outputs.restored != '0'
+        uses: ./.github/actions/push-review-texts
+        env:
+          # A failed replay push keeps the existing branches; never mint a new one per run.
+          PUSH_RESCUE_DISABLE: '1'
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: replay ${{ steps.replay.outputs.restored }} rescued review file(s) from push-rescue branches (BRO-6615)'
+
+      - name: Delete replayed rescue branches
+        if: steps.probe.outputs.count != '0' && steps.replay.outcome == 'success' && steps.push.outcome != 'failure'
+        working-directory: data/review-texts
+        run: node ../../scripts/lib/push-rescue.js prune --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
+
+      - name: Fail if a rescue branch could not be replayed
+        if: steps.probe.outputs.count != '0' && steps.replay.outputs.failed != '' && steps.replay.outputs.failed != '0'
+        run: |
+          echo "::error::${{ steps.replay.outputs.failed }} rescue branch(es) could not be replayed (see the replay step); they are kept for the next run."
+          exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Replay Push Rescue Failed'
+          description: 'New review files saved on push-rescue branches in broadway-review-texts are not back on main yet; the branches are kept and the next hourly run retries.'
+          severity: 'warning'

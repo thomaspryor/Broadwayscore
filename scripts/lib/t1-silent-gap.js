@@ -1,0 +1,625 @@
+/**
+ * t1-silent-gap.js
+ *
+ * Pure classifier for the "major-outlet review silently missing from the
+ * score" failure class (2026-07-18: The Times/Oresteia sat as an empty
+ * paywall stub for 3 days; NYT/Potluck as a bot-stub rejected by the
+ * scoreability check — neither was recovered or escalated because the
+ * aggregator-gap audit only sees files whose URL an aggregator article
+ * lists, and no alert ever fires for a discovered-but-unscoreable file).
+ *
+ * Inclusion semantics are DELEGATED to the canonical predicate
+ * (scripts/lib/review-guards.js isIncludableForRebuild + hasValidScore — the
+ * same single-source-of-truth validate-data.js and check-review-count-drift.js
+ * use), per memory/feedback_includability_predicates_must_be_canonical.md. This
+ * module only decides, for a file the canonical predicate says will NOT reach
+ * reviews.json, whether that absence is a legitimate editorial exclusion or
+ * a silent gap worth recovering/escalating.
+ *
+ * Kept pure (no fs / no fetch) per the test-extraction rule — the sweep
+ * runner (scripts/audit-t1-silent-gaps.js) and the unit test share it.
+ */
+
+'use strict';
+
+const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
+const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt, explainExclusion, hasIncludableSyndicationPrimary } = require('./review-guards');
+
+// explainExclusion() reasons where a SIBLING file carries the same review into
+// the score, so this file's absence is resolved, not a gap (BRO-4457).
+const SIBLING_SHIELDED_REASONS = new Set(['knownSyndicationSecondary']);
+
+// explainExclusion's 'knownSyndicationSecondary' needs an includable primary
+// (BRO-5901) but not a scored one. COLLECTED must mean the review actually
+// reaches the score, so also require that primary to carry a valid score
+// (ship-check BRO-4457: an unscored primary must leave the card OPEN).
+function siblingPrimaryReachesScore(file, filePath, show) {
+  // BRO-5901: one shared rule with explainExclusion's knownSyndicationSecondary.
+  try { return hasIncludableSyndicationPrimary(file, show, filePath, { requireScore: true }); } catch { return false; }
+}
+const { classifyReviewUrl, listingPageUrlReason, offTopicSectionReason } = require('./non-review-url-patterns');
+const { isForumLinkRecoverable, isForumThreadUrl, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES } = require('./talkinbroadway-forum-link');
+// BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
+// would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
+// the sweep must not keep dispatching for it (4x/day/show forever at
+// DISPATCH_RETRY_HOURS=6). Same predicate verify-all-scored.js uses.
+const { unscoredSkipReason } = require('./scoring-queue-counts');
+
+// Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
+// 2 = TheaterMania/Standard/Telegraph class.
+const MAJOR_TIER_MAX = 2;
+
+// Re-alert the same file at most once per this many days.
+const REALERT_DAYS = 7;
+
+// 'unscored' means "scoreable content, scoring just hasn't run" — give the
+// scoring cron this long after the text landed before treating it as a gap
+// (the scoring→rebuild chain can lag ~4h; task #178).
+const UNSCORED_GRACE_HOURS = 12;
+
+// Ensemble rejection reasons that are editorial verdicts (the review SHOULD
+// be excluded) rather than fetch-quality failures (bot stub / garbage text —
+// a better fetch could still recover the review).
+const EDITORIAL_REJECTIONS = new Set(['not_a_review', 'wrong_production', 'wrong_show']);
+
+// Editorial verdicts: the review is correctly absent from the score. Mirrors
+// the exclusion families in review-guards.js isIncludableForRebuild —
+// everything here is "right review judgment", never "bad fetch".
+function hasEditorialExclusion(f) {
+  return f.wrongProduction === true || f.wrongShow === true
+    || f.isNonReview === true || f.isNotReview === true
+    || f.nonReviewFlag === true || f.nonReviewContent === true
+    || f.isRoundupArticle === true || f.fabricatedEntry === true
+    || f.isSyndicatedDuplicate === true || f.crossOutletDuplicate === true
+    || f.wrongAttribution === true || f.suspectedMisattribution === true
+    || !!f.duplicateOf || !!f.duplicateTextOf
+    || f.humanReviewedWrongProduction === true
+    || !!(f.contentVerification && f.contentVerification.wrongArticle === true)
+    // showNotMentioned without an aggregator excerpt = the show name isn't in the
+    // fetched text (likely wrong content) → correct absence. The deleted mirror
+    // suppressed this in passesFlagFilters; isIncludableForRebuild does NOT model
+    // it (documented context-dependent omission), so restore it here or a
+    // showNotMentioned file with text-but-no-score would falsely escalate as
+    // 'unscored' (ship-check finding, S1-T5). Excerpt present ⇒ real content ⇒ not excluded.
+    || (f.showNotMentioned === true && !hasAggregatorExcerpt(f))
+    || EDITORIAL_REJECTIONS.has(f.rejectionReason);
+}
+
+// The file's URL points at the WRONG article (discovery mis-attribution) or a
+// known-blocked URL — re-fetching the file's own URL can only re-ingest the
+// wrong content, and "review missing" is not true (the real review may not
+// exist). These are task-#6 Bug-A phantoms, not silent gaps.
+//
+// WARNING for other consumers (BRO-3804): incompleteReason is informational
+// metadata clearFailureFlags() is supposed to null out once a file scores,
+// but a real-corpus check found ~16,700 of 19,534 WRONG_URL_INCOMPLETE-
+// flagged files already carry a valid score (stale, pre-dating that helper
+// or from a write path that skips it). classifySilentGap below only reaches
+// hasWrongUrlSignal() after the `isIncludableForRebuild(file, show) &&
+// hasValidScore(file)` short-circuit a few lines down — never consume this
+// Set/function directly without the same hasValidScore() (and, per branch
+// 4's pattern, wrongShowCleared()) guard, or you'll misclassify thousands of
+// real scored reviews as junk (scripts/lib/outlet-registry-audit-exclusions.js
+// is the reference implementation, hardened after 2 rounds of adversarial
+// review caught exactly this).
+const WRONG_URL_INCOMPLETE = new Set(['url_content_mismatch', 'wrong_content', 'scraper_garbage']);
+// The discovery-time URL classifier (video/news items, listing pages, ticket
+// sellers, aggregator navigation) already refuses these URLs, but it only ran
+// at discovery. NOT a blanket exclusion: existing regression tests
+// (silent-gap-rejection-reason, coverage-gap-alerts, audit-t1-silent-gaps) keep
+// non-review pieces flagged until the scorer terminally classifies them
+// not_a_review. It applies only where that can never happen: the scorer will
+// skip the file for good (dispatchable === false) and no ensemble verdict was
+// ever recorded, so nothing is going to classify it. Missing/unparseable URLs
+// are never judged here.
+function hasNonReviewUrl(f) {
+  if (!f || typeof f.url !== 'string' || !f.url.startsWith('http')) return false;
+  const r = classifyReviewUrl(f.url);
+  return r.ok === false && r.reason !== 'not-http-url' && r.reason !== 'unparseable-url';
+}
+
+// BRO-6082: an empty file (no text, so no ensemble verdict can ever be
+// recorded) in a sport, obituary or film-news section. Re-fetching that URL
+// can only re-fetch the football report or obituary, so the hourly recovery
+// and every dispatched session fail on it. Deliberately the off-topic-section
+// reason ONLY, not hasNonReviewUrl: classifyReviewUrl's non-review-host and
+// aggregator-internal-nav reasons also match real reviews (4columns.org, BWW
+// review articles; 147 empty-body files at the time), and roundup-page files
+// are pinned as recoverable gaps (audit-t1-silent-gaps.test.mjs). Gated on
+// !rejectionReason so a scorer verdict still decides whenever one exists.
+function isEmptyBodyAtNonReviewUrl(f) {
+  return !f.rejectionReason && f.listingPageUrlManualClear !== true && !!offTopicSectionReason(f.url);
+}
+
+// The rebuild's listingPageUrl exclusion (review-guards), as the audit reads it.
+function isListingPageFile(f) {
+  return typeof f.url === 'string' && f.listingPageUrlManualClear !== true
+    && !!listingPageUrlReason(f.url);
+}
+
+function hasWrongUrlSignal(f) {
+  return WRONG_URL_INCOMPLETE.has(f.incompleteReason)
+    || f.isBlockedReviewUrl === true
+    || f.bwwAggregatorAmbiguous === true;
+}
+
+// Can a scoring dispatch do anything for this file? Fails OPEN on a throw (BRO-2985).
+function isDispatchable(file, show, filePath) {
+  try {
+    return unscoredSkipReason(file, {
+      show,
+      showTitle: show && show.title ? show.title : undefined,
+      filePath,
+    }) === null;
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * Classify one dir file. Returns null when there is nothing to escalate,
+ * else { type, recoverable }.
+ *
+ * type:
+ *   'empty-body'           — no usable text/stars/score; re-ingest from the
+ *                            file's own URL may heal it (recoverable=true
+ *                            while merge-safe and under the shared retry cap)
+ *   'rejected-unscoreable' — scoreability/garbage rejection (bot-stub or
+ *                            truncation class); needs a better fetch, so
+ *                            report + alert only
+ *   'unscored'             — scoreable content but the scoring pipeline never
+ *                            produced a score; fix = dispatch scoring
+ *
+ * @param {object} args
+ * @param {object} args.file            parsed review-text JSON
+ * @param {object} [args.show]          shows.json entry (stale-flag heuristics
+ *                                      in the canonical predicate use it)
+ * @param {number} args.tier            outlet tier (getTier(outletId, {showCategory}))
+ * @param {boolean} args.outletScored   this outlet already has an entry that
+ *                                      will reach reviews.json for the show
+ * @param {Date} [args.now]             clock for the unscored grace window
+ * @returns {null | {type: string, recoverable: boolean}}
+ */
+function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
+  if (!file || typeof file !== 'object') return null;
+  if (tier == null || tier > MAJOR_TIER_MAX) return null;
+  if (outletScored) return null;
+
+  // Canonical: this file will contribute a reviews.json entry — rebuild or
+  // deploy lag at worst, never a gap. SCORED axis = isIncludableForRebuild
+  // (flag/context filters) AND hasValidScore (score-presence half). No filePath
+  // here (pure classifier) → duplicateOf falls back to unconditional skip, which
+  // matches the deleted mirror's passesFlagFilters behavior.
+  // filePath lets the includability check see sibling files (knownSyndicationSecondary,
+  // circular duplicateOf) exactly as the scorer and rebuild do; without it a
+  // deliberately-excluded secondary (nydailynews Chris Jones next to his
+  // chicagotribune primary) reads as 'unscored' forever.
+  if (isIncludableForRebuild(file, show, filePath) && hasValidScore(file)) return null;
+
+  // Editorial verdicts and wrong-URL phantoms are correct absences regardless
+  // of which branch below they'd land in.
+  if (hasEditorialExclusion(file) || hasWrongUrlSignal(file)) return null;
+
+  // Page-as-review artifacts: a roundup/aggregate page (playbill
+  // what-are-the-reviews, WOS/BWW/Stage roundups) ingested under the host's
+  // own outletId is never a first-party review — "review missing" is not
+  // true, and re-ingesting its URL can only re-fetch the roundup page
+  // (2026-07-19: shifters playbill--unknown husk emailed a CRITICAL alert).
+  if (isRoundupPageAsReview(file)) return null;
+
+  if (isIncludableForRebuild(file, show, filePath)) {
+    // Includable content (flags + context clean), but no valid score yet.
+    if (isEmptyBodyFile(file)) {
+      if (isEmptyBodyAtNonReviewUrl(file)) return null;
+      return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
+    }
+    const fetchedAt = Date.parse(file.textFetchedAt || '');
+    if (!Number.isNaN(fetchedAt) && now instanceof Date
+        && now.getTime() - fetchedAt < UNSCORED_GRACE_HOURS * 3600000) {
+      return null; // fresh text — scoring cron hasn't had its window yet
+    }
+    // BRO-2985: still REPORT the gap (a T1 review with text and no score is a
+    // real problem the operator must see), but tell the caller whether a
+    // scoring dispatch can do anything about it. Fail OPEN on a throw — a
+    // missed opening-night score costs far more than a wasted dispatch.
+    const dispatchable = isDispatchable(file, show, filePath);
+    if (dispatchable === false && !file.rejectionReason && hasNonReviewUrl(file)) return null;
+    return { type: 'unscored', recoverable: false, dispatchable };
+  }
+
+  // Flag-excluded by the canonical predicate; only fetch-quality states
+  // escalate (editorial/wrong-URL exclusions already returned null above).
+  if (file.rejectedAt) {
+    // Scoreability/garbage rejection (e.g. rejectedBy: ensemble-scoreability-
+    // check on an NYT bot stub). rejectionReason for editorial verdicts is
+    // filtered above; absent/garbage_text means the TEXT was bad, not the review.
+    return { type: 'rejected-unscoreable', recoverable: false };
+  }
+
+  // Empty stubs excluded only by content tier (contentTier 'stub'/'invalid'
+  // with no editorial flag) are the paywall-stub class. Report them even when
+  // auto-recovery can't run (retry cap exhausted, paywall) — a cap-exhausted
+  // T1 stub is exactly the "human must run the local cookie ingest" case, and
+  // returning null here made both thestage stubs vanish from the audit while
+  // still unresolved (2026-07-18). Guards on this branch:
+  //  - contentTier 'invalid' is content-garbage, not a paywall stub — a
+  //    cookie re-ingest of its own URL can only re-fetch garbage, so it is
+  //    not an actionable gap (ship-check finding: 'invalid' is NOT covered
+  //    by hasEditorialExclusion above and would otherwise alert here).
+  //  - a textless stub that already carries a valid score path (e.g.
+  //    originalScore from first-party page stars — stage-star-svg) scores at
+  //    rebuild time and is NOT a gap; isEmptyBodyFile only checks fullText/
+  //    aggregatorStars/assignedScore, so use the canonical score predicate.
+  //  - BRO-5166: a listing-page URL (show page, hub, event listing; the
+  //    rebuild's listingPageUrl exclusion) and no ensemble verdict: a re-fetch
+  //    can only re-fetch the listing, so nothing will ever close it
+  //    (broadwayworld.com/chicago/regional/The-Humanities, empty). Placed after
+  //    the rejectedAt branch on purpose: a rejected listing file still reports
+  //    as rejected-unscoreable (#1141 guard). A human clear wins.
+  if (isListingPageFile(file)) return null;
+  if (file.contentTier !== 'invalid' && isEmptyBodyFile(file) && !hasValidScore(file)) {
+    if (isEmptyBodyAtNonReviewUrl(file)) return null;
+    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
+  }
+
+  return null;
+}
+
+/**
+ * Alert dedupe: should this gap email now?
+ * @param {string|null} lastAlertedAt ISO timestamp of the previous alert for
+ *                                    this show/file key (null = never)
+ * @param {Date} now
+ */
+function shouldAlertGap(lastAlertedAt, now) {
+  if (!lastAlertedAt) return true;
+  const last = Date.parse(lastAlertedAt);
+  if (Number.isNaN(last)) return true;
+  return now.getTime() - last >= REALERT_DAYS * 24 * 60 * 60 * 1000;
+}
+
+// Self-heal-before-paging policy for 'unscored' gaps (2026-07-21: the sweep
+// emailed the operator `gh workflow run "LLM Ensemble Score Reviews" ...` as
+// the fix — a command the sweep can dispatch itself). One scoring dispatch
+// per show per DISPATCH_RETRY_HOURS; the gap only emails once a dispatch
+// that old has failed to heal it.
+const DISPATCH_RETRY_HOURS = 6;
+
+/**
+ * Should the sweep dispatch a scoring run for this show now?
+ * @param {string|null} lastDispatchAt ISO timestamp of the sweep's previous
+ *                                     scoring dispatch for this show (null = never)
+ * @param {Date} now
+ */
+function shouldDispatchScoring(lastDispatchAt, now) {
+  if (!lastDispatchAt) return true;
+  const last = Date.parse(lastDispatchAt);
+  if (Number.isNaN(last)) return true;
+  return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
+}
+
+/**
+ * Should an 'unscored' gap page the operator? Only after self-heal had its
+ * chance: a scoring dispatch happened at least DISPATCH_RETRY_HOURS ago and
+ * the gap still classifies. Never-dispatched or freshly-dispatched gaps stay
+ * out of the email (they are recorded in the report either way).
+ *
+ * A PRESENT-but-unparseable stamp escalates (returns true): treating garbage
+ * as "never dispatched" here while shouldDispatchScoring treats it as
+ * "dispatch now" would re-dispatch forever with zero operator visibility
+ * (ship-check finding). One email + one re-dispatch, and a successful
+ * dispatch overwrites the corrupt stamp.
+ * @param {string|null} lastDispatchAt
+ * @param {Date} now
+ */
+function shouldEmailUnscoredGap(lastDispatchAt, now) {
+  if (!lastDispatchAt) return false;
+  const last = Date.parse(lastDispatchAt);
+  if (Number.isNaN(last)) return true;
+  return now.getTime() - last >= DISPATCH_RETRY_HOURS * 3600000;
+}
+
+// --- Gap-card lifecycle (BRO-341) ---------------------------------------
+//
+// classifySilentGap() above is a per-run classifier: it tells the sweep
+// whether a FILE is a gap right now. It has no memory of a previously-filed
+// card, so the sweep (audit-t1-silent-gaps.js) had nothing to check a card's
+// underlying condition against once opened — every gap card, once created,
+// stayed open forever even after the file was collected/scored or turned out
+// to be a correct editorial absence (2026-08-14 triage: #936/#1019/#1027/
+// #1070 sat open after the review was collected; #839/#1141 sat open despite
+// carrying terminal isNonReview/isRoundupArticle/wrongProduction flags whose
+// own suggested fix command could never succeed).
+//
+// The functions below give the sweep a within-run dedupe (dedupeGapCards), a
+// canonical per-file identity for reporting (gapCardKey), a cross-path
+// duplicate check (otherAlertPathKey), and a terminal-state classification
+// (classifyGapCardState) so it can:
+//   - collapse several candidate files for the same show+outlet to ONE card
+//     per run instead of one per file (byline-explosion clusters), and skip
+//     dispatching down one alert path when the OTHER path already tracks the
+//     identical file — the actual root cause of the #1070/#1114 and
+//     #1082/#1179 exact-duplicate pairs (filed once via the near-opening
+//     'gap:' path, once via the >24h 'backstop:' path, on different runs), and
+//   - resolveCondition() a previously-open card the moment its file's state
+//     turns terminal, instead of leaving it open forever.
+
+const GAP_CARD_STATE = {
+  OPEN: 'open',
+  COLLECTED: 'collected',
+  NO_REVIEW: 'no-review',
+  DUPLICATE: 'duplicate',
+};
+
+// Canonical, stable identity string for one show+outlet+file gap card.
+// NOT currently constructed by any production code path — dedupeGapCards()
+// below groups on a plain `${showId}/${outletId}` key directly (gapCardKey's
+// own output includes `file`, so it couldn't group multiple files onto one
+// outlet if used there), and neither alert-dispatch path in
+// audit-t1-silent-gaps.js uses it as the routeAlert() conditionKey either:
+// the near-opening ('gap:showId/file') and >24h backstop
+// ('backstop:showId/file') paths keep their own native, unmigrated prefixes,
+// because routeAlert()'s ledger cooldown AND its cross-system Linear dedupe
+// (findLinearDuplicate → a plain substring search for `[conditionKey:<key>]`
+// inside EXISTING card bodies) both key off the exact conditionKey string.
+// Every gap card filed before this fix has its old prefix baked verbatim
+// into its Linear issue body — switching the dispatched conditionKey format
+// would make every already-open gap invisible to both dedupe mechanisms on
+// the very next run (ledger sees "no record", Linear search finds no
+// substring match), so the first post-deploy pass over any real corpus
+// would re-file a duplicate card for every single currently-open gap —
+// exactly the bug this fix exists to close. (Caught in review before ship:
+// see otherAlertPathKey() below, which handles the actual near-opening/
+// backstop duplicate case without renaming the key.) gapCardKey() is kept as
+// the canonical per-file identity primitive (BRO-341's acceptance criteria
+// calls for a tested "dedupe key") for reporting/future use — it is exported
+// and unit-tested, just not yet wired into a live dispatch or grouping path.
+function gapCardKey({ showId, outletId, file }) {
+  return `t1gap:${showId}/${outletId}/${file}`;
+}
+
+// Given the conditionKey prefix one alert path is ABOUT to dispatch under
+// ('gap' or 'backstop'), returns the OTHER path's native conditionKey for
+// the identical show+file. audit-t1-silent-gaps.js checks whether that key
+// is already 'open' in the alert-router ledger before dispatching — the
+// actual fix for the #1070/#1114 and #1082/#1179 duplicate pairs: those were
+// filed once via the urgent 'gap:' path and once via the >24h 'backstop:'
+// path for the identical file, on different runs (so same-run dedupe alone
+// can't catch it).
+function otherAlertPathKey(showId, file, thisPathPrefix) {
+  const otherPrefix = thisPathPrefix === 'gap' ? 'backstop' : 'gap';
+  return `${otherPrefix}:${showId}/${file}`;
+}
+
+/**
+ * Per-file terminal classification for an existing (or would-be) gap card.
+ * Unlike classifySilentGap (which only answers "is this a gap right now"),
+ * this names WHY a file that WAS a gap no longer is one, so a caller can
+ * decide whether to resolveCondition() a previously-filed card.
+ *
+ * Returns:
+ *   'collected' — the outlet now reaches the composite score (this file
+ *                 became scoreable, or another file for the same outlet
+ *                 did). A previously-open card should close: the review
+ *                 arrived.
+ *   'no-review'  — the classifier's own editorial/roundup/wrong-URL
+ *                 exclusion fired: this file's absence is a correct
+ *                 editorial verdict (isNonReview, isRoundupArticle,
+ *                 wrongProduction, wrongShow, duplicateOf, …), not a fetch
+ *                 failure. No command can recover a review that was never
+ *                 published. A previously-open card should close: the
+ *                 "gap" was never a real one. Content-garbage
+ *                 (contentTier: 'invalid') files fall in this bucket too —
+ *                 classifySilentGap already treats them as un-actionable
+ *                 (re-ingesting the same URL can only re-fetch garbage), so
+ *                 a stale card for one should close the same way.
+ *   'open'      — still a live, unresolved gap (empty-body / unscored /
+ *                 rejected-unscoreable). A previously-open card should stay
+ *                 open.
+ *   null        — not T1/T2-gap-eligible at all (wrong tier, or a fresh file
+ *                 still inside the unscored grace window) — there is
+ *                 nothing for a card to track either way.
+ *
+ * @param {object} args same shape as classifySilentGap's args.
+ */
+function classifyGapCardState({ file, show, tier, outletScored, now, filePath }) {
+  if (!file || typeof file !== 'object') return null;
+  if (tier == null || tier > MAJOR_TIER_MAX) return null;
+  if (outletScored) return GAP_CARD_STATE.COLLECTED;
+  if (isIncludableForRebuild(file, show, filePath) && hasValidScore(file)) return GAP_CARD_STATE.COLLECTED;
+  if (hasEditorialExclusion(file) || hasWrongUrlSignal(file)) return GAP_CARD_STATE.NO_REVIEW;
+  if (isRoundupPageAsReview(file)) return GAP_CARD_STATE.NO_REVIEW;
+  const gap = classifySilentGap({ file, show, tier, outletScored, now, filePath });
+  if (gap) return GAP_CARD_STATE.OPEN;
+  // BRO-4457: a known-syndication secondary (nydailynews Chris Jones next to a
+  // live chicagotribune primary) is excluded by the scorer and rebuild on
+  // purpose; the critic's review reaches the score through the primary file.
+  // classifySilentGap already returns null for it (filePath-aware), but this
+  // function then fell through to null ("not eligible"), so a backstop card
+  // filed before that classifier fix could never close. Map it to COLLECTED.
+  if (filePath && SIBLING_SHIELDED_REASONS.has(explainExclusion(file, show, filePath))
+      && siblingPrimaryReachesScore(file, filePath, show)) {
+    return GAP_CARD_STATE.COLLECTED;
+  }
+  // classifySilentGap's own final branch excludes contentTier:'invalid' from
+  // ever counting as a recoverable empty-body gap — mirror that exclusion
+  // here as a terminal state rather than plain "not eligible" so a stale
+  // card for a file that was later reclassified as garbage still closes.
+  if (file.contentTier === 'invalid') return GAP_CARD_STATE.NO_REVIEW;
+  // Same mirror for classifySilentGap's listing-page early return (BRO-5166):
+  // a card opened before the listing rule existed must close.
+  if (isListingPageFile(file)) return GAP_CARD_STATE.NO_REVIEW;
+  // BRO-5863: classifySilentGap's `unscored` early return drops an unscored file at
+  // a named non-review URL (cbsnews.com/video/ player page) that no ensemble verdict
+  // will ever classify. Mirror it here or the backstop card filed before the pattern
+  // existed never closes (this function fell through to null).
+  if (!file.rejectionReason && !hasValidScore(file) && hasNonReviewUrl(file)
+      && isDispatchable(file, show, filePath) === false) return GAP_CARD_STATE.NO_REVIEW;
+  // BRO-6082: classifySilentGap's empty-body early return, mirrored so a card
+  // filed before the off-topic-section pattern existed closes.
+  if (!hasValidScore(file) && isEmptyBodyFile(file) && isEmptyBodyAtNonReviewUrl(file)) return GAP_CARD_STATE.NO_REVIEW;
+  return null;
+}
+
+/**
+ * Collapse a run's open gaps to one card per show+outlet. A byline-explosion
+ * cluster (or any outlet with several candidate files) can leave more than
+ * one file classifying as an open gap for the SAME outlet in a single run —
+ * without this, each file mints its own card for what is, from the owner's
+ * perspective, one missing review.
+ *
+ * `gaps` items need at minimum { showId, outletId, file }; a `url` field is
+ * used for primary selection when present, and all extra fields are
+ * preserved on output. Duplicates carry cardState: 'duplicate' and
+ * duplicateOfFile pointing at the kept file, so a caller can still
+ * report/log them without dispatching a second card.
+ *
+ * Primary selection is deterministic, not scan-order-dependent: a candidate
+ * with a usable `url` (an actionable fix command) is always preferred over
+ * one without, and ties break on filename. Without this, whichever file
+ * `fs.readdirSync()` happened to return first would win — a URL-less file
+ * could become primary while a directly-fixable sibling gets silently
+ * dropped as a duplicate, and a later directory re-scan (a sibling file
+ * added/removed) could flip which file is primary from run to run, which
+ * would leave the PREVIOUS primary's card open forever (still a real gap,
+ * just no longer the one being tracked) while filing a new card for the new
+ * primary — review finding, BRO-341.
+ *
+ * @param {Array<object>} gaps
+ * @returns {{ primary: Array<object>, duplicates: Array<object> }}
+ */
+function dedupeGapCards(gaps) {
+  const groups = new Map(); // show+outlet key -> all gaps in that group
+  for (const g of gaps || []) {
+    const key = `${g.showId}/${g.outletId}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(g);
+  }
+  const primary = [];
+  const duplicates = [];
+  for (const group of groups.values()) {
+    const sorted = [...group].sort((a, b) => {
+      const aHasUrl = a.url ? 1 : 0;
+      const bHasUrl = b.url ? 1 : 0;
+      if (aHasUrl !== bHasUrl) return bHasUrl - aHasUrl;
+      return String(a.file).localeCompare(String(b.file));
+    });
+    const [best, ...rest] = sorted;
+    primary.push(best);
+    for (const g of rest) {
+      duplicates.push({ ...g, cardState: GAP_CARD_STATE.DUPLICATE, duplicateOfFile: best.file });
+    }
+  }
+  return { primary, duplicates };
+}
+
+// BRO-6082: a report entry whose every automated path is spent. The hourly
+// CI audit cannot fetch it (paywall, bot wall, forum-link budget used up) and
+// the scorer will not take it, so a dispatched cloud session has nothing to
+// run: the fix commands need the Mac cookie jar or a subscriber copy. Two clocks
+// so neither a fresh file nor a long-held file that only just became a gap
+// qualifies: file held MANUAL_RECOVERY_FILE_DAYS (firstSeen, immutable) AND
+// gap open MANUAL_RECOVERY_GAP_HOURS (gapSeenAt; restarts if the gap clears).
+// health-check reports these on their own FYI row instead of the dispatched one.
+const MANUAL_RECOVERY_FILE_DAYS = 7;
+const MANUAL_RECOVERY_GAP_HOURS = 24;
+function hasNoAutomatedPath(entry) {
+  if (!entry || typeof entry !== 'object') return false;
+  const noAutomatedPath = entry.type === 'unscored'
+    ? entry.dispatchable === false
+    : entry.recoverable === false;
+  if (!noAutomatedPath) return false;
+  // isForumLinkRecoverable reads false BETWEEN the daily slow tries, so the
+  // per-run `recoverable` flag would flip a forum stub in and out of this
+  // state all week. The budget, not the flag, says whether a try is left.
+  if (typeof entry.url === 'string' && isForumThreadUrl(entry.url)
+      && (entry.forumLinkRecoveryCount || 0) < FORUM_RECOVERY_CAP + FORUM_RECOVERY_SLOW_TRIES) return false;
+  return true;
+}
+
+// BRO-6632: the narrower question the health-check backlog row asks: is this a
+// gap whose FETCH was abandoned (paywall, bot wall, spent forum budget) and
+// that the manual clock will move to the FYI line? Excludes the types that
+// are a real problem the operator must see now (unscored the scorer will not
+// take, rejected-unscoreable), and fails open when the clocks are unstamped,
+// since needsManualRecovery can never fire for those.
+function isFetchAbandonedAwaitingManual(entry) {
+  if (!hasNoAutomatedPath(entry)) return false;
+  if (entry.type === 'unscored' || entry.type === 'rejected-unscoreable') return false;
+  return !Number.isNaN(Date.parse(entry.firstSeen || '')) && !Number.isNaN(Date.parse(entry.gapSeenAt || ''));
+}
+
+function needsManualRecovery(entry, now = new Date()) {
+  if (!hasNoAutomatedPath(entry)) return false;
+  const fileAt = Date.parse(entry.firstSeen || '');
+  const gapAt = Date.parse(entry.gapSeenAt || '');
+  if (Number.isNaN(fileAt) || Number.isNaN(gapAt)) return false;
+  const t = now.getTime();
+  return t - fileAt >= MANUAL_RECOVERY_FILE_DAYS * 86400000
+    && t - gapAt >= MANUAL_RECOVERY_GAP_HOURS * 3600000;
+}
+
+// The FYI digest line for needsManualRecovery gaps, or null when there are none.
+// Title-only rendering (info rows show their title), so the count and the
+// shows live in it. One line per show+outlet, like the gap cards.
+const MANUAL_RECOVERY_CONDITION_KEY = 't1-gaps:needs-manual-recovery';
+function manualRecoveryDigestLine(gaps, now = new Date()) {
+  const manual = (Array.isArray(gaps) ? gaps : []).filter((g) => g && g.needsManualRecovery === true);
+  if (manual.length === 0) return null;
+  const { primary } = dedupeGapCards(manual);
+  const names = primary.map((g) => `${g.title || g.showId} (${g.outletId})`);
+  const shown = names.slice(0, 5).join(', ') + (names.length > 5 ? `, +${names.length - 5} more` : '');
+  return {
+    conditionKey: MANUAL_RECOVERY_CONDITION_KEY,
+    title: `Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: ${primary.length} (${shown}). Checked ${now.toISOString().slice(0, 10)}.`,
+    description: 'Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.',
+    severity: 'info',
+    info: true,
+  };
+}
+
+/**
+ * BRO-5076: open `gap:`/`backstop:` ledger keys whose review file no longer
+ * exists. closeCardIfTerminal only visits files that still exist, so a file
+ * that was deleted or renamed (unknown byline -> named critic) left its key
+ * open forever and check-alert-condition-absent could never prove it gone.
+ * Deliberately narrow: a key is stale only when its show directory exists and
+ * the file is absent. "Not in the computed gap list" is NOT used: that list
+ * also omits fresh-unscored files (12h grace), shows outside the window and
+ * unreadable files, whose gaps are still real.
+ */
+function staleOpenGapKeys(ledger, { dirExists, fileExists }) {
+  const out = [];
+  for (const [key, row] of Object.entries((ledger && ledger.conditions) || {})) {
+    const m = /^(?:gap|backstop):([^/]+)\/(.+)$/.exec(key);
+    if (!m || !row || row.status !== 'open') continue;
+    if (dirExists(m[1]) && !fileExists(m[1], m[2])) out.push(key);
+  }
+  return out;
+}
+
+module.exports = {
+  hasNoAutomatedPath,
+  isFetchAbandonedAwaitingManual,
+  manualRecoveryDigestLine,
+  MANUAL_RECOVERY_CONDITION_KEY,
+  needsManualRecovery,
+  MANUAL_RECOVERY_FILE_DAYS,
+  MANUAL_RECOVERY_GAP_HOURS,
+  classifySilentGap,
+  shouldAlertGap,
+  shouldDispatchScoring,
+  shouldEmailUnscoredGap,
+  MAJOR_TIER_MAX,
+  REALERT_DAYS,
+  UNSCORED_GRACE_HOURS,
+  DISPATCH_RETRY_HOURS,
+  GAP_CARD_STATE,
+  gapCardKey,
+  otherAlertPathKey,
+  classifyGapCardState,
+  dedupeGapCards,
+  WRONG_URL_INCOMPLETE,
+  hasWrongUrlSignal,
+  staleOpenGapKeys,
+};

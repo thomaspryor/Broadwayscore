@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4888-b",
+  "planId": "374b0cf5-f8fc-404f-a75a-d150a7f16822",
+  "status": "applied",
+  "createdAt": "2026-10-09T04:17:01.809Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4888 follow-up: the Jonathan Baz Evita score override was written as provisional, which makes the rebuild skip it; make it final so the review counts at 51.",
+    "steps": [
+      "humanReviewScoreProvisional true means the rebuild ignores humanReviewScore (rebuild-helpers.js P0); set it to false so the 51 takes effect."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/jonathan-baz--unknown.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": true,
+        "newValue": false,
+        "description": "humanReviewScoreProvisional true makes the rebuild skip the human score (rebuild-helpers.js P0); set to false so the 51 (3/5 star band floor) takes effect."
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T06:35:25.031Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/jonathan-baz--unknown.json humanReviewScoreProvisional: true -> false"
+    }
+  ]
+}

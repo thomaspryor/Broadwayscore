@@ -1,0 +1,312 @@
+{
+  "issueNumber": "bro-4956",
+  "planId": "b564e913-3019-4d1a-9160-42e390555584",
+  "status": "partial",
+  "createdAt": "2026-10-10T09:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956: complete and correct the four West End openings of 7-9 Oct 2026 (Blood of my Blood, An Oak Tree, Rent, From The Heart) against the Best of Theatre / BroadwayWorld round-ups, plus one cousin found by the collision sweep (The Children, The Times). Adds reviews lost to the same-critic slot collision, stubs whose fetch was abandoned, and outlets discovery missed; flags a 2025 prior-production file; clears a false not-a-review verdict; fixes a misread date and byline; extends Rent's closing date (booking to 29 May 2027). The Time Out carry-forward and the playwright quote page on An Oak Tree drop out through the guards landed with this plan.",
+    "steps": [
+      "Blood of my Blood: London Box Office (supersedes the flagged Juniper Blood file) and the Evening Standard (stale stub retired first)",
+      "An Oak Tree: flag The Stage's 2025 Young Vic file, ingest The Stage's Other Palace review and the North West End text, clear the false not-a-review on LondonTheatre1",
+      "From The Heart: correct the Box Office Radio date and byline, ingest First Night Magazine and London Theatre Reviews",
+      "Rent: ingest LondonTheatre1, Musical Theatre Review, Plays International, West End Wilma, London Theatre Reviews and the FT text; closing date 2027-05-29",
+      "The Children: ingest The Times review the collision guard refused"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=blood-of-my-blood-west-end-2026 --url=https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review --critic=\"Stuart King\"",
+        "description": "London Box Office, Stuart King (4 stars); the slot held his flagged 2025 Juniper Blood review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "blood-of-my-blood-west-end-2026/standard--nick-curtis.json",
+        "destPath": "_superseded-misattributed/blood-of-my-blood-west-end-2026--standard--nick-curtis.json",
+        "description": "Retire the Standard stub: refetch abandoned with a stale url_content_mismatch verdict, no text"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=blood-of-my-blood-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html --critic=\"Nick Curtis\"",
+        "description": "Evening Standard, Nick Curtis (4 stars per Best of Theatre round-up)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "This file is The Stage's May 2025 Young Vic review, a prior production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "prior production: Young Vic, May 2025 (this show is The Other Palace, Oct 2026)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=an-oak-tree-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth --critic=\"Dave Fargnoli\"",
+        "description": "The Stage, Dave Fargnoli, Other Palace review (4 stars per Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=an-oak-tree-off-west-end-2026 --url=https://northwestend.com/an-oak-tree-the-other-palace/",
+        "description": "North West End, Alice Rose: the file is a stub, fill its text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "A 786-word review with a 4/5 JSON-LD rating; contentVerification itself says articleType review (high)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the false not-a-review rejection"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/boxofficeradio--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2024-07-09",
+        "newValue": "2026-10-09",
+        "description": "Page reads 09/10/2026; 2024-07-09 came from the station's radio-schedule sidebar"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/boxofficeradio--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Paul Scott",
+        "description": "Byline on the page: written by Paul Scott"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://firstnightmagazine.com/2026/10/09/review-of-from-the-heart-don-black-musical-revue-has-many-aspects-to-love/ --critic=\"Guillermo Nazara\"",
+        "description": "First Night Magazine, Guillermo Nazara (4 stars)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=from-the-heart-west-end-2026 --url=https://www.londontheatrereviews.co.uk/post.cfm?p=29339",
+        "description": "London Theatre Reviews"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rent-west-end-2026 --url=https://www.londontheatre1.com/reviews/rent-at-tom-stoppard-theatre-review/ --critic=\"Terry Eastham\"",
+        "description": "LondonTheatre1, Terry Eastham"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rent-west-end-2026 --url=https://musicaltheatrereview.com/rent-tom-stoppard-theatre/",
+        "description": "Musical Theatre Review"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rent-west-end-2026 --url=https://playsinternational.org.uk/rent-tom-stoppard-theatre/ --critic=\"Louise Penn\"",
+        "description": "Plays International, Louise Penn"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rent-west-end-2026 --url=https://westendwilma.com/review-rent-tom-stoppard-theatre/",
+        "description": "West End Wilma"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rent-west-end-2026 --url=https://www.londontheatrereviews.co.uk/post.cfm?p=29336",
+        "description": "London Theatre Reviews"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rent-west-end-2026 --url=https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa?syn-25a6b1a6=1 --critic=\"Sarah Hemming\"",
+        "description": "Financial Times, Sarah Hemming: the file is a stub, fill its text"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rent-west-end-2026",
+        "field": "closingDate",
+        "oldValue": "2027-02-13",
+        "newValue": "2027-05-29",
+        "description": "Extended before opening: booking until Saturday 29 May 2027 (BroadwayWorld and Best of Theatre round-ups, 9 Oct 2026)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "summer-1976-2023/broadwaynews--brittani-samuel.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Url is https://www.broadwaynews.com/review/ (the site's review index), scored 36; the corpus sweep for hub pages found it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "summer-1976-2023/broadwaynews--brittani-samuel.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "review index page (broadwaynews.com/review/), not one critic's review (BRO-4956)",
+        "description": "Reason for the non-review flag"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-children-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-children-review-pitch-perfect-fallout-from-a-knock-at-the-door-h9cv5vwv2",
+        "description": "The Times on The Children (Lyric Hammersmith 2026): refused against a flagged junk Times file"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T02:43:59.858Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved blood-of-my-blood-west-end-2026/standard--nick-curtis.json → _superseded-misattributed/blood-of-my-blood-west-end-2026--standard--nick-curtis.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json wrongProductionReason: null -> \"prior production: Young Vic, May 2025 (this show is The Other Palace, Oct 2026)\""
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=an-oak-tree-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth --critic=\"Dave Fargnoli\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/boxofficeradio--unknown.json publishDate: \"2024-07-09\" -> \"2026-10-09\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/boxofficeradio--unknown.json criticName: \"Unknown\" -> \"Paul Scott\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for rent-west-end-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/broadwaynews--brittani-samuel.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/broadwaynews--brittani-samuel.json isNonReviewReason: null -> \"review index page (broadwaynews.com/review/), not one critic's review (BRO-4956)\""
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-children-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-children-review-pitch-perfect-fallout-from-a-knock-at-the-door-h9cv5vwv2"
+    }
+  ]
+}

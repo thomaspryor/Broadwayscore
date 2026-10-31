@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-5229",
+  "planId": "8ff1ab58-54d8-4e94-be88-0135978524d7",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5229: mark Plaza Suite (2022 Broadway revival) recouped. Owner decision 2026-10-13: a forum post is an acceptable citation. No trade report exists; the BroadwayWorld forum thread on & Juliet recouping (June 11, 2024) lists Plaza Suite as recouped.",
+    "steps": [
+      "ErmengardeStopSniveling, BroadwayWorld forum, 2024-06-11: \"SWEENEY, MUSIC MAN, PLAZA SUITE, and WOODS definitely recouped.\" (OhHiii, same thread, same day, lists Plaza Suite among recouped shows.)",
+      "No recoupment date was reported; recoupedDate is 2022, an estimate from the limited run (Mar to Jul 2022), stated as such in recoupedSource (same convention as the-lion-king and chicago). Designation left TBD per designation-rule.js."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "plaza-suite-2022",
+        "entry": {
+          "designation": "TBD",
+          "recouped": true,
+          "recoupedDate": "2022",
+          "recoupedSource": "BroadwayWorld forum (Jun 11, 2024), & Juliet recoupment thread: \"SWEENEY, MUSIC MAN, PLAZA SUITE, and WOODS definitely recouped.\" No trade report gives the date; the 2022 date is an estimate (the limited run played Mar to Jul 2022).",
+          "notes": "Limited revival at the Hudson (Mar to Jul 2022) starring Sarah Jessica Parker and Matthew Broderick; broke the Hudson house record four times. Recoupment per forum report only; capitalization not reported.",
+          "sources": [
+            {
+              "type": "reddit",
+              "url": "https://forum.broadwayworld.com/thread/JULIET-Recoups-Its-Investment",
+              "date": "2024-06-11"
+            }
+          ]
+        },
+        "description": "plaza-suite-2022: recouped per BroadwayWorld forum citation (owner decision)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T05:16:59.492Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added plaza-suite-2022 (TBD)"
+    }
+  ]
+}

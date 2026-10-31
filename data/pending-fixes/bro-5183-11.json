@@ -1,0 +1,161 @@
+{
+  "issueNumber": "bro-5183-11",
+  "planId": "5b286e32-d012-4f13-868c-bf4985e36fb7",
+  "status": "applied",
+  "createdAt": "2026-10-13T02:10:30.547Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183: mark legacy web-search rows with an impossible outlet/critic pair as not real reviews (they stay excluded; evidence in each action).",
+    "steps": [
+      "stereophonic-2024/usatoday--charles-isherwood.json: isNonReview -> true",
+      "stereophonic-2024/usatoday--charles-isherwood.json: isNonReviewReason -> BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+      "stereophonic-2024/washpost--peter-marks.json: isNonReview -> true",
+      "stereophonic-2024/washpost--peter-marks.json: isNonReviewReason -> BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+      "tammy-faye-2024/times-uk--jesse-green.json: isNonReview -> true",
+      "tammy-faye-2024/times-uk--jesse-green.json: isNonReviewReason -> BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017",
+      "the-bands-visit-2017/guardian--jesse-green.json: isNonReview -> true",
+      "the-bands-visit-2017/guardian--jesse-green.json: isNonReviewReason -> BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017",
+      "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json: isNonReview -> true",
+      "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json: isNonReviewReason -> BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-). Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/washpost--peter-marks.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/washpost--peter-marks.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/times-uk--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Jesse Green has been chief theater critic of The New York Times since 2017. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/times-uk--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bands-visit-2017/guardian--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Jesse Green has been chief theater critic of The New York Times since 2017. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bands-visit-2017/guardian--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not a real review: legacy LLM web-search row whose outlet/critic pair is impossible. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck. Stored url does not resolve to a review; no aggregator lists it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck",
+        "description": "Reason for the isNonReview flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:07:22.292Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/washpost--peter-marks.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/washpost--peter-marks.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Peter Marks left The Washington Post on 2023-12-31 (Playbill, Broadway News); this show opened after that\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tammy-faye-2024/times-uk--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tammy-faye-2024/times-uk--jesse-green.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/guardian--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/guardian--jesse-green.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Jesse Green has been chief theater critic of The New York Times since 2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sign-in-sidney-brusteins-window-2023/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5183: invented web-search row. Angie Han is The Hollywood Reporter's TV critic; its Broadway reviews are by David Rooney and Frank Scheck\""
+    }
+  ]
+}

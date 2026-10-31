@@ -1,0 +1,286 @@
+{
+  "_meta": {
+    "card": "BRO-5018",
+    "status": "incomplete",
+    "researchedAt": "2026-10-29",
+    "minimumPairsPerEra": 10,
+    "eraBasis": "The era of asOfA, the earlier cost observation. Cross-era pairs count once, in their starting era. This is not the production's opening era.",
+    "dateBasis": "asOf describes the cost, reportedAt describes publication. Period averages use the documented period midpoint or end, explained in each source note. Neither dates nor amounts are extracted from URLs.",
+    "scope": "Public amounts and source paraphrases only. No source quotations. These are research observations, never model inputs or permission to enable datedCosts. Coverage alone cannot establish no-worse recoupment categories or zero new false recoupments.",
+    "caveat": "The long Phantom interval and the short Good Night budget-to-actual comparison are disclosed rather than treated as independent annual inflation measurements. Spider-Man pairs follow adjacent reported budget revisions, not every possible combination; production delays and redesign make these capitalization changes unlike annual running-cost inflation. Cabaret compares a preliminary budget with final reported capitalization. More dated observations are needed in every era. Dance of the Vampires also compares an early Broadway budget with mounted capitalization after a delayed opening. The Addams Family and Rocky compare early Broadway budgets with reported capitalization at opening; development changes are not isolated from inflation. These are not observations of the separate German Rocky production."
+  },
+  "pairs": [
+    {
+      "show": "the-phantom-of-the-opera-1988",
+      "era": "pre-2010",
+      "kind": "running-cost",
+      "currency": "USD",
+      "costBasis": "reported weekly running costs for the original Broadway production",
+      "asOfA": "1988-01-24",
+      "amountA": 375000,
+      "sourceA": {
+        "url": "https://www.washingtonpost.com/archive/lifestyle/style/1988/01/24/phantom/44b67604-8ed5-4706-a952-f87c802d6809/",
+        "sourceType": "producer-confirmed",
+        "publisher": "The Washington Post",
+        "reportedAt": "1988-01-24",
+        "dateBasis": "reported-current",
+        "confirmedBy": "Cameron Mackintosh",
+        "note": "Mackintosh's contemporary Broadway weekly running-cost statement."
+      },
+      "asOfB": "2023-04-13",
+      "amountB": 950000,
+      "sourceB": {
+        "url": "https://variety.com/2023/legit/news/phantom-of-the-opera-closing-broadway-come-back-cameron-mackintosh-1235580960/",
+        "sourceType": "trade",
+        "publisher": "Variety",
+        "reportedAt": "2023-04-13",
+        "dateBasis": "reported-current",
+        "note": "General manager Aaron Lustbader's current weekly cost; indexed Yahoo syndication also confirms this amount."
+      }
+    },
+    {
+      "show": "hamilton",
+      "era": "2010-2019",
+      "kind": "running-cost",
+      "currency": "USD",
+      "costBasis": "fixed weekly expenses excluding royalties and percentage rent",
+      "asOfA": "2016-02-01",
+      "amountA": 658000,
+      "sourceA": {
+        "url": "https://www.broadwayjournal.com/p/lavish-dolly-earns-modest-returns",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2018-08-23",
+        "dateBasis": "period-midpoint",
+        "note": "First-year average in the corrected article. February 2016 represents the midpoint of the first Broadway year, matching the researched seeds. The correction removes variable theater rent."
+      },
+      "asOfB": "2017-01-31",
+      "amountB": 643000,
+      "sourceB": {
+        "url": "https://www.broadwayjournal.com/p/hamilton-inc-update-creators-producers-clean-up-as-muzzled-cast-waits-for-it",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2018-04-25",
+        "dateBasis": "period-midpoint",
+        "note": "Annual fixed-expense average for the year ended July 2017. January 2017 represents that period's midpoint, matching the researched seeds. April 2018 is the publication date, not another cost observation."
+      }
+    },
+    {
+      "show": "good-night-and-good-luck-2025",
+      "era": "2020+",
+      "kind": "running-cost",
+      "currency": "USD",
+      "costBasis": "weekly operating costs before royalties, production budget versus run average",
+      "asOfA": "2025-04-30",
+      "amountA": 1000000,
+      "sourceA": {
+        "url": "https://www.broadwayjournal.com/p/inside-broadways-rocky-rebound",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2025-04-30",
+        "dateBasis": "reported-current",
+        "note": "Current operating-paper budget reported during the Broadway run. This is the production's budget, not a category estimate."
+      },
+      "asOfB": "2025-06-08",
+      "amountB": 1100000,
+      "sourceB": {
+        "url": "https://www.broadwayjournal.com/p/clooneys-broadway-windfall",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2026-03-31",
+        "dateBasis": "period-end",
+        "note": "Financial statements give the 13-week 2025 run average plus royalties. The cost date is the run's end, not March 2026. This checks budget fidelity over the run, not a year's inflation after closing."
+      }
+    },
+    {
+      "show": "spider-man-turn-off-the-dark",
+      "era": "pre-2010",
+      "kind": "capitalization",
+      "currency": "USD",
+      "costBasis": "reported total Broadway production budget, including successive revisions before and through opening",
+      "asOfA": "2009-08-14",
+      "amountA": 35000000,
+      "sourceA": {
+        "url": "https://playbill.com/article/playbillcoms-theatre-week-in-review-aug-8-14-web-of-intrigue-com-163558",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2009-08-14",
+        "dateBasis": "reported-current",
+        "note": "Contemporary reported Broadway production budget during the cash-flow stoppage. Publication date and amount verified in indexed article text; this is a show-specific budget, not a category estimate."
+      },
+      "asOfB": "2010-05-18",
+      "amountB": 50000000,
+      "sourceB": {
+        "url": "https://playbill.com/article/julie-taymor-talks-spider-man-com-191230",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2010-05-18",
+        "dateBasis": "reported-current",
+        "note": "Current Broadway production-cost estimate attributed to production executives in reporting on Taymor's New Dramatists appearance. Indexed article text supplies the date and amount; this is a later budget revision, not realized annual inflation."
+      }
+    },
+    {
+      "show": "spider-man-turn-off-the-dark",
+      "era": "2010-2019",
+      "kind": "capitalization",
+      "currency": "USD",
+      "costBasis": "reported total Broadway production budget, including successive revisions before and through opening",
+      "asOfA": "2010-05-18",
+      "amountA": 50000000,
+      "sourceA": {
+        "url": "https://playbill.com/article/julie-taymor-talks-spider-man-com-191230",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2010-05-18",
+        "dateBasis": "reported-current",
+        "note": "Current Broadway production-cost estimate attributed to production executives in reporting on Taymor's New Dramatists appearance. Indexed article text supplies the date and amount; this is a later budget revision, not realized annual inflation."
+      },
+      "asOfB": "2010-10-29",
+      "amountB": 65000000,
+      "sourceB": {
+        "url": "https://playbill.com/article/spider-man-actor-kevin-aubin-injured-at-group-sales-event-com-173166",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2010-10-29",
+        "dateBasis": "reported-current",
+        "note": "Current reported Broadway production budget during rehearsals, before the first preview. Date and amount verified in indexed article text."
+      }
+    },
+    {
+      "show": "spider-man-turn-off-the-dark",
+      "era": "2010-2019",
+      "kind": "capitalization",
+      "currency": "USD",
+      "costBasis": "reported total Broadway production budget, including successive revisions before and through opening",
+      "asOfA": "2010-10-29",
+      "amountA": 65000000,
+      "sourceA": {
+        "url": "https://playbill.com/article/spider-man-actor-kevin-aubin-injured-at-group-sales-event-com-173166",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2010-10-29",
+        "dateBasis": "reported-current",
+        "note": "Current reported Broadway production budget during rehearsals, before the first preview. Date and amount verified in indexed article text."
+      },
+      "asOfB": "2011-06-28",
+      "amountB": 75000000,
+      "sourceB": {
+        "url": "https://news.pollstar.com/2011/06/28/calculating-spider-man-costs/",
+        "sourceType": "trade",
+        "publisher": "Pollstar",
+        "reportedAt": "2011-06-28",
+        "dateBasis": "reported-current",
+        "note": "Current total production cost in reporting on recently released financial statements after the June opening. The article separately identifies weekly operating costs; this observation uses capitalization only."
+      }
+    },
+    {
+      "show": "cabaret-2024",
+      "era": "2020+",
+      "kind": "capitalization",
+      "currency": "USD",
+      "costBasis": "total Broadway capitalization, preliminary budget versus final reported investment",
+      "asOfA": "2023-09-20",
+      "amountA": 24250000,
+      "sourceA": {
+        "url": "https://www.broadwayjournal.com/p/cabaret-at-24-million-is-broadways-costliest-revival-exclusive",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2023-09-20",
+        "dateBasis": "reported-current",
+        "note": "Preliminary Broadway budget and recoupment chart reviewed by the reporter. Uses the full capitalization, not the smaller recoupment basis excluding reserves, deposits and advances."
+      },
+      "asOfB": "2025-09-21",
+      "amountB": 24250000,
+      "sourceB": {
+        "url": "https://www.broadwayjournal.com/p/cabaret-producers-investor-tried-to-extort-us",
+        "sourceType": "trade",
+        "publisher": "Broadway Journal",
+        "reportedAt": "2025-09-25",
+        "dateBasis": "period-end",
+        "note": "Final Broadway capitalization reported as entirely lost after the production closed the preceding Sunday. The cost date is the run's end. This is a budget-to-final comparison, not a claim of new capitalization spending at closing."
+      }
+    },
+    {
+      "show": "dance-of-the-vampires-2002",
+      "era": "pre-2010",
+      "kind": "capitalization",
+      "currency": "USD",
+      "costBasis": "total Broadway production budget, pre-rehearsal plan versus mounted capitalization",
+      "asOfA": "2001-10-05",
+      "amountA": 10000000,
+      "sourceA": {
+        "url": "https://playbill.com/article/dance-of-the-vampires-wont-reach-minskoff-till-oct-2002-com-98991",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2001-10-05",
+        "dateBasis": "reported-current",
+        "note": "Broadway budget reported alongside producer David Sonenberg's plan to bypass a regional tryout. Uses the Broadway amount, not the separate Vienna budget. Date and amount verified in indexed article text."
+      },
+      "asOfB": "2003-01-14",
+      "amountB": 12000000,
+      "sourceB": {
+        "url": "https://playbill.com/article/dance-of-the-vampires-to-close-on-broadway-jan-25-com-111015",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2003-01-14",
+        "dateBasis": "reported-current",
+        "note": "Mounted Broadway capitalization reported when closing was announced. The article identifies the December 9 opening and distinguishes this production from European incarnations. Date and amount verified in indexed article text."
+      }
+    },
+    {
+      "show": "the-addams-family-2010",
+      "era": "pre-2010",
+      "kind": "capitalization",
+      "currency": "USD",
+      "costBasis": "reported capitalization budget for the original Broadway production, from development to opening",
+      "asOfA": "2007-05-22",
+      "amountA": 10000000,
+      "sourceA": {
+        "url": "https://www.comicsbeat.com/studio-briefing-2-addams-family-to-bway/",
+        "sourceType": "trade",
+        "publisher": "The Beat",
+        "reportedAt": "2007-05-22",
+        "dateBasis": "reported-current",
+        "note": "Heidi MacDonald reports the planned Broadway musical budget when announcing the adaptation. This is an early production budget, not money confirmed spent."
+      },
+      "asOfB": "2010-04-09",
+      "amountB": 16500000,
+      "sourceB": {
+        "url": "https://playbill.com/article/playbillcoms-theatre-week-in-review-april-3-9-addams-and-tenor-open-on-broadway-com-167534",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2010-04-09",
+        "dateBasis": "reported-current",
+        "note": "Robert Simonson reports the mounted Broadway musical capitalization in the opening-week roundup. The separate $15 million figure is advance ticket sales, not capitalization. Verified in indexed article text."
+      }
+    },
+    {
+      "show": "rocky-2014",
+      "era": "2010-2019",
+      "kind": "capitalization",
+      "currency": "USD",
+      "costBasis": "reported capitalization budget for the original Broadway production, from announcement to opening",
+      "asOfA": "2013-04-28",
+      "amountA": 15000000,
+      "sourceA": {
+        "url": "https://www.broadwayworld.com/article/Its-Official-ROCKY-The-Musical-is-Headed-to-Broadways-Winter-Garden-Theatre-20130428",
+        "sourceType": "producer-confirmed",
+        "publisher": "BroadwayWorld",
+        "reportedAt": "2013-04-28",
+        "dateBasis": "reported-current",
+        "confirmedBy": "Bill Taylor, Stage Entertainment USA",
+        "note": "Robert Diamond relays the New York Times report attributing the approximate Broadway production budget to Taylor. It explicitly describes the Broadway version, not the earlier Hamburg production."
+      },
+      "asOfB": "2014-03-13",
+      "amountB": 16500000,
+      "sourceB": {
+        "url": "https://playbill.com/article/playbill-on-opening-night-rocky-ringside-at-the-winter-garden-com-216058",
+        "sourceType": "trade",
+        "publisher": "Playbill",
+        "reportedAt": "2014-03-14",
+        "dateBasis": "period-end",
+        "note": "Harry Haun reports the Broadway musical capitalization at its March 13 opening, in an article published the following day. This ends the pre-opening budget period. Verified in indexed article text."
+      }
+    }
+  ]
+}

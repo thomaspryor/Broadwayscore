@@ -1,0 +1,56 @@
+{
+  "outletId": "the-komisar-scoop",
+  "generatedAt": "2026-10-28T20:42:44.379Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 216,
+    "inWindow": 216,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "not-review": 170,
+      "held": 45,
+      "gap": 1
+    },
+    "viaTitleVariant": {},
+    "recall": 0.978,
+    "recallWithCatalog": 0.978
+  },
+  "corpusSide": {
+    "rowsInWindow": 144,
+    "notEnumerated": 1,
+    "noUrl": 0,
+    "samples": [
+      {
+        "showId": "n-a-off-broadway-2024",
+        "url": "https://www.thekomisarscoop.com/2024/06/n-a-smart-debate-on-ideology-and-politics-politics-between-nancy-pelosi-and-aoc/",
+        "publishDate": "2024-06-28",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://www.thekomisarscoop.com/2024/10/claude-ai-distorted-my-review-of-mcneal-of-playwrightr-using-ai/",
+      "headline": "Claude AI distorted my review of “McNeal,” of playwright using AI",
+      "publishDate": "2024-10-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mcneal-2024"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [],
+  "misfiles": [],
+  "heldUnmatched": [],
+  "ambiguous": [],
+  "catalogGaps": [],
+  "outOfWindow": []
+}
