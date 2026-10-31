@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T19:06:48.468Z",
+  "generatedAt": "2026-10-31T19:30:32.187Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,24 +7,26 @@
   "clean": 300,
   "defective": 1,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "antigone-tron-regional-2026",
-      "title": "Antigone",
-      "openingDate": "2026-09-24",
+      "showId": "four-quartets-royal-bath-regional-2026",
+      "title": "Four Quartets",
+      "openingDate": "2026-08-25",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 82.3 vs local 82.93 (Δ0.63)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: artsdesk"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-10-31T19:06:44.907Z"
+      "missingFromProd": [
+        "artsdesk"
+      ],
+      "localCount": 1,
+      "deployedCount": 0,
+      "firstDefectAt": "2026-10-31T19:30:25.803Z"
     }
   ],
   "persistentDefective": 0,
