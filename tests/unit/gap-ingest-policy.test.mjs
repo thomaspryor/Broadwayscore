@@ -91,7 +91,7 @@ describe('ingestBlockReason — WE gate parity for non-priorRun rows', () => {
     for (const weRef of [true, false]) {
       for (const showIsWe of [true, false]) {
         for (const weGateOn of [true, false]) {
-          const m = { weRef };
+          const m = { weRef, knownOutletId: 'nytimes' };
           assert.equal(
             ingestBlockReason(m, { showIsWe, weGateOn }) !== null,
             !!oldPred(m, showIsWe, weGateOn),
@@ -103,7 +103,7 @@ describe('ingestBlockReason — WE gate parity for non-priorRun rows', () => {
   });
 
   test('plain Broadway current-run URL is ingestable', () => {
-    assert.equal(ingestBlockReason({}, { showIsWe: false, weGateOn: false }), null);
+    assert.equal(ingestBlockReason({ knownOutletId: 'nytimes' }, { showIsWe: false, weGateOn: false }), null);
   });
 });
 
@@ -123,7 +123,7 @@ describe('ingestBlockReason — per-aggregator trust (2026-07-11)', () => {
   test('one trusted citing source is enough to ingest', () => {
     assert.equal(
       ingestBlockReason(
-        { weRef: true, weRefSources: ['theatre-reviews', 'westendtheatre'] },
+        { knownOutletId: 'nytimes', weRef: true, weRefSources: ['theatre-reviews', 'westendtheatre'] },
         { ...gateOn, lowTrustSources: new Set(['theatre-reviews']) }
       ),
       null
@@ -131,16 +131,16 @@ describe('ingestBlockReason — per-aggregator trust (2026-07-11)', () => {
   });
 
   test('fail-open: no trust data / no source attribution / non-weRef rows are never low-trust blocked', () => {
-    assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, { ...gateOn, lowTrustSources: new Set() }), null);
-    assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, gateOn), null);
-    assert.equal(ingestBlockReason({ weRef: true }, { ...gateOn, lowTrustSources: new Set(['theatre-reviews']) }), null);
-    assert.equal(ingestBlockReason({}, { showIsWe: false, weGateOn: false, lowTrustSources: new Set(['theatre-reviews']) }), null);
+    assert.equal(ingestBlockReason({ knownOutletId: 'nytimes', weRef: true, weRefSources: ['theatre-reviews'] }, { ...gateOn, lowTrustSources: new Set() }), null);
+    assert.equal(ingestBlockReason({ knownOutletId: 'nytimes', weRef: true, weRefSources: ['theatre-reviews'] }, gateOn), null);
+    assert.equal(ingestBlockReason({ knownOutletId: 'nytimes', weRef: true }, { ...gateOn, lowTrustSources: new Set(['theatre-reviews']) }), null);
+    assert.equal(ingestBlockReason({ knownOutletId: 'nytimes' }, { showIsWe: false, weGateOn: false, lowTrustSources: new Set(['theatre-reviews']) }), null);
   });
 
   test('precedence: prior-run and gate-off outrank low-trust', () => {
     const ctx = { showIsWe: true, weGateOn: false, lowTrustSources: new Set(['theatre-reviews']) };
     assert.equal(ingestBlockReason({ weRef: true, priorRun: true, weRefSources: ['theatre-reviews'] }, { ...ctx, weGateOn: true }), 'prior-run');
-    assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, ctx), 'we-gate-off');
+    assert.equal(ingestBlockReason({ knownOutletId: 'nytimes', weRef: true, weRefSources: ['theatre-reviews'] }, ctx), 'we-gate-off');
   });
 });
 
@@ -210,21 +210,21 @@ describe('isUrlYearOutOfWindow (BRO-1412 — Show Score / other URL-only discove
 describe('ingestBlockReason — SERP census gate (#371, ship-check 2026-07-24)', () => {
   test('Broadway-market serpCensus row is blocked by default (gate off)', () => {
     assert.equal(
-      ingestBlockReason({ serpCensus: true }, { showIsWe: false, weGateOn: false, serpCensusGateOn: false }),
+      ingestBlockReason({ knownOutletId: 'nytimes', serpCensus: true }, { showIsWe: false, weGateOn: false, serpCensusGateOn: false }),
       'serp-census-gate-off'
     );
   });
 
   test('serpCensus row ingests once SERP_CENSUS_INGEST is on', () => {
     assert.equal(
-      ingestBlockReason({ serpCensus: true }, { showIsWe: false, weGateOn: false, serpCensusGateOn: true }),
+      ingestBlockReason({ knownOutletId: 'nytimes', serpCensus: true }, { showIsWe: false, weGateOn: false, serpCensusGateOn: true }),
       null
     );
   });
 
   test('WE show serpCensus row is blocked by the WE gate first, independent of the SERP census gate', () => {
     assert.equal(
-      ingestBlockReason({ serpCensus: true }, { showIsWe: true, weGateOn: false, serpCensusGateOn: true }),
+      ingestBlockReason({ knownOutletId: 'nytimes', serpCensus: true }, { showIsWe: true, weGateOn: false, serpCensusGateOn: true }),
       'we-gate-off'
     );
   });
@@ -237,6 +237,35 @@ describe('ingestBlockReason — SERP census gate (#371, ship-check 2026-07-24)',
   });
 
   test('non-serpCensus Broadway rows are unaffected by the new gate', () => {
-    assert.equal(ingestBlockReason({}, { showIsWe: false, weGateOn: false, serpCensusGateOn: false }), null);
+    assert.equal(ingestBlockReason({ knownOutletId: 'nytimes' }, { showIsWe: false, weGateOn: false, serpCensusGateOn: false }), null);
+  });
+});
+
+describe('ingestBlockReason — unregistered host (BRO-6685)', () => {
+  const ctx = { showIsWe: false, weGateOn: false, serpCensusGateOn: true };
+
+  test('globalnews2.xyz scraper copy (no outlet-registry domain) is refused even with the census gate on', () => {
+    const m = {
+      url: 'https://globalnews2.xyz/a-few-good-men-broadway-review-bradley-whitford-and-tom-blyth-handle-the-truth/',
+      host: 'globalnews2.xyz', knownOutletId: null, serpCensus: true,
+    };
+    assert.equal(ingestBlockReason(m, ctx), 'unregistered-host');
+  });
+
+  test('aggregator-listed (non-census) unregistered host is refused too: no auto-registration', () => {
+    assert.equal(ingestBlockReason({ host: 'ctvoice.example', knownOutletId: null }, ctx), 'unregistered-host');
+  });
+
+  test('a flaggedMiss with a held file outletId is recovery, not a new registration', () => {
+    assert.equal(ingestBlockReason({ knownOutletId: null, recoverableOutletId: 'ctvoice' }, ctx), null);
+  });
+
+  test('a registered host still ingests', () => {
+    assert.equal(ingestBlockReason({ host: 'nytimes.com', knownOutletId: 'nytimes', serpCensus: true }, ctx), null);
+  });
+
+  test('earlier reasons keep precedence over unregistered-host', () => {
+    assert.equal(ingestBlockReason({ priorRun: true, knownOutletId: null }, ctx), 'prior-run');
+    assert.equal(ingestBlockReason({ serpCensus: true, knownOutletId: null }, { ...ctx, serpCensusGateOn: false }), 'serp-census-gate-off');
   });
 });

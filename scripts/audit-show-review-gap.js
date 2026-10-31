@@ -2527,6 +2527,8 @@ async function main(argv = process.argv.slice(2)) {
     // INGEST_PER_SHOW_CAP scraper credits in a single hourly run.
     let perShowFetches = 0;
     if (ingestMissing && r.missing.length > 0) {
+      // BRO-6685: unregistered hosts are now blocked in ingestBlockReason ('unregistered-host');
+      // the 2026-06-05 auto-onboard below only runs for a recoverable/registered row.
       // Auto-onboard 2026-06-05: ingest ALL missing URLs, not just registry-known
       // outlets. Unknown outlets are captured under a domain-derived provisional
       // slug (ingestMissingUrl) instead of being skipped — that skip lost the
@@ -2557,7 +2559,7 @@ async function main(argv = process.argv.slice(2)) {
       if (weBlocked.length > 0) {
         r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }), censusGateOn: serpCensusGateOn }));
         const nPrior = weBlocked.filter(isPriorProductionCitation).length;
-        console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
+        console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} gated (WE_GAP_INGEST / SERP_CENSUS_INGEST unset, or unregistered host) — report-only mode` : ''})`);
       }
       const ingestable = eligibleMissing.slice(0, INGEST_PER_SHOW_CAP);
       // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs so future runs

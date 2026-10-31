@@ -44,7 +44,7 @@ function currentRunUncollected(r, { isCollectable = defaultCollectable, ignoreCe
   // the gate ON, a we-gate-off hold is a real pending gap and still counts).
   const censusUrls = new Set((r.missing || []).filter(m => m && m.serpCensus).map(m => m.url));
   const reportOnly = new Set((r.weIngestBlocked || [])
-    .filter(x => x.reason === 'serp-census-gate-off' || (censusUrls.has(x.url) && !x.censusGateOn)).map(x => x.url));
+    .filter(x => x.reason === 'serp-census-gate-off' || x.reason === 'unregistered-host' || (censusUrls.has(x.url) && !x.censusGateOn)).map(x => x.url));
   const missing = currentRunOnly(r.missing)
     .filter(m => !resolved.has(m.url) && !reportOnly.has(m.url) && !(ignoreCensusTagged && m.serpCensus) && isCollectable(m)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
