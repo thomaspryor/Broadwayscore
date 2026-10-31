@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-10-31T01:30:03.290Z",
-    "endedAt": null,
+    "endedAt": "2026-10-31T08:00:50.617Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-10-31T03:55:09.210Z",
-    "lastOkSampleAt": "2026-10-31T03:55:09.210Z"
+    "lastSampleAt": "2026-10-31T07:57:26.601Z",
+    "lastOkSampleAt": "2026-10-31T07:57:26.601Z"
   },
   "firstLiveAt": null,
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 0,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 0,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-10-31T03:00:07.083Z",
-    "2h": null,
+    "2h": "2026-10-31T04:07:17.597Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -54,6 +54,24 @@
       "liveCount": 0,
       "fetchedAt": "2026-10-31T04:00:23.732Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "incomplete",
+      "source": [
+        "dtli",
+        "show-score"
+      ],
+      "count": 2,
+      "covered": 0,
+      "coverage": 0,
+      "missing": [
+        "nytimes",
+        "a-younger-theatre"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-10-31T08:00:22.250Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -66,11 +84,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-10-31T08:00:22.334Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-10-31T04:00:31.622Z",
+    "capturedAt": "2026-10-31T08:00:50.543Z",
     "files": [
       {
         "file": "a-younger-theatre--simon-holton.json",
@@ -79,7 +103,7 @@
         "critic": "Simon Holton",
         "firstSeenAt": "2026-10-30T17:31:44.716Z",
         "scoredAt": "2026-10-30T17:54:08.734Z",
-        "publishDate": null,
+        "publishDate": "June 2nd, 2013",
         "includable": false,
         "reason": "wrongProduction",
         "syndicatedUnder": null
