@@ -1371,7 +1371,7 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
 # are denied in cloud (block-prompting-remote-tools.sh: each prompts the
 # owner's phone), so the wake must come from something already running:
 # a background Bash or Monitor without a completion notice, a background
-# Agent, a started session (it reports back), a self-bound Routine the owner
+# Agent, a started session (plus CHILDWATCH below), a self-bound Routine the owner
 # asked for, or a PR subscription. A NOT SAFE that waits on the owner
 # (DECISION NEEDED:, or a "You need to:" line that is not "nothing") needs no
 # wake. Kill switch WAKELESS_GATE_DISABLE=1. Fail-open.
