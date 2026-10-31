@@ -2,6 +2,10 @@
 
 ## Purpose
 
+London follow-up: [BRO-6488 coverage recheck](outlet-census-london-recheck.md)
+records the October 31 saved-gap presence audit, per-season counts and missing
+outlet inventory. London enumeration and vetted-gap ingestion remain incomplete.
+
 Every other coverage audit starts from what we already know about (aggregator pages, pollers, files we hold). The census starts from the outlet instead. It asks each outlet for every theater review it has published since 2021-06-01, matches each one to a show, and diffs that list against our corpus. A review nobody cited and no poller found shows up here as a gap.
 
 It does two jobs. It fills coverage gaps, and it exposes pipeline bugs: show-matching errors, misfiled reviews, catalog gaps (NYC productions we have no show for), and outlets the pipeline cannot read at all.
