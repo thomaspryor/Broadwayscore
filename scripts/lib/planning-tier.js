@@ -4,7 +4,7 @@
 //   substantial = plan + /plan-review + owner yes   (a new system is a product decision)
 //   moderate    = quick /second-opinion              (nudge only, never blocks)
 //   simple      = go
-// Pure decision functions; the PreToolUse hook (.claude/hooks/planning-tier-advisory.sh)
+// Pure decision functions; the PreToolUse hook (.claude/hooks/planning-tier-hook.js)
 // feeds them facts from git. Tested by scripts/tests/planning-tier.test.mjs.
 
 const { findFreshPlanVerdict, VERDICT_TTL_MS } = require('./infra-review-scope.js');
