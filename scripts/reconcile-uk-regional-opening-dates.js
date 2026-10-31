@@ -50,6 +50,8 @@ if (require.main === module) {
       const base = { type: 'data-edit', file: 'shows.json', showId: m.show.id };
       actions.push({ ...base, field: 'openingDate', newValue: m.openingDate, description: `Earliest review is ${m.gapDays}d before the review-seeded opening date` });
       actions.push({ ...base, field: 'openingDateSource', newValue: m.openingDateSource, description: 'Opening date now the earliest review date (unconfirmed upper bound)' });
+      // openingDate edits stamp a human pin that would block later press-night sources: clear it.
+      actions.push({ ...base, field: 'humanCorrectedOpeningDate', newValue: null, description: 'Clear the pin so Playbill/theatremonkey press-night dates can still refine this date' });
     }
     const file = path.join(os.tmpdir(), `reconcile-opening-${process.pid}.json`);
     fs.writeFileSync(file, JSON.stringify(actions));
