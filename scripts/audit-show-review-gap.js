@@ -2662,7 +2662,7 @@ async function main(argv = process.argv.slice(2)) {
       const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && recBlockedPred(m));
       if (weRecBlocked.length > 0) {
         const nPrior = weRecBlocked.filter(isPriorProductionCitation).length;
-        console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered (${nPrior} prior-production — permanently report-only${nPrior < weRecBlocked.length ? `; ${weRecBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
+        console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered (${nPrior} prior-production — permanently report-only${nPrior < weRecBlocked.length ? `; ${weRecBlocked.length - nPrior} gated (WE_GAP_INGEST unset or unregistered host) — report-only mode` : ''})`);
       }
       // A blocklisted url is a terminal skip (BRO-3403); dropping it here, before
       // the budget slice, keeps it from holding a per-show fetch slot every run.
