@@ -946,3 +946,10 @@ test('hasApprovedFlag: excerpt churn and whitespace re-cleans keep a bound appro
   const ex = applyReviewFieldEdit({ url: 'https://example.com/b', dtliExcerpt: 'x' }, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
   assert.equal(hasApprovedFlag({ ...ex.record, playbillExcerpt: 'later excerpt' }, 'wrongShow'), true, 'later aggregator excerpt');
 });
+
+test('hasApprovedFlag: a cosmetic url swap (https, www, tracking params) keeps a bound approval', () => {
+  const { hasApprovedFlag } = require('./review-field-edit.js');
+  const res = applyReviewFieldEdit({ url: 'http://www.example.com/a/', fullText: 'Body text.' }, { field: 'wrongShow', oldValue: null, newValue: true }, stamp);
+  assert.equal(hasApprovedFlag({ ...res.record, url: 'https://example.com/a?utm_source=x' }, 'wrongShow'), true);
+  assert.equal(hasApprovedFlag({ ...res.record, url: 'https://example.com/b' }, 'wrongShow'), false);
+});

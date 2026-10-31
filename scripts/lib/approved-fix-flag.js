@@ -18,7 +18,11 @@ const crypto = require('crypto');
  */
 function approvedFixBinding(record) {
   const r = record || {};
-  const url = typeof r.url === 'string' ? r.url.trim() : '';
+  // Scheme, www, query, fragment and trailing slash are cosmetic: an https upgrade
+  // or tracking parameter is the same article (url-change-invariant agrees).
+  const url = typeof r.url === 'string'
+    ? r.url.trim().replace(/^https?:\/\/(?:www\.)?/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase()
+    : '';
   const text = typeof r.fullText === 'string' ? r.fullText.replace(/\s+/g, ' ').trim().toLowerCase() : '';
   // Aggregator excerpts and metaExcerpt churn on their own (DTLI, Playbill, a
   // refresh) without changing what the human judged, so a record with no body

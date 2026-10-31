@@ -219,7 +219,7 @@ function aggregatorGapHold(result, nowMs = Date.now(), env = process.env) {
   const at = Date.parse(result.computedAt || '');
   if (!at || nowMs - at > GAP_AUDIT_MAX_AGE_HOURS * 3600000) return { hold: false, missing: [], reason: 'gap audit is stale' };
   // priorRun entries cite earlier productions (a 2019 run, a London URL), not this one.
-  const missing = [...new Set(result.missing.filter(m => m && !m.serpCensus && !m.priorRun).map(m => m.knownOutletId || m.host || m.url))];
+  const missing = [...new Set(result.missing.filter(m => m && !m.serpCensus && !m.priorRun && m.knownOutletId).map(m => m.knownOutletId || m.host || m.url))];
   return missing.length
     ? { hold: true, missing, reason: `aggregator roundups list ${missing.length} outlet review(s) we don't display: ${missing.join(', ')}` }
     : { hold: false, missing: [], reason: 'aggregator roundups fully covered' };
@@ -892,12 +892,12 @@ const PRONOUN = /\b(he|she)\b/i; // subject pronouns only: "calling his voice" i
 function claimProblems(draft, facts) {
   const out = [];
   const people = [facts.bestQuotes, facts.worstQuotes, [facts.loneDissenter]].flat().filter(Boolean)
-    .flatMap(c => [c.critic, c.outlet]).filter(Boolean).map(n => String(n).toLowerCase());
+    .map(c => c.critic).filter(Boolean).map(n => String(n).toLowerCase()); // critics only: "he" after an outlet name is usually an actor
   for (const [where, text] of [['title', draft.title], ['body', draft.body], ['suggestedReply', draft.suggestedReply]]) {
     const mixedZero = Number(facts && facts.buckets && facts.buckets.mixed) === 0;
     const claimText = text.replace(/https?:\/\/\S+/g, '')
       // A true count in a list of counts ("..., zero mixed, zero negative") is not a claim.
-      .replace(mixedZero ? /\b(?:zero|0)\s+mixed\b(?=\s*(?:,|and\b|\.|$))/gi : /$^/, '');
+      .replace(mixedZero ? /\b(?:zero|0)\s+mixed\b(?=\s*(?:,|and\b|or\b|\.|$))/gim : /$^/, '');
     if (NO_MIXED_CLAIM.test(claimText)) out.push(`${where} claims there are no mixed reviews; describe what critics wrote instead`);
     for (const sent of text.split(/(?<=[.!?])\s+/)) {
       if (PRONOUN.test(sent) && people.some(n => sent.toLowerCase().includes(n))) {

@@ -238,11 +238,14 @@ async function main() {
   for (const c of candidates) {
     const prevDraft = drafts.drafts[c.show.id];
     const gate = lib.aggregatorGapHold(gapByShow.get(c.show.id));
+    if (!gate.hold && prevDraft && prevDraft.heldGap) delete prevDraft.heldGap; // gap closed: release
     if (gate.hold && !FORCE_SHOW) {
       console.log(`  ${c.show.id}: HELD, ${gate.reason}`);
-      // An already-ready draft would still be emailed as postable.
-      if (prevDraft && prevDraft.status === 'ready') {
-        drafts.drafts[c.show.id] = { ...prevDraft, status: 'held-gap', heldReason: gate.reason, heldAt: new Date().toISOString() };
+      // A ready draft nobody has been emailed yet would go out as postable. The flag
+      // (status stays 'ready' so digest and due-date readers are unaffected) is dropped
+      // when the next clean run redrafts it, because carryOverState does not copy it.
+      if (prevDraft && prevDraft.status === 'ready' && !prevDraft.emailedAt) {
+        drafts.drafts[c.show.id] = { ...prevDraft, heldGap: { reason: gate.reason, at: new Date().toISOString() } };
       }
       continue;
     }

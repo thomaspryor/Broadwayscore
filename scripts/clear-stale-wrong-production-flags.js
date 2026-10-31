@@ -429,7 +429,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     if (data.wrongProduction !== true) continue; // cleared by someone else meanwhile
     // BRO-5000: a plan/human flag outranks this script's clear (An Oak Tree, Time Out:
     // flag set 2026-10-11 after this script cleared it 2026-10-10 and kept it counted).
-    if (Array.isArray(data.approvedFixes) && data.approvedFixes.some((f) => f && f.field === 'wrongProduction' && f.newValue !== false)) continue;
+    if (require('./lib/approved-fix-flag').hasApprovedFlag(data, 'wrongProduction')) continue; // bound to the url/body it judged (BRO-6676)
     // The judged text changed since the scan (re-fetch meanwhile): leave it
     // for the next run rather than clear on a verdict about other text.
     // Re-classify the fresh record too: an operator reason, ensemble rejection

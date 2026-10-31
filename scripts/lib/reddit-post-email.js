@@ -28,6 +28,7 @@ function dueEmails(drafts, nowMs) {
   const canUpdate = !(drafts && drafts._meta && drafts._meta.postedDetection === 'skipped');
   for (const d of activeDrafts(drafts, nowMs)) {
     if (!isComplete(d)) continue;
+    if (d.heldGap) continue; // BRO-6676: aggregator gap hold
     if (!d.emailedAt) out.push({ draft: d, kind: 'new' });
     else if (canUpdate && numbersMoved(d) && updateAllowed(d, nowMs)) out.push({ draft: d, kind: 'update' });
     else if (!d.reminderAt && (nowMs - Date.parse(d.emailedAt)) / 3600000 >= REMIND_AFTER_HOURS) out.push({ draft: d, kind: 'reminder' });
@@ -49,6 +50,7 @@ function resendEmails(drafts, ids) {
     const d = all[id];
     if (!d) skipped.push({ showId: id, reason: 'no draft' });
     else if (d.status !== 'ready') skipped.push({ showId: id, reason: d.status === 'posted' ? 'already posted' : `status ${d.status}` });
+    else if (d.heldGap) skipped.push({ showId: id, reason: `held: ${d.heldGap.reason}` });
     else if (!isComplete(d)) skipped.push({ showId: id, reason: 'incomplete draft' });
     else due.push({ draft: d, kind: 'new' });
   }

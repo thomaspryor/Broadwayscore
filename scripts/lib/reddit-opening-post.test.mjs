@@ -718,3 +718,26 @@ test('aggregatorGapHold: priorRun entries and duplicates do not hold (BRO-6676 r
   const r = { computedAt: new Date().toISOString(), missing: [{ knownOutletId: 'x', priorRun: true }, { knownOutletId: 'nyt' }, { knownOutletId: 'nyt' }] };
   assert.deepEqual(lib.aggregatorGapHold(r).missing, ['nyt']);
 });
+
+test('claimProblems: "zero mixed" across a line break or "zero mixed or negative" passes; outlet-name pronoun passes (BRO-6676 ship-check)', () => {
+  const facts = { buckets: { mixed: 0 }, bestQuotes: [{ critic: 'Jesse Green', outlet: 'The New York Times' }], worstQuotes: [] };
+  const run = (t) => lib.claimProblems({ title: 't', body: t, suggestedReply: '' }, facts);
+  assert.deepEqual(run('3 positive, zero mixed\n\nThe raves lead.'), []);
+  assert.deepEqual(run('zero mixed or negative.'), []);
+  assert.deepEqual(run('The New York Times loved Jason Tam, saying he owns the stage.'), []);
+});
+
+test('aggregatorGapHold: only registered outlets hold, a blog with no outlet id does not', () => {
+  const r = { computedAt: new Date().toISOString(), missing: [{ knownOutletId: null, host: 'someblog.com' }, { knownOutletId: 'nyt' }] };
+  assert.deepEqual(lib.aggregatorGapHold(r).missing, ['nyt']);
+});
+
+test('BRO-6676: a draft held for an aggregator gap is not emailed or resent', () => {
+  const now = Date.now();
+  const base = { status: 'ready', title: 't', body: 'b', subreddit: 'x', submitUrl: 'u', showTitle: 'S', score: 80, createdAt: new Date(now).toISOString() };
+  const held = { drafts: { s: { ...base, showId: 's', heldGap: { reason: 'gap' } } } };
+  const free = { drafts: { s: { ...base, showId: 's' } } };
+  assert.equal(mail.dueEmails(held, now).length, 0);
+  assert.equal(mail.resendEmails(held, ['s']).due.length, 0);
+  assert.equal(mail.dueEmails(free, now).length, 1, 'without the flag the same draft is due');
+});
