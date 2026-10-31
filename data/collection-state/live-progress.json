@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T15:47:59.986Z",
-  "processed": 219,
-  "failed": 100,
-  "successRate": "68.7%",
+  "updatedAt": "2026-10-31T15:58:46.110Z",
+  "processed": 228,
+  "failed": 52,
+  "successRate": "81.4%",
   "tierBreakdown": {
-    "playwright": 113,
-    "amp": 0,
-    "browserbase": 4,
+    "playwright": 114,
+    "amp": 16,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 19,
-    "scrapingbee": 6,
-    "brightdata": 0,
-    "archiveToday": 16,
-    "archive": 61
+    "scrapingdog": 3,
+    "scrapingbee": 5,
+    "brightdata": 6,
+    "archiveToday": 22,
+    "archive": 90
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-10-31T15:38:08.536Z",
@@ -35,6 +35,61 @@
     },
     {
       "t": "2026-10-31T15:39:34.254Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T15:29:16.388Z",
+      "event": "bb-session",
+      "session": "881ef61f",
+      "url": "http://www.nytimes.com/2016/01/29/theater/review-sojourners-about-nigerians-assi"
+    },
+    {
+      "t": "2026-10-31T15:29:17.019Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T15:33:51.354Z",
+      "event": "bb-session",
+      "session": "79f004c8",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/these-paper-bullets"
+    },
+    {
+      "t": "2026-10-31T15:33:51.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-31T15:34:03.704Z",
+      "event": "bb-session",
+      "session": "e354c606",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/these-paper-bullets"
+    },
+    {
+      "t": "2026-10-31T15:34:04.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-31T15:35:08.421Z",
+      "event": "bb-session",
+      "session": "68017e70",
+      "url": "http://www.nytimes.com/2015/12/16/theater/review-in-these-paper-bullets-a-chance"
+    },
+    {
+      "t": "2026-10-31T15:35:09.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T15:55:24.436Z",
+      "event": "bb-session",
+      "session": "b92ec7e5",
+      "url": "http://www.nytimes.com/2015/12/03/theater/review-in-invisible-thread-a-gay-new-y"
+    },
+    {
+      "t": "2026-10-31T15:55:25.118Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
