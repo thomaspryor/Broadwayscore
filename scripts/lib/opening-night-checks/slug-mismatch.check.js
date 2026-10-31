@@ -246,6 +246,7 @@ function buildMentionRegex(show, opts) {
  */
 function loadSourceTextByUrl(reviewTextsRoot, showId) {
   const byUrl = new Map();
+  byUrl.fullTexts = new Map();
   if (!reviewTextsRoot) return byUrl;
   const dir = path.join(reviewTextsRoot, showId);
   let files;
@@ -257,6 +258,9 @@ function loadSourceTextByUrl(reviewTextsRoot, showId) {
     const segments = [d.fullText, d.bwwExcerpt, d.dtliExcerpt, d.showScoreExcerpt, d.pullQuote]
       .filter(t => typeof t === 'string' && t);
     byUrl.set(d.url, (byUrl.get(d.url) || []).concat(segments));
+    if (typeof d.fullText === 'string' && d.fullText && !d.isRoundupArticle) {
+      byUrl.fullTexts.set(d.url, (byUrl.fullTexts.get(d.url) || []).concat(d.fullText));
+    }
   }
   return byUrl;
 }
@@ -275,6 +279,22 @@ function sourceTextNamesShow(segments, mentionRe) {
   if (!mentionRe || !segments) return false;
   const list = Array.isArray(segments) ? segments : [segments];
   return list.some(t => typeof t === 'string' && mentionRe.test(t.slice(0, LEDE_CHARS)));
+}
+
+/**
+ * True when a saved FULL text names the show at least REPEAT_MENTIONS times
+ * anywhere in the body (BRO-6524). Regional and criticism pieces often open on
+ * the plot or the company and name the play only later ("The Lifespan of a
+ * Fact" appears after the lede), so the lede test above misses a correct
+ * review. One mention anywhere is still not enough: a column or roundup names
+ * a show once in passing (Musto columns, "also opening this month: X"), and
+ * that must keep flagging. Only fullText counts: excerpts are short by design.
+ */
+const REPEAT_MENTIONS = 2;
+function fullTextNamesShowRepeatedly(fullTexts, mentionRe) {
+  if (!mentionRe || !fullTexts) return false;
+  const global = new RegExp(mentionRe.source, 'gi');
+  return fullTexts.some(t => typeof t === 'string' && (t.match(global) || []).length >= REPEAT_MENTIONS);
 }
 
 function run(show, context) {
@@ -306,7 +326,8 @@ function run(show, context) {
     }
     if (!sourceTextByUrl) sourceTextByUrl = loadSourceTextByUrl(context.reviewTextsRoot, show.id);
     const segs = sourceTextByUrl.get(review.url);
-    if (sourceTextNamesShow(segs, mentionRe)) { textConfirmed++; continue; }
+    if (sourceTextNamesShow(segs, mentionRe)
+        || fullTextNamesShowRepeatedly(sourceTextByUrl.fullTexts.get(review.url), mentionRe)) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;
@@ -363,4 +384,5 @@ function run(show, context) {
 module.exports = {
   name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug,
   isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
+  fullTextNamesShowRepeatedly,
 };
