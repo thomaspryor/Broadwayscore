@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T19:32:22.533Z",
+  "timestamp": "2026-10-31T19:50:22.219Z",
   "stats": {
-    "totalReviews": 75911,
-    "alreadyFlagged": 21756,
+    "totalReviews": 75985,
+    "alreadyFlagged": 21759,
     "dateGuardCatches": 238,
-    "directorMismatch": 3218,
-    "tvFilmSignals": 2167,
-    "londonSignals": 3510,
+    "directorMismatch": 3223,
+    "tvFilmSignals": 2171,
+    "londonSignals": 3511,
     "offBroadwaySignals": 718,
     "yearMismatch": 320,
-    "noPublishDate": 8577
+    "noPublishDate": 8576
   },
   "findings": [
     {
@@ -17022,6 +17022,32 @@
       ]
     },
     {
+      "showId": "diana-regional-2025",
+      "file": "broadwayworld--misha-davenport.json",
+      "publishDate": "2025-06-02",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-DIANA-at-Theo-Ubique-20250602",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "diana-regional-2025",
+      "file": "chi-mt--unknown.json",
+      "publishDate": "2025-06-25",
+      "url": "https://www.chi-mt.com/reviews/chicago-shakes-42-balloons-theo-diana-bic-porchlight-titanique-jun-25",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "diana-the-musical-2021",
       "file": "amny--matt-windman.json",
       "score": 42,
@@ -18847,6 +18873,19 @@
       "score": 61,
       "publishDate": "2025-11-21",
       "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "endgame-regional-2025",
+      "file": "chicagotribune--emily-mcclanathan.json",
+      "publishDate": "2025-05-27",
+      "url": "https://www.chicagotribune.com/2025/05/27/review-in-endgame-at-facility-theatre-reality-and-dystopia-wash-together/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38517,6 +38556,19 @@
       ]
     },
     {
+      "showId": "magic-chichester-festival-regional-2026",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2026-09-08",
+      "url": "https://www.thewrap.com/creative-content/reviews/practical-magic-2-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
       "showId": "magic-goes-wrong-west-end-2019",
       "file": "the-jewish-chronicle--john-nathan.json",
       "score": 76,
@@ -46835,6 +46887,7 @@
     {
       "showId": "pass-over-regional-2025",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 78,
       "publishDate": "2025-07-29",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/pass-over-fleetwood-jourdain-theatre/",
       "findings": [
@@ -48093,6 +48146,63 @@
       "score": 52,
       "publishDate": "April 26, 2013",
       "url": "https://stream.wsj.com/story/latest-headlines/SS-2-63399/SS-2-221001/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-regional-2025",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "publishDate": "2025-06-15",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-PIPPIN-at-BrightSide-Theatre-20250615",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-regional-2025",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2025-06-14",
+      "url": "https://www.chicagotheatrereview.com/2025/06/brightsides-magic-to-do/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from pippin-2013"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-regional-2025",
+      "file": "new-city-stage--mary-wisniewski.json",
+      "publishDate": "2025-06-18",
+      "url": "https://www.newcitystage.com/2025/06/18/the-search-for-meaning-a-review-of-pippin-at-brightside-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-regional-2025",
+      "file": "splash-magazines--susan-lillis.json",
+      "publishDate": "2025-06-15",
+      "url": "https://chicago.splashmags.com/index.php/2025/06/brightside-theatre-in-naperville-proudly-presents-pippin/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -91038,6 +91148,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "end-west-end-2025",
+      "file": "camdennewjournal--unknown.json",
+      "score": null,
+      "publishDate": "2025-11-28",
+      "url": "https://www.camdennewjournal.co.uk/article/review-end-at-dorfman-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
