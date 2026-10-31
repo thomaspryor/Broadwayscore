@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-31T10:42:20.804Z",
+  "timestamp": "2026-10-31T11:06:35.362Z",
   "stats": {
-    "totalReviews": 74136,
-    "alreadyFlagged": 22470,
+    "totalReviews": 74137,
+    "alreadyFlagged": 22471,
     "dateGuardCatches": 229,
-    "directorMismatch": 3034,
-    "tvFilmSignals": 2075,
+    "directorMismatch": 3038,
+    "tvFilmSignals": 2077,
     "londonSignals": 3419,
-    "offBroadwaySignals": 664,
+    "offBroadwaySignals": 666,
     "yearMismatch": 303,
     "noPublishDate": 8336
   },
@@ -19130,6 +19130,39 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2017 (2x) more than 2025 (1x). 2017 matches production: evita-west-end-2017"
+        }
+      ]
+    },
+    {
+      "showId": "fade-off-broadway-2017",
+      "file": "deadline--jeremy-gerard.json",
+      "score": null,
+      "publishDate": "February 9th, 2017",
+      "url": "http://deadline.com/2017/02/review-fade-big-river-romeo-et-juliette-rusalka-1201907001/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "fade-off-broadway-2017",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "February 8th, 2017",
+      "url": "https://newyorktheater.me/2017/02/08/fade-play-review-latina-tv-writer-on-how-horrible-tv-is/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -43416,6 +43449,19 @@
     },
     {
       "showId": "oslo-off-broadway-2016",
+      "file": "talkinbroadway--unknown.json",
+      "publishDate": "2016-07-11",
+      "url": "http://www.talkinbroadway.com/page/ob/7_11_16.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "oslo-off-broadway-2016",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": null,
       "publishDate": null,
@@ -44053,6 +44099,34 @@
       "score": 51,
       "publishDate": "December 3, 2004",
       "url": "http://theater.nytimes.com/2004/12/03/theater/reviews/03paci.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from pacific-overtures-1976"
+        }
+      ]
+    },
+    {
+      "showId": "pacific-overtures-off-broadway-2017",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": null,
+      "publishDate": "May 4th, 2017",
+      "url": "https://cititour.com/NYC_Broadway/Pacific-Overtures/162",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from pacific-overtures-1976"
+        }
+      ]
+    },
+    {
+      "showId": "pacific-overtures-off-broadway-2017",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "2017-05-04",
+      "url": "http://www.hollywoodreporter.com/review/pacific-overtures-theater-1000003",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -54984,6 +55058,20 @@
       "score": 76,
       "publishDate": "2005-05-05",
       "url": "https://variety.com/2005/legit/reviews/sweet-charity-5-1200526101/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "broadwayworld--michael-dale.json",
+      "score": null,
+      "publishDate": "November 21st, 2016",
+      "url": "http://www.broadwayworld.com/article/BWW-Review-Leigh-Silverman-and-Sutton-Foster-Discover-Fresh-Nuances-In-Intimate-SWEET-CHARITY-20161121",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -111273,6 +111361,20 @@
       ]
     },
     {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "November 20th, 2016",
+      "url": "http://dctheatrescene.com/2016/11/20/sweet-charity-review-sutton-foster-escapist-revival/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "sylvia-2015",
       "file": "ew--marc-snetiker.json",
       "score": 73,
@@ -120372,7 +120474,7 @@
     {
       "showId": "the-revlon-girl-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2026-10-29",
       "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-park-theatre-review",
       "findings": [
