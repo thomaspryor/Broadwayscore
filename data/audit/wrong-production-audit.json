@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T18:34:57.594Z",
+  "timestamp": "2026-10-31T18:54:22.559Z",
   "stats": {
-    "totalReviews": 75622,
-    "alreadyFlagged": 21748,
+    "totalReviews": 75725,
+    "alreadyFlagged": 21753,
     "dateGuardCatches": 238,
-    "directorMismatch": 3205,
-    "tvFilmSignals": 2160,
+    "directorMismatch": 3211,
+    "tvFilmSignals": 2162,
     "londonSignals": 3508,
     "offBroadwaySignals": 717,
-    "yearMismatch": 319,
-    "noPublishDate": 8523
+    "yearMismatch": 320,
+    "noPublishDate": 8543
   },
   "findings": [
     {
@@ -6184,6 +6184,32 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2022 (3x) more than 2025 (2x). 2022 matches production: as-you-like-it-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "ashland-avenue-regional-2025",
+      "file": "new-city-stage--mary-wisniewski.json",
+      "publishDate": "2025-09-19",
+      "url": "https://www.newcitystage.com/2025/09/19/in-ashland-avenue-one-chicago-shop-owner-must-come-to-terms-with-the-future/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "ashland-avenue-regional-2025",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2025-09-17",
+      "url": "https://thefourthwalsh.com/2025/09/review-ashland-avenue-goodman-theatre-the-office-fans-this-one-is-for-you/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -15396,6 +15422,24 @@
       ]
     },
     {
+      "showId": "dear-evan-hansen-off-broadway-2016",
+      "file": "vulture--jesse-green.json",
+      "publishDate": "2016-05-01",
+      "url": "http://www.vulture.com/2016/05/theater-review-dear-evan-hansen.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2016 (0x). 2026 matches production: dear-evan-hansen-regional-2026"
+        }
+      ]
+    },
+    {
       "showId": "dear-evan-hansen-tour-2024",
       "file": "the-show-report--theshowreport.json",
       "score": 90,
@@ -18295,6 +18339,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
+      "file": "broadway-and-me--unknown.json",
+      "publishDate": "2015-10-31",
+      "url": "http://broadwayandme.blogspot.com/2015/10/the-public-continues-its-hot-streak.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
         }
       ]
     },
@@ -57244,6 +57301,19 @@
     },
     {
       "showId": "sweat-off-broadway-2016",
+      "file": "bobs-theater-blog--unknown.json",
+      "publishDate": "2016-11-02",
+      "url": "http://bobs-theater-blog.blogspot.com/2016/11/sweat.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": null,
       "publishDate": "2016-11-30",
@@ -57313,10 +57383,36 @@
     },
     {
       "showId": "sweat-off-broadway-2016",
+      "file": "newyorker--hilton-als.json",
+      "publishDate": "2016-11-21",
+      "url": "http://www.newyorker.com/magazine/2016/11/28/black-lives-matter-onstage",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
       "file": "nytimes--charles-isherwood.json",
       "score": null,
       "publishDate": null,
       "url": "http://www.nytimes.com/2016/11/04/theater/review-the-jobs-are-gone-in-sweat-so-are-peoples-hopes.html?_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "reviewing-the-drama--unknown.json",
+      "publishDate": "2016-11-03",
+      "url": "http://www.reviewingthedrama.com/2016/11/sweat.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57344,6 +57440,19 @@
       "file": "theatermania--zachary-stewart.json",
       "publishDate": "2016-11-03",
       "url": "http://www.theatermania.com/off-broadway/reviews/sweat_79026.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "theatre-reviews-by-john-clum--unknown.json",
+      "publishDate": "2016-11-16",
+      "url": "http://clumtheater.blogspot.com/2016/11/sweat-by-lynn-nottage-at-public.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
