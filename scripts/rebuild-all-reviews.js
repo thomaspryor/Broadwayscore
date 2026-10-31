@@ -3503,7 +3503,7 @@ showDirs.forEach(showId => {
         if (wpHealKind === 'venue') stats.cvVenueCarveoutWrongProductionHealed = (stats.cvVenueCarveoutWrongProductionHealed || 0) + 1;
         else stats.cvOwnCastWrongProductionHealed = (stats.cvOwnCastWrongProductionHealed || 0) + 1;
         if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
-          markRescoreNeeded(data, 'wrongProduction venue carve-out heal');
+          markRescoreNeeded(data, wpHealKind === 'own-cast' ? 'wrongProduction own-cast heal' : 'wrongProduction venue carve-out heal');
         }
         try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
       }

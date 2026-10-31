@@ -1061,6 +1061,19 @@ function isVenueCarveoutPersistedWrongProduction(data, show) {
  * Chichester, sits inside the preview-anchored window but months before opening).
  */
 const OWN_CAST_OPENING_LEAD_DAYS = 45;
+// Reviews dated well after opening are replacement-cast or long-run revisits
+// (race-2009 Izzard recast, 207 days); the opening cast still appears in them.
+const OWN_CAST_OPENING_LAG_DAYS = 90;
+// A two-show column leads with the other show (the-emporium: Animal Wisdom first,
+// own title at char 3,123). When the own title first appears this deep, the
+// body is not a review of this show alone, so cast hits prove nothing.
+const OWN_CAST_TITLE_LEAD_CHARS = 2000;
+function ownTitleFirstIndex(text, title) {
+  const norm = (x) => String(x || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ');
+  const t = norm(title).trim().replace(/^the /, '');
+  if (!t) return -1;
+  return norm(text).indexOf(t);
+}
 function isOwnCastEvidencePersistedWrongProduction(data, show) {
   if (!data || data.wrongProduction !== true || !show) return false;
   const reason = String(data.wrongProductionReason || '');
@@ -1080,6 +1093,8 @@ function isOwnCastEvidencePersistedWrongProduction(data, show) {
   const openMs = toDateMs(show.openingDate);
   const pubMs = toDateMs(data.publishDate);
   if (isNaN(openMs) || isNaN(pubMs) || pubMs < openMs - OWN_CAST_OPENING_LEAD_DAYS * 86400000) return false;
+  if (pubMs > openMs + OWN_CAST_OPENING_LAG_DAYS * 86400000) return false;
+  if (ownTitleFirstIndex(data.fullText, show.title) > OWN_CAST_TITLE_LEAD_CHARS) return false;
   const { ownShowTextEvidence } = require('./own-show-text-evidence');
   return ownShowTextEvidence(data.fullText, show).strong;
 }
