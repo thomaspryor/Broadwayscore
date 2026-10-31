@@ -1406,7 +1406,8 @@ if _CW_CODES:
         _cw_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'child-session-wait-guard.js')
         if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '')
                 and os.path.isfile(_cw_js) and not _owner_must_act(_cw_text)):
-            import subprocess
+            import subprocess, time
+            from datetime import datetime
             _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
                         for m in re.findall(r'<task-notification>.*?<task-id>\s*([^<\s]+)\s*</task-id>', p or '', re.DOTALL)}
             _cw_tools = []
@@ -1418,12 +1419,17 @@ if _CW_CODES:
                 if _nm == 'TaskStop':
                     _cw_done.add(str(_inp.get('task_id') or _inp.get('taskId') or ''))
                 _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', tool_results_by_id.get(_tid, '') or '')
+                _cw_ts = result_ts_by_id.get(_tid, '')
+                try:
+                    _cw_ts = datetime.fromisoformat(_cw_ts.replace('Z', '+00:00')).timestamp() * 1000 if _cw_ts else None
+                except Exception:
+                    _cw_ts = None
                 _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp, 'ok': _tid not in tool_error_ids,
-                                  'taskId': _bm.group(1) if _bm else None})
+                                  'taskId': _bm.group(1) if _bm else None, 'startedAt': _cw_ts})
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
-                'all': True, 'skip': [c for c in ('CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH') if c not in _CW_CODES],
+                'all': True, 'now': time.time() * 1000, 'skip': [c for c in ('CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH') if c not in _CW_CODES],
                 'liveChildren': _live_work()['children']}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
@@ -2439,7 +2445,7 @@ if [[ "$result" == "CHILDJOBS" ]]; then
 fi
 
 if [[ "$result" == "CHILDWATCH" ]]; then
-  echo "🛑 BLOCKED: KEEP OPEN while a session you started is still live, but nothing will wake you if it goes idle without reporting back (BRO-6717: the BRO-6518 child sat idle 17h, then 19h; an idle child sends neither a report-back nor a failure event). Before ending the turn, start a Bash with run_in_background: true and timeout 2100000: node scripts/lib/child-idle-watch.js watch --session <child id> --minutes 30. When it wakes you, call get_session on the child, save the JSON and run node scripts/lib/child-idle-watch.js check --from-json <file>: rearm starts the watch again; nudge means send_message the child (poll in-turn, or hand its queue to a workflow, then report back); restart means it failed. If the child owns the work end to end and you do not need its result, end SAFE TO ARCHIVE instead (.claude/CLOUD.md 'Starting a worker session' step 6). Bypass: NO-VERIFY: <reason>. Kill switch CHILDWATCH_GATE_DISABLE=1." >&2
+  echo "🛑 BLOCKED: KEEP OPEN while a session you started is still live, but nothing will wake you if it goes idle without reporting back (BRO-6717: the BRO-6518 child sat idle 17h, then 19h; an idle child sends neither a report-back nor a failure event). Before ending the turn, start a Bash with run_in_background: true and timeout 7200000: node scripts/lib/child-idle-watch.js watch --session <child id> --minutes 30 (one per child you wait on). When it wakes you, call get_session on the child, save the JSON and run node scripts/lib/child-idle-watch.js check --from-json <file> [--reported-at <time of its last report-back>]: rearm starts the watch again; nudge means send_message the child (poll in-turn, or hand its queue to a workflow, then report back); unblock means interrupt_session and send a workaround; restart means it failed; done means collect its report and archive_session it. If the child owns the work end to end and you do not need its result, end SAFE TO ARCHIVE instead (.claude/CLOUD.md 'Starting a worker session' step 6). Bypass: NO-VERIFY: <reason>. Kill switch CHILDWATCH_GATE_DISABLE=1." >&2
   exit 2
 fi
 

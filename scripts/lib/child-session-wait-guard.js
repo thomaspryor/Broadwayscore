@@ -86,69 +86,105 @@ function childWaitDecision(input) {
 // 17h, then 19h. A child's KEEP OPEN on jobs needs a live run_in_background
 // Bash or Monitor (its exit wakes the turn); otherwise poll in-turn, or hand
 // the queue to something durable (a workflow, the tic-daily pending queue).
-const JOB_NOUN = '(?:jobs?|loops?|crawls?|crawlers?|ingests?|ingestion|batch(?:es)?|queues?|dispatch(?:es)?|scrapes?|scrapers?|backfills?|workers?|process(?:es)?|shards?|fetch(?:es)?)';
+const JOB_NOUN = '(?:jobs?|loops?|crawls?|crawlers?|ingests?|ingestion|imports?|rescores?|rescoring|reprocess(?:ing)?|batch(?:es)?|queues?|dispatch(?:es)?|scrapes?|scrapers?|scraping|backfills?|shards?|pipelines?)';
 const JOBS_WAIT_RE = new RegExp(
-  '\\b' + JOB_NOUN + '\\b[^.;\\n]{0,60}?\\b(?:in progress|in flight|is running|are running|still running|still going|running|pending|queued|to (?:finish|complete)|ha(?:s|ve)n.t finished|working through)\\b'
+  '\\b' + JOB_NOUN + '\\b[^.;\\n]{0,60}?\\b(?:in progress|in flight|is running|are running|still running|still going|running|pending|queued|to (?:finish|complete)|ha(?:s|ve)n.t finished|working through|continues|in the background|mid-?way|underway)\\b'
   + '|\\b(?:waiting|awaiting|wait)\\b[^.;\\n]{0,40}\\b' + JOB_NOUN + '\\b'
-  + '|\\b(?:I(?:.ll| will)|will) (?:check back|check (?:on|in on) (?:them|it|the)|come back|look again|re-?check)\\b',
+  + '|\\b\\d+\\s+(?:of\\s+\\d+\\s+)?\\w+\\s+(?:left|remaining) to (?:process|ingest|score|fetch|crawl)\\b'
+  + '|\\bI(?:.ll| will) (?:check back|check (?:on|in on) (?:them|it|the)|come back|look again|re-?check)\\b',
   'i'
 );
+// Waiting on a person (the parent, the owner, a review) is not waiting on jobs.
+const PERSON_WAIT_RE = /\b(?:wait(?:ing)?|awaiting|hold(?:ing)?)\b[^.;\n]{0,30}\b(?:parent|owner|you\b|your|approv\w*|review\w*|answer|reply|decision)/i;
 
 function verdictKeepOpen(closing) {
   const last = String(closing || '').split('\n').filter((l) => l.trim()).slice(-1)[0] || '';
   return /^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT)\b/m.test(last);
 }
 
-// A background Bash that only launches a detached process (nohup/setsid/
-// disown/trailing &) exits at once; the real job is untracked. Its completion
-// notice is sometimes never recorded, so without this it would read as live
-// forever (the _live_work "errs live" case in verify-edits.sh).
-const DETACHED_RE = /\b(?:nohup|setsid|disown)\b|&\s*(?:$|;|\becho\b)|spawn-detached/m;
+/** Clauses of the KEEP OPEN / NOT SAFE / "Still running" lines, verdict tokens dropped. */
+function waitClauses(closing) {
+  return String(closing || '').split('\n')
+    .filter((l) => /^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running)\b/i.test(l))
+    .map((l) => l.replace(/^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running:?)\s*[—–:,-]?\s*/i, ''))
+    .flatMap((l) => l.split(/[;.]\s*|,\s*(?:and|but|while)\b|\s\band\b\s(?=the\b)/i))
+    .map((c) => c.trim()).filter(Boolean);
+}
 
-/** A background Bash or Monitor still running: no completion notice, no TaskStop, not a detached launcher. */
-function liveBackground(tools = [], done = [], cmdRe = null) {
-  return tools.some((t) => {
+// A background Bash that only launches a detached process (nohup/setsid/
+// disown, or `&` with no `wait`) exits at once; the real job is untracked.
+// Its completion notice is sometimes never recorded, so without this it would
+// read as live forever (the _live_work "errs live" case in verify-edits.sh).
+const LAUNCHER_RE = /(?:^|[;&|(\n]\s*)(?:nohup|setsid)\b|\bdisown\b|spawn-detached/;
+// Background Bash defaults to a 10 min timeout and caps at 2h; past it the
+// task is dead whether or not its notice was recorded.
+const BG_DEFAULT_MS = 600000;
+const BG_MAX_MS = 7200000;
+
+function isDetached(cmd) {
+  const c = String(cmd || '').replace(/&&|\|\||\|&|&>|\d?>&\d?/g, ' ');
+  if (LAUNCHER_RE.test(c)) return true;
+  // A bare `&` detaches unless the same command waits for it.
+  return /&\s*(?:$|;|\n|\becho\b)/.test(c) && !/\bwait\b/.test(c);
+}
+
+/**
+ * Background Bash / Monitor tasks still running: no completion notice, no
+ * TaskStop, not a detached launcher, not past their own timeout.
+ * `now` and each tool's `startedAt` (ms) are optional; without them the age
+ * check is skipped (the safe direction for a gate).
+ */
+function liveBackground(tools = [], done = [], { cmdRe = null, now = null } = {}) {
+  return tools.filter((t) => {
     if (!t || !t.ok) return false;
     const inp = t.input || {};
     const cmd = String(inp.command || '');
     const bg = t.name === 'Monitor' || (t.name === 'Bash' && inp.run_in_background);
     if (!bg || (t.taskId && done.includes(t.taskId))) return false;
-    if (t.name === 'Bash' && DETACHED_RE.test(cmd.replace(/&&|\|\||>&|&>|2>&1/g, ' '))) return false;
+    if (t.name === 'Bash' && isDetached(cmd)) return false;
+    if (now != null && t.startedAt != null) {
+      const limit = Math.min(Number(inp.timeout || inp.timeout_ms) || (t.name === 'Monitor' ? BG_MAX_MS : BG_DEFAULT_MS), BG_MAX_MS);
+      if (now - t.startedAt > limit) return false;
+    }
     return !cmdRe || cmdRe.test(cmd);
   });
 }
 
 /** @returns {{block: boolean, reason: string}} */
 function childJobsDecision(input) {
-  const { firstPrompt, env, closing = '', tools = [], done = [] } = input || {};
+  const { firstPrompt, env, closing = '', tools = [], done = [], now = null } = input || {};
   const no = (reason) => ({ block: false, reason });
   if (!isChildSession({ firstPrompt, env })) return no('not a child session');
   if (!verdictKeepOpen(closing)) return no('closing verdict is not KEEP OPEN');
-  const waitLines = closing.split('\n').filter((l) => /^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running)\b/i.test(l));
-  const strip = (l) => l.replace(/^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running:?)\s*[—–:,-]?\s*/i, '');
-  if (!waitLines.some((l) => JOBS_WAIT_RE.test(l) && !NOT_WAITING_RE.test(strip(l)))) {
+  if (!waitClauses(closing).some((c) => JOBS_WAIT_RE.test(c) && !NOT_WAITING_RE.test(c) && !PERSON_WAIT_RE.test(c))) {
     return no('KEEP OPEN does not wait on jobs this session runs');
   }
-  if (liveBackground(tools, done)) return no('a background task or Monitor is live');
+  if (liveBackground(tools, done, { now }).length) return no('a background task or Monitor is live');
   return { block: true, reason: 'child session ends KEEP OPEN on running jobs with no live background task or Monitor' };
 }
 
 // ─── Parent waiting on a child (CHILDWATCH, BRO-6717) ───────────────────────
 // The BRO-6518 parent ended KEEP OPEN on its child's report-back; an idle
 // child sends neither a report nor a failure event, so the parent never woke.
-// A parent ending KEEP OPEN with a live child needs a live
-// `child-idle-watch.js watch` background task (it wakes the parent within 30
-// min to check get_session).
+// A parent whose KEEP OPEN waits on a live child needs a live
+// `child-idle-watch.js watch --session <that child>` background task (it
+// wakes the parent within 30 min to check get_session).
 const WATCH_CMD_RE = /child-idle-watch(?:\.js)?\s+watch\b/;
+const CHILD_WAIT_RE = /\b(?:sessions?|child(?:ren)?|workers?|report[- ]?backs?|reports? back|sub-?sessions?)\b/i;
 
 /** @returns {{block: boolean, reason: string}} */
 function parentWatchDecision(input) {
-  const { closing = '', tools = [], done = [], liveChildren = [] } = input || {};
+  const { closing = '', tools = [], done = [], liveChildren = [], now = null } = input || {};
   const no = (reason) => ({ block: false, reason });
   if (!liveChildren.length) return no('no live child session');
   if (!verdictKeepOpen(closing)) return no('closing verdict is not KEEP OPEN');
-  if (liveBackground(tools, done, WATCH_CMD_RE)) return no('a child-idle-watch task is live');
-  return { block: true, reason: 'parent ends KEEP OPEN on a child session with no child-idle-watch running' };
+  if (!waitClauses(closing).some((c) => CHILD_WAIT_RE.test(c) && !NOT_WAITING_RE.test(c))) {
+    return no('KEEP OPEN does not wait on a child session');
+  }
+  const ids = liveChildren.map((c) => (String(c).match(/\b(?:session|cse)_[0-9A-Za-z]{10,}\b/) || [String(c)])[0]);
+  const watches = liveBackground(tools, done, { cmdRe: WATCH_CMD_RE, now });
+  if (watches.some((t) => ids.some((id) => String(t.input.command).includes(id)))) return no('a child-idle-watch task is live');
+  return { block: true, reason: 'parent ends KEEP OPEN on a child session with no child-idle-watch running for it' };
 }
 
 /**
@@ -170,7 +206,7 @@ function decideAll(input) {
 
 module.exports = {
   childWaitDecision, childJobsDecision, parentWatchDecision, decideAll,
-  isChildSession, liveBackground, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE, DETACHED_RE,
+  isChildSession, liveBackground, isDetached, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE,
 };
 
 if (require.main === module) {

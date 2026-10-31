@@ -169,3 +169,65 @@ test('hook: a parent ending KEEP OPEN on a live child needs a child-idle-watch',
   assert.equal(runHook('Backfill Chicago (BRO-6498)', [create, watch], FX.parent.closing).status, 0, 'live watch passes');
   assert.equal(runHook('Backfill Chicago (BRO-6498)', [create], FX.parent.closing, { CHILDWATCH_GATE_DISABLE: '1' }).status, 0, 'kill switch');
 });
+
+// ─── Ship-check findings (false positives / negatives) ───────────────────────
+const { isDetached, liveBackground } = require('./child-session-wait-guard.js');
+const blocks = (closing) => childJobsDecision(childInput(TURN1, { closing, tools: [], done: [] })).block;
+
+test('waiting on the parent, the owner or a review is not a jobs wait', () => {
+  for (const c of [
+    "KEEP OPEN — waiting on the parent's answer about the workers",
+    'KEEP OPEN — waiting on the parent to approve the batch plan',
+    'KEEP OPEN — waiting for the owner to approve the dispatch',
+    'KEEP OPEN — the parent will check back with me',
+    'KEEP OPEN — waiting on review of the process change',
+  ]) assert.equal(blocks(c), false, c);
+});
+
+test('other ways of saying jobs are still going are caught, clause by clause', () => {
+  for (const c of [
+    'KEEP OPEN — the import is still running',
+    'KEEP OPEN — the rescore continues in the background',
+    'KEEP OPEN — the ingest is mid-way',
+    'KEEP OPEN — 40 of 120 reviews left to process',
+    'KEEP OPEN — the crawl is running; the ingest finished',
+  ]) assert.equal(blocks(c), true, c);
+});
+
+test('detached launchers do not count as a wake; in-task waits and redirects do', () => {
+  const U = 'un' + 'til'; // keeps the literal out of shell-hook scans of this file
+  for (const [cmd, want] of [
+    ['nohup x > l 2>&1 &', true], ['x & echo started', true], ['setsid node a.js', true],
+    ['(\n while x; do sleep 1; done\n) &\nwait', false], ['sleep 5 &\nwait $!', false],
+    ['grep -n setsid x; sleep 1800', false], [`${U} check; do sleep 60; done & wait`, false],
+    ['echo hi >&2', false], ['a |& tee f', false],
+  ]) assert.equal(isDetached(cmd), want, cmd);
+});
+
+test('a background task past its own timeout is dead even with no notice', () => {
+  const t0 = Date.parse('2026-10-29T20:00:00Z');
+  const task = { ...POLL, startedAt: t0 };
+  assert.equal(liveBackground([task], [], { now: t0 + 9 * 60000 }).length, 1, 'inside the 10 min default');
+  assert.equal(liveBackground([task], [], { now: t0 + 11 * 60000 }).length, 0, 'past the 10 min default');
+  const long = { ...POLL, startedAt: t0, input: { ...POLL.input, timeout: 7200000 } };
+  assert.equal(liveBackground([long], [], { now: t0 + 119 * 60000 }).length, 1);
+  assert.equal(liveBackground([long], [], { now: t0 + 121 * 60000 }).length, 0);
+  assert.equal(childJobsDecision(childInput(TURN2, { tools: [...TURN2.tools, task], now: t0 + 3 * 3600000 })).block, true,
+    'an old background command does not satisfy the gate forever');
+});
+
+test('CHILDWATCH: only a wait on the child counts, and the watch must name that child', () => {
+  const base = { tools: [], done: [], liveChildren: LIVE };
+  assert.equal(parentWatchDecision({ ...base, closing: 'Still running: the land run.\n\nKEEP OPEN — the land run is in progress.' }).block, false,
+    'parent waiting on its own CI is not this gate');
+  const other = WATCH(5, { command: 'node scripts/lib/child-idle-watch.js watch --session session_01OTHERCHILDxxxx --minutes 30' });
+  assert.equal(parentWatchDecision({ ...base, closing: FX.parent.closing, tools: [other] }).block, true, 'a watch on another child');
+});
+
+test('decide: blocked child → unblock; report-back just before the last activity still counts; shallow updated_at wins', () => {
+  const now = '2026-10-30T05:00:00Z';
+  assert.equal(decide({ session: { status_bucket: 'SESSION_STATUS_BUCKET_BLOCKED', updated_at: '2026-10-30T00:00:00Z' }, now }).action, 'unblock');
+  assert.equal(decide({ session: { status_bucket: 'IDLE', updated_at: '2026-10-30T00:05:00Z' }, now, reportedAt: '2026-10-30T00:01:00Z' }).action, 'done');
+  const nested = { events: [{ updated_at: '2026-10-30T04:59:00Z' }], ccr: { status_bucket: 'IDLE', updated_at: '2026-10-29T23:52:00Z' } };
+  assert.equal(decide({ session: nested, now }).action, 'nudge');
+});

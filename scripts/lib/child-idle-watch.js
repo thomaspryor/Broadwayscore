@@ -13,12 +13,12 @@
  * (its exit wakes the parent), and the idle decision is a pure function the
  * parent feeds the get_session result into when it wakes:
  *
- *   1. Bash run_in_background, timeout 2100000:
+ *   1. Bash run_in_background, timeout 7200000 (one per child):
  *        node scripts/lib/child-idle-watch.js watch --session <id> [--minutes 30]
  *   2. On wake: get_session <id>, save the JSON, then
  *        node scripts/lib/child-idle-watch.js check --from-json <file> [--reported-at <iso>]
  *      It prints {action, reason, rearmMinutes}: rearm (start step 1 again with
- *      rearmMinutes), nudge (send_message the child: poll in-turn or hand its
+ *      rearmMinutes), unblock (interrupt_session, send a workaround), nudge (send_message the child: poll in-turn or hand its
  *      queue to a workflow / the tic-daily pending queue, then report), restart
  *      (it failed) or done (collect the report).
  *
@@ -31,14 +31,25 @@ const DEFAULT_IDLE_MINUTES = 30;
 const WORKING = new Set(['WORKING', 'RUNNING', 'ACTIVE', 'IN_PROGRESS', 'STARTING', 'QUEUED']);
 const DONE = new Set(['COMPLETED', 'REVIEW_READY', 'ARCHIVED']);
 const FAILED = new Set(['FAILED', 'ERROR', 'ERRORED', 'CRASHED']);
+const BLOCKED = new Set(['BLOCKED', 'NEEDS_INPUT', 'AWAITING_INPUT', 'REQUIRES_ACTION']);
+// A report-back moves the child's updated_at a little (its turn ends after it).
+const REPORT_SLACK_MS = 10 * 60000;
 
-/** First value of `key` anywhere in a parsed get_session payload (it nests under ccr/session). */
-function findField(obj, key, depth = 0) {
-  if (!obj || typeof obj !== 'object' || depth > 6) return undefined;
-  if (Object.prototype.hasOwnProperty.call(obj, key) && obj[key] != null) return obj[key];
-  for (const v of Object.values(obj)) {
-    const hit = findField(v, key, depth + 1);
-    if (hit !== undefined) return hit;
+/**
+ * Shallowest value of `key` in a parsed get_session payload (it nests under
+ * ccr/session). Breadth-first, so the session's own updated_at wins over one
+ * on a nested event.
+ */
+function findField(obj, key) {
+  let level = [obj];
+  for (let depth = 0; depth < 6 && level.length; depth++) {
+    const next = [];
+    for (const o of level) {
+      if (!o || typeof o !== 'object') continue;
+      if (Object.prototype.hasOwnProperty.call(o, key) && o[key] != null) return o[key];
+      next.push(...Object.values(o));
+    }
+    level = next;
   }
   return undefined;
 }
@@ -59,7 +70,7 @@ function toMs(v) {
  * @param {number|string} p.now
  * @param {number} [p.idleMinutes=30]
  * @param {string} [p.reportedAt]  when the child last reported back (send_message to @parent), if seen
- * @returns {{action: 'rearm'|'nudge'|'restart'|'done', reason: string, idleMinutes: number|null, rearmMinutes: number}}
+ * @returns {{action: 'rearm'|'nudge'|'unblock'|'restart'|'done', reason: string, idleMinutes: number|null, rearmMinutes: number}}
  */
 function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES, reportedAt } = {}) {
   const nowMs = toMs(now) ?? Date.now();
@@ -75,8 +86,10 @@ function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES,
     return out('done', `child is ${bucket || status || 'archived'}: collect its report`);
   }
   if (FAILED.has(bucket) || FAILED.has(status)) return out('restart', `child ${bucket || status}: fix or restart it`);
-  // A report-back after the child's last activity means it has said its piece.
-  if (reported != null && (updated == null || reported >= updated)) {
+  if (BLOCKED.has(bucket) || BLOCKED.has(status)) return out('unblock', `child ${bucket || status}: interrupt_session and send a workaround`);
+  // A report-back at (or just before) the child's last activity means it has
+  // said its piece; activity well after the report means it went back to work.
+  if (reported != null && (updated == null || updated - reported <= REPORT_SLACK_MS)) {
     return out('done', 'child reported back after its last activity');
   }
   if (WORKING.has(bucket) || (!bucket && WORKING.has(status))) {
@@ -101,7 +114,7 @@ function arg(argv, name, dflt) {
 function usage() {
   return [
     'child-idle-watch.js (BRO-6717): wake a parent session when its child goes idle.',
-    '  watch --session <id> [--minutes 30]   timer; run it with run_in_background (timeout 2100000); its exit wakes you',
+    '  watch --session <id> [--minutes 30]   timer; run it with run_in_background (timeout 7200000); its exit wakes you',
     '  check --from-json <file> [--reported-at <iso>] [--idle-minutes 30] [--now <iso>]',
     '                                        decide from a saved get_session result: rearm | nudge | restart | done',
   ].join('\n');
