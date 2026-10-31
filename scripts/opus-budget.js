@@ -14,7 +14,7 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const B = require('./lib/opus-budget.js');
 
-const USAGE = 'Usage: node scripts/opus-budget.js [--record-usage --type=seven_day --status=<allowed|allowed_warning|...> --resets-at=<epoch seconds>]';
+const USAGE = 'Usage: node scripts/opus-budget.js [--record-usage --type=<rateLimitType> --status=<status> --resets-at=<resetsAt>]\nValues: get_session (no id) external_metadata.rate_limit_info; only type seven_day is recorded.\nBudget: 4 Opus launches/24h; 0 for non-P0 while the weekly limit warns; no cap in the last 30h before the weekly reset with room left.';
 
 function arg(name) {
   const a = process.argv.find((x) => x.startsWith(`--${name}=`));
