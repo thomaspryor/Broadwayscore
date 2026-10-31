@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T12:43:24.201Z",
+  "timestamp": "2026-10-31T13:15:48.894Z",
   "stats": {
     "totalReviews": 74244,
-    "alreadyFlagged": 22482,
-    "dateGuardCatches": 232,
+    "alreadyFlagged": 22483,
+    "dateGuardCatches": 233,
     "directorMismatch": 3049,
-    "tvFilmSignals": 2081,
+    "tvFilmSignals": 2083,
     "londonSignals": 3421,
-    "offBroadwaySignals": 670,
+    "offBroadwaySignals": 671,
     "yearMismatch": 305,
-    "noPublishDate": 8412
+    "noPublishDate": 8409
   },
   "findings": [
     {
@@ -13719,19 +13719,6 @@
       ]
     },
     {
-      "showId": "dancing-at-lughnasa-crucible-regional-2025",
-      "file": "broadwayworld--john-mcdaid.json",
-      "publishDate": "2025-09-27",
-      "url": "https://www.broadwayworld.com/rhode-island/article/Review-POWERFUL-DANCING-AT-LUGHNASA-at-The-Players-20250927",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
       "showId": "dancing-at-lughnasa-west-end-2023",
       "file": "artsdesk--matt-wolf.json",
       "score": 75,
@@ -18642,6 +18629,20 @@
       ]
     },
     {
+      "showId": "evening-at-the-talk-house-off-broadway-2017",
+      "file": "off-off-online--edward-karam.json",
+      "score": null,
+      "publishDate": "2017-02-18",
+      "url": "https://www.offoffonline.com/offoffonline/2017/2/14/evening-at-the-talk-house",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "every-brilliant-thing-2026",
       "file": "ew--dalton-ross.json",
       "score": 86,
@@ -18927,6 +18928,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jeremy herrin\" from every-brilliant-thing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "everybody-off-broadway-2017",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2017-03-11",
+      "url": "http://broadwayandme.blogspot.com/2017/03/meditations-on-death-everybody-wakey.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+BroadwayMe+%28Broadway+%26amp%3B+Me%29",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -28813,6 +28828,20 @@
       ]
     },
     {
+      "showId": "if-i-forget-off-broadway-2017",
+      "file": "northjerseycom--robert-feldberg.json",
+      "score": null,
+      "publishDate": "2017-02-23",
+      "url": "http://www.northjersey.com/story/entertainment/theater/2017/02/23/theater-review-family-fights-together/98201248/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "ifthen-2014",
       "file": "newsday--linda-winer.json",
       "score": 83,
@@ -33354,6 +33383,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"ed stambollouian\" from kenrex-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "kid-victory-off-broadway-2017",
+      "file": "theatre-is-easy--keith-paul-medelis.json",
+      "score": null,
+      "publishDate": "February 23rd, 2017",
+      "url": "http://www.theasy.com/Reviews/2017/K/kidvictory.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -67747,19 +67790,6 @@
       ]
     },
     {
-      "showId": "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
-      "file": "broadwayworld--debbie-gilpin.json",
-      "publishDate": "2025-08-13",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-TWO-GENTLEMEN-OF-VERONA-The-Other-Place-20250813",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
       "showId": "the-unfriend-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 55,
@@ -96804,6 +96834,20 @@
       ]
     },
     {
+      "showId": "kid-victory-off-broadway-2017",
+      "file": "frontmezzjunkies--steven-ross.json",
+      "score": null,
+      "publishDate": "2017-02-22",
+      "url": "https://frontmezzjunkies.com/2017/02/22/kid-victory/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "killer-joe-west-end-2018",
       "file": "standard--henry-hitchings.json",
       "score": 41,
@@ -106728,6 +106772,19 @@
       ]
     },
     {
+      "showId": "prince-faggot-off-broadway-2025",
+      "file": "talkinbroadway--marc-miller.json",
+      "publishDate": "2025-06-17",
+      "url": "https://www.talkinbroadway.com/page/ob/06_17_25.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 85d before show (2025-06-17 vs 2025-09-10)"
+        }
+      ]
+    },
+    {
       "showId": "prince-of-broadway-2017",
       "file": "ew--jessica-derschowitz.json",
       "score": 53,
@@ -109861,6 +109918,7 @@
     {
       "showId": "specimen-off-broadway-2026",
       "file": "front-row-center--david-walters.json",
+      "score": 62,
       "publishDate": "2026-05-21",
       "url": "https://thefrontrowcenter.com/2026/05/specimen/",
       "findings": [
@@ -109874,6 +109932,7 @@
     {
       "showId": "specimen-off-broadway-2026",
       "file": "off-off-online--stanford-friedman.json",
+      "score": 66,
       "publishDate": "2026-05-11",
       "url": "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
       "findings": [
@@ -109887,6 +109946,7 @@
     {
       "showId": "specimen-off-broadway-2026",
       "file": "theater-scene--tony-marinelli.json",
+      "score": 90,
       "publishDate": "2026-05-25",
       "url": "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
       "findings": [
