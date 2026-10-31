@@ -1,22 +1,70 @@
 {
-  "generatedAt": "2026-10-30T08:51:18.695Z",
+  "generatedAt": "2026-10-31T08:38:36.718Z",
   "shadow": true,
-  "checkoutSha": "db093c241ed7c781b87a5d01c0e87c7da3e8c5f0",
-  "totalCandidates": 416,
-  "eligibleCandidates": 114,
-  "checked": 30,
+  "checkoutSha": "c8cbc41b5101f177e139a84d2fab160c1c999529",
+  "totalCandidates": 412,
+  "eligibleCandidates": 116,
+  "checked": 25,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 18,
-    "fail": 5,
-    "unverifiable": 7
+    "pass": 15,
+    "fail": 6,
+    "unverifiable": 4
   },
   "alreadyDone": [
     {
-      "id": "BRO-6591",
-      "name": "Batch show promoters: skip a duplicate candidate instead of losing the whole save (BRO-6578 follow-up)",
-      "verifyCmd": "node --test tests/unit/shows-write-guard-duplicate-title.test.mjs",
+      "id": "BRO-6696",
+      "name": "Fold isNonReviewUrl into canonical classifyReviewUrl (ingest + submission paths)",
+      "verifyCmd": "node --test scripts/lib/serp-non-review-url.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6693",
+      "name": "Intake guard: refuse Show Score Off-Broadway listings that TDF tags Off-Off-Broadway (Peter Panto class)",
+      "verifyCmd": "node --test scripts/lib/retire-show-action.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6688",
+      "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
+      "verifyCmd": "test -f scripts/lib/wait-for-land.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6684",
+      "name": "Opus spend: rule-based Opus grants + weekly-usage-aware daily cap",
+      "verifyCmd": "node --test tests/unit/opus-budget.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6678",
+      "name": "Populate show castBilling so Reddit posts can name the first-billed cast (66 open shows get none)",
+      "verifyCmd": "node --test scripts/lib/reddit-opening-post.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6677",
+      "name": "check-provider-spend --day=<old day> silently wipes that day's durable spend aggregate once the raw ledger has rotated",
+      "verifyCmd": "node --test scripts/tests/provider-spend-ledger-commit-ordering.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6661",
+      "name": "Press-night probe: auto-log hand fixes (manualActions) from review-texts commits during the night",
+      "verifyCmd": "node --test tests/unit/press-night-digest-line.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6643",
+      "name": "Move remaining ORCHESTRATOR_PAUSED reads (express 142/695, poller 1456, orchestrator 906) onto read-actions-variable.sh",
+      "verifyCmd": "node --test tests/unit/orchestrator-pause-read.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6599",
+      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
+      "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
       "detail": null
     },
     {
@@ -26,21 +74,27 @@
       "detail": null
     },
     {
+      "id": "BRO-6582",
+      "name": "Check 6 live shows whose type disagrees with their TodayTix category",
+      "verifyCmd": "node --test scripts/audit-type-todaytix-category-drift.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-6581",
       "name": "Image pipeline: verify all three TodayTix art slots; record wrong URLs when a noReliableArt marker is written",
       "verifyCmd": "node --test scripts/lib/no-reliable-art.test.mjs scripts/fetch-show-images-auto.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6567",
-      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
-      "verifyCmd": "node --test tests/unit/text-contrast-guard.test.mjs",
+      "id": "BRO-6564",
+      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
+      "verifyCmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6547",
-      "name": "Word-boundary title matching: tb-direct-url substring match + possessive over-strip in normalizeTitle",
-      "verifyCmd": "node --test tests/unit/show-dedup-word-containment.test.mjs",
+      "id": "BRO-6556",
+      "name": "Touring near you: ticket link on each city-picker stop row",
+      "verifyCmd": "node --test tests/unit/tour-city-picker-ticket-link.test.mjs",
       "detail": null
     },
     {
@@ -48,163 +102,114 @@
       "name": "Record outlet on SERP ledger rows, then measure/extend backfill outlet pruning to collect-outlet-reviews.js",
       "verifyCmd": "node --test scripts/lib/backfill-outlet-yield.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6531",
-      "name": "peter-panto-off-broadway-2026 is an Off-Off-Broadway show stored as off-broadway with venue 'Lower E Side'",
-      "verifyCmd": "node --test scripts/lib/retire-show-action.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6519",
-      "name": "Landing line: cut the remaining lock-hold causes (pre-warmed first push, both-sides inert re-check, churn budget)",
-      "verifyCmd": "node --test scripts/lib/tsc-stamp.test.mjs scripts/lib/land-branch.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6513",
-      "name": "Outlet census round 3: vet and ingest gaps on the newly enumerated outlets (timeout, frontmezzjunkies, off-off-online, pages-on-stages, thestage, theatrely, bystander, others)",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6507",
-      "name": "TR coverage: 4 West End 2016-17 shows with unexplained gaps (no-mans-land, school-of-rock, 42nd-street, follies)",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6493",
-      "name": "Closed OB rows with opening == first preview and no Playbill production page (~68): second date source",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6491",
-      "name": "Outlet text-health: make --zero-char-hosts quiet+scheduled, check 28 Exeunt verifier rejections",
-      "verifyCmd": "node --test scripts/audit-outlet-text-status.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6488",
-      "name": "Outlet-first review census for London outlets, 2012 to now (T1-T3), matched to West End/Off-West End shows",
-      "verifyCmd": "test -f docs/specs/outlet-census.md",
-      "detail": null
-    },
-    {
-      "id": "BRO-6474",
-      "name": "validate-data --strict red: art-west-end-2016 artshub Singapore arts-hub article attached as a review",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6391",
-      "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
-      "verifyCmd": "node --test scripts/lib/cost-report-alerts.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6380",
-      "name": "Admin: Money Scorecard sign-ups panel so the owner can check sign-ups himself",
-      "verifyCmd": "node --test tests/unit/money-gate.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6372",
-      "name": "Email-list monitor: confirm sign-in joins from Formspree auth-auto submissions, not just sign_in_completed",
-      "verifyCmd": "node --test scripts/lib/email-gate-funnel-rules.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6356",
-      "name": "TR wrong_show repair, part 3: 88 files still rejected after re-extract (parser keeps another show's text; merged files never get NO-RECORD)",
-      "verifyCmd": "node --test scripts/lib/we-historical-tr-coverage.test.js scripts/lib/tr-pdf-parse.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
     {
-      "id": "BRO-6597",
-      "name": "main test.yml red: show-venue BRO-2281 test, im-every-woman-the-chaka-khan-musical-west-end-2026 missing from shows.json",
-      "verifyCmd": "node --test scripts/lib/show-venue.test.mjs",
-      "detail": "not ok: BRO-2281: relocated Hackney Empire run carries the actual v… | first failure: show im-every-woman-the-chaka-khan-musical-west-end-2026 must exist in shows.jso"
+      "id": "BRO-6646",
+      "name": "Scraping spend alert: alarm on prepaid-credit exhaustion pace, not daily credits",
+      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cHJvdmlkZXItc3BlbmQ6b3ZlcnNwZW5k",
+      "detail": "[check-alert-condition-absent] FAIL: \"provider-spend:overspend\" still firing — open, last fired 2026-10-30T08:43:47.483Z (23.8h ago, within 168h)\n"
     },
     {
       "id": "BRO-6594",
       "name": "Auto-fix (second try): Opening Night Poller Failed",
       "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-poller.yml --expect=success",
-      "detail": "(gh not authenticated; read runs from the public GitHub API)\nopening-night-poller.yml: MISMATCH — most recent run concluded 'cancelled', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41022828855)\n"
+      "detail": "(gh not authenticated; read runs from the public GitHub API)\nopening-night-poller.yml: MISMATCH — most recent run concluded 'in_progress', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41181720164)\n"
     },
     {
-      "id": "BRO-6563",
-      "name": "main test.yml red: E2E Tests / Run unit tests — \"returns shows from different markets with same title\"",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 dGVzdC15bWw6cmVkOkUyRSBUZXN0czpkMzA0ZWU4NA",
-      "detail": "[check-alert-condition-absent] FAIL: \"test-yml:red:E2E Tests:d304ee84\" still firing — open, last fired 2026-10-30T08:45:56.577Z (0.0h ago, within 168h)\n"
+      "id": "BRO-6586",
+      "name": "Re-extract truncated/stub BroadwayWorld review files with the new JSON-LD articleBody extractor",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadwayworld --reviews=3",
+      "detail": "FAIL broadwayworld: show missing; scored reviews 0 < 3\n"
     },
     {
-      "id": "BRO-6503",
-      "name": "West End history: seasons 2011-12 and 2010-11 (reference list first, outlet-by-outlet supply)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=we-2011-12,we-2010-11",
-      "detail": "FAIL we-2011-12: show missing\nFAIL we-2010-11: show missing\n"
+      "id": "BRO-6538",
+      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n⚠️  WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 79 Off-Broadway shows missing \"off-br"
     },
     {
-      "id": "BRO-6396",
-      "name": "WE historical 2015-16 + 2014-15: finish gather/collect/score and reach SEASON PASS (BRO-6343 follow-up)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=photograph-51,cats,elf,hangmen,goodnight-mister-tom,the-end-of-longing,f-a-n-y,breakfast-at-tiffanys,di-and-viv-and-rose,1984 --reviews=20",
-      "detail": "FAIL photograph-51: show missing; scored reviews 0 < 20\nFAIL cats: show missing; scored reviews 0 < 20\nFAIL elf: show missing; scored reviews 0 < 20\nFAIL hangmen: show missing; scored reviews 0 < 20\nFAIL goodnight-mister-tom: show missing; scored reviews 0 < 20\nFAIL the-end-of-longing: show missing; scored reviews 0 < 20\nFAIL f-a-n-y: show missing; scored reviews 0 < 20\nFAIL breakfast-at-tiffanys:"
+      "id": "BRO-6533",
+      "name": "WE 2010-11 and 2011-12: score gathered reviews, repair press nights, re-audit (BRO-6503 follow-on)",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n⚠️  WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 79 Off-Broadway shows missing \"off-br"
+    },
+    {
+      "id": "BRO-6507",
+      "name": "TR coverage: 4 West End 2016-17 shows with unexplained gaps (no-mans-land, school-of-rock, 42nd-street, follies)",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n⚠️  WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025...\n⚠️  WARNING: 79 Off-Broadway shows missing \"off-br"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-6558",
-      "name": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 dGVzdC15bWw6cmVkOkUyRSBUZXN0czo5NDU1ZDFmNA",
-      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"test-yml:red:E2E Tests:9455d1f4\" — resolved without a parseable resolvedAt\n"
+      "id": "BRO-6681",
+      "name": "iOS: share my diary link from the Watched tab (web already has it)",
+      "verifyCmd": "node --test tests/unit/diary-share.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/diary-share.test.mjs"
     },
     {
-      "id": "BRO-6516",
-      "name": "UK regional coverage build: hubs + shared UK Regional, Jan 2024 to now (owner-approved)",
-      "verifyCmd": "node --test scripts/uk-regional-coverage.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/uk-regional-coverage.test.mjs"
+      "id": "BRO-6570",
+      "name": "Outlet id alias split: 1 review filed under 'timeoutlondon' instead of 'timeout-london'",
+      "verifyCmd": "node --test scripts/audit-outlet-identity-hygiene.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-outlet-identity-hygiene.test.mjs"
     },
     {
-      "id": "BRO-6427",
-      "name": "TR probe: listings-index page picked for end-of-longing, di-and-viv-and-rose, 1984 (WE historical)",
-      "verifyCmd": "node --test scripts/check-we-historical-tr-coverage.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-we-historical-tr-coverage.test.mjs"
+      "id": "BRO-6568",
+      "name": "Local builds and next dev dirty tracked files (AGENTS.md, public/data/shows) and trip the commit-everything Stop hook",
+      "verifyCmd": "node --test scripts/test-clean-build.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/test-clean-build.test.mjs"
     },
     {
-      "id": "BRO-6417",
-      "name": "Social voice: every post, video and reply informs AND sparks discussion (owner principle 2026-10-27)",
-      "verifyCmd": "node --test scripts/social-autopost/captions.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/social-autopost/captions.test.mjs"
-    },
-    {
-      "id": "BRO-6412",
-      "name": "Social video: Benjamin Button London vs Off-Broadway compare video (TikTok/Shorts/Reels)",
-      "verifyCmd": "node --test scripts/social-autopost/social-autopost.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/social-autopost/social-autopost.test.mjs"
-    },
-    {
-      "id": "BRO-6406",
-      "name": "Import: same-venue production picked by logged date (La Bohème Met 2024 flagged as date mismatch)",
-      "verifyCmd": "node --test tests/unit/show-match.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/show-match.test.mjs"
-    },
-    {
-      "id": "BRO-6350",
-      "name": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.)",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 54904ms (timeout — no verdict)"
+      "id": "BRO-6548",
+      "name": "NYC facts audit: 8 rows with no readable authoritative source (BRO-6489 leftovers)",
+      "verifyCmd": "node --test scripts/nyc-facts-audit-verification.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/nyc-facts-audit-verification.test.mjs"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6547",
-      "name": "Word-boundary title matching: tb-direct-url substring match + possessive over-strip in normalizeTitle",
-      "branch": "land/codex-bro-6547",
-      "sha": "9dd622193c83ef03ff36a64dfb500b11bb181d37",
-      "landedAt": "2026-10-30T08:00:15.407Z"
+      "id": "BRO-6684",
+      "name": "Opus spend: rule-based Opus grants + weekly-usage-aware daily cap",
+      "branch": "land/bro-6684-cost-row",
+      "sha": "4fb16fbaf2cbcda3e5f5b250a61c83c3c2eee7df",
+      "landedAt": "2026-10-31T06:08:38.055Z"
+    },
+    {
+      "id": "BRO-6678",
+      "name": "Populate show castBilling so Reddit posts can name the first-billed cast (66 open shows get none)",
+      "branch": "land/codex-bro-6678",
+      "sha": "0c158ac8ab0e2c8f85ec350f62415fe572089042",
+      "landedAt": "2026-10-31T08:32:48.594Z"
+    },
+    {
+      "id": "BRO-6599",
+      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
+      "branch": "land/codex-bro-6599",
+      "sha": "7f1645144c6f491d8b74f1faf4084f8dafcc4897",
+      "landedAt": "2026-10-31T06:13:24.596Z"
+    },
+    {
+      "id": "BRO-6582",
+      "name": "Check 6 live shows whose type disagrees with their TodayTix category",
+      "branch": "land/codex-bro-6582",
+      "sha": "afe1f40b3337d3dec33027df5f617718ba3f6a22",
+      "landedAt": "2026-10-31T01:58:43.994Z"
+    },
+    {
+      "id": "BRO-6564",
+      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
+      "branch": "land/codex-bro-6564",
+      "sha": "0f2198a9a40edfe49e8f70ed5258012c8b44fa6b",
+      "landedAt": "2026-10-30T08:33:33.052Z"
+    },
+    {
+      "id": "BRO-6556",
+      "name": "Touring near you: ticket link on each city-picker stop row",
+      "branch": "land/codex-bro-6556",
+      "sha": "e9bbff56a3bfc8a7e7df1c884e2e438e432e2d0a",
+      "landedAt": "2026-10-31T02:08:40.193Z"
     },
     {
       "id": "BRO-6537",
@@ -212,76 +217,6 @@
       "branch": "land/codex-bro-6537",
       "sha": "00a5c68eda0ffa5d043bcfdc334026abb0b349c7",
       "landedAt": "2026-10-30T00:10:04.830Z"
-    },
-    {
-      "id": "BRO-6531",
-      "name": "peter-panto-off-broadway-2026 is an Off-Off-Broadway show stored as off-broadway with venue 'Lower E Side'",
-      "branch": "land/codex-bro-6531",
-      "sha": "88fdfdd3269b857c4c9e6bf936924f48974ec1cd",
-      "landedAt": "2026-10-29T22:13:28.755Z"
-    },
-    {
-      "id": "BRO-6507",
-      "name": "TR coverage: 4 West End 2016-17 shows with unexplained gaps (no-mans-land, school-of-rock, 42nd-street, follies)",
-      "branch": "land/bro-6507-batch",
-      "sha": "88119c0576367232abef2b2b3b6eef6709983314",
-      "landedAt": "2026-10-29T18:19:13.768Z"
-    },
-    {
-      "id": "BRO-6493",
-      "name": "Closed OB rows with opening == first preview and no Playbill production page (~68): second date source",
-      "branch": "land/bro-6493-d-wrongprod",
-      "sha": "241b0bfc9c591a0e13331b930a29c89a319c89fe",
-      "landedAt": "2026-10-30T07:10:36.590Z"
-    },
-    {
-      "id": "BRO-6491",
-      "name": "Outlet text-health: make --zero-char-hosts quiet+scheduled, check 28 Exeunt verifier rejections",
-      "branch": "land/bro-6491-zero-char-step",
-      "sha": "a9aac4bdfdf6933a0febb87ab2f257d05bd4fe80",
-      "landedAt": "2026-10-30T07:43:54.273Z"
-    },
-    {
-      "id": "BRO-6488",
-      "name": "Outlet-first review census for London outlets, 2012 to now (T1-T3), matched to West End/Off-West End shows",
-      "branch": "land/bro-6488-movecheck",
-      "sha": "eea3a29dd31b27f91cddac3a7210e3eeaa2fb08e",
-      "landedAt": "2026-10-29T23:21:45.941Z"
-    },
-    {
-      "id": "BRO-6474",
-      "name": "validate-data --strict red: art-west-end-2016 artshub Singapore arts-hub article attached as a review",
-      "branch": "land/bro-6474-heuristic-clear-guard",
-      "sha": "63f9e6bf864dd12de497bc755407d02d0ceace79",
-      "landedAt": "2026-10-29T07:26:58.005Z"
-    },
-    {
-      "id": "BRO-6391",
-      "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
-      "branch": "land/bro-6391-cost-report-cards",
-      "sha": "fca42ddc2fb2077c54652ca3c5b0323944f371ba",
-      "landedAt": "2026-10-26T22:38:01.928Z"
-    },
-    {
-      "id": "BRO-6380",
-      "name": "Admin: Money Scorecard sign-ups panel so the owner can check sign-ups himself",
-      "branch": "land/codex-bro-6380",
-      "sha": "92d983cd096bcaf56cdb9b245778c52e56d46d09",
-      "landedAt": "2026-10-27T16:25:30.395Z"
-    },
-    {
-      "id": "BRO-6372",
-      "name": "Email-list monitor: confirm sign-in joins from Formspree auth-auto submissions, not just sign_in_completed",
-      "branch": "land/bro-6372-formspree-auth-joins",
-      "sha": "7f6af780c0b47756abb48e5964a983e1f7d8d2d5",
-      "landedAt": "2026-10-29T06:30:08.000Z"
-    },
-    {
-      "id": "BRO-6356",
-      "name": "TR wrong_show repair, part 3: 88 files still rejected after re-extract (parser keeps another show's text; merged files never get NO-RECORD)",
-      "branch": "land/codex-bro-6356",
-      "sha": "b27571749f51bfdc14406e1a4051b09a62646d2c",
-      "landedAt": "2026-10-27T05:47:03.427Z"
     }
   ]
 }
