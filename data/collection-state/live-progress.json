@@ -1,21 +1,48 @@
 {
-  "updatedAt": "2026-10-31T02:31:01.192Z",
-  "processed": 483,
-  "failed": 280,
-  "successRate": "63.3%",
+  "updatedAt": "2026-10-31T02:45:51.211Z",
+  "processed": 495,
+  "failed": 285,
+  "successRate": "63.5%",
   "tierBreakdown": {
-    "playwright": 227,
+    "playwright": 228,
     "amp": 7,
     "browserbase": 7,
     "directCookies": 0,
     "scrapingdog": 31,
     "scrapingbee": 17,
-    "brightdata": 1,
-    "archiveToday": 41,
-    "archive": 140
+    "brightdata": 2,
+    "archiveToday": 38,
+    "archive": 150
   },
   "browserbaseSessions": 3,
   "recentActivity": [
+    {
+      "t": "2026-10-30T21:03:44.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-30T21:49:54.592Z",
+      "event": "bb-session",
+      "session": "6adec66a",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-30T21:49:55.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-30T22:39:53.372Z",
+      "event": "bb-session",
+      "session": "fc352287",
+      "url": "https://www.talkinbroadway.com/page/ob/10_30_26.html"
+    },
+    {
+      "t": "2026-10-30T22:39:54.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
     {
       "t": "2026-10-30T22:40:40.847Z",
       "event": "bb-session",
@@ -98,35 +125,6 @@
       "t": "2026-10-31T01:21:28.679Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T01:48:19.904Z",
-      "event": "bb-session",
-      "session": "5943fa9f",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-10-31T01:48:20.390Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-31T02:21:30.468Z",
-      "event": "bb-session",
-      "session": "615fcc3e",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-10-31T02:22:37.261Z",
-      "event": "bb-session",
-      "session": "9e63aaf3",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
-    },
-    {
-      "t": "2026-10-31T02:23:15.875Z",
-      "event": "bb-session",
-      "session": "77dc5caa",
-      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
