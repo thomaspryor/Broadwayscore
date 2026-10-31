@@ -1509357,5 +1509357,74 @@
     "runId": "41154894357",
     "source": "comparative-rescore",
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-31T01:49:43.414Z",
+    "completedAt": "2026-10-31T01:55:10.440Z",
+    "totalReviews": 73098,
+    "processed": 388,
+    "skipped": 71505,
+    "errors": 6,
+    "tokensUsed": {
+      "input": 2381862,
+      "output": 120252,
+      "cacheRead": 38070,
+      "cacheWrite": 1460663,
+      "total": 5967791
+    },
+    "costUsd": 7.008919925,
+    "runId": "41156678816",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "becky-nurse-of-salem-regional-2024",
+        "outletId": "chicago-theatre-review",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "dirty-laundry-off-broadway-2024",
+        "outletId": "vulture",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "cock-regional-2024",
+        "outletId": "buzznews",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "evening-at-the-talk-house-off-broadway-2017",
+        "outletId": "hollywood-reporter",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-bands-visit-off-broadway-2016",
+        "outletId": "hollywood-reporter",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-31T01:55:23.579Z",
+    "completedAt": "2026-10-31T01:56:12.587Z",
+    "totalReviews": 20,
+    "processed": 20,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 52382,
+      "output": 4286,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 56668
+    },
+    "costUsd": 0.1443759,
+    "runId": "41156678816",
+    "source": "comparative-rescore",
+    "errorDetails": []
   }
 ]
