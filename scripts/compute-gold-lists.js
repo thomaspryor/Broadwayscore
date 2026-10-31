@@ -25,6 +25,9 @@ const fs = require('fs');
 const path = require('path');
 const { getMarketMinReviews, hasEnoughReviews } = require('./lib/min-reviews');
 const { isCuratedHistoricalShow } = require('./lib/should-hide-reviews');
+// Audience gold is a ranking, so it uses the full-confidence review bar (same
+// as the site's ranked lists), not the lower bar for showing a grade.
+const AUDIENCE_GRADE_CONFIG = require('../src/config/audience-grade.json');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const outputPath = path.join(dataDir, 'gold-lists-computed.json');
@@ -188,6 +191,8 @@ function computeAudienceGoldForMarket(listType, membershipFilter, season, uncapp
     const show = showById[showId];
     if (!show || !membershipFilter(show) || getSeason(show.openingDate) !== season) continue;
     if (data.combinedScore == null || data.combinedScore < cfg.minScore) continue;
+    const audienceTotal = Object.values(data.sources || {}).reduce((a, x) => a + ((x && x.reviewCount) || 0), 0);
+    if (audienceTotal < AUDIENCE_GRADE_CONFIG.fullConfidenceReviews) continue;
 
     results.push({
       showId: show.id, title: show.title, slug: show.slug,

@@ -26,6 +26,7 @@ const consumers = [
   'scripts/generate-homepage-archive.js',
   'scripts/lib/generate-market-archive.js',
   'scripts/generate-fantasy-config.js',
+  'scripts/compute-gold-lists.js',
   'scripts/lib/reddit-opening-post.js',
   'scripts/newsletter/generate.mjs',
 ];
