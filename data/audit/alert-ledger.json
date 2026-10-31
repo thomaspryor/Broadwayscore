@@ -245,7 +245,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-31T16:14:24.276Z",
-      "lastSeen": "2026-10-31T21:03:26.652Z",
+      "lastSeen": "2026-10-31T21:29:21.182Z",
       "lastNotifiedAt": "2026-10-31T16:14:24.276Z",
       "lastSurfacedAt": "2026-10-31T16:14:24.276Z",
       "notifyCount": 193,
@@ -253,7 +253,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
       "sweptTracker": "BRO-6656",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26833,26 +26833,24 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:ba804f4f": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
-      "incidentOpenedAt": "2026-10-31T02:42:15.793Z",
-      "lastSeen": "2026-10-31T02:42:15.793Z",
-      "lastNotifiedAt": "2026-10-31T02:42:15.793Z",
+      "incidentOpenedAt": "2026-10-31T21:29:19.599Z",
+      "lastSeen": "2026-10-31T21:29:19.599Z",
+      "lastNotifiedAt": "2026-10-31T21:29:19.599Z",
       "lastSurfacedAt": null,
-      "notifyCount": 3,
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-6683",
-      "absentRunIds": [],
+      "linearIdentifier": "BRO-6740",
       "dispatch": {
-        "requestedAt": "2026-10-31T02:42:15.793Z",
+        "requestedAt": "2026-10-31T21:29:19.599Z",
         "mode": "dispatch-at-filing",
-        "runId": "41159257741",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41159257741"
+        "runId": "41241535567",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41241535567"
       },
-      "resolvedAt": "2026-10-31T03:41:45.156Z",
-      "resolveReason": "job-green"
+      "absentRunIds": []
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "open",
@@ -33761,7 +33759,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6727",
-      "silentRefires": 5
+      "silentRefires": 5,
+      "absentRunIds": [
+        "41241535567"
+      ]
     },
     "land:land/bro-6715-cost": {
       "status": "open",
