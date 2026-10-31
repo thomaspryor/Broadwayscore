@@ -130,7 +130,7 @@ function runHook(firstPrompt, calls, closing, env = {}) {
   calls.forEach((c, i) => {
     const id = `tu-${i}`;
     lines.push(JSON.stringify({ type: 'assistant', message: { role: 'assistant', content: [{ type: 'tool_use', id, name: c.name, input: c.input }] } }));
-    lines.push(JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: id, content: c.result || 'ok' }] } }));
+    lines.push(JSON.stringify({ type: 'user', ...(c.ts ? { timestamp: c.ts } : {}), message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: id, content: c.result || 'ok' }] } }));
     if (c.notice) lines.push(JSON.stringify({ type: 'user', message: { role: 'user', content: c.notice } }));
   });
   fs.writeFileSync(tp, lines.join('\n') + '\n');
@@ -230,4 +230,12 @@ test('decide: blocked child → unblock; report-back just before the last activi
   assert.equal(decide({ session: { status_bucket: 'IDLE', updated_at: '2026-10-30T00:05:00Z' }, now, reportedAt: '2026-10-30T00:01:00Z' }).action, 'done');
   const nested = { events: [{ updated_at: '2026-10-30T04:59:00Z' }], ccr: { status_bucket: 'IDLE', updated_at: '2026-10-29T23:52:00Z' } };
   assert.equal(decide({ session: nested, now }).action, 'nudge');
+});
+
+test('hook: a background poll started 3h ago with no notice is not live (start time reaches the guard)', { skip: !fs.existsSync(HOOK) && 'no repo hook' }, () => {
+  const stale = { name: 'Bash', input: POLL.input, result: bgResult('bpoll'), ts: new Date(Date.now() - 3 * 3600000).toISOString() };
+  const r = runHook(FX.firstPrompt, [...turnCalls(TURN2), stale], TURN2.closing);
+  assert.equal(r.status, 2, r.stderr.slice(0, 400));
+  const fresh = { ...stale, ts: new Date(Date.now() - 60000).toISOString() };
+  assert.equal(runHook(FX.firstPrompt, [...turnCalls(TURN2), fresh], TURN2.closing).status, 0);
 });
