@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T17:17:35.241Z",
-  "processed": 347,
-  "failed": 196,
-  "successRate": "63.9%",
+  "updatedAt": "2026-10-31T17:20:00.181Z",
+  "processed": 79,
+  "failed": 61,
+  "successRate": "56.4%",
   "tierBreakdown": {
-    "playwright": 189,
+    "playwright": 44,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 25,
-    "scrapingbee": 16,
+    "scrapingdog": 4,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 31,
-    "archive": 92
+    "archiveToday": 17,
+    "archive": 36
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-10-31T15:38:08.536Z",
@@ -80,16 +80,27 @@
     {
       "t": "2026-10-31T15:35:09.054Z",
       "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-31T16:53:57.674Z",
+      "event": "bb-session",
+      "session": "2cd3320f",
+      "url": "http://www.nytimes.com/2016/11/08/theater/master-harold-and-the-boys-review.html"
+    },
+    {
+      "t": "2026-10-31T16:53:58.482Z",
+      "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T15:55:24.436Z",
+      "t": "2026-10-31T16:55:20.740Z",
       "event": "bb-session",
-      "session": "b92ec7e5",
-      "url": "http://www.nytimes.com/2015/12/03/theater/review-in-invisible-thread-a-gay-new-y"
+      "session": "e9570f4f",
+      "url": "http://www.nytimes.com/2016/11/07/theater/finians-rainbow-review.html?_r=0"
     },
     {
-      "t": "2026-10-31T15:55:25.118Z",
+      "t": "2026-10-31T16:55:21.529Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
