@@ -114,7 +114,7 @@ function main(argv = process.argv.slice(2)) {
     console.log(JSON.stringify(d, null, 2));
     return 0;
   }
-  const pct = (n) => `${Math.round((1000 * n) / d.shows) / 10}%`;
+  const pct = (n) => (d.shows ? `${Math.round((1000 * n) / d.shows) / 10}%` : "n/a");
   console.log(`UK regional productions: ${d.shows}   reviews: ${d.totalReviews} (${d.totalScoredReviews} scored)`);
   console.log('\nReviews per show (all reviews)');
   for (const [k, n] of Object.entries(d.allBuckets)) console.log(`  ${k.padEnd(5)} ${String(n).padStart(4)}  ${pct(n)}`);
