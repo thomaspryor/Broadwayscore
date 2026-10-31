@@ -273,7 +273,7 @@ function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now
 }
 
 /** Same ledger + deduplicated cloud claims and counter as pickLinearModel (BRO-5770).
- * Usage display only: there is no Opus cap (BRO-6502). Missing either source is unknown, not zero.
+ * Also the count the daily Opus budget spends against (BRO-6684, opus-budget.js). Missing either source is unknown, not zero.
  */
 async function fetchOpusUsage({ now = new Date(), readLedger = readDispatchLedgers, fetchClaims = fetchOpusClaimEntries } = {}) {
   // Use the canonical Mac ledger path, as the dispatcher does, even from a digest worktree.

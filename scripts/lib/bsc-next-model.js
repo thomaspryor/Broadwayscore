@@ -218,7 +218,7 @@ function pickLinearModel({ explicitFlag, issue, taskId, readEntries, opusBudget 
   if (hint === 'opus') {
     // BRO-6684: the card's own Opus line spends the daily Opus budget; P0s and retries above never do.
     if (opusBudget && !isP0Issue(issue) && opusBudget.remaining <= 0) return { model: 'sonnet', reason: `Model: opus on the card, but the Opus budget is spent (${opusBudget.reason})` };
-    if (opusBudget) opusBudget.remaining -= 1;
+    if (opusBudget && !isP0Issue(issue)) opusBudget.remaining -= 1;
     return { model: 'opus', reason: 'Model: opus on the card' };
   }
   return { model: 'sonnet', reason: `Model: ${hint} on the card` };

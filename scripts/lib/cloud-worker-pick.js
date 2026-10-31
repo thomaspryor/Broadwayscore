@@ -593,8 +593,9 @@ function opusClaimEntries(comments) {
   const { parseWorkerModel } = require('./linear-session-reporting.js');
   return (Array.isArray(comments) ? comments : [])
     .filter((c) => c && c.issue && parseWorkerModel(c.body) === 'opus')
-    // One row per card (BRO-6684): a parent's claim and its child's re-claim are one launch.
-    .filter((c, i, all) => all.findIndex((d) => d.issue.identifier === c.issue.identifier) === i)
+    // One row per card (BRO-6684): a parent's claim and its child's re-claim are one launch. Keep the
+    // oldest (comments arrive newest first), so a Mac ledger launch still matches it in withCloudOpusClaims.
+    .filter((c, i, all) => all.findLastIndex((d) => d.issue.identifier === c.issue.identifier) === i)
     .map((c) => ({ event: 'launch', source: 'cloud-claim', taskId: `linear:${c.issue.identifier}`, model: 'opus', ts: c.createdAt }));
 }
 

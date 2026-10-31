@@ -74,11 +74,12 @@ card. Step 6 runs for each card once its waiter reports.
 
 Once per firing, before the first pick (BRO-6684): call `get_session` with no
 session_id and run `node scripts/opus-budget.js --record-usage
+--type=<external_metadata.rate_limit_info.rateLimitType>
 --status=<external_metadata.rate_limit_info.status>
 --resets-at=<external_metadata.rate_limit_info.resetsAt>`. The picker uses it for
 the daily Opus budget (no cap in the last 30h before the weekly reset with room
 left; none for non-P0 cards while the weekly limit warns). If get_session fails,
-skip it: the default 4/24h cap applies.
+or the limit type is not `seven_day`, skip it: the default 4/24h cap applies.
 
 For each card:
 

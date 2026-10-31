@@ -29,16 +29,19 @@ test('weekly warning stops non-P0 Opus; room near the reset lifts the cap', () =
   const lifted = B.decideOpusBudget({ opusLaunches24h: 9, usage: near, nowMs: NOW });
   assert.equal(lifted.cap, null);
   assert.equal(lifted.remaining, Infinity);
+  assert.equal(B.decideOpusBudget({ opusLaunches24h: 0, usage: { status: 'something_new', resetsAt: far.resetsAt }, nowMs: NOW }).remaining, 4, 'unknown status = default cap');
   // A reset already in the past is stale data, not a lift.
   assert.equal(B.decideOpusBudget({ opusLaunches24h: 9, usage: { status: 'allowed', resetsAt: (NOW - H) / 1000 }, nowMs: NOW }).remaining, 0);
 });
 
 test('recorded usage is read back, and ignored once stale', () => {
   const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'opus-budget-')), 'u.json');
-  B.recordUsage({ status: 'allowed', resetsAt: '1793905200', file, now: new Date(NOW) });
+  B.recordUsage({ status: 'allowed', resetsAt: '1793905200', type: 'seven_day', file, now: new Date(NOW) });
   assert.deepEqual(B.readUsage({ file, nowMs: NOW + H }), { status: 'allowed', resetsAt: 1793905200 });
   assert.equal(B.readUsage({ file, nowMs: NOW + 7 * H }), null);
-  assert.throws(() => B.recordUsage({ status: 'allowed', resetsAt: 'x', file }));
+  assert.throws(() => B.recordUsage({ status: 'allowed', resetsAt: 'x', type: 'seven_day', file }));
+  // A five-hour limit always resets within 30h: recording it would lift the cap all week.
+  assert.throws(() => B.recordUsage({ status: 'allowed', resetsAt: '1793905200', type: 'five_hour', file }), /seven_day/);
 });
 
 const card = (o = {}) => ({ identifier: 'BRO-1', priority: 3, description: '', comments: { nodes: [] }, ...o });
@@ -59,6 +62,9 @@ test('P0s and retries keep Opus with the budget spent', () => {
   const spent = { remaining: 0, reason: 'test' };
   assert.equal(pick(card({ priority: 1 }), spent).model, 'opus');
   assert.equal(pick(card({ priority: 1, description: 'Model: Opus' }), spent).model, 'opus');
+  const one = { remaining: 1, reason: 't' };
+  pick(card({ priority: 1, description: 'Model: Opus' }), one);
+  assert.equal(one.remaining, 1, 'a P0 does not spend the budget');
   assert.equal(pick(card({ comments: { nodes: [{ body: 'Dispatched to a worker' }] } }), spent).model, 'opus');
   assert.equal(pick(card(), spent).model, 'sonnet');
 });
@@ -95,4 +101,5 @@ test('launch check: no card, long budget, unreadable card', async () => {
   assert.match((await L.evaluate(input({ prompt: 'OWNER-ASKED-OPUS: yes\nBUDGET: 6h' }), deps(card()))).deny, /at most BUDGET: 4h/);
   assert.equal(await L.evaluate(input({}), deps(null)), null, 'fails open');
   assert.deepEqual(L.cardIds({ title: 'BRO-12: a', tags: ['bro-12', 'bro-7'] }), ['BRO-12', 'BRO-7']);
+  assert.deepEqual(L.cardIds({ title: 'BRO-5: follow-up to BRO-3', tags: ['config:x'] }), ['BRO-5']);
 });

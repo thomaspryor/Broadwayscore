@@ -75,8 +75,8 @@ Usage:
           owner-judgment marker) prints VERIFY-ADVISORY; --no-verify
           "<reason>" files it with the reason on the card.
           --model stamps "Model: Opus|Sonnet" on the card; the worker that
-          picks it up uses that model (there is no Opus cap, and a card that
-          failed before still moves up to Opus).
+          picks it up uses that model (an Opus line spends the daily Opus
+          budget, BRO-6684; a card that failed before still moves up to Opus).
           Opus: multi-file, architectural, adversarial debugging. Sonnet:
           mechanical, single-file, data fixes. Anything else → exit 2.
           Only a Model line in the description counts; one in a comment

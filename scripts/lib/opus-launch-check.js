@@ -18,15 +18,19 @@
 const OPUS_MAX_BUDGET_H = 4;
 const OWNER_RE = /(^|\n)\s*OWNER-ASKED-OPUS:[ \t]*\S/;
 const BUDGET_RE = /(^|\n)\s*BUDGET:[ \t]*(\d+)h\b/;
-const DEADLINE_MS = 12_000;
+// The whole hook gets 20s (settings.json) and the plan-only check after this one up to 14s.
+const DEADLINE_MS = 5_000;
 
 function isOpus(model) {
   return /^claude-opus-\d/.test(String(model || '').trim().toLowerCase());
 }
 
+// The session's cards: the id the title starts with ("BRO-N: <short>", CLOUD.md) and the bro-n tags.
+// A follow-up id mentioned later in the title is not a card this session works on.
 function cardIds(toolInput) {
-  const text = [toolInput.title, ...(Array.isArray(toolInput.tags) ? toolInput.tags : [])].join(' ');
-  return [...new Set((text.match(/\bbro-\d+\b/gi) || []).map((s) => s.toUpperCase()))];
+  const lead = /^\s*(bro-\d+)\b/i.exec(String(toolInput.title || ''));
+  const tags = (Array.isArray(toolInput.tags) ? toolInput.tags : []).filter((t) => /^bro-\d+$/i.test(String(t).trim()));
+  return [...new Set([...(lead ? [lead[1]] : []), ...tags].map((s) => String(s).trim().toUpperCase()))];
 }
 
 /**

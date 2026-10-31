@@ -8,13 +8,14 @@
  * end of the weekly window when plenty of usage is left, so none is wasted.
  *
  *   - default: OPUS_DAILY_CAP (4) Opus launches per 24h (P0s and retries count, but are never refused);
- *   - weekly status "allowed_warning" (or worse): 0, so only P0s and retries get Opus;
+ *   - weekly status "allowed_warning" or "rejected": 0, so only P0s and retries get Opus;
+ *     an unrecognised status counts as unknown;
  *   - weekly status "allowed" and the weekly reset within LIFT_WINDOW_H (30h): no cap;
  *   - usage unknown or stale (older than USAGE_MAX_AGE_H): the default cap.
  *
  * Usage comes from get_session's external_metadata.rate_limit_info, which only a
  * cloud session can read. The session records it with
- *   node scripts/opus-budget.js --record-usage --status=<status> --resets-at=<epoch s>
+ *   node scripts/opus-budget.js --record-usage --type=seven_day --status=<status> --resets-at=<epoch s>
  * into USAGE_PATH, and every picker in that container reads it.
  *
  * P0s and retries are never downgraded here (a retry on the model that already
@@ -33,6 +34,10 @@ const LIFT_WINDOW_H = 30;
 const USAGE_MAX_AGE_H = 6;
 const USAGE_PATH = path.join(os.homedir(), '.claude', 'state', 'claude-usage.json');
 const OK_STATUS = 'allowed';
+const WEEKLY_TYPE = 'seven_day';
+// rate_limit_info.status values that mean the weekly limit is close or hit. Any other
+// value we have not seen is treated as unknown (the default cap), never as a hard stop.
+const TIGHT_STATUSES = new Set(['allowed_warning', 'rejected']);
 
 function disabled(env = process.env) {
   return env.OPUS_BUDGET_DISABLED === '1';
@@ -48,7 +53,7 @@ function disabled(env = process.env) {
 function decideOpusBudget({ opusLaunches24h, usage, nowMs }) {
   const used = Number.isFinite(opusLaunches24h) ? opusLaunches24h : 0;
   const countNote = Number.isFinite(opusLaunches24h) ? `${used} used in 24h` : '24h count unknown';
-  if (usage && usage.status && usage.status !== OK_STATUS) {
+  if (usage && TIGHT_STATUSES.has(usage.status)) {
     return { cap: 0, remaining: 0, reason: `weekly limit is "${usage.status}": Opus only for P0s and retries` };
   }
   if (usage && usage.status === OK_STATUS && Number.isFinite(usage.resetsAt)) {
@@ -74,9 +79,11 @@ function readUsage({ file = USAGE_PATH, nowMs = Date.now() } = {}) {
   }
 }
 
-function recordUsage({ status, resetsAt, file = USAGE_PATH, now = new Date() }) {
+function recordUsage({ status, resetsAt, type, file = USAGE_PATH, now = new Date() }) {
   const r = Number(resetsAt);
   if (!status || !Number.isFinite(r)) throw new Error('need --status and --resets-at (epoch seconds) from get_session rate_limit_info');
+  // Only the weekly limit may lift the cap: a five-hour limit always resets within 30h (review finding).
+  if (type !== WEEKLY_TYPE) throw new Error(`rate_limit_info.rateLimitType is "${type}"; only "${WEEKLY_TYPE}" is recorded (pass --type=${WEEKLY_TYPE})`);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const row = { status: String(status), resetsAt: r, recordedAt: now.toISOString() };
   fs.writeFileSync(file, JSON.stringify(row) + '\n');
@@ -101,4 +108,4 @@ async function loadOpusBudget({ nowMs = Date.now(), usage = readUsage({ nowMs })
   return decideOpusBudget({ opusLaunches24h: count, usage, nowMs });
 }
 
-module.exports = { OPUS_DAILY_CAP, LIFT_WINDOW_H, USAGE_MAX_AGE_H, USAGE_PATH, disabled, decideOpusBudget, readUsage, recordUsage, loadOpusBudget };
+module.exports = { WEEKLY_TYPE, OPUS_DAILY_CAP, LIFT_WINDOW_H, USAGE_MAX_AGE_H, USAGE_PATH, disabled, decideOpusBudget, readUsage, recordUsage, loadOpusBudget };

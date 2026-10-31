@@ -154,10 +154,14 @@ test('create_session on Opus needs a non-empty MODEL-REASON: line in the prompt 
 
 test('create_session on Opus also needs the card policy or an OWNER-ASKED-OPUS: line (BRO-6684)', () => {
   const model = 'claude-opus-5-5';
+  const source_url = 'https://github.com/thomaspryor/Broadwayscore';
+  const tail = '\nREPORT-BACK: send_message @parent';
   // No card in title or tags and no owner line: a free-text reason is no longer enough.
-  assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: big data job', model })), 'deny');
-  assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked\nOWNER-ASKED-OPUS: "run this on opus"', model })), 'pass');
-  assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked\nOWNER-ASKED-OPUS: "run this on opus"\nBUDGET: 6h', model })), 'deny');
+  assert.equal(run(remote('create_session', { prompt: `MODEL-REASON: big data job\nBUDGET: 3h${tail}`, model, source_url })), 'deny');
+  assert.equal(run(remote('create_session', { prompt: `MODEL-REASON: owner asked\nOWNER-ASKED-OPUS: "run this on opus"\nBUDGET: 3h${tail}`, model, source_url })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: `MODEL-REASON: owner asked\nOWNER-ASKED-OPUS: "run this on opus"\nBUDGET: 6h${tail}`, model, source_url })), 'deny');
+  // Other repos (the iOS app) are not Broadwayscore card work: only the BRO-5228 line applies.
+  assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked', model, source_url: 'https://github.com/thomaspryor/BroadwayScorecard-app' })), 'pass');
 });
 
 test('create_session with a misspelled Broadwayscore source_url is denied (BRO-5068: lowercase starts in /home/user, no commands or hooks)', () => {

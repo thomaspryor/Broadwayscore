@@ -54,10 +54,12 @@ case "$tool" in
       deny "Blocked: source_url must be exactly $canon (that spelling: https, capital B, no .git, no trailing slash). Any other form starts the new session in /home/user instead of the project, so it loads none of the project's commands (/ship-check, /what-else, /wrap-up) or Stop hooks (BRO-5068). Retry with source_url \"$canon\"."
     fi
     [ "$url" = "$canon" ] && miss="$(printf '%s' "$input" | jq -r '.tool_input.prompt // "" | tostring | [(if test("(^|\\n)\\s*BUDGET:[ \\t]*([1-9]|1[0-2])h\\b") then empty else "a `BUDGET: <hours>h` line (1-12, usually 6h) so it stops on its own: at the budget it lands what is done, reports on its card, files the rest, and ends (BRO-5673)" end), (if test("(^|\\n)\\s*REPORT-BACK:[ \\t]*\\S") then empty else "a `REPORT-BACK:` line, so this session learns it finished without the owner messaging it (BRO-5781). Paste: REPORT-BACK: as your final action (finished, landed, refused, or stopped at BUDGET), send_message your parent session (session_id \"@parent\") one line: card, outcome, land run URL" end)] | join("; and ")' 2>/dev/null)" && [ -n "$miss" ] && deny "Blocked: a Broadwayscore worker session needs $miss (.claude/CLOUD.md 'Starting a worker session')."
-    # BRO-6684: an Opus session must be Opus by the card policy (+ daily Opus budget) or carry OWNER-ASKED-OPUS:, with BUDGET <= 4h.
+    # BRO-6684 (Broadwayscore sessions only): an Opus session must be Opus by the card policy (+ daily Opus budget) or carry OWNER-ASKED-OPUS:, with BUDGET <= 4h.
     # Fails open; kill switch OPUS_BUDGET_DISABLED=1.
-    opusout="$(printf '%s' "$input" | node "$(cd "$(dirname "$0")/../.." && pwd)/scripts/opus-launch-check-hook.js" 2>/dev/null)"
-    [ -n "$opusout" ] && { printf '%s\n' "$opusout"; exit 0; }
+    if [ "$url" = "$canon" ]; then
+      opusout="$(printf '%s' "$input" | node "$(cd "$(dirname "$0")/../.." && pwd)/scripts/opus-launch-check-hook.js" 2>/dev/null)"
+      [ -n "$opusout" ] && { printf '%s\n' "$opusout"; exit 0; }
+    fi
     # BRO-6088: allowed create_session -> advisory if this session's own card is plan-only (never denies; script fails open, kill switch PLAN_ONLY_CREATE_SESSION_DISABLE=1).
     printf '%s' "$input" | node "$(cd "$(dirname "$0")/../.." && pwd)/scripts/plan-only-create-session-hook.js" 2>/dev/null
     ;;
