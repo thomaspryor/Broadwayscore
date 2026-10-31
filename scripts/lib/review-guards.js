@@ -4010,8 +4010,10 @@ function recordFetchAttempt(show, review, failureEntry) {
   // Press night (first 48h after opening, BRO-6585): one failed fetch put
   // TheWrap's A Few Good Men review on a 6h wait, past the whole night. Retry
   // hourly and never abandon inside the window; normal tiers resume after it.
-  const openedMs = new Date(show && show.openingDate).getTime();
-  if (lifecycle === 'openWindow' && now - openedMs <= PRESS_NIGHT_WINDOW_MS) {
+  // Measured from the publication moment, not openingDate midnight UTC: the
+  // date-only openingDate would otherwise eat ~25h of the 48h window (BRO-6679).
+  const pressNightStartMs = getPublicationMoment(show) ?? new Date(show && show.openingDate).getTime();
+  if (lifecycle === 'openWindow' && now >= pressNightStartMs && now - pressNightStartMs <= PRESS_NIGHT_WINDOW_MS) {
     return { fetchRetryAfter: new Date(now + PRESS_NIGHT_FETCH_COOLDOWN_MS).toISOString() };
   }
 

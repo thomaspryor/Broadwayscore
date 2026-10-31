@@ -34,6 +34,23 @@ test('press-night fetch failure retries in 1h and is never abandoned inside 48h'
   assert.ok(new Date(q.fetchRetryAfter).getTime() - now > 5 * 3600 * 1000);
 });
 
+// BRO-6679: the window runs 48h from the 9pm-ET publication moment, not from
+// openingDate midnight UTC; fixed clock so it cannot flake by time of day.
+test('press-night window is 48h from publication, deterministic', (t) => {
+  const show = { status: 'open', category: 'broadway', openingDate: '2026-10-29' };
+  const pub = Date.parse('2026-10-30T01:00:00Z'); // 9pm EDT on 10-29
+  const run = (offsetH) => {
+    t.mock.timers.enable({ apis: ['Date'], now: pub + offsetH * 3600 * 1000 });
+    const p = recordFetchAttempt(show, {}, { failureReason: 'garbage_content', failureCount: 9 });
+    t.mock.timers.reset();
+    return p;
+  };
+  const inside = run(47);
+  assert.equal(inside.fetchDiscoveryAbandoned, undefined);
+  assert.equal(new Date(inside.fetchRetryAfter).getTime() - (pub + 47 * 3600 * 1000), 3600 * 1000);
+  assert.equal(run(49).fetchDiscoveryAbandoned, true);
+});
+
 test('a failed fetch (retry stamped, no fetchMethod) is not "not_attempted"', () => {
   const r = classifyIncompleteReason({ url: 'https://www.thewrap.com/x-review/', contentTier: 'excerpt', fetchRetryAfter: new Date().toISOString() }, null);
   assert.notEqual(r && r.incompleteReason, 'not_attempted');
