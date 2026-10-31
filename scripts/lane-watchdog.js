@@ -170,7 +170,7 @@ async function watchdog() {
       } catch (e) { return { ok: false, reason: `claim write failed: ${String(e.message).slice(0, 120)}` }; }
     },
     dispatchOldPath: () => {
-      if (dryRun) { console.log(`dry-run: would dispatch opening-night-orchestrator.yml show_id=${id} market=${market}`); return true; }
+      if (dryRun) { console.log(`dry-run: would run gh ${oldPathDispatchArgs(show).join(' ')}`); return true; }
       try {
         execFileSync('gh', oldPathDispatchArgs(show), { stdio: 'inherit', timeout: 60000 });
         return true;

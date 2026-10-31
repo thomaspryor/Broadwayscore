@@ -90,7 +90,10 @@ jobs:
           SHOW: ${{ inputs.show }}
           NIGHT: ${{ inputs.night }}
           REQUEST_ID: ${{ inputs.request_id }}
+          REF: ${{ github.ref }}
         run: |
+          # A live change from a branch would run unreviewed code with the variables token and skip the audit commit.
+          if [ "$MODE" = live ] && [ "$REF" != refs/heads/main ]; then echo "::error::mode live runs only from main (this is $REF)"; exit 1; fi
           case "$MODE" in live|dry-run) ;; drill) [ "$ACTION" = rollback ] || { echo "::error::drill is for rollback only"; exit 1; } ;;
             *) echo "::error::mode must be live, dry-run or drill"; exit 1 ;; esac
           if [ -n "$SHOW" ]; then printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show must be a show id"; exit 1; }; fi
@@ -131,8 +134,8 @@ jobs:
           node scripts/lane-switch.js "${args[@]}"
 
       - name: Commit audit row
+        # Not continue-on-error: a live change whose audit row did not land must turn the run red.
         if: always() && inputs.mode == 'live' && github.ref == 'refs/heads/main'
-        continue-on-error: true
         env:
           ACTION: ${{ inputs.action }}
           WHO: ${{ github.triggering_actor }}
@@ -147,6 +150,6 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening-night lane switch failed'
-          description: 'BRO-6622. A lane switch or rollback step failed; the run summary names the step and says to re-run the rollback. Every step runs even when an earlier one failed.'
+          description: 'BRO-6622. A lane switch or rollback step failed (the run summary names it and says to re-run the rollback), or the audit row did not commit (the row is in the run log).'
           severity: 'warning'
           email: 'false'

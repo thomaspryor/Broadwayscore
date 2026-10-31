@@ -28,7 +28,8 @@ Before turning the lane on for a market, read the latest BRO-5955 owner decision
 
 1. Rehearse first: send the same inputs with `mode: dry-run`. Check the plan it prints.
 2. Send it again with `mode: live`.
-3. Wait for the run to finish green. A red run means a step failed; its log names the step.
+3. Wait for the run to finish green. A red run means a step failed; its log names the step. `mode: live` runs only
+   from main.
 
 ## Turn the lane on for a market
 
@@ -56,15 +57,19 @@ show's opening date. What it does, in order:
 
 1. Sets `LANE_STANDDOWN=all` and deletes `LANE_ONLY_MARKETS` (skipped if already so).
 2. Waits up to 15 min for the lane to stand down by itself. With `"hard":"true"` it skips the wait.
-3. Cancels any lane night run still holding the show-night, then waits for it to finish its review-texts push.
-4. Releases that run's lease, only if the same run still holds it (a fresh claim is never cut).
+3. Cancels every lane night run still holding a target night, then waits once, up to 10 min, for all of them to
+   finish their review-texts push. A night whose run is still going keeps its lease and gets no old-path run.
+4. Releases that run's lease, only if the same run still holds it (a fresh claim is never cut). A night whose lease
+   changed hands is left alone and gets no old-path run either.
 5. Inside the press-night window (embargo -3h to +6h) it starts the old path once
    (`opening-night-orchestrator.yml` with the show and its market). It uses the watchdog's claim, so a rollback and
    the watchdog never both start it.
 
 A cancelled lane run pages Discord with a warning; that is expected after a rollback. If `ORCHESTRATOR_PAUSED` is set,
 the summary warns that the old path will not publish until it is cleared. If a variable write fails (403), the run
-still releases the lease and starts the old path, then goes red.
+still releases the lease and starts the old path, then goes red. Any red rollback: send the same rollback again. It
+skips what is already done, and never starts the old path twice. If it says an earlier rollback claimed the night,
+wait 10 min first.
 
 ### Afterwards
 

@@ -14,10 +14,11 @@
  *   3. Wait up to STANDDOWN_WAIT_MIN for each target to clear (no live lease of the holder seen, no in-flight night run).
  *      Cancelling first would cut that clean exit short, so the cancel is only for a lane still holding after the wait,
  *      or when the session passes hard (a hung lane).
- *   4. Cancel the still-running night runs once, then wait up to RUN_WAIT_MIN for them to complete: a cancel still runs
- *      the run's always() push and release, and the lease must not be freed while the lane's files are only local.
+ *   4. Cancel every still-running night run, then wait once, up to RUN_WAIT_MIN, for all of them: a cancel still runs
+ *      the run's always() push and release, and the lease must not be freed while the lane's files are only local. A
+ *      night whose run is still going (or cannot be seen) keeps its lease and gets no old-path run (re-run the rollback).
  *   5. Release a lease still held, pinned to the holder seen at plan time (auto-fallback.releaseStuckLease). A lease
- *      already gone is success; one that changed hands is left alone and fails the run (re-run the rollback).
+ *      already gone is success; one that changed hands is left alone, gets no old-path run and fails the run.
  *   6. Inside the press-night window, hand each show-night to the old path once through the watchdog's own claim
  *      (claimFallback on opening-night-lane-fallbacks), so a rollback and a watchdog never both dispatch. Outside the
  *      window nothing is dispatched: with the variables cleared, the regular crons cover the show.
@@ -63,9 +64,13 @@ function validateSwitch({ action, variable, value }) {
   if (name === 'LANE_STANDDOWN' && p.tokens.size === 0 && p.unknown.length === 1 && p.unknown[0] === 'all') {
     return { ok: true, variable: name, op: 'set', value: 'all' };
   }
+  if (name === 'LANE_STANDDOWN' && p.unknown.includes('all')) {
+    return { ok: false, reason: 'refused: all stands down every market, so it goes alone (value all)' };
+  }
   if (p.unknown.length) {
     return { ok: false, reason: `refused: ${name} does not take ${p.unknown.join(', ')} (use ${name === 'LANE_STANDDOWN' ? 'all or ' : ''}${KNOWN})` };
   }
+  if (!p.tokens.size) return { ok: false, reason: `refused: ${JSON.stringify(raw)} names no market (use action clear to remove ${name})` };
   return { ok: true, variable: name, op: 'set', value: [...p.tokens].sort().join(',') };
 }
 
@@ -179,6 +184,11 @@ async function executeRollback(plan, ports, opts) {
     }
   }
 
+  // Cancel every still-running night run first, then wait once for all of them: one wait per target in turn would run
+  // past the job timeout with several targets. A target whose run is still going (or cannot be seen) is blocked: its
+  // lease is kept and the old path is not dispatched, because the lane may still be writing (the watchdog's rule too).
+  const blocked = new Set();
+  const cancelled = [];
   for (const t of pending) {
     const o = wait ? observe() : { runs: t.runIds.map((id) => ({ databaseId: id, displayTitle: `${NIGHT_TITLE_PREFIX}${t.show} ${t.night}`, status: 'in_progress' })) };
     const runIds = o.runs === null ? t.runIds : inFlight(o.runs, t).map((r) => r.databaseId);
@@ -186,31 +196,45 @@ async function executeRollback(plan, ports, opts) {
       const step = { op: 'cancel-run', runId: id, show: t.show, night: t.night };
       await guard(step, () => { const r = ports.cancelRun(id); record(step, !!r.ok, r.ok ? 'cancel requested' : `cancel failed (${r.detail || 'unknown'})`); });
     }
-    if (runIds.length) {
-      const step = { op: 'wait-run', minutes: runWaitMin, show: t.show, night: t.night };
-      if (!wait) record(step, true, 'dry run: would wait for the cancelled run to push and release');
-      else {
-        await guard(step, async () => {
-          const w = await pollUntil((x) => x.runs !== null && inFlight(x.runs, t).length === 0, runWaitMin);
-          record(step, true, w.done ? 'run completed' : `run still not completed after ${runWaitMin} min; releasing anyway`);
-        });
-      }
-    }
-    if (t.holder) {
-      const step = { op: 'release-lease', show: t.show, night: t.night, holder: t.holder };
-      await guard(step, () => {
-        const r = ports.release((s) => af.releaseStuckLease(s, { show: t.show, night: t.night, holder: t.holder }));
-        if (r.ok) record(step, true, r.released === false ? 'would release' : `released lease of ${t.holder}`);
-        else if (r.reason === 'lease-gone') record(step, true, 'lease already gone (the lane released it)');
-        else if (r.reason === 'other-holder') record(step, false, `lease now held by ${r.holder}, left alone: re-run the rollback`);
-        else record(step, false, `release failed (${r.reason})`);
+    if (runIds.length) cancelled.push(t);
+  }
+  if (cancelled.length) {
+    const step = { op: 'wait-run', minutes: runWaitMin, targets: cancelled.map((t) => key(t.show, t.night)) };
+    if (!wait) record(step, true, 'dry run: would wait for the cancelled runs to push and release');
+    else {
+      for (const t of cancelled) blocked.add(key(t.show, t.night));
+      await guard(step, async () => {
+        const w = await pollUntil((x) => x.runs !== null && cancelled.every((t) => inFlight(x.runs, t).length === 0), runWaitMin);
+        const still = w.o.runs === null ? cancelled : cancelled.filter((t) => inFlight(w.o.runs, t).length > 0);
+        for (const t of cancelled) if (!still.includes(t)) blocked.delete(key(t.show, t.night));
+        record(step, !still.length, still.length
+          ? `still running after ${runWaitMin} min, or the run list is unreadable: ${still.map((t) => key(t.show, t.night)).join(', ')} keep their lease and get no old-path run; re-run the rollback`
+          : 'the cancelled runs completed');
       });
     }
+  }
+
+  for (const t of pending) {
+    if (!t.holder || blocked.has(key(t.show, t.night))) continue;
+    const step = { op: 'release-lease', show: t.show, night: t.night, holder: t.holder };
+    await guard(step, () => {
+      const r = ports.release((s) => af.releaseStuckLease(s, { show: t.show, night: t.night, holder: t.holder }));
+      if (r.ok) return record(step, true, r.released === false ? 'would release' : `released lease of ${t.holder}`);
+      if (r.reason === 'lease-gone') return record(step, true, 'lease already gone (the lane released it)');
+      blocked.add(key(t.show, t.night));
+      if (r.reason === 'other-holder') record(step, false, `lease now held by ${r.holder}, left alone: re-run the rollback`);
+      else record(step, false, `release failed (${r.reason})`);
+    });
   }
 
   for (const t of plan.targets) {
     const step = { op: 'fallback', show: t.show, night: t.night };
     await guard(step, () => {
+      if (blocked.has(key(t.show, t.night))) {
+        // The orchestrator would skip a show someone else holds, and the claim would then block every retry.
+        record(step, false, 'not dispatched: the lane may still hold or write this night (see above); re-run the rollback');
+        return;
+      }
       if (!ports.inWindow(t.show, t.night, ports.now())) {
         record(step, true, 'outside the press-night window: not dispatched, the regular crons cover the show');
         return;
@@ -226,7 +250,12 @@ function fallbackOnce(step, ports, { holder, now }) {
   const args = { show: step.show, night: step.night, holder, now };
   const c = ports.claim((s) => af.claimFallback(s, args));
   if (!c.ok && c.reason === 'already-dispatched') return [true, `old path already dispatched by ${c.holder}; no second dispatch`];
-  if (!c.ok && c.reason === 'claim-in-flight') return [true, `watchdog ${c.holder} is dispatching the old path now; no second dispatch`];
+  if (!c.ok && c.reason === 'claim-in-flight') {
+    // A watchdog claim means it is dispatching this tick. A rollback claim is an earlier rollback whose dispatch may
+    // have failed; it goes stale after CLAIM_STALE_MIN, so this run must go red and be re-run, never report success.
+    if (String(c.holder || '').startsWith('rollback:')) return [false, `earlier rollback ${c.holder} claimed this night and may not have dispatched: re-run in ${af.CLAIM_STALE_MIN} min`];
+    return [true, `watchdog ${c.holder} is dispatching the old path now; no second dispatch`];
+  }
   // A claim that cannot be written dispatches anyway: a duplicate old-path run is cheaper than none (watchdog rule).
   if (!ports.dispatchOldPath(step.show)) return [false, 'old-path dispatch failed: re-run the rollback'];
   if (!c.ok) return [true, `old path dispatched without a claim (${c.reason})`];
@@ -240,7 +269,7 @@ function describeStep(s) {
     case 'delete-var': return `delete ${s.variable}`;
     case 'wait-standdown': return `wait up to ${s.minutes} min for ${s.targets.join(', ')} to stand down`;
     case 'cancel-run': return `cancel night run ${s.runId} (${s.show} ${s.night})`;
-    case 'wait-run': return `wait up to ${s.minutes} min for ${s.show} ${s.night}'s cancelled run to finish`;
+    case 'wait-run': return `wait up to ${s.minutes} min for the cancelled runs of ${s.targets.join(', ')} to finish`;
     case 'release-lease': return `release lease ${s.show}|${s.night} held by ${s.holder}`;
     case 'fallback': return `hand ${s.show} ${s.night} to the old path`;
     default: return s.op;

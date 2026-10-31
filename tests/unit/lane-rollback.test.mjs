@@ -132,6 +132,41 @@ test('lease already gone is success; a lease that changed hands is left alone an
   assert.equal(moved.leases.leases[KEY].holder, 'lane-run-2', 'a fresh lane claim is never cut');
 });
 
+test('a night whose lease changed hands or whose run never finished gets no old-path run', async () => {
+  const moved = world({ runs: [] });
+  const p = plan(moved);
+  moved.leases = liveLease('lane-run-2');
+  const r1 = await ls.executeRollback(p, moved.ports, { holder: 'rollback:1', hard: true });
+  assert.equal(moved.calls.filter((c) => c.startsWith('dispatch')).length, 0, 'the orchestrator would skip a held show');
+  assert.equal(r1.results.find((x) => x.step.op === 'fallback').ok, false);
+  assert.deepEqual(moved.fallbacks, { leases: {} }, 'no claim, so a re-run can still dispatch');
+  const stuck = world();
+  const r2 = await ls.executeRollback(plan(stuck), stuck.ports, { holder: 'rollback:1', hard: true });
+  assert.equal(r2.ok, false);
+  assert.ok(!stuck.calls.includes('release'), 'a run still writing keeps its lease');
+  assert.equal(stuck.calls.filter((c) => c.startsWith('dispatch')).length, 0);
+  assert.match(r2.results.find((x) => x.step.op === 'wait-run').note, /re-run the rollback/);
+});
+
+test('several nights: every run is cancelled first, then one shared wait', async () => {
+  const T2 = 'Opening-night lane night other-show 2026-11-12';
+  const w = world({ runs: [{ databaseId: 11, displayTitle: TITLE, status: 'in_progress' }, { databaseId: 12, displayTitle: T2, status: 'in_progress' }],
+    script: (n, x) => { if (x.calls.includes('cancel 12')) x.runs = []; } });
+  const p = ls.planRollback({ now: NOW, vars: VARS_ON, leaseState: w.leases, laneRuns: w.runs });
+  const r = await ls.executeRollback(p, w.ports, { holder: 'rollback:1', hard: true });
+  assert.deepEqual(w.calls.filter((c) => c.startsWith('cancel')), ['cancel 11', 'cancel 12']);
+  assert.equal(r.results.filter((x) => x.step.op === 'wait-run').length, 1);
+  assert.equal(r.ok, true);
+});
+
+test('an earlier rollback still holding the claim fails this run instead of passing silently', async () => {
+  const w = world({ runs: [] });
+  w.fallbacks = af.claimFallback({ leases: {} }, { show: SHOW, night: NIGHT, holder: 'rollback:0', now: new Date(NOW).toISOString() }).state;
+  const r = await ls.executeRollback(plan(w), w.ports, { holder: 'rollback:1', hard: true });
+  assert.equal(r.ok, false);
+  assert.match(r.results.find((x) => x.step.op === 'fallback').note, /re-run in 10 min/);
+});
+
 test('a second rollback, or one racing the watchdog, never dispatches twice', async () => {
   const w = world({ runs: [] });
   await ls.executeRollback(plan(w), w.ports, { holder: 'rollback:1', hard: true });

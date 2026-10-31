@@ -134,7 +134,7 @@ function ports(mode, { leaseBranch, fallbackBranch, tag }) {
     release: dryLease ? (fn) => evaluate(leaseBranch, fn) : casOn(leaseBranch, `opening-night lease: lane switch rollback released (BRO-6622${tag})`),
     claim: dryLease ? (fn) => evaluate(fallbackBranch, fn) : casOn(fallbackBranch, `opening-night lane fallback claim: lane switch rollback (BRO-6622${tag})`),
     dispatchOldPath: (showId) => {
-      const args = oldPathDispatchArgs(findShow(showId) ? { ...findShow(showId), id: showId } : { id: showId });
+      const args = oldPathDispatchArgs(findShow(showId) || { id: showId });
       if (!live) { log(`${mode}: would run gh ${args.join(' ')}`); return true; }
       try { sh('gh', args); return true; } catch (e) {
         log(`::warning::old-path dispatch failed: ${errText(e)}`);
@@ -152,6 +152,7 @@ function ports(mode, { leaseBranch, fallbackBranch, tag }) {
 function writeAudit(row) {
   fs.mkdirSync(path.dirname(AUDIT_FILE), { recursive: true });
   fs.appendFileSync(AUDIT_FILE, JSON.stringify(row) + '\n');
+  log(`audit row: ${JSON.stringify(row)}`);
 }
 
 function summary(lines) {
@@ -213,10 +214,12 @@ async function cmdRollback() {
   const fallbackBranch = drill ? ls.DRILL_FALLBACK_BRANCH : af.FALLBACK_BRANCH;
   let show = arg('show') || '';
   let night = arg('night') || '';
+  // Leases, run titles and the old-path dispatch all use the show id, so a slug given here becomes the id.
+  const known = show && !drill ? findShow(show) : null;
+  if (known) show = known.id;
   if (show && !night && !drill) {
-    const s = findShow(show);
-    if (!s || !s.openingDate) { log(`::error::--night is required: ${show} has no openingDate in shows.json`); return 2; }
-    night = s.openingDate;
+    if (!known || !known.openingDate) { log(`::error::--night is required: ${show} has no openingDate in shows.json`); return 2; }
+    night = known.openingDate;
   }
   if (drill) {
     night = new Date().toISOString().slice(0, 10);
@@ -224,6 +227,13 @@ async function cmdRollback() {
     const seeded = casOn(leaseBranch, 'opening-night lease: drill seed (BRO-6622)')(() => ({ ok: true, state: ls.drillLeaseState({ night }) }));
     if (!seeded.ok) { log(`::error::drill: could not seed the synthetic lease on ${leaseBranch} (${seeded.reason})`); return 1; }
     log(`drill: seeded synthetic lease ${show}|${night} held by ${ls.DRILL_HOLDER} on ${leaseBranch}`);
+    // An earlier drill the same day left its claim marked dispatched; clear it so this drill proves the dispatch again.
+    const cleared = casOn(fallbackBranch, 'opening-night fallback: drill reset (BRO-6622)')((st) => {
+      const leases = { ...((st && st.leases) || {}) };
+      delete leases[`${show}|${night}`];
+      return { ok: true, state: { ...(st || {}), leases } };
+    });
+    if (!cleared.ok) { log(`::error::drill: could not clear the drill claim on ${fallbackBranch} (${cleared.reason})`); return 1; }
   }
   // Drill reads its variables but never writes them: the probe below is its only variable write.
   const vars = { onlyMarkets: readVar('LANE_ONLY_MARKETS'), standdown: readVar('LANE_STANDDOWN') };
@@ -234,7 +244,7 @@ async function cmdRollback() {
   }
   // A mistyped --show would skip the real show's lease and start the old path for nothing. One the lane holds or
   // runs is still rolled back even when shows.json lags.
-  if (show && !drill && !findShow(show) && !plan.targets.some((t) => t.holder || t.runIds.length)) {
+  if (show && !drill && !known && !plan.targets.some((t) => t.holder || t.runIds.length)) {
     log(`::error::refused: ${show} is not in data/shows.json and has no live lease or lane night run (typo?)`); return 2;
   }
   plan.warnings.forEach((w) => log(`::warning::${w}`));
@@ -254,8 +264,10 @@ async function cmdRollback() {
     ...(plan.varSteps.length ? [] : ['- nothing to restore (they were already rolled back)']),
     ...(paused ? ['', `Warning: ${paused}`] : [])];
   if (drill) {
-    const leaseLeft = (readLeases(leaseBranch).leases || { x: 1 })[`${show}|${night}`];
-    const claim = (readLeases(fallbackBranch).leases || {})[`${show}|${night}`];
+    const leaseState = readLeases(leaseBranch);
+    const claimState = readLeases(fallbackBranch);
+    const leaseLeft = leaseState.unknown ? 'unreadable' : (leaseState.leases || {})[`${show}|${night}`];
+    const claim = (claimState.leases || {})[`${show}|${night}`];
     let dispatches = 0;
     const again = await ls.executeRollback(ls.planRollback({ show, night, vars, leaseState: readLeases(leaseBranch), laneRuns: [] }),
       { ...p, setVar: () => ({ ok: true }), deleteVar: () => ({ ok: true }), dispatchOldPath: (s) => { dispatches += 1; return p.dispatchOldPath(s); } },
