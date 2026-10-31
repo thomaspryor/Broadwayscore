@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T19:30:32.598Z",
+  "generatedAt": "2026-10-31T20:09:50.883Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -112,10 +112,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -126,14 +122,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "musical-theatre-review",
-      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
-    },
-    {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -148,7 +136,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 757,
+  "itemsScanned": 784,
   "matchedGaps": 6,
   "possibleGaps": 12,
   "gaps": [

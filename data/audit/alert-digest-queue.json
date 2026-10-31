@@ -1744,6 +1744,20 @@
     "queuedAt": "2026-10-31T18:27:01.199Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:tosca-english-national-opera-west-end-2026",
+    "title": "Review gap — \"Tosca - English National Opera\" missing 4 cited review(s)",
+    "description": "Tosca - English National Opera (tosca-english-national-opera-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-english-national-opera-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T20:09:00.598Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -1755,7 +1769,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-31T19:30:01.510Z"
+    "queuedAt": "2026-10-31T20:09:22.065Z"
   },
   {
     "conditionKey": "land:land/bro-6249-planning-tiers",

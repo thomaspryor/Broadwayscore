@@ -1,34 +1,13 @@
 {
-  "generatedAt": "2026-10-31T19:30:32.187Z",
+  "generatedAt": "2026-10-31T20:09:50.483Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 300,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "four-quartets-royal-bath-regional-2026",
-      "title": "Four Quartets",
-      "openingDate": "2026-08-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: artsdesk"
-        }
-      ],
-      "missingFromProd": [
-        "artsdesk"
-      ],
-      "localCount": 1,
-      "deployedCount": 0,
-      "firstDefectAt": "2026-10-31T19:30:25.803Z"
-    }
-  ],
+  "clean": 301,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
