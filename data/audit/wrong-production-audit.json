@@ -1,20 +1,21 @@
 {
-  "timestamp": "2026-10-31T20:40:44.121Z",
+  "timestamp": "2026-10-31T20:59:39.142Z",
   "stats": {
-    "totalReviews": 76143,
-    "alreadyFlagged": 21765,
+    "totalReviews": 76213,
+    "alreadyFlagged": 21703,
     "dateGuardCatches": 238,
-    "directorMismatch": 3230,
-    "tvFilmSignals": 2174,
-    "londonSignals": 3514,
-    "offBroadwaySignals": 718,
-    "yearMismatch": 320,
-    "noPublishDate": 8591
+    "directorMismatch": 3240,
+    "tvFilmSignals": 2180,
+    "londonSignals": 3516,
+    "offBroadwaySignals": 722,
+    "yearMismatch": 322,
+    "noPublishDate": 8594
   },
   "findings": [
     {
       "showId": "12-ophelias-regional-2026",
       "file": "chicagotribune--emily-mcclanathan.json",
+      "score": 47,
       "publishDate": "2026-04-21",
       "url": "https://www.chicagotribune.com/2026/04/21/review-12-ophelias-strawdog/",
       "findings": [
@@ -4030,6 +4031,7 @@
     {
       "showId": "amadeus-regional-2025",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 79,
       "publishDate": "2025-11-18",
       "url": "https://chicago.suntimes.com/theater/2025/11/18/review-steppenwolfs-psychological-thriller-amadeus-pits-genius-against-ego-with-wigs",
       "findings": [
@@ -4043,6 +4045,7 @@
     {
       "showId": "amadeus-regional-2025",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": "2025-11-18",
       "url": "https://www.chicagotheatrereview.com/2025/11/music-menace-and-a-murder-myth/",
       "findings": [
@@ -5128,6 +5131,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-2018",
+      "file": "escape-into-life--scott-klavan.json",
+      "score": 80,
+      "publishDate": "May 24th, 2018",
+      "url": "http://www.escapeintolife.com/theatre/scott-klavan-angels-in-america/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. wolfe\" from angels-in-america-perestroika-1993"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
         }
       ]
     },
@@ -7476,6 +7498,19 @@
     },
     {
       "showId": "becky-shaw-2026",
+      "file": "the-interested-bystander--interested-bystander.json",
+      "publishDate": "2026-04-22",
+      "url": "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "becky-shaw-2026",
       "file": "variety--rebecca-rubin.json",
       "score": 81,
       "publishDate": "2026-04-07",
@@ -7727,6 +7762,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-2013",
+      "file": "northjerseycom--robert-feldberg.json",
+      "score": 92,
+      "publishDate": "2013-10-27T20:59:55-04:00",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/229493451_Theater_review___Betrayal___starring_Daniel_Craig_and_Rachel_Weisz.html?page=all",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -8145,6 +8199,7 @@
     {
       "showId": "birds-of-north-america-regional-2026",
       "file": "chicago-sun-times--mike-davis.json",
+      "score": 80,
       "publishDate": "2026-01-27",
       "url": "https://chicago.suntimes.com/theater/2026/01/27/birds-of-north-america-a-red-orchid-theatre-review",
       "findings": [
@@ -8158,6 +8213,7 @@
     {
       "showId": "birds-of-north-america-regional-2026",
       "file": "wernerstheatrereviews--emily-werner.json",
+      "score": 88,
       "publishDate": "2026-01-27",
       "url": "https://wernerstheatrereviews.wordpress.com/2026/01/27/family-in-flight-birds-of-north-america/",
       "findings": [
@@ -11199,6 +11255,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "the-interested-bystander--interested-bystander.json",
+      "publishDate": "2026-04-09",
+      "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -15415,6 +15484,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-2016",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 87,
+      "publishDate": "December 4th, 2016",
+      "url": "https://t2conline.com/just-hand-the-tony-to-ben-platt-and-dear-evan-hansen-now/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2016 (0x). 2026 matches production: dear-evan-hansen-regional-2026"
         }
       ]
     },
@@ -26577,6 +26665,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "allie-and-the-after-party--allie-bugajski.json",
+      "score": 76,
       "publishDate": "2026-02-14",
       "url": "https://www.allieandtheafterparty.com/reviews/chicago-shakespeare-theater-hamnet",
       "findings": [
@@ -26590,6 +26679,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/hamnet-reviewed-by-frank-meccia/",
       "findings": [
@@ -26603,6 +26693,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "broadwayworld--rachel-weinberg.json",
+      "score": 74,
       "publishDate": "2026-02-14",
       "url": "https://www.broadwayworld.com/chicago/article/Review-HAMNET-at-Chicago-Shakespeare-Theater-20260214",
       "findings": [
@@ -26616,6 +26707,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "buzznews--bill-esler.json",
+      "score": 63,
       "publishDate": "2026-02-16",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/6192-shakespeare-is-in-love-again-in-hamnet-at-chicago-shakespeare-theater.html",
       "findings": [
@@ -26629,6 +26721,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 88,
       "publishDate": "2026-02-19",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/hamnet-chicago-shakespeare-theater-royal-shakespeare-company/",
       "findings": [
@@ -26642,6 +26735,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 89,
       "publishDate": "2026-02-15",
       "url": "https://chicago.suntimes.com/theater/2026/02/15/review-hamnet-chicago-shakespeare-theater",
       "findings": [
@@ -26655,6 +26749,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 91,
       "publishDate": "2026-02-16",
       "url": "https://www.chicagotheatrereview.com/2026/02/a-family-portrait-of-love-and-loss/",
       "findings": [
@@ -26668,6 +26763,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "chicagocultureauthority--frank-sennett.json",
+      "score": 90,
       "publishDate": "2026-02-14",
       "url": "https://chicagocultureauthority.com/2026/02/14/a-mothers-love-and-anguish-drive-hamnet-to-stunning-emotional-heights-at-chicago-shakes/",
       "findings": [
@@ -26681,6 +26777,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "chicagoonstage--karen-topham.json",
+      "score": 90,
       "publishDate": "2026-02-16",
       "url": "https://www.chicagoonstage.com/rscs-hamnet-at-cst-is-an-enthralling-exploration-of-grief/",
       "findings": [
@@ -26694,6 +26791,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "chicagotribune--chris-jones.json",
+      "score": 68,
       "publishDate": "2026-02-15",
       "url": "https://www.chicagotribune.com/2026/02/15/review-hamnet-chicago-shakespeare/?clearUserState=true",
       "findings": [
@@ -26707,6 +26805,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 74,
       "publishDate": "2026-02-14",
       "url": "https://www.letsplaytheatricalreview.com/blog/hamnet",
       "findings": [
@@ -26720,6 +26819,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "new-city-stage--mary-wisniewski.json",
+      "score": 90,
       "publishDate": "2026-02-18",
       "url": "https://www.newcitystage.com/2026/02/18/the-royal-shakespeare-companys-hamnet-shows-how-grief-inspires-art/",
       "findings": [
@@ -26738,6 +26838,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "picksinsix--ed-tracy.json",
+      "score": 88,
       "publishDate": "2026-02-15",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2026/2/14/picksinsix-review-royal-shakespeare-company-chicago-shakespeare-theater",
       "findings": [
@@ -26751,6 +26852,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "splash-magazines--debra-davy.json",
+      "score": 48,
       "publishDate": "2026-02-15",
       "url": "https://splashmags.com/2026/02/hamnet-the-play-review-alas-poor-yoric/",
       "findings": [
@@ -26764,6 +26866,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "thefourthwalsh--katy-walsh.json",
+      "score": 87,
       "publishDate": "2026-02-17",
       "url": "https://thefourthwalsh.com/2026/02/review-hamnet-chicago-shakespeare-theater-thought-provoking-and-clever-origin-story/",
       "findings": [
@@ -26777,6 +26880,7 @@
     {
       "showId": "hamnet-regional-2026",
       "file": "third-coast-review--nancy-s-bishop.json",
+      "score": 89,
       "publishDate": "2026-02-15",
       "url": "https://thirdcoastreview.com/stages/2026/02/15/review-royal-shakespeares-hamnet-chishakes",
       "findings": [
@@ -28827,6 +28931,7 @@
     {
       "showId": "hedda-gabler-regional-2026",
       "file": "stageandcinema--cj-fernandes.json",
+      "score": 80,
       "publishDate": "2026-02-16",
       "url": "https://stageandcinema.com/2026/02/16/hedda-gabler-remy-bumppo/",
       "findings": [
@@ -35566,6 +35671,20 @@
     },
     {
       "showId": "kiss-me-kate-2019",
+      "file": "adriandimanlig--adrian-dimanlig.json",
+      "score": 88,
+      "publishDate": "March 15th, 2019",
+      "url": "http://www.adriandimanlig.com/the-hangover-report-roundabouts-smashing-recalibrated-kiss-me-kate-puts-the-emphasis-on-real-love/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from kiss-me-kate-1999"
+        }
+      ]
+    },
+    {
+      "showId": "kiss-me-kate-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 45,
       "publishDate": "March 15th, 2019",
@@ -36046,6 +36165,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 42,
+      "publishDate": "October 31st, 2016",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"howard davies\" from les-liaisons-dangereuses-1987"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
       "file": "northjerseycom--unknown.json",
       "score": 61,
       "publishDate": "2016-10-31",
@@ -36243,6 +36376,30 @@
       "score": 62,
       "publishDate": "2014-03-24T11:48:37",
       "url": "https://thefrontrowcenter.com/2014/03/les-miserables/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-2014",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 72,
+      "publishDate": "March 23, 2014",
+      "url": "https://www.hollywoodreporter.com/review/les-miserables-theater-review-690474",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37872,6 +38029,20 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 78,
+      "publishDate": "October 17, 2019",
+      "url": "http://nystagereview.com/2019/10/17/little-shop-of-horrors-a-bloody-good-time/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "nytimes--ben-brantley.json",
       "score": 92,
       "publishDate": "October 18th, 2019",
@@ -38552,19 +38723,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "magic-chichester-festival-regional-2026",
-      "file": "thewrap--robert-hofler.json",
-      "publishDate": "2026-09-08",
-      "url": "https://www.thewrap.com/creative-content/reviews/practical-magic-2-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -45071,6 +45229,20 @@
       ]
     },
     {
+      "showId": "oslo-2017",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 72,
+      "publishDate": "May 4th, 2017",
+      "url": "https://t2conline.com/she-says-oslo-proves-when-talking-peace-it-is-never-short-or-easy/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "oslo-off-broadway-2016",
       "file": "amny--matt-windman.json",
       "score": null,
@@ -48231,6 +48403,7 @@
     {
       "showId": "pivot-regional-2026",
       "file": "third-coast-review--nancy-s-bishop.json",
+      "score": 75,
       "publishDate": "2026-02-25",
       "url": "https://thirdcoastreview.com/stages/2026/02/25/review-rivendell-theatre-pivot",
       "findings": [
@@ -49442,6 +49615,20 @@
       "score": 85,
       "publishDate": "2017-04-06",
       "url": "https://www.broadwayworld.com/article/BWW-Review-Kevin-Kline-Leads-A-Terrific-Cast-In-Noel-Cowards-Classic-Comedy-PRESENT-LAUGHTER-20170406",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from present-laughter-1982"
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-2017",
+      "file": "bsonarts--bruce-smith.json",
+      "score": 63,
+      "publishDate": "April 6th, 2017",
+      "url": "http://bsonarts.com/2017/04/06/present-laughter",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52787,6 +52974,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "six-degrees-of-separation-2017",
+      "file": "simon-seez--simon-saltzman.json",
+      "score": 85,
+      "publishDate": "April 29th, 2017",
+      "url": "https://simonsaltzman.blogspot.com/2017/04/six-degrees-of-separation-at-ethel.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from six-degrees-of-separation-1990"
         }
       ]
     },
@@ -57502,6 +57703,7 @@
     {
       "showId": "superior-donuts-regional-2025",
       "file": "buzznews--john-accrocco.json",
+      "score": 79,
       "publishDate": "2025-11-07",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/6070-review-superior-donuts-at-the-artistic-home-at-the-den-theatre.html",
       "findings": [
@@ -57515,6 +57717,7 @@
     {
       "showId": "superior-donuts-regional-2025",
       "file": "third-coast-review--unknown.json",
+      "score": 74,
       "publishDate": "2025-11-08",
       "url": "https://thirdcoastreview.com/stages/2025/11/08/review-superior-donuts-artistic-home",
       "findings": [
@@ -57536,6 +57739,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "sweat-2017",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 43,
+      "publishDate": "March 30th, 2017",
+      "url": "https://t2conline.com/she-says-who-really-wants-to-sweat/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2017 (0x). 2026 matches production: sweat-citizens-regional-2026"
         }
       ]
     },
@@ -61696,6 +61918,7 @@
     {
       "showId": "the-dance-of-death-regional-2026",
       "file": "chicagocultureauthority--frank-sennett.json",
+      "score": 78,
       "publishDate": "2026-02-08",
       "url": "https://chicagocultureauthority.com/2026/02/08/jeff-perry-gets-his-freak-on-in-the-dance-of-death-at-steppenwolf/",
       "findings": [
@@ -61995,6 +62218,7 @@
     {
       "showId": "the-drowsy-chaperone-regional-2026",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 88,
       "publishDate": "2026-03-18",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/drowsy-chaperone-theo/",
       "findings": [
@@ -73269,6 +73493,20 @@
     },
     {
       "showId": "tru-off-broadway-2026",
+      "file": "nysr--david-finkle.json",
+      "score": 79,
+      "publishDate": "2026-03-20",
+      "url": "https://nystagereview.com/2026/03/19/tru-gossipy-truman-capote-on-the-uproarious-warpath/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
       "file": "nysr--frank-scheck.json",
       "score": 78,
       "publishDate": "2026-03-19",
@@ -74109,7 +74347,7 @@
     {
       "showId": "twelfth-night-crucible-regional-2026",
       "file": "soz6--unknown.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-10-18",
       "url": "https://www.soz6.com/news/twelfth-night-review-mathew-horne-oozes-arrogance-as-a-brilliantly-buttoned-up-malvolio",
       "findings": [
@@ -77472,6 +77710,7 @@
     {
       "showId": "white-christmas-regional-2025",
       "file": "picksinsix--ed-tracy.json",
+      "score": 90,
       "publishDate": "2025-11-24",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2025/11/24/picksinsix-review-white-christmas-paramount-theatre",
       "findings": [
@@ -78484,6 +78723,7 @@
     {
       "showId": "wyrd-regional-2025",
       "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/wyrd/",
       "findings": [
@@ -81679,6 +81919,7 @@
     {
       "showId": "amadeus-regional-2025",
       "file": "chicagocultureauthority--frank-sennett.json",
+      "score": 91,
       "publishDate": "2025-11-18",
       "url": "https://chicagocultureauthority.com/2025/11/17/ian-barford-and-robert-falls-rock-amadeus-at-steppenwolf/",
       "findings": [
@@ -105246,6 +105487,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
+      "score": 95,
       "publishDate": "2026-05-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-mass-donmar-warehouse",
       "findings": [
@@ -105315,7 +105557,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2026-04-29",
       "url": "https://theatreweekly.com/review-mass-at-donmar-warehouse/",
       "findings": [
@@ -106771,6 +107013,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2011",
+      "file": "thestage--michael-coveney.json",
+      "score": null,
+      "publishDate": "2011-06-02",
+      "url": "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-at-wyndhams-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -111366,6 +111622,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-2017",
+      "file": "frontmezzjunkies--steven-ross.json",
+      "score": 72,
+      "publishDate": "April 5th, 2017",
+      "url": "https://frontmezzjunkies.com/2017/04/05/present-laughter-2/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -116191,7 +116461,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "bbc-news--neil-armstrong.json",
-      "score": 94,
+      "score": 92,
       "publishDate": "2023-12-14",
       "url": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
       "findings": [
@@ -116274,7 +116544,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "lost-in-theatreland--jill-johnson.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2023-12-18",
       "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
       "findings": [
@@ -116335,7 +116605,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "standard--robert-dex-arts-correspondent.json",
-      "score": 92,
+      "score": 94,
       "publishDate": "2023-12-15",
       "url": "https://www.standard.co.uk/news/uk/stranger-things-the-first-shadow-west-end-theatre-louis-mccartney-b1127164.html",
       "findings": [
@@ -116349,7 +116619,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "sunday-times--dominic-maxwell.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2024-01-07",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-strange-and-staggeringly-good-klckxpnk5",
       "findings": [
@@ -125654,6 +125924,34 @@
     },
     {
       "showId": "the-present-2017",
+      "file": "frontmezzjunkies--steven-ross.json",
+      "score": 62,
+      "publishDate": "2017-01-15",
+      "url": "https://frontmezzjunkies.com/2017/01/14/the-present/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-present-2017",
+      "file": "new-york-irish-arts--gwen-orel.json",
+      "score": 62,
+      "publishDate": "2017-02-22",
+      "url": "http://www.newyorkirisharts.com/2017/02/the-present-a-small-gift-inside-a-big-box/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-present-2017",
       "file": "newsday--linda-winer.json",
       "score": 90,
       "publishDate": "January 8, 2017",
@@ -128529,6 +128827,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "therese-raquin-2015",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 45,
+      "publishDate": "2015-11-09",
+      "url": "http://www.theaterscene.net/plays/therese-raquin/victor-gluck/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
