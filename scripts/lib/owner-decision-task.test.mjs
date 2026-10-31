@@ -134,3 +134,17 @@ test('answering a task retires its steps and leaves a Paused card where it is', 
   assert.equal(link.parseDecisionBlock(desc).steps.length, 0);
   assert.equal(pick.isOwnerTaskResume({ comments: { nodes: comments } }, NOW + 20 * MIN), true);
 });
+
+// BRO-6715: every owner answer fast-tracks, not only a task's Done tap.
+const answerComment = (ageMs, choice, drain = false) => drain
+  ? { body: `Owner answered: Option B (Reject), by replying "B" on 2026-10-31.\n\nThis is now ordinary work for the cloud workers (check: node --test x). Picked up by the daily decision-reply drain.`, createdAt: at(ageMs) }
+  : { body: `**Owner decision** (answered by the owner through the email link, 2026-10-31 UTC)\n\nChose: ${choice}\n\n> not needed\n\nDecision ref ODAb92688739dde5f61`, createdAt: at(ageMs) };
+
+test('a fresh option or own-words answer fast-tracks; approving a held visual change and an unanswered-task do not', () => {
+  assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'Own words')]), NOW), true);
+  assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'Option B: Reject')]), NOW), true);
+  assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'Option A: Approve')]), NOW), false);
+  assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, 'Could not do it')]), NOW), false);
+  assert.equal(pick.isOwnerTaskResume(card([answerComment(5 * MIN, '', true)]), NOW), true);
+  assert.equal(pick.isOwnerTaskResume(card([answerComment(49 * HOUR, 'Own words')]), NOW), false);
+});

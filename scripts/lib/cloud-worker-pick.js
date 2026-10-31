@@ -142,7 +142,13 @@ function isStartNow(issue, nowMs) {
 // so editing the card cannot reopen the window; the comment must also carry
 // the answer ref recordAnswer writes. Bodies are unescaped first, as every
 // other marker test does (Linear escapes markdown in stored bodies).
-const OWNER_TASK_DONE_RE = /^\*\*Owner decision\*\* \(answered by the owner\b[^\n]*\n\s*\nChose: Done, I did it\s*(?:\n|$)/;
+// BRO-6715: any owner answer to a decision card fast-tracks it the same way, so a tap in the digest or
+// email starts the work at the next worker firing instead of waiting out the idle and pause cooldowns.
+// Not "I could not do it" (nothing changed) and not an Approve of a held visual change (the lander ships
+// that one; a worker would only pause on it again). The drain's own "Owner answered: ..." note counts
+// when it says the card is now ordinary worker work.
+const OWNER_TASK_DONE_RE = /^\*\*Owner decision\*\* \(answered by the owner\b[^\n]*\n\s*\nChose: (?!I could not do it|Could not do it|Option A: Approve\b)\S/;
+const OWNER_DRAIN_ANSWER_RE = /^Owner answered: [\s\S]*This is now ordinary work for the cloud workers/;
 const OWNER_TASK_RESUME_MS = 48 * HOUR_MS;
 function isOwnerTaskResume(issue, nowMs) {
   const nodes = (issue && issue.comments && Array.isArray(issue.comments.nodes)) ? issue.comments.nodes : [];
@@ -150,7 +156,8 @@ function isOwnerTaskResume(issue, nowMs) {
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
   const { unescapeMarkdown, ANSWER_REF_RE } = require('../../src/lib/owner-decision-link.js');
   const body = newest ? unescapeMarkdown(String(newest.body || '')) : '';
-  if (!OWNER_TASK_DONE_RE.test(body) || !ANSWER_REF_RE.test(body)) return false;
+  const drained = OWNER_DRAIN_ANSWER_RE.test(body);
+  if (!drained && (!OWNER_TASK_DONE_RE.test(body) || !ANSWER_REF_RE.test(body))) return false;
   const age = nowMs - Date.parse(newest.createdAt);
   return age >= 0 && age < OWNER_TASK_RESUME_MS;
 }
