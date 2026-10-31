@@ -33,7 +33,7 @@ test('fastPublish: dispatches urgent shows through the per-show lane', async () 
     urgentIds: new Set(['the-moth-off-west-end-2026']),
     dispatch: async (id, opts) => { calls.push([id, opts]); return { ok: true }; },
   });
-  assert.deepEqual(calls, [['the-moth-off-west-end-2026', { reason: 'gap-ingest' }]]);
+  assert.deepEqual(calls, [['the-moth-off-west-end-2026', { reason: 'verify-all-scored' }]]);
   assert.deepEqual(r.dispatched, ['the-moth-off-west-end-2026']);
 });
 
@@ -53,7 +53,14 @@ test('fastPublish: caps dispatches per run', async () => {
   const ids = ['a', 'b', 'c', 'd'];
   const r = await fastPublish({ showIds: ids, urgentIds: new Set(ids), dispatch: async () => ({ ok: true }), max: 2 });
   assert.deepEqual(r.dispatched, ['a', 'b']);
-  assert.deepEqual(r.notUrgent, ['c', 'd']);
+  assert.deepEqual(r.deferred, ['c', 'd']);
+  assert.deepEqual(r.notUrgent, []);
+});
+
+test('fastPublish shares the verify-all-scored concurrency lane (no parallel double scoring)', async () => {
+  const seen = [];
+  await fastPublish({ showIds: ['a'], urgentIds: new Set(['a']), dispatch: async (id, o) => { seen.push(o.reason); return { ok: true }; } });
+  assert.deepEqual(seen, ['verify-all-scored']);
 });
 
 test('audit-aggregator-gap.yml publishes ingests right after the ingest step', () => {

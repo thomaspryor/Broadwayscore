@@ -266,7 +266,8 @@ jobs:
       # skips (stubs, back-catalogue) still publishes the slow way.
       - name: Push ingested review-texts now (fast path)
         id: fast_push
-        if: ${{ !cancelled() }}
+        # Kill switch: repo variable GAP_FAST_PUBLISH_DISABLED=true
+        if: ${{ !cancelled() && vars.GAP_FAST_PUBLISH_DISABLED != 'true' }}
         # lint-allow-swallow: speed-up only; the end-of-job push + rebuild trigger still publish everything
         continue-on-error: true
         uses: ./.github/actions/push-review-texts

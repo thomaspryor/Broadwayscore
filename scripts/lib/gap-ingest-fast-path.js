@@ -40,27 +40,34 @@ function newShowIdsFromPaths(paths) {
  * @param {string[]} p.showIds        shows that gained a review file
  * @param {Set<string>} p.urgentIds   urgentScoringShowIds() result
  * @param {(showId:string, opts:object)=>Promise<{ok:boolean,error?:string}>} p.dispatch
- * @returns {Promise<{dispatched:string[], notUrgent:string[], failed:string[]}>}
+ * @returns {Promise<{dispatched:string[], notUrgent:string[], deferred:string[], failed:string[]}>}
  */
 // Cap per run: the review-texts diff can include files other writers pushed
 // while the audit ran, and each dispatch is a full scoring-workflow run.
 const MAX_DISPATCH = 5;
 
-async function fastPublish({ showIds, urgentIds, dispatch, reason = 'gap-ingest', max = MAX_DISPATCH }) {
+// Same reason as verify-all-scored.js: llm-ensemble-score.yml keys its concurrency
+// lane on rescore_reason, so sharing it keeps the rebuild's orphan-unscored
+// dispatcher and this one from scoring the same show in parallel.
+const LANE_REASON = 'verify-all-scored';
+
+async function fastPublish({ showIds, urgentIds, dispatch, reason = LANE_REASON, max = MAX_DISPATCH }) {
   const dispatched = [];
   const notUrgent = [];
+  const deferred = [];
   const failed = [];
   for (const id of showIds) {
-    if (!urgentIds.has(id) || dispatched.length + failed.length >= max) { notUrgent.push(id); continue; }
+    if (!urgentIds.has(id)) { notUrgent.push(id); continue; }
+    if (dispatched.length + failed.length >= max) { deferred.push(id); continue; }
     let res;
     try { res = await dispatch(id, { reason }); } catch (e) { res = { ok: false, error: String(e && e.message || e) }; }
     (res && res.ok ? dispatched : failed).push(id);
   }
-  return { dispatched, notUrgent, failed };
+  return { dispatched, notUrgent, deferred, failed };
 }
 
-function listAddedPaths(repoDir, beforeSha) {
-  const out = execFileSync('git', ['-C', repoDir, 'diff', '--name-only', '--diff-filter=AM', `${beforeSha}..HEAD`], { encoding: 'utf8' });
+function listAddedPaths(repoDir, beforeSha, filter = 'AM') {
+  const out = execFileSync('git', ['-C', repoDir, 'diff', '--name-only', `--diff-filter=${filter}`, `${beforeSha}..HEAD`], { encoding: 'utf8' });
   return out.split('\n').filter(Boolean);
 }
 
@@ -80,12 +87,16 @@ if (require.main === module) {
       const { dispatchRescore } = require('./dispatch-rescore');
       const before = process.env.BEFORE_SHA;
       if (!before) throw new Error('BEFORE_SHA not set');
-      const showIds = newShowIdsFromPaths(listAddedPaths(path.join(__dirname, '..', '..', 'data', 'review-texts'), before));
+      const rtDir = path.join(__dirname, '..', '..', 'data', 'review-texts');
+      // New files first: the per-run cap should go to tonight's ingests, not to
+      // other writers' edits that arrived with the same pull.
+      const added = newShowIdsFromPaths(listAddedPaths(rtDir, before, 'A'));
+      const showIds = [...added, ...newShowIdsFromPaths(listAddedPaths(rtDir, before, 'M')).filter((id) => !added.includes(id))];
       const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
       const shows = Array.isArray(raw) ? raw : (raw.shows || []);
       const urgentIds = urgentScoringShowIds(shows, { evidence: loadReviewEvidence() });
       const r = await fastPublish({ showIds, urgentIds, dispatch: dispatchRescore });
-      console.log(`gap-ingest-fast-path: new shows=[${showIds}] dispatched=[${r.dispatched}] notUrgent=[${r.notUrgent}] failed=[${r.failed}]`);
+      console.log(`gap-ingest-fast-path: new shows=[${showIds}] dispatched=[${r.dispatched}] notUrgent=[${r.notUrgent}] deferredOverCap=[${r.deferred}] failed=[${r.failed}]`);
     } catch (e) {
       console.log(`::warning::gap-ingest-fast-path failed (${String(e.message).split('\n')[0]}); slow rebuild trigger still runs`);
     }
