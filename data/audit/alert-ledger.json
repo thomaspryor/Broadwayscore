@@ -26833,21 +26833,24 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:ba804f4f": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
-      "incidentOpenedAt": "2026-10-30T13:06:49.638Z",
-      "lastSeen": "2026-10-30T21:10:28.834Z",
-      "lastNotifiedAt": "2026-10-30T13:06:49.638Z",
+      "incidentOpenedAt": "2026-10-31T02:42:15.793Z",
+      "lastSeen": "2026-10-31T02:42:15.793Z",
+      "lastNotifiedAt": "2026-10-31T02:42:15.793Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-6627",
+      "linearIdentifier": "BRO-6683",
       "absentRunIds": [],
-      "silentRefires": 12,
-      "resolvedAt": "2026-10-30T21:39:30.194Z",
-      "resolveReason": "job-green"
+      "dispatch": {
+        "requestedAt": "2026-10-31T02:42:15.793Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41159257741",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41159257741"
+      }
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "open",
