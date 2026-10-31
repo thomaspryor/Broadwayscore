@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T16:05:55.818Z",
+  "generatedAt": "2026-10-31T16:32:05.002Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -112,10 +112,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -140,9 +136,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 777,
-  "matchedGaps": 10,
-  "possibleGaps": 11,
+  "itemsScanned": 786,
+  "matchedGaps": 6,
+  "possibleGaps": 12,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -163,6 +159,15 @@
       "publishDate": "2026-10-28"
     },
     {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "level": "matched",
+      "outletId": "new-york-classical-review",
+      "url": "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
+      "headline": "Yoncheva, Spyres provide adrenaline injection to Met&#8217;s &#8220;Medea&#8221; revival",
+      "publishDate": "2026-10-31"
+    },
+    {
       "showId": "memoriam-off-west-end-2026",
       "title": "Memoriam",
       "level": "matched",
@@ -170,24 +175,6 @@
       "url": "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
       "headline": "Review: Memoriam &#8211; Southwark Playhouse Borough, London",
       "publishDate": "2026-10-27"
-    },
-    {
-      "showId": "middlemarch-rsc-regional-2026",
-      "title": "Middlemarch",
-      "level": "matched",
-      "outletId": "theatrecat",
-      "url": "https://theatrecat.com/2026/10/29/middlemarch-swan-stratford-upon-avon/",
-      "headline": "MIDDLEMARCH         Swan, Stratford upon Avon",
-      "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "middlemarch-rsc-regional-2026",
-      "title": "Middlemarch",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-middlemarch-parts-1-2-rsc",
-      "headline": "Review: MIDDLEMARCH PARTS 1 & 2, RSC",
-      "publishDate": "2026-10-29"
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -202,36 +189,9 @@
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/22/the-heart",
-      "headline": "The Heart",
-      "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
       "outletId": "theatre-reviews-limited",
       "url": "https://www.theatrereviews.com/off-broadway-review-the-heart-at-roundabout-theatre-companys-laura-pels-theatre-in-the-harold-and-miriam-steinberg-center-for-theatre-through-sunday-december-13-2026/",
       "headline": "Off-Broadway Review: &#8220;The Heart&#8221; at Roundabout Theatre Company&#8217;s Laura Pels Theatre in the Harold and Miriam Steinberg Center for Theatre (Through Sunday, December 13, 2026)",
-      "publishDate": "2026-10-31"
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "matched",
-      "outletId": "readaboutstuff",
-      "url": "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
-      "headline": "Review: The Moth &#8211; Finborough Theatre, London",
-      "publishDate": "2026-10-31"
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
-      "headline": "Review: The Moth (Finborough Theatre)",
       "publishDate": "2026-10-31"
     },
     {
@@ -332,6 +292,15 @@
       "url": "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
       "headline": "Review of &#8216;The Moth&#8217;: &#8220;Dusty play doesn&#8217;t emerge from its cocoon&#8221;",
       "publishDate": "2026-10-30"
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "possible",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/oct/31/theatre-horror-play-paranormal-activity-blackout-silence-lambs-haunting-hill-house",
+      "headline": "Jump scares, leather gloves and squeaking moth noises: theatre horror masters on how they make their shows so scary",
+      "publishDate": "2026-10-31"
     }
   ]
 }

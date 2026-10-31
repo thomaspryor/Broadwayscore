@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T16:05:34.020Z",
+  "generatedAt": "2026-10-31T16:31:39.747Z",
   "windowDays": 45,
   "showsScanned": 218,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 142.21574833333332,
+      "fileAgeHours": 142.64510055555556,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 127.67157027777778,
+      "nonTerminalAgeHours": 128.10649444444445,
       "needsManualRecovery": false
     },
     {
@@ -40,10 +40,30 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 170.73543444444445,
+      "fileAgeHours": 171.1648052777778,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 156.78346166666665,
+      "nonTerminalAgeHours": 157.21838583333334,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "kowalski-regional-2026",
+      "title": "Kowalski",
+      "openingDate": "2026-09-23",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": false,
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch925.html",
+      "recovery": null,
+      "recoveryCount": 3,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=kowalski-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch925.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-31T13:59:51.230Z",
+      "fileAgeHours": 2.5277669444444446,
+      "gapSeenAt": "2026-10-31T15:05:19.178Z",
+      "nonTerminalAgeHours": 1.4390469444444445,
+      "needsManualRecovery": false
     }
   ],
   "contradictions": []

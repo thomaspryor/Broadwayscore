@@ -292,20 +292,6 @@
     "queuedAt": "2026-10-31T15:02:52.932Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-kick-inside-off-broadway-2026",
-    "title": "Review gap — \"The Kick Inside\" missing 28 cited review(s)",
-    "description": "The Kick Inside (the-kick-inside-off-broadway-2026): 28 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-kick-inside-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T15:02:53.005Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-moth-off-west-end-2026",
     "title": "Review gap — \"The Moth\" missing 1 cited review(s)",
     "description": "The Moth (the-moth-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-moth-off-west-end-2026 --checkpoint --ingest-missing",
@@ -855,6 +841,82 @@
     "queuedAt": "2026-10-31T15:38:14.910Z"
   },
   {
+    "conditionKey": "land:land/bro-6715-cost",
+    "title": "Landing blocked: rebase red on land/bro-6715-cost",
+    "description": "land.yml did not land land/bro-6715-cost: the rebase gate went red at 834fb309d8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41216040187",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6715-cost"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "834fb309d8e361cf82c1c1603cee39a11dc7df1b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41216040187"
+      }
+    ],
+    "queuedAt": "2026-10-31T15:46:52.096Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6715-cost2",
+    "title": "Landing blocked: rebase red on land/bro-6715-cost2",
+    "description": "land.yml did not land land/bro-6715-cost2: the rebase gate went red at 166dadabd1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41216654701",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6715-cost2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "166dadabd12e3d3cdeaa96102da9b24bd8f437b7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41216654701"
+      }
+    ],
+    "queuedAt": "2026-10-31T15:56:50.701Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+    "title": "Review gap — \"Queeney Todd: The Demon Bottom of Fleet Street\" missing 1 cited review(s)",
+    "description": "Queeney Todd: The Demon Bottom of Fleet Street (queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T16:30:52.948Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -866,7 +928,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-31T16:05:34.021Z"
+    "queuedAt": "2026-10-31T16:31:39.748Z"
   },
   {
     "conditionKey": "test-yml:main-streak-escalation",
@@ -900,37 +962,6 @@
     "queuedAt": "2026-10-31T16:14:24.277Z"
   },
   {
-    "conditionKey": "land:land/bro-6715-cost",
-    "title": "Landing blocked: rebase red on land/bro-6715-cost",
-    "description": "land.yml did not land land/bro-6715-cost: the rebase gate went red at 834fb309d8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41216040187",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-6715-cost"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "834fb309d8e361cf82c1c1603cee39a11dc7df1b"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41216040187"
-      }
-    ],
-    "queuedAt": "2026-10-31T15:46:52.096Z"
-  },
-  {
     "conditionKey": "corpus-drift:critic-outlets",
     "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff) (still open — BRO-4515)",
     "description": "Still firing after 41 notifications since it was filed. Tracked at BRO-4515.\n\ncheck-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Henry Hitchings at daily-mail (1% share) for private-lives-west-end-2013\n  Patrick Marmion at mail-on-sunday (2% share) for hay-fever-west-end-2026\n  Patrick Marmion at mail-on-sunday (2% share) for hercules-west-end-2025\n  Patrick Marmion at mail-on-sunday (2% share) for high-school-musical-off-west-end-2026\n  Patrick Marmion at mail-on-sunday (2% share) for into-the-woods-west-end-2025\n  Patrick Marmion at mail-on-sunday (2% share) for martin-guerre-west-end-2026\n  Jacob Bush at thereviewshub (6% share) for dear-young-monster-sheffield-regional-2025\n  Sandi Durell at theater-life (3% share) for golden-boy-2012\n  Sandi Durell at theater-life (3% share) for stick-fly-2011\n  Mark Fisher at the-scotsman (3% share) for escaped-alone-tron-regional-2024\n  Mark Fisher at the-scotsman (3% share) for stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026\n  Lucy Popescu at islingtontribune (6% share) for the-last-ship-west-end-2026\n  Laura Collins-Hughes at village-voice (1% share) for this-aint-no-disco-off-broadway-2018\n  Cheryl Markosky at london-theatre (9% share) for how-the-other-half-loves-west-end-2026\n  Lyndsey Winship at dance-magazine (8% share) for company-2021\n  Bridget Galton at islington-gazette (5% share) for paddington-the-musical-west-end-2025\n  Bridget Galton at islington-gazette (5% share) for when-we-have-sufficiently-tortured-each-other-west-end-2019\n  Hedy Weiss at chicago-sun-times (7% share) for an-american-in-paris-2015\n  Howard Loxton at camdennewjournal (1% share) for peter-gynt-west-end-2019\n  Allison Considine at off-off-online (2% share) for the-smuggler-off-broadway-2023\n  John Groves at bestoftheatre (4% share) for what-the-animals-say-off-west-end-2026\n  John Cutler at bestoftheatre (4% share) for an-oak-tree-off-west-end-2026\n  Amanda Finn at chicago-reader (6% share) for twisted-melodies-regional-2025\n  Chris Bartlett at musical-theatre-review (9% share) for million-dollar-quartet-off-west-end-2026\n  Georgina Brown at independent (4% share) for middlemarch-rsc-regional-2026\n  Scott Lipton at broadwaynews (9% share) for almost-famous-2022\n  Kate Wyver at timeout-london (3% share) for expendable-west-end-2024\n  Kenji Fujishima at frombroadway (2% share) for aftermath-art-new-york-off-broadway-2026\n  George Grella at financialtimes (8% share) for carmen-off-broadway-2025\n  Markos Papadatos at truehollywoodtalk (6% share) for night-of-january-16th-off-broadway-2026\n  Margret Echeverria at nytg (5% share) for amy-and-the-orphans-off-broadway-2018\n  Ross at times-square-chronicles (8% share) for mama-im-a-big-girl-now-off-broadway-2024\n  Daisy Bowie-Sell at timeout-london (8% share) for the-nether-west-end-2015\n  Daisy Bowie-Sell at timeout-london (8% share) for urinetown-the-musical-west-end-2014\n  Mert Dilek at thestage (9% share) for les-miserables-west-end-2021\n  Brian Scott at theater-life (9% share) for snow-in-midsummer-off-broadway-2022\n  David Pollock at independent (7% share) for let-the-right-one-in-west-end-2014\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
@@ -943,37 +974,6 @@
     "tracked": "BRO-4515",
     "fields": [],
     "queuedAt": "2026-10-31T16:06:12.699Z"
-  },
-  {
-    "conditionKey": "land:land/bro-6715-cost2",
-    "title": "Landing blocked: rebase red on land/bro-6715-cost2",
-    "description": "land.yml did not land land/bro-6715-cost2: the rebase gate went red at 166dadabd1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41216654701",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-6715-cost2"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "166dadabd12e3d3cdeaa96102da9b24bd8f437b7"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41216654701"
-      }
-    ],
-    "queuedAt": "2026-10-31T15:56:50.701Z"
   },
   {
     "conditionKey": "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)",
