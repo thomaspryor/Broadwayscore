@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T15:39:06.795Z",
+  "generatedAt": "2026-10-31T16:05:34.020Z",
   "windowDays": 45,
   "showsScanned": 218,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 141.7666086111111,
+      "fileAgeHours": 142.21574833333332,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 127.23067416666666,
+      "nonTerminalAgeHours": 127.67157027777778,
       "needsManualRecovery": false
     },
     {
@@ -40,34 +40,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 170.2863152777778,
+      "fileAgeHours": 170.73543444444445,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 156.34256555555555,
+      "nonTerminalAgeHours": 156.78346166666665,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "kowalski-regional-2026",
-      "title": "Kowalski",
-      "openingDate": "2026-09-23",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch925.html",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Fetch failed: All scraping methods failed"
-      },
-      "recoveryCount": 2,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=kowalski-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch925.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-31T13:59:51.230Z",
-      "fileAgeHours": 1.654318888888889,
-      "gapSeenAt": "2026-10-31T15:05:19.178Z",
-      "nonTerminalAgeHours": 0.5632266666666667,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []
