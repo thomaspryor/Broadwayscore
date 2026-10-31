@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-31T14:45:18.015Z",
+    "generatedAt": "2026-10-31T15:10:25.386Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -17,7 +17,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 61
+      "churn": 63
     }
   ],
   "covered": [
@@ -28,7 +28,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 46,
+      "churn": 53,
       "mergeAttr": "union"
     }
   ]
