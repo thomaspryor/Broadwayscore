@@ -29,7 +29,7 @@ function extractPlaybillCastBilling(html) {
 }
 
 /**
- * Apply a saved production page only when its canonical URL matches the
+ * Apply a production page only when its canonical URL matches the
  * existing data/playbill-urls.json entry. This compares source identity; it
  * does not infer any production metadata from a URL. The current tab must
  * never supply the cast of a closed/historical production.
@@ -42,9 +42,23 @@ function enrichCastBilling(show, html, playbillUrl, { force = false } = {}) {
   const $ = cheerio.load(html);
   if ($('link[rel="canonical"]').attr('href') !== playbillUrl) return false;
   const names = extractPlaybillCastBilling(html);
-  if (!names.length || JSON.stringify(names) === JSON.stringify(show.castBilling)) return false;
-  show.castBilling = names;
+  return enrichCastBillingFromSnapshot(show, { names, sourceUrl: playbillUrl }, playbillUrl, { force });
+}
+
+/**
+ * The scheduled cast scraper persists validated billing in cast-changes.json.
+ * Rebuild enrichment copies it into shows.json through shows-write-guard.
+ * Recheck status and source identity here because either can change between runs.
+ */
+function enrichCastBillingFromSnapshot(show, snapshot, playbillUrl, { force = false } = {}) {
+  if (!['open', 'previews'].includes(show.status)) return false;
+  if (show.castBilling?.length && !force) return false;
+  if (!playbillUrl || snapshot?.sourceUrl !== playbillUrl) return false;
+  const names = snapshot.names;
+  if (!Array.isArray(names) || !names.length || names.some(name => typeof name !== 'string' || !name.trim())) return false;
+  if (JSON.stringify(names) === JSON.stringify(show.castBilling)) return false;
+  show.castBilling = [...names];
   return true;
 }
 
-module.exports = { extractPlaybillCastBilling, enrichCastBilling };
+module.exports = { extractPlaybillCastBilling, enrichCastBilling, enrichCastBillingFromSnapshot };

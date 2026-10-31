@@ -48,6 +48,7 @@ const {
 } = require('./lib/cast-changes-apply');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { fetchPage } = require('./lib/scraper');
+const { enrichCastBilling } = require('./lib/playbill-cast-billing');
 const { fetchWithFallback: fetchRedditWithFallback } = require('./lib/reddit-api');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -117,6 +118,7 @@ const stats = {
   eventsUpgraded: 0,
   eventsCleaned: 0,
   showsCleaned: 0,
+  billingUpdated: 0,
   errors: [],
 };
 
@@ -841,6 +843,7 @@ async function scrapePlaybillCast(targetShows, existing) {
   console.log(`[Playbill] ${eligible.length} Broadway shows with Playbill URLs`);
 
   const results = {};
+  let billingUpdated = 0;
   let fetchPage;
   try {
     fetchPage = require('./lib/scraper').fetchPage;
@@ -866,6 +869,19 @@ async function scrapePlaybillCast(targetShows, existing) {
       }
 
       const html = result.content;
+
+      // Reuse this fetch for ordered billing. This workflow persists cast-changes,
+      // while rebuild's enrich-cast-from-files copies the snapshot into shows.json.
+      // Collect independently of existing/manual billing and baseline/event changes.
+      const billedShow = { status: show.status };
+      if (enrichCastBilling(billedShow, html, playbillUrl)) {
+        const snapshot = { names: billedShow.castBilling, sourceUrl: playbillUrl };
+        existing.shows[show.id] ||= { currentCast: [], upcoming: [], history: [] };
+        if (JSON.stringify(existing.shows[show.id].castBilling) !== JSON.stringify(snapshot)) {
+          existing.shows[show.id].castBilling = snapshot;
+          billingUpdated++;
+        }
+      }
 
       // Extract current cast from the "Cast Current" tab
       const castMembers = extractPlaybillCurrentCast(html);
@@ -914,7 +930,8 @@ async function scrapePlaybillCast(targetShows, existing) {
   }
 
   const totalEvents = Object.values(results).reduce((s, arr) => s + arr.length, 0);
-  console.log(`[Playbill] Checked ${eligible.length} shows, found ${totalEvents} changes`);
+  console.log(`[Playbill] Checked ${eligible.length} shows, found ${totalEvents} changes, updated ${billingUpdated} billing lists`);
+  stats.billingUpdated += billingUpdated;
   return results;
 }
 
@@ -1790,6 +1807,7 @@ async function main() {
   console.log(`  Events upgraded:  ${stats.eventsUpgraded}`);
   console.log(`  Events cleaned:   ${stats.eventsCleaned}`);
   console.log(`  Shows cleaned:    ${stats.showsCleaned}`);
+  console.log(`  Billing updated:  ${stats.billingUpdated}`);
   console.log(`  Total changes:    ${allChanges.length}`);
   console.log(`  Errors:           ${stats.errors.length}`);
 
@@ -1798,7 +1816,7 @@ async function main() {
     stats.errors.forEach(e => console.log(`  - ${e}`));
   }
 
-  if (allChanges.length === 0) {
+  if (allChanges.length === 0 && stats.billingUpdated === 0) {
     console.log('\n[Result] No changes detected');
     return;
   }
@@ -1957,4 +1975,4 @@ if (require.main === module) {
     .finally(() => scraperCleanup());
 }
 
-module.exports = { validateEvent, suppressClosureRedundantDepartures, mergeEvents, cleanExpiredEvents };
+module.exports = { validateEvent, suppressClosureRedundantDepartures, mergeEvents, cleanExpiredEvents, scrapePlaybillCast, main };

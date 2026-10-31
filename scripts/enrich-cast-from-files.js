@@ -4,9 +4,9 @@
  *
  * Reads per-show IBDB cast files and writes simplified {name, role} arrays
  * into shows.json for mobile app and content-matching consumers.
- * Also fills castBilling from saved Playbill production-page HTML at
- * data/cache/playbill-cast/<show-id>.html, verified against playbill-urls.json.
- * Cache collection/backfill is separate; absent HTML leaves billing alone.
+ * Also fills castBilling from validated Playbill snapshots in cast-changes.json,
+ * collected by scrape-cast-changes.js using its existing production-page fetch.
+ * Missing snapshots leave billing alone; source URLs must still match the registry.
  *
  * Zero network requests — purely local file transformation.
  *
@@ -25,7 +25,7 @@
 const fs = require('fs');
 const { castFileMismatchReason } = require('./lib/cast-tombstone');
 const { extractCast: extractCastPrincipals } = require('./lib/cast-principals');
-const { enrichCastBilling } = require('./lib/playbill-cast-billing');
+const { enrichCastBillingFromSnapshot } = require('./lib/playbill-cast-billing');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
@@ -39,7 +39,7 @@ Usage:
 `;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
-const PLAYBILL_CAST_DIR = path.join(__dirname, '..', 'data', 'cache', 'playbill-cast');
+const CAST_CHANGES_FILE = path.join(__dirname, '..', 'data', 'cast-changes.json');
 const PLAYBILL_URLS_FILE = path.join(__dirname, '..', 'data', 'playbill-urls.json');
 
 // Parse CLI arguments
@@ -87,14 +87,11 @@ function main() {
   let shows = showsData.shows;
   console.log(`Total shows in database: ${shows.length}`);
 
-  // Check cast directory exists
-  if (!fs.existsSync(CAST_DIR)) {
-    console.error('Cast directory not found:', CAST_DIR);
-    process.exit(1);
-  }
-
+  // Billing snapshots do not depend on the separate IBDB cast directory.
   const castFiles = new Set(
-    fs.readdirSync(CAST_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
+    fs.existsSync(CAST_DIR)
+      ? fs.readdirSync(CAST_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
+      : []
   );
   console.log(`Cast files found: ${castFiles.size}`);
 
@@ -118,11 +115,13 @@ function main() {
 
   // Optional local source, so ordinary cast enrichment still works without it.
   let playbillUrls = {};
-  if (fs.existsSync(PLAYBILL_CAST_DIR) && fs.existsSync(PLAYBILL_URLS_FILE)) {
+  let castChanges = {};
+  if (fs.existsSync(CAST_CHANGES_FILE) && fs.existsSync(PLAYBILL_URLS_FILE)) {
     try {
       playbillUrls = JSON.parse(fs.readFileSync(PLAYBILL_URLS_FILE, 'utf8')).shows || {};
+      castChanges = JSON.parse(fs.readFileSync(CAST_CHANGES_FILE, 'utf8')).shows || {};
     } catch (e) {
-      console.log(`  Warning: Failed to read Playbill URLs: ${e.message}`);
+      console.log(`  Warning: Failed to read Playbill billing snapshots: ${e.message}`);
     }
   }
 
@@ -139,19 +138,9 @@ function main() {
   for (const show of targets) {
     // Independent of the alphabetical cast array and its early exits below.
     // Most affected shows already have cast, so they must reach this writer.
-    if (['open', 'previews'].includes(show.status) && (!show.castBilling?.length || force) && playbillUrls[show.id]) {
-      const htmlFile = path.join(PLAYBILL_CAST_DIR, `${show.id}.html`);
-      if (fs.existsSync(htmlFile)) {
-        try {
-          const html = fs.readFileSync(htmlFile, 'utf8');
-          if (enrichCastBilling(show, html, playbillUrls[show.id], { force })) {
-            billingEnriched++;
-            if (dryRun) console.log(`  Would enrich billing: ${show.id} - ${show.castBilling.slice(0, 4).join(', ')}`);
-          }
-        } catch (e) {
-          console.log(`  Warning: Failed to read Playbill cast for ${show.id}: ${e.message}`);
-        }
-      }
+    if (enrichCastBillingFromSnapshot(show, castChanges[show.id]?.castBilling, playbillUrls[show.id], { force })) {
+      billingEnriched++;
+      if (dryRun) console.log(`  Would enrich billing: ${show.id} - ${show.castBilling.slice(0, 4).join(', ')}`);
     }
 
     // Skip if already has cast and not forcing

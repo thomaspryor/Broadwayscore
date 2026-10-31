@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractPlaybillCastBilling, enrichCastBilling } = require('../../scripts/lib/playbill-cast-billing');
+const { extractPlaybillCastBilling, enrichCastBilling, enrichCastBillingFromSnapshot } = require('../../scripts/lib/playbill-cast-billing');
 const { namedCast } = require('../../scripts/lib/reddit-opening-post');
 const cheerio = require('cheerio');
 const html = readFileSync(new URL('../fixtures/playbill-cast/lost-boys.html', import.meta.url), 'utf8');
@@ -96,4 +96,42 @@ test('preserves existing billing unless forced, and never clears it on a bad sou
   assert.deepEqual(show.castBilling, ['Previously verified performer']);
   assert.equal(enrichCastBilling(show, html, sourceUrl, { force: true }), true);
   assert.deepEqual(show.castBilling.slice(0, 4), firstFour);
+});
+
+test('serialized billing snapshots enrich shows without changing the alphabetical cast', () => {
+  const cast = [{ name: 'Alphabetical cast stays separate' }];
+  const show = { status: 'previews', cast };
+  const snapshot = JSON.parse(JSON.stringify({ names: extractPlaybillCastBilling(html), sourceUrl }));
+  assert.equal(enrichCastBillingFromSnapshot(show, snapshot, sourceUrl), true);
+  assert.deepEqual(namedCast(show), firstFour);
+  assert.equal(show.cast, cast);
+  assert.notEqual(show.castBilling, snapshot.names, 'do not alias the saved snapshot');
+  assert.equal(enrichCastBillingFromSnapshot(show, snapshot, sourceUrl, { force: true }), false);
+});
+
+test('snapshot consumer rejects missing, malformed, reassigned and historical billing', () => {
+  for (const snapshot of [undefined, null, {}, { names: firstFour },
+    { sourceUrl, names: [] }, { sourceUrl, names: 'not an array' },
+    { sourceUrl, names: [''] }, { sourceUrl, names: ['  '] }, { sourceUrl, names: [null] },
+    { sourceUrl: sourceUrl + '-other', names: firstFour }]) {
+    const show = { status: 'open', castBilling: ['Verified performer'] };
+    assert.equal(enrichCastBillingFromSnapshot(show, snapshot, sourceUrl, { force: true }), false);
+    assert.deepEqual(show.castBilling, ['Verified performer']);
+  }
+  const snapshot = { sourceUrl, names: firstFour };
+  for (const status of ['closed', 'announced', undefined]) {
+    const show = { status };
+    assert.equal(enrichCastBillingFromSnapshot(show, snapshot, sourceUrl, { force: true }), false);
+    assert.equal(show.castBilling, undefined);
+  }
+  assert.equal(enrichCastBillingFromSnapshot({ status: 'open' }, snapshot, undefined), false);
+});
+
+test('snapshot consumer keeps manual billing unless explicitly forced', () => {
+  const snapshot = { sourceUrl, names: firstFour };
+  const show = { status: 'open', castBilling: ['Verified performer'] };
+  assert.equal(enrichCastBillingFromSnapshot(show, snapshot, sourceUrl), false);
+  assert.deepEqual(show.castBilling, ['Verified performer']);
+  assert.equal(enrichCastBillingFromSnapshot(show, snapshot, sourceUrl, { force: true }), true);
+  assert.deepEqual(namedCast(show), firstFour);
 });
