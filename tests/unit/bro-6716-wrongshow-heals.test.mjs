@@ -357,7 +357,23 @@ test('BRO-6716 ship-check: the rejection-delete breadcrumb only covers the exact
   test('own-cast heal: low-confidence different-show verdict keeps the flag', () => {
     const low = { ...base, contentVerification: { ...cv, confidence: 'low', issues: ['This is a review of a completely different show, Hamlet'], reasoning: 'different show entirely' } };
     const sig = G.hasStrongDifferentShowSignal(low.contentVerification.issues, low.contentVerification.reasoning);
-    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(low, truShow), !sig);
+    assert.equal(sig, true, 'fixture must carry a strong different-show signal');
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(low, truShow), false);
+  });
+  test('own-cast heal: late replacement-cast review (race-2009 Izzard, 200+ days) keeps the flag', () => {
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...base, publishDate: '2026-04-30' }, { ...truShow, closingDate: '2027-01-01' }), true);
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...base, publishDate: '2026-10-05' }, { ...truShow, closingDate: '2027-01-01' }), false);
+  });
+  test('own-cast heal: two-show column that leads with the other show keeps the flag', () => {
+    const titled = { ...truShow, title: 'Tru' };
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...base, fullText: 'Tru. ' + body }, titled), true);
+    const joint = 'Animal Wisdom at Signature Theatre is a seance with songs. '.repeat(50) + 'Next door, Tru. ' + body;
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...base, fullText: joint }, titled), false);
+  });
+  test('own-cast heal: missing cast, opening date or unparseable publish date keeps the flag', () => {
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(base, { ...truShow, cast: undefined }), false);
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(base, { ...truShow, openingDate: undefined }), false);
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...base, publishDate: 'sometime' }, truShow), false);
   });
 }
 {
