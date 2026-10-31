@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T18:15:40.604Z",
+  "timestamp": "2026-10-31T18:34:57.594Z",
   "stats": {
-    "totalReviews": 75542,
-    "alreadyFlagged": 21747,
+    "totalReviews": 75622,
+    "alreadyFlagged": 21748,
     "dateGuardCatches": 238,
-    "directorMismatch": 3204,
-    "tvFilmSignals": 2158,
+    "directorMismatch": 3205,
+    "tvFilmSignals": 2160,
     "londonSignals": 3508,
     "offBroadwaySignals": 717,
     "yearMismatch": 319,
-    "noPublishDate": 8512
+    "noPublishDate": 8523
   },
   "findings": [
     {
@@ -6176,6 +6176,7 @@
     {
       "showId": "as-you-like-it-regional-2025",
       "file": "chicagotribune--chris-jones.json",
+      "score": 72,
       "publishDate": "2025-11-10",
       "url": "https://www.chicagotribune.com/2025/11/10/review-as-you-like-it-writers-theatre/",
       "findings": [
@@ -6225,6 +6226,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "aubergine-off-broadway-2016",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": null,
+      "publishDate": "2016-09-13",
+      "url": "http://t2conline.com/aubergine-no-everything-can-be-solved-with-food-or-can-it/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -44912,6 +44927,20 @@
     },
     {
       "showId": "oslo-off-broadway-2016",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": "2016-07-11",
+      "url": "http://www.amny.com/entertainment/oslo-review-play-by-j-t-rogers-dramatizes-israel-palestine-accord-1.12031061",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "oslo-off-broadway-2016",
       "file": "financialtimes--unknown.json",
       "publishDate": "2016-07-12",
       "url": "https://next.ft.com/content/adaccc22-4813-11e6-8d68-72e9211e86ab",
@@ -44954,7 +44983,7 @@
       "showId": "oslo-off-broadway-2016",
       "file": "njcom--christopher-kelly.json",
       "score": null,
-      "publishDate": "July 11, 2016",
+      "publishDate": "2016-07-11",
       "url": "http://www.nj.com/entertainment/index.ssf/2016/07/oslo_play_lincoln_center_theater_review.html",
       "findings": [
         {
@@ -44968,7 +44997,7 @@
       "showId": "oslo-off-broadway-2016",
       "file": "nytimes--ben-brantley.json",
       "score": null,
-      "publishDate": "July 11, 2016",
+      "publishDate": "2016-07-11",
       "url": "http://www.nytimes.com/2016/07/12/theater/review-a-byzantine-path-to-middle-east-peace-in-oslo.html",
       "findings": [
         {
@@ -44993,10 +45022,10 @@
     },
     {
       "showId": "oslo-off-broadway-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
+      "file": "theatre-reviews-limited--michele-willens.json",
       "score": null,
-      "publishDate": null,
-      "url": "http://t2conline.com/she-says-oslo-proves-when-talking-peace-it-is-never-short-or-easy/",
+      "publishDate": "2016-07-12",
+      "url": "http://www.theatrereviews.com/off-broadway-review-oslo-enacts-history-on-stage-at-lincoln-centers-mitzi-e-newhouse-theater/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -77935,6 +77964,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "wyrd-regional-2025",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/wyrd/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
