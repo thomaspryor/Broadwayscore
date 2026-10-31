@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-31T11:15:17.920Z",
+  "generatedAt": "2026-10-31T11:42:26.049Z",
   "windowDays": 21,
-  "targets": 38,
-  "auditedThisRun": 11,
-  "carriedForward": 1112,
+  "targets": 34,
+  "auditedThisRun": 10,
+  "carriedForward": 1116,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 575,
-    "missingCurrentRun": 1157,
+    "withGap": 578,
+    "missingCurrentRun": 1159,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 835,
-    "totalRecoverable": 49,
-    "totalRecovered": 65,
+    "totalFlaggedMisses": 837,
+    "totalRecoverable": 50,
+    "totalRecovered": 66,
     "humanExcluded": 6,
-    "automatedExcluded": 640,
-    "automatedExcludedListed": 535,
-    "priorProductionCitations": 5819
+    "automatedExcluded": 643,
+    "automatedExcludedListed": 537,
+    "priorProductionCitations": 5792
   },
   "results": [
     {
@@ -24443,7 +24443,7 @@
         "http://www.washingtonpost.com/entertainment/theater_dance/review-aubergine-is-a-rich-homage-to-the-power-of-food/2016/09/12/c17b4f4a-7945-11e6-8064-c1ddc8a724bb_story.html"
       ],
       "dirFiles": 31,
-      "dirClean": 31,
+      "dirClean": 30,
       "inReviewsJson": 1,
       "missing": [],
       "dirOnly": [
@@ -24452,7 +24452,30 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.newsday.com/entertainment/theater/aubergine-review-food-death-link-it-s-missing-an-ingredient-1.12312486",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "clean",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/aubergine-review-food-death-link-it-s-missing-an-ingredient-1.12312486"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "contentTierInvalid"
+          ],
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -24466,7 +24489,7 @@
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "recoveryResults": [
         {
@@ -24478,7 +24501,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thebroadwayblog.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thebroadwayblog.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch fa",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -24490,7 +24513,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -24502,7 +24525,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         },
         {
@@ -24514,13 +24537,13 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         },
         {
-          "url": "http://www.newsday.com/entertainment/theater/aubergine-review-food-death-link-it-s-missing-an-ingredient-1.12312486",
-          "host": "newsday.com",
-          "file": "newsday--linda-winer.json",
+          "url": "https://newyorktheater.me/2016/09/12/aubergine-review/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
@@ -24531,8 +24554,16 @@
         }
       ],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/aubergine-review-food-death-link-it-s-missing-an-ingredient-1.12312486"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -24698,12 +24729,6 @@
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
           },
           {
-            "url": "http://www.newsday.com/entertainment/theater/aubergine-review-food-death-link-it-s-missing-an-ingredient-1.12312486",
-            "outletId": "newsday.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
             "url": "http://bobs-theater-blog.blogspot.com/2016/09/aubergine.html",
             "outletId": "bobs-theater-blog.blogspot.com",
             "state": "live",
@@ -24732,13 +24757,20 @@
             "outletId": "washingtonpost.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/aubergine-review-food-death-link-it-s-missing-an-ingredient-1.12312486",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 30,
+        "liveCount": 29,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-31T11:15:17.920Z"
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -40697,7 +40729,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T11:15:17.920Z"
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "building-the-wall-off-broadway-2026",
@@ -77611,7 +77643,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -77623,7 +77655,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -77635,25 +77667,25 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
-          "url": "http://www.theatrereviews.com/off-broadway-review-fade-at-primary-stages-at-the-cherry-lane-theater/",
-          "host": "theatrereviews.com",
-          "file": "theatre-reviews-limited--david-roberts.json",
-          "recovered": true,
+          "url": "https://www.timeout.com/newyork/blog/theater-review-fade-finds-comedy-in-latinx-class-tension-from-hollywood-020817",
+          "host": "timeout.com",
+          "file": "timeout--david-cote.json",
+          "recovered": false,
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
           "uncited": true
         },
         {
-          "url": "http://slleiter.blogspot.com/2017/02/131-review-fade-seen-february-10-2017.html",
-          "host": "slleiter.blogspot.com",
-          "file": "theatres-leiter-side--samuel-l-leiter.json",
+          "url": "http://variety.com/2017/legit/reviews/fade-review-play-tanya-saracho-1201980218/",
+          "host": "variety.com",
+          "file": "variety--frank-rizzo.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
@@ -77769,7 +77801,7 @@
         "liveCount": 16,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-31T11:15:17.920Z"
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "falls-for-jodie-off-broadway-2026",
@@ -151593,7 +151625,7 @@
         "http://www.reviewingthedrama.com/2016/09/marie-and-rosetta.html"
       ],
       "dirFiles": 32,
-      "dirClean": 32,
+      "dirClean": 31,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [
@@ -151602,7 +151634,30 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.newsday.com/entertainment/theater/marie-and-rosetta-review-a-dazzling-look-at-music-history-1.12311682",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "clean",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/marie-and-rosetta-review-a-dazzling-look-at-music-history-1.12311682"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "contentTierInvalid"
+          ],
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -151616,7 +151671,7 @@
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "recoveryResults": [
         {
@@ -151628,7 +151683,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thebroadwayblog.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thebroadwayblog.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch fa",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -151640,7 +151695,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -151652,7 +151707,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -151664,13 +151719,13 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
-          "url": "http://www.newsday.com/entertainment/theater/marie-and-rosetta-review-a-dazzling-look-at-music-history-1.12311682",
-          "host": "newsday.com",
-          "file": "newsday--linda-winer.json",
+          "url": "http://www.ny1.com/nyc/all-boroughs/on-stage/2016/09/28/theater-review---marie-and-rosetta-.html",
+          "host": "ny1.com",
+          "file": "ny1--roma-torre.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
@@ -151681,8 +151736,16 @@
         }
       ],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/marie-and-rosetta-review-a-dazzling-look-at-music-history-1.12311682"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -151824,12 +151887,6 @@
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
           },
           {
-            "url": "http://www.newsday.com/entertainment/theater/marie-and-rosetta-review-a-dazzling-look-at-music-history-1.12311682",
-            "outletId": "newsday.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
             "url": "http://www.womanaroundtown.com/sections/playing-around/marie-and-rosetta-theres-a-whole-lotta-gospel-goin-on",
             "outletId": "womanaroundtown.com",
             "state": "live",
@@ -151864,13 +151921,20 @@
             "outletId": "reviewingthedrama.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/marie-and-rosetta-review-a-dazzling-look-at-music-history-1.12311682",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 30,
+        "liveCount": 29,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-31T11:15:17.920Z"
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
@@ -188272,412 +188336,14 @@
       "openingDate": "2016-12-12",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-othello-on-broadway-starring-denzel-washington-and-jake-gyllenhaal",
-        "https://playbill.com/article/what-are-the-reviews-for-bedlams-4-person-version-of-shakespeares-othello",
-        "https://playbill.com/article/read-reviews-for-othello-at-shakespeares-globe-theatre",
-        "https://playbill.com/article/read-reviews-for-the-publics-othello-in-the-park"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.cbsnews.com/newyork/news/othello-on-broadway-denzel-washington-jake-gyllenhaal-barrymore-theatre/",
-        "https://www.chicagotribune.com/2025/03/23/review-othello-on-broadway-stars-a-muted-denzel-and-a-gyllenhaal-on-fire/",
-        "https://cititour.com/NYC_Broadway/Othello/1288",
-        "https://culturesauce.com/2025/04/03/othello-denzel-washington-jake-gyllenhaal-broadway-review/",
-        "https://www.thedailybeast.com/othello-on-broadway-denzel-washington-and-jake-gyllenhaals-tragic-misfire/",
-        "https://deadline.com/2025/03/othello-broadway-denzel-washington-jake-gyllenhaal-1236346453/",
-        "https://www.digitaljournal.com/entertainment/review-denzel-washington-and-jake-gyllenhaal-in-othello-on-broadway/article",
-        "https://ew.com/othello-review-denzel-washington-jake-gyllenhaal-do-battle-on-broadway-11701734",
-        "https://www.theguardian.com/stage/2025/mar/24/othello-review-denzel-washington-jake-gyllenhaal",
-        "https://www.hollywoodreporter.com/lifestyle/arts/othello-theater-review-denzel-washington-jake-gyllenhaal-shakespeare-broadway-1236170552/",
-        "https://www.vulture.com/article/theater-review-denzel-washington-in-othello.html",
-        "https://nystagereview.com/2025/03/23/othello-gyllenhaal-slays-in-the-great-tragedy/",
-        "https://nystagereview.com/2025/03/23/othello-for-this-revival-the-stars-are-the-thing/",
-        "https://www.newyorktheatreguide.com/reviews/othello-broadway-review-denzel-washington-jake-gyllenhaal",
-        "https://www.newyorker.com/magazine/2025/04/07/othello-theatre-review-broadway",
-        "https://www.nytimes.com/2025/03/23/theater/othello-broadway-review-washington-gyllenhaal.html",
-        "https://observer.com/2025/03/review-denzel-washingtons-othello-has-star-wattage-but-no-illumination/",
-        "https://www.theatermania.com/news/review-is-othello-starring-denzel-washington-and-jake-gyllenhaal-worth-921-a-ticket_1768318/",
-        "https://www.theatrely.com/post/an-aimless-othello-review",
-        "https://www.timeout.com/newyork/theater/othello-broadway-review-denzel-washington-jake-gyllenhaal",
-        "https://www.thetimes.com/culture/theatre-dance/article/othello-review-denzel-washington-sprinkles-box-office-magic-on-the-bard-hl97ckxgt",
-        "https://www.usatoday.com/story/entertainment/music/2025/03/24/othello-denzel-washington-jake-gyllenhaal-review/82490987007/",
-        "https://variety.com/2025/legit/reviews/othello-review-denzel-washington-jake-gyllenhaal-broadway-1236345962/",
-        "https://www.wsj.com/articles/othello-review-denzel-washingtons-dismal-revival-1d83de8a",
-        "https://www.washingtonpost.com/entertainment/theater/2025/03/24/othello-denzel-washington-jake-gyllenhaal/",
-        "https://www.thewrap.com/othello-broadway-review-denzel-washington-jake-gyllenhaal/",
-        "https://exeuntnyc.com/reviews/review-othello-at-west-end-theatre/",
-        "https://thefrontrowcenter.com/2026/05/othello-2/",
-        "https://nystagereview.com/2026/05/07/othello-bedlams-four-actor-version-a-palpable-hit/",
-        "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
-        "https://www.standard.co.uk/go/london/theatre/othello-review-mark-rylance-returns-to-the-globe-with-a-larky-performance-a3902011.html",
-        "https://www.theguardian.com/stage/2018/aug/02/othello-review-mark-rylance-andre-holland-shakespeares-globe-london",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-shakespeares-globe-review-mark-rylance-a8474121.html ",
-        "https://www.thereviewshub.com/othello-shakespeares-globe-london/",
-        "https://www.thestage.co.uk/reviews/2018/othello-starring-andre-holland-mark-rylance-review-shakespeares-globe-london/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/othello-globe-review-mark-rylances-iago-offers-theessence-evils/",
-        "https://www.timeout.com/london/theatre/othello-review-1",
-        "https://www.thetimes.co.uk/article/theatre-review-othello-shakespeare-s-globe-se1-fjsjkdnjg",
-        "https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/",
-        "https://www.whatsonstage.com/london-theatre/reviews/othello-shakespeare-globe-rylance-holland-atim_47258.html",
-        "http://www.amny.com/entertainment/othello-review-shakespeare-in-the-park-1.19286522",
-        "http://www.thedailybeast.com/the-must-see-othello-at-shakespeare-in-the-park-racism-and-power-in-pass-over",
-        "http://deadline.com/2018/06/othello-review-chukwudi-iwuji-corey-stoll-shakespeare-in-the-park-1202412953/",
-        "http://ew.com/theater/2018/06/18/othello-public-theater-review/",
-        "http://www.hollywoodreporter.com/review/othello-review-1120759",
-        "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
-        "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-othello-review-20180618-story.html",
-        "http://www.vulture.com/2018/06/in-central-park-an-othello-in-which-love-conquers-little.html",
-        "http://www.nytimes.com/2018/06/18/theater/othello-shakespeare-in-the-park-review.html",
-        "http://www.thewrap.com/othello-theater-review-corey-stoll-iago-shakespeare-park-chukwudi-iwuji/"
+        "https://variety.com/2025/legit/reviews/othello-review-denzel-washington-jake-gyllenhaal-broadway-1236345962/"
       ],
       "dirFiles": 1,
       "dirClean": 1,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.cbsnews.com/newyork/news/othello-on-broadway-denzel-washington-jake-gyllenhaal-barrymore-theatre/",
-          "host": "cbsnews.com",
-          "knownOutletId": "cbsnews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.chicagotribune.com/2025/03/23/review-othello-on-broadway-stars-a-muted-denzel-and-a-gyllenhaal-on-fire/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Othello/1288",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://culturesauce.com/2025/04/03/othello-denzel-washington-jake-gyllenhaal-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/othello-on-broadway-denzel-washington-and-jake-gyllenhaals-tragic-misfire/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://deadline.com/2025/03/othello-broadway-denzel-washington-jake-gyllenhaal-1236346453/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-denzel-washington-and-jake-gyllenhaal-in-othello-on-broadway/article",
-          "host": "digitaljournal.com",
-          "knownOutletId": "digital-journal",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://ew.com/othello-review-denzel-washington-jake-gyllenhaal-do-battle-on-broadway-11701734",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/mar/24/othello-review-denzel-washington-jake-gyllenhaal",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/othello-theater-review-denzel-washington-jake-gyllenhaal-shakespeare-broadway-1236170552/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/article/theater-review-denzel-washington-in-othello.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/03/23/othello-gyllenhaal-slays-in-the-great-tragedy/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/03/23/othello-for-this-revival-the-stars-are-the-thing/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/othello-broadway-review-denzel-washington-jake-gyllenhaal",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2025/04/07/othello-theatre-review-broadway",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2025/03/23/theater/othello-broadway-review-washington-gyllenhaal.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2025/03/review-denzel-washingtons-othello-has-star-wattage-but-no-illumination/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-is-othello-starring-denzel-washington-and-jake-gyllenhaal-worth-921-a-ticket_1768318/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/an-aimless-othello-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/othello-broadway-review-denzel-washington-jake-gyllenhaal",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/othello-review-denzel-washington-sprinkles-box-office-magic-on-the-bard-hl97ckxgt",
-          "host": "thetimes.com",
-          "knownOutletId": "sunday-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.usatoday.com/story/entertainment/music/2025/03/24/othello-denzel-washington-jake-gyllenhaal-review/82490987007/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/othello-review-denzel-washingtons-dismal-revival-1d83de8a",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/24/othello-denzel-washington-jake-gyllenhaal/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/othello-broadway-review-denzel-washington-jake-gyllenhaal/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-othello-at-west-end-theatre/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2026/05/othello-2/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2026/05/07/othello-bedlams-four-actor-version-a-palpable-hit/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/othello-review-mark-rylance-returns-to-the-globe-with-a-larky-performance-a3902011.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/aug/02/othello-review-mark-rylance-andre-holland-shakespeares-globe-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-shakespeares-globe-review-mark-rylance-a8474121.html ",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thereviewshub.com/othello-shakespeares-globe-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2018/othello-starring-andre-holland-mark-rylance-review-shakespeares-globe-london/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/othello-globe-review-mark-rylances-iago-offers-theessence-evils/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/othello-review-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/theatre-review-othello-shakespeare-s-globe-se1-fjsjkdnjg",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/othello-shakespeare-globe-rylance-holland-atim_47258.html",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/othello-review-shakespeare-in-the-park-1.19286522",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thedailybeast.com/the-must-see-othello-at-shakespeare-in-the-park-racism-and-power-in-pass-over",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://deadline.com/2018/06/othello-review-chukwudi-iwuji-corey-stoll-shakespeare-in-the-park-1202412953/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://ew.com/theater/2018/06/18/othello-public-theater-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/othello-review-1120759",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-othello-review-20180618-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2018/06/in-central-park-an-othello-in-which-love-conquers-little.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2018/06/18/theater/othello-shakespeare-in-the-park-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thewrap.com/othello-theater-review-corey-stoll-iago-shakespeare-park-chukwudi-iwuji/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -188687,385 +188353,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 468,
-        "byReason": {
-          "aggregator-internal-nav": 237,
-          "not-http-url": 38,
-          "production-database-listing": 40,
-          "aggregator-section-root": 17,
-          "non-review-host": 83,
-          "bare-host": 1,
-          "roundup-page": 52
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-the-reviews-for-othello-on-broadway-starring-denzel-washington-and-jake-gyllenhaal",
-          "publishDate": "2025-03-24"
-        },
-        {
-          "url": "https://playbill.com/article/what-are-the-reviews-for-bedlams-4-person-version-of-shakespeares-othello",
-          "publishDate": "2026-05-08"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-othello-at-shakespeares-globe-theatre",
-          "publishDate": "2018-08-02"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-the-publics-othello-in-the-park",
-          "publishDate": "2018-06-19"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.cbsnews.com/newyork/news/othello-on-broadway-denzel-washington-jake-gyllenhaal-barrymore-theatre/",
-          "host": "cbsnews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.chicagotribune.com/2025/03/23/review-othello-on-broadway-stars-a-muted-denzel-and-a-gyllenhaal-on-fire/",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Othello/1288",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://culturesauce.com/2025/04/03/othello-denzel-washington-jake-gyllenhaal-broadway-review/",
-          "host": "culturesauce.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thedailybeast.com/othello-on-broadway-denzel-washington-and-jake-gyllenhaals-tragic-misfire/",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://deadline.com/2025/03/othello-broadway-denzel-washington-jake-gyllenhaal-1236346453/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-denzel-washington-and-jake-gyllenhaal-in-othello-on-broadway/article",
-          "host": "digitaljournal.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://ew.com/othello-review-denzel-washington-jake-gyllenhaal-do-battle-on-broadway-11701734",
-          "host": "ew.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/mar/24/othello-review-denzel-washington-jake-gyllenhaal",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/othello-theater-review-denzel-washington-jake-gyllenhaal-shakespeare-broadway-1236170552/",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.vulture.com/article/theater-review-denzel-washington-in-othello.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2025/03/23/othello-gyllenhaal-slays-in-the-great-tragedy/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2025/03/23/othello-for-this-revival-the-stars-are-the-thing/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/othello-broadway-review-denzel-washington-jake-gyllenhaal",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2025/04/07/othello-theatre-review-broadway",
-          "host": "newyorker.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2025/03/23/theater/othello-broadway-review-washington-gyllenhaal.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://observer.com/2025/03/review-denzel-washingtons-othello-has-star-wattage-but-no-illumination/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-is-othello-starring-denzel-washington-and-jake-gyllenhaal-worth-921-a-ticket_1768318/",
-          "host": "theatermania.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/an-aimless-othello-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/othello-broadway-review-denzel-washington-jake-gyllenhaal",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/othello-review-denzel-washington-sprinkles-box-office-magic-on-the-bard-hl97ckxgt",
-          "host": "thetimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.usatoday.com/story/entertainment/music/2025/03/24/othello-denzel-washington-jake-gyllenhaal-review/82490987007/",
-          "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.wsj.com/articles/othello-review-denzel-washingtons-dismal-revival-1d83de8a",
-          "host": "wsj.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/24/othello-denzel-washington-jake-gyllenhaal/",
-          "host": "washingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/othello-broadway-review-denzel-washington-jake-gyllenhaal/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-othello-at-west-end-theatre/",
-          "host": "exeuntnyc.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2026/05/othello-2/",
-          "host": "thefrontrowcenter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2026/05/07/othello-bedlams-four-actor-version-a-palpable-hit/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
-          "host": "theatermania.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/othello-review-mark-rylance-returns-to-the-globe-with-a-larky-performance-a3902011.html",
-          "host": "standard.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/aug/02/othello-review-mark-rylance-andre-holland-shakespeares-globe-london",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-shakespeares-globe-review-mark-rylance-a8474121.html ",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thereviewshub.com/othello-shakespeares-globe-london/",
-          "host": "thereviewshub.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2018/othello-starring-andre-holland-mark-rylance-review-shakespeares-globe-london/",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/othello-globe-review-mark-rylances-iago-offers-theessence-evils/",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/othello-review-1",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/theatre-review-othello-shakespeare-s-globe-se1-fjsjkdnjg",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/othello-shakespeare-globe-rylance-holland-atim_47258.html",
-          "host": "whatsonstage.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.amny.com/entertainment/othello-review-shakespeare-in-the-park-1.19286522",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.thedailybeast.com/the-must-see-othello-at-shakespeare-in-the-park-racism-and-power-in-pass-over",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://deadline.com/2018/06/othello-review-chukwudi-iwuji-corey-stoll-shakespeare-in-the-park-1202412953/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://ew.com/theater/2018/06/18/othello-public-theater-review/",
-          "host": "ew.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/othello-review-1120759",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-othello-review-20180618-story.html",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.vulture.com/2018/06/in-central-park-an-othello-in-which-love-conquers-little.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nytimes.com/2018/06/18/theater/othello-shakespeare-in-the-park-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.thewrap.com/othello-theater-review-corey-stoll-iago-shakespeare-park-chukwudi-iwuji/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -189082,7 +188375,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-31T11:15:17.920Z"
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "othello-off-broadway-2026",
@@ -240711,15 +240004,22 @@
       "openingDate": "2016-12-04",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-critics-think-of-the-babylon-line"
+      ],
       "aggregatorListedUrls": [
+        "http://www.thedailybeast.com/articles/2016/12/05/how-to-learn-a-hard-lesson-in-relationships-review-the-babylon-line.html",
+        "http://deadline.com/2016/12/the-babylon-line-josh-radnor-elizabeth-reaser-review-1201864652/",
+        "http://www.ew.com/article/2016/12/05/babylon-line-broadway-review",
+        "http://www.hollywoodreporter.com/review/babylon-line-review-953071",
         "http://www.nytimes.com/2016/12/05/theater/the-babylon-line-review.html",
+        "http://www.newsday.com/entertainment/theater/the-babylon-line-review-josh-radnor-stars-in-satisfying-play-1.12708041",
+        "http://www.timeout.com/newyork/blog/theater-review-richard-greenberg-commutes-to-1967-long-island-on-the-babylon-line-120216",
+        "http://.vulture.com/2016/12/theater-review-the-babylon-line.html",
+        "http://www.thewrap.com/the-babylon-line-theater-review-josh-radnor-elizabeth-reaser-bring-lust-to-adult-ed/",
         "https://www.timeout.com/newyork/blog/theater-review-richard-greenberg-commutes-to-1967-long-island-on-the-babylon-line-120216",
         "http://www.vulture.com/2016/12/theater-review-the-babylon-line.html",
-        "http://deadline.com/2016/12/the-babylon-line-josh-radnor-elizabeth-reaser-review-1201864652/",
         "http://variety.com/2016/legit/reviews/the-babylon-line-review-play-josh-radnor-1201935267/",
-        "http://www.hollywoodreporter.com/review/babylon-line-review-953071",
-        "http://www.ew.com/article/2016/12/05/babylon-line-broadway-review",
         "http://www.theatermania.com/off-broadway/reviews/the-babylon-line_79325.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=8BWTW5",
         "http://www.talkinbroadway.com/page/ob/12_05_16.html",
@@ -240729,7 +240029,6 @@
         "http://thefrontrowcenter.com/2016/12/the-babylon-line/",
         "https://frontmezzjunkies.com/2016/12/27/the-babylon-line-running-off-the-tracks/",
         "http://thebroadwayblog.com/2016/12/08/15783-babylon-line-review-lincoln-center",
-        "http://www.thewrap.com/the-babylon-line-theater-review-josh-radnor-elizabeth-reaser-bring-lust-to-adult-ed/",
         "http://t2conline.com/the-babylon-line-a-playwright-looking-for-a-story-or-actors-in-search-of-a-better-play/",
         "http://offoffonline.com/?p=27377",
         "http://www.northjersey.com/story/entertainment/theater/2016/12/06/theater-review-babylon-line/95005316/",
@@ -240737,8 +240036,6 @@
         "http://www.citycabaret.com/the-babylon-line.html",
         "http://www.villagevoice.com/arts/the-intriguingly-meandering-route-of-richard-greenberg-s-the-babylon-line-9494253",
         "http://clumtheater.blogspot.com/2016/12/richard-greenbergs-babylon-line-at.html",
-        "http://www.thedailybeast.com/articles/2016/12/05/how-to-learn-a-hard-lesson-in-relationships-review-the-babylon-line.html",
-        "http://www.newsday.com/entertainment/theater/the-babylon-line-review-josh-radnor-stars-in-satisfying-play-1.12708041",
         "https://bobs-theater-blog.blogspot.com/2016/12/the-babylon-line.html",
         "http://www.womanaroundtown.com/sections/playing-around/the-babylon-line-spelunking-for-stories",
         "https://dougmarino.blogspot.com/2016/11/the-babylon-line.html",
@@ -240766,10 +240063,14 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 2,
+        "count": 112,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 1
+          "aggregator-internal-nav": 66,
+          "not-http-url": 5,
+          "production-database-listing": 10,
+          "aggregator-section-root": 4,
+          "non-review-host": 23,
+          "roundup-page": 4
         }
       },
       "dedupedVariants": [],
@@ -240785,7 +240086,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thebroadwayblog.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thebroadwayblog.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch fa",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -240797,7 +240098,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -240809,31 +240110,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
-          "uncited": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/blog/theater-review-richard-greenberg-commutes-to-1967-long-island-on-the-babylon-line-120216",
-          "host": "timeout.com",
-          "file": "timeout--david-cote.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
-          "url": "http://www.wnyc.org/story/review-babylon-line-looks-secret-vibrancy-postwar-long-island/",
-          "host": "wnyc.org",
-          "file": "wnyc--jennifer-vanasco.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -240843,8 +240120,56 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "http://www.thedailybeast.com/articles/2016/12/05/how-to-learn-a-hard-lesson-in-relationships-review-the-babylon-line.html",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
+            "url": "http://deadline.com/2016/12/the-babylon-line-josh-radnor-elizabeth-reaser-review-1201864652/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
+            "url": "http://www.ew.com/article/2016/12/05/babylon-line-broadway-review",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/babylon-line-review-953071",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
             "url": "http://www.nytimes.com/2016/12/05/theater/the-babylon-line-review.html",
             "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/the-babylon-line-review-josh-radnor-stars-in-satisfying-play-1.12708041",
+            "outletId": "newsday.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T10:47:44.037Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/blog/theater-review-richard-greenberg-commutes-to-1967-long-island-on-the-babylon-line-120216",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://.vulture.com/2016/12/theater-review-the-babylon-line.html",
+            "outletId": ".vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.thewrap.com/the-babylon-line-theater-review-josh-radnor-elizabeth-reaser-bring-lust-to-adult-ed/",
+            "outletId": "thewrap.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
           },
@@ -240861,26 +240186,8 @@
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
           },
           {
-            "url": "http://deadline.com/2016/12/the-babylon-line-josh-radnor-elizabeth-reaser-review-1201864652/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
             "url": "http://variety.com/2016/legit/reviews/the-babylon-line-review-play-josh-radnor-1201935267/",
             "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
-            "url": "http://www.hollywoodreporter.com/review/babylon-line-review-953071",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
-            "url": "http://www.ew.com/article/2016/12/05/babylon-line-broadway-review",
-            "outletId": "ew.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
           },
@@ -240939,12 +240246,6 @@
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
           },
           {
-            "url": "http://www.thewrap.com/the-babylon-line-theater-review-josh-radnor-elizabeth-reaser-bring-lust-to-adult-ed/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
             "url": "http://t2conline.com/the-babylon-line-a-playwright-looking-for-a-story-or-actors-in-search-of-a-better-play/",
             "outletId": "t2conline.com",
             "state": "live",
@@ -240987,18 +240288,6 @@
             "firstSeenAt": "2026-10-31T10:47:44.037Z"
           },
           {
-            "url": "http://www.thedailybeast.com/articles/2016/12/05/how-to-learn-a-hard-lesson-in-relationships-review-the-babylon-line.html",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
-            "url": "http://www.newsday.com/entertainment/theater/the-babylon-line-review-josh-radnor-stars-in-satisfying-play-1.12708041",
-            "outletId": "newsday.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T10:47:44.037Z"
-          },
-          {
             "url": "https://bobs-theater-blog.blogspot.com/2016/12/the-babylon-line.html",
             "outletId": "bobs-theater-blog.blogspot.com",
             "state": "live",
@@ -241024,10 +240313,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 30,
-        "candidateCount": 30
+        "liveCount": 31,
+        "candidateCount": 31
       },
-      "computedAt": "2026-10-31T11:15:17.920Z"
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -241862,7 +241151,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T11:15:17.920Z"
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -261971,6 +261260,362 @@
         "candidateCount": 33
       },
       "computedAt": "2026-10-13T06:41:07.802Z"
+    },
+    {
+      "showId": "the-light-years-off-broadway-2017",
+      "title": "The Light Years",
+      "openingDate": "2017-03-13",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society-playwrights-horizons.html",
+        "https://www.timeout.com/newyork/blog/theater-review-the-light-years-shines-a-bright-light-on-old-weird-americana-031317",
+        "http://www.nydailynews.com/entertainment/theater-arts/transcend-happy-marriage-946-theater-review-article-1.3003564",
+        "http://variety.com/2017/legit/reviews/the-light-years-review-debate-society-1202007629/",
+        "http://www.theatermania.com/off-broadway/reviews/the-light-years_80351.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-O0CIE",
+        "http://www.talkinbroadway.com/page/ob/3_13_17a.html",
+        "http://www.theaterscene.net/plays/offbway-plays/the-light-years/darryl-reilly/",
+        "http://www.curtainup.com/lightyears17.html",
+        "http://theaterpizzazz.com/the-light-years/",
+        "http://thefrontrowcenter.com/2017/03/the-light-years/",
+        "https://frontmezzjunkies.com/2017/03/13/light-years/",
+        "http://exeuntmagazine.com/reviews/review-light-years-playwrights-horizons/",
+        "http://www.theatrereviews.com/off-broadway-review-the-light-years-at-playwrights-horizons/",
+        "http://slleiter.blogspot.com/2017/03/159-review-light-years-seen-march-22.html",
+        "http://t2conline.com/she-says-the-light-years-is-a-magical-look-at-times-gone-by/",
+        "https://www.offoffonline.com/offoffonline/2017/3/12/the-light-years",
+        "http://www.thedailybeast.com/articles/2017/03/15/off-broadway-reaches-for-the-stars-reviews-of-the-light-years-and-the-outer-space.html",
+        "http://www.huffingtonpost.com/entry/theater-marvelous-menagerie-fading-light-years_us_58c8b478e4b0009b23bd944b",
+        "http://www.northjersey.com/story/entertainment/theater/2017/03/13/theater-review-bright-lights-murky-play/99126572/",
+        "https://scribicide.com/2017/03/14/a-ribbon-of-cosmic-light/",
+        "http://www.villagevoice.com/arts/sally-fields-glass-menagerie-remains-unbreakable-while-the-electric-light-years-proves-unfathomable-9769162",
+        "http://reflectionsinthelight.blogspot.com/2017/03/off-broadway-review-light-years.html",
+        "http://morethantheplay.blogspot.com/2017/03/the-light-years.html",
+        "http://newyork.edgemedianetwork.com/entertainment/theatre/reviews//211183/_review_::_the_light_years",
+        "https://tandbontheaisle.wordpress.com/2017/03/14/wonders-never-cease/",
+        "http://nytheatreguide.com/2017/03/off-broadway-review-the-light-years-at-playwrights-horizons/",
+        "https://bobs-theater-blog.blogspot.com/2017/03/the-light-years.html",
+        "http://www.reviewingthedrama.com/2017/03/the-light-years.html",
+        "http://www.bkmag.com/2017/03/15/the-light-years-at-playwrights-horizon-offers-little-illumination/"
+      ],
+      "dirFiles": 29,
+      "dirClean": 29,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/transcend-happy-marriage-946-theater-review-article-1.3003564",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/entry/theater-marvelous-menagerie-fading-light-years_us_58c8b478e4b0009b23bd944b",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/transcend-happy-marriage-946-theater-review-article-1.3003564",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.huffingtonpost.com/entry/theater-marvelous-menagerie-fading-light-years_us_58c8b478e4b0009b23bd944b",
+          "host": "huffingtonpost.com",
+          "outletId": "huffpost",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-light-years-off-broadway-2017: http://www.huffingtonpost.com/entry/theater-marvelous-menagerie-fading-light-years_us_58c8b478e4b0009b23bd944b is already owned by sunday-in-the-park-with-george-2017 — one of the two is contaminated. Inspect data/review-texts/sunday-in-the-park-with-george-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.broadwayworld.com/article/BWW-Review-THE-LIGHT-YEARS-Salutes-Starry-Eyed-Innovators-Who-Remain-Earthbound-20170315",
+          "host": "broadwayworld.com",
+          "file": "broadwayworld--michael-dale.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/03/15/off-broadway-reaches-for-the-stars-reviews-of-the-light-years-and-the-outer-space.html",
+          "host": "thedailybeast.com",
+          "file": "dailybeast--tim-teeman.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thedailybeast.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thedailybeast.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Scraping",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://newyork.edgemedianetwork.com/entertainment/theatre/reviews//211183/_review_::_the_light_years",
+          "host": "edgemedianetwork.com",
+          "file": "edge-new-york--brooke-pierce.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=newyork.edgemedianetwork.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=newyork.edgemedianetwork.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/transcend-happy-marriage-946-theater-review-article-1.3003564"
+          },
+          {
+            "outletId": "huffpost",
+            "outlet": "huffpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.huffingtonpost.com/entry/theater-marvelous-menagerie-fading-light-years_us_58c8b478e4b0009b23bd944b"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society-playwrights-horizons.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/blog/theater-review-the-light-years-shines-a-bright-light-on-old-weird-americana-031317",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/the-light-years-review-debate-society-1202007629/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/the-light-years_80351.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-O0CIE",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/3_13_17a.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/the-light-years/darryl-reilly/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.curtainup.com/lightyears17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/the-light-years/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/03/the-light-years/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/03/13/light-years/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://exeuntmagazine.com/reviews/review-light-years-playwrights-horizons/",
+            "outletId": "exeuntmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theatrereviews.com/off-broadway-review-the-light-years-at-playwrights-horizons/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://slleiter.blogspot.com/2017/03/159-review-light-years-seen-march-22.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://t2conline.com/she-says-the-light-years-is-a-magical-look-at-times-gone-by/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2017/3/12/the-light-years",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.thedailybeast.com/articles/2017/03/15/off-broadway-reaches-for-the-stars-reviews-of-the-light-years-and-the-outer-space.html",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.northjersey.com/story/entertainment/theater/2017/03/13/theater-review-bright-lights-murky-play/99126572/",
+            "outletId": "northjersey.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://scribicide.com/2017/03/14/a-ribbon-of-cosmic-light/",
+            "outletId": "scribicide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.villagevoice.com/arts/sally-fields-glass-menagerie-remains-unbreakable-while-the-electric-light-years-proves-unfathomable-9769162",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://reflectionsinthelight.blogspot.com/2017/03/off-broadway-review-light-years.html",
+            "outletId": "reflectionsinthelight.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://morethantheplay.blogspot.com/2017/03/the-light-years.html",
+            "outletId": "morethantheplay.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://newyork.edgemedianetwork.com/entertainment/theatre/reviews//211183/_review_::_the_light_years",
+            "outletId": "newyork.edgemedianetwork.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://tandbontheaisle.wordpress.com/2017/03/14/wonders-never-cease/",
+            "outletId": "tandbontheaisle.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://nytheatreguide.com/2017/03/off-broadway-review-the-light-years-at-playwrights-horizons/",
+            "outletId": "nytheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://bobs-theater-blog.blogspot.com/2017/03/the-light-years.html",
+            "outletId": "bobs-theater-blog.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.reviewingthedrama.com/2017/03/the-light-years.html",
+            "outletId": "reviewingthedrama.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.bkmag.com/2017/03/15/the-light-years-at-playwrights-horizon-offers-little-illumination/",
+            "outletId": "bkmag.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/transcend-happy-marriage-946-theater-review-article-1.3003564",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/theater-marvelous-menagerie-fading-light-years_us_58c8b478e4b0009b23bd944b",
+            "outletId": "huffpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 28,
+        "candidateCount": 30
+      },
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "the-lion-king-1997",
@@ -289561,6 +289206,388 @@
       "computedAt": "2026-10-25T21:01:04.675Z"
     },
     {
+      "showId": "the-whirligig-off-broadway-2017",
+      "title": "The Whirligig",
+      "openingDate": "2017-05-21",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/05/21/theater/whirligig-review.html",
+        "https://www.timeout.com/newyork/theater/the-whirligig",
+        "http://deadline.com/2017/05/review-the-whirligig-in-hamish-linklaters-the-whirligig-zosia-mamet-1202099440/",
+        "http://www.nydailynews.com/entertainment/theater-arts/whirligig-spins-story-troubled-family-theater-review-article-1.3179977",
+        "http://variety.com/2017/legit/reviews/the-whirligig-review-play-zosia-mamet-1202439497/",
+        "http://www.hollywoodreporter.com/review/whirligig-1005802",
+        "http://www.ny1.com/nyc/all-boroughs/on-stage/2017/05/26/theater-review-the-whirligig.html",
+        "http://www.theatermania.com/off-broadway/reviews/the-whirligig_81166.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-V1A3TJ",
+        "http://www.talkinbroadway.com/page/ob/5_21_17.html",
+        "http://www.theaterscene.net/plays/offbway-plays/the-whirligig/victor-gluck/",
+        "http://www.curtainup.com/whirligig17.html",
+        "http://www.theasy.com/Reviews/2017/W/thewhirligig.php",
+        "http://theaterpizzazz.com/review-whirligig/",
+        "http://thefrontrowcenter.com/2017/05/the-whirligig/",
+        "https://stagebuddy.com/theater/theater-review/review-the-whirligig",
+        "https://frontmezzjunkies.com/2017/05/30/whirligig/",
+        "http://exeuntmagazine.com/reviews/review-whirligig-pershing-square-signature-center/",
+        "http://www.theatrereviews.com/off-broadway-review-the-whirligig-at-the-pershing-square-signature-centers-alice-griffin-jewel-box-theatre/",
+        "https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/",
+        "http://thebroadwayblog.com/2017/05/28/16587-whirlgig-review-off-broadway",
+        "https://cititour.com/NYC_Broadway/The-Whirligig/59",
+        "http://www.clydefitchreport.com/2017/05/whirligig-hamish-linklater/",
+        "http://www.newsday.com/entertainment/theater/the-whirligig-review-hamish-linklater-s-study-of-a-family-wrecked-by-drugs-1.13649877",
+        "http://www.thewrap.com/whirligig-theater-review-zosia-mamet-climbs-tree-guilt-trip/",
+        "http://t2conline.com/the-whirligig-a-cycle-of-pain/",
+        "http://www.huffingtonpost.com/entry/59234223e4b0b28a33f62ea3",
+        "http://twi-ny.com/blog/2017/05/22/the-whirligig/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "https://www.offoffonline.com/offoffonline/2017/5/21/the-whirligig",
+        "http://broadwayandme.blogspot.com/2017/06/the-shared-promise-and-common-failings.html",
+        "https://www.ft.com/content/c4da4606-3c71-11e7-ac89-b01cc67cfeec",
+        "https://scribicide.com/2017/05/29/bad-chemistry/",
+        "http://theaterlife.com/the-whirligig-building-the-wall-12/",
+        "https://dandwyeroffscript.tumblr.com/post/161357572066/the-whirligig",
+        "http://reviewsoffbroadway.blogspot.com/2017/05/love-redemption-and-family-shine-in.html",
+        "http://www.northjersey.com/story/entertainment/2017/05/22/whirligig/335928001/",
+        "http://zealnyc.com/review-the-whirligig-spins-aided-by-a-strong-ensemble-cast/",
+        "http://www.womanaroundtown.com/sections/playing-around/the-whirligig-superb-theater"
+      ],
+      "dirFiles": 41,
+      "dirClean": 40,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "blogcritics.org",
+          "count": 1
+        },
+        {
+          "host": "recliningstandards.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": true,
+          "recoverableFile": "nyt-theater--jonathan-mandell.json",
+          "recoverableOutletId": "nyt-theater",
+          "recoverableCritic": "Jonathan Mandell",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "nonReview",
+              "urlInDir": "https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 2,
+        "byReason": {
+          "non-review-host": 2
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        },
+        {
+          "url": "http://zealnyc.com/review-the-whirligig-spins-aided-by-a-strong-ensemble-cast/",
+          "host": "zealnyc.com",
+          "file": "zeal-nyc--dan-bacalzo.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nArticle extraction retur",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/05/21/theater/whirligig-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-whirligig",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://deadline.com/2017/05/review-the-whirligig-in-hamish-linklaters-the-whirligig-zosia-mamet-1202099440/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/whirligig-spins-story-troubled-family-theater-review-article-1.3179977",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/the-whirligig-review-play-zosia-mamet-1202439497/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/whirligig-1005802",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.ny1.com/nyc/all-boroughs/on-stage/2017/05/26/theater-review-the-whirligig.html",
+            "outletId": "ny1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/the-whirligig_81166.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-V1A3TJ",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/5_21_17.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/the-whirligig/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.curtainup.com/whirligig17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/W/thewhirligig.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/review-whirligig/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/05/the-whirligig/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/review-the-whirligig",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/05/30/whirligig/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://exeuntmagazine.com/reviews/review-whirligig-pershing-square-signature-center/",
+            "outletId": "exeuntmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theatrereviews.com/off-broadway-review-the-whirligig-at-the-pershing-square-signature-centers-alice-griffin-jewel-box-theatre/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/2017/05/28/16587-whirlgig-review-off-broadway",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/The-Whirligig/59",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.clydefitchreport.com/2017/05/whirligig-hamish-linklater/",
+            "outletId": "clydefitchreport.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/the-whirligig-review-hamish-linklater-s-study-of-a-family-wrecked-by-drugs-1.13649877",
+            "outletId": "newsday.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.thewrap.com/whirligig-theater-review-zosia-mamet-climbs-tree-guilt-trip/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://t2conline.com/the-whirligig-a-cycle-of-pain/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/59234223e4b0b28a33f62ea3",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://twi-ny.com/blog/2017/05/22/the-whirligig/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2017/5/21/the-whirligig",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://broadwayandme.blogspot.com/2017/06/the-shared-promise-and-common-failings.html",
+            "outletId": "broadwayandme.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://www.ft.com/content/c4da4606-3c71-11e7-ac89-b01cc67cfeec",
+            "outletId": "ft.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://scribicide.com/2017/05/29/bad-chemistry/",
+            "outletId": "scribicide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://theaterlife.com/the-whirligig-building-the-wall-12/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://dandwyeroffscript.tumblr.com/post/161357572066/the-whirligig",
+            "outletId": "dandwyeroffscript.tumblr.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://reviewsoffbroadway.blogspot.com/2017/05/love-redemption-and-family-shine-in.html",
+            "outletId": "reviewsoffbroadway.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.northjersey.com/story/entertainment/2017/05/22/whirligig/335928001/",
+            "outletId": "northjersey.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://zealnyc.com/review-the-whirligig-spins-aided-by-a-strong-ensemble-cast/",
+            "outletId": "zealnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.womanaroundtown.com/sections/playing-around/the-whirligig-superb-theater",
+            "outletId": "womanaroundtown.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 38,
+        "candidateCount": 39
+      },
+      "computedAt": "2026-10-31T11:42:26.049Z"
+    },
+    {
       "showId": "the-whole-sky-all-diamonds-off-broadway-2026",
       "title": "The Whole Sky All Diamonds",
       "openingDate": "2026-08-13",
@@ -293138,6 +293165,794 @@
         "candidateCount": 6
       },
       "computedAt": "2026-10-27T23:59:53.509Z"
+    },
+    {
+      "showId": "tiny-beautiful-things-off-broadway-2016",
+      "title": "Tiny Beautiful Things",
+      "openingDate": "2016-12-07",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.vulture.com/2017/10/theater-tiny-beautiful-things-won-me-over-against-my-will.html",
+        "http://www.theatermania.com/off-broadway/reviews/tiny-beautiful-things-public-theater_82615.html",
+        "https://www.talkinbroadway.com/page/ob/10_02_17.html",
+        "http://www.theaterscene.net/plays/offbway-plays/tiny-beautiful-things/victor-gluck/",
+        "http://theaterpizzazz.com/tiny-beautiful-things/",
+        "http://thefrontrowcenter.com/2017/10/tiny-beautiful-things/",
+        "https://stagebuddy.com/theater/theater-review/review-tiny-beautiful-things",
+        "https://frontmezzjunkies.com/2017/10/02/tiny-beautiful-things-another-second-round-of-big-powerful-waves/",
+        "http://www.theatrereviews.com/off-broadway-review-tiny-beautiful-things-at-the-public-theaters-newman-theater/",
+        "https://slleiter.blogspot.com/2017/10/81-2017-2018-review-tiny-beautiful.html",
+        "http://www.thewrap.com/tiny-beautiful-things-theater-review-nia-vardalos-cheryl-strayed/",
+        "http://www.huffingtonpost.com/entry/59d2870de4b092b22a8e389c",
+        "http://wolfentertainmentguide.com/viewpage.aspx",
+        "http://broadwayandme.blogspot.com/2017/10/tiny-beautiful-things-is-too-small-for.html",
+        "https://www.thedailybeast.com/review-the-big-problem-with-cheryl-strayeds-tiny-beautiful-things-stage-adaptation",
+        "https://www.stageleft.nyc/blog/2017/10/10/5a12rt9hlddjvv0l7jwo9u2g3a5pjn",
+        "http://simonsaltzman.blogspot.com/2017/11/tiny-beautiful-things-at-publics-newman.html",
+        "http://www.citycabaret.com/tiny-beautiful-things.html",
+        "https://www.manhattandigest.com/2017/10/09/theater-review-tiny-beautiful-things-one-big-gift/",
+        "https://www.theepochtimes.com/theater-review-tiny-beautiful-things_2332104.html",
+        "https://www.offoffonline.com/offoffonline/2017/10/12/tiny-beautiful-things",
+        "http://t2conline.com/aisle-say-on-the-square-getting-through-the-pain/",
+        "http://www.clydefitchreport.com/2017/10/vardalos-tiny-beautiful-things/",
+        "http://www.nytimes.com/2016/12/07/theater/tiny-beautiful-things-review.html",
+        "https://www.timeout.com/newyork/blog/theater-review-tiny-beautiful-things-will-break-your-heart-at-the-public-theater-120816",
+        "http://www.vulture.com/2016/12/theater-review-tiny-beautiful-things.html",
+        "http://www.nydailynews.com/entertainment/theater-arts/tiny-beautiful-poignant-illusionists-lacks-wow-factor-article-1.2902033",
+        "http://variety.com/2016/legit/reviews/tiny-beautiful-things-review-1201937303/",
+        "http://www.hollywoodreporter.com/review/tiny-beautiful-things-953866",
+        "http://www.amny.com/entertainment/tiny-beautiful-things-review-nia-vardalos-self-help-show-1.12718127",
+        "http://www.theatermania.com/off-broadway/reviews/tiny-beautiful-things_79355.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-I7E15X",
+        "http://www.talkinbroadway.com/page/ob/12_07_16.html",
+        "http://www.curtainup.com/tinybeautifulthings16.html",
+        "https://frontmezzjunkies.com/2016/12/07/tiny-beautiful-things/",
+        "https://newyorktheater.me/2016/12/07/tiny-beautiful-things-review-nia-vardalos-dramatizes-dear-sugar-advice-columns/",
+        "http://www.thewrap.com/tiny-beautiful-things-theater-review-nia-vardalos-no-miss-lonelyhearts/",
+        "http://www.thedailybeast.com/articles/2016/12/07/the-play-that-s-also-an-advice-column-review-of-tiny-beautiful-things.html",
+        "http://www.newsday.com/entertainment/theater/tiny-beautiful-things-review-nia-vardalos-plays-sugar-columnist-1.12724641",
+        "http://www.villagevoice.com/arts/wtf-wtf-wtf-in-tiny-beautiful-things-that-is-the-question-9429248",
+        "https://bobs-theater-blog.blogspot.com/2016/12/tiny-beautiful-things-c.html"
+      ],
+      "dirFiles": 40,
+      "dirClean": 19,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://t2conline.com/aisle-say-on-the-square-getting-through-the-pain/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.vulture.com/2017/10/theater-tiny-beautiful-things-won-me-over-against-my-will.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.vulture.com/2017/10/theater-tiny-beautiful-things-won-me-over-against-my-will.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.theatermania.com/off-broadway/reviews/tiny-beautiful-things-public-theater_82615.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--hayley-levitt.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theatermania.com/off-broadway/reviews/tiny-beautiful-things-public-theater_82615.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/10_02_17.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--howard-miller.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/10_02_17.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/tiny-beautiful-things/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--victor-gluck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theaterscene.net/plays/offbway-plays/tiny-beautiful-things/victor-gluck/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://theaterpizzazz.com/tiny-beautiful-things/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-pizzazz--sandi-durell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theaterpizzazz.com/tiny-beautiful-things/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://thefrontrowcenter.com/2017/10/tiny-beautiful-things/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--massimo-iacoboni.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://thefrontrowcenter.com/2017/10/tiny-beautiful-things/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-tiny-beautiful-things",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "stagebuddy--ariana-rudes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://stagebuddy.com/theater/theater-review/review-tiny-beautiful-things"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.theatrereviews.com/off-broadway-review-tiny-beautiful-things-at-the-public-theaters-newman-theater/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--david-roberts.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theatrereviews.com/off-broadway-review-tiny-beautiful-things-at-the-public-theaters-newman-theater/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2017/10/81-2017-2018-review-tiny-beautiful.html",
+          "host": "slleiter.blogspot.com",
+          "knownOutletId": "theatres-leiter-side",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatres-leiter-side--samuel-l-leiter.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://slleiter.blogspot.com/2017/10/81-2017-2018-review-tiny-beautiful.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.thewrap.com/tiny-beautiful-things-theater-review-nia-vardalos-cheryl-strayed/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.thewrap.com/tiny-beautiful-things-theater-review-nia-vardalos-cheryl-strayed/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.huffingtonpost.com/entry/59d2870de4b092b22a8e389c",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "huffpost--steven-suskin.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.huffingtonpost.com/entry/59d2870de4b092b22a8e389c"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://wolfentertainmentguide.com/viewpage.aspx",
+          "host": "wolfentertainmentguide.com",
+          "knownOutletId": "wolf-entertainment-guide",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wolf-entertainment-guide--william-wolf.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7256"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://broadwayandme.blogspot.com/2017/10/tiny-beautiful-things-is-too-small-for.html",
+          "host": "broadwayandme.blogspot.com",
+          "knownOutletId": "broadway-and-me",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-and-me--janice-c-simpson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://broadwayandme.blogspot.com/2017/10/tiny-beautiful-things-is-too-small-for.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-the-big-problem-with-cheryl-strayeds-tiny-beautiful-things-stage-adaptation",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/review-the-big-problem-with-cheryl-strayeds-tiny-beautiful-things-stage-adaptation"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.stageleft.nyc/blog/2017/10/10/5a12rt9hlddjvv0l7jwo9u2g3a5pjn",
+          "host": "stageleft.nyc",
+          "knownOutletId": "stage-left",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "stage-left--robert-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.stageleft.nyc/blog/2017/10/10/5a12rt9hlddjvv0l7jwo9u2g3a5pjn"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://simonsaltzman.blogspot.com/2017/11/tiny-beautiful-things-at-publics-newman.html",
+          "host": "simonsaltzman.blogspot.com",
+          "knownOutletId": "simon-seez",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "simon-seez--simon-saltzman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://simonsaltzman.blogspot.com/2017/11/tiny-beautiful-things-at-publics-newman.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.citycabaret.com/tiny-beautiful-things.html",
+          "host": "citycabaret.com",
+          "knownOutletId": "city-cabaret",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "city-cabaret--elizabeth-ahlfors.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.citycabaret.com/tiny-beautiful-things.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.manhattandigest.com/2017/10/09/theater-review-tiny-beautiful-things-one-big-gift/",
+          "host": "manhattandigest.com",
+          "knownOutletId": "manhattan-digest",
+          "recoverable": true,
+          "recoverableFile": "manhattan-digest--ryan-leeds.json",
+          "recoverableOutletId": "manhattan-digest",
+          "recoverableCritic": "Ryan Leeds",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "manhattan-digest--ryan-leeds.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.manhattandigest.com/2017/10/09/theater-review-tiny-beautiful-things-one-big-gift/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "lateDateMismatch"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theepochtimes.com/theater-review-tiny-beautiful-things_2332104.html",
+          "host": "theepochtimes.com",
+          "knownOutletId": "epoch-times",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "epoch-times--diana-barth.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theepochtimes.com/theater-review-tiny-beautiful-things_2332104.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2017/10/12/tiny-beautiful-things",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "recoverable": true,
+          "recoverableFile": "off-off-online--curtis-russell.json",
+          "recoverableOutletId": "off-off-online",
+          "recoverableCritic": "Curtis Russell",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "off-off-online--curtis-russell.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2017/10/12/tiny-beautiful-things"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "lateDateMismatch"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.clydefitchreport.com/2017/10/vardalos-tiny-beautiful-things/",
+          "host": "clydefitchreport.com",
+          "knownOutletId": "the-clyde-fitch-report",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-clyde-fitch-report--martha-wade-steketee.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.clydefitchreport.com/2017/10/vardalos-tiny-beautiful-things/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://t2conline.com/aisle-say-on-the-square-getting-through-the-pain/",
+          "host": "t2conline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.amny.com/entertainment/tiny-beautiful-things-review-nia-vardalos-self-help-show-1.12718127",
+          "host": "amny.com",
+          "file": "amny--matt-windman.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.broadwayworld.com/article/BWW-Review-Nia-Vardalos-TINY-BEAUTIFUL-THINGS-Offers-Spoonfuls-of-Sugar-20161211",
+          "host": "broadwayworld.com",
+          "file": "broadwayworld--michael-dale.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2016/12/07/the-play-that-s-also-an-advice-column-review-of-tiny-beautiful-things.html",
+          "host": "thedailybeast.com",
+          "file": "dailybeast--janice-kaplan.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thedailybeast.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thedailybeast.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Scraping",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/tiny-beautiful-things-953866",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/tiny-beautiful-things-review-nia-vardalos-plays-sugar-columnist-1.12724641",
+          "host": "newsday.com",
+          "file": "newsday--linda-winer.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://frontmezzjunkies.com/2017/10/02/tiny-beautiful-things-another-second-round-of-big-powerful-waves/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2016/12/07/theater/tiny-beautiful-things-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/blog/theater-review-tiny-beautiful-things-will-break-your-heart-at-the-public-theater-120816",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.vulture.com/2016/12/theater-review-tiny-beautiful-things.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/tiny-beautiful-poignant-illusionists-lacks-wow-factor-article-1.2902033",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://variety.com/2016/legit/reviews/tiny-beautiful-things-review-1201937303/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/tiny-beautiful-things-953866",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.amny.com/entertainment/tiny-beautiful-things-review-nia-vardalos-self-help-show-1.12718127",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/tiny-beautiful-things_79355.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-I7E15X",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/12_07_16.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.curtainup.com/tinybeautifulthings16.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2016/12/07/tiny-beautiful-things/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2016/12/07/tiny-beautiful-things-review-nia-vardalos-dramatizes-dear-sugar-advice-columns/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.thewrap.com/tiny-beautiful-things-theater-review-nia-vardalos-no-miss-lonelyhearts/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.thedailybeast.com/articles/2016/12/07/the-play-that-s-also-an-advice-column-review-of-tiny-beautiful-things.html",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/tiny-beautiful-things-review-nia-vardalos-plays-sugar-columnist-1.12724641",
+            "outletId": "newsday.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "http://www.villagevoice.com/arts/wtf-wtf-wtf-in-tiny-beautiful-things-that-is-the-question-9429248",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          },
+          {
+            "url": "https://bobs-theater-blog.blogspot.com/2016/12/tiny-beautiful-things-c.html",
+            "outletId": "bobs-theater-blog.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T11:42:26.049Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 18,
+        "candidateCount": 18
+      },
+      "computedAt": "2026-10-31T11:42:26.049Z"
     },
     {
       "showId": "titanique-2026",
