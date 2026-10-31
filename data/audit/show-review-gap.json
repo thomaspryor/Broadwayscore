@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-31T08:58:08.970Z",
+  "generatedAt": "2026-10-31T09:12:44.430Z",
   "windowDays": 21,
-  "targets": 11,
-  "auditedThisRun": 11,
-  "carriedForward": 1094,
+  "targets": 9,
+  "auditedThisRun": 9,
+  "carriedForward": 1096,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -25154,7 +25154,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thebroadwayblog.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=thebroadwayblog.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch fa",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -25166,7 +25166,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=somedayprods.com): Scrapingdog HTTP 404: {\"message\":\"DNS resolution failed for hostname \\\"somedayprods.com\\\". The domain could not be translated to an IP address - it may be misspelled, expired, not registered, or its DNS may not have propag\n⚠️  ScrapingBee failed (render_js=false, domain=somedayprods.com): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per reques\n⚠️  Playwright failed:",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -25240,7 +25240,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -50176,7 +50176,7 @@
         "liveCount": 22,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -81605,56 +81605,6 @@
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "https://recliningstandards.org/2017/07/21/theater-review-in-fulfillment-center-four-characters-in-search-of-an-unknown-future/",
-          "host": "recliningstandards.org",
-          "file": "df-reviews--david-fox.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 3,
-          "uncited": true
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
-          "host": "hollywoodreporter.com",
-          "file": "hollywood-reporter--frank-scheck.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 3,
-          "uncited": true
-        },
-        {
-          "url": "http://www.theasy.com/Reviews/2017/F/fulfillmentcenter.php",
-          "host": "theasy.com",
-          "file": "theatre-is-easy--ken-kaissar.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 3,
-          "uncited": true
-        },
-        {
-          "url": "https://zealnyc.com/review-fulfillment-center-a-quietly-moving-character-study/",
-          "host": "zealnyc.com",
-          "file": "zeal-nyc--jil-picariello.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nArticle extraction retur",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -81767,7 +81717,7 @@
         "liveCount": 17,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -124752,18 +124702,14 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-jesus-hopped-the-a-train",
         "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Adly-Guirgis-JESUS-HOPPED-THE-A-TRAIN-20171024"
       ],
       "aggregatorListedUrls": [
-        "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
-        "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
-        "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
-        "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
-        "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
         "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
         "https://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
         "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+        "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
         "http://deadline.com/2017/11/stage-review-school-girls-actually-jesus-hopped-the-a-train-1202215847/",
         "http://www.theatermania.com/off-broadway/reviews/jesus-hopped-the-a-train_82856.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=3EXELW",
@@ -124784,7 +124730,10 @@
         "http://showshowdown.blogspot.com/2017/10/jesus-hopped-a-train.html",
         "http://morethantheplay.blogspot.com/2017/10/jesus-hopped-a-train.html",
         "http://www.themodernistbeat.com/2017/11/20/what-happens-to-the-message-if-the-messenger-is-flawed/",
-        "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html"
+        "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html",
+        "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+        "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/"
       ],
       "dirFiles": 27,
       "dirClean": 27,
@@ -124804,79 +124753,22 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 415,
+        "count": 306,
         "byReason": {
-          "aggregator-internal-nav": 296,
-          "not-http-url": 65,
-          "production-database-listing": 10,
-          "aggregator-section-root": 8,
-          "non-review-host": 36
+          "not-http-url": 59,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 228,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
-          "host": "hollywoodreporter.com",
-          "file": "hollywood-reporter--frank-scheck.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 3,
-          "uncited": true
-        },
-        {
-          "url": "http://www.theasy.com/Reviews/2017/J/jesushoppedtheatrain.php",
-          "host": "theasy.com",
-          "file": "theatre-is-easy--ran-xia.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
           {
             "url": "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
             "outletId": "nytimes.com",
@@ -124890,8 +124782,20 @@
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
           {
+            "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
             "url": "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
             "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
+            "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
@@ -125020,13 +124924,31 @@
             "outletId": "gotham-playgoer.blogspot.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 26,
         "candidateCount": 26
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "job-2024",
@@ -153120,12 +153042,9 @@
       "openingDate": "2017-12-27",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-mary-shelleys-frankenstein-choreographed-by-and-starring-robert-fairchild"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://www.nydailynews.com/entertainment/theater-arts/mary-shelley-frankenstein-review-puzzling-patchwork-article-1.3721846",
-        "https://www.nytimes.com/2017/12/27/theater/review-in-mary-shelleys-frankenstein-robert-fairchild.html"
+        "http://www.nydailynews.com/entertainment/theater-arts/mary-shelley-frankenstein-review-puzzling-patchwork-article-1.3721846"
       ],
       "dirFiles": 16,
       "dirClean": 14,
@@ -153150,6 +153069,10 @@
         },
         {
           "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
           "count": 1
         },
         {
@@ -153189,15 +153112,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 101,
-        "byReason": {
-          "aggregator-internal-nav": 58,
-          "not-http-url": 5,
-          "production-database-listing": 10,
-          "aggregator-section-root": 4,
-          "non-review-host": 20,
-          "roundup-page": 4
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -153212,7 +153128,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         },
         {
@@ -153223,8 +153139,8 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"",
-          "recoveryCount": 2,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nArticle extraction retur",
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -153238,19 +153154,13 @@
             "outletId": "nydailynews.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2017/12/27/theater/review-in-mary-shelleys-frankenstein-robert-fairchild.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
-        "candidateCount": 2
+        "liveCount": 1,
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -165363,7 +165273,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         },
         {
@@ -165375,7 +165285,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         },
         {
@@ -165387,7 +165297,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -165400,7 +165310,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "money-talks-off-broadway-2017",
@@ -165438,7 +165348,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -165451,7 +165361,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
@@ -189412,31 +189322,17 @@
       "candidatesRejected": {
         "count": 116,
         "byReason": {
-          "aggregator-internal-nav": 71,
           "not-http-url": 6,
-          "production-database-listing": 11,
-          "aggregator-section-root": 4,
           "non-review-host": 20,
+          "aggregator-internal-nav": 71,
+          "aggregator-section-root": 4,
+          "production-database-listing": 11,
           "roundup-page": 4
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.hollywoodreporter.com/review/paradise-blue-review-1111636",
-          "host": "hollywoodreporter.com",
-          "file": "hollywood-reporter--frank-scheck.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -189627,7 +189523,7 @@
         "liveCount": 25,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "paranormal-activity-2026",
@@ -279399,7 +279295,7 @@
         "liveCount": 30,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-31T08:58:08.970Z"
+      "computedAt": "2026-10-31T09:12:44.430Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
