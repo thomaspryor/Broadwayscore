@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-31T18:47:32.823Z",
+  "generatedAt": "2026-10-31T19:05:43.046Z",
   "windowDays": 21,
-  "targets": 63,
-  "auditedThisRun": 62,
-  "carriedForward": 1495,
+  "targets": 10,
+  "auditedThisRun": 10,
+  "carriedForward": 1562,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 625,
-    "missingCurrentRun": 1340,
+    "withGap": 639,
+    "missingCurrentRun": 1381,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 869,
-    "totalRecoverable": 57,
-    "totalRecovered": 69,
+    "totalFlaggedMisses": 884,
+    "totalRecoverable": 61,
+    "totalRecovered": 65,
     "humanExcluded": 12,
-    "automatedExcluded": 790,
-    "automatedExcludedListed": 620,
-    "priorProductionCitations": 6071
+    "automatedExcluded": 805,
+    "automatedExcludedListed": 635,
+    "priorProductionCitations": 6119
   },
   "results": [
     {
@@ -173130,18 +173130,17 @@
       "aggregatorListedUrls": [
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
-        "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/",
-        "https://www.timeout.com/newyork/theater/medea-4",
-        "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-        "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
-        "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+        "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
         "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+        "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
         "https://indieopera.com/review-medea/",
-        "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/"
+        "https://www.timeout.com/newyork/theater/medea-4",
+        "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+        "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/"
       ],
-      "dirFiles": 17,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 18,
+      "dirClean": 1,
+      "inReviewsJson": 1,
       "missing": [
         {
           "url": "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
@@ -173151,37 +173150,17 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/medea-4",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "serpCensus": true
-        },
-        {
-          "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-10-18",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
-          "host": "classicalsource.com",
-          "knownOutletId": "classical-source",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-09-27",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
           "host": "the-tls.com",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
+          "host": "operacanada.ca",
+          "knownOutletId": "operacanada",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-10-13",
           "serpCensus": true
         },
         {
@@ -173191,9 +173170,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/",
-          "host": "letterboxd.com",
-          "knownOutletId": "letterboxd",
+          "url": "https://www.timeout.com/newyork/theater/medea-4",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "serpCensus": true
         }
       ],
@@ -173260,8 +173245,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -173271,7 +173256,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -173281,7 +173266,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -173301,25 +173286,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 28,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 22,
+          "non-review-host": 18,
+          "non-stage-review": 2,
+          "event-listing": 1,
           "census-junk-host": 1,
-          "no-review-evidence": 3,
-          "ticketing-reseller": 4,
-          "event-listing": 3,
-          "review-hub-page": 1
+          "no-review-evidence": 1,
+          "show-listing-page": 1,
+          "ticketing-reseller": 2,
+          "review-hub-page": 1,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -173334,24 +173321,17 @@
           "censusGateOn": true
         },
         {
-          "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-          "host": "operawire.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
-          "host": "classicalsource.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
           "host": "the-tls.com",
           "priorRun": false,
           "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
+          "host": "operacanada.ca",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         },
         {
@@ -173363,21 +173343,6 @@
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/",
-          "host": "letterboxd.com",
-          "outletId": "letterboxd",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
         {
           "url": "https://www.timeout.com/newyork/theater/medea-4",
           "host": "timeout.com",
@@ -173414,20 +173379,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "timeout",
-            "outlet": "timeout",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/medea-4"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/"
-          },
-          {
             "outletId": "the-tls.com",
             "outlet": "the-tls.com",
             "critic": "Unknown",
@@ -173442,11 +173393,18 @@
             "url": "https://indieopera.com/review-medea/"
           },
           {
-            "outletId": "letterboxd",
-            "outlet": "letterboxd",
+            "outletId": "timeout",
+            "outlet": "timeout",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/"
+            "url": "https://www.timeout.com/newyork/theater/medea-4"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/"
           },
           {
             "outletId": "everything-theatre",
@@ -173459,18 +173417,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.timeout.com/newyork/theater/medea-4",
-            "outletId": "timeout",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T00:11:50.524Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+            "url": "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
           },
           {
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
@@ -173487,11 +173437,18 @@
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
-            "url": "https://letterboxd.com/film/the-metropolitan-opera-medea/reviews/rated/none/",
-            "outletId": "letterboxd",
+            "url": "https://www.timeout.com/newyork/theater/medea-4",
+            "outletId": "timeout",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/",
@@ -173502,10 +173459,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
+        "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-31T10:20:07.676Z"
+      "computedAt": "2026-10-31T19:05:43.046Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -211215,6 +211172,285 @@
       "computedAt": "2026-10-27T23:59:53.509Z"
     },
     {
+      "showId": "peer-gynt-off-broadway-2016",
+      "title": "Peer Gynt",
+      "openingDate": "2016-05-25",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-national-theatres-peer-gynt-starring-james-mcardle"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2016/05/26/theater/review-a-minimalist-version-of-peer-gynt-still-provokes.html",
+        "http://www.timeout.com/newyork/theater/peer-gynt-2",
+        "http://www.wsj.com/articles/peer-gynt-review-an-ibsen-in-outline-1464898505",
+        "http://www.nydailynews.com/entertainment/theater-arts/paramour-unlovable-article-1.2651181",
+        "http://www.theatermania.com/off-broadway/reviews/peer-gynt_77198.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=B7R0QO",
+        "http://www.theaterscene.net/plays/peer-gynt/victor-gluck/",
+        "http://www.curtainup.com/peergyntcsc16.html",
+        "http://www.theaterpizzazz.com/peer-gynt/",
+        "http://thefrontrowcenter.com/2016/05/peer-gynt/",
+        "http://stagebuddy.com/reviews/review-peer-gynt",
+        "http://www.theatrereviews.com/review-peer-gynt-at-the-classic-stage-company/",
+        "http://thebroadwayblog.com/2016/05/26/14748-peer-gynt-csc",
+        "http://bobs-theater-blog.blogspot.com/2016/05/peer-gynt.html",
+        "http://t2conline.com/peer-gynt-lacks-humor/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "http://offoffonline.com/?p=24218",
+        "http://broadwayandme.blogspot.com/2016/06/a-gynt-who-truly-lost-its-way.html",
+        "https://zealnyc.com/a-spare-snoozy-peer-gynt-at-the-csc/",
+        "http://www.theepochtimes.com/n3/2078679-theater-review-peer-gynt/",
+        "http://letstalkoffbroadway.com/2016/05/directed-adapted-company.html",
+        "http://nytheatreguide.com/2016/05/off-broadway-review-peer-gynt-at-classic-stage-company/"
+      ],
+      "dirFiles": 22,
+      "dirClean": 21,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.timeout.com/newyork/theater/peer-gynt-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/newyork/theater/peer-gynt-2"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 104,
+        "byReason": {
+          "aggregator-internal-nav": 61,
+          "non-review-host": 20,
+          "not-http-url": 5,
+          "production-database-listing": 11,
+          "aggregator-section-root": 4,
+          "non-stage-review": 3
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-national-theatres-peer-gynt-starring-james-mcardle",
+          "publishDate": "2019-07-10"
+        }
+      ],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.theepochtimes.com/n3/2078679-theater-review-peer-gynt/",
+          "host": "theepochtimes.com",
+          "file": "epoch-times--diana-barth.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://nytheatreguide.com/2016/05/off-broadway-review-peer-gynt-at-classic-stage-company/",
+          "host": "nytheatreguide.com",
+          "file": "nytg--patricia-contino.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.wsj.com/articles/peer-gynt-review-an-ibsen-in-outline-1464898505",
+          "host": "wsj.com",
+          "file": "wsj--terry-teachout.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/peer-gynt-2"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2016/05/26/theater/review-a-minimalist-version-of-peer-gynt-still-provokes.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.wsj.com/articles/peer-gynt-review-an-ibsen-in-outline-1464898505",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/paramour-unlovable-article-1.2651181",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/peer-gynt_77198.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=B7R0QO",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/peer-gynt/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.curtainup.com/peergyntcsc16.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterpizzazz.com/peer-gynt/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2016/05/peer-gynt/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://stagebuddy.com/reviews/review-peer-gynt",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatrereviews.com/review-peer-gynt-at-the-classic-stage-company/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/2016/05/26/14748-peer-gynt-csc",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://bobs-theater-blog.blogspot.com/2016/05/peer-gynt.html",
+            "outletId": "bobs-theater-blog.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://t2conline.com/peer-gynt-lacks-humor/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://offoffonline.com/?p=24218",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://broadwayandme.blogspot.com/2016/06/a-gynt-who-truly-lost-its-way.html",
+            "outletId": "broadwayandme.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://zealnyc.com/a-spare-snoozy-peer-gynt-at-the-csc/",
+            "outletId": "zealnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theepochtimes.com/n3/2078679-theater-review-peer-gynt/",
+            "outletId": "theepochtimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://letstalkoffbroadway.com/2016/05/directed-adapted-company.html",
+            "outletId": "letstalkoffbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://nytheatreguide.com/2016/05/off-broadway-review-peer-gynt-at-classic-stage-company/",
+            "outletId": "nytheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/peer-gynt-2",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 21,
+        "candidateCount": 22
+      },
+      "computedAt": "2026-10-31T19:05:43.046Z"
+    },
+    {
       "showId": "pen-pals-off-broadway-2025",
       "title": "Pen Pals",
       "openingDate": "2025-01-06",
@@ -239362,6 +239598,629 @@
       "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
+      "showId": "sojourners-off-broadway-2016",
+      "title": "Sojourners",
+      "openingDate": "2016-01-28",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/05/16/theater/sojourners-review.html",
+        "https://www.timeout.com/newyork/theater/sojourners-her-portmanteau",
+        "http://deadline.com/2017/05/review-sojourners-and-her-portmanteau-off-broadway-new-plays-derren-browns-a-mental-case-1202095100/",
+        "http://www.theatermania.com/off-broadway/reviews/sojourners-and-her-portmanteau_81093.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=VW13P4",
+        "http://www.theaterscene.net/plays/sojourners-her-portmanteau/victor-gluck/",
+        "http://www.curtainup.com/sojournernytw17.html",
+        "http://theaterpizzazz.com/coming-merica-soujourners/",
+        "http://thefrontrowcenter.com/2017/05/sojourners-her-portmanteau/",
+        "https://stagebuddy.com/theater/theater-review/review-sojournersher-portmanteau",
+        "https://frontmezzjunkies.com/2017/05/16/sojourners-her-portmanteau/",
+        "http://exeuntmagazine.com/reviews/sojourners-portmanteau-new-york-theater-workshop/",
+        "http://www.theatrereviews.com/off-broadway-review-sojourners-and-her-portmanteau-at-new-york-theatre-workshop/",
+        "https://newyorktheater.me/2017/05/16/sojourners-and-her-portmanteau-reviews-nigerian-american-immigrant-family-saga/",
+        "http://t2conline.com/sojourners-a-second-look-at-fitting-in/",
+        "http://twi-ny.com/blog/2017/06/04/sojourners-her-portmanteau/",
+        "https://www.offoffonline.com/offoffonline/2017/5/21/sojourners-and-her-portmanteau",
+        "https://bobs-theater-blog.blogspot.com/2017/04/sojourners-her-portmanteau.html",
+        "https://dougmarino.blogspot.com/2017/04/sojourners.html",
+        "http://www.nytimes.com/2016/01/29/theater/review-sojourners-about-nigerians-assimilating-to-life-in-the-us.html",
+        "http://www.newyorktheatreguide.com/reviews/sojourners16.htm",
+        "http://www.timeout.com/newyork/theater/sojourners",
+        "http://www.theatermania.com/off-broadway/reviews/sojourners_75764.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=UZ7QET",
+        "http://www.talkinbroadway.com/page/ob/1_28_16.html",
+        "http://www.theaterscene.net/plays/sojourners/darryl-reilly/",
+        "http://www.theasy.com/Reviews/2016/S/sojourners.php",
+        "http://www.theaterpizzazz.com/strangers-in-a-strange-land-sojourners/",
+        "http://stagebuddy.com/reviews/review-sojourners",
+        "http://newyorktheater.me/2016/01/29/sojourners-review-african-immigrant-epic-begins-with-love-stories/",
+        "http://www.americantheaterweb.com/index.php/topnews/",
+        "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/"
+      ],
+      "dirFiles": 29,
+      "dirClean": 12,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "wnyc.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2017/05/16/theater/sojourners-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--jesse-green.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Jesse Green",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.nytimes.com/2017/05/16/theater/sojourners-review.html?_r=0"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "lateDateMismatch"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/sojourners-her-portmanteau",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/sojourners-her-portmanteau"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://deadline.com/2017/05/review-sojourners-and-her-portmanteau-off-broadway-new-plays-derren-browns-a-mental-case-1202095100/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--jeremy-gerard.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://deadline.com/2017/05/review-sojourners-and-her-portmanteau-off-broadway-new-plays-derren-browns-a-mental-case-1202095100/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/sojourners-her-portmanteau/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--victor-gluck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theaterscene.net/plays/sojourners-her-portmanteau/victor-gluck/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.curtainup.com/sojournernytw17.html",
+          "host": "curtainup.com",
+          "knownOutletId": "curtainup",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "curtainup--elyse-sommer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.curtainup.com/sojournernytw17.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://theaterpizzazz.com/coming-merica-soujourners/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-pizzazz--jk-clarke.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theaterpizzazz.com/coming-merica-soujourners/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://thefrontrowcenter.com/2017/05/sojourners-her-portmanteau/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--tulis-mccall.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://thefrontrowcenter.com/2017/05/sojourners-her-portmanteau/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-sojournersher-portmanteau",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "stagebuddy--ariana-starr.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://stagebuddy.com/theater/theater-review/review-sojournersher-portmanteau"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2017/05/16/sojourners-her-portmanteau/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "recoverable": true,
+          "recoverableFile": "frontmezzjunkies--steven-ross.json",
+          "recoverableOutletId": "frontmezzjunkies",
+          "recoverableCritic": "Steven Ross",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frontmezzjunkies--steven-ross.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://frontmezzjunkies.com/2017/05/16/sojourners-her-portmanteau/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "lateDateMismatch"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://exeuntmagazine.com/reviews/sojourners-portmanteau-new-york-theater-workshop/",
+          "host": "exeuntmagazine.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--loren-noveck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://exeuntmagazine.com/reviews/sojourners-portmanteau-new-york-theater-workshop/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.theatrereviews.com/off-broadway-review-sojourners-and-her-portmanteau-at-new-york-theatre-workshop/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--david-roberts.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theatrereviews.com/off-broadway-review-sojourners-and-her-portmanteau-at-new-york-theatre-workshop/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:New York Theatre Workshop",
+          "reverify": false
+        },
+        {
+          "url": "http://t2conline.com/sojourners-a-second-look-at-fitting-in/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-square-chronicles--suzanna-bowling.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://t2conline.com/sojourners-a-second-look-at-fitting-in/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:New York Theater Workshop",
+          "reverify": false
+        },
+        {
+          "url": "http://twi-ny.com/blog/2017/06/04/sojourners-her-portmanteau/",
+          "host": "twi-ny.com",
+          "knownOutletId": "this-week-in-new-york",
+          "recoverable": true,
+          "recoverableFile": "this-week-in-new-york--mark-rifkin.json",
+          "recoverableOutletId": "this-week-in-new-york",
+          "recoverableCritic": "Mark Rifkin",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "this-week-in-new-york--mark-rifkin.json",
+              "flag": "emptyBody",
+              "urlInDir": "http://twi-ny.com/blog/2017/06/04/sojourners-her-portmanteau/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "lateDateMismatch"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2017/5/21/sojourners-and-her-portmanteau",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "off-off-online--curtis-russell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2017/5/21/sojourners-and-her-portmanteau"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://bobs-theater-blog.blogspot.com/2017/04/sojourners-her-portmanteau.html",
+          "host": "bobs-theater-blog.blogspot.com",
+          "knownOutletId": "bobs-theater-blog",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bobs-theater-blog--robert-sholiton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://bobs-theater-blog.blogspot.com/2017/04/sojourners-her-portmanteau.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "https://dougmarino.blogspot.com/2017/04/sojourners.html",
+          "host": "dougmarino.blogspot.com",
+          "knownOutletId": "act-three-the-reviews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "act-three-the-reviews--doug-marino.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://dougmarino.blogspot.com/2017/04/sojourners.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-tile-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2016/S/sojourners.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-is-easy--brett-aresco.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theasy.com/Reviews/2016/S/sojourners.php?platform=hootsuite"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "non-review-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/",
+          "host": "forbes.com",
+          "outletId": "forbes",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "sojourners-off-broadway-2016: http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/ is already owned by nice-fish-off-broadway-2016 — one of the two is contaminated. Inspect data/review-texts/nice-fish-off-broadway-2016/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "forbes",
+            "outlet": "forbes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2016/S/sojourners.php"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/sojourners-and-her-portmanteau_81093.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=VW13P4",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2017/05/16/sojourners-and-her-portmanteau-reviews-nigerian-american-immigrant-family-saga/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2016/01/29/theater/review-sojourners-about-nigerians-assimilating-to-life-in-the-us.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.newyorktheatreguide.com/reviews/sojourners16.htm",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/sojourners",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/sojourners_75764.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=UZ7QET",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/1_28_16.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/sojourners/darryl-reilly/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterpizzazz.com/strangers-in-a-strange-land-sojourners/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://stagebuddy.com/reviews/review-sojourners",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://newyorktheater.me/2016/01/29/sojourners-review-african-immigrant-epic-begins-with-love-stories/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.americantheaterweb.com/index.php/topnews/",
+            "outletId": "americantheaterweb.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/",
+            "outletId": "forbes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2016/S/sojourners.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 11,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-10-31T19:05:43.046Z"
+    },
+    {
       "showId": "soldiers-of-tomorrow-off-west-end-2026",
       "title": "Soldiers Of Tomorrow",
       "openingDate": "2026-06-10",
@@ -241909,46 +242768,28 @@
         "https://thefrontrowcenter.com/2026/05/specimen/",
         "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
         "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
-        "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
+        "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/",
         "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
-        "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
-        "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/"
+        "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
+        "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
       ],
-      "dirFiles": 4,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 6,
+      "dirClean": 4,
+      "inReviewsJson": 4,
       "missing": [
         {
           "url": "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
           "host": "cureus.com",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "serpCensus": true
-        },
-        {
-          "url": "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
+          "url": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -241956,23 +242797,28 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theater-scene--tony-marinelli.json",
+              "file": "theatermania--linda-buchwald.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/"
+              "urlInDir": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
           "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-05-25",
+          "priorRunSource": "flagged-file-date:2026-07-27",
+          "serpCensus": true,
           "reverify": false
         },
         {
-          "url": "https://thefrontrowcenter.com/2026/05/specimen/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
+          "url": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -241980,65 +242826,22 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "front-row-center--david-walters.json",
+              "file": "theatrely--emily-wyrwa.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://thefrontrowcenter.com/2026/05/specimen/"
+              "urlInDir": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-05-21",
-          "reverify": false
-        },
-        {
-          "url": "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "this-week-in-new-york--mark-rifkin.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
           ],
           "priorRun": true,
-          "priorRunSource": "show-score-tile-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--stanford-friedman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/5/4/specimen"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-05-11",
+          "priorRunSource": "flagged-file-date:2026-07-27",
+          "serpCensus": true,
           "reverify": false
         }
       ],
@@ -242055,8 +242858,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -242076,7 +242879,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -242086,7 +242889,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -242096,23 +242899,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 38,
         "byReason": {
           "aggregator-internal-nav": 1,
-          "non-review-host": 27,
-          "non-review-path": 2,
-          "bare-host": 1,
-          "venue-production-page": 1
+          "non-review-host": 32,
+          "non-review-path": 1,
+          "census-junk-host": 1,
+          "venue-production-page": 2,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -242127,53 +242931,7 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
-          "host": "theatrely.com",
-          "outletId": "theatrely",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/",
-          "host": "twi-ny.com",
-          "outletId": "this-week-in-new-york",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "specimen-off-broadway-2026: https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -242184,65 +242942,53 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/"
-          },
-          {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
-          },
-          {
-            "outletId": "this-week-in-new-york",
-            "outlet": "this-week-in-new-york",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/05/specimen/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T16:58:09.613Z"
+          },
           {
             "url": "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
             "outletId": "cureus.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T10:20:07.676Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
-            "outletId": "theatrely",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T10:20:07.676Z"
-          },
-          {
-            "url": "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/",
-            "outletId": "this-week-in-new-york",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T16:58:09.613Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 4
+        "liveCount": 4,
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-31T10:20:07.676Z"
+      "computedAt": "2026-10-31T19:05:43.046Z"
     },
     {
       "showId": "spellbound-off-broadway-2026",
@@ -245933,6 +246679,548 @@
         "candidateCount": 13
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "straight-off-broadway-2016",
+      "title": "Straight",
+      "openingDate": "2016-02-29",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-HALFWAY-BITCHES-GO-STRAIGHT-TO-HEAVEN-What-Did-the-Critics-Think-20191210",
+        "https://www.broadwayworld.com/article/Review-Roundup-Ralph-Fiennes-Stars-In-STRAIGHT-LINE-CRAZY-At-The-Shed-20221026"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.hollywoodreporter.com/review/halfway-bitches-go-straight-heaven-review-1261045",
+        "https://www.thewrap.com/highway-bitches-go-straight-to-heaven-theater-review-stephen-adly-guirgis/",
+        "https://www.thedailybeast.com/the-loud-life-lessons-of-stephen-adly-guirgis-halfway-bitches-go-straight-to-heaven",
+        "https://www.newyorktheatreguide.com/reviews/review-of-halfway-bitches-go-straight-to-heaven-at-atlantic-theater-company",
+        "https://www.nytimes.com/2022/10/26/theater/straight-line-crazy-review.html",
+        "https://www.thewrap.com/straight-line-crazy-off-broadway-review-ralph-fiennes-robert-moses/",
+        "https://nystagereview.com/2022/10/26/straight-line-crazy-ralph-fiennes-is-straight-line-wonderful/",
+        "https://newyorktheater.me/2022/10/26/straight-line-crazy-review-ralph-fiennes-as-robert-moses/",
+        "https://www.vulture.com/2022/10/theater-review-straight-line-crazy-david-hare-ralph-fiennes-nyc.html",
+        "https://www.theaterpizzazz.com/straight-line-crazy/",
+        "https://www.newyorktheatreguide.com/reviews/straight-line-crazy-off-broadway-review-ralph-fiennes",
+        "http://www.nytimes.com/2016/03/03/theater/review-straight-glides-between-sexual-assumptions.html",
+        "http://www.timeout.com/newyork/theater/straight",
+        "https://observer.com/2016/03/coming-of-age-stories-straight-and-a-room-of-my-own/",
+        "http://www.theatermania.com/off-broadway/reviews/straight_76143.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6EEZNK",
+        "http://www.talkinbroadway.com/page/ob/2_29_16.html",
+        "http://www.theaterscene.net/plays/straight/victor-gluck",
+        "http://www.theaterpizzazz.com/straight-a-love-triangle-that-wont-come-out/",
+        "http://stagebuddy.com/reviews/review-straight",
+        "http://frontmezzjunkies.com/2016/02/19/straight-surprisingly-twisted/",
+        "http://www.theatrereviews.com/straight-at-the-acorn-theatre-on-theatre-row-through-may-8-2016/",
+        "http://thebroadwayblog.com/2016/02/29/14147-review-straight-play",
+        "http://slleiter.blogspot.com/2016/03/155-review-straight-seen-february-25.html",
+        "http://broadwayandme.blogspot.com/2016/04/straight-probes-zigzags-of-modern-love.html",
+        "http://www.huffingtonpost.com/michael-giltz/theater-jake-epstein-make_b_9359200.html",
+        "http://www.out.com/michael-musto/2016/3/07/comic-judy-gold-im-way-more-jewish-lesbian",
+        "http://dandwyeroffscript.tumblr.com/post/142079438846/straight",
+        "http://whatsonoffbroadway.com/2016/02/28/straight-whats-in-a-definition/",
+        "http://showshowdown.blogspot.com/2016/02/straight.html",
+        "http://clumtheater.blogspot.com/2016/02/straight-by-scott-elmegreen-and-drew.html",
+        "http://motherhoodlater.com/posts/mom-theatre-blogger-straight-show-review-by-robin-gorman-newman/",
+        "http://gaycitynews.nyc/football-brewskies-brojobs/",
+        "http://whiterhinoreport.blogspot.com/2016/03/straight-by-scott-elmegreen-and-drew.html",
+        "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/",
+        "http://rochellejewelshapiro.com/straight-now-at-the-acorn-theater-nyt-critics-pick/",
+        "http://nytheatreguide.com/2016/02/theatre-review-straight-at-acorn-theatre/",
+        "http://bobs-theater-blog.blogspot.com/2016/03/straight.html",
+        "http://www.nyunews.com/2016/03/09/straight-explores-a-modern-gay-identity/",
+        "http://odysseymagazine.net/featured-columnist/the-new-york-city-column-by-frankie-c-mar-3rd-2016/",
+        "http://www.edgemedianetwork.com/index.php?id=193327"
+      ],
+      "dirFiles": 29,
+      "dirClean": 28,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/halfway-bitches-go-straight-heaven-review-1261045",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/highway-bitches-go-straight-to-heaven-theater-review-stephen-adly-guirgis/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/the-loud-life-lessons-of-stephen-adly-guirgis-halfway-bitches-go-straight-to-heaven",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/straight-line-crazy-off-broadway-review-ralph-fiennes-robert-moses/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2022/10/26/straight-line-crazy-ralph-fiennes-is-straight-line-wonderful/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2022/10/26/straight-line-crazy-review-ralph-fiennes-as-robert-moses/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2022/10/theater-review-straight-line-crazy-david-hare-ralph-fiennes-nyc.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://gaycitynews.nyc/football-brewskies-brojobs/",
+          "host": "gaycitynews.nyc",
+          "knownOutletId": "gay-city-news"
+        },
+        {
+          "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "glreview.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://frontmezzjunkies.com/2016/02/19/straight-surprisingly-twisted/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frontmezzjunkies--steven-ross.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://frontmezzjunkies.com/2016/02/19/straight-surprisingly-twisted/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 587,
+        "byReason": {
+          "aggregator-internal-nav": 450,
+          "non-review-host": 31,
+          "not-http-url": 97,
+          "aggregator-section-root": 8,
+          "ticketing-listing": 1
+        }
+      },
+      "dedupedVariants": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/review-of-halfway-bitches-go-straight-to-heaven-at-atlantic-theater-company",
+          "host": "newyorktheatreguide.com",
+          "matchedUrl": "http://nytheatreguide.com/2016/02/theatre-review-straight-at-acorn-theatre/",
+          "outletId": "nytg",
+          "reason": "same outlet \"nytg\" already held at nytheatreguide.com; newyorktheatreguide.com is a registered alias of it"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/straight-line-crazy-off-broadway-review-ralph-fiennes",
+          "host": "newyorktheatreguide.com",
+          "matchedUrl": "http://nytheatreguide.com/2016/02/theatre-review-straight-at-acorn-theatre/",
+          "outletId": "nytg",
+          "reason": "same outlet \"nytg\" already held at nytheatreguide.com; newyorktheatreguide.com is a registered alias of it"
+        }
+      ],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-HALFWAY-BITCHES-GO-STRAIGHT-TO-HEAVEN-What-Did-the-Critics-Think-20191210",
+          "publishDate": "2019-12-10"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Ralph-Fiennes-Stars-In-STRAIGHT-LINE-CRAZY-At-The-Shed-20221026",
+          "publishDate": "2022-10-26"
+        }
+      ],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/halfway-bitches-go-straight-heaven-review-1261045",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/highway-bitches-go-straight-to-heaven-theater-review-stephen-adly-guirgis/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/the-loud-life-lessons-of-stephen-adly-guirgis-halfway-bitches-go-straight-to-heaven",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/straight-line-crazy-off-broadway-review-ralph-fiennes-robert-moses/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2022/10/26/straight-line-crazy-ralph-fiennes-is-straight-line-wonderful/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2022/10/26/straight-line-crazy-review-ralph-fiennes-as-robert-moses/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2022/10/theater-review-straight-line-crazy-david-hare-ralph-fiennes-nyc.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://gaycitynews.nyc/football-brewskies-brojobs/",
+          "host": "gaycitynews.nyc",
+          "outletId": "gay-city-news",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/",
+          "host": "forbes.com",
+          "outletId": "forbes",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "straight-off-broadway-2016: http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/ is already owned by nice-fish-off-broadway-2016 — one of the two is contaminated. Inspect data/review-texts/nice-fish-off-broadway-2016/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://motherhoodlater.com/posts/mom-theatre-blogger-straight-show-review-by-robin-gorman-newman/",
+          "host": "motherhoodlater.com",
+          "file": "motherhood-later--robin-gorman-newman.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://nytheatreguide.com/2016/02/theatre-review-straight-at-acorn-theatre/",
+          "host": "nytheatreguide.com",
+          "file": "nytg--april-forrer.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "gay-city-news",
+            "outlet": "gay-city-news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://gaycitynews.nyc/football-brewskies-brojobs/"
+          },
+          {
+            "outletId": "forbes",
+            "outlet": "forbes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://frontmezzjunkies.com/2016/02/19/straight-surprisingly-twisted/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/review-of-halfway-bitches-go-straight-to-heaven-at-atlantic-theater-company",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2022/10/26/theater/straight-line-crazy-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://www.theaterpizzazz.com/straight-line-crazy/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/straight-line-crazy-off-broadway-review-ralph-fiennes",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2016/03/03/theater/review-straight-glides-between-sexual-assumptions.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/straight",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://observer.com/2016/03/coming-of-age-stories-straight-and-a-room-of-my-own/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/straight_76143.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6EEZNK",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/2_29_16.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/straight/victor-gluck",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterpizzazz.com/straight-a-love-triangle-that-wont-come-out/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://stagebuddy.com/reviews/review-straight",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatrereviews.com/straight-at-the-acorn-theatre-on-theatre-row-through-may-8-2016/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/2016/02/29/14147-review-straight-play",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://slleiter.blogspot.com/2016/03/155-review-straight-seen-february-25.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://broadwayandme.blogspot.com/2016/04/straight-probes-zigzags-of-modern-love.html",
+            "outletId": "broadwayandme.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/michael-giltz/theater-jake-epstein-make_b_9359200.html",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.out.com/michael-musto/2016/3/07/comic-judy-gold-im-way-more-jewish-lesbian",
+            "outletId": "out.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://dandwyeroffscript.tumblr.com/post/142079438846/straight",
+            "outletId": "dandwyeroffscript.tumblr.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://whatsonoffbroadway.com/2016/02/28/straight-whats-in-a-definition/",
+            "outletId": "whatsonoffbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://showshowdown.blogspot.com/2016/02/straight.html",
+            "outletId": "showshowdown.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://clumtheater.blogspot.com/2016/02/straight-by-scott-elmegreen-and-drew.html",
+            "outletId": "clumtheater.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://motherhoodlater.com/posts/mom-theatre-blogger-straight-show-review-by-robin-gorman-newman/",
+            "outletId": "motherhoodlater.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://whiterhinoreport.blogspot.com/2016/03/straight-by-scott-elmegreen-and-drew.html",
+            "outletId": "whiterhinoreport.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://rochellejewelshapiro.com/straight-now-at-the-acorn-theater-nyt-critics-pick/",
+            "outletId": "rochellejewelshapiro.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://nytheatreguide.com/2016/02/theatre-review-straight-at-acorn-theatre/",
+            "outletId": "nytheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://bobs-theater-blog.blogspot.com/2016/03/straight.html",
+            "outletId": "bobs-theater-blog.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.nyunews.com/2016/03/09/straight-explores-a-modern-gay-identity/",
+            "outletId": "nyunews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://odysseymagazine.net/featured-columnist/the-new-york-city-column-by-frankie-c-mar-3rd-2016/",
+            "outletId": "odysseymagazine.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.edgemedianetwork.com/index.php?id=193327",
+            "outletId": "edgemedianetwork.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://gaycitynews.nyc/football-brewskies-brojobs/",
+            "outletId": "gay-city-news",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.forbes.com/sites/leeseymour/2016/02/29/best-theater-of-the-month-mark-rylance-jane-austen-and-more/",
+            "outletId": "forbes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://frontmezzjunkies.com/2016/02/19/straight-surprisingly-twisted/",
+            "outletId": "frontmezzjunkies",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 28,
+        "candidateCount": 31
+      },
+      "computedAt": "2026-10-31T19:05:43.046Z"
     },
     {
       "showId": "stranger-things-2024",
@@ -261201,6 +262489,299 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:36:14.445Z"
+    },
+    {
+      "showId": "the-body-of-an-american-off-broadway-2016",
+      "title": "The Body of an American",
+      "openingDate": "2016-02-23",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2016/02/24/theater/review-the-body-of-an-american-ties-created-by-war.html",
+        "http://www.newyorktheatreguide.com/reviews/bodyofanamerican16.htm",
+        "http://www.timeout.com/newyork/theater/the-body-of-an-american",
+        "http://www.theatermania.com/off-broadway/reviews/the-body-of-an-american_76067.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=O328FI",
+        "http://www.talkinbroadway.com/page/ob/2_23_16.html",
+        "http://www.theaterscene.net/plays/the-body-of-an-american/victor-gluck/",
+        "http://www.curtainup.com/bodyofanamericanny16.html",
+        "http://www.theaterpizzazz.com/the-body-of-an-american/",
+        "http://theatrereviews.ceoexpress.com/viewpage.asp",
+        "http://thebroadwayblog.com/2016/02/23/14062-when-a-photos-worth-more-than-1000-words-the-body-of-an-american",
+        "http://www.broadwayandme.blogspot.com/2016/03/highlights-and-lowlights-of-five.html",
+        "http://www.asherworldturns.com/spring-2016-nyc-theater-guide/",
+        "http://www.examiner.com/review/body-of-an-american-an-audacious-intimate-look-at-an-unusual-friendship",
+        "http://thewestfieldnews.com/review-the-body-of-an-american-at-hartford-stage"
+      ],
+      "dirFiles": 12,
+      "dirClean": 10,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://theatrereviews.ceoexpress.com/viewpage.asp",
+          "host": "ceoexpress.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.broadwayandme.blogspot.com/2016/03/highlights-and-lowlights-of-five.html",
+          "host": "broadwayandme.blogspot.com",
+          "knownOutletId": "broadway-and-me"
+        },
+        {
+          "url": "http://www.asherworldturns.com/spring-2016-nyc-theater-guide/",
+          "host": "asherworldturns.com",
+          "knownOutletId": "as-her-world-turns"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.examiner.com/review/body-of-an-american-an-audacious-intimate-look-at-an-unusual-friendship",
+          "host": "examiner.com",
+          "knownOutletId": "examiner",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "examiner--andrew-beck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.examiner.com/review/body-of-an-american-an-audacious-intimate-look-at-an-unusual-friendship"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "http://thewestfieldnews.com/review-the-body-of-an-american-at-hartford-stage",
+          "host": "thewestfieldnews.com",
+          "knownOutletId": "westfield-news",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "westfield-news--mark-auerbach.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://thewestfieldnews.com/review-the-body-of-an-american-at-hartford-stage"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Hartford Stage",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://theatrereviews.ceoexpress.com/viewpage.asp",
+          "host": "ceoexpress.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.broadwayandme.blogspot.com/2016/03/highlights-and-lowlights-of-five.html",
+          "host": "broadwayandme.blogspot.com",
+          "outletId": "broadway-and-me",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-body-of-an-american-off-broadway-2016: http://www.broadwayandme.blogspot.com/2016/03/highlights-and-lowlights-of-five.html is already owned by nice-fish-off-broadway-2016 — one of the two is contaminated. Inspect data/review-texts/nice-fish-off-broadway-2016/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "http://www.asherworldturns.com/spring-2016-nyc-theater-guide/",
+          "host": "asherworldturns.com",
+          "outletId": "as-her-world-turns",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-body-of-an-american-off-broadway-2016: http://www.asherworldturns.com/spring-2016-nyc-theater-guide/ is already owned by the-woodsman-off-broadway-2016 — one of the two is contaminated. Inspect data/review-texts/the-woodsman-off-broadway-2016/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.newyorktheatreguide.com/reviews/bodyofanamerican16.htm",
+          "host": "newyorktheatreguide.com",
+          "file": "nytg--tulis-mccall.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=newyorktheatreguide.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=newyorktheatreguide.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdo",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "ceoexpress.com",
+            "outlet": "ceoexpress.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theatrereviews.ceoexpress.com/viewpage.asp"
+          },
+          {
+            "outletId": "broadway-and-me",
+            "outlet": "broadway-and-me",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.broadwayandme.blogspot.com/2016/03/highlights-and-lowlights-of-five.html"
+          },
+          {
+            "outletId": "as-her-world-turns",
+            "outlet": "as-her-world-turns",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.asherworldturns.com/spring-2016-nyc-theater-guide/"
+          },
+          {
+            "outletId": "examiner",
+            "outlet": "examiner",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.examiner.com/review/body-of-an-american-an-audacious-intimate-look-at-an-unusual-friendship"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2016/02/24/theater/review-the-body-of-an-american-ties-created-by-war.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.newyorktheatreguide.com/reviews/bodyofanamerican16.htm",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/the-body-of-an-american",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/the-body-of-an-american_76067.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=O328FI",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/2_23_16.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/the-body-of-an-american/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.curtainup.com/bodyofanamericanny16.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterpizzazz.com/the-body-of-an-american/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/2016/02/23/14062-when-a-photos-worth-more-than-1000-words-the-body-of-an-american",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://theatrereviews.ceoexpress.com/viewpage.asp",
+            "outletId": "ceoexpress.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.broadwayandme.blogspot.com/2016/03/highlights-and-lowlights-of-five.html",
+            "outletId": "broadway-and-me",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.asherworldturns.com/spring-2016-nyc-theater-guide/",
+            "outletId": "as-her-world-turns",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.examiner.com/review/body-of-an-american-an-audacious-intimate-look-at-an-unusual-friendship",
+            "outletId": "examiner",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 14
+      },
+      "computedAt": "2026-10-31T19:05:43.046Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -306878,6 +308459,7 @@
         "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-200pm",
         "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
         "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-730pm",
+        "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
         "https://www.newjerseystage.com/events/2026/10/30/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-30-200pm",
         "https://www.newjerseystage.com/events/2026/11/01/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-11-01-200pm",
         "https://www.newjerseystage.com/events/2026/10/28/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-28-730pm"
@@ -306985,7 +308567,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -307001,19 +308583,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 26,
         "byReason": {
-          "write-path-blocked": 1,
-          "non-review-host": 24,
           "aggregator-internal-nav": 2,
-          "census-junk-host": 1,
-          "no-review-evidence": 1,
-          "ticketing-listing": 1,
-          "non-review-path": 2
+          "non-review-host": 18,
+          "non-review-path": 2,
+          "write-path-blocked": 1,
+          "event-listing": 2,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -307026,14 +308607,14 @@
           "outletId": "newjerseystage",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: newjerseystage--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "the-unexpected-3rd-2026: https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-200pm has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-730pm",
@@ -307146,7 +308727,7 @@
             "outletId": "newjerseystage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T18:47:32.823Z"
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
           },
           {
             "url": "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-730pm",
@@ -307181,7 +308762,7 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-31T18:47:32.823Z"
+      "computedAt": "2026-10-31T19:05:43.046Z"
     },
     {
       "showId": "the-unknown-off-broadway-2026",
@@ -313454,6 +315035,762 @@
         "candidateCount": 17
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "tick-tick-boom-off-broadway-2016",
+      "title": "Tick, Tick… BOOM!",
+      "openingDate": "2016-10-20",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2016/10/21/theater/tick-tick-boom-review.html",
+        "https://www.timeout.com/newyork/blog/theater-review-keen-company-revisits-jonathan-larsons-tick-tickboom-102016",
+        "http://www.hollywoodreporter.com/review/tick-tick-boom-review-940078",
+        "http://www.theatermania.com/off-broadway/reviews/tick-tickboom_78812.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-19KBS1",
+        "http://www.talkinbroadway.com/page/ob/10_20_16a.html",
+        "http://www.theaterscene.net/musicals/tick-tick-boom/darryl-reilly/",
+        "http://www.theasy.com/Reviews/2016/T/ticktickboom.php",
+        "http://theaterpizzazz.com/tick-tick-boom/",
+        "http://thefrontrowcenter.com/2016/10/tick-tick-boom/",
+        "http://stagebuddy.com/reviews/review-tick-tick-boom",
+        "https://frontmezzjunkies.com/2016/10/28/tick-tick-boom/",
+        "http://www.theatrereviews.com/off-broadway-review-keen-companys-tick-tick-boom-explodes-with-joy-at-the-acorn-theatre-on-theatre-row/",
+        "http://thebroadwayblog.com/2016/11/11/15611-dont-miss-keens-companys-tick-tick-boom",
+        "https://cititour.com/NYC_Broadway/Tick-Tick-Boom/163",
+        "http://slleiter.blogspot.com/2016/10/87-review-tick-tick-boom-seen-october.html",
+        "http://t2conline.com/tick-tickboom-is-musically-thrilling/",
+        "http://broadwayandme.blogspot.com/2016/10/the-art-of-making-art-in-sunday-in-park.html",
+        "http://musicaltheatrereview.com/tick-tickboom-acorn-theatre-at-theatre-row-new-york/",
+        "http://www.manhattandigest.com/2016/10/28/theater-review-keen-company-tick-tick-boom/",
+        "http://www.philly.com/philly/blogs/397855902.html",
+        "http://nytheatreguide.com/2016/10/off-broadway-review-tick-tick-boom-at-acorn-theatre-theatre-row/",
+        "http://offoffonline.com/?p=26444",
+        "https://zealnyc.com/review-tick-tick-boom-offers-a-keyhole-look-at-jonathan-larsons-life/",
+        "http://nytheatreguide.com/2016/11/off-broadway-review-tick-tick-boom-at-the-acorn-theatre-in-theatre-row/",
+        "http://www.womanaroundtown.com/sections/playing-around/tick-tickboom-when-do-you-give-up",
+        "https://dougmarino.blogspot.com/2016/10/tick-tick-boom.html"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.timeout.com/newyork/blog/theater-review-keen-company-revisits-jonathan-larsons-tick-tickboom-102016",
+          "host": "timeout.com",
+          "knownOutletId": "timeout"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/tick-tick-boom-review-940078",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.theatermania.com/off-broadway/reviews/tick-tickboom_78812.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-19KBS1",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "http://www.talkinbroadway.com/page/ob/10_20_16a.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "http://www.theaterscene.net/musicals/tick-tick-boom/darryl-reilly/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2016/T/ticktickboom.php",
+          "host": "theasy.com",
+          "knownOutletId": "theatre-is-easy"
+        },
+        {
+          "url": "http://theaterpizzazz.com/tick-tick-boom/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz"
+        },
+        {
+          "url": "http://thefrontrowcenter.com/2016/10/tick-tick-boom/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center"
+        },
+        {
+          "url": "http://stagebuddy.com/reviews/review-tick-tick-boom",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2016/10/28/tick-tick-boom/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies"
+        },
+        {
+          "url": "http://www.theatrereviews.com/off-broadway-review-keen-companys-tick-tick-boom-explodes-with-joy-at-the-acorn-theatre-on-theatre-row/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited"
+        },
+        {
+          "url": "http://thebroadwayblog.com/2016/11/11/15611-dont-miss-keens-companys-tick-tick-boom",
+          "host": "thebroadwayblog.com",
+          "knownOutletId": "broadway-blog"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Tick-Tick-Boom/163",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "http://slleiter.blogspot.com/2016/10/87-review-tick-tick-boom-seen-october.html",
+          "host": "slleiter.blogspot.com",
+          "knownOutletId": "theatres-leiter-side"
+        },
+        {
+          "url": "http://t2conline.com/tick-tickboom-is-musically-thrilling/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles"
+        },
+        {
+          "url": "http://broadwayandme.blogspot.com/2016/10/the-art-of-making-art-in-sunday-in-park.html",
+          "host": "broadwayandme.blogspot.com",
+          "knownOutletId": "broadway-and-me"
+        },
+        {
+          "url": "http://musicaltheatrereview.com/tick-tickboom-acorn-theatre-at-theatre-row-new-york/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review"
+        },
+        {
+          "url": "http://www.manhattandigest.com/2016/10/28/theater-review-keen-company-tick-tick-boom/",
+          "host": "manhattandigest.com",
+          "knownOutletId": "manhattan-digest"
+        },
+        {
+          "url": "http://www.philly.com/philly/blogs/397855902.html",
+          "host": "philly.com",
+          "knownOutletId": "philadelphia-inquirer"
+        },
+        {
+          "url": "http://nytheatreguide.com/2016/10/off-broadway-review-tick-tick-boom-at-acorn-theatre-theatre-row/",
+          "host": "nytheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "http://offoffonline.com/?p=26444",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online"
+        },
+        {
+          "url": "https://zealnyc.com/review-tick-tick-boom-offers-a-keyhole-look-at-jonathan-larsons-life/",
+          "host": "zealnyc.com",
+          "knownOutletId": "zeal-nyc"
+        },
+        {
+          "url": "http://nytheatreguide.com/2016/11/off-broadway-review-tick-tick-boom-at-the-acorn-theatre-in-theatre-row/",
+          "host": "nytheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "http://www.womanaroundtown.com/sections/playing-around/tick-tickboom-when-do-you-give-up",
+          "host": "womanaroundtown.com",
+          "knownOutletId": "woman-around-town"
+        },
+        {
+          "url": "https://dougmarino.blogspot.com/2016/10/tick-tick-boom.html",
+          "host": "dougmarino.blogspot.com",
+          "knownOutletId": "act-three-the-reviews"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 2,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/newyork/blog/theater-review-keen-company-revisits-jonathan-larsons-tick-tickboom-102016",
+          "host": "timeout.com",
+          "outletId": "timeout",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/tick-tick-boom-review-940078",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.theatermania.com/off-broadway/reviews/tick-tickboom_78812.html",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-19KBS1",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.talkinbroadway.com/page/ob/10_20_16a.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.theaterscene.net/musicals/tick-tick-boom/darryl-reilly/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene"
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2016/T/ticktickboom.php",
+          "host": "theasy.com",
+          "outletId": "theatre-is-easy"
+        },
+        {
+          "url": "http://theaterpizzazz.com/tick-tick-boom/",
+          "host": "theaterpizzazz.com",
+          "outletId": "theater-pizzazz"
+        },
+        {
+          "url": "http://thefrontrowcenter.com/2016/10/tick-tick-boom/",
+          "host": "thefrontrowcenter.com",
+          "outletId": "front-row-center"
+        },
+        {
+          "url": "http://stagebuddy.com/reviews/review-tick-tick-boom",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2016/10/28/tick-tick-boom/",
+          "host": "frontmezzjunkies.com",
+          "outletId": "frontmezzjunkies"
+        },
+        {
+          "url": "http://www.theatrereviews.com/off-broadway-review-keen-companys-tick-tick-boom-explodes-with-joy-at-the-acorn-theatre-on-theatre-row/",
+          "host": "theatrereviews.com",
+          "outletId": "theatre-reviews-limited"
+        },
+        {
+          "url": "http://thebroadwayblog.com/2016/11/11/15611-dont-miss-keens-companys-tick-tick-boom",
+          "host": "thebroadwayblog.com",
+          "outletId": "broadway-blog"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Tick-Tick-Boom/163",
+          "host": "cititour.com",
+          "outletId": "cititour"
+        },
+        {
+          "url": "http://slleiter.blogspot.com/2016/10/87-review-tick-tick-boom-seen-october.html",
+          "host": "slleiter.blogspot.com",
+          "outletId": "theatres-leiter-side"
+        },
+        {
+          "url": "http://t2conline.com/tick-tickboom-is-musically-thrilling/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles"
+        },
+        {
+          "url": "http://broadwayandme.blogspot.com/2016/10/the-art-of-making-art-in-sunday-in-park.html",
+          "host": "broadwayandme.blogspot.com",
+          "outletId": "broadway-and-me"
+        },
+        {
+          "url": "http://musicaltheatrereview.com/tick-tickboom-acorn-theatre-at-theatre-row-new-york/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
+        },
+        {
+          "url": "http://www.manhattandigest.com/2016/10/28/theater-review-keen-company-tick-tick-boom/",
+          "host": "manhattandigest.com",
+          "outletId": "manhattan-digest"
+        },
+        {
+          "url": "http://www.philly.com/philly/blogs/397855902.html",
+          "host": "philly.com",
+          "outletId": "philadelphia-inquirer"
+        },
+        {
+          "url": "http://nytheatreguide.com/2016/10/off-broadway-review-tick-tick-boom-at-acorn-theatre-theatre-row/",
+          "host": "nytheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "http://offoffonline.com/?p=26444",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online"
+        },
+        {
+          "url": "https://zealnyc.com/review-tick-tick-boom-offers-a-keyhole-look-at-jonathan-larsons-life/",
+          "host": "zealnyc.com",
+          "outletId": "zeal-nyc"
+        },
+        {
+          "url": "http://nytheatreguide.com/2016/11/off-broadway-review-tick-tick-boom-at-the-acorn-theatre-in-theatre-row/",
+          "host": "nytheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "http://www.womanaroundtown.com/sections/playing-around/tick-tickboom-when-do-you-give-up",
+          "host": "womanaroundtown.com",
+          "outletId": "woman-around-town"
+        },
+        {
+          "url": "https://dougmarino.blogspot.com/2016/10/tick-tick-boom.html",
+          "host": "dougmarino.blogspot.com",
+          "outletId": "act-three-the-reviews"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/blog/theater-review-keen-company-revisits-jonathan-larsons-tick-tickboom-102016"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/tick-tick-boom-review-940078"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theatermania.com/off-broadway/reviews/tick-tickboom_78812.html"
+          },
+          {
+            "outletId": "lighting-and-sound-america",
+            "outlet": "lighting-and-sound-america",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-19KBS1"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.talkinbroadway.com/page/ob/10_20_16a.html"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/musicals/tick-tick-boom/darryl-reilly/"
+          },
+          {
+            "outletId": "theatre-is-easy",
+            "outlet": "theatre-is-easy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theasy.com/Reviews/2016/T/ticktickboom.php"
+          },
+          {
+            "outletId": "theater-pizzazz",
+            "outlet": "theater-pizzazz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theaterpizzazz.com/tick-tick-boom/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://thefrontrowcenter.com/2016/10/tick-tick-boom/"
+          },
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://stagebuddy.com/reviews/review-tick-tick-boom"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/2016/10/28/tick-tick-boom/"
+          },
+          {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theatrereviews.com/off-broadway-review-keen-companys-tick-tick-boom-explodes-with-joy-at-the-acorn-theatre-on-theatre-row/"
+          },
+          {
+            "outletId": "broadway-blog",
+            "outlet": "broadway-blog",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://thebroadwayblog.com/2016/11/11/15611-dont-miss-keens-companys-tick-tick-boom"
+          },
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Tick-Tick-Boom/163"
+          },
+          {
+            "outletId": "theatres-leiter-side",
+            "outlet": "theatres-leiter-side",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://slleiter.blogspot.com/2016/10/87-review-tick-tick-boom-seen-october.html"
+          },
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://t2conline.com/tick-tickboom-is-musically-thrilling/"
+          },
+          {
+            "outletId": "broadway-and-me",
+            "outlet": "broadway-and-me",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://broadwayandme.blogspot.com/2016/10/the-art-of-making-art-in-sunday-in-park.html"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://musicaltheatrereview.com/tick-tickboom-acorn-theatre-at-theatre-row-new-york/"
+          },
+          {
+            "outletId": "manhattan-digest",
+            "outlet": "manhattan-digest",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.manhattandigest.com/2016/10/28/theater-review-keen-company-tick-tick-boom/"
+          },
+          {
+            "outletId": "philadelphia-inquirer",
+            "outlet": "philadelphia-inquirer",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.philly.com/philly/blogs/397855902.html"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nytheatreguide.com/2016/10/off-broadway-review-tick-tick-boom-at-acorn-theatre-theatre-row/"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://offoffonline.com/?p=26444"
+          },
+          {
+            "outletId": "zeal-nyc",
+            "outlet": "zeal-nyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://zealnyc.com/review-tick-tick-boom-offers-a-keyhole-look-at-jonathan-larsons-life/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nytheatreguide.com/2016/11/off-broadway-review-tick-tick-boom-at-the-acorn-theatre-in-theatre-row/"
+          },
+          {
+            "outletId": "woman-around-town",
+            "outlet": "woman-around-town",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.womanaroundtown.com/sections/playing-around/tick-tickboom-when-do-you-give-up"
+          },
+          {
+            "outletId": "act-three-the-reviews",
+            "outlet": "act-three-the-reviews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dougmarino.blogspot.com/2016/10/tick-tick-boom.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2016/10/21/theater/tick-tick-boom-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/blog/theater-review-keen-company-revisits-jonathan-larsons-tick-tickboom-102016",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/tick-tick-boom-review-940078",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/tick-tickboom_78812.html",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-19KBS1",
+            "outletId": "lighting-and-sound-america",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/10_20_16a.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/tick-tick-boom/darryl-reilly/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2016/T/ticktickboom.php",
+            "outletId": "theatre-is-easy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/tick-tick-boom/",
+            "outletId": "theater-pizzazz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2016/10/tick-tick-boom/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://stagebuddy.com/reviews/review-tick-tick-boom",
+            "outletId": "stagebuddy",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2016/10/28/tick-tick-boom/",
+            "outletId": "frontmezzjunkies",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatrereviews.com/off-broadway-review-keen-companys-tick-tick-boom-explodes-with-joy-at-the-acorn-theatre-on-theatre-row/",
+            "outletId": "theatre-reviews-limited",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/2016/11/11/15611-dont-miss-keens-companys-tick-tick-boom",
+            "outletId": "broadway-blog",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Tick-Tick-Boom/163",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://slleiter.blogspot.com/2016/10/87-review-tick-tick-boom-seen-october.html",
+            "outletId": "theatres-leiter-side",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://t2conline.com/tick-tickboom-is-musically-thrilling/",
+            "outletId": "times-square-chronicles",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://broadwayandme.blogspot.com/2016/10/the-art-of-making-art-in-sunday-in-park.html",
+            "outletId": "broadway-and-me",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://musicaltheatrereview.com/tick-tickboom-acorn-theatre-at-theatre-row-new-york/",
+            "outletId": "musical-theatre-review",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.manhattandigest.com/2016/10/28/theater-review-keen-company-tick-tick-boom/",
+            "outletId": "manhattan-digest",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.philly.com/philly/blogs/397855902.html",
+            "outletId": "philadelphia-inquirer",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://nytheatreguide.com/2016/10/off-broadway-review-tick-tick-boom-at-acorn-theatre-theatre-row/",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://offoffonline.com/?p=26444",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://zealnyc.com/review-tick-tick-boom-offers-a-keyhole-look-at-jonathan-larsons-life/",
+            "outletId": "zeal-nyc",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://nytheatreguide.com/2016/11/off-broadway-review-tick-tick-boom-at-the-acorn-theatre-in-theatre-row/",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.womanaroundtown.com/sections/playing-around/tick-tickboom-when-do-you-give-up",
+            "outletId": "woman-around-town",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://dougmarino.blogspot.com/2016/10/tick-tick-boom.html",
+            "outletId": "act-three-the-reviews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 1,
+        "candidateCount": 26
+      },
+      "computedAt": "2026-10-31T19:05:43.046Z"
     },
     {
       "showId": "til-death-off-broadway-2023",
@@ -321624,6 +323961,265 @@
       "computedAt": "2026-10-25T10:27:27.352Z"
     },
     {
+      "showId": "turn-me-loose-off-broadway-2016",
+      "title": "Turn Me Loose",
+      "openingDate": "2016-05-19",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2016/05/20/theater/review-in-turn-me-loose-raw-jokes-that-still-sear-and-bite.html",
+        "http://www.timeout.com/newyork/theater/turn-me-loose",
+        "http://deadline.com/2016/05/turn-me-loose-joe-morton-scandal-review-1201761103/",
+        "http://www.nydailynews.com/entertainment/theater-arts/60s-comic-dick-gregory-oscar-wilde-stage-off-broadway-article-1.2643055",
+        "http://www.hollywoodreporter.com/review/joe-morton-turn-me-loose-895784",
+        "http://nypost.com/2016/05/19/a-new-show-tell-its-audience-to-yell-the-n-word/",
+        "http://www.theatermania.com/off-broadway/reviews/turn-me-loose_77135.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=7ALGSV",
+        "http://www.theaterscene.net/plays/turn-me-loose/darryl-reilly/",
+        "http://www.curtainup.com/turnmeloose16.html",
+        "http://www.theaterpizzazz.com/turn-me-loose/",
+        "http://thefrontrowcenter.com/2016/05/turn-me-loose/",
+        "http://stagebuddy.com/reviews/review-turn-loose",
+        "http://slleiter.blogspot.com/2016/05/9-review-turn-me-loose-seen-may-20-2016.html",
+        "http://dctheatrescene.com/2016/05/19/turn-loose-review-scandals-joe-morton-play-dick-gregory/",
+        "http://www.huffingtonpost.com/david-finkle/first-nighter-joe-morton_b_10082638.html",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "https://dramaqueennyc.com/2016/05/28/review-turn-me-loose/",
+        "http://nytheatreguide.com/2016/05/off-broadway-review-turn-me-loose-at-westside-theater/",
+        "http://offoffonline.com/?p=24275",
+        "http://t2conline.com/my-view-turn-me-loose-i-laughed-so-hard-i-cried/",
+        "http://bobs-theater-blog.blogspot.com/2016/06/turn-me-loose.html"
+      ],
+      "dirFiles": 25,
+      "dirClean": 22,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.timeout.com/newyork/theater/turn-me-loose",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/newyork/theater/turn-me-loose"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://newyorktheater.me/2016/05/19/turn-me-loose-joe-morton-as-dick-gregory-review-pics/turnmeloose2/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 154 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://nytheatreguide.com/2016/05/off-broadway-review-turn-me-loose-at-westside-theater/",
+          "host": "nytheatreguide.com",
+          "file": "nytg--jeff-myhre.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.timeout.com/newyork/theater/turn-me-loose"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2016/05/20/theater/review-in-turn-me-loose-raw-jokes-that-still-sear-and-bite.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://deadline.com/2016/05/turn-me-loose-joe-morton-scandal-review-1201761103/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/60s-comic-dick-gregory-oscar-wilde-stage-off-broadway-article-1.2643055",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/joe-morton-turn-me-loose-895784",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://nypost.com/2016/05/19/a-new-show-tell-its-audience-to-yell-the-n-word/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/turn-me-loose_77135.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=7ALGSV",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/turn-me-loose/darryl-reilly/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.curtainup.com/turnmeloose16.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterpizzazz.com/turn-me-loose/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2016/05/turn-me-loose/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://stagebuddy.com/reviews/review-turn-loose",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://slleiter.blogspot.com/2016/05/9-review-turn-me-loose-seen-may-20-2016.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://dctheatrescene.com/2016/05/19/turn-loose-review-scandals-joe-morton-play-dick-gregory/",
+            "outletId": "dctheatrescene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-joe-morton_b_10082638.html",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://dramaqueennyc.com/2016/05/28/review-turn-me-loose/",
+            "outletId": "dramaqueennyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://nytheatreguide.com/2016/05/off-broadway-review-turn-me-loose-at-westside-theater/",
+            "outletId": "nytheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://offoffonline.com/?p=24275",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://t2conline.com/my-view-turn-me-loose-i-laughed-so-hard-i-cried/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://bobs-theater-blog.blogspot.com/2016/06/turn-me-loose.html",
+            "outletId": "bobs-theater-blog.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/turn-me-loose",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 21,
+        "candidateCount": 22
+      },
+      "computedAt": "2026-10-31T19:05:43.046Z"
+    },
+    {
       "showId": "twelfth-night-crucible-regional-2026",
       "title": "Twelfth Night",
       "openingDate": "2026-10-18",
@@ -326299,6 +328895,276 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "vanity-fair-off-broadway-2017",
+      "title": "Vanity Fair",
+      "openingDate": "2017-04-02",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/04/03/theater/vanity-fair-broadway-review-kate-hamill-eric-tucker.html",
+        "https://www.wsj.com/articles/vanity-fair-review-becky-sharp-takes-the-stage-1491252935",
+        "http://www.theatermania.com/off-broadway/reviews/vanity-fair_80580.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-RLM4B2",
+        "http://www.theaterscene.net/plays/offbway-plays/vanity-fair/victor-gluck/",
+        "http://www.curtainup.com/vanityfair17.html",
+        "http://www.theasy.com/Reviews/2017/V/vanityfair.php",
+        "http://theaterpizzazz.com/wanting-everything-at-vanity-fair/",
+        "http://thefrontrowcenter.com/2017/05/vanity-fair/",
+        "https://frontmezzjunkies.com/2017/05/21/vanity-fair/",
+        "http://slleiter.blogspot.com/2017/04/165-review-vanity-fair-seen-march-31.html",
+        "http://twi-ny.com/blog/2017/04/23/vanity-fair/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "https://www.offoffonline.com/offoffonline/2017/3/30/vanity-fair",
+        "http://www.huffingtonpost.com/entry/theater_us_58e29d7de4b09dbd42f3d91b",
+        "https://dandwyeroffscript.tumblr.com/post/159422263081/vanity-fair",
+        "http://zealnyc.com/review-vanity-fair-only-more-than-fair/",
+        "http://www.philly.com/philly/blogs/the-arts/Vanity-Fair-at-the-Pearl-Imaginative-smart-with-feminist-edge.html",
+        "http://newyorktheatre.blogspot.co.uk/2017/04/vanity-fair.html",
+        "http://newyork.edgemedianetwork.com/entertainment/theatre/reviews//211145/_review_::_vanity_fair",
+        "http://www.womanaroundtown.com/sections/playing-around/a-helter-skelter-vanity-fair"
+      ],
+      "dirFiles": 22,
+      "dirClean": 20,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://twi-ny.com/blog/2017/04/23/vanity-fair/",
+          "host": "twi-ny.com",
+          "knownOutletId": "this-week-in-new-york",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "this-week-in-new-york--mark-rifkin.json",
+              "flag": "clean",
+              "urlInDir": "http://twi-ny.com/blog/2017/04/23/vanity-fair/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "cvWrongArticleHighConfidence"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "http://newyorktheatre.blogspot.co.uk/2017/04/vanity-fair.html",
+          "host": "newyorktheatre.blogspot.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newyorktheatre--steve-capra.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://newyorktheatre.blogspot.co.uk/2017/04/vanity-fair.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 2,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "http://slleiter.blogspot.com/2017/04/165-review-vanity-fair-seen-march-31.html",
+          "host": "slleiter.blogspot.com",
+          "file": "theatres-leiter-side--samuel-l-leiter.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "this-week-in-new-york",
+            "outlet": "this-week-in-new-york",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://twi-ny.com/blog/2017/04/23/vanity-fair/"
+          },
+          {
+            "outletId": "newyorktheatre.blogspot.co.uk",
+            "outlet": "newyorktheatre.blogspot.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://newyorktheatre.blogspot.co.uk/2017/04/vanity-fair.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/04/03/theater/vanity-fair-broadway-review-kate-hamill-eric-tucker.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/vanity-fair-review-becky-sharp-takes-the-stage-1491252935",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/vanity-fair_80580.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-RLM4B2",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/vanity-fair/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.curtainup.com/vanityfair17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/V/vanityfair.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/wanting-everything-at-vanity-fair/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/05/vanity-fair/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/05/21/vanity-fair/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://slleiter.blogspot.com/2017/04/165-review-vanity-fair-seen-march-31.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2017/3/30/vanity-fair",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/theater_us_58e29d7de4b09dbd42f3d91b",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "https://dandwyeroffscript.tumblr.com/post/159422263081/vanity-fair",
+            "outletId": "dandwyeroffscript.tumblr.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://zealnyc.com/review-vanity-fair-only-more-than-fair/",
+            "outletId": "zealnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.philly.com/philly/blogs/the-arts/Vanity-Fair-at-the-Pearl-Imaginative-smart-with-feminist-edge.html",
+            "outletId": "philly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://newyork.edgemedianetwork.com/entertainment/theatre/reviews//211145/_review_::_vanity_fair",
+            "outletId": "newyork.edgemedianetwork.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://www.womanaroundtown.com/sections/playing-around/a-helter-skelter-vanity-fair",
+            "outletId": "womanaroundtown.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://twi-ny.com/blog/2017/04/23/vanity-fair/",
+            "outletId": "this-week-in-new-york",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          },
+          {
+            "url": "http://newyorktheatre.blogspot.co.uk/2017/04/vanity-fair.html",
+            "outletId": "newyorktheatre.blogspot.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T19:05:43.046Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 19,
+        "candidateCount": 21
+      },
+      "computedAt": "2026-10-31T19:05:43.046Z"
     },
     {
       "showId": "vanya-off-broadway-2025",
