@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6690",
   "planId": "4b8e2960-7866-4d35-a376-4cbb8ba9afb1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T04:46:39.908Z",
   "submitter": {
     "name": null,
@@ -75,5 +75,44 @@
         "description": "Delete WestEndTheatre archives filed under Broadway/off-Broadway shows (212: 197 Broadway, 15 off-Broadway); aborts without deleting if the count differs. The one UK regional archive (RSC Stratford) is kept."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T05:40:17.214Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json wrongProductionReason: null -> \"An Enemy of the People (2024) is the Broadway/NY Jeremy Strong production. This Sunday Times piece (Dominic Maxwell) reviews the London Matt Smith staging; BRO-6690\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disruption-off-broadway-2026/thestage--dave-fargnoli.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disruption-off-broadway-2026/thestage--dave-fargnoli.json wrongProductionReason: null -> \"This Stage review is of the London Park Theatre production of Disruption, not the New York run; BRO-6690\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "macbeth-off-broadway-2026/times-uk--clive-davis.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "macbeth-off-broadway-2026/times-uk--clive-davis.json wrongProductionReason: null -> \"This Times review covers the Metropolitan Opera Verdi Macbeth, a different work from this show; BRO-6690\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-wet-archive-market.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
