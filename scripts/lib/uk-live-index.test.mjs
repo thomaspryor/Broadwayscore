@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { searchTerms, reviewWindow, parseWpItems, parseBtgListing, wosItems, hubItems, btgItems } = require('./uk-live-index.js');
+const { searchTerms, decodeEntities, reviewWindow, parseWpItems, parseBtgListing, wosItems, hubItems, btgItems } = require('./uk-live-index.js');
 const { matchCensusItems } = require('./uk-regional-census-match.js');
 
 const show = { id: 'ben-and-imo-royal-shakespeare-regional-2024', title: 'Ben and Imo', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', city: 'stratford-upon-avon-uk', openingDate: '2024-03-10', closingDate: '2024-04-13' };
 
 test('searchTerms strips quotes and adds the pre-colon head', () => {
-  assert.deepEqual(searchTerms("Hen's Night"), ['Hens Night']);
+  assert.deepEqual(searchTerms("Hen's Night"), ['Hens Night', 'Hen s Night']);
   assert.deepEqual(searchTerms('A Christmas Carol: A Ghost Story'), ['A Christmas Carol: A Ghost Story', 'A Christmas Carol']);
 });
 
@@ -50,4 +50,13 @@ test('readers feed the census matcher: right house matches, another house and an
   assert.ok(urls.some((u) => u.includes('thereviewshub.com/ben-and-imo-swan')));
   assert.ok(urls.some((u) => u.includes('britishtheatreguide.info/reviews/ben-and-imo-swan-theatre-s-23039')));
   assert.ok(!urls.some((u) => u.includes('old-vic')), 'a review of another house is not matched');
+});
+
+test('decodeEntities leaves an out-of-range numeric entity alone instead of throwing', () => {
+  assert.equal(decodeEntities('a &#99999999999; b &#x110000; c &#8211;'), 'a &#99999999999; b &#x110000; c –');
+});
+
+test('searchTerms also tries the apostrophe as a space, and entities &apos; and &hellip; decode', () => {
+  assert.deepEqual(searchTerms('Hen’s Night'), ['Hens Night', 'Hen s Night']);
+  assert.equal(decodeEntities('Hen&apos;s Night&hellip;'), "Hen's Night...");
 });

@@ -19,14 +19,21 @@ const WOS = 'https://www.whatsonstage.com/wp-json/wp/v2/news';
 const HUB = 'https://thereviewshub.com/wp-json/wp/v2/posts';
 const BTG = 'https://www.britishtheatreguide.info/reviews';
 
+// String.fromCodePoint throws above 0x10FFFF (BRO-5261), so an out-of-range entity stays as written.
+function codePointChar(n, whole) {
+  return Number.isInteger(n) && n >= 0 && n <= 0x10FFFF ? String.fromCodePoint(n) : whole;
+}
+
 function decodeEntities(s) {
   return String(s || '')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&#(\d+);/g, (m, n) => codePointChar(Number(n), m))
+    .replace(/&#x([0-9a-f]+);/gi, (m, n) => codePointChar(parseInt(n, 16), m))
     .replace(/&ndash;|&mdash;/g, '-')
     .replace(/&rsquo;|&lsquo;/g, "'")
     .replace(/&quot;/g, '"')
     .replace(/&amp;/g, '&')
+    .replace(/&apos;/g, "'")
+    .replace(/&hellip;/g, '...')
     .replace(/&nbsp;/g, ' ');
 }
 
@@ -34,6 +41,9 @@ function decodeEntities(s) {
 function searchTerms(title) {
   const clean = String(title || '').replace(/[’'`"]/g, '').replace(/\s+/g, ' ').trim();
   const terms = [clean];
+  // WordPress search tokenises "Hen’s" as hen + s, so the apostrophe-stripped form alone never matches it.
+  const spaced = String(title || '').replace(/[’'`"]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (spaced !== clean) terms.push(spaced);
   const head = clean.split(/[:–—-]\s/)[0].trim();
   if (head && head !== clean && head.length >= 4) terms.push(head);
   return terms;

@@ -17,6 +17,7 @@ const { TABLE, resolveMetroInfo } = require('./lib/venue-metro');
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+let failures = 0;
 async function get(url) {
   for (let i = 0; i < 3; i++) {
     try {
@@ -26,6 +27,7 @@ async function get(url) {
     } catch { /* retry */ }
     await sleep(1500 * (i + 1));
   }
+  failures++;
   return '[]';
 }
 
@@ -48,6 +50,7 @@ async function main(argv = process.argv.slice(2)) {
   }
   fs.writeFileSync(arg('out'), JSON.stringify([...all.values()], null, 1) + '\n');
   console.log(`${all.size} items -> ${arg('out')}`);
+  if (failures) console.error(`WARNING: ${failures} index fetches failed after retries; the item list may be incomplete`);
   return 0;
 }
 

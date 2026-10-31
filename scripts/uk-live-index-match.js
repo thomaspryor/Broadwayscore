@@ -24,6 +24,7 @@ const { isLocalOnlyShow } = require('./lib/local-market');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 
 const DATA = path.join(__dirname, '..', 'data');
+let failures = 0;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function get(url) {
@@ -35,6 +36,7 @@ async function get(url) {
     } catch { /* retry */ }
     await sleep(1500 * (i + 1));
   }
+  failures++;
   return '[]';
 }
 
@@ -56,14 +58,20 @@ async function main(argv = process.argv.slice(2)) {
   for (const s of pool) {
     const items = [];
     for (const read of [wosItems, hubItems, btgItems]) { items.push(...(await read(s, get))); await sleep(300); }
-    const m = matchCensusItems(items, [s], held, urlKey);
+    const m = matchCensusItems(items, hub, held, urlKey) // every hub row, so an item that fits two is ambiguous and dropped;
     const fresh = m.matched.filter((x) => x.showId === s.id);
     const hasOutlet = (o) => (held.get(s.id) || new Set()).has(`outlet:${o}`);
-    const picks = fresh.filter((x) => !hasOutlet(x.outletId));
+    const seenOutlet = new Set();
+    const picks = fresh.filter((x) => {
+      if (hasOutlet(x.outletId) || seenOutlet.has(x.outletId)) return false;
+      seenOutlet.add(x.outletId); // one review per outlet per show
+      return true;
+    });
     log.push({ id: s.id, candidates: items.length, matched: fresh.length, new: picks.length });
     if (picks.length) plan[s.id] = picks.map((x) => ({ url: x.url, outlet: x.outletId }));
     if (argv.includes('--verbose')) console.log(`${s.id}: ${items.length} candidates, ${fresh.length} matched, ${picks.length} new${picks.length ? ' -> ' + picks.map((x) => `${x.outletId}:${x.url.split('/').filter(Boolean).pop()}`).join(' | ') : ''}`);
   }
+  if (failures) console.error(`WARNING: ${failures} index fetches failed after retries (blocked or down); zero candidates for a show may be a failed read, not an absence`);
   console.log(`pool ${pool.length} shows, ${Object.keys(plan).length} with a new review, ${Object.values(plan).reduce((a, v) => a + v.length, 0)} URLs`);
   if (arg('plan')) fs.writeFileSync(arg('plan'), JSON.stringify(plan, null, 2) + '\n');
   return 0;

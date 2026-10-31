@@ -32,7 +32,8 @@ const RECEIVING_HOUSES = new Set(['The Lowry', 'Lyceum Theatre, Sheffield', 'Bir
 // production (data/pending-fixes/bro-6541-z.json). A rerun must not found them again.
 const RETIRED_FOUNDINGS = new Set(['the-watsons-chichester-festival-regional-2025', 'east-is-east-citizens-regional-2026']);
 const foldTitle = (t) => norm(t).replace(/\b(the|a|musical|play)\b/g, '').replace(/\s+/g, '');
-const sameTitle = (a, b) => foldTitle(a) === foldTitle(b);
+// A folded title under 4 characters (all stopwords, "Up") is too thin to call two productions the same.
+const sameTitle = (a, b) => { const f = foldTitle(a); return f.length >= 4 && f === foldTitle(b); };
 const SAFE_URL = /^[A-Za-z0-9:/._~%=+,-]+$/;
 
 const ALIASES = TABLE.venues
