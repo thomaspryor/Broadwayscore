@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6725-i",
   "planId": "f6206933-eab8-405c-beb5-40d65f3d6092",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T16:46:14.493Z",
   "submitter": {
     "name": null,
@@ -254,5 +254,129 @@
         "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T18:01:58.697Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for twelfth-night-crucible-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for twelfth-night-crucible-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for twelfth-night-crucible-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for wish-you-werent-here-sheffield-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for wish-you-werent-here-sheffield-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for wish-you-werent-here-sheffield-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for edward-ii-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for edward-ii-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for edward-ii-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-new-real-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-new-real-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-new-real-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for his-last-report-york-royal-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for his-last-report-york-royal-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for his-last-report-york-royal-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-penelopiad-york-royal-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-penelopiad-york-royal-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-penelopiad-york-royal-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for art-royal-bath-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for art-royal-bath-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for art-royal-bath-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jack-oran-mor-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for jack-oran-mor-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for jack-oran-mor-regional-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
