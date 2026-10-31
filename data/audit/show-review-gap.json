@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T09:22:39.984Z",
+  "generatedAt": "2026-10-31T09:31:16.538Z",
   "windowDays": 21,
   "targets": 9,
   "auditedThisRun": 9,
@@ -25214,7 +25214,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -50150,7 +50150,7 @@
         "liveCount": 22,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -81533,15 +81533,11 @@
       "openingDate": "2017-06-20",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-mtcs-fulfillment-center-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
-        "http://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
-        "http://www.timeout.com/newyork/theater/fulfillment-center",
         "https://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
         "https://www.timeout.com/newyork/theater/fulfillment-center",
+        "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
         "http://www.theatermania.com/off-broadway/reviews/fulfillment-center_81496.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=48KEV9",
         "http://www.talkinbroadway.com/page/ob/6_20_17.html",
@@ -81555,7 +81551,9 @@
         "https://www.villagevoice.com/2017/06/28/fall-in-love-with-the-four-wayward-loners-of-abe-kooglers-fulfillment-center/",
         "https://zealnyc.com/review-fulfillment-center-a-quietly-moving-character-study/",
         "https://bobs-theater-blog.blogspot.com/2017/06/fulfillment-center.html",
-        "https://dougmarino.blogspot.com/2017/06/fulfillment-center.html"
+        "https://dougmarino.blogspot.com/2017/06/fulfillment-center.html",
+        "http://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
+        "http://www.timeout.com/newyork/theater/fulfillment-center"
       ],
       "dirFiles": 18,
       "dirClean": 18,
@@ -81575,14 +81573,9 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 108,
+        "count": 1,
         "byReason": {
-          "aggregator-internal-nav": 64,
-          "not-http-url": 5,
-          "production-database-listing": 12,
-          "aggregator-section-root": 4,
-          "non-review-host": 22,
-          "census-junk-host": 1
+          "non-review-host": 1
         }
       },
       "dedupedVariants": [],
@@ -81594,24 +81587,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T09:22:39.984Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/fulfillment-center",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T09:22:39.984Z"
-          },
-          {
             "url": "https://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
             "outletId": "nytimes.com",
             "state": "live",
@@ -81620,6 +81595,12 @@
           {
             "url": "https://www.timeout.com/newyork/theater/fulfillment-center",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
+            "outletId": "hollywoodreporter.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
@@ -81706,13 +81687,25 @@
             "outletId": "dougmarino.blogspot.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T09:22:39.984Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/fulfillment-center",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T09:22:39.984Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 17,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -124697,16 +124690,14 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-jesus-hopped-the-a-train"
+        "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Adly-Guirgis-JESUS-HOPPED-THE-A-TRAIN-20171024"
       ],
       "aggregatorListedUrls": [
-        "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
-        "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
-        "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
-        "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
-        "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
         "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
         "https://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+        "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+        "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
         "http://deadline.com/2017/11/stage-review-school-girls-actually-jesus-hopped-the-a-train-1202215847/",
         "http://www.theatermania.com/off-broadway/reviews/jesus-hopped-the-a-train_82856.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=3EXELW",
@@ -124722,13 +124713,15 @@
         "https://slleiter.blogspot.com/2017/10/93-2017-2018-review-jesus-hopped-a.html",
         "https://dctheatrescene.com/2017/10/23/jesus-hopped-train-review-killers-finding-god/",
         "http://t2conline.com/jesus-hopped-the-a-train-must-see-theatre/",
-        "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
         "https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240",
         "http://twi-ny.com/blog/2017/10/24/jesus-hopped-the-a-train/",
         "http://showshowdown.blogspot.com/2017/10/jesus-hopped-a-train.html",
         "http://morethantheplay.blogspot.com/2017/10/jesus-hopped-a-train.html",
         "http://www.themodernistbeat.com/2017/11/20/what-happens-to-the-message-if-the-messenger-is-flawed/",
-        "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html"
+        "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html",
+        "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+        "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/"
       ],
       "dirFiles": 27,
       "dirClean": 27,
@@ -124748,13 +124741,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 110,
+        "count": 306,
         "byReason": {
-          "aggregator-internal-nav": 69,
-          "not-http-url": 6,
-          "production-database-listing": 10,
-          "aggregator-section-root": 4,
-          "non-review-host": 21
+          "not-http-url": 59,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 228,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -124766,36 +124758,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
-            "url": "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
             "url": "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
             "outletId": "nytimes.com",
             "state": "live",
@@ -124804,6 +124766,24 @@
           {
             "url": "https://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
+            "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
@@ -124898,12 +124878,6 @@
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
           },
           {
-            "url": "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:07:39.479Z"
-          },
-          {
             "url": "https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240",
             "outletId": "huffingtonpost.com",
             "state": "live",
@@ -124938,13 +124912,31 @@
             "outletId": "gotham-playgoer.blogspot.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 26,
         "candidateCount": 26
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "job-2024",
@@ -153109,12 +153101,11 @@
       "candidatesRejected": {
         "count": 101,
         "byReason": {
-          "aggregator-internal-nav": 58,
           "not-http-url": 5,
-          "production-database-listing": 10,
-          "aggregator-section-root": 4,
           "non-review-host": 20,
-          "roundup-page": 4
+          "aggregator-internal-nav": 62,
+          "aggregator-section-root": 4,
+          "production-database-listing": 10
         }
       },
       "dedupedVariants": [],
@@ -153142,7 +153133,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -165245,44 +165236,6 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.amny.com/entertainment/lynn-nottage-review-mlima-s-tale-1.18057963",
-          "host": "amny.com",
-          "file": "amny--matt-windman.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 3,
-          "uncited": true
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/mlimas-tale-theater-review-1102826",
-          "host": "hollywoodreporter.com",
-          "file": "hollywood-reporter--frank-scheck.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 3,
-          "uncited": true
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/mlima-tale-review-lynn-nottage-drama-opens-public-article-1.3932011",
-          "host": "nydailynews.com",
-          "file": "nydailynews--joe-dziemianowicz.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -165292,7 +165245,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "money-talks-off-broadway-2017",
@@ -165320,20 +165273,6 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "http://www.theasy.com/Reviews/2017/M/moneytalks.php",
-          "host": "theasy.com",
-          "file": "theatre-is-easy--angelina-joyce-dibart.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -165343,7 +165282,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
@@ -189304,11 +189243,11 @@
       "candidatesRejected": {
         "count": 116,
         "byReason": {
-          "aggregator-internal-nav": 71,
           "not-http-url": 6,
-          "production-database-listing": 11,
-          "aggregator-section-root": 4,
           "non-review-host": 20,
+          "aggregator-internal-nav": 71,
+          "aggregator-section-root": 4,
+          "production-database-listing": 11,
           "roundup-page": 4
         }
       },
@@ -189505,7 +189444,7 @@
         "liveCount": 25,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "paranormal-activity-2026",
@@ -279277,7 +279216,7 @@
         "liveCount": 30,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-31T09:22:39.984Z"
+      "computedAt": "2026-10-31T09:31:16.538Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
