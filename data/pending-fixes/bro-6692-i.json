@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6692-i",
+  "planId": "74ac7824-aaf9-4198-9bcc-e1d829ee3465",
+  "status": "pending",
+  "createdAt": "2026-10-31T06:46:58.879Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest census reviews for the new UK hub productions (part 1 of 2)",
+    "steps": [
+      "BRO-6541: ingest thereviewshub review for community-birmingham-rep-regional-2025",
+      "BRO-6541: ingest british-theatre review for community-birmingham-rep-regional-2025",
+      "BRO-6541: ingest thereviewshub review for noises-off-stephen-joseph-regional-2025",
+      "BRO-6541: ingest british-theatre review for noises-off-stephen-joseph-regional-2025",
+      "BRO-6541: ingest thereviewshub review for the-accountants-aviva-studios-regional-2024",
+      "BRO-6541: ingest british-theatre review for the-accountants-aviva-studios-regional-2024",
+      "BRO-6541: ingest thereviewshub review for the-house-party-leeds-regional-2025",
+      "BRO-6541: ingest british-theatre review for the-house-party-leeds-regional-2025",
+      "BRO-6541: ingest thereviewshub review for animal-farm-leeds-regional-2025",
+      "BRO-6541: ingest british-theatre review for animal-farm-leeds-regional-2025",
+      "BRO-6541: ingest thereviewshub review for little-women-york-royal-regional-2024",
+      "BRO-6541: ingest british-theatre review for little-women-york-royal-regional-2024",
+      "BRO-6541: ingest thereviewshub review for the-constant-wife-york-royal-regional-2026",
+      "BRO-6541: ingest british-theatre review for the-constant-wife-york-royal-regional-2026",
+      "BRO-6541: ingest thereviewshub review for good-for-a-girl-birmingham-rep-regional-2025",
+      "BRO-6541: ingest british-theatre review for good-for-a-girl-birmingham-rep-regional-2025",
+      "BRO-6541: ingest thereviewshub review for tambo-and-bones-leeds-regional-2025",
+      "BRO-6541: ingest british-theatre review for tambo-and-bones-leeds-regional-2025",
+      "BRO-6541: ingest thereviewshub review for starter-for-ten-birmingham-rep-regional-2025",
+      "BRO-6541: ingest british-theatre review for starter-for-ten-birmingham-rep-regional-2025",
+      "BRO-6541: ingest whatsonstage review for the-school-for-scandal-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest thereviewshub review for the-school-for-scandal-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest thereviewshub review for lizzie-the-musical-hope-mill-regional-2024",
+      "BRO-6541: ingest british-theatre review for lizzie-the-musical-hope-mill-regional-2024",
+      "BRO-6541: ingest thereviewshub review for the-grand-babylon-hotel-hull-truck-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=community-birmingham-rep-regional-2025 --url=https://www.thereviewshub.com/community-birmingham-rep/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for community-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=community-birmingham-rep-regional-2025 --url=https://www.britishtheatreguide.info/reviews/community-the-birmingham-24136 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for community-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=noises-off-stephen-joseph-regional-2025 --url=https://www.thereviewshub.com/noises-off-stephen-joseph-theatre-scarborough/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for noises-off-stephen-joseph-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=noises-off-stephen-joseph-regional-2025 --url=https://www.britishtheatreguide.info/reviews/noises-off-stephen-joseph-24766 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for noises-off-stephen-joseph-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-accountants-aviva-studios-regional-2024 --url=https://www.thereviewshub.com/the-accountants-aviva-studios-manchester/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-accountants-aviva-studios-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-accountants-aviva-studios-regional-2024 --url=https://www.britishtheatreguide.info/reviews/the-accountants-aviva-studios-23250 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-accountants-aviva-studios-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-house-party-leeds-regional-2025 --url=https://www.thereviewshub.com/the-house-party-leeds-playhouse/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-house-party-leeds-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-house-party-leeds-regional-2025 --url=https://www.britishtheatreguide.info/reviews/the-house-party-the-courtyard-24204 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-house-party-leeds-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=animal-farm-leeds-regional-2025 --url=https://www.thereviewshub.com/animal-farm-leeds-playhouse/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for animal-farm-leeds-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=animal-farm-leeds-regional-2025 --url=https://www.britishtheatreguide.info/reviews/animal-farm-the-quarry-lee-24241 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for animal-farm-leeds-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=little-women-york-royal-regional-2024 --url=https://www.thereviewshub.com/little-women-york-theatre-royal/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for little-women-york-royal-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=little-women-york-royal-regional-2024 --url=https://www.britishtheatreguide.info/reviews/little-women-york-theatre-ro-23804 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for little-women-york-royal-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-constant-wife-york-royal-regional-2026 --url=https://www.thereviewshub.com/the-constant-wife-york-theatre-royal/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-constant-wife-york-royal-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-constant-wife-york-royal-regional-2026 --url=https://www.britishtheatreguide.info/reviews/the-constant-wi-york-theatre-ro-25268 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-constant-wife-york-royal-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=good-for-a-girl-birmingham-rep-regional-2025 --url=https://www.thereviewshub.com/good-for-a-girl-birmingham-rep/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for good-for-a-girl-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=good-for-a-girl-birmingham-rep-regional-2025 --url=https://www.britishtheatreguide.info/reviews/good-for-a-girl-the-birmingham-24190 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for good-for-a-girl-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tambo-and-bones-leeds-regional-2025 --url=https://www.thereviewshub.com/tambo-bones-leeds-playhouse/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for tambo-and-bones-leeds-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tambo-and-bones-leeds-regional-2025 --url=https://www.britishtheatreguide.info/reviews/tambo-bones-the-courtyard-24412 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for tambo-and-bones-leeds-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=starter-for-ten-birmingham-rep-regional-2025 --url=https://www.thereviewshub.com/starter-for-ten-birmingham-rep/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for starter-for-ten-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=starter-for-ten-birmingham-rep-regional-2025 --url=https://www.britishtheatreguide.info/reviews/starter-for-ten-birmingham-rep-25027 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for starter-for-ten-birmingham-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-school-for-scandal-royal-shakespeare-regional-2024 --url=https://www.whatsonstage.com/news/the-school-for-scandal-at-the-rscs-royal-shakespeare-theatre-review_1613289/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-school-for-scandal-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-school-for-scandal-royal-shakespeare-regional-2024 --url=https://www.thereviewshub.com/the-school-for-scandal-royal-shakespeare-theatre-stratford-upon-avon/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-school-for-scandal-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lizzie-the-musical-hope-mill-regional-2024 --url=https://www.thereviewshub.com/lizzie-the-musical-hope-mill-theatre-manchester-2/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for lizzie-the-musical-hope-mill-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lizzie-the-musical-hope-mill-regional-2024 --url=https://www.britishtheatreguide.info/reviews/lizzie-the-musi-hope-mill-theat-23871 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for lizzie-the-musical-hope-mill-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-grand-babylon-hotel-hull-truck-regional-2026 --url=https://www.thereviewshub.com/the-grand-babylon-hotel-hull-truck-theatre/ --outlet=thereviewshub",
+        "description": "BRO-6541: ingest thereviewshub review for the-grand-babylon-hotel-hull-truck-regional-2026"
+      }
+    ]
+  }
+}
