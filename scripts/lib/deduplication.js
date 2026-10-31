@@ -257,6 +257,10 @@ const AUTHOR_PREFIXES = new Set([
   'julia sweeney', 'maltby and shire', 'matthew bourne', 'monty python',
   'neil simon', 'noel coward', 'roald dahl', 'stephane wrembel',
   'stephen sondheim', 'thornton wilder',
+  // Single-word brand/author possessives. A bare one-word possessive is NOT
+  // stripped by default: "Hell's Kitchen"/"The Kitchen", "Marvin's Room"/"Veronica's
+  // Room" and "A Doll's House"/"A Dog's House" collapsed to one key (BRO-6547).
+  'disney', 'shakespeare', 'ovid',
 ]);
 
 /**
@@ -324,7 +328,7 @@ function normalizeTitleUncached(title) {
     // Keep unknown multi-word possessives, including "Midsummer Night's" and
     // "No Man's", so exact-title/subtitle checks cannot collapse them to Dream/Land.
     .replace(/^((?:[a-z][a-z0-9.\-]*\s+){0,2}[a-z][a-z0-9.\-]*)['’]s\s+(?:the\s+|a\s+|an\s+)?/i,
-      (match, prefix) => !/\s/.test(prefix) || AUTHOR_PREFIXES.has(prefix.replace(/\s+/g, ' ')) ? '' : match)
+      (match, prefix) => AUTHOR_PREFIXES.has(prefix.replace(/\s+/g, ' ').toLowerCase()) ? '' : match)
     // Re-strip leading article (in case the possessive removal exposed one)
     .replace(/^(the|a|an)\s+/i, '')
     // "/" is a word separator, not punctuation to drop — see slugify()'s

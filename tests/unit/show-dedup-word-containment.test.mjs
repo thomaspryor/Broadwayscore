@@ -109,3 +109,24 @@ test('whole-word containment still flags a duplicate', () => {
   );
   assert.equal(r.isDuplicate, true);
 });
+
+// BRO-6547: a bare one-word possessive is part of the title, not an author
+// prefix. Each pair below is two different plays that used to share a key.
+test('one-word possessives are kept unless a known brand/author', () => {
+  for (const [a, b] of [
+    ["Hell's Kitchen", 'The Kitchen'],
+    ["Marvin's Room", "Veronica's Room"],
+    ["A Doll's House", "A Dog's House"],
+    ["Sherlock's Last Tape", "Krapp's Last Tape"],
+    ["Brooklyn's Bridge", 'The Bridge'],
+  ]) {
+    assert.notEqual(normalizeTitle(a), normalizeTitle(b), `${a} vs ${b}`);
+  }
+  for (const [a, b] of [
+    ["Disney's Beauty and the Beast", 'Beauty and the Beast'],
+    ["Shakespeare's Cabaret", 'Cabaret'],
+    ["Thornton Wilder's The Emporium", 'The Emporium'],
+  ]) {
+    assert.equal(normalizeTitle(a), normalizeTitle(b), `${a} vs ${b}`);
+  }
+});
