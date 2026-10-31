@@ -84,6 +84,8 @@ jobs:
           SOURCE_OK: ${{ steps.source.outputs.ok }}
           SOURCE_ERROR: ${{ steps.source.outputs.reason }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # A refused or failed reconcile (unreadable claude-config, a mass
@@ -91,7 +93,7 @@ jobs:
           # that report is still committed so the digest names the reason,
           # then the step fails so notify-failure fires.
           for attempt in 1 2 3 4 5; do
-            git fetch -q origin main || { sleep $((5 * attempt)); continue; }
+            git_net 180 fetch -q origin main || { sleep $((5 * attempt)); continue; }
             git reset -q --hard origin/main
             rc=0
             if [ "$SOURCE_OK" = "true" ]; then
@@ -109,7 +111,7 @@ jobs:
               exit $rc
             fi
             git commit -q -m "chore: reconcile cloud-memory from claude-config (BRO-5074) [skip ci]"
-            if git push -q origin HEAD:main; then
+            if git_net 180 push -q origin HEAD:main; then
               echo "Pushed $(git rev-parse --short HEAD) on attempt $attempt"
               exit $rc
             fi

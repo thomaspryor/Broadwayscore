@@ -170,9 +170,11 @@ jobs:
       - name: Re-check all three trees after the pushes
         if: success() && inputs.mode == 'apply'
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # Each tree must be on its remote, or --check would pass on an unpushed copy.
           for repo in /tmp/core-data-checkout data/review-texts .; do
-            git -C "$repo" fetch -q origin HEAD
+            git_net 180 -C "$repo" fetch -q origin HEAD
             ahead=$(git -C "$repo" rev-list --count FETCH_HEAD..HEAD)
             [ "$ahead" = 0 ] || { echo "::error::$repo has $ahead unpushed commit(s)"; exit 1; }
           done

@@ -20,8 +20,12 @@
 # .github/actions/checkout-aggregator-archive/action.yml (their clones, BRO-5338).
 # Inline clones (BRO-5972): rebuild-reviews, rebuild-fast, opening-night-poller,
 # fetch-guardian-reviews, scrape-dtli-show-score, finance-ingest and
-# cloud-memory-reconcile workflows. audit-workflow-hygiene.js rule (z) flags new
-# bare clones.
+# cloud-memory-reconcile workflows. Inline fetch/pull/push (BRO-6029): every
+# workflow and composite run block; the GitLab mirrors and the history-purge
+# force push carry `# hygiene-unbounded-clone-ok:` instead (whole-repo
+# transfers bounded by their job timeout). audit-workflow-hygiene.js rule (z)
+# flags new bare clone/fetch/pull/push, and (z2) a git_net call placed before
+# its run block sources this file.
 git_net() {
   local secs="$1"; shift
   local bin

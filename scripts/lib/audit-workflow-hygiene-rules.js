@@ -1442,6 +1442,31 @@ function findUnboundedGitNetworkCommands(raw) {
 }
 
 /**
+ * Rule (z2): a `git_net` call before the run block defines it (BRO-6029).
+ * git_net is a shell function each run block must source
+ * (scripts/lib/git-net-timeout.sh, with the fail-open `git_net() { ... }`
+ * fallback). A block that sources it only further down, or an inline
+ * `run: git_net ...` that cannot source it, dies with "git_net: command not
+ * found" (exit 127). BRO-6029's first rewrite did exactly this in three blocks
+ * whose BRO-5972 source line sat below the new fetch.
+ */
+const GIT_NET_SOURCE_RE = /^\s*(?:\.|source)\s+\S*git-net-timeout\.sh\b|\bgit_net\s*\(\)\s*\{/;
+const GIT_NET_CALL_RE = /(?:^|[\s;&|({!`]|\$\()git_net\s+(?:\d|["'$])/;
+function findGitNetUsedBeforeSource(raw) {
+  const hits = [];
+  for (const block of extractRunBlocks(raw, { includeInline: true })) {
+    let defined = false;
+    for (const { lineNum, text } of block.lines) {
+      const t = text.trim();
+      if (t.startsWith('#')) continue;
+      if (GIT_NET_SOURCE_RE.test(t)) { defined = true; continue; }
+      if (!defined && GIT_NET_CALL_RE.test(t.replace(/\s#.*$/, ''))) hits.push({ lineNum, text: t });
+    }
+  }
+  return hits;
+}
+
+/**
  * Rule (aa): every workflow declares a top-level `permissions:` block
  * (BRO-6398). With no block anywhere the job runs on the repository default,
  * which is write-all here, so a planted or prompt-injected step can push,
@@ -1504,6 +1529,7 @@ module.exports = {
   findEolNodeVersions,
   NODE_MIN_MAJOR,
   findUnboundedGitNetworkCommands,
+  findGitNetUsedBeforeSource,
   findUnboundedGitClones,
   findDispatchWithoutActionsWrite,
   findScriptWithoutDispatchToken,

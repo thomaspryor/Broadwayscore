@@ -99,7 +99,7 @@ runs:
           # the actual rate-limit signal in an earlier version of this fix).
           PULL_STDERR_FILE=$(mktemp)
           # keep-run-ok: rebases the separate aggregator-archive repo (cd /tmp/aggregator-archive-checkout); it has no autostash=regenerated paths (BRO-5552)
-          if ! git pull --rebase -X theirs origin main 2>"$PULL_STDERR_FILE"; then
+          if ! git_net 300 pull --rebase -X theirs origin main 2>"$PULL_STDERR_FILE"; then
             cat "$PULL_STDERR_FILE" >&2
             git rebase --abort 2>/dev/null || true
           else

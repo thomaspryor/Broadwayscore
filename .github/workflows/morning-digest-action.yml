@@ -65,10 +65,12 @@ jobs:
 
       - name: Pin snapshots to when the Mac sent
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # created_at normalised to ISO in node: Resend's format is not one GNU date parses reliably.
           read -r SENT SINCE < <(node -e "const m=require(process.argv[1]);const t=m.found&&Date.parse(m.created_at);if(t)process.stdout.write(new Date(t).toISOString()+' '+new Date(t-2*3600e3).toISOString())" "$RUNNER_TEMP/mac/mac-meta.json") || true
           if [ -z "$SENT" ]; then echo "No Mac digest today; snapshots stay at main."; exit 0; fi
-          git fetch --quiet --shallow-since="$SINCE" origin main
+          git_net 300 fetch --quiet --shallow-since="$SINCE" origin main
           SHA=$(git rev-list -1 --before="$SENT" origin/main)
           if [ -z "$SHA" ]; then echo "No main commit before $SENT in the fetched history; snapshots stay at main."; exit 0; fi
           git checkout "$SHA" -- 'data/audit/*-snapshot.json' data/freshness-report.json

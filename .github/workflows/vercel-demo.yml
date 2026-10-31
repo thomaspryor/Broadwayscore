@@ -245,8 +245,10 @@ jobs:
         env:
           INPUT_REF: ${{ github.event.inputs.ref }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           set +e
-          git fetch origin main --depth=1 2>/dev/null
+          git_net 180 fetch origin main --depth=1 2>/dev/null
           PIN=$(git show origin/main:.github/demo-pin.txt 2>/dev/null | tr -d '[:space:]')
           set -e
           REF="${INPUT_REF}"

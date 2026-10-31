@@ -78,6 +78,8 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # pipefail: the script's exit code (validate-data failure after the
           # save) must fail this step, not tee's.
           set -o pipefail
@@ -94,7 +96,7 @@ jobs:
             CORE=/tmp/core-data-checkout
             # blob:none keeps the deepen to commits and trees; git show fetches
             # the two commercial.json blobs it needs on demand.
-            git -C "$CORE" fetch -q --filter=blob:none --deepen=2000 origin main
+            git_net 300 -C "$CORE" fetch -q --filter=blob:none --deepen=2000 origin main
             FULL=$(git -C "$CORE" rev-parse --verify "${REVERT}^{commit}")
             SUBJECT=$(git -C "$CORE" log -1 --format=%s "$FULL")
             if [ "$SUBJECT" != "data: release held commercial rows" ]; then

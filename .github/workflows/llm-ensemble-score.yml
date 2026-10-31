@@ -233,6 +233,8 @@ jobs:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # Review-texts was checked out at job start, but fixes may have been pushed
           # while this run was queued. Pull latest to avoid scoring stale data.
           # (Becky Shaw incident: wrongShow:false was pushed but scoring used the old checkout)
@@ -241,7 +243,7 @@ jobs:
           if [ -n "${INPUT_SHOW_ID}" ]; then
             # Targeted refresh: only pull the specific show directory (faster)
             echo "Refreshing review-texts for show: ${INPUT_SHOW_ID}"
-            git fetch origin main --depth=1
+            git_net 180 fetch origin main --depth=1
             # show_id may be a comma-separated list (the scorer takes --show=a,b,c).
             IFS=',' read -ra SHOW_IDS <<< "${INPUT_SHOW_ID}"
             for sid in "${SHOW_IDS[@]}"; do
@@ -252,7 +254,7 @@ jobs:
           else
             # Full refresh: pull all latest changes
             echo "Refreshing all review-texts..."
-            git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull origin main --rebase --quiet 2>/dev/null || echo "Pull failed — using existing checkout"
+            git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull origin main --rebase --quiet 2>/dev/null || echo "Pull failed — using existing checkout"
           fi
           cd ../..
           echo "Review-texts refreshed"

@@ -182,6 +182,8 @@ jobs:
           INPUT_INCLUDE_CLOSED: ${{ github.event.inputs.include_closed || 'true' }}
           INPUT_WINDOW_DAYS: ${{ github.event.inputs.redispatched != 'true' && github.event.inputs.window_days || '1095' }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # Default window widened to 3y + include-closed so the cron grinds the
           # whole back-catalogue, not just the last 21d. Checkpointing + the soft
           # time budget keep each 25-min run from timing out (every run was being
@@ -233,7 +235,7 @@ jobs:
           # otherwise reads as still-empty here and the stale husk gets
           # re-ingested + pushed over the real review (2026-07-18: heathers
           # theatre-weekly lost a scored 3367-char review this way).
-          git -C data/review-texts pull --ff-only origin main \
+          git_net 300 -C data/review-texts pull --ff-only origin main \
             || echo "::warning::review-texts ff-pull failed — recovery may run against a stale checkout"
           node scripts/audit-show-review-gap.js $ARGS
 

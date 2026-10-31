@@ -3676,8 +3676,10 @@ jobs:
         env:
           GATE_ARM_BASE: ${{ github.event.before || github.event.pull_request.base.sha }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           if [ -n "$GATE_ARM_BASE" ]; then
-            git fetch --no-tags --depth=1 origin "$GATE_ARM_BASE" || true
+            git_net 180 fetch --no-tags --depth=1 origin "$GATE_ARM_BASE" || true
           fi
           node scripts/audit-new-gate-arming.js
 
@@ -4305,6 +4307,8 @@ jobs:
         # Comment-only diffs to the Tony predictions module are ignored so
         # docblock edits don't force unrelated audit reruns.
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # Base-ref selection:
           # - PR event: github.base_ref is set (e.g. "main"). Compare against origin/<base>.
           # - Push-to-main / schedule / dispatch: github.base_ref is empty. The
@@ -4313,7 +4317,7 @@ jobs:
           #   no-ops. Fall back to HEAD~1 to detect the change that just landed.
           if [ -n "${{ github.base_ref }}" ]; then
             BASE_REF="${{ github.base_ref }}"
-            git fetch origin "$BASE_REF" --depth=2 2>/dev/null || true
+            git_net 180 fetch origin "$BASE_REF" --depth=2 2>/dev/null || true
             BASE="origin/$BASE_REF"
             if ! git rev-parse "$BASE" >/dev/null 2>&1; then BASE=HEAD~1; fi
           else
@@ -5579,11 +5583,13 @@ jobs:
         env:
           BEFORE: ${{ github.event.before }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
             echo "No pushed-from commit; skipping."; exit 0
           fi
           git cat-file -e "$BEFORE^{commit}" 2>/dev/null \
-            || git fetch --no-tags --depth=1 origin "$BEFORE" \
+            || git_net 180 fetch --no-tags --depth=1 origin "$BEFORE" \
             || { echo "Could not fetch $BEFORE; skipping."; exit 0; }
           # stdout carries the ::warning:: line for the log; the summary gets the table only.
           for mode in "" "--as-of-report"; do

@@ -195,8 +195,10 @@ jobs:
         # inert move of main from a substantive one and only re-run the
         # gauntlet for the latter.
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           TIP=$(git rev-parse HEAD)
-          git fetch origin main
+          git_net 180 fetch origin main
           BASE=$(git rev-parse origin/main)
           echo "tip=$TIP" >> "$GITHUB_OUTPUT"
           echo "base=$BASE" >> "$GITHUB_OUTPUT"
@@ -987,6 +989,8 @@ jobs:
         #   it (LAND_DEADLINE_MIN, land-branch.js deadlineRefusal), so the
         #   timeout only fires on a real hang.
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           set +e
           TRAIN_ARGS=()
           if [ "$TRAIN_LANDED" = "true" ]; then TRAIN_ARGS+=(--train-landed-only)
@@ -1018,7 +1022,7 @@ jobs:
             # stay unmarked and finish on their own run as already on main.
             pushed="$(cat /tmp/land-pushed-sha 2>/dev/null || true)"
             if { [ "$rc" = "124" ] || [ "$rc" = "137" ]; } && [ -n "$pushed" ] \
-              && git fetch -q origin main && git merge-base --is-ancestor "$pushed" origin/main; then
+              && git_net 180 fetch -q origin main && git merge-base --is-ancestor "$pushed" origin/main; then
               { echo "landed=true"; echo "sha=$pushed"; echo "attempts="; echo "failed_check="
                 echo "reason=land.js was killed by the ${backstop} min deadman after its push; ${pushed:0:10} is on main"; } >> "$GITHUB_OUTPUT"
               echo "::warning::land.js killed by the ${backstop} min deadman after pushing ${pushed:0:10}, which is on main: reporting landed"
@@ -1087,7 +1091,9 @@ jobs:
         # 0). UNKNOWN (exit 2) or NOT_LANDED keep the ref and say so; a ref
         # is never deleted on the strength of a push's own exit code.
         run: |
-          git fetch origin main
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          git_net 180 fetch origin main
           if node scripts/lib/landing-verify.js --sha="$SHA" --cwd="$PWD"; then
             # BRO-3873 step 5: the landing record FIRST, before any cleanup.
             # A fast-forward creates no commit to stamp a trailer on, so

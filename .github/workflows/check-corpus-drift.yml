@@ -159,10 +159,12 @@ jobs:
         # "error in object: unshallow". Heal before and after so the deepen
         # fallback and this job's later pushes keep working.
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           source scripts/lib/heal-phantom-shallow.sh
           heal_phantom_shallow || true
-          git fetch --shallow-since="10 days ago" origin main \
-            || { heal_phantom_shallow || true; git fetch --deepen=4000 origin main; } \
+          git_net 300 fetch --shallow-since="10 days ago" origin main \
+            || { heal_phantom_shallow || true; git_net 300 fetch --deepen=4000 origin main; } \
             || echo "::warning::history deepen failed — churn-merge-coverage will run degraded"
           heal_phantom_shallow || true
 

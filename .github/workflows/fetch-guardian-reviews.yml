@@ -120,6 +120,8 @@ jobs:
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           # Stale-checkout race guard, part 2 (BRO-3161, ported from
           # rebuild-reviews.yml): the Guardian API loop above took real
           # wall-clock time since the checkout — re-check review-texts'
@@ -136,7 +138,7 @@ jobs:
           # silently land only in FETCH_HEAD and the drift check below would
           # never fire.
           CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
-          git -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
+          git_net 180 -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
           CURRENT_SHA=$(git -C data/review-texts rev-parse refs/remotes/origin/main)
           echo "" > /tmp/stale-checkout-shows.txt
           if node -e "
@@ -173,7 +175,6 @@ jobs:
           rm -rf data/review-texts
           # BRO-5972: git_net caps the re-clone (a normal one takes ~46s) so a
           # hung transfer fails the step instead of eating the job timeout.
-          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           git_net 300 clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
 
           # Retry rebuild

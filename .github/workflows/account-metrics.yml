@@ -90,6 +90,8 @@ jobs:
       - name: Save dashboard data (private repo)
         if: always() && inputs.simulate != 'signin-stalled'
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           if [ ! -f account-metrics/account-dashboard.json ]; then
             echo "No dashboard this run (see the previous step) — private repo left as is."
             exit 0
@@ -110,10 +112,10 @@ jobs:
           fi
           git commit -m "analytics: account dashboard ($(date -u +%Y-%m-%dT%H:%MZ))"
           for i in 1 2 3 4 5; do
-            if git push origin HEAD:main; then exit 0; fi
+            if git_net 180 push origin HEAD:main; then exit 0; fi
             if [ "$i" = "5" ]; then echo "::error::push failed after 5 attempts"; exit 1; fi
             sleep $((i * 3 + RANDOM % 5))
-            if ! git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase -X theirs origin main; then
+            if ! git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase -X theirs origin main; then
               git rebase --abort 2>/dev/null || true
               git reset --hard "@{u}" 2>/dev/null || true
               echo "::error::rebase onto the new private main failed; dashboard not saved this run"

@@ -41,6 +41,7 @@ jobs:
       - name: Push to GitLab
         run: |
           cd repo.git
+          # hygiene-unbounded-clone-ok: whole-repo mirror force push; job timeout-minutes bounds it, a per-op cap or lowSpeedTime abort would kill a legit pack phase (BRO-6029)
           git push --force "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadway-review-texts.git" 'refs/heads/*:refs/heads/*' 'refs/tags/*:refs/tags/*' 2>&1
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}

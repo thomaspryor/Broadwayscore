@@ -435,14 +435,16 @@ jobs:
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always()
         run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           git add data/audit/
           if git diff --staged --quiet; then
             echo "No changes to reviews.json"
           else
             git commit -m "data: Auto-rebuild reviews.json (truncated re-scrape)"
-            git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || {
+            git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || {
               git rebase --abort 2>/dev/null || true
-              git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' A %O %A %B %P" pull --no-rebase -X ours origin main
+              git_net 300 -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' A %O %A %B %P" pull --no-rebase -X ours origin main
             }
             bash scripts/lib/push-with-retry.sh
           fi

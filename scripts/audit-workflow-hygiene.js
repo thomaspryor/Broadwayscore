@@ -196,6 +196,8 @@
  *     findUnboundedGitNetworkCommands() in scripts/lib/audit-workflow-hygiene-rules.js.
  *     Calls inside push-with-retry.sh are bounded by that helper.
  *     ADVISORY ONLY (CLAUDE.md §19).
+ *     (z2) also reports a `git_net` call that comes before its run block
+ *     sources git-net-timeout.sh (exit 127 at runtime): findGitNetUsedBeforeSource().
  *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-full-blobs-ok: <reason>     — (on the checkout step) skip full-blob-checkout check
@@ -258,6 +260,7 @@ const {
   findStringInputInterpolation,
   findCompositeShellHazards,
   findUnboundedGitNetworkCommands,
+  findGitNetUsedBeforeSource,
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
   findEolNodeVersions,
@@ -912,6 +915,7 @@ async function main() {
   const shortCoreDataTimeoutFindings = [];
   // Rule (z) (BRO-5972) is advisory too: workflows and composite actions.
   const unboundedGitFindings = [];
+  const gitNetBeforeSourceFindings = [];
   // Rule (q) (BRO-5033) is advisory too: git diff/status/show on an ignored
   // path. Scans workflows and composite actions; `git check-ignore` decides.
   const ignoredDiffFindings = [];
@@ -1133,6 +1137,8 @@ async function main() {
     {
       const hits = findUnboundedGitNetworkCommands(raw);
       if (hits.length > 0) unboundedGitFindings.push({ file, hits });
+      const early = findGitNetUsedBeforeSource(raw);
+      if (early.length > 0) gitNetBeforeSourceFindings.push({ file, hits: early });
     }
 
     // Rule (l): no paid-provider spend in a push-triggered workflow (BRO-2984).
@@ -1232,6 +1238,8 @@ async function main() {
       const raw = fs.readFileSync(full, 'utf8');
       const networkHits = findUnboundedGitNetworkCommands(raw);
       if (networkHits.length > 0) unboundedGitFindings.push({ file: `actions/${dir}/action.yml`, hits: networkHits });
+      const earlyHits = findGitNetUsedBeforeSource(raw);
+      if (earlyHits.length > 0) gitNetBeforeSourceFindings.push({ file: `actions/${dir}/action.yml`, hits: earlyHits });
       for (const [kind, key, tag] of [['masked-push', 'maskedPush', 'hygiene-masked-push-ok:'], ['string-input', 'stringInput', 'hygiene-string-input-ok:']]) {
         if (raw.includes(tag)) continue;
         const hits = findCompositeShellHazards(raw).filter((h) => h.kind === kind).map((h) => ({ name: 'composite step', lineNum: h.lineNum, handler: h.detail, input: h.detail.replace(/^inputs\./, '') }));
@@ -1247,6 +1255,18 @@ async function main() {
       `ℹ️  git clone/fetch/pull/push with no wall-clock cap: ${n} across ${unboundedGitFindings.length} file(s); a stalled transfer waits for the job timeout instead of failing (BRO-5972, BRO-6029). Wrap it as \`git_net <secs> clone|fetch|pull|push ...\` (scripts/lib/git-net-timeout.sh) or add \`# hygiene-unbounded-clone-ok: <reason>\`.`,
     );
     for (const { file, hits } of unboundedGitFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
+    }
+  }
+
+  // ── Rule (z2): git_net called before its run block sources it (advisory; BRO-6029) ─
+  if (gitNetBeforeSourceFindings.length > 0) {
+    const n = gitNetBeforeSourceFindings.reduce((acc, { hits }) => acc + hits.length, 0);
+    console.log(
+      `ℹ️  git_net called before the run block sources it: ${n} across ${gitNetBeforeSourceFindings.length} file(s); the step dies with "git_net: command not found" (exit 127) (BRO-6029). Put the \`. "\${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }\` line at the top of that run block.`,
+    );
+    for (const { file, hits } of gitNetBeforeSourceFindings) {
       console.log(`   • ${file}`);
       for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
     }

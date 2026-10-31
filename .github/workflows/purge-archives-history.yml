@@ -217,6 +217,7 @@ jobs:
             ref="refs/$refpath/$name"
             echo "=== Pushing $reftype $name (lease: $orig_sha) ==="
             for attempt in 1 2 3 4 5; do
+              # hygiene-unbounded-clone-ok: first push after filter-repo carries the rewritten history; a per-attempt cap would leave refs half rewritten, job timeout-minutes bounds it (BRO-6029)
               OUT=$(git push --force-with-lease="$ref:$orig_sha" origin "$ref" 2>&1)
               RC=$?  # hygiene-exitcode-ok: push_with_lease is only called as `push_with_lease ... || FAILED_REFS=...`, which suspends -e inside it
               echo "$OUT"

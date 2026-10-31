@@ -15,7 +15,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { findUnboundedGitClones, findUnboundedGitNetworkCommands } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
+const { findUnboundedGitClones, findUnboundedGitNetworkCommands, findGitNetUsedBeforeSource } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
 const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
 
 const wf = (body) => `on: push\njobs:\n  a:\n    runs-on: ubuntu-latest\n    steps:\n      - run: |\n${body.split('\n').map((l) => `          ${l}`).join('\n')}\n`;
@@ -171,4 +171,59 @@ test('network rule includes clones and keeps the clone-only API compatible', () 
   const raw = wf('git clone https://x/y.git d\ngit fetch origin main\ngit pull\ngit push');
   assert.equal(findUnboundedGitNetworkCommands(raw).length, 4);
   assert.equal(findUnboundedGitClones(raw).length, 1);
+});
+
+// BRO-6029: the inline fetch/pull/push wrap-up. The only bare network
+// commands left in the live tree carry a `hygiene-unbounded-clone-ok:`
+// reason (GitLab mirrors and the history-purge force push).
+function liveFiles() {
+  const out = [];
+  const wfDir = path.join(ROOT, '.github', 'workflows');
+  for (const f of readdirSync(wfDir).filter((n) => /\.ya?ml$/.test(n))) out.push([f, path.join(wfDir, f)]);
+  const actDir = path.join(ROOT, '.github', 'actions');
+  for (const d of readdirSync(actDir)) {
+    const p = path.join(actDir, d, 'action.yml');
+    try { readFileSync(p); out.push([`actions/${d}/action.yml`, p]); } catch { /* no action.yml */ }
+  }
+  return out;
+}
+
+test('every workflow and composite git fetch/pull/push is bounded or carries a reason', () => {
+  const offenders = [];
+  for (const [name, p] of liveFiles()) {
+    for (const h of findUnboundedGitNetworkCommands(readFileSync(p, 'utf8'))) offenders.push(`${name}:${h.lineNum}: ${h.text.trim()}`);
+  }
+  assert.deepEqual(offenders, [], `unbounded git network command(s):\n${offenders.join('\n')}`);
+});
+
+test('git_net before its run block sources it is flagged (exit 127 at runtime)', () => {
+  for (const body of [
+    'git_net 180 fetch origin main\n. "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }',
+    'if git_net 180 push origin HEAD:main; then exit 0; fi',
+    'git status && git_net 300 pull --rebase origin main',
+    'OUT=$(git_net 180 push origin main 2>&1)',
+  ]) {
+    assert.equal(findGitNetUsedBeforeSource(wf(body)).length, 1, body);
+  }
+  assert.equal(findGitNetUsedBeforeSource('jobs:\n  a:\n    steps:\n      - run: git_net 300 pull origin main\n').length, 1);
+});
+
+test('git_net after a source line or local definition passes', () => {
+  for (const body of [
+    '. "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }\ngit_net 180 fetch origin main',
+    'source scripts/lib/git-net-timeout.sh\nif git_net 180 push; then :; fi',
+    'git_net() { shift; git "$@"; }\ngit_net 60 fetch',
+    '# git_net 180 fetch origin main',
+    'echo "wrap it with git_net"',
+  ]) {
+    assert.deepEqual(findGitNetUsedBeforeSource(wf(body)), [], body);
+  }
+});
+
+test('every live git_net call is sourced earlier in its run block', () => {
+  const offenders = [];
+  for (const [name, p] of liveFiles()) {
+    for (const h of findGitNetUsedBeforeSource(readFileSync(p, 'utf8'))) offenders.push(`${name}:${h.lineNum}: ${h.text}`);
+  }
+  assert.deepEqual(offenders, [], `git_net used before it is sourced:\n${offenders.join('\n')}`);
 });
