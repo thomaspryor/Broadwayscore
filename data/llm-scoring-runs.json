@@ -2081920,21 +2081920,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T20:38:42.698Z",
-    "completedAt": "2026-10-31T20:38:49.636Z",
-    "totalReviews": 13,
+    "startedAt": "2026-10-31T20:39:03.191Z",
+    "completedAt": "2026-10-31T20:39:08.074Z",
+    "totalReviews": 14,
     "processed": 1,
-    "skipped": 12,
+    "skipped": 13,
     "errors": 0,
     "tokensUsed": {
-      "input": 6035,
-      "output": 331,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 15174
+      "input": 5624,
+      "output": 364,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 14598
     },
-    "costUsd": 0.03638935,
-    "runId": "41239254502",
+    "costUsd": 0.0222026,
+    "runId": "41239308723",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2087767,10 +2087767,10 @@
       {
         "showId": "beehive-the-60s-musical-regional-2024",
         "ourDistribution": {
-          "up": 12,
+          "up": 13,
           "flat": 0,
           "down": 0,
-          "total": 12
+          "total": 13
         },
         "hasDisagreement": false
       },
@@ -2091938,6 +2091938,16 @@
           "flat": 3,
           "down": 1,
           "total": 12
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "cygnus-regional-2025",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2120077,10 +2120087,10 @@
       {
         "showId": "the-music-man-regional-2024",
         "ourDistribution": {
-          "up": 11,
+          "up": 10,
           "flat": 0,
           "down": 0,
-          "total": 11
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -2126994,8 +2127004,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T20:43:45.276Z",
-    "completedAt": "2026-10-31T20:43:45.279Z",
+    "startedAt": "2026-10-31T20:44:05.653Z",
+    "completedAt": "2026-10-31T20:44:05.655Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2127008,45 +2127018,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41239254502",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-31T20:39:20.366Z",
-    "completedAt": "2026-10-31T20:39:24.589Z",
-    "totalReviews": 24,
-    "processed": 1,
-    "skipped": 23,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5525,
-      "output": 272,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 14324
-    },
-    "costUsd": 0.020736699999999997,
-    "runId": "41239331914",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-31T20:44:22.872Z",
-    "completedAt": "2026-10-31T20:44:22.884Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41239331914",
+    "runId": "41239308723",
     "source": "comparative-rescore",
     "errorDetails": []
   }
