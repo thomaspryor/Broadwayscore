@@ -1446,20 +1446,6 @@
     "queuedAt": "2026-10-31T18:23:06.187Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:these-are-our-neighbours-citizens-regional-2026",
-    "title": "Review gap — \"These Are Our Neighbours\" missing 1 cited review(s)",
-    "description": "These Are Our Neighbours (these-are-our-neighbours-citizens-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=these-are-our-neighbours-citizens-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:23:06.202Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:twelfth-night-crucible-regional-2026",
     "title": "Review gap — \"Twelfth Night\" missing 4 cited review(s)",
     "description": "Twelfth Night (twelfth-night-crucible-regional-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=twelfth-night-crucible-regional-2026 --checkpoint --ingest-missing",
@@ -1630,20 +1616,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T19:05:44.417Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-unexpected-3rd-2026",
-    "title": "Review gap — \"The Unexpected 3rd\" missing 4 cited review(s)",
-    "description": "The Unexpected 3rd (the-unexpected-3rd-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-unexpected-3rd-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:47:34.403Z"
   },
   {
     "conditionKey": "corpus-drift:monitor-only",
@@ -1871,6 +1843,20 @@
     "queuedAt": "2026-10-31T21:22:24.478Z"
   },
   {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 29.2% of shows changed coverage state (still open — BRO-5516)",
+    "description": "Still firing after 83 notifications since it was filed. Tracked at BRO-5516.\n\nreview-gap blast radius 29.2% (14/48 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: dear-england-new-wimbledon-theatre-west-end-2026, dog-man-the-musical-west-end-2026, encores-la-cage-aux-folles-off-broadway-2026, hugo-marchand-artists-at-the-center-off-broadway-2026, into-the-woods-west-end-2025, jesus-christ-superstar-west-end-2026, kinky-boots-the-musical-west-end-2026, les-liaisons-dangereuses-west-end-2026, man-to-man-west-end-2026, mexodus-off-broadway-2026, pride-west-end-2026, the-maids-off-broadway-2026, the-story-west-end-2026, to-kill-a-mockingbird-west-end-2026\n\nPARTIAL write: the other 38 show(s) audited this run were NOT risky and were persisted normally. Only the 14 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5516",
+    "fields": [],
+    "queuedAt": "2026-10-31T22:30:56.936Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -1882,6 +1868,29 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-31T22:06:02.287Z"
+    "queuedAt": "2026-10-31T22:31:19.015Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h (still open — BRO-5532)",
+    "description": "Still firing after 71 notifications since it was filed. Tracked at BRO-5532.\n\n2 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5532",
+    "fields": [
+      {
+        "name": "A Few Good Men — theater-scene (63h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"a-few-good-men-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Magic Mike Live — financialtimes (40h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"magic-mike-live-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-10-31T22:31:49.847Z"
   }
 ]

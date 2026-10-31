@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-31T22:05:43.219Z",
+  "generatedAt": "2026-10-31T22:30:56.337Z",
   "windowDays": 21,
   "targets": 63,
-  "auditedThisRun": 63,
-  "carriedForward": 1495,
+  "auditedThisRun": 38,
+  "carriedForward": 1524,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 621,
+    "withGap": 620,
     "missingCurrentRun": 1321,
     "totalCitedNoUrl": 1,
     "totalFlaggedMisses": 854,
     "totalRecoverable": 58,
-    "totalRecovered": 79,
+    "totalRecovered": 80,
     "humanExcluded": 12,
-    "automatedExcluded": 785,
+    "automatedExcluded": 786,
     "automatedExcludedListed": 605,
-    "priorProductionCitations": 5986
+    "priorProductionCitations": 6065
   },
   "results": [
     {
@@ -11843,7 +11843,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "advance-man-regional-2026",
@@ -24964,34 +24964,16 @@
       "aggregatorListedUrls": [
         "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
         "https://www.timeout.com/newyork/theater/arcadia-bedlam-review-tom-stoppard",
-        "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html",
-        "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/",
-        "https://stagebuddy.com/theater/theater-review/review-arcadia"
+        "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html"
       ],
-      "dirFiles": 54,
-      "dirClean": 21,
-      "inReviewsJson": 24,
+      "dirFiles": 51,
+      "dirClean": 22,
+      "inReviewsJson": 25,
       "missing": [
         {
           "url": "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html",
           "host": "theatermania.com",
           "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2017-07-23",
-          "serpCensus": true
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/review-arcadia",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2017-07-20",
           "serpCensus": true
         }
       ],
@@ -25075,6 +25057,10 @@
         {
           "host": "thetimes.com",
           "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -25112,11 +25098,12 @@
       "candidatesRejected": {
         "count": 109,
         "byReason": {
+          "aggregator-internal-nav": 63,
           "not-http-url": 7,
-          "non-review-host": 21,
-          "aggregator-internal-nav": 66,
+          "production-database-listing": 11,
           "aggregator-section-root": 4,
-          "production-database-listing": 11
+          "non-review-host": 21,
+          "non-stage-review": 3
         }
       },
       "dedupedVariants": [],
@@ -25128,22 +25115,6 @@
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/arcadia/joel-benjamin/",
-          "host": "theaterscene.net",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/review-arcadia",
-          "host": "stagebuddy.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
       "ingestResults": [
         {
           "url": "http://www.theatermania.com/off-broadway/reviews/pity-in-history-and-arcadia-potomac-theatre_81820.html",
@@ -25193,7 +25164,7 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-26T01:58:58.789Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "archduke-off-broadway-2025",
@@ -27817,6 +27788,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/atlantis-review-minerva-theatre-chichester-festival-theatre",
+          "host": "thestage.co.uk",
+          "file": "thestage--dave-fargnoli.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -27826,7 +27811,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "atonement-chichester-festival-regional-2026",
@@ -27905,6 +27890,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/attachment-review-everyman-theatre-liverpool",
+          "host": "thestage.co.uk",
+          "file": "thestage--matt-barton.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -27914,7 +27913,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "attack-of-the-elvis-impersonators-off-broadway-2017",
@@ -28754,17 +28753,10 @@
         "https://1883magazine.com/avenue-q-review-london/",
         "https://valentinedsides.com/2026/04/17/avenue-q/"
       ],
-      "dirFiles": 63,
+      "dirFiles": 64,
       "dirClean": 36,
       "inReviewsJson": 38,
-      "missing": [
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
-          "host": "express.co.uk",
-          "knownOutletId": "sunday-express",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
@@ -28873,6 +28865,33 @@
           "reverify": true
         },
         {
+          "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sunday-express--callum-crumlish.json",
+              "flag": "clean",
+              "urlInDir": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://1883magazine.com/avenue-q-review-london/",
           "host": "1883magazine.com",
           "knownOutletId": "1883magazine",
@@ -28940,34 +28959,9 @@
       ],
       "automatedExcludedListed": 4,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
-          "host": "express.co.uk",
-          "outletId": "sunday-express",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "sunday-express",
-            "outlet": "sunday-express",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets"
-          },
           {
             "outletId": "sunday-telegraph",
             "outlet": "sunday-telegraph",
@@ -28981,6 +28975,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london"
+          },
+          {
+            "outletId": "sunday-express",
+            "outlet": "sunday-express",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets"
           },
           {
             "outletId": "1883magazine",
@@ -29126,13 +29127,6 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
-            "outletId": "sunday-express",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
             "outletId": "sunday-telegraph",
             "state": "GAP",
@@ -29142,6 +29136,13 @@
           {
             "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
             "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
+            "outletId": "sunday-express",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -29165,7 +29166,7 @@
         "liveCount": 21,
         "candidateCount": 26
       },
-      "computedAt": "2026-10-30T23:31:22.664Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "babe-off-broadway-2024",
@@ -35821,7 +35822,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "bella-bella-off-broadway-2019",
@@ -64878,9 +64879,9 @@
       },
       "computedAt": "2026-08-30T07:41:12.140Z",
       "quarantine": {
-        "nextState": "incomplete:0:4",
-        "since": "2026-09-28T01:29:33.759Z",
-        "lastAt": "2026-09-28T01:29:33.759Z"
+        "nextState": "incomplete:1:4",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
       },
       "automatedExcludedListed": 0
     },
@@ -69962,11 +69963,13 @@
     {
       "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
       "title": "Death of a Salesman",
-      "openingDate": "2026-09-27",
+      "openingDate": "2026-09-25",
       "status": "open",
       "category": "regional",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman"
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman",
+        "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Nathan-Lane-and-Laurie-Metcalf-20260409",
+        "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009"
       ],
       "aggregatorListedUrls": [
         "https://www.amny.com/entertainment/broadway/review-death-of-a-salesman-2022/",
@@ -69991,7 +69994,31 @@
         "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wendell-pierce-1235397256/",
         "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
         "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217",
-        "https://www.thewrap.com/death-of-a-salesman-broadway-review-wendell-pierce/"
+        "https://www.thewrap.com/death-of-a-salesman-broadway-review-wendell-pierce/",
+        "https://www.nytimes.com/2026/04/09/theater/death-of-a-salesman-review-broadway-lane-metcalf.html",
+        "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-revival-7da101d1",
+        "https://1minutecritic.com/death-of-a-salesman-broadway-review-nathan-lane/",
+        "https://nystagereview.com/2026/04/09/death-of-a-salesman-nathan-lane-makes-big-deal-in-miller-classic/",
+        "https://nystagereview.com/2026/04/09/death-of-a-salesman-more-relevant-than-ever/",
+        "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf",
+        "https://deadline.com/2026/04/death-of-a-salesman-broadway-review-nathan-lane-1236784788/",
+        "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
+        "https://culturesauce.com/2026/04/09/death-of-a-salesman-nathan-lane-laurie-metcalf-broadway-review/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-review-nathan-lane-broadway-1236560881/",
+        "https://nypost.com/2026/04/09/entertainment/death-of-a-salesman-review-nathan-lane-and-laurie-metcalf-star-in-a-triumphant-broadway-revival/",
+        "https://www.thewrap.com/creative-content/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf/",
+        "https://www.theguardian.com/stage/2026/apr/10/death-of-a-salesman-broadway-review",
+        "https://ew.com/death-of-a-salesman-review-timely-broadway-revival-feels-urgent-as-ever-11943371",
+        "https://davidcote1.substack.com/p/death-of-a-salesman-on-broadway-attention",
+        "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
+        "https://www.theatrely.com/post/a-bold-new-death-of-a-salesman-filled-with-talent-review",
+        "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesman/",
+        "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/",
+        "https://www.slantmagazine.com/theater/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-christopher-abbott/",
+        "https://www.timeout.com/newyork/news/broadway-review-death-of-a-salesman-to-die-for-041426",
+        "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+        "https://www.nytimes.com/2020/01/02/theater/death-of-a-salesman-review-wendell-pierce.html",
+        "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival"
       ],
       "dirFiles": 6,
       "dirClean": 6,
@@ -70157,6 +70184,174 @@
           "knownOutletId": "thewrap",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/04/09/theater/death-of-a-salesman-review-broadway-lane-metcalf.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-revival-7da101d1",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/death-of-a-salesman-broadway-review-nathan-lane/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/09/death-of-a-salesman-nathan-lane-makes-big-deal-in-miller-classic/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/09/death-of-a-salesman-more-relevant-than-ever/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2026/04/death-of-a-salesman-broadway-review-nathan-lane-1236784788/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/09/death-of-a-salesman-nathan-lane-laurie-metcalf-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-review-nathan-lane-broadway-1236560881/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2026/04/09/entertainment/death-of-a-salesman-review-nathan-lane-and-laurie-metcalf-star-in-a-triumphant-broadway-revival/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/apr/10/death-of-a-salesman-broadway-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/death-of-a-salesman-review-timely-broadway-revival-feels-urgent-as-ever-11943371",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://davidcote1.substack.com/p/death-of-a-salesman-on-broadway-attention",
+          "host": "davidcote1.substack.com",
+          "knownOutletId": "cote-notices",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-bold-new-death-of-a-salesman-filled-with-talent-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesman/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-christopher-abbott/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-death-of-a-salesman-to-die-for-041426",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2020/01/02/theater/death-of-a-salesman-review-wendell-pierce.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [
@@ -70193,15 +70388,18 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 116,
+        "count": 732,
         "byReason": {
-          "not-http-url": 6,
-          "non-review-host": 20,
-          "aggregator-internal-nav": 71,
-          "aggregator-section-root": 4,
+          "aggregator-internal-nav": 510,
+          "not-http-url": 139,
           "production-database-listing": 11,
-          "non-stage-review": 3,
-          "review-index-page": 1
+          "aggregator-section-root": 13,
+          "non-review-host": 50,
+          "non-stage-review": 1,
+          "roundup-page": 3,
+          "bare-host": 1,
+          "review-index-page": 1,
+          "tag-index-page": 3
         }
       },
       "dedupedVariants": [],
@@ -70209,10 +70407,351 @@
         {
           "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman",
           "publishDate": "2022-10-09"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Nathan-Lane-and-Laurie-Metcalf-20260409",
+          "publishDate": "2026-04-09"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+          "publishDate": "2022-10-09"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-death-of-a-salesman-2022/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://broadwaynews.com/2022/10/09/director-miranda-cromwell-breathes-stunning-black-life-into-death-of-a-salesman/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1100",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-death-salesman-20221010-ggdxdb4ia5ecbgbkats54zlhze-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2022/10/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke-1235138627/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.msn.com/en-us/entertainment/news/death-of-a-salesman-cast-delivers-in-soaring-new-broadway-production/ar-AA12MvFD",
+          "host": "msn.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-death-of-a-salesman-broadway-chris-jones-review-20221010-7nckjd3wczfczgboqsbrr3dzjq-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-lacks-fire/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2022/10/09/death-of-a-salesman-wendell-pierce-and-sharon-d-clarke-bring-classic-to-broadway/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2022/10/09/death-of-a-salesman-arthur-millers-classic-drama-needlessly-embellished/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/10/09/theater/review-death-of-a-salesman.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2022/10/09/death-of-a-salesman-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.queerty.com/great-migration-informs-stark-stunning-death-salesman-20221010",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/american-dreams-reviewed-death-of-a-salesman-and-1776",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/death-of-a-salesman/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wendell-pierce-1235397256/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/death-of-a-salesman-broadway-review-wendell-pierce/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/04/09/theater/death-of-a-salesman-review-broadway-lane-metcalf.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-revival-7da101d1",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://1minutecritic.com/death-of-a-salesman-broadway-review-nathan-lane/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/09/death-of-a-salesman-nathan-lane-makes-big-deal-in-miller-classic/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/09/death-of-a-salesman-more-relevant-than-ever/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2026/04/death-of-a-salesman-broadway-review-nathan-lane-1236784788/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/09/death-of-a-salesman-nathan-lane-laurie-metcalf-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-review-nathan-lane-broadway-1236560881/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2026/04/09/entertainment/death-of-a-salesman-review-nathan-lane-and-laurie-metcalf-star-in-a-triumphant-broadway-revival/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/apr/10/death-of-a-salesman-broadway-review",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/death-of-a-salesman-review-timely-broadway-revival-feels-urgent-as-ever-11943371",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://davidcote1.substack.com/p/death-of-a-salesman-on-broadway-attention",
+          "host": "davidcote1.substack.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-bold-new-death-of-a-salesman-filled-with-talent-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesman/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-christopher-abbott/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-death-of-a-salesman-to-die-for-041426",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2020/01/02/theater/death-of-a-salesman-review-wendell-pierce.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -70222,7 +70761,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "deathtrap-regional-2025",
@@ -74011,9 +74550,9 @@
       },
       "computedAt": "2026-08-30T07:41:12.140Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-09-28T01:29:33.759Z",
-        "lastAt": "2026-09-28T01:29:33.759Z"
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
       }
     },
     {
@@ -79401,6 +79940,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/educating-rita-review-dundee-rep-theatre",
+          "host": "thestage.co.uk",
+          "file": "thestage--fergus-morgan.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -79410,7 +79963,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "eelpout-regional-2026",
@@ -81301,7 +81854,12 @@
         "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-09-25T02:12:11.469Z"
+      "computedAt": "2026-09-25T02:12:11.469Z",
+      "quarantine": {
+        "nextState": "incomplete:3:4",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "encores-the-wild-party-off-broadway-2026",
@@ -91457,7 +92015,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "franky-off-west-end-2026",
@@ -126361,7 +126919,12 @@
         "candidateCount": 7
       },
       "computedAt": "2026-08-03T14:37:42.385Z",
-      "automatedExcludedListed": 0
+      "automatedExcludedListed": 0,
+      "quarantine": {
+        "nextState": "incomplete:1:2",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -134092,7 +134655,12 @@
         "liveCount": 11,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-26T18:53:32.675Z"
+      "computedAt": "2026-10-26T18:53:32.675Z",
+      "quarantine": {
+        "nextState": "complete:7:7",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "invisible-me-off-west-end-2026",
@@ -136346,7 +136914,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "jena-friedman-motherfucker-off-broadway-2026",
@@ -140124,7 +140692,12 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-23T06:56:57.530Z"
+      "computedAt": "2026-09-23T06:56:57.530Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "jesus-hopped-the-a-train-off-broadway-2017",
@@ -147604,7 +148177,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-27T19:16:41.144Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "kinky-boots-tour-2025",
@@ -152711,7 +153289,12 @@
         "liveCount": 6,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-27T07:10:24.330Z"
+      "computedAt": "2026-10-27T07:10:24.330Z",
+      "quarantine": {
+        "nextState": "complete:6:6",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
@@ -161888,13 +162471,13 @@
     {
       "showId": "macbeth-tobacco-factory-regional-2026",
       "title": "Macbeth",
-      "openingDate": "2026-03-05",
+      "openingDate": "2026-02-26",
       "status": "closed",
       "category": "regional",
       "aggregatorArticles": [
         "https://playbill.com/article/what-did-reviews-say-about-macbeth-at-the-metropolitan-opera",
-        "https://playbill.com/article/what-do-the-critics-think-of-macbeth-starring-corey-stoll-and-nadia-bowers",
-        "https://playbill.com/article/reviews-read-what-critics-had-to-say-about-sam-golds-macbeth"
+        "https://playbill.com/article/reviews-read-what-critics-had-to-say-about-sam-golds-macbeth",
+        "https://playbill.com/article/what-do-the-critics-think-of-macbeth-starring-corey-stoll-and-nadia-bowers"
       ],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/09/23/arts/music/macbeth-review-met-opera-nyc.html",
@@ -161903,15 +162486,6 @@
         "https://www.theatermania.com/news/review-macbeth-a-tale-of-halting-ambition-at-the-metropolitan-opera_1854763/",
         "https://www.thetimes.com/culture/classical-opera/article/macbeth-at-the-met-review-dwfcrtjgt",
         "https://www.vulture.com/article/the-mets-macbeth-is-a-bubbling-cauldron-of-operatic-fun.html",
-        "https://www.thedailybeast.com/heres-a-fast-macbeth-with-no-witches-and-for-all-the-women-who-thought-they-were-mad",
-        "https://www.hollywoodreporter.com/review/macbeth-theater-review-1250310",
-        "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
-        "http://nystagereview.com/2019/10/27/macbeth-a-slimmed-down-version-of-the-scottish-play/",
-        "http://nystagereview.com/2019/10/27/macbeth-do-too-many-witches-spoil-the-theatrical-brew/",
-        "https://www.newyorktheatreguide.com/reviews/review-of-macbeth-starring-corey-stoll-at-classic-stage-company",
-        "https://www.nytimes.com/2019/10/27/theater/macbeth-review-corey-stoll.html",
-        "https://www.timeout.com/newyork/theater/macbeth-34",
-        "https://www.thewrap.com/macbeth-theater-review-corey-stoll-john-doyle-nadia-bowers/",
         "https://nystagereview.com/2022/04/29/macbeth-loud-sound-intermittent-fury-signifying-nothing/",
         "https://www.amny.com/entertainment/broadway/review-macbeth-hits-broadway-with-daniel-craig-and-weird-direction/",
         "https://cititour.com/NYC_News/Review-Daniel-Craig-Bonds-With-Macbeth/6368",
@@ -161933,7 +162507,16 @@
         "https://www.thewrap.com/macbeth-broadway-review-daniel-craig-ruth-negga/",
         "https://www.timeout.com/newyork/theater/macbeth-broadway-review-daniel-craig-ruth-negga",
         "https://variety.com/2022/legit/reviews/macbeth-review-daniel-craig-ruth-negga-broadway-1235254654/",
-        "https://www.washingtonpost.com/theater-dance/2022/04/29/potus-macbeth-broadway/"
+        "https://www.washingtonpost.com/theater-dance/2022/04/29/potus-macbeth-broadway/",
+        "https://www.thedailybeast.com/heres-a-fast-macbeth-with-no-witches-and-for-all-the-women-who-thought-they-were-mad",
+        "https://www.hollywoodreporter.com/review/macbeth-theater-review-1250310",
+        "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
+        "http://nystagereview.com/2019/10/27/macbeth-a-slimmed-down-version-of-the-scottish-play/",
+        "http://nystagereview.com/2019/10/27/macbeth-do-too-many-witches-spoil-the-theatrical-brew/",
+        "https://www.newyorktheatreguide.com/reviews/review-of-macbeth-starring-corey-stoll-at-classic-stage-company",
+        "https://www.nytimes.com/2019/10/27/theater/macbeth-review-corey-stoll.html",
+        "https://www.timeout.com/newyork/theater/macbeth-34",
+        "https://www.thewrap.com/macbeth-theater-review-corey-stoll-john-doyle-nadia-bowers/"
       ],
       "dirFiles": 3,
       "dirClean": 3,
@@ -161978,69 +162561,6 @@
           "url": "https://www.vulture.com/article/the-mets-macbeth-is-a-bubbling-cauldron-of-operatic-fun.html",
           "host": "vulture.com",
           "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/heres-a-fast-macbeth-with-no-witches-and-for-all-the-women-who-thought-they-were-mad",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/macbeth-theater-review-1250310",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/10/27/macbeth-a-slimmed-down-version-of-the-scottish-play/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/10/27/macbeth-do-too-many-witches-spoil-the-theatrical-brew/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/review-of-macbeth-starring-corey-stoll-at-classic-stage-company",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2019/10/27/theater/macbeth-review-corey-stoll.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/macbeth-34",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/macbeth-theater-review-corey-stoll-john-doyle-nadia-bowers/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -162197,6 +162717,69 @@
           "knownOutletId": "washpost",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/heres-a-fast-macbeth-with-no-witches-and-for-all-the-women-who-thought-they-were-mad",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/macbeth-theater-review-1250310",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/27/macbeth-a-slimmed-down-version-of-the-scottish-play/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/27/macbeth-do-too-many-witches-spoil-the-theatrical-brew/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/review-of-macbeth-starring-corey-stoll-at-classic-stage-company",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/10/27/theater/macbeth-review-corey-stoll.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/macbeth-34",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/macbeth-theater-review-corey-stoll-john-doyle-nadia-bowers/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [
@@ -162223,13 +162806,13 @@
       "candidatesRejected": {
         "count": 424,
         "byReason": {
-          "not-http-url": 34,
-          "non-review-host": 60,
           "aggregator-internal-nav": 161,
-          "aggregator-section-root": 13,
-          "roundup-page": 96,
+          "not-http-url": 34,
           "production-database-listing": 57,
-          "non-stage-review": 3
+          "aggregator-section-root": 13,
+          "non-review-host": 60,
+          "non-stage-review": 3,
+          "roundup-page": 96
         }
       },
       "dedupedVariants": [],
@@ -162239,16 +162822,279 @@
           "publishDate": "2026-09-23"
         },
         {
-          "url": "https://playbill.com/article/what-do-the-critics-think-of-macbeth-starring-corey-stoll-and-nadia-bowers",
-          "publishDate": "2019-10-28"
-        },
-        {
           "url": "https://playbill.com/article/reviews-read-what-critics-had-to-say-about-sam-golds-macbeth",
           "publishDate": "2022-04-29"
+        },
+        {
+          "url": "https://playbill.com/article/what-do-the-critics-think-of-macbeth-starring-corey-stoll-and-nadia-bowers",
+          "publishDate": "2019-10-28"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2026/09/23/arts/music/macbeth-review-met-opera-nyc.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://operawire.com/metropolitan-opera-2026-27-review-macbeth/",
+          "host": "operawire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://slippedisc.com/2026/09/which-witch-first-review-of-macbeth-at-the-met/",
+          "host": "slippedisc.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-macbeth-a-tale-of-halting-ambition-at-the-metropolitan-opera_1854763/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/classical-opera/article/macbeth-at-the-met-review-dwfcrtjgt",
+          "host": "thetimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/the-mets-macbeth-is-a-bubbling-cauldron-of-operatic-fun.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2022/04/29/macbeth-loud-sound-intermittent-fury-signifying-nothing/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-macbeth-hits-broadway-with-daniel-craig-and-weird-direction/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_News/Review-Daniel-Craig-Bonds-With-Macbeth/6368",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2022/04/macbeth-broadway-review-daniel-craig-ruth-negga-1235011369/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/theater/theater-reviews/macbeth-broadway-daniel-craig-ruth-negga/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-kate-dillon-macbeth-theater-review-1235137293/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-macbeth-broadway-review-daniel-craig-20220429-64iwlu7n7vho3nsbp5gue5eryq-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2022/04/29/macbeth-broadway-review-daniel-craig-play-is-a-disaster/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2022/04/29/macbeth-have-you-heard-the-one-about-the-scottish-play/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/sam-gold-shakes-up-macbeth-on-broadway-and-most-of-its-pieces-fall-nicely-into-place",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2022/04/30/macbeth-review-daniel-craig/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/04/29/theater/macbeth-review-broadway.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2022/04/review-daniel-craig-and-ruth-neggas-macbeth-is-chic-but-incomprehensible/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/macbeth-review-daniel-craig-fails-shake-stir-ruth-negga-provides/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/toil-and-trouble-in-chilled-out-macbeth-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/daniel-craigs-macbeth-is-a-modern-bloody-broadway-puzzle-with-soup-on-the-side",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2022/apr/29/macbeth-review-daniel-craig-ruth-negga",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/macbeth-on-broadway-review-daniel-craig-swaps-bond-for-the-bard-wj0tnxgm0",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/macbeth-broadway-review-daniel-craig-ruth-negga/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/macbeth-broadway-review-daniel-craig-ruth-negga",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/macbeth-review-daniel-craig-ruth-negga-broadway-1235254654/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2022/04/29/potus-macbeth-broadway/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/heres-a-fast-macbeth-with-no-witches-and-for-all-the-women-who-thought-they-were-mad",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/macbeth-theater-review-1250310",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/27/macbeth-a-slimmed-down-version-of-the-scottish-play/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/27/macbeth-do-too-many-witches-spoil-the-theatrical-brew/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/review-of-macbeth-starring-corey-stoll-at-classic-stage-company",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2019/10/27/theater/macbeth-review-corey-stoll.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/macbeth-34",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/macbeth-theater-review-corey-stoll-john-doyle-nadia-bowers/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -162258,7 +163104,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "machine-learning-off-broadway-2026",
@@ -163532,7 +164378,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "maltby-and-shires-about-time-off-broadway-2026",
@@ -167758,7 +168604,12 @@
         "liveCount": 20,
         "candidateCount": 20
       },
-      "computedAt": "2026-10-11T22:49:53.446Z"
+      "computedAt": "2026-10-11T22:49:53.446Z",
+      "quarantine": {
+        "nextState": "complete:18:18",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "manic-street-creature-west-end-2026",
@@ -176087,12 +176938,33 @@
       "openingDate": "2026-10-30",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera",
+        "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+      ],
       "aggregatorListedUrls": [
+        "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+        "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+        "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+        "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+        "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+        "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+        "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare",
+        "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+        "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+        "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+        "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+        "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+        "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+        "https://www.timeout.com/newyork/theater/medea-2",
+        "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+        "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
         "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
+        "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
         "https://www.timeout.com/newyork/theater/medea-4",
+        "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
         "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
         "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
         "https://indieopera.com/review-medea/",
@@ -176102,6 +176974,97 @@
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
+        {
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+          "host": "operawire.com",
+          "knownOutletId": "operawire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+          "host": "parterre.com",
+          "knownOutletId": "parterre-box",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
           "host": "newyorktheatrereview.blogspot.com",
@@ -176118,9 +177081,25 @@
           "serpCensus": true
         },
         {
+          "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
+          "host": "operawire.com",
+          "knownOutletId": "operawire",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-10-18",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.timeout.com/newyork/theater/medea-4",
           "host": "timeout.com",
           "knownOutletId": "timeout",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
+          "host": "classicalsource.com",
+          "knownOutletId": "classical-source",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-09-27",
           "serpCensus": true
         },
         {
@@ -176132,23 +177111,66 @@
         {
           "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
           "host": "the-tls.com",
-          "knownOutletId": null,
+          "knownOutletId": "the-tls",
           "serpCensus": true
         },
         {
           "url": "https://indieopera.com/review-medea/",
           "host": "indieopera.com",
-          "knownOutletId": null,
+          "knownOutletId": "indie-opera",
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "newyorkclassicalreview.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
           "host": "ayoungertheatre.com",
@@ -176220,7 +177242,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -176241,7 +177263,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -176251,30 +177273,136 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 249,
         "byReason": {
-          "non-review-host": 18,
-          "census-junk-host": 1,
+          "aggregator-internal-nav": 141,
+          "not-http-url": 12,
+          "production-database-listing": 21,
+          "aggregator-section-root": 8,
+          "non-review-host": 56,
+          "non-stage-review": 4,
+          "roundup-page": 1,
+          "no-review-evidence": 2,
           "event-listing": 1,
-          "ticketing-reseller": 3,
-          "non-stage-review": 3,
-          "roundup-page": 1
+          "census-junk-host": 1,
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera",
+          "publishDate": "2022-09-29"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale",
+          "publishDate": "2020-01-31"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+          "host": "operawire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+          "host": "parterre.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-2",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
           "host": "newyorktheatrereview.blogspot.com",
@@ -176290,21 +177418,51 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-          "host": "the-tls.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
+          "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
+          "host": "operawire.com",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://indieopera.com/review-medea/",
-          "host": "indieopera.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
+          "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
+          "host": "classicalsource.com",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+          "host": "the-tls.com",
+          "outletId": "the-tls",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://indieopera.com/review-medea/",
+          "host": "indieopera.com",
+          "outletId": "indie-opera",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "medea-off-broadway-2026: https://indieopera.com/review-medea/ dated 2022-10-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
         {
           "url": "https://www.timeout.com/newyork/theater/medea-4",
           "host": "timeout.com",
@@ -176355,15 +177513,15 @@
             "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/"
           },
           {
-            "outletId": "the-tls.com",
-            "outlet": "the-tls.com",
+            "outletId": "the-tls",
+            "outlet": "the-tls",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff"
           },
           {
-            "outletId": "indieopera.com",
-            "outlet": "indieopera.com",
+            "outletId": "indie-opera",
+            "outlet": "indie-opera",
             "critic": "Unknown",
             "stars": null,
             "url": "https://indieopera.com/review-medea/"
@@ -176378,6 +177536,12 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T22:30:56.337Z"
+          },
           {
             "url": "https://www.timeout.com/newyork/theater/medea-4",
             "outletId": "timeout",
@@ -176394,14 +177558,14 @@
           },
           {
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-            "outletId": "the-tls.com",
+            "outletId": "the-tls",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
           },
           {
             "url": "https://indieopera.com/review-medea/",
-            "outletId": "indieopera.com",
+            "outletId": "indie-opera",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
@@ -176415,10 +177579,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 5
+        "liveCount": 1,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-31T19:29:46.681Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -179270,7 +180434,12 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-09-25T23:07:29.288Z"
+      "computedAt": "2026-09-25T23:07:29.288Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "mexodus-tour-2026",
@@ -190233,6 +191402,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/my-romantic-history-review-tron-theatre-glasgow",
+          "host": "thestage.co.uk",
+          "file": "thestage--fergus-morgan.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -190242,7 +191425,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
@@ -194257,7 +195440,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "octet-regional-2026",
@@ -199571,7 +200754,7 @@
     {
       "showId": "oliver-twist-hull-truck-regional-2025",
       "title": "Oliver Twist",
-      "openingDate": "2025-12-09",
+      "openingDate": "2025-12-02",
       "status": "closed",
       "category": "regional",
       "aggregatorArticles": [],
@@ -199603,7 +200786,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -212446,7 +213629,7 @@
       ],
       "dirFiles": 46,
       "dirClean": 21,
-      "inReviewsJson": 21,
+      "inReviewsJson": 22,
       "missing": [],
       "dirOnly": [
         {
@@ -212503,13 +213686,13 @@
           "dirFlags": [
             {
               "file": "whatsonstage--rachel-agyekum.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         }
@@ -212624,7 +213807,7 @@
         "liveCount": 11,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-30T23:31:22.664Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "parcel-from-america-off-broadway-2026",
@@ -215592,7 +216775,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "play-on-regional-2026",
@@ -217741,7 +218924,12 @@
         "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-29T07:30:38.899Z"
+      "computedAt": "2026-10-29T07:30:38.899Z",
+      "quarantine": {
+        "nextState": "complete:8:8",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "prince-faggot-off-broadway-2025",
@@ -224592,7 +225780,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "return-to-the-forest-off-west-end-2026",
@@ -231821,7 +233009,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "sea-wall-off-broadway-2026",
@@ -233226,7 +234414,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "shear-madness-off-broadway-2015",
@@ -233654,7 +234842,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "sherlock-holmes-and-the-christmas-clowns-regional-2025",
@@ -241337,7 +242525,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "soft-power-off-broadway-2019",
@@ -244410,53 +245598,15 @@
         "https://thefrontrowcenter.com/2026/05/specimen/",
         "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
         "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
-        "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
-        "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
-        "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
-        "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/"
+        "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/",
+        "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
       ],
       "dirFiles": 6,
       "dirClean": 4,
       "inReviewsJson": 4,
-      "missing": [
-        {
-          "url": "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
-          "host": "cureus.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-27",
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
           "host": "theatrely.com",
@@ -244511,7 +245661,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -244531,7 +245681,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -244547,43 +245697,25 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 41,
+        "count": 39,
         "byReason": {
-          "non-review-host": 34,
-          "aggregator-internal-nav": 4,
-          "venue-production-page": 2,
-          "non-review-path": 1
+          "aggregator-internal-nav": 2,
+          "non-review-host": 33,
+          "write-path-blocked": 1,
+          "census-junk-host": 2,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
-          "host": "cureus.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "cureus.com",
-            "outlet": "cureus.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -244615,20 +245747,13 @@
             "outletId": "twi-ny.com",
             "state": "live",
             "firstSeenAt": "2026-10-30T16:58:09.613Z"
-          },
-          {
-            "url": "https://www.cureus.com/articles/533807-erdheim-chester-disease-a-case-report-exploring-the-crucial-role-of-multimodality-imaging-and-targeted-specimen-re-review",
-            "outletId": "cureus.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T06:43:10.293Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 4,
-        "candidateCount": 5
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-31T19:29:46.681Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "spellbound-off-broadway-2026",
@@ -251112,6 +252237,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/summer-holiday-the-musical-review-crucible-theatre-sheffield",
+          "host": "thestage.co.uk",
+          "file": "thestage--matt-barton.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -251121,7 +252260,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "summerfolk-west-end-2026",
@@ -253088,7 +254227,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "sweat-off-broadway-2016",
@@ -255190,13 +256329,364 @@
       "openingDate": "2026-07-15",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-sweeney-todd-starring-josh-groban-and-annaleigh-ashford",
+        "https://playbill.com/article/read-reviews-for-immersive-sweeney-todd-off-broadway",
+        "https://playbill.com/article/what-do-critics-think-of-sweeney-todd-in-manila-starring-lea-salonga"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.bloomberg.com/news/articles/2023-03-27/sweeney-todd-josh-groban-and-annaleigh-ashford-broadway-review",
+        "https://cititour.com/NYC_Broadway/Sweeney-Todd-The-Demon-Barber-of-Fleet-Street/1094",
+        "https://www.thedailybeast.com/sweeney-todd-review-josh-groban-and-annaleigh-ashford-shine-in-broadway-revival",
+        "https://deadline.com/2023/03/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-stephen-sondheim-1235310162/",
+        "https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-sweeney-todd-review-20230327-evqibkjo6vb5vhtzavhi2b3vdy-story.html",
+        "https://nypost.com/2023/03/26/sweeney-todd-review-josh-groban-a-gentle-demon-on-broadway/",
+        "https://nystagereview.com/2023/03/26/sweeney-todd-god-thats-great/",
+        "https://nystagereview.com/2023/03/26/sweeney-todd-a-bloody-good-treat-for-sondheim-fans/",
+        "https://www.nysun.com/article/josh-grobans-turn-as-sweeney-todd-should-silence-the-doubters",
+        "https://www.newyorktheatreguide.com/reviews/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford",
+        "https://www.nytimes.com/2023/03/26/theater/sweeney-todd-broadway-review-josh-groban.html",
+        "https://www.queerty.com/josh-groban-and-annaleigh-ashford-lead-a-gloriously-gruesome-revival-of-sweeney-todd-20230326",
+        "https://www.slantmagazine.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-em-review-josh-groban/",
+        "https://www.timeout.com/newyork/theater/sweeney-todd-broadway-review-revival-josh-groban-annaleigh-ashford-stephen-sondheim",
+        "https://www.theatrely.com/post/a-ravishingly-conducted-sweeney-todd-review",
+        "https://www.theatermania.com/news/review-sweeney-todd-stars-josh-groban-and-annaleigh-ashford-as-a-match-made-in-hell_1439874/",
+        "https://www.theaterpizzazz.com/sweeney-todd/",
+        "https://www.usatoday.com/story/entertainment/music/2023/03/27/sweeney-todd-2023-broadway-review-josh-groban/11534358002/",
+        "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-annaleigh-ashford-1235564843/",
+        "https://www.vulture.com/2023/03/theater-review-sweeney-todd-broadway-revival.html",
+        "https://www.wsj.com/articles/sweeney-todd-review-josh-grobans-boyish-demon-barber-151e79dc",
+        "https://www.washingtonpost.com/theater-dance/2023/03/26/groban-ashford-sweeney-todd-sondheim/",
+        "https://www.thewrap.com/sweeney-todd-broadway-review-josh-groban/",
+        "http://www.amny.com/entertainment/sweeney-todd-review-show-sacrifices-story-score-for-gimmick-1.13196397",
+        "http://ew.com/theater/2017/03/01/sweeney-todd-ew-stage-review/",
+        "http://www.thedailybeast.com/articles/2017/03/01/review-treat-yourself-to-sweeney-todd-s-brilliant-feast-of-blood-pie-and-mash.html",
+        "https://dctheatrescene.com/2017/03/01/sweeney-todd-review-murder-pie-shop-gets-tasty-side-pie/",
+        "http://www.hollywoodreporter.com/review/sweeney-todd-demon-barber-fleet-street-theater-review-981597",
+        "http://www.nbcnewyork.com/entertainment/the-scene/Review-Sweeney-Todd-Sondheim-Tooting-415025753.html",
+        "http://www.newsday.com/entertainment/theater/sweeney-todd-review-bloody-good-sondheim-with-pie-if-you-dare-1.13194856",
+        "http://www.nj.com/entertainment/index.ssf/2017/03/review_sweeney_todd_linda_the_penitent_off_broadwa.html",
+        "http://www.nydailynews.com/entertainment/theater-arts/sweeney-todd-fine-boys-wakey-wakey-theater-review-article-1.2985734",
+        "https://www.nytimes.com/2017/03/01/theater/sweeney-todd-review.html",
+        "https://www.timeout.com/newyork/blog/theater-review-sweeney-todd-in-its-site-specific-pie-shop-staging-is-bloody-brilliant-030117 ",
+        "http://www.vulture.com/2017/03/theater-review-a-close-up-sweeney-todd-gets-extra-demonic.html",
+        "https://news.abs-cbn.com/life/10/12/19/theater-review-lea-salonga-totally-kills-it-in-wild-dystopic-sweeney-todd",
+        "https://www.bworldonline.com/sweeney-todd-gets-a-modern-tweak/",
+        "https://lifestyle.inquirer.net/348650/sweeney-todd-bobby-garcias-reinvention-of-the-musical-a-triumph-of-vision-and-staging/",
+        "https://www.rappler.com/rappler-blogs/analette-abesamis/242633-sweeney-todd-musical-manila-dark-side-lea-salonga"
+      ],
+      "dirFiles": 7,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2023-03-27/sweeney-todd-josh-groban-and-annaleigh-ashford-broadway-review",
+          "host": "bloomberg.com",
+          "knownOutletId": "bloomberg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Sweeney-Todd-The-Demon-Barber-of-Fleet-Street/1094",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/sweeney-todd-review-josh-groban-and-annaleigh-ashford-shine-in-broadway-revival",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2023/03/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-stephen-sondheim-1235310162/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-sweeney-todd-review-20230327-evqibkjo6vb5vhtzavhi2b3vdy-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2023/03/26/sweeney-todd-review-josh-groban-a-gentle-demon-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/03/26/sweeney-todd-god-thats-great/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/03/26/sweeney-todd-a-bloody-good-treat-for-sondheim-fans/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/josh-grobans-turn-as-sweeney-todd-should-silence-the-doubters",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/03/26/theater/sweeney-todd-broadway-review-josh-groban.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.queerty.com/josh-groban-and-annaleigh-ashford-lead-a-gloriously-gruesome-revival-of-sweeney-todd-20230326",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-em-review-josh-groban/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/sweeney-todd-broadway-review-revival-josh-groban-annaleigh-ashford-stephen-sondheim",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-ravishingly-conducted-sweeney-todd-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-sweeney-todd-stars-josh-groban-and-annaleigh-ashford-as-a-match-made-in-hell_1439874/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/sweeney-todd/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2023/03/27/sweeney-todd-2023-broadway-review-josh-groban/11534358002/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-annaleigh-ashford-1235564843/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2023/03/theater-review-sweeney-todd-broadway-revival.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/sweeney-todd-review-josh-grobans-boyish-demon-barber-151e79dc",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2023/03/26/groban-ashford-sweeney-todd-sondheim/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/sweeney-todd-broadway-review-josh-groban/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/sweeney-todd-review-show-sacrifices-story-score-for-gimmick-1.13196397",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://ew.com/theater/2017/03/01/sweeney-todd-ew-stage-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/03/01/review-treat-yourself-to-sweeney-todd-s-brilliant-feast-of-blood-pie-and-mash.html",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dctheatrescene.com/2017/03/01/sweeney-todd-review-murder-pie-shop-gets-tasty-side-pie/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/sweeney-todd-demon-barber-fleet-street-theater-review-981597",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Sweeney-Todd-Sondheim-Tooting-415025753.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/sweeney-todd-review-bloody-good-sondheim-with-pie-if-you-dare-1.13194856",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/03/review_sweeney_todd_linda_the_penitent_off_broadwa.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/sweeney-todd-fine-boys-wakey-wakey-theater-review-article-1.2985734",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/03/01/theater/sweeney-todd-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/blog/theater-review-sweeney-todd-in-its-site-specific-pie-shop-staging-is-bloody-brilliant-030117 ",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2017/03/theater-review-a-close-up-sweeney-todd-gets-extra-demonic.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://news.abs-cbn.com/life/10/12/19/theater-review-lea-salonga-totally-kills-it-in-wild-dystopic-sweeney-todd",
+          "host": "abs-cbn.com",
+          "knownOutletId": "abscbnnewscom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.bworldonline.com/sweeney-todd-gets-a-modern-tweak/",
+          "host": "bworldonline.com",
+          "knownOutletId": "businessworld",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://lifestyle.inquirer.net/348650/sweeney-todd-bobby-garcias-reinvention-of-the-musical-a-triumph-of-vision-and-staging/",
+          "host": "inquirer.net",
+          "knownOutletId": "philippine-daily-inquirer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.rappler.com/rappler-blogs/analette-abesamis/242633-sweeney-todd-musical-manila-dark-side-lea-salonga",
+          "host": "rappler.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "matineemouse.substack.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "wave.co",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -255205,11 +256695,319 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 388,
+        "byReason": {
+          "aggregator-internal-nav": 205,
+          "not-http-url": 18,
+          "production-database-listing": 37,
+          "aggregator-section-root": 12,
+          "non-review-host": 60,
+          "non-stage-review": 6,
+          "roundup-page": 48,
+          "bare-host": 2
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-sweeney-todd-starring-josh-groban-and-annaleigh-ashford",
+          "publishDate": "2023-03-26"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-immersive-sweeney-todd-off-broadway",
+          "publishDate": "2017-03-01"
+        },
+        {
+          "url": "https://playbill.com/article/what-do-critics-think-of-sweeney-todd-in-manila-starring-lea-salonga",
+          "publishDate": "2019-10-23"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2023-03-27/sweeney-todd-josh-groban-and-annaleigh-ashford-broadway-review",
+          "host": "bloomberg.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Sweeney-Todd-The-Demon-Barber-of-Fleet-Street/1094",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/sweeney-todd-review-josh-groban-and-annaleigh-ashford-shine-in-broadway-revival",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2023/03/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-stephen-sondheim-1235310162/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-sweeney-todd-review-20230327-evqibkjo6vb5vhtzavhi2b3vdy-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2023/03/26/sweeney-todd-review-josh-groban-a-gentle-demon-on-broadway/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/03/26/sweeney-todd-god-thats-great/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/03/26/sweeney-todd-a-bloody-good-treat-for-sondheim-fans/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/josh-grobans-turn-as-sweeney-todd-should-silence-the-doubters",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/03/26/theater/sweeney-todd-broadway-review-josh-groban.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.queerty.com/josh-groban-and-annaleigh-ashford-lead-a-gloriously-gruesome-revival-of-sweeney-todd-20230326",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-em-review-josh-groban/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/sweeney-todd-broadway-review-revival-josh-groban-annaleigh-ashford-stephen-sondheim",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-ravishingly-conducted-sweeney-todd-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-sweeney-todd-stars-josh-groban-and-annaleigh-ashford-as-a-match-made-in-hell_1439874/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/sweeney-todd/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2023/03/27/sweeney-todd-2023-broadway-review-josh-groban/11534358002/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-annaleigh-ashford-1235564843/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2023/03/theater-review-sweeney-todd-broadway-revival.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/sweeney-todd-review-josh-grobans-boyish-demon-barber-151e79dc",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2023/03/26/groban-ashford-sweeney-todd-sondheim/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/sweeney-todd-broadway-review-josh-groban/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.amny.com/entertainment/sweeney-todd-review-show-sacrifices-story-score-for-gimmick-1.13196397",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://ew.com/theater/2017/03/01/sweeney-todd-ew-stage-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/03/01/review-treat-yourself-to-sweeney-todd-s-brilliant-feast-of-blood-pie-and-mash.html",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://dctheatrescene.com/2017/03/01/sweeney-todd-review-murder-pie-shop-gets-tasty-side-pie/",
+          "host": "dctheatrescene.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/sweeney-todd-demon-barber-fleet-street-theater-review-981597",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Sweeney-Todd-Sondheim-Tooting-415025753.html",
+          "host": "nbcnewyork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/sweeney-todd-review-bloody-good-sondheim-with-pie-if-you-dare-1.13194856",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/03/review_sweeney_todd_linda_the_penitent_off_broadwa.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/sweeney-todd-fine-boys-wakey-wakey-theater-review-article-1.2985734",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2017/03/01/theater/sweeney-todd-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/blog/theater-review-sweeney-todd-in-its-site-specific-pie-shop-staging-is-bloody-brilliant-030117 ",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2017/03/theater-review-a-close-up-sweeney-todd-gets-extra-demonic.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://news.abs-cbn.com/life/10/12/19/theater-review-lea-salonga-totally-kills-it-in-wild-dystopic-sweeney-todd",
+          "host": "abs-cbn.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.bworldonline.com/sweeney-todd-gets-a-modern-tweak/",
+          "host": "bworldonline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://lifestyle.inquirer.net/348650/sweeney-todd-bobby-garcias-reinvention-of-the-musical-a-triumph-of-vision-and-staging/",
+          "host": "inquirer.net",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.rappler.com/rappler-blogs/analette-abesamis/242633-sweeney-todd-musical-manila-dark-side-lea-salonga",
+          "host": "rappler.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -255219,7 +257017,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
@@ -261169,6 +262967,69 @@
         "candidateCount": 12
       },
       "computedAt": "2026-10-31T21:21:46.538Z"
+    },
+    {
+      "showId": "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026",
+      "title": "The Assassination of Margaret Thatcher",
+      "openingDate": "2026-05-08",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/may/08/the-assassination-of-margaret-thatcher-review-everyman-theatre-liverpool-hilary-mantel",
+          "host": "theguardian.com",
+          "file": "guardian--alexis-soloski.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-assassination-of-margaret-thatcher-review-liverpool-everyman-hilary-mantel",
+          "host": "thestage.co.uk",
+          "file": "thestage--matt-barton.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "the-authenticator-west-end-2026",
@@ -269313,6 +271174,43 @@
       "computedAt": "2026-10-31T19:29:46.681Z"
     },
     {
+      "showId": "the-constant-wife-york-royal-regional-2026",
+      "title": "The Constant Wife",
+      "openingDate": "2026-01-27",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-31T22:30:56.337Z"
+    },
+    {
       "showId": "the-cook-regional-2026",
       "title": "The Cook",
       "openingDate": "2026-09-09",
@@ -269375,6 +271273,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-corinthian-review-oran-mor-glasgow",
+          "host": "thestage.co.uk",
+          "file": "thestage--fergus-morgan.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -269384,7 +271296,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "the-creeps-off-broadway-2023",
@@ -273150,6 +275062,43 @@
       "computedAt": "2026-10-28T15:05:14.854Z"
     },
     {
+      "showId": "the-grand-babylon-hotel-hull-truck-regional-2026",
+      "title": "The Grand Babylon Hotel",
+      "openingDate": "2026-03-12",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-31T22:30:56.337Z"
+    },
+    {
       "showId": "the-great-gatsby-2024",
       "title": "The Great Gatsby",
       "openingDate": "2024-04-25",
@@ -276467,6 +278416,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-hen-night-review-oran-mor-glasgow",
+          "host": "thestage.co.uk",
+          "file": "thestage--fergus-morgan.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -276476,7 +278439,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "the-high-life-the-musical-dundee-rep-regional-2026",
@@ -276513,7 +278476,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
@@ -288749,7 +290712,12 @@
         "liveCount": 7,
         "candidateCount": 9
       },
-      "computedAt": "2026-09-25T02:12:11.469Z"
+      "computedAt": "2026-09-25T02:12:11.469Z",
+      "quarantine": {
+        "nextState": "incomplete:6:8",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "the-man-who-fell-with-the-rain-regional-2026",
@@ -291931,6 +293899,43 @@
       "computedAt": "2026-10-31T17:07:08.919Z"
     },
     {
+      "showId": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+      "title": "The Night Larry Kramer Kissed Me",
+      "openingDate": "2026-02-13",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-31T22:30:56.337Z"
+    },
+    {
       "showId": "the-notebook-2024",
       "title": "The Notebook",
       "openingDate": "2024-03-14",
@@ -293128,6 +295133,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-only-way-out-is-in-review-pitlochry-festival-theatre",
+          "host": "thestage.co.uk",
+          "file": "thestage--fergus-morgan.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -293137,7 +295156,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "the-oresteia-west-end-2026",
@@ -308554,7 +310573,12 @@
         "candidateCount": 10
       },
       "computedAt": "2026-10-11T22:49:53.446Z",
-      "automatedExcludedListed": 0
+      "automatedExcludedListed": 0,
+      "quarantine": {
+        "nextState": "complete:9:9",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "the-streets-of-new-york-off-broadway-2021",
@@ -309909,7 +311933,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "the-trojan-women-regional-2026",
@@ -310071,6 +312095,7 @@
         "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
         "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-200pm",
         "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
+        "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
         "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-730pm",
         "https://www.newjerseystage.com/events/2026/10/30/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-30-200pm",
         "https://www.newjerseystage.com/events/2026/11/01/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-11-01-200pm",
@@ -310107,6 +312132,31 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
+          "host": "theatrebeyondbroadway.com",
+          "knownOutletId": "theatre-beyond-broadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrebeyondbroadway--nickson-frederick.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-01",
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.newjerseystage.com/events/2026/10/28/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-28-730pm",
           "host": "newjerseystage.com",
@@ -310169,7 +312219,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -310189,25 +312239,26 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 34,
         "byReason": {
-          "write-path-blocked": 1,
-          "non-review-host": 24,
-          "aggregator-internal-nav": 2,
-          "census-junk-host": 1,
+          "production-database-listing": 1,
+          "non-review-host": 27,
+          "non-stage-review": 1,
           "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "event-listing": 1,
           "ticketing-listing": 1,
-          "non-review-path": 2
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -310220,14 +312271,14 @@
           "outletId": "newjerseystage",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: newjerseystage--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "the-unexpected-3rd-2026: https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-200pm has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-730pm",
@@ -310235,14 +312286,14 @@
           "outletId": "newjerseystage",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: newjerseystage--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "the-unexpected-3rd-2026: https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-730pm has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://www.newjerseystage.com/events/2026/10/30/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-30-200pm",
@@ -310250,14 +312301,14 @@
           "outletId": "newjerseystage",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: newjerseystage--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "the-unexpected-3rd-2026: https://www.newjerseystage.com/events/2026/10/30/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-30-200pm has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://www.newjerseystage.com/events/2026/11/01/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-11-01-200pm",
@@ -310265,14 +312316,14 @@
           "outletId": "newjerseystage",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: newjerseystage--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "the-unexpected-3rd-2026: https://www.newjerseystage.com/events/2026/11/01/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-11-01-200pm has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
@@ -310375,7 +312426,7 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-31T18:47:32.823Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "the-unknown-off-broadway-2026",
@@ -315364,9 +317415,13 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thestage.co.uk/reviews/these-are-our-neighbours-review-citizens-theatre-glasgow",
+        "https://ayoungishperspective.co.uk/2026/10/18/review-these-are-our-neighbours/",
+        "https://theatreandtonic.co.uk/blog/these-are-our-neighbours-at-citizens-theatre-glasgow-review",
+        "https://corrblimey.uk/2026/10/17/review-these-are-our-neighbours-citizens-theatre-glasgow/",
         "https://www.britishtheatreguide.info/reviews/these-are-our-n-citizens-theatr-26134",
-        "https://ayoungishperspective.co.uk/2026/10/18/review-these-are-our-neighbours/"
+        "https://www.thestage.co.uk/reviews/these-are-our-neighbours-review-citizens-theatre-glasgow",
+        "https://coffeetablenotes.blogspot.com/2026/10/these-are-our-neighbours.html",
+        "https://strathclydetelegraph.com/2026/10/17/review-these-are-our-neighbours-citizens-theatre-%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90/"
       ],
       "dirFiles": 4,
       "dirClean": 4,
@@ -315377,18 +317432,21 @@
           "host": "britishtheatreguide.info",
           "knownOutletId": "british-theatre",
           "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "corrblimey.uk",
-          "count": 1
         },
         {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
+          "url": "https://coffeetablenotes.blogspot.com/2026/10/these-are-our-neighbours.html",
+          "host": "coffeetablenotes.blogspot.com",
+          "knownOutletId": "coffee-table-notes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://strathclydetelegraph.com/2026/10/17/review-these-are-our-neighbours-citizens-theatre-%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90/",
+          "host": "strathclydetelegraph.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
+      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -315403,8 +317461,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
-            "accepted": 0,
+            "results": 7,
+            "accepted": 1,
             "error": null
           },
           {
@@ -315424,7 +317482,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 6,
             "error": null
           },
           {
@@ -315434,7 +317492,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -315450,22 +317508,62 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 26,
         "byReason": {
-          "non-review-host": 25,
-          "aggregator-internal-nav": 2,
-          "no-review-evidence": 3,
-          "write-path-blocked": 1,
-          "venue-production-page": 1
+          "non-review-host": 23,
+          "venue-production-page": 1,
+          "no-review-evidence": 2
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://strathclydetelegraph.com/2026/10/17/review-these-are-our-neighbours-citizens-theatre-%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90/",
+          "host": "strathclydetelegraph.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/these-are-our-n-citizens-theatr-26134",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://coffeetablenotes.blogspot.com/2026/10/these-are-our-neighbours.html",
+          "host": "coffeetablenotes.blogspot.com",
+          "outletId": "coffee-table-notes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -315475,19 +317573,45 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.britishtheatreguide.info/reviews/these-are-our-n-citizens-theatr-26134"
+          },
+          {
+            "outletId": "coffee-table-notes",
+            "outlet": "coffee-table-notes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://coffeetablenotes.blogspot.com/2026/10/these-are-our-neighbours.html"
+          },
+          {
+            "outletId": "strathclydetelegraph.com",
+            "outlet": "strathclydetelegraph.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://strathclydetelegraph.com/2026/10/17/review-these-are-our-neighbours-citizens-theatre-%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.thestage.co.uk/reviews/these-are-our-neighbours-review-citizens-theatre-glasgow",
-            "outletId": "thestage.co.uk",
+            "url": "https://ayoungishperspective.co.uk/2026/10/18/review-these-are-our-neighbours/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/10/18/review-these-are-our-neighbours/",
-            "outletId": "ayoungishperspective.co.uk",
+            "url": "https://theatreandtonic.co.uk/blog/these-are-our-neighbours-at-citizens-theatre-glasgow-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T22:30:56.337Z"
+          },
+          {
+            "url": "https://corrblimey.uk/2026/10/17/review-these-are-our-neighbours-citizens-theatre-glasgow/",
+            "outletId": "corrblimey.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T22:30:56.337Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/these-are-our-neighbours-review-citizens-theatre-glasgow",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -315497,13 +317621,27 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://coffeetablenotes.blogspot.com/2026/10/these-are-our-neighbours.html",
+            "outletId": "coffee-table-notes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T22:30:56.337Z"
+          },
+          {
+            "url": "https://strathclydetelegraph.com/2026/10/17/review-these-are-our-neighbours-citizens-theatre-%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90/",
+            "outletId": "strathclydetelegraph.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T22:30:56.337Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
-        "candidateCount": 3
+        "liveCount": 4,
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
       "showId": "this-is-government-off-broadway-2025",
@@ -319987,7 +322125,12 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-09-24T19:52:14.230Z"
+      "computedAt": "2026-09-24T19:52:14.230Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-31T22:30:56.475Z",
+        "lastAt": "2026-10-31T22:30:56.475Z"
+      }
     },
     {
       "showId": "toc-toc-off-broadway-2026",
