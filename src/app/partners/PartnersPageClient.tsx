@@ -128,7 +128,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search shows..."
-            className="w-full sm:w-96 px-4 py-2.5 bg-surface-raised border border-white/10 rounded-card text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50 mb-4"
+            className="w-full sm:w-96 px-4 py-2.5 bg-surface-raised border border-white/10 rounded-card text-white placeholder-fg-placeholder focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50 mb-4"
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-72 overflow-y-auto border border-white/5 rounded-card p-2 bg-surface-raised/30">
             {filteredShows.map(show => {
@@ -201,7 +201,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                     value={utmSource}
                     onChange={e => setUtmSource(e.target.value.replace(/[^a-z0-9_-]/gi, ''))}
                     placeholder="e.g. understudies"
-                    className="w-full px-3 py-2 bg-surface-raised border border-white/10 rounded-card text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50 text-sm"
+                    className="w-full px-3 py-2 bg-surface-raised border border-white/10 rounded-card text-white placeholder-fg-placeholder focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50 text-sm"
                   />
                   <p className="text-[11px] text-fg-muted mt-2">Tags click-throughs so we can see what traffic you drive.</p>
                 </div>

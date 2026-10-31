@@ -235,7 +235,7 @@ export default function EmailCaptureModal({
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@gmail.com"
                 required
-                className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
+                className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
                 autoFocus={shouldAutoFocus}
               />
             </div>
@@ -253,7 +253,7 @@ export default function EmailCaptureModal({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Jane Smith"
-                    className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
+                    className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
                   />
                 </div>
 
@@ -267,7 +267,7 @@ export default function EmailCaptureModal({
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="Broadway Productions LLC"
-                    className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
+                    className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
                   />
                 </div>
 

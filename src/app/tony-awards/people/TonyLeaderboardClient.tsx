@@ -129,7 +129,7 @@ export default function TonyLeaderboardClient({
           value={query}
           onChange={(e) => { setQuery(e.target.value); setShowCount(INITIAL_COUNT); }}
           placeholder="Search by name..."
-          className="w-full sm:w-64 px-3 py-2 text-sm bg-surface-overlay border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-brand/50"
+          className="w-full sm:w-64 px-3 py-2 text-sm bg-surface-overlay border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:ring-1 focus:ring-brand/50"
           aria-label="Search leaderboard by name"
         />
       </div>

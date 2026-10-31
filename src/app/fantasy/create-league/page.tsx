@@ -52,7 +52,7 @@ export default function CreateLeaguePage() {
             <label className="block text-sm text-gray-400 mb-1">League Name *</label>
             <input
               type="text"
-              className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+              className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-fg-placeholder focus:border-brand/50 focus:outline-none transition-colors"
               placeholder="e.g. Theater Nerds 2026"
               value={name}
               onChange={e => setName(e.target.value)}
@@ -65,7 +65,7 @@ export default function CreateLeaguePage() {
             <label className="block text-sm text-gray-400 mb-1">Your Email *</label>
             <input
               type="email"
-              className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+              className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-fg-placeholder focus:border-brand/50 focus:outline-none transition-colors"
               placeholder="you@email.com"
               value={email}
               onChange={e => setEmail(e.target.value)}

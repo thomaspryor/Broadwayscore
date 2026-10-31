@@ -92,7 +92,7 @@ export default function HeaderSubscribeButton() {
                     placeholder="email@example.com"
                     required
                     autoFocus
-                    className="w-full px-3 py-2.5 bg-surface border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
+                    className="w-full px-3 py-2.5 bg-surface border border-white/10 rounded-lg text-sm text-white placeholder-fg-placeholder focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
                   />
                   <button
                     type="submit"

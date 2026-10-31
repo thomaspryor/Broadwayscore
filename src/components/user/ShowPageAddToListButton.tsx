@@ -207,7 +207,7 @@ export default function ShowPageAddToListButton({ showId, variant = 'default' }:
                   onChange={e => setNewName(e.target.value)}
                   placeholder="List name"
                   maxLength={100}
-                  className="flex-1 bg-transparent text-sm text-white placeholder-gray-500 outline-none border-b border-white/20 focus:border-brand/50 px-1 py-1"
+                  className="flex-1 bg-transparent text-sm text-white placeholder-fg-placeholder outline-none border-b border-white/20 focus:border-brand/50 px-1 py-1"
                 />
                 <button
                   type="submit"

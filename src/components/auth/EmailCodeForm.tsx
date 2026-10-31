@@ -81,7 +81,7 @@ export default function EmailCodeForm({ onSendCode, onVerifyCode, onBack, disabl
     }
   };
 
-  const inputClass = 'w-full px-4 py-3 bg-surface-overlay text-white text-sm rounded-lg border border-white/10 placeholder-gray-500 focus:outline-none focus:border-white/40 disabled:opacity-50';
+  const inputClass = 'w-full px-4 py-3 bg-surface-overlay text-white text-sm rounded-lg border border-white/10 placeholder-fg-placeholder focus:outline-none focus:border-white/40 disabled:opacity-50';
   const primaryClass = 'w-full px-4 py-3 bg-white text-gray-800 font-semibold text-sm rounded-lg hover:bg-gray-100 disabled:opacity-50 transition-colors';
   const linkClass = 'text-sm text-gray-400 underline hover:text-gray-200 disabled:opacity-50';
 

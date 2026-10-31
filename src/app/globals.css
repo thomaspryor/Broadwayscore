@@ -435,7 +435,7 @@
 
   /* Search input - enhanced */
   .search-input {
-    @apply w-full px-5 py-3.5 bg-surface-raised border border-white/10 rounded-card text-white placeholder-gray-500;
+    @apply w-full px-5 py-3.5 bg-surface-raised border border-white/10 rounded-card text-white placeholder-fg-placeholder;
     @apply focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all;
   }
 

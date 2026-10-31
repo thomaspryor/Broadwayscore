@@ -352,7 +352,7 @@ function FantasyDraftInner() {
             <input
               id="fantasy-email"
               type="email"
-              className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+              className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-fg-placeholder focus:border-brand/50 focus:outline-none transition-colors"
               placeholder="you@email.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
@@ -368,7 +368,7 @@ function FantasyDraftInner() {
               <input
                 id="fantasy-team-name"
                 type="text"
-                className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+                className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-fg-placeholder focus:border-brand/50 focus:outline-none transition-colors"
                 placeholder="Optional"
                 value={teamName}
                 onChange={e => setTeamName(e.target.value)}
@@ -393,7 +393,7 @@ function FantasyDraftInner() {
                 <input
                   id="fantasy-league-name"
                   type="text"
-                  className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+                  className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-fg-placeholder focus:border-brand/50 focus:outline-none transition-colors"
                   placeholder="Optional, or create a league first"
                   value={leagueName}
                   onChange={e => setLeagueName(e.target.value)}
@@ -469,7 +469,7 @@ function FantasyDraftInner() {
               ) : (
                 <input
                   type={q.type === 'number' ? 'number' : 'text'}
-                  className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+                  className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-fg-placeholder focus:border-brand/50 focus:outline-none transition-colors"
                   placeholder={q.type === 'number' ? 'Your guess' : 'Your answer'}
                   value={tiebreakers[q.id] || ''}
                   onChange={e => setTiebreakers(prev => ({ ...prev, [q.id]: e.target.value }))}

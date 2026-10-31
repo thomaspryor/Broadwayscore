@@ -267,7 +267,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
             required
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? `${id}-error` : undefined}
-            className="min-h-[44px] w-full min-w-0 flex-1 rounded-lg border border-white/10 bg-surface px-3.5 text-base text-white placeholder-gray-500 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-brand sm:text-sm"
+            className="min-h-[44px] w-full min-w-0 flex-1 rounded-lg border border-white/10 bg-surface px-3.5 text-base text-white placeholder-fg-placeholder focus:border-transparent focus:outline-none focus:ring-2 focus:ring-brand sm:text-sm"
           />
           <button
             type="submit"

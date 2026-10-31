@@ -259,7 +259,7 @@ export default function RatingEditor({
           // text-base on mobile is load-bearing: a sub-16px font makes iOS
           // Safari zoom the whole page on focus and stay zoomed after save
           // (owner report, 2026-07-17). Never drop below 16px here.
-          className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
+          className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
         />
         <div className="flex items-center justify-between mt-0.5">
           <div className="flex items-center gap-1.5 text-xs text-fg-muted">

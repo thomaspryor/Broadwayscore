@@ -27,12 +27,12 @@ function checkToken(root = ROOT, cfgText) {
   return { token, failures };
 }
 
-const LEFTOVER = /text-gray-(500|600)/;
+const LEFTOVER = /(?:text|placeholder)-gray-(500|600)/;
 // SVG <text> labels (chart axes) take their color from fill-*, not text-*.
 const FILL_LEFTOVER = /fill-gray-(500|600)/;
 const DECORATIVE = /<svg|<path|starClass|stars\.push/;
 
-/** Finds text-gray-500/600 left in src (line-level; class tokens never span lines). */
+/** Finds text-/placeholder-gray-500/600 left in src (line-level; class tokens never span lines). */
 function findLeftovers(root = ROOT) {
   const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(path.join(d, e.name)) : /\.(tsx|ts|jsx|js|css)$/.test(e.name) ? [path.join(d, e.name)] : []);
   const hits = [];

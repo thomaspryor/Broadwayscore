@@ -136,7 +136,7 @@ export default function FantasyShowPicker({
         {isOpen ? (
           <input
             type="text"
-            className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-base sm:text-sm"
+            className="flex-1 bg-transparent text-white placeholder-fg-placeholder outline-none text-base sm:text-sm"
             placeholder="Search shows..."
             value={search}
             onChange={e => setSearch(e.target.value)}
