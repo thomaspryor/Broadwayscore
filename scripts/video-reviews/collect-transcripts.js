@@ -123,7 +123,9 @@ async function main() {
 
   for (const file of discoveryFiles) {
     const data = JSON.parse(fs.readFileSync(path.join(DISCOVERY_DIR, file), 'utf8'));
-    if (creatorFilter && data.handle.toLowerCase() !== creatorFilter.toLowerCase()) continue;
+    // Match handle or discovery file name (the creator id), as pre-classify-titles.js does (BRO-6095)
+    if (creatorFilter && data.handle.toLowerCase() !== creatorFilter.toLowerCase()
+        && file.replace(/\.json$/, '').toLowerCase() !== creatorFilter.toLowerCase()) continue;
 
     // Collect videos flagged as review candidates (by title heuristics OR by LLM pre-classification)
     const candidates = data.videos.filter(v => v.isReviewCandidate || v.llmFlagged);
