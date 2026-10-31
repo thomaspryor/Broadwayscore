@@ -780,3 +780,27 @@ test('observed release with no assumed +2h census keeps the no-census reason in 
   assert.equal(o['coverage-2h'].status, 'unknown');
   assert.match(o['coverage-2h'].detail, /no-census-yet/);
 });
+
+// BRO-6701 (Medea 2026): aggregator rows for OTHER Medea productions read as missing reviews of the night.
+test('unionCensus drops legacy NYT archive rows (an older production of a same-title show)', () => {
+  const { unionCensus, isLegacyArchiveUrl } = require('./review-census.js');
+  const legacy = 'http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&res=9B04E0D9173AF932A25751C1A9649C8B63&fta=y';
+  assert.equal(isLegacyArchiveUrl(legacy), true);
+  assert.equal(isLegacyArchiveUrl('https://www.nytimes.com/2026/10/30/theater/medea-review.html'), false);
+  const c = unionCensus([{ source: 'dtli', reviews: [{ outlet: 'The New York Times', critic: 'Unknown', url: legacy }, { outlet: 'Variety', url: 'https://variety.com/x' }] }]);
+  assert.deepEqual(c.entries.map((e) => e.outletId), ['variety']);
+});
+
+test('censusExclusions: a listing whose exact URL is wrongProduction leaves the census even when first seen before the window', () => {
+  const url = 'http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/';
+  const census = { entries: [{ outletId: 'a-younger-theatre', url }, { outletId: 'variety', url: 'https://variety.com/x' }], count: 2, sourcesPresent: ['show-score'], hadAnySource: true };
+  const files = [{ outletId: 'a-younger-theatre', url, firstSeenAt: '2026-10-30T17:31:44.716Z', publishDate: 'June 2nd, 2013', includable: false, reason: 'wrongProduction' }];
+  const opts = { windowStartMs: Date.parse('2026-10-30T22:00:00.000Z'), night: '2026-10-30' }; // file first seen 17:31, before the window
+  assert.deepEqual(stateLib.censusExclusions(census, files, opts).map((e) => e.outletId), ['a-younger-theatre']);
+  // same outlet, different URL: the night's real review is still owed
+  assert.deepEqual(stateLib.censusExclusions({ ...census, entries: [{ outletId: 'a-younger-theatre', url: 'https://ayoungertheatre.com/medea-2026/' }] }, files, opts), []);
+  // end to end: the Medea record no longer fails coverage-2h on the wrong-production listing
+  const r = nightRec({}, files);
+  r.reference['2h'] = lib.coverageAt(r, census, Date.parse(at(120)), { excluded: stateLib.censusExclusions(census, files, opts) });
+  assert.deepEqual(r.reference['2h'].missing, ['variety']);
+});

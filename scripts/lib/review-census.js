@@ -249,6 +249,15 @@ function sourceExtractors(market = 'west-end') {
  * @param {Array<{source:string, reviews:Array}>} perSource
  * @returns {{entries:Array, count:number, sourcesPresent:string[], hadAnySource:boolean}}
  */
+/**
+ * BRO-6701: retired NYT archive hosts (theater.nytimes.com/mem/, query.nytimes.com) only carry pre-2008
+ * reviews, so a roundup row there is an older production of a same-title show (Medea 2026 inherited one
+ * from DTLI). A 2026 review can never live on them. Host match only; nothing is read out of the path.
+ */
+function isLegacyArchiveUrl(url) {
+  return /^https?:\/\/(theater|query)\.nytimes\.com\//i.test(String(url || '').trim());
+}
+
 function unionCensus(perSource) {
   const byOutlet = new Map();
   const sourcesPresent = [];
@@ -256,6 +265,7 @@ function unionCensus(perSource) {
     if (!Array.isArray(reviews) || reviews.length === 0) continue;
     sourcesPresent.push(source);
     for (const r of reviews) {
+      if (isLegacyArchiveUrl(r.url)) continue;
       // A source's own r.outletId always wins when present — some sources (e.g.
       // theatre-reviews) resolve shared-domain edition splits (telegraph vs
       // sunday-telegraph, timeout vs timeout-london) via byline/section text that
@@ -468,7 +478,7 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
 }
 
 module.exports = {
-  buildCensusFromArchives, unionCensus, censusVerdict, CI_UNFETCHABLE_OUTLETS,
+  buildCensusFromArchives, unionCensus, isLegacyArchiveUrl, censusVerdict, CI_UNFETCHABLE_OUTLETS,
   sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
   standingOutletsSource, candidateStatesFor, outletVariants, outletInSet,
 };

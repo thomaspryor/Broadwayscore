@@ -22,6 +22,10 @@ const DEFAULT_DIR = path.join(ROOT, 'data', 'review-texts');
 // explainExclusion reasons that mean "the same review is live under another outlet".
 const SYNDICATED_REASONS = new Set(['knownSyndicationSecondary', 'syndicatedDuplicate', 'crossOutletDuplicate']);
 
+// Reasons that say the listed article is about a different production/show, not this night's review.
+const WRONG_PRODUCTION_REASONS = new Set(['wrongProduction', 'wrongShow']);
+const urlKey = (u) => String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+
 function outletIdOfFile(d) {
   const raw = String(d.outletId || d.outlet || '').trim();
   if (!raw) return null; // normalizeOutlet('') returns 'unknown', which would read as a real outlet
@@ -59,6 +63,7 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
       // BRO-6652: when the text was scored (a paywalled review can be listed long before its text arrives).
       scoredAt: (d.llmMetadata && d.llmMetadata.scoredAt) || null,
       publishDate: d.publishDate || null,
+      url: d.url || null,
       includable: reason === null,
       reason: reason || null,
       syndicatedUnder,
@@ -79,6 +84,12 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
  */
 function censusExclusions(census, files, opts = {}) {
   const { windowStartMs = null, night = null } = opts;
+  // BRO-6701: a listing whose exact URL the rebuild already judged another production's review (Medea: an
+  // aggregator row for a 2013 staging) is not a review of the night, whenever the file was first seen.
+  const wrongListing = new Map();
+  for (const f of files) {
+    if (f.url && !f.includable && WRONG_PRODUCTION_REASONS.has(f.reason)) wrongListing.set(urlKey(f.url), f);
+  }
   if (windowStartMs != null) {
     files = files.filter((f) => {
       const seen = f.firstSeenAt ? Date.parse(f.firstSeenAt) : NaN;
@@ -97,6 +108,8 @@ function censusExclusions(census, files, opts = {}) {
   }
   const out = [];
   for (const e of census.entries) {
+    const wl = e.url && wrongListing.get(urlKey(e.url));
+    if (wl) { out.push({ outletId: e.outletId, reason: `listing is another production's review (${wl.reason})` }); continue; }
     const fs_ = byOutlet.get(e.outletId) || byOutlet.get(e.outletId.replace(/-london$/, '')) || byOutlet.get(`${e.outletId}-london`) || [];
     if (!fs_.length || fs_.some((f) => f.includable)) continue;
     const synd = fs_.find((f) => f.syndicatedUnder || SYNDICATED_REASONS.has(f.reason));
