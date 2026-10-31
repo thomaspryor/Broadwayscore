@@ -20,6 +20,7 @@ permissions:
   actions: read   # the debounce lists this workflow's recent runs
 
 concurrency:
+  # concurrency-queue-ok: a debounce. One wake starts one worker; a wake queued behind a running one adds nothing, so keeping only the newest pending run is correct.
   group: board-worker-wake
   cancel-in-progress: false
 
