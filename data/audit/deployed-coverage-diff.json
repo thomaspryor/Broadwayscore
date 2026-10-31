@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-10-31T10:20:33.226Z",
+  "generatedAt": "2026-10-31T10:48:37.259Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 302,
-  "clean": 302,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 301,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "antigone-tron-regional-2026",
+      "title": "Antigone",
+      "openingDate": "2026-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.93 vs local 83.51 (Δ0.58)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-10-31T10:48:28.289Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
