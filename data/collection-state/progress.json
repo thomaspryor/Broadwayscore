@@ -862,7 +862,11 @@
     "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
     "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
-    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/timeout--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1243,7 +1247,8 @@
       "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
       "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
       "data/review-texts/surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-      "data/review-texts/murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json"
     ],
     "archive": [
       "frozen-2018/village-voice--michael-feingold.json",
@@ -1415,7 +1420,7 @@
     ]
   },
   "startTime": "2026-10-30T19:50:43.255Z",
-  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
   "log": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -1611,6 +1616,28 @@
       "t": "2026-10-31T04:05:33.029Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T04:09:40.462Z",
+      "event": "bb-session",
+      "session": "698919db",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T04:09:41.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T04:09:51.374Z",
+      "event": "bb-session",
+      "session": "c5a1f43a",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T04:09:51.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
