@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const { findStaleCreators, runWithRetries, buildListingCommand } = require('../lib/video-pipeline-health');
 const { preserveLlmFlags } = require('../lib/video-discovery-merge');
+const { creatorHandle } = require('../lib/video-creator-handle');
 
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
 const DISCOVERY_DIR = path.join(__dirname, '../../data/video-reviews-discovery');
@@ -38,7 +39,7 @@ const REVIEW_SIGNALS = /review|★|thoughts on|i saw|we saw|i went|we went|my ta
 const NON_REVIEW_SIGNALS = /^(BREAKING|EXCLUSIVE|URGENT|WILD|UPSETTING).*tea|casting rumor|new cast announce|replacement announce/i;
 
 function scanCreator(creator, limit) {
-  const handle = creator.platforms.tiktok?.handle || creator.platforms.youtube?.channelHandle;
+  const handle = creatorHandle(creator);
   const platform = creator.primaryPlatform;
 
   let url;
