@@ -2050826,21 +2050826,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T22:23:07.490Z",
-    "completedAt": "2026-10-31T22:23:21.717Z",
-    "totalReviews": 5,
-    "processed": 3,
-    "skipped": 2,
+    "startedAt": "2026-10-31T22:24:44.450Z",
+    "completedAt": "2026-10-31T22:25:24.548Z",
+    "totalReviews": 12,
+    "processed": 8,
+    "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 18883,
-      "output": 914,
-      "cacheRead": 11421,
+      "input": 47836,
+      "output": 2487,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 46662
+      "total": 120429
     },
-    "costUsd": 0.0703591,
-    "runId": "41247358835",
+    "costUsd": 0.1809258,
+    "runId": "41247492026",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2089324,6 +2089324,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-notebooks-of-leonardo-da-vinci-regional-2022",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 1,
+          "down": 1,
+          "total": 8
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-ocean-at-the-end-of-the-lane-west-end-2019",
         "ourDistribution": {
           "up": 8,
@@ -2091417,16 +2091427,6 @@
           "flat": 1,
           "down": 1,
           "total": 11
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "the-things-i-could-never-tell-steven-regional-2021",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 1,
-          "down": 0,
-          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2095935,8 +2095935,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T22:28:19.261Z",
-    "completedAt": "2026-10-31T22:28:19.263Z",
+    "startedAt": "2026-10-31T22:30:22.363Z",
+    "completedAt": "2026-10-31T22:30:22.365Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2095949,7 +2095949,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41247358835",
+    "runId": "41247492026",
     "source": "comparative-rescore",
     "errorDetails": []
   }
