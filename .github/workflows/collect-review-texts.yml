@@ -389,6 +389,7 @@ jobs:
         continue-on-error: true
 
 
+      # always-commit-ok: private-repo checkpoint push; partial progress must be kept and the public data gate (validate-data.js) still guards the rebuild that publishes it (BRO-5591)
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
@@ -811,6 +812,7 @@ jobs:
           fi
         continue-on-error: true
 
+      # always-commit-ok: private-repo checkpoint push; partial progress must be kept and the public data gate (validate-data.js) still guards the rebuild that publishes it (BRO-5591)
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts

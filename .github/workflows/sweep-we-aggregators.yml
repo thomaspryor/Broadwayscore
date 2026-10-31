@@ -224,6 +224,7 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      # always-commit-ok: private-repo checkpoint push; partial progress must be kept and the public data gate (validate-data.js) still guards the rebuild that publishes it (BRO-5591)
       - name: Push review-texts to private repo
         if: always() && inputs.dry_run != true
         uses: ./.github/actions/push-review-texts
@@ -231,6 +232,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from sweep-we-aggregators'
 
+      # always-commit-ok: private-repo checkpoint push; partial progress must be kept and the public data gate (validate-data.js) still guards the rebuild that publishes it (BRO-5591)
       - name: Push aggregator archives to private repo
         if: always() && inputs.dry_run != true
         uses: ./.github/actions/push-aggregator-archive

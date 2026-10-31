@@ -468,12 +468,14 @@ jobs:
           fi
 
 
+      # always-commit-ok: private-repo checkpoint push; partial progress must be kept and the public data gate (validate-data.js) still guards the rebuild that publishes it (BRO-5591)
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Gather Review Data — Commit review data"
+      # always-commit-ok: private-repo checkpoint push; partial progress must be kept and the public data gate (validate-data.js) still guards the rebuild that publishes it (BRO-5591)
       - name: Push aggregator-archive to private repo
         if: always()
         uses: ./.github/actions/push-aggregator-archive

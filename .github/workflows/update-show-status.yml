@@ -918,6 +918,7 @@ jobs:
           fi
           echo "Pushed audit: thomaspryor/broadway-scorecard-data:${REMOTE_PATH}"
 
+      # always-commit-ok: private-repo checkpoint push; partial progress must be kept and the public data gate (validate-data.js) still guards the rebuild that publishes it (BRO-5591)
       - name: Push aggregator-archive to private repo
         if: always()
         uses: ./.github/actions/push-aggregator-archive

@@ -132,6 +132,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from auto-maintain'
 
+      # always-commit-ok: auto-maintain commit is deliberately best-effort; the validate step is continue-on-error and test.yml gates the published data (BRO-5591)
       - name: Commit and push non-gitignored changes
         if: always() && steps.changes.outputs.has_changes == 'true'
         # Task #574: bare stage-data-changes.sh stages all of data/, so a
