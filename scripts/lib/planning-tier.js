@@ -17,10 +17,10 @@ const MODERATE_NEW_FILES_IN_NEW_DIR = 2;
 const APPROVAL_TOKEN = 'OWNER-PLAN-APPROVED:';
 
 // Where a "new directory" is a meaningful signal. Data, docs and tests are not systems.
-const WATCHED_ROOTS = /^(src|scripts|supabase|\.github|\.claude)\//;
+const WATCHED_ROOTS = /^(src|scripts|supabase|\.github|\.claude|tools|app|lib|packages)\//;
 const EXEMPT = /^(data|memory|cloud-memory|docs|public|node_modules|\.claude\/worktrees)\/|(^|\/)(tests?|__tests__)\/|\.test\.(m?js|tsx?)$|\.md$/;
 const WORKFLOW_RE = /^\.github\/workflows\/[^/]+\.ya?ml$/;
-const SECRET_RE = /\bsecrets\.([A-Z][A-Z0-9_]{2,})/g;
+const SECRET_RE = /\bsecrets(?:\.|\[\s*['"])([A-Z][A-Z0-9_]{2,})/g;
 // GitHub-provided, not a secret anyone has to create.
 const BUILTIN_SECRETS = new Set(['GITHUB_TOKEN']);
 
@@ -49,12 +49,34 @@ function classify(facts) {
   return { tier: 'simple', triggers: [] };
 }
 
-function isApproved({ verdicts = [], sessionId = null, now = Date.now(), transcriptText = '' }) {
-  if (findFreshPlanVerdict({ verdicts, sessionId, now })) return { ok: true, via: 'plan-review verdict' };
-  const i = String(transcriptText).indexOf(APPROVAL_TOKEN);
-  if (i >= 0 && /\S{3}/.test(String(transcriptText).slice(i + APPROVAL_TOKEN.length, i + APPROVAL_TOKEN.length + 40))) {
-    return { ok: true, via: APPROVAL_TOKEN };
+// Owner-approval token: only genuine user-role text counts. System reminders (which quote
+// CLAUDE.md, including this very token), the hook's own output and assistant text are ignored,
+// and the quote must be real words, not the "<quote>" placeholder.
+const PLAN_REVIEWERS = new Set(['plan-review', 'owner-override']);
+
+function userTextFromTranscript(raw) {
+  const out = [];
+  for (const line of String(raw).split('\n')) {
+    if (!line.includes('"user"')) continue;
+    let e; try { e = JSON.parse(line); } catch { continue; }
+    if (!e || e.type !== 'user' || !e.message) continue;
+    const c = e.message.content;
+    const parts = typeof c === 'string' ? [c] : Array.isArray(c) ? c.filter((b) => b && b.type === 'text').map((b) => b.text) : [];
+    for (const t of parts) out.push(String(t).replace(/<system-reminder>[\s\S]*?<\/system-reminder>/g, ''));
   }
+  return out.join('\n');
+}
+
+function hasOwnerApproval(raw) {
+  const t = userTextFromTranscript(raw);
+  return /OWNER-PLAN-APPROVED:\s*["\u201c]?(?!<)[A-Za-z0-9][^\n]{2,}/.test(t);
+}
+
+function isApproved({ verdicts = [], sessionId = null, now = Date.now(), transcriptText = '' }) {
+  // A moderate-tier /second-opinion verdict must not unlock the substantial tier.
+  const planOnly = verdicts.filter((v) => v && PLAN_REVIEWERS.has(v.reviewer));
+  if (sessionId && findFreshPlanVerdict({ verdicts: planOnly, sessionId, now })) return { ok: true, via: 'plan-review verdict' };
+  if (hasOwnerApproval(transcriptText)) return { ok: true, via: APPROVAL_TOKEN };
   return { ok: false, via: null };
 }
 
@@ -73,4 +95,4 @@ function decide({ tier, triggers = [], approved = false, now = Date.now(), mode 
     : { action: 'warn', message: `Planning tier: SUBSTANTIAL (${why}), no plan-review verdict or owner approval yet. Advisory now; it blocks from ${new Date(enforceAfter).toISOString().slice(0, 10)}. ${how}` };
 }
 
-module.exports = { classify, decide, isApproved, secretsIn, ENFORCE_AFTER_MS, APPROVAL_TOKEN, VERDICT_TTL_MS, SUBSTANTIAL_NEW_FILES_IN_NEW_DIR };
+module.exports = { hasOwnerApproval, classify, decide, isApproved, secretsIn, ENFORCE_AFTER_MS, APPROVAL_TOKEN, VERDICT_TTL_MS, SUBSTANTIAL_NEW_FILES_IN_NEW_DIR };

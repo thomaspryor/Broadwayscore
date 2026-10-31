@@ -22,17 +22,27 @@ function gather(input) {
   let dirIsNew = false;
   let newFilesInDir = 1;
   if (isNewFile && dir !== '.') {
-    const tracked = git(['ls-files', '--', dir + '/'], top).split('\n').filter(Boolean);
-    dirIsNew = tracked.length === 0;
-    if (dirIsNew) {
-      const present = fs.existsSync(path.join(top, dir)) ? fs.readdirSync(path.join(top, dir)).filter((f) => fs.statSync(path.join(top, dir, f)).isFile()).length : 0;
-      newFilesInDir = present + 1;
+    // Topmost ancestor directory (below the repo root) with no tracked files = the new system's root.
+    const parts = dir.split('/');
+    let rootDir = null;
+    for (let i = 1; i <= parts.length; i++) {
+      const d = parts.slice(0, i).join('/');
+      if (git(['ls-files', '--', d + '/'], top).split('\n').filter(Boolean).length === 0) { rootDir = d; break; }
+    }
+    if (rootDir) {
+      let ignored = false;
+      try { git(['check-ignore', '-q', '--', path.join(rootDir, 'x')], top); ignored = true; } catch { /* exit 1 = not ignored */ }
+      if (!ignored) {
+        dirIsNew = true;
+        const count = (d) => { let n = 0; try { for (const e of fs.readdirSync(d, { withFileTypes: true })) n += e.isDirectory() ? count(path.join(d, e.name)) : 1; } catch { /* gone */ } return n; };
+        newFilesInDir = count(path.join(top, rootDir)) + 1;
+      }
     }
   }
   let knownSecrets = new Set();
   const content = (input.tool_input && input.tool_input.content) || '';
   if (isNewFile && /secrets\./.test(content)) {
-    try { for (const m of git(['grep', '-ohE', 'secrets\\.[A-Z][A-Z0-9_]+', '--', '.github'], top).split('\n')) if (m) knownSecrets.add(m.slice(8)); } catch { /* no matches */ }
+    try { for (const m of git(['grep', '-ohE', 'secrets(\\.|\\[ *[\'\"])[A-Z][A-Z0-9_]+', '--', '.github'], top).split('\n')) if (m) knownSecrets.add(m.replace(/^secrets(\.|\[\s*['\"])/, '')); } catch { /* no matches */ }
   }
   return { top, facts: { relPath: rel.split(path.sep).join('/'), isNewFile, dirIsNew, newFilesInDir, content, knownSecrets } };
 }
@@ -46,7 +56,7 @@ async function main() {
   const { tier, triggers } = pt.classify(g.facts);
   if (tier === 'simple') return 0;
   let verdicts = [];
-  try { const rg = await import(path.join(__dirname, 'review-gate.mjs')); verdicts = rg.readLedger(rg.canonicalRoot(g.top)); } catch { verdicts = []; }
+  try { const rg = await import(path.join(__dirname, 'review-gate.mjs')); verdicts = rg.readLedger(rg.canonicalRoot(process.env.CLAUDE_PROJECT_DIR || process.cwd())); } catch { verdicts = []; }
   let transcriptText = '';
   try { if (input.transcript_path) transcriptText = fs.readFileSync(input.transcript_path, 'utf8'); } catch { /* none */ }
   const approved = pt.isApproved({ verdicts: Array.isArray(verdicts) ? verdicts : [], sessionId: input.session_id || null, now: Date.now(), transcriptText }).ok;
