@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T23:26:11.577Z",
+  "timestamp": "2026-10-31T23:40:51.144Z",
   "stats": {
-    "totalReviews": 76578,
-    "alreadyFlagged": 21731,
+    "totalReviews": 76630,
+    "alreadyFlagged": 21734,
     "dateGuardCatches": 238,
-    "directorMismatch": 3244,
-    "tvFilmSignals": 2177,
+    "directorMismatch": 3247,
+    "tvFilmSignals": 2178,
     "londonSignals": 3520,
     "offBroadwaySignals": 721,
     "yearMismatch": 323,
-    "noPublishDate": 8681
+    "noPublishDate": 8682
   },
   "findings": [
     {
@@ -1430,6 +1430,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023",
+      "file": "chicago-reader--kelly-kleiman.json",
+      "publishDate": "2023-09-14",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/the-love-language-of-dance/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
         }
       ]
     },
@@ -30003,6 +30016,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "i-hate-it-here-regional-2021",
+      "file": "chicagoonstage--karen-topham.json",
+      "score": 87,
+      "publishDate": "2021-07-16",
+      "url": "https://www.chicagoonstage.com/i-hate-it-here-pretty-much-sums-up-2020/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -71036,6 +71063,20 @@
       ]
     },
     {
+      "showId": "the-sound-inside-regional-2021",
+      "file": "wttw--hedy-weiss.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://news.wttw.com/2021/05/14/goodman-theatre-play-reflects-life-death-love-and-sound-inside",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from the-sound-inside-2019"
+        }
+      ]
+    },
+    {
       "showId": "the-sound-of-music-tour-2025",
       "file": "broadwayworld--aa-cristi.json",
       "publishDate": "2026-09-29",
@@ -78902,6 +78943,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-regional-2021",
+      "file": "chicagotheaterandarts--mira-temkin.json",
+      "publishDate": "2021-12-10",
+      "url": "https://chicagotheaterandarts.com/2021/12/10/grab-a-handful-of-peanuts/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from youre-a-good-man-charlie-brown-1999"
         }
       ]
     },
