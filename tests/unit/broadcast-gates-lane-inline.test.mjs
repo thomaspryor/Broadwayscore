@@ -14,7 +14,6 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.join(import.meta.dirname, '..', '..');
@@ -177,11 +176,4 @@ test('wiring: the rebuild stamps laneSource from laneRowSource, and the workflow
   assert.match(onr, /includes\(rowConfidence\(r\)\)/);
   assert.equal(rowConfidence({ llmScore: { confidence: 'high' } }), 'high');
   assert.equal(rowConfidence({ scoreConfidence: 'low', llmScore: { confidence: 'high' } }), 'low');
-});
-
-test('a --send-to preview without RESEND_API_KEY fails loudly instead of exiting 0 unsent', () => {
-  const env = { ...process.env }; delete env.RESEND_API_KEY;
-  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'send-opening-night-broadcast.js'), '--send-to=nobody@example.invalid'], { env, encoding: 'utf8' });
-  assert.equal(r.status, 1, r.stdout + r.stderr);
-  assert.match(r.stderr, /NOT sent/);
 });

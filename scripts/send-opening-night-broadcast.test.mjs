@@ -19,6 +19,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const mod = require('./send-opening-night-broadcast.js');
@@ -484,4 +485,24 @@ test('BRO-6634 remindersDue: an update email restarts the gap; age text uses dra
   const [e] = refresh.remindersDue(shows, T0 + 11 * H);
   assert.ok(e);
   assert.equal(Math.round(e.draftAgeHours), 11);
+});
+
+// BRO-6623: an asked-for --send-to preview without RESEND_API_KEY used to print "skipping draft creation"
+// and exit 0 unsent. The key check runs before any data load, lock, tracker sync or Resend call.
+function runWithoutKey(args) {
+  const env = { ...process.env }; delete env.RESEND_API_KEY;
+  return spawnSync(process.execPath, [path.join(import.meta.dirname, 'send-opening-night-broadcast.js'), ...args], { env, encoding: 'utf8' });
+}
+test('--send-to without RESEND_API_KEY exits 1 and says the preview was NOT sent (also for an empty --send-to=)', () => {
+  for (const arg of ['--send-to=nobody@example.invalid', '--send-to=']) {
+    const r = runWithoutKey([arg]);
+    assert.equal(r.status, 1, `${arg}: ${r.stdout}${r.stderr}`);
+    assert.match(r.stderr, /NOT sent/);
+    assert.doesNotMatch(r.stdout + r.stderr, /^Preview sent to/m);
+  }
+});
+test('the draft path without RESEND_API_KEY still skips quietly with exit 0', () => {
+  const r = runWithoutKey([]);
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stdout, /skipping draft creation/);
 });

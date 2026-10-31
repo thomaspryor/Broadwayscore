@@ -504,7 +504,8 @@ else
     > /tmp/sim-preview.log 2>&1 || true
   log_output /tmp/sim-preview.log
 
-  if grep -qi "sent\|delivered\|email" /tmp/sim-preview.log 2>/dev/null; then
+  # BRO-6623: match the script's success line only; "preview ... NOT sent" (no key) also contains "sent".
+  if grep -q "^Preview sent to" /tmp/sim-preview.log 2>/dev/null; then
     pass "Preview email sent to $OWNER_EMAIL"
   else
     fail "Preview email may not have sent — check log"
@@ -533,7 +534,7 @@ else
     --market="$MARKET" --lookback="$LOOKBACK" --budget=100 --send-to="$OWNER_EMAIL" \
     > /tmp/sim-preview2.log 2>&1 || true
 
-  if grep -qi "already.*preview\|skipping.*duplicate\|preview.*sent" /tmp/sim-preview2.log 2>/dev/null; then
+  if grep -qi "preview already sent\|preview was sent by another run" /tmp/sim-preview2.log 2>/dev/null; then
     pass "Fix K: Duplicate preview correctly blocked"
   else
     warn "Could not confirm preview dedup — check /tmp/sim-preview2.log"
