@@ -68,8 +68,10 @@ function parseBtgListing(html) {
     const href = (/href="(\/reviews\/[a-z0-9-]+-\d+)"/.exec(b) || [])[1];
     const title = (/<h3>([^<]+)<\/h3>/.exec(b) || [])[1];
     const start = (/<time datetime="(\d{4}-\d{2}-\d{2})"/.exec(b) || [])[1];
+    // prod-info: <p>producer</p><p>house</p><p>run dates</p>
+    const venue = (/<div class="prod-info">\s*<p>[^<]*<\/p>\s*<p>([^<]+)<\/p>/.exec(b) || [])[1];
     if (!href || !title || !start) continue;
-    out.push({ url: `https://www.britishtheatreguide.info${href}`, headline: decodeEntities(title), publishDate: start, outletId: 'british-theatre' });
+    out.push({ url: `https://www.britishtheatreguide.info${href}`, headline: decodeEntities(venue ? `${title} at ${venue}` : title), publishDate: start, outletId: 'british-theatre' });
   }
   return out;
 }
@@ -96,4 +98,23 @@ async function btgItems(show, get) {
   return [...seen.values()];
 }
 
-module.exports = { searchTerms, reviewWindow, parseWpItems, parseBtgListing, decodeEntities, wosItems, hubItems, btgItems };
+/**
+ * Venue-season reader: every review an outlet's index holds for one house since `since`
+ * (the productions that were reviewed, which is the only kind worth founding). `venueTerm` is the
+ * house as outlets write it ("Birmingham Rep"). WordPress outlets page 100 at a time, up to 6 pages.
+ */
+async function venueItems(venueTerm, since, get, pages = 6) {
+  const seen = new Map();
+  const q = encodeURIComponent(venueTerm);
+  for (const [base, outletId, extra] of [[WOS, 'whatsonstage', '&categories=63'], [HUB, 'thereviewshub', '']]) {
+    for (let page = 1; page <= pages; page++) {
+      const rows = parseWpItems(await get(`${base}?search=${q}&after=${since}T00:00:00&per_page=100&page=${page}&_fields=link,date,title${extra}`), outletId);
+      for (const it of rows) seen.set(it.url, it);
+      if (rows.length < 100) break;
+    }
+  }
+  for (const it of parseBtgListing(await get(`${BTG}?q=${q}`))) if (it.publishDate >= since) seen.set(it.url, it);
+  return [...seen.values()];
+}
+
+module.exports = { venueItems, searchTerms, reviewWindow, parseWpItems, parseBtgListing, decodeEntities, wosItems, hubItems, btgItems };

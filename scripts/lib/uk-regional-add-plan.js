@@ -100,7 +100,8 @@ function buildAction(row, shows) {
   // "Tristan + Yseult" in a census headline must find "Tristan & Yseult" (BRO-6578), and a
   // review dated across New Year must find the run it reviews. Same house only: Manchester has
   // "Jungle Book" at Aviva Studios and "The Jungle Book" at the Octagon in one year.
-  const loose = (s) => norm(s).replace(/\b(?:and|the)\b/g, ' ').replace(/\s+/g, ' ').trim();
+  // Spaces are dropped too: one outlet writes "Robinredbreast", another "Robin Red Breast" (BRO-6692).
+  const loose = (s) => norm(s).replace(/\b(?:and|the)\b/g, ' ').replace(/\s+/g, '');
   const lt = loose(title);
   const reviewed = Date.parse(row.date);
   // The run the review covers opened up to ~6 months before it (a revival a year on is new).
