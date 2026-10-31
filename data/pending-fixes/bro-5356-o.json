@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5356-o",
+  "planId": "75c05e55-60a0-478b-ad87-55cefdf4703a",
+  "status": "applied",
+  "createdAt": "2026-10-14T19:34:45.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5356 (o): repair the stale showId on the-whos-tommy-2024 NYSR Finkle row (still 'the-whos-tommy' after its move).",
+    "steps": [
+      "review-field-edit showId the-whos-tommy -> the-whos-tommy-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "showId",
+        "oldValue": "the-whos-tommy",
+        "newValue": "the-whos-tommy-2024",
+        "description": "File lives in the-whos-tommy-2024 (the 2024 Broadway revival it reviews) but its showId still names the 1993 production. Compare-and-set: refused if the stored value differs."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T20:33:41.016Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--david-finkle.json showId: \"the-whos-tommy\" -> \"the-whos-tommy-2024\""
+    }
+  ]
+}

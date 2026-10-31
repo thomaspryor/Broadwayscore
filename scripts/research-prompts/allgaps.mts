@@ -1,0 +1,25 @@
+import { getSeasonsWithCommercialData, getShowsBySeasonWithCommercial, getAllOpenShowsWithCommercial } from '../../src/lib/data-commercial';
+import commercialData from '../../data/commercial.json';
+import { hasNoInvestorsToRepay } from '../lib/commercial-designations';
+const recs = (commercialData as any).shows as Record<string, any>;
+const seasons = getSeasonsWithCommercialData();
+const out: string[] = [];
+const counts: Record<string, number> = {};
+const seen = new Set<string>();
+const tag = (row: any, season: string) => {
+  const r = recs[row.slug]; if (!r || seen.has(row.slug)) return; seen.add(row.slug);
+  const g: string[] = [];
+  const noInv = hasNoInvestorsToRepay(r);
+  if (!noInv && r.capitalization == null) g.push('cap');
+  else if (!noInv && r.capitalization != null && !r.capitalizationSource) g.push('cap-uncited');
+  if (!noInv && r.weeklyRunningCost == null && r.recouped !== true) g.push('cost');
+  if (row.status === 'closed' && r.designation === 'TBD') g.push('outcome');
+  if (r.designation === 'Nonprofit' && !r.productionType) g.push('nonprofit-check');
+  for (const x of g) counts[x] = (counts[x] || 0) + 1;
+  if (g.length) out.push([season, row.slug, row.status, r.designation, g.join(',')].join(' | '));
+};
+for (const s of seasons) for (const row of getShowsBySeasonWithCommercial(s)) tag(row, s);
+for (const row of getAllOpenShowsWithCommercial()) tag(row, 'running');
+console.log('seasons:', seasons.join(' '));
+console.log('rows with gaps:', out.length, JSON.stringify(counts));
+console.log(out.join('\n'));

@@ -1,0 +1,372 @@
+{
+  "issueNumber": "bro-5317-b",
+  "planId": "5c779297-103d-42c5-ba9b-ed3f50242082",
+  "status": "partial",
+  "createdAt": "2026-10-31T01:15:16.194Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Replace CMS uploader handles on 61 live rows: restore 54 verified bylines, clear seven uncredited names to Unknown, and preserve an existing duplicate pointer while explicitly normalizing its guard-written reason. Reserved staging and archive paths require separate private-data maintenance. (part 2 of 3)",
+    "steps": [
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-two-halves-of-guinness-park-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-i-made-you-a-mixtape-the-cockpit",
+      "Outlet article indexed text explicitly credits this critic in its sign-off; live page unavailable on 2026-10-31. Evidence: https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
+      "Stored full article credits only LALadmin; live page could not be fetched and no personal byline was verified; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-indian-ink-hampstead-theatre",
+      "Live news article has no personal byline; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-i-m-not-being-funny-bush-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-scenes-from-a-repatriation-royal-court",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-jersey-boys-trafalgar-theatre-1",
+      "Live article sign-off checked 2026-10-31. Evidence: https://musicaltheatrereview.com/royal-academy-of-music-jane-eyre/",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/some-woman-dorfman-national-theatre/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-chewing-gum-dreams-theatre503",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-sting-the-maria-theatre-young-vic",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-an-oak-tree-the-other-palace",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-for-black-boys-garrick-theatre",
+      "Outlet article indexed text explicitly credits this critic; live page unavailable on 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-romeo-and-juliet-greenwich-theatre",
+      "Live news article has no personal byline; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://dancemagazine.co.uk/2026/05/dancers-revealed-for-a-life-in-four-seasons-at-regents-park-open-air-theatre/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-safe-haven-arcola-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-lost-atoms-lyric-hammersmith",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-legends-of-them-brixton-house",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-relics-lyric-hammersmith-theatre",
+      "Stored article sign-off explicitly credits this critic; live domain redirects to suspended-account page on 2026-10-31. Evidence: https://www.liverpoolsoundandvision.co.uk/2026/07/23/the-mike-jacoby-trio-welcome-to-the-family-album-review/",
+      "Live article heading explicitly credits this critic; checked 2026-10-31. Evidence: https://getthechance.wales/2026/09/18/review-the-seven-deadly-sins-the-human-voice-charing-cross-theatre-london-by-james-ellis/",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "two-halves-of-guinness-off-west-end-2026/all-that-dazzles-uk--lily-admin.json",
+        "field": "criticName",
+        "oldValue": "Lily - Admin",
+        "newValue": "Justin Williams",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-two-halves-of-guinness-park-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "i-made-you-a-mixtape-off-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Ruth Sealey",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-i-made-you-a-mixtape-the-cockpit"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-gruffalo-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Scarlett Maxwell",
+        "description": "Outlet article indexed text explicitly credits this critic in its sign-off; live page unavailable on 2026-10-31. Evidence: https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-off-west-end-2026/londonatlarge--laladmin.json",
+        "field": "criticName",
+        "oldValue": "LALadmin",
+        "newValue": "Unknown",
+        "description": "Stored full article credits only LALadmin; live page could not be fetched and no personal byline was verified; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "indian-ink-off-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-indian-ink-hampstead-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stories-the-tap-dance-sensation-west-end-2026/dance-informa-uk--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Unknown",
+        "description": "Live news article has no personal byline; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-not-being-funny-west-end-2026/all-that-dazzles-uk--lily-admin.json",
+        "field": "criticName",
+        "oldValue": "Lily - Admin",
+        "newValue": "Lily Melhuish",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-i-m-not-being-funny-bush-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scenes-from-a-repatriation-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-scenes-from-a-repatriation-royal-court"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jersey-boys-west-end-2021/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-jersey-boys-trafalgar-theatre-1"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-off-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Susan Elkin",
+        "description": "Live article sign-off checked 2026-10-31. Evidence: https://musicaltheatrereview.com/royal-academy-of-music-jane-eyre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-woman-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jane Edwardes",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/some-woman-dorfman-national-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chewing-gum-dreams-off-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-chewing-gum-dreams-theatre503"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sting-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Phil McCullough",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-sting-the-maria-theatre-young-vic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-an-oak-tree-the-other-palace"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-for-black-boys-garrick-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-2022/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Phil McCullough",
+        "description": "Outlet article indexed text explicitly credits this critic; live page unavailable on 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-romeo-and-juliet-greenwich-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-life-in-four-seasons-west-end-2026/dance-informa-uk--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Unknown",
+        "description": "Live news article has no personal byline; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://dancemagazine.co.uk/2026/05/dancers-revealed-for-a-life-in-four-seasons-at-regents-park-open-air-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "safe-haven-off-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Heva Kelly",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-safe-haven-arcola-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lost-atoms-off-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-lost-atoms-lyric-hammersmith"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legends-of-them-west-end-2024/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Harry Bower",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-legends-of-them-brixton-house"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "catarina-and-the-beauty-of-killing-fascists-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "relics-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Ruth Sealey",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-relics-lyric-hammersmith-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-family-album-regional-2026/liverpoolsoundandvision--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Ian D. Hall",
+        "description": "Stored article sign-off explicitly credits this critic; live domain redirects to suspended-account page on 2026-10-31. Evidence: https://www.liverpoolsoundandvision.co.uk/2026/07/23/the-mike-jacoby-trio-welcome-to-the-family-album-review/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-the-seven-deadly-sins-west-end-2026/getthechance--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "James Ellis",
+        "description": "Live article heading explicitly credits this critic; checked 2026-10-31. Evidence: https://getthechance.wales/2026/09/18/review-the-seven-deadly-sins-the-human-voice-charing-cross-theatre-london-by-james-ellis/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-broadway-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Mark Brown",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T02:24:34.629Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-halves-of-guinness-off-west-end-2026/all-that-dazzles-uk--lily-admin.json criticName: \"Lily - Admin\" -> \"Justin Williams\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "i-made-you-a-mixtape-off-west-end-2026/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Ruth Sealey\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-gruffalo-west-end-2026/musical-theatre-review--unknown.json criticName: \"Admin\" -> \"Scarlett Maxwell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-off-west-end-2026/londonatlarge--laladmin.json criticName: \"LALadmin\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "indian-ink-off-west-end-2025/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stories-the-tap-dance-sensation-west-end-2026/dance-informa-uk--unknown.json criticName: \"Admin\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-not-being-funny-west-end-2026/all-that-dazzles-uk--lily-admin.json criticName: \"Lily - Admin\" -> \"Lily Melhuish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "scenes-from-a-repatriation-west-end-2025/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jersey-boys-west-end-2021/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jane-eyre-off-west-end-2026/musical-theatre-review--unknown.json criticName: \"Admin\" -> \"Susan Elkin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-woman-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Jane Edwardes\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chewing-gum-dreams-off-west-end-2026/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sting-west-end-2026/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Phil McCullough\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-2022/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Phil McCullough\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-life-in-four-seasons-west-end-2026/dance-informa-uk--unknown.json criticName: \"Admin\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "safe-haven-off-west-end-2026/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Heva Kelly\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lost-atoms-off-west-end-2026/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-legends-of-them-west-end-2024/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Harry Bower\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: catarina-and-the-beauty-of-killing-fascists-west-end-2026/plays-international--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "relics-west-end-2026/all-that-dazzles-uk--sam-admin.json criticName: \"Sam - Admin\" -> \"Ruth Sealey\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-family-album-regional-2026/liverpoolsoundandvision--unknown.json criticName: \"Admin\" -> \"Ian D. Hall\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-the-seven-deadly-sins-west-end-2026/getthechance--unknown.json criticName: \"Admin\" -> \"James Ellis\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Mark Brown\""
+    }
+  ],
+  "executedIn": "ci"
+}

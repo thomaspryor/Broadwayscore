@@ -1,0 +1,161 @@
+name: Land retry on cancel
+
+# BRO-4246: land.yml's Land job used to wait in the single-pending `landing`
+# concurrency group (shared with autonomous-merge.yml), so a newer landing
+# cancelled it even though Checks passed. BRO-4653/4676/4677 then gated the
+# re-runs on that one seat so they would not evict each other.
+# BRO-5112 removed the shared seat: the Land job's group is per branch and the
+# fast-forward waits in the git-ref landing mutex (scripts/land-mutex.js), so a
+# re-run evicts nobody. Each firing is a SWEEP that re-runs at most ONE
+# stranded cancelled Land job (main-red lanes first, then oldest). It fires
+# when a Land or Autonomous Merge run completes and on a cron backstop.
+# Cancelled Land runs now come from a human cancel (not replayed once work
+# started), same-branch runs, and pre-BRO-5112 land.yml definitions on
+# branches cut before it.
+# Decision logic + tests: scripts/lib/land-retry-on-cancel{,.test} and
+# scripts/lib/land-queue-backoff{,.test}.
+# BRO-4802: everything outside that fast window used to strand for good (nine
+# finished cards sat unlanded 1-7 days on 2026-10-06). The hourly `stranded`
+# job walks every land/** ref: evicted ones get a full re-run, refused / red /
+# budget-spent ones are routed to the card they name. Logic + tests:
+# scripts/lib/land-stranded-refs{,.test}.
+# BRO-5100: the same hourly firing also runs the `reclaim` job: In Progress
+# cards whose claiming session died (no Linear activity for 48h, no live land
+# ref) go back to Todo. Logic + tests: scripts/lib/linear-reclaim-abandoned{,.test}.
+
+on:
+  workflow_run:
+    workflows: ['Land', 'Autonomous Merge']
+    types: [completed]
+  schedule:
+    # Backstop for a missed or dropped completion event (cron is throttled
+    # under load; the completion trigger does the real work). BRO-5673: every
+    # 20 min, was 10; tests/unit/land-retry-cancelled-schedule.test.mjs pins both.
+    - cron: '*/20 * * * *'
+    # BRO-4802: hourly stranded-ref pass (the `stranded` job keys on this string).
+    - cron: '23 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'sweep (default), stranded, or reclaim'
+        required: false
+        default: 'sweep'
+        type: choice
+        options: [sweep, stranded, reclaim]
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  sweep:
+    name: Re-run stranded Land jobs
+    if: github.event.schedule != '23 * * * *' && (github.event_name != 'workflow_dispatch' || inputs.mode == 'sweep')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      # One sweep at a time, so two sweeps never re-run the same stranded run.
+      # A newer pending sweep replacing an older one loses nothing: it makes
+      # the same decision.
+      group: land-retry-sweep
+      cancel-in-progress: false
+    steps:
+      # Sparse: run 37360514150 was cancelled at the 5-min timeout inside a
+      # full checkout of the 2.5 GB repo (BRO-4754). The sweep needs only
+      # scripts/ and the notify-failure action.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - name: Sweep for a stranded Land run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-4651: fallback when GITHUB_TOKEN's quota is exhausted mid-burst.
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-5196: same park settings as land.yml's admit step, or a
+          # non-default depth re-parks resumed runs in a loop.
+          LAND_MUTEX_PARK_DEPTH: ${{ vars.LAND_MUTEX_PARK_DEPTH }}
+          LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
+          # BRO-6015: resumed runs join up to park depth + this headroom.
+          LAND_MUTEX_RESUME_HEADROOM: ${{ vars.LAND_MUTEX_RESUME_HEADROOM }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/land-retry-cancelled.js --sweep
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Land retry sweep failed'
+          description: 'sweep after ${{ github.event_name }} could not check or re-run stranded Land jobs'
+          severity: 'warning'
+
+  stranded:
+    name: Route land refs stranded outside the fast retry
+    if: github.event.schedule == '23 * * * *' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'stranded')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      # Own group: the pass must not queue behind (or evict) the sweep.
+      group: land-stranded-pass
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - name: Re-run or route stranded land refs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LAND_STRANDED_KILL_SWITCH: ${{ vars.LAND_STRANDED_KILL_SWITCH }}
+        run: node scripts/land-retry-cancelled.js --stranded
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Stranded land-ref pass failed'
+          description: 'hourly pass could not read land refs or route stranded ones (BRO-4802)'
+          severity: 'warning'
+
+  reclaim:
+    name: Reclaim In Progress cards abandoned by dead sessions
+    if: github.event.schedule == '23 * * * *' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'reclaim')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: linear-reclaim-abandoned
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - name: Move abandoned In Progress cards back to Todo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_RECLAIM_KILL_SWITCH: ${{ vars.LINEAR_RECLAIM_KILL_SWITCH }}
+        run: node scripts/linear-reclaim-abandoned.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Abandoned-card reclaim failed'
+          description: 'hourly pass could not read Linear or land refs, or failed to move abandoned In Progress cards (BRO-5100)'
+          severity: 'warning'

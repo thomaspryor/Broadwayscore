@@ -1,0 +1,682 @@
+{
+  "issueNumber": "bro-6503-we-2010-11-b",
+  "planId": "0c94c2da-0e06-4401-9171-10ddef2caebd",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:46:47.418Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 20 closed West End production(s) for 2010-2011 from the historical backfill (we-historical:theatricalia; BRO-6503).",
+    "steps": [
+      "Append in-a-forest-dark-and-deep-west-end-2011 (Vaudeville Theatre, 2011-03-14 to 2011-06-04)",
+      "Append the-umbrellas-of-cherbourg-west-end-2011 (Gielgud Theatre, 2011-03-22 to 2011-05-21)",
+      "Append remembrance-day-west-end-2011 (Royal Court, 2011-03-23 to 2011-04-16)",
+      "Append cause-celebre-west-end-2011 (The Old Vic, 2011-03-29 to 2011-06-11)",
+      "Append wastwater-west-end-2011 (Royal Court, 2011-03-31 to 2011-05-07)",
+      "Append betty-blue-eyes-west-end-2011 (Novello Theatre, 2011-04-13 to 2011-09-24)",
+      "Append london-road-west-end-2011 (Dorfman Theatre, 2011-04-14 to 2011-08-27)",
+      "Append bette-and-joan-west-end-2011 (Arts Theatre, 2011-05-05 to 2011-06-25)",
+      "Append pygmalion-west-end-2011 (Garrick Theatre, 2011-05-12 to 2011-09-03)",
+      "Append much-ado-about-nothing-west-end-2011 (Wyndham's Theatre, 2011-05-16 to 2011-09-03)",
+      "Append betrayal-west-end-2011 (Harold Pinter Theatre, 2011-05-27 to 2011-08-20)",
+      "Append butley-west-end-2011 (Duchess Theatre, 2011-06-06 to 2011-08-27)",
+      "Append shrek-the-musical-west-end-2011 (Theatre Royal Drury Lane, 2011-06-14 to 2013-02-24)",
+      "Append lend-me-a-tenor-musical-west-end-2011 (Gielgud Theatre, 2011-06-15 to 2011-08-06)",
+      "Append rosencrantz-and-guildenstern-are-dead-west-end-2011 (Theatre Royal Haymarket, 2011-06-21 to 2011-08-20)",
+      "Append park-avenue-cat-west-end-2011 (Arts Theatre, 2011-07-01 to 2011-08-20)",
+      "Append the-village-bike-west-end-2011 (Royal Court, 2011-07-01 to 2011-07-30)",
+      "Append ghost-the-musical-west-end-2011 (Piccadilly Theatre, 2011-07-15 to 2012-10-06)",
+      "Append rock-of-ages-west-end-2011 (Shaftesbury Theatre, 2011-08-31 to 2013-01-06)",
+      "Append the-kitchen-west-end-2011 (Olivier Theatre, 2011-08-31 to 2011-11-09)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "in-a-forest-dark-and-deep-west-end-2011",
+          "title": "In A Forest Dark And Deep",
+          "slug": "in-a-forest-dark-and-deep-west-end-2011",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2011-03-14",
+          "openingDate": "2011-03-14",
+          "closingDate": "2011-06-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.926Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/87g/in-a-forest-dark-and-deep/production/14s3"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-umbrellas-of-cherbourg-west-end-2011",
+          "title": "The Umbrellas of Cherbourg",
+          "slug": "the-umbrellas-of-cherbourg-west-end-2011",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2011-03-22",
+          "openingDate": "2011-03-22",
+          "closingDate": "2011-05-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.943Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/82k/the-umbrellas-of-cherbourg/production/14b4"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "remembrance-day-west-end-2011",
+          "title": "Remembrance Day",
+          "slug": "remembrance-day-west-end-2011",
+          "venue": "Royal Court",
+          "previewsStartDate": "2011-03-23",
+          "openingDate": "2011-03-23",
+          "closingDate": "2011-04-16",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.960Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/an7/remembrance-day/production/ny4"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cause-celebre-west-end-2011",
+          "title": "Cause Célèbre",
+          "slug": "cause-celebre-west-end-2011",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2011-03-29",
+          "openingDate": "2011-03-29",
+          "closingDate": "2011-06-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.975Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/anm/cause-celebre/production/nyw"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "wastwater-west-end-2011",
+          "title": "Wastwater",
+          "slug": "wastwater-west-end-2011",
+          "venue": "Royal Court",
+          "previewsStartDate": "2011-03-31",
+          "openingDate": "2011-03-31",
+          "closingDate": "2011-05-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:46.993Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fp1/wastwater/production/10j1"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "betty-blue-eyes-west-end-2011",
+          "title": "Betty Blue Eyes",
+          "slug": "betty-blue-eyes-west-end-2011",
+          "venue": "Novello Theatre",
+          "previewsStartDate": "2011-04-13",
+          "openingDate": "2011-04-13",
+          "closingDate": "2011-09-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.007Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ffw/betty-blue-eyes/production/104x"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "london-road-west-end-2011",
+          "title": "London Road",
+          "slug": "london-road-west-end-2011",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": "2011-04-14",
+          "openingDate": "2011-04-14",
+          "closingDate": "2011-08-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.027Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/apt/london-road/production/p39"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bette-and-joan-west-end-2011",
+          "title": "Bette and Joan",
+          "slug": "bette-and-joan-west-end-2011",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2011-05-05",
+          "openingDate": "2011-05-05",
+          "closingDate": "2011-06-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.050Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/as5/bette-and-joan/production/pa8"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "pygmalion-west-end-2011",
+          "title": "Pygmalion",
+          "slug": "pygmalion-west-end-2011",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2011-05-12",
+          "openingDate": "2011-05-12",
+          "closingDate": "2011-09-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.075Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/2h2/pygmalion/production/pgn"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "much-ado-about-nothing-west-end-2011",
+          "title": "Much Ado About Nothing",
+          "slug": "much-ado-about-nothing-west-end-2011",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2011-05-16",
+          "openingDate": "2011-05-16",
+          "closingDate": "2011-09-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.099Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1/much-ado-about-nothing/production/ng6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "betrayal-west-end-2011",
+          "title": "Betrayal",
+          "slug": "betrayal-west-end-2011",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2011-05-27",
+          "openingDate": "2011-05-27",
+          "closingDate": "2011-08-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.149Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/56c/betrayal/production/zky"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "butley-west-end-2011",
+          "title": "Butley",
+          "slug": "butley-west-end-2011",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2011-06-06",
+          "openingDate": "2011-06-06",
+          "closingDate": "2011-08-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.175Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4v4/butley/production/zs9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "shrek-the-musical-west-end-2011",
+          "title": "Shrek the Musical",
+          "slug": "shrek-the-musical-west-end-2011",
+          "venue": "Theatre Royal Drury Lane",
+          "previewsStartDate": "2011-06-14",
+          "openingDate": "2011-06-14",
+          "closingDate": "2013-02-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.199Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/krx/shrek-the-musical/production/s0a"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lend-me-a-tenor-musical-west-end-2011",
+          "title": "Lend Me a Tenor (Musical)",
+          "slug": "lend-me-a-tenor-musical-west-end-2011",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2011-06-15",
+          "openingDate": "2011-06-15",
+          "closingDate": "2011-08-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.228Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7m1/lend-me-a-tenor-musical/production/14b5"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "rosencrantz-and-guildenstern-are-dead-west-end-2011",
+          "title": "Rosencrantz and Guildenstern are Dead",
+          "slug": "rosencrantz-and-guildenstern-are-dead-west-end-2011",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2011-06-21",
+          "openingDate": "2011-06-21",
+          "closingDate": "2011-08-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.254Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4nd/rosencrantz-and-guildenstern-are-dead/production/pqe"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "park-avenue-cat-west-end-2011",
+          "title": "Park Avenue Cat",
+          "slug": "park-avenue-cat-west-end-2011",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2011-07-01",
+          "openingDate": "2011-07-01",
+          "closingDate": "2011-08-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.279Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gj3/park-avenue-cat/production/12fg"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-village-bike-west-end-2011",
+          "title": "The Village Bike",
+          "slug": "the-village-bike-west-end-2011",
+          "venue": "Royal Court",
+          "previewsStartDate": "2011-07-01",
+          "openingDate": "2011-07-01",
+          "closingDate": "2011-07-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.303Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/cv4/the-village-bike/production/rz6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ghost-the-musical-west-end-2011",
+          "title": "Ghost – The Musical",
+          "slug": "ghost-the-musical-west-end-2011",
+          "venue": "Piccadilly Theatre",
+          "previewsStartDate": "2011-07-15",
+          "openingDate": "2011-07-15",
+          "closingDate": "2012-10-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.325Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7cn/ghost-the-musical/production/14gq"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "rock-of-ages-west-end-2011",
+          "title": "Rock of Ages",
+          "slug": "rock-of-ages-west-end-2011",
+          "venue": "Shaftesbury Theatre",
+          "previewsStartDate": "2011-08-31",
+          "openingDate": "2011-08-31",
+          "closingDate": "2013-01-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.350Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/g0r/rock-of-ages/production/117a"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-kitchen-west-end-2011",
+          "title": "The Kitchen",
+          "slug": "the-kitchen-west-end-2011",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2011-08-31",
+          "openingDate": "2011-08-31",
+          "closingDate": "2011-11-09",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2010-2011",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:46:47.374Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/62c/the-kitchen/production/sfb"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T10:04:43.150Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added in-a-forest-dark-and-deep-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-umbrellas-of-cherbourg-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added remembrance-day-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cause-celebre-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wastwater-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added betty-blue-eyes-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added london-road-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bette-and-joan-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added pygmalion-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added much-ado-about-nothing-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added betrayal-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added butley-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shrek-the-musical-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lend-me-a-tenor-musical-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rosencrantz-and-guildenstern-are-dead-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added park-avenue-cat-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-village-bike-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ghost-the-musical-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rock-of-ages-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-kitchen-west-end-2011"
+    }
+  ],
+  "executedIn": "ci"
+}

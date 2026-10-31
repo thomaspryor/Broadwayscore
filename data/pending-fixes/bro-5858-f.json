@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-5858-f",
+  "planId": "dcf5cfc7-4c8a-4d7b-bfcb-e9e140826a4d",
+  "status": "applied",
+  "createdAt": "2026-10-21T21:21:25.693Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5858: restore the duplicateOf pointer on the here-we-are Unknown twin now that the All That Dazzles file scores again",
+    "steps": [
+      "Set duplicateOf on all-that-dazzles-uk--unknown.json to the All That Dazzles file (same url)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/all-that-dazzles-uk--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "all-that-dazzles-uk--all-that-dazzles.json",
+        "description": "BRO-5858: same url as all-that-dazzles-uk--all-that-dazzles.json (byline All That Dazzles). Plan bro-5858 set this pointer; rebuild 39671183979 cleared it while the target was excluded by a stale nonReviewFlag. Plan bro-5858-e cleared that flag, so the pointer goes back."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T21:36:17.479Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/all-that-dazzles-uk--unknown.json duplicateOf: null -> \"all-that-dazzles-uk--all-that-dazzles.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

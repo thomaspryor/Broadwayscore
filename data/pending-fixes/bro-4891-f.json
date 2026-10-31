@@ -1,0 +1,264 @@
+{
+  "issueNumber": "bro-4891",
+  "planId": "51abb175-352d-4ad3-a718-f5ba50c33948",
+  "status": "applied",
+  "createdAt": "2026-10-14T21:04:31.692Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4891 (f): count four genuine reviews dropped by a syndication flag pointing at their own file (Paddington Daily Mail Marmion, Three Days of Rain 2006 NYT Brantley, Gutenberg Chicago Tribune, Man and Boy Bloomberg), mark the Theatre Record Paddington copy as its duplicate, delete three Benjamin Button reviews from the John Proctor West End folder, clear a bogus rating on a Full Monty news story, and empty the 1981 cast copied onto the Dreamgirls revival.",
+    "steps": [
+      "Clear self-pointing isSyndicatedDuplicate on 4 files",
+      "Point the Theatre Record Daily Mail copy at the Marmion file",
+      "Delete 3 Benjamin Button files from john-proctor-is-the-villain-west-end-2026",
+      "Null originalScore on the-full-monty-2000/nytimes--ben-brantley.json",
+      "Set dreamgirls-2026 cast to []"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Patrick Marmion Daily Mail 5/5 review (has its own dailymail.co.uk url) was flagged a syndicated duplicate of itself, so the Daily Mail row came from the url-less Theatre Record copy under the wrong byline"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json",
+        "newValue": null,
+        "description": "Clear the pointer to this same file (a file cannot be a syndicated copy of itself)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paddington-the-musical-west-end-2025/daily-mail--robert-gore-langton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "daily-mail--patrick-marmion.json",
+        "description": "Theatre Record copy whose text is word-for-word Patrick Marmion's Daily Mail review (\"Truly this is a great bear...\"), filed under Robert Gore-Langton with no url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-days-of-rain-2006/nytimes--ben-brantley.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Ben Brantley NYT review of the 2006 Three Days of Rain (nytimes.com/2006/04/20) was flagged a syndicated duplicate of itself; NYT has no row for the show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-days-of-rain-2006/nytimes--ben-brantley.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "three-days-of-rain-2006/nytimes--ben-brantley.json",
+        "newValue": null,
+        "description": "Clear the pointer to this same file (a file cannot be a syndicated copy of itself)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gutenberg-2023/chicagotribune--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Chris Jones Chicago Tribune review (the syndication primary) was flagged a duplicate of itself; Tribune has no row for the show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gutenberg-2023/chicagotribune--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "gutenberg-2023/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "Clear the pointer to this same file (a file cannot be a syndicated copy of itself)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-and-boy-2011/bloomberg--jeremy-gerard.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Jeremy Gerard Bloomberg review was flagged a syndicated duplicate of itself; Bloomberg has no row for the show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-and-boy-2011/bloomberg--jeremy-gerard.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "man-and-boy-2011/bloomberg--jeremy-gerard.json",
+        "newValue": null,
+        "description": "Clear the pointer to this same file (a file cannot be a syndicated copy of itself)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "john-proctor-is-the-villain-west-end-2026/guardian--emma-john.json",
+        "description": "The Curious Case of Benjamin Button (Ambassadors) review filed under John Proctor Is the Villain; excluded, never counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "john-proctor-is-the-villain-west-end-2026/guardian--emma-johns.json",
+        "description": "The Curious Case of Benjamin Button (Ambassadors) review filed under John Proctor Is the Villain; excluded, never counted"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "john-proctor-is-the-villain-west-end-2026/whatsonstage--alun-hood.json",
+        "description": "The Curious Case of Benjamin Button (Ambassadors) review filed under John Proctor Is the Villain; excluded, never counted"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-full-monty-2000/nytimes--ben-brantley.json",
+        "field": "originalScore",
+        "oldValue": "4/4 stars",
+        "newValue": null,
+        "description": "File holds a North County Times news story by Pam Kragen (Old Globe gala), not a review; it carries no rating. Already rejected as not_a_review"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreamgirls-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Obba Babatundé",
+            "role": "C.C. White"
+          },
+          {
+            "name": "Cleavant Derricks",
+            "role": "James Thunder Early"
+          },
+          {
+            "name": "Loretta Devine",
+            "role": "Lorrell Robinson"
+          },
+          {
+            "name": "Ben Harney",
+            "role": "Curtis Taylor, Jr."
+          },
+          {
+            "name": "Jennifer Holliday",
+            "role": "Effie Melody White"
+          },
+          {
+            "name": "Sheryl Lee Ralph",
+            "role": "Deena Jones"
+          },
+          {
+            "name": "Deborah Burrell",
+            "role": "Michelle Morris"
+          },
+          {
+            "name": "Vondie Curtis-Hall",
+            "role": "Marty"
+          },
+          {
+            "name": "Tony Franklin",
+            "role": "Wayne"
+          },
+          {
+            "name": "David Thomé",
+            "role": "Frank"
+          },
+          {
+            "name": "Cheryl Alexander",
+            "role": "Charlene"
+          },
+          {
+            "name": "Vanessa Bell",
+            "role": "One of \"The Stepp Sisters\""
+          },
+          {
+            "name": "Charles Bernard",
+            "role": "One of \"Little Albert and the Tru-Tones\""
+          },
+          {
+            "name": "Paul Binotto",
+            "role": "Dave"
+          },
+          {
+            "name": "Candy Darling",
+            "role": "One of \"The Sweethearts\""
+          }
+        ],
+        "newValue": [],
+        "description": "The 15-name cast is the 1981 original Broadway cast copied verbatim from dreamgirls-1981 (Babatunde, Derricks, Devine, Holliday, Ralph...); the delayed revival has announced no cast (Playbill 2026-08-25)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T21:45:27.111Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json syndicatedPrimaryFile: \"paddington-the-musical-west-end-2025/daily-mail--patrick-marmion.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/daily-mail--robert-gore-langton.json duplicateOf: null -> \"daily-mail--patrick-marmion.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/nytimes--ben-brantley.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-days-of-rain-2006/nytimes--ben-brantley.json syndicatedPrimaryFile: \"three-days-of-rain-2006/nytimes--ben-brantley.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gutenberg-2023/chicagotribune--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gutenberg-2023/chicagotribune--chris-jones.json syndicatedPrimaryFile: \"gutenberg-2023/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-and-boy-2011/bloomberg--jeremy-gerard.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-and-boy-2011/bloomberg--jeremy-gerard.json syndicatedPrimaryFile: \"man-and-boy-2011/bloomberg--jeremy-gerard.json\" -> null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted john-proctor-is-the-villain-west-end-2026/guardian--emma-john.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted john-proctor-is-the-villain-west-end-2026/guardian--emma-johns.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted john-proctor-is-the-villain-west-end-2026/whatsonstage--alun-hood.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-full-monty-2000/nytimes--ben-brantley.json originalScore: \"4/4 stars\" -> null (retracted originalRating, originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for dreamgirls-2026"
+    }
+  ]
+}

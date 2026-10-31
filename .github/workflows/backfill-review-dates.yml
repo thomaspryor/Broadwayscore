@@ -1,0 +1,189 @@
+name: Backfill Review Dates
+
+on:
+  # BRO-5769: weekly early/carried publish-date recheck. Schedule events carry no inputs, so the
+  # "Resolve inputs" step below sets the recheck sweep explicitly (free sources only, all outlets, 20 files).
+  schedule:
+    - cron: '17 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max reviews to process per run'
+        required: false
+        default: '100'
+        type: string
+      offset:
+        description: 'Skip first N undated reviews (for batching)'
+        required: false
+        default: '0'
+        type: string
+      show:
+        description: 'Only process a specific show ID'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Show what would be updated without writing files'
+        required: false
+        default: false
+        type: boolean
+      domains:
+        description: 'Domain filter: high-yield (recommended), all (no filter), or comma-separated list'
+        required: false
+        default: 'high-yield'
+        type: string
+      free_only:
+        description: 'Only use free sources (Archive.org + cookies), no paid scrapers'
+        required: false
+        default: false
+        type: boolean
+      recheck_dates:
+        description: 'Re-read the page date of early/carried dates (BRO-5674) instead of undated reviews. The domains filter still applies (set domains to all for every outlet); with free_only=false paid scrapers run first, so this spends credits. Use offset=0 on repeat runs.'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: backfill-review-dates
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve inputs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_LIMIT: ${{ inputs.limit }}
+          DISPATCH_OFFSET: ${{ inputs.offset }}
+          DISPATCH_SHOW: ${{ inputs.show }}
+          DISPATCH_DOMAINS: ${{ inputs.domains }}
+          DISPATCH_RECHECK_DATES: ${{ inputs.recheck_dates }}
+          DISPATCH_FREE_ONLY: ${{ inputs.free_only }}
+          DISPATCH_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # A newline in a dispatch string would inject extra GITHUB_ENV lines.
+          for v in "${DISPATCH_LIMIT}" "${DISPATCH_OFFSET}" "${DISPATCH_SHOW}" "${DISPATCH_DOMAINS}"; do
+            case "$v" in *$'\n'*|*$'\r'*) echo "::error::dispatch input contains a newline"; exit 1;; esac
+          done
+          if [ "${EVENT_NAME}" = "schedule" ]; then
+            {
+              echo "INPUT_LIMIT=20"
+              echo "INPUT_OFFSET=0"
+              echo "INPUT_SHOW="
+              echo "INPUT_DOMAINS=all"
+              echo "INPUT_RECHECK_DATES=true"
+              echo "INPUT_FREE_ONLY=true"
+              echo "INPUT_DRY_RUN=false"
+            } >> "$GITHUB_ENV"
+          else
+            {
+              echo "INPUT_LIMIT=${DISPATCH_LIMIT}"
+              echo "INPUT_OFFSET=${DISPATCH_OFFSET}"
+              echo "INPUT_SHOW=${DISPATCH_SHOW}"
+              echo "INPUT_DOMAINS=${DISPATCH_DOMAINS}"
+              echo "INPUT_RECHECK_DATES=${DISPATCH_RECHECK_DATES}"
+              echo "INPUT_FREE_ONLY=${DISPATCH_FREE_ONLY}"
+              echo "INPUT_DRY_RUN=${DISPATCH_DRY_RUN}"
+            } >> "$GITHUB_ENV"
+          fi
+
+      - name: Run date backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+        run: |
+          ARGS="--limit=${INPUT_LIMIT} --offset=${INPUT_OFFSET}"
+          if [ -n "${INPUT_SHOW}" ]; then
+            ARGS="$ARGS --show=${INPUT_SHOW}"
+          fi
+          if [ -n "${INPUT_DOMAINS}" ] && [ "${INPUT_DOMAINS}" != "all" ]; then
+            ARGS="$ARGS --domains=${INPUT_DOMAINS}"
+          fi
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${INPUT_FREE_ONLY}" = "true" ]; then
+            ARGS="$ARGS --free-only"
+          fi
+          if [ "${INPUT_RECHECK_DATES}" = "true" ]; then
+            ARGS="$ARGS --recheck-dates"
+          fi
+          echo "Running: node scripts/backfill-review-dates.js $ARGS"
+          node scripts/backfill-review-dates.js $ARGS
+
+      - name: Push review texts
+        id: push-review-texts
+        if: ${{ env.INPUT_DRY_RUN != 'true' }}
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Backfill publishDate from HTML metadata'
+
+      # BRO-5308: dispatch only when review-texts actually reached the private repo
+      # (push-review-texts 'pushed', which also counts in-job checkpoint pushes).
+      - name: Trigger rebuild
+        if: ${{ env.INPUT_DRY_RUN != 'true' && steps.push-review-texts.outputs.pushed == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Rebuild Reviews Data" -f reason="Post date backfill"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-review-dates
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Review Dates Failed'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

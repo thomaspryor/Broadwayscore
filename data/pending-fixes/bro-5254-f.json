@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-5254-f",
+  "planId": "991764bf-db7c-45e7-a137-19b09cf89b6c",
+  "status": "applied",
+  "createdAt": "2026-10-14T04:49:53.801Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5254 forced refetch of act-one-2014 Variety (Marilyn Stasio): the collector LLM check stamped contentVerification.wrongProduction (high) because it read the cast as reversed. The review is the 2014 Lincoln Center Act One (Santino Fontana as young Moss Hart, Tony Shalhoub in three roles including the older Hart and Kaufman), so the verdict is a misread; the rebuild would promote it and drop a correct review. Mark it manually cleared.",
+    "steps": [
+      "Set wrongProductionManualClear true on act-one-2014/variety--marilyn-stasio.json.",
+      "Then rebuild-reviews.yml."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "act-one-2014/variety--marilyn-stasio.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "CV wrongProduction is a cast misread (Shalhoub played the older Moss Hart and Kaufman); the review is of this production"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T06:11:50.428Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "act-one-2014/variety--marilyn-stasio.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6137-r2-d",
+  "planId": "cfe19d59-6bac-4563-b0f6-98028b32628b",
+  "status": "partial",
+  "createdAt": "2026-10-24T16:25:24.828Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137 round 2 (part 4 of 5): Nonprofit labels, Did Not Recoup for silent commercial closures (BRO-5645), Easy Winner for two recouped limited runs.",
+    "steps": [
+      "eclipsed-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "eclipsed-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645.",
+      "eclipsed-2016: the label rests on no recoupment ever being announced.",
+      "eclipsed-2016: loss label now set under the owner rule, nothing further to evidence.",
+      "spring-awakening-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "spring-awakening-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645.",
+      "spring-awakening-2015: the label rests on no recoupment ever being announced.",
+      "spring-awakening-2015: loss label now set under the owner rule, nothing further to evidence.",
+      "hangmen-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "hangmen-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645.",
+      "hangmen-2022: the label rests on no recoupment ever being announced.",
+      "hangmen-2022: loss label now set under the owner rule, nothing further to evidence.",
+      "the-minutes-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-minutes-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645.",
+      "the-minutes-2022: the label rests on no recoupment ever being announced.",
+      "the-minutes-2022: loss label now set under the owner rule, nothing further to evidence.",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645.",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: the label rests on no recoupment ever being announced.",
+      "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: loss label now set under the owner rule, nothing further to evidence.",
+      "ohio-state-murders-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "ohio-state-murders-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645.",
+      "ohio-state-murders-2022: the label rests on no recoupment ever being announced.",
+      "ohio-state-murders-2022: loss label now set under the owner rule, nothing further to evidence."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "eclipsed-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "eclipsed-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "eclipsed-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "eclipsed-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "eclipsed-2016",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "eclipsed-2016: the label rests on no recoupment ever being announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "eclipsed-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "eclipsed-2016: loss label now set under the owner rule, nothing further to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spring-awakening-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "spring-awakening-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spring-awakening-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "spring-awakening-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spring-awakening-2015",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "spring-awakening-2015: the label rests on no recoupment ever being announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spring-awakening-2015",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "spring-awakening-2015: loss label now set under the owner rule, nothing further to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "hangmen-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "hangmen-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "hangmen-2022: the label rests on no recoupment ever being announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "hangmen-2022: loss label now set under the owner rule, nothing further to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-minutes-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-minutes-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-minutes-2022: the label rests on no recoupment ever being announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-minutes-2022: loss label now set under the owner rule, nothing further to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: the label rests on no recoupment ever being announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: loss label now set under the owner rule, nothing further to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ohio-state-murders-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "ohio-state-murders-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ohio-state-murders-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "ohio-state-murders-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ohio-state-murders-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "ohio-state-murders-2022: the label rests on no recoupment ever being announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ohio-state-murders-2022",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "ohio-state-murders-2022: loss label now set under the owner rule, nothing further to evidence."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T17:11:55.677Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for eclipsed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for eclipsed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for spring-awakening-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for spring-awakening-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for ohio-state-murders-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for ohio-state-murders-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for ohio-state-murders-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

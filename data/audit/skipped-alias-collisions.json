@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-10-31T08:22:30.012Z",
+  "skipped": [
+    {
+      "outletId": "time-out-lond_on",
+      "collisions": [
+        {
+          "key": "timeoutlond_on ~ timeoutlondon",
+          "outletIds": [
+            "time-out-lond_on",
+            "timeout-london"
+          ]
+        }
+      ]
+    },
+    {
+      "outletId": "timeoutlondon",
+      "collisions": [
+        {
+          "key": "timeoutlondon",
+          "outletIds": [
+            "timeout-london",
+            "timeoutlondon"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "generatedAt": "2026-10-31T07:32:11.660Z",
+    "windowDays": 3,
+    "minChurn": 30,
+    "degraded": true,
+    "note": "Churn-vs-merge-attribute coverage monitor. Non-blocking; surfaced via health-check.js digest. Flagged = high-churn tracked file with no merge driver and no merge-coverage=exempt mark in .gitattributes."
+  },
+  "summary": {
+    "minChurn": 30,
+    "flaggedCount": 0,
+    "exemptCount": 1,
+    "coveredCount": 7,
+    "highChurnTracked": 8
+  },
+  "flagged": [],
+  "exempt": [
+    {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 49
+    }
+  ],
+  "covered": [
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 98,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 33,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/needs-human-review.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/rebuild-score-drift.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/skipped-alias-collisions.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    }
+  ]
+}

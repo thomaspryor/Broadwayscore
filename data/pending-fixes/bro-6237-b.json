@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-6237-b",
+  "planId": "7dfeda32-316a-4237-8ca9-1a29a84e499f",
+  "status": "pending",
+  "createdAt": "2026-10-26T11:33:49.849Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (8 true non-reviews, 71 real reviews cleared) (part 2 of 4)",
+    "steps": [
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json: nonReviewManualClear",
+      "ballet-shoes-west-end-2024/london-theatre--julia-rank.json: nonReviewManualClear",
+      "buena-vista-social-club-tour-2026/broadwayworld--michael-rabice.json: nonReviewManualClear",
+      "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json: nonReviewManualClear",
+      "children-of-a-lesser-god-2018/medium--christian-lewis.json: nonReviewManualClear",
+      "data-off-broadway-2026/nytimes--tim-teeman.json: nonReviewManualClear",
+      "deaf-republic-west-end-2025/londontheatre1--chris-omaweng.json: nonReviewManualClear",
+      "dolly-a-true-original-musical-regional-2025/cowboys-and-indians--joe-leydon.json: nonReviewManualClear",
+      "dracula-west-end-2025/daily-mail--patrick-marmion.json: nonReviewManualClear",
+      "english-2025/broadwaynews--brittani-samuel.json: nonReviewManualClear",
+      "giant-2026/theatre-reviews-limited--joseph-verlezza.json: nonReviewManualClear",
+      "going-bacharach-the-songs-of-an-icon-off-broadway-2026/nysr--elysa-gardner.json: nonReviewManualClear",
+      "harry-potter-2021/cititour--brian-scott-lipton.json: nonReviewManualClear",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json: nonReviewManualClear",
+      "hello-dolly-2017/theater-life--david-sheward.json: nonReviewManualClear",
+      "high-society-west-end-2026/monstagigz--unknown.json: nonReviewManualClear",
+      "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json: nonReviewManualClear",
+      "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json: nonReviewManualClear",
+      "ink-2019/wsj--terry-teachout.json: nonReviewManualClear",
+      "jane-eyre-off-west-end-2026/british-theatre--zia-trench.json: nonReviewManualClear",
+      "john-proctor-is-the-villain-2025/nytimes--jesse-green.json: nonReviewManualClear",
+      "killer-joe-west-end-2018/timeout-london--andrzej-lukowski.json: nonReviewManualClear",
+      "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/darkusmagazine--sal-fasone.json: nonReviewManualClear",
+      "life-of-pi-tour-2024/broadwayworld--dara-homer.json: nonReviewManualClear",
+      "mcneal-2024/broadwaynews--brittani-samuel.json: nonReviewManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ballet-shoes-west-end-2024/london-theatre--julia-rank.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ballet-shoes-west-end-2024/london-theatre--julia-rank.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-tour-2026/broadwayworld--michael-rabice.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "buena-vista-social-club-tour-2026/broadwayworld--michael-rabice.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "children-of-a-lesser-god-2018/medium--christian-lewis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "children-of-a-lesser-god-2018/medium--christian-lewis.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "data-off-broadway-2026/nytimes--tim-teeman.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "data-off-broadway-2026/nytimes--tim-teeman.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deaf-republic-west-end-2025/londontheatre1--chris-omaweng.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "deaf-republic-west-end-2025/londontheatre1--chris-omaweng.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dolly-a-true-original-musical-regional-2025/cowboys-and-indians--joe-leydon.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "dolly-a-true-original-musical-regional-2025/cowboys-and-indians--joe-leydon.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dracula-west-end-2025/daily-mail--patrick-marmion.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "dracula-west-end-2025/daily-mail--patrick-marmion.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "english-2025/broadwaynews--brittani-samuel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "english-2025/broadwaynews--brittani-samuel.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "giant-2026/theatre-reviews-limited--joseph-verlezza.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "giant-2026/theatre-reviews-limited--joseph-verlezza.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "going-bacharach-the-songs-of-an-icon-off-broadway-2026/nysr--elysa-gardner.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "going-bacharach-the-songs-of-an-icon-off-broadway-2026/nysr--elysa-gardner.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/cititour--brian-scott-lipton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "harry-potter-2021/cititour--brian-scott-lipton.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-2017/theater-life--david-sheward.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hello-dolly-2017/theater-life--david-sheward.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-society-west-end-2026/monstagigz--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "high-society-west-end-2026/monstagigz--unknown.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hungry-women-off-broadway-2026/pages-on-stages--mason-pilevsky.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ink-2019/wsj--terry-teachout.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ink-2019/wsj--terry-teachout.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-off-west-end-2026/british-theatre--zia-trench.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "jane-eyre-off-west-end-2026/british-theatre--zia-trench.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-2025/nytimes--jesse-green.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "john-proctor-is-the-villain-2025/nytimes--jesse-green.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "killer-joe-west-end-2018/timeout-london--andrzej-lukowski.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "killer-joe-west-end-2018/timeout-london--andrzej-lukowski.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/darkusmagazine--sal-fasone.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/darkusmagazine--sal-fasone.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-tour-2024/broadwayworld--dara-homer.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "life-of-pi-tour-2024/broadwayworld--dara-homer.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mcneal-2024/broadwaynews--brittani-samuel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "mcneal-2024/broadwaynews--brittani-samuel.json: nonReviewManualClear"
+      }
+    ]
+  }
+}

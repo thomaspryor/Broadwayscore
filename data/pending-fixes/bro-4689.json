@@ -1,0 +1,135 @@
+{
+  "issueNumber": "bro-4689",
+  "planId": "b1faff71-f988-4047-b22a-56258deb6035",
+  "status": "applied",
+  "createdAt": "2026-10-12T13:41:00.192Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add two Guardian-reviewed Off-West End visiting productions that reverse-discovery found missing (BRO-4689): Berliner Ensemble's De Profundis at the Coronet Theatre (2-7 Oct 2026) and HoriPro's End of the World and Hard-Boiled Wonderland at the Barbican Theatre (8-11 Oct 2026). Both closed; facts from the venues' and company's own pages.",
+    "steps": [
+      "Append de-profundis-off-west-end-2026",
+      "Append end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "de-profundis-off-west-end-2026",
+          "title": "De Profundis",
+          "slug": "de-profundis-off-west-end",
+          "venue": "Coronet Theatre",
+          "theaterAddress": "103 Notting Hill Gate, London W11 3LB",
+          "openingDate": "2026-10-02",
+          "closingDate": "2026-10-07",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [],
+          "runtime": "1h 50m",
+          "intermissions": 0,
+          "synopsis": "The Berliner Ensemble's staging of Oscar Wilde's prison letter De Profundis as a solo performance, directed by Oliver Reese and performed by Jens Harzer in German with English surtitles, in a five-performance London visit.",
+          "cast": [
+            {
+              "name": "Jens Harzer",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Oscar Wilde",
+              "role": "Writer"
+            },
+            {
+              "name": "Oliver Reese",
+              "role": "Director"
+            }
+          ],
+          "ticketLinks": [],
+          "openingDateSource": "press night 2 October 2026 (theatreweekly.com); run 2-7 October 2026 (berliner-ensemble.de touring page)",
+          "discoverySource": "reverse-discovery-audit",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/oct/05/de-profundis-review-oscar-wilde-coronet-theatre-london",
+            "https://www.berliner-ensemble.de/en/node/1112",
+            "https://theatreweekly.com/berliner-ensembles-acclaimed-production-of-de-profundis-receives-uk-premiere-at-the-coronet-theatre/",
+            "https://www.timeout.com/london/theatre/de-profundis-2"
+          ],
+          "statusSource": "added by hand 2026-10-12 (BRO-4689); Berliner Ensemble touring page lists Coronet Theatre performances 2, 3, 4, 6 and 7 October 2026; Theatre Weekly gives press night 2 October"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+          "title": "End of the World and Hard-Boiled Wonderland",
+          "slug": "end-of-the-world-and-hard-boiled-wonderland-off-west-end",
+          "venue": "Barbican Theatre",
+          "theaterAddress": "Silk Street, London EC2Y 8DS",
+          "openingDate": "2026-10-08",
+          "closingDate": "2026-10-11",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [],
+          "runtime": "2h 45m",
+          "synopsis": "HoriPro's stage adaptation of Haruki Murakami's 1985 novel Hard-Boiled Wonderland and the End of the World, adapted by Ako Takahashi and directed and choreographed by Philippe Decouflé, starring Tatsuya Fujiwara. Performed in Japanese with English surtitles; the Barbican run was its European premiere.",
+          "cast": [
+            {
+              "name": "Tatsuya Fujiwara",
+              "role": "Watashi"
+            },
+            {
+              "name": "Miu Tomita",
+              "role": "Woman in Pink"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Haruki Murakami",
+              "role": "Based on the novel by"
+            },
+            {
+              "name": "Ako Takahashi",
+              "role": "Adaptation"
+            },
+            {
+              "name": "Philippe Decouflé",
+              "role": "Director and Choreographer"
+            }
+          ],
+          "ticketLinks": [],
+          "openingDateSource": "press performance 8 October 2026 (Barbican press release); run 8-11 October 2026",
+          "discoverySource": "reverse-discovery-audit",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/oct/09/end-of-the-world-and-hard-boiled-wonderland-review-haruki-murakami-barbican-theatre-london",
+            "https://www.barbican.org.uk/sites/default/files/documents/2026-08/End%20of%20the%20World%20and%20Hard-Boiled%20Wonderland%20press%20release.pdf",
+            "https://www.timeout.com/london/theatre/end-of-the-world-and-hard-boiled-wonderland"
+          ],
+          "statusSource": "added by hand 2026-10-12 (BRO-4689); Barbican press release: Thursday 8 to Sunday 11 October 2026, press performance Thursday 8 October 2026"
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:42:30.828Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added de-profundis-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026"
+    }
+  ]
+}

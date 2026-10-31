@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5373-z",
+  "planId": "29fb3569-61b6-424f-8684-99f29c132270",
+  "status": "applied",
+  "createdAt": "2026-10-15T05:23:08.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (z): clear two stale wrongProduction flags on restored reviews (bobs-theater-blog 2017, Porch on Windy Hill).",
+    "steps": [
+      "manual clears"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5373: stale flag carried by the restore. It was set while this April 2017 post on the Broadway production sat under the 2019 Off-Broadway show ('mentions Lyceum', the 2017 Broadway venue). Under the-play-that-goes-wrong-2017 the Lyceum is the right venue."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5373: stale flag carried by the restore. It was set while this April 2017 post on the Broadway production sat under the 2019 Off-Broadway show ('mentions Lyceum', the 2017 Broadway venue). Under the-play-that-goes-wrong-2017 the Lyceum is the right venue."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5373: the review (Theater Life, 2025-09-19) covers the Sept-Oct 2025 Urban Stages New York premiere; the 2026 Urban Stages run under this show id is its encore (same production, venue and company), so the pre-window date flag does not make it a different production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5373: the review (Theater Life, 2025-09-19) covers the Sept-Oct 2025 Urban Stages New York premiere; the 2026 Urban Stages run under this show id is its encore (same production, venue and company), so the pre-window date flag does not make it a different production."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T05:49:07.509Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ]
+}

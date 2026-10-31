@@ -1,0 +1,479 @@
+{
+  "issueNumber": "bro-5036-b",
+  "planId": "cfdd8670-456b-4102-addc-985b9466d577",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:59:45.852Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5036: strict re-verify of the closed Broadway and West End rows with Google-sourced art, then contact sheets of every strict reject, found 30 wrong images on 26 rows (films, albums, novels, other productions, newspaper scans). Null them, reject each Google source, and mark the 7 rows left with no art so the sweep and self-heal stop refilling them. (part 2 of 3)",
+    "steps": [
+      "Null each wrong format (compare-and-set)",
+      "Add its recorded Google source to rejectedImageUrls (add-only)",
+      "Set noReliableArt on rows left with no art (fingerprint-checked)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreyfus-in-rehearsal-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dreyfus-in-rehearsal-1974/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "dreyfus-in-rehearsal-1974: thumbnail was a scanned newspaper page, not art (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreyfus-in-rehearsal-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/dreyfus-in-rehearsal-ethel-barrymore-theatre-vault-0000004328"
+        ],
+        "description": "dreyfus-in-rehearsal-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreyfus-in-rehearsal-1974",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "dreyfus in rehearsal|ethel barrymore theatre|1974-10-17"
+        },
+        "description": "dreyfus-in-rehearsal-1974: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-national-health-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-national-health-1974/thumbnail.jpg",
+          "poster": "/images/shows/the-national-health-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/the-national-health-1974/poster.jpg",
+          "hero": null
+        },
+        "description": "the-national-health-1974: thumbnail was the Columbia Pictures film poster (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-national-health-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/the-national-health-circle-in-the-square-theatre-vault-0000003299"
+        ],
+        "description": "the-national-health-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "saturday-sunday-monday-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/saturday-sunday-monday-1974/thumbnail.jpg",
+          "poster": "/images/shows/saturday-sunday-monday-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/saturday-sunday-monday-1974/poster.jpg",
+          "hero": null
+        },
+        "description": "saturday-sunday-monday-1974: thumbnail was the film (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "saturday-sunday-monday-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.themoviedb.org/movie/2814-sabato-domenica-e-lunedi"
+        ],
+        "description": "saturday-sunday-monday-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "p-s-your-cat-is-dead-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/p-s-your-cat-is-dead-1975/thumbnail.jpg",
+          "poster": "/images/shows/p-s-your-cat-is-dead-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/p-s-your-cat-is-dead-1975/poster.jpg",
+          "hero": null
+        },
+        "description": "p-s-your-cat-is-dead-1975: thumbnail was the novel cover (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "p-s-your-cat-is-dead-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.daytonaplayhouse.org/seasons/2020s/2024-2025/ps-your-cat-is-dead"
+        ],
+        "description": "p-s-your-cat-is-dead-1975: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "thieves-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/thieves-1974/thumbnail.jpg",
+          "poster": "/images/shows/thieves-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/thieves-1974/poster.jpg",
+          "hero": null
+        },
+        "description": "thieves-1974: thumbnail was a scanned newspaper ad page, not art (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "thieves-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.facebook.com/groups/893472017418035/posts/7417084951723343/"
+        ],
+        "description": "thieves-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-earth-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mother-earth-1972/thumbnail.jpg",
+          "poster": "/images/shows/mother-earth-1972/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mother-earth-1972: poster was the rock band Mother Earth album cover; thumbnail was Emma Goldman's Mother Earth magazine (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-earth-1972",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.facebook.com/groups/538701559522634/posts/26868368479462583/",
+          "google-images:https://playbill.com/production/mother-earth-belasco-theatre-vault-0000010790"
+        ],
+        "description": "mother-earth-1972: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-earth-1972",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "mother earth|belasco theatre|1972-10-19"
+        },
+        "description": "mother-earth-1972: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-now-darling-1970",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/not-now-darling-1970/thumbnail.jpg",
+          "poster": "/images/shows/not-now-darling-1970/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/not-now-darling-1970/poster.jpg",
+          "hero": null
+        },
+        "description": "not-now-darling-1970: thumbnail was the 1973 film poster (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-now-darling-1970",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/not-now-darling-brooks-atkinson-theatre-vault-0000008042"
+        ],
+        "description": "not-now-darling-1970: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/youre-a-good-man-charlie-brown-1971/thumbnail.jpg",
+          "poster": "/images/shows/youre-a-good-man-charlie-brown-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/youre-a-good-man-charlie-brown-1971/poster.jpg",
+          "hero": null
+        },
+        "description": "youre-a-good-man-charlie-brown-1971: thumbnail was a later college production graphic (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-1971",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.mit.edu/~mtg/PastShowsPresent-2015.html"
+        ],
+        "description": "youre-a-good-man-charlie-brown-1971: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "into-the-woods-1997",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/into-the-woods-1997/thumbnail.jpg",
+          "poster": "/images/shows/into-the-woods-1997/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/into-the-woods-1997/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "into-the-woods-1997: poster was the original 1987 Martin Beck production window card (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "into-the-woods-1997",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://en.wikipedia.org/wiki/Into_the_Woods"
+        ],
+        "description": "into-the-woods-1997: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-most-happy-fella-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-most-happy-fella-1979/thumbnail.jpg",
+          "poster": "/images/shows/the-most-happy-fella-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/the-most-happy-fella-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "the-most-happy-fella-1979: thumbnail was the 1956 original cast recording (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-most-happy-fella-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://en.wikipedia.org/wiki/The_Most_Happy_Fella"
+        ],
+        "description": "the-most-happy-fella-1979: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/peter-pan-1979/thumbnail.jpg",
+          "poster": "/images/shows/peter-pan-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/peter-pan-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "peter-pan-1979: thumbnail was a later touring production logo (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.instagram.com/peterpanthemusical/"
+        ],
+        "description": "peter-pan-1979: never re-take those Google sources (BRO-5036)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:33:33.058Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dreyfus-in-rehearsal-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for dreyfus-in-rehearsal-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for dreyfus-in-rehearsal-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-national-health-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-national-health-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for saturday-sunday-monday-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for saturday-sunday-monday-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for p-s-your-cat-is-dead-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for p-s-your-cat-is-dead-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for thieves-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for thieves-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mother-earth-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for mother-earth-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for mother-earth-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for not-now-darling-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for not-now-darling-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for youre-a-good-man-charlie-brown-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for youre-a-good-man-charlie-brown-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for into-the-woods-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for into-the-woods-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-most-happy-fella-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-most-happy-fella-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for peter-pan-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for peter-pan-1979"
+    }
+  ]
+}

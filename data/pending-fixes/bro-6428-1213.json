@@ -1,0 +1,418 @@
+{
+  "issueNumber": "bro-6428-1213",
+  "planId": "36af4993-d557-466a-85a2-3f95dc267055",
+  "status": "applied",
+  "createdAt": "2026-10-27T10:08:55.570Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 12 closed West End production(s) for 2012-2013 from the historical backfill (we-historical:olt; BRO-6428).",
+    "steps": [
+      "Append hedda-gabler-west-end-2012 (The Old Vic, 2012-09-05 to 2012-11-10)",
+      "Append a-chorus-of-disapproval-west-end-2012 (Harold Pinter Theatre, 2012-09-17 to 2013-01-05)",
+      "Append monty-pythons-spamalot-west-end-2012 (Playhouse Theatre, 2012-11-14 to 2014-04-12)",
+      "Append the-bodyguard-west-end-2012 (Adelphi Theatre, 2012-11-06 to 2014-08-29)",
+      "Append the-judas-kiss-west-end-2013 (Duke of York's Theatre, 2013-01-09 to 2013-04-06)",
+      "Append the-curious-incident-of-the-dog-in-the-night-time-west-end-2013 (Apollo Theatre, 2013-03-01 to 2013-12-19)",
+      "Append alan-bennetts-untold-stories-west-end-2013 (Duchess Theatre, 2013-03-22 to 2013-06-15)",
+      "Append once-west-end-2013 (Phoenix Theatre, 2013-03-16 to 2015-03-21)",
+      "Append beautiful-thing-west-end-2013 (Arts Theatre, 2013-04-13 to 2013-05-25)",
+      "Append passion-play-west-end-2013 (Duke of York's Theatre, 2013-05-01 to 2013-08-03)",
+      "Append private-lives-west-end-2013 (Gielgud Theatre, 2013-06-22 to 2013-09-21)",
+      "Append the-ladykillers-west-end-2013 (Vaudeville Theatre, 2013-06-29 to 2013-11-16)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hedda-gabler-west-end-2012",
+          "title": "Hedda Gabler",
+          "slug": "hedda-gabler-west-end-2012",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2012-09-05",
+          "openingDate": "2012-09-12",
+          "closingDate": "2012-11-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.220Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160410035530/http://www.officiallondontheatre.co.uk/london-shows/show/item144042/hedda-gabler/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-chorus-of-disapproval-west-end-2012",
+          "title": "A Chorus of Disapproval",
+          "slug": "a-chorus-of-disapproval-west-end-2012",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2012-09-17",
+          "openingDate": "2012-09-27",
+          "closingDate": "2013-01-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.271Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160411171640/http://www.officiallondontheatre.co.uk/london-shows/show/item146319/a-chorus-of-disapproval/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "monty-pythons-spamalot-west-end-2012",
+          "title": "Monty Python's Spamalot",
+          "slug": "monty-pythons-spamalot-west-end-2012",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2012-11-14",
+          "closingDate": "2014-04-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.298Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171007203713/http://www.officiallondontheatre.co.uk:80/london-shows/show/item159355/monty-pythons-spamalot"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-bodyguard-west-end-2012",
+          "title": "The Bodyguard",
+          "slug": "the-bodyguard-west-end-2012",
+          "venue": "Adelphi Theatre",
+          "previewsStartDate": "2012-11-06",
+          "openingDate": "2012-12-05",
+          "closingDate": "2014-08-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.337Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160410190515/http://www.officiallondontheatre.co.uk/london-shows/show/item141348/the-bodyguard/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-judas-kiss-west-end-2013",
+          "title": "The Judas Kiss",
+          "slug": "the-judas-kiss-west-end-2013",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2013-01-09",
+          "openingDate": "2013-01-22",
+          "closingDate": "2013-04-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.363Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160921052610/http://www.officiallondontheatre.co.uk/london-shows/show/item158594/the-judas-kiss/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2013",
+          "title": "The Curious Incident of the Dog in the Night-Time",
+          "slug": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2013",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2013-03-01",
+          "openingDate": "2013-03-12",
+          "closingDate": "2013-12-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.397Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160411010149/http://www.officiallondontheatre.co.uk/london-shows/show/item160832/the-curious-incident-of-the-dog-in-the-night-time/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "alan-bennetts-untold-stories-west-end-2013",
+          "title": "Alan Bennett's Untold Stories",
+          "slug": "alan-bennetts-untold-stories-west-end-2013",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2013-03-22",
+          "openingDate": "2013-04-02",
+          "closingDate": "2013-06-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.419Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160411132049/http://www.officiallondontheatre.co.uk/london-shows/show/item169410/alan-bennetts-untold-stories/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "once-west-end-2013",
+          "title": "Once",
+          "slug": "once-west-end-2013",
+          "venue": "Phoenix Theatre",
+          "previewsStartDate": "2013-03-16",
+          "openingDate": "2013-04-09",
+          "closingDate": "2015-03-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.440Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160412053102/http://www.officiallondontheatre.co.uk/london-shows/show/item158698/once/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "beautiful-thing-west-end-2013",
+          "title": "Beautiful Thing",
+          "slug": "beautiful-thing-west-end-2013",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2013-04-13",
+          "openingDate": "2013-04-17",
+          "closingDate": "2013-05-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.463Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20150708055832/http://www.officiallondontheatre.co.uk:80/london-shows/show/item167778/beautiful-thing/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "passion-play-west-end-2013",
+          "title": "Passion Play",
+          "slug": "passion-play-west-end-2013",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2013-05-01",
+          "openingDate": "2013-05-07",
+          "closingDate": "2013-08-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.481Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160415080028/http://www.officiallondontheatre.co.uk/london-shows/show/item161508/passion-play/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "private-lives-west-end-2013",
+          "title": "Private Lives",
+          "slug": "private-lives-west-end-2013",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2013-06-22",
+          "openingDate": "2013-07-03",
+          "closingDate": "2013-09-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.505Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160415192931/http://www.officiallondontheatre.co.uk/london-shows/show/item170083/private-lives/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-ladykillers-west-end-2013",
+          "title": "The Ladykillers",
+          "slug": "the-ladykillers-west-end-2013",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2013-06-29",
+          "openingDate": "2013-07-09",
+          "closingDate": "2013-11-16",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:55.526Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160410093034/http://www.officiallondontheatre.co.uk/london-shows/show/item175572/the-ladykillers/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-27T10:40:21.012Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hedda-gabler-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-chorus-of-disapproval-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added monty-pythons-spamalot-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-bodyguard-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-judas-kiss-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-curious-incident-of-the-dog-in-the-night-time-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added alan-bennetts-untold-stories-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added once-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added beautiful-thing-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added passion-play-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added private-lives-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-ladykillers-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
+}

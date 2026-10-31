@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-06",
+  "planId": "fbca62ec-830a-4dc8-8a14-908a538050ed",
+  "status": "partial",
+  "createdAt": "2026-10-11T21:42:49.528Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 6: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://variety.com/2009/legit/reviews/next-to-normal-1200472563/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2014/apr/17/james-franco-chris-o-dowd-mice-men-broadway-reviews is Nancy Groves; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/ is Christian Lewis; Aramide Tinubu came from the legacy web-search step and is not on the page. The page critic already has the live record variety--unknown.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html is Jackson McHenry; Helen Shaw came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2019/04/the-brightness-amid-the-menace-re-reviewing-oklahoma.html#:~:text=One%20of%20the%20great%2C%20risky,all%2Dexposing%20light%20and%20complete%20darkness. is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/03/theater-reviews-once-wins-over-the-twee-averse.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/ is A.D. Amorosi; Aramide Tinubu came from the legacy web-search step and is not on the page. The page critic already has the live record variety--ad-amorosi.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.theatrely.com/post/once-upon-a-one-more-time-crowns-a-pop-princess-review is Juan A. Ramirez; Olivia Clement came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/04/stage-dive-theater-review-one-man-two-guvnors.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://stageandcinema.com/2012/04/19/one-man-two-guvnors-broadway/ is Thomas Antoinne; Samuel L. Leiter came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2017/sep/24/oslo-lyttelton-review-high-drama-back-channels is Susannah Clapp; Jesse Hassenger came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorker.com/magazine/2023/03/27/parade-theatre-review-broadway is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theatrely.com/post/the-humanity-of-parade-on-full-display-review is Kobi Kassal; Juan A. Ramirez came from the legacy web-search step and is not on the page.",
+      "Page byline at https://observer.com/2021/09/pass-over-theatre-review-broadway/ is David Cote; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorktheatreguide.com/reviews/pass-over-broadway-review-no-one-is-off-the-hook-in-this-challenging-yet-optimistic-play is Diep Tran; David Gordon came from the legacy web-search step and is not on the page. The page critic already has the live record nytg--diep-tran.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://variety.com/2021/legit/reviews/pass-over-antoinette-nwandu-broadway-1235046615/ is Marilyn Stasio; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2024/legit/reviews/patriots-review-broadway-peter-morgan-play-1235978407/ is Frank Rizzo; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theatermania.com/news/review-patriots-on-broadway-unpacks-the-power-struggle-for-russia_1737910/ is Zachary Stewart; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2013/01/theater-review-picnic.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://stageandcinema.com/2013/01/19/picnic/ is Dmitry Zvonkov; Victor Gluck came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2013/legit/reviews/pippin-2-1117948951/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2022/03/theater-review-plaza-suite-with-parker-and-broderick.html is Helen Shaw; Sara Holdren came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2018/legit/reviews/pretty-woman-musical-review-broadway-1202905982/ is Bob Verini; Marilyn Stasio came from the legacy web-search step and is not on the page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-2009/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2009/legit/reviews/next-to-normal-1200472563/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/guardian--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Nancy Groves",
+        "description": "Page byline at https://www.theguardian.com/stage/2014/apr/17/james-franco-chris-o-dowd-mice-men-broadway-reviews is Nancy Groves; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/variety--aramide-tinubu.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--unknown.json",
+        "description": "Page byline at https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/ is Christian Lewis; Aramide Tinubu came from the legacy web-search step and is not on the page. The page critic already has the live record variety--unknown.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/vulture--helen-shaw.json",
+        "field": "criticName",
+        "oldValue": "Helen Shaw",
+        "newValue": "Jackson McHenry",
+        "description": "Page byline at https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html is Jackson McHenry; Helen Shaw came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oklahoma-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/2019/04/the-brightness-amid-the-menace-re-reviewing-oklahoma.html#:~:text=One%20of%20the%20great%2C%20risky,all%2Dexposing%20light%20and%20complete%20darkness. is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2012/03/theater-reviews-once-wins-over-the-twee-averse.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-one-more-time-2023/variety--aramide-tinubu.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--ad-amorosi.json",
+        "description": "Page byline at https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/ is A.D. Amorosi; Aramide Tinubu came from the legacy web-search step and is not on the page. The page critic already has the live record variety--ad-amorosi.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-one-more-time-2023/theatrely--olivia-clement.json",
+        "field": "criticName",
+        "oldValue": "Olivia Clement",
+        "newValue": "Juan A. Ramirez",
+        "description": "Page byline at https://www.theatrely.com/post/once-upon-a-one-more-time-crowns-a-pop-princess-review is Juan A. Ramirez; Olivia Clement came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-man-two-guvnors-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2012/04/stage-dive-theater-review-one-man-two-guvnors.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-man-two-guvnors-2012/stageandcinema--samuel-l-leiter.json",
+        "field": "criticName",
+        "oldValue": "Samuel L. Leiter",
+        "newValue": "Thomas Antoinne",
+        "description": "Page byline at https://stageandcinema.com/2012/04/19/one-man-two-guvnors-broadway/ is Thomas Antoinne; Samuel L. Leiter came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oslo-2017/guardian--jesse-hassenger.json",
+        "field": "criticName",
+        "oldValue": "Jesse Hassenger",
+        "newValue": "Susannah Clapp",
+        "description": "Page byline at https://www.theguardian.com/stage/2017/sep/24/oslo-lyttelton-review-high-drama-back-channels is Susannah Clapp; Jesse Hassenger came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.newyorker.com/magazine/2023/03/27/parade-theatre-review-broadway is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/theatrely--juan-a-ramirez.json",
+        "field": "criticName",
+        "oldValue": "Juan A. Ramirez",
+        "newValue": "Kobi Kassal",
+        "description": "Page byline at https://www.theatrely.com/post/the-humanity-of-parade-on-full-display-review is Kobi Kassal; Juan A. Ramirez came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pass-over-2021/observer--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "David Cote",
+        "description": "Page byline at https://observer.com/2021/09/pass-over-theatre-review-broadway/ is David Cote; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pass-over-2021/nytg--david-gordon.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytg--diep-tran.json",
+        "description": "Page byline at https://www.newyorktheatreguide.com/reviews/pass-over-broadway-review-no-one-is-off-the-hook-in-this-challenging-yet-optimistic-play is Diep Tran; David Gordon came from the legacy web-search step and is not on the page. The page critic already has the live record nytg--diep-tran.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pass-over-2021/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Marilyn Stasio",
+        "description": "Page byline at https://variety.com/2021/legit/reviews/pass-over-antoinette-nwandu-broadway-1235046615/ is Marilyn Stasio; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/variety--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2024/legit/reviews/patriots-review-broadway-peter-morgan-play-1235978407/ is Frank Rizzo; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/theatermania--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Zachary Stewart",
+        "description": "Page byline at https://www.theatermania.com/news/review-patriots-on-broadway-unpacks-the-power-struggle-for-russia_1737910/ is Zachary Stewart; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "picnic-2013/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "Page byline at https://www.vulture.com/2013/01/theater-review-picnic.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "picnic-2013/stageandcinema--victor-gluck.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck",
+        "newValue": "Dmitry Zvonkov",
+        "description": "Page byline at https://stageandcinema.com/2013/01/19/picnic/ is Dmitry Zvonkov; Victor Gluck came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2013/legit/reviews/pippin-2-1117948951/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "plaza-suite-2022/hollywood-reporter--angie-han.json",
+        "field": "criticName",
+        "oldValue": "Angie Han",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prayer-for-the-french-republic-2024/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "plaza-suite-2022/vulture--sara-holdren.json",
+        "field": "criticName",
+        "oldValue": "Sara Holdren",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.vulture.com/2022/03/theater-review-plaza-suite-with-parker-and-broderick.html is Helen Shaw; Sara Holdren came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pretty-woman-the-musical-2018/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Bob Verini",
+        "description": "Page byline at https://variety.com/2018/legit/reviews/pretty-woman-musical-review-broadway-1202905982/ is Bob Verini; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:36:42.765Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-to-normal-2009/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/guardian--jesse-green.json criticName: \"Jesse Green\" -> \"Nancy Groves\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "oh-mary-2024/variety--aramide-tinubu.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-2024/vulture--helen-shaw.json criticName: \"Helen Shaw\" -> \"Jackson McHenry\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oklahoma-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-one-more-time-2023/variety--aramide-tinubu.json duplicateOf: null -> \"variety--ad-amorosi.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-one-more-time-2023/theatrely--olivia-clement.json criticName: \"Olivia Clement\" -> \"Juan A. Ramirez\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-man-two-guvnors-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-man-two-guvnors-2012/stageandcinema--samuel-l-leiter.json criticName: \"Samuel L. Leiter\" -> \"Thomas Antoinne\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oslo-2017/guardian--jesse-hassenger.json criticName: \"Jesse Hassenger\" -> \"Susannah Clapp\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "parade-2023/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "parade-2023/theatrely--juan-a-ramirez.json criticName: \"Juan A. Ramirez\" -> \"Kobi Kassal\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pass-over-2021/observer--jesse-green.json criticName: \"Jesse Green\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "pass-over-2021/nytg--david-gordon.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pass-over-2021/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Marilyn Stasio\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/variety--jesse-green.json criticName: \"Jesse Green\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/theatermania--jesse-green.json criticName: \"Jesse Green\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "picnic-2013/vulture--jesse-green.json duplicateOf: null -> \"vulture--scott-brown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "picnic-2013/stageandcinema--victor-gluck.json criticName: \"Victor Gluck\" -> \"Dmitry Zvonkov\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "plaza-suite-2022/hollywood-reporter--angie-han.json criticName: \"Angie Han\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prayer-for-the-french-republic-2024/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "plaza-suite-2022/vulture--sara-holdren.json criticName: \"Sara Holdren\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pretty-woman-the-musical-2018/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Bob Verini\""
+    }
+  ]
+}

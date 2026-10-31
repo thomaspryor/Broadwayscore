@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!-- cmux socket reachability sentinel (BRO-2992). Runs OUTSIDE cmux, on the
+     same 15-minute cadence as com.broadwayscore.dispatch-watchdog-health, so
+     a real outage (like the 2h BRO-2959 auth-migration blackout, where
+     bsc-reconcile's tab self-heal, bsc-prune, and dispatch-watchdog all went
+     silently blind at once) is DETECTED within 30-45 minutes (3 consecutive
+     failed checks) and queued into the next daily digest, instead of staying
+     invisible until an owner happens to notice. Decision logic:
+     scripts/lib/cmux-reachability-check.js. Manual check:
+     node scripts/check-cmux-reachability.js -->
+<dict>
+  <key>Label</key>
+  <string>com.broadwayscore.cmux-reachability</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>/opt/homebrew/bin/node /Users/tompryor/Broadwayscore/scripts/check-cmux-reachability.js</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>900</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/tompryor/Library/Logs/cmux-reachability.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tompryor/Library/Logs/cmux-reachability.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

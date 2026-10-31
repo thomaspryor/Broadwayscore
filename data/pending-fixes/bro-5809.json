@@ -1,0 +1,321 @@
+{
+  "issueNumber": "bro-5809",
+  "planId": "1ed7d641-83d6-4bd9-9fbb-2fe6b07d8fb9",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5809: clear casts copied from older productions onto five announced shows.",
+    "steps": [
+      "Set cast to [] on 5 announced shows (compare-and-set)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2025",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Tallulah Bankhead",
+            "role": "Amanda Prynne"
+          },
+          {
+            "name": "Donald Cook",
+            "role": "Elyot Chase"
+          },
+          {
+            "name": "Barbara Baxley",
+            "role": "Sybil Chase"
+          },
+          {
+            "name": "William Langford",
+            "role": "Victor Prynne"
+          },
+          {
+            "name": "Therese Quadri",
+            "role": "Louise"
+          }
+        ],
+        "newValue": [],
+        "description": "Announced show carries 1948 Broadway revival cast (Tallulah Bankhead, Donald Cook); cleared (BRO-5809)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "let-the-good-times-roll-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Jerry Dixon",
+            "role": "Nomax"
+          },
+          {
+            "name": "Doug Eskew",
+            "role": "Big Moe"
+          },
+          {
+            "name": "Milton Craig Nealy",
+            "role": "Four-Eyed Moe"
+          },
+          {
+            "name": "Kevin Ramsey",
+            "role": "No Moe"
+          },
+          {
+            "name": "Jeffrey D. Sams",
+            "role": "Eat Moe"
+          },
+          {
+            "name": "Glenn Turner",
+            "role": "Little Moe"
+          }
+        ],
+        "newValue": [],
+        "description": "Announced show carries Five Guys Named Moe's 1992 cast; cleared (BRO-5809)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-anything-ok-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Patti LuPone",
+            "role": "Reno Sweeney"
+          },
+          {
+            "name": "Howard McGillin",
+            "role": "Billy Crocker"
+          },
+          {
+            "name": "John Cunningham",
+            "role": "Elisha J. Whitney"
+          },
+          {
+            "name": "Boyd Gaines",
+            "role": "Lord Evelyn Oakleigh"
+          },
+          {
+            "name": "Linda Hart",
+            "role": "Erma"
+          },
+          {
+            "name": "Kaitlin Hopkins",
+            "role": "Hope Harcourt"
+          },
+          {
+            "name": "Elizabeth Hubbard",
+            "role": "Mrs. Evangeline Harcourt"
+          },
+          {
+            "name": "Michael McGrath",
+            "role": "Moonface Martin"
+          },
+          {
+            "name": "Brad Anderson",
+            "role": "Sailor"
+          },
+          {
+            "name": "Randy Bobish",
+            "role": "G-Man # 1"
+          },
+          {
+            "name": "Rich Ceraulo",
+            "role": "Sailor"
+          },
+          {
+            "name": "Jennifer Paige Chambers",
+            "role": "Reno's Angel"
+          },
+          {
+            "name": "Eric Chan",
+            "role": "John"
+          },
+          {
+            "name": "Bruce Dow",
+            "role": "Minister"
+          },
+          {
+            "name": "Jennifer Frankel",
+            "role": "Reno's Angel"
+          }
+        ],
+        "newValue": [],
+        "description": "Announced show carries 1987 Anything Goes revival cast (Patti LuPone, Howard McGillin); cleared (BRO-5809)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-house-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Richard Allen",
+            "role": "Judge"
+          },
+          {
+            "name": "Edith Atwater",
+            "role": "Beatrice Cenci"
+          },
+          {
+            "name": "Hallam Bosworth",
+            "role": "Father Simon"
+          },
+          {
+            "name": "Henry Buckler",
+            "role": "Salvaore"
+          },
+          {
+            "name": "Elvin Field",
+            "role": "Giovanni"
+          },
+          {
+            "name": "Helen Holmes",
+            "role": "Lucrezia Cenci"
+          },
+          {
+            "name": "Richard Huett",
+            "role": "Pedro"
+          },
+          {
+            "name": "Harry Irvine",
+            "role": "Judge"
+          },
+          {
+            "name": "Edward Jephson",
+            "role": "Cardinal Silvestri"
+          },
+          {
+            "name": "Franklin Klein",
+            "role": "Warder"
+          },
+          {
+            "name": "Fred Leslie",
+            "role": "Prince Colonna"
+          },
+          {
+            "name": "Ian Maclaren",
+            "role": "Francesco Cenci"
+          },
+          {
+            "name": "Agnes Marc",
+            "role": "Portzia"
+          },
+          {
+            "name": "Harold McGee",
+            "role": "Sbirro"
+          },
+          {
+            "name": "Benedict McQuarrie",
+            "role": "Giorgio"
+          }
+        ],
+        "newValue": [],
+        "description": "Announced show carries 1930s Broadway cast (Edith Atwater, Hallam Bosworth); cleared (BRO-5809)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-in-the-garden-of-good-and-evil-2024",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Vasily Andrewsky",
+            "role": "Russian Art Singer"
+          },
+          {
+            "name": "Alice Ankers",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Miriam Avendale",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Ima Berline",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Dorothy Booth",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Marion Booth",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Helen Bowers",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Phoebe Brune",
+            "role": "Natasha"
+          },
+          {
+            "name": "Konstantin Buketoff",
+            "role": "Russian Art Singer"
+          },
+          {
+            "name": "Hugh Cameron",
+            "role": "Nicholas"
+          },
+          {
+            "name": "Adelaide Candee",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Terry Carroll",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Blanche Collins",
+            "role": "Olga"
+          },
+          {
+            "name": "Ann Constance",
+            "role": "American Ballet"
+          },
+          {
+            "name": "Betty Credito",
+            "role": "American Ballet"
+          }
+        ],
+        "newValue": [],
+        "description": "Announced show carries 1940s ballet-era cast (Russian Art Singer, American Ballet), not the unopened musical; cleared (BRO-5809)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T03:11:00.298Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for private-lives-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for let-the-good-times-roll-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for is-anything-ok-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for midnight-in-the-garden-of-good-and-evil-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

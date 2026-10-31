@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-10-30T09:01:09.230Z",
+  "apply": true,
+  "auditGeneratedAt": "2026-10-30T08:51:39.039Z",
+  "counts": {
+    "skip:command-shared-with-another-card": 2,
+    "bounce:no-auto-worker": 4,
+    "recent-activity": 4,
+    "closed": 1,
+    "landing-evidence-needs-in-review": 1,
+    "sweep:eligible": 3,
+    "sweep:closed": 2,
+    "sweep:recheck-after-pending": 1
+  },
+  "rows": [
+    {
+      "id": "BRO-6386",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-6382",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-6381",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-6121",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-6458",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6430",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6355",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6343",
+      "state": "In Progress",
+      "action": "closed",
+      "sha": "4fd2c10101b126980f71bf99ae5cdb31012c978b"
+    },
+    {
+      "id": "BRO-6314",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-5957",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "landing-evidence-needs-in-review"
+    },
+    {
+      "id": "BRO-5721",
+      "state": "In Review",
+      "action": "sweep-closed"
+    },
+    {
+      "id": "BRO-5516",
+      "state": "In Review",
+      "action": "sweep-leave",
+      "reason": "recheck-after-pending"
+    },
+    {
+      "id": "BRO-6279",
+      "state": "In Review",
+      "action": "sweep-closed"
+    }
+  ]
+}

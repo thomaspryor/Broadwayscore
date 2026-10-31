@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6580",
+  "planId": "273af69c-95e6-41e4-9909-e32e489ac491",
+  "status": "applied",
+  "createdAt": "2026-10-30T04:00:18.711Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Mark two newyorktheater.me critics-roundup posts (Color Purple 2015, Art 2025) as non-reviews; they relay other outlets' reviews and were scored as Jonathan Mandell reviews",
+    "steps": [
+      "the-color-purple-2015/nyt-theater--jonathan-mandell.json: isNonReviewReason",
+      "the-color-purple-2015/nyt-theater--jonathan-mandell.json: isNonReview",
+      "art-2025/nyt-theater--jonathan-mandell.json: isNonReviewReason",
+      "art-2025/nyt-theater--jonathan-mandell.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/nyt-theater--jonathan-mandell.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review) BRO-6580: roundup of other critics reviews, not Mandell own review",
+        "description": "the-color-purple-2015/nyt-theater--jonathan-mandell.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/nyt-theater--jonathan-mandell.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-color-purple-2015/nyt-theater--jonathan-mandell.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-2025/nyt-theater--jonathan-mandell.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review) BRO-6580: verdict roundup of other critics reviews, not Mandell own review",
+        "description": "art-2025/nyt-theater--jonathan-mandell.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-2025/nyt-theater--jonathan-mandell.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "art-2025/nyt-theater--jonathan-mandell.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T05:16:39.440Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/nyt-theater--jonathan-mandell.json isNonReviewReason: null -> \"manual (not a review) BRO-6580: roundup of other critics reviews, not Mandell own review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/nyt-theater--jonathan-mandell.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/nyt-theater--jonathan-mandell.json isNonReviewReason: null -> \"manual (not a review) BRO-6580: verdict roundup of other critics reviews, not Mandell own review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/nyt-theater--jonathan-mandell.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

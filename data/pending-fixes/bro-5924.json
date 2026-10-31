@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-5924",
+  "planId": "15eed66e-b4f6-4a96-b1ac-21ee02ccd8aa",
+  "status": "partial",
+  "createdAt": "2026-10-22T07:54:59.561Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5924: Helen Shaw's NYT pieces that review two shows in one article (Midnight + The Curious Case of Benjamin Button; School Pictures + Two Girls) are filed under one show only. File each show's own section under its own row and cut the existing row down to its own section, then rescore both.",
+    "steps": [
+      "Helen Shaw's NYT piece reviews Midnight and Benjamin Button in one article and is filed only under Benjamin Button. File the Midnight section (from 'The more compelling is the sprawling Midnight' to 'There's still time') as midnight-off-broadway-2026/nytimes--helen-shaw.json, and cut the Benjamin Button row down to its own section ('Unfortunately, I don't think...' to 'none of us are getting any younger') so its score comes from that section only. Both rows are queued for a rescore.",
+      "Same combined-article case: Helen Shaw's NYT piece on School Pictures and Two Girls is filed only under School Pictures. File the Two Girls section as two-girls-off-broadway-2026/nytimes--helen-shaw.json and cut the School Pictures row to its own section."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Helen Shaw's NYT piece reviews Midnight and Benjamin Button in one article and is filed only under Benjamin Button. File the Midnight section (from 'The more compelling is the sprawling Midnight' to 'There's still time') as midnight-off-broadway-2026/nytimes--helen-shaw.json, and cut the Benjamin Button row down to its own section ('Unfortunately, I don't think...' to 'none of us are getting any younger') so its score comes from that section only. Both rows are queued for a rescore.",
+        "script": "copy-multishow-section.js",
+        "args": "--from=the-curious-case-of-benjamin-button-off-broadway-2026/nytimes--helen-shaw.json --to-show=midnight-off-broadway-2026 --method=markers --expect-start=The_more_compelling_is_the_sprawling --expect-end=There_s_still_time --own-start=Unfortunately_I_don_t_think --own-end=are_getting_any_younger --apply"
+      },
+      {
+        "type": "run-script",
+        "description": "Same combined-article case: Helen Shaw's NYT piece on School Pictures and Two Girls is filed only under School Pictures. File the Two Girls section as two-girls-off-broadway-2026/nytimes--helen-shaw.json and cut the School Pictures row to its own section.",
+        "script": "copy-multishow-section.js",
+        "args": "--from=school-pictures-off-broadway-2026/nytimes--helen-shaw.json --to-show=two-girls-off-broadway-2026 --method=markers --expect-start=Though_it_s_similarly_portable --expect-end=answers_for_just_two_girls_to_give --own-start=I_hope_Milo_Cramer_the_performer --own-end=or_at_a_City_Council_meeting --apply"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T10:28:34.508Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script copy-multishow-section.js failed: Command failed: node scripts/copy-multishow-section.js --from=the-curious-case-of-benjamin-button-off-broadway-2026/nytimes--helen-shaw.json --to-show=midnight-off-broadway-2026 --method=markers --expect-start=The_more_compelling_is_the_sprawling --expect-end=There_s_still_time --own-start=Unfortunately_I_don_t_think --own-end=are_getting_any_younger --apply"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script copy-multishow-section.js failed: Command failed: node scripts/copy-multishow-section.js --from=school-pictures-off-broadway-2026/nytimes--helen-shaw.json --to-show=two-girls-off-broadway-2026 --method=markers --expect-start=Though_it_s_similarly_portable --expect-end=answers_for_just_two_girls_to_give --own-start=I_hope_Milo_Cramer_the_performer --own-end=or_at_a_City_Council_meeting --apply"
+    }
+  ],
+  "executedIn": "ci"
+}

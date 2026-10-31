@@ -1,0 +1,575 @@
+{
+  "_meta": {
+    "generatedAt": "2026-10-31T07:37:19.554Z",
+    "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
+  },
+  "summary": {
+    "auditsRun": 56,
+    "driftCount": 26,
+    "crashCount": 0,
+    "anyDrift": true,
+    "anyCrashed": false
+  },
+  "audits": [
+    {
+      "name": "backfill-eurydice-image-found",
+      "label": "backfill outcome: eurydice-image-found",
+      "command": "node scripts/lib/corpus-checks/eurydice-image-found.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: EURYDICE has a shows.json entry with an images block\nok 1 - EURYDICE has a shows.json entry with an images block\n  ---\n  duration_ms: 85.158787\n  type: 'test'\n  ...\n# Subtest: EURYDICE poster path resolves to a real, non-placeholder file on disk\nok 2 - EURYDICE poster path resolves to a real, non-placeholder file on disk\n  ---\n  duration_ms: 78.794082\n  type: 'test'\n  ...\n# Subtest: EURYDICE passes the canonical hasRealImage predicate (self-heal acceptance criteria)\nok 3 - EURYDICE passes the canonical hasRealImage predicate (self-heal acceptance criteria)\n  ---\n  duration_ms: 73.230039\n  type: 'test'\n  ...\n# Subtest: the poster file on disk is a real image, not a zero-byte or tiny stub\nok 4 - the poster file on disk is a real image, not a zero-byte or tiny stub\n  ---\n  duration_ms: 90.782565\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 337.118248",
+      "channel": "fyi"
+    },
+    {
+      "name": "backfill-brothers-paranormal-show-exists",
+      "label": "backfill outcome: brothers-paranormal-show-exists",
+      "command": "node scripts/lib/corpus-checks/brothers-paranormal-show-exists.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "  ...\n# Subtest: The Brothers Paranormal entry has the fields CLAUDE.md rule 3 requires for a closed show\nok 2 - The Brothers Paranormal entry has the fields CLAUDE.md rule 3 requires for a closed show\n  ---\n  duration_ms: 65.023781\n  type: 'test'\n  ...\n# Subtest: The Brothers Paranormal is correctly classified as Off-Broadway, not Broadway\nok 3 - The Brothers Paranormal is correctly classified as Off-Broadway, not Broadway\n  ---\n  duration_ms: 55.963218\n  type: 'test'\n  ...\n# Subtest: The Brothers Paranormal dates match the cross-verified Playbill/Pan Asian Rep production run\nok 4 - The Brothers Paranormal dates match the cross-verified Playbill/Pan Asian Rep production run\n  ---\n  duration_ms: 76.987703\n  type: 'test'\n  ...\n# Subtest: The Brothers Paranormal is flagged provisional with its manual-verification source recorded\nok 5 - The Brothers Paranormal is flagged provisional with its manual-verification source recorded\n  ---\n  duration_ms: 54.053302\n  type: 'test'\n  ...\n# Subtest: The Brothers Paranormal passes the canonical exemption predicate (survives --all-provisional sweeps)\nok 6 - The Brothers Paranormal passes the canonical exemption predicate (survives --all-provisional sweeps)\n  ---\n  duration_ms: 59.164543\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 398.759251",
+      "channel": "fyi"
+    },
+    {
+      "name": "backfill-everybodys-talking-about-jamie-show-exists",
+      "label": "backfill outcome: everybodys-talking-about-jamie-show-exists",
+      "command": "node scripts/lib/corpus-checks/everybodys-talking-about-jamie-show-exists.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "  ...\n# Subtest: Everybody's Talking About Jamie entry matches the Playbill-confirmed Peacock Theatre revival\nok 2 - Everybody's Talking About Jamie entry matches the Playbill-confirmed Peacock Theatre revival\n  ---\n  duration_ms: 66.726279\n  type: 'test'\n  ...\n# Subtest: Everybody's Talking About Jamie is correctly classified as West End / off-West-End\nok 3 - Everybody's Talking About Jamie is correctly classified as West End / off-West-End\n  ---\n  duration_ms: 55.625266\n  type: 'test'\n  ...\n# Subtest: Everybody's Talking About Jamie dates match the sourced run (first preview, press night window, closing)\nok 4 - Everybody's Talking About Jamie dates match the sourced run (first preview, press night window, closing)\n  ---\n  duration_ms: 77.191123\n  type: 'test'\n  ...\n# Subtest: Everybody's Talking About Jamie is flagged with its manual-verification source recorded\nok 5 - Everybody's Talking About Jamie is flagged with its manual-verification source recorded\n  ---\n  duration_ms: 54.493895\n  type: 'test'\n  ...\n# Subtest: Everybody's Talking About Jamie is correctly classified provisional by the canonical predicate (isProvisional)\nok 6 - Everybody's Talking About Jamie is correctly classified provisional by the canonical predicate (isProvisional)\n  ---\n  duration_ms: 59.489179\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 401.055784",
+      "channel": "fyi"
+    },
+    {
+      "name": "backfill-standing-at-the-skys-edge-show-exists",
+      "label": "backfill outcome: standing-at-the-skys-edge-show-exists",
+      "command": "node scripts/lib/corpus-checks/standing-at-the-skys-edge-show-exists.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: Standing at the Sky's Edge has a shows.json entry\nok 1 - Standing at the Sky's Edge has a shows.json entry\n  ---\n  duration_ms: 82.544907\n  type: 'test'\n  ...\n# Subtest: Standing at the Sky's Edge entry has the fields CLAUDE.md rule 3 requires for a closed show\nok 2 - Standing at the Sky's Edge entry has the fields CLAUDE.md rule 3 requires for a closed show\n  ---\n  duration_ms: 74.622559\n  type: 'test'\n  ...\n# Subtest: Standing at the Sky's Edge is correctly classified as West End, not Broadway\nok 3 - Standing at the Sky's Edge is correctly classified as West End, not Broadway\n  ---\n  duration_ms: 72.072869\n  type: 'test'\n  ...\n# Subtest: Standing at the Sky's Edge dates match the Playbill-cross-validated West End transfer run\nok 4 - Standing at the Sky's Edge dates match the Playbill-cross-validated West End transfer run\n  ---\n  duration_ms: 69.167145\n  type: 'test'\n  ...\n# Subtest: Standing at the Sky's Edge is flagged provisional with its manual-verification source recorded\nok 5 - Standing at the Sky's Edge is flagged provisional with its manual-verification source recorded\n  ---\n  duration_ms: 67.228546\n  type: 'test'\n  ...\n1..5\n# tests 5\n# suites 0\n# pass 5\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 375.20103",
+      "channel": "fyi"
+    },
+    {
+      "name": "backfill-amaze-review-flags",
+      "label": "backfill outcome: amaze-review-flags",
+      "command": "node scripts/lib/corpus-checks/amaze-review-flags.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: AMAZE entry has dates and opens no later than its earliest dated review\nok 1 - AMAZE entry has dates and opens no later than its earliest dated review\n  ---\n  duration_ms: 87.630463\n  type: 'test'\n  ...\n# Subtest: no AMAZE review file carries wrongProduction without a reason; scored rows exist\nok 2 - no AMAZE review file carries wrongProduction without a reason; scored rows exist\n  ---\n  duration_ms: 247.912891\n  type: 'test'\n  ...\n# Subtest: AMAZE critic score is non-null on the slim file\nok 3 - AMAZE critic score is non-null on the slim file\n  ---\n  duration_ms: 0.334435\n  type: 'test'\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 3\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 344.526433",
+      "channel": "fyi"
+    },
+    {
+      "name": "backfill-the-lonely-few-image",
+      "label": "backfill outcome: the-lonely-few-image",
+      "command": "node scripts/lib/corpus-checks/the-lonely-few-image.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: THE LONELY FEW has a shows.json entry with an images block\nok 1 - THE LONELY FEW has a shows.json entry with an images block\n  ---\n  duration_ms: 83.230376\n  type: 'test'\n  ...\n# Subtest: THE LONELY FEW poster path resolves to a real, non-placeholder file on disk\nok 2 - THE LONELY FEW poster path resolves to a real, non-placeholder file on disk\n  ---\n  duration_ms: 75.56644\n  type: 'test'\n  ...\n# Subtest: THE LONELY FEW passes the canonical hasRealImage predicate (self-heal acceptance criteria)\nok 3 - THE LONELY FEW passes the canonical hasRealImage predicate (self-heal acceptance criteria)\n  ---\n  duration_ms: 72.87168\n  type: 'test'\n  ...\n# Subtest: the poster file on disk is a real image, not a zero-byte or tiny stub\nok 4 - the poster file on disk is a real image, not a zero-byte or tiny stub\n  ---\n  duration_ms: 87.254989\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 327.743201",
+      "channel": "fyi"
+    },
+    {
+      "name": "backfill-image-healing",
+      "label": "backfill outcome: image-healing",
+      "command": "node scripts/lib/corpus-checks/image-healing.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "  ...\n# Subtest: Bad Kreyòl poster path resolves to a real, non-placeholder file on disk\nok 2 - Bad Kreyòl poster path resolves to a real, non-placeholder file on disk\n  ---\n  duration_ms: 75.719536\n  type: 'test'\n  ...\n# Subtest: Bad Kreyòl passes the canonical hasRealImage predicate (self-heal acceptance criteria)\nok 3 - Bad Kreyòl passes the canonical hasRealImage predicate (self-heal acceptance criteria)\n  ---\n  duration_ms: 72.353884\n  type: 'test'\n  ...\n# Subtest: Bad Kreyòl image directory passes the file-based coverage predicate (not just directory existence)\nok 4 - Bad Kreyòl image directory passes the file-based coverage predicate (not just directory existence)\n  ---\n  duration_ms: 0.522585\n  type: 'test'\n  ...\n# Subtest: the poster file on disk is a real image, not a zero-byte or tiny stub\nok 5 - the poster file on disk is a real image, not a zero-byte or tiny stub\n  ---\n  duration_ms: 86.718227\n  type: 'test'\n  ...\n# Subtest: findImagelessScoredShows no longer flags Bad Kreyòl now that it has a real image\nok 6 - findImagelessScoredShows no longer flags Bad Kreyòl now that it has a real image\n  ---\n  duration_ms: 66.667609\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 394.929087",
+      "channel": "fyi"
+    },
+    {
+      "name": "backfill-mystic-pizza-show-existence",
+      "label": "backfill outcome: mystic-pizza-show-existence",
+      "command": "node scripts/lib/corpus-checks/mystic-pizza-show-existence.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "      ...\n    # Subtest: show has a real venue and dates\n    ok 3 - show has a real venue and dates\n      ---\n      duration_ms: 0.19251\n      type: 'test'\n      ...\n    # Subtest: \"mystic pizza\" search query matches the show via the real search predicate\n    ok 4 - \"mystic pizza\" search query matches the show via the real search predicate\n      ---\n      duration_ms: 0.296824\n      type: 'test'\n      ...\n    # Subtest: show has enough reviews to clear the regional min-score threshold\n    ok 5 - show has enough reviews to clear the regional min-score threshold\n      ---\n      duration_ms: 0.150962\n      type: 'test'\n      ...\n    # Subtest: every ingested review has a registered outlet and a valid assignedScore\n    ok 6 - every ingested review has a registered outlet and a valid assignedScore\n      ---\n      duration_ms: 0.242603\n      type: 'test'\n      ...\n    1..6\nok 1 - Mystic Pizza show existence (\\#1933)\n  ---\n  duration_ms: 2.937423\n  type: 'suite'\n  ...\n1..1\n# tests 6\n# suites 1\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 17.788316",
+      "channel": "fyi"
+    },
+    {
+      "name": "text-quality",
+      "label": "Review text quality (full/truncated/unknown %)",
+      "command": "node scripts/audit-text-quality.js",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 73743\nHas fullText: 59371\n\n--- Quality Breakdown ---\n  full: 44238 (74.5%)\n  truncated: 13785 (23.2%)\n  partial: 804 (1.4%)\n  excerpt: 305 (0.5%)\n  stub: 220 (0.4%)\n  complete: 19 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 10852\n  has_footer_junk: 2252\n  ends_with_ellipsis: 197\n  has_footer_text: 101\n  paywall_or_login_prompt: 84\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 74.5% (min: 25%)\n  ✅ Truncated: 23.2% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED",
+      "channel": "fyi"
+    },
+    {
+      "name": "aggregator-truth",
+      "label": "Local vs aggregator review-count ratios",
+      "command": "node scripts/validate-aggregator-truth.js",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "\nℹ️  SHOWS WITHOUT AGGREGATOR DATA (16 shows):\n   These are new/upcoming shows or shows not yet indexed by aggregators.\n   This is expected and not an error.\n   First 10: every-brilliant-thing-2026, death-of-a-salesman-2026, beaches-2026, the-balusters-2026, becky-shaw-2026, cats-the-jellicle-ball-2026, dog-day-afternoon-2026, fallen-angels-2026, the-fear-of-13-2026, giant-2026\n   ...and 6 more\n\n------------------------------------------------------------\nSUMMARY\n------------------------------------------------------------\nTotal shows: 87\n  ✅ Healthy: 54\n  ⚠️  Likely duplicates: 16\n  ❌ Definite duplicates: 0\n  ⚠️  Likely missing: 0\n  ℹ️  No aggregator data: 16\n\n============================================================\nVALIDATION RESULT\n============================================================\n\n⚠️  PASSED WITH 16 WARNING(S)\n\nWarnings indicate potential issues but are not blocking.\n⚠️  WARNING: illinoise-2024: 40 local vs 13 aggregator (3.08x)\n⚠️  WARNING: stereophonic-2024: 49 local vs 16 aggregator (3.06x)\n⚠️  WARNING: an-enemy-of-the-people-2024: 39 local vs 19 aggregator (2.05x)\n⚠️  WARNING: the-roommate-2024: 36 local vs 18 aggregator (2.00x)\n⚠️  WARNING: the-notebook-2024: 39 local vs 20 aggregator (1.95x)\n⚠️  WARNING: mj-2022: 42 local vs 23 aggregator (1.83x)\n⚠️  WARNING: the-outsiders-2024: 27 local vs 15 aggregator (1.80x)\n⚠️  WARNING: mother-play-2024: 24 local vs 14 aggregator (1.71x)\n⚠️  WARNING: the-great-gatsby-2024: 30 local vs 18 aggregator (1.67x)\n⚠️  WARNING: mary-jane-2024: 23 local vs 14 aggregator (1.64x)\n⚠️  WARNING: patriots-2024: 26 local vs 16 aggregator (1.63x)\n⚠️  WARNING: six-2021: 30 local vs 19 aggregator (1.58x)\n⚠️  WARNING: lempicka-2024: 28 local vs 18 aggregator (1.56x)\n⚠️  WARNING: merrily-we-roll-along-2023: 31 local vs 20 aggregator (1.55x)\n⚠️  WARNING: heart-of-rock-and-roll-2024: 20 local vs 13 aggregator (1.54x)\n⚠️  WARNING: stranger-things-2024: 26 local vs 17 aggregator (1.53x)",
+      "channel": "fyi"
+    },
+    {
+      "name": "pull-quote-quality",
+      "label": "shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc)",
+      "command": "node scripts/audit-pull-quotes.js --fail-on-hit",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "audit-pull-quotes: 41215 reviews across 5454 show(s)\n\n[quality] 2 shipped pull quote(s) trip a hard guard\n     2 internal-note\n       bleak-expectations-west-end-2023 / whatsonstage: \"[The play's] tropes ... get stretched to the point of translucence, and it all lacks a little cohesion. It’s l\"\n       n-a-off-broadway-2024 / lighting-and-sound-america: \"[Taylor] has a way of lowballing wisecracks that makes them land with twice the punch.\"",
+      "channel": "fyi"
+    },
+    {
+      "name": "regex-fp",
+      "label": "content-quality regex false-positive rate",
+      "command": "node scripts/audit-regex-patterns.js --full",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "      …sion. Owen Campbell, from the horror film X, plays the audio engineer on the other side of the glass.…\n    [a-ghost-in-your-ear-off-west-end-2026/liamodell--liam-odell.json] match: \"horror film\"\n      …ic, but past experiences with horror films have concerned the story pulling you in with intrigue, cur…\n    [a-little-life-west-end-2023/londontheatre1--ben-ross.json] match: \"horror film\"\n      …are created equal, however. A horror film’s cheap frights, for example, are not the same as a subtler…\n\nSee memory/feedback_content_quality_regex_fps.md for tightening strategy.\n\n[audit-regex-patterns] Discovery exclude-substring audit: 3563 external production titles + tracked show titles (tests/fixtures/discovery-title-corpus.json + public/data/mobile-shows.json), threshold 0 hits per pattern.\n\nPattern family              Patterns  Max hits  Over threshold\n--------------------------  --------  --------  --------------\nNON_THEATER_PATTERNS              61         2               1\nWE_EXTRA_PATTERNS                  5         0               0\nVENUE_PAGE_EXCLUDE_PATTERNS        39         1               2\n\n❌ 3 discovery exclude pattern(s) match a real production title:\n\n  NON_THEATER_PATTERNS[24] — 2 hits (allow 0)\n    pattern: \"ballet\"\n    matched title: \"Ballet Shoes\"\n    matched title: \"Ballet Shoes\"\n\n  VENUE_PAGE_EXCLUDE_PATTERNS[4] — 1 hits (allow 0)\n    pattern: \"work in progress\"\n    matched title: \"Aasif Mandvi: A Work in Progress\"\n\n  VENUE_PAGE_EXCLUDE_PATTERNS[15] — 1 hits (allow 0)\n    pattern: \"meet the\"\n    matched title: \"Meet the Cartozians\"\n\nA hit here means a real production would be silently excluded from discovery — tighten the pattern (multi-word variant, see the \"gala\"/\"quartet\" precedents in discover-new-shows.js), do not allowlist unless confirmed intentional.\n\n[audit-regex-patterns] Discovery exclude-substring audit: 56 external Met repertory titles + tracked opera titles (tests/fixtures/discovery-title-corpus.json + mobile-shows.json, ty===\"opera\"), threshold 0 hits per pattern.\n\nPattern family              Patterns  Max hits  Over threshold\n--------------------------  --------  --------  --------------\nNON_OPERA_TITLE_PATTERNS           9         0               0\n\n✅ No discovery exclude pattern matches a production title.",
+      "channel": "fyi"
+    },
+    {
+      "name": "run-contamination",
+      "label": "reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear)",
+      "command": "node scripts/audit-run-contamination.js --max-actionable=0",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "1 inherited: 108 rows on 9 shows; 9 link(s) on the automatic rule (no recorded carry/no-carry) decision\n2 pre-window: 612 rows dated >1d before earliest show date ({\"2-14d\":410,\">60d\":149,\"15-60d\":53}); by cause {\"undeclared\":418,\"declared-prior-run\":167,\"cleared-flag\":7,\"llm-guessed-date\":9,\"human-allow\":11}; unexplained 427 rows on 200 shows, since 2026-06-01: 61 rows on 24 shows; worst a-strange-loop-regional-2026 (8), sunny-afternoon-the-story-of-the-kinks-regional-2025 (8), an-american-in-paris-west-end-2017 (7), hymn-regional-2025 (7), natasha-pierre-and-the-great-comet-of-1812-regional-2024 (7)\n3 republished-marker: 1 counted rows on 1 shows name an earlier year; worst the-pianist-off-west-end-2026 (1)\n4 flag-vs-clear: 601 files carry wrongProduction=true AND a clear marker (0 flagged by a plan AFTER the clear)\n5 duplicates: 6 URLs counted on 2+ unlinked shows with dates >14d apart or outside a show's run (suspect), 133 more are one article reviewing several shows; 0 url-less rows beside a url row on 0 shows\n6 show-dates: 9 shows with 2+ outlets reviewing 1-14d before the stored opening (0 Playbill-derived); 15 open shows 2-30d past opening with zero reviews (0 Playbill-derived)\n7 stars: 89 numeric-star ratings on 73 shows with no star evidence in the text (heuristic candidates)\nBASELINE {\"inherited\":108,\"preWindowUnexplained\":427,\"preWindowRecentUnexplained\":61,\"republished\":1,\"flagVsClear\":0,\"sameUrlTwoShows\":6,\"sharedArticles\":133,\"urllessBesideUrl\":0,\"reviewsBeforeStoredOpening\":9,\"openNoReviews\":15,\"stars\":89}\nACTIONABLE 62 (ceiling 0): recent unexplained pre-window + counted republished + human flag beaten by clear",
+      "channel": "fyi"
+    },
+    {
+      "name": "cast-vs-reviews",
+      "label": "cast on file named in none of the show's full reviews (wrong-production cast)",
+      "command": "node scripts/audit-cast-vs-reviews.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "931 shows checked (>=3 full reviews, >=2 named cast); 1 flagged; 5 excused\n  current-cast operation-mincemeat-2025  (row lists the current company; the reviews name the opening cast on file)\n  current-cast six-2021  (row lists the current company; the reviews name the opening cast on file)\n  current-cast chicago-1996  (row lists the current company; the reviews name the opening cast on file)\n  hand-checked les-miserables-west-end-2021  (row checked by hand against cast announcements; see HAND_CHECKED)\n  hand-checked the-mousetrap-west-end-2021  (row checked by hand against cast announcements; see HAND_CHECKED)\n  contradicted im-almost-there-off-broadway-2026  (0/15 named in 3 reviews)  e.g. Len Cariou, Liz Robertson, George Rose, Colleen Ashton",
+      "channel": "fyi"
+    },
+    {
+      "name": "commercial-source-coverage",
+      "label": "outlets cited by >=10 commercial shows that the recoupment poller neither watches nor exempts",
+      "command": "node scripts/audit-commercial-source-coverage.js",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Tracked recoupment hosts: broadwayjournal.com, broadwaynews.com, deadline.com, hollywoodreporter.com, playbill.com, variety.com\nGAP: newyorktheatreguide.com cited by 22 shows, not tracked and not exempt. Add a feed to BROADWAY_BUSINESS_FEEDS in scripts/lib/rss-discovery.js or an EXEMPT_HOSTS reason in scripts/lib/commercial-source-coverage.js.\nGAP: web.archive.org cited by 13 shows, not tracked and not exempt. Add a feed to BROADWAY_BUSINESS_FEEDS in scripts/lib/rss-discovery.js or an EXEMPT_HOSTS reason in scripts/lib/commercial-source-coverage.js.\nGAP: broadwaydirect.com cited by 10 shows, not tracked and not exempt. Add a feed to BROADWAY_BUSINESS_FEEDS in scripts/lib/rss-discovery.js or an EXEMPT_HOSTS reason in scripts/lib/commercial-source-coverage.js.\nWARN: shubert.nyc cited by 8 shows (fails at 10).\n129 cited hosts; 3 gaps, 1 warnings, 0 stale exemptions.",
+      "channel": "fyi"
+    },
+    {
+      "name": "todaytix-placeholder-runtime",
+      "label": "TodayTix placeholder runtime \"3h 12m\" stored on a row (BRO-5860)",
+      "command": "node scripts/lib/corpus-checks/todaytix-placeholder-runtime.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: no TodayTix-linked row stores the TodayTix placeholder runtime\nok 1 - no TodayTix-linked row stores the TodayTix placeholder runtime\n  ---\n  duration_ms: 86.902975\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 94.512245",
+      "channel": "fyi"
+    },
+    {
+      "name": "cross-show-url",
+      "label": "cross-show URL contamination (review URL slug names a different show)",
+      "command": "node scripts/audit-cross-show-url.js --strict --max=50",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "  [SCORED]   cat-on-a-hot-tin-roof-2013 <- the-other-place-2013 | washpost--peter-marks.json | http://www.washingtonpost.com/entertainment/theater_dance/on-broadway-\n  [SCORED]   cats-cradle-regional-2023 <- lifeline-off-west-end-2026 | evanstonroundtable--cissy-lacks.json | https://evanstonroundtable.com/2023/09/13/theater-review-cats-cradle-l\n  [SCORED]   crazysexycool-regional-2026 <- the-heart-off-broadway-2026 | dc-theater-arts--sherrita-wilkins.json | https://dctheaterarts.org/2026/06/28/crazysexycool-at-arena-stage-find\n  [SCORED]   dog-day-afternoon-2026 <- death-of-a-salesman-2026 | washpost--thomas-floyd.json | https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-\n  [SCORED]   doubt-2024 <- debate-baldwin-vs-buckley-regional-2025 | nysr--melissa-rose-bernardo.json | https://nystagereview.com/2024/03/07/doubt-the-debate-rages-on/\n  [SCORED]   electra-persona-west-end-2026 <- double-bill-tell-me-straight-and-aggy-off-west-end-2026 | guardian--arifa-akbar.json | https://www.theguardian.com/stage/2026/sep/02/electrapersona-review-bl\n  [SCORED]   empire-the-musical-off-broadway-2024 <- new-york-new-york-2023 | nysr--melissa-rose-bernardo.json | https://nystagereview.com/2024/07/12/empire-a-tired-newsies-meets-new-\n  [SCORED]   every-brilliant-thing-2026 <- aftermath-art-new-york-off-broadway-2026 | la-voce-di-new-york--jk-clarke.json | https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-pr\n  [SCORED]   frankie-and-johnny-in-the-clair-de-lune-2019 <- long-lost-off-broadway-2019 | cultural-weekly--david-sheward.json | https://culturaldaily.com/making-missing-connections-frankie-johnny-lo\n  [unscored] frankie-and-johnny-in-the-clair-de-lune-2019 <- long-lost-off-broadway-2019 | stagezine--david-sheward.json | https://www.culturalweekly.com/making-missing-connections-frankie-john\n  [SCORED]   grangeville-off-broadway-2026 <- curse-of-the-starving-class-off-broadway-2025 | theater-scene--archive.json | https://www.theaterscene.net/plays/offbway-plays/curse-of-the-starving\n  [SCORED]   helena-and-hermia-in-the-enamored-odyssey-regional-2025 <- sunny-afternoon-the-story-of-the-kinks-regional-2025 | chi-mt--unknown.json | https://www.chi-mt.com/reviews/chicago-shakes-sunny-afternoon-impostor\n  [SCORED]   hells-kitchen-tour-2025 <- orlando-off-west-end-2026 | attractions--andy-haynes.json | https://attractionsmagazine.com/theater-review-hells-kitchen-broadway-\n  [SCORED]   hells-kitchen-tour-2025 <- wine-in-the-wilderness-off-broadway-2025 | so-sumi--glenn-sumi.json | https://www.goaheadsumi.com/reviews-hells-kitchen-amelie-aye-caesar-wi\n  [SCORED]   home-im-darling-west-end-2018 <- exit-the-king-west-end-2018 | express-uk--neil-norman.json | https://www.express.co.uk/entertainment/theatre/998413/exit-the-king-h\n  [SCORED]   jacob-marleys-christmas-carol-regional-2025 <- lifeline-off-west-end-2026 | stageandcinema--cj-fernandes.json | https://stageandcinema.com/2025/12/05/review-jacob-marleys-christmas-c\n  [SCORED]   joe-turners-come-and-gone-regional-2024 <- august-osage-county-2007 | chicagocultureauthority--frank-sennett.json | https://chicagocultureauthority.com/2024/05/02/a-searing-joe-turners-c\n  [SCORED]   left-on-tenth-2024 <- romeo-juliet-2024 | washpost--naveen-kumar.json | https://www.washingtonpost.com/entertainment/theater/2024/10/24/romeo-\n  [SCORED]   lemons-lemons-lemons-lemons-lemons-west-end-2023 <- 2-22-a-ghost-story-west-end-2023 | sunday-times--quentin-letts.json | https://www.thetimes.co.uk/article/cheryl-in-2-22-a-ghost-story-its-a-\n  [SCORED]   les-miserables-tour-2022 <- des-moines-off-broadway-2022 | broadwayworld--dc-felton.json | https://www.broadwayworld.com/des-moines/article/Review-LES-MISERABLES\n  [unscored] les-miserables-tour-2022 <- revolution-s-regional-2025 | latimes--chloe-kim.json | https://highschool.latimes.com/arts-and-entertainment/review-les-miser\n  [SCORED]   long-days-journey-into-night-2016 <- fully-committed-2016 | out-magazine--michael-musto.json | http://www.out.com/michael-musto/2016/5/02/jesse-tyler-ferguson-wont-s\n  [unscored] magic-mike-live-west-end-2021 <- the-tempest-1995 | standard--nick-curtis.json | https://www.standard.co.uk/culture/theatre/the-tempest-sigourney-weave\n  [unscored] maybe-happy-ending-2024 <- death-becomes-her-2024 | the-interested-bystander--interested-bystander.json | https://www.interestedbystander.com/2024/11/broadway-reviews-death-bec\n  [SCORED]   mel-brooks-young-frankenstein-hope-mill-regional-2025 <- young-frankenstein-2007 | curtain-call-reviews--unknown.json | https://www.curtaincallreviews.co.uk/young-frankenstein\n  [SCORED]   mel-brooks-young-frankenstein-hope-mill-regional-2025 <- young-frankenstein-2007 | manchestertheatres--unknown.json | https://www.manchestertheatres.com/event/mel-brooks'-young-frankenstei\n  [SCORED]   midnight-in-the-garden-of-good-and-evil-regional-2024 <- the-mad-ones-regional-2024 | chi-mt--unknown.json | https://www.chi-mt.com/reviews/goodman-midnight-blank-mad-ones-jul-24\n  [SCORED]   million-dollar-quartet-regional-2024 <- beautiful-the-carole-king-musical-regional-2023 | chicagocultureauthority--frank-sennett.json | https://chicagocultureauthority.com/2024/07/23/theres-a-whole-lotta-sh\n  [SCORED]   monsieur-chopin-regional-2024 <- hershey-felder-the-piano-and-me-off-broadway-2026 | splash-magazines--mira-temkin.json | https://chicago.splashmags.com/index.php/2024/04/hershey-felder-shines\n  [SCORED]   mother-play-2024 <- uncle-vanya-2024 | washpost--elisabeth-vincentelli.json | https://www.washingtonpost.com/entertainment/theater/2024/04/25/rachel\n  [SCORED]   much-ado-about-nothing-west-end-2022 <- jack-absolute-flies-again-west-end-2022 | sunday-times--quentin-letts.json | https://www.thetimes.co.uk/article/five-stars-for-jack-absolute-flies-\n  [SCORED]   much-ado-about-nothing-west-end-2025 <- opening-night-west-end-2024 | daily-mail--patrick-marmion.json | https://www.dailymail.com/tvshowbiz/article-14416467/Tom-Hiddleston-Ha\n  [SCORED]   my-neighbour-totoro-west-end-2025 <- peter-pan-west-end-2026 | times-uk--dominic-maxwell.json | https://www.thetimes.com/culture/theatre-dance/article/wendy-and-peter\n  [SCORED]   natasha-pierre-and-the-great-comet-of-1812-2016 <- escape-6-ways-to-get-away-1-2004 | newsday--linda-winer.json | https://www.newsday.com/entertainment/theater/great-comet-review-music\n  [SCORED]   not-ready-for-prime-time-off-broadway-2025 <- liberation-2025 | the-interested-bystander--cary-wong.json | https://www.interestedbystander.com/2025/10/theater-reviews-liberation\n  [SCORED]   on-the-twentieth-century-2015 <- twentieth-century-2004 | nbcny--robert-kahn.json | http://www.nbcnewyork.com/entertainment/the-scene/Roundabouts-Twentiet\n  [SCORED]   on-the-twentieth-century-regional-2024 <- death-becomes-her-2024 | chi-mt--unknown.json | https://www.chi-mt.com/reviews/paramount-beautiful-blank-twentieth-cen\n  … 59 more\n\n✗ STRICT: 119 unhandled cross-show URL mismatch(es) > baseline 50. A new scrape likely leaked cross-show URLs — triage the clusters (2+ reviews → same other show) and --fix the confirmed ones.",
+      "channel": "fyi"
+    },
+    {
+      "name": "body-date-mismatch",
+      "label": "review byline date disagrees with publishDate by >3 days on a shipping review",
+      "command": "node scripts/audit-body-date-mismatch.js --max-unexplained=0",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Scanned 73523 files: 11 byline/publishDate mismatches (>3d), 4 unexplained, 0 body swap(s) awaiting url repair (max 0 combined)\n  [UNEXPLAINED] harlequinade-west-end-2015/londontheatre1--chris-omaweng.json: publishDate 2015-11-10, byline 2019-05-04 (+1271d)\n  [wrongProduction] no-mans-land-west-end-2016/londontheatre1--neil-cheesman.json: publishDate 2016-04-08, byline 2024-07-18 (+3023d)\n  [wrongProduction] orlando-off-broadway-2026/londontheatre1--tom-carter.json: publishDate 2022-12-06, byline 2024-05-16 (+527d)\n  [isNonReview] pride-west-end-2026/london-theatre--unknown.json: publishDate 2026-06-26, byline 2021-11-03 (-1696d)\n  [duplicateOf] sherlock-holmes-west-end-2026/londontheatre1--unknown.json: publishDate 2026-05-02, byline 2026-05-31 (+29d)\n  [UNEXPLAINED] the-end-of-longing-west-end-2016/londontheatre1--chris-omaweng.json: publishDate 2016-02-11, byline 2022-04-22 (+2262d)\n  [UNEXPLAINED] the-government-inspector-chichester-festival-regional-2025/viewfromthegods--simon-jenner.json: publishDate 2025-05-06, byline 2025-04-30 (-6d)\n  [isNonReview] the-hunger-games-on-stage-west-end-2025/city-am--adam-bloodworth.json: publishDate 2026-09-20, byline 2025-11-13 (-311d)\n  [wrongProduction] the-pianist-off-west-end-2026/thereviewshub--unknown.json: publishDate 2016-07-28, byline 2020-04-13 (+1355d)\n  [crossOutletDuplicate] the-price-2017/nytg--unknown.json: publishDate 2017-09-22, byline 2017-03-24 (-182d)\n  [UNEXPLAINED] the-resistible-rise-of-arturo-ui-west-end-2013/londontheatre1--guest-reviewer.json: publishDate 2013-09-25, byline 2019-05-04 (+2047d)\nFix: check the body is this review; correct publishDate (review-field-edit plan) or, if the body is another article, exclude it and refetch the url. A date-based wrongProduction contradicted by the byline: fix publishDate, then clear the flag. URL-REPAIR: set the url of the article the body now holds (review-field-edit url repair).",
+      "channel": "fyi"
+    },
+    {
+      "name": "phantom-text-stars",
+      "label": "stored text-derived star ratings read from prose (year + \"starring\", number tails)",
+      "command": "node scripts/audit-phantom-text-stars.js --max=0",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "phantom text stars: 0 (max 0)",
+      "channel": "fyi"
+    },
+    {
+      "name": "unknown-outlets",
+      "label": "resolvable unknown outlets (in reviews, not yet in registry)",
+      "command": "node scripts/audit-unknown-outlets.js --max=5",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 45 (threshold 5) across 73743 files\n  Examples (registerable outlet ids absent from outlet-registry.json):\n    globalnews2  —  a-few-good-men-2026/globalnews2--unknown.json\n    beauty-news-nyc  —  afterglow-off-broadway-2017/beauty-news-nyc--pk-greenfield.json\n    boyculture  —  afterglow-off-broadway-2017/boyculture--matthew-rettenmund.json\n    the-gay-and-lesbian-review  —  afterglow-off-broadway-2017/the-gay-and-lesbian-review--allen-ellenzweig.json\n    frombroadway  —  aftermath-art-new-york-off-broadway-2026/frombroadway--kenji-fujishima.json\n    irishfilmcritic  —  aint-too-proud-tour-2024/irishfilmcritic--isabelle-anguiano.json\n    fuck-yeah-great-plays  —  all-the-fine-boys-off-broadway-2017/fuck-yeah-great-plays--fuck-yeah-great-plays.json\n    should-appeal-to-two-audiences  —  angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json\n    the-showmance-already-happened  —  anna-christie-off-broadway-2025/the-showmance-already-happened--in-brooklyn.json\n    pillow-talking  —  attack-of-the-elvis-impersonators-off-broadway-2017/pillow-talking--wayne-j-keeley.json\n    8asians  —  aubergine-off-broadway-2016/8asians--lily-w.json\n    theglobalcelebritymeter  —  billy-crystal-860-2026/theglobalcelebritymeter--steve-smith.json\n    frombroadway  —  copperfield-the-new-musical-off-broadway-2026/frombroadway--pete-hempstead.json\n    raysofadventure  —  dear-evan-hansen-tour-2024/raysofadventure--rays-of-adventure.json\n    time-out-lond_on  —  death-of-a-salesman-west-end-2015/time-out-lond_on--andrzej-lukowski.json",
+      "channel": "fyi"
+    },
+    {
+      "name": "review-key-duplicates",
+      "label": "duplicate reviews (same showDir|outlet|critic)",
+      "command": "node scripts/audit-review-key-duplicates.js --max=5",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "[audit-review-key-duplicates] duplicate reviews: 22 (threshold 5) across 73523 files\n  Examples (same showDir|outlet|critic appearing more than once):\n    affluenza-off-west-end-2026|londontheatredirect|carol johnson  —  affluenza-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json\n    aladdin-2014|theatermania|zachary stewart  —  aladdin-2014/theatermania--zachary-stewart.json\n    baghdaddy-west-end-2022|times-uk|dominic maxwell  —  baghdaddy-west-end-2022/times-uk--unknown.json\n    camp-siegfried-west-end-2021|whatsonstage|alex wood  —  camp-siegfried-west-end-2021/whatsonstage--unknown.json\n    cruise-west-end-2021|whatsonstage|sarah crompton  —  cruise-west-end-2021/whatsonstage--sarah-crompton.json\n    endgame-west-end-2020|times-uk|clive davis  —  endgame-west-end-2020/times-uk--unknown.json\n    good-time-charlie-off-broadway-2026|cititour|brian scott lipton  —  good-time-charlie-off-broadway-2026/cititour--brian-scott.json\n    im-every-woman-off-west-end-2026|theupcoming|emilia gould  —  im-every-woman-off-west-end-2026/theupcoming--unknown.json\n    labour-of-love-west-end-2017|standard|henry hitchings  —  labour-of-love-west-end-2017/standard--henry-hitchings.json\n    memphis-2009|variety|david rooney  —  memphis-2009/variety--david-rooney.json\n    next-to-normal-west-end-2024|broadwayworld|abbie grundy  —  next-to-normal-west-end-2024/broadwayworld--abby-grundy.json\n    standing-at-the-skys-edge-west-end-2023|london-theatre|marianka swain  —  standing-at-the-skys-edge-west-end-2023/london-theatre--unknown.json\n    the-coast-of-utopia-2006|nytimes|ben brantley  —  the-coast-of-utopia-2006/nytimes--ben-brantley.json\n    the-comedy-about-spies-west-end-2025|broadwayworld|franco milazzo  —  the-comedy-about-spies-west-end-2025/broadwayworld--senior-franco-milazzo.json\n    the-girl-who-fell-west-end-2019|whatsonstage|daniel perks  —  the-girl-who-fell-west-end-2019/whatsonstage--unknown.json",
+      "channel": "fyi"
+    },
+    {
+      "name": "churn-merge-coverage",
+      "label": "high-churn tracked files lacking a .gitattributes merge driver",
+      "command": "node scripts/audit-churn-merge-coverage.js",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 0 flagged, 1 exempt, 7 covered (DEGRADED: incomplete git history)\n  ✅ all high-churn tracked files are covered or exempt\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json",
+      "channel": "fyi"
+    },
+    {
+      "name": "review-contamination",
+      "label": "review-text contamination (strict classes A/C/E/F)",
+      "command": "node scripts/audit-review-contamination.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "  E_unflagged_roundup: 0\n  F_empty_unknown: 0\n  G_older_production_live: 5\n  H_url_names_other_show: 238\n\n=== SAMPLES (first 5 per class) ===\n\n--- B_false_positive_wp ---\n  {\"showId\":\"110-in-the-shade-2007\",\"file\":\"theatermania--david-finkle.json\",\"daysFromOpening\":1,\"wrongProductionNote\":\"\"}\n  {\"showId\":\"an-enemy-of-the-people-2024\",\"file\":\"guardian--susannah-clapp.json\",\"daysFromOpening\":-26,\"wrongProductionNote\":\"\"}\n  {\"showId\":\"data-off-broadway-2026\",\"file\":\"the-interested-bystander--cary-wong.json\",\"daysFromOpening\":17,\"wrongProductionNote\":\"\"}\n  {\"showId\":\"death-of-england-delroy-west-end-2020\",\"file\":\"fringereview--simon-jenner.json\",\"daysFromOpening\":25,\"wrongProductionNote\":\"Date guard: review 2020-11-29 is 18d after 2020-11-04 (close\"}\n  {\"showId\":\"death-of-england-delroy-west-end-2020\",\"file\":\"indiependent--unknown.json\",\"daysFromOpening\":28,\"wrongProductionNote\":\"Date guard: review 2020-12-02 is 21d after 2020-11-04 (close\"}\n\n--- C_domain_mismatch ---\n  {\"showId\":\"hadestown-2019\",\"file\":\"whatsonstage--scott-mitchell.json\",\"internalOutlet\":\"whatsonstage\",\"rawInternalOutlet\":\"whatsonstage\",\"expected\":\"reviews-off-broadway\",\"domain\":\"reviewsoffbroadway.blogspot.com\"}\n  {\"showId\":\"les-liaisons-dangereuses-2016\",\"file\":\"wolf-entertainment-guide--william-wolf.json\",\"internalOutlet\":\"wolf-entertainment-guide\",\"rawInternalOutlet\":\"wolf-entertainment-guide\",\"expected\":\"nytg\",\"domain\":\"newyorktheatreguide.com\"}\n\n--- D_pre_opening_feature ---\n  {\"showId\":\"1536-west-end-2026\",\"file\":\"london-box-office--shehrazade-zafar-arif.json\",\"daysBefore\":7,\"textLen\":2812}\n  {\"showId\":\"a-christmas-story-the-musical-2012\",\"file\":\"timeout--david-cote.json\",\"daysBefore\":28,\"textLen\":2688}\n  {\"showId\":\"a-dolls-house-part-2-2017\",\"file\":\"the-modernist-beat--anthony-pennino.json\",\"daysBefore\":17,\"textLen\":3468}\n  {\"showId\":\"a-little-life-west-end-2023\",\"file\":\"cultural-capital--unknown.json\",\"daysBefore\":5,\"textLen\":14390}\n  {\"showId\":\"a-strange-loop-regional-2026\",\"file\":\"chicagoonstage--karen-topham.json\",\"daysBefore\":7,\"textLen\":5777}\n\n--- G_older_production_live ---\n  {\"showId\":\"collaborators-west-end-2012\",\"file\":\"loureviews--louise-penn.json\",\"kind\":\"url-date-contradiction\",\"reason\":\"URL's own date 2012-03-02 (path) is outside this show's runs and priorRuns, and the file has no publishDate\",\"url\":\"https://loureviews.blog/2012/03/02/theatre-review-collaborators/\"}\n  {\"showId\":\"feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026\",\"file\":\"whatsonstage--sarah-crompton.json\",\"kind\":\"stale-wrong-verdict-tier\",\"reason\":\"persisted contentTierReason \\\"Wrong production\\\" but no wrongProduction/wrongShow flag and no human clear\",\"url\":\"https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-afraid-as-if-something-terrible-is-going-to-happen_1727576/\"}\n  {\"showId\":\"hamlet-off-broadway-2026\",\"file\":\"guardian--arifa-akbar.json\",\"kind\":\"url-date-contradiction\",\"reason\":\"URL's own date 2024-05-28 (path) is outside this show's runs and priorRuns, and the file has publishDate 2025-10-03\",\"url\":\"https://www.theguardian.com/stage/article/2024/may/28/hamlet-review-one-woman-juggling-act-exposes-limits-of-eddie-izzards-acting-ability\"}\n  {\"showId\":\"long-days-journey-into-night-west-end-2012\",\"file\":\"loureviews--louise-penn.json\",\"kind\":\"url-date-contradiction\",\"reason\":\"URL's own date 2012-02-25 (path) is outside this show's runs and priorRuns, and the file has no publishDate\",\"url\":\"https://loureviews.blog/2012/02/25/theatre-review-long-days-journey-into-night/\"}\n  {\"showId\":\"west-side-story-2009\",\"file\":\"ew--leah-greenblatt.json\",\"kind\":\"url-date-contradiction\",\"reason\":\"URL's own date 2020-02-20 (path) is outside this show's runs and priorRuns, and the file has no publishDate\",\"url\":\"https://ew.com/theater-reviews/2020/02/20/west-side-story-broadway-review/\"}\n\n--- H_url_names_other_show ---\n  {\"showId\":\"44-the-obama-musical-regional-2025\",\"file\":\"chicago-reader--kerry-reid.json\",\"namesShow\":\"come-from-away-2017\",\"url\":\"https://chicagoreader.com/performing-arts/theater/theater-review/44-the-musical-come-from-away/\",\"combined\":false}\n  {\"showId\":\"44-the-obama-musical-regional-2025\",\"file\":\"splash-magazines--larita-s-smith.json\",\"namesShow\":\"the-audience-2015\",\"url\":\"https://chicago.splashmags.com/index.php/2025/08/44-the-musical-review-leaves-the-audience-in-stitches/\",\"combined\":false}\n  {\"showId\":\"9-to-5-the-musical-west-end-2019\",\"file\":\"all-that-dazzles-uk--unknown.json\",\"namesShow\":\"your-lie-in-april-west-end-2024\",\"url\":\"https://www.allthatdazzles.co.uk/post/review-your-lie-in-april-the-musical-in-concert-theatre-royal-drury-lane\",\"combined\":false}\n  {\"showId\":\"a-dolls-house-2023\",\"file\":\"frontmezzjunkies--unknown.json\",\"namesShow\":\"cat-on-a-hot-tin-roof-2013\",\"url\":\"https://frontmezzjunkies.com/2023/03/26/a-dolls-house-cat-on-a-hot-tin-roof/\",\"combined\":false}\n  {\"showId\":\"a-dolls-house-part-2-2017\",\"file\":\"newyorker--hilton-als.json\",\"namesShow\":\"leap-of-faith-2012\",\"url\":\"http://www.newyorker.com/magazine/2017/05/08/lucas-hnaths-leap-of-faith-into-a-dolls-house?mbid=rss\",\"combined\":false}\n\n❌ STRICT mode: 2 contamination issue(s) in strict classes. Failing.",
+      "channel": "fyi"
+    },
+    {
+      "name": "duplicate-of-url-mismatch",
+      "label": "stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor)",
+      "command": "node scripts/audit-duplicate-of-url-mismatch.js",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Found 6 duplicateOf/crossOutletDuplicate URL mismatch(es):\n\n  cats-1982/the-sunflower--karen-galindo.json\n    → duplicateTextOf: the-sunflower--reviews-karen-galindo.json  (duplicateOf-cycle)\n    → our url:     https://thesunflower.com/45810/arts-and-culture/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/\n    → sibling url: null\n    → chain:       the-sunflower--karen-galindo.json -> the-sunflower--reviews-karen-galindo.json -> the-sunflower--karen-galindo.json -> ...\n\n  cats-1982/the-sunflower--reviews-karen-galindo.json\n    → duplicateTextOf: the-sunflower--karen-galindo.json  (duplicateOf-cycle)\n    → our url:     https://thesunflower.com/45810/arts-and-culture/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/\n    → sibling url: null\n    → chain:       the-sunflower--reviews-karen-galindo.json -> the-sunflower--karen-galindo.json -> the-sunflower--reviews-karen-galindo.json -> ...\n\ncrossOutletDuplicate: 4 primary pointer issue(s) (0 auto-healable, 0 repointable to a live copy, 4 report-only: undecided renamed primary / self-reference with a twin / pointer-missing / mutual 2-cycle):\n\n  cult-of-love-2024/talkinbroadway--matthew-murray.json  → crossOutletPrimaryFile: null  (pointer-missing)\n  oklahoma-2019/nydailynews--broadway-news.json  → crossOutletPrimaryFile: oklahoma-2019/chicagotribune--chris-jones-bway.json  (primary-renamed: oklahoma-2019/nydailynews--chris-jones.json)\n  spring-awakening-2015/dc-theater-arts--richard-seff.json  → crossOutletPrimaryFile: spring-awakening-2015/dctheatrescene--var-block.json  (primary-renamed: spring-awakening-2015/dc-theater-arts--var-block.json)\n  spring-awakening-2015/dc-theater-arts--var-block.json  → crossOutletPrimaryFile: spring-awakening-2015/dc-metro-theater-arts--richard-seff.json  (primary-renamed: spring-awakening-2015/dc-theater-arts--richard-seff.json)\n\nRun with --fix to clear stale flags.",
+      "channel": "fyi"
+    },
+    {
+      "name": "cloned-excerpts",
+      "label": "same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count)",
+      "command": "node scripts/audit-cloned-excerpts.js --live-only",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "LIVE  excerpt-copy beautiful-the-carole-king-musical-2014 huffpost--danny-groner.json ~ huffpost--david-finkle.json — excerpt is inside only one file's own fullText (1.00 vs 0.00)\nLIVE  same-review  cruise-west-end-2021 whatsonstage--sarah-compton.json ~ whatsonstage--sarah-crompton.json — text-similar (0.87) [keep whatsonstage--sarah-crompton.json]\nLIVE  same-review  good-time-charlie-off-broadway-2026 cititour--brian-scott-lipton.json ~ cititour--brian-scott.json — text-similar (0.82) [keep cititour--brian-scott-lipton.json]\nLIVE  same-review  harry-potter-and-the-cursed-child-both-parts-west-end-2021 independent--jack-shepherd.json ~ independent--paul-taylor.json — text-similar (0.94) [keep independent--paul-taylor.json]\nLIVE  same-review  im-every-woman-off-west-end-2026 theupcoming--emilia-gould.json ~ theupcoming--unknown.json — text-similar (0.97) [keep theupcoming--emilia-gould.json]\nLIVE  phantom      ink-2019 vulture--jesse-green.json ~ vulture--sara-holdren.json — web-search record with weak text/url, sibling is not\nLIVE  same-review  labour-of-love-west-end-2017 standard--fiona-mountford.json ~ standard--henry-hitchings.json — text-similar (0.67) [keep standard--fiona-mountford.json]\nLIVE  unresolved   six-the-musical-west-end-2021 musical-theatre-review--angela-thomas.json ~ musical-theatre-review--ian-bowkett.json — excerpt ownership undecided (0.00 vs 0.00)\nLIVE  same-review  superhoe-west-end-2019 timeout-london--andrzej-lukowski.json ~ timeout-london--nicole-lecky-is-a-serious-name-to.json — text-similar (0.75) [keep timeout-london--andrzej-lukowski.json]\nLIVE  same-review  the-comedy-about-spies-west-end-2025 broadwayworld--franco-milazzo.json ~ broadwayworld--senior-franco-milazzo.json — text-similar (0.91) [keep broadwayworld--franco-milazzo.json]\nLIVE  same-review  the-king-and-i-west-end-2018 the-jewish-chronicle--jessica-weinstein.json ~ the-jewish-chronicle--john-nathan.json — text-similar (0.88) [keep the-jewish-chronicle--jessica-weinstein.json]\nLIVE  phantom      the-parisian-woman-2017 newyorker--hilton-als.json ~ newyorker--michael-schulman.json — web-search record with weak text/url, sibling is not\nLIVE  excerpt-copy the-producers-west-end-2025 london-theatre--anya-ryan.json ~ london-theatre--olivia-rook.json — excerpt is inside only one file's own fullText (0.00 vs 0.89)\nLIVE  same-review  the-producers-west-end-2025 timeout-london--andrzej-lukowski.json ~ timeout-london--unknown.json — identical fullText [keep timeout-london--andrzej-lukowski.json]\nLIVE  same-review  the-waverly-gallery-2018 hollywood-reporter--david-rooney.json ~ hollywood-reporter--matt-windman.json — text-similar (1.00) [keep hollywood-reporter--matt-windman.json]\nLIVE  phantom      topdog-underdog-2022 hollywood-reporter--david-rooney.json ~ hollywood-reporter--lovia-gyarkye.json — web-search record with weak text/url, sibling is not\n\nlive cloned pairs: 16 {\"excerpt-copy\":2,\"same-review\":10,\"phantom\":3,\"unresolved\":1} (all pairs scanned: 16)\n[audit-cloned-excerpts] review-texts: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts",
+      "channel": "fyi"
+    },
+    {
+      "name": "cast-changes",
+      "label": "cast-changes.json integrity — full --strict (gate = cross-show conflict / spike)",
+      "command": "node scripts/audit-cast-changes.js --strict",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Audit summary:\n  Shows examined:                              29\n  Stale closure dates repaired (vs shows.json):0\n  Closure groups reclassified:                 0\n  Per-actor departures collapsed into closure: 0\n  Contradicted closures dropped (stale):       0\n  Contradicting arrivals dropped (stale):      0\n  Ended absences dropped:                      0\n  Stale [AUTO-FLAGGED] entries dropped:        0\n  Name-variant dedupes:                        0\n  Redundant in-cast arrivals dropped:          0\n  Duplicate currentCast entries flagged:       0\n  Cross-show overlap conflicts flagged:        0\n\n(dry-run; pass --write to persist)",
+      "channel": "fyi"
+    },
+    {
+      "name": "non-reviews",
+      "label": "scored non-review content (definitive wrong-page) — full --strict",
+      "command": "node scripts/audit-non-reviews.js --strict",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 57219 scored reviews\nAlready rejected: 648\nHeuristic high-confidence: 2\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 2\n\n--- Flagged Non-Reviews ---\n  ✗ a-day-in-the-death-of-joe-egg-west-end-2019/daily-mail--patrick-marmion.json\n    Type: obituary | Outlet: Daily Mail | Score: 88\n    Evidence: aged 92, there couldn't be a more fitting tribute; death last month aged 92\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews.",
+      "channel": "fyi"
+    },
+    {
+      "name": "review-texts",
+      "label": "review-text file structure — full validator (gate = catastrophic classes + churn floor)",
+      "command": "node scripts/validate-review-texts.js",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "  review-texts/witness-for-the-prosecution-west-end-2022/sunday-times--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wolf-hall-west-end-2014/guardian--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wolves-regional-2023/chicago-reader--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wolves-regional-2023/chicagotribune--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/women-beware-women-regional-2024/chicago-reader--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/women-beware-women-regional-2024/thefourthwalsh--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/women-beware-women-regional-2024/third-coast-review--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/women-on-the-verge-of-a-nervous-breakdown-west-end-2015/londontheatre1--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/women-on-the-verge-of-a-nervous-breakdown-west-end-2015/standard--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wonder-regional-2026/boston-globe--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wonder-regional-2026/sleeplesscritic--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wonder-regional-2026/thecrimson--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wonderland-2011/curtainup--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wonderland-2011/hollywood-reporter--unknown.json: Garbage critic name: '(empty)'\n  review-texts/working-girl-la-jolla-regional-2025/weliveentertainment--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/woyzeck-west-end-2017/artsdesk--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/woyzeck-west-end-2017/camdennewjournal--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/woyzeck-west-end-2017/express-uk--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/woyzeck-west-end-2017/maturetimes--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/woyzeck-west-end-2017/sierz-co-uk--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/woyzeck-west-end-2017/sunday-times--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/written-on-the-heart-west-end-2012/whatsonstage--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wuthering-heights-west-end-2022/islingtontribune--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wuthering-heights-west-end-2022/whatsonstage--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/yellow-face-2024/frontmezzjunkies--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/yellow-face-2024/stagebuddy--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/yellow-face-2024/thewrap--unknown.json: Garbage critic name: '(empty)'\n  review-texts/yes-prime-minister-west-end-2011/london-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-got-older-off-broadway-2026/exeunt-magazine--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-got-older-off-broadway-2026/nytg--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-will-get-sick-regional-2025/talkinbroadway--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-will-get-sick-regional-2025/thefourthwalsh--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-will-get-sick-regional-2025/third-coast-review--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/young-frankenstein-west-end-2017/a-younger-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/young-frankenstein-west-end-2017/camdennewjournal--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/young-frankenstein-west-end-2017/sunday-times--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/zac-efron-regional-2024/chicago-reader--unknown.json: Garbage critic name: 'Unknown'\n\nSummary: 73740/73743 passed, 3 errors, 3804 warnings, 62 stale _pending",
+      "channel": "fyi"
+    },
+    {
+      "name": "cast-contamination",
+      "label": "data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only)",
+      "command": "node scripts/audit-cast-contamination.js",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "[audit-cast-contamination] flagged 1 cast files (0 fail, 1 warn)\n\n  [warn] specimen-off-broadway-2026 (18 orphans, source=web-search)\n     flags: SRC_URL_NO_TITLE\n     src:   https://www.broadwayworld.com/people/character/Performer-336265/",
+      "channel": "fyi"
+    },
+    {
+      "name": "commercial-contamination",
+      "label": "data/commercial.json physics/contradiction — full --strict (gate = FAIL only)",
+      "command": "node scripts/audit-commercial-contamination.js --strict",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "[audit-commercial-contamination] 0 fail, 0 warn",
+      "channel": "fyi"
+    },
+    {
+      "name": "audience-buzz-contamination",
+      "label": "data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)",
+      "command": "node scripts/audit-audience-buzz-contamination.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "[audit-audience-buzz-contamination] 0 fail, 1 warn, 9 info (platform disagreement, not gated)\n\n  [info] 1776-2022\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=24,median=63,diff=39,rc=37\n  [info] a-beautiful-noise-the-neil-diamond-musical-2022\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=48,median=83,diff=35,rc=207\n  [info] almost-famous-2022 \"Almost Famous\"\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=26,median=64,diff=38,rc=27\n  [info] an-american-daughter-off-broadway-2026 \"An American Daughter\"\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=15,median=54,diff=39,rc=26\n  [info] bad-cinderella-2023\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=19,median=63,diff=44,rc=242\n  [info] bloodlove-off-broadway-2026\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=40,median=81,diff=41,rc=45\n  [info] girl-from-the-north-country-2022\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=37,median=76,diff=39,rc=27\n  [info] labelless-off-broadway-2026\n     OTHER_SOURCE_DIVERGENCE:src=showScore,score=89,median=50,diff=39,rc=307\n  [info] perfect-crime-off-broadway-1987 \"Perfect Crime\"\n     OTHER_SOURCE_DIVERGENCE:src=theatr,score=21,median=59,diff=38,rc=29\n  [warn] billy-crystal-860-2026 \"Billy Crystal 860\"\n     BROADWAYCOM_URL_NO_TITLE:https://www.broadway.com/shows/860/\n[audit] 124 score-eligible shows still on pre-fix Reddit (<2026-06-15); drained by scrape-reddit-sentiment.js --refresh-stale",
+      "channel": "fyi"
+    },
+    {
+      "name": "critic-consensus-contamination",
+      "label": "data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only)",
+      "command": "node scripts/audit-critic-consensus-contamination.js --strict",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "[audit-critic-consensus-contamination] 0 fail, 0 warn",
+      "channel": "fyi"
+    },
+    {
+      "name": "synopsis-story",
+      "label": "shows.json synopses holding wikitext debris or audience pitch copy",
+      "command": "node scripts/audit-synopsis-story.js --fail-on-hit",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Synopses checked: 2697\nHard (debris or pitch): 0\nSoft (nonStoryReason, advisory): 159 (--soft to list)",
+      "channel": "fyi"
+    },
+    {
+      "name": "stuck-rescore-flags",
+      "label": "needsRescore=true reviews the scorer rejects (stuck flags that never clear)",
+      "command": "node scripts/audit-stuck-rescore-flags.js --gate --max=25",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "[stuck-rescore] 4 stuck needsRescore flag(s) (non-scoreable) of 3400 flagged; threshold --max=25\n     1  fullText added after excerpt-based score (backfill)\n     1  stale automated text verdict cleared (fullText re-fetched after rejection)\n     1  multi-show-split: new child file, awaiting scoring\n     1  fullText added after excerpt-based scoring\n    - a-view-from-the-bridge-west-end-2024/whatsonstage--sarah-crompton.json  [fullText added after excerpt-based score (backfill)]\n    - buena-vista-social-club-off-broadway-2023/theater-pizzazz--carol-rocamora.json  [stale automated text verdict cleared (fullText re-fetched after rejection)]\n    - floyd-collins-2025/theater-life--david-sheward.json  [multi-show-split: new child file, awaiting scoring]\n    - the-encounter-2016/wsj--terry-teachout.json  [fullText added after excerpt-based scoring]",
+      "channel": "fyi"
+    },
+    {
+      "name": "stale-score-input",
+      "label": "reviews scored off an excerpt that now have fullText, never flagged for rescore",
+      "command": "node scripts/audit-stale-score-input.js --gate --max=25",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "[stale-score-input] 3336 candidate(s): 0 fixable, 3336 unscoreable; threshold --max=25",
+      "channel": "fyi"
+    },
+    {
+      "name": "false-balance-framing",
+      "label": "critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority)",
+      "command": "node scripts/audit-false-balance.js",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "     text: Critics are largely charmed by this verbatim courtroom drama, praising its witty adaptation and theatrical energy, though some question whether restaging the we…\n  [warn] venus-in-fur-2011 (positive=14, mixed=1, negative=1)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.13\n     text: Critics hail Nina Arianda's star-making performance in Ives' clever, erotically charged two-hander, though some find the play repetitive or overwritten. The pow…\n  [warn] we-are-your-robots-off-broadway-2024 (positive=8, mixed=2, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.20\n     text: Critics mostly embrace this whimsical AI musical, praising Lipton's clever concept and jazz quartet format, though some find the execution more charming than po…\n  [warn] weather-girl-off-broadway-2025 (positive=7, mixed=1, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.13\n     text: McDermott delivers a riveting performance as a spiraling TV meteorologist in Watkins' darkly funny climate apocalypse solo show, though some critics find it mor…\n  [warn] what-the-animals-say-off-west-end-2026 (positive=16, mixed=2, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.11\n     text: Ireland's explosive debut crackles with dark humor and raw energy, earning strong praise for its sharp writing and fierce performances, though some critics find…\n  [warn] where-we-belong-off-broadway-2022 (positive=6, mixed=1, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.14\n     text: Madeline Sayet's solo show exploring her Mohegan identity and relationship with Shakespeare earns mixed-to-positive reviews. Critics praise her storytelling and…\n  [warn] white-rabbit-red-rabbit-west-end-2024 (positive=9, mixed=2, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.18\n     text: Critics find this cold-read experiment thrilling in concept, with actors tackling Soleimanpour's script sight unseen creating genuine tension. However, some fee…\n  [warn] whos-afraid-of-virginia-woolf-west-end-2017 (positive=8, mixed=1, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.11\n     text: Staunton and Hill deliver fierce, powerhouse performances in this scorching revival of Albee's masterpiece, though some find the three-hour marital slugfest exh…\n  [warn] witness-for-the-prosecution-west-end-2022 (positive=18, mixed=3, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.14\n     text: Christie's courtroom thriller gets compelling new life in Lucy Bailey's site-specific staging at County Hall's grand chamber, which critics agree is the product…\n  [warn] yellow-face-2024 (positive=21, mixed=3, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.13\n     text: Hwang's sharp, self-skewering satire about identity politics and yellowface casting remains bitingly relevant in its Broadway debut, buoyed by Daniel Dae Kim's …\n  [warn] you-cant-take-it-with-you-2014 (positive=15, mixed=3, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.17\n     text: This Kaufman-Hart classic charms most critics with its spirited ensemble and feel-good escapism, though some find the 1936 comedy creaky and overly whimsical fo…\n  [warn] you-got-older-off-broadway-2026 (positive=14, mixed=1, negative=1)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.13\n     text: Barron's intimate family drama about millennial anxiety and aging parents earns praise for its tender honesty and dark humor, though some critics find its surre…\n  [warn] you-will-get-sick-regional-2025 (positive=12, mixed=2, negative=0)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.14\n     text: Critics find this surreal exploration of terminal illness mostly effective, praising Morton and Smallwood's stellar chemistry and the absurdist approach, though…\n  [warn] young-frankenstein-west-end-2017 (positive=15, mixed=1, negative=2)\n     HEDGE_VS_NEAR_UNANIMOUS_WARN:minorityShare=0.17\n     text: Critics largely embrace this revamped West End production as a riotous improvement over its Broadway debut, with most praising its relentless gags and phenomena…",
+      "channel": "fyi"
+    },
+    {
+      "name": "sibling-title-misroute",
+      "label": "same-title-sibling review misrouted to the wrong production (baseline-diff)",
+      "command": "node scripts/audit-sibling-title-misroute.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "    [reroute] jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 -> jesus-christ-superstar-west-end-2026  thestage--sam-marlowe.json  (sibling opening 1d from publishDate vs current 100d)\n    [reroute] little-shop-of-horrors-off-broadway-2019 -> little-shop-of-horrors-hope-mill-regional-2026  thestage--unknown.json  (sibling-venue-in-url: \"hope-mill\")\n    [reroute] midnight-in-the-garden-of-good-and-evil-2024 -> midnight-in-the-garden-of-good-and-evil-regional-2024  wsj--charles-isherwood.json  (sibling-venue-in-url: \"goodman\")\n    [reroute] motown-the-musical-west-end-2016 -> motown-the-musical-2016  london-theatre--mark-shenton.json  (sibling opening 34d from publishDate vs current 92d)\n    [reroute] much-ado-about-nothing-west-end-2022 -> much-ado-about-nothing-royal-shakespeare-regional-2025  i-paper--sam-marlowe.json  (sibling-venue-in-url: \"royal-shakespeare\")\n    [reroute] othello-2025 -> othello-royal-shakespeare-regional-2024  hollywood-reporter--david-rooney.json  (same-title-sibling: publish-date, venue-substring)\n    [reroute] pericles-off-broadway-2024 -> pericles-regional-2024  nysr--david-finkle.json  (same-title-sibling: url-year, venue-substring)\n    [reroute] prince-faggot-off-broadway-2025 -> prince-faggot-playwrights-horizons-off-broadway-2025  culturesauce--unknown.json  (same-title-sibling: url-year, publish-date)\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  ap--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  backstage-barbie--backstage-barbie.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  broadwayselect--peter-filichia.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  magical-misstari-tour--tari-stratton.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  theater-scene--rachel-goddard.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2014 -> the-crucible-crucible-regional-2024  plays-to-see--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  i-paper--fiona-mountford.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  telegraph--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  variety--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2023 -> the-crucible-crucible-regional-2024  timeout-london--andrzej-lukowski.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-thanksgiving-play-2023 -> the-thanksgiving-play-regional-2024  chicagotribune--chris-jones.json  (same-title-sibling: url-year, venue-substring)\n    [reroute] titus-andronicus-off-broadway-2026 -> titus-andronicus-royal-shakespeare-regional-2025  la-voce-di-new-york--jk-clarke.json  (same-title-sibling: url-year, publish-date, venue-substring)\n    [reroute] titus-andronicus-off-broadway-2026 -> titus-andronicus-royal-shakespeare-regional-2025  theatermania--zachary-stewart.json  (same-title-sibling: publish-date, venue-substring)\n    [reroute] titus-andronicus-off-broadway-2026 -> titus-andronicus-royal-shakespeare-regional-2025  timeout--adam-feldman.json  (same-title-sibling: publish-date, venue-substring)\n    [ambiguous] a-midsummer-nights-dream-1996  telegraph--unknown.json  (ambiguous-production)\n    [ambiguous] eclipsed-2016  curtainup--elyse-sommer.json  (ambiguous-production)\n    [ambiguous] godspell-2011  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] guys-and-dolls-2009  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] kramerfauci-st-anns-off-broadway-2026  one-minute-critic--matthew-wexler.json  (ambiguous-production)\n    [ambiguous] little-shop-of-horrors-off-broadway-2019  nytg--gillian-russo.json  (ambiguous-production)\n    [ambiguous] loves-labours-lost-off-west-end-2026  gay-times--unknown.json  (ambiguous-production)\n    [ambiguous] midnight-in-the-garden-of-good-and-evil-2024  deadline--greg-evans.json  (ambiguous-production)\n    [ambiguous] midnight-in-the-garden-of-good-and-evil-2024  nydailynews--karu-f-daniels.json  (ambiguous-production)\n    [ambiguous] pericles-off-broadway-2024  culturesauce--thom-geier.json  (ambiguous-production)\n    [ambiguous] pericles-off-broadway-2024  theatermania--pete-hempstead.json  (ambiguous-production)\n    [ambiguous] singin-in-the-rain-west-end-2012  london-theatre--unknown.json  (ambiguous-production)\n    [ambiguous] the-crucible-2016  curtainup--elyse-sommer.json  (ambiguous-production)\n    [ambiguous] this-is-our-youth-2014  chicagotribune--chris-jones.json  (ambiguous-production)\n    [ambiguous] titanique-off-broadway-2022  frontmezzjunkies--unknown.json  (ambiguous-production)\n    [ambiguous] war-horse-west-end-2018  whatsonstage--jane-kemp.json  (ambiguous-production)\n    [same-url] fences-leeds-regional-2026 -> fences-off-west-end-2026  whatsonstage--jim-keaveney.json  (same url as fences-off-west-end-2026/whatsonstage--jim-keaveney.json)\n  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.",
+      "channel": "card"
+    },
+    {
+      "name": "orphaned-wrongprod-provenance",
+      "label": "review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
+      "command": "node scripts/audit-orphaned-wrongprod-provenance.js --gate",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Scanned 73783 files: 0 orphaned (0 baselined, 0 NEW, 0 baseline entries now fixed)",
+      "channel": "card"
+    },
+    {
+      "name": "duplicate-shows",
+      "label": "duplicate SHOW entries in shows.json (baseline-diff)",
+      "command": "node scripts/audit-duplicate-shows.js --strict --include-closed",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Found 5 duplicate-show cluster(s), 5 pair(s) (baselined: 3, new: 2):\n\n  [shared-venue-token:soho] lost in del valle|2026\n    lost-in-del-valle-off-broadway-2026  (SoHo Playhouse, 5 review files)\n    lost-in-del-valle-return-off-broadway-2026  (SoHo Playhouse, 5 review files)\n  [shared-venue-token:marjorie,deane,little] going bacharach|2026\n    going-bacharach-the-songs-of-an-icon-off-broadway-2026  (The Marjorie S. Deane Little Theater, 12 review files)\n    going-bacharach-the-songs-of-an-icon-return-off-broadway-2026  (The Marjorie S. Deane Little Theater, 1 review files)\n  [shared-venue-token:king,head] america the beautiful|2026\n    america-the-beautiful-chapter-2-off-west-end-2026  (King's Head Theatre, 1 review files)\n    america-the-beautiful-chapter-1-off-west-end-2026  (King's Head Theatre, 5 review files)\n  [shared-venue-token:shakespeare] hamlet|2025\n    hamlet-royal-shakespeare-regional-2025  (Royal Shakespeare Theatre, Stratford-upon-Avon, 3 review files)\n    hamlet-regional-2025  (Chicago Shakespeare Theater, Chicago, IL, 7 review files)\n  [shared-venue-token:chicago] topdog underdog|2024\n    topdog-underdog-regional-2024-windy-city-playhouse  (Windy City Playhouse, Chicago, IL, 10 review files)\n    topdog-underdog-regional-2024  (Filament Theatre, Chicago, IL, 3 review files)\n\nDetail written to data/audit/duplicate-shows.json\n\n⚠️  NEW duplicate pair(s) not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/duplicate-shows-baseline.json):\n  [shared-venue-token:shakespeare] hamlet|2025: hamlet-royal-shakespeare-regional-2025 <-> hamlet-regional-2025\n  [shared-venue-token:chicago] topdog underdog|2024: topdog-underdog-regional-2024-windy-city-playhouse <-> topdog-underdog-regional-2024\n\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct\nproduction), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline",
+      "channel": "card"
+    },
+    {
+      "name": "show-score-urls",
+      "label": "one Show Score URL mapped to 2+ showIds (baseline-diff)",
+      "command": "node scripts/audit-show-score-urls.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "    Review dates: 0 dates found\n    ! Page venue \"@sohoplace\" != show venue \"Soho Place\"\n\nSUSPICIOUS — no archive to verify (36):\n  no-mans-land-2013 (closed, James Earl Jones Theatre): No archive to verify, multi-production show (2 productions)\n  of-mice-and-men-2014 (closed, Longacre Theatre): No archive to verify, multi-production show (2 productions)\n  annie-2012 (closed, Palace Theatre): No archive to verify, multi-production show (3 productions)\n  cat-on-a-hot-tin-roof-2013 (closed, Richard Rodgers Theatre): No archive to verify, multi-production show (6 productions)\n  a-streetcar-named-desire-2012 (closed, Broadhurst Theatre): No archive to verify, multi-production show (5 productions)\n  hamlet-2009 (closed, Broadhurst Theatre): No archive to verify, multi-production show (3 productions)\n  les-miserables-2014 (closed, Imperial Theatre): No archive to verify, multi-production show (3 productions)\n  cyrano-de-bergerac-2012 (closed, Todd Haimes Theatre): No archive to verify, multi-production show (3 productions)\n  jekyll-and-hyde-2013 (closed, Marquis Theatre): No archive to verify, multi-production show (2 productions)\n  godspell-2011 (closed, Circle in the Square Theatre): No archive to verify, multi-production show (2 productions)\n  ... and 26 more (use --verbose)\n\nANOTHER PRODUCTION'S PAGE (6):\n  machinal-2014: https://www.show-score.com/broadway-shows/machinal\n    7/7 page dates (earliest 2024-04-19) come over 365 days after this production closed 2014-03-02: another production's page [archived page dates]\n  betrayal-2013: https://www.show-score.com/broadway-shows/betrayal\n    35/35 page dates (earliest 2019-03-13) come over 365 days after this production closed 2014-01-05: another production's page [archived page dates]\n  the-boy-at-the-back-of-the-class-off-west-end-2026: https://www.show-score.com/uk/london/west-end-shows/the-boy-at-the-back-of-the-class\n    wrong-production page: 7/7 page dates (latest 2024-02-13) predate this production's start 2026-04-07 by over 60 days: another production's page [extractor rejection]\n  the-choir-of-man-off-west-end-2026: https://www.show-score.com/uk/london/west-end-shows/choir-of-man-west-end\n    wrong-production page: 5/5 page dates (latest 2023-10-14) predate this production's start 2026-03-14 by over 60 days: another production's page [extractor rejection]\n  fish-off-broadway-2026: https://www.show-score.com/off-broadway-shows/fish-signature-theatre-company\n    wrong-production page: 5/5 page dates (latest 2024-04-12) predate this production's start 2026-09-26 by over 60 days: another production's page [extractor rejection]\n  elektra-off-broadway-2026: https://www.show-score.com/off-broadway-shows/elektra-theatre-for-a-new-audience\n    wrong-production page: 5/5 page dates (latest 2022-04-13) predate this production's start 2026-11-10 by over 60 days: another production's page [extractor rejection]\n\nRemove with: node scripts/purge-wrong-production-show-score.js --apply\n\nSummary:\n  Duplicate URLs:       0\n  Confirmed wrong:      6\n  Suspicious (no arch): 36\n  Other production:     6\n  OK:                   753\n  No archive:           108\n  Total checked:        906",
+      "channel": "card"
+    },
+    {
+      "name": "cv-flag-contradiction",
+      "label": "exclusion flag contradicted by its own content-verification pass (baseline-diff)",
+      "command": "node scripts/audit-cv-flag-contradiction.js --window=30 --strict",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Flag-vs-CV contradiction sweep: 270 shows in the last 30d window, 10 contradiction(s) found.\n  [wrongProduction] girls-off-west-end-2026/london-box-office--christian-durham.json (459w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] other-desert-cities-2026/harrisonline--unknown.json (455w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json (793w)\n  [wrongProduction] school-pictures-off-broadway-2026/theatermania--zachary-stewart.json (1343w)\n  [wrongProduction] harry-potter-and-the-cursed-child-one-part-west-end-2026/deadline--joe-utichi.json (1603w)\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json (618w)\nCoverage: examined 179 of 5454 corpus show(s) (2933 review file(s) parsed).\n  --window=30d selected 270 show(s): 148 already opened, 122 not yet opened (the window filter has no upper bound).\n  91 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  5275 corpus show(s) were NOT examined, of which 422 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n⚠️  cv-flag-contradiction: 1 stale baseline entry (no live violation behind them):\n   - hay-fever-west-end-2026::theatreboard--unknown.json\n   A stale entry would silently re-excuse the same regression later. Prune: node scripts/audit-cv-flag-contradiction.js --prune-stale\n\n(10 baselined, 0 new)",
+      "channel": "card"
+    },
+    {
+      "name": "counted-review-integrity",
+      "label": "counted reviews that break an invariant (same review on unrelated shows, one review under two critics, URL year outside the run, never-opened show, junk outlet, openingDate after its own reviews, priorRuns pointing at a missing show)",
+      "command": "node scripts/audit-counted-review-integrity.js --max=82 --max-cross-show-duplicate=68 --max-same-show-multi-byline=6 --max-url-year-outside-run=2 --max-unopened-show-counted=1 --max-junk-outlet=2 --max-opening-date-cluster=4 --max-prior-run-link=0",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Counted-review integrity: 70 issue(s) across 61 show(s)\n  cross-show-duplicate     58\n  same-show-multi-byline   1\n  url-year-outside-run     3\n  unopened-show-counted    0\n  junk-outlet              8\n  opening-date-cluster     0\n  prior-run-link           0\nOver baseline: url-year-outside-run 3 > 2; junk-outlet 8 > 2. Triage the new rows with --check=<name> --verbose, fix the cause, or re-baseline after a cleanup pass.",
+      "channel": "fyi"
+    },
+    {
+      "name": "flagged-in-window",
+      "label": "review files excluded as wrong production/show although their date and URL year sit inside the run (recovery backlog)",
+      "command": "node scripts/audit-counted-review-integrity.js --flagged --max=850",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Excluded but dated and URL-dated inside the run: 1005 file(s) across 625 show(s)\nOver baseline: 1005 > 850.",
+      "channel": "fyi"
+    },
+    {
+      "name": "self-contradictory-clears",
+      "label": "a review asserting an exclusion flag AND its own retraction breadcrumb at once (baseline-diff)",
+      "command": "node scripts/audit-self-contradictory-clears.js --gate --baseline",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Self-contradictory clear sweep: 73563 review file(s) scanned, 11 contradiction(s).\n    11 | wrongShow + contentVerificationPromoted (#1022)\n         hamlet-off-broadway-2026/ap--mark-kennedy.json\n         john-proctor-is-the-villain-west-end-2026/thestage--paul-raven.json\n         little-shop-of-horrors-off-broadway-2019/times-square-chronicles--suzanna-bowling.json\n         mamma-mia-west-end-2021/musical-theatre-review--angela-thomas.json\n         moulin-rouge-the-musical-west-end-2021/london-theatre--marianka-swain.json\n         … and 6 more\n\nBaseline 11 (±15) — now 11 (+0).",
+      "channel": "card"
+    },
+    {
+      "name": "aggregator-archive-integrity",
+      "label": "cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
+      "command": "node scripts/audit-aggregator-archive-integrity.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Aggregator-archive integrity:\n  Scanned: 7077 files\n  Skipped (no show in shows.json): 258\n  Bad: 2\n\n❌ NEW bad archives (2):\n   - show-score/well-see-off-broadway-2026\n   - theatre-reviews/loves-labours-lost-off-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
+      "channel": "card"
+    },
+    {
+      "name": "outlet-identity-hygiene",
+      "label": "live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
+      "command": "node scripts/audit-outlet-identity-hygiene.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "live reviews scanned: 41215\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 6 outlet(s)\n  (+3 staged by the rebuild within the grace window, not failed: globalnews2, irishfilmcritic, marissavivian)\ncorpus files scanned: 73783; provisional outlets without a decision: 6\n  the-showmance-already-happened (1) e.g. anna-christie-off-broadway-2025/the-showmance-already-happened--in-brooklyn.json\n  theglobalcelebritymeter (1) e.g. billy-crystal-860-2026/theglobalcelebritymeter--steve-smith.json\n  time-out-lond_on (1) e.g. death-of-a-salesman-west-end-2015/time-out-lond_on--andrzej-lukowski.json\n  substack-com (1) e.g. other-desert-cities-2026/substack-com--sloan-ciccone.json\n  wtlgomag (2) e.g. shucked-tour-2024/wtlgomag--unknown.json\n  timeoutlondon (1) e.g. the-bodyguard-west-end-2012/timeoutlondon--andrzej-lukowski.json\nPROBLEMS: 12",
+      "channel": "card"
+    },
+    {
+      "name": "critic-outlets",
+      "label": "critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
+      "command": "node scripts/audit-critic-outlets.js --strict",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "  Patrick Marmion at mail-on-sunday (2% share) for hay-fever-west-end-2026\n  Patrick Marmion at mail-on-sunday (2% share) for hercules-west-end-2025\n  Patrick Marmion at mail-on-sunday (2% share) for high-school-musical-off-west-end-2026\n  Patrick Marmion at mail-on-sunday (2% share) for into-the-woods-west-end-2025\n  Patrick Marmion at mail-on-sunday (2% share) for martin-guerre-west-end-2026\n  Jacob Bush at thereviewshub (6% share) for dear-young-monster-sheffield-regional-2025\n  Sandi Durell at theater-life (4% share) for golden-boy-2012\n  Sandi Durell at theater-life (4% share) for stick-fly-2011\n  Mark Fisher at the-scotsman (3% share) for escaped-alone-tron-regional-2024\n  Mark Fisher at the-scotsman (3% share) for stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026\n  Lucy Popescu at islingtontribune (6% share) for the-last-ship-west-end-2026\n  Laura Collins-Hughes at village-voice (1% share) for this-aint-no-disco-off-broadway-2018\n  Cheryl Markosky at london-theatre (9% share) for how-the-other-half-loves-west-end-2026\n  Lyndsey Winship at dance-magazine (8% share) for company-2021\n  Bridget Galton at islington-gazette (5% share) for paddington-the-musical-west-end-2025\n  Bridget Galton at islington-gazette (5% share) for when-we-have-sufficiently-tortured-each-other-west-end-2019\n  Hedy Weiss at chicago-sun-times (7% share) for an-american-in-paris-2015\n  Howard Loxton at camdennewjournal (1% share) for peter-gynt-west-end-2019\n  Allison Considine at off-off-online (2% share) for the-smuggler-off-broadway-2023\n  John Groves at bestoftheatre (4% share) for what-the-animals-say-off-west-end-2026\n  John Cutler at bestoftheatre (4% share) for an-oak-tree-off-west-end-2026\n  Amanda Finn at chicago-reader (6% share) for twisted-melodies-regional-2025\n  Georgina Brown at independent (4% share) for middlemarch-rsc-regional-2026\n  Scott Lipton at broadwaynews (9% share) for almost-famous-2022\n  Kate Wyver at timeout-london (3% share) for expendable-west-end-2024\n  Kenji Fujishima at frombroadway (2% share) for aftermath-art-new-york-off-broadway-2026\n  George Grella at financialtimes (8% share) for carmen-off-broadway-2025\n  Markos Papadatos at truehollywoodtalk (6% share) for night-of-january-16th-off-broadway-2026\n  Margret Echeverria at nytg (5% share) for amy-and-the-orphans-off-broadway-2018\n  Christopher Caggiano at zeal-nyc (8% share) for the-play-that-goes-wrong-2017\n  Ross at times-square-chronicles (8% share) for mama-im-a-big-girl-now-off-broadway-2024\n  Daisy Bowie-Sell at timeout-london (8% share) for the-nether-west-end-2015\n  Daisy Bowie-Sell at timeout-london (8% share) for urinetown-the-musical-west-end-2014\n  Caitlin Huston at broadwaynews (9% share) for escape-to-margaritaville-2018\n  Mert Dilek at thestage (9% share) for les-miserables-west-end-2021\n  Brian Scott at theater-life (9% share) for snow-in-midsummer-off-broadway-2022\n  David Pollock at independent (7% share) for let-the-right-one-in-west-end-2014\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
+      "channel": "card"
+    },
+    {
+      "name": "autoclear-vs-ensemble",
+      "label": "an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
+      "command": "node scripts/audit-autoclear-vs-ensemble.js --strict",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "autoclear-vs-ensemble audit: 73563 files scanned.\n  wrongProduction violations: 0\n  wrongShow violations: 0",
+      "channel": "card"
+    },
+    {
+      "name": "contradicted-flag-basis",
+      "label": "exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+      "command": "node scripts/audit-contradicted-flag-basis.js --gate --max=0",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Contradicted-flag-basis sweep: 4063 shows scanned, 2 match(es).\n  [wrongProduction] a-view-from-the-bridge-2015/njcom--christopher-kelly.json\n      basis cites 2015-07-01 but record is dated 2015-11-12, inside run 2015-10-21..2016-02-28\n  [wrongProduction] richard-iii-west-end-2014/timeout-london--andrzej-lukowski.json\n      basis cites 2019-11-22 but record is dated 2014-07-09, inside run 2014-07-01..2014-10-04\n\nFAIL: 2 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
+      "channel": "card"
+    },
+    {
+      "name": "duplicate-of-cleared-contradiction",
+      "label": "a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
+      "command": "node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0",
+      "exitCode": 1,
+      "ok": false,
+      "crashed": false,
+      "detail": "Duplicate-of-cleared contradiction sweep: 73783 review file(s) scanned, 1 match(es).\n  time-stands-still-2010/hollywood-reporter--david-rooney.json -> hollywood-reporter--frank-scheck.json (both claim/deny the same URL)\n\nFAIL: 1 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
+      "channel": "card"
+    },
+    {
+      "name": "url-downgrade",
+      "label": "maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
+      "command": "node scripts/audit-url-downgrade.js --gate",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "  [protected] mexodus-off-broadway-2026/nyt-theater--unknown.json — url dated 2025-10-04 (before_preview, 132d)\n  [protected] oh-mary-tour-2026/deadline--denise-petski.json — url dated 2024 (year-before-window, undefinedd)\n  [protected] orlando-off-broadway-2026/guardian--unknown.json — url dated 2022-12-11 (before_preview, 457d)\n  [protected] please-please-me-west-end-2026/guardian--susannah-clapp.json — url dated 2024-08-04 (before_preview, 585d)\n  [protected] romeo-and-juliet-off-broadway-2026/guardian--clare-brennan.json — url dated 2024-09-22 (before_preview, 586d)\n  [protected] romeo-and-juliet-off-broadway-2026/nytimes--charles-isherwood.json — url dated 2011-07-13 (before_preview, 5406d)\n  [protected] romeo-and-juliet-west-end-2026/guardian--unknown.json — url dated 2025-07-09 (before_preview, 215d)\n  [protected] seagull-true-story-off-broadway-2026/nysr--frank-scheck.json — url dated 2023-02-28 (before_preview, 1097d)\n  [protected] shucked-2023/broadwayworld--elizabeth-cortes.json — url dated 2025-03-14 (after_close, 418d)\n  [protected] shucked-2023/broadwayworld--roy-berko.json — url dated 2025-04-24 (after_close, 459d)\n  [protected] something-rotten-2015/washpost--nelson-pressley.json — url dated 2018-02-07 (after_close, 395d)\n  [protected] tammy-faye-2024/broadwayworld--cindy-marcolina.json — url dated 2022-10-26 (before_preview, 703d)\n  [protected] the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json — url dated undefined (forum-thread-url, undefinedd)\n  [protected] the-getaway-driver-regional-2026/deadline--jill-goldsmith.json — url dated 2025 (year-before-window, undefinedd)\n  [protected] the-glass-menagerie-2017/chicagotribune--chris-jones.json — url dated 2013-09-26 (before_preview, 1209d)\n  [protected] the-hills-of-california-2024/guardian--arifa-akbar.json — url dated 2024-02-08 (before_preview, 195d)\n  [protected] the-play-that-goes-wrong-off-broadway-2019/nytimes--ben-brantley.json — url dated 2017-04-02 (before_preview, 668d)\n  [protected] the-seagull-2008/guardian--arifa-akbar.json — url dated 2025-03-06 (after_close, 5912d)\n  [protected] the-sound-of-music-2027/broadwayworld--anikatrina-fageol.json — url dated 2026-02-18 (before_preview, 377d)\n  [protected] the-sound-of-music-2027/broadwayworld--david-friscic.json — url dated 2025-09-15 (before_preview, 533d)\n  [protected] the-sound-of-music-2027/broadwayworld--greg-dalton-white.json — url dated 2026-08-31 (before_preview, 183d)\n  [protected] the-sound-of-music-2027/broadwayworld--jeffrey-kare.json — url dated 2025-10-08 (before_preview, 510d)\n  [protected] the-sound-of-music-2027/broadwayworld--joni-lorraine.json — url dated 2026-02-04 (before_preview, 391d)\n  [protected] the-sound-of-music-2027/broadwayworld--paul-batterson.json — url dated 2023-10-25 (before_preview, 1224d)\n  [protected] the-sound-of-music-2027/broadwayworld--r-scott-reedy.json — url dated 2026-01-11 (before_preview, 415d)\n  [protected] the-sound-of-music-2027/broadwayworld--tina-st-angelo.json — url dated 2025-10-25 (before_preview, 493d)\n  [protected] the-sound-of-music-2027/broadwayworld--vickie-evans.json — url dated 2025-11-20 (before_preview, 467d)\n  [protected] the-whos-tommy-tour-2026/deadline--greg-evans.json — url dated 2024 (year-before-window, undefinedd)\n  [protected] the-wiz-2024/latimes--mary-mcnamara.json — url dated 2015-12-03 (before_preview, 3018d)\n  [protected] to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json — url dated 2022-05-19 (before_preview, 1477d)\n  [protected] tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json — url dated 2026-06-29 (before_preview, 104d)\n  [protected] tosca-off-broadway-2026/broadwayworld--dc-felton.json — url dated 2026-07-02 (before_preview, 101d)\n  [protected] tosca-off-broadway-2026/broadwayworld--roger-catlin.json — url dated 2026-08-10 (before_preview, 62d)\n  [protected] twelfth-night-off-west-end-2026/nysr--unknown.json — url dated 2025-08-21 (before_preview, 317d)\n  [protected] two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nypost--johnny-oleksinski.json — url dated 2025-11-20 (after_close, 123d)\n  [protected] two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nypost--unknown.json — url dated 2025-11-20 (after_close, 123d)\n  [protected] two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nysr--unknown.json — url dated 2025-11-20 (after_close, 123d)\n  [protected] vanya-off-broadway-2025/washpost--unknown.json — url dated 2013-03-14 (before_preview, 4359d)\n  [protected] west-side-story-2009/ew--leah-greenblatt.json — url dated 2020-02-20 (after_close, 3329d)\n  [protected] whos-afraid-of-virginia-woolf-2012/broadwayworld--harker-jones.json — url dated 2022-05-03 (after_close, 3341d)",
+      "channel": "card"
+    },
+    {
+      "name": "orphan-show-ids",
+      "label": "public/data/shows/{id}.json existing for an id no longer in shows.json",
+      "command": "node scripts/audit-orphan-show-ids.js",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "OK: no orphan show IDs found across slim files, audience-buzz, show-score",
+      "channel": "card"
+    },
+    {
+      "name": "orphan-review-folders",
+      "label": "data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
+      "command": "node scripts/report-orphan-review-folders.js --strict",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Orphan review-text folders: 0 (0 files)\n  of which retired ids (stranded by a retirement): 0 folders, 0 files",
+      "channel": "card"
+    },
+    {
+      "name": "aggregator-url-latent",
+      "label": "aggregator LISTING urls stored under a real outletId (population must shrink, never grow)",
+      "command": "node scripts/audit-aggregator-url-latent.js",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Scanned 73743 review-text files (0 unreadable/skipped)\n  live aggregator-URL mismatches:   0\n  latent (behind exclusion flags):  1 (ceiling 2, grace +3)\n\nLATENT (invisible to the gate until an auto-clear promotes them):\n  dracula-west-end-2025/telegraph--paul-raven.json\n\n::notice::latent population shrank to 1 (ceiling 2) — tighten the pin. Set \"latentCeiling\" to 1 in scripts/.aggregator-url-latent.json.",
+      "channel": "card"
+    },
+    {
+      "name": "awards-freshness",
+      "label": "data/awards.json stale (>14 months) or last-touch date unknown — see detail (annual awards cadence)",
+      "command": "node scripts/audit-awards-freshness.js",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "✅ awards freshness: fresh — data/awards.json last touched 1 days ago (2026-10-29T18:37:33Z), within the 425-day window",
+      "channel": "card"
+    },
+    {
+      "name": "exclusion-mirror",
+      "label": "exclusion rule census: per-rule count jump or explainExclusion-vs-rebuild disagreement rise",
+      "command": "node scripts/exclusion-rule-census.js --check --max-rule-delta=200 --max-rate-rise=0.01",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "Exclusion mirror summary 2026-10-31T07:15:01.705Z: 30261/73715 excluded by the mirror; 387/73087 disagree with the rebuild (0.53%)\n  largest rule moves: wrongProduction +6, suspectedMisattribution -6, nonReview +4, cvWrongArticleHighConfidence +4, noTextOrScoreSignal +3",
+      "channel": "fyi"
+    }
+  ]
+}

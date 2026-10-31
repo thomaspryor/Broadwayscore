@@ -1,0 +1,249 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate } = require('../../scripts/lib/review-write-guard.js');
+
+const body = (n) => 'x'.repeat(n);
+
+test('a substantive review is NOT buried under an empty same-URL stub', () => {
+  // much-ado Sarah Crompton (real body) being re-written while alun-hood (empty)
+  // shares the URL — must stay primary, not re-dup to the stub.
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(3498) }, { fullText: '' }), false);
+});
+
+test('an empty stub IS marked duplicate of a real same-URL review', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: '' }, { fullText: body(3498) }), true);
+});
+
+test('two empty byline-explosion stubs still collapse (one stays primary)', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: '' }, { fullText: '' }), true);
+});
+
+test('two substantive same-URL files defer to collider (historical behavior)', () => {
+  // Same review re-scraped; keep the existing dedup behavior (mark new as dup).
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(3000) }, { fullText: body(2900) }), true);
+});
+
+test('a short (<500) new body defers to collider even if collider is empty', () => {
+  // Below the substance floor we do not claim canonical status — conservative.
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(300) }, { fullText: '' }), true);
+});
+
+test('unreadable collider (null) falls back to marking duplicate', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(3000) }, null), true);
+});
+
+test('a _duplicateOfCleared breadcrumb blocks re-marking, even for a thin file', () => {
+  // betrayal-2013 guardian--david-cote: a prior pass cleared the collision as
+  // different-critics-same-URL; a later unrelated write (publishDate backfill)
+  // must NOT re-flag duplicateOf (163 corpus-wide re-flags, 2026-07-15).
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(300), _duplicateOfCleared: 'auto:2026-04-12 different critics' },
+    { fullText: body(3000) }
+  ), false);
+});
+
+test('a _duplicateOfCleared breadcrumb also blocks the unreadable-collider fallback', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: '', _duplicateOfCleared: 'auto:2026-04-12 different critics' },
+    null
+  ), false);
+});
+
+test('without the breadcrumb, genuine duplicates still flag (no regression)', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(3000), _duplicateOfCleared: null }, { fullText: body(2900) }), true);
+});
+
+// --- byline/anchor quality (card #1340): when both bodies are substantive,
+// the length check alone can't tell the siblings apart — a named/anchored new
+// write must not still get buried under an Unknown/unanchored collider (the
+// Death Note WhatsOnStage pattern task #1338 retro-healed after the fact) ---
+
+const ANCHORED = { score: 85, band: { floor: 71, ceiling: 90, fraction: 0.8 } };
+const UNANCHORED = { score: 91 };
+
+test('named+anchored new write beats an Unknown+unanchored collider, both substantive', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), false);
+});
+
+// llmScore: { score: 74 } (not undefined, and not UNANCHORED's score of 91):
+// this test is about the new write lacking an anchored BAND, not about it
+// lacking a score entirely. shouldFlipDuplicateDirection (BRO-3821 follow-up,
+// commit 0ce2aae154e) added a "never trade a scored record for an unscored
+// one" guard — an unscored newData now always defers regardless of byline,
+// so the original `{ criticName: 'Alun Hood' }` fixture (no llmScore at all)
+// started asserting the exact regression that guard exists to stop. Giving
+// newData a score with no band keeps this test on the band branch it names,
+// matching the same fix already made to duplicate-direction-heal.test.mjs's
+// sibling "named-only loser (no band) still flips" case.
+test('named-only new write (no band) still beats an Unknown+unanchored collider', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: { score: 74 } },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), false);
+});
+
+test('anchored-only new write (Unknown byline) still beats an Unknown+unanchored collider', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Unknown', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), false);
+});
+
+test('quality check does not flip when the collider is itself named — legitimate direction stands', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Alex Wood' }
+  ), true);
+});
+
+test('quality check does not fire for a flagged new write (clean-source gate)', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Alun Hood', llmScore: ANCHORED, wrongProduction: true },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), true);
+});
+
+test('quality check is gated on the substance floor — a short named/anchored new write does NOT out-rank a substantive collider', () => {
+  // A 300-char stub carrying a byline must not claim canonical status over a
+  // genuinely substantive Unknown-byline review just because it also passes
+  // shouldFlipDuplicateDirection — the substance floor applies first.
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(300), criticName: 'Alun Hood', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: UNANCHORED }
+  ), true);
+});
+
+test('mutual anchored-but-Unknown siblings still defer to collider (historical behavior)', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), criticName: 'Unknown', llmScore: ANCHORED },
+    { fullText: body(3000), criticName: 'Unknown', llmScore: ANCHORED }
+  ), true);
+});
+
+// --- shouldMarkPostCorrectionDuplicate: the urlCorrectedFrom branch that used
+// to be a blanket skip (the-enormous-crocodile london-theatre--unknown weekly
+// oscillation, 2026-08-01) ---
+
+test('post-correction: a bodyless corrected file adopting a sibling-owned URL IS tombstoned', () => {
+  // maybeUpgradeUrl nulls fullText, so the crocodile --unknown slot always
+  // arrives here bodyless — it holds nothing unique, defer to the sibling.
+  assert.equal(shouldMarkPostCorrectionDuplicate(
+    { fullText: null, urlCorrectedFrom: 'https://old.example/show-page' },
+    { fullText: body(3000) }
+  ), true);
+});
+
+test('post-correction: a substantive body is NEVER tombstoned (multi-critic same-URL protection)', () => {
+  // 88 corpus files with urlCorrectedFrom + a same-URL sibling carry real
+  // bodies (review probe 2026-08-01) — possibly legitimate multi-critic
+  // reviews; the dedicated dedup passes own that call, not this branch.
+  assert.equal(shouldMarkPostCorrectionDuplicate(
+    { fullText: body(3000), urlCorrectedFrom: 'https://old.example/x' },
+    { fullText: body(2900) }
+  ), false);
+});
+
+test('post-correction: _duplicateOfCleared breadcrumb still wins, even bodyless', () => {
+  assert.equal(shouldMarkPostCorrectionDuplicate(
+    { fullText: '', _duplicateOfCleared: 'auto:2026-04-12 different critics' },
+    { fullText: body(3000) }
+  ), false);
+});
+
+test('post-correction: unreadable collider declines to mark (conservative, unlike the normal branch)', () => {
+  assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: '' }, null), false);
+});
+
+test('post-correction: null newData declines without throwing', () => {
+  assert.equal(shouldMarkPostCorrectionDuplicate(null, { fullText: body(3000) }), false);
+});
+
+test('post-correction: body at the 200-char floor stays primary; just under it defers', () => {
+  assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: body(200) }, { fullText: body(3000) }), false);
+  assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: body(199) }, { fullText: body(3000) }), true);
+});
+
+test('post-correction: sole-score guard — bodyless file with the only score stays primary', () => {
+  // ap--mark-kennedy (score 65, stars-fallback pattern) vs a scoreless bodyless
+  // sibling: burying the only score-bearing copy would lose the review.
+  assert.equal(shouldMarkPostCorrectionDuplicate(
+    { fullText: '', assignedScore: 65 },
+    { fullText: '' }
+  ), false);
+  assert.equal(shouldMarkPostCorrectionDuplicate(
+    { fullText: '', aggregatorStars: '4/5' },
+    { fullText: '' }
+  ), false);
+});
+
+test('post-correction: a scored bodyless file still defers when the sibling can also score', () => {
+  assert.equal(shouldMarkPostCorrectionDuplicate(
+    { fullText: '', assignedScore: 91 },
+    { fullText: '', aggregatorStars: '5/5' }
+  ), true);
+  assert.equal(shouldMarkPostCorrectionDuplicate(
+    { fullText: '', assignedScore: 91 },
+    { fullText: body(3000) }
+  ), true);
+});
+
+// BRO-4192: a valid review must never be buried under an INVALID same-URL
+// sibling. heal-orphaned-duplicate-pointers cleared 97 such pointers per
+// rebuild and this collision check re-set every one in the same write.
+test('valid review is NOT marked duplicate of a wrongProduction same-URL sibling', () => {
+  // you-got-older 2026: Helen Shaw (valid) vs a misfiled 2014 Isherwood copy.
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(5420) },
+    { fullText: body(5355), wrongProduction: true },
+  ), false);
+});
+
+test('valid review is NOT marked duplicate of a rejected / nonReview / wrongShow sibling', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(4543) },
+    { fullText: body(4644), nonReviewFlag: true, rejectedBy: 'ensemble-scoreability-check' }), false);
+  assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: '' },
+    { fullText: body(3000), wrongShow: true }), false);
+});
+
+test('when BOTH records are invalid the historical dedup still applies', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), rejectedBy: 'ensemble-scoreability-check' },
+    { fullText: body(2900), wrongProduction: true },
+  ), true);
+});
+
+test('a manually cleared wrongProduction flag does not count as invalid', () => {
+  // Retraction breadcrumbs keep the collider a legitimate canonical (BRO-3092).
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000) },
+    { fullText: body(2900), wrongProduction: true, wrongProductionManualClear: true },
+  ), true);
+});
+
+// BRO-4192: with a known show, validity follows the rebuild's own inclusion
+// rule (explainExclusion) and ignores the record's own duplicate pointer.
+test('isExcludedIgnoringDuplicate: show-aware, ignores duplicateOf', () => {
+  const { isExcludedIgnoringDuplicate, _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
+  const show = { id: 'bro4192-test-show', title: 'Test Show', status: 'closed', openingDate: '2024-04-25', closingDate: '2024-06-30' };
+  _setShowsCacheForTest(new Map([[show.id, show]]));
+  try {
+    const good = {
+      showId: show.id, outletId: 'nytimes', outlet: 'New York Times', criticName: 'Jesse Green',
+      url: 'https://www.nytimes.com/2024/04/25/theater/test-show-review.html', publishDate: 'April 25, 2024',
+      fullText: body(3000), contentTier: 'complete', assignedScore: 81,
+    };
+    assert.equal(isExcludedIgnoringDuplicate(good), false);
+    // A live duplicate pointer does not make the record itself invalid.
+    assert.equal(isExcludedIgnoringDuplicate({ ...good, duplicateOf: 'nytimes--other.json' }), false);
+    // A standing ensemble rejection does.
+    assert.equal(isExcludedIgnoringDuplicate({ ...good, rejectedAt: '2026-03-02T00:00:00Z', rejectedBy: 'ensemble-scoreability-check' }), true);
+  } finally {
+    _setShowsCacheForTest(null);
+  }
+});

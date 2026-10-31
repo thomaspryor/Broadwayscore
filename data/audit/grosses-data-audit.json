@@ -1,0 +1,154 @@
+{
+  "_meta": {
+    "description": "Grosses data audit report",
+    "generatedAt": "2026-02-15T15:32:51.786Z",
+    "generatedBy": "scripts/audit-grosses-data.js"
+  },
+  "summary": {
+    "grossesJson": {
+      "totalShows": 682,
+      "showsWithThisWeek": 29,
+      "showsAllTimeOnly": 653,
+      "weekEnding": "2/08/2026",
+      "lastUpdated": "2026-02-11T15:52:36.762Z"
+    },
+    "history": {
+      "totalWeeks": 57,
+      "earliestWeek": "2025-01-12",
+      "latestWeek": "2026-02-08",
+      "showsInLatestWeek": 29,
+      "historyEntriesChecked": 1479
+    },
+    "showsJson": {
+      "totalShows": 727,
+      "openShows": 28,
+      "previewShows": 16,
+      "closedShows": 683
+    },
+    "nullDensity": {
+      "totalThisWeekFields": 319,
+      "nullFields": 33,
+      "nullPercentage": 10.3,
+      "nullByField": {
+        "grossYoY": 11,
+        "capacityYoY": 11,
+        "atpYoY": 11
+      }
+    },
+    "issuesSummary": {
+      "total": 16,
+      "bySeverity": {
+        "high": 0,
+        "medium": 8,
+        "low": 8
+      },
+      "byType": {
+        "orphan-entry": 7,
+        "orphan-history-entry": 1,
+        "capacity-prev-mismatch": 1,
+        "closed-show-thisweek": 1,
+        "preview-high-alltime": 4,
+        "wow-anomaly-gross": 1,
+        "wow-anomaly-atp": 1
+      }
+    }
+  },
+  "issues": [
+    {
+      "type": "orphan-entry",
+      "severity": "medium",
+      "showId": "angels-in-america-millennium-approaches-2018",
+      "detail": "Grosses entry for \"angels-in-america-millennium-approaches-2018\" has no matching show in shows.json"
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "medium",
+      "showId": "the-coast-of-utopia-part-3-salvage-2007",
+      "detail": "Grosses entry for \"the-coast-of-utopia-part-3-salvage-2007\" has no matching show in shows.json"
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "medium",
+      "showId": "assassins-2012",
+      "detail": "Grosses entry for \"assassins-2012\" has no matching show in shows.json"
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "medium",
+      "showId": "the-norman-conquests-round-and-round-the-garden-2009",
+      "detail": "Grosses entry for \"the-norman-conquests-round-and-round-the-garden-2009\" has no matching show in shows.json"
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "medium",
+      "showId": "the-coast-of-utopia-part-1-voyage-2006",
+      "detail": "Grosses entry for \"the-coast-of-utopia-part-1-voyage-2006\" has no matching show in shows.json"
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "medium",
+      "showId": "the-coast-of-utopia-part-2-shipwreck-2006",
+      "detail": "Grosses entry for \"the-coast-of-utopia-part-2-shipwreck-2006\" has no matching show in shows.json"
+    },
+    {
+      "type": "orphan-entry",
+      "severity": "medium",
+      "showId": "the-norman-conquests-table-manners-2009",
+      "detail": "Grosses entry for \"the-norman-conquests-table-manners-2009\" has no matching show in shows.json"
+    },
+    {
+      "type": "orphan-history-entry",
+      "severity": "low",
+      "showId": "wonderful-world",
+      "detail": "History entry for \"wonderful-world\" has no matching show in shows.json (found in week 2025-01-12)"
+    },
+    {
+      "type": "capacity-prev-mismatch",
+      "severity": "low",
+      "showId": "wicked",
+      "detail": "capacityPrevWeek (98.46%) differs from history prev week (95.44%) by 3.0 pts"
+    },
+    {
+      "type": "closed-show-thisweek",
+      "severity": "medium",
+      "showId": "oedipus",
+      "detail": "Closed show (closingDate: 2026-02-08) still has thisWeek data — gross: $1,212,949"
+    },
+    {
+      "type": "preview-high-alltime",
+      "severity": "low",
+      "showId": "death-of-a-salesman",
+      "detail": "Preview show has 242 allTime performances — may need status update"
+    },
+    {
+      "type": "preview-high-alltime",
+      "severity": "low",
+      "showId": "the-fear-of-13",
+      "detail": "Preview show has 127 allTime performances — may need status update"
+    },
+    {
+      "type": "preview-high-alltime",
+      "severity": "low",
+      "showId": "proof",
+      "detail": "Preview show has 933 allTime performances — may need status update"
+    },
+    {
+      "type": "preview-high-alltime",
+      "severity": "low",
+      "showId": "the-rocky-horror-show",
+      "detail": "Preview show has 467 allTime performances — may need status update"
+    },
+    {
+      "type": "wow-anomaly-gross",
+      "severity": "low",
+      "showId": "chicago",
+      "detail": "100% gross increase WoW ($659,765 → $1,316,977)"
+    },
+    {
+      "type": "wow-anomaly-atp",
+      "severity": "low",
+      "showId": "chicago",
+      "detail": "73% ATP swing WoW ($89.48 → $155.19)"
+    }
+  ]
+}

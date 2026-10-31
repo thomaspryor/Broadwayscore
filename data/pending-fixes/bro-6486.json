@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-6486",
+  "planId": "035df193-7440-4be3-9f1e-949d95b72bf3",
+  "status": "applied",
+  "createdAt": "2026-10-29T01:01:55.751Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6486: delete five Exeunt NYC 0-char stubs pointing at WordPress photo-attachment pages; each show already has the real scored Exeunt review",
+    "steps": [
+      "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Nicole Serratore is already scored on this show",
+      "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Loren Noveck is already scored on this show",
+      "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Loren Noveck is already scored on this show",
+      "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Lane Williamson is already scored on this show",
+      "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Cameron Kelsall is already scored on this show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fish-off-broadway-2026/exeunt-magazine--unknown.json",
+        "description": "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Nicole Serratore is already scored on this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+        "description": "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Loren Noveck is already scored on this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "two-girls-off-broadway-2026/exeunt-magazine--unknown.json",
+        "description": "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Loren Noveck is already scored on this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+        "description": "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Lane Williamson is already scored on this show"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json",
+        "description": "BRO-6486: 0-char stub whose url is a WordPress photo-attachment page (<review>/attachment/<photo>/), not a review; the real Exeunt review by Cameron Kelsall is already scored on this show"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T02:03:28.134Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fish-off-broadway-2026/exeunt-magazine--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted two-girls-off-broadway-2026/exeunt-magazine--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,194 @@
+{
+  "issueNumber": "bro-5243-h",
+  "planId": "daba3bfe-12d2-45d6-98e4-e64d99715352",
+  "status": "applied",
+  "createdAt": "2026-10-14T12:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (h): rename 8 WSJ review files from wsj--charles-isherwood.json to wsj--terry-teachout.json. All 8 hold Teachout's signed reviews (2019-2021, before Isherwood joined WSJ). The live show pages already say Teachout, but Isherwood's critic page lists 4 of them and the verifier judges them against Isherwood. Then re-verify 3 stale verdicts.",
+    "steps": [
+      "delete 5 duplicate/stub Teachout files",
+      "rename 8 Isherwood-named files to the Teachout file name",
+      "re-verify 3 rows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "aint-too-proud-2019/wsj--charles-isherwood.json",
+        "destPath": "aint-too-proud-2019/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "a-christmas-carol-2019/wsj--charles-isherwood.json",
+        "destPath": "a-christmas-carol-2019/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "clydes-2021/wsj--charles-isherwood.json",
+        "destPath": "clydes-2021/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "all-my-sons-2019/wsj--terry-teachout.json",
+        "description": "BRO-5243: make room for the rename below; this Teachout file is a duplicate of the Isherwood-named file (same url and text, duplicateOf it)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "all-my-sons-2019/wsj--charles-isherwood.json",
+        "destPath": "all-my-sons-2019/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "linda-vista-2019/wsj--terry-teachout.json",
+        "description": "BRO-5243: make room for the rename below; this Teachout file is a duplicate of the Isherwood-named file (same url and text, duplicateOf it)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "linda-vista-2019/wsj--charles-isherwood.json",
+        "destPath": "linda-vista-2019/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "grand-horizons-2020/wsj--terry-teachout.json",
+        "description": "BRO-5243: make room for the rename below; this Teachout file is a duplicate of the Isherwood-named file (same url; 4,790 vs 5,028 chars)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "grand-horizons-2020/wsj--charles-isherwood.json",
+        "destPath": "grand-horizons-2020/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "is-this-a-room-2021/wsj--terry-teachout.json",
+        "description": "BRO-5243: make room for the rename below; this Teachout file is a 209-char stub; the Isherwood-named file holds the 1,824-char review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "is-this-a-room-2021/wsj--charles-isherwood.json",
+        "destPath": "is-this-a-room-2021/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "company-2021/wsj--terry-teachout.json",
+        "description": "BRO-5243: make room for the rename below; this Teachout file is a 155-char stub; the Isherwood-named file holds the 5,103-char review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "company-2021/wsj--charles-isherwood.json",
+        "destPath": "company-2021/wsj--terry-teachout.json",
+        "description": "BRO-5243: file the WSJ review under its real critic: the text is Teachout's (criticName already Terry Teachout; signed 'Write to him at tteachout@wsj.com'); Isherwood became WSJ's critic only after Teachout died (2022-01-13). Critic pages and the content verifier take the critic from the file name, so Isherwood's critic page still lists this review and the verifier keeps judging it against Isherwood."
+      },
+      {
+        "type": "run-script",
+        "script": "reverify-stale-cv-promoted.js",
+        "args": "--file=a-christmas-carol-2019/wsj--terry-teachout.json,is-this-a-room-2021/wsj--terry-teachout.json,company-2021/wsj--terry-teachout.json",
+        "description": "BRO-5243: re-verify the 3 rows whose verdicts still judge them against Isherwood (plan g refused 2 because the file name said Isherwood)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T12:40:29.653Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved aint-too-proud-2019/wsj--charles-isherwood.json → aint-too-proud-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-christmas-carol-2019/wsj--charles-isherwood.json → a-christmas-carol-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved clydes-2021/wsj--charles-isherwood.json → clydes-2021/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted all-my-sons-2019/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved all-my-sons-2019/wsj--charles-isherwood.json → all-my-sons-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted linda-vista-2019/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved linda-vista-2019/wsj--charles-isherwood.json → linda-vista-2019/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted grand-horizons-2020/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved grand-horizons-2020/wsj--charles-isherwood.json → grand-horizons-2020/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted is-this-a-room-2021/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved is-this-a-room-2021/wsj--charles-isherwood.json → is-this-a-room-2021/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted company-2021/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved company-2021/wsj--charles-isherwood.json → company-2021/wsj--terry-teachout.json",
+      "cleared": []
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reverify-stale-cv-promoted.js successfully"
+    }
+  ]
+}

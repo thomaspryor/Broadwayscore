@@ -1,0 +1,170 @@
+name: Social Autopost
+# BRO-6368: a brief run is titled by its hash so scripts/cloud-dispatch.js finds it.
+run-name: ${{ inputs.brief && format('Social Autopost brief {0}', inputs.brief) || 'Social Autopost' }}
+
+# BRO-6242: the morning after a show's opening night (10:00 local), a Critic Score
+# card goes to Instagram, Facebook, X, Threads and Bluesky through Buffer
+# (scripts/social-autopost/run.js). Hourly: each post is created in Buffer about an
+# hour before it goes out, and every run reads back whether earlier posts really
+# published. Without the BUFFER_API_KEY secret nothing is posted. Kill switch:
+# repository variable SOCIAL_AUTOPOST_DISABLED=true; cancel_queued deletes posts
+# already scheduled. Replaces social-post.yml's daily Twitter-only rotation, which
+# never had credentials.
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # redispatch-after-hours: 1  (a run must start within 70 min of a post's slot to book it on time)
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
+      dry_run:
+        description: 'Render cards and captions only; post nothing'
+        required: false
+        type: boolean
+        default: false
+      show:
+        description: 'Preview one show id (dry run; the card is uploaded as an artifact)'
+        required: false
+        type: string
+        default: ''
+      self_test:
+        description: 'Create a draft on every channel, then delete it (checks the Buffer connection)'
+        required: false
+        type: boolean
+        default: false
+      cancel_queued:
+        description: 'Delete every post this system has scheduled that has not gone out yet'
+        required: false
+        type: boolean
+        default: false
+      brief:
+        # BRO-6368: dispatched by scripts/social-autopost/brief.js --post after the owner
+        # approved the preview. Only the hash: run.js re-reads the stored manifest and
+        # re-checks every fact before posting.
+        description: 'Post an approved brief (its 12-character hash from brief.js)'
+        required: false
+        type: string
+        default: ''
+
+# One writer for data/social-autopost-ledger.json. Runs take a few minutes and the
+# cron is hourly. A brief run (BRO-6368) can queue next to an hourly one; GitHub
+# keeps one pending run per group, so a brief run also does the hourly work and
+# brief.js re-dispatches a brief run that was cancelled while pending.
+concurrency:
+  group: social-autopost
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  autopost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SOCIAL_AUTOPOST_DISABLED: ${{ vars.SOCIAL_AUTOPOST_DISABLED }}
+      BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Find due work
+        id: check
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_SELF_TEST: ${{ inputs.self_test }}
+          INPUT_CANCEL: ${{ inputs.cancel_queued }}
+          INPUT_REDISPATCHED: ${{ inputs.redispatched }}
+          INPUT_BRIEF: ${{ inputs.brief }}
+        run: |
+          if [ -n "$INPUT_BRIEF" ]; then
+            [[ "$INPUT_BRIEF" =~ ^[0-9a-f]{12}$ ]] || { echo "::error::brief must be a 12-character hash"; exit 1; }
+            # A brief run also does the hourly work (it may have replaced a pending hourly run).
+            node scripts/social-autopost/run.js --check "--brief=$INPUT_BRIEF"
+          elif [ -n "$INPUT_SHOW" ] || [ "$INPUT_SELF_TEST" = "true" ]; then
+            printf 'due=1\nrender=1\n' >> "$GITHUB_OUTPUT"
+          elif [ "$INPUT_CANCEL" = "true" ]; then
+            printf 'due=1\nrender=0\n' >> "$GITHUB_OUTPUT"
+          else
+            node scripts/social-autopost/run.js --check
+          fi
+
+      - name: Setup Playwright
+        if: steps.check.outputs.render != '0' && steps.check.outputs.render != ''
+        uses: ./.github/actions/setup-playwright
+
+      - name: Post and verify
+        if: steps.check.outputs.due != '0' && steps.check.outputs.due != ''
+        env:
+          INPUT_SHOW: ${{ inputs.show }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_SELF_TEST: ${{ inputs.self_test }}
+          INPUT_CANCEL: ${{ inputs.cancel_queued }}
+          INPUT_BRIEF: ${{ inputs.brief }}
+        run: |
+          ARGS=(--out=/tmp/social-autopost)
+          if [ -n "$INPUT_BRIEF" ]; then ARGS+=("--brief=$INPUT_BRIEF")
+          elif [ "$INPUT_CANCEL" = "true" ]; then ARGS=(--cancel-queued)
+          elif [ "$INPUT_SELF_TEST" = "true" ]; then ARGS+=(--self-test)
+          elif [ -n "$INPUT_SHOW" ]; then ARGS+=(--dry-run "--show=$INPUT_SHOW")
+          elif [ "$INPUT_DRY_RUN" = "true" ]; then ARGS+=(--dry-run)
+          fi
+          node scripts/social-autopost/run.js "${ARGS[@]}"
+
+      - name: Upload cards
+        if: always() && steps.check.outputs.render != '0' && steps.check.outputs.render != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: social-cards
+          path: /tmp/social-autopost/*.png
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Commit ledger
+        # always(): run.js writes each post to the ledger as soon as Buffer accepts
+        # it, so a later failure in the same run must still land the record (or the
+        # next run would find it again; buffer.js findExistingPost is the backstop).
+        if: always() && inputs.dry_run != true && !inputs.show
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          [ -f data/social-autopost-ledger.json ] && git add data/social-autopost-ledger.json
+          if git diff --cached --quiet; then
+            echo "No changes to the social autopost ledger"
+          else
+            git commit -m "data: social autopost ledger [automated]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Social Autopost Failed'
+          severity: 'warning'

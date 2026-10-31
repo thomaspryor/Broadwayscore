@@ -1,0 +1,161 @@
+{
+  "issueNumber": "bro-4977",
+  "planId": "73942024-788d-4744-956f-3044f122e208",
+  "status": "partial",
+  "createdAt": "2026-10-10T16:28:17.070Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4977: remove The Stage review of the UK musical \"How Soon is Now?\" from Soon (BWW roundup listed it under Soon), and trim the other articles Times Square Chronicles pages glued onto 53 stored reviews (incl. Soon, whose pull quote praised Linda Purl in another show). Code fixes for both causes land in the same change. Also removes seven reviews of The Heart of Rock and Roll (2024) that sat live on Broadway (1987), a show titled with the bare word Broadway that the cross-show URL guard skipped.",
+    "steps": [
+      "thestage--matt-barton.json on soon-off-broadway-2026 is The Stage review of How Soon is Now? (Box of Tricks, Storyhouse Chester; headline and url say so). Flag wrongShow so it leaves Soon.",
+      "broadway-1987: seven Heart of Rock and Roll (2024) reviews filed under the 1987 play Broadway; each is already present under heart-of-rock-and-roll-2024. Flag wrongShow.",
+      "Re-extract every stored t2conline.com review with the fixed extractor; replace fullText only where it is provably the same article minus the glued-on tail, and queue a rescore."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/thestage--matt-barton.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The Stage review of How Soon is Now? (UK touring musical by Siân Owen), not Soon; BWW roundup headline \"The Stage - How Soon is Now? review\", url /reviews/how-soon-is-now-review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broadway-1987/cititour--brian-scott-lipton.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Heart of Rock and Roll (2024), https://cititour.com/NYC_Broadway/Heart-of-Rock-and-Roll/1227; the same review is already filed under heart-of-rock-and-roll-2024. Landed on Broadway (1987) because that title is the bare word \"Broadway\"."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broadway-1987/new-york-sun--elysa-gardner.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Heart of Rock and Roll (2024), https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard; the same review is already filed under heart-of-rock-and-roll-2024. Landed on Broadway (1987) because that title is the bare word \"Broadway\"."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broadway-1987/nytg--gillian-russo.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Heart of Rock and Roll (2024), https://www.newyorktheatreguide.com/reviews/the-heart-of-rock-and-roll-broadway-review-huey-lewis; the same review is already filed under heart-of-rock-and-roll-2024. Landed on Broadway (1987) because that title is the bare word \"Broadway\"."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broadway-1987/theatrely--joey-sims.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Heart of Rock and Roll (2024), https://www.theatrely.com/post/the-heart-of-rock-and-roll-is-bubbleheaded-fun-on-broadway-review; the same review is already filed under heart-of-rock-and-roll-2024. Landed on Broadway (1987) because that title is the bare word \"Broadway\"."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broadway-1987/thewrap--robert-hofler.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Heart of Rock and Roll (2024), https://www.thewrap.com/the-heart-of-rock-and-roll-broadway-review/; the same review is already filed under heart-of-rock-and-roll-2024. Landed on Broadway (1987) because that title is the bare word \"Broadway\"."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broadway-1987/timeout--regina-robbins.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Heart of Rock and Roll (2024), https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis; the same review is already filed under heart-of-rock-and-roll-2024. Landed on Broadway (1987) because that title is the bare word \"Broadway\"."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broadway-1987/vulture--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Heart of Rock and Roll (2024), https://www.vulture.com/article/heart-of-rock-and-roll-broadway-theater-review.html; the same review is already filed under heart-of-rock-and-roll-2024. Landed on Broadway (1987) because that title is the bare word \"Broadway\"."
+      },
+      {
+        "type": "run-script",
+        "script": "repair-page-bleed.js",
+        "args": "--host=t2conline.com --apply",
+        "description": "Trim auto-loaded next stories from stored Times Square Chronicles review texts and queue rescores (51 expected). Batch 1; the script stops at its time budget and repaired files are skipped, so the next two batches finish the rest."
+      },
+      {
+        "type": "run-script",
+        "script": "repair-page-bleed.js",
+        "args": "--host=t2conline.com --apply",
+        "description": "Batch 2 (no-op if batch 1 finished)."
+      },
+      {
+        "type": "run-script",
+        "script": "repair-page-bleed.js",
+        "args": "--host=t2conline.com --apply",
+        "description": "Batch 3 (no-op if earlier batches finished)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T18:26:14.170Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/thestage--matt-barton.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/cititour--brian-scott-lipton.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/new-york-sun--elysa-gardner.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/nytg--gillian-russo.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/theatrely--joey-sims.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/thewrap--robert-hofler.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/timeout--regina-robbins.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "broadway-1987/vulture--unknown.json wrongShow applied, but the write guard also changed duplicateOf, duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-page-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-page-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-page-bleed.js successfully"
+    }
+  ]
+}

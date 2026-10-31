@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-10-30T09:07:17.356Z",
+  "workflowHalf": {
+    "ok": true,
+    "reason": null,
+    "scannedWorkflows": 209,
+    "scannedScripts": 676,
+    "findings": []
+  },
+  "launchdHalf": {
+    "ok": false,
+    "reason": "not darwin — launchd is Mac-only, this half is CI-blind by design (same restriction as check-hook-liveness.js)",
+    "scannedAgents": 0,
+    "scannedScripts": 0,
+    "unresolvedTargets": [],
+    "findings": []
+  },
+  "totalFindings": 0,
+  "bannerText": "notion-schedule-coupling: 0 live schedules found reading the frozen Notion mirror (GitHub workflow schedules only; launchd agents NOT scanned on this host — run it on the Mac)"
+}

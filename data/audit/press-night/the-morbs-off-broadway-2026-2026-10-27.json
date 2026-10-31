@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-morbs-off-broadway-2026",
+  "night": "2026-10-27",
+  "market": "off-broadway",
+  "embargoAt": "2026-10-28T02:00:00.000Z",
+  "probe": {
+    "startedAt": "2026-10-28T01:30:03.236Z",
+    "endedAt": "2026-10-28T08:00:22.266Z",
+    "intervalMin": 5,
+    "samples": 78,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-28T07:57:59.350Z",
+    "lastOkSampleAt": "2026-10-28T07:57:59.350Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": 0,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-28T03:00:09.805Z",
+    "2h": "2026-10-28T04:02:47.623Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-10-28T04:00:20.084Z",
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-10-28T08:00:18.404Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "fileState": {
+    "capturedAt": "2026-10-28T08:00:22.050Z",
+    "files": [
+      {
+        "file": "phusionpassenger--unknown.json",
+        "outletId": "phusionpassenger",
+        "outlet": "phusionpassenger",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-26T08:11:05.417Z",
+        "publishDate": null,
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--linda-buchwald.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Linda Buchwald",
+        "firstSeenAt": "2026-10-27T13:40:27.506Z",
+        "publishDate": "2026-07-28",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

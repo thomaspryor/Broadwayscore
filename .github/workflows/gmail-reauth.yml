@@ -1,0 +1,134 @@
+name: Gmail Reauth
+
+# BRO-3712: one-tap renewal of GMAIL_REFRESH_TOKEN (finance-ingest.yml's Gmail
+# grant). Design notes: scripts/lib/gmail-reauth.js.
+#
+#   mode=link      (run by hand when finance-ingest fails with invalid_grant)
+#                  checks Google accepts our client id + callback URL, then
+#                  writes a signed one-tap link onto the Linear card as a
+#                  DECISION NEEDED line, which emails the owner.
+#   mode=probe     the Google check alone; writes nothing.
+#   mode=complete  dispatched by /api/admin/gmail-reauth/callback after the
+#                  owner pressed Allow. `sealed` is the auth code + PKCE
+#                  verifier, AES-GCM sealed with APPROVAL_HMAC_SECRET, so the
+#                  public run page shows nothing usable. Exchanges it, refuses
+#                  any account but the owner's, saves the secret, reruns
+#                  finance-ingest.yml, and clears the card's link. On failure
+#                  the card gets a fresh link with a one-line reason.
+#
+# Values never reach the log: the script ::add-mask::s each one and the token
+# goes to a 0600 file that `gh secret set` reads from stdin.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'link | probe | complete (complete is for the site callback)'
+        type: choice
+        options: [link, probe, complete]
+        default: link
+      sealed:
+        description: 'complete only: sealed grant from the site callback'
+        required: false
+        default: ''
+      issue:
+        description: 'Linear card that carries the renewal link'
+        required: false
+        default: 'BRO-3712'
+
+permissions:
+  contents: read
+  actions: write # dispatch finance-ingest.yml after the secret is saved
+
+concurrency:
+  # Per run: a pending 'complete' run carries the owner's sealed approval, and a
+  # static group would let a later dispatch evict it unseen (BRO-4859).
+  group: gmail-reauth-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  reauth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Probe Google / write the owner's link
+        if: ${{ inputs.mode != 'complete' }}
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          MODE: ${{ inputs.mode }}
+          ISSUE: ${{ inputs.issue }}
+        run: node scripts/gmail-reauth.js "$MODE" "--issue=$ISSUE"
+
+      - name: Exchange the approval for a refresh token
+        id: exchange
+        if: ${{ inputs.mode == 'complete' }}
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GMAIL_REAUTH_SEALED: ${{ inputs.sealed }}
+          ISSUE: ${{ inputs.issue }}
+        run: node scripts/gmail-reauth.js complete "--out=$RUNNER_TEMP/gmail-refresh-token" "--issue=$ISSUE"
+
+      - name: Save GMAIL_REFRESH_TOKEN
+        if: ${{ inputs.mode == 'complete' }}
+        env:
+          # Same PAT update-theatr.yml uses for `gh secret set`.
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          f="$RUNNER_TEMP/gmail-refresh-token"
+          trap 'rm -f "$f"' EXIT
+          for attempt in 1 2 3 4 5; do
+            if gh secret set GMAIL_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"; then
+              echo "::notice::GMAIL_REFRESH_TOKEN replaced (attempt $attempt)"
+              exit 0
+            fi
+            echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
+            [ "$attempt" -lt 5 ] && sleep $((attempt * 10))
+          done
+          echo "::error::could not save GMAIL_REFRESH_TOKEN after 5 attempts"
+          exit 1
+
+      - name: Rerun the Gmail ingest
+        if: ${{ inputs.mode == 'complete' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run finance-ingest.yml --repo "$GITHUB_REPOSITORY" --ref main
+
+      - name: Clear the card's renewal link
+        if: ${{ inputs.mode == 'complete' }}
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ISSUE: ${{ inputs.issue }}
+        run: node scripts/gmail-reauth.js done "--issue=$ISSUE" || echo "::warning::could not clear the card link"
+
+      - name: Re-post the link if saving failed
+        # The exchange step re-posts its own failures with a reason; this
+        # covers a failure after it (secret save, dispatch), so it must not
+        # overwrite that reason.
+        if: ${{ failure() && inputs.mode == 'complete' && steps.exchange.outcome == 'success' }}
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          rm -f "$RUNNER_TEMP/gmail-refresh-token"
+          node scripts/gmail-reauth.js link "--issue=$ISSUE" "--problem=Gmail reconnect did not finish." || true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Gmail Reauth Failed'
+          severity: 'warning'
+          description: 'The one-tap Gmail renewal did not finish (BRO-3712). The Linear card has a fresh link with the reason; see the run log for the step.'

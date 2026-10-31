@@ -1,0 +1,895 @@
+#!/usr/bin/env node
+
+/**
+ * check-corpus-drift.js
+ *
+ * Passive monitor that runs the three CORPUS-STATISTICS audits and records a
+ * single verdict to data/audit/corpus-drift.json. These audits assert on
+ * properties of the live review corpus (full-text %, aggregator count ratios,
+ * regex false-positive counts) that drift continuously as the CI bots commit
+ * shows.json / reviews.json / review-texts every ~30 min. They are MONITORING
+ * metrics, not code-correctness invariants, so they do NOT belong in the
+ * blocking test.yml gate — when they flap, main goes red for non-code reasons,
+ * the signal stops meaning anything, and real regressions hide in the noise.
+ *
+ * This script is the "separate non-blocking workflow" half of that split
+ * (see .github/workflows/check-corpus-drift.yml), mirroring the established
+ * check-review-count-drift.js / check-seo-health.js pattern: run daily +
+ * after each rebuild, write a verdict JSON, and let scripts/health-check.js
+ * surface it in the daily email digest. The catastrophe FLOOR (a genuine
+ * quality collapse, not drift) stays blocking in test.yml via
+ * `audit-text-quality.js --gate`.
+ *
+ * It runs each audit as a child process so the audit logic stays single-source
+ * (no reimplementation/divergence) and records the exit code:
+ *   - audit-text-quality.js        exit 0 = pass, 1 = threshold breach
+ *   - validate-aggregator-truth.js exit 0 = ok/warnings, 1 = definite dup error
+ *   - audit-regex-patterns.js      exit 0 = under threshold, 1 = over, 2 = scan failed
+ *
+ * Usage:
+ *   node scripts/check-corpus-drift.js            # run audits, write json, exit 0
+ *   node scripts/check-corpus-drift.js --strict   # exit 2 if any audit failed
+ *   node scripts/check-corpus-drift.js --audit-out=PATH
+ *
+ * Exit codes:
+ *   0 — always, unless --strict (this is a passive monitor; drift is not a job failure)
+ *   2 — an audit reported a breach AND --strict
+ *   3 — a child audit could not run at all (scan failed / crashed) — a real error
+ *
+ * Drift "breach" (ok:false) is NOT a workflow failure — it surfaces in the
+ * digest. Only a child that cannot run (exit 3) or --strict escalates.
+ */
+
+require('./lib/cli-help').exitOnHelp(module);
+const fs = require('fs');
+const path = require('path');
+const { spawnSync } = require('child_process');
+// BRO-2424 (port of BRO-545's guard-escalation pattern): a crashed child
+// audit (exit 3) is right to fail this DAILY cron loud on its first
+// occurrence, but the same crash recurring run after run (e.g. a corpus file
+// that stays malformed) used to fail loud forever with no real escalation —
+// its notify-failure call is `severity: 'warning'`, a no-op for anything but
+// 'critical' (see .github/actions/notify-failure). See guard-escalation.js
+// header for the shape this reuses.
+const {
+  nextGuardState,
+  shouldAutoRecover,
+  shouldEscalate,
+  buildOverrideCommand,
+  buildGuardBlockedAlert,
+} = require('./lib/guard-escalation');
+
+// Locate sibling audit scripts relative to THIS file, but run them — and write
+// the verdict — relative to the invocation cwd (the repo root in CI), so the
+// audits resolve data/review-texts the same way they do when run standalone.
+const SCRIPTS_DIR = __dirname;
+const AUDIT_OUT_DEFAULT = path.join(process.cwd(), 'data', 'audit', 'corpus-drift.json');
+// Same state file check-rebuild-staleness.js uses (data/audit/, public repo,
+// git-tracked) — keyed per-guard so multiple guards can share one file.
+const GUARD_STATE_FILE = path.join(process.cwd(), 'data', 'audit', 'guard-escalation-state.json');
+const GUARD_ID = 'corpus-drift-audit-crash';
+const WORKFLOW_DISPLAY_NAME = 'Check Corpus Drift';
+const ALERT_CONDITION_KEY = `guard-escalation:${GUARD_ID}`;
+
+function loadJSON(file, fallback = null) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return fallback;
+  }
+}
+
+function loadGuardState() {
+  const doc = loadJSON(GUARD_STATE_FILE, {});
+  return (doc && doc[GUARD_ID]) || null;
+}
+
+function saveGuardState(state) {
+  const doc = loadJSON(GUARD_STATE_FILE, {});
+  doc[GUARD_ID] = state;
+  try {
+    fs.mkdirSync(path.dirname(GUARD_STATE_FILE), { recursive: true });
+    fs.writeFileSync(GUARD_STATE_FILE, JSON.stringify(doc, null, 2) + '\n');
+  } catch (e) {
+    console.error(`::warning::[check-corpus-drift] could not persist guard-escalation state: ${e.message}`);
+  }
+}
+
+// Each audit: how to run it and how to read its exit code. `crashCodes` are
+// exit codes that mean "could not run" (a real error) vs "ran and found drift".
+const AUDITS = [
+  // BRO-5266: these backfill acceptance probes pin live world state. Preserve
+  // their checks in the advisory corpus monitor, outside blocking unit jobs.
+  ...[
+    'eurydice-image-found',
+    'brothers-paranormal-show-exists',
+    'everybodys-talking-about-jamie-show-exists',
+    'standing-at-the-skys-edge-show-exists',
+    'amaze-review-flags',
+    'the-lonely-few-image',
+    'image-healing',
+    'mystic-pizza-show-existence',
+  ].map(name => ({
+    name: `backfill-${name}`,
+    label: `backfill outcome: ${name}`,
+    script: `lib/corpus-checks/${name}.mjs`,
+    args: [],
+    crashCodes: [], // 0 = held, 1 = data drift (including missing input data)
+  })),
+  {
+    name: 'text-quality',
+    label: 'Review text quality (full/truncated/unknown %)',
+    script: 'audit-text-quality.js',
+    args: [],
+    crashCodes: [2],           // 0 pass / 1 drift / 2 = corpus missing or empty (couldn't run)
+  },
+  {
+    name: 'aggregator-truth',
+    label: 'Local vs aggregator review-count ratios',
+    script: 'validate-aggregator-truth.js',
+    args: [],
+    crashCodes: [],            // 0 ok / 1 definite-duplicate drift
+  },
+  {
+    name: 'pull-quote-quality',
+    label: 'shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc)',
+    script: 'audit-pull-quotes.js',
+    // Card em-20260801-000455/#727/#728 (second-opinion review 2026-08-17):
+    // a corpus-wide 0-hits assertion belongs here, not in the blocking
+    // test.yml unit-test manifest — new reviews land continuously via
+    // automated ingestion, so a single bad pick on an unrelated push would
+    // red main for non-code reasons, the exact flap this file exists to
+    // absorb (see file header). scripts/tests/pull-quote-quality.test.mjs
+    // keeps only the pinned Les Mis/Cititour regression as a blocking test.
+    args: ['--fail-on-hit'],
+    crashCodes: [],            // 0 clean / 1 = hard-guard hit (drift). Corpus-missing also exits 1 → shown as drift, same as aggregator-truth.
+  },
+  {
+    name: 'regex-fp',
+    label: 'content-quality regex false-positive rate',
+    script: 'audit-regex-patterns.js',
+    args: ['--full'],
+    crashCodes: [2],           // 2 = scan failed (missing corpus / malformed)
+  },
+  // BRO-5000/BRO-4998: reviews of another run, production or date counted toward a score.
+  // Advisory first (CLAUDE.md rule 19): the ceiling is the post-remediation count, so a
+  // NEW recent pre-window row, counted republished page, or human flag beaten by a script
+  // clear shows up in the digest. Classes 1/5/6/7 are reported in the audit's own output.
+  {
+    name: 'run-contamination',
+    label: 'reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear)',
+    script: 'audit-run-contamination.js',
+    args: ['--max-actionable=0'], // measured 0 on 2026-10-13 after the BRO-5239 sweep (was 44)
+    crashCodes: [3],           // 0 under ceiling / 1 above (drift) / 3 = corpus unreadable
+  },
+  {
+    // BRO-5860: cast on file that none of the show's >=3 full reviews names
+    // (King of the Yees took another company's cast, BRO-5853). Rows listing
+    // today's company or checked by hand are excused inside the audit
+    // (explainContradiction / HAND_CHECKED, BRO-5857), so any hit is drift.
+    name: 'cast-vs-reviews',
+    label: 'cast on file named in none of the show\'s full reviews (wrong-production cast)',
+    script: 'audit-cast-vs-reviews.js',
+    args: ['--strict'],
+    crashCodes: [2],           // 0 clean / 1 a contradicted show / 2 = shows.json unreadable or nothing checkable
+  },
+  // BRO-6211: an outlet cited by >=10 shows in commercial.json that the recoupment poller
+  // neither watches nor exempts with a reason (Playbill and Broadway News were missed for
+  // months). Advisory first (rule 19): this monitor never blocks a push.
+  {
+    name: 'commercial-source-coverage',
+    label: 'outlets cited by >=10 commercial shows that the recoupment poller neither watches nor exempts',
+    script: 'audit-commercial-source-coverage.js',
+    args: [],
+    crashCodes: [2],           // 0 covered / 1 gap or stale exemption / 2 = commercial.json missing
+  },
+  {
+    name: 'todaytix-placeholder-runtime',
+    label: 'TodayTix placeholder runtime "3h 12m" stored on a row (BRO-5860)',
+    script: 'lib/corpus-checks/todaytix-placeholder-runtime.mjs',
+    args: [],
+    crashCodes: [],            // 0 = none stored / 1 = placeholder present
+  },
+  {
+    name: 'cross-show-url',
+    label: 'cross-show URL contamination (review URL slug names a different show)',
+    script: 'audit-cross-show-url.js',
+    // --max baseline = known stable false-positive tail (franchise/substring
+    // collisions + untriaged singles), measured at 56 unhandled on 2026-06-23
+    // after fixing the Schmigadoon/Care/this-is-not-about-me real clusters.
+    // Drift (exit 1) fires only when a new scrape leaks cross-show URLs and
+    // pushes the count ABOVE the baseline, not on the existing FP backlog.
+    // Re-baseline (lower this) after a triage pass clears the singles.
+    // BRO-3065 (2026-10-13): matcher now drops run-year-impossible candidates
+    // (publishDate), BWW /<region>/article/ words and part-word hits, and the
+    // real misfiles were fixed (data/pending-fixes/bro-3065*.json): 114 -> 47
+    // unhandled, all checked false positives (combined reviews, same title in
+    // another production, undated rows). 50 leaves room for 3 new singles.
+    args: ['--strict', '--max=50'],
+    crashCodes: [2],           // 0 clean / 1 a contradicted show / 2 = corpus missing
+  },
+  // BRO-2770: byline date in the body vs publishDate (>3 days) on a record that
+  // still ships. Body and metadata describe different articles, or publishDate
+  // is wrong, so the date guards judge the review on a date that isn't its own.
+  {
+    name: 'body-date-mismatch',
+    label: 'review byline date disagrees with publishDate by >3 days on a shipping review',
+    script: 'audit-body-date-mismatch.js',
+    args: ['--max-unexplained=0'],
+    crashCodes: [3],           // 0 clean / 1 = unexplained mismatch (drift) / 3 = corpus missing
+  },
+  // BRO-5295: a stored numeric-stars/text-pattern rating that came from prose
+  // ("1992 starring ...", "(c) 2014 StarTribune"), not from a rating. Measured 7
+  // on 2026-10-13 (all queued in data/pending-fixes/bro-5295.json); advisory
+  // first (CLAUDE.md rule 19), so a new hit shows up in the digest.
+  {
+    name: 'phantom-text-stars',
+    label: 'stored text-derived star ratings read from prose (year + "starring", number tails)',
+    script: 'audit-phantom-text-stars.js',
+    args: ['--max=0'],
+    crashCodes: [3],           // 0 clean / 1 = phantom star stored (drift) / 3 = corpus missing or bad args
+  },
+  {
+    name: 'unknown-outlets',
+    label: 'resolvable unknown outlets (in reviews, not yet in registry)',
+    script: 'audit-unknown-outlets.js',
+    // Moved off the blocking test.yml gate (was assert.ok(resolvableUnknowns<=5)).
+    // Drifts up whenever a new scraper discovers an outlet not yet registered —
+    // a no-op push could fail it, so it belongs here, surfaced in the digest.
+    args: ['--max=5'],
+    crashCodes: [2],           // 0 under threshold / 1 over (drift) / 2 = corpus/registry missing
+  },
+  {
+    name: 'review-key-duplicates',
+    label: 'duplicate reviews (same showDir|outlet|critic)',
+    script: 'audit-review-key-duplicates.js',
+    // Moved off the blocking test.yml gate (was assert.ok(report.current.duplicates<=5)).
+    // WE scrapers create timeout/unknown variant files that accumulate between
+    // dedup passes — a no-op push could fail it, so it belongs here in the digest.
+    args: ['--max=5'],
+    crashCodes: [2],           // 0 under threshold / 1 over (drift) / 2 = corpus missing
+  },
+  {
+    name: 'churn-merge-coverage',
+    label: 'high-churn tracked files lacking a .gitattributes merge driver',
+    script: 'audit-churn-merge-coverage.js',
+    // Complements the test.yml "merge drivers registered" guard: that checks
+    // every DECLARED driver is registered; this finds files that SHOULD have a
+    // driver but never got one (collection-state/*.json sat uncovered for weeks).
+    // Needs ~3 days of commit history — the workflow deepens the shallow checkout.
+    args: [],
+    crashCodes: [2],           // 0 all covered/exempt / 1 files need a decision (drift) / 2 = not a git repo
+  },
+  {
+    name: 'review-contamination',
+    label: 'review-text contamination (strict classes A/C/E/F)',
+    script: 'audit-review-contamination.js',
+    // The per-push test.yml gate runs --gate (catastrophe FLOOR only — class A
+    // cross-market leak or a mass spike) so a single pre-existing/parallel C/E/F
+    // file in the bot-mutated 39k-file corpus doesn't red the trunk for unrelated
+    // pushes. The FULL --strict triage runs HERE, daily, surfaced (non-blocking) in
+    // the digest — that is the safety net for sub-floor E/F drift the gate lets pass.
+    args: ['--strict'],
+    crashCodes: [],            // 0 clean / 1 = strict hits (drift). Corpus-missing also exits 1 → shown as drift, same as aggregator-truth.
+  },
+  // The four flappy whole-corpus audits gated to a --gate catastrophe floor in
+  // test.yml (2026-06-29, Notion 38e637c5). The FULL strict run lives HERE so the
+  // sub-floor drift the per-push gate lets pass still surfaces daily in the digest.
+  {
+    name: 'duplicate-of-url-mismatch',
+    label: 'stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor)',
+    script: 'audit-duplicate-of-url-mismatch.js',
+    args: [],                  // report mode: 0 clean / 1 = ANY mismatch (drift)
+    crashCodes: [],
+  },
+  // BRO-4406: same show + same outlet, one aggregator excerpt on TWO files, both live
+  // in reviews.json (phantom/duplicate reviews double-counted). The write-time guard
+  // in review-write-guard strips new clones; this daily run catches any that slip past
+  // (same-review twins, writers that bypass safeWriteReview). Fix: `node
+  // scripts/audit-cloned-excerpts.js --live-only --apply` in the review-texts clone.
+  {
+    name: 'cloned-excerpts',
+    label: 'same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count)',
+    script: 'audit-cloned-excerpts.js',
+    args: ['--live-only'],     // 0 clean / 1 = any live cloned pair (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'cast-changes',
+    label: 'cast-changes.json integrity — full --strict (gate = cross-show conflict / spike)',
+    script: 'audit-cast-changes.js',
+    args: ['--strict'],        // 0 clean / 1 = ANY issue (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'non-reviews',
+    label: 'scored non-review content (definitive wrong-page) — full --strict',
+    script: 'audit-non-reviews.js',
+    args: ['--strict'],        // 0 clean / 1 = definitive wrong-page among scored (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'review-texts',
+    label: 'review-text file structure — full validator (gate = catastrophic classes + churn floor)',
+    script: 'validate-review-texts.js',
+    args: [],                  // 0 clean / 1 = ANY error: dup/garbage/contamination/corrupt (drift)
+    crashCodes: [],
+  },
+  // The next four flappy whole-corpus contamination audits gated to a --gate
+  // catastrophe floor in test.yml (2026-06-30, Notion 38f637c5). The per-push gate
+  // blocks only on each file's zero-FP catastrophe class; the FULL run (fails +
+  // warns, incl. the sub-floor drift the gate lets pass) lives HERE so it still
+  // surfaces daily in the digest.
+  {
+    name: 'cast-contamination',
+    label: 'data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only)',
+    script: 'audit-cast-contamination.js',
+    args: [],                  // report mode: 0 clean / 1 = ANY flagged file (fail or warn = drift)
+    crashCodes: [],
+  },
+  {
+    name: 'commercial-contamination',
+    label: 'data/commercial.json physics/contradiction — full --strict (gate = FAIL only)',
+    script: 'audit-commercial-contamination.js',
+    args: ['--strict'],        // 0 clean / 1 = fail or warn (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'audience-buzz-contamination',
+    label: 'data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)',
+    script: 'audit-audience-buzz-contamination.js',
+    args: ['--strict'],        // 0 clean / 1 = fail (single divergence) or warn (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'critic-consensus-contamination',
+    label: 'data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only)',
+    script: 'audit-critic-consensus-contamination.js',
+    args: ['--strict'],        // 0 clean / 1 = orphan or staleness drift
+    crashCodes: [],
+  },
+  {
+    name: 'synopsis-story',
+    label: 'shows.json synopses holding wikitext debris or audience pitch copy',
+    // BRO-5063: 60+ live synopses carried Wikipedia scrape debris ("thumb
+    // alt=", ";Act I") or producer pitch ("Don't miss", "Join us").
+    // isValidSynopsis now rejects both at write time; this reports rows saved
+    // before that or by a writer that skips it. Read-only, never writes.
+    script: 'audit-synopsis-story.js',
+    args: ['--fail-on-hit'],
+    crashCodes: [2],           // 0 clean / 1 = hard rows (drift) / 2 = shows.json missing
+  },
+  {
+    name: 'stuck-rescore-flags',
+    label: 'needsRescore=true reviews the scorer rejects (stuck flags that never clear)',
+    // Invariant behind the late-star producer/consumer seam bug (2026-06-30): a
+    // review flagged for rescore that isScoreable=false never clears (the scorer
+    // filters non-scoreable reviews out BEFORE processing and only clears the flag
+    // AFTER scoring), so the queue accumulates. Catches EVERY producer of
+    // needsRescore, not just late-star. See scripts/lib/stuck-rescore-flag.js.
+    //
+    // The 1170-flag backlog measured 2026-07-01 was burned down (--fix) and the
+    // enrich-reviews.yml "Drain stuck needsRescore flags" step now clears them every
+    // 6h, so steady-state is ~0. --max=25 is a small cushion for in-flight churn
+    // between drain cycles (reviews flagged then wrong-flagged within a 6h window).
+    // Drift (exit 1) fires when the count exceeds that — a producer flagging
+    // non-scoreable reviews faster than the drain clears them (a new producer bug).
+    script: 'audit-stuck-rescore-flags.js',
+    args: ['--gate', '--max=25'],
+    crashCodes: [2],           // 0/under / 1 = grew above backlog (new producer bug) / 2 = corpus missing
+  },
+  {
+    name: 'stale-score-input',
+    label: 'reviews scored off an excerpt that now have fullText, never flagged for rescore',
+    // Card #1902 (2026-08-26): 653 reviews measured with contentTier
+    // complete/truncated but llmMetadata.textSource.type=excerpt — scored
+    // off an excerpt despite fullText now on disk, because nothing set
+    // needsRescore before the write-time hook (review-file-writer.js) and
+    // the wrongProduction auto-clear sites (rebuild-all-reviews.js) existed.
+    // `total` is the coarse population (~653, mostly permanent — the
+    // 278-file unscoreable residue never reaches 0); gate on `fixable` only,
+    // which ratchets toward 0 as the backfill (audit-stale-score-input.js
+    // --fix) drains and the write-time hook now catches new drift as it
+    // happens. Backfill drained the 379-file baseline to 0 on 2026-08-26;
+    // --max=25 is a small cushion for in-flight churn (mirrors
+    // audit-stuck-rescore-flags.js's steady-state cushion above), not the
+    // measured baseline anymore.
+    script: 'audit-stale-score-input.js',
+    args: ['--gate', '--max=25'],
+    crashCodes: [2],           // 0/under / 1 = fixable grew above baseline / 2 = corpus missing
+  },
+  {
+    name: 'false-balance-framing',
+    label: 'critic-consensus text overstating the critical split (hedge/"divided" language vs a dominant bucketBreakdown majority)',
+    // BRO-164: generate-critic-consensus.js's Layer 5b sentiment guards only
+    // fire at the extremes (100% positive, or >=50% negative+mixed) — a show
+    // with e.g. 90% positive / 10% mixed can still get hedge phrasing that
+    // reads as a real split. A systemic generator gap, not a rare corruption
+    // bug (~291/1092 records flagged as of 2026-08-26) — belongs in the
+    // digest like the other flappy whole-corpus audits above, not the
+    // per-push gate. No --gate flag exists on this script by design (see its
+    // own docstring); this is the full report.
+    script: 'audit-false-balance.js',
+    args: [],
+    crashCodes: [],            // 0 clean / 1 = flagged records found (drift). Corpus-missing throws → non-zero exit, shown as drift, same as aggregator-truth.
+  },
+
+  // ── BRO-3535: baseline-diff / zero-adjudication audits MOVED here from
+  // test.yml's blocking data-validation job ────────────────────────────────
+  // These run the LIVE corpus fresh against a frozen baseline (or a
+  // zero-tolerance population with no adjudication mechanism) on EVERY
+  // push — so an unrelated bot commit landing between two pushes reddens
+  // main with no code change in the diff (the exact BRO-3471 incident:
+  // audit-show-score-urls.js --strict was a brand-new gate that found 6
+  // pre-existing duplicates and reddened main within 30 minutes of
+  // landing). Unlike the contamination-family entries above (already split:
+  // a narrow --gate catastrophe-floor stays blocking in test.yml, the FULL
+  // audit runs here), none of these have a narrower on-push-safe mode —
+  // --strict/--gate IS their only invocation. `healExempt` documents why no
+  // auto-heal workflow exists yet; read by
+  // scripts/lib/data-gate-heal-paths.js's auditCorpusDriftGates() (BRO-3535).
+  {
+    name: 'sibling-title-misroute',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'same-title-sibling review misrouted to the wrong production (baseline-diff)',
+    script: 'audit-sibling-title-misroute.js',
+    args: ['--strict'],
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined hit / 2 = corpus missing
+  },
+  {
+    name: 'orphaned-wrongprod-provenance',
+    healPathRequired: true, // BRO-2740
+    label: 'review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)',
+    // Heal path is its baseline-diff (--update-baseline). No --fix: each file
+    // is either a real wrong-production (restore the flag) or a false
+    // detection (delete provenance), and restoring flags changes scoring
+    // (CLAUDE.md 12.7). healExempt removed (BRO-5315): redundant with the
+    // baseline-diff path, so it could only ever re-excuse a lost heal path.
+    script: 'audit-orphaned-wrongprod-provenance.js',
+    args: ['--gate'],
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined orphan / 2 = corpus missing or partial
+  },
+  {
+    name: 'duplicate-shows',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'duplicate SHOW entries in shows.json (baseline-diff)',
+    script: 'audit-duplicate-shows.js',
+    // --include-closed (BRO-6481): a dupe whose twin has closed was invisible.
+    args: ['--strict', '--include-closed'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined duplicate pair
+  },
+  {
+    name: 'show-score-urls',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'one Show Score URL mapped to 2+ showIds (baseline-diff)',
+    script: 'audit-show-score-urls.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined URL collision
+  },
+  {
+    name: 'cv-flag-contradiction',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'exclusion flag contradicted by its own content-verification pass (baseline-diff)',
+    script: 'audit-cv-flag-contradiction.js',
+    args: ['--window=30', '--strict'],
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined (showId,file) hit / 2 = corpus missing
+  },
+  {
+    name: 'counted-review-integrity',
+    label: 'counted reviews that break an invariant (same review on unrelated shows, one review under two critics, URL year outside the run, never-opened show, junk outlet, openingDate after its own reviews, priorRuns pointing at a missing show)',
+    script: 'audit-counted-review-integrity.js',
+    // BRO-4886: monitor, not a gate (CLAUDE.md 19). Baseline 82 = the 80 found
+    // on 2026-10-08, most of them untriaged cross-show quote repeats (some are a
+    // multi-show column legitimately quoted on both shows). Drift fires when a
+    // new bad row pushes the total above it; lower --max after a cleanup pass.
+    // Per-check ceilings too, so growth in a quiet check is not hidden by a noisy one.
+    args: ['--max=82', '--max-cross-show-duplicate=68', '--max-same-show-multi-byline=6', '--max-url-year-outside-run=2',
+      '--max-unopened-show-counted=1', '--max-junk-outlet=2', '--max-opening-date-cluster=4', '--max-prior-run-link=0'],
+    crashCodes: [2],           // 0 at/under baseline / 1 grew above it / 2 = corpus missing
+  },
+  {
+    name: 'flagged-in-window',
+    label: 'review files excluded as wrong production/show although their date and URL year sit inside the run (recovery backlog)',
+    script: 'audit-counted-review-integrity.js',
+    // BRO-4886: 825 on 2026-10-08. Includes real cross-market and tour reviews, so this is a
+    // worklist for the recovery scripts, not a defect count. It must not grow; lower --max as
+    // sweeps clear it.
+    args: ['--flagged', '--max=850'],
+    crashCodes: [2],           // 0 at/under baseline / 1 grew above it / 2 = review-texts missing
+  },
+  {
+    name: 'self-contradictory-clears',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'a review asserting an exclusion flag AND its own retraction breadcrumb at once (baseline-diff)',
+    script: 'audit-self-contradictory-clears.js',
+    args: ['--gate', '--baseline'],
+    crashCodes: [],            // 0 within band of committed baseline / 1 = materially worse than baseline
+  },
+  {
+    name: 'aggregator-archive-integrity',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)',
+    script: 'audit-aggregator-archive-integrity.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined mismatch
+  },
+  {
+    name: 'outlet-identity-hygiene',
+    healPathRequired: true, // BRO-4419: drift surfaces in the daily digest
+    label: 'live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets',
+    healExempt: 'each hit is a judgment call (confirm the outlet with a tier, or block the host); no --fix can decide that.',
+    script: 'audit-outlet-identity-hygiene.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 clean / 1 = a live look-alike, look-alike alias, or undecided provisional outlet
+  },
+  {
+    name: 'critic-outlets',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)',
+    script: 'audit-critic-outlets.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 under baseline / 1 = new un-baselined (showId,file) flag
+  },
+  {
+    name: 'autoclear-vs-ensemble',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection',
+    // heal-exempt: --fix exists and is documented safe but no scheduled
+    // workflow runs it yet (BRO-3507 ratchet seed, carried over BRO-3535).
+    script: 'audit-autoclear-vs-ensemble.js',
+    args: ['--strict'],
+    healExempt: '--fix exists and is documented safe but no scheduled workflow runs it yet — tracked follow-up, not wired to a cron.',
+    crashCodes: [],            // 0 clean / 1 = hit found
+  },
+  {
+    name: 'contradicted-flag-basis',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)',
+    script: 'audit-contradicted-flag-basis.js',
+    args: ['--gate', '--max=0'],
+    healExempt: 'report-only by design — no --fix exists; a prior sweep of this shape auto-un-suppressed 8 wrong-production reviews the day after running unsupervised.',
+    crashCodes: [],            // 0 clean / 1 = hit found (live count is 0 by design; any hit is real signal)
+  },
+  {
+    name: 'duplicate-of-cleared-contradiction',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)',
+    script: 'audit-duplicate-of-cleared-contradiction.js',
+    args: ['--gate', '--max=0'],
+    healExempt: '--fix exists and is documented bulk-safe (see #1655) but no scheduled workflow runs it yet — tracked follow-up, not wired to a cron.',
+    crashCodes: [],            // 0 clean / 1 = hit found
+  },
+  {
+    name: 'url-downgrade',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)',
+    script: 'audit-url-downgrade.js',
+    args: ['--gate'],
+    healExempt: 'fixing requires picking the correct historical URL per hit (which prior production/run this review actually belongs to) — not mechanical.',
+    crashCodes: [],            // 0 clean / 1 = a live (unflagged) URL-swap regression found
+  },
+  {
+    name: 'orphan-show-ids',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'public/data/shows/{id}.json existing for an id no longer in shows.json',
+    script: 'audit-orphan-show-ids.js',
+    args: [],
+    healExempt: 'self-heal-orphan-show-files.yml already runs on a daily schedule and deletes anything past its 24h grace period, but via its own inline fs.unlink (not `--fix` — the script\'s exit code is captured BEFORE its own --fix would run, so that workflow deliberately avoids invoking it directly, see that workflow\'s header) — not detectable by the --fix-flag pattern match.',
+    crashCodes: [],            // 0 clean / 1 = orphan slim show file(s) found
+  },
+  {
+    name: 'orphan-review-folders',
+    healPathRequired: true, // BRO-4317: NEW digest-routed corpus audit
+    label: 'data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)',
+    script: 'report-orphan-review-folders.js',
+    args: ['--strict'],
+    healExempt: 'each file needs a per-review decision (move by publish date, delete a duplicate, or drop a review of an untracked production), executed as an approved-fix plan; no mechanical --fix.',
+    crashCodes: [2],           // 0 clean / 1 = orphan folder(s) found / 2 = shows.json or review-texts missing
+  },
+  {
+    name: 'aggregator-url-latent',
+    healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
+    label: 'aggregator LISTING urls stored under a real outletId (population must shrink, never grow)',
+    script: 'audit-aggregator-url-latent.js',
+    args: [],
+    healExempt: 'ratchet — fix the producer that wrote the bad outletId, not the ceiling; no mechanical --fix is safe (the class is discovered per-writer, not per-file).',
+    crashCodes: [],            // 0 clean/shrinking / 1 = population grew
+  },
+  {
+    name: 'awards-freshness',
+    healPathRequired: true, // BRO-4434: moved from test.yml's awards-data-freshness job (main = code only)
+    // Neutral on purpose (ship-check): exit 1 also covers "last-touch date
+    // unknown" (API/token/gh failure), and this label is the digest row AND
+    // the escalated card's title — it must not claim staleness on an outage.
+    label: 'data/awards.json stale (>14 months) or last-touch date unknown — see detail (annual awards cadence)',
+    script: 'audit-awards-freshness.js',
+    args: [],
+    healExempt: 'annual manual update (memory/awards-annual-update.md) — the digest→card promotion IS the heal path; no mechanical fix exists for "nobody ran this year\'s ceremonies".',
+    // 1 = stale OR the commits-by-path API gave no answer (printed as such).
+    // Deliberately NOT a crash code: a GitHub API blip is one drift line,
+    // never a job-level exit 3 that reds the other ~30 audits (plan-review
+    // pre-mortem, BRO-4434).
+    crashCodes: [],
+  },
+  {
+    // BRO-2320/BRO-2321: explainExclusion() is a MIRROR of rebuild's inline
+    // gate. rebuild-reviews.yml runs the census with --compare-rebuild right
+    // after the full rebuild (same job, real per-show exclusion lists) and
+    // commits a counts-only summary; this reads it without rescanning.
+    // Fires when a rule's excluded count jumps, the mirror/rebuild
+    // disagreement rate rises, or the summary went stale.
+    name: 'exclusion-mirror',
+    label: 'exclusion rule census: per-rule count jump or explainExclusion-vs-rebuild disagreement rise',
+    script: 'exclusion-rule-census.js',
+    args: ['--check', '--max-rule-delta=200', '--max-rate-rise=0.01'],
+    crashCodes: [],            // 0 ok / 1 = rule moved > 200, rate rose > 1pt, or summary missing/stale
+  },
+];
+
+function runAudit(audit) {
+  const scriptPath = path.join(SCRIPTS_DIR, audit.script);
+  const res = spawnSync('node', [scriptPath, ...audit.args], {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+    maxBuffer: 32 * 1024 * 1024,
+  });
+  const exitCode = res.status == null ? -1 : res.status;
+  const crashed = exitCode === -1 || audit.crashCodes.includes(exitCode);
+  const ok = exitCode === 0;
+  // Keep the last ~40 lines of output as a digest-friendly detail snippet.
+  const out = ((res.stdout || '') + (res.stderr || '')).trim();
+  const tail = out.split('\n').slice(-40).join('\n');
+  return {
+    name: audit.name,
+    label: audit.label,
+    command: `node scripts/${audit.script}${audit.args.length ? ' ' + audit.args.join(' ') : ''}`,
+    exitCode,
+    ok,
+    crashed,
+    detail: tail,
+    // BRO-6082: where this audit's drift reaches the owner. 'card': its own
+    // routeAlert condition (routePerAuditAlerts). 'fyi': the one digest FYI
+    // line (queueUntrackedDriftLine). health-check reads it so drift that has
+    // a channel is not also a dispatched umbrella row no session can close.
+    channel: audit.healPathRequired ? 'card' : 'fyi',
+  };
+}
+
+// Pure: assemble the verdict object from audit results. `now` injected for
+// deterministic tests (Date is otherwise the only impurity).
+function buildVerdict(auditResults, now) {
+  const anyCrashed = auditResults.some((a) => a.crashed);
+  const anyDrift = auditResults.some((a) => !a.ok && !a.crashed);
+  return {
+    _meta: {
+      generatedAt: now,
+      note: 'Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate.',
+    },
+    summary: {
+      auditsRun: auditResults.length,
+      driftCount: auditResults.filter((a) => !a.ok && !a.crashed).length,
+      crashCount: auditResults.filter((a) => a.crashed).length,
+      anyDrift,
+      anyCrashed,
+    },
+    audits: auditResults,
+  };
+}
+
+// Pure: the exit-code policy. This is the load-bearing decision — drift is NOT
+// a failure (it surfaces in the digest); only an audit that couldn't run, or
+// drift under --strict, escalates.
+//   3 — a child audit crashed / couldn't run (real error)
+//   2 — drift detected AND --strict
+//   0 — otherwise (passive monitor)
+function decideExit({ anyCrashed, anyDrift, strict }) {
+  if (anyCrashed) return 3;
+  if (anyDrift && strict) return 2;
+  return 0;
+}
+
+// BRO-3535: per-audit digest routing, separate from the single shared
+// audit-crash guard above (which answers "is this monitor itself broken?").
+// This answers a different question per audit: "has THIS gate been drifting
+// long enough to deserve a ticket?" Deliberately reuses routeAlert's OWN
+// notifyCount/threshold escalation (owner-alert-router.js decideDigestEscalation,
+// ESCALATION_NOTIFY_THRESHOLD) instead of a new streak-tracking mechanism —
+// every routeAlert(disposition:'digest') call bumps a per-conditionKey counter
+// in the alert ledger and self-promotes to a real Linear card once it crosses
+// that threshold, so no new state file or guard-escalation generalization is
+// needed here. A crashed audit is skipped (its own guard above already covers
+// "could not run"); only ok:false/crashed:false ("drift") calls routeAlert,
+// and a clean run resolves any open condition for that gate. Best-effort: a
+// router failure here must never fail this non-blocking monitor.
+//
+// Scoped to `healPathRequired: true` entries only (ship-check catch, codebase
+// review) — those are exactly the 14 gates BRO-3535 moved out of test.yml's
+// blocking gate, which is what this ticket's alerting requirement is about.
+// The ~20 pre-existing MONITOR-only entries (text-quality, aggregator-truth,
+// etc.) were never reviewed for "should a persistent drift here eventually
+// file a Linear card" — extending new alerting behavior to them would be an
+// unreviewed scope expansion, not a fix for the problem this ticket names.
+async function routePerAuditAlerts(audits) {
+  let routeAlert, resolveCondition;
+  try {
+    ({ routeAlert, resolveCondition } = require('./lib/owner-alert-router'));
+  } catch (e) {
+    console.error(`::warning::[check-corpus-drift] owner-alert-router unavailable, skipping per-audit digest routing: ${e.message}`);
+    return;
+  }
+  const scopedNames = new Set(AUDITS.filter((a) => a.healPathRequired).map((a) => a.name));
+  for (const a of audits) {
+    if (a.crashed) continue;
+    if (!scopedNames.has(a.name)) continue;
+    const conditionKey = `corpus-drift:${a.name}`;
+    try {
+      if (a.ok) {
+        resolveCondition(conditionKey);
+      } else {
+        await routeAlert({
+          conditionKey,
+          title: `Corpus drift: ${a.label}`,
+          description: `check-corpus-drift.js audit "${a.name}" (${a.command}) has been drifting. Latest output:\n\n${a.detail}`,
+          hint: `Run: ${a.command}`,
+          disposition: 'digest',
+          cooldownHours: 24,
+        });
+      }
+    } catch (e) {
+      console.error(`::warning::[check-corpus-drift] routeAlert/resolveCondition failed for "${conditionKey}" (${e.message}) — this run's digest data is still written to disk regardless.`);
+    }
+  }
+}
+
+// BRO-6082: the monitor-only audits (no healPathRequired, so no per-audit
+// card) used to reach the owner only through the health row "Quality: corpus
+// drift", which digest-autofix dispatched as one card covering ~18 unrelated
+// statistics; no session could make it absent, so it parked. They are told as
+// one FYI line instead (queueDigestLine info:true: never carded or dispatched,
+// same channel as the weekly traffic receipt). Pure builder + thin queue call.
+const UNTRACKED_DRIFT_CONDITION_KEY = 'corpus-drift:monitor-only';
+function untrackedDriftLine(audits, now) {
+  const drifting = audits.filter((a) => !a.ok && !a.crashed && a.channel === 'fyi');
+  if (drifting.length === 0) return null;
+  const names = drifting.map((a) => a.name);
+  const shown = names.slice(0, 6).join(', ') + (names.length > 6 ? `, +${names.length - 6} more` : '');
+  return {
+    conditionKey: UNTRACKED_DRIFT_CONDITION_KEY,
+    title: `Data-quality monitors drifting from baseline: ${drifting.length} (${shown}). Checked ${String(now).slice(0, 10)}.`,
+    description: 'Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit\'s command and output.',
+    severity: 'info',
+    info: true,
+  };
+}
+
+function queueUntrackedDriftLine(audits, now) {
+  const line = untrackedDriftLine(audits, now);
+  try {
+    const router = require('./lib/owner-alert-router');
+    if (line) router.queueDigestLine(line);
+    else router.removeDigestLines(UNTRACKED_DRIFT_CONDITION_KEY);
+  } catch (e) {
+    console.error(`::warning::[check-corpus-drift] queueDigestLine failed for "${UNTRACKED_DRIFT_CONDITION_KEY}" (${e.message})`);
+  }
+}
+
+async function main() {
+  const argv = process.argv.slice(2);
+  const strict = argv.includes('--strict');
+  const outArg = argv.find((a) => a.startsWith('--audit-out='));
+  const auditOut = outArg ? path.resolve(outArg.split('=')[1]) : AUDIT_OUT_DEFAULT;
+
+  const audits = AUDITS.map(runAudit);
+  const verdict = buildVerdict(audits, new Date().toISOString());
+
+  fs.mkdirSync(path.dirname(auditOut), { recursive: true });
+  fs.writeFileSync(auditOut, JSON.stringify(verdict, null, 2) + '\n');
+
+  console.log(`[check-corpus-drift] wrote ${auditOut}`);
+  for (const a of audits) {
+    const status = a.crashed ? '💥 CRASHED' : a.ok ? '✅ ok' : '⚠️  drift';
+    console.log(`  ${status}  ${a.name} (exit ${a.exitCode}) — ${a.label}`);
+  }
+
+  await routePerAuditAlerts(audits);
+  queueUntrackedDriftLine(audits, verdict._meta.generatedAt);
+
+  const code = decideExit({ ...verdict.summary, strict });
+  if (code !== 3) {
+    // Healthy, or drift (with or without --strict): decideExit's crash check
+    // runs first (see its own precedence test), so code !== 3 here means NO
+    // audit crashed this run. Clear any open crash streak so an intervening
+    // successful (non-crashing) run — even one that still exits non-zero for
+    // --strict drift — doesn't let a LATER crash get miscounted as
+    // consecutive with an OLDER one across a clean run in between (found by
+    // Codex adversarial review: this used to only run on the code===0 path,
+    // skipped entirely by the code===2 early exit below).
+    const priorState = loadGuardState();
+    if (priorState && priorState.consecutiveBlocks > 0) {
+      try {
+        const { resolveCondition } = require('./lib/owner-alert-router');
+        resolveCondition(ALERT_CONDITION_KEY);
+      } catch (e) { /* best-effort — a missing router/ledger never blocks a healthy run */ }
+      saveGuardState(nextGuardState(priorState, false, Date.now()));
+    }
+    if (code === 2) console.error('[check-corpus-drift] drift detected and --strict set.');
+    process.exit(code);
+  }
+
+  // code === 3: one or more audits crashed (could not run at all).
+  const crashedNames = audits.filter((a) => a.crashed).map((a) => a.name).join(', ');
+  const priorState = loadGuardState();
+  const state = nextGuardState(priorState, true, Date.now());
+  saveGuardState(state);
+
+  const overrideCommand = buildOverrideCommand({
+    workflowDisplayName: WORKFLOW_DISPLAY_NAME,
+    reason: 'BRO-2424 corpus-drift audit-crash guard manual override',
+  });
+  const baseMsg =
+    `[check-corpus-drift] ${audits.filter((a) => a.crashed).length} audit(s) could not run ` +
+    `(crashed): ${crashedNames}. Override: ${overrideCommand}`;
+
+  if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks, { firstBlockedAt: state.firstBlockedAt, now: Date.now() })) {
+    // First (or still-below-threshold) crash: fail loud, unchanged from
+    // before BRO-2424 — a one-off audit crash is worth flagging immediately.
+    console.error(`::error::${baseMsg}`);
+    process.exit(3);
+  }
+
+  // BRO-2424 auto-recovery: this audit-crash condition has now fired
+  // state.consecutiveBlocks runs in a row. The verdict JSON was already
+  // written above (other audits' results are still useful), so proceeding
+  // just stops marking this DAILY monitor red for a condition that keeps
+  // reproducing — it degrades to a loud, escalating alert instead.
+  const alert = buildGuardBlockedAlert({
+    guardId: GUARD_ID,
+    guardLabel: 'Corpus-drift audit-crash guard (check-corpus-drift.js)',
+    consecutiveBlocks: state.consecutiveBlocks,
+    workflowDisplayName: WORKFLOW_DISPLAY_NAME,
+    overrideCommand,
+    impact: `the ${crashedNames} audit(s) have not run — their drift/health signal is stale`,
+    runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
+      ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+      : undefined,
+  });
+  console.error(`::warning::${baseMsg}`);
+  console.error(`::warning::[guard-escalation] AUTO-RECOVERING — ${alert.description.replace(/\n/g, ' | ')}`);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    try {
+      fs.appendFileSync(
+        process.env.GITHUB_STEP_SUMMARY,
+        `\n## ⚠️ Guard auto-recovery — ${alert.title}\n\n${alert.description.replace(/\n/g, '\n\n')}\n`,
+      );
+    } catch (e) { /* summary write is best-effort */ }
+  }
+
+  if (shouldEscalate(state.consecutiveBlocks)) {
+    try {
+      const { routeAlert } = require('./lib/owner-alert-router');
+      // Lower severity than BRO-545's reviews.json-stalled case: this monitor
+      // is non-blocking by design (see file header) and the underlying audits
+      // still ran (only one crashed) — 'digest', not 'human' (no page).
+      await routeAlert({
+        conditionKey: ALERT_CONDITION_KEY,
+        title: alert.title,
+        description: alert.description,
+        disposition: 'digest',
+        cooldownHours: 1,
+      });
+    } catch (e) {
+      console.error(`::warning::[guard-escalation] routeAlert failed (${e.message}) — escalation was logged above regardless.`);
+    }
+  }
+  // Auto-recovered: exit 0 so this job stays green — the condition is
+  // already visible via the warnings/summary/digest alert above.
+}
+
+if (require.main === module) {
+  main().catch((e) => {
+    console.error(`::error::[check-corpus-drift] unexpected failure: ${e.stack || e.message}`);
+    process.exit(1);
+  });
+}
+
+module.exports = { AUDITS, runAudit, buildVerdict, decideExit, routePerAuditAlerts, untrackedDriftLine, UNTRACKED_DRIFT_CONDITION_KEY };

@@ -1,0 +1,319 @@
+name: Execute Approved Fix
+# The plan id in the title lets scripts/cloud-dispatch.js find this run when split
+# plans (bro-N, bro-N-b) are dispatched together (BRO-5892).
+run-name: "execute-approved-fix ${{ inputs.issue_number }} [${{ inputs.mode }}]"
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub issue number, or a Linear id (bro-N) for a session-authored plan in data/pending-fixes/'
+        required: true
+        type: string
+      plan_id:
+        description: 'planId from the approval link — executor refuses on mismatch (stale-link guard)'
+        required: true
+        type: string
+      mode:
+        description: 'apply executes the plan; reject marks it rejected without executing'
+        required: false
+        default: 'apply'
+        type: choice
+        options: [apply, reject]
+
+permissions:
+  contents: write
+  issues: write
+  actions: write  # BRO-6629: gather-reviews dispatch for added shows
+
+# Per-issue group, matching auto-fix-feedback-bug.yml's key exactly (BRO-3500
+# what-else follow-up) — see that file's comment for why a shared group was
+# wrong. workflow_dispatch-only here so inputs.issue_number is always set.
+concurrency:
+  # shows-json-writer-exempt: per-issue group shared with auto-fix-feedback-bug.yml (BRO-3500); a shared group would drop distinct issues' approved fixes at the one-pending limit (BRO-5803)
+  group: auto-fix-feedback-bug-${{ inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    # 45 (was 10): BRO-4431 lets run-script ingest review URLs, each a scraper
+    # fetch of up to a few minutes (run-script caps each script at 5 min).
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      # BRO-4779: run-script plans may edit the aggregator archive (sibling-misfile
+      # cleanup). Always checked out and pushed; the push is a no-op when unchanged.
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ingest-review-from-url.js fetches Playwright-first hosts (bachtrack renders
+      # its body only in a browser); without one it saves the meta description.
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # BRO-5886: hand the ingest-html-handoff key to the executor as a 0600 file,
+      # not as step env (a child could read the step shell's /proc/<pid>/environ).
+      - name: Stage html handoff key
+        env:
+          HTML_HANDOFF_PRIVATE_KEY: ${{ secrets.HTML_HANDOFF_PRIVATE_KEY }}
+        run: |
+          if [ -n "$HTML_HANDOFF_PRIVATE_KEY" ]; then
+            umask 077
+            printf '%s\n' "$HTML_HANDOFF_PRIVATE_KEY" > "$RUNNER_TEMP/html-handoff-key.pem"
+          fi
+
+      - name: Execute approved fix
+        id: exec
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          PLAN_ID: ${{ inputs.plan_id }}
+          EXEC_MODE: ${{ inputs.mode }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Plans are PII-redacted; the submitter thank-you recovers contact
+          # info from the issue's DIAGNOSIS_JSON, which needs a token.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-4431: run-script can ingest a review URL (ingest-review-from-url.js
+          # fetches through the shared scraper chain).
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          # BRO-5886: the executor reads and deletes this file before any action
+          # runs, so the key is in no process environment of this step.
+          HTML_HANDOFF_KEY_FILE: ${{ runner.temp }}/html-handoff-key.pem
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/execute-approved-fix.js
+
+      - name: Remove html handoff key file
+        if: always()
+        run: rm -f "$RUNNER_TEMP/html-handoff-key.pem"
+
+      - name: Refresh recoupment model after a commercial.json fix
+        # A fixed weekly cost or capitalization changes break-even and
+        # recoupment %; re-run the model so they never trail the new figure
+        # until Friday (BRO-4985).
+        if: steps.exec.outputs.result == 'fixed'
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          PLAN="data/pending-fixes/${ISSUE_NUMBER}.json"
+          if [ -f "$PLAN" ] && grep -q 'commercial.json' "$PLAN"; then
+            node scripts/merge-model-recoupment.js
+          else
+            echo "Plan does not touch commercial.json; model refresh skipped"
+          fi
+
+      - name: Push review-texts to private repo
+        id: push_review_texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Execute Approved Fix — Commit and push changes"
+      - name: Push aggregator-archive to private repo
+        id: push_aggregator
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Execute Approved Fix — aggregator-archive changes"
+      # BRO-6194: pushed BEFORE the status commit (it used to follow it). The plan file on main says
+      # "applied" only once every private-repo write behind it has landed; the runner trusts that status.
+      - name: Push core data to private repo
+        id: push_core
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from execute-approved-fix'
+      # BRO-6194: a fixed plan is only recorded "applied" when all three private pushes succeeded and the
+      # core push was not skipped (validation sentinel, or no core checkout). Otherwise the plan stays
+      # "pending" on main and this job fails, so the dispatching runner sees a failed apply instead of a
+      # trusted status. A shows.json/audience-buzz.json data-edit whose newValue is already in place is a no-op
+      # success (BRO-6489); other edits still check oldValue: check the data first.
+      - name: Confirm private pushes landed
+        id: push_gate
+        if: always() && steps.exec.outputs.result == 'fixed'
+        env:
+          PUSH_REVIEW_TEXTS: ${{ steps.push_review_texts.outcome }}
+          PUSH_AGGREGATOR: ${{ steps.push_aggregator.outcome }}
+          PUSH_CORE: ${{ steps.push_core.outcome }}
+        run: |
+          bad=""
+          [ "$PUSH_REVIEW_TEXTS" = "success" ] || bad="$bad review-texts($PUSH_REVIEW_TEXTS)"
+          [ "$PUSH_AGGREGATOR" = "success" ] || bad="$bad aggregator-archive($PUSH_AGGREGATOR)"
+          [ "$PUSH_CORE" = "success" ] || bad="$bad core-data($PUSH_CORE)"
+          if [ -f "${RUNNER_TEMP:-/tmp}/.skip-push-core-data" ]; then bad="$bad core-data(refused by validation sentinel)"; fi
+          if [ ! -d /tmp/core-data-checkout/.git ]; then bad="$bad core-data(no checkout, push skipped)"; fi
+          if [ -n "$bad" ]; then
+            echo "::error::Not recording the plan as applied; private push(es) did not land:$bad"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Commit and push changes
+        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed' || steps.exec.outputs.result == 'rejected') && steps.push_gate.outputs.ok != 'false'
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          # BRO-5182: commercial-pending-review.json is a union-merged managed file (push-with-retry.sh reconcile_merged_json).
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git add data/pending-fixes/
+          # BRO-6122: outlet-registry-flag edits this tracked file.
+          git add data/outlet-registry.json 2>/dev/null || true
+          # BRO-5182: reconcile-pending-commercial.js prunes this tracked file; the weekly
+          # commercial workflows commit it the same way (commercial-friday.yml).
+          git add data/commercial-pending-review.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "fix(data): Execute approved fix for #${ISSUE_NUMBER}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # BRO-6629: an add-show plan never gathered its shows (ten census-added Off-Broadway
+      # shows kept only their census reviews). Runs after every push, so gather sees the
+      # rows. Shows older than the hourly gap audit's 3-year window have no other retry,
+      # so a full queue fails this step loudly instead of only warning. Spend is tagged per
+      # show by gather-reviews.js (spend-purpose.js gatherPurposeForShow).
+      - name: Gather reviews for added shows
+        if: always() && steps.exec.outputs.result == 'fixed' && steps.push_gate.outputs.ok == 'true' && steps.exec.outputs.gather_show_ids != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_CAP_DISABLED: ${{ vars.WORKFLOW_CAP_DISABLED }}
+          SHOWS: ${{ steps.exec.outputs.gather_show_ids }}
+        run: |
+          N=$(printf '%s' "$SHOWS" | tr ',' '\n' | grep -c .)
+          JOBS=$(( N < 10 ? N : 10 ))
+          set +e
+          node scripts/capped-workflow-dispatch.js --workflow=gather-reviews.yml \
+            -f shows="$SHOWS" -f parallel_jobs="$JOBS" -f max_tier=3
+          RC=$?
+          set -e
+          if [ "$RC" = "3" ]; then
+            echo "::error::gather-reviews stayed at its in-flight cap; rerun this workflow to gather: $SHOWS"
+            exit 1
+          fi
+          exit "$RC"
+
+      - name: Fail when private pushes did not land
+        if: always() && steps.push_gate.outputs.ok == 'false'
+        run: |
+          echo "::error::Plan left pending: a private-repo push did not land (see 'Confirm private pushes landed')"
+          exit 1
+      - name: Update GitHub issue
+        if: always()
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          # A fixed plan whose private pushes did not land is not reported (or closed) as applied (BRO-6194).
+          FIX_RESULT: ${{ steps.push_gate.outputs.ok == 'false' && 'push-failed' || steps.exec.outputs.result }}
+          FIX_FAILED: ${{ steps.exec.outputs.failed }}
+          FIX_ISSUE_NUMBER: ${{ inputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const result = process.env.FIX_RESULT || 'error';
+            const rawIssue = process.env.FIX_ISSUE_NUMBER || '';
+            const issueNumber = parseInt(rawIssue);
+            // BRO-4216: session-authored plans are keyed by a Linear id
+            // (e.g. bro-4202), not a GitHub issue. Nothing to comment on.
+            if (!/^\d/.test(rawIssue)) {
+              core.info(`Plan ${rawIssue} is not a GitHub issue; result=${result}`);
+              const refused = parseInt(process.env.FIX_FAILED || '0') || 0;
+              if (result !== 'fixed' && result !== 'already-applied' && result !== 'rejected') core.setFailed(`Plan ${rawIssue}: ${result}`);
+              else if (refused > 0) core.setFailed(`Plan ${rawIssue}: ${refused} action(s) refused; see the Execute step log`);
+              return;
+            }
+            const isSystematic = rawIssue.includes('-systematic');
+
+            if (result === 'fixed') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: isSystematic
+                  ? '## Systematic Fix Applied\n\nThe approved systematic remediation plan has been executed across the dataset. Changes will be live after the next deploy.\n\n---\n*Executed via one-click approval*'
+                  : '## Fix Applied\n\nThe approved remediation plan has been executed. Changes will be live after the next deploy.\n\n---\n*Executed via one-click approval*'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: [isSystematic ? 'systematic-fix-applied' : 'auto-fixed']
+              });
+              if (!isSystematic) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  state: 'closed', state_reason: 'completed'
+                });
+              }
+            } else if (result === 'already-applied') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Already Applied\n\nThis fix was already executed. No duplicate action taken.'
+              });
+            } else if (result === 'validation-failed') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Validation Failed\n\nThe approved fix was applied but failed data validation. Changes were rolled back. Needs manual review.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `## Execution Error\n\nFix execution returned: \`${result}\`. A maintainer will review.`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
+            }
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Execute Approved Fix Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

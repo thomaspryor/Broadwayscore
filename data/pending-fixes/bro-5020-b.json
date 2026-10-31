@@ -1,0 +1,241 @@
+{
+  "issueNumber": "bro-5020-b",
+  "planId": "143da819-12ea-490a-9d3b-0611c26ad5fa",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 held-row review: release only fields a fetched source states. Five new commercial entries (three cap-only TBD, The Piano Lesson cap + announced recoupment with designation left TBD, Caroline, or Change as Roundabout nonprofit) and a Grey House correction (add the reported $8M cap; recouped false had no source, so it becomes unknown). (Re-run of bro-5020 without the grey-house recouped edit: grey-house is now Fizzle on the data repo, and a loss designation requires recouped=false; that edit waits on the checker.)",
+    "steps": [
+      "Every value below was read on a fetched page (BroadwayNews, Broadway Journal, Roundabout); rows whose only support was an inference, a mirror, or a different production stay unreleased.",
+      "Cap-only closed shows stay TBD and read Undisclosed; no Flop/Fizzle is claimed without a reported outcome.",
+      "The Piano Lesson designation is what scripts/lib/designation-rule.js assigns (TBD: recouped, no reported return)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-lehman-trilogy-2021",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": 5750000,
+          "capitalizationSource": "BroadwayNews (Jun 2021): capitalized for up to $5.75 million, per 2019 financial documents",
+          "notes": "Commercial transfer at the Nederlander (Oct 2021 to Jan 2022). Capitalized for up to $5.75M. No recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-lehman-trilogy-announces-broadway-return-date/",
+              "date": "2021-06-04"
+            }
+          ]
+        },
+        "description": "the-lehman-trilogy-2021: cap only, TBD"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "mrs-doubtfire-2021",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": 18000000,
+          "capitalizationSource": "BroadwayNews (Oct 2019): SEC filing shows capitalization of up to $18 million (AP later reported $17 million)",
+          "notes": "Broadway run at the Stephen Sondheim (Dec 2021 to May 2022), paused in early 2022. Capitalized for up to $18M per its SEC filing. No investor outcome reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/mrs-doubtfire-musical-to-open-on-broadway-this-season/",
+              "date": "2019-10-16"
+            }
+          ]
+        },
+        "description": "mrs-doubtfire-2021: cap only (SEC ceiling), TBD"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "thoughts-of-a-colored-man-2021",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": 5000000,
+          "capitalizationSource": "BroadwayNews (Dec 2021): capitalized for up to $5 million",
+          "notes": "Golden Theatre run (Oct to Dec 2021), closed early during the Omicron surge. Capitalized for up to $5M. No recoupment announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/thoughts-of-a-colored-man-closes-on-broadway/",
+              "date": "2021-12-23"
+            }
+          ]
+        },
+        "description": "thoughts-of-a-colored-man-2021: cap only, TBD"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-piano-lesson-2022",
+        "entry": {
+          "designation": "TBD",
+          "recouped": true,
+          "recoupedDate": "2024-03",
+          "recoupedSource": "BroadwayNews (Mar 21, 2024): The Piano Lesson recouped",
+          "capitalization": 7000000,
+          "capitalizationSource": "BroadwayNews: lead producer Brian Anthony Moreland said he capitalized The Piano Lesson for $7 million",
+          "notes": "Limited revival at the Ethel Barrymore (Oct 2022 to Jan 2023). Capitalized at $7M; recoupment announced in March 2024. Investor return not reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-piano-lesson-recoups/",
+              "date": "2024-03-21"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/",
+              "date": "2025-08-22"
+            }
+          ]
+        },
+        "description": "the-piano-lesson-2022: cap + announced recoupment; designation left TBD by designation-rule.js"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "caroline-or-change-2021",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Roundabout Theatre Company",
+          "recouped": null,
+          "notes": "Roundabout Theatre Company production at Studio 54 (Oct 2021 to Jan 2022).",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.roundabouttheatre.org/about/",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.playbill.com/article/broadway-revival-of-caroline-or-change-completes-limited-run-january-9",
+              "date": "2022-01-09"
+            }
+          ]
+        },
+        "description": "caroline-or-change-2021: Nonprofit (Roundabout)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "grey-house: capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (May 2023): capitalized for $8 million",
+        "description": "grey-house: capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "notes",
+        "oldValue": "Commercial play at the Lyceum; closed Jul 30, 2023, five weeks ahead of schedule. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "newValue": "Commercial play at the Lyceum; closed Jul 30, 2023, five weeks ahead of schedule. Capitalized at $8M (Broadway Journal). No recoupment announced.",
+        "description": "grey-house: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/grey-house-cuts-broadway-run-short",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/grey-house-cuts-broadway-run-short",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+            "date": "2023-05-08"
+          }
+        ],
+        "description": "grey-house: sources"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T08:01:09.526Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-lehman-trilogy-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added mrs-doubtfire-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added thoughts-of-a-colored-man-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-piano-lesson-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added caroline-or-change-2021 (Nonprofit)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for grey-house"
+    }
+  ]
+}

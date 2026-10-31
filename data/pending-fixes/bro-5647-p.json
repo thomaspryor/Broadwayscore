@@ -1,0 +1,344 @@
+{
+  "issueNumber": "bro-5647-p",
+  "planId": "c006c410-b750-4fe1-a723-49948015187a",
+  "status": "applied",
+  "createdAt": "2026-10-21T17:19:54.977Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From Dots' audit of the four Oct 21 ChatGPT reports and two Gemini reports, each quote re-read at its page (Forbes items rest on Dots' read of the publisher's text; Forbes blocks this machine). Old values from the private core data at ede3b1d. Losses now on record: Be More Chill (lead producer: '$9 million they lost', NPR), Once on This Island (co-producer: 'didn't even come close to recouping', Cleveland Magazine), American Son (Variety: 'lost money in its Broadway run').",
+    "steps": [
+      "Three reported losses"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "be-more-chill-2019",
+        "showId": "be-more-chill-2019",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "be-more-chill-2019: lead producer said it lost $9 million"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "be-more-chill-2019",
+        "showId": "be-more-chill-2019",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "be-more-chill-2019: the loss was reported"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "be-more-chill-2019",
+        "showId": "be-more-chill-2019",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "be-more-chill-2019: did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "be-more-chill-2019",
+        "showId": "be-more-chill-2019",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "NPR (Jeff Lunden, Aug 9, 2019), on lead producer Jerry Goehring: \"Goehring says they're hoping to make back some of the $9 million they lost with a tour and licensing.\" https://www.tpr.org/2019-08-09/no-room-for-the-modest-hit-anymore-broadway-prepares-for-summer-closings",
+        "description": "be-more-chill-2019: loss source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "be-more-chill-2019",
+        "showId": "be-more-chill-2019",
+        "field": "notes",
+        "oldValue": "Joe Iconis musical at the Lyceum (opened Mar 10, 2019; closed Aug 11, 2019). Capitalized for up to $9.5 million; no recoupment announced.",
+        "newValue": "Joe Iconis musical at the Lyceum (opened Mar 10, 2019; closed Aug 11, 2019). Capitalized for up to $9.5 million (Forbes reported $9 million). Lead producer Jerry Goehring said the Broadway run lost $9 million, which they hoped to recover in part from a tour and licensing.",
+        "description": "be-more-chill-2019: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "be-more-chill-2019",
+        "showId": "be-more-chill-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/be-more-chill-to-end-run-in-august/",
+            "date": "2019-06-20"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/be-more-chill-to-end-run-in-august/",
+            "date": "2019-06-20"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.tpr.org/2019-08-09/no-room-for-the-modest-hit-anymore-broadway-prepares-for-summer-closings",
+            "date": "2019-08-09"
+          }
+        ],
+        "description": "be-more-chill-2019: add the loss source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "showId": "once-on-this-island-2017",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "once-on-this-island-2017: co-producer said it did not come close to recouping"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "showId": "once-on-this-island-2017",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "once-on-this-island-2017: the loss was reported"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "showId": "once-on-this-island-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "once-on-this-island-2017: did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "showId": "once-on-this-island-2017",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Cleveland Magazine (Linda Feagler, Feb 17, 2022), co-producer Kathryn McKendry on the 2017 revival: \"financially, we didn't even come close to recouping our investment.\" An investor had told Forbes in Dec 2018 that it would close without making a profit (via INTIX). https://clevelandmagazine.com/articles/new-book-celebrates-chagrin-falls-couple-s-theater-production-journey/",
+        "description": "once-on-this-island-2017: loss source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "showId": "once-on-this-island-2017",
+        "field": "notes",
+        "oldValue": "Revival at Circle in the Square (opened Dec 3, 2017; closed Jan 6, 2019), Tony winner for Best Revival. An investor put weekly costs at about $450,000 and said it would close without a profit; no capitalization reported.",
+        "newValue": "Revival at Circle in the Square (opened Dec 3, 2017; closed Jan 6, 2019), Tony winner for Best Revival. An investor put weekly costs at about $450,000; co-producer Kathryn McKendry later said investors did not come close to recouping. No capitalization reported.",
+        "description": "once-on-this-island-2017: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "showId": "once-on-this-island-2017",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://access.intix.org/Full-Article/three-broadway-shows-to-close-as-box-office-sinks-and-long-term-issues-loom",
+            "date": "2018-12-03"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://access.intix.org/Full-Article/three-broadway-shows-to-close-as-box-office-sinks-and-long-term-issues-loom",
+            "date": "2018-12-03"
+          },
+          {
+            "type": "trade",
+            "url": "https://clevelandmagazine.com/articles/new-book-celebrates-chagrin-falls-couple-s-theater-production-journey/",
+            "date": "2022-02-17"
+          }
+        ],
+        "description": "once-on-this-island-2017: add the loss source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-son-2018",
+        "showId": "american-son-2018",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "american-son-2018: Variety reported it lost money on Broadway"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-son-2018",
+        "showId": "american-son-2018",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "american-son-2018: the loss was reported"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-son-2018",
+        "showId": "american-son-2018",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "american-son-2018: did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-son-2018",
+        "showId": "american-son-2018",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Variety (Gordon Cox, Mar 12, 2019, republished by Yahoo): \"'American Son,' for instance, lost money in its Broadway run\". https://www.yahoo.com/entertainment/politics-seized-broadway-spotlight-130003720.html",
+        "description": "american-son-2018: loss source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-son-2018",
+        "showId": "american-son-2018",
+        "field": "notes",
+        "oldValue": "Christopher Demos-Brown play at the Booth (opened Nov 4, 2018; closed Jan 27, 2019) starring and co-produced by Kerry Washington. Capitalized at $4.2 million; no recoupment announced.",
+        "newValue": "Christopher Demos-Brown play at the Booth (opened Nov 4, 2018; closed Jan 27, 2019) starring and co-produced by Kerry Washington. Capitalized at $4.2 million; Variety reported it lost money on Broadway. Netflix later filmed it; how much of that reached investors is not public.",
+        "description": "american-son-2018: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-son-2018",
+        "showId": "american-son-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wral.com/archive/17909214/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wral.com/archive/17909214/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.yahoo.com/entertainment/politics-seized-broadway-spotlight-130003720.html",
+            "date": "2019-03-12"
+          }
+        ],
+        "description": "american-son-2018: add the loss source"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T17:28:44.143Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for be-more-chill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for be-more-chill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for be-more-chill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for be-more-chill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for be-more-chill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for be-more-chill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for american-son-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for american-son-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for american-son-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for american-son-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for american-son-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for american-son-2018"
+    }
+  ],
+  "executedIn": "ci"
+}

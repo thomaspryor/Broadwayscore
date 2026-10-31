@@ -1,0 +1,15 @@
+{
+  "primary": {
+    "url": "https://original.example/review",
+    "outletId": "original",
+    "criticName": "Jane Doe"
+  },
+  "repost": {
+    "url": "https://personal-blog.example/repost",
+    "outletId": "showriz",
+    "criticName": "unknown",
+    "duplicateOf": "original--jane-doe.json",
+    "duplicateReason": "Hand-verified repost of the original review",
+    "protectedFields": ["duplicateOf", "duplicateReason"]
+  }
+}

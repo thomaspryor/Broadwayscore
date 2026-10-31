@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "description": "Shows outside the opening window whose hidden scored review files were investigated and accepted (e.g. syndicated duplicate text, a mis-dated review the late-date guard rightly drops). check-review-count-drift.js alerts only on a show that is dark or hides more than the threshold AND has a hidden file NOT listed here. Regenerate with: node scripts/check-review-count-drift.js --update-baseline, then review the diff.",
+    "generatedAt": "2026-10-06T00:57:04.690Z"
+  },
+  "shows": {
+    "china-doll-2015": [
+      "journal-inquirer--lauren-yarger.json",
+      "latimes--charles-mcnulty.json",
+      "stagezine--david-nounou.json",
+      "theatermania--david-gordon.json"
+    ],
+    "into-the-woods-1997": [
+      "washpost--peter-marks.json"
+    ]
+  }
+}

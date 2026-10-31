@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5449",
+  "planId": "82387ab0-fb4d-4875-8bb5-3ebd9c5facf4",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5449: Day of the Hog (Off-Broadway, Players Theatre Loft, one-month limited run) was the only open OB show with no closing signal the detector can watch. Its venue ticketing page states closing night 2026-09-27, already past, so set closingDate and mark it closed.",
+    "steps": [
+      "TheaterMania listing for Day of the Hog (https://www.theatermania.com/shows/new-york-theater/day-of-the-hog_1833448/): \"Closing Night: September 27, 2026\"; nyc.com listing 9/10-9/27.",
+      "Show has no TodayTix id, no review texts and no closingDate (data/audit/ob-closing-candidates.json unmonitoredOpenShows)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "day-of-the-hog-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-27",
+        "description": "day-of-the-hog-off-broadway-2026: closingDate set from TheaterMania closing night"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "day-of-the-hog-off-broadway-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "day-of-the-hog-off-broadway-2026: status open -> closed (closing night 2026-09-27 passed)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T15:57:21.403Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for day-of-the-hog-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for day-of-the-hog-off-broadway-2026"
+    }
+  ]
+}

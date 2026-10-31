@@ -1,0 +1,503 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const {
+  extractClosingDateMentions,
+  resolveMentionDate,
+  extractClosingDateCandidates,
+  runLengthWeeks,
+  aggregateClosingDateCandidates,
+  updateTodayTixMissingState,
+  decideTodayTixCandidates,
+  shouldSuppressCandidate,
+  shouldSuppressTodayTixCandidate,
+  isEligibleForFutureClosingDateFill,
+  findTitleOffsets,
+  selectAutoApplyClosures,
+} = require('./ob-closing-detector.js');
+
+// --- extractClosingDateMentions: date-pattern extraction ---
+
+test('extracts "through Sun July 5" (day-of-week, no year)', () => {
+  const mentions = extractClosingDateMentions('The show runs through Sun July 5 at the theater.');
+  assert.equal(mentions.length, 1);
+  assert.equal(mentions[0].month, 7);
+  assert.equal(mentions[0].day, 5);
+  assert.equal(mentions[0].year, null);
+});
+
+test('extracts "through July 5, 2026" (explicit year)', () => {
+  const mentions = extractClosingDateMentions('Tickets are on sale through July 5, 2026 only.');
+  assert.equal(mentions.length, 1);
+  assert.equal(mentions[0].month, 7);
+  assert.equal(mentions[0].day, 5);
+  assert.equal(mentions[0].year, 2026);
+});
+
+test('extracts "runs thru 7/5" (numeric date, no year)', () => {
+  const mentions = extractClosingDateMentions('The limited engagement runs thru 7/5 at Theater Row.');
+  assert.equal(mentions.length, 1);
+  assert.equal(mentions[0].month, 7);
+  assert.equal(mentions[0].day, 5);
+  assert.equal(mentions[0].year, null);
+});
+
+test('extracts numeric date with 2-digit year', () => {
+  const mentions = extractClosingDateMentions('Performances continue through 7/5/26.');
+  assert.equal(mentions.length, 1);
+  assert.equal(mentions[0].year, 2026);
+});
+
+test('does NOT match "through the years" (negative case)', () => {
+  const mentions = extractClosingDateMentions('This show has evolved through the years into something special.');
+  assert.equal(mentions.length, 0);
+});
+
+test('does NOT match bare "closes" without a trailing date', () => {
+  const mentions = extractClosingDateMentions('The theater closes its doors early on weeknights.');
+  assert.equal(mentions.length, 0);
+});
+
+test('extracts "closes <date>"', () => {
+  const mentions = extractClosingDateMentions('The production closes August 14, 2026.');
+  assert.equal(mentions.length, 1);
+  assert.equal(mentions[0].month, 8);
+  assert.equal(mentions[0].day, 14);
+  assert.equal(mentions[0].year, 2026);
+});
+
+test('extracts "final performance <date>"', () => {
+  const mentions = extractClosingDateMentions('The final performance is September 1.');
+  assert.equal(mentions.length, 1);
+  assert.equal(mentions[0].month, 9);
+  assert.equal(mentions[0].day, 1);
+});
+
+test('extracts "limited run through <date>"', () => {
+  const mentions = extractClosingDateMentions('This is a limited run through June 30, 2026 at the venue.');
+  assert.equal(mentions.length, 1);
+  assert.equal(mentions[0].month, 6);
+  assert.equal(mentions[0].day, 30);
+  assert.equal(mentions[0].year, 2026);
+});
+
+// --- resolveMentionDate: year resolution from review context, never URLs ---
+
+test('resolves year from publishDate when text omits it (same-year case)', () => {
+  const mention = { month: 7, day: 5, year: null };
+  assert.equal(resolveMentionDate(mention, '2026-06-15'), '2026-07-05');
+});
+
+test('rolls to next year when computed date is well before publishDate', () => {
+  // Review published Dec 2026 says "through Jan 5" — must mean Jan 2027, not Jan 2026.
+  const mention = { month: 1, day: 5, year: null };
+  assert.equal(resolveMentionDate(mention, '2026-12-10'), '2027-01-05');
+});
+
+test('uses explicit year in the mention over publishDate inference', () => {
+  const mention = { month: 7, day: 5, year: 2027 };
+  assert.equal(resolveMentionDate(mention, '2026-06-15'), '2027-07-05');
+});
+
+test('returns null when no year in text and no publishDate available', () => {
+  const mention = { month: 7, day: 5, year: null };
+  assert.equal(resolveMentionDate(mention, undefined), null);
+});
+
+// --- extractClosingDateCandidates: the real Misterman FRC boilerplate ---
+
+test('Misterman fixture: resolves full closing date from review context', () => {
+  const fullText =
+    "Misterman runs through Sun July 5 at Theater Row, 410 West 42nd Street. " +
+    "Running Time: 90 minutes no intermission";
+  const candidates = extractClosingDateCandidates(fullText, '2026-06-20');
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].isoDate, '2026-07-05');
+  assert.match(candidates[0].quote, /runs through Sun July 5/);
+});
+
+// --- runLengthWeeks ---
+
+test('computes run length in weeks', () => {
+  assert.equal(runLengthWeeks('2026-06-01', '2026-06-15'), 2);
+});
+
+test('returns null when closing is not after opening', () => {
+  assert.equal(runLengthWeeks('2026-06-15', '2026-06-01'), null);
+});
+
+// --- aggregateClosingDateCandidates: corroboration ---
+
+test('proposes high confidence when 2+ reviews agree', () => {
+  const result = aggregateClosingDateCandidates('show-1', '2026-05-01', [
+    { reviewId: 'nyt/review.json', isoDate: '2026-07-05', quote: 'q1' },
+    { reviewId: 'timeout/review.json', isoDate: '2026-07-05', quote: 'q2' },
+  ]);
+  assert.equal(result.confidence, 'high');
+  assert.equal(result.proposedClosingDate, '2026-07-05');
+});
+
+test('proposes medium confidence for single review within 1-10wk run length', () => {
+  const result = aggregateClosingDateCandidates('show-1', '2026-05-01', [
+    { reviewId: 'nyt/review.json', isoDate: '2026-06-01', quote: 'q1' },
+  ]);
+  assert.equal(result.confidence, 'medium');
+  assert.equal(result.proposedClosingDate, '2026-06-01');
+});
+
+test('does not propose for single review outside 1-10wk run length', () => {
+  const result = aggregateClosingDateCandidates('show-1', '2026-05-01', [
+    { reviewId: 'nyt/review.json', isoDate: '2027-05-01', quote: 'q1' },
+  ]);
+  assert.equal(result, null);
+});
+
+test('does not propose when reviews disagree (ambiguous)', () => {
+  const result = aggregateClosingDateCandidates('show-1', '2026-05-01', [
+    { reviewId: 'nyt/review.json', isoDate: '2026-07-05', quote: 'q1' },
+    { reviewId: 'timeout/review.json', isoDate: '2026-07-12', quote: 'q2' },
+  ]);
+  assert.equal(result, null);
+});
+
+test('returns null for empty mentions', () => {
+  assert.equal(aggregateClosingDateCandidates('show-1', '2026-05-01', []), null);
+});
+
+// --- TodayTix staleness diff ---
+
+test('updateTodayTixMissingState starts a new entry for a newly-missing show', () => {
+  const state = updateTodayTixMissingState({}, ['show-a', 'show-b'], new Set(['show-b']), '2026-07-01');
+  assert.deepEqual(state, {
+    'show-a': { consecutiveMissingChecks: 1, firstMissingDate: '2026-07-01', lastCheckedDate: '2026-07-01' },
+  });
+});
+
+test('updateTodayTixMissingState increments consecutive count across runs', () => {
+  const week1 = updateTodayTixMissingState({}, ['show-a'], new Set(), '2026-07-01');
+  const week2 = updateTodayTixMissingState(week1, ['show-a'], new Set(), '2026-07-08');
+  assert.equal(week2['show-a'].consecutiveMissingChecks, 2);
+  assert.equal(week2['show-a'].firstMissingDate, '2026-07-01');
+  assert.equal(week2['show-a'].lastCheckedDate, '2026-07-08');
+});
+
+test('updateTodayTixMissingState resets (drops) a show that reappears', () => {
+  const week1 = updateTodayTixMissingState({}, ['show-a'], new Set(), '2026-07-01');
+  const week2 = updateTodayTixMissingState(week1, ['show-a'], new Set(['show-a']), '2026-07-08');
+  assert.deepEqual(week2, {});
+});
+
+test('decideTodayTixCandidates only flags entries at/above the threshold', () => {
+  const state = {
+    'show-a': { consecutiveMissingChecks: 1, firstMissingDate: '2026-07-08' },
+    'show-b': { consecutiveMissingChecks: 2, firstMissingDate: '2026-07-01' },
+    'show-c': { consecutiveMissingChecks: 3, firstMissingDate: '2026-06-24' },
+  };
+  const candidates = decideTodayTixCandidates(state, 2);
+  const ids = candidates.map((c) => c.showId).sort();
+  assert.deepEqual(ids, ['show-b', 'show-c']);
+});
+
+// --- shouldSuppressCandidate (weekly-alert noise guards) ---
+
+test('suppress: existing closingDate always wins over review boilerplate', () => {
+  const show = { id: 'heathers-2025', closingDate: '2026-11-08', status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-01-25', '2026-07-12'), 'already-has-closing-date');
+});
+
+test('suppress: proposal more than a year past = extended/open-ended, not stale-open', () => {
+  const show = { id: 'little-shop-2019', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2020-01-19', '2026-07-12'), 'stale-evidence');
+});
+
+test('suppress: a recent past proposal on a date-less show is actionable', () => {
+  const show = { id: 'my-joy-2025', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-04-05', '2026-07-12'), null);
+});
+
+test('suppress: a future-dated proposal is not yet closed — nothing to review (card #799)', () => {
+  const show = { id: 'america-who-hurt-you-2026', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-09-11', '2026-07-12'), 'future-date-not-yet-closed');
+});
+
+test('suppress: a proposal dated exactly today is actionable, not future', () => {
+  const show = { id: 'shifters-2026', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-07-12', '2026-07-12'), null);
+});
+
+// --- shouldSuppressTodayTixCandidate (Drunk Shakespeare class: confirmed still open) ---
+
+test('suppress-todaytix: flagged show is suppressed', () => {
+  const show = { id: 'drunk-shakespeare-off-broadway-2022', todaytixStalenessIgnore: true };
+  assert.equal(shouldSuppressTodayTixCandidate(show), true);
+});
+
+test('suppress-todaytix: unflagged show with no closingDate is not suppressed', () => {
+  const show = { id: 'pied-a-terre-off-broadway-2026' };
+  assert.equal(shouldSuppressTodayTixCandidate(show), false);
+});
+
+test('suppress-todaytix: a show that already has a closingDate is suppressed (Shifters class)', () => {
+  const show = { id: 'shifters-off-broadway-2026', status: 'open', closingDate: '2026-09-20' };
+  assert.equal(shouldSuppressTodayTixCandidate(show), true);
+});
+
+test('suppress-todaytix: missing show record is not suppressed (never throws)', () => {
+  assert.equal(shouldSuppressTodayTixCandidate(undefined), false);
+});
+
+// --- isEligibleForFutureClosingDateFill (card #799 auto-fill gate) ---
+
+const FUTURE_HIGH = {
+  showId: 'america-who-hurt-you-off-broadway-2026',
+  proposedClosingDate: '2026-10-04',
+  latestMentionedDate: '2026-10-04',
+  confidence: 'high',
+  reason: 'future-date-not-yet-closed',
+  evidence: [],
+};
+
+test('future-fill: high confidence, no later mention, is eligible', () => {
+  assert.equal(isEligibleForFutureClosingDateFill(FUTURE_HIGH), true);
+});
+
+test('future-fill: medium confidence stays alert-only (weaker evidence bar)', () => {
+  assert.equal(isEligibleForFutureClosingDateFill({ ...FUTURE_HIGH, confidence: 'medium' }), false);
+});
+
+test('future-fill: refuses when a later date is mentioned (extension guard, ship-check finding)', () => {
+  const extended = { ...FUTURE_HIGH, proposedClosingDate: '2026-10-04', latestMentionedDate: '2026-10-18' };
+  assert.equal(isEligibleForFutureClosingDateFill(extended), false);
+});
+
+test('future-fill: wrong suppression reason is never eligible', () => {
+  assert.equal(isEligibleForFutureClosingDateFill({ ...FUTURE_HIGH, reason: 'already-has-closing-date' }), false);
+});
+
+test('future-fill: missing/undefined candidate is not eligible (never throws)', () => {
+  assert.equal(isEligibleForFutureClosingDateFill(undefined), false);
+});
+
+// --- title-proximity disambiguation (multi-show roundup columns) ---
+//
+// Regression for the 2026-09-08 Spellbound miss: the show's only text-bearing
+// review was a Times Square Chronicles roundup covering three productions, so
+// the sweep saw "Sept 6" (correct), "Sept 13" and "Sept 19" (other shows),
+// treated that as disagreement, and dropped the show entirely.
+
+const ROUNDUP_TEXT = [
+  'Spellbound at SoHo Playhouse runs through September 6, a limited engagement.',
+  'x'.repeat(4000),
+  'Another Opening plays at the Lortel through September 13 before touring.',
+  'y'.repeat(4000),
+  'A Third Show continues at the Cherry Lane through September 19.',
+].join(' ');
+
+test('proximity: roundup column resolves to the date nearest this show title', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20', { title: 'Spellbound' });
+  assert.deepEqual([...new Set(candidates.map((c) => c.isoDate))], ['2026-09-06']);
+  assert.ok(candidates[0].titleDistance < 300);
+});
+
+test('proximity: the roundup is unusable without a title (old behaviour preserved)', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20');
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 3);
+  assert.equal(aggregateClosingDateCandidates('s', '2026-08-19', candidates.map((c) => ({ reviewId: 'r', ...c }))), null);
+});
+
+test('proximity: a title that never appears leaves every mention in place', () => {
+  const candidates = extractClosingDateCandidates(ROUNDUP_TEXT, '2026-08-20', { title: 'Some Other Play' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 3);
+});
+
+test('proximity: titles too short to anchor on are ignored', () => {
+  // "Job" would match "job" anywhere in ordinary prose.
+  const text = 'The job runs through September 6. Elsewhere, a revival plays through September 13.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Job' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 2);
+});
+
+test('proximity: two dates equally close to the title stay ambiguous', () => {
+  const text = 'Spellbound runs through September 6 and, after a transfer, through September 13.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Spellbound' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 2);
+});
+
+test('proximity: a single distinct date is returned untouched', () => {
+  const text = 'Spellbound runs through September 6. It closes September 6 at SoHo Playhouse.';
+  const candidates = extractClosingDateCandidates(text, '2026-08-20', { title: 'Spellbound' });
+  assert.equal(new Set(candidates.map((c) => c.isoDate)).size, 1);
+});
+
+test('findTitleOffsets matches across punctuation and diacritics without shifting offsets', () => {
+  const text = 'A review of Pied \u00e0 Terre, which plays on.';
+  const offsets = findTitleOffsets(text, 'Pied a Terre');
+  assert.equal(offsets.length, 1);
+  assert.equal(text.slice(offsets[0], offsets[0] + 12), 'Pied \u00e0 Terre');
+});
+
+// --- selectAutoApplyClosures: two independent signals required ---
+
+const HIGH = { showId: 's1', proposedClosingDate: '2026-04-05', latestMentionedDate: '2026-04-05', confidence: 'high', reason: '4 reviews agree', evidence: [] };
+const OPEN_NO_DATE = { s1: { id: 's1', status: 'open' } };
+const MISSING_8 = { s1: { consecutiveMissingChecks: 8, firstMissingDate: '2026-07-13' } };
+
+test('auto-apply: high confidence + TodayTix-absent + past date + open/no-date is applied', () => {
+  const picked = selectAutoApplyClosures([HIGH], OPEN_NO_DATE, MISSING_8, '2026-09-08');
+  assert.equal(picked.length, 1);
+  assert.equal(picked[0].closingDate, '2026-04-05');
+  assert.match(picked[0].reason, /8 consecutive checks/);
+});
+
+test('auto-apply: review agreement alone is not enough (Little Shop class)', () => {
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, {}, '2026-09-08'), []);
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, { s1: { consecutiveMissingChecks: 1 } }, '2026-09-08'), []);
+});
+
+test('auto-apply: TodayTix absence alone is not enough (Drunk Shakespeare class)', () => {
+  assert.deepEqual(selectAutoApplyClosures([], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: a todaytixStalenessIgnore show never auto-closes off the staleness signal (ship-check finding, card #799)', () => {
+  const ignored = { s1: { id: 's1', status: 'open', todaytixStalenessIgnore: true } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], ignored, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: medium confidence stays alert-only', () => {
+  const medium = { ...HIGH, confidence: 'medium' };
+  assert.deepEqual(selectAutoApplyClosures([medium], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: never closes on a future date', () => {
+  const future = { ...HIGH, proposedClosingDate: '2026-12-01' };
+  assert.deepEqual(selectAutoApplyClosures([future], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: never overwrites an existing closingDate or a closed show', () => {
+  const dated = { s1: { id: 's1', status: 'open', closingDate: '2026-11-08' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], dated, MISSING_8, '2026-09-08'), []);
+  const closed = { s1: { id: 's1', status: 'closed' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], closed, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: unknown show id is skipped rather than throwing', () => {
+  assert.deepEqual(selectAutoApplyClosures([HIGH], {}, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: refuses when a later date is mentioned (extension guard)', () => {
+  // Shifters (2026): nine reviews agree on 2026-08-30 while later reviews say
+  // 09-13 and the run actually went to 09-20. Closing on the majority date
+  // would have marked a running show closed three weeks early.
+  const extended = { ...HIGH, proposedClosingDate: '2026-08-30', latestMentionedDate: '2026-09-13' };
+  assert.deepEqual(selectAutoApplyClosures([extended], OPEN_NO_DATE, MISSING_8, '2026-09-22'), []);
+});
+
+test('auto-apply: TodayTix absence must span real time, not just repeat runs', () => {
+  // Two workflow_dispatch runs an hour apart reach 2 checks the same day.
+  const sameDay = { s1: { consecutiveMissingChecks: 2, firstMissingDate: '2026-09-08' } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, sameDay, '2026-09-08'), []);
+  const spanned = { s1: { consecutiveMissingChecks: 2, firstMissingDate: '2026-08-20' } };
+  assert.equal(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, spanned, '2026-09-08').length, 1);
+});
+
+test('auto-apply: missing firstMissingDate is treated as unproven, not as zero', () => {
+  const noDate = { s1: { consecutiveMissingChecks: 99 } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], OPEN_NO_DATE, noDate, '2026-09-08'), []);
+});
+
+test('aggregate: carries the latest mentioned date, not just the most-cited', () => {
+  const mentions = [
+    { reviewId: 'a', isoDate: '2026-08-30' },
+    { reviewId: 'b', isoDate: '2026-08-30' },
+    { reviewId: 'c', isoDate: '2026-09-13' },
+  ];
+  const proposal = aggregateClosingDateCandidates('s1', '2026-07-01', mentions);
+  assert.equal(proposal.proposedClosingDate, '2026-08-30');
+  assert.equal(proposal.latestMentionedDate, '2026-09-13');
+});
+
+// Exercise production writers and the real lock/atomic save with isolated files.
+const fs = require('node:fs');
+const path = require('node:path');
+const { createShowsWriteGuard } = require('./shows-write-guard.js');
+const { applyConfirmedClosures, applyFutureClosingDateFills } = require('../detect-ob-closings.js');
+const { FUTURE_DATE_NOT_YET_CLOSED } = require('./ob-closing-detector.js');
+
+for (const mode of ['confirmed', 'future']) {
+  for (const concurrentChange of [
+    { todaytixStalenessIgnore: true },
+    { humanCorrectedClosingDate: true },
+    { status: 'closed' },
+    { closingDate: '2025-01-02' },
+    { title: 'Human updated title' },
+  ]) {
+    test(`${mode} revalidates fresh records after concurrent ${Object.keys(concurrentChange)[0]} change`, (t) => {
+      const dir = fs.mkdtempSync(path.join(process.cwd(), '.claude/bro3834-test-'));
+      t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+      const showsPath = path.join(dir, 'shows.json');
+      const statePath = path.join(dir, 'state.json');
+      const original = { shows: ['protected', 'eligible'].map(id => ({ id, status: 'open', category: 'off-broadway' })), _meta: {} };
+      fs.writeFileSync(showsPath, JSON.stringify(original, null, 2));
+      fs.writeFileSync(statePath, JSON.stringify(Object.fromEntries(original.shows.map(s => [s.id, { consecutiveMissingChecks: 3, firstMissingDate: '2000-01-01' }]))));
+      const candidates = original.shows.map(s => ({ showId: s.id, confidence: 'high', proposedClosingDate: mode === 'confirmed' ? '2001-01-01' : '2099-01-01', reason: mode === 'confirmed' ? 'review agreement' : FUTURE_DATE_NOT_YET_CLOSED, evidence: [] }));
+      const options = { showsPath, statePath, createGuard(p) {
+        const guard = createShowsWriteGuard(p);
+        return { ...guard, saveShows(data, opts) {
+          // This writer lands after the detector loaded, before it acquires its lock.
+          const human = createShowsWriteGuard(p);
+          const fresh = human.loadShows();
+          Object.assign(fresh.shows[0], concurrentChange);
+          fresh.shows[0].humanNote = 'preserve this unrelated same-record field';
+          human.saveShows(fresh);
+          return guard.saveShows(data, opts);
+        } };
+      } };
+      const result = mode === 'confirmed'
+        ? applyConfirmedClosures(original, candidates, false, false, options)
+        : applyFutureClosingDateFills(original, candidates, false, options);
+      const saved = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
+      const blocked = !('title' in concurrentChange);
+      assert.deepEqual(result.map(c => c.showId), blocked ? ['eligible'] : ['protected', 'eligible']);
+      for (const [key, value] of Object.entries(concurrentChange)) assert.equal(saved[0][key], value);
+      assert.equal(saved[0].humanNote, 'preserve this unrelated same-record field');
+      assert.equal(saved[0].closingDate, blocked ? concurrentChange.closingDate : candidates[0].proposedClosingDate);
+      assert.equal(saved[0].status, concurrentChange.status || (blocked || mode === 'future' ? 'open' : 'closed'));
+      assert.equal(saved[1].closingDate, candidates[1].proposedClosingDate);
+      assert.equal(saved[1].status, mode === 'confirmed' ? 'closed' : 'open');
+      assert.equal(fs.existsSync(`${showsPath}.lock`), false);
+    });
+  }
+}
+
+for (const mode of ['confirmed', 'future']) {
+  test(`${mode} does not rewrite the file when every record becomes protected`, (t) => {
+    const dir = fs.mkdtempSync(path.join(process.cwd(), '.claude/bro3834-noop-'));
+    t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const showsPath = path.join(dir, 'shows.json');
+    const statePath = path.join(dir, 'state.json');
+    const original = { shows: [{ id: 'x', status: 'open' }], _meta: {} };
+    fs.writeFileSync(showsPath, JSON.stringify(original, null, 2));
+    fs.writeFileSync(statePath, JSON.stringify({ x: { consecutiveMissingChecks: 3, firstMissingDate: '2000-01-01' } }));
+    const candidate = { showId: 'x', confidence: 'high', proposedClosingDate: mode === 'confirmed' ? '2001-01-01' : '2099-01-01', reason: mode === 'confirmed' ? 'review agreement' : FUTURE_DATE_NOT_YET_CLOSED };
+    let humanBytes;
+    const options = { showsPath, statePath, createGuard(p) {
+      const guard = createShowsWriteGuard(p);
+      return { ...guard, saveShows(data, opts) {
+        const human = createShowsWriteGuard(p);
+        const fresh = human.loadShows();
+        fresh.shows[0].humanCorrectedClosingDate = true;
+        human.saveShows(fresh);
+        humanBytes = fs.readFileSync(p, 'utf8');
+        return guard.saveShows(data, opts);
+      } };
+    } };
+    const result = mode === 'confirmed'
+      ? applyConfirmedClosures(original, [candidate], false, false, options)
+      : applyFutureClosingDateFills(original, [candidate], false, options);
+    assert.deepEqual(result, []);
+    assert.equal(fs.readFileSync(showsPath, 'utf8'), humanBytes);
+    assert.equal(fs.existsSync(`${showsPath}.lock`), false);
+  });
+}

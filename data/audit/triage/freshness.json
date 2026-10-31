@@ -1,0 +1,125 @@
+{
+  "system": "freshness",
+  "status": "pass",
+  "lastChecked": "2026-10-30T08:41:09.866Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Freshness: reviews.json",
+      "status": "pass",
+      "message": "0h old"
+    },
+    {
+      "name": "Freshness: shows.json",
+      "status": "pass",
+      "message": "2h old"
+    },
+    {
+      "name": "Freshness: grosses.json",
+      "status": "pass",
+      "message": "3d old"
+    },
+    {
+      "name": "Freshness: audience-buzz.json",
+      "status": "pass",
+      "message": "2h old"
+    },
+    {
+      "name": "Freshness: commercial.json",
+      "status": "pass",
+      "message": "4h old"
+    },
+    {
+      "name": "Freshness: critic-consensus.json",
+      "status": "pass",
+      "message": "0h old"
+    },
+    {
+      "name": "Freshness: lottery-rush.json",
+      "status": "pass",
+      "message": "15h old"
+    },
+    {
+      "name": "Freshness: cast-changes.json",
+      "status": "pass",
+      "message": "0h old"
+    },
+    {
+      "name": "Freshness: nyt-critics-picks.json",
+      "status": "pass",
+      "message": "1h old"
+    },
+    {
+      "name": "Freshness: video-reviews.json",
+      "status": "pass",
+      "message": "4d old"
+    },
+    {
+      "name": "Freshness: tony-win-probabilities.json",
+      "status": "ok",
+      "message": "Skipped (off-season)"
+    },
+    {
+      "name": "Freshness: tony-polymarket-odds.json",
+      "status": "ok",
+      "message": "Skipped (off-season)"
+    },
+    {
+      "name": "Freshness: tony-kalshi-odds.json",
+      "status": "ok",
+      "message": "Skipped (off-season)"
+    },
+    {
+      "name": "Freshness: audit/t1-silent-gaps.json",
+      "status": "pass",
+      "message": "2h old"
+    },
+    {
+      "name": "Freshness: audit/uncollected-live-reviews.json",
+      "status": "pass",
+      "message": "2h old"
+    },
+    {
+      "name": "Freshness: audit/imageless-scored-shows.json",
+      "status": "pass",
+      "message": "5h old"
+    },
+    {
+      "name": "Freshness: audit/venue-date-mismatches.json",
+      "status": "pass",
+      "message": "8h old"
+    },
+    {
+      "name": "Freshness: audit/alert-sender-inventory.json",
+      "status": "pass",
+      "message": "13h old"
+    },
+    {
+      "name": "Freshness: audit/ob-closing-candidates.json",
+      "status": "pass",
+      "message": "4d old"
+    },
+    {
+      "name": "Freshness: audit/same-title-confusion.json",
+      "status": "pass",
+      "message": "5d old"
+    },
+    {
+      "name": "Freshness: audit/slug-misroute-audit.json",
+      "status": "pass",
+      "message": "5d old"
+    },
+    {
+      "name": "Freshness: audit/open-backlog-acceptance-sweep.json",
+      "status": "pass",
+      "message": "23h old"
+    },
+    {
+      "name": "Freshness: audit/progress-watch-state.json",
+      "status": "pass",
+      "message": "17h old"
+    }
+  ]
+}

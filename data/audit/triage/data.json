@@ -1,0 +1,125 @@
+{
+  "system": "data",
+  "status": "warn",
+  "lastChecked": "2026-10-30T08:41:09.867Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Data: OB shows no closing signal can detect",
+      "status": "pass",
+      "message": "Every open Off-Broadway show has a closing signal the detector can watch"
+    },
+    {
+      "name": "Data: OB closing candidates awaiting review",
+      "status": "pass",
+      "message": "No open Off-Broadway show looks closed per the weekly detector"
+    },
+    {
+      "name": "Data: tour automation stopped reporting",
+      "status": "pass",
+      "message": "All three national-tour jobs reported on schedule"
+    },
+    {
+      "name": "Data: tour review sweep held",
+      "status": "pass",
+      "message": "The daily tour sweep held nothing back"
+    },
+    {
+      "name": "Data: tour dates need a look",
+      "status": "pass",
+      "message": "Every tour was dated automatically"
+    },
+    {
+      "name": "Data: running-tour discovery failed",
+      "status": "pass",
+      "message": "Running-tour discovery on Tours To You succeeded"
+    },
+    {
+      "name": "Data: Tours To You pages not checked",
+      "status": "pass",
+      "message": "All 225 Tours To You show pages read within 4 days"
+    },
+    {
+      "name": "Data: national tours added automatically",
+      "status": "pass",
+      "message": "No national tours added automatically this run"
+    },
+    {
+      "name": "Data: closed national tours reopened automatically",
+      "status": "pass",
+      "message": "No closed national tours reopened"
+    },
+    {
+      "name": "Data: closed national tour lists new dates",
+      "status": "pass",
+      "message": "No closed national tour lists new dates"
+    },
+    {
+      "name": "Data: live show with zero critic reviews on site",
+      "status": "pass",
+      "message": "No live show is missing every discovered critic review"
+    },
+    {
+      "name": "Data: uncollected live review strands",
+      "status": "pass",
+      "message": "Every discovered review URL for live shows was fetched"
+    },
+    {
+      "name": "Data: armed-but-vacuous backlog cards",
+      "status": "warn",
+      "message": "7 Linear card(s) carry an acceptance check that cannot tell done from not done (7 can never fail, 0 can never pass). First: BRO-6530 Renew The Stage login cookie on the Mac Studio (CI cookie expired 2026-10-29)"
+    },
+    {
+      "name": "Data: undispatchable Linear backlog cards",
+      "status": "warn",
+      "message": "8 of 441 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6521 Opening-night audit 2026-10-29"
+    },
+    {
+      "name": "Data: Linear card-verifiability report stale",
+      "status": "pass",
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-29"
+    },
+    {
+      "name": "Data: review coverage holes",
+      "status": "warn",
+      "message": "63 review(s) with no usable text, 62 rejected although verified as a review, 22 never scored, 31 with a blocked URL (0 published on the site), across 468 current shows"
+    },
+    {
+      "name": "Data: published scores outside the critic's rating",
+      "status": "warn",
+      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (1 more already queued for rescore), of 34799 checked"
+    },
+    {
+      "name": "Data: early publish dates awaiting page-date recheck",
+      "status": "pass",
+      "message": "28 early publish date(s) awaiting recheck (limit 40); 125 already attempted and not yet confirmed"
+    },
+    {
+      "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
+      "status": "pass",
+      "message": "duplicate-flag inheritance audit is within its committed floor"
+    },
+    {
+      "name": "Data: stale-slot squatters (current-year review slots held by another production)",
+      "status": "pass",
+      "message": "audit ran: 558 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "status": "warn",
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Middlemarch\" (guardian-review — missing 0d)"
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "warn",
+      "message": "2 discovered review(s) not reaching the composite score (2 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored)"
+    },
+    {
+      "name": "Data: BWW roundup discovery misses near opening",
+      "status": "warn",
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: a-few-good-men-2026 (6 misses, last 2026-10-30T06:40:31.934Z)."
+    }
+  ]
+}

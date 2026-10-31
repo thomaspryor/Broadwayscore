@@ -1,0 +1,71 @@
+{
+  "issueNumber": "bro-4884-d",
+  "planId": "6386b9a7-33c0-4930-ae2d-261a41605808",
+  "status": "applied",
+  "createdAt": "2026-10-11T05:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4884: clear two validate-data errors that refuse every validate-gated core-data push. (1) Night of January 16th: a reader-submitted Theatricalia production listing (not a review) and its copy whose byline step named the playwright, Ayn Rand, as critic; the copy was deleted 2026-10-09 (bro-4884-b) and re-created from the listing on 2026-10-10. Both go. (2) An Oak Tree 2026 (The Other Palace, Francesca Moody Productions): The Stage review of the 2025 Young Vic run (URL says young-vic-london, dated 7 May 2025), held by the date flagger on a Theatre Record month match.",
+    "steps": [
+      "Delete the Theatricalia production listing and its byline copy.",
+      "Flag the 2025 Young Vic review on the 2026 Other Palace record as wrong production, with a reason."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+        "description": "Copy of a Theatricalia production listing with the playwright as critic; re-created from the listing after the 2026-10-09 delete."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "night-of-january-16th-off-broadway-2026/theatricalia--unknown.json",
+        "description": "Theatricalia production listing submitted through the review form; not a review. Source of the Ayn Rand copy."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The Stage review of the 2025 Young Vic run (URL young-vic-london, published 7 May 2025); this record is the 2026 Francesca Moody run at The Other Palace."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the 2025 Young Vic run (URL young-vic-london, 7 May 2025), not the 2026 Other Palace production (BRO-4884)",
+        "description": "Provenance for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T06:07:05.632Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted night-of-january-16th-off-broadway-2026/theatricalia--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json wrongProductionReason: null -> \"Review of the 2025 Young Vic run (URL young-vic-london, 7 May 2025), not the 2026 Other Palace production (BRO-4884)\""
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "issueNumber": "bro-5373-r",
+  "planId": "da5bb62d-7993-4bc5-a560-13b14116b288",
+  "status": "applied",
+  "createdAt": "2026-10-14T21:38:52.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (r): 13 reviews credited to the wrong critic, found by a corpus scan for urls naming a different critic of the same outlet. File names (which drive the critic page) and criticName repaired.",
+    "steps": [
+      "13 moves, 6 criticName edits"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "america-who-hurt-you-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json",
+        "destPath": "america-who-hurt-you-off-broadway-2026/theater-scene--tony-marinelli.json",
+        "description": "TheaterScene page reads 'Posted on <date> by Tony Marinelli' and its url ends /tony-marinelli/; the file was named for the site's editor, Victor Gluck, so the critic page credited him."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kimberly-akimbo-2022/theater-scene--victor-gluck-editor-in-chief.json",
+        "destPath": "kimberly-akimbo-2022/theater-scene--joel-benjamin.json",
+        "description": "TheaterScene page reads 'Posted on <date> by Joel Benjamin' and its url ends /joel-benjamin/; the file was named for the site's editor, Victor Gluck, so the critic page credited him."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json",
+        "destPath": "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--tony-marinelli.json",
+        "description": "TheaterScene page reads 'Posted on <date> by Tony Marinelli' and its url ends /tony-marinelli/; the file was named for the site's editor, Victor Gluck, so the critic page credited him."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "lost-in-del-valle-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json",
+        "destPath": "lost-in-del-valle-off-broadway-2026/theater-scene--tony-marinelli.json",
+        "description": "TheaterScene page reads 'Posted on <date> by Tony Marinelli' and its url ends /tony-marinelli/; the file was named for the site's editor, Victor Gluck, so the critic page credited him."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "death-of-a-salesman-2026/theater-scene--victor-gluck.json",
+        "destPath": "death-of-a-salesman-2026/theater-scene--samuel-l-leiter.json",
+        "description": "TheaterScene url names the author (/samuel-l-leiter/, the site's per-author permalink); the outlet-listing poller credited the editor, Victor Gluck."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2026/theater-scene--samuel-l-leiter.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck",
+        "newValue": "Samuel L. Leiter",
+        "description": "TheaterScene url names the author (/samuel-l-leiter/, the site's per-author permalink); the outlet-listing poller credited the editor, Victor Gluck."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "fallen-angels-2026/theater-scene--victor-gluck.json",
+        "destPath": "fallen-angels-2026/theater-scene--samuel-l-leiter.json",
+        "description": "TheaterScene url names the author (/samuel-l-leiter/, the site's per-author permalink); the outlet-listing poller credited the editor, Victor Gluck."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fallen-angels-2026/theater-scene--samuel-l-leiter.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck",
+        "newValue": "Samuel L. Leiter",
+        "description": "TheaterScene url names the author (/samuel-l-leiter/, the site's per-author permalink); the outlet-listing poller credited the editor, Victor Gluck."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "school-girls-or-the-african-mean-girls-play-2026/theater-scene--victor-gluck.json",
+        "destPath": "school-girls-or-the-african-mean-girls-play-2026/theater-scene--samuel-l-leiter.json",
+        "description": "TheaterScene url names the author (/samuel-l-leiter/, the site's per-author permalink); the outlet-listing poller credited the editor, Victor Gluck."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/theater-scene--samuel-l-leiter.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck",
+        "newValue": "Samuel L. Leiter",
+        "description": "TheaterScene url names the author (/samuel-l-leiter/, the site's per-author permalink); the outlet-listing poller credited the editor, Victor Gluck."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hughie-2016/huffpost--michael-glitz.json",
+        "destPath": "hughie-2016/huffpost--steven-suskin.json",
+        "description": "HuffPost url is under /steven-suskin/ (his 'Aisle View' column; text opens with the production photo credit, his format)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hughie-2016/huffpost--steven-suskin.json",
+        "field": "criticName",
+        "oldValue": "Michael Glitz",
+        "newValue": "Steven Suskin",
+        "description": "HuffPost url is under /steven-suskin/ (his 'Aisle View' column; text opens with the production photo credit, his format)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "noises-off-2016/huffpost--fern-siegel.json",
+        "destPath": "noises-off-2016/huffpost--steven-suskin.json",
+        "description": "HuffPost url is under /steven-suskin/ (his 'Aisle View' column; text opens with the production photo credit, his format). criticName is already Steven Suskin; the destination is a same-url copy that points at this file (duplicateOf), so it is replaced.",
+        "overwrite": true
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "she-loves-me-2016/huffpost--fern-siegel.json",
+        "destPath": "she-loves-me-2016/huffpost--steven-suskin.json",
+        "description": "HuffPost url is under /steven-suskin/ (his 'Aisle View' column; text opens with the production photo credit, his format). criticName is already Steven Suskin; the destination is a same-url copy that points at this file (duplicateOf), so it is replaced.",
+        "overwrite": true
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "beautiful-the-carole-king-musical-2014/huffpost--danny-groner.json",
+        "destPath": "beautiful-the-carole-king-musical-2014/huffpost--david-finkle.json",
+        "description": "HuffPost url is under /david-finkle/ ('First Nighter', his column) and criticName is already David Finkle. The destination holds the same text and url and points at this file (duplicateOf), so it is replaced.",
+        "overwrite": true
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-little-life-west-end-2023/daily-mail--laura-fox.json",
+        "destPath": "a-little-life-west-end-2023/daily-mail--luke-jones.json",
+        "description": "Text is the dailymail.co.uk review at the stored url (.../A-little-grim-Little-Life-worth-pain-LUKE-JONES-review), whose byline is Luke Jones; the fetch replaced the Theatre Record text the file was first created with."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-life-west-end-2023/daily-mail--luke-jones.json",
+        "field": "criticName",
+        "oldValue": "Laura Fox",
+        "newValue": "Luke Jones",
+        "description": "Text is the dailymail.co.uk review at the stored url (.../A-little-grim-Little-Life-worth-pain-LUKE-JONES-review), whose byline is Luke Jones; the fetch replaced the Theatre Record text the file was first created with."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "burlesque-west-end-2026/express-uk--stefan-kyriazis.json",
+        "destPath": "burlesque-west-end-2026/express-uk--neil-norman.json",
+        "description": "Text is the express.co.uk review at the stored url (.../burlesque-review-neil-norman), byline Neil Norman."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burlesque-west-end-2026/express-uk--neil-norman.json",
+        "field": "criticName",
+        "oldValue": "Stefan Kyriazis",
+        "newValue": "Neil Norman",
+        "description": "Text is the express.co.uk review at the stored url (.../burlesque-review-neil-norman), byline Neil Norman."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T23:12:04.706Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved america-who-hurt-you-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json → america-who-hurt-you-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved kimberly-akimbo-2022/theater-scene--victor-gluck-editor-in-chief.json → kimberly-akimbo-2022/theater-scene--joel-benjamin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json → the-cherry-orchard-park-avenue-armory-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved lost-in-del-valle-off-broadway-2026/theater-scene--victor-gluck-editor-in-chief.json → lost-in-del-valle-off-broadway-2026/theater-scene--tony-marinelli.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved death-of-a-salesman-2026/theater-scene--victor-gluck.json → death-of-a-salesman-2026/theater-scene--samuel-l-leiter.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/theater-scene--samuel-l-leiter.json criticName: \"Victor Gluck\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved fallen-angels-2026/theater-scene--victor-gluck.json → fallen-angels-2026/theater-scene--samuel-l-leiter.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fallen-angels-2026/theater-scene--samuel-l-leiter.json criticName: \"Victor Gluck\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved school-girls-or-the-african-mean-girls-play-2026/theater-scene--victor-gluck.json → school-girls-or-the-african-mean-girls-play-2026/theater-scene--samuel-l-leiter.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/theater-scene--samuel-l-leiter.json criticName: \"Victor Gluck\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hughie-2016/huffpost--michael-glitz.json → hughie-2016/huffpost--steven-suskin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hughie-2016/huffpost--steven-suskin.json criticName: \"Michael Glitz\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved noises-off-2016/huffpost--fern-siegel.json → noises-off-2016/huffpost--steven-suskin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved she-loves-me-2016/huffpost--fern-siegel.json → she-loves-me-2016/huffpost--steven-suskin.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved beautiful-the-carole-king-musical-2014/huffpost--danny-groner.json → beautiful-the-carole-king-musical-2014/huffpost--david-finkle.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-little-life-west-end-2023/daily-mail--laura-fox.json → a-little-life-west-end-2023/daily-mail--luke-jones.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-life-west-end-2023/daily-mail--luke-jones.json criticName: \"Laura Fox\" -> \"Luke Jones\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved burlesque-west-end-2026/express-uk--stefan-kyriazis.json → burlesque-west-end-2026/express-uk--neil-norman.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burlesque-west-end-2026/express-uk--neil-norman.json criticName: \"Stefan Kyriazis\" -> \"Neil Norman\""
+    }
+  ]
+}

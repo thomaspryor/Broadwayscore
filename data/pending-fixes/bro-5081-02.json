@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-02",
+  "planId": "339beb2d-ad10-4994-8b63-7a44effc2a12",
+  "status": "partial",
+  "createdAt": "2026-10-11T21:42:49.528Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 2: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/04/03/curtain-down-heads-up-readers-review-bengal-tiger-at-the-baghdad-zoo/ is Erik Piepenburg; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2013/oct/28/betrayal-review-daniel-craig-pinter-new-york is David Cote; Charles Isherwood came from the legacy web-search step and is not on the page. The page critic already has the live record guardian--david-cote.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.vulture.com/2019/09/review-broadways-tight-new-betrayal-with-tom-hiddleston.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2022/12/theater-review-between-riverside-and-crazy-on-broadway.html is Jackson McHenry; Sara Holdren came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2023/03/theater-review-bob-fosse-dancin-revival.html is Jackson McHenry; Sara Holdren came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2011/mar/31/book-of-mormon-review is Hadley Freeman; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2006/legit/reviews/bridge-tunnel-1200519007/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/08/theater-review-bring-it-on-the-musical.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://variety.com/2009/legit/reviews/burn-the-floor-1200476346/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/09/theater-review-chaplin-the-musical.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.vulture.com/2019/01/theater-reviews-choir-boy-and-blue-ridge.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--sara-holdren.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/clydes-review-lynn-nottage-uzo-aduba-1235052637/ is Lovia Gyarkye; David Rooney came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2010/legit/reviews/collected-stories-1117942647/ is Marilyn Stasio; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://deadline.com/2017/03/broadway-review-come-from-away-1202041704/ is Jeremy Gerard; Pete Hammond came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2008/legit/reviews/cry-baby-1200472551/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2024/dec/12/cult-of-love-review-broadway-play is Jesse Hassenger; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2024/legit/reviews/cult-of-love-review-shailene-woodley-zachary-quinto-leslye-headland-1236247528/ is Daniel D'Addario; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/theater-review-cult-of-love.html is Jackson McHenry; Helen Shaw came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theatermania.com/news/review-death-becomes-her-is-broadway-musical-comedy-heaven_1756248/ is Zachary Stewart; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2014/oct/24/disgraced-review-broadway-greek-tragedy is Alexis Soloski; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2008/legit/reviews/equus-1200472325/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/theater-review-jonathan-spector-eureka-day-jessica-hecht.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/04/theater-review-throwing-up-my-hands-at-evita.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://stageandcinema.com/2012/04/20/evita-marquis-theatre/ is Thomas Antoinne; Steven Suskin came from the legacy web-search step and is not on the page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "bengal-tiger-at-the-baghdad-zoo-2011/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Erik Piepenburg",
+        "description": "Page byline at https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/04/03/curtain-down-heads-up-readers-review-bengal-tiger-at-the-baghdad-zoo/ is Erik Piepenburg; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2013/guardian--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--david-cote.json",
+        "description": "Page byline at https://www.theguardian.com/stage/2013/oct/28/betrayal-review-daniel-craig-pinter-new-york is David Cote; Charles Isherwood came from the legacy web-search step and is not on the page. The page critic already has the live record guardian--david-cote.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/2019/09/review-broadways-tight-new-betrayal-with-tom-hiddleston.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/vulture--sara-holdren.json",
+        "field": "criticName",
+        "oldValue": "Sara Holdren",
+        "newValue": "Jackson McHenry",
+        "description": "Page byline at https://www.vulture.com/2022/12/theater-review-between-riverside-and-crazy-on-broadway.html is Jackson McHenry; Sara Holdren came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bob-fosses-dancin-2023/vulture--sara-holdren.json",
+        "field": "criticName",
+        "oldValue": "Sara Holdren",
+        "newValue": "Jackson McHenry",
+        "description": "Page byline at https://www.vulture.com/2023/03/theater-review-bob-fosse-dancin-revival.html is Jackson McHenry; Sara Holdren came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/guardian--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Hadley Freeman",
+        "description": "Page byline at https://www.theguardian.com/stage/2011/mar/31/book-of-mormon-review is Hadley Freeman; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bridge-and-tunnel-2006/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2006/legit/reviews/bridge-tunnel-1200519007/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bring-it-on-the-musical-2012/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "Page byline at https://www.vulture.com/2012/08/theater-review-bring-it-on-the-musical.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burn-the-floor-2009/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2009/legit/reviews/burn-the-floor-1200476346/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chaplin-2012/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "Page byline at https://www.vulture.com/2012/09/theater-review-chaplin-the-musical.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "choir-boy-2019/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "Page byline at https://www.vulture.com/2019/01/theater-reviews-choir-boy-and-blue-ridge.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--sara-holdren.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/hollywood-reporter--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Lovia Gyarkye",
+        "description": "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/clydes-review-lynn-nottage-uzo-aduba-1235052637/ is Lovia Gyarkye; David Rooney came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "collected-stories-2010/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Marilyn Stasio",
+        "description": "Page byline at https://variety.com/2010/legit/reviews/collected-stories-1117942647/ is Marilyn Stasio; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-2017/deadline--pete-hammond.json",
+        "field": "criticName",
+        "oldValue": "Pete Hammond",
+        "newValue": "Jeremy Gerard",
+        "description": "Page byline at https://deadline.com/2017/03/broadway-review-come-from-away-1202041704/ is Jeremy Gerard; Pete Hammond came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "company-2021/hollywood-reporter--angie-han.json",
+        "field": "criticName",
+        "oldValue": "Angie Han",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/ is David Rooney; Angie Han came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "crybaby-2008/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2008/legit/reviews/cry-baby-1200472551/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cult-of-love-2024/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Jesse Hassenger",
+        "description": "Page byline at https://www.theguardian.com/stage/2024/dec/12/cult-of-love-review-broadway-play is Jesse Hassenger; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cult-of-love-2024/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Daniel D'Addario",
+        "description": "Page byline at https://variety.com/2024/legit/reviews/cult-of-love-review-shailene-woodley-zachary-quinto-leslye-headland-1236247528/ is Daniel D'Addario; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cult-of-love-2024/vulture--helen-shaw.json",
+        "field": "criticName",
+        "oldValue": "Helen Shaw",
+        "newValue": "Jackson McHenry",
+        "description": "Page byline at https://www.vulture.com/article/theater-review-cult-of-love.html is Jackson McHenry; Helen Shaw came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-becomes-her-2024/theatermania--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Zachary Stewart",
+        "description": "Page byline at https://www.theatermania.com/news/review-death-becomes-her-is-broadway-musical-comedy-heaven_1756248/ is Zachary Stewart; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disgraced-2014/guardian--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Alexis Soloski",
+        "description": "Page byline at https://www.theguardian.com/stage/2014/oct/24/disgraced-review-broadway-greek-tragedy is Alexis Soloski; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "equus-2008/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2008/legit/reviews/equus-1200472325/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-2024/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/article/theater-review-jonathan-spector-eureka-day-jessica-hecht.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "Page byline at https://www.vulture.com/2012/04/theater-review-throwing-up-my-hands-at-evita.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/stageandcinema--steven-suskin.json",
+        "field": "criticName",
+        "oldValue": "Steven Suskin",
+        "newValue": "Thomas Antoinne",
+        "description": "Page byline at https://stageandcinema.com/2012/04/20/evita-marquis-theatre/ is Thomas Antoinne; Steven Suskin came from the legacy web-search step and is not on the page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:25:30.252Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bengal-tiger-at-the-baghdad-zoo-2011/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Erik Piepenburg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "betrayal-2013/guardian--charles-isherwood.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "between-riverside-and-crazy-2022/vulture--sara-holdren.json criticName: \"Sara Holdren\" -> \"Jackson McHenry\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bob-fosses-dancin-2023/vulture--sara-holdren.json criticName: \"Sara Holdren\" -> \"Jackson McHenry\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "book-of-mormon-2011/guardian--ben-brantley.json criticName: \"Ben Brantley\" -> \"Hadley Freeman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bridge-and-tunnel-2006/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bring-it-on-the-musical-2012/vulture--jesse-green.json duplicateOf: null -> \"vulture--scott-brown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-the-floor-2009/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "chaplin-2012/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "choir-boy-2019/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clydes-2021/hollywood-reporter--david-rooney.json criticName: \"David Rooney\" -> \"Lovia Gyarkye\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "collected-stories-2010/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Marilyn Stasio\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/deadline--pete-hammond.json criticName: \"Pete Hammond\" -> \"Jeremy Gerard\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "company-2021/hollywood-reporter--angie-han.json criticName: \"Angie Han\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crybaby-2008/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Jesse Hassenger\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Daniel D'Addario\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/vulture--helen-shaw.json criticName: \"Helen Shaw\" -> \"Jackson McHenry\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-2024/theatermania--jesse-green.json criticName: \"Jesse Green\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disgraced-2014/guardian--jesse-green.json criticName: \"Jesse Green\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "equus-2008/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eureka-day-2024/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "evita-2012/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/stageandcinema--steven-suskin.json criticName: \"Steven Suskin\" -> \"Thomas Antoinne\""
+    }
+  ]
+}
