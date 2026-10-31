@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-10-31T21:10:27.700Z",
-  "processed": 147,
-  "failed": 74,
-  "successRate": "66.5%",
+  "updatedAt": "2026-10-31T21:31:48.148Z",
+  "processed": 209,
+  "failed": 92,
+  "successRate": "69.4%",
   "tierBreakdown": {
-    "playwright": 84,
+    "playwright": 112,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 2,
+    "scrapingdog": 15,
+    "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 12,
-    "archive": 34
+    "archiveToday": 15,
+    "archive": 55
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-31T21:17:08.425Z",
+      "event": "bb-session",
+      "session": "502244e4",
+      "url": "https://www.nytimes.com/2026/09/26/theater/jake-shears-scissor-sisters-rocky-hor"
+    },
+    {
+      "t": "2026-10-31T21:17:09.104Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T21:17:56.808Z",
+      "event": "bb-session",
+      "session": "9c833542",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-31T21:17:57.386Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T21:19:11.444Z",
+      "event": "bb-session",
+      "session": "081751fd",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-31T21:19:12.009Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T21:27:32.061Z",
+      "event": "bb-session",
+      "session": "8d3c214d",
+      "url": "https://www.nytimes.com/2025/11/12/theater/hunger-games-live-london.html"
+    },
+    {
+      "t": "2026-10-31T21:27:32.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
