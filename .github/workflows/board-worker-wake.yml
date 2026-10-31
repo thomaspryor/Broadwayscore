@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: read
+  actions: read   # the debounce lists this workflow's recent runs
 
 concurrency:
   group: board-worker-wake
@@ -38,6 +39,7 @@ jobs:
           BOARD_WORKER_FIRE_URL: ${{ secrets.BOARD_WORKER_FIRE_URL }}
           BOARD_WORKER_FIRE_TOKEN: ${{ secrets.BOARD_WORKER_FIRE_TOKEN }}
           REASON: ${{ inputs.reason }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/wake-board-worker.js "$REASON"
 
       - name: Notify on failure

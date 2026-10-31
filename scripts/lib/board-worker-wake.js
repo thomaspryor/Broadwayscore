@@ -36,4 +36,27 @@ async function wakeBoardWorker({ env = process.env, fetchImpl = globalThis.fetch
   }
 }
 
-module.exports = { wakeBoardWorker, FIRE_URL_RE };
+/**
+ * Debounce: every fire starts a full new routine session and the API has no idempotency key, so
+ * five answers in a row must not start five sessions. One worker that starts after the first answer
+ * picks every answered card (answers go first in the picker). Skip when another run of this workflow
+ * finished successfully in the last `windowMin` minutes (4: a worker picks its cards in its first minutes, and 4 keeps fires under the routine 30-per-hour cap). Fail-open: if GitHub cannot be asked, fire.
+ */
+async function recentWakeRun({ env = process.env, fetchImpl = globalThis.fetch, now = Date.now(), windowMin = 4 } = {}) {
+  const repo = env.GITHUB_REPOSITORY;
+  const token = env.GITHUB_TOKEN;
+  if (!repo || !token) return null;
+  try {
+    const since = new Date(now - windowMin * 60000).toISOString();
+    const res = await fetchImpl(`https://api.github.com/repos/${repo}/actions/workflows/board-worker-wake.yml/runs?status=success&per_page=10&created=%3E%3D${encodeURIComponent(since)}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const other = (json.workflow_runs || []).find((r) => String(r.id) !== String(env.GITHUB_RUN_ID || ''));
+    return other ? { id: other.id, at: other.created_at } : null;
+  } catch { return null; }
+}
+
+module.exports = { wakeBoardWorker, recentWakeRun, FIRE_URL_RE };
