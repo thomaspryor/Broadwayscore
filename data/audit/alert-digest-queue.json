@@ -292,20 +292,6 @@
     "queuedAt": "2026-10-31T15:02:52.932Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-kick-inside-off-broadway-2026",
-    "title": "Review gap — \"The Kick Inside\" missing 28 cited review(s)",
-    "description": "The Kick Inside (the-kick-inside-off-broadway-2026): 28 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-kick-inside-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T15:02:53.005Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-moth-off-west-end-2026",
     "title": "Review gap — \"The Moth\" missing 1 cited review(s)",
     "description": "The Moth (the-moth-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-moth-off-west-end-2026 --checkpoint --ingest-missing",
@@ -1096,6 +1082,20 @@
     "queuedAt": "2026-10-31T18:23:04.502Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+    "title": "Review gap — \"ANON – a tempest at our kitchen table\" missing 1 cited review(s)",
+    "description": "ANON – a tempest at our kitchen table (anon-a-tempest-at-our-kitchen-table-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=anon-a-tempest-at-our-kitchen-table-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:23:04.516Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:any-rebellion-of-will-regional-2026",
     "title": "Review gap — \"Any Rebellion of Will\" missing 2 cited review(s)",
     "description": "Any Rebellion of Will (any-rebellion-of-will-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=any-rebellion-of-will-regional-2026 --checkpoint --ingest-missing",
@@ -1817,7 +1817,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-31T20:32:00.357Z"
+    "queuedAt": "2026-10-31T20:57:52.640Z"
   },
   {
     "conditionKey": "land:land/bro-6725-date-ci2",

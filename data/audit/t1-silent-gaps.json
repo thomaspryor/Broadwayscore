@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T20:32:00.356Z",
+  "generatedAt": "2026-10-31T20:57:52.639Z",
   "windowDays": 45,
   "showsScanned": 218,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 146.6564197222222,
+      "fileAgeHours": 147.0875875,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 132.11221916666668,
+      "nonTerminalAgeHours": 132.54340888888888,
       "needsManualRecovery": false
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 175.1761038888889,
+      "fileAgeHours": 175.6072738888889,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 161.22411055555557,
+      "nonTerminalAgeHours": 161.65530027777777,
       "needsManualRecovery": true
     },
     {
@@ -63,9 +63,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=dead-girls-quinceanera-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch933.html --outlet=talkinbroadway --critic=\"Christine Malcom\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-29T17:57:44.710Z",
-      "fileAgeHours": 50.57100222222222,
+      "fileAgeHours": 51.00219138888889,
       "gapSeenAt": "2026-10-31T17:36:35.237Z",
-      "nonTerminalAgeHours": 2.9236441666666666,
+      "nonTerminalAgeHours": 3.354833888888889,
       "needsManualRecovery": false
     },
     {
@@ -83,9 +83,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=kowalski-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch925.html --outlet=talkinbroadway --critic=\"Savannah Brooks\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-31T13:59:51.230Z",
-      "fileAgeHours": 6.535865,
+      "fileAgeHours": 6.9670547222222226,
       "gapSeenAt": "2026-10-31T18:23:22.548Z",
-      "nonTerminalAgeHours": 2.1438355555555555,
+      "nonTerminalAgeHours": 2.575025277777778,
       "needsManualRecovery": false
     },
     {
@@ -106,9 +106,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=im-gonna-marry-you-tobey-maguire-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch930.html --outlet=talkinbroadway --critic=\"Savannah Brooks\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-31T13:58:25.753Z",
-      "fileAgeHours": 6.5596097222222225,
+      "fileAgeHours": 6.990799166666666,
       "gapSeenAt": "2026-10-31T17:36:35.237Z",
-      "nonTerminalAgeHours": 2.9236441666666666,
+      "nonTerminalAgeHours": 3.354833888888889,
       "needsManualRecovery": false
     }
   ],

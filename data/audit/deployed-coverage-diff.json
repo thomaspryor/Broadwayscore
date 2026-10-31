@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-10-31T20:32:20.697Z",
+  "generatedAt": "2026-10-31T20:58:16.376Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 301,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 299,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "twelfth-night-crucible-regional-2026",
+      "title": "Twelfth Night",
+      "openingDate": "2026-10-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.39 vs local 76.96 (Δ0.43)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-31T20:58:08.721Z"
+    },
+    {
+      "showId": "the-penelopiad-york-royal-regional-2026",
+      "title": "The Penelopiad",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.39 vs local 76.5 (Δ0.89)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-10-31T20:58:08.721Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
