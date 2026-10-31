@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T21:19:55.374Z",
+  "timestamp": "2026-10-31T21:38:36.015Z",
   "stats": {
-    "totalReviews": 76265,
+    "totalReviews": 76287,
     "alreadyFlagged": 21700,
     "dateGuardCatches": 238,
-    "directorMismatch": 3239,
-    "tvFilmSignals": 2180,
-    "londonSignals": 3517,
+    "directorMismatch": 3240,
+    "tvFilmSignals": 2182,
+    "londonSignals": 3518,
     "offBroadwaySignals": 722,
     "yearMismatch": 323,
-    "noPublishDate": 8596
+    "noPublishDate": 8601
   },
   "findings": [
     {
@@ -6265,7 +6265,7 @@
     },
     {
       "showId": "ashland-avenue-regional-2025",
-      "file": "thefourthwalsh--unknown.json",
+      "file": "thefourthwalsh--katy-walsh.json",
       "score": 63,
       "publishDate": "2025-09-17",
       "url": "https://thefourthwalsh.com/2025/09/review-ashland-avenue-goodman-theatre-the-office-fans-this-one-is-for-you/",
@@ -17124,7 +17124,7 @@
     },
     {
       "showId": "diana-regional-2025",
-      "file": "chi-mt--unknown.json",
+      "file": "chi-mt--patrick-obrien.json",
       "publishDate": "2025-06-25",
       "url": "https://www.chi-mt.com/reviews/chicago-shakes-42-balloons-theo-diana-bic-porchlight-titanique-jun-25",
       "findings": [
@@ -24614,7 +24614,7 @@
     },
     {
       "showId": "good-people-regional-2026",
-      "file": "wernerstheatrereviews--unknown.json",
+      "file": "wernerstheatrereviews--emily-werner.json",
       "publishDate": "2026-07-21",
       "url": "https://wernerstheatrereviews.wordpress.com/2026/07/21/4-chairs-theatres-good-people-delivers-a-timely-story-of-empathy-and-survival/",
       "findings": [
@@ -47098,7 +47098,7 @@
     },
     {
       "showId": "passion-regional-2025",
-      "file": "around-the-town-chicago--unknown.json",
+      "file": "around-the-town-chicago--mark-reinecke.json",
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/passion-reviewed-by-mark-reinecke/",
       "findings": [
@@ -57715,7 +57715,7 @@
     },
     {
       "showId": "superior-donuts-regional-2025",
-      "file": "third-coast-review--unknown.json",
+      "file": "third-coast-review--nancy-s-bishop.json",
       "score": 74,
       "publishDate": "2025-11-08",
       "url": "https://thirdcoastreview.com/stages/2025/11/08/review-superior-donuts-artistic-home",
@@ -58689,7 +58689,7 @@
     },
     {
       "showId": "sweet-charity-regional-2025",
-      "file": "around-the-town-chicago--unknown.json",
+      "file": "around-the-town-chicago--alan-bresloff.json",
       "score": 76,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/sweet-charity-3/",
@@ -59507,6 +59507,19 @@
       ]
     },
     {
+      "showId": "the-ask-off-broadway-2026",
+      "file": "the-knockturnal--karen-snyder.json",
+      "publishDate": "2026-10-18",
+      "url": "https://theknockturnal.com/the-ask-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
       "showId": "the-assembled-parties-2013",
       "file": "ap--mark-kennedy.json",
       "score": 85,
@@ -59702,6 +59715,19 @@
       "score": 90,
       "publishDate": "2016-12-09",
       "url": "https://www.timeout.com/newyork/blog/theater-review-the-bands-visit-takes-us-to-a-distant-quirky-land-121416",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from the-bands-visit-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-bands-visit-off-broadway-2016",
+      "file": "variety--marilyn-stasio.json",
+      "publishDate": "2016-12-09",
+      "url": "https://variety.com/2016/legit/reviews/the-bands-visit-review-musical-tony-shalhoub-1201938052/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62758,7 +62784,7 @@
     },
     {
       "showId": "the-f-ck-house-regional-2025",
-      "file": "third-coast-review--unknown.json",
+      "file": "third-coast-review--nancy-s-bishop.json",
       "publishDate": "2025-09-02",
       "url": "https://thirdcoastreview.com/stages/2025/09/02/review-strawdog-theatre-the-fck-house",
       "findings": [
@@ -77708,7 +77734,7 @@
     },
     {
       "showId": "white-christmas-regional-2025",
-      "file": "picksinsix--ed-tracy.json",
+      "file": "picksinsix--regina-belt-daniels.json",
       "score": 90,
       "publishDate": "2025-11-24",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2025/11/24/picksinsix-review-white-christmas-paramount-theatre",
@@ -78721,7 +78747,7 @@
     },
     {
       "showId": "wyrd-regional-2025",
-      "file": "around-the-town-chicago--frank-meccia.json",
+      "file": "around-the-town-chicago--alan-bresloff.json",
       "score": 75,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/wyrd/",
@@ -112935,7 +112961,7 @@
     {
       "showId": "roleplay-off-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-10-27",
       "url": "https://www.allthatdazzles.co.uk/post/review-roleplay-soho-theatre",
       "findings": [
@@ -113741,6 +113767,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "broadwaypodcastnetwork--broadway-podcast-network.json",
+      "publishDate": "2026-07-30",
+      "url": "https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -126848,6 +126887,19 @@
       "score": 43,
       "publishDate": "March 27, 2002",
       "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9906e0dd133bf934a15750c0a9649c8b63&scp=2&sq=%22smell%20of%20the%20kill%22&st=cse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "britishtheatrecom--susan-novak.json",
+      "publishDate": "2026-07-16",
+      "url": "https://www.britishtheatre.com/zh/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
