@@ -25,6 +25,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // workflow for each exemption. Retained gaps and evidence are documented in
 // scripts/orphaned-audit-writes-triage.md. Do not exempt an unstaged durable write.
 const EXEMPT = {
+  "scripts/draft-reddit-opening-posts.js|data/audit/show-review-gap.json":
+    "read-only: gapByShow loads the gap audit for the aggregator-gap hold; the script writes only reddit-post-drafts.json",
   "scripts/produce-press-night-digest-snapshot.js|data/audit/reddit-post-drafts.json":
     "read-only: loadInputs reads the Reddit drafts to grade them; the producer writes only press-night-digest-snapshot.json, staged by opening-night-checklist.yml's telemetry commit",
   "scripts/audit-coverage-holes.js|data/audit/coverage-holes-decisions.json":
