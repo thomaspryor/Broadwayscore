@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T20:21:08.079Z",
+  "timestamp": "2026-10-31T20:40:44.121Z",
   "stats": {
-    "totalReviews": 76093,
-    "alreadyFlagged": 21760,
+    "totalReviews": 76143,
+    "alreadyFlagged": 21765,
     "dateGuardCatches": 238,
     "directorMismatch": 3230,
-    "tvFilmSignals": 2175,
-    "londonSignals": 3511,
+    "tvFilmSignals": 2174,
+    "londonSignals": 3514,
     "offBroadwaySignals": 718,
     "yearMismatch": 320,
-    "noPublishDate": 8595
+    "noPublishDate": 8591
   },
   "findings": [
     {
@@ -68767,19 +68767,6 @@
       ]
     },
     {
-      "showId": "the-penelopiad-york-royal-regional-2026",
-      "file": "grandgoldman--claire-hodges.json",
-      "publishDate": "2026-10-17",
-      "url": "https://grandgoldman.com/fa/blogs/celebrity/the-penelopiad-review-atwood-gives-voice-to-penelopes-maids",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"amazon prime\""
-        }
-      ]
-    },
-    {
       "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "broadwaywithaj--aj-jaffari.json",
       "score": 92,
@@ -74122,6 +74109,7 @@
     {
       "showId": "twelfth-night-crucible-regional-2026",
       "file": "soz6--unknown.json",
+      "score": 79,
       "publishDate": "2026-10-18",
       "url": "https://www.soz6.com/news/twelfth-night-review-mathew-horne-oozes-arrogance-as-a-brilliantly-buttoned-up-malvolio",
       "findings": [
@@ -84257,6 +84245,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "betty-blue-eyes-west-end-2011",
+      "file": "independent--michael-coveney.json",
+      "score": null,
+      "publishDate": "2011-04-14",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/first-night-betty-blue-eyes-novello-theatre-london-2267577.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -99454,6 +99456,20 @@
       "score": 61,
       "publishDate": "April 24, 2019",
       "url": "https://www.hollywoodreporter.com/review/ink-theater-1204291",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "ink-2019",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 72,
+      "publishDate": "2019-05-02",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-3LUY0W",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -127304,6 +127320,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-umbrellas-of-cherbourg-west-end-2011",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2011-03-23",
+      "url": "http://www.thisislondon.co.uk/theatre/review-23934627-theres-not-much-to-stir-the-emotions-in-the-umbrellas-of-cherbourg.do",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
