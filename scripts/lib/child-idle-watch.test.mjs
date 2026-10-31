@@ -171,6 +171,17 @@ test('hook: a parent ending KEEP OPEN on a live child needs a child-idle-watch',
   assert.equal(runHook('Backfill Chicago (BRO-6498)', [create], FX.parent.closing, { CHILDWATCH_GATE_DISABLE: '1' }).status, 0, 'kill switch');
 });
 
+test('hook: a child\'s finished Monitor is not a live wait; a Monitor event is progress (BRO-6717)', { skip: !fs.existsSync(HOOK) && 'no repo hook' }, () => {
+  // Real shapes: the result names the task in parentheses; an event notice has <event> and no <status>.
+  const mon = (n) => ({ name: 'Monitor', input: { command: 'node scripts/lib/wait-for-land.js land/x 60', description: 'land run' },
+    result: 'Monitor started (task bmon7k2q9, expires in 3600s).', notice: n });
+  const ev = '<task-notification>\n<task-id>bmon7k2q9</task-id>\n<summary>Monitor event: "land run"</summary>\n<event>waiting: run 1 in_progress</event>\n</task-notification>';
+  const calls = turnCalls(TURN2);
+  assert.equal(runHook(FX.firstPrompt, [...calls, mon(ev)], TURN2.closing).status, 0, 'an event is progress, the Monitor is live');
+  const r = runHook(FX.firstPrompt, [...calls, mon(ev), { name: 'Bash', input: { command: 'true' }, notice: notice('bmon7k2q9') }], TURN2.closing);
+  assert.equal(r.status, 2, 'a finished Monitor is not a wake: ' + r.stderr.slice(0, 400));
+});
+
 // ─── Ship-check findings (false positives / negatives) ───────────────────────
 const { isDetached, liveBackground } = require('./child-session-wait-guard.js');
 const blocks = (closing) => childJobsDecision(childInput(TURN1, { closing, tools: [], done: [] })).block;

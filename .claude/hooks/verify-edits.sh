@@ -1409,7 +1409,9 @@ if _CW_CODES:
             import subprocess, time
             from datetime import datetime
             _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
-                        for m in re.findall(r'<task-notification>.*?<task-id>\s*([^<\s]+)\s*</task-id>', p or '', re.DOTALL)}
+                        for n in re.findall(r'<task-notification>(.*?)</task-notification>', p or '', re.DOTALL)  # a Monitor <event> without <status> is progress
+                        if '<status>' in re.sub(r'<event>.*?</event>', '', n, flags=re.DOTALL) or '<event>' not in n
+                        for m in re.findall(r'<task-id>\s*([^<\s]+)\s*</task-id>', n)}
             _cw_tools = []
             for _i, (_k, _p) in enumerate(events):
                 if _k != 'tool':
@@ -1418,14 +1420,14 @@ if _CW_CODES:
                 _inp = _inp if isinstance(_inp, dict) else {}
                 if _nm == 'TaskStop':
                     _cw_done.add(str(_inp.get('task_id') or _inp.get('taskId') or ''))
-                _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', tool_results_by_id.get(_tid, '') or '')
+                _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})|\bMonitor started \(task\s+([0-9A-Za-z_-]{4,})', tool_results_by_id.get(_tid, '') or '')
                 _cw_ts = result_ts_by_id.get(_tid, '')
                 try:
                     _cw_ts = datetime.fromisoformat(_cw_ts.replace('Z', '+00:00')).timestamp() * 1000 if _cw_ts else None
                 except Exception:
                     _cw_ts = None
                 _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp, 'ok': _tid not in tool_error_ids,
-                                  'taskId': _bm.group(1) if _bm else None, 'startedAt': _cw_ts})
+                                  'taskId': (_bm.group(1) or _bm.group(2)) if _bm else None, 'startedAt': _cw_ts})
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
