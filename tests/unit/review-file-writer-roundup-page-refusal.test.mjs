@@ -42,6 +42,7 @@ const SAMPLES = {
   'thestage.co.uk': ['https://www.thestage.co.uk/review-round-ups/the-story-review-round-up', 'thestage', LONDON_SHOW],
   'londonboxoffice.co.uk': ['https://www.londonboxoffice.co.uk/news/post/Review-Round-Up%3A-THE-STORY', 'london-box-office', LONDON_SHOW],
   'westendtheatre.com': ['https://www.westendtheatre.com/123456/news/reviews/the-story-reviews/', 'westendtheatre', LONDON_SHOW],
+  'goldderby.com': ['https://www.goldderby.com/theater/2026/other-desert-cities-broadway-revival-reviews/', 'goldderby', BROADWAY_SHOW],
   'broadwayworld.com': ['https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITIES-Opens-On-Broadway-20261001', 'broadwayworld', BROADWAY_SHOW],
 };
 
