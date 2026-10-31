@@ -1,32 +1,24 @@
 {
-  "generatedAt": "2026-10-31T03:46:05.676Z",
-  "night": "2026-10-29",
+  "generatedAt": "2026-10-31T05:52:28.535Z",
+  "night": "2026-10-30",
   "counts": {
-    "total": 5,
+    "total": 3,
     "passed": 0,
-    "failed": 2,
-    "notGraded": 3
+    "failed": 1,
+    "notGraded": 2
   },
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "A Few Good Men: published by the regular pipeline; TheWrap fixed by hand at 12:42am; 21 of 22 reviews live by 1:02am; reviews came out at 11:02pm, not the expected 10:00pm, so they were timed from 11:02pm; TheWrap went live at 1:24am (late); the first review was not live until 11:40pm (38 min after release); emails ready. Failed."
+      "line": "The Moth: published by the regular pipeline; 3 of 6 reviews live by 7:00pm; FringeReview (Simon Jenner) went live at 8:18pm (late); FringeReview (Unknown) went live at 8:18pm (late); London Pub Theatres went live at 8:18pm (late). Failed."
     },
     {
-      "verdict": "FAIL",
-      "line": "The Heart: published by the regular pipeline; 2 of 4 reviews live by 12:00am; Theater Pizzazz went live at 12:50am (late); Is Something Of A Miracle not live by 3:55am; emails ready. Failed."
+      "verdict": "PENDING",
+      "line": "Medea: not graded yet, still being checked."
     },
     {
-      "verdict": "UNKNOWN",
-      "line": "Kelly McCaughan: Catholic Guilt: not graded, the overnight check stopped before it finished."
-    },
-    {
-      "verdict": "UNKNOWN",
-      "line": "The Greatest Story Ever: not graded, no reviews were published overnight."
-    },
-    {
-      "verdict": "UNKNOWN",
-      "line": "The Lives of Others: published by the regular pipeline; no opening-night email draft yet (the site has 0 of the 8 reviews a draft needs). Not graded: could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night or whether reviews stayed up."
+      "verdict": "PENDING",
+      "line": "Specimen: not graded yet, still being checked."
     }
   ],
   "scoreboard": {
@@ -35,8 +27,8 @@
     "passedOnOwn": 0
   },
   "missFirstSeen": {
-    "a-few-good-men-2026|2026-10-29|review:thewrap:Robert Hofler": "2026-10-30T19:32:46.818Z",
-    "the-heart-off-broadway-2026|2026-10-29|review:theater-pizzazz:Ron Fassler": "2026-10-30T19:32:46.818Z",
-    "the-heart-off-broadway-2026|2026-10-29|review:is-something-of-a-miracle:": "2026-10-30T19:32:46.818Z"
+    "the-moth-off-west-end-2026|2026-10-30|review:fringereview:Simon Jenner": "2026-10-31T05:52:28.535Z",
+    "the-moth-off-west-end-2026|2026-10-30|review:fringereview:Unknown": "2026-10-31T05:52:28.535Z",
+    "the-moth-off-west-end-2026|2026-10-30|review:londonpubtheatres:Katie Walker-Cook": "2026-10-31T05:52:28.535Z"
   }
 }
