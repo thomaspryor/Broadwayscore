@@ -1880,6 +1880,34 @@
     "queuedAt": "2026-10-31T23:09:19.829Z"
   },
   {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T23:26:52.173Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-show-ids",
+    "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
+    "description": "check-corpus-drift.js audit \"orphan-show-ids\" (node scripts/audit-orphan-show-ids.js) has been drifting. Latest output:\n\nFound 2 orphan show ID(s):\n\nSlim show files (2) — not in shows.json:\n  public/data/shows/studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025.json\n  public/data/shows/the-high-life-the-musical-dundee-rep-regional-2026.json\n\nRun with --fix to delete orphan slim files. audience-buzz/show-score require manual rename.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T23:35:22.967Z"
+  },
+  {
     "conditionKey": "corpus-drift:monitor-only",
     "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +12 more). Checked 2026-10-31.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
@@ -1891,7 +1919,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-31T23:11:02.485Z"
+    "queuedAt": "2026-10-31T23:35:22.995Z"
   },
   {
     "conditionKey": "review-gap:opening-window:cirque-berserk-west-end-2026",
@@ -1934,19 +1962,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T23:26:40.592Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T23:26:52.173Z"
   }
 ]

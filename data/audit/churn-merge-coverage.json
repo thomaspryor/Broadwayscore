@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-31T23:06:12.323Z",
+    "generatedAt": "2026-10-31T23:31:04.986Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -17,11 +17,11 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 95
+      "churn": 88
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 48
+      "churn": 43
     }
   ],
   "covered": [
@@ -32,12 +32,12 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 69,
+      "churn": 61,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 49,
+      "churn": 44,
       "mergeAttr": "ours"
     }
   ]
