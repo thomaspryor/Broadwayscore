@@ -285,3 +285,21 @@ test('the context window and effort default reach multi-repo sessions (BRO-6684)
   assert.ok(settings.env.CLAUDE_CODE_AUTO_COMPACT_WINDOW, 'the repo sets an autocompact window');
   assert.equal(buildSettings({ hooks: {} }, '/home/user').settings.env, undefined, 'absent keys are not invented');
 });
+
+test('an owner env entry and effort level survive re-runs and uninstall (BRO-6684)', () => {
+  const t = fs.mkdtempSync(path.join(os.tmpdir(), 'home-spend-'));
+  fs.mkdirSync(path.join(t, '.claude'));
+  const file = path.join(t, '.claude', 'settings.json');
+  fs.writeFileSync(file, JSON.stringify({ env: { FOO: '1' }, effortLevel: 'high' }));
+  const run = (...a) => spawnSync(process.execPath, [INSTALLER, '--target', t, ...a], { encoding: 'utf8' });
+  run('--adopt-hookless-settings');
+  run();
+  run();
+  const s = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(s.env.FOO, '1');
+  assert.ok(s.env.CLAUDE_CODE_AUTO_COMPACT_WINDOW, 'the repo window is added beside the owner entry');
+  assert.equal(s.effortLevel, 'high');
+  assert.equal(run('--check').status, 0, 'no drift after a re-run');
+  run('--uninstall');
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { env: { FOO: '1' }, effortLevel: 'high' });
+});

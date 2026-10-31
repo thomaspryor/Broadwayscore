@@ -56,6 +56,26 @@ function hookCommand(target, hookName) {
 
 // Repo settings keys copied as-is: the context window (env) and default effort (BRO-6684).
 const SPEND_KEYS = ['env', 'effortLevel'];
+// What this installer last wrote for them, so an owner's own values are told apart on every run.
+const SPEND_RECORD_KEY = '_installedSpend';
+
+// The owner's part of a settings file: env entries and effortLevel that differ from what we wrote.
+function ownerSpend(existing) {
+  const ours = (existing && existing[SPEND_RECORD_KEY]) || {};
+  const env = Object.fromEntries(Object.entries((existing && existing.env) || {}).filter(([k, v]) => !(ours.env && ours.env[k] === v)));
+  const effort = existing && existing.effortLevel !== undefined && existing.effortLevel !== ours.effortLevel ? existing.effortLevel : undefined;
+  return { env, effortLevel: effort };
+}
+
+// Repo spend keys merged under the owner's own values: env per entry, effortLevel whole.
+function mergeSpend(repoSpend, owner) {
+  const out = {};
+  const env = { ...(repoSpend.env || {}), ...owner.env };
+  if (Object.keys(env).length) out.env = env;
+  const effort = owner.effortLevel !== undefined ? owner.effortLevel : repoSpend.effortLevel;
+  if (effort !== undefined) out.effortLevel = effort;
+  return out;
+}
 
 // The generated settings for <target>: every hook in the repo settings, same
 // events, matchers and timeouts, commands rewritten to hookCommand().
@@ -100,9 +120,12 @@ function plan(target, adoptHookless = false) {
   const isObject = existing && typeof existing === 'object' && !Array.isArray(existing);
   const mayAdopt = !!(adoptHookless && isObject && !Object.hasOwn(existing, 'hooks') && !Object.hasOwn(existing, MARK_KEY));
   const preserve = isObject && (existing[MARK_KEY] === MARK || mayAdopt);
-  let merged = preserve ? { ...existing, ...settings } : settings;
-  // Adopting the owner's own settings: their env/effortLevel win over the repo's.
-  if (mayAdopt && existing[MARK_KEY] !== MARK) for (const key of SPEND_KEYS) if (Object.hasOwn(existing, key)) merged = { ...merged, [key]: existing[key] };
+  const merged = preserve ? { ...existing, ...settings } : { ...settings };
+  // The owner's own env entries / effortLevel survive every run; ours are recorded (BRO-6684).
+  const owner = preserve ? ownerSpend(existing) : { env: {} };
+  for (const key of [...SPEND_KEYS, SPEND_RECORD_KEY]) delete merged[key]; // fixed key order: re-runs write nothing
+  Object.assign(merged, mergeSpend(repoSpend, owner));
+  if (Object.keys(repoSpend).length) merged[SPEND_RECORD_KEY] = repoSpend;
   return { settingsPath, settings: merged, wired, links, mayAdopt, repoSpend };
 }
 
@@ -170,8 +193,11 @@ function uninstall(p) {
     const remaining = { ...existing };
     delete remaining[MARK_KEY];
     delete remaining.hooks;
-    // Spend keys this installer wrote (still equal to the repo's value); an owner's own stay.
-    for (const key of SPEND_KEYS) if (JSON.stringify(remaining[key]) === JSON.stringify(p.repoSpend[key])) delete remaining[key];
+    // Keep only the owner's own env entries / effortLevel (what differs from what we recorded).
+    const owner = ownerSpend(remaining);
+    for (const key of [...SPEND_KEYS, SPEND_RECORD_KEY]) delete remaining[key];
+    if (Object.keys(owner.env).length) remaining.env = owner.env;
+    if (owner.effortLevel !== undefined) remaining.effortLevel = owner.effortLevel;
     if (Object.keys(remaining).length) fs.writeFileSync(p.settingsPath, JSON.stringify(remaining, null, 2) + '\n');
     else fs.unlinkSync(p.settingsPath);
   }
