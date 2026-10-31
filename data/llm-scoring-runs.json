@@ -1900636,21 +1900636,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T19:53:27.455Z",
-    "completedAt": "2026-10-31T19:54:04.096Z",
-    "totalReviews": 7,
-    "processed": 7,
-    "skipped": 0,
+    "startedAt": "2026-10-31T19:55:22.010Z",
+    "completedAt": "2026-10-31T19:55:31.869Z",
+    "totalReviews": 3,
+    "processed": 2,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 41710,
-      "output": 2135,
-      "cacheRead": 26649,
+      "input": 12984,
+      "output": 620,
+      "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 105116
+      "total": 31613
     },
-    "costUsd": 0.1576646,
-    "runId": "41235686960",
+    "costUsd": 0.0482635,
+    "runId": "41235951725",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1914620,16 +1914620,6 @@
           "flat": 0,
           "down": 0,
           "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "galileo-regional-2025",
-        "ourDistribution": {
-          "up": 7,
-          "flat": 0,
-          "down": 0,
-          "total": 7
         },
         "hasDisagreement": false
       },
@@ -1942090,6 +1942080,16 @@
         "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
       },
       {
+        "showId": "time-is-a-color-and-the-color-is-blue-regional-2025",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 2,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "time-stands-still-2010",
         "ourDistribution": {
           "up": 16,
@@ -1945090,8 +1945090,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T19:59:02.236Z",
-    "completedAt": "2026-10-31T19:59:02.238Z",
+    "startedAt": "2026-10-31T20:00:29.377Z",
+    "completedAt": "2026-10-31T20:00:29.378Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1945104,7 +1945104,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41235686960",
+    "runId": "41235951725",
     "source": "comparative-rescore",
     "errorDetails": []
   }
