@@ -47,3 +47,17 @@ test('debounce: another successful wake run in the window skips; the current run
   assert.equal(await recentWakeRun({ env, fetchImpl: async () => { throw new Error('x'); } }), null, 'fail-open');
   assert.equal(await recentWakeRun({ env: {}, fetchImpl: ok([{ id: 1 }]) }), null, 'no token, no check');
 });
+
+test('requestWake only dispatches inside GitHub Actions and never throws', async () => {
+  const { requestWake } = require('../../scripts/lib/board-worker-wake.js');
+  let calls = 0;
+  const fetchImpl = async (u, o) => { calls++; assert.match(u, /actions\/workflows\/board-worker-wake\.yml\/dispatches$/); return { ok: true }; };
+  assert.equal((await requestWake({ env: { GITHUB_TOKEN: 't', GITHUB_REPOSITORY: 'o/r' }, fetchImpl })).why, 'not-in-actions');
+  assert.equal(calls, 0, 'a dev machine or a unit test never starts a run');
+  assert.equal((await requestWake({ env: { GITHUB_ACTIONS: 'true', GITHUB_TOKEN: 't', GITHUB_REPOSITORY: 'o/r' }, fetchImpl })).why, 'not-in-actions', 'opt-in flag required');
+  assert.equal(calls, 0);
+  const env = { BOARD_WORKER_WAKE_ENABLED: 'true', GITHUB_ACTIONS: 'true', GITHUB_TOKEN: 't', GITHUB_REPOSITORY: 'o/r' };
+  assert.equal((await requestWake({ env, fetchImpl, reason: 'BRO-1' })).requested, true);
+  assert.equal((await requestWake({ env, fetchImpl: async () => ({ ok: false, status: 403 }) })).why, 'http-403');
+  assert.match((await requestWake({ env, fetchImpl: async () => { throw new Error('net'); } })).why, /^error: net/);
+});

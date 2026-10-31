@@ -23,7 +23,7 @@ function ok(body: Record<string, unknown>, status = 200) {
 
 export async function POST(req: NextRequest) {
   const secret = process.env.LINEAR_WEBHOOK_SECRET;
-  if (!secret) return ok({ ok: false, reason: 'not-configured' }, 503);
+  if (!secret) return ok({ ok: false, reason: 'not-configured' });
   const raw = await req.text();
   if (!w.verifySignature(raw, req.headers.get('linear-signature'), secret)) return ok({ ok: false, reason: 'bad-signature' }, 401);
   let payload: unknown;
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   const issueId = w.replyCandidate(payload);
   if (!issueId) return ok({ ok: true, acted: false, reason: 'not-a-reply' });
   const ghToken = process.env.GH_DISPATCH_TOKEN;
-  if (!ghToken) return ok({ ok: false, reason: 'no-github-token' }, 500);
+  if (!ghToken) { console.error('[linear-webhook] GH_DISPATCH_TOKEN is not set'); return ok({ ok: false, reason: 'no-github-token' }); }
   try {
     const data = await linearGraphql(ISSUE_QUERY, { id: issueId });
     const issue = data && data.issue;

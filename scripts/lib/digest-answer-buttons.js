@@ -20,6 +20,9 @@ const { answerUrl, BASE_URL } = require('./owner-decision-email.js');
  */
 function answerButtonsFor(issue, { secret = process.env.APPROVAL_HMAC_SECRET, now = Date.now(), baseUrl = BASE_URL } = {}) {
   if (!secret || process.env.DIGEST_NO_LIST_TOKEN || !issue || !issue.identifier) return null;
+  // A row whose description never loaded (the enrich step is fail-soft) would look label-only and be signed
+  // against the title hash; the answer page matches the real question and would say "Nothing to answer".
+  if (typeof issue.description !== 'string') return null;
   let open;
   try { [open] = link.listOpenDecisions([{ ...issue, description: issue.description || '' }]); } catch { return null; }
   if (!open || !open.choices || !open.choices.length) return null;

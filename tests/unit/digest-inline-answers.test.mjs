@@ -88,3 +88,18 @@ test('a heading-style decision block is folded into the one-line form the answer
   const fenced = '```\n## DECISION NEEDED\n\nexample\n```\n';
   assert.equal(parse.canonicalizeDecisionHeading(fenced), fenced);
 });
+
+test('a row whose description never loaded gets no buttons (it would be signed against the wrong question)', () => {
+  const issue = { identifier: 'BRO-9', title: 'Looks label-only', labels: { nodes: [{ name: 'awaiting-owner' }] } };
+  assert.equal(answerButtonsFor(issue, { secret: 's', now: Date.now() }), null);
+  assert.ok(answerButtonsFor({ ...issue, description: '' }, { secret: 's', now: Date.now() }), 'an empty description is a real label-only card');
+});
+
+test('heading rewrite keeps bold balanced and leaves shapes it cannot fold alone', () => {
+  const parse = require('../../scripts/lib/decision-card-parse.js');
+  const fold = (h) => parse.canonicalizeDecisionHeading(`x\n\n${h}\n\nWhich one?\n`);
+  assert.match(fold('## **DECISION NEEDED (owner):**'), /\*\*DECISION NEEDED \(owner\):\*\* Which one\?/);
+  assert.match(fold('## **DECISION NEEDED**'), /\*\*DECISION NEEDED\*\*: Which one\?/);
+  const odd = `x\n\n## **DECISION NEEDED (owner)**\n\nWhich one?\n`;
+  assert.equal(parse.canonicalizeDecisionHeading(odd), odd);
+});

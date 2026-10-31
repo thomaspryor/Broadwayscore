@@ -6,11 +6,12 @@
  * reply sat until the drain's twice-daily schedule.
  */
 const crypto = require('crypto');
+const link = require('./owner-decision-link.js');
 
 const MAX_SKEW_MS = 60 * 1000;
 const MAX_BODY_CHARS = 1500;
 // Comments the automation writes itself. None of these is an answer, and several land on decision cards.
-const MACHINE_BODY_RE = /^\s*(?:\*\*Session report|\*\*Owner decision\*\*|Claimed by |Dispatched |Emailed the owner|Owner answered:|ANSWERED|Asked the owner|Waiting on your approval|Auto-|RECLAIMED|<!-- |## Codex runner|\[[a-z][a-z0-9 ]*-[a-z0-9 -]*(?::[a-z0-9-]+)?\](?!\())/i;
+const MACHINE_BODY_RE = /^\s*(?:\*\*Session report|\*\*Owner decision\*\*|Claimed by |Dispatched |Emailed the owner|Owner answered:|ANSWERED|Asked the owner|Waiting on your approval|Visual change approved by the owner|Auto-|RECLAIMED|<!-- |## Codex runner|\[[a-z][a-z0-9 ]*-[a-z0-9 -]*(?::[a-z0-9-]+)?\](?!\())/i;
 
 /** Linear-Signature is the hex HMAC-SHA256 of the raw body, keyed with the webhook's signing secret. */
 function verifySignature(rawBody, header, secret) {
@@ -40,7 +41,10 @@ function waitsOnOwner(issue) {
   if (!issue) return false;
   const labelled = ((issue.labels && issue.labels.nodes) || []).some((l) => l && l.name === 'awaiting-owner');
   const done = issue.state && ['completed', 'canceled'].includes(issue.state.type);
-  return !done && (labelled || /DECISION NEEDED/i.test(String(issue.description || '')) && !/^\s*ANSWERED\b/im.test(String(issue.description || '')));
+  const desc = String(issue.description || '');
+  // A live one-line marker (an ANSWERED line elsewhere does not hide a second open question), or the heading form the drain also reads.
+  const live = link.markerLines(desc).some((m) => !link.isPlaceholderQuestion(m.question)) || /^\s*#{1,6}\s+\**DECISION NEEDED/im.test(link.stripCode(desc).join('\n'));
+  return !done && (labelled || live);
 }
 
 module.exports = { verifySignature, fresh, replyCandidate, waitsOnOwner, MAX_SKEW_MS, MAX_BODY_CHARS };

@@ -59,4 +59,23 @@ async function recentWakeRun({ env = process.env, fetchImpl = globalThis.fetch, 
   } catch { return null; }
 }
 
-module.exports = { wakeBoardWorker, recentWakeRun, FIRE_URL_RE };
+/**
+ * Ask the wake workflow (the one place that holds the routine token and debounces) to run. Used by the
+ * Linear reply drain so that every wake, from an email tap or a Linear reply, goes through the same
+ * serialized, debounced path. Only inside GitHub Actions and only when the workflow opts in with
+ * BOARD_WORKER_WAKE_ENABLED=true (so no test, in CI or locally, ever starts a real run); fail-soft.
+ */
+async function requestWake({ env = process.env, fetchImpl = globalThis.fetch, reason = '' } = {}) {
+  if (env.BOARD_WORKER_WAKE_ENABLED !== 'true' || env.GITHUB_ACTIONS !== 'true' || !env.GITHUB_TOKEN || !env.GITHUB_REPOSITORY) return { requested: false, why: 'not-in-actions' };
+  try {
+    const res = await fetchImpl(`https://api.github.com/repos/${env.GITHUB_REPOSITORY}/actions/workflows/board-worker-wake.yml/dispatches`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: env.GITHUB_REF_NAME || 'main', inputs: { reason: String(reason).slice(0, 60) } }),
+      signal: AbortSignal.timeout(10000),
+    });
+    return res.ok ? { requested: true } : { requested: false, why: `http-${res.status}` };
+  } catch (e) { return { requested: false, why: `error: ${String(e && e.message).slice(0, 60)}` }; }
+}
+
+module.exports = { wakeBoardWorker, recentWakeRun, requestWake, FIRE_URL_RE };
