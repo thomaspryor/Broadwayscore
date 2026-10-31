@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T05:38:30.673Z",
-  "processed": 76,
-  "failed": 33,
-  "successRate": "69.7%",
+  "updatedAt": "2026-10-31T05:49:37.403Z",
+  "processed": 148,
+  "failed": 32,
+  "successRate": "82.2%",
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 95,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 3,
+    "scrapingdog": 9,
+    "scrapingbee": 6,
     "brightdata": 2,
-    "archiveToday": 7,
-    "archive": 20
+    "archiveToday": 10,
+    "archive": 39
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-10-31T04:45:56.945Z",
@@ -50,26 +50,43 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T05:30:28.221Z",
+      "t": "2026-10-31T05:27:32.972Z",
       "event": "bb-session",
-      "session": "15361418",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+      "session": "12bc9e5e",
+      "url": "https://www.nytimes.com/2018/02/01/theater/review-fire-and-air-terrence-mcnally-"
     },
     {
-      "t": "2026-10-31T05:30:28.938Z",
+      "t": "2026-10-31T05:27:33.580Z",
       "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T05:32:13.012Z",
+      "t": "2026-10-31T05:32:24.008Z",
       "event": "bb-session",
-      "session": "b0e7ae4c",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "cc2bfc49",
+      "url": "http://deadline.com/2018/01/review-cardinal-with-anna-chlumsky-and-adam-pally-12"
     },
     {
-      "t": "2026-10-31T05:32:13.716Z",
+      "t": "2026-10-31T05:37:42.917Z",
+      "event": "bb-session",
+      "session": "8afb2075",
+      "url": "https://www.nytimes.com/2017/12/27/theater/review-in-mary-shelleys-frankenstein-"
+    },
+    {
+      "t": "2026-10-31T05:37:43.507Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T05:41:34.468Z",
+      "event": "bb-session",
+      "session": "5d7559bf",
+      "url": "https://www.nytimes.com/2017/11/08/theater/office-hour-review.html?_r=0"
+    },
+    {
+      "t": "2026-10-31T05:41:35.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
