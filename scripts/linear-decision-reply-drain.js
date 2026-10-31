@@ -53,7 +53,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const linear = deps.linear || require('./lib/linear-client.js');
   const reply = require('./lib/decision-reply.js');
   const { isAwaitingOwner } = require('./lib/owner-approval-channel.js');
-  const { findDecisionQuestion } = require('./lib/decision-card-parse.js');
+  const { findDecisionQuestion, canonicalizeDecisionHeading } = require('./lib/decision-card-parse.js');
   const drain = require('./lib/linear-drain-parked.js');
   const { headlessUnfitReason } = require('./lib/cloud-worker-pick.js');
   const now = deps.now ? deps.now() : new Date();
@@ -68,6 +68,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   for (const stub of candidates) {
     const full = await linear.getIssue(stub.identifier);
     if (!full) { skipped['not-found'] = (skipped['not-found'] || 0) + 1; continue; }
+    // BRO-6715: a heading-style decision block gets no digest buttons; fold it into the one-line form.
+    const canon = canonicalizeDecisionHeading(full.description);
+    if (canon !== full.description) {
+      if (apply) { await linear.updateIssue(full.id, { description: canon }); full.description = canon; console.log(`normalized decision heading: ${full.identifier}`); }
+      else console.log(`would normalize decision heading: ${full.identifier}`);
+    }
     const plan = reply.planReply(full, planOptions);
     if (plan.action === 'skip') { skipped[plan.why] = (skipped[plan.why] || 0) + 1; continue; }
     plans.push({ issue: full, plan });
