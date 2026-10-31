@@ -1764560,21 +1764560,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T19:13:22.849Z",
-    "completedAt": "2026-10-31T19:13:37.864Z",
-    "totalReviews": 4,
-    "processed": 3,
-    "skipped": 1,
+    "startedAt": "2026-10-31T19:12:31.204Z",
+    "completedAt": "2026-10-31T19:13:47.717Z",
+    "totalReviews": 15,
+    "processed": 15,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 16603,
-      "output": 857,
-      "cacheRead": 11421,
-      "cacheWrite": 0,
-      "total": 43143
+      "input": 93543,
+      "output": 4852,
+      "cacheRead": 53298,
+      "cacheWrite": 3807,
+      "total": 231509
     },
-    "costUsd": 0.0632756,
-    "runId": "41232576338",
+    "costUsd": 0.36676855,
+    "runId": "41232557033",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1768224,6 +1768224,16 @@
           "flat": 4,
           "down": 4,
           "total": 10
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "amelie-regional-2025",
+        "ourDistribution": {
+          "up": 15,
+          "flat": 0,
+          "down": 0,
+          "total": 15
         },
         "hasDisagreement": false
       },
@@ -1772835,16 +1772845,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
-      },
-      {
-        "showId": "catch-me-if-you-can-regional-2025",
-        "ourDistribution": {
-          "up": 9,
-          "flat": 0,
-          "down": 1,
-          "total": 10
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "catch-of-the-day-off-broadway-2026",
@@ -1808904,8 +1808904,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T19:18:34.690Z",
-    "completedAt": "2026-10-31T19:18:34.692Z",
+    "startedAt": "2026-10-31T19:18:44.339Z",
+    "completedAt": "2026-10-31T19:18:44.341Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1808918,7 +1808918,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41232576338",
+    "runId": "41232557033",
     "source": "comparative-rescore",
     "errorDetails": []
   }
