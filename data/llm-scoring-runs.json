@@ -1599826,21 +1599826,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T15:03:21.813Z",
-    "completedAt": "2026-10-31T15:03:58.784Z",
-    "totalReviews": 4,
-    "processed": 4,
-    "skipped": 0,
+    "startedAt": "2026-10-31T15:03:33.621Z",
+    "completedAt": "2026-10-31T15:05:04.746Z",
+    "totalReviews": 18,
+    "processed": 16,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 25270,
-      "output": 1113,
-      "cacheRead": 11421,
-      "cacheWrite": 3807,
-      "total": 62012
+      "input": 98965,
+      "output": 5086,
+      "cacheRead": 60912,
+      "cacheWrite": 0,
+      "total": 246147
     },
-    "costUsd": 0.10599304999999999,
-    "runId": "41212306952",
+    "costUsd": 0.3737762,
+    "runId": "41212516702",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1607925,6 +1607925,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "catch-as-catch-can-regional-2026",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 4,
+          "down": 1,
+          "total": 16
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "catch-me-if-you-can-2011",
         "ourDistribution": {
           "up": 5,
@@ -1610456,6 +1610466,16 @@
           "flat": 3,
           "down": 1,
           "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "deserted-regional-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 2,
+          "down": 0,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -1637700,16 +1637720,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-producers-regional-2026",
-        "ourDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 0,
-          "total": 4
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-producers-west-end-2025",
         "ourDistribution": {
           "up": 39,
@@ -1643216,8 +1643226,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T15:08:56.288Z",
-    "completedAt": "2026-10-31T15:08:56.290Z",
+    "startedAt": "2026-10-31T15:10:02.031Z",
+    "completedAt": "2026-10-31T15:10:02.033Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1643230,7 +1643240,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41212306952",
+    "runId": "41212516702",
     "source": "comparative-rescore",
     "errorDetails": []
   }
