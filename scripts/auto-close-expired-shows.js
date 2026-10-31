@@ -32,10 +32,23 @@ const data = loadShows();
 const closedList = closeExpiredShows(data.shows, { apply: !dryRun });
 const closed = closedList.length;
 
-if (closed === 0) {
+// BRO-6725: move review-seeded UK regional opening dates to the earliest review, so new
+// Guardian/census-seeded shows self-correct once their other reviews arrive.
+let movedDates = [];
+try {
+  const reviewsPath = path.join(__dirname, '..', 'data', 'reviews.json');
+  if (require('fs').existsSync(reviewsPath)) {
+    const { applyMoves } = require('./reconcile-uk-regional-opening-dates');
+    movedDates = applyMoves(data.shows, require(reviewsPath).reviews || []);
+  }
+} catch (e) { console.warn('opening-date reconcile skipped: ' + e.message); }
+
+if (closed === 0 && movedDates.length === 0) {
   console.log('No expired shows to close.');
   process.exit(0);
 }
+if (movedDates.length) console.log(`${dryRun ? '[DRY RUN] Would move' : 'Moved'} ${movedDates.length} review-seeded opening date(s) to the earliest review`);
+if (closed === 0) { if (!dryRun) saveShows(data); process.exit(0); }
 
 if (dryRun) {
   console.log(`[DRY RUN] Would close ${closed} show(s):`);

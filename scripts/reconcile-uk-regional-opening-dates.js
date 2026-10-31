@@ -58,4 +58,14 @@ if (require.main === module) {
     execFileSync('node', [path.join(__dirname, 'new-fix-plan.js'), `--id=${arg.slice(7)}`, '--summary=UK regional: move review-seeded opening dates to the earliest review date', `--actions=${file}`], { stdio: 'inherit' });
   }
 }
-module.exports = { plan };
+// CI path (BRO-6725): the daily status job applies the same moves to shows that were
+// seeded after the one-off plans, so a review-seeded date never stays after a review.
+function applyMoves(shows, reviews) {
+  const { moves } = plan(shows, reviews);
+  for (const m of moves) {
+    m.show.openingDate = m.openingDate;
+    m.show.openingDateSource = m.openingDateSource;
+  }
+  return moves;
+}
+module.exports = { plan, applyMoves };

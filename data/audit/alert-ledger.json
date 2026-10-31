@@ -5500,13 +5500,13 @@
       "title": "Data audits failing (non-blocking): Run data validation",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-31T18:59:22.277Z",
+      "lastSeen": "2026-10-31T20:05:42.091Z",
       "lastNotifiedAt": "2026-10-31T09:43:10.125Z",
       "lastSurfacedAt": "2026-10-29T08:53:30.228Z",
       "notifyCount": 32,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -18726,13 +18726,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-10-31T19:39:45.539Z",
+      "lastSeen": "2026-10-31T20:00:30.028Z",
       "lastNotifiedAt": "2026-10-31T18:27:00.864Z",
       "lastSurfacedAt": "2026-10-31T18:27:00.864Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 9
+      "silentRefires": 11
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -23808,13 +23808,13 @@
       "title": "1 user request(s) stuck — not live after 3 days",
       "firstSeen": "2026-10-22T07:05:54.815Z",
       "incidentOpenedAt": "2026-10-22T07:05:54.815Z",
-      "lastSeen": "2026-10-31T16:21:31.823Z",
+      "lastSeen": "2026-10-31T20:07:18.591Z",
       "lastNotifiedAt": "2026-10-29T07:17:00.263Z",
       "lastSurfacedAt": "2026-10-29T07:17:00.263Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "reddit-sentiment:stale": {
       "status": "resolved",
@@ -34017,6 +34017,32 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 2
+    },
+    "land:land/bro-6249-planning-tiers": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-6249-planning-tiers",
+      "firstSeen": "2026-10-31T20:07:36.369Z",
+      "incidentOpenedAt": "2026-10-31T20:07:36.369Z",
+      "lastSeen": "2026-10-31T20:07:36.369Z",
+      "lastNotifiedAt": "2026-10-31T20:07:36.369Z",
+      "lastSurfacedAt": "2026-10-31T20:07:36.369Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-6716-owncast": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-6716-owncast",
+      "firstSeen": "2026-10-31T20:06:35.108Z",
+      "incidentOpenedAt": "2026-10-31T20:06:35.108Z",
+      "lastSeen": "2026-10-31T20:06:35.108Z",
+      "lastNotifiedAt": "2026-10-31T20:06:35.108Z",
+      "lastSurfacedAt": "2026-10-31T20:06:35.108Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
