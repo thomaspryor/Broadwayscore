@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T03:21:21.720Z",
+  "timestamp": "2026-10-31T03:50:35.405Z",
   "stats": {
-    "totalReviews": 72974,
-    "alreadyFlagged": 22376,
-    "dateGuardCatches": 229,
-    "directorMismatch": 2976,
-    "tvFilmSignals": 2050,
-    "londonSignals": 3411,
-    "offBroadwaySignals": 651,
-    "yearMismatch": 301,
-    "noPublishDate": 9271
+    "totalReviews": 72978,
+    "alreadyFlagged": 22377,
+    "dateGuardCatches": 230,
+    "directorMismatch": 2979,
+    "tvFilmSignals": 2051,
+    "londonSignals": 3410,
+    "offBroadwaySignals": 652,
+    "yearMismatch": 302,
+    "noPublishDate": 9235
   },
   "findings": [
     {
@@ -1205,6 +1205,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "rhetoricalreview--keolanani-kinghorn.json",
+      "publishDate": "2026-01-21",
+      "url": "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -19173,6 +19191,19 @@
       ]
     },
     {
+      "showId": "falsettos-regional-2024",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2024-11-22",
+      "url": "https://thirdcoastreview.com/2024/11/22/stages-court-theatre-and-timeline-theatre-falsettos",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
       "showId": "farinelli-and-the-king-west-end-2015",
       "file": "standard--fiona-mountford.json",
       "score": 78,
@@ -37010,6 +37041,19 @@
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
+      "file": "exeunt-magazine--unknown.json",
+      "publishDate": "2025-11-25",
+      "url": "https://exeuntnyc.com/reviews/review-meet-the-cartozians-at-pershing-square-signature-center/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "meet-the-cartozians-off-broadway-2025",
       "file": "nysr--michael-sommers.json",
       "score": 82,
       "publishDate": "2025-11-17",
@@ -45897,6 +45941,19 @@
       "score": 81,
       "publishDate": "2025-04-24",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/prayer-for-the-french-republic-northlight-theatre-theater-wit/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from prayer-for-the-french-republic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "prayer-for-the-french-republic-regional-2025",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2025-04-20",
+      "url": "https://thirdcoastreview.com/2025/04/20/stages-review-northlight-and-theater-wit-prayer-for-the-french-republic",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -105019,6 +105076,24 @@
       ]
     },
     {
+      "showId": "prince-faggot-off-broadway-2025",
+      "file": "culturesauce--unknown.json",
+      "publishDate": "2025-06-17",
+      "url": "https://culturesauce.com/2025/06/17/prince-faggot-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 85d before show (2025-06-17 vs 2025-09-10)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "prince-of-broadway-2017",
       "file": "ew--jessica-derschowitz.json",
       "score": 53,
@@ -119040,20 +119115,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "file": "artshub--unknown.json",
-      "score": null,
-      "publishDate": "2026-10-30",
-      "url": "https://www.artshub.co.uk/event/the-revlon-girl-2637273/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
