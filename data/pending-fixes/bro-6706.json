@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6706",
   "planId": "de8df004-c44a-44f8-aead-2b8e0a358a3a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T11:46:03.479Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "shows.json: million-dollar-quartet-regional-2024.isRevival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T11:54:33.546Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for wiping-my-mothers-arse-pitlochry-festival-regional-2026 (tags: [\"regional\",\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for million-dollar-quartet-regional-2024 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
 }
