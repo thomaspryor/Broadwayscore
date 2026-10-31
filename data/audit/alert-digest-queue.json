@@ -1644,5 +1644,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T17:55:14.864Z"
+  },
+  {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget — already tracked at BRO-6732",
+    "description": "This condition already has an open tracker (BRO-6732); not filing a duplicate. It will go quiet in the digest from here.\n\nRolling 24h LLM scoring cost $29.33 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6732",
+    "fields": [],
+    "queuedAt": "2026-10-31T18:20:16.856Z"
   }
 ]
