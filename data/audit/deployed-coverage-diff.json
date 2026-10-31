@@ -1,81 +1,107 @@
 {
-  "generatedAt": "2026-10-31T17:59:11.896Z",
+  "generatedAt": "2026-10-31T18:23:47.047Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 297,
-  "defective": 4,
+  "clean": 296,
+  "defective": 5,
   "byType": {
-    "score-drift": 3,
-    "missing-from-prod": 1
+    "score-drift": 5,
+    "missing-from-prod": 2
   },
   "shows": [
     {
-      "showId": "lanny-bristol-old-vic-regional-2026",
-      "title": "Lanny",
-      "openingDate": "2026-10-23",
+      "showId": "dead-girls-quinceanera-regional-2026",
+      "title": "Dead Girl's Quinceanera",
+      "openingDate": "2026-10-05",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: observer"
+          "detail": "1 scored outlet(s) absent from the deployed payload: maratapporg"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.2 vs local 75.63 (Δ0.43)"
         }
       ],
       "missingFromProd": [
-        "observer"
+        "maratapporg"
       ],
-      "localCount": 13,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-10-31T17:59:03.683Z"
-    },
-    {
-      "showId": "middlemarch-rsc-regional-2026",
-      "title": "Middlemarch",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.59 vs local 78.81 (Δ1.22)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-10-31T17:59:03.683Z"
-    },
-    {
-      "showId": "hadestown-2019",
-      "title": "Hadestown",
-      "openingDate": "2019-04-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.98 vs local 82.88 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 51,
-      "deployedCount": 51,
-      "firstDefectAt": "2026-10-31T17:11:45.469Z"
-    },
-    {
-      "showId": "the-mousetrap-west-end-2021",
-      "title": "The Mousetrap",
-      "openingDate": "1952-11-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.1 vs local 68.69 (Δ1.59)"
-        }
-      ],
-      "missingFromProd": [],
       "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-10-31T17:36:47.479Z"
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-31T18:23:39.181Z"
+    },
+    {
+      "showId": "detroit-67-regional-2026",
+      "title": "Detroit '67",
+      "openingDate": "2026-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: maratapporg"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.36 vs local 82.07 (Δ0.71)"
+        }
+      ],
+      "missingFromProd": [
+        "maratapporg"
+      ],
+      "localCount": 5,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-10-31T18:23:39.181Z"
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "openingDate": "2026-10-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.53 vs local 79.08 (Δ0.55)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 19,
+      "firstDefectAt": "2026-10-31T18:23:39.181Z"
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "openingDate": "2026-10-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.77 vs local 74.78 (Δ1.01)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-31T18:23:39.181Z"
+    },
+    {
+      "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
+      "title": "A History of Paper",
+      "openingDate": "2026-08-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.7 vs local 72.34 (Δ0.36)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-10-31T18:23:39.181Z"
     }
   ],
   "persistentDefective": 0,
