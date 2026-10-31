@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T22:47:46.722Z",
+  "timestamp": "2026-10-31T23:07:05.276Z",
   "stats": {
-    "totalReviews": 76422,
-    "alreadyFlagged": 21726,
+    "totalReviews": 76499,
+    "alreadyFlagged": 21728,
     "dateGuardCatches": 238,
     "directorMismatch": 3244,
-    "tvFilmSignals": 2174,
+    "tvFilmSignals": 2176,
     "londonSignals": 3519,
     "offBroadwaySignals": 721,
     "yearMismatch": 323,
-    "noPublishDate": 8622
+    "noPublishDate": 8652
   },
   "findings": [
     {
@@ -54306,6 +54306,19 @@
       ]
     },
     {
+      "showId": "songs-for-a-new-world-regional-2021",
+      "file": "rescripted--ada-alozie.json",
+      "publishDate": "2021-10-02",
+      "url": "https://rescripted.org/2021/10/02/theo-ubique-songs-new-world/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "soul-doctor-2013",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 63,
@@ -64547,6 +64560,20 @@
     },
     {
       "showId": "the-high-life-the-musical-dundee-rep-regional-2026",
+      "file": "the-list--unknown.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://list.co.uk/news/the-high-life-the-musical-theatre-review-a-delirious-triumph-48248",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
       "file": "the-list--unknown.json",
       "score": 81,
       "publishDate": null,
