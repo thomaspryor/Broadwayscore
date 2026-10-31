@@ -1,131 +1,133 @@
 {
-  "updatedAt": "2026-10-31T14:10:47.027Z",
-  "processed": 458,
-  "failed": 112,
-  "successRate": "80.4%",
+  "updatedAt": "2026-10-31T14:33:57.921Z",
+  "processed": 430,
+  "failed": 227,
+  "successRate": "65.4%",
   "tierBreakdown": {
-    "playwright": 232,
-    "amp": 1,
-    "browserbase": 26,
-    "directCookies": 1,
-    "scrapingdog": 27,
-    "scrapingbee": 20,
-    "brightdata": 25,
-    "archiveToday": 48,
-    "archive": 163
+    "playwright": 201,
+    "amp": 0,
+    "browserbase": 22,
+    "directCookies": 0,
+    "scrapingdog": 29,
+    "scrapingbee": 16,
+    "brightdata": 9,
+    "archiveToday": 31,
+    "archive": 138
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-31T10:32:57.002Z",
-      "event": "bb-session",
-      "session": "ad2fedea",
-      "url": "https://www.nytimes.com/2017/05/08/theater/review-he-can-cook-too-so-why-not-mar"
+      "t": "2026-10-31T08:57:48.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     },
     {
-      "t": "2026-10-31T10:32:57.556Z",
+      "t": "2026-10-31T08:58:49.147Z",
+      "event": "bb-session",
+      "session": "98229634",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-31T09:37:22.851Z",
+      "event": "bb-session",
+      "session": "b56663a6",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-31T09:37:23.550Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T09:44:03.768Z",
+      "event": "bb-session",
+      "session": "bf971130",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunday-in-the-park-george-cance"
+    },
+    {
+      "t": "2026-10-31T09:44:43.945Z",
+      "event": "bb-session",
+      "session": "fe7231ec",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-31T09:45:25.480Z",
+      "event": "bb-session",
+      "session": "41a36af0",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-31T09:45:26.151Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T10:33:15.085Z",
+      "t": "2026-10-31T09:56:47.445Z",
       "event": "bb-session",
-      "session": "5d6beb94",
-      "url": "http://www.hollywoodreporter.com/review/pacific-overtures-theater-1000003"
+      "session": "4a2ff41c",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-10-31T10:48:44.610Z",
-      "event": "bb-session",
-      "session": "f1d8ccbe",
-      "url": "https://www.nytimes.com/2017/04/10/theater/the-profane-zayd-dohrn.html"
+      "t": "2026-10-31T09:56:48.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-31T10:48:45.166Z",
+      "t": "2026-10-31T09:58:46.990Z",
+      "event": "bb-session",
+      "session": "0204e814",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-31T09:58:56.236Z",
+      "event": "bb-session",
+      "session": "88f2cdcd",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-31T09:59:39.904Z",
+      "event": "bb-session",
+      "session": "5b77b247",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-31T09:59:48.906Z",
+      "event": "bb-session",
+      "session": "4b49dd88",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-31T10:05:29.879Z",
+      "event": "bb-session",
+      "session": "10a9e7b8",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-31T10:05:30.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-31T13:17:01.483Z",
+      "event": "bb-session",
+      "session": "2f636cd4",
+      "url": "http://www.nytimes.com/2015/11/12/theater/review-shear-madness-where-getting-a-h"
+    },
+    {
+      "t": "2026-10-31T13:17:02.014Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T11:03:14.799Z",
+      "t": "2026-10-31T13:27:44.167Z",
       "event": "bb-session",
-      "session": "e0b92b26",
-      "url": "https://www.nytimes.com/2017/04/03/theater/vanity-fair-broadway-review-kate-hami"
-    },
-    {
-      "t": "2026-10-31T11:03:15.349Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:04:37.104Z",
-      "event": "bb-session",
-      "session": "5d67735e",
-      "url": "https://www.wsj.com/articles/vanity-fair-review-becky-sharp-takes-the-stage-1491"
-    },
-    {
-      "t": "2026-10-31T11:04:37.582Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-31T11:22:34.323Z",
-      "event": "bb-session",
-      "session": "4415e859",
-      "url": "http://www.hollywoodreporter.com/review/how-transcend-a-happy-marriage-theater-r"
-    },
-    {
-      "t": "2026-10-31T11:35:34.952Z",
-      "event": "bb-session",
-      "session": "bbcdaeca",
-      "url": "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society"
-    },
-    {
-      "t": "2026-10-31T11:35:35.505Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:36:24.916Z",
-      "event": "bb-session",
-      "session": "291ffdb5",
-      "url": "https://www.nytimes.com/2017/03/13/theater/the-moors-review.html"
-    },
-    {
-      "t": "2026-10-31T11:36:25.357Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:55:15.144Z",
-      "event": "bb-session",
-      "session": "3fc87b21",
-      "url": "https://www.nytimes.com/2017/03/24/theater/review-emperor-jones-fearsome-and-fea"
-    },
-    {
-      "t": "2026-10-31T11:55:15.686Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:56:23.350Z",
-      "event": "bb-session",
-      "session": "efda11a1",
-      "url": "https://www.nytimes.com/2017/03/03/theater/review-little-miss-sunshine-trips-int"
+      "session": "3fbd6f84",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
       "t": "2026-10-31T13:27:44.747Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T14:00:02.025Z",
-      "event": "bb-session",
-      "session": "f529db09",
-      "url": "http://www.newyorker.com/magazine/2016/12/05/a-strangely-muted-sweet-charity?mbi"
-    },
-    {
-      "t": "2026-10-31T14:00:02.544Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
     }
   ]
 }

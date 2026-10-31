@@ -1507898,21 +1507898,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T14:12:04.078Z",
-    "completedAt": "2026-10-31T14:12:32.779Z",
+    "startedAt": "2026-10-31T14:22:22.212Z",
+    "completedAt": "2026-10-31T14:22:48.425Z",
     "totalReviews": 6,
-    "processed": 6,
-    "skipped": 0,
+    "processed": 5,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 37945,
-      "output": 1882,
+      "input": 35652,
+      "output": 1577,
       "cacheRead": 19035,
-      "cacheWrite": 3807,
-      "total": 93384
+      "cacheWrite": 0,
+      "total": 83663
     },
-    "costUsd": 0.15531195000000003,
-    "runId": "41208641994",
+    "costUsd": 0.13030449999999996,
+    "runId": "41209307624",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1518544,10 +1518544,20 @@
       {
         "showId": "dial-m-for-murder-regional-2025",
         "ourDistribution": {
-          "up": 9,
+          "up": 15,
           "flat": 0,
           "down": 0,
-          "total": 9
+          "total": 15
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "dial-m-for-murder-regional-2026",
+        "ourDistribution": {
+          "up": 15,
+          "flat": 0,
+          "down": 0,
+          "total": 15
         },
         "hasDisagreement": false
       },
@@ -1530181,6 +1530191,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "mean-girls-regional-2026",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "mean-girls-west-end-2024",
         "ourDistribution": {
           "up": 22,
@@ -1539772,6 +1539792,16 @@
           "flat": 0,
           "down": 5,
           "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-addams-family-regional-2026",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1550638,20 +1550668,10 @@
       {
         "showId": "witch-regional-2023",
         "ourDistribution": {
-          "up": 12,
+          "up": 6,
           "flat": 0,
           "down": 0,
-          "total": 12
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "witch-regional-2026",
-        "ourDistribution": {
-          "up": 12,
-          "flat": 0,
-          "down": 0,
-          "total": 12
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1551108,8 +1551128,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T14:17:30.867Z",
-    "completedAt": "2026-10-31T14:17:30.868Z",
+    "startedAt": "2026-10-31T14:27:45.829Z",
+    "completedAt": "2026-10-31T14:27:45.831Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1551122,7 +1551142,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41208641994",
+    "runId": "41209307624",
     "source": "comparative-rescore",
     "errorDetails": []
   }

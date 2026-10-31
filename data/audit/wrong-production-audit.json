@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T14:04:46.674Z",
+  "timestamp": "2026-10-31T14:19:52.676Z",
   "stats": {
-    "totalReviews": 74283,
-    "alreadyFlagged": 22488,
+    "totalReviews": 74361,
+    "alreadyFlagged": 22489,
     "dateGuardCatches": 233,
-    "directorMismatch": 3051,
-    "tvFilmSignals": 2088,
+    "directorMismatch": 3066,
+    "tvFilmSignals": 2092,
     "londonSignals": 3422,
-    "offBroadwaySignals": 674,
+    "offBroadwaySignals": 675,
     "yearMismatch": 305,
-    "noPublishDate": 8407
+    "noPublishDate": 8416
   },
   "findings": [
     {
@@ -16453,6 +16453,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "dial-m-for-murder-regional-2026",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/dial-m-for-murder-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -34377,6 +34391,45 @@
       ]
     },
     {
+      "showId": "kowalski-regional-2026",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": "2026-09-23",
+      "url": "https://chicago.suntimes.com/theater/2026/09/23/review-kowalski-lookingglass-theatre-johnny-galecki-tennessee-williams-marlon-brando",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "kowalski-regional-2026",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-09-22",
+      "url": "https://www.chicagotheatrereview.com/2026/09/the-kindness-of-strangers-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "kowalski-regional-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-09-20",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/20/picksinsix-review-kowalski-brando-beginnings-lookingglass-theatre-company",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
       "showId": "kpop-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 79,
@@ -46514,6 +46567,149 @@
       ]
     },
     {
+      "showId": "play-on-regional-2026",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/play-on-reviewed-by-julia-w-rath/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicago-reader--kelly-kleiman.json",
+      "publishDate": "2026-09-23",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/play-on-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicago-sun-times--graham-meyer.json",
+      "publishDate": "2026-09-22",
+      "url": "https://chicago.suntimes.com/theater/2026/09/22/review-play-on-chicago-shakespeare",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-09-25",
+      "url": "https://www.chicagotheatrereview.com/2026/09/take-the-a-train/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicagostageandscreen--angela-allyn.json",
+      "publishDate": "2026-09-19",
+      "url": "https://www.chicagostageandscreen.com/post/sparkling-revival-delightfully-swings-at-chicago-shakes",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2026-09-19",
+      "url": "https://www.chicagotribune.com/2026/09/19/review-play-on-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2026-09-18",
+      "url": "https://www.letsplaytheatricalreview.com/blog/play-on",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-09-23",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/23/picksinsix-review-play-on-chicago-shakepseare-theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "splash-magazines--emily-werner.json",
+      "publishDate": "2026-09-22",
+      "url": "https://splashmags.com/2026/09/from-shakespeare-to-swing-play-on-celebrates-harlem-and-jazz/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2026-09-19",
+      "url": "https://thefourthwalsh.com/2026/09/review-play-on-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-09-21",
+      "url": "https://thirdcoastreview.com/stages/2026/09/21/review-chicago-shakespeare-play-on",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
       "showId": "player-kings-west-end-2024",
       "file": "daily-mail--rory-tingle.json",
       "score": null,
@@ -55385,6 +55581,34 @@
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
+      "file": "guardian--alexis-soloski.json",
+      "score": null,
+      "publishDate": "2016-11-21",
+      "url": "https://www.theguardian.com/stage/2016/nov/21/sweet-charity-review-sutton-foster-neil-simon",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "2016-11-20",
+      "url": "http://www.hollywoodreporter.com/review/sweet-charity-review-949242",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
       "file": "nbcny--robert-kahn.json",
       "score": 87,
       "publishDate": "November 20th, 2016",
@@ -55413,6 +55637,20 @@
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
+      "file": "newyorker--hilton-als.json",
+      "score": null,
+      "publishDate": "2016-11-28",
+      "url": "http://www.newyorker.com/magazine/2016/12/05/a-strangely-muted-sweet-charity?mbid=rss",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
       "file": "northjerseycom--robert-feldberg.json",
       "score": null,
       "publishDate": "2016-11-21",
@@ -55430,6 +55668,19 @@
       "file": "nytimes--ben-brantley.json",
       "publishDate": "November 20th, 2016",
       "url": "http://www.nytimes.com/2016/11/21/theater/sutton-foster-sweet-charity-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2016-11-20",
+      "url": "https://www.nytimes.com/2016/11/21/theater/sutton-foster-sweet-charity-review.html?eafs_enabled=false",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -112980,6 +113231,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-babylon-line-off-broadway-2016",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2016-12-08",
+      "url": "http://thebroadwayblog.com/2016/12/08/15783-babylon-line-review-lincoln-center",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
