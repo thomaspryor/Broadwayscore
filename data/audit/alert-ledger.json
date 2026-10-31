@@ -241,7 +241,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -255,7 +255,8 @@
       "linearIdentifier": "BRO-6656",
       "notifyCountAtRelease": 177,
       "sweptTracker": "BRO-6422",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-31T01:24:45.845Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -33029,7 +33030,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:f37cf14e": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"press-night fetch failure retries in 1h and is never abandoned inside 48h\"",
       "firstSeen": "2026-10-31T00:50:08.394Z",
@@ -33040,7 +33041,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6679",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-31T01:24:45.611Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-6676-systemic": {
       "status": "resolved",
