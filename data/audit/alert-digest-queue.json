@@ -3837,6 +3837,20 @@
     "queuedAt": "2026-10-31T04:04:56.409Z"
   },
   {
+    "conditionKey": "express-retry-still-thin:medea-off-broadway-2026",
+    "title": "Opening Night Express retry still found thin review coverage for medea-off-broadway-2026",
+    "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T04:44:46.988Z"
+  },
+  {
     "conditionKey": "land:land/bro-6547-possessive",
     "title": "Landing blocked: toplevel-regression red on land/bro-6547-possessive",
     "description": "land.yml did not land land/bro-6547-possessive: the toplevel-regression gate went red at 14f1f5f5f7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41168067623",
