@@ -1844321,21 +1844321,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T18:54:38.540Z",
-    "completedAt": "2026-10-31T18:54:52.806Z",
-    "totalReviews": 3,
-    "processed": 3,
+    "startedAt": "2026-10-31T18:55:30.161Z",
+    "completedAt": "2026-10-31T18:56:18.636Z",
+    "totalReviews": 10,
+    "processed": 10,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 15891,
-      "output": 869,
-      "cacheRead": 7614,
-      "cacheWrite": 3807,
-      "total": 42100
+      "input": 63960,
+      "output": 2946,
+      "cacheRead": 38070,
+      "cacheWrite": 0,
+      "total": 156492
     },
-    "costUsd": 0.07458905,
-    "runId": "41231048705",
+    "costUsd": 0.23668619999999996,
+    "runId": "41231317565",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1858255,6 +1858255,16 @@
           "flat": 0,
           "down": 0,
           "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "gangsta-baby-regional-2025",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 2,
+          "down": 0,
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1872625,6 +1872635,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "rabbits-in-their-pockets-regional-2025",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 2,
+          "down": 0,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "race-2009",
         "ourDistribution": {
           "up": 8,
@@ -1879082,6 +1879102,16 @@
           "flat": 0,
           "down": 0,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-first-lady-of-television-regional-2025",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 1,
+          "down": 0,
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -1888575,8 +1888605,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T18:59:50.238Z",
-    "completedAt": "2026-10-31T18:59:50.239Z",
+    "startedAt": "2026-10-31T19:01:14.732Z",
+    "completedAt": "2026-10-31T19:01:14.733Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1888589,7 +1888619,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41231048705",
+    "runId": "41231317565",
     "source": "comparative-rescore",
     "errorDetails": []
   }
