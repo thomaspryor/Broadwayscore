@@ -8,6 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
@@ -134,7 +135,7 @@ function runHook(firstPrompt, calls, closing, env = {}) {
     if (c.notice) lines.push(JSON.stringify({ type: 'user', message: { role: 'user', content: c.notice } }));
   });
   fs.writeFileSync(tp, lines.join('\n') + '\n');
-  const r = spawnSync('bash', [HOOK], {
+  const r = spawnSyncStdinFile('bash', [HOOK], {
     input: JSON.stringify({ transcript_path: tp, session_id: 'ciw-' + process.pid + '-' + Math.random(), stop_hook_active: false, last_assistant_message: closing }),
     encoding: 'utf8', timeout: 30000,
     env: { ...process.env, ...OTHER_GATES_OFF, ...env, HOME: home, CLAUDE_PROJECT_DIR: REPO },
