@@ -147,12 +147,14 @@ function nonProductionRefusal(row, action, reviewCount, now) {
   // `outOfTier: true` (BRO-6531): an out-of-tier listing (Off-Off-Broadway) carries a scheduled
   // opening date from its source. It may go while that date is still ahead; one that has
   // opened is a real run either way.
+  if (action.outOfTier !== undefined && action.outOfTier !== true) return 'outOfTier must be true when present';
   const opening = isoOrNull(row.openingDate);
   if (opening) {
     const today = (now instanceof Date ? now : now ? new Date(now) : new Date()).toISOString().slice(0, 10);
     if (action.outOfTier !== true || opening <= today) return `openingDate ${row.openingDate} is set: a row dated as opened is a real run`;
+    const previews = isoOrNull(row.previewsStartDate);
+    if (previews && previews <= today) return `previews started ${previews}: a row in previews is a real run`;
   }
-  if (action.outOfTier !== undefined && action.outOfTier !== true) return 'outOfTier must be true when present';
   if (typeof reviewCount !== 'function') return 'review count unavailable';
   const n = reviewCount(row.id);
   if (n !== 0) return `${row.id} has ${n} review(s): move them before retiring`;

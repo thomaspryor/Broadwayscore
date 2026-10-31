@@ -136,7 +136,8 @@ test('nonProduction: a non-provisional announced row with no reviews retires wit
     [base, { openingDate: '2026-10-01' }, none, /real run/],
     [base, { openingDate: '2099-01-01' }, none, /real run/],
     [{ ...base, outOfTier: true }, { openingDate: '2026-10-01' }, none, /real run/],
-    [{ ...base, outOfTier: 'yes' }, {}, none, /outOfTier must be true/],
+    [{ ...base, outOfTier: 'yes' }, { openingDate: '2099-01-01' }, none, /outOfTier must be true/],
+    [{ ...base, outOfTier: true }, { openingDate: '2099-01-01', previewsStartDate: '2026-01-01' }, none, /previews started/],
     [base, {}, () => 2, /2 review/],
     [base, {}, undefined, /review count unavailable/],
   ];
