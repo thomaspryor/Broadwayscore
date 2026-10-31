@@ -27,6 +27,7 @@
 const { hasHumanAssertedFlag } = require('./contradicted-flag-basis');
 const { isHumanRejecter } = require('./stale-automated-text-verdict');
 const { isPriorProductionCitation } = require('./prior-production-citations');
+const { parsePointer } = require('./cross-outlet-cycle');
 
 // Breadcrumb keys a person (or an operator-run triage) writes when asserting an
 // exclusion, e.g. wrongProductionManual / isNonReviewManual. `...ManualClear`
@@ -91,10 +92,15 @@ function isTimeoutListingCapsule(d) {
 // primary (heal-dangling-syndication.js / heal-syndicated-duplicates.js), in
 // which case the rebuild still drops the reprint and the review counts nowhere.
 // `isHeldPrimary` is supplied by the audit, which holds the show's dir files.
-function isHeldSyndicatedReprint(d, isHeldPrimary) {
-  return !!d && d.isSyndicatedDuplicate === true && !!d.syndicatedPrimaryFile
+// `isHeldFile(pointer, d)` is supplied by the audit, which holds the show's dir files:
+// true when the pointer resolves (scripts/lib/cross-outlet-cycle.js parsePointer, bare
+// names against d's owning show) to another file of the SAME owning show that the
+// rebuild counts. A syndication pointer must name its show explicitly (BRO-5514).
+function isHeldSyndicatedReprint(d, isHeldFile) {
+  return !!d && d.isSyndicatedDuplicate === true && typeof d.syndicatedPrimaryFile === 'string'
+    && d.syndicatedPrimaryFile.includes('/')
     && Number(d.syndicationSimilarity) >= 80
-    && typeof isHeldPrimary === 'function' && !!isHeldPrimary(d);
+    && typeof isHeldFile === 'function' && !!isHeldFile(d.syndicatedPrimaryFile, d);
 }
 // BRO-6689: the CV pass reads a (often truncated, plot-heavy) slice of the body, so its
 // "preview/feature, not a review" verdict can be wrong. Real reviews were hidden that way
@@ -127,9 +133,9 @@ function isDeterministicGateExclusion(d) {
 }
 // "Confirmed" = the exclusion is the correct outcome (a non-review, a Time Out
 // listing capsule, a held syndicated reprint), not a gap. Name kept from BRO-5500.
-function isConfirmedNonReviewFile(d, isHeldPrimary) {
+function isConfirmedNonReviewFile(d, isHeldFile) {
   if (isEnsembleNonReview(d) || isHumanConfirmedNonReview(d)) return true;
-  if (isTimeoutListingCapsule(d) || isHeldSyndicatedReprint(d, isHeldPrimary)) return true;
+  if (isTimeoutListingCapsule(d) || isHeldSyndicatedReprint(d, isHeldFile)) return true;
   const cv = d && d.contentVerification;
   if (!cv || cv.isValid !== false || cv.confidence !== 'high') return false;
   if (cv.articleTypeConfidence !== 'high' || !NONREVIEW_ARTICLE_TYPES.has(cv.articleType)) return false;
@@ -137,29 +143,75 @@ function isConfirmedNonReviewFile(d, isHeldPrimary) {
   return isDeterministicGateExclusion(d) || !hasReviewShapedEvidence(d);
 }
 
+// BRO-6687: rule-made exclusions that are the correct outcome even though no human or
+// non-review verdict confirms them. Each rule keys on the REAL explain() reason (the
+// rebuild's own verdict for this file); a null/throwing explain never confirms, and the
+// rawDetectorBasis fallback is never used here. Returns the rule name or null.
+//  (a) knownSyndicationSecondary: review-guards already verified an includable primary.
+//  (b) isRoundupArticle set by a rule: roundup URL pattern or an 'auto:' reason.
+//  (c) duplicateOf / crossOutletDuplicate whose pointer names a held, counted file of
+//      the same owning show (a copy of something already counted).
+//  (d) wrongProduction/wrongShow from a deterministic non-LLM rule, EXCEPT the date
+//      family (pre-opening/date/URL-date/cross-market guards), which can misfire on a
+//      real preview-period review an aggregator cites; those stay reverify.
+//  (e) wrong_production/wrong_show rejected by the scoreability ensemble with >=3 models
+//      agreeing (BRO-5391 precedent for not_a_review). garbage_text deliberately excluded.
+const DATE_FAMILY_REASON = /anticipatory_pre_opening_post|Pre-opening guard|Date guard|Auto-flagged: URL date|Cross-market/i;
+function isDeterministicNonDateExclusion(d) {
+  return [['wrongProduction', 'wrongProductionReason', 'wrongProductionNote'], ['wrongShow', 'wrongShowReason', 'wrongShowNote']]
+    .some(([flag, reason, note]) => {
+      if (d[flag] !== true) return false;
+      const text = [d[reason], d[note]].filter(x => typeof x === 'string' && x.trim()).join(' ');
+      return text !== '' && !LLM_REASON.test(text) && !DATE_FAMILY_REASON.test(text);
+    });
+}
+const ENSEMBLE_WRONG_REASONS = new Set(['wrong_production', 'wrong_show']);
+function ruleConfirmedBasis(d, reason, isHeldFile, isRoundupUrl) {
+  if (!d || !reason) return null;
+  if (reason === 'knownSyndicationSecondary') return 'syndication-primary-held';
+  if (reason === 'isRoundupArticle') {
+    const byUrl = typeof isRoundupUrl === 'function' && !!(isRoundupUrl(d.url) || {}).isRoundup;
+    const byRule = typeof d.roundupArticleReason === 'string' && d.roundupArticleReason.startsWith('auto:');
+    return byUrl || byRule ? 'roundup-rule' : null;
+  }
+  const held = p => typeof isHeldFile === 'function' && typeof p === 'string' && !!isHeldFile(p, d);
+  if (reason === 'duplicateOf') return held(d.duplicateOf) ? 'duplicate-of-held' : null;
+  if (reason === 'crossOutletDuplicate') return d.crossOutletDuplicate === true && held(d.crossOutletPrimaryFile) ? 'cross-outlet-duplicate-of-held' : null;
+  if ((reason === 'wrongProduction' || reason === 'wrongShow') && isDeterministicNonDateExclusion(d)) return 'deterministic-rule';
+  if (d.rejectedBy === 'ensemble-scoreability-check' && Number(d.rejectionAgreeCount) >= 3
+    && ENSEMBLE_WRONG_REASONS.has(d.rejectionReason)) return 'ensemble-3-agree';
+  return null;
+}
+
 /**
  * Classify one flaggedMiss from its excluded dir files.
  * @param {object[]} files - the excluded dir files for the listed URL
  * @param {(d: object) => (string|null)} [explain] - exclusion reason for a file
  *   (review-guards explainExclusion bound to the show); null/throw falls back
- *   to the raw detector field, then 'unknown'
- * @returns {{ exclusion: 'humanExcluded'|'automatedExcluded', basis: string[] }}
+ *   to the raw detector field, then 'unknown' (for `basis` only)
+ * @param {(pointer: string, d: object) => boolean} [isHeldFile] - does the pointer
+ *   resolve to a held, counted file of d's owning show
+ * @param {(url: string) => {isRoundup: boolean}} [isRoundupUrl] - review-guards isRoundupUrl
+ * @returns {{ exclusion, basis: string[], confirmedNonReview: boolean, confirmedBasis: (string|null)[] }}
  */
-function classifyFlaggedMiss(files, explain, isHeldPrimary) {
+function classifyFlaggedMiss(files, explain, isHeldFile, isRoundupUrl) {
   const list = Array.isArray(files) ? files.filter(Boolean) : [];
   const human = list.some(hasHumanExclusionAssertion);
   const basis = [];
+  const confirmedBasis = [];
   for (const d of list) {
     let reason = null;
     try { reason = explain ? explain(d) : null; } catch { reason = null; }
     const r = reason || rawDetectorBasis(d) || 'unknown';
     if (!basis.includes(r)) basis.push(r);
+    confirmedBasis.push(isConfirmedNonReviewFile(d, isHeldFile) ? 'non-review'
+      : ruleConfirmedBasis(d, reason, isHeldFile, isRoundupUrl));
   }
   // A human assertion normally means "never second-guess"; it only counts as a
   // confirmed non-review when the human said so (isNotReview), not e.g. wrongProduction.
-  const confirmedNonReview = list.length > 0 && list.every(d => isConfirmedNonReviewFile(d, isHeldPrimary))
+  const confirmedNonReview = list.length > 0 && confirmedBasis.every(Boolean)
     && (!human || list.every(isHumanConfirmedNonReview));
-  return { exclusion: human ? 'humanExcluded' : 'automatedExcluded', basis, confirmedNonReview };
+  return { exclusion: human ? 'humanExcluded' : 'automatedExcluded', basis, confirmedNonReview, confirmedBasis };
 }
 
 /** Re-check an automated exclusion only when a current-run round-up lists it. */
@@ -172,7 +224,26 @@ function countAutomatedExcludedListed(flaggedMisses) {
   return Array.isArray(flaggedMisses) ? flaggedMisses.filter(m => m && m.reverify === true).length : 0;
 }
 
+/**
+ * Build the isHeldFile callback for classifyFlaggedMiss over one show dir's files.
+ * A pointer ('<show>/<file>' or bare '<file>') resolves against the file's OWNING show
+ * (_ctxShow, else _carriedFromShowId, else the host show), so a carried file's bare
+ * pointer never matches a same-named file of the host show. The target must be another
+ * file of the same owner that isCovered says is counted.
+ */
+function makeHeldFileResolver(dirData, hostShowId, isCovered) {
+  const ownerOf = x => (x._ctxShow && x._ctxShow.id) || x._carriedFromShowId || hostShowId;
+  return (pointer, d) => {
+    const p = parsePointer(pointer);
+    if (!p) return false;
+    const owner = ownerOf(d);
+    if ((p.showId || owner) !== owner) return false;
+    return dirData.some(x => x !== d && x._file === p.file && ownerOf(x) === owner && isCovered(x));
+  };
+}
+
 module.exports = {
+  makeHeldFileResolver,
   hasHumanExclusionAssertion,
   rawDetectorBasis,
   classifyFlaggedMiss,

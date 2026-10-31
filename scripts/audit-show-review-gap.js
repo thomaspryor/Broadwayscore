@@ -66,9 +66,9 @@ const {
   resolveUrlEditionOutletId,
 } = require('./lib/outlet-canonicalize');
 const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
-const { isIncludableForRebuild, explainExclusion } = require('./lib/review-guards');
+const { isIncludableForRebuild, explainExclusion, isRoundupUrl } = require('./lib/review-guards');
 // BRO-4971: human vs automated exclusion split + re-verify marking for flaggedMisses.
-const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed } = require('./lib/flagged-miss-basis');
+const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed, makeHeldFileResolver } = require('./lib/flagged-miss-basis');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { ingestFailureReason } = require('./lib/ingest-failure-reason');
 const { partitionUnextractable, updateZeroCharCounts } = require('./lib/gap-unextractable'); // BRO-4765
@@ -1390,11 +1390,11 @@ async function auditShow(show, opts = {}) {
         // wrong-show / manually-protected exclusions are NOT recoverable.
         const recoverableFile = dirFiles.find(d => isRecoverableFlaggedFile(d));
         // BRO-4971: humanExcluded vs automatedExcluded + which detector (basis).
-        const { exclusion, basis, confirmedNonReview } = classifyFlaggedMiss(dirFiles, d => explainFileExclusion(d, show), d => {
-          // BRO-5514: pointer must be '<this show>/<file>' and that file present and counted.
-          const [pShow, pFile] = String(d.syndicatedPrimaryFile).split('/');
-          return pShow === show.id && dirData.some(x => x._file === pFile && x !== d && isCoveredFile(x, show));
-        });
+        // BRO-5514/6687: a pointer is held when it resolves (bare names against the file's
+        // owning show) to another counted file of that SAME owning show.
+        const isHeldFile = makeHeldFileResolver(dirData, show.id, x => isCoveredFile(x, show));
+        const { exclusion, basis, confirmedNonReview, confirmedBasis } = classifyFlaggedMiss(
+          dirFiles, d => explainFileExclusion(d, show), isHeldFile, isRoundupUrl);
         result.flaggedMisses.push({
           url: aggUrl,
           host: aggHost,
@@ -1412,7 +1412,7 @@ async function auditShow(show, opts = {}) {
           dirFlags: dirFiles.map(d => ({ file: d._file, flag: classifyShowFile(d), urlInDir: d.url })),
           exclusion,
           basis,
-          ...(confirmedNonReview ? { confirmedNonReview: true } : {}),
+          ...(confirmedNonReview ? { confirmedNonReview: true, confirmedBasis } : {}),
           // Stored flagged files dated before this run: permanent prior-run (see policy).
           ...(() => { const d = recoverableFile ? null : flaggedFilePriorRunDate(dirFiles, show); return d ? { priorRun: true, priorRunSource: `flagged-file-date:${d}` } : {}; })(),
         });

@@ -1216,3 +1216,74 @@ test('BRO-6629: short or numeric titles keep a token set, so roundup sidebars fo
   assert.equal(ums('https://www.broadwayworld.com/off-broadway/article/Review-MERRILY-WE-ROLL-ALONG-20231010', tt('44')), false);
   assert.equal(ums('https://www.theatermania.com/news/44-the-musical-review_1234', tt('44')), true);
 });
+
+// BRO-6687: rule-made exclusions resolve themselves (confirmedBasis per file).
+// Each rule keys on the real explain() reason; null explain never confirms.
+test('flagged-miss-basis: rule-confirmed exclusions (BRO-6687 a-e) and their negatives', () => {
+  const { classifyFlaggedMiss } = require('./lib/flagged-miss-basis.js');
+  const { isRoundupUrl } = require('./lib/review-guards.js');
+  const reasonOf = r => () => r;
+  const held = new Set(['show-a/held--x.json', 'held--x.json']);
+  const isHeld = p => held.has(p);
+  const run = (d, reason, isHeldFile = isHeld) => classifyFlaggedMiss([d], reasonOf(reason), isHeldFile, isRoundupUrl);
+  const ok = (res, basis) => { assert.equal(res.confirmedNonReview, true); assert.deepStrictEqual(res.confirmedBasis, [basis]); };
+  const no = res => { assert.equal(res.confirmedNonReview, false); assert.deepStrictEqual(res.confirmedBasis, [null]); };
+
+  // (a) syndication secondary
+  ok(run({ outletId: 'x' }, 'knownSyndicationSecondary'), 'syndication-primary-held');
+  // (b) roundup: 'auto:' reason confirms; flag with neither URL match nor auto: does not
+  ok(run({ isRoundupArticle: true, roundupArticleReason: 'auto: pull-quote compilation', url: 'https://ex.com/a' }, 'isRoundupArticle'), 'roundup-rule');
+  no(run({ isRoundupArticle: true, roundupArticleReason: 'manual', url: 'https://ex.com/review-of-play' }, 'isRoundupArticle'));
+  // explain null while the raw flag is set: never confirmed
+  no(run({ isRoundupArticle: true, roundupArticleReason: 'auto: x', url: 'https://ex.com/a' }, null));
+  // throwing explain: never confirmed
+  assert.equal(classifyFlaggedMiss([{ isRoundupArticle: true, roundupArticleReason: 'auto: x' }], () => { throw new Error('x'); }, isHeld, isRoundupUrl).confirmedNonReview, false);
+  // (c) duplicateOf held / uncovered target
+  ok(run({ duplicateOf: 'held--x.json' }, 'duplicateOf'), 'duplicate-of-held');
+  no(run({ duplicateOf: 'other--y.json' }, 'duplicateOf'));
+  no(run({ duplicateOf: 'held--x.json' }, 'duplicateOf', () => false));
+  // crossOutlet: held same-show pointer confirms; flag false or pointer elsewhere does not
+  ok(run({ crossOutletDuplicate: true, crossOutletPrimaryFile: 'show-a/held--x.json' }, 'crossOutletDuplicate'), 'cross-outlet-duplicate-of-held');
+  no(run({ crossOutletDuplicate: false, crossOutletPrimaryFile: 'show-a/held--x.json' }, 'crossOutletDuplicate'));
+  no(run({ crossOutletDuplicate: true, crossOutletPrimaryFile: 'show-b/held--x.json' }, 'crossOutletDuplicate'));
+  // (d) deterministic non-date wrongProduction confirms; LLM and date-family reasons do not
+  ok(run({ wrongProduction: true, wrongProductionReason: 'Venue mismatch: London Palladium vs Broadway' }, 'wrongProduction'), 'deterministic-rule');
+  no(run({ wrongProduction: true, wrongProductionReason: 'Collector LLM verdict: different production' }, 'wrongProduction'));
+  for (const r of ['anticipatory_pre_opening_post', 'Pre-opening guard: pre-window date', 'Date guard: review 2026 is 9d before opening', 'Auto-flagged: URL date 2019 is 900 days', 'Cross-market: US outlet']) {
+    no(run({ wrongProduction: true, wrongProductionReason: r }, 'wrongProduction'));
+  }
+  no(run({ wrongShow: false, wrongShowReason: 'Venue mismatch' }, 'wrongShow'));
+  // (e) ensemble 3-agree wrong_production confirms; agree-2 and garbage_text do not
+  const ens = { rejectedBy: 'ensemble-scoreability-check', rejectionAgreeCount: 3, rejectionReason: 'wrong_production' };
+  ok(run(ens, 'ensembleRejected'), 'ensemble-3-agree');
+  ok(run({ ...ens, rejectionReason: 'wrong_show' }, 'ensembleRejected'), 'ensemble-3-agree');
+  no(run({ ...ens, rejectionAgreeCount: 2 }, 'ensembleRejected'));
+  no(run({ ...ens, rejectionReason: 'garbage_text' }, 'ensembleRejected'));
+  no(run(ens, null));
+  // every file must be confirmed; human wrongProduction assertion blocks
+  const mixed = classifyFlaggedMiss([{ outletId: 'a' }, { outletId: 'b' }], d => d.outletId === 'a' ? 'knownSyndicationSecondary' : 'contentTierInvalid', isHeld, isRoundupUrl);
+  assert.equal(mixed.confirmedNonReview, false);
+  assert.deepStrictEqual(mixed.confirmedBasis, ['syndication-primary-held', null]);
+});
+
+// BRO-6687: the audit's isHeldFile resolves bare pointers against the file's OWNING show,
+// so a carried file's bare pointer cannot collide with a same-named file of the host show.
+test('makeHeldFileResolver: pointers resolve against the owning show; target must be covered', () => {
+  const { makeHeldFileResolver } = require('./lib/flagged-miss-basis.js');
+  const hostHeld = { _file: 'nyt--a.json', covered: true };
+  const carriedHeld = { _file: 'vulture--b.json', _carriedFromShowId: 'old-show', covered: true };
+  const hostUncovered = { _file: 'post--c.json', covered: false };
+  const carried = { _file: 'x--d.json', _carriedFromShowId: 'old-show' };
+  const host = { _file: 'y--e.json' };
+  const dir = [hostHeld, carriedHeld, hostUncovered, carried, host];
+  const isHeld = makeHeldFileResolver(dir, 'host-show', x => x.covered === true);
+  assert.equal(isHeld('nyt--a.json', host), true, 'bare pointer, same owner, covered');
+  assert.equal(isHeld('host-show/nyt--a.json', host), true, 'qualified pointer to own show');
+  assert.equal(isHeld('nyt--a.json', carried), false, 'carried file bare pointer must not match the host show file');
+  assert.equal(isHeld('vulture--b.json', carried), true, 'carried file resolves inside its owner');
+  assert.equal(isHeld('old-show/vulture--b.json', host), false, 'pointer to another show');
+  assert.equal(isHeld('post--c.json', host), false, 'uncovered target');
+  assert.equal(isHeld('y--e.json', host), false, 'a file is never its own held target');
+  assert.equal(isHeld('not-json', host), false);
+  assert.equal(isHeld(undefined, host), false);
+});
