@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-31T09:50:06.267Z",
+  "timestamp": "2026-10-31T10:07:21.424Z",
   "stats": {
     "totalReviews": 73842,
-    "alreadyFlagged": 22446,
+    "alreadyFlagged": 22449,
     "dateGuardCatches": 229,
-    "directorMismatch": 3031,
+    "directorMismatch": 3030,
     "tvFilmSignals": 2074,
-    "londonSignals": 3420,
+    "londonSignals": 3419,
     "offBroadwaySignals": 662,
     "yearMismatch": 303,
     "noPublishDate": 8459
@@ -16949,19 +16949,6 @@
       "file": "fayetteville-flyer--by-kevin-kinder.json",
       "publishDate": "2026-10-20",
       "url": "https://fayettevilleflyer.com/2026/10/20/broadway-bound-but-not-before-fayetteville-dirty-dancing-comes-to-walton-arts-center/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
-        }
-      ]
-    },
-    {
-      "showId": "dirty-dancing-tour-2026",
-      "file": "hollywood-reporter--caitlin-huston.json",
-      "publishDate": "2026-10-06",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-coming-broadway-1236722969/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -116258,20 +116245,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 86d before show (October 30, 2015 vs 2016-01-24)"
-        }
-      ]
-    },
-    {
-      "showId": "the-hunger-games-on-stage-west-end-2025",
-      "file": "britishtheatrecom--sophie-hartley.json",
-      "score": null,
-      "publishDate": "2025-11-22",
-      "url": "https://www.britishtheatre.com/posts/hunger-games-on-stage-london-guide",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
