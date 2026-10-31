@@ -745,7 +745,7 @@ def _live_work():
     # The new session's own "id" field first; a bare token only as fallback.
     idfield_re = re.compile(r'"id"\s*:\s*"((?:session|cse)_[0-9A-Za-z]{10,})"')
     bucket_re = re.compile(r'status_bucket\\?"?\s*[:=]\s*\\?"?(?:SESSION_STATUS_BUCKET_)?([A-Za-z_]+)', re.IGNORECASE)
-    bg_id_re = re.compile(r'\bID:\s*([0-9A-Za-z_-]{4,})')
+    bg_id_re = re.compile(r'\bID:\s*([0-9A-Za-z_-]{4,})|\bMonitor started \(task\s+([0-9A-Za-z_-]{4,})')  # Monitor's real result has no "ID:"
     R = 'mcp__Claude_Code_Remote__'
     trig = {}          # trig id -> {'idx', 'label', 'fire' (ts|None for cron), 'done' (idx)}
     agent_start = {}   # agent id -> (idx, label)
@@ -818,7 +818,7 @@ def _live_work():
                 if ok and i > last_owner:
                     m = bg_id_re.search(res)
                     label = '%s "%s"' % (name, (inp.get('description') or inp.get('command') or '')[:50])
-                    waits[m.group(1) if m else 'call-%d' % i] = (i, label)
+                    waits[(m.group(1) or m.group(2)) if m else 'call-%d' % i] = (i, label)
             elif name == 'mcp__github__subscribe_pr_activity' or name.endswith('subscribe_pr_activity'):
                 if ok and not name.endswith('unsubscribe_pr_activity'):
                     pr_watch = True
@@ -845,7 +845,7 @@ def _live_work():
         elif kind in ('user_notice', 'user_text'):
             for mn in re.finditer(r'<task-notification>(.*?)</task-notification>', payload or '', flags=re.DOTALL):
                 idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', mn.group(1))
-                if idm:
+                if idm and ('<status>' in re.sub(r'<event>.*?</event>', '', mn.group(1), flags=re.DOTALL) or '<event>' not in mn.group(1)):  # a Monitor <event> without <status> is progress
                     task_done[idm.group(1)] = i
             for mh in re.finditer(r'<agent-message\s+from="([^"]+)"', payload or ''):
                 task_done[mh.group(1)] = i

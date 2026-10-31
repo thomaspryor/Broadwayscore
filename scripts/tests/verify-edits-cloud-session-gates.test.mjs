@@ -2077,6 +2077,19 @@ test('WAKELESS: a wake that already finished is not a wake', skipNoRepoHook, () 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('WAKELESS: a real Monitor result is tracked by its task id (BRO-6717)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wake-monitor');
+  // Real shapes: the Monitor result names the task in parentheses; an event
+  // notice carries <event> and no <status>; the end notice carries <status>.
+  const mon = toolUse('Monitor', { command: 'node scripts/lib/wait-for-land.js land/x 60', description: 'land run' }, 'Monitor started (task bmon7k2q9, expires in 3600s).');
+  const ev = notice('<task-notification>\n<task-id>bmon7k2q9</task-id>\n<summary>Monitor event: "land run"</summary>\n<event>waiting: run 1 in_progress</event>\n</task-notification>');
+  const end = notice('<task-notification>\n<task-id>bmon7k2q9</task-id>\n<status>completed</status>\n</task-notification>');
+  assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, mon]), STALE, WK_ON), 'live monitor');
+  assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, mon, ev]), STALE, WK_ON), 'an event is progress, the monitor is still live');
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, mon, ev, end]), STALE, WK_ON), 'a finished monitor is not a wake');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('WAKELESS: waiting on the owner needs no wake; bypass and kill switch', skipNoRepoHook, () => {
   const dir = makeTmpDir('wake-owner');
   const t = writeTranscript(dir, [GIT_PUSH]);
