@@ -4032,5 +4032,36 @@
       }
     ],
     "queuedAt": "2026-10-31T07:02:49.924Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6687-cm-fix",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6687-cm-fix",
+    "description": "land.yml did not land land/bro-6687-cm-fix: the unit-tests-node gate went red at cb4a0e83d5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41178198532",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6687-cm-fix"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cb4a0e83d502b0590dea5562472f4c9269a38c43"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41178198532"
+      }
+    ],
+    "queuedAt": "2026-10-31T07:10:48.925Z"
   }
 ]
