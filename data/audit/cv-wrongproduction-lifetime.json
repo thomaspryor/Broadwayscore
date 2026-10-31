@@ -1,26 +1,26 @@
 {
-  "updatedAt": "2026-10-30T09:04:12.666Z",
-  "scanned": 3831,
-  "showsWithViolations": 121,
-  "totalViolations": 151,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-10-31T08:52:39.608Z",
+  "scanned": 4077,
+  "showsWithViolations": 122,
+  "totalViolations": 152,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 856,
-    "not-shipped": 55,
+    "temporal-override-low-confidence": 867,
+    "not-shipped": 56,
     "duplicate-not-shipped": 55,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 13,
     "prior-run-or-tour-leg": 45
   },
   "newViolationKeys": [
-    "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
-    "oppenheimer-west-end-2015::standard--fiona-mountford.json"
+    "appropriate-2023::pages-on-stages--mason-pilevsky.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
     "hells-kitchen-2024::chelsea-community-news--michael-musto.json",
     "hells-kitchen-2024::theater-life--samuel-l-leiter.json",
+    "appropriate-2023::pages-on-stages--mason-pilevsky.json",
     "the-sign-in-sidney-brusteins-window-2023::nytg--brian-scott-lipton.json",
     "a-dolls-house-2023::talkinbroadway--matthew-murray.json",
     "between-riverside-and-crazy-2022::vulture--jackson-mchenry.json",
@@ -238,6 +238,27 @@
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
+        }
+      ]
+    },
+    {
+      "showId": "appropriate-2023",
+      "title": "Appropriate",
+      "openingDate": "2023-12-18",
+      "message": "pages-on-stages/Mason Pilevsky (pages-on-stages--mason-pilevsky.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 50d of opening, likely correct production] While this is clearly a review of 'Appropriate' with — https://pagesonstages.wordpress.com/2024/02/06/appropriate/",
+      "violations": [
+        {
+          "filename": "pages-on-stages--mason-pilevsky.json",
+          "url": "https://pagesonstages.wordpress.com/2024/02/06/appropriate/",
+          "outletId": "pages-on-stages",
+          "criticName": "Mason Pilevsky",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 50d of opening, likely correct production] While this is clearly a review of 'Appropriate' with",
+          "cvIssues": [
+            "No Broadway venue named in the text (Helen Hayes Theater not mentioned)",
+            "Venue mention references 'Second Stage' theater, which is Off-Broadway"
+          ]
         }
       ]
     },
