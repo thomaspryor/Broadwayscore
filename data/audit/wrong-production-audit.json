@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T12:26:07.737Z",
+  "timestamp": "2026-10-31T12:43:24.201Z",
   "stats": {
-    "totalReviews": 74238,
-    "alreadyFlagged": 22478,
+    "totalReviews": 74244,
+    "alreadyFlagged": 22482,
     "dateGuardCatches": 232,
     "directorMismatch": 3049,
-    "tvFilmSignals": 2080,
-    "londonSignals": 3420,
+    "tvFilmSignals": 2081,
+    "londonSignals": 3421,
     "offBroadwaySignals": 670,
     "yearMismatch": 305,
-    "noPublishDate": 8410
+    "noPublishDate": 8412
   },
   "findings": [
     {
@@ -4562,7 +4562,7 @@
       "showId": "an-american-in-paris-west-end-2017",
       "file": "independent--zoe-anderson.json",
       "score": 86,
-      "publishDate": "2017-03-23",
+      "publishDate": "2017-03-28",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/an-american-in-paris-dominion-theatre-london-review-a7645281.html",
       "findings": [
         {
@@ -49776,6 +49776,19 @@
       ]
     },
     {
+      "showId": "shaun-the-sheeps-circus-show-aviva-studios-regional-2025",
+      "file": "thestage--matt-barton.json",
+      "publishDate": "2025-12-17",
+      "url": "https://www.thestage.co.uk/reviews/shaun-the-sheeps-circus-show-review-aviva-studios-manchester-aardman-circa",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "she-loves-me-2016",
       "file": "nypost--johnny-oleksinski.json",
       "score": 89,
@@ -94745,6 +94758,20 @@
       "file": "standard--unknown.json",
       "publishDate": "2025-12-16",
       "url": "https://www.standard.co.uk/culture/theatre/indian-ink-review-hampstead-theatre-b1262756.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "indian-ink-off-west-end-2025",
+      "file": "thestage--tom-wicker.json",
+      "score": 55,
+      "publishDate": "2025-12-17",
+      "url": "https://www.thestage.co.uk/reviews/indian-ink-review-hampstead-theatre-london-tom-stoppard-felicity-kendal-ruby-ashbourne-serkis-gavi-singh-chera",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
