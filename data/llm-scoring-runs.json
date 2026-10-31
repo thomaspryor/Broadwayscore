@@ -1856189,21 +1856189,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T19:33:16.022Z",
-    "completedAt": "2026-10-31T19:33:35.045Z",
-    "totalReviews": 5,
-    "processed": 4,
-    "skipped": 1,
+    "startedAt": "2026-10-31T19:34:03.573Z",
+    "completedAt": "2026-10-31T19:34:48.404Z",
+    "totalReviews": 9,
+    "processed": 9,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 23874,
-      "output": 1255,
-      "cacheRead": 15228,
+      "input": 56827,
+      "output": 2782,
+      "cacheRead": 34263,
       "cacheWrite": 0,
-      "total": 60235
+      "total": 139862
     },
-    "costUsd": 0.09081439999999999,
-    "runId": "41234244560",
+    "costUsd": 0.21263639999999998,
+    "runId": "41234217340",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1859806,6 +1859806,16 @@
           "flat": 1,
           "down": 0,
           "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "always-something-there-regional-2025",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 2,
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -1879219,16 +1879229,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "BWW: Down thumbs differ by 43% (ours: 32%, theirs: 75%)"
-      },
-      {
-        "showId": "memorabilia-regional-2025",
-        "ourDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 0,
-          "total": 4
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "memoriam-off-west-end-2026",
@@ -1900593,8 +1900593,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T19:38:31.792Z",
-    "completedAt": "2026-10-31T19:38:31.793Z",
+    "startedAt": "2026-10-31T19:39:44.883Z",
+    "completedAt": "2026-10-31T19:39:44.885Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1900607,7 +1900607,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41234244560",
+    "runId": "41234217340",
     "source": "comparative-rescore",
     "errorDetails": []
   }
