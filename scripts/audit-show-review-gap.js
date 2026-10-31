@@ -207,7 +207,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
@@ -1971,15 +1971,25 @@ function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}
 // roundup-listed reviews sat uncaptured all night and were found by hand. For a
 // Broadway / off-Broadway show in its first 3 days, a residual gap after auto-ingest
 // now files an 'auto' card (roundup-gap:<showId>); a later run that audits the show
-// with no residual resolves it. WE shows keep their own weAlert path above.
+// with no residual resolves it. Slow markets (BRO-6687) join the same rollup below.
 const ROUNDUP_GAP_ALERT_DAYS = 3;
+const { slowMarketListedGap, inSlowMarketWindow } = require('./lib/slow-market-gap');
 function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
   const alert = [];
   const resolve = [];
   for (const r of results || []) {
-    if (!['broadway', 'off-broadway'].includes(r.category)) continue;
     const opened = r.openingDate ? Date.parse(r.openingDate) : NaN;
-    if (!Number.isFinite(opened) || opened > now || now - opened > ROUNDUP_GAP_ALERT_DAYS * 86400000) continue;
+    const inRoundupWindow = ['broadway', 'off-broadway'].includes(r.category)
+      && Number.isFinite(opened) && opened <= now && now - opened <= ROUNDUP_GAP_ALERT_DAYS * 86400000;
+    // BRO-6687: off-Broadway past day 3, West End and off-West End stay in for the
+    // audit's 21-day window, counting only cited rows and reverify exclusions.
+    if (!inRoundupWindow && inSlowMarketWindow(r, now)) {
+      const { rows, ...counts } = slowMarketListedGap(r);
+      if (counts.residual > 0) alert.push({ showId: r.showId, title: r.title, counts, missing: rows });
+      else resolve.push(r.showId);
+      continue;
+    }
+    if (!inRoundupWindow) continue;
     const counts = computeResidualCounts(r, ingestMissing);
     if (counts.residual > 0) alert.push({ showId: r.showId, title: r.title, counts, missing: currentRunOnly(r.missing || []) });
     // Resolve only on a run that actually found the roundups: a discovery miss (SERP
@@ -2033,7 +2043,7 @@ function buildRoundupGapAlert(plan) {
     items: (plan && plan.alert) || [],
     itemBlock: roundupGapShowBlock,
     title: (shows) => `Roundup gaps: ${shows.reduce((n, g) => n + g.counts.residual, 0)} listed review(s) not captured across ${shows.length} show(s)`,
-    intro: (shows) => `The BWW / Playbill roundups list reviews the site doesn't have after this run's auto-ingest. Shows: ${shows.map((g) => g.title || g.showId).join(', ')}.`,
+    intro: (shows) => `Aggregator roundups (BWW / Playbill; for off-Broadway and the West End, any citing source) list reviews the site doesn't have after this run's auto-ingest. Shows: ${shows.map((g) => g.title || g.showId).join(', ')}.`,
     footer: 'For each: grep the poller / this audit log for the URL; the EXCLUSION line names the guard that dropped it. Fix the guard, then ingest.',
   });
 }
@@ -2555,7 +2565,8 @@ async function main(argv = process.argv.slice(2)) {
       // SERP_CENSUS_INGEST=1 on every market.
       const blockedPred = (m) => ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) !== null;
       const weBlocked = r.missing.filter(blockedPred);
-      const eligibleMissing = r.missing.filter(m => !blockedPred(m));
+      // BRO-6687: cited rows before census rows, last run's tries to the back, so the cap cannot starve a review.
+      const eligibleMissing = orderIngestCandidates(r.missing.filter(m => !blockedPred(m)), (priorRowById.get(s.id) || {}).ingestResults);
       if (weBlocked.length > 0) {
         r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }), censusGateOn: serpCensusGateOn }));
         const nPrior = weBlocked.filter(isPriorProductionCitation).length;

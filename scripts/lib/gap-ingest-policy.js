@@ -360,4 +360,24 @@ function isRoundupSelfCitation(row) {
   return SELF_VERDICT_ROUNDUPS.has(src) && normalizeOutlet(row.outletId || row.outletName || '') === src;
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation };
+/**
+ * BRO-6687: order a show's ingest-eligible gap rows before the per-show cap.
+ * The cap took rows in discovery order, so on Martin Guerre 2026 five SERP-census
+ * pages (forum threads, listing pages) used all 5 slots every hourly run for 11
+ * days and the aggregator-cited London Now review behind them was never tried.
+ * Aggregator-cited rows go before census rows, and a URL already tried last run
+ * goes to the back: it is still missing, so that try did not land it (an "ok"
+ * write the page filter later drops counts too, 243 such rows on 2026-10-31).
+ * Stable otherwise.
+ * @param {object[]} rows - eligible r.missing rows
+ * @param {object[]} [priorIngestResults] - the previous audit row's ingestResults
+ * @returns {object[]} the same rows, reordered
+ */
+function orderIngestCandidates(rows, priorIngestResults = []) {
+  const key = (u) => String(u || '').trim().replace(/^https?:\/\/(www\.)?/i, '').replace(/#.*$/, '').replace(/\/$/, '').toLowerCase();
+  const triedLastRun = new Set((priorIngestResults || []).filter(x => x && x.url).map(x => key(x.url)));
+  const rank = (m) => (triedLastRun.has(key(m.url)) ? 2 : 0) + (m.serpCensus ? 1 : 0);
+  return (rows || []).map((m, i) => ({ m, i, k: rank(m) })).sort((a, b) => a.k - b.k || a.i - b.i).map(x => x.m);
+}
+
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };

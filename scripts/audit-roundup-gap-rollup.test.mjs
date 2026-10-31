@@ -80,3 +80,47 @@ test('every open per-show roundup-gap key is offered to the quiet resolve; the r
   assert.deepEqual(openLegacyRoundupGapKeys(conditions), ['roundup-gap:elf-lyons-the-woman-on-the-edge-off-broadway-2026']);
   assert.deepEqual(openLegacyRoundupGapKeys(undefined), []);
 });
+
+// BRO-6687: slow markets (off-Broadway past day 3, West End, off-West End) join the
+// rollup for 21 days, counting only cited rows and reverify exclusions.
+const slow = (id, category, openingDate, extra = {}) => ({ showId: id, title: `Show ${id}`, category, openingDate, missing: [], flaggedMisses: [], ingestResults: [], ingestSkippedByCap: [], aggregatorArticles: [], ...extra });
+
+test('a West End show with a cap-skipped cited review alerts on day 11', () => {
+  const r = slow('mg', 'west-end', '2026-10-05', {
+    missing: [{ url: 'https://c.example/forum', serpCensus: true }, { url: 'https://n.example/review', weRef: true }],
+    ingestResults: [{ url: 'https://c.example/forum', ok: false, noop: true }],
+    ingestSkippedByCap: [{ url: 'https://n.example/review' }],
+  });
+  const plan = planRoundupGapAlerts([r], true, NOW);
+  assert.equal(plan.alert.length, 1);
+  assert.deepEqual([plan.alert[0].counts.residual, plan.alert[0].counts.capped], [1, 1]);
+  assert.deepEqual(plan.alert[0].missing.map((m) => m.url), ['https://n.example/review']);
+  assert.match(buildRoundupGapAlert(plan).description, /n\.example\/review/);
+});
+
+test('census-only and prior-run gaps do not hold a slow-market alert open', () => {
+  const r = slow('x', 'off-west-end', '2026-10-10', {
+    missing: [{ url: 'https://c.example/a', serpCensus: true }, { url: 'https://old.example/r', priorRun: true }],
+    flaggedMisses: [{ url: 'https://f.example/r', reverify: false, confirmedNonReview: true }],
+  });
+  const plan = planRoundupGapAlerts([r], true, NOW);
+  assert.equal(plan.alert.length, 0);
+  assert.deepEqual(plan.resolve, ['x']);
+});
+
+test('a reverify exclusion counts; an ingest that landed this run does not', () => {
+  const r = slow('y', 'off-broadway', '2026-10-06', {
+    missing: [{ url: 'https://ok.example/r' }],
+    ingestResults: [{ url: 'https://ok.example/r', ok: true }],
+    flaggedMisses: [{ url: 'https://rv.example/r', reverify: true }],
+  });
+  const plan = planRoundupGapAlerts([r], true, NOW);
+  assert.equal(plan.alert[0].counts.residual, 1);
+  assert.equal(plan.alert[0].counts.flaggedOut, 1);
+});
+
+test('slow-market window ends at 21 days and never includes Broadway past day 3', () => {
+  const late = slow('late', 'west-end', '2026-09-20', { missing: [{ url: 'https://n.example/r' }] });
+  const bway = slow('bw', 'broadway', '2026-10-06', { missing: [{ url: 'https://n.example/r' }] });
+  assert.equal(planRoundupGapAlerts([late, bway], true, NOW).alert.length, 0);
+});

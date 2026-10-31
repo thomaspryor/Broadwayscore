@@ -20,7 +20,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('../../scripts/lib/gap-ingest-policy.js');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, orderIngestCandidates } = require('../../scripts/lib/gap-ingest-policy.js');
 
 // TKAM class: WE 2026 entry, 2018 Broadway Review Roundup article.
 const TKAM_2026 = { id: 'to-kill-a-mockingbird-west-end-2026', title: 'To Kill a Mockingbird', openingDate: '2026-06-25' };
@@ -267,5 +267,42 @@ describe('ingestBlockReason — unregistered host (BRO-6685)', () => {
   test('earlier reasons keep precedence over unregistered-host', () => {
     assert.equal(ingestBlockReason({ priorRun: true, knownOutletId: null }, ctx), 'prior-run');
     assert.equal(ingestBlockReason({ serpCensus: true, knownOutletId: null }, { ...ctx, serpCensusGateOn: false }), 'serp-census-gate-off');
+  });
+});
+
+describe('orderIngestCandidates (BRO-6687 cap starvation)', () => {
+  // Martin Guerre 2026 as of 2026-10-31: five census rows ahead of the cited review.
+  const census = [
+    'https://www.oldvictheatre.com/news/martin-guerre-press-night/',
+    'https://theatreboard.co.uk/thread/7596/martin-guerre-2024',
+    'https://theatreboard.co.uk/thread/7596/martin-guerre',
+    'https://broadwaybaby.com/shows/martin-guerre/839230',
+    'https://www.theatremonkey.com/show/martin-guerre/',
+  ].map(url => ({ url, serpCensus: true }));
+  const cited = { url: 'https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/', weRef: true };
+  const prior = [{ url: census[0].url, ok: true }, ...census.slice(1).map(m => ({ url: m.url, ok: false, noop: true, expected: true }))];
+
+  test('the aggregator-cited row moves inside the 5-row cap', () => {
+    const out = orderIngestCandidates([...census, cited], prior);
+    assert.equal(out[0], cited);
+    assert.ok(out.slice(0, 5).includes(cited));
+  });
+  test('rows tried last run go behind untried rows of the same kind', () => {
+    const fresh = { url: 'https://example.com/fresh', serpCensus: true };
+    const out = orderIngestCandidates([...census, fresh], prior);
+    assert.equal(out[0], fresh);
+  });
+  test('stable with no prior run, and does not mutate the input', () => {
+    const rows = [census[0], cited, census[1]];
+    const copy = rows.slice();
+    assert.deepEqual(orderIngestCandidates(rows), [cited, census[0], census[1]]);
+    assert.deepEqual(rows, copy);
+  });
+  test('URL matching ignores scheme, www and trailing slash', () => {
+    const out = orderIngestCandidates([{ url: 'http://example.com/a/' }, { url: 'https://example.com/b' }], [{ url: 'https://www.example.com/a' }]);
+    assert.equal(out[0].url, 'https://example.com/b');
+  });
+  test('missing input is safe', () => {
+    assert.deepEqual(orderIngestCandidates(undefined, undefined), []);
   });
 });
