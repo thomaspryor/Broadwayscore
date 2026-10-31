@@ -191,20 +191,6 @@
     "queuedAt": "2026-10-31T11:42:27.402Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
-    "title": "4 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T11:55:48.489Z"
-  },
-  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 6 review(s) flagged for anchored re-score (still open — BRO-6121)",
     "description": "Still firing after 20 notifications since it was filed. Tracked at BRO-6121.\n\n{\"unanchored\":6} across the whole corpus, by market {\"broadway\":27,\"west-end\":9,\"regional\":9}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] not-ready-for-prime-time-off-broadway-2025/one-minute-critic--lindsay-b-davis.json 3/5 band 51-70\n- [unanchored] the-burning-cauldron-of-fiery-fire-off-broadway-2025/one-minute-critic--billy-mcentee.json 3/5 band 51-70\n- [unanchored] lord-nil-7-deadly-sins-off-broadway-2025/one-minute-critic--matthew-wexler.json 2/5 band 31-50\n- [unanchored] joy-a-new-true-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json 3/5 band 51-70\n- [unanchored] prince-faggot-off-broadway-2025/culturesauce--unknown.json 4/5 stars band 71-90\n- [unanchored] how-to-transcend-a-happy-marriage-off-broadway-2017/timeout--david-cote.json 3/5 band 51-70",
@@ -217,5 +203,19 @@
     "tracked": "BRO-6121",
     "fields": [],
     "queuedAt": "2026-10-31T13:12:01.907Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
+    "title": "5 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/\n- nbcny--1daa444e.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-announces-pregnant-baby-no-3/6559878/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T13:21:33.330Z"
   }
 ]
