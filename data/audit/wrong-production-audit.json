@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T07:50:58.620Z",
+  "timestamp": "2026-10-31T08:25:46.579Z",
   "stats": {
-    "totalReviews": 73564,
-    "alreadyFlagged": 22428,
+    "totalReviews": 73830,
+    "alreadyFlagged": 22434,
     "dateGuardCatches": 229,
-    "directorMismatch": 3001,
+    "directorMismatch": 3012,
     "tvFilmSignals": 2068,
-    "londonSignals": 3416,
-    "offBroadwaySignals": 657,
+    "londonSignals": 3417,
+    "offBroadwaySignals": 658,
     "yearMismatch": 302,
-    "noPublishDate": 8295
+    "noPublishDate": 8540
   },
   "findings": [
     {
@@ -14908,8 +14908,8 @@
     {
       "showId": "dear-evan-hansen-off-broadway-2016",
       "file": "variety--marilyn-stasio.json",
-      "publishDate": "2016-05-01",
-      "url": "https://variety.com/2016/legit/reviews/dear-evan-hansen-review-off-broadway-1201764280/",
+      "publishDate": null,
+      "url": "http://variety.com/2016/legit/reviews/dear-evan-hansen-review-broadway-1201933338/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -17755,10 +17755,38 @@
     },
     {
       "showId": "eclipsed-off-broadway-2015",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/lupita-nyong-brilliant-bleak-blunt-eclipsed-article-1.2397495",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
       "file": "nytimes--charles-isherwood.json",
       "score": null,
       "publishDate": "October 14, 2015",
       "url": "http://www.nytimes.com/2015/10/15/theater/review-in-eclipsed-female-captives-in-liberias-civil-war-seek-sustenance.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
+        }
+      ]
+    },
+    {
+      "showId": "eclipsed-off-broadway-2015",
+      "file": "variety--marilyn-stasio.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://variety.com/2015/legit/reviews/eclipsed-review-lupita-nyongo-danai-gurira-1201617655/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24731,6 +24759,104 @@
       ]
     },
     {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "act-three-the-reviews--doug-marino.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://dougmarino.blogspot.com/2016/05/hadestown.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://cititour.com/NYC_Broadway/Hadestown/346",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "deadline--jeremy-gerard.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://deadline.com/2016/05/hadestown-new-musical-review-1201761800/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "epoch-times--judd-hollander.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theepochtimes.com/n3/2111039-theater-review-hadestown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "front-row-center--tulis-mccall.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://thefrontrowcenter.com/2016/05/hadestown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.thewrap.com/hadestown-review-anais-mitchell-orpheus-eurydice/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "village-voice--miriam-felton-dansky.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.villagevoice.com/arts/hadestown-is-an-underworld-you-won-t-want-to-leave-8677953",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
       "showId": "hadestown-tour-2024",
       "file": "arkansas-democrat-gazette--eric-e-harrison.json",
       "score": 87,
@@ -25518,6 +25644,25 @@
     },
     {
       "showId": "hangmen-off-broadway-2018",
+      "file": "frontmezzjunkies--steven-ross.json",
+      "score": null,
+      "publishDate": "2018-02-11",
+      "url": "https://frontmezzjunkies.com/2018/02/11/atcs-hangmen/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
       "file": "newnownextcom--michael-musto.json",
       "score": 86,
       "publishDate": "2018-02-06",
@@ -25757,6 +25902,20 @@
       "score": 79,
       "publishDate": "2018-02-05",
       "url": "http://www.vulture.com/2018/02/theater-martin-mcdonagh-on-a-dying-profession-in-hangmen.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "wnyc--jennifer-vanasco.json",
+      "score": null,
+      "publishDate": "February 10th, 2018",
+      "url": "https://www.wnyc.org/story/review-darkly-funny-hangmen-full-compelling-twists/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -103443,6 +103602,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "on-the-shore-of-the-wide-world-off-broadway-2017",
+      "file": "dailybeast--tim-teeman.json",
+      "score": null,
+      "publishDate": "September 15th, 2017",
+      "url": "http://www.thedailybeast.com/whod-want-to-be-old-reviews-of-for-peter-pan-on-her-70th-birthday-and-on-the-shore-of-the-wide-world",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },

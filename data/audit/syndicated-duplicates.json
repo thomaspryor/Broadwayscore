@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-31T07:40:50.344Z",
+  "generatedAt": "2026-10-31T08:14:05.493Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 3,
+    "newlyFlagged": 3,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 3,
+    "showsAffected": 3,
+    "avgSimilarity": 71,
+    "avgScoreDiff": 6
   },
   "syndicationPairs": [
     {
@@ -153,7 +153,44 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Austin Yang",
+      "showId": "fire-and-air-off-broadway-2018",
+      "primaryOutlet": "nytg",
+      "secondaryOutlet": "front-row-center",
+      "primaryFile": "nytg--austin-yang.json",
+      "secondaryFile": "front-row-center--austin-yang.json",
+      "similarity": 77,
+      "primaryScore": 60,
+      "secondaryScore": 66,
+      "scoreDiff": 6
+    },
+    {
+      "critic": "Holli Harms",
+      "showId": "office-hour-off-broadway-2017",
+      "primaryOutlet": "nytg",
+      "secondaryOutlet": "front-row-center",
+      "primaryFile": "nytg--holli-harms.json",
+      "secondaryFile": "front-row-center--holli-harms.json",
+      "similarity": 65,
+      "primaryScore": 66,
+      "secondaryScore": 78,
+      "scoreDiff": 12
+    },
+    {
+      "critic": "Margret Echeverria",
+      "showId": "amy-and-the-orphans-off-broadway-2018",
+      "primaryOutlet": "nytg",
+      "secondaryOutlet": "front-row-center",
+      "primaryFile": "nytg--margret-echeverria.json",
+      "secondaryFile": "front-row-center--margret-echeverria.json",
+      "similarity": 72,
+      "primaryScore": 89,
+      "secondaryScore": 89,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
