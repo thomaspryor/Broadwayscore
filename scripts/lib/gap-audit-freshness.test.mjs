@@ -167,3 +167,49 @@ test('BRO-5513: closed in-window show with an alerting row re-audits at 12h, not
   const old = { id: 'o', status: 'closed', openingDate: iso(60 * DAY) };
   assert.equal(freshnessMsFor(old, { gaps: 2, uncollected: 2 }, { now: NOW }), 14 * DAY);
 });
+
+// BRO-6687: slow-market reviews trickle in over days 8-21; a clean audit on day 7
+// must not drop the show behind the whole back catalogue for a week.
+test('slow-market show in days 8-21 that audited clean gets its own 48h tier', () => {
+  const { auditTier, SLOW_MARKET_CLEAN_TIER, SLOW_MARKET_CLEAN_FRESHNESS_MS } = require('./gap-audit-freshness.js');
+  const we = { id: 'we', status: 'open', category: 'west-end', openingDate: iso(10 * DAY) };
+  const clean = { at: new Date(NOW - 3 * DAY).toISOString(), gaps: 0, uncollected: 0 };
+  assert.equal(auditTier(we, clean, NOW), SLOW_MARKET_CLEAN_TIER);
+  assert.equal(freshnessMsFor(we, clean, { now: NOW }), SLOW_MARKET_CLEAN_FRESHNESS_MS);
+  for (const category of ['off-broadway', 'off-west-end']) {
+    assert.equal(auditTier({ ...we, category }, clean, NOW), SLOW_MARKET_CLEAN_TIER, category);
+  }
+});
+
+test('slow-market tier leaves alerting rows, Broadway, closed and out-of-window shows unchanged', () => {
+  const { auditTier } = require('./gap-audit-freshness.js');
+  const we = { id: 'we', status: 'open', category: 'west-end', openingDate: iso(10 * DAY) };
+  const clean = { gaps: 0, uncollected: 0 };
+  assert.equal(auditTier(we, { uncollected: 2 }, NOW), 1, 'a row with a gap stays in the alerting tier');
+  assert.equal(freshnessMsFor(we, { gaps: 2, uncollected: 2 }, { now: NOW }), 12 * 60 * 60 * 1000);
+  assert.equal(auditTier({ ...we, category: 'broadway' }, clean, NOW), 2);
+  assert.equal(freshnessMsFor({ ...we, category: 'broadway' }, clean, { now: NOW }), 12 * 60 * 60 * 1000);
+  assert.equal(auditTier({ ...we, status: 'closed' }, clean, NOW), 2);
+  assert.equal(auditTier({ ...we, openingDate: iso(25 * DAY) }, clean, NOW), 2);
+  assert.equal(auditTier({ ...we, openingDate: iso(3 * DAY) }, clean, NOW), 0, 'priority window still wins');
+  assert.equal(freshnessMsFor(we, clean, { freshnessHours: 72, now: NOW }), 72 * 60 * 60 * 1000, 'never shortens a longer configured freshness');
+});
+
+test('slow-market previews show with no openingDate uses previewsStartDate', () => {
+  const { auditTier, SLOW_MARKET_CLEAN_TIER } = require('./gap-audit-freshness.js');
+  const show = { id: 'p', status: 'previews', category: 'off-broadway', previewsStartDate: iso(12 * DAY) };
+  assert.equal(auditTier(show, { uncollected: 0 }, NOW), SLOW_MARKET_CLEAN_TIER);
+});
+
+test('Broadway alerting row sorts ahead of a clean slow-market row, which sorts ahead of the back catalogue', () => {
+  const alerting = { id: 'bway', status: 'open', category: 'broadway', openingDate: iso(15 * DAY) };
+  const we = { id: 'we', status: 'open', category: 'west-end', openingDate: iso(10 * DAY) };
+  const backlog = { id: 'old', status: 'open', category: 'broadway', openingDate: iso(400 * DAY) };
+  const checkpoint = {
+    bway: { at: new Date(NOW - 1 * DAY).toISOString(), uncollected: 3 },
+    we: { at: new Date(NOW - 5 * DAY).toISOString(), uncollected: 0 },
+    old: { at: new Date(NOW - 30 * DAY).toISOString(), uncollected: 0 },
+  };
+  assert.ok(compareAuditPriority(alerting, we, checkpoint, NOW) < 0);
+  assert.ok(compareAuditPriority(we, backlog, checkpoint, NOW) < 0);
+});

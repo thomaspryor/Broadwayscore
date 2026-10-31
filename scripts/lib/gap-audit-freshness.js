@@ -15,6 +15,7 @@
 
 const { inOpeningWindow } = require('./gap-reference-sources');
 const { showRecencyKey } = require('./collection-priority');
+const { SLOW_MARKETS, SLOW_MARKET_ALERT_DAYS } = require('./slow-market-gap');
 
 // Shows opened within the last 7 days sort ahead of the back-catalogue grind.
 const OPENING_PRIORITY_WINDOW_DAYS = 7;
@@ -44,6 +45,22 @@ function alertReadsRow(show, entry, now = Date.now()) {
   return (entry.alertUncollected ?? entry.uncollected) > 0;
 }
 
+// BRO-6687: off-Broadway / West End / off-West End reviews trickle in over days
+// 8-21, but a show there that audited clean on day 7 fell to tier 2 behind ~770
+// back-catalogue shows and waited 2-13 days for re-audit (43 of 67 in-window
+// slow-market shows on 2026-10-31), so late reviews were not found in-window.
+// These shows get their own tier between alerting rows and the back catalogue,
+// re-checked every 48h: about 25 audits/day for ~50 shows, against ~70/day of
+// observed audit throughput. Rows that still count uncollected reviews stay
+// tier 1 at the normal cadence.
+const SLOW_MARKET_CLEAN_TIER = 1.5;
+const SLOW_MARKET_CLEAN_FRESHNESS_MS = 48 * 60 * 60 * 1000;
+function isSlowMarketCleanInWindow(show, entry, now = Date.now()) {
+  return show?.status !== 'closed' && SLOW_MARKETS.has(show?.category)
+    && inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS)
+    && !!entry && !(entry.uncollected > 0);
+}
+
 function inOpeningPriorityWindow(show, now = Date.now()) {
   if (show?.status === 'closed') return false;
   if (inOpeningWindow(show, now, OPENING_PRIORITY_WINDOW_DAYS)) return true;
@@ -70,6 +87,7 @@ function freshnessMsFor(show, lastEntry, { freshnessHours = 12, now = Date.now()
       ? OPENING_WINDOW_FRESHNESS_MS
       : OPENING_WARM_FRESHNESS_MS;
   }
+  if (isSlowMarketCleanInWindow(show, lastEntry, now)) return Math.max(SLOW_MARKET_CLEAN_FRESHNESS_MS, freshnessHours * 60 * 60 * 1000);
   return freshnessHours * 60 * 60 * 1000; // open/previews — re-check often for new reviews
 }
 
@@ -105,6 +123,7 @@ function auditTier(show, entry, now = Date.now()) {
   if (inOpeningPriorityWindow(show, now)) return 0;
   if (show?.status !== 'closed' && inOpeningWindow(show, now) && (!entry || entry.uncollected > 0)) return 1;
   if (show?.status === 'closed' && alertReadsRow(show, entry, now)) return 1; // BRO-5513
+  if (isSlowMarketCleanInWindow(show, entry, now)) return SLOW_MARKET_CLEAN_TIER; // BRO-6687
   return 2;
 }
 
@@ -259,6 +278,9 @@ module.exports = {
   inOpeningPriorityWindow,
   compareAuditPriority,
   auditTier,
+  isSlowMarketCleanInWindow,
+  SLOW_MARKET_CLEAN_TIER,
+  SLOW_MARKET_CLEAN_FRESHNESS_MS,
   checkpointTs,
   OPENING_PRIORITY_WINDOW_DAYS,
   OPENING_HOT_DAYS,

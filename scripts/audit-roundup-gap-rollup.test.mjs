@@ -125,8 +125,8 @@ test('slow-market window ends at 21 days and never includes Broadway past day 3'
   assert.equal(planRoundupGapAlerts([late, bway], true, NOW).alert.length, 0);
 });
 
-test('a slow-market row not re-audited for 36h stays out (it can neither clear nor be fixed)', () => {
-  const stale = slow('st', 'west-end', '2026-10-10', { missing: [{ url: 'https://n.example/r' }], computedAt: new Date(NOW - 37 * 3600000).toISOString() });
+test('a slow-market row not re-audited for 72h stays out (it can neither clear nor be fixed)', () => {
+  const stale = slow('st', 'west-end', '2026-10-10', { missing: [{ url: 'https://n.example/r' }], computedAt: new Date(NOW - 73 * 3600000).toISOString() });
   const undated = slow('nd', 'west-end', '2026-10-10', { missing: [{ url: 'https://n.example/r' }], computedAt: undefined });
   const plan = planRoundupGapAlerts([stale, undated], true, NOW);
   assert.deepEqual([plan.alert.length, plan.resolve.length], [0, 0]);
