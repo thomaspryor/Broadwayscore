@@ -11,7 +11,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { baseSlug, computeCombinedWith, shouldRecoverJointWrongShow } = require('./lib/combined-review-utils');
+const { baseSlug, normalizeArticleUrl, isBogusCombinedFlag, computeCombinedWith, shouldRecoverJointWrongShow } = require('./lib/combined-review-utils');
 const { isCombinedReviewOfOtherMemberOnly } = require('./lib/review-guards');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
@@ -34,10 +34,7 @@ function loadShows() {
   return Array.isArray(raw) ? raw : raw.shows;
 }
 
-function normalizeUrl(url) {
-  if (!url) return null;
-  return url.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase();
-}
+const normalizeUrl = normalizeArticleUrl;
 
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -84,7 +81,22 @@ function main() {
   let flagged = 0, urlCount = 0, siblingEntriesSkipped = 0, staleFlagsCleared = 0;
   for (const [url, entries] of urlMap) {
     const uniqueShows = new Set(entries.map(e => e.showId));
-    if (uniqueShows.size < 2) continue;
+    if (uniqueShows.size < 2) {
+      // BRO-6682: a flag stamped under the old collapsed URL key (LSA story.asp,
+      // ~400-show combinedWith) must not outlive the key that produced it.
+      for (const entry of entries) {
+        try {
+          const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
+          if (!isBogusCombinedFlag(data)) continue;
+          staleFlagsCleared++;
+          if (DRY_RUN) { console.log(`  [would clear bogus isCombinedReview, ${data.combinedWith.length} shows] ${entry.showId}/${entry.file}`); continue; }
+          data.isCombinedReview = false;
+          data.combinedWith = null;
+          safeWriteReview(entry.filePath, data);
+        } catch { /* unreadable file: other checks report it */ }
+      }
+      continue;
+    }
     // Require 2+ DIFFERENT base shows. Filters out same-production-different-id
     // cases that aren't joint reviews.
     const uniqueBaseShows = new Set([...uniqueShows].map(baseSlug));

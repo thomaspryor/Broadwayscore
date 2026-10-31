@@ -278,6 +278,18 @@ function extractReviewLinksFromArticle(html, showId) {
  * Cloudflare gating goes through the same providers as other BWW/Playbill
  * fetches the poller already makes.
  */
+// One sitemap fetch per fetcher per 10 minutes: the poller and census call this
+// once per show, and the fetch goes through the paid scraping chain.
+const SITEMAP_TTL_MS = 10 * 60 * 1000;
+const _sitemapCache = new WeakMap();
+async function cachedSitemap(fetchHtml) {
+  const hit = _sitemapCache.get(fetchHtml);
+  if (hit && Date.now() - hit.ts < SITEMAP_TTL_MS) return hit.xml;
+  const xml = await fetchHtml(VERDICT_SITEMAP_URL);
+  if (xml) _sitemapCache.set(fetchHtml, { ts: Date.now(), xml });
+  return xml;
+}
+
 async function searchPlaybillVerdict(show, opts = {}) {
   if (!show || !show.title) return null;
 
@@ -293,14 +305,30 @@ async function searchPlaybillVerdict(show, opts = {}) {
   }
 
   const html = await fetchHtml(VERDICT_CATEGORY_URL);
-  if (!html) return null;
 
   // No size gate here — an empty/broken fetch produces zero articles from
   // extractArticlesFromCategoryPage, which the next check rejects. The size
   // gate in scrape-playbill-verdict.js (>500B) is a batch-mode zero-data
   // guard; the per-show path just fails open and moves on.
-  const articles = extractArticlesFromCategoryPage(html);
-  if (articles.length === 0) return null;
+  const articles = html ? extractArticlesFromCategoryPage(html) : [];
+  const hit = findVerdictArticle(articles, show, { matchTitleToShow, matchSlugToShow });
+  if (hit || opts.skipSitemap) return hit;
+
+  // BRO-6682: the category page's first paint lists only ~27-30 articles. On a
+  // night with dozens of openings (In the Heights, 2026-10-29) a show's Verdict
+  // article scrolls off that list while its critics are still being added, and
+  // every poll said "no matching article". The site-wide sitemap still lists
+  // it, so fall back to it for this one show.
+  try {
+    const xml = await cachedSitemap(fetchHtml);
+    return findVerdictArticle(extractArticlesFromSitemap(xml), show, { matchTitleToShow, matchSlugToShow });
+  } catch (_) {
+    return null;
+  }
+}
+
+function findVerdictArticle(articles, show, { matchTitleToShow, matchSlugToShow }) {
+  if (!articles || articles.length === 0) return null;
 
   // Accept both high- and medium-confidence matches here. The batch Playbill
   // scraper (scrape-playbill-verdict.js) rejects medium because it matches

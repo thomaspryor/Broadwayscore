@@ -16,6 +16,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { writeReviewOrThrow } = require('./lib/review-write-guard');
+const { normalizeArticleUrl } = require('./lib/combined-review-utils');
 
 const BASE = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(BASE, 'data', 'review-texts');
@@ -116,7 +117,7 @@ function mergeInto(winner, donor) {
 
 function normalizeUrl(url) {
   if (!url) return null;
-  return url.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase();
+  return normalizeArticleUrl(url);
 }
 
 function buildDirectoryMap() {

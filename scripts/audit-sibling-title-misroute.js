@@ -62,6 +62,7 @@
 'use strict';
 
 const fs = require('fs');
+const { normalizeArticleUrl } = require('./lib/combined-review-utils');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -328,13 +329,13 @@ function main() {
       try {
         const d = JSON.parse(fs.readFileSync(h.filePath, 'utf8'));
         const targetDir = path.join(REVIEW_TEXTS_DIR, h.targetShowId);
-        const normUrl = String(d.url).toLowerCase().replace(/[#?].*$/, '').replace(/\/+$/, '');
+        const normUrl = normalizeArticleUrl(String(d.url)) || '';
         let existingMatch = null; // { file, data } — the target-dir file with the same URL, if any
         if (fs.existsSync(targetDir)) {
           for (const tf of fs.readdirSync(targetDir).filter(x => x.endsWith('.json'))) {
             try {
               const td = JSON.parse(fs.readFileSync(path.join(targetDir, tf), 'utf8'));
-              const tUrl = td.url ? String(td.url).toLowerCase().replace(/[#?].*$/, '').replace(/\/+$/, '') : null;
+              const tUrl = td.url ? normalizeArticleUrl(String(td.url)) : null;
               if (tUrl && tUrl === normUrl) { existingMatch = { file: tf, data: td }; break; }
             } catch { /* skip unreadable */ }
           }

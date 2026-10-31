@@ -418,7 +418,7 @@ function readReviewOnDisk(showDir, review) {
   if (fs.existsSync(canonical)) return readJson(canonical);
 
   if (!review.url || !review.outletId) return null;
-  const norm = (u) => String(u || '').toLowerCase().replace(/[#?].*$/, '').replace(/\/+$/, '');
+  const norm = (u) => require('./lib/combined-review-utils').normalizeArticleUrl(String(u || '')) || '';
   const want = norm(review.url);
   if (!want) return null;
   const prefix = `${review.outletId}--`;

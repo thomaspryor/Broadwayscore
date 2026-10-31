@@ -147,7 +147,7 @@ async function discoverSourceUrl(sourceName, show) {
     if (sourceName === 'playbill-verdict') {
       const { searchPlaybillVerdict } = require('./lib/playbill-verdict-discover');
       const r = await searchPlaybillVerdict(show);
-      return typeof r === 'string' ? r : (r && r.url) || null;
+      return typeof r === 'string' ? r : (r && (r.articleUrl || r.url)) || null;
     }
   } catch (e) {
     console.log(`    ${sourceName}: discovery failed — ${e.message}`);
