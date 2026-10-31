@@ -2237994,21 +2237994,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T23:38:49.691Z",
-    "completedAt": "2026-10-31T23:39:18.170Z",
-    "totalReviews": 10,
-    "processed": 6,
+    "startedAt": "2026-10-31T23:40:39.127Z",
+    "completedAt": "2026-10-31T23:40:58.317Z",
+    "totalReviews": 8,
+    "processed": 4,
     "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 34458,
-      "output": 1898,
-      "cacheRead": 19035,
-      "cacheWrite": 3807,
-      "total": 88273
+      "input": 23047,
+      "output": 1220,
+      "cacheRead": 15228,
+      "cacheWrite": 0,
+      "total": 58991
     },
-    "costUsd": 0.14510794999999999,
-    "runId": "41252860285",
+    "costUsd": 0.0878757,
+    "runId": "41252928264",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2252164,12 +2252164,22 @@
         "hasDisagreement": false
       },
       {
-        "showId": "fun-home-regional-2025",
+        "showId": "fun-home-regional-2022",
         "ourDistribution": {
-          "up": 10,
+          "up": 14,
           "flat": 0,
           "down": 0,
-          "total": 10
+          "total": 14
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "fun-home-regional-2025",
+        "ourDistribution": {
+          "up": 14,
+          "flat": 0,
+          "down": 0,
+          "total": 14
         },
         "hasDisagreement": false
       },
@@ -2263937,6 +2263947,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "ohio-state-murders-regional-2021",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "oklahoma-2019",
         "ourDistribution": {
           "up": 58,
@@ -2269560,16 +2269580,6 @@
           "flat": 0,
           "down": 0,
           "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "songs-for-nobodies-regional-2021",
-        "ourDistribution": {
-          "up": 6,
-          "flat": 0,
-          "down": 0,
-          "total": 6
         },
         "hasDisagreement": false
       },
@@ -2283313,8 +2283323,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T23:44:15.725Z",
-    "completedAt": "2026-10-31T23:44:15.727Z",
+    "startedAt": "2026-10-31T23:45:56.310Z",
+    "completedAt": "2026-10-31T23:45:56.312Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2283327,7 +2283337,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41252860285",
+    "runId": "41252928264",
     "source": "comparative-rescore",
     "errorDetails": []
   }
