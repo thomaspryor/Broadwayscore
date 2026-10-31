@@ -922,20 +922,6 @@
     "queuedAt": "2026-10-29T17:59:59.366Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
-    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'David Barbour',\n+     outletId: 'lighting-and-sound-america',\n+     showId: 'corruption-off-broadway-2024'\n+   }\n+ ]\n- []\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T18:02:49.028Z"
-  },
-  {
     "conditionKey": "land:land/bro-4303-visual-v2",
     "title": "Landing blocked: unit-tests-tsx red on land/bro-4303-visual-v2",
     "description": "land.yml did not land land/bro-4303-visual-v2: the unit-tests-tsx gate went red at b56d18a79c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40920387395",
@@ -1424,34 +1410,6 @@
       }
     ],
     "queuedAt": "2026-10-29T22:50:08.537Z"
-  },
-  {
-    "conditionKey": "live-data-test:tests/unit/doubled-market-ids-live-data.test.mjs::the live corpus has zero unallowlisted doubled-market ids",
-    "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the live corpus has zero unallowlisted doubled-market ids\" in tests/unit/doubled-market-ids-live-data.test.mjs is red against the live corpus.\n\nfix the title, or allowlist the id with the source you checked\n+ actual - expected\n\n+ [\n+   'loki-the-end-of-the-world-tour-regional-2026 \"Loki - The End of the World Tour\"'\n+ ]\n- []\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T23:10:05.392Z"
-  },
-  {
-    "conditionKey": "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows",
-    "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data: no byte-identical art across unrelated, unlinked shows\" in tests/unit/duplicate-images-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/hero.webp, /images/shows/happy-days-are-here-again-regional-2024/hero.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/poster.webp, /images/shows/happy-days-are-here-again-regional-2024/poster.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/thumbnail.webp, /images/shows/happy-days-are-here-again-regional-2024/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/hero.webp, /images/shows/deathtrap-regional-2025/hero.webp, /images/shows/company-regional-2026/hero.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/thumbnail.webp, /images/shows/deathtrap-regional-2025/thumbnail.webp, /images/shows/company-regional-2026/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/poster.webp, /images/shows/deatht",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T23:10:05.417Z"
   },
   {
     "conditionKey": "land:land/bro-6546-voidfix",
@@ -3658,5 +3616,61 @@
       }
     ],
     "queuedAt": "2026-10-31T00:25:38.232Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/doubled-market-ids-live-data.test.mjs::the live corpus has zero unallowlisted doubled-market ids",
+    "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the live corpus has zero unallowlisted doubled-market ids\" in tests/unit/doubled-market-ids-live-data.test.mjs is red against the live corpus.\n\nfix the title, or allowlist the id with the source you checked\n+ actual - expected\n\n+ [\n+   'loki-the-end-of-the-world-tour-regional-2026 \"Loki - The End of the World Tour\"'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T00:35:50.670Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows",
+    "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data: no byte-identical art across unrelated, unlinked shows\" in tests/unit/duplicate-images-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/hero.webp, /images/shows/happy-days-are-here-again-regional-2024/hero.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/poster.webp, /images/shows/happy-days-are-here-again-regional-2024/poster.webp)',\n+   'bernarda-regional-2023 | happy-days-are-here-again-regional-2024 (/images/shows/bernarda-regional-2023/thumbnail.webp, /images/shows/happy-days-are-here-again-regional-2024/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/hero.webp, /images/shows/deathtrap-regional-2025/hero.webp, /images/shows/company-regional-2026/hero.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/thumbnail.webp, /images/shows/deathtrap-regional-2025/thumbnail.webp, /images/shows/company-regional-2026/thumbnail.webp)',\n+   'company-regional-2026 | deathtrap-regional-2025 | the-curious-incident-of-the-dog-in-the-night-time-regional-2024 (/images/shows/the-curious-incident-of-the-dog-in-the-night-time-regional-2024/poster.webp, /images/shows/deatht",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T00:35:50.690Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Mark Kennedy',\n+     outletId: 'ap',\n+     showId: 'aladdin-2014'\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T00:35:50.710Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked candidate sub-venue slugs found (same class as the West End National Theatre bug): {\n\"the-public-theater\": [\n{\n\"slug\": \"martinson-theater-at-joseph-papp-public-theater\",\n\"rawStrings\": [\n\"Martinson Theater at Joseph Papp Public Theater\"\n],\n\"showCount\": 2\n}\n],\n\"theatre-row\": [\n{\n\"slug\": \"the-lion-theatre-at-theatre-row\",\n\"rawStrings\": [\n\"The Lion Theatre at Theatre Row\"\n],\n\"showCount\": 1\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'the-public-theater': [\n+     {\n+       rawStrings: [\n+         'Martinson Theater at Joseph Papp Public Theater'\n+       ],\n+       showCount: 2,\n+       slug: 'martinson-theater-at-joseph-papp-public-theater'\n+     }\n+   ],\n+   'theatre-row': [\n+     {\n+       rawStrings: [\n+         'The Lion Theatre at Theatre Row'\n+       ],\n+       showCount: 1,\n+       slug: 'the-lion-theatre-at-theatre-row'\n+     }\n+   ]\n+ }\n- {}\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T00:35:50.727Z"
   }
 ]
