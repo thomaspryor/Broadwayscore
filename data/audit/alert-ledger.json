@@ -22738,12 +22738,13 @@
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.708Z",
-      "lastSeen": "2026-10-31T00:35:50.708Z",
+      "lastSeen": "2026-10-31T07:42:49.363Z",
       "lastNotifiedAt": "2026-10-31T00:35:50.708Z",
       "lastSurfacedAt": "2026-10-31T00:35:50.708Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -24828,13 +24829,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-31T00:35:50.649Z",
+      "lastSeen": "2026-10-31T07:42:49.311Z",
       "lastNotifiedAt": "2026-10-30T14:05:55.493Z",
       "lastSurfacedAt": "2026-10-30T14:05:55.493Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "resolved",
@@ -26698,12 +26699,13 @@
       "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
-      "lastSeen": "2026-10-31T00:35:50.727Z",
+      "lastSeen": "2026-10-31T07:42:49.378Z",
       "lastNotifiedAt": "2026-10-31T00:35:50.727Z",
       "lastSurfacedAt": "2026-10-31T00:35:50.727Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -31761,12 +31763,13 @@
       "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.391Z",
       "incidentOpenedAt": "2026-10-29T23:10:05.391Z",
-      "lastSeen": "2026-10-31T00:35:50.669Z",
+      "lastSeen": "2026-10-31T07:42:49.331Z",
       "lastNotifiedAt": "2026-10-31T00:35:50.669Z",
       "lastSurfacedAt": "2026-10-31T00:35:50.669Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows": {
       "status": "open",
@@ -31774,12 +31777,13 @@
       "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.416Z",
       "incidentOpenedAt": "2026-10-29T23:10:05.416Z",
-      "lastSeen": "2026-10-31T00:35:50.689Z",
+      "lastSeen": "2026-10-31T07:42:49.348Z",
       "lastNotifiedAt": "2026-10-31T00:35:50.689Z",
       "lastSurfacedAt": "2026-10-31T00:35:50.689Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-6546-voidfix": {
       "status": "open",
