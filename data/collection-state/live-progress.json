@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-31T06:55:39.673Z",
-  "processed": 292,
-  "failed": 65,
-  "successRate": "81.8%",
+  "updatedAt": "2026-10-31T06:59:07.204Z",
+  "processed": 244,
+  "failed": 55,
+  "successRate": "81.6%",
   "tierBreakdown": {
-    "playwright": 189,
+    "playwright": 161,
     "amp": 0,
-    "browserbase": 24,
+    "browserbase": 25,
     "directCookies": 0,
     "scrapingdog": 15,
     "scrapingbee": 14,
     "brightdata": 3,
-    "archiveToday": 20,
-    "archive": 77
+    "archiveToday": 19,
+    "archive": 58
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-31T04:55:05.609Z",
-      "event": "bb-session",
-      "session": "91a38f05",
-      "url": "https://www.nytimes.com/2018/03/01/theater/amy-and-the-orphans-review.html"
-    },
-    {
-      "t": "2026-10-31T04:55:06.220Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-31T05:03:49.222Z",
       "event": "bb-session",
@@ -126,6 +115,18 @@
       "t": "2026-10-31T06:11:50.295Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T06:51:24.557Z",
+      "event": "bb-session",
+      "session": "c334a9b4",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-31T06:52:56.578Z",
+      "event": "bb-session",
+      "session": "501ccfc7",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
