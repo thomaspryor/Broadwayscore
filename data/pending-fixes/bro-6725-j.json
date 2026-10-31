@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6725-j",
   "planId": "1d1ba179-ad98-4e73-99ff-b4a56924d805",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T16:46:14.493Z",
   "submitter": {
     "name": null,
@@ -254,5 +254,129 @@
         "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T18:08:20.648Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for 1984-royal-bath-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for 1984-royal-bath-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for 1984-royal-bath-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for emma-royal-bath-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for emma-royal-bath-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for emma-royal-bath-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for lines-crucible-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for lines-crucible-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for lines-crucible-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for macbeth-tobacco-factory-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for macbeth-tobacco-factory-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for macbeth-tobacco-factory-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for glorious-hope-mill-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for glorious-hope-mill-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for glorious-hope-mill-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for consumed-sheffield-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for consumed-sheffield-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for consumed-sheffield-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for antigone-tron-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for antigone-tron-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for antigone-tron-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-39-steps-hull-truck-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-39-steps-hull-truck-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-39-steps-hull-truck-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
