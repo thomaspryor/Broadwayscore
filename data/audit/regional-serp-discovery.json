@@ -1,41 +1,564 @@
 {
-  "lastRun": "2026-10-30T19:22:21.318Z",
+  "lastRun": "2026-10-31T03:53:48.699Z",
   "shows": [
     {
-      "showId": "middlemarch-rsc-regional-2026",
-      "query": "\"Middlemarch\" review Stratford-upon-Avon",
+      "showId": "sense-and-sensibility-pitlochry-festival-regional-2024",
+      "query": "\"Sense and Sensibility\" review Pitlochry",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://www.theguardian.com/stage/article/2024/jun/27/sense-and-sensibility-review-pitlochry-festival-theatre",
+          "outletId": "guardian",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://stalbanstimes.co.uk/review/theatre-review-sense-and-sensibility/",
+          "domain": "stalbanstimes.co.uk",
+          "title": "Theatre review: Sense and Sensibility - St Albans Times"
+        },
+        {
+          "url": "https://www.linkedin.com/posts/neil-cooper-48631433_sense-and-sensibility-at-pitlochry-festival-activity-7212111416957247488-h9h3",
+          "domain": "linkedin.com",
+          "title": "Neil Cooper's Post - LinkedIn"
+        },
+        {
+          "url": "https://www.facebook.com/OVOtheatre/posts/our-co-production-of-sense-and-sensibility-is-getting-brilliant-reviews-and-afte/991482232984132/",
+          "domain": "facebook.com",
+          "title": "Our co-production of Sense and Sensibility is getting brilliant ..."
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 6
+    },
+    {
+      "showId": "the-last-cabaret-on-earth-oran-mor-regional-2024",
+      "query": "\"The Last Cabaret on Earth\" review Glasgow",
+      "candidates": 2,
+      "ingested": [],
+      "newOutletCandidates": [],
+      "skippedExisting": 0,
+      "skippedUnregistered": 0,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "the-high-life-the-musical-dundee-rep-regional-2026",
+      "query": "\"The High Life the Musical\" review Dundee",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://list.co.uk/news/the-high-life-the-musical-theatre-review-a-delirious-triumph-48248",
+          "outletId": "the-list",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://glasgowchamberofcommerce.com/news/news/2026/april/02/the-high-life-the-musical-is-ready-for-take-off/",
+          "domain": "glasgowchamberofcommerce.com",
+          "title": "The High Life The Musical is ready for take off! | Glasgow Chamber ..."
+        },
+        {
+          "url": "https://radiosummerhallarts.com/2026/04/10/the-high-life-the-musical-still-living-it/",
+          "domain": "radiosummerhallarts.com",
+          "title": "The High Life: The Musical Still Living It! - Radio Summerhall Arts"
+        },
+        {
+          "url": "https://www.facebook.com/captheatres/posts/-the-high-life-has-been-nominated-for-best-musical-production-at-the-uktheatreaw/1544561347703620/",
+          "domain": "facebook.com",
+          "title": "The High Life has been nominated for Best Musical Production at ..."
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 6
+    },
+    {
+      "showId": "little-shop-of-horrors-hope-mill-regional-2026",
+      "query": "\"Little Shop of Horrors\" review Manchester",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://www.curtaincallreviews.co.uk/little-shop-of-horrors-2",
+          "outletId": "curtain-call-reviews",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.londontheatres.com/news/review-_-little-shop-of-horrors-is-a-feast-not-to-be-missed",
+          "domain": "londontheatres.com",
+          "title": "REVIEW - Little Shop of Horrors is a feast not to be missed!"
+        },
+        {
+          "url": "https://www.facebook.com/61593249246207/videos/manchester-has-had-its-say-now-come-see-it-for-yourself-little-shop-of-horrors-i/2614648925660884/",
+          "domain": "facebook.com",
+          "title": "Little Shop of Horrors Manchester: Audience Response Says It All"
+        }
+      ],
+      "skippedExisting": 2,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 5
+    },
+    {
+      "showId": "goodbye-dreamland-bowlarama-oran-mor-regional-2025",
+      "query": "\"Goodbye Dreamland Bowlarama\" review Glasgow",
+      "candidates": 6,
+      "ingested": [
+        {
+          "url": "https://www.broadwayworld.com/scotland/article/Review-GOODBYE-DREAMLAND-BOWLARAMA-Oran-Mor-20250517",
+          "outletId": "broadwayworld",
+          "action": "new"
+        },
+        {
+          "url": "https://www.heraldscotland.com/life_style/25162477.charm-aplenty---review-goodbye-dreamland-bowlarama-oran-mor/",
+          "outletId": "herald",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.lisainthetheatre.com/post/review-goodbye-dreamland-bowlarama",
+          "domain": "lisainthetheatre.com",
+          "title": "Review: Goodbye Dreamland Bowlarama | A Play, A Pie and A Pint"
+        },
+        {
+          "url": "https://strathclydetelegraph.com/2025/06/05/play-pie-pint-review-goodbye-dreamland-bowlarama/",
+          "domain": "strathclydetelegraph.com",
+          "title": "A Play, A Pie, and A Pint Review: Goodbye Dreamland Bowlarama"
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 1
+    },
+    {
+      "showId": "righ-iasgair-the-fisher-king-oran-mor-regional-2025",
+      "query": "\"Righ Iasgair the Fisher King\" review Glasgow",
+      "candidates": 7,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/playpiepint/posts/still-black-waters-where-birds-dont-sing-home-of-righ-iasgairthe-fisher-king-che/1626600398755793/",
+          "domain": "facebook.com",
+          "title": "\"Still black waters where birds don't sing, home of Righ Iasgair...The ..."
+        },
+        {
+          "url": "https://www.facebook.com/TheScotsmanNewspaper/posts/-theatre-reviews-to-kill-a-mockingbird-righ-iasgair-the-fisher-king/1256765549814065/",
+          "domain": "facebook.com",
+          "title": "Theatre reviews: To Kill a Mockingbird | Righ Iasgair: The Fisher King"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 5
+    },
+    {
+      "showId": "the-history-boys-20th-anniversary-royal-bath-regional-2024",
+      "query": "\"The History Boys 20th Anniversary\" review Bath",
+      "candidates": 5,
+      "ingested": [],
+      "newOutletCandidates": [],
+      "skippedExisting": 1,
+      "skippedUnregistered": 0,
+      "skippedNotReview": 4
+    },
+    {
+      "showId": "snow-white-and-the-seven-dwarfs-royal-bath-regional-2024",
+      "query": "\"Snow White and the Seven Dwarfs\" review Bath",
       "candidates": 10,
       "ingested": [],
       "newOutletCandidates": [
         {
-          "url": "https://www.facebook.com/fb-answers/rsc-middlemarch-review/?locale=fi_FI",
+          "url": "https://www.reddit.com/r/disney/comments/1itol3i/thoughts_on_snow_white_1937_before_the_remake/",
+          "domain": "reddit.com",
+          "title": "Thoughts on Snow White 1937 before the remake comes out. - Reddit"
+        },
+        {
+          "url": "https://thebathandwiltshireparent.co.uk/2024/12/review-snow-white-and-the-seven-dwarfs-at-the-theatre-royal-bath-2/",
+          "domain": "thebathandwiltshireparent.co.uk",
+          "title": "Review – Snow White and the Seven Dwarfs at the Theatre Royal Bath"
+        },
+        {
+          "url": "https://thebathmagazine.co.uk/theatre-review-snow-white-the-seven-dwarfs/",
+          "domain": "thebathmagazine.co.uk",
+          "title": "Theatre Review: Snow White & the Seven Dwarfs - The Bath Magazine"
+        },
+        {
+          "url": "https://www.facebook.com/moviebowlgrillesherman/videos/-experience-the-magic-snow-white-arrives-on-the-big-screen-march-21st-at-movie-b/952920106909877/",
           "domain": "facebook.com",
-          "title": "RSC Middlemarch Review - Facebook"
+          "title": "Experience the Magic! Snow White arrives on the big screen March ..."
         },
         {
-          "url": "https://www.aol.co.uk/articles/middlemarch-review-world-greatest-novel-164040000.html",
-          "domain": "aol.co.uk",
-          "title": "Middlemarch review – World's Greatest Novel hurtles from deathbed ..."
+          "url": "https://www.walmart.com/ip/Snow-White-and-the-Seven-Dwarfs-Blu-ray-DVD-Disney-Kids-Family/48332557",
+          "domain": "walmart.com",
+          "title": "Snow White and the Seven Dwarfs (Blu-ray + DVD) - Walmart.com"
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 5,
+      "skippedNotReview": 4
+    },
+    {
+      "showId": "studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025",
+      "query": "\"Studio3: Alright Sunshine, Fleg and Fruitcake\" review Glasgow",
+      "candidates": 7,
+      "ingested": [],
+      "newOutletCandidates": [],
+      "skippedExisting": 0,
+      "skippedUnregistered": 0,
+      "skippedNotReview": 7
+    },
+    {
+      "showId": "snow-mice-egg-regional-2025",
+      "query": "\"Snow Mice!\" review Bath",
+      "candidates": 9,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.theftr.co.uk/snow-mice-the-egg-bath-theatre-royal/",
+          "domain": "theftr.co.uk",
+          "title": "Snow Mice, The Egg, Bath Theatre Royal | Fine Times Recorder"
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 7
+    },
+    {
+      "showId": "scraps-wardrobe-regional-2025",
+      "query": "\"Scraps\" review Bristol",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://thewardrobetheatre.com/shows/scraps-christmas-leftovers/",
+          "domain": "thewardrobetheatre.com",
+          "title": "SCRAPS: Christmas Leftovers - The Wardrobe Theatre"
         },
         {
-          "url": "https://www.facebook.com/DashArtsCo/posts/back-in-2022-we-premiered-the-great-middlemarch-mystery-an-immersive-modern-day-/1933051121296812/",
+          "url": "https://www.facebook.com/DanielsJourney82/videos/you-have-to-love-chippy-scraps-and-these-ones-in-bakewell-in-the-peak-district-w/1703543206996036/",
           "domain": "facebook.com",
-          "title": "Middlemarch adaptation at RSC Stratford - Facebook"
-        },
+          "title": "You have to love chippy scraps and these ones in Bakewell in the ..."
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 7
+    },
+    {
+      "showId": "confessions-of-a-shinagawa-monkey-tramway-regional-2025",
+      "query": "\"Confessions of a Shinagawa Monkey\" review Glasgow",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
         {
-          "url": "https://www.facebook.com/fb-answers/middlemarch-stratford-upon-avon-connection/",
-          "domain": "facebook.com",
-          "title": "Middlemarch Stratford Upon Avon Connection - Facebook"
-        },
-        {
-          "url": "https://stylebham.com/middlemarch-rsc-stratford-upon-avon/",
-          "domain": "stylebham.com",
-          "title": "Middlemarch at the RSC | George Eliot's Classic Comes to Life"
+          "url": "https://www.ahatalent.co.uk/actors/news/confessions-of-a-shinagawa-monkey/",
+          "domain": "ahatalent.co.uk",
+          "title": "Confessions of a Shinagawa Monkey - AHA Talent"
         }
       ],
       "skippedExisting": 0,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 9
+    },
+    {
+      "showId": "cock-53two-regional-2024",
+      "query": "\"Cock\" review Manchester",
+      "candidates": 4,
+      "ingested": [
+        {
+          "url": "https://ilovemanchester.com/cock-review-53two",
+          "outletId": "ilovemanchester",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/HopeMillTheatre/posts/following-its-northern-premiere-in-2024-cock-returns-to-manchester-for-just-4-pe/1146798080822630/",
+          "domain": "facebook.com",
+          "title": "Hope Mill Theatre's post - Facebook"
+        },
+        {
+          "url": "https://www.tripadvisor.com/Restaurant_Review-g186346-d19186510-Reviews-or15-The_Cock_Bottle-York_North_Yorkshire_England.html",
+          "domain": "tripadvisor.com",
+          "title": "THE COCK & BOTTLE, York - Restaurant Reviews, Photos & Phone ..."
+        },
+        {
+          "url": "https://www.inkl.com/news/cock-review-love-lies-bleeding-in-mike-bartlett-s-bitter-romantic-triangle",
+          "domain": "inkl.com",
+          "title": "Cock review: love lies bleeding in Mike Bartlett's… - inkl"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 0
+    },
+    {
+      "showId": "takeaway-liverpool-everyman-regional-2025",
+      "query": "\"Takeaway\" review Liverpool",
+      "candidates": 4,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.tripadvisor.ie/Restaurant_Review-g186337-d8478113-Reviews-Dingle_Takeaway-Liverpool_Merseyside_England.html",
+          "domain": "tripadvisor.ie",
+          "title": "Dingle Takeaway - Liverpool Restaurants - Tripadvisor"
+        },
+        {
+          "url": "https://www.tripadvisor.in/Restaurant_Review-g186337-d8478113-Reviews-Dingle_Takeaway-Liverpool_Merseyside_England.html",
+          "domain": "tripadvisor.in",
+          "title": "Dingle Takeaway - Liverpool Restaurants - Tripadvisor"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 2
+    },
+    {
+      "showId": "the-snowflake-birmingham-rep-regional-2024",
+      "query": "\"The Snowflake\" review Birmingham",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.stagenoise.com/review/2024/snowflake",
+          "domain": "stagenoise.com",
+          "title": "Snowflake | Stage Noise - Diana Simmonds"
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 9
+    },
+    {
+      "showId": "spitfire-girls-birmingham-rep-regional-2025",
+      "query": "\"Spitfire Girls\" review Birmingham",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/OctagonBolton/videos/spitfire-girls-comes-to-life-on-stage-inspired-by-remarkable-true-eventsas-the-r/2968958839981118/",
+          "domain": "facebook.com",
+          "title": "Spitfire Girls comes to life on stage, inspired by remarkable true ..."
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 6
+    },
+    {
+      "showId": "to-move-in-time-birmingham-rep-regional-2024",
+      "query": "\"To Move in Time\" review Birmingham",
+      "candidates": 5,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://asmallmindatthetheatre.blogspot.com/2024/05/review-of-to-move-in-time-at-birmingham.html",
+          "domain": "asmallmindatthetheatre.blogspot.com",
+          "title": "Review of To Move In Time at Birmingham Rep (The Door)"
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 3
+    },
+    {
+      "showId": "jekyll-and-hyde-liverpool-everyman-regional-2026",
+      "query": "\"Jekyll and Hyde\" review Liverpool",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://theatreweekly.com/full-details-announced-for-jekyll-hyde-at-liverpool-everyman-this-july/",
+          "outletId": "theatre-weekly",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/everymanplayhouse/videos/step-inside-the-world-of-yep-jekyll-hyde-coming-to-our-main-stage-this-weekend%EF%B8%8Fj/1030462183086614/",
+          "domain": "facebook.com",
+          "title": "Step inside the world of YEP: Jekyll & Hyde, coming to our main ..."
+        },
+        {
+          "url": "https://www.facebook.com/SparkySpriteEnt/posts/just-got-home-after-watching-jekyll-hyde-performed-by-stages-theatrical-well-wow/1765273728453619/",
+          "domain": "facebook.com",
+          "title": "Jekyll & hyde performance review - Facebook"
+        }
+      ],
+      "skippedExisting": 3,
+      "skippedUnregistered": 2,
+      "skippedNotReview": 3
+    },
+    {
+      "showId": "the-vagina-monologues-crucible-regional-2025",
+      "query": "\"The Vagina Monologues\" review Sheffield",
+      "candidates": 9,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/radioexe/posts/the-vagina-monologues-has-been-at-the-exeter-northcott-read-our-four-star-review/1298651745594836/",
+          "domain": "facebook.com",
+          "title": "'The Vagina Monologues' has been at the Exeter Northcott. Read ..."
+        },
+        {
+          "url": "https://www.exploringexeter.co.uk/review-deafinitely-theatres-the-vagina-monologues-a-bold-celebration-of-voice-womanhood-and-visibility/",
+          "domain": "exploringexeter.co.uk",
+          "title": "Review: Deafinitely Theatre's The Vagina Monologues – A Bold ..."
+        },
+        {
+          "url": "https://www.thespec.com/entertainment/stage/a-celebration-a-rant-and-a-bit-of-a-shocker-it-s-the-vagina-monologues/article_15384019-52be-5639-bc43-ca3162994210.html",
+          "domain": "thespec.com",
+          "title": "'Vagina Monologues' is a celebration and a bit of a shocker"
+        },
+        {
+          "url": "https://www.facebook.com/deafinitelytheatre/videos/-exciting-news-yes-the-vagina-monologues-evening-show-at-birmingham-is-sold-out-/1059216595702978/",
+          "domain": "facebook.com",
+          "title": "Exciting news!! Yes, The Vagina Monologues evening show at ..."
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 4,
+      "skippedNotReview": 4
+    },
+    {
+      "showId": "all-my-pretty-ones-birmingham-rep-regional-2025",
+      "query": "\"All My Pretty Ones\" review Birmingham",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.birminghamworld.uk/whats-on/all-my-pretty-ones-play-birmingham-rep-5129959",
+          "domain": "birminghamworld.uk",
+          "title": "Powerful play 'All My Pretty Ones' explores hidden histories at ..."
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 8
+    },
+    {
+      "showId": "tell-me-how-it-ends-liverpool-everyman-regional-2024",
+      "query": "\"Tell Me How It Ends\" review Liverpool",
+      "candidates": 9,
+      "ingested": [],
+      "newOutletCandidates": [],
+      "skippedExisting": 0,
+      "skippedUnregistered": 0,
+      "skippedNotReview": 9
+    },
+    {
+      "showId": "a-thousand-splendid-suns-birmingham-rep-regional-2025",
+      "query": "\"A Thousand Splendid Suns\" review Birmingham",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://fairypoweredproductions.com/a-thousand-splendid-suns-review/",
+          "outletId": "fairypoweredproductions",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://abrummiehomeandabroad.com/theatre-review-a-thousand-splendid-suns/",
+          "domain": "abrummiehomeandabroad.com",
+          "title": "Theatre Review: A Thousand Splendid Suns at the Birmingham Rep"
+        },
+        {
+          "url": "https://www.thenottsedit.com/p/a-thousand-splendid-suns-nottingham-playhouse-theatre-review",
+          "domain": "thenottsedit.com",
+          "title": "A Thousand Splendid Suns at Nottingham Playhouse theatre review"
+        },
+        {
+          "url": "https://www.facebook.com/birminghamrep/posts/-a-thousand-splendid-suns-a-runaway-success-were-thrilled-by-the-overwhelming-re/1089172466575821/",
+          "domain": "facebook.com",
+          "title": "A Thousand Splendid Suns - Birmingham Rep - Facebook"
+        },
+        {
+          "url": "https://brumhour.co.uk/a-thousand-splendid-suns-at-birmingham-rep-review/",
+          "domain": "brumhour.co.uk",
+          "title": "A Thousand Splendid Suns at Birmingham Rep: Review"
+        },
+        {
+          "url": "https://www.facebook.com/birminghamrep/posts/a-thousand-splendid-suns-comes-to-life-tomorrow-check-out-this-behind-the-scenes/1079155227577545/",
+          "domain": "facebook.com",
+          "title": "A Thousand Splendid Suns comes to life tomorrow! Check out this ..."
+        }
+      ],
+      "skippedExisting": 1,
       "skippedUnregistered": 5,
-      "skippedNotReview": 5
+      "skippedNotReview": 3
+    },
+    {
+      "showId": "a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024",
+      "query": "\"A Christmas Carol: A Ghost Story\" review Birmingham",
+      "candidates": 10,
+      "ingested": [
+        {
+          "url": "https://fairypoweredproductions.com/a-christmas-carol-a-ghost-story-review/",
+          "outletId": "fairypoweredproductions",
+          "action": "new"
+        }
+      ],
+      "newOutletCandidates": [
+        {
+          "url": "https://abrummiehomeandabroad.com/theatre-review-a-christmas-carol/",
+          "domain": "abrummiehomeandabroad.com",
+          "title": "Theatre Review: A Christmas Carol: A Ghost Story at the ..."
+        },
+        {
+          "url": "https://www.facebook.com/birminghamrep/posts/a-christmas-carol-a-ghost-story-has-been-delighting-audiences-for-little-over-a-/975998874559848/",
+          "domain": "facebook.com",
+          "title": "A Christmas Carol: A Ghost Story has been delighting audiences for ..."
+        },
+        {
+          "url": "https://www.facebook.com/birminghamrep/videos/joy-to-the-world-a-christmas-carol-a-ghost-story-opens-here-at-the-rep-for-its-v/1041054111101290/",
+          "domain": "facebook.com",
+          "title": "Joy to the world! A Christmas Carol: A Ghost story opens here at The ..."
+        },
+        {
+          "url": "https://www.linkedin.com/pulse/review-christmas-carol-ghost-story-dr-roshan-doug-yvkbc",
+          "domain": "linkedin.com",
+          "title": "Review - A Christmas Carol: A Ghost Story - LinkedIn"
+        }
+      ],
+      "skippedExisting": 2,
+      "skippedUnregistered": 4,
+      "skippedNotReview": 3
+    },
+    {
+      "showId": "oasis-vs-blur-comedy-the-battle-birmingham-rep-regional-2026",
+      "query": "\"Oasis vs Blur Comedy: The Battle\" review Birmingham",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/birminghamcitycouncil/posts/-are-you-team-blur-or-team-oasis-the-iconic-battle-of-the-bands-that-defined-199/1360244706148042/",
+          "domain": "facebook.com",
+          "title": "Are you Team Blur or Team Oasis The iconic battle of the bands that ..."
+        }
+      ],
+      "skippedExisting": 0,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 8
+    },
+    {
+      "showId": "showstopper-the-improvised-musical-crucible-regional-2025",
+      "query": "\"Showstopper! The Improvised Musical\" review Sheffield",
+      "candidates": 10,
+      "ingested": [],
+      "newOutletCandidates": [
+        {
+          "url": "https://www.facebook.com/BBCSounds/videos/an-ode-to-newscastthe-cast-of-showstopper-the-improvised-musical-joined-adam-on-/1661348804539311/",
+          "domain": "facebook.com",
+          "title": "An ode to Newscast? The cast of Showstopper! The Improvised ..."
+        }
+      ],
+      "skippedExisting": 1,
+      "skippedUnregistered": 1,
+      "skippedNotReview": 8
     }
   ]
 }
