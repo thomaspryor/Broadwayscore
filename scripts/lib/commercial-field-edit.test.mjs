@@ -14,6 +14,27 @@ const NOW = '2026-10-05T03:00:00.000Z';
 const fresh = () => ({ shows: { 'lucky-guy-2013': { designation: 'Flop', recouped: false, lastUpdated: '2026-09-01T00:00:00.000Z' } } });
 
 describe('applyCommercialFieldEdit', () => {
+  it('accepts evidence dates at their source precision, and allows clearing one', () => {
+    for (const date of ['2024', '2024-12', '2024-12-09', null]) {
+      const c = fresh();
+      const r = applyCommercialFieldEdit(c, 'lucky-guy-2013', 'returnSnapshotAsOf', null, date, NOW);
+      assert.equal(r.ok, true, r.reason);
+      assert.equal(c.shows['lucky-guy-2013'].returnSnapshotAsOf, date);
+      assert.equal(c.shows['lucky-guy-2013'].lastUpdated, NOW);
+    }
+  });
+
+  it('refuses invalid or future return evidence dates without changing the record', () => {
+    for (const date of ['2026-02-30', '2026-13', '2027', '2026-10-06', 'yesterday', '', 2024, undefined]) {
+      const c = fresh();
+      const before = JSON.stringify(c);
+      const r = applyCommercialFieldEdit(c, 'lucky-guy-2013', 'returnSnapshotAsOf', null, date, NOW);
+      assert.equal(r.ok, false, String(date));
+      assert.match(r.reason, /valid, non-future evidence date/);
+      assert.equal(JSON.stringify(c), before);
+    }
+  });
+
   it('writes the field and stamps lastUpdated', () => {
     const c = fresh();
     const r = applyCommercialFieldEdit(c, 'lucky-guy-2013', 'designation', 'Flop', 'Easy Winner', NOW);

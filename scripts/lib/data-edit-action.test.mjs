@@ -12,6 +12,21 @@ const { applyDataEdit, dataEditAllowProblem, EDITABLE_DATA_FIELDS } = require('.
 // that would fail at execution fails at authoring time instead.
 const shows = () => ({ shows: [{ id: 'a-2026', venue: 'Old Theatre', status: 'open' }, { id: 'b-2026', venue: 'X' }] });
 
+test('return snapshot evidence can be backfilled through a plan without enabling feedback writes (BRO-6333)', () => {
+  const { FEEDBACK_EDITABLE_FIELDS, AUTO_FIX_EDITABLE_FIELDS } = require('./feedback-pipeline-fields');
+  const { returnSnapshotLabel } = require('./commercial-return-snapshot');
+  const data = { shows: { example: { designation: 'Windfall', recouped: true, recoupedDate: '2022-12' } } };
+  const action = { file: 'commercial.json', showSlug: 'example', field: 'returnSnapshotAsOf', oldValue: null, newValue: '2024-12-09' };
+  assert.equal(FEEDBACK_EDITABLE_FIELDS['commercial.json'].includes(action.field), false);
+  assert.equal(AUTO_FIX_EDITABLE_FIELDS['commercial.json'].includes(action.field), false);
+  assert.equal(returnSnapshotLabel(data.shows.example, { status: 'open' }), null);
+  const result = applyDataEdit(data, action);
+  assert.equal(result.ok, true, result.reason);
+  assert.equal(data.shows.example.designation, 'Windfall');
+  assert.equal(returnSnapshotLabel(data.shows.example, { status: 'open' }), 'as of Dec 2024');
+  assert.equal(applyDataEdit(data, { ...action, newValue: '2024-11' }).ok, false, 'stale oldValue must still fail');
+});
+
 test('applies a shows.json edit when oldValue matches, mutating in place', () => {
   const data = shows();
   const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'venue', oldValue: 'Old Theatre', newValue: 'New Theatre' });
