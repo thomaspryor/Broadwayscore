@@ -4,6 +4,9 @@
  *
  * Reads per-show IBDB cast files and writes simplified {name, role} arrays
  * into shows.json for mobile app and content-matching consumers.
+ * Also fills castBilling from saved Playbill production-page HTML at
+ * data/cache/playbill-cast/<show-id>.html, verified against playbill-urls.json.
+ * Cache collection/backfill is separate; absent HTML leaves billing alone.
  *
  * Zero network requests — purely local file transformation.
  *
@@ -12,7 +15,7 @@
  *
  * Options:
  *   --dry-run           Show changes without writing
- *   --force             Overwrite existing cast entries
+ *   --force             Overwrite existing cast entries and billing
  *   --category=CAT      Filter: broadway, off-broadway, west-end (default: all)
  *   --status=STATUS     Filter: open, previews, closed (default: all)
  *   --max-members=N     Max principals per show (default: 15)
@@ -22,6 +25,7 @@
 const fs = require('fs');
 const { castFileMismatchReason } = require('./lib/cast-tombstone');
 const { extractCast: extractCastPrincipals } = require('./lib/cast-principals');
+const { enrichCastBilling } = require('./lib/playbill-cast-billing');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
@@ -35,6 +39,8 @@ Usage:
 `;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
+const PLAYBILL_CAST_DIR = path.join(__dirname, '..', 'data', 'cache', 'playbill-cast');
+const PLAYBILL_URLS_FILE = path.join(__dirname, '..', 'data', 'playbill-urls.json');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -110,8 +116,19 @@ function main() {
 
   console.log(`Shows after filters: ${targets.length}`);
 
+  // Optional local source, so ordinary cast enrichment still works without it.
+  let playbillUrls = {};
+  if (fs.existsSync(PLAYBILL_CAST_DIR) && fs.existsSync(PLAYBILL_URLS_FILE)) {
+    try {
+      playbillUrls = JSON.parse(fs.readFileSync(PLAYBILL_URLS_FILE, 'utf8')).shows || {};
+    } catch (e) {
+      console.log(`  Warning: Failed to read Playbill URLs: ${e.message}`);
+    }
+  }
+
   // Process
   let enriched = 0;
+  let billingEnriched = 0;
   let skippedExisting = 0;
   let skippedNoCastFile = 0;
   let skippedEmptySource = 0;
@@ -120,6 +137,23 @@ function main() {
   const enrichedShows = [];
 
   for (const show of targets) {
+    // Independent of the alphabetical cast array and its early exits below.
+    // Most affected shows already have cast, so they must reach this writer.
+    if (['open', 'previews'].includes(show.status) && (!show.castBilling?.length || force) && playbillUrls[show.id]) {
+      const htmlFile = path.join(PLAYBILL_CAST_DIR, `${show.id}.html`);
+      if (fs.existsSync(htmlFile)) {
+        try {
+          const html = fs.readFileSync(htmlFile, 'utf8');
+          if (enrichCastBilling(show, html, playbillUrls[show.id], { force })) {
+            billingEnriched++;
+            if (dryRun) console.log(`  Would enrich billing: ${show.id} - ${show.castBilling.slice(0, 4).join(', ')}`);
+          }
+        } catch (e) {
+          console.log(`  Warning: Failed to read Playbill cast for ${show.id}: ${e.message}`);
+        }
+      }
+    }
+
     // Skip if already has cast and not forcing
     if (show.cast && show.cast.length > 0 && !force) {
       skippedExisting++;
@@ -173,10 +207,10 @@ function main() {
   }
 
   // Write
-  if (!dryRun && enriched > 0) {
+  if (!dryRun && (enriched > 0 || billingEnriched > 0)) {
     saveShows(showsData);
     if (skippedMismatch) console.log(`Skipped (wrong production): ${skippedMismatch}`);
-    console.log(`\nWrote shows.json with ${enriched} enriched cast arrays`);
+    console.log(`\nWrote shows.json with ${enriched} enriched cast arrays and ${billingEnriched} billing lists`);
   }
 
   // Summary
@@ -184,6 +218,7 @@ function main() {
   console.log('SUMMARY');
   console.log('='.repeat(60));
   console.log(`  Enriched:              ${enriched}`);
+  console.log(`  Billing enriched:      ${billingEnriched}`);
   console.log(`  Skipped (existing):    ${skippedExisting}`);
   console.log(`  Skipped (no file):     ${skippedNoCastFile}`);
   console.log(`  Skipped (empty src):   ${skippedEmptySource}`);
