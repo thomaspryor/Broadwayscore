@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-31T06:59:07.204Z",
-  "processed": 244,
-  "failed": 55,
-  "successRate": "81.6%",
+  "updatedAt": "2026-10-31T07:02:55.209Z",
+  "processed": 225,
+  "failed": 61,
+  "successRate": "78.7%",
   "tierBreakdown": {
     "playwright": 161,
     "amp": 0,
     "browserbase": 25,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 14,
+    "scrapingdog": 13,
+    "scrapingbee": 11,
     "brightdata": 3,
-    "archiveToday": 19,
-    "archive": 58
+    "archiveToday": 18,
+    "archive": 57
   },
   "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-31T05:03:49.222Z",
-      "event": "bb-session",
-      "session": "e4536406",
-      "url": "https://www.nytimes.com/2018/02/06/theater/in-the-body-of-the-world-review-eve-e"
-    },
-    {
-      "t": "2026-10-31T05:03:49.848Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-31T05:27:32.972Z",
       "event": "bb-session",
@@ -117,16 +106,26 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T06:51:24.557Z",
+      "t": "2026-10-31T06:55:01.932Z",
       "event": "bb-session",
-      "session": "c334a9b4",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "8aa18d3d",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
     },
     {
-      "t": "2026-10-31T06:52:56.578Z",
+      "t": "2026-10-31T06:55:02.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T06:57:00.937Z",
       "event": "bb-session",
-      "session": "501ccfc7",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "7ee8f4e6",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T06:57:01.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
