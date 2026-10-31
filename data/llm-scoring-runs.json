@@ -1646128,21 +1646128,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T15:44:35.753Z",
-    "completedAt": "2026-10-31T15:45:19.316Z",
-    "totalReviews": 10,
-    "processed": 8,
-    "skipped": 2,
+    "startedAt": "2026-10-31T15:44:27.498Z",
+    "completedAt": "2026-10-31T15:45:22.863Z",
+    "totalReviews": 12,
+    "processed": 11,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 56230,
-      "output": 2620,
-      "cacheRead": 30456,
+      "input": 74381,
+      "output": 3378,
+      "cacheRead": 41877,
       "cacheWrite": 0,
-      "total": 132856
+      "total": 178172
     },
-    "costUsd": 0.2076753,
-    "runId": "41215756116",
+    "costUsd": 0.2736091,
+    "runId": "41215738289",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1666895,16 +1666895,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "loki-the-end-of-the-world-tour-regional-2026",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 0,
-          "down": 0,
-          "total": 8
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "lombardi-2010",
         "ourDistribution": {
           "up": 13,
@@ -1676492,6 +1676482,16 @@
           "flat": 0,
           "down": 0,
           "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "south-pacific-regional-2026",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 0,
+          "down": 0,
+          "total": 11
         },
         "hasDisagreement": false
       },
@@ -1689646,8 +1689646,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T15:50:16.899Z",
-    "completedAt": "2026-10-31T15:50:16.901Z",
+    "startedAt": "2026-10-31T15:50:19.947Z",
+    "completedAt": "2026-10-31T15:50:19.949Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1689660,7 +1689660,45 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41215756116",
+    "runId": "41215738289",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-31T15:45:44.091Z",
+    "completedAt": "2026-10-31T15:46:01.756Z",
+    "totalReviews": 4,
+    "processed": 4,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 20631,
+      "output": 1222,
+      "cacheRead": 15228,
+      "cacheWrite": 0,
+      "total": 55317
+    },
+    "costUsd": 0.08061739999999999,
+    "runId": "41215820586",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-31T15:50:59.806Z",
+    "completedAt": "2026-10-31T15:50:59.808Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "41215820586",
     "source": "comparative-rescore",
     "errorDetails": []
   }
