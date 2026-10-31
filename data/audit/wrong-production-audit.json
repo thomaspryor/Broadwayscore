@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T23:07:05.276Z",
+  "timestamp": "2026-10-31T23:26:11.577Z",
   "stats": {
-    "totalReviews": 76499,
-    "alreadyFlagged": 21728,
+    "totalReviews": 76578,
+    "alreadyFlagged": 21731,
     "dateGuardCatches": 238,
     "directorMismatch": 3244,
-    "tvFilmSignals": 2176,
-    "londonSignals": 3519,
+    "tvFilmSignals": 2177,
+    "londonSignals": 3520,
     "offBroadwaySignals": 721,
     "yearMismatch": 323,
-    "noPublishDate": 8652
+    "noPublishDate": 8681
   },
   "findings": [
     {
@@ -12354,6 +12354,19 @@
       ]
     },
     {
+      "showId": "choir-boy-regional-2022",
+      "file": "buzznews--wesley-david.json",
+      "publishDate": "2022-06-29",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5007-visually-and-audibly-beautiful-choir-boy.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "choir-chichester-festival-regional-2025",
       "file": "theatreandtonic--rosie.json",
       "score": 79,
@@ -18099,6 +18112,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "dr-horribles-sing-along-blog-regional-2021",
+      "file": "new-city-stage--ben-kaye.json",
+      "publishDate": "2021-10-12",
+      "url": "https://www.newcitystage.com/2021/10/12/a-fans-gotta-do-a-review-of-dr-horribles-sing-along-blog-at-black-button-eyes-productions/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
         }
       ]
     },
@@ -54308,6 +54334,7 @@
     {
       "showId": "songs-for-a-new-world-regional-2021",
       "file": "rescripted--ada-alozie.json",
+      "score": 89,
       "publishDate": "2021-10-02",
       "url": "https://rescripted.org/2021/10/02/theo-ubique-songs-new-world/",
       "findings": [
@@ -64555,20 +64582,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "the-high-life-the-musical-dundee-rep-regional-2026",
-      "file": "the-list--unknown.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "https://list.co.uk/news/the-high-life-the-musical-theatre-review-a-delirious-triumph-48248",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -112957,6 +112970,20 @@
       "score": 82,
       "publishDate": "2026-10-27",
       "url": "https://www.allthatdazzles.co.uk/post/review-roleplay-soho-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "roleplay-off-west-end-2026",
+      "file": "sierz-co-uk--unknown.json",
+      "score": 44,
+      "publishDate": "2026-10-27",
+      "url": "https://sierz.co.uk/reviews/roleplay-soho-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
