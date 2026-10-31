@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T16:24:26.405Z",
-  "processed": 95,
-  "failed": 55,
-  "successRate": "63.3%",
+  "updatedAt": "2026-10-31T16:26:44.417Z",
+  "processed": 220,
+  "failed": 113,
+  "successRate": "66.1%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 116,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 4,
+    "scrapingdog": 17,
+    "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 41
+    "archiveToday": 21,
+    "archive": 56
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-31T15:45:38.277Z",
@@ -25,7 +25,62 @@
     {
       "t": "2026-10-31T15:45:38.949Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T15:39:33.450Z",
+      "event": "bb-session",
+      "session": "7ba06fc1",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-31T15:39:34.254Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T16:18:32.535Z",
+      "event": "bb-session",
+      "session": "0aabb22b",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T16:18:33.283Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T16:20:22.658Z",
+      "event": "bb-session",
+      "session": "2c19e036",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T16:20:23.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T16:26:02.971Z",
+      "event": "bb-session",
+      "session": "7f145953",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T16:26:03.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T16:26:13.321Z",
+      "event": "bb-session",
+      "session": "a2f8854c",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-31T16:26:13.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
