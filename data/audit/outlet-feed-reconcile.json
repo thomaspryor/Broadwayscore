@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T23:31:57.001Z",
+  "generatedAt": "2026-10-31T02:57:59.074Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -22,6 +22,11 @@
       "id": "medea-off-broadway-2026",
       "title": "Medea",
       "openingDate": "2026-10-30"
+    },
+    {
+      "id": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "openingDate": "2026-11-01"
     },
     {
       "id": "a-few-good-men-2026",
@@ -47,11 +52,6 @@
       "id": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "openingDate": "2026-10-29"
-    },
-    {
-      "id": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
-      "openingDate": "2026-10-24"
     },
     {
       "id": "the-revlon-girl-off-west-end-2026",
@@ -96,6 +96,10 @@
   ],
   "skipped": [
     {
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
       "showId": "the-greatest-story-ever-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -103,20 +107,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -139,9 +135,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 666,
-  "matchedGaps": 8,
-  "possibleGaps": 13,
+  "itemsScanned": 777,
+  "matchedGaps": 9,
+  "possibleGaps": 12,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -160,6 +156,15 @@
       "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
       "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
       "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "level": "matched",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
+      "headline": "‘Memoriam’ review &#8211; Intelligent piece on Holocaust remembrance in the digital age",
+      "publishDate": "2026-10-30"
     },
     {
       "showId": "memoriam-off-west-end-2026",
@@ -214,24 +219,6 @@
       "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
       "headline": "The Revlon Girl",
       "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
-      "level": "possible",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/bu21-lower-marsh-arts-club/",
-      "headline": "BU21 &#8211; Lower Marsh Arts Club",
-      "publishDate": "2026-10-26"
-    },
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
-      "level": "possible",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-the-revlon-girl-park-theatre",
-      "headline": "Review: THE REVLON GIRL, Park Theatre",
-      "publishDate": "2026-10-29"
     },
     {
       "showId": "girls-off-west-end-2026",
@@ -304,6 +291,15 @@
       "url": "https://stageandcinema.com/2026/10/28/assimilation-word-for-word-z-below-san-francisco-review/",
       "headline": "Theater Review: ASSIMILATION (Word for Word / San Francisco)",
       "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
+      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
+      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-heart-off-broadway-2026",

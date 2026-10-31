@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-10-30T23:31:56.618Z",
+  "generatedAt": "2026-10-31T02:57:58.842Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 306,
-  "clean": 305,
+  "checked": 302,
+  "clean": 301,
   "defective": 1,
   "byType": {
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "openingDate": "2026-10-28",
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "openingDate": "2026-04-20",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.76 vs local 84.15 (Δ0.61)"
+          "detail": "deployed cs 79.38 vs local 78.98 (Δ0.4)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-10-30T23:31:51.835Z"
+      "localCount": 42,
+      "deployedCount": 42,
+      "firstDefectAt": "2026-10-31T02:57:53.966Z"
     }
   ],
   "persistentDefective": 0,

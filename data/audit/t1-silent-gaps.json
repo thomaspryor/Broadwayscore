@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-30T23:31:30.985Z",
+  "generatedAt": "2026-10-31T02:57:42.333Z",
   "windowDays": 45,
-  "showsScanned": 222,
+  "showsScanned": 218,
   "gaps": [
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 125.64786805555555,
+      "fileAgeHours": 129.07967277777777,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 111.10406055555555,
+      "nonTerminalAgeHours": 114.54054611111111,
       "needsManualRecovery": false
     },
     {
@@ -40,9 +40,33 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 154.16757555555554,
+      "fileAgeHours": 157.59934333333334,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 140.21595194444444,
+      "nonTerminalAgeHours": 143.6524375,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "title": "The Hairy Ape",
+      "openingDate": "2026-10-04",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "outletId": "nydailynews",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/hairy-ape-bobby-cannavale-profane-theater-review-article-1.3031263",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: All scraping methods failed"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-hairy-ape-irish-repertory-theatre-off-broadway-2026 --url=http://www.nydailynews.com/entertainment/theater-arts/hairy-ape-bobby-cannavale-profane-theater-review-article-1.3031263 --outlet=nydailynews --critic=\"Joe Dziemianowicz\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-31T01:45:18.388Z",
+      "fileAgeHours": 1.2061686111111112,
+      "gapSeenAt": "2026-10-31T02:57:42.333Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     }
   ],
