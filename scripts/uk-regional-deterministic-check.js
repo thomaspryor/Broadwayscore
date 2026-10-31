@@ -33,6 +33,7 @@ const byShow = {};
 for (const r of reviews) if (ids.has(r.showId)) (byShow[r.showId] = byShow[r.showId] || []).push(r);
 
 const { foldDiacritics } = require('./lib/url-slug');
+const { isStaleUkRegionalRun } = require('./lib/auto-close-expired');
 const { reconcileOpeningDate } = require('./lib/uk-regional-opening-date');
 const { scoreOutsideStarBand } = require('./lib/star-band-bounds');
 const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -68,6 +69,8 @@ for (const s of uk) {
   if (s.previewsStartDate && s.openingDate && s.previewsStartDate > s.openingDate) add('previewsAfterOpening', s.id);
   if (s.status === 'closed' && s.closingDate && s.closingDate > today) add('closedButClosingInFuture', s.id, s.closingDate);
   if (s.status === 'open' && s.closingDate && s.closingDate < today) add('openButClosingInPast', s.id, s.closingDate);
+  // BRO-6725: open with no closingDate past the auto-close window means the daily closer has not run or regressed.
+  if (s.status === 'open' && isStaleUkRegionalRun(s, today)) add('openNoClosingDateStale', s.id, s.openingDate);
   if (s.openingDate && s.openingDate > today && rs.length) add('reviewsBeforeOpeningDate', s.id, `${rs.length} reviews, opens ${s.openingDate}`);
 
   const dated = rs.map((r) => r.publishDate).filter(Boolean).sort();
@@ -104,7 +107,7 @@ if (process.argv.includes('--json')) {
   for (const [k, v] of Object.entries(out)) if (Array.isArray(v)) console.log(`\n${k} (${v.length}): ${v.slice(0, 6).join('; ')}${v.length > 6 ? ' ...' : ''}`);
 }
 // --strict (BRO-6725): exit 1 on the classes that must stay at zero.
-const STRICT_ZERO = ['seededOpeningAfterReview', 'starOutsideBand'];
+const STRICT_ZERO = ['seededOpeningAfterReview', 'starOutsideBand', 'openNoClosingDateStale'];
 if (process.argv.includes('--strict')) {
   const bad = STRICT_ZERO.filter((k) => (out[k] || []).length);
   if (bad.length) { console.error(`STRICT FAIL: ${bad.map((k) => `${k}=${out[k].length}`).join(', ')}`); process.exitCode = 1; }

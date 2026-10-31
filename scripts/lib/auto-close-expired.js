@@ -3,6 +3,8 @@
  * Closing dates are calendar dates in the show's market timezone
  * (ET for Broadway/OB, London for WE/OWE); UTC comparison can close a day early.
  */
+const { isUkRegionalVenue } = require('./market-label');
+
 function getMarketDate(category, now = new Date()) {
   const tz = (category === 'west-end' || category === 'off-west-end')
     ? 'Europe/London'
@@ -10,13 +12,27 @@ function getMarketDate(category, now = new Date()) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(now);
 }
 
+// BRO-6725: UK regional rows seeded from a Guardian review/census have an opening date but
+// almost never a closing date, so the closingDate rule below never fired and stale runs sat
+// in "On Stage Now". With no closingDate, close once the run is older than this window.
+// Real UK regional runs are 2-6 weeks; a sourced closingDate always wins over this guess.
+const UK_REGIONAL_NO_CLOSE_DAYS = 56;
+
+function isStaleUkRegionalRun(show, today) {
+  if (show.category !== 'regional' || show.closingDate || !show.openingDate) return false;
+  if (!isUkRegionalVenue(show.venue)) return false;
+  const age = (Date.parse(today) - Date.parse(show.openingDate)) / 86400000;
+  return age > UK_REGIONAL_NO_CLOSE_DAYS;
+}
+
 /** Returns [{id, closingDate, market}] for open shows past closingDate; mutates status only when apply=true. */
 function closeExpiredShows(shows, { apply = false, now = new Date() } = {}) {
   const closedList = [];
   for (const show of Object.values(shows)) {
     const today = getMarketDate(show.category, now);
-    if (show.status === 'open' && show.closingDate && show.closingDate < today) {
-      closedList.push({ id: show.id, closingDate: show.closingDate, market: show.market || 'broadway' });
+    const expired = show.closingDate && show.closingDate < today;
+    if (show.status === 'open' && (expired || isStaleUkRegionalRun(show, today))) {
+      closedList.push({ id: show.id, closingDate: show.closingDate || null, market: show.market || 'broadway' });
       if (apply) {
         show.status = 'closed';
         delete show._staleMissingSince; // same bookkeeping as update-show-status.js close path
@@ -26,4 +42,4 @@ function closeExpiredShows(shows, { apply = false, now = new Date() } = {}) {
   return closedList;
 }
 
-module.exports = { getMarketDate, closeExpiredShows };
+module.exports = { getMarketDate, closeExpiredShows, isStaleUkRegionalRun, UK_REGIONAL_NO_CLOSE_DAYS };

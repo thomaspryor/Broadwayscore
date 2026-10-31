@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { closeExpiredShows } = require('./lib/auto-close-expired.js');
+const { closeExpiredShows, isStaleUkRegionalRun } = require('./lib/auto-close-expired.js');
 
 const now = new Date('2026-10-11T12:00:00Z');
 const mk = () => ({
@@ -44,4 +44,14 @@ test('a committing workflow runs the writer; test.yml only dry-runs', () => {
   assert.ok(upd.indexOf('auto-close-expired-shows.js') < upd.indexOf('- name: Validate data'));
   const t = tst.match(cmd);
   assert.ok(t && t[1].includes('--dry-run'), 'test.yml must not write');
+});
+
+test('UK regional open show with no closingDate closes after the stale window (BRO-6725)', () => {
+  const uk = (id, openingDate, extra = {}) => ({ id, status: 'open', category: 'regional', venue: 'Royal Exchange Theatre', openingDate, ...extra });
+  const shows = { old: uk('old', '2026-08-01'), fresh: uk('fresh', '2026-10-01'), dated: uk('dated', '2026-08-01', { closingDate: '2026-12-01' }) };
+  const list = closeExpiredShows(shows, { apply: true, now });
+  assert.deepEqual(list.map(s => s.id), ['old']);
+  assert.equal(shows.fresh.status, 'open');
+  assert.equal(shows.dated.status, 'open');
+  assert.equal(isStaleUkRegionalRun({ category: 'broadway', openingDate: '2020-01-01' }, '2026-10-11'), false);
 });
