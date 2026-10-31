@@ -134,9 +134,13 @@ module.exports = { findConflictMarkers, hasConflictMarkers, conflictSides, parse
 
 if (require.main === module) {
   const fs = require('fs');
-  const files = process.argv.slice(2);
+  // --files-from=<list> (one path per line) keeps a bulk push under ARG_MAX (BRO-6687).
+  const fromArg = process.argv.slice(2).find((a) => a.startsWith('--files-from='));
+  const files = fromArg
+    ? fs.readFileSync(fromArg.slice('--files-from='.length), 'utf8').split('\n').filter(Boolean)
+    : process.argv.slice(2);
   if (files.length === 0) {
-    console.error('usage: node scripts/lib/conflict-markers.js <file> [<file> ...]');
+    console.error('usage: node scripts/lib/conflict-markers.js <file> [<file> ...] | --files-from=<list>');
     process.exit(2);
   }
   let bad = 0;
