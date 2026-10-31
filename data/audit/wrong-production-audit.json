@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T03:50:35.405Z",
+  "timestamp": "2026-10-31T04:09:46.956Z",
   "stats": {
-    "totalReviews": 72978,
-    "alreadyFlagged": 22377,
+    "totalReviews": 73009,
+    "alreadyFlagged": 22380,
     "dateGuardCatches": 230,
     "directorMismatch": 2979,
-    "tvFilmSignals": 2051,
-    "londonSignals": 3410,
+    "tvFilmSignals": 2054,
+    "londonSignals": 3411,
     "offBroadwaySignals": 652,
     "yearMismatch": 302,
-    "noPublishDate": 9235
+    "noPublishDate": 9246
   },
   "findings": [
     {
@@ -23484,6 +23484,19 @@
       ]
     },
     {
+      "showId": "goodbye-dreamland-bowlarama-oran-mor-regional-2025",
+      "file": "herald--neil-cooper.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.heraldscotland.com/life_style/25162477.charm-aplenty---review-goodbye-dreamland-bowlarama-oran-mor/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "grease-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 30,
@@ -44960,6 +44973,19 @@
       ]
     },
     {
+      "showId": "pig-heart-boy-crucible-regional-2025",
+      "file": "timesbookshop--unknown.json",
+      "publishDate": null,
+      "url": "https://timesbookshop.co.uk/pig-heart-boy-9781839044472/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "pippin-2013",
       "file": "about-entertainment--ben-brantley.json",
       "score": 58,
@@ -48363,6 +48389,7 @@
     {
       "showId": "scots-the-musical-dundee-rep-regional-2026",
       "file": "the-scotsman--joyce-mcmillan.json",
+      "score": 80,
       "publishDate": "2026-03-20",
       "url": "https://www.scotsman.com/arts-and-culture/theatre-and-stage/theatre-reviews-joy-scots-a-musical-celebration-of-a-nation-6043165",
       "findings": [
@@ -59691,6 +59718,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-high-life-the-musical-dundee-rep-regional-2026",
+      "file": "the-list--unknown.json",
+      "publishDate": null,
+      "url": "https://list.co.uk/news/the-high-life-the-musical-theatre-review-a-delirious-triumph-48248",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -78580,6 +78620,19 @@
       "score": 76,
       "publishDate": "2026-05-31",
       "url": "https://westendwilma.com/beetlejuice-musical-review-london-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "being-mr-wickham-chichester-festival-regional-2026",
+      "file": "theatre-news--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatre-news.com/news/UK/125287/Adrian-Lukis-returns-as-Jane-Austen-s-most-infamous-rogue-in-Being-Mr-Wickham",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
