@@ -31,7 +31,7 @@ const RECEIVING_HOUSES = new Set(['The Lowry', 'Lyceum Theatre, Sheffield', 'Bir
 // Founded from one census item, then retired because the review page belongs to an older
 // production (data/pending-fixes/bro-6541-z.json). A rerun must not found them again.
 const RETIRED_FOUNDINGS = new Set(['the-watsons-chichester-festival-regional-2025', 'east-is-east-citizens-regional-2026']);
-const foldTitle = (t) => norm(t).replace(/\b(the|a|musical|play)\b/g, '').replace(/\s+/g, ' ').trim();
+const foldTitle = (t) => norm(t).replace(/\b(the|a|musical|play)\b/g, '').replace(/\s+/g, '');
 const sameTitle = (a, b) => foldTitle(a) === foldTitle(b);
 const SAFE_URL = /^[A-Za-z0-9:/._~%=+,-]+$/;
 
@@ -163,7 +163,7 @@ function mergeNearTitles(groups) {
 
 function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/uk-regional-census-productions.js [--min-outlets=2] [--since=YYYY-MM-DD] [--card=BRO-N] [--skip-outlets=a,b] [--exclude=id,id] [--out=<file>] [--plans=<prefix>] [--ingest-plans=<prefix>]');
+    console.log('Usage: node scripts/uk-regional-census-productions.js [--min-outlets=2] [--since=YYYY-MM-DD] [--card=BRO-N] [--skip-outlets=a,b] [--exclude=id,id] [--items=<file>] [--out=<file>] [--plans=<prefix>] [--ingest-plans=<prefix>]');
     return null;
   }
   const arg = (k) => (argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=').slice(1).join('=') || null;
@@ -176,7 +176,9 @@ function main(argv = process.argv.slice(2)) {
   const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const shows = Array.isArray(data) ? data : data.shows;
   const hub = shows.filter((s) => /-uk$/.test(s.city || ''));
-  const { unmatched } = matchCensusItems(loadItems(since), hub, new Map(), urlKey);
+  // --items=<file.json>: extra census-shaped items from the live indexes (scripts/uk-venue-season-items.js).
+  const extra = arg('items') ? JSON.parse(fs.readFileSync(arg('items'), 'utf8')).filter((i) => String(i.publishDate || '') >= since) : [];
+  const { unmatched } = matchCensusItems([...loadItems(since), ...extra], hub, new Map(), urlKey);
   const groups = groupProductions(unmatched.filter((i) => !skipOutlets.has(i.outletId))).filter((g) => g.items.length >= minOutlets);
 
   const adds = [];

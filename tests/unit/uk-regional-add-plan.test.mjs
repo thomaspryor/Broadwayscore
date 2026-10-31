@@ -72,3 +72,10 @@ test('skips a production whose title differs only by and/& or opens in the previ
   assert.match(buildAction(row(), undated(2026)).skip, /exists/);
   assert.ok(buildAction(row(), undated(2024)).action);
 });
+
+test('skips a production whose title differs only by word spacing (BRO-6692)', () => {
+  const existing = [{ id: 'robinredbreast-aviva-studios-regional-2024', title: 'Robinredbreast', city: 'manchester-uk', venue: 'Aviva Studios, Manchester', openingDate: '2024-05-21' }];
+  const spaced = row({ title: 'Robin Red Breast', venue: 'Aviva Studios', hub: 'north-west', date: '2024-05-20' });
+  assert.match(buildAction(spaced, existing).skip, /exists as robinredbreast/);
+  assert.ok(buildAction({ ...spaced, venue: 'Royal Exchange Theatre' }, existing).action, 'another house is a different production');
+});
