@@ -1,31 +1,42 @@
 {
-  "updatedAt": "2026-10-31T10:42:46.895Z",
-  "processed": 321,
-  "failed": 166,
-  "successRate": "65.9%",
+  "updatedAt": "2026-10-31T11:11:57.547Z",
+  "processed": 325,
+  "failed": 165,
+  "successRate": "66.3%",
   "tierBreakdown": {
-    "playwright": 148,
+    "playwright": 153,
     "amp": 0,
     "browserbase": 20,
     "directCookies": 0,
     "scrapingdog": 21,
     "scrapingbee": 13,
-    "brightdata": 9,
-    "archiveToday": 27,
+    "brightdata": 4,
+    "archiveToday": 29,
     "archive": 104
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-31T09:37:23.550Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "t": "2026-10-31T10:14:03.764Z",
+      "event": "bb-session",
+      "session": "26d098ec",
+      "url": "https://www.nytimes.com/2017/06/03/theater/building-the-wall-closing.html"
     },
     {
-      "t": "2026-10-31T09:44:03.768Z",
+      "t": "2026-10-31T10:14:04.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T10:14:48.258Z",
       "event": "bb-session",
-      "session": "bf971130",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunday-in-the-park-george-cance"
+      "session": "9864c310",
+      "url": "https://www.nytimes.com/2017/05/15/theater/venus-review.html"
+    },
+    {
+      "t": "2026-10-31T10:14:48.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
       "t": "2026-10-31T10:15:05.766Z",
@@ -53,7 +64,7 @@
     {
       "t": "2026-10-31T10:32:57.556Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "bloomberg.com"
     },
     {
       "t": "2026-10-31T10:33:15.085Z",
@@ -104,6 +115,18 @@
       "event": "bb-session",
       "session": "8e6a7d7a",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-31T11:03:07.102Z",
+      "event": "bb-session",
+      "session": "9d4cd9f1",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-31T11:04:13.745Z",
+      "event": "bb-session",
+      "session": "c09edfa1",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
