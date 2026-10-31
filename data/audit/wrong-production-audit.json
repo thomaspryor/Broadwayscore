@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T14:38:57.141Z",
+  "timestamp": "2026-10-31T14:54:27.225Z",
   "stats": {
-    "totalReviews": 74434,
-    "alreadyFlagged": 22496,
+    "totalReviews": 74506,
+    "alreadyFlagged": 22505,
     "dateGuardCatches": 233,
-    "directorMismatch": 3083,
-    "tvFilmSignals": 2094,
+    "directorMismatch": 3115,
+    "tvFilmSignals": 2098,
     "londonSignals": 3423,
-    "offBroadwaySignals": 678,
+    "offBroadwaySignals": 682,
     "yearMismatch": 305,
-    "noPublishDate": 8393
+    "noPublishDate": 8366
   },
   "findings": [
     {
@@ -43665,10 +43665,36 @@
     },
     {
       "showId": "oslo-off-broadway-2016",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2016-07-12",
+      "url": "https://next.ft.com/content/adaccc22-4813-11e6-8d68-72e9211e86ab",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "oslo-off-broadway-2016",
       "file": "hollywood-reporter--david-rooney.json",
       "score": null,
       "publishDate": "July 12, 2016",
       "url": "http://www.hollywoodreporter.com/review/oslo-theater-review-909909",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "oslo-off-broadway-2016",
+      "file": "huffpost--steven-suskin.json",
+      "publishDate": "2016-07-11",
+      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-high-powered-n_b_10934316.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43756,6 +43782,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"eric tucker\" from othello-bedlam-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "othello-off-broadway-2026",
+      "file": "theatermania--kenji-fujishima.json",
+      "publishDate": "2026-07-06",
+      "url": "https://www.theatermania.com/news/review-classical-theatre-of-harlems-othello-is-the-best-of-a-recent-batch_1844714/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -55783,10 +55822,57 @@
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2016-12-14",
+      "url": "http://broadwayandme.blogspot.com/2016/12/sweet-charity-adds-bitter-to-its-sweet.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "broadwayselect--peter-filichia.json",
+      "score": null,
+      "publishDate": "2016-11-28",
+      "url": "http://broadwayselect.com/sweet-charity-where-is-she-going/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": null,
-      "publishDate": "November 21st, 2016",
+      "publishDate": "2016-11-21",
       "url": "http://www.broadwayworld.com/article/BWW-Review-Leigh-Silverman-and-Sutton-Foster-Discover-Fresh-Nuances-In-Intimate-SWEET-CHARITY-20161121",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": null,
+      "publishDate": "November 20th, 2016",
+      "url": "https://cititour.com/NYC_Broadway/Sweet-Charity/479",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55801,6 +55887,34 @@
       "score": null,
       "publishDate": "2016-11-20",
       "url": "http://deadline.com/2016/11/sweet-charity-sutton-foster-review-1201857837/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "exeunt-magazine--lane-williamson.json",
+      "score": null,
+      "publishDate": "2016-11-22",
+      "url": "http://exeuntmagazine.com/reviews/review-sweet-charity-pershing-square-signature-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "front-row-center--kathleen-campion.json",
+      "score": null,
+      "publishDate": "2016-12-30",
+      "url": "http://thefrontrowcenter.com/2016/12/sweet-charity/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55829,6 +55943,34 @@
       "score": null,
       "publishDate": "2016-11-20",
       "url": "http://www.hollywoodreporter.com/review/sweet-charity-review-949242",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "huffpost--steven-suskin.json",
+      "score": null,
+      "publishDate": "2016-11-20",
+      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-suttons-sweet-_b_13114956.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": null,
+      "publishDate": "2016-11-28",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SDGQDI",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55895,6 +56037,20 @@
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
+      "file": "ny1--roma-torre.json",
+      "score": null,
+      "publishDate": "2016-11-23",
+      "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2016/11/22/theater-review---sweet-charity-.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
       "file": "nytimes--ben-brantley.json",
       "publishDate": "November 20th, 2016",
       "url": "http://www.nytimes.com/2016/11/21/theater/sutton-foster-sweet-charity-review.html",
@@ -55911,6 +56067,118 @@
       "file": "nytimes--unknown.json",
       "publishDate": "2016-11-20",
       "url": "https://www.nytimes.com/2016/11/21/theater/sutton-foster-sweet-charity-review.html?eafs_enabled=false",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "observer--rex-reed.json",
+      "score": null,
+      "publishDate": "2016-11-22",
+      "url": "http://observer.com/2016/11/sweet-charity-revival-starring-sutton-foster-is-middling-mediocrity/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "November 20th, 2016",
+      "url": "http://www.talkinbroadway.com/page/ob/11_20_16a.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "theater-in-the-now--michael-block.json",
+      "score": null,
+      "publishDate": "2016-12-11",
+      "url": "http://www.theaterinthenow.com/2016/12/review-meh-charity.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": "2016-12-28",
+      "url": "http://www.theaterscene.net/musicals/sweet-charity-2/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "theatre-is-easy--shani-r-friedman.json",
+      "score": null,
+      "publishDate": "November 20th, 2016",
+      "url": "http://www.theasy.com/Reviews/2016/S/sweetcharity.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": null,
+      "publishDate": "2016-12-30",
+      "url": "http://www.theatrereviews.com/off-broadway-review-sweet-charity-at-the-new-group-at-the-pershing-square-signature-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "theatres-leiter-side--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2016-11-20",
+      "url": "http://slleiter.blogspot.com/2016/11/102-review-sweet-charity-seen-november.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "towleroad--naveen-kumar.json",
+      "score": null,
+      "publishDate": "2016-11-22",
+      "url": "http://www.towleroad.com/2016/11/sweet-charity/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55944,6 +56212,20 @@
       "score": null,
       "publishDate": "2016-11-20",
       "url": "http://www.vulture.com/2016/11/theater-review-can-sweet-charity-still-work.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "washpost--jennifer-farrar.json",
+      "score": null,
+      "publishDate": "November 21st, 2016",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-foster-shines-in-perky-revival-of-sweet-charity/2016/11/21/4f9d5920-affc-11e6-bc2d-19b3d759cfe7_story.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -67086,6 +67368,39 @@
       ]
     },
     {
+      "showId": "the-robber-bridegroom-off-broadway-2016",
+      "file": "deadline--jeremy-gerard.json",
+      "score": null,
+      "publishDate": "2016-03-13",
+      "url": "http://deadline.com/2016/03/the-robber-bridegroom-and-southern-comfort-review-1201719729/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-robber-bridegroom-off-broadway-2016",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": null,
+      "publishDate": "2016-03-20",
+      "url": "http://www.theatrereviews.com/review-the-robber-bridegroom-at-the-laura-pels-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-rocky-horror-show-2026",
       "file": "nypost--johnny-oleksinski.json",
       "score": 60,
@@ -74169,6 +74484,127 @@
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
         },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-regional-2026",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/west-side-story-7/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-regional-2026",
+      "file": "chicago-reader--kelly-kleiman.json",
+      "publishDate": "2026-08-17",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/west-side-story-music-theater-works/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-regional-2026",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-08-18",
+      "url": "https://www.chicagotheatrereview.com/2026/08/worthy-of-a-standing-ovation/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-regional-2026",
+      "file": "chicagotheaterandarts--jodie-jacobs.json",
+      "publishDate": "2026-08-20",
+      "url": "https://chicagotheaterandarts.com/2026/08/20/west-side-story-reflects-our-problems/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-regional-2026",
+      "file": "new-city-stage--mary-wisniewski.json",
+      "publishDate": "2026-08-20",
+      "url": "https://www.newcitystage.com/2026/08/20/music-theater-works-captures-the-majestic-scope-of-west-side-story/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-regional-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-08-15",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/8/15/picksinsix-review-west-side-story-music-theatre-works",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-regional-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-08-22",
+      "url": "https://thirdcoastreview.com/stages/2026/08/22/review-music-theater-works-west-side-story",
+      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -100523,6 +100959,20 @@
     },
     {
       "showId": "marie-and-rosetta-off-broadway-2016",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "September 14th, 2016",
+      "url": "https://newyorktheater.me/2016/09/14/marie-and-rosetta-review-rock-n-roll-pioneer-sister-rosetta-tharpe/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "marie-and-rosetta-off-broadway-2016",
       "file": "nytimes--charles-isherwood.json",
       "score": null,
       "publishDate": "September 14th, 2016",
@@ -105577,6 +106027,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"mitzi newhouse\""
+        }
+      ]
+    },
+    {
+      "showId": "othello-the-remix-off-broadway-2016",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2016-11-19",
+      "url": "http://broadwayandme.blogspot.com/2016/11/a-hip-hop-aesthetic-infuses-hipness.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+BroadwayMe+%28Broadway+%26amp%3B+Me%29",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "othello-the-remix-off-broadway-2016",
+      "file": "vulture--jesse-green.json",
+      "score": null,
+      "publishDate": "2016-12-12",
+      "url": "http://www.vulture.com/2016/12/theater-review-a-pair-of-othellos.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
@@ -112436,7 +112914,7 @@
       "showId": "sweet-charity-off-broadway-2016",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": null,
-      "publishDate": "November 20th, 2016",
+      "publishDate": "2016-11-20",
       "url": "http://dctheatrescene.com/2016/11/20/sweet-charity-review-sutton-foster-escapist-revival/",
       "findings": [
         {
