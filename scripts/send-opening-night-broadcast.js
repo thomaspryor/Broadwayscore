@@ -761,7 +761,7 @@ async function main() {
     }
 
     try {
-      await postJSON('https://api.resend.com/emails', {
+      const sent = await postJSON('https://api.resend.com/emails', {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
         reply_to: REPLY_TO,
         to: [SEND_TO],
@@ -774,7 +774,7 @@ async function main() {
       }, {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
-      console.log(`Preview sent to ${SEND_TO}`);
+      console.log(`Preview sent to ${SEND_TO}${sent && sent.id ? ` (Resend message id ${sent.id})` : ''}`); // BRO-6623: id is the audit trail
 
       // BRO-886: record the tracker write IMMEDIATELY after the send succeeds,
       // not at the end of main() after the whole draft/preview branch — a
