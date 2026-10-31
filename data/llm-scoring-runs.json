@@ -1658754,21 +1658754,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T17:27:54.831Z",
-    "completedAt": "2026-10-31T17:28:23.881Z",
-    "totalReviews": 6,
-    "processed": 6,
-    "skipped": 0,
+    "startedAt": "2026-10-31T17:30:45.946Z",
+    "completedAt": "2026-10-31T17:31:34.655Z",
+    "totalReviews": 12,
+    "processed": 10,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 38309,
-      "output": 1656,
-      "cacheRead": 19035,
-      "cacheWrite": 3807,
-      "total": 93849
+      "input": 61623,
+      "output": 3156,
+      "cacheRead": 38070,
+      "cacheWrite": 0,
+      "total": 153310
     },
-    "costUsd": 0.15414475,
-    "runId": "41224114766",
+    "costUsd": 0.23317369999999998,
+    "runId": "41224286079",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1672429,13 +1672429,13 @@
           "total": 80
         },
         "dtliDistribution": {
-          "up": 6,
+          "up": 5,
           "flat": 0,
           "down": 0,
-          "total": 7
+          "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 39% (ours: 46%, theirs: 86%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 46%, theirs: 83%)"
       },
       {
         "showId": "frozen-2018",
@@ -1672446,13 +1672446,13 @@
           "total": 80
         },
         "dtliDistribution": {
-          "up": 6,
+          "up": 5,
           "flat": 0,
           "down": 0,
-          "total": 7
+          "total": 6
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 39% (ours: 46%, theirs: 86%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 46%, theirs: 83%)"
       },
       {
         "showId": "frozen-west-end-2021",
@@ -1673680,16 +1673680,6 @@
           "flat": 4,
           "down": 1,
           "total": 12
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "green-corridors-regional-2026",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 1,
-          "down": 0,
-          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1688593,6 +1688583,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "sherlock-holmes-and-the-christmas-clowns-regional-2025",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 3,
+          "down": 0,
+          "total": 10
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "sherlock-holmes-west-end-2026",
         "ourDistribution": {
           "up": 19,
@@ -1702808,8 +1702808,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T17:33:21.194Z",
-    "completedAt": "2026-10-31T17:33:21.196Z",
+    "startedAt": "2026-10-31T17:36:32.096Z",
+    "completedAt": "2026-10-31T17:36:32.098Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1702822,7 +1702822,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41224114766",
+    "runId": "41224286079",
     "source": "comparative-rescore",
     "errorDetails": []
   }
