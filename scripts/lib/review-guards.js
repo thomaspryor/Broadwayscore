@@ -1639,6 +1639,15 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'BritishTheatre review round-up post (aggregate of other critics)' };
   }
 
+  // BRO-6685: Gold Derby's /theater/{year}/{show}-reviews/ pages are roundups of
+  // OTHER critics' reviews (a-few-good-men-aaron-sorkin-bradley-whitford-broadway-
+  // revival-reviews was scored 60 as goldderby--ethan-alter on 2026-10-31 after
+  // its url replaced a pre-opening news page). Gold Derby publishes no first-party
+  // criticism, so a /theater/ slug carrying -review(s) (ending in it, or followed by more words) is the aggregate.
+  if (/goldderby\.com\/theater\/[^?#]*-reviews?(?:-|\/|[?#]|$)/i.test(url)) {
+    return { isRoundup: true, reason: 'Gold Derby critics-reviews roundup page' };
+  }
+
   // BRO-4875: three more hosts whose own critics-roundup articles were ingested
   // and scored as that outlet's review. Host-scoped like every pattern above.
   //   londontheatredirect.com /news/{slug}-review-roundup and
@@ -3066,6 +3075,8 @@ const ROUNDUP_HOST_OUTLETS = {
   'londontheatredirect.com': ['londontheatredirect', 'london-theatre-direct'],
   'independent.co.uk': ['independent', 'the-independent'],
   'latimes.com': ['latimes', 'la-times', 'los-angeles-times'],
+  // BRO-6685, with its isRoundupUrl pattern.
+  'goldderby.com': ['goldderby', 'gold-derby'],
   // BRO-6580, with their isRoundupUrl patterns.
   'standard.co.uk': ['standard', 'evening-standard'],
   'dailymail.co.uk': ['daily-mail', 'mail-on-sunday', 'dailymail'],

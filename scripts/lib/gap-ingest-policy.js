@@ -181,7 +181,7 @@ function partitionShowScoreReviews(reviews, show, { urlOf = (r) => r && r.url, d
  * Why an aggregator-listed URL must NOT be auto-ingested (null = ingestable).
  * @param {object} m    missing/flaggedMiss entry ({priorRun, weRef, weRefSources, serpCensus})
  * @param {object} ctx  {showIsWe: boolean, weGateOn: boolean, lowTrustSources?: Set<string>, serpCensusGateOn?: boolean}
- * @returns {'prior-run'|'we-gate-off'|'serp-census-gate-off'|'low-trust-source'|null}
+ * @returns {'prior-run'|'we-gate-off'|'serp-census-gate-off'|'low-trust-source'|'unregistered-host'|null}
  */
 function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources, serpCensusGateOn }) {
   // Production identity: a URL cited only by a prior production's article/roundup
@@ -210,6 +210,15 @@ function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources, serpCensusG
       m.weRefSources.every((s) => lowTrustSources.has(s))) {
     return 'low-trust-source';
   }
+  // BRO-6685: the gap audit never auto-registers an outlet. A host with no
+  // outlet-registry domain (knownOutletId null) was captured under a
+  // domain-derived provisional slug since 2026-06-05; on 2026-10-31 that let a
+  // content-scraper copy (globalnews2.xyz) of a real A Few Good Men review go
+  // live scored 58. Such rows stay report-only (unknown-aggregator-outlets.json
+  // is the onboarding queue). Last, so every earlier reason keeps precedence.
+  // A flaggedMiss whose stored file already carries an outletId (recoverableOutletId) is
+  // recovery of a held file, not a new registration, so it is not blocked here.
+  if (!m.knownOutletId && !m.recoverableOutletId) return 'unregistered-host';
   return null;
 }
 

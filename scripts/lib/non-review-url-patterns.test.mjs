@@ -651,3 +651,30 @@ test('listingPageUrlReason: Talkin\' Broadway index page is a listing, a numbere
   assert.equal(listingPageUrlReason('https://www.talkinbroadway.com/page/world/index.html'), 'review-index-page');
   assert.equal(listingPageUrlReason('https://www.talkinbroadway.com/page/world/860.html'), null);
 });
+
+// BRO-6685: Gold Derby's "...-reviews/" roundup was scored 60 as a review of A Few Good Men.
+const GD_ROUNDUP = 'https://www.goldderby.com/theater/2026/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-revival-reviews/';
+const GD_NEWS = 'https://www.goldderby.com/theater/2026/a-few-good-men-broadway-cast-announcement/';
+
+test('isRoundupUrl: Gold Derby -reviews/ roundup page is flagged, other Gold Derby pages are not', () => {
+  const { isRoundupUrl } = require('./review-guards.js');
+  assert.equal(isRoundupUrl(GD_ROUNDUP).isRoundup, true);
+  assert.equal(isRoundupUrl(GD_ROUNDUP.replace(/\/$/, '?utm=x')).isRoundup, true);
+  assert.equal(isRoundupUrl('https://www.goldderby.com/theater/2026/other-desert-cities-reviews-critics-julia-louis-dreyfus-broadway-debut/').isRoundup, true);
+  assert.equal(isRoundupUrl(GD_NEWS).isRoundup, false);
+  assert.equal(isRoundupUrl('https://www.goldderby.com/odds/combined-odds/broadway-2026-tony-awards-predictions/').isRoundup, false);
+});
+
+test('isRoundupPageAsReview: Gold Derby roundup filed under the goldderby outlet is page-as-review', () => {
+  const { isRoundupPageAsReview } = require('./review-guards.js');
+  assert.equal(isRoundupPageAsReview({ url: GD_ROUNDUP, outletId: 'goldderby' }), true);
+  assert.equal(isRoundupPageAsReview({ url: GD_NEWS, outletId: 'goldderby' }), false);
+});
+
+test('maybeUpgradeUrl: a merge refuses to swap a goldderby file url onto the roundup page', () => {
+  const { maybeUpgradeUrl } = require('./review-normalization.js');
+  const file = { outletId: 'goldderby', criticName: 'Ethan Alter', url: GD_NEWS, fullText: '', contentTier: 'stub' };
+  const before = file.url;
+  assert.equal(maybeUpgradeUrl(file, GD_ROUNDUP, 'test'), false);
+  assert.equal(file.url, before);
+});
