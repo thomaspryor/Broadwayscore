@@ -1649106,21 +1649106,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T16:03:34.435Z",
-    "completedAt": "2026-10-31T16:05:06.220Z",
-    "totalReviews": 19,
-    "processed": 16,
-    "skipped": 2,
+    "startedAt": "2026-10-31T16:04:22.199Z",
+    "completedAt": "2026-10-31T16:05:03.845Z",
+    "totalReviews": 8,
+    "processed": 8,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 120406,
-      "output": 5318,
-      "cacheRead": 64719,
+      "input": 49345,
+      "output": 2538,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 283916
+      "total": 122715
     },
-    "costUsd": 0.441113,
-    "runId": "41217177553",
+    "costUsd": 0.1860574,
+    "runId": "41217366163",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1655973,6 +1655973,16 @@
           "flat": 0,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "both-regional-2026",
+        "ourDistribution": {
+          "up": 8,
+          "flat": 0,
+          "down": 0,
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -1682736,10 +1682746,10 @@
       {
         "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
         "ourDistribution": {
-          "up": 29,
+          "up": 28,
           "flat": 3,
           "down": 2,
-          "total": 34
+          "total": 33
         },
         "bwwDistribution": {
           "up": 9,
@@ -1692052,16 +1692062,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "windfall-regional-2026",
-        "ourDistribution": {
-          "up": 16,
-          "flat": 0,
-          "down": 0,
-          "total": 16
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "windows-regional-2026",
         "ourDistribution": {
           "up": 4,
@@ -1692656,8 +1692656,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T16:10:04.515Z",
-    "completedAt": "2026-10-31T16:10:04.518Z",
+    "startedAt": "2026-10-31T16:10:00.364Z",
+    "completedAt": "2026-10-31T16:10:00.365Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1692670,7 +1692670,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41217177553",
+    "runId": "41217366163",
     "source": "comparative-rescore",
     "errorDetails": []
   }
