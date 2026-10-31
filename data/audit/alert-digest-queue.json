@@ -203,5 +203,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T11:55:48.489Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 6 review(s) flagged for anchored re-score (still open — BRO-6121)",
+    "description": "Still firing after 20 notifications since it was filed. Tracked at BRO-6121.\n\n{\"unanchored\":6} across the whole corpus, by market {\"broadway\":27,\"west-end\":9,\"regional\":9}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] not-ready-for-prime-time-off-broadway-2025/one-minute-critic--lindsay-b-davis.json 3/5 band 51-70\n- [unanchored] the-burning-cauldron-of-fiery-fire-off-broadway-2025/one-minute-critic--billy-mcentee.json 3/5 band 51-70\n- [unanchored] lord-nil-7-deadly-sins-off-broadway-2025/one-minute-critic--matthew-wexler.json 2/5 band 31-50\n- [unanchored] joy-a-new-true-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json 3/5 band 51-70\n- [unanchored] prince-faggot-off-broadway-2025/culturesauce--unknown.json 4/5 stars band 71-90\n- [unanchored] how-to-transcend-a-happy-marriage-off-broadway-2017/timeout--david-cote.json 3/5 band 51-70",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6121",
+    "fields": [],
+    "queuedAt": "2026-10-31T13:12:01.907Z"
   }
 ]
