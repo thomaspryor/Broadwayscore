@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6606-c",
   "planId": "2a01da67-bf32-4394-bf6c-daaa3cdae08e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T05:20:54.380Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "Letterboxd film page synopsis (2020 film), not a review of the stage production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T05:31:42.789Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted uncle-vanya-west-end-2020/letterboxd--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
