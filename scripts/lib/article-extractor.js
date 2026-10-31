@@ -831,6 +831,11 @@ const PATTERNS = [
   // wrongShow ("not a review") — the 2026-06-04 War Horse contamination incident.
   ['whatsonstage.com', /<div[^>]+class="[^"]*news-content[^"]*"[^>]*>([\s\S]*?)<(?:section[^>]+class="[^"]*(?:article-tags|featured-in-this-story)|div[^>]+class="[^"]*social-share-news-icons)/, 300],
 
+  // The Reviews Hub: the review sits in div.entry-content, followed by the tag and
+  // share rows. Without this pattern every ingest exited non-zero with "extraction
+  // returned 0 chars" (BRO-6692: 10 of 25 UK regional URLs failed).
+  ['thereviewshub.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<(?:div[^>]+class="[^"]*(?:the-post-tags|post-share-bot|author-box)|section)/, 300],
+
   // Generic fallbacks (any host) — see extractGeneric below for largest-match logic.
   [null, /<article[^>]*>([\s\S]*?)<\/article>/, 300],
   [null, /<main[^>]*>([\s\S]*?)<\/main>/, 500],
