@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T19:50:22.219Z",
+  "timestamp": "2026-10-31T20:03:24.821Z",
   "stats": {
-    "totalReviews": 75985,
+    "totalReviews": 76036,
     "alreadyFlagged": 21759,
     "dateGuardCatches": 238,
-    "directorMismatch": 3223,
+    "directorMismatch": 3230,
     "tvFilmSignals": 2171,
     "londonSignals": 3511,
     "offBroadwaySignals": 718,
     "yearMismatch": 320,
-    "noPublishDate": 8576
+    "noPublishDate": 8588
   },
   "findings": [
     {
@@ -48157,6 +48157,7 @@
     {
       "showId": "pippin-regional-2025",
       "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "score": 75,
       "publishDate": "2025-06-15",
       "url": "https://www.broadwayworld.com/chicago/article/Review-PIPPIN-at-BrightSide-Theatre-20250615",
       "findings": [
@@ -48170,6 +48171,7 @@
     {
       "showId": "pippin-regional-2025",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": "2025-06-14",
       "url": "https://www.chicagotheatrereview.com/2025/06/brightsides-magic-to-do/",
       "findings": [
@@ -48188,6 +48190,7 @@
     {
       "showId": "pippin-regional-2025",
       "file": "new-city-stage--mary-wisniewski.json",
+      "score": 78,
       "publishDate": "2025-06-18",
       "url": "https://www.newcitystage.com/2025/06/18/the-search-for-meaning-a-review-of-pippin-at-brightside-theatre/",
       "findings": [
@@ -48201,6 +48204,7 @@
     {
       "showId": "pippin-regional-2025",
       "file": "splash-magazines--susan-lillis.json",
+      "score": 89,
       "publishDate": "2025-06-15",
       "url": "https://chicago.splashmags.com/index.php/2025/06/brightside-theatre-in-naperville-proudly-presents-pippin/",
       "findings": [
@@ -58427,6 +58431,97 @@
       "score": null,
       "publishDate": "November 21st, 2016",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-foster-shines-in-perky-revival-of-sweet-charity/2016/11/21/4f9d5920-affc-11e6-bc2d-19b3d759cfe7_story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-regional-2025",
+      "file": "allie-and-the-after-party--allie-bugajski.json",
+      "publishDate": "2025-05-16",
+      "url": "https://www.allieandtheafterparty.com/reviews/blank-theatre-company-sweet-charity-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-regional-2025",
+      "file": "around-the-town-chicago--unknown.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/sweet-charity-3/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-regional-2025",
+      "file": "broadwayworld--zac-thriffiley.json",
+      "publishDate": "2025-05-21",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-SWEET-CHARITY-at-Blank-Theatre-Company-20250521",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-regional-2025",
+      "file": "buzznews--lauren-katz.json",
+      "publishDate": "2025-05-17",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5885-blank-theatre-s-sweet-charity-charms-with-talented-cast-and-standout-choreography.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-regional-2025",
+      "file": "chicago-reader--rob-silverman-ascher.json",
+      "publishDate": "2025-05-21",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/sweet-charity-blank-theatre-company/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-regional-2025",
+      "file": "chicago-theatre-review--alina-c-hevia.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.chicagotheatrereview.com/2025/05/the-blank-theatres-sweet-charity-is-a-ray-of-brightly-colored-sunshine/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-regional-2025",
+      "file": "entertainingchicago--alli-doubek.json",
+      "publishDate": "2025-05-14",
+      "url": "https://entertainingchicago.com/blank-theatre-companys-sweet-charity-is-a-charming-tale-of-love/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
