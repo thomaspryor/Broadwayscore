@@ -1,19 +1,131 @@
 {
-  "updatedAt": "2026-10-31T14:39:35.293Z",
-  "processed": 73,
-  "failed": 17,
-  "successRate": "81.1%",
+  "updatedAt": "2026-10-31T14:46:28.938Z",
+  "processed": 512,
+  "failed": 128,
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 39,
-    "amp": 4,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 5,
-    "archive": 31
+    "playwright": 261,
+    "amp": 3,
+    "browserbase": 26,
+    "directCookies": 1,
+    "scrapingdog": 31,
+    "scrapingbee": 24,
+    "brightdata": 30,
+    "archiveToday": 56,
+    "archive": 177
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 15,
+  "recentActivity": [
+    {
+      "t": "2026-10-31T10:32:57.002Z",
+      "event": "bb-session",
+      "session": "ad2fedea",
+      "url": "https://www.nytimes.com/2017/05/08/theater/review-he-can-cook-too-so-why-not-mar"
+    },
+    {
+      "t": "2026-10-31T10:32:57.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T10:33:15.085Z",
+      "event": "bb-session",
+      "session": "5d6beb94",
+      "url": "http://www.hollywoodreporter.com/review/pacific-overtures-theater-1000003"
+    },
+    {
+      "t": "2026-10-31T10:48:44.610Z",
+      "event": "bb-session",
+      "session": "f1d8ccbe",
+      "url": "https://www.nytimes.com/2017/04/10/theater/the-profane-zayd-dohrn.html"
+    },
+    {
+      "t": "2026-10-31T10:48:45.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T11:03:14.799Z",
+      "event": "bb-session",
+      "session": "e0b92b26",
+      "url": "https://www.nytimes.com/2017/04/03/theater/vanity-fair-broadway-review-kate-hami"
+    },
+    {
+      "t": "2026-10-31T11:03:15.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T11:04:37.104Z",
+      "event": "bb-session",
+      "session": "5d67735e",
+      "url": "https://www.wsj.com/articles/vanity-fair-review-becky-sharp-takes-the-stage-1491"
+    },
+    {
+      "t": "2026-10-31T11:04:37.582Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-31T11:22:34.323Z",
+      "event": "bb-session",
+      "session": "4415e859",
+      "url": "http://www.hollywoodreporter.com/review/how-transcend-a-happy-marriage-theater-r"
+    },
+    {
+      "t": "2026-10-31T11:35:34.952Z",
+      "event": "bb-session",
+      "session": "bbcdaeca",
+      "url": "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society"
+    },
+    {
+      "t": "2026-10-31T11:35:35.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T11:36:24.916Z",
+      "event": "bb-session",
+      "session": "291ffdb5",
+      "url": "https://www.nytimes.com/2017/03/13/theater/the-moors-review.html"
+    },
+    {
+      "t": "2026-10-31T11:36:25.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T11:55:15.144Z",
+      "event": "bb-session",
+      "session": "3fc87b21",
+      "url": "https://www.nytimes.com/2017/03/24/theater/review-emperor-jones-fearsome-and-fea"
+    },
+    {
+      "t": "2026-10-31T11:55:15.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T11:56:23.350Z",
+      "event": "bb-session",
+      "session": "efda11a1",
+      "url": "https://www.nytimes.com/2017/03/03/theater/review-little-miss-sunshine-trips-int"
+    },
+    {
+      "t": "2026-10-31T11:56:23.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T14:00:02.025Z",
+      "event": "bb-session",
+      "session": "f529db09",
+      "url": "http://www.newyorker.com/magazine/2016/12/05/a-strangely-muted-sweet-charity?mbi"
+    },
+    {
+      "t": "2026-10-31T14:00:02.544Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
