@@ -1,62 +1,95 @@
 {
-  "updatedAt": "2026-10-31T16:44:12.408Z",
-  "processed": 32,
-  "failed": 38,
-  "successRate": "45.7%",
+  "updatedAt": "2026-10-31T17:04:39.429Z",
+  "processed": 363,
+  "failed": 87,
+  "successRate": "80.7%",
   "tierBreakdown": {
-    "playwright": 15,
-    "amp": 0,
-    "browserbase": 4,
+    "playwright": 181,
+    "amp": 20,
+    "browserbase": 21,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 7,
-    "archive": 22
+    "scrapingdog": 6,
+    "scrapingbee": 10,
+    "brightdata": 6,
+    "archiveToday": 38,
+    "archive": 150
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 14,
   "recentActivity": [
     {
-      "t": "2026-10-31T16:11:02.931Z",
+      "t": "2026-10-31T15:14:19.531Z",
       "event": "bb-session",
-      "session": "1f0294d8",
-      "url": "https://www.nytimes.com/2017/06/03/theater/building-the-wall-closing.html"
+      "session": "471a5f9d",
+      "url": "http://www.nytimes.com/2016/02/22/theater/review-in-the-woodsman-a-love-lost-in-"
     },
     {
-      "t": "2026-10-31T16:11:03.757Z",
+      "t": "2026-10-31T15:14:20.241Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T16:20:38.233Z",
+      "t": "2026-10-31T15:29:16.388Z",
       "event": "bb-session",
-      "session": "7f68232f",
-      "url": "https://www.nytimes.com/2017/03/13/theater/the-moors-review.html"
+      "session": "881ef61f",
+      "url": "http://www.nytimes.com/2016/01/29/theater/review-sojourners-about-nigerians-assi"
     },
     {
-      "t": "2026-10-31T16:20:39.149Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-31T16:24:52.962Z",
-      "event": "bb-session",
-      "session": "4556ef61",
-      "url": "https://www.nytimes.com/2017/02/22/theater/if-i-forget-review.html"
-    },
-    {
-      "t": "2026-10-31T16:24:53.763Z",
+      "t": "2026-10-31T15:29:17.019Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T16:39:46.824Z",
+      "t": "2026-10-31T15:33:51.354Z",
       "event": "bb-session",
-      "session": "e44cae7a",
-      "url": "http://www.wsj.com/articles/sutton-foster-stars-a-revival-of-neil-simons-sweet-c"
+      "session": "79f004c8",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/these-paper-bullets"
     },
     {
-      "t": "2026-10-31T16:39:47.636Z",
+      "t": "2026-10-31T15:33:51.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-31T15:34:03.704Z",
+      "event": "bb-session",
+      "session": "e354c606",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/these-paper-bullets"
+    },
+    {
+      "t": "2026-10-31T15:34:04.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-31T15:35:08.421Z",
+      "event": "bb-session",
+      "session": "68017e70",
+      "url": "http://www.nytimes.com/2015/12/16/theater/review-in-these-paper-bullets-a-chance"
+    },
+    {
+      "t": "2026-10-31T15:35:09.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T15:55:24.436Z",
+      "event": "bb-session",
+      "session": "b92ec7e5",
+      "url": "http://www.nytimes.com/2015/12/03/theater/review-in-invisible-thread-a-gay-new-y"
+    },
+    {
+      "t": "2026-10-31T15:55:25.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T16:16:06.773Z",
+      "event": "bb-session",
+      "session": "3036710c",
+      "url": "https://www.wsj.com/articles/incident-at-vichy-review-wordy-but-worthwhile-11622"
+    },
+    {
+      "t": "2026-10-31T16:16:07.418Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
@@ -69,7 +102,29 @@
     {
       "t": "2026-10-31T16:40:06.103Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T16:38:51.683Z",
+      "event": "bb-session",
+      "session": "72a3b128",
+      "url": "http://www.nytimes.com/2015/10/20/theater/review-perfect-arrangement-a-comic-tal"
+    },
+    {
+      "t": "2026-10-31T16:38:52.318Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T16:49:59.107Z",
+      "event": "bb-session",
+      "session": "4aa786f8",
+      "url": "http://www.nytimes.com/2015/10/13/theater/review-would-you-still-love-me-if-with"
+    },
+    {
+      "t": "2026-10-31T16:49:59.822Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
