@@ -435,6 +435,22 @@ function aggregateLedgerByDay(ledgerRecords, day) {
     || a.script.localeCompare(b.script));
 }
 
+/**
+ * BRO-6677: replace a durable day's rows only when the raw ledger reaches
+ * back to that day's UTC midnight. A rotated, empty or unreadable ledger
+ * cannot rebuild it safely. Return null so the writer leaves the file alone.
+ * Ledger rows can be out of order after merge=union recovery.
+ */
+function rebuildDailyAggregate(existingRows, ledgerRecords, day) {
+  const dayStartMs = Date.parse(`${day}T00:00:00Z`);
+  const coversDay = Number.isFinite(dayStartMs) && (ledgerRecords || []).some((r) => {
+    const ts = r && typeof r.ts === 'string' ? Date.parse(r.ts) : NaN;
+    return Number.isFinite(ts) && ts <= dayStartMs;
+  });
+  if (!coversDay) return null;
+  return [...existingRows.filter((r) => r.day !== day), ...aggregateLedgerByDay(ledgerRecords, day)];
+}
+
 // BRO-3227 (moved here from check-provider-spend.js by BRO-3349): the
 // ledger going stale/discontinuous is not itself a spend breach
 // (budgetBreaches/computeStreak below only see whatever record THIS run
@@ -585,7 +601,7 @@ module.exports = {
   attributionGaps,
   attributionWindowVerdict,
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
-  utcYesterday, isNextUtcDay, aggregateLedgerByDay, bbCost,
+  utcYesterday, isNextUtcDay, aggregateLedgerByDay, rebuildDailyAggregate, bbCost,
   BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
   ledgerFreshnessHours, lastLedgerDay, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 };

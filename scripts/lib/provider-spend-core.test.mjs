@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, isNextUtcDay,
-  aggregateLedgerByDay, bbCost,
+  aggregateLedgerByDay, rebuildDailyAggregate, bbCost,
   ledgerFreshnessHours, lastLedgerDay,
 } = require('./provider-spend-core.js');
 
@@ -304,6 +304,57 @@ test('aggregateLedgerByDay: category is null for providers that never set it', (
   ];
   const rows = aggregateLedgerByDay(records, '2026-09-01');
   assert.equal(rows[0].category, null);
+});
+
+// --- BRO-6677: old-day reruns must not destroy the durable aggregate ---
+
+const durableRows = [
+  { day: '2026-09-01', provider: 'scrapingbee', script: 'old.js', calls: 200, credits: 1000 },
+  { day: '2026-09-02', provider: 'brightdata', script: 'other.js', calls: 10, credits: 10 },
+];
+
+for (const [label, records] of [
+  ['rotated past the day', [{ ts: '2026-09-02T00:00:00Z', provider: 'scrapingbee', credits: 1 }]],
+  ['partially rotated day', [{ ts: '2026-09-01T00:00:00.001Z', provider: 'scrapingbee', credits: 1 }]],
+  ['empty ledger', []],
+  ['no usable timestamps', [null, {}, { ts: null }, { ts: 'invalid' }]],
+]) {
+  test(`rebuildDailyAggregate: ${label} skips replacement and preserves existing rows`, () => {
+    const existing = structuredClone(durableRows);
+    assert.equal(rebuildDailyAggregate(existing, records, '2026-09-01'), null);
+    assert.deepEqual(existing, durableRows);
+  });
+}
+
+test('rebuildDailyAggregate: a row exactly at UTC midnight allows replacement', () => {
+  const records = [
+    { ts: '2026-09-01T00:00:00Z', provider: 'scrapingbee', script: 'new.js', fn: 'page', credits: 5 },
+    { ts: '2026-09-01T23:59:59Z', provider: 'scrapingbee', script: 'new.js', fn: 'page', credits: 10 },
+  ];
+  const existing = structuredClone(durableRows);
+  assert.deepEqual(rebuildDailyAggregate(existing, records, '2026-09-01'), [durableRows[1], {
+    day: '2026-09-01', provider: 'scrapingbee', workflow: null, script: 'new.js', fn: 'page',
+    host: null, category: null, calls: 2, credits: 15,
+  }]);
+  assert.deepEqual(existing, durableRows);
+});
+
+test('rebuildDailyAggregate: coverage uses timestamps across unsorted ledger rows', () => {
+  const records = [
+    { ts: '2026-09-01T12:00:00Z', provider: 'brightdata', script: 'new.js', fn: 'page', credits: 2 },
+    { ts: 'invalid' },
+    { ts: '2026-08-31T23:59:59Z', provider: 'brightdata', credits: 99 },
+  ];
+  const result = rebuildDailyAggregate(durableRows, records, '2026-09-01');
+  assert.equal(result.length, 2);
+  assert.deepEqual(result[0], durableRows[1]);
+  assert.equal(result[1].calls, 1);
+  assert.equal(result[1].credits, 2);
+});
+
+test('rebuildDailyAggregate: a covered day with no calls can replace stale rows with none', () => {
+  const records = [{ ts: '2026-08-31T23:59:59Z', provider: 'brightdata', credits: 99 }];
+  assert.deepEqual(rebuildDailyAggregate(durableRows, records, '2026-09-01'), [durableRows[1]]);
 });
 
 // --- BRO-3349: freshness helpers moved here from check-provider-spend.js ---

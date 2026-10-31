@@ -27,7 +27,7 @@ const {
   fetchBdZoneCostDay, fetchBbUsageForDay, fetchSbUsage, fetchSdAccount,
 } = require('./lib/provider-billing');
 const {
-  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, aggregateLedgerByDay,
+  computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, rebuildDailyAggregate,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
   attributionGaps, attributionWindowVerdict,
 } = require('./lib/provider-spend-core');
@@ -216,12 +216,16 @@ async function main() {
 
   // S0-T6: roll today's per-call ledger into the durable daily aggregate
   // BEFORE the raw ledger rotates it away. Idempotent by day, same as LEDGER.
-  const todaysAggRows = aggregateLedgerByDay(callLedger, DAY);
   const existingAgg = readDailyAgg();
-  const aggSeries = [...existingAgg.filter((r) => r.day !== DAY), ...todaysAggRows];
-  console.log(`[provider-spend] ${DAY}: daily aggregate — ${todaysAggRows.length} (provider,workflow,script,fn) row(s)`);
-  for (const row of todaysAggRows.slice(0, 5)) {
-    console.log(`  ${row.provider} ${row.credits}cr / ${row.calls} calls — ${row.script} (${row.fn}, workflow=${row.workflow || 'none'})`);
+  const aggSeries = rebuildDailyAggregate(existingAgg, callLedger, DAY);
+  if (aggSeries === null) {
+    console.warn(`::warning::[provider-spend] ${DAY}: raw ledger does not cover ${DAY} 00:00Z; keeping existing daily aggregate rows unchanged and skipping aggregate rewrite.`);
+  } else {
+    const todaysAggRows = aggSeries.filter((r) => r.day === DAY);
+    console.log(`[provider-spend] ${DAY}: daily aggregate: ${todaysAggRows.length} (provider,workflow,script,fn) row(s)`);
+    for (const row of todaysAggRows.slice(0, 5)) {
+      console.log(`  ${row.provider} ${row.credits}cr / ${row.calls} calls: ${row.script} (${row.fn}, workflow=${row.workflow || 'none'})`);
+    }
   }
 
   // BRO-4215: computed before the dry-run return so --dry-run shows them.
@@ -244,7 +248,9 @@ async function main() {
   fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
   fs.writeFileSync(LEDGER, series.map((r) => JSON.stringify(r)).join('\n') + '\n');
   fs.writeFileSync(SNAPSHOT, JSON.stringify(snapshot, null, 2) + '\n');
-  fs.writeFileSync(DAILY_AGG, aggSeries.map((r) => JSON.stringify(r)).join('\n') + '\n');
+  if (aggSeries !== null) {
+    fs.writeFileSync(DAILY_AGG, aggSeries.map((r) => JSON.stringify(r)).join('\n') + '\n');
+  }
 
   if (breaches.overspend.length || breaches.unmeasured.length) {
     const { routeAlert } = require('./lib/owner-alert-router');
