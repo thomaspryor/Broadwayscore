@@ -1702885,21 +1702885,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T17:59:21.990Z",
-    "completedAt": "2026-10-31T18:00:07.159Z",
-    "totalReviews": 10,
-    "processed": 9,
-    "skipped": 1,
+    "startedAt": "2026-10-31T17:59:25.748Z",
+    "completedAt": "2026-10-31T18:00:31.299Z",
+    "totalReviews": 14,
+    "processed": 12,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 56102,
-      "output": 2558,
-      "cacheRead": 34263,
+      "input": 76282,
+      "output": 3946,
+      "cacheRead": 45684,
       "cacheWrite": 0,
-      "total": 138548
+      "total": 187803
     },
-    "costUsd": 0.2077436,
-    "runId": "41226674480",
+    "costUsd": 0.28821230000000003,
+    "runId": "41226660440",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1707764,6 +1707764,16 @@
           "flat": 10,
           "down": 2,
           "total": 43
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "as-you-like-it-regional-2025",
+        "ourDistribution": {
+          "up": 12,
+          "flat": 0,
+          "down": 0,
+          "total": 12
         },
         "hasDisagreement": false
       },
@@ -1738614,16 +1738624,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-house-that-will-not-stand-regional-2025",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 1,
-          "down": 0,
-          "total": 9
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-house-without-a-christmas-tree-regional-2024",
         "ourDistribution": {
           "up": 2,
@@ -1747009,8 +1747009,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T18:05:03.985Z",
-    "completedAt": "2026-10-31T18:05:03.986Z",
+    "startedAt": "2026-10-31T18:05:27.431Z",
+    "completedAt": "2026-10-31T18:05:27.432Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1747023,7 +1747023,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41226674480",
+    "runId": "41226660440",
     "source": "comparative-rescore",
     "errorDetails": []
   }
