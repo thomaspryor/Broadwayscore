@@ -2058,14 +2058,14 @@ test('WAKELESS: incident replay — NOT SAFE, waiting, nothing armed → BLOCKED
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('WAKELESS: each real wake passes — background Bash, Monitor, background Agent, started session, PR subscription, owner-asked send_later', skipNoRepoHook, () => {
+test('WAKELESS: each real wake passes — background Bash, Monitor, background Agent, armed child watcher, PR subscription, owner-asked send_later', skipNoRepoHook, () => {
   const dir = makeTmpDir('wake-armed');
   const monitor = toolUse('Monitor', { command: 'until gh-free-check; do sleep 60; done', description: 'land run' }, MONITOR_STARTED);
   const agent = toolUse('Agent', { description: 'scan', prompt: 'x', run_in_background: true }, 'Async agent launched successfully.\nagentId: a1b2c3d4e5f6');
   const sub = toolUse('mcp__claude-code-remote__subscribe_pr_activity', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 42 }, 'subscribed');
   const later = toolUse('mcp__claude-code-remote__send_later', { delay_minutes: 60, message: 'check', initiation: 'human_request' }, `{"fire_at":"${FAR}","trigger_id":"trig_01OWNER"}`);
   for (const [label, calls] of [['bg bash', [BG_WAIT]], ['monitor', [monitor]], ['agent', [agent]],
-    ['child', [CREATE_CHILD, GET_CHILD('WORKING')]], ['pr', [sub]], ['send_later', [later]]]) {
+    ['child + watcher', [CREATE_CHILD, GET_CHILD('WORKING'), BG_WAIT]], ['pr', [sub]], ['send_later', [later]]]) {
     assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, ...calls]), STALE, WK_ON), label);
   }
   fs.rmSync(dir, { recursive: true, force: true });
@@ -2075,6 +2075,8 @@ test('WAKELESS: a wake that already finished is not a wake', skipNoRepoHook, () 
   const dir = makeTmpDir('wake-done');
   assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, BG_WAIT, BG_DONE]), STALE, WK_ON), 'background wait already exited');
   assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, CREATE_CHILD, GET_CHILD('COMPLETED')]), STALE, WK_ON), 'child already finished');
+  // BRO-6717: a working child alone is no wake; an idle child never reports, so the parent arms child-idle-watch.
+  assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, CREATE_CHILD, GET_CHILD('WORKING')]), STALE, WK_ON), 'child with no watcher');
   const denied = toolUse('mcp__claude-code-remote__send_later', { delay_minutes: 60, message: 'check' }, 'PreToolUse: Blocked: send_later and create_trigger put an approval prompt');
   assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, denied]), STALE, WK_ON), 'a denied send_later arms nothing');
   // A stop-hook block between the wait and the closing does not hide the wait.

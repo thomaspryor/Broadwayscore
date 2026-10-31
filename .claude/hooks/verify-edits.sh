@@ -1409,7 +1409,7 @@ if os.environ.get('CHILDIDLE_GATE_DISABLE', '0') != '1':
 # are denied in cloud (block-prompting-remote-tools.sh: each prompts the
 # owner's phone), so the wake must come from something already running:
 # a background Bash or Monitor without a completion notice, a background
-# Agent, a started session (it reports back), a self-bound Routine the owner
+# Agent, a self-bound Routine the owner
 # asked for, or a PR subscription. A NOT SAFE that waits on the owner
 # (DECISION NEEDED:, or a "You need to:" line that is not "nothing") needs no
 # wake. Kill switch WAKELESS_GATE_DISABLE=1. Fail-open.
@@ -1420,8 +1420,8 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
                 and not _ve_seen('WAKELESS')):
             _wk_owner = _owner_must_act(_wk_text) or bool(re.search(r'\bfires into this session\b', _wk_last, re.I))  # routine host (BRO-6020)
             _lw = _live_work()
-            if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['children']
-                                      or _lw['waits'] or _lw['pr_watch']):
+            # A started child is no wake: an idle child sends nothing (BRO-6717); arm child-idle-watch.mjs (a wait).
+            if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['waits'] or _lw['pr_watch']):
                 _ve_block("WAKELESS")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
@@ -2454,7 +2454,7 @@ if [[ "$result" == "CHILDIDLE" ]]; then
 fi
 
 if [[ "$result" == "WAKELESS" ]]; then
-  echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait; a child session you started: node scripts/lib/child-idle-watch.mjs arm --child <its id>, an idle child sends nothing), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
