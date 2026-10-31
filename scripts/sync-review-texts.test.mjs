@@ -123,6 +123,20 @@ test('uncommitted local change + unrelated remote commit still syncs (exit 0)', 
   }
 });
 
+test('already committed local changes are pushed when the pull needs no repair', () => {
+  const f = fixture();
+  try {
+    write(f.local, 'show-a/outlet--critic.json', { fullText: 'local edit', contentTier: 'complete' });
+    git(f.local, 'commit', '-qam', 'local');
+    const r = run(f.script);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.equal(git(f.local, 'rev-parse', 'HEAD'), git(f.origin, 'rev-parse', 'main'));
+    assert.equal(JSON.parse(git(f.origin, 'show', 'main:show-a/outlet--critic.json')).fullText, 'local edit');
+  } finally {
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
 test('guarded_pull_rebase: conflict returns 1 and leaves no rebase; refusal to start returns 0', () => {
   const f = fixture();
   try {
@@ -196,3 +210,54 @@ test('guarded_pull_rebase: a non-local-changes failure (bad remote) warns and re
     fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// Similar pending stubs are distinct reviews, even when git calls their
+// delete/add a rename. Exercise both pulls in the real sync script.
+const OLD_STUB = '_pending/the-heart/deadline--old.json';
+const NEW_STUB = '_pending/medea/hollywood-reporter--new.json';
+function pendingStub(outletId, showId, url) {
+  return {
+    showId, outletId, url, publishDate: null,
+    fullText: null, isFullReview: false, originalScore: null,
+    assignedScore: null, scoreSource: null, dtliExcerpt: null,
+    bwwExcerpt: null, showScoreExcerpt: null, contentTier: 'stub',
+    contentTierReason: 'No text content', pendingReason: 'no-byline',
+    source: 'opening-night-poller', criticName: 'Unknown',
+  };
+}
+
+for (const phase of ['initial pull', 'retry pull', 'local addition']) {
+  test(`unrelated stub rename pairing during ${phase} preserves each review's own fields`, () => {
+    const f = fixture();
+    try {
+      const oldStub = pendingStub('deadline', 'the-heart', 'https://example.test/heart');
+      const newStub = pendingStub('hollywood-reporter', 'medea', 'https://example.test/medea');
+      write(f.local, OLD_STUB, oldStub);
+      git(f.local, 'add', '-A');
+      git(f.local, 'commit', '-qm', 'seed pending stub');
+      git(f.local, 'push', '-q', 'origin', 'HEAD:main');
+      git(f.other, 'pull', '-q', '--ff-only');
+
+      const replacing = phase === 'local addition' ? f.local : f.other;
+      const editing = phase === 'local addition' ? f.other : f.local;
+      fs.unlinkSync(path.join(replacing, OLD_STUB));
+      write(replacing, NEW_STUB, newStub);
+      git(replacing, 'add', '-A');
+      git(replacing, 'commit', '-qm', 'drain old stub and discover unrelated review');
+      write(editing, OLD_STUB, { ...oldStub, criticName: 'Greg Evans' });
+      if (phase !== 'retry pull') git(editing, 'commit', '-qam', 'identify old review critic');
+      git(f.other, 'push', '-q', 'origin', 'HEAD:main');
+
+      const r = run(f.script);
+      assert.equal(r.status, 0, `stdout:\n${r.stdout}\nstderr:\n${r.stderr}`);
+      assert.deepEqual(JSON.parse(git(f.origin, 'show', `main:${NEW_STUB}`)), newStub,
+        'an edit to the drained review must never appear in the unrelated review');
+      assert.equal(git(f.origin, 'ls-tree', '-r', '--name-only', 'main', '--', OLD_STUB), '',
+        'the drained stub stays deleted');
+      assert.equal(git(f.local, 'status', '--porcelain'), '', 'repairs must be committed before pushing');
+      assert.equal(git(f.local, 'rev-parse', 'HEAD'), git(f.origin, 'rev-parse', 'main'));
+    } finally {
+      fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+}

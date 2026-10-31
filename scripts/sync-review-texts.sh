@@ -101,7 +101,11 @@ fi
 # commit below landed on a half-finished rebase. Abort and fail loud instead.
 # shellcheck source=scripts/lib/rebase-guards.sh
 source "$SCRIPT_DIR/lib/rebase-guards.sh"
+# shellcheck source=scripts/lib/review-texts-rename-guard.sh
+source "$SCRIPT_DIR/lib/review-texts-rename-guard.sh"
+BEFORE_PULL=$(git rev-parse HEAD)
 guarded_pull_rebase origin main $(depth_args) -q || exit 1
+repair_review_texts_renames "$BEFORE_PULL" || exit 1
 
 # Restore protected fields (humanReviewScore, humanReviewedWrongProduction, etc.)
 # from pre-rebase HEAD. ORIG_HEAD is set by git when a rebase replayed commits.
@@ -114,7 +118,8 @@ fi
 
 # Check for changes
 git add -A
-if git diff --staged --quiet; then
+# A clean index can still have outgoing commits, including a repaired rebase.
+if git diff --staged --quiet && [ "$(git rev-list --count origin/main..HEAD)" = 0 ]; then
   echo "No review-texts changes to sync."
   exit 0
 fi
@@ -153,7 +158,7 @@ node -e "
 
 # Re-stage after protection pass
 git add -A
-if git diff --staged --quiet; then
+if git diff --staged --quiet && [ "$(git rev-list --count origin/main..HEAD)" = 0 ]; then
   echo "No review-texts changes to sync (all changes were stale)."
   exit 0
 fi
@@ -163,13 +168,17 @@ echo "Changes: $CHANGED"
 
 # Commit
 COMMIT_MSG="${1:-data: Sync local review-texts changes}"
-git commit -m "$COMMIT_MSG" -m "Changed: $CHANGED"
+if ! git diff --staged --quiet; then
+  git commit -m "$COMMIT_MSG" -m "Changed: $CHANGED"
+fi
 
 # Push with retry
 for i in 1 2 3 4 5; do
+  BEFORE_PULL=$(git rev-parse HEAD)
   # unbounded-fetch-ok: bound arrives via $(depth_args), see the depth_args()
   # definition near the top of this script for the full rationale.
   if git pull --rebase origin main $(depth_args) 2>&1; then
+    repair_review_texts_renames "$BEFORE_PULL" || exit 1
     # Resolve any conflicts by keeping ours (local is always newer for local sessions)
     UNMERGED=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
     if [ -n "$UNMERGED" ]; then
@@ -186,7 +195,9 @@ for i in 1 2 3 4 5; do
       node "$RPF" ORIG_HEAD >/dev/null 2>&1 || true
       # Re-stage anything restore-protected-fields rewrote
       git add -A 2>/dev/null || true
-      git commit --amend --no-edit 2>/dev/null || true
+    fi
+    if ! git diff --staged --quiet; then
+      bash "$SCRIPT_DIR/lib/commit-or-amend.sh" origin/main
     fi
 
     if git push origin main 2>&1; then
