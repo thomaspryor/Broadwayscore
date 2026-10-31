@@ -305,4 +305,20 @@ describe('orderIngestCandidates (BRO-6687 cap starvation)', () => {
   test('missing input is safe', () => {
     assert.deepEqual(orderIngestCandidates(undefined, undefined), []);
   });
+  test('round-robin: every row past the cap gets a turn (15 rows, cap 5, 3 runs)', () => {
+    const rows = Array.from({ length: 15 }, (_, i) => ({ url: `https://x.example/r${i}`, serpCensus: i % 3 === 0 }));
+    let prior = {};
+    const seen = new Set();
+    for (let run = 0; run < 3; run++) {
+      const ord = orderIngestCandidates(rows, prior.ingestResults, prior.ingestSkippedByCap);
+      ord.slice(0, 5).forEach((m) => seen.add(m.url));
+      prior = { ingestResults: ord.slice(0, 5).map((m) => ({ url: m.url, ok: true })), ingestSkippedByCap: ord.slice(5).map((m) => ({ url: m.url })) };
+    }
+    assert.equal(seen.size, 15);
+  });
+  test('rows the cap skipped last run go first, in skip order', () => {
+    const rows = ['a', 'b', 'c', 'd'].map((k) => ({ url: `https://x.example/${k}` }));
+    const out = orderIngestCandidates(rows, [{ url: 'https://x.example/a' }], [{ url: 'https://x.example/d' }, { url: 'https://x.example/c' }]);
+    assert.deepEqual(out.map((m) => m.url.slice(-1)), ['d', 'c', 'b', 'a']);
+  });
 });

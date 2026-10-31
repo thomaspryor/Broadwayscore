@@ -2565,8 +2565,9 @@ async function main(argv = process.argv.slice(2)) {
       // SERP_CENSUS_INGEST=1 on every market.
       const blockedPred = (m) => ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) !== null;
       const weBlocked = r.missing.filter(blockedPred);
-      // BRO-6687: cited rows before census rows, last run's tries to the back, so the cap cannot starve a review.
-      const eligibleMissing = orderIngestCandidates(r.missing.filter(m => !blockedPred(m)), (priorRowById.get(s.id) || {}).ingestResults);
+      // BRO-6687: round-robin past the cap (last run's skipped rows first, its tries last) so no review starves.
+      const priorRow = priorRowById.get(s.id) || {};
+      const eligibleMissing = orderIngestCandidates(r.missing.filter(m => !blockedPred(m)), priorRow.ingestResults, priorRow.ingestSkippedByCap);
       if (weBlocked.length > 0) {
         r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }), censusGateOn: serpCensusGateOn }));
         const nPrior = weBlocked.filter(isPriorProductionCitation).length;

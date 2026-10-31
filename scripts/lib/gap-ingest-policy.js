@@ -365,19 +365,31 @@ function isRoundupSelfCitation(row) {
  * The cap took rows in discovery order, so on Martin Guerre 2026 five SERP-census
  * pages (forum threads, listing pages) used all 5 slots every hourly run for 11
  * days and the aggregator-cited London Now review behind them was never tried.
- * Aggregator-cited rows go before census rows, and a URL already tried last run
- * goes to the back: it is still missing, so that try did not land it (an "ok"
- * write the page filter later drops counts too, 243 such rows on 2026-10-31).
- * Stable otherwise.
+ * Round-robin, so every eligible row gets a turn within ceil(n / cap) runs:
+ *   1. rows the cap skipped last run, in the order they were skipped (FIFO);
+ *   2. rows not seen last run, aggregator-cited before census;
+ *   3. rows tried last run (still missing, so that try did not land them; an "ok"
+ *      write the page filter later drops counts too, 243 such rows on 2026-10-31),
+ *      cited before census.
+ * Only demoting last run's tries would rotate the first 10 rows forever and starve
+ * row 11+ (22 shows had more than 10 eligible rows on 2026-10-31).
  * @param {object[]} rows - eligible r.missing rows
  * @param {object[]} [priorIngestResults] - the previous audit row's ingestResults
+ * @param {object[]} [priorSkippedByCap] - the previous audit row's ingestSkippedByCap
  * @returns {object[]} the same rows, reordered
  */
-function orderIngestCandidates(rows, priorIngestResults = []) {
+function orderIngestCandidates(rows, priorIngestResults = [], priorSkippedByCap = []) {
   const key = (u) => String(u || '').trim().replace(/^https?:\/\/(www\.)?/i, '').replace(/#.*$/, '').replace(/\/$/, '').toLowerCase();
   const triedLastRun = new Set((priorIngestResults || []).filter(x => x && x.url).map(x => key(x.url)));
-  const rank = (m) => (triedLastRun.has(key(m.url)) ? 2 : 0) + (m.serpCensus ? 1 : 0);
-  return (rows || []).map((m, i) => ({ m, i, k: rank(m) })).sort((a, b) => a.k - b.k || a.i - b.i).map(x => x.m);
+  const cappedAt = new Map();
+  (priorSkippedByCap || []).forEach((x, i) => { if (x && x.url && !cappedAt.has(key(x.url))) cappedAt.set(key(x.url), i); });
+  const rank = (m) => {
+    const k = key(m.url);
+    if (cappedAt.has(k)) return [0, cappedAt.get(k)];
+    return [triedLastRun.has(k) ? 2 : 1, m.serpCensus ? 1 : 0];
+  };
+  return (rows || []).map((m, i) => ({ m, i, k: rank(m) }))
+    .sort((a, b) => a.k[0] - b.k[0] || a.k[1] - b.k[1] || a.i - b.i).map(x => x.m);
 }
 
 module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };

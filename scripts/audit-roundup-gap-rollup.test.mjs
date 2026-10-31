@@ -83,7 +83,7 @@ test('every open per-show roundup-gap key is offered to the quiet resolve; the r
 
 // BRO-6687: slow markets (off-Broadway past day 3, West End, off-West End) join the
 // rollup for 21 days, counting only cited rows and reverify exclusions.
-const slow = (id, category, openingDate, extra = {}) => ({ showId: id, title: `Show ${id}`, category, openingDate, missing: [], flaggedMisses: [], ingestResults: [], ingestSkippedByCap: [], aggregatorArticles: [], ...extra });
+const slow = (id, category, openingDate, extra = {}) => ({ showId: id, title: `Show ${id}`, category, openingDate, missing: [], flaggedMisses: [], ingestResults: [], ingestSkippedByCap: [], aggregatorArticles: [], computedAt: new Date(NOW - 3600000).toISOString(), ...extra });
 
 test('a West End show with a cap-skipped cited review alerts on day 11', () => {
   const r = slow('mg', 'west-end', '2026-10-05', {
@@ -123,4 +123,28 @@ test('slow-market window ends at 21 days and never includes Broadway past day 3'
   const late = slow('late', 'west-end', '2026-09-20', { missing: [{ url: 'https://n.example/r' }] });
   const bway = slow('bw', 'broadway', '2026-10-06', { missing: [{ url: 'https://n.example/r' }] });
   assert.equal(planRoundupGapAlerts([late, bway], true, NOW).alert.length, 0);
+});
+
+test('a slow-market row not re-audited for 36h stays out (it can neither clear nor be fixed)', () => {
+  const stale = slow('st', 'west-end', '2026-10-10', { missing: [{ url: 'https://n.example/r' }], computedAt: new Date(NOW - 37 * 3600000).toISOString() });
+  const undated = slow('nd', 'west-end', '2026-10-10', { missing: [{ url: 'https://n.example/r' }], computedAt: undefined });
+  const plan = planRoundupGapAlerts([stale, undated], true, NOW);
+  assert.deepEqual([plan.alert.length, plan.resolve.length], [0, 0]);
+});
+
+test('a reverify row recovered this run does not hold the slow-market alert', () => {
+  const r = slow('rc', 'off-west-end', '2026-10-10', {
+    flaggedMisses: [{ url: 'https://rv.example/r', reverify: true }],
+    recoveryResults: [{ url: 'https://rv.example/r', recovered: true }],
+  });
+  assert.deepEqual(planRoundupGapAlerts([r], true, NOW).resolve, ['rc']);
+});
+
+test('off-Broadway uses the roundup path through day 3 and the slow path from day 4', () => {
+  const day = (d) => new Date(NOW - d * 86400000).toISOString().slice(0, 10);
+  // Census-only gap: the roundup path counts it (uningested), the slow path does not.
+  const mk = (id, d) => slow(id, 'off-broadway', day(d), { missing: [{ url: 'https://c.example/a', serpCensus: true }], aggregatorArticles: [{ url: 'https://bww.example/rr' }] });
+  const plan = planRoundupGapAlerts([mk('d2', 2), mk('d5', 5)], false, NOW);
+  assert.deepEqual(plan.alert.map((a) => a.showId), ['d2']);
+  assert.deepEqual(plan.resolve, ['d5']);
 });

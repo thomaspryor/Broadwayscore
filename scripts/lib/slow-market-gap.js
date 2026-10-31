@@ -26,7 +26,8 @@ function slowMarketListedGap(r) {
   const tried = new Set((r.ingestResults || []).map(x => x && x.url));
   const capped = new Set((r.ingestSkippedByCap || []).map(x => x && x.url));
   const cited = currentRunOnly(r.missing).filter(m => m && !m.serpCensus && !landed.has(m.url));
-  const reverify = currentRunOnly(r.flaggedMisses).filter(m => m && m.reverify === true && !m.serpCensus);
+  const recovered = new Set((r.recoveryResults || []).filter(x => x && x.recovered && !x.uncited).map(x => x.url));
+  const reverify = currentRunOnly(r.flaggedMisses).filter(m => m && m.reverify === true && !m.serpCensus && !recovered.has(m.url));
   const counts = {
     failedIngest: cited.filter(m => tried.has(m.url)).length,
     capped: cited.filter(m => capped.has(m.url)).length,
@@ -37,11 +38,18 @@ function slowMarketListedGap(r) {
   return { residual: cited.length + reverify.length, ...counts, rows: [...cited, ...reverify] };
 }
 
-/** True when the show is a slow-market opening inside the alert window. */
+// A row the audit has not re-checked recently can neither clear nor be fixed, so it
+// would hold the rollup card open (6 of 14 slow-market rows were 6-13 days old on
+// 2026-10-31). The audit runs hourly; 36h tolerates a day of skipped or failed runs.
+const SLOW_MARKET_MAX_ROW_AGE_HOURS = 36;
+
+/** True when the show is a slow-market opening inside the alert window, audited recently. */
 function inSlowMarketWindow(r, now = Date.now()) {
   if (!r || !SLOW_MARKETS.has(r.category)) return false;
+  const audited = r.computedAt ? Date.parse(r.computedAt) : NaN;
+  if (!Number.isFinite(audited) || now - audited > SLOW_MARKET_MAX_ROW_AGE_HOURS * 3600000) return false;
   const opened = r.openingDate ? Date.parse(r.openingDate) : NaN;
   return Number.isFinite(opened) && opened <= now && now - opened <= SLOW_MARKET_ALERT_DAYS * 86400000;
 }
 
-module.exports = { slowMarketListedGap, inSlowMarketWindow, SLOW_MARKETS, SLOW_MARKET_ALERT_DAYS };
+module.exports = { slowMarketListedGap, inSlowMarketWindow, SLOW_MARKETS, SLOW_MARKET_ALERT_DAYS, SLOW_MARKET_MAX_ROW_AGE_HOURS };

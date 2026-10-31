@@ -28,10 +28,11 @@ function gradeShow(row, liveCount) {
     grade: g.residual === 0 ? 'PASS' : 'FAIL',
     live: liveCount,
     notLive: g.rows.map((m) => m.url),
+    cited: g.rows.length - g.flaggedOut,
     capped: g.capped,
     reverify: g.flaggedOut,
     census: currentRunOnly(row.missing).filter((m) => m && m.serpCensus).length,
-    hiddenAsNonReview: (row.flaggedMisses || []).filter((m) => m && m.confirmedNonReview).length,
+    hiddenAsNonReview: currentRunOnly(row.flaggedMisses).filter((m) => m && m.confirmedNonReview).length,
     auditedAt: row.computedAt || null,
   };
 }
@@ -53,7 +54,7 @@ function main(argv = process.argv.slice(2)) {
   else {
     console.log(`gap audit generated ${audit.generatedAt}`);
     for (const s of out) {
-      console.log(`${s.grade.padEnd(8)} ${s.showId}: ${s.live} live, ${s.notLive.length} cited not live${s.capped ? ` (${s.capped} behind the ingest cap)` : ''}${s.reverify ? `, ${s.reverify} automated exclusion(s) to re-verify` : ''}; info: ${s.census} census candidate(s), ${s.hiddenAsNonReview} excluded as non-review${s.auditedAt ? `; audited ${s.auditedAt}` : ''}`);
+      console.log(`${s.grade.padEnd(8)} ${s.showId}: ${s.live} live, ${s.cited || 0} cited not live${s.capped ? ` (${s.capped} behind the ingest cap)` : ''}${s.reverify ? `, ${s.reverify} automated exclusion(s) to re-verify` : ''}; info: ${s.census} census candidate(s), ${s.hiddenAsNonReview} excluded as non-review${s.auditedAt ? `; audited ${s.auditedAt}` : ''}`);
       for (const u of s.notLive) console.log(`         - ${u}`);
     }
   }
