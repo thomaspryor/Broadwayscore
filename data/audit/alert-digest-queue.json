@@ -3646,20 +3646,6 @@
     "queuedAt": "2026-10-31T03:22:12.650Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:murder-cathedral-off-west-end-2026",
-    "title": "Review gap — \"Murder in the Cathedral\" missing 1 cited review(s)",
-    "description": "Murder in the Cathedral (murder-cathedral-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=murder-cathedral-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T03:22:12.729Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:specimen-off-broadway-2026",
     "title": "Review gap — \"Specimen\" missing 1 cited review(s)",
     "description": "Specimen (specimen-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=specimen-off-broadway-2026 --checkpoint --ingest-missing",
@@ -3894,6 +3880,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T05:17:29.949Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:dogstar-off-west-end-2026",
+    "title": "Review gap — \"Dogstar\" missing 1 cited review(s)",
+    "description": "Dogstar (dogstar-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=dogstar-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T06:31:51.008Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-revlon-girl-off-west-end-2026",
+    "title": "Review gap — \"The Revlon Girl\" missing 2 cited review(s)",
+    "description": "The Revlon Girl (the-revlon-girl-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-revlon-girl-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T06:31:51.372Z"
   },
   {
     "conditionKey": "land:land/bro-6606-cost",
