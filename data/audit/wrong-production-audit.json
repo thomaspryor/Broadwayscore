@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T09:15:44.613Z",
+  "timestamp": "2026-10-31T09:33:03.148Z",
   "stats": {
-    "totalReviews": 73844,
-    "alreadyFlagged": 22444,
+    "totalReviews": 73842,
+    "alreadyFlagged": 22445,
     "dateGuardCatches": 229,
-    "directorMismatch": 3030,
+    "directorMismatch": 3031,
     "tvFilmSignals": 2074,
     "londonSignals": 3420,
     "offBroadwaySignals": 662,
     "yearMismatch": 303,
-    "noPublishDate": 8464
+    "noPublishDate": 8460
   },
   "findings": [
     {
@@ -33412,6 +33412,20 @@
       "score": 82,
       "publishDate": "2021-12-09",
       "url": "https://www.offoffonline.com/offoffonline/2021/12/8/kimberly-akimbo",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from kimberly-akimbo-2022"
+        }
+      ]
+    },
+    {
+      "showId": "kimberly-akimbo-off-broadway-2021",
+      "file": "talkinbroadway--david-hurst.json",
+      "score": 62,
+      "publishDate": "December 8th, 2021",
+      "url": "https://www.talkinbroadway.com/page/ob/12_08_21.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
