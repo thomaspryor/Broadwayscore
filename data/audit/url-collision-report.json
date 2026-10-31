@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-31T14:37:44.914Z",
+  "generatedAt": "2026-10-31T16:07:14.968Z",
   "summary": {
-    "total": 11,
+    "total": 13,
     "high": 6,
-    "medium": 4,
+    "medium": 6,
     "low": 1
   },
   "collisions": [
@@ -197,6 +197,33 @@
       "confidence": "high"
     },
     {
+      "url": "http://www.wolfentertainmentguide.com/viewpage.aspx?record=6839&cat=theater",
+      "normalizedUrl": "https://wolfentertainmentguide.com/viewpage.aspx",
+      "candidates": [
+        {
+          "showId": "peer-gynt-off-broadway-2016",
+          "file": "wolf-entertainment-guide--william-wolf.json",
+          "publishDate": "May 26th, 2016",
+          "openingDate": "2016-05-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "wolf-entertainment-guide"
+        },
+        {
+          "showId": "turn-me-loose-off-broadway-2016",
+          "file": "wolf-entertainment-guide--william-wolf.json",
+          "publishDate": "May 20th, 2016",
+          "openingDate": "2016-05-19",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "wolf-entertainment-guide"
+        }
+      ],
+      "suggestedWinner": "peer-gynt-off-broadway-2016",
+      "reason": "publishDate May 26th, 2016 is 1 days from peer-gynt-off-broadway-2016 but also 1 days from turn-me-loose-off-broadway-2016",
+      "confidence": "medium"
+    },
+    {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
       "normalizedUrl": "https://thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
       "candidates": [
@@ -302,6 +329,33 @@
       ],
       "suggestedWinner": "translations-west-end-2019",
       "reason": "publishDate 2019-10-21 is 0 days from translations-west-end-2019 but also 1 days from translations-west-end-2018",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.whatsonstage.com/news/trouble-in-mind-review-a-bracingly-relevant-play-whose-time-has-finally-come_55519/",
+      "normalizedUrl": "https://whatsonstage.com/news/trouble-in-mind-review-a-bracingly-relevant-play-whose-time-has-finally-come_55519",
+      "candidates": [
+        {
+          "showId": "trouble-in-mind-2021",
+          "file": "whatsonstage--alun-hood.json",
+          "publishDate": "2021-12-10",
+          "openingDate": "2021-11-18",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        },
+        {
+          "showId": "trouble-in-mind-west-end-2021",
+          "file": "whatsonstage--alun-hood.json",
+          "publishDate": "2021-12-10",
+          "openingDate": "2021-12-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "trouble-in-mind-west-end-2021",
+      "reason": "publishDate 2021-12-10 is 0 days from trouble-in-mind-west-end-2021 but also 22 days from trouble-in-mind-2021",
       "confidence": "medium"
     }
   ]
